@@ -1,2 +1,2 @@
 # EveryProtocol
-Clientside ViaVersion, ViaLegacy and ViaAprilFools implementation with clientsided fixes
+Clientside ViaVersion, ViaLegacy and ViaAprilFools implementation with clientside fixes for Fabric
