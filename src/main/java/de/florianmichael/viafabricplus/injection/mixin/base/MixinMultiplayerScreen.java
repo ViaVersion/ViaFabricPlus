@@ -19,6 +19,6 @@ public class MixinMultiplayerScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     public void addProtocolSelectionButton(CallbackInfo ci) {
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("ViaFabricPlus"), button -> client.setScreen(ProtocolSelectionScreen.INSTANCE)).position(3, 3).size(98, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.literal("ViaFabricPlus"), button -> ProtocolSelectionScreen.open(this)).position(3, 3).size(98, 20).build());
     }
 }

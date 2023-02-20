@@ -21,13 +21,15 @@
 
 package de.florianmichael.viafabricplus.value;
 
+import com.google.gson.JsonObject;
+
 public abstract class AbstractValue<T> {
     private final String name;
     private final T defaultValue;
 
     private T value;
 
-    public AbstractValue(String name, T defaultValue) {
+    public AbstractValue(final String name, final T defaultValue) {
         this.name = name;
         this.defaultValue = defaultValue;
 
@@ -35,6 +37,9 @@ public abstract class AbstractValue<T> {
 
         ValueHolder.values.add(this);
     }
+
+    public abstract void write(final JsonObject object);
+    public abstract void read(final JsonObject object);
 
     public String getName() {
         return name;

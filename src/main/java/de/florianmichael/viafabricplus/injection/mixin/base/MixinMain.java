@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinMain {
 
     @Inject(method = "main([Ljava/lang/String;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;initCrashReport()V"))
-    private static void loadViaLoadingBase(CallbackInfo ci) {
-        ViaFabricPlus.getClassWrapper().preInit();
+    private static void preLoad(CallbackInfo ci) {
+        ViaFabricPlus.getClassWrapper().preLoad();
     }
 }

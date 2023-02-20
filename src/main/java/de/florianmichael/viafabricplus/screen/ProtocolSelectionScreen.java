@@ -15,21 +15,27 @@ import net.minecraft.text.Text;
 
 import java.awt.*;
 
+@SuppressWarnings("DataFlowIssue")
 public class ProtocolSelectionScreen extends Screen {
-    public final static ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
+    private final static ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
+    public Screen prevScreen;
 
     protected ProtocolSelectionScreen() {
         super(Text.literal("Protocol selection"));
+    }
+
+    public static void open(final Screen current) {
+        INSTANCE.prevScreen = current;
+        MinecraftClient.getInstance().setScreen(INSTANCE);
     }
 
     @Override
     protected void init() {
         super.init();
 
-        this.addDrawableChild(new SlotList(this.client, width, height, 30, height - 20, textRenderer.fontHeight + 2));
+        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, textRenderer.fontHeight + 2));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("Values"), button -> {
-        }).position(3, 3).size(98, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.literal("Values"), button -> ValuesScreen.open(this)).position(0, 0).size(98, 20).build());
     }
 
     @Override
@@ -40,9 +46,15 @@ public class ProtocolSelectionScreen extends Screen {
         matrices.scale(2F, 2F, 2F);
         drawCenteredText(matrices, textRenderer, "ViaFabricPlus", width / 4, 3, -1);
         matrices.pop();
+        drawCenteredText(matrices, textRenderer, "https://github.com/FlorianMichael/ViaFabricPlus", width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
 
-        drawStringWithShadow(matrices, textRenderer, "by EnZaXD/FlorianMichael", 1, height - (textRenderer.fontHeight) * 2, -1);
-        drawStringWithShadow(matrices, textRenderer, "https://github.com/FlorianMichael/ViaFabricPlus", 1, height - textRenderer.fontHeight, -1);
+        final String authorString = "by EnZaXD/FlorianMichael";
+        drawStringWithShadow(matrices, textRenderer, authorString, width - textRenderer.getWidth(authorString), 0, -1);
+    }
+
+    @Override
+    public void close() {
+        client.setScreen(prevScreen);
     }
 
     public static class SlotList extends AlwaysSelectedEntryListWidget<ProtocolSlot> {
@@ -50,18 +62,14 @@ public class ProtocolSelectionScreen extends Screen {
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
-            for (ProtocolVersion protocol : InternalProtocolList.getProtocols()) {
-                addEntry(new ProtocolSlot(this, protocol));
-            }
+            InternalProtocolList.getProtocols().stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }
     }
 
     public static class ProtocolSlot extends AlwaysSelectedEntryListWidget.Entry<ProtocolSlot> {
-        private final SlotList slotList;
         private final ProtocolVersion protocolVersion;
 
-        public ProtocolSlot(final SlotList slotList, final ProtocolVersion protocolVersion) {
-            this.slotList = slotList;
+        public ProtocolSlot(final ProtocolVersion protocolVersion) {
             this.protocolVersion = protocolVersion;
         }
 
@@ -86,8 +94,6 @@ public class ProtocolSelectionScreen extends Screen {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
             drawCenteredText(matrices, textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
             matrices.pop();
-
-            if (isSelected) this.slotList.setSelected(this);
         }
     }
 }
