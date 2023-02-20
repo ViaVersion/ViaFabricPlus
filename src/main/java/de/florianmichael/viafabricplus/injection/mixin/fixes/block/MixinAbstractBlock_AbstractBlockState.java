@@ -42,7 +42,7 @@ public abstract class MixinAbstractBlock_AbstractBlockState {
     protected abstract BlockState asBlockState();
 
     @Inject(method = "getHardness", at = @At("RETURN"), cancellable = true)
-    public void injectGetHardness(BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
+    public void changeHardness(BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
         final BlockState state = this.asBlockState();
 
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {

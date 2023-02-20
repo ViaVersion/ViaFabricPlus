@@ -45,78 +45,76 @@ public class MixinPistonHeadBlock extends FacingBlock {
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2))
-            cir.setReturnValue(getCoreShape_1_8(state));
+            cir.setReturnValue(viafabricplus_getCoreShape_v1_8_x(state));
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8))
-            return VoxelShapes.union(getHeadShape_1_8(state), getCoreShape_1_8(state));
+            return VoxelShapes.union(viafabricplus_getHeadShape_v1_8_x(state), viafabricplus_getCoreShape_v1_8_x(state));
 
         return super.getCollisionShape(state, world, pos, context);
     }
 
     @Unique
-    private final VoxelShape protocolhack_CORE_DOWN_SHAPE_1_8 = Block.createCuboidShape(6, 4, 6, 10, 16, 10);
+    private final VoxelShape viafabricplus_core_down_shape_v1_8_x = Block.createCuboidShape(6, 4, 6, 10, 16, 10);
 
     @Unique
-    private final VoxelShape protocolhack_CORE_UP_SHAPE_1_8 = Block.createCuboidShape(6, 0, 6, 10, 12, 10);
+    private final VoxelShape viafabricplus_core_up_shape_v1_8_x = Block.createCuboidShape(6, 0, 6, 10, 12, 10);
 
     @Unique
-    private final VoxelShape protocolhack_CORE_NORTH_SHAPE_1_8 = Block.createCuboidShape(4, 6, 4, 12, 10, 16);
+    private final VoxelShape viafabricplus_core_north_shape_v1_8_x = Block.createCuboidShape(4, 6, 4, 12, 10, 16);
 
     @Unique
-    private final VoxelShape protocolhack_CORE_SOUTH_SHAPE_1_8 = Block.createCuboidShape(4, 6, 0, 12, 10, 12);
+    private final VoxelShape viafabricplus_core_south_shape_v1_8_x = Block.createCuboidShape(4, 6, 0, 12, 10, 12);
 
     @Unique
-    private final VoxelShape protocolhack_CORE_WEST_SHAPE_1_8 = Block.createCuboidShape(6, 4, 4, 10, 12, 16);
+    private final VoxelShape viafabricplus_core_west_shape_v1_8_x = Block.createCuboidShape(6, 4, 4, 10, 12, 16);
 
     @Unique
-    private final VoxelShape protocolhack_CORE_EAST_SHAPE_1_8 = Block.createCuboidShape(0, 6, 4, 12, 10, 12);
+    private final VoxelShape viafabricplus_core_east_shape_v1_8_x = Block.createCuboidShape(0, 6, 4, 12, 10, 12);
 
     @Unique
-    private VoxelShape getCoreShape_1_8(BlockState state) {
+    private VoxelShape viafabricplus_getCoreShape_v1_8_x(BlockState state) {
         final Direction direction = state.get(FACING);
 
         return switch (direction) {
-            case DOWN -> protocolhack_CORE_DOWN_SHAPE_1_8;
-            case UP -> protocolhack_CORE_UP_SHAPE_1_8;
-            case NORTH -> protocolhack_CORE_NORTH_SHAPE_1_8;
-            case SOUTH -> protocolhack_CORE_SOUTH_SHAPE_1_8;
-            case WEST -> protocolhack_CORE_WEST_SHAPE_1_8;
-            case EAST -> protocolhack_CORE_EAST_SHAPE_1_8;
+            case DOWN -> viafabricplus_core_down_shape_v1_8_x;
+            case UP -> viafabricplus_core_up_shape_v1_8_x;
+            case NORTH -> viafabricplus_core_north_shape_v1_8_x;
+            case SOUTH -> viafabricplus_core_south_shape_v1_8_x;
+            case WEST -> viafabricplus_core_west_shape_v1_8_x;
+            case EAST -> viafabricplus_core_east_shape_v1_8_x;
         };
     }
 
     @Unique
-    private final VoxelShape protocolhack_HEAD_DOWN_SHAPE_1_8 = Block.createCuboidShape(0, 0, 0, 16, 4, 16);
+    private final VoxelShape viafabricplus_head_down_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 16, 4, 16);
 
     @Unique
-    private final VoxelShape protocolhack_HEAD_UP_SHAPE_1_8 = Block.createCuboidShape(0, 12, 0, 16, 16, 16);
+    private final VoxelShape viafabricplus_head_up_shape_v1_8_x = Block.createCuboidShape(0, 12, 0, 16, 16, 16);
 
     @Unique
-    private final VoxelShape protocolhack_HEAD_NORTH_SHAPE_1_8 = Block.createCuboidShape(0, 0, 0, 16, 16, 4);
+    private final VoxelShape viafabricplus_head_north_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 16, 16, 4);
 
     @Unique
-    private final VoxelShape protocolhack_HEAD_SOUTH_SHAPE_1_8 = Block.createCuboidShape(0, 0, 12, 16, 16, 16);
+    private final VoxelShape viafabricplus_head_south_shape_v1_8_x = Block.createCuboidShape(0, 0, 12, 16, 16, 16);
 
     @Unique
-    private final VoxelShape protocolhack_HEAD_WEST_SHAPE_1_8 = Block.createCuboidShape(0, 0, 0, 4, 16, 16);
+    private final VoxelShape viafabricplus_head_west_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 4, 16, 16);
 
     @Unique
-    private final VoxelShape protocolhack_HEAD_EAST_SHAPE_1_8 = Block.createCuboidShape(12, 0, 0, 16, 16, 16);
+    private final VoxelShape viafabricplus_head_east_shape_v1_8_x = Block.createCuboidShape(12, 0, 0, 16, 16, 16);
 
     @Unique
-    private VoxelShape getHeadShape_1_8(BlockState state) {
-        final Direction direction = state.get(FACING);
-
-        return switch (direction) {
-            case DOWN -> protocolhack_HEAD_DOWN_SHAPE_1_8;
-            case UP -> protocolhack_HEAD_UP_SHAPE_1_8;
-            case NORTH -> protocolhack_HEAD_NORTH_SHAPE_1_8;
-            case SOUTH -> protocolhack_HEAD_SOUTH_SHAPE_1_8;
-            case WEST -> protocolhack_HEAD_WEST_SHAPE_1_8;
-            case EAST -> protocolhack_HEAD_EAST_SHAPE_1_8;
+    private VoxelShape viafabricplus_getHeadShape_v1_8_x(BlockState state) {
+        return switch (state.get(FACING)) {
+            case DOWN -> viafabricplus_head_down_shape_v1_8_x;
+            case UP -> viafabricplus_head_up_shape_v1_8_x;
+            case NORTH -> viafabricplus_head_north_shape_v1_8_x;
+            case SOUTH -> viafabricplus_head_south_shape_v1_8_x;
+            case WEST -> viafabricplus_head_west_shape_v1_8_x;
+            case EAST -> viafabricplus_head_east_shape_v1_8_x;
         };
     }
 }

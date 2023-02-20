@@ -43,7 +43,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinSnowBlock {
 
     @Unique
-    private static final VoxelShape[] protocolhack_LAYERS_TO_SHAPE_1_12_2 = new VoxelShape[]{
+    private static final VoxelShape[] viafabricplus_layers_to_shape_v1_12_2 = new VoxelShape[]{
             Block.createCuboidShape(0, -0.00001 /* Bypass for Minecraft-Fixes */, 0, 16, 0, 16),
             Block.createCuboidShape(0, 0, 0, 16, 2, 16),
             Block.createCuboidShape(0, 0, 0, 16, 4, 16),
@@ -61,7 +61,7 @@ public class MixinSnowBlock {
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(protocolhack_LAYERS_TO_SHAPE_1_12_2[state.get(LAYERS) - 1]);
+            cir.setReturnValue(viafabricplus_layers_to_shape_v1_12_2[state.get(LAYERS) - 1]);
         }
     }
 }

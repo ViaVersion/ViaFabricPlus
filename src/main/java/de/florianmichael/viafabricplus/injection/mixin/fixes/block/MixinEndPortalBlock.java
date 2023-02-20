@@ -43,10 +43,10 @@ public abstract class MixinEndPortalBlock extends BlockWithEntity {
     @Final
     protected static VoxelShape SHAPE;
     @Unique
-    private final VoxelShape protocolhack_SHAPE_1_8 = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 1.0, 16.0);
+    private final VoxelShape viafabricplus_shape_v1_8_x = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 1.0, 16.0);
 
     @Unique
-    private final VoxelShape protocolhack_SHAPE_1_16_5 = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
+    private final VoxelShape viafabricplus_shape_v1_16_5 = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
 
     protected MixinEndPortalBlock(Settings settings) {
         super(settings);
@@ -57,10 +57,10 @@ public abstract class MixinEndPortalBlock extends BlockWithEntity {
         if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().world == null) return;
 
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            cir.setReturnValue(protocolhack_SHAPE_1_8);
+            cir.setReturnValue(viafabricplus_shape_v1_8_x);
         }
         else if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
-            cir.setReturnValue(protocolhack_SHAPE_1_16_5);
+            cir.setReturnValue(viafabricplus_shape_v1_16_5);
         }
     }
 

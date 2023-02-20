@@ -15,7 +15,7 @@ public class MixinPacketWrapperImpl implements IPacketWrapperImpl {
     @Shadow @Final private Deque<Pair<Type<?>, Object>> readableObjects;
 
     @Override
-    public Deque<Pair<Type<?>, Object>> ep$readableObjects() {
+    public Deque<Pair<Type<?>, Object>> viafabricplus_readableObjects() {
         return this.readableObjects;
     }
 }

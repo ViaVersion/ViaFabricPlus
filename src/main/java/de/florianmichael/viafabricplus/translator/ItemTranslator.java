@@ -61,6 +61,6 @@ public class ItemTranslator {
             throw new RuntimeException(e);
         }
 
-        return (Item) ((IPacketWrapperImpl) wrapper).ep$readableObjects().stream().filter(typeObjectPair -> Item.class.equals(typeObjectPair.key().getOutputClass())).findFirst().orElse(null).value();
+        return (Item) ((IPacketWrapperImpl) wrapper).viafabricplus_readableObjects().stream().filter(typeObjectPair -> Item.class.equals(typeObjectPair.key().getOutputClass())).findFirst().orElse(null).value();
     }
 }

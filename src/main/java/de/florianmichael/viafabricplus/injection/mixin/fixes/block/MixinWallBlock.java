@@ -47,7 +47,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinWallBlock extends Block {
 
     @Unique
-    private static final VoxelShape[] protocolhack_SHAPE_BY_INDEX_1_12_2 = new VoxelShape[]{
+    private static final VoxelShape[] viafabricplus_shape_by_index_v1_12_2 = new VoxelShape[]{
             Block.createCuboidShape(4, 0, 4, 12, 16, 12),
             Block.createCuboidShape(4, 0, 4, 12, 16, 16),
             Block.createCuboidShape(0, 0, 4, 12, 16, 12),
@@ -69,8 +69,9 @@ public class MixinWallBlock extends Block {
             Block.createCuboidShape(0, 0, 0, 16, 16, 12),
             Block.createCuboidShape(0, 0, 0, 16, 16, 16)
     };
+
     @Unique
-    private static final VoxelShape[] protocolhack_CLIP_SHAPE_BY_INDEX_1_12_2 = new VoxelShape[]{
+    private static final VoxelShape[] viafabricplus_cip_shape_by_index_v1_12_2 = new VoxelShape[]{
             Block.createCuboidShape(4, 0, 4, 12, 24, 12),
             Block.createCuboidShape(4, 0, 4, 12, 24, 16),
             Block.createCuboidShape(0, 0, 4, 12, 24, 12),
@@ -109,7 +110,7 @@ public class MixinWallBlock extends Block {
     }
 
     @Unique
-    private static BlockState protocolhack_oldWallPlacementLogic(BlockState state) {
+    private static BlockState viafabricplus_oldWallPlacementLogic(BlockState state) {
         boolean addUp = false;
         if (state.get(WallBlock.NORTH_SHAPE) == WallShape.TALL) {
             state = state.with(WallBlock.NORTH_SHAPE, WallShape.LOW);
@@ -134,7 +135,7 @@ public class MixinWallBlock extends Block {
     }
 
     @Unique
-    private static int protocolhack_getShapeIndex_1122(BlockState state) {
+    private static int viafabricplus_getShapeIndex_v1_12_2(BlockState state) {
         int i = 0;
 
         if (state.get(NORTH_SHAPE) != WallShape.NONE) i |= 1 << Direction.NORTH.getHorizontal();
@@ -148,28 +149,28 @@ public class MixinWallBlock extends Block {
     @Inject(method = "getPlacementState", at = @At("RETURN"), cancellable = true)
     public void injectGetPlacementState(ItemPlacementContext ctx, CallbackInfoReturnable<BlockState> cir) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
-            cir.setReturnValue(protocolhack_oldWallPlacementLogic(cir.getReturnValue()));
+            cir.setReturnValue(viafabricplus_oldWallPlacementLogic(cir.getReturnValue()));
         }
     }
 
     @Inject(method = "getStateForNeighborUpdate", at = @At("RETURN"), cancellable = true)
     public void injectGetStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos, CallbackInfoReturnable<BlockState> cir) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
-            cir.setReturnValue(protocolhack_oldWallPlacementLogic(cir.getReturnValue()));
+            cir.setReturnValue(viafabricplus_oldWallPlacementLogic(cir.getReturnValue()));
         }
     }
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     public void injectGetCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(protocolhack_CLIP_SHAPE_BY_INDEX_1_12_2[protocolhack_getShapeIndex_1122(state)]);
+            cir.setReturnValue(viafabricplus_cip_shape_by_index_v1_12_2[viafabricplus_getShapeIndex_v1_12_2(state)]);
         }
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(protocolhack_SHAPE_BY_INDEX_1_12_2[protocolhack_getShapeIndex_1122(state)]);
+            cir.setReturnValue(viafabricplus_shape_by_index_v1_12_2[viafabricplus_getShapeIndex_v1_12_2(state)]);
         }
     }
 }

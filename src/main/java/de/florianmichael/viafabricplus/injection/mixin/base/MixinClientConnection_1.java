@@ -24,6 +24,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.vialoadingbase.netty.CustomViaDecodeHandler;
 import de.florianmichael.vialoadingbase.netty.CustomViaEncodeHandler;
 import de.florianmichael.vialoadingbase.netty.NettyConstants;
@@ -49,6 +50,7 @@ public class MixinClientConnection_1 {
         if (channel instanceof SocketChannel) {
             // Creating the user connection
             final UserConnection user = new UserConnectionImpl(channel, true);
+            channel.attr(ViaFabricPlus.LOCAL_USER_CONNECTION).set(user);
 
             // Creating the pipeline
             new ProtocolPipelineImpl(user);

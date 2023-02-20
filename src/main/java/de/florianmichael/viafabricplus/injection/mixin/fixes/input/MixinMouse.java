@@ -39,7 +39,7 @@ public class MixinMouse {
     @Redirect(method = { "method_29615", "method_22685", "method_22684" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;execute(Ljava/lang/Runnable;)V"))
     public void redirectSync(MinecraftClient instance, Runnable runnable) {
         if (ValueHolder.executeInputsInSync.getValue()) {
-            ((IMinecraftClient) client).protocolhack_trackMouseInteraction(runnable);
+            ((IMinecraftClient) client).viafabricplus_trackMouseInteraction(runnable);
             return;
         }
 

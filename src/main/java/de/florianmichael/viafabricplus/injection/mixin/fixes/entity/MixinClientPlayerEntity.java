@@ -205,7 +205,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     }
 
     @Override
-    public void protocolhack_cancelSwingOnce() {
+    public void viafabricplus_cancelSwingOnce() {
         protocolhack_areSwingCanceledThisTick = true;
     }
 }

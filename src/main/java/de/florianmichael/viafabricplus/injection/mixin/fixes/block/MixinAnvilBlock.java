@@ -44,9 +44,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinAnvilBlock {
 
     @Unique
-    private static final VoxelShape protocolhack_X_AXIS_SHAPE_1_12_2 = Block.createCuboidShape(0, 0, 2, 16, 16, 14);
+    private static final VoxelShape viafabricplus_x_axis_shape_v1_12_2 = Block.createCuboidShape(0, 0, 2, 16, 16, 14);
+
     @Unique
-    private static final VoxelShape protocolhack_Z_AXIS_SHAPE_1_12_2 = Block.createCuboidShape(2, 0, 0, 14, 16, 16);
+    private static final VoxelShape viafabricplus_z_axis_shape_v1_12_2 = Block.createCuboidShape(2, 0, 0, 14, 16, 16);
+
     @Shadow
     @Final
     public static DirectionProperty FACING;
@@ -54,7 +56,7 @@ public class MixinAnvilBlock {
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(state.get(FACING).getAxis() == Direction.Axis.X ? protocolhack_X_AXIS_SHAPE_1_12_2 : protocolhack_Z_AXIS_SHAPE_1_12_2);
+            cir.setReturnValue(state.get(FACING).getAxis() == Direction.Axis.X ? viafabricplus_x_axis_shape_v1_12_2 : viafabricplus_z_axis_shape_v1_12_2);
         }
     }
 }

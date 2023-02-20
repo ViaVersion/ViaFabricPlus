@@ -44,12 +44,12 @@ public class MixinEndPortalFrameBlock {
     @Final
     protected static VoxelShape FRAME_WITH_EYE_SHAPE;
     @Unique
-    private final VoxelShape protocolhack_EYE_SHAPE_1_12_2 = Block.createCuboidShape(5.0, 13.0, 5.0, 11.0, 16.0, 11.0);
+    private final VoxelShape viafabricplus_eye_shape_v1_12_2 = Block.createCuboidShape(5.0, 13.0, 5.0, 11.0, 16.0, 11.0);
 
     @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/EndPortalFrameBlock;FRAME_WITH_EYE_SHAPE:Lnet/minecraft/util/shape/VoxelShape;"))
     public VoxelShape redirectGetOutlineShape() {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return VoxelShapes.union(FRAME_SHAPE, protocolhack_EYE_SHAPE_1_12_2);
+            return VoxelShapes.union(FRAME_SHAPE, viafabricplus_eye_shape_v1_12_2);
         }
         return FRAME_WITH_EYE_SHAPE;
     }

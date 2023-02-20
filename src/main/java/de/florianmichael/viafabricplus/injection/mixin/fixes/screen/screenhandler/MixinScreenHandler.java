@@ -60,7 +60,7 @@ public class MixinScreenHandler implements IScreenHandler {
     }
 
     @Override
-    public short protocolhack_getAndIncrementLastActionId() {
+    public short viafabricplus_getAndIncrementLastActionId() {
         return ++protocolhack_lastActionId;
     }
 }

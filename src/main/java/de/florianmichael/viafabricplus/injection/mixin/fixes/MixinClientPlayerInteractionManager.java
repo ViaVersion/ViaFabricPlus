@@ -76,7 +76,7 @@ public abstract class MixinClientPlayerInteractionManager {
     private void injectAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && player instanceof IClientPlayerEntity) {
             player.swingHand(Hand.MAIN_HAND);
-            ((IClientPlayerEntity) player).protocolhack_cancelSwingOnce();
+            ((IClientPlayerEntity) player).viafabricplus_cancelSwingOnce();
         }
     }
 
@@ -119,7 +119,7 @@ public abstract class MixinClientPlayerInteractionManager {
                 clickSlotPacket.write(Type.SHORT, (short) clickSlot.getSlot());
                 clickSlotPacket.write(Type.BYTE, (byte) clickSlot.getButton());
                 assert client.player != null;
-                clickSlotPacket.write(Type.SHORT, ((IScreenHandler) client.player.currentScreenHandler).protocolhack_getAndIncrementLastActionId());
+                clickSlotPacket.write(Type.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId());
                 clickSlotPacket.write(Type.VAR_INT, clickSlot.getActionType().ordinal());
                 clickSlotPacket.write(Type.FLAT_VAR_INT_ITEM, ItemTranslator.minecraftToViaVersion(clickSlotPacket.user(), slotItemBeforeModification, ProtocolVersion.v1_16.getVersion()));
 

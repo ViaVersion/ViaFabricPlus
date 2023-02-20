@@ -35,6 +35,6 @@ public class MixinProfileKeysImpl {
 
     @Inject(method = "decodeKeyPairResponse", at = @At("RETURN"))
     private static void trackLegacyKey(KeyPairResponse keyPairResponse, CallbackInfoReturnable<PlayerPublicKey.PublicKeyData> cir) {
-        ((IPublicKeyData) (Object) cir.getReturnValue()).protocolhack_set1_19_0Key(keyPairResponse.getLegacyPublicKeySignature());
+        ((IPublicKeyData) (Object) cir.getReturnValue()).viafabricplus_set1_19_0Key(keyPairResponse.getLegacyPublicKeySignature());
     }
 }

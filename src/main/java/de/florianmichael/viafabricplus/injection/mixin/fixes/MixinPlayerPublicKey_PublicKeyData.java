@@ -35,12 +35,12 @@ public class MixinPlayerPublicKey_PublicKeyData implements IPublicKeyData {
     private ByteBuffer protocolhack_1_19_0Key;
 
     @Override
-    public ByteBuffer protocolhack_get1_19_0Key() {
+    public ByteBuffer viafabricplus_get1_19_0Key() {
         return protocolhack_1_19_0Key;
     }
 
     @Override
-    public void protocolhack_set1_19_0Key(ByteBuffer byteBuffer) {
+    public void viafabricplus_set1_19_0Key(ByteBuffer byteBuffer) {
         this.protocolhack_1_19_0Key = byteBuffer;
     }
 }

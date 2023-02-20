@@ -138,12 +138,12 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
     }
 
     @Override
-    public void protocolhack_trackKeyboardInteraction(Runnable interaction) {
+    public void viafabricplus_trackKeyboardInteraction(Runnable interaction) {
         this.protocolhack_keyboardInteractions.add(interaction);
     }
 
     @Override
-    public void protocolhack_trackMouseInteraction(Runnable interaction) {
+    public void viafabricplus_trackMouseInteraction(Runnable interaction) {
         this.protocolhack_mouseInteractions.add(interaction);
     }
 }
