@@ -41,7 +41,7 @@ public class ItemReleaseVersionDefinition {
     private final static Map<Item, ProtocolRange[]> itemMap = new HashMap<>();
 
     public static boolean contains(final Item item, final ComparableProtocolVersion version) {
-        if (!itemMap.containsKey(item)) return false;
+        if (!itemMap.containsKey(item)) return true;
 
         return Arrays.stream(itemMap.get(item)).anyMatch(protocolRange -> protocolRange.contains(version));
     }

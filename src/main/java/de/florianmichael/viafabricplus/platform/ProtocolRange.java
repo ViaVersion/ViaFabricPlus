@@ -50,9 +50,11 @@ public class ProtocolRange {
     }
 
     public boolean contains(final ComparableProtocolVersion protocolVersion) {
-        if (this.lowerBound != null && this.lowerBound.getIndex() < protocolVersion.getIndex()) return false;
-
-        return this.upperBound == null || this.upperBound.getIndex() <= protocolVersion.getIndex();
+        if (this.lowerBound != null && protocolVersion.getIndex() < lowerBound.getIndex())
+            return false;
+        if (this.upperBound != null && protocolVersion.getIndex() > upperBound.getIndex())
+            return false;
+        return true;
     }
 
     @Override

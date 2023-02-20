@@ -31,7 +31,7 @@ public class ProtocolSyncBooleanValue extends AbstractValue<Boolean> {
     private boolean syncWithProtocol;
 
     public ProtocolSyncBooleanValue(String name, ProtocolRange protocolRange) {
-        super(name, true);
+        super(name + " (" + protocolRange.toString() + ")", true);
 
         this.protocolRange = protocolRange;
     }
