@@ -19,23 +19,22 @@
  *         Version-independent validity and automatic renewal
  */
 
-package de.florianmichael.viafabricplus.provider;
+package de.florianmichael.viafabricplus.injection.mixin.fixes;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.minecraft.item.Item;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
-import de.florianmichael.viafabricplus.translator.ItemTranslator;
-import net.minecraft.item.ItemStack;
+import de.florianmichael.viafabricplus.value.ValueHolder;
+import net.minecraft.client.network.PendingUpdateManager;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-public class EveryProtocolHandItemProvider extends HandItemProvider {
-    public static ItemStack lastUsedItem = null;
+@Mixin(PendingUpdateManager.class)
+public class MixinPendingUpdateManager {
 
-    @Override
-    public Item getHandItem(UserConnection info) {
-        if (lastUsedItem == null) {
-            return null;
+    @Inject(method = "incrementSequence", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/PendingUpdateManager;pendingSequence:Z", shift = At.Shift.BEFORE), cancellable = true)
+    public void injectIncrementSequence(CallbackInfoReturnable<PendingUpdateManager> cir) {
+        if (ValueHolder.disableSequencing.getValue()) {
+            cir.setReturnValue((PendingUpdateManager) (Object) this);
         }
-        return ItemTranslator.minecraftToViaVersion(info, lastUsedItem, ProtocolVersion.v1_8.getVersion());
     }
 }

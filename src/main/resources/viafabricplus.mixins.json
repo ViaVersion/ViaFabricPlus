@@ -99,7 +99,11 @@
   },
   "client": [
     "base.MixinMain",
+    "fixes.MixinCamera",
+    "fixes.MixinClientPlayerInteractionManager",
+    "fixes.MixinClientPlayNetworkHandler",
     "fixes.MixinMinecraftClient",
+    "fixes.MixinPendingUpdateManager",
     "fixes.MixinPlayerEntityRenderer",
     "fixes.MixinProfileKeysImpl",
     "fixes.MixinServerAddress",

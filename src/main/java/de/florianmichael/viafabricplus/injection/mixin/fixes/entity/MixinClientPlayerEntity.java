@@ -23,6 +23,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.entity;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.value.ValueHolder;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
@@ -47,7 +48,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings("ConstantValue")
 @Mixin(value = ClientPlayerEntity.class, priority = 2000)
-public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
+public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity implements IClientPlayerEntity {
 
     @Shadow
     public Input input;
@@ -201,5 +202,10 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         if (ViaLoadingBase.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             sendSprintingPacket();
         }
+    }
+
+    @Override
+    public void protocolhack_cancelSwingOnce() {
+        protocolhack_areSwingCanceledThisTick = true;
     }
 }

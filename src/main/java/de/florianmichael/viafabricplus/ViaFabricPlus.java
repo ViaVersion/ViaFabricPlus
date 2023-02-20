@@ -31,8 +31,8 @@ import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
 import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
 import de.florianmichael.viafabricplus.platform.ViaAprilFoolsPlatformImpl;
 import de.florianmichael.viafabricplus.platform.ViaLegacyPlatformImpl;
-import de.florianmichael.viafabricplus.provider.EveryProtocolHandItemProvider;
-import de.florianmichael.viafabricplus.provider.EveryProtocolMovementTransmitterProvider;
+import de.florianmichael.viafabricplus.provider.ViaFabricPlusHandItemProvider;
+import de.florianmichael.viafabricplus.provider.ViaFabricPlusMovementTransmitterProvider;
 import de.florianmichael.viafabricplus.value.ValueHolder;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.api.SubPlatform;
@@ -111,8 +111,8 @@ public class ViaFabricPlus {
             return parentNode;
         });
         builder = builder.viaProviderCreator(providers -> {
-            providers.use(MovementTransmitterProvider.class, new EveryProtocolMovementTransmitterProvider());
-            providers.use(HandItemProvider.class, new EveryProtocolHandItemProvider());
+            providers.use(MovementTransmitterProvider.class, new ViaFabricPlusMovementTransmitterProvider());
+            providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());
         });
         builder = builder.protocolReloader(protocolVersion -> {
             availableItemsInTargetVersion.clear();
