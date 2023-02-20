@@ -46,7 +46,7 @@ public class MixinCamera {
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setPos(DDD)V", shift = At.Shift.BEFORE))
     public void onUpdateHeight(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        if (!ValueHolder.replaceSneaking.getValue() && ValueHolder.replaceSneaking.getValue()) {
+        if (!ValueHolder.replaceSneaking.getValue() && ValueHolder.sneakInstant.getValue()) {
             cameraY = lastCameraY = focusedEntity.getStandingEyeHeight();
         }
     }

@@ -52,9 +52,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO
+ *  - Add ViaFabricPlus-Visual
+ *  - Add ViaFabricPlus-Emulation
+ */
 public class ViaFabricPlus {
     public final static File RUN_DIRECTORY = new File(".viafabricplus");
-    public final static AttributeKey<UserConnection> LOCAL_USER_CONNECTION = AttributeKey.newInstance("via-version-user-connection");
+    public final static AttributeKey<UserConnection> LOCAL_USER_CONNECTION = AttributeKey.newInstance("viafabricplus-via-connection");
 
     private final static ViaFabricPlus self = new ViaFabricPlus();
 

@@ -16,7 +16,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 
-@SuppressWarnings("DataFlowIssue")
+@SuppressWarnings({"DataFlowIssue", "DuplicatedCode"})
 public class ValuesScreen extends Screen {
     private final static ValuesScreen INSTANCE = new ValuesScreen();
     public Screen prevScreen;
@@ -43,9 +43,12 @@ public class ValuesScreen extends Screen {
 
         matrices.push();
         matrices.scale(2F, 2F, 2F);
-        drawCenteredText(matrices, textRenderer, "ViaFabricPlus", width / 4, 3, -1);
+        drawCenteredText(matrices, textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.pop();
-        drawCenteredText(matrices, textRenderer, "https://github.com/FlorianMichael/ViaFabricPlus", width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
+        drawCenteredText(matrices, textRenderer, "https://github.com/FlorianMichael/ViaFabricPlus", width / 2, (textRenderer.fontHeight + 2) * 2 + 3, Color.GREEN.getRGB());
+
+        final String authorString = "by EnZaXD/FlorianMichael";
+        drawStringWithShadow(matrices, textRenderer, authorString, width - textRenderer.getWidth(authorString), 0, Color.GREEN.getRGB());
     }
 
     @Override
