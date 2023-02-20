@@ -21,6 +21,10 @@ repositories {
 	}
 }
 
+loom {
+	accessWidenerPath = file("src/main/resources/viafabricplus.accesswidener")
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
@@ -34,6 +38,8 @@ dependencies {
 
 	implementation "com.github.RaphiMC:ViaLegacy:${project.vialegacy_version}"
 	implementation "com.github.RaphiMC:ViaAprilFools:${project.viaaprilfools_version}"
+
+	implementation "net.lenni0451.mcstructs:text:${project.mcstructs_text_version}"
 }
 
 processResources {

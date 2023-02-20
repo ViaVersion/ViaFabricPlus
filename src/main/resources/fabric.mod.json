@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "everyprotocol",
+  "id": "viafabricplus",
   "version": "${version}",
 
-  "name": "Every Protocol",
+  "name": "ViaFabricPlus",
   "description": " Clientside ViaVersion, ViaLegacy and ViaAprilFools implementation with clientside fixes for Fabric",
   "authors": [
     "FlorianMichael",
@@ -12,17 +12,17 @@
   ],
   "contact": {
     "homepage": "https://github.com/FlorianMichael/",
-    "sources": "https://github.com/FlorianMichael/EveryProtocol"
+    "sources": "https://github.com/FlorianMichael/ViaFabricPlus"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/everyprotocol/icon.png",
+  "icon": "assets/viafabricplus/icon.png",
 
   "environment": "*",
   "mixins": [
-    "everyprotocol.mixins.json"
+    "viafabricplus.mixins.json"
   ],
-
+  "accessWidener": "viafabricplus.accesswidener",
   "depends": {
     "fabricloader": ">=0.14.11",
     "minecraft": "~1.19.3",
