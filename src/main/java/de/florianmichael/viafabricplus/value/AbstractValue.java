@@ -32,6 +32,8 @@ public abstract class AbstractValue<T> {
         this.defaultValue = defaultValue;
 
         this.value = defaultValue;
+
+        ValueHolder.values.add(this);
     }
 
     public String getName() {

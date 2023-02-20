@@ -17,7 +17,11 @@
 
   "license": "CC0-1.0",
   "icon": "assets/viafabricplus/icon.png",
-
+  "entrypoints": {
+    "client": [
+      "de.florianmichael.viafabricplus.ViaFabricPlus"
+    ]
+  },
   "environment": "*",
   "mixins": [
     "viafabricplus.mixins.json"

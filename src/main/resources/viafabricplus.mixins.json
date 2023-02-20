@@ -99,6 +99,7 @@
   },
   "client": [
     "base.MixinMain",
+    "base.MixinMultiplayerScreen",
     "fixes.MixinCamera",
     "fixes.MixinClientPlayerInteractionManager",
     "fixes.MixinClientPlayNetworkHandler",

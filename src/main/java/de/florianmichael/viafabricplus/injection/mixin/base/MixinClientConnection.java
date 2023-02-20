@@ -29,7 +29,7 @@ import io.netty.channel.Channel;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PacketDecryptor;
 import net.minecraft.network.encryption.PacketEncryptor;
-import net.raphimc.vialegacy.api.LegacyProtocolVersions;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -58,7 +58,7 @@ public class MixinClientConnection implements IClientConnection {
 
     @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
     private void storeEncryptionCiphers(Cipher decryptionCipher, Cipher encryptionCipher, CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersions.r1_6_4)) {
+        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             ci.cancel();
             this.viafabricplus_decryptionCipher = decryptionCipher;
             this.viafabricplus_encryptionCipher = encryptionCipher;

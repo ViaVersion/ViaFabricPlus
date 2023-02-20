@@ -25,13 +25,13 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.platform.ProtocolRange;
 import de.florianmichael.viafabricplus.value.impl.BooleanValue;
 import de.florianmichael.viafabricplus.value.impl.ProtocolSyncBooleanValue;
-import net.raphimc.vialegacy.api.LegacyProtocolVersions;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ValueHolder {
-    private final static List<AbstractValue<?>> values = new ArrayList<>();
+    public final static List<AbstractValue<?>> values = new ArrayList<>();
 
     // General settings
     public static final BooleanValue removeNotAvailableItemsFromCreativeTab = new BooleanValue("Remove not available items from creative tab", true);
@@ -48,7 +48,7 @@ public class ValueHolder {
 
     // 1.9 -> 1.8.x
     public static final ProtocolSyncBooleanValue removeCooldowns = new ProtocolSyncBooleanValue("Remove cooldowns", ProtocolRange.andOlder(ProtocolVersion.v1_8));
-    public static final ProtocolSyncBooleanValue sendIdlePacket = new ProtocolSyncBooleanValue("Send idle packet", new ProtocolRange(ProtocolVersion.v1_8, LegacyProtocolVersions.r1_3_1tor1_3_2));
+    public static final ProtocolSyncBooleanValue sendIdlePacket = new ProtocolSyncBooleanValue("Send idle packet", new ProtocolRange(ProtocolVersion.v1_8, LegacyProtocolVersion.r1_3_1tor1_3_2));
 
     // 1.8.x -> 1.7.6
     public static final ProtocolSyncBooleanValue replaceSneaking = new ProtocolSyncBooleanValue("Replace sneaking", ProtocolRange.andOlder(ProtocolVersion.v1_7_6));

@@ -38,6 +38,7 @@ import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.api.SubPlatform;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.util.AttributeKey;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.Person;
@@ -46,17 +47,18 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
-import net.raphimc.vialegacy.api.LegacyProtocolVersions;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViaFabricPlus {
+public class ViaFabricPlus implements ClientModInitializer {
     public static final AttributeKey<UserConnection> LOCAL_USER_CONNECTION = AttributeKey.newInstance("via-version-user-connection");
 
-    private final static ViaFabricPlus self = new ViaFabricPlus();
+    private static final ViaFabricPlus self = new ViaFabricPlus();
 
-    private final SubPlatform SUB_PLATFORM_VIA_LEGACY = new SubPlatform("ViaLegacy", () -> true, ViaLegacyPlatformImpl::new, protocolVersions -> protocolVersions.addAll(LegacyProtocolVersions.PROTOCOLS));
+    private final SubPlatform SUB_PLATFORM_VIA_LEGACY = new SubPlatform("ViaLegacy", () -> true, ViaLegacyPlatformImpl::new, protocolVersions -> protocolVersions.addAll(LegacyProtocolVersion.PROTOCOLS));
     private final SubPlatform SUB_PLATFORM_VIA_APRIL_FOOLS = new SubPlatform("ViaAprilFools", () -> true, ViaAprilFoolsPlatformImpl::new, this::invokeAprilFoolsProtocols);
 
     private final List<Item> availableItemsInTargetVersion = new ArrayList<>();
@@ -71,13 +73,13 @@ public class ViaFabricPlus {
         origin.add(v1_16_2Index - 1, AprilFoolsProtocolVersion.sCombatTest8c);
     }
 
-    public void create() {
+    public void preInit() {
         ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
 
         builder = builder.subPlatform(SUB_PLATFORM_VIA_LEGACY);
         builder = builder.subPlatform(SUB_PLATFORM_VIA_APRIL_FOOLS);
 
-        builder = builder.runDirectory(MinecraftClient.getInstance().runDirectory);
+        builder = builder.runDirectory(new File("ViaFabricPlus"));
         builder = builder.nativeVersion(SharedConstants.getProtocolVersion());
         builder = builder.singlePlayerProvider(() -> MinecraftClient.getInstance().isInSingleplayer());
         builder = builder.eventLoop(new DefaultEventLoop());
@@ -118,13 +120,15 @@ public class ViaFabricPlus {
             availableItemsInTargetVersion.clear();
             availableItemsInTargetVersion.addAll(Registries.ITEM.stream().filter(item -> ItemReleaseVersionDefinition.contains(item, protocolVersion)).toList());
         });
+        builder.build();
+    }
 
+    @Override
+    public void onInitializeClient() {
         ValueHolder.setup();
 
         PackFormatsDefinition.load();
         ItemReleaseVersionDefinition.load();
-
-        builder.build();
     }
 
     public List<Item> getAvailableItemsInTargetVersion() {

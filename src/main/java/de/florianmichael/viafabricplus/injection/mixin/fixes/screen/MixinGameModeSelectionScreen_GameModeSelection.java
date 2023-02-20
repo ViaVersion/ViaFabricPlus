@@ -4,7 +4,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.GameModeSelectionScreen;
-import net.raphimc.vialegacy.api.LegacyProtocolVersions;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,7 +24,7 @@ public class MixinGameModeSelectionScreen_GameModeSelection {
 
     @Inject(method = "getCommand", at = @At("HEAD"), cancellable = true)
     private void oldCommand(CallbackInfoReturnable<String> cir) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersions.r1_2_4tor1_2_5)) {
+        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
             cir.setReturnValue(
                     "gamemode " + MinecraftClient.getInstance().getSession().getUsername() + ' ' + switch (((Enum<?>)(Object)this).ordinal()) {
                         case 0, 3 -> 1;
@@ -41,7 +41,7 @@ public class MixinGameModeSelectionScreen_GameModeSelection {
             switch ((GameModeSelectionScreen.GameModeSelection)(Object)this) {
                 case CREATIVE -> cir.setReturnValue(Optional.of(SURVIVAL));
                 case SURVIVAL -> {
-                    if (ViaLoadingBase.getTargetVersion().isOlderThan(LegacyProtocolVersions.r1_2_4tor1_2_5)) {
+                    if (ViaLoadingBase.getTargetVersion().isOlderThan(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
                         cir.setReturnValue(Optional.of(CREATIVE));
                     } else {
                         cir.setReturnValue(Optional.of(GameModeSelectionScreen.GameModeSelection.ADVENTURE));

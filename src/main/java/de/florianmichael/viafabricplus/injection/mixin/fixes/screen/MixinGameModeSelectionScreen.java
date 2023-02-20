@@ -3,7 +3,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.screen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.gui.screen.GameModeSelectionScreen;
-import net.raphimc.vialegacy.api.LegacyProtocolVersions;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,7 +26,7 @@ public class MixinGameModeSelectionScreen {
     public void fixUIWidth(CallbackInfo ci) {
         if (ViaLoadingBase.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
             final List<GameModeSelectionScreen.GameModeSelection> gameModeSelections = Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList();
-            if (ViaLoadingBase.getTargetVersion().isOlderThan(LegacyProtocolVersions.r1_3_1tor1_3_2)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
+            if (ViaLoadingBase.getTargetVersion().isOlderThan(LegacyProtocolVersion.r1_3_1tor1_3_2)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
             if (ViaLoadingBase.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
 
             protocolhack_unwrappedGameModes = gameModeSelections.toArray(GameModeSelectionScreen.GameModeSelection[]::new);
