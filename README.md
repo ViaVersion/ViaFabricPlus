@@ -7,7 +7,7 @@ since this is no longer existent I am now developing the Protocol Translation pa
 and now: ViaFabricPlus is here
 
 ## Project structure
-ViaFabricPlus splits into three major parts:
+ViaFabricPlus splits into two major parts:
 | Part                    | Description                                                                                                                                                                                                                            |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ViaFabricPlus           | Core of the project, all fixes here are stable and have been tested many times                                                                                                                                                         |
