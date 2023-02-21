@@ -1,16 +1,3 @@
-/*
- * Copyright (c) FlorianMichael as EnZaXD 2022
- * Created on 6/24/22, 8:47 PM
- *
- * --FLORIAN MICHAEL PRIVATE LICENCE v1.0--
- *
- * This file / project is protected and is the intellectual property of Florian Michael (aka. EnZaXD),
- * any use (be it private or public, be it copying or using for own use, be it publishing or modifying) of this
- * file / project is prohibited. It requires in that use a written permission with official signature of the owner
- * "Florian Michael". "Florian Michael" receives the right to control and manage this file / project. This right is not
- * cancelled by copying or removing the license and in case of violation a criminal consequence is to be expected.
- * The owner "Florian Michael" is free to change this license.
- */
 /**
  * --FLORIAN MICHAEL PRIVATE LICENCE v1.2--
  *
@@ -32,10 +19,9 @@
  *         Version-independent validity and automatic renewal
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.screen;
+package de.florianmichael.viafabricplus_visual.injection.mixin;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus_visual.ViaFabricPlusVisual;
 import net.minecraft.block.entity.CommandBlockBlockEntity;
 import net.minecraft.client.gui.screen.ingame.CommandBlockScreen;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
@@ -61,7 +47,7 @@ public abstract class MixinCommandBlockScreen {
 
     @Inject(method = "init", at = @At("TAIL"))
     private void injectInit(CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlusVisual.removeNewerFeaturesFromCommandBlockScreen.getValue()) {
             modeButton.visible = false;
             conditionalModeButton.visible = false;
             redstoneTriggerButton.visible = false;
