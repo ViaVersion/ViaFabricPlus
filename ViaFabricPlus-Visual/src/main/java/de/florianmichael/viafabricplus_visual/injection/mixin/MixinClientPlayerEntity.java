@@ -19,26 +19,28 @@
  *         Version-independent validity and automatic renewal
  */
 
-package de.florianmichael.viafabricplus.value.impl;
+package de.florianmichael.viafabricplus_visual.injection.mixin;
 
-import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.value.AbstractValue;
+import com.mojang.authlib.GameProfile;
+import de.florianmichael.viafabricplus_visual.ViaFabricPlusVisual;
+import de.florianmichael.viafabricplus_visual.definition.ArmorPointsDefinition;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
+import org.spongepowered.asm.mixin.Mixin;
 
-public class BooleanValue extends AbstractValue<Boolean> {
+@Mixin(ClientPlayerEntity.class)
+public class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
 
-    public BooleanValue(String name, Boolean defaultValue) {
-        super(name, defaultValue);
+    public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
+        super(world, profile);
     }
 
     @Override
-    public void write(JsonObject object) {
-        object.addProperty(getName(), getValue());
-    }
-
-    @Override
-    public void read(JsonObject object) {
-        if (!object.has(getName())) return;
-
-        setValue(object.get(getName()).getAsBoolean());
+    public int getArmor() {
+        if (ViaFabricPlusVisual.emulateArmorHud.getValue()) {
+            return ArmorPointsDefinition.sum();
+        }
+        return super.getArmor();
     }
 }

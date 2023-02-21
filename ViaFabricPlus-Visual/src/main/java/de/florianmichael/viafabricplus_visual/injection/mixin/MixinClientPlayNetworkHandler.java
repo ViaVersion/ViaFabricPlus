@@ -19,26 +19,20 @@
  *         Version-independent validity and automatic renewal
  */
 
-package de.florianmichael.viafabricplus.value.impl;
+package de.florianmichael.viafabricplus_visual.injection.mixin;
 
-import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.value.AbstractValue;
+import de.florianmichael.viafabricplus_visual.ViaFabricPlusVisual;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.packet.s2c.play.ServerMetadataS2CPacket;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-public class BooleanValue extends AbstractValue<Boolean> {
+@Mixin(ClientPlayNetworkHandler.class)
+public class MixinClientPlayNetworkHandler {
 
-    public BooleanValue(String name, Boolean defaultValue) {
-        super(name, defaultValue);
-    }
-
-    @Override
-    public void write(JsonObject object) {
-        object.addProperty(getName(), getValue());
-    }
-
-    @Override
-    public void read(JsonObject object) {
-        if (!object.has(getName())) return;
-
-        setValue(object.get(getName()).getAsBoolean());
+    @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))
+    public boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
+        return instance.isSecureChatEnforced() || ViaFabricPlusVisual.disableSecureChatWarning.getValue();
     }
 }

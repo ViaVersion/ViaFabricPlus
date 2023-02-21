@@ -19,26 +19,24 @@
  *         Version-independent validity and automatic renewal
  */
 
-package de.florianmichael.viafabricplus.value.impl;
+package de.florianmichael.viafabricplus_visual.injection.mixin;
 
-import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.value.AbstractValue;
+import de.florianmichael.viafabricplus_visual.ViaFabricPlusVisual;
+import net.minecraft.client.gui.hud.ChatHud;
+import net.minecraft.client.gui.hud.ChatHudLine;
+import net.minecraft.client.gui.hud.MessageIndicator;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-public class BooleanValue extends AbstractValue<Boolean> {
+@Mixin(ChatHud.class)
+public class MixinChatHud {
 
-    public BooleanValue(String name, Boolean defaultValue) {
-        super(name, defaultValue);
-    }
-
-    @Override
-    public void write(JsonObject object) {
-        object.addProperty(getName(), getValue());
-    }
-
-    @Override
-    public void read(JsonObject object) {
-        if (!object.has(getName())) return;
-
-        setValue(object.get(getName()).getAsBoolean());
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHudLine$Visible;indicator()Lnet/minecraft/client/gui/hud/MessageIndicator;"))
+    public MessageIndicator removeIndicators(ChatHudLine.Visible instance) {
+        if (ViaFabricPlusVisual.hideSignatureIndicator.getValue()) {
+            return null;
+        }
+        return instance.indicator();
     }
 }

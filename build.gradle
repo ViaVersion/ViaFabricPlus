@@ -9,15 +9,17 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-repositories {
-	mavenCentral()
-	maven {
-		name = "Jitpack"
-		url = "https://jitpack.io"
-	}
-	maven {
-		name = "ViaVersion"
-		url "https://repo.viaversion.com"
+allprojects {
+	repositories {
+		mavenCentral()
+		maven {
+			name = "Jitpack"
+			url = "https://jitpack.io"
+		}
+		maven {
+			name = "ViaVersion"
+			url "https://repo.viaversion.com"
+		}
 	}
 }
 
@@ -61,5 +63,29 @@ java {
 jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}" }
+	}
+}
+
+
+tasks.register("installAddons") {
+	group archivesBaseName
+	dependsOn "build"
+	doLast {
+		File base = file(".")
+		base.listFiles().each {
+			if (it.name.startsWith("ViaFabricPlus-") && it.isDirectory()) {
+				String addonName = it.name.toLowerCase() + "-" + project(it.name).version + ".jar"
+				File build = new File(it, "build" + File.separator + "libs" + File.separator + addonName)
+				File modDest = new File(base, "run" + File.separator + "mods" + File.separator + addonName)
+				if(build.exists()) {
+					if (modDest.delete())
+						println "Deleted old $addonName"
+					else
+						println "Failed to delete old $addonName version"
+					if (build.renameTo(modDest))
+						println "Copied $addonName"
+				}
+			}
+		}
 	}
 }

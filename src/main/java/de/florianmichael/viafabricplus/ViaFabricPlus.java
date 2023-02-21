@@ -58,7 +58,7 @@ import java.util.List;
  *  - Add ViaFabricPlus-Emulation
  */
 public class ViaFabricPlus {
-    public final static File RUN_DIRECTORY = new File(".viafabricplus");
+    public final static File RUN_DIRECTORY = new File("ViaFabricPlus");
     public final static AttributeKey<UserConnection> LOCAL_USER_CONNECTION = AttributeKey.newInstance("viafabricplus-via-connection");
 
     private final static ViaFabricPlus self = new ViaFabricPlus();

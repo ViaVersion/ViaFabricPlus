@@ -49,6 +49,7 @@ public class ProtocolSyncBooleanValue extends AbstractValue<Boolean> {
 
     @Override
     public void read(JsonObject object) {
+        if (!object.has(getName())) return;
         final JsonObject valueNode = object.get(getName()).getAsJsonObject();
 
         setValue(valueNode.get("value").getAsBoolean());

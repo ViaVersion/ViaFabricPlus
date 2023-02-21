@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "de.florianmichael.viafabricplus_visual.injection.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "MixinChatHud",
+    "MixinChatScreen",
+    "MixinClientPlayerEntity",
+    "MixinClientPlayNetworkHandler",
+    "MixinItemRenderer"
+  ]
+}
