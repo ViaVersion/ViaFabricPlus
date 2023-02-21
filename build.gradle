@@ -9,6 +9,13 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+configurations {
+	include
+
+	implementation.extendsFrom include
+	api.extendsFrom include
+}
+
 allprojects {
 	repositories {
 		mavenCentral()
@@ -32,16 +39,16 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	implementation "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
+	include "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
 
-	implementation "com.viaversion:viaversion:${project.viaversion_version}"
-	implementation "com.viaversion:viabackwards-common:${project.viabackwards_version}"
-	implementation "org.yaml:snakeyaml:1.29"
+	include "com.viaversion:viaversion:${project.viaversion_version}"
+	include "com.viaversion:viabackwards-common:${project.viabackwards_version}"
+	include "org.yaml:snakeyaml:1.29"
 
-	implementation "com.github.RaphiMC:ViaLegacy:${project.vialegacy_version}"
-	implementation "com.github.RaphiMC:ViaAprilFools:${project.viaaprilfools_version}"
+	include "com.github.RaphiMC:ViaLegacy:${project.vialegacy_version}"
+	include "com.github.RaphiMC:ViaAprilFools:${project.viaaprilfools_version}"
 
-	implementation "net.lenni0451.mcstructs:text:${project.mcstructs_text_version}"
+	include "net.lenni0451.mcstructs:text:${project.mcstructs_text_version}"
 }
 
 processResources {
@@ -61,6 +68,15 @@ java {
 }
 
 jar {
+	dependsOn configurations.include
+	from {
+		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+		configurations.include.collect {
+			zipTree(it)
+		}
+	} {
+		exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA"
+	}
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}" }
 	}
