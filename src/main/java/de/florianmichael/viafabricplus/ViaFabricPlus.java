@@ -117,10 +117,13 @@ public class ViaFabricPlus {
             providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
         });
         builder = builder.protocolReloader(protocolVersion -> {
+            FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(viaFabricPlusAddon -> viaFabricPlusAddon.onChangeVersion(protocolVersion));
             availableItemsInTargetVersion.clear();
             availableItemsInTargetVersion.addAll(Registries.ITEM.stream().filter(item -> ItemReleaseVersionDefinition.contains(item, protocolVersion)).toList());
         });
         builder.build();
+
+        FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(ViaFabricPlusAddon::onPreLoad);
     }
 
     public void postLoad() throws Exception {
@@ -136,6 +139,8 @@ public class ViaFabricPlus {
                 throw new RuntimeException(e);
             }
         }));
+
+        FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(ViaFabricPlusAddon::onPostLoad);
     }
 
     public void close() throws Exception {

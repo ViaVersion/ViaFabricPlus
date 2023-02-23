@@ -57,6 +57,7 @@ public class MixinDebugHud {
                     }
                 }
             }
+            information.add("");
         }
         cir.getReturnValue().addAll(information);
     }

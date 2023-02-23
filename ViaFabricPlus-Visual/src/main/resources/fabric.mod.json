@@ -15,7 +15,7 @@
     "sources": "https://github.com/FlorianMichael/ViaFabricPlus"
   },
   "entrypoints": {
-    "client": [
+    "viafabricplus": [
       "de.florianmichael.viafabricplus_visual.ViaFabricPlusVisual"
     ]
   },

@@ -2,7 +2,7 @@ package de.florianmichael.viafabricplus_visual.injection.mixin;
 
 import com.mojang.authlib.GameProfile;
 import de.florianmichael.viafabricplus_visual.ViaFabricPlusVisual;
-import de.florianmichael.viafabricplus_visual.definition.ArmorPointsDefinition;
+import de.florianmichael.viafabricplus_visual.definition.v1_8_x.ArmorPointsDefinition;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
