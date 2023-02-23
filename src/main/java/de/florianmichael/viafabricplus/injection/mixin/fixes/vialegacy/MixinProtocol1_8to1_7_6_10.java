@@ -28,7 +28,6 @@ public class MixinProtocol1_8to1_7_6_10 extends AbstractProtocol<ClientboundPack
                 map(Type.DOUBLE); // z
                 map(Type.FLOAT); // yaw
                 map(Type.FLOAT); // pitch
-                read(Type.BOOLEAN); // onGround
                 handler(wrapper -> {
                     final boolean onGround = wrapper.read(Type.BOOLEAN); // On Ground
                     final TeleportTracker teleportTracker = wrapper.user().get(TeleportTracker.class);
