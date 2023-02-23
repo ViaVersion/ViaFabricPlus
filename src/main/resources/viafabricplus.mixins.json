@@ -6,9 +6,11 @@
   "mixins": [
     "base.MixinClientConnection",
     "base.MixinClientConnection_1",
+    "base.MixinClientLoginNetworkHandler",
     "base.MixinMain",
     "base.MixinMinecraftClient",
     "base.MixinMultiplayerScreen",
+    "bridge.MixinDebugHud",
     "fixes.MixinCamera",
     "fixes.MixinClientPlayerInteractionManager",
     "fixes.MixinClientPlayNetworkHandler",
@@ -121,8 +123,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "client": [
-    "base.MixinClientLoginNetworkHandler"
-  ]
+  }
 }
