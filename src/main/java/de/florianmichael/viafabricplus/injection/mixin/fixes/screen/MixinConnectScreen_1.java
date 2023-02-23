@@ -52,7 +52,7 @@ public class MixinConnectScreen_1 {
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/Packet;)V", ordinal = 1, shift = At.Shift.BEFORE))
     public void setupConnectionSessions(CallbackInfo ci) {
-        final UserConnection userConnection = field_2416.connection.channel.attr(ViaFabricPlus.LOCAL_USER_CONNECTION).get();
+        final UserConnection userConnection = field_2416.connection.channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
 
         if (userConnection == null) {
             ViaLoadingBase.LOGGER.log(Level.WARNING, "ViaVersion userConnection is null");

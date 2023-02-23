@@ -120,5 +120,8 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "base.MixinClientLoginNetworkHandler"
+  ]
 }

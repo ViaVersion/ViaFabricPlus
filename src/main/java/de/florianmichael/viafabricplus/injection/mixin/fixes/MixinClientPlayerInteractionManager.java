@@ -92,7 +92,7 @@ public abstract class MixinClientPlayerInteractionManager {
                 else
                     slotItemBeforeModification = protocolhack_oldItems.get(clickSlot.getSlot());
 
-                final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, networkHandler.getConnection().channel.attr(ViaFabricPlus.LOCAL_USER_CONNECTION).get());
+                final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, networkHandler.getConnection().channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get());
 
                 clickSlotPacket.write(Type.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
                 clickSlotPacket.write(Type.SHORT, (short) clickSlot.getSlot());

@@ -1,7 +1,7 @@
 package de.florianmichael.viafabricplus.definition.v1_19_0.provider;
 
 import com.viaversion.viaversion.api.platform.providers.Provider;
-import net.minecraft.util.Pair;
+import com.viaversion.viaversion.util.Pair;
 
 import java.util.List;
 

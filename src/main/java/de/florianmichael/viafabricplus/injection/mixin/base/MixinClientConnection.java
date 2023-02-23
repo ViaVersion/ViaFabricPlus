@@ -47,7 +47,7 @@ public class MixinClientConnection implements IClientConnection {
     @Override
     public void viafabricplus_setupPreNettyEncryption() {
         this.encrypted = true;
-        this.channel.pipeline().addBefore(PreNettyConstants.DECODER, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
-        this.channel.pipeline().addBefore(PreNettyConstants.ENCODER, "encrypt", new PacketEncryptor(this.viafabricplus_encryptionCipher));
+        this.channel.pipeline().addBefore(PreNettyConstants.HANDLER_DECODER_NAME, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
+        this.channel.pipeline().addBefore(PreNettyConstants.HANDLER_ENCODER_NAME, "encrypt", new PacketEncryptor(this.viafabricplus_encryptionCipher));
     }
 }

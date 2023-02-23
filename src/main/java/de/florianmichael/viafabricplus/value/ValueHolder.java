@@ -41,6 +41,9 @@ public class ValueHolder {
     public static final ProtocolSyncBooleanValue replaceSneaking = new ProtocolSyncBooleanValue("Replace sneaking", ProtocolRange.andOlder(ProtocolVersion.v1_7_6));
     public static final ProtocolSyncBooleanValue longSneaking = new ProtocolSyncBooleanValue("Long sneaking", ProtocolRange.andOlder(ProtocolVersion.v1_7_6));
 
+    // a1_0_15 -> c0_28toc0_30
+    public static final ProtocolSyncBooleanValue useBetaCraftAuthentication = new ProtocolSyncBooleanValue("Use BetaCraft authentication", ProtocolRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));
+
     public static void setup() throws FileNotFoundException {
         if (CONFIG_FILE.exists()) {
             final JsonObject parentNode = GSON.fromJson(new FileReader(CONFIG_FILE), JsonObject.class).getAsJsonObject();

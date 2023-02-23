@@ -8,10 +8,10 @@ import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemPr
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
 import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
+import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
 import de.florianmichael.viafabricplus.platform.ViaAprilFoolsPlatformImpl;
 import de.florianmichael.viafabricplus.platform.ViaLegacyPlatformImpl;
-import de.florianmichael.viafabricplus.provider.ViaFabricPlusHandItemProvider;
-import de.florianmichael.viafabricplus.provider.ViaFabricPlusMovementTransmitterProvider;
+import de.florianmichael.viafabricplus.provider.*;
 import de.florianmichael.viafabricplus.value.ValueHolder;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.api.SubPlatform;
@@ -23,34 +23,46 @@ import net.fabricmc.loader.api.metadata.Person;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.registry.Registries;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
+import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
+import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
+import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ViaFabricPlus {
     public final static File RUN_DIRECTORY = new File("ViaFabricPlus");
-    public final static AttributeKey<UserConnection> LOCAL_USER_CONNECTION = AttributeKey.newInstance("viafabricplus-via-connection");
+    public final static AttributeKey<UserConnection> LOCAL_VIA_CONNECTION = AttributeKey.newInstance("viafabricplus-via-connection");
+    public final static AttributeKey<ClientConnection> LOCAL_MINECRAFT_CONNECTION = AttributeKey.newInstance("viafabricplus-minecraft-connection");
 
     private final static ViaFabricPlus self = new ViaFabricPlus();
 
-    private final SubPlatform SUB_PLATFORM_VIA_LEGACY = new SubPlatform("ViaLegacy", () -> true, ViaLegacyPlatformImpl::new, protocolVersions -> protocolVersions.addAll(LegacyProtocolVersion.PROTOCOLS));
-    private final SubPlatform SUB_PLATFORM_VIA_APRIL_FOOLS = new SubPlatform("ViaAprilFools", () -> true, ViaAprilFoolsPlatformImpl::new, this::invokeAprilFoolsProtocols);
+    private final SubPlatform SUB_PLATFORM_VIA_LEGACY = new SubPlatform("ViaLegacy", () -> true, ViaLegacyPlatformImpl::new, protocolVersions -> {
+        final List<ProtocolVersion> legacyProtocols = new ArrayList<>(LegacyProtocolVersion.PROTOCOLS);
+        Collections.reverse(legacyProtocols);
+        legacyProtocols.remove(LegacyProtocolVersion.c0_30cpe);
+        final int c0_28toc0_30Index = legacyProtocols.indexOf(LegacyProtocolVersion.c0_28toc0_30);
+        legacyProtocols.set(c0_28toc0_30Index - 1, LegacyProtocolVersion.c0_30cpe);
+        protocolVersions.addAll(legacyProtocols);
+    });
+    private final SubPlatform SUB_PLATFORM_VIA_APRIL_FOOLS = new SubPlatform("ViaAprilFools", () -> true, ViaAprilFoolsPlatformImpl::new, protocolVersions -> {
+        final int v1_14Index = protocolVersions.indexOf(ProtocolVersion.v1_14);
+        final int v1_16Index = protocolVersions.indexOf(ProtocolVersion.v1_16);
+        final int v1_16_2Index = protocolVersions.indexOf(ProtocolVersion.v1_16_2);
+
+        protocolVersions.add(v1_14Index - 1,AprilFoolsProtocolVersion.s3d_shareware);
+        protocolVersions.add(v1_16Index - 1, AprilFoolsProtocolVersion.s20w14infinite);
+        protocolVersions.add(v1_16_2Index - 1, AprilFoolsProtocolVersion.sCombatTest8c);
+    });
 
     private final List<Item> availableItemsInTargetVersion = new ArrayList<>();
-
-    protected void invokeAprilFoolsProtocols(List<ProtocolVersion> origin) {
-        final int v1_14Index = origin.indexOf(ProtocolVersion.v1_14);
-        final int v1_16Index = origin.indexOf(ProtocolVersion.v1_16);
-        final int v1_16_2Index = origin.indexOf(ProtocolVersion.v1_16_2);
-
-        origin.add(v1_14Index - 1,AprilFoolsProtocolVersion.s3d_shareware);
-        origin.add(v1_16Index - 1, AprilFoolsProtocolVersion.s20w14infinite);
-        origin.add(v1_16_2Index - 1, AprilFoolsProtocolVersion.sCombatTest8c);
-    }
 
     public void preLoad() {
         ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
@@ -94,6 +106,13 @@ public class ViaFabricPlus {
         builder = builder.viaProviderCreator(providers -> {
             providers.use(MovementTransmitterProvider.class, new ViaFabricPlusMovementTransmitterProvider());
             providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());
+
+            providers.use(CommandArgumentsProvider.class, new ViaFabricPlusCommandArgumentsProvider());
+
+            providers.use(OldAuthProvider.class, new ViaFabricPlusOldAuthProvider());
+            providers.use(ClassicWorldHeightProvider.class, new ViaFabricPlusClassicWorldHeightProvider());
+            providers.use(EncryptionProvider.class, new ViaFabricPlusEncryptionProvider());
+            providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
         });
         builder = builder.protocolReloader(protocolVersion -> {
             availableItemsInTargetVersion.clear();
