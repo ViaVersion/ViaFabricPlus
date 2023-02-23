@@ -5,11 +5,10 @@ import de.florianmichael.viafabricplus.platform.ProtocolRange;
 import de.florianmichael.vialoadingbase.api.version.ComparableProtocolVersion;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Assigns to each Minecraft version the version in which the respective block or item was added
@@ -18,11 +17,17 @@ import java.util.Map;
  */
 public class ItemReleaseVersionDefinition {
     private final static Map<Item, ProtocolRange[]> itemMap = new HashMap<>();
+    private final static List<Item> currentMap = new ArrayList<>();
 
-    public static boolean contains(final Item item, final ComparableProtocolVersion version) {
+    public static void reload(final ComparableProtocolVersion protocolVersion) {
+        currentMap.clear();
+        currentMap.addAll(Registries.ITEM.stream().filter(item -> ItemReleaseVersionDefinition.contains(item, protocolVersion)).toList());
+    }
+
+    public static boolean contains(final Item item, final ComparableProtocolVersion protocolVersion) {
         if (!itemMap.containsKey(item)) return true;
 
-        return Arrays.stream(itemMap.get(item)).anyMatch(protocolRange -> protocolRange.contains(version));
+        return Arrays.stream(itemMap.get(item)).anyMatch(protocolRange -> protocolRange.contains(protocolVersion));
     }
 
     public static void load() {
@@ -1284,5 +1289,9 @@ public class ItemReleaseVersionDefinition {
 
     private static void register(final Item item, final ProtocolRange... ranges) {
         itemMap.put(item, ranges);
+    }
+
+    public static List<Item> getCurrentMap() {
+        return currentMap;
     }
 }

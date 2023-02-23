@@ -34,12 +34,15 @@ public class ViaFabricPlusVisual implements ViaFabricPlusAddon {
 
     @Override
     public void onPostLoad() {
+        System.out.println("Test");
         ArmorPointsDefinition.load();
         ClassicItemSelectionScreen.create(InternalProtocolList.fromProtocolVersion(LegacyProtocolVersion.c0_28toc0_30));
     }
 
     @Override
     public void onChangeVersion(ComparableProtocolVersion protocolVersion) {
-        ClassicItemSelectionScreen.INSTANCE.reload(protocolVersion);
+        if (ClassicItemSelectionScreen.INSTANCE != null) {
+            ClassicItemSelectionScreen.INSTANCE.reload(protocolVersion);
+        }
     }
 }

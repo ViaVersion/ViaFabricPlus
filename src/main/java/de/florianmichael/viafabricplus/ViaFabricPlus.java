@@ -12,7 +12,7 @@ import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgume
 import de.florianmichael.viafabricplus.platform.ViaAprilFoolsPlatformImpl;
 import de.florianmichael.viafabricplus.platform.ViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.provider.*;
-import de.florianmichael.viafabricplus.value.ValueHolder;
+import de.florianmichael.viafabricplus.util.SavingSystem;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.api.SubPlatform;
 import io.netty.channel.DefaultEventLoop;
@@ -22,9 +22,7 @@ import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.Person;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.Item;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.registry.Registries;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
@@ -50,7 +48,7 @@ public class ViaFabricPlus {
         Collections.reverse(legacyProtocols);
         legacyProtocols.remove(LegacyProtocolVersion.c0_30cpe);
         final int c0_28toc0_30Index = legacyProtocols.indexOf(LegacyProtocolVersion.c0_28toc0_30);
-        legacyProtocols.set(c0_28toc0_30Index - 1, LegacyProtocolVersion.c0_30cpe);
+        legacyProtocols.add(c0_28toc0_30Index + 1, LegacyProtocolVersion.c0_30cpe);
         protocolVersions.addAll(legacyProtocols);
     });
     private final SubPlatform SUB_PLATFORM_VIA_APRIL_FOOLS = new SubPlatform("ViaAprilFools", () -> true, ViaAprilFoolsPlatformImpl::new, protocolVersions -> {
@@ -58,12 +56,10 @@ public class ViaFabricPlus {
         final int v1_16Index = protocolVersions.indexOf(ProtocolVersion.v1_16);
         final int v1_16_2Index = protocolVersions.indexOf(ProtocolVersion.v1_16_2);
 
-        protocolVersions.add(v1_14Index - 1,AprilFoolsProtocolVersion.s3d_shareware);
-        protocolVersions.add(v1_16Index - 1, AprilFoolsProtocolVersion.s20w14infinite);
-        protocolVersions.add(v1_16_2Index - 1, AprilFoolsProtocolVersion.sCombatTest8c);
+        protocolVersions.add(v1_14Index + 1,AprilFoolsProtocolVersion.s3d_shareware);
+        protocolVersions.add(v1_16Index + 1, AprilFoolsProtocolVersion.s20w14infinite);
+        protocolVersions.add(v1_16_2Index + 1, AprilFoolsProtocolVersion.sCombatTest8c);
     });
-
-    private final List<Item> availableItemsInTargetVersion = new ArrayList<>();
 
     public void preLoad() {
         ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
@@ -73,7 +69,11 @@ public class ViaFabricPlus {
 
         builder = builder.runDirectory(RUN_DIRECTORY);
         builder = builder.nativeVersion(SharedConstants.getProtocolVersion());
-        builder = builder.singlePlayerProvider(() -> MinecraftClient.getInstance().isInSingleplayer());
+        builder = builder.singlePlayerProvider(() -> {
+            if (MinecraftClient.getInstance() == null) return true;
+
+            return MinecraftClient.getInstance().isInSingleplayer();
+        });
         builder = builder.eventLoop(new DefaultEventLoop());
         builder = builder.dumpCreator(() -> {
             final JsonObject parentNode = new JsonObject();
@@ -118,8 +118,7 @@ public class ViaFabricPlus {
         });
         builder = builder.protocolReloader(protocolVersion -> {
             FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(viaFabricPlusAddon -> viaFabricPlusAddon.onChangeVersion(protocolVersion));
-            availableItemsInTargetVersion.clear();
-            availableItemsInTargetVersion.addAll(Registries.ITEM.stream().filter(item -> ItemReleaseVersionDefinition.contains(item, protocolVersion)).toList());
+            ItemReleaseVersionDefinition.reload(protocolVersion);
         });
         builder.build();
 
@@ -127,7 +126,7 @@ public class ViaFabricPlus {
     }
 
     public void postLoad() throws Exception {
-        ValueHolder.setup();
+        SavingSystem.setup();
 
         PackFormatsDefinition.load();
         ItemReleaseVersionDefinition.load();
@@ -144,11 +143,7 @@ public class ViaFabricPlus {
     }
 
     public void close() throws Exception {
-        ValueHolder.save();
-    }
-
-    public List<Item> getAvailableItemsInTargetVersion() {
-        return availableItemsInTargetVersion;
+        SavingSystem.save();
     }
 
     public static ViaFabricPlus getClassWrapper() {

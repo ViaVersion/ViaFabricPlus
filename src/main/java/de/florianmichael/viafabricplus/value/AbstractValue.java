@@ -6,7 +6,7 @@ public abstract class AbstractValue<T> {
     private final String name;
     private final T defaultValue;
 
-    private T value;
+    public T value;
 
     public AbstractValue(final String name, final T defaultValue) {
         this.name = name;

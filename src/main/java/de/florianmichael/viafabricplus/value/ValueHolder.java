@@ -1,23 +1,15 @@
 package de.florianmichael.viafabricplus.value;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.platform.ProtocolRange;
 import de.florianmichael.viafabricplus.value.impl.BooleanValue;
 import de.florianmichael.viafabricplus.value.impl.ProtocolSyncBooleanValue;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ValueHolder {
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public final static File CONFIG_FILE = new File(ViaFabricPlus.RUN_DIRECTORY, "settings.json");
-
     public final static List<AbstractValue<?>> values = new ArrayList<>();
 
     // General settings
@@ -43,27 +35,4 @@ public class ValueHolder {
 
     // a1_0_15 -> c0_28toc0_30
     public static final ProtocolSyncBooleanValue useBetaCraftAuthentication = new ProtocolSyncBooleanValue("Use BetaCraft authentication", ProtocolRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));
-
-    public static void setup() throws FileNotFoundException {
-        if (CONFIG_FILE.exists()) {
-            final JsonObject parentNode = GSON.fromJson(new FileReader(CONFIG_FILE), JsonObject.class).getAsJsonObject();
-            for (AbstractValue<?> value : values) {
-                value.read(parentNode);
-            }
-        }
-    }
-
-    public static void save() throws IOException {
-        CONFIG_FILE.delete();
-        CONFIG_FILE.createNewFile();
-
-        try (final FileWriter fw = new FileWriter(CONFIG_FILE)) {
-            final JsonObject parentNode = new JsonObject();
-            for (AbstractValue<?> value : values) {
-                value.write(parentNode);
-            }
-            fw.write(GSON.toJson(parentNode));
-            fw.flush();
-        }
-    }
 }
