@@ -90,6 +90,7 @@
     "fixes.screen.screenhandler.MixinBrewingStandScreenHandler_FuelSlot",
     "fixes.screen.screenhandler.MixinPlayerScreenHandler",
     "fixes.screen.screenhandler.MixinScreenHandler",
+    "fixes.viaaprilfools.MixinProtocol1_16to20w14infinite",
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
     "fixes.vialoadingbase.MixinCustomViaConfig",
     "fixes.viaversion.MixinCommonBoss",

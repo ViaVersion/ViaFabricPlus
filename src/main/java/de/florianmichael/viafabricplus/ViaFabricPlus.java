@@ -27,6 +27,7 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.registry.Registries;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
@@ -113,6 +114,7 @@ public class ViaFabricPlus {
             providers.use(ClassicWorldHeightProvider.class, new ViaFabricPlusClassicWorldHeightProvider());
             providers.use(EncryptionProvider.class, new ViaFabricPlusEncryptionProvider());
             providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
+            providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
         });
         builder = builder.protocolReloader(protocolVersion -> {
             availableItemsInTargetVersion.clear();
