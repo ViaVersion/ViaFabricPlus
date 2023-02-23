@@ -1,24 +1,3 @@
-/**
- * --FLORIAN MICHAEL PRIVATE LICENCE v1.2--
- * <p>
- * This file / project is protected and is the intellectual property of Florian Michael (aka. EnZaXD),
- * any use (be it private or public, be it copying or using for own use, be it publishing or modifying) of this
- * file / project is prohibited. It requires in that use a written permission with official signature of the owner
- * "Florian Michael". "Florian Michael" receives the right to control and manage this file / project. This right is not
- * cancelled by copying or removing the license and in case of violation a criminal consequence is to be expected.
- * The owner "Florian Michael" is free to change this license. The creator assumes no responsibility for any infringements
- * that have arisen, are arising or will arise from this project / file. If this licence is used anywhere,
- * the latest version published by the author Florian Michael (aka EnZaXD) always applies automatically.
- * <p>
- * Changelog:
- *     v1.0:
- *         Added License
- *     v1.1:
- *         Ownership withdrawn
- *     v1.2:
- *         Version-independent validity and automatic renewal
- */
-
 package de.florianmichael.viafabricplus.injection.mixin.fixes;
 
 import com.mojang.authlib.GameProfile;
@@ -70,10 +49,6 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Shadow public abstract void onEntityVelocityUpdate(EntityVelocityUpdateS2CPacket packet);
 
-    @Shadow private ClientWorld world;
-
-    @Shadow @Nullable public abstract PlayerListEntry getPlayerListEntry(UUID uuid);
-
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixPlayerListOrdering(MinecraftClient client, Screen screen, ClientConnection connection, ServerInfo serverInfo, GameProfile profile, WorldSession worldSession, CallbackInfo ci) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
@@ -108,12 +83,8 @@ public abstract class MixinClientPlayNetworkHandler {
     @Inject(method = "onEntitySpawn", at = @At("TAIL"))
     public void forceEntityVelocity(EntitySpawnS2CPacket packet, CallbackInfo ci) {
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            if (packet.getEntityType() == EntityType.ITEM ||
-            packet.getEntityType() == EntityType.ARROW || packet.getEntityType() ==
-            EntityType.SPECTRAL_ARROW || packet.getEntityType() == EntityType.TRIDENT) {
-                onEntityVelocityUpdate(new EntityVelocityUpdateS2CPacket(
-                        packet.getId(), new Vec3d(packet.getVelocityX(), packet.getVelocityY(), packet.getVelocityZ())
-                ));
+            if (packet.getEntityType() == EntityType.ITEM || packet.getEntityType() == EntityType.ARROW || packet.getEntityType() == EntityType.SPECTRAL_ARROW || packet.getEntityType() == EntityType.TRIDENT) {
+                onEntityVelocityUpdate(new EntityVelocityUpdateS2CPacket(packet.getId(), new Vec3d(packet.getVelocityX(), packet.getVelocityY(), packet.getVelocityZ())));
             }
         }
     }

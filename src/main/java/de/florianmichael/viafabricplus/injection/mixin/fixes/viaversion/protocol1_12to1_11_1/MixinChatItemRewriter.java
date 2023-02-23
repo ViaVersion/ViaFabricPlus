@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// Copyright RaphiMC/RK_01 - GPL v3 LICENSE
 @Mixin(value = ChatItemRewriter.class, remap = false)
 public abstract class MixinChatItemRewriter {
 
