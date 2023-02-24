@@ -19,7 +19,7 @@ import java.awt.*;
 
 @SuppressWarnings({"DataFlowIssue", "DuplicatedCode"})
 public class ValuesScreen extends Screen {
-    private final static ValuesScreen INSTANCE = new ValuesScreen();
+    public final static ValuesScreen INSTANCE = new ValuesScreen();
     public Screen prevScreen;
 
     protected ValuesScreen() {

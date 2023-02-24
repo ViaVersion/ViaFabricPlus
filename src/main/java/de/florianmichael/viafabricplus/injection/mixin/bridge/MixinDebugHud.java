@@ -6,6 +6,7 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
+import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.release.protocol1_2_1_3to1_1.storage.SeedStorage;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.storage.EntityTracker;
@@ -27,7 +28,7 @@ public class MixinDebugHud {
         final List<String> information = new ArrayList<>();
         if (MinecraftClient.getInstance().getNetworkHandler() != null) {
             information.add("");
-            information.add("[ViaFabricPlus]");
+            information.add(Formatting.GOLD + "[ViaFabricPlus]");
             final UserConnection userConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
 
             information.add("Pipeline count: " + userConnection.getProtocolInfo().getPipeline().pipes().size());

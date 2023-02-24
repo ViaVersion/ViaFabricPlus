@@ -125,6 +125,7 @@
     "defaultRequire": 1
   },
   "client": [
+    "base.MixinOptionsScreen",
     "bridge.MixinConnectScreen",
     "bridge.MixinDownloadingTerrainScreen"
   ]
