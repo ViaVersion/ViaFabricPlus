@@ -49,4 +49,8 @@ public class ProtocolSyncBooleanValue extends AbstractValue<Boolean> {
     public void setSyncWithProtocol(boolean syncWithProtocol) {
         this.syncWithProtocol = syncWithProtocol;
     }
+
+    public ProtocolRange getProtocolRange() {
+        return protocolRange;
+    }
 }

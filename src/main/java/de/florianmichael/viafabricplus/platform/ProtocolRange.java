@@ -36,6 +36,13 @@ public class ProtocolRange {
         return true;
     }
 
+    public ProtocolRange[] inverse() {
+        return new ProtocolRange[] {
+                ProtocolRange.andNewer(lowerBound),
+                ProtocolRange.andOlder(upperBound)
+        };
+    }
+
     @Override
     public String toString() {
         if (lowerBound == null) return upperBound.getName() + "+";
