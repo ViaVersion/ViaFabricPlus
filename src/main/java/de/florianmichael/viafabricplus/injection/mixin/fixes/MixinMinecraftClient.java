@@ -1,12 +1,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viaversion.protocols.protocol1_12to1_11_1.Protocol1_12To1_11_1;
-import com.viaversion.viaversion.protocols.protocol1_9_3to1_9_1_2.ServerboundPackets1_9_3;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.injection.access.IMinecraftClient;
+import de.florianmichael.viafabricplus.definition.v1_12_2.SyncInputExecutor;
+import de.florianmichael.viafabricplus.definition.v1_8_x.InventoryPacketSender;
 import de.florianmichael.viafabricplus.value.ValueHolder;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -20,17 +15,14 @@ import net.minecraft.util.Hand;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.concurrent.ConcurrentLinkedDeque;
-
 @Mixin(MinecraftClient.class)
-public abstract class MixinMinecraftClient implements IMinecraftClient {
+public abstract class MixinMinecraftClient {
 
     @Shadow
     @Nullable
@@ -80,45 +72,17 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
         }
     }
 
-    @Unique
-    private final ConcurrentLinkedDeque<Runnable> protocolhack_keyboardInteractions = new ConcurrentLinkedDeque<>();
-
-    @Unique
-    private final ConcurrentLinkedDeque<Runnable> protocolhack_mouseInteractions = new ConcurrentLinkedDeque<>();
-
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
             ordinal = 4, shift = At.Shift.BEFORE))
     public void injectTick(CallbackInfo ci) {
         if (!ValueHolder.executeInputsInSync.getValue()) return;
 
-        while (!protocolhack_mouseInteractions.isEmpty()) {
-            protocolhack_mouseInteractions.poll().run();
-        }
-        while (!protocolhack_keyboardInteractions.isEmpty()) {
-            protocolhack_keyboardInteractions.poll().run();
-        }
+        SyncInputExecutor.callback();
     }
 
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasRidingInventory()Z"))
     private void onInventoryKeyPressed(CallbackInfo ci) throws Exception {
-        final UserConnection viaConnection = getNetworkHandler().getConnection().channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
-
-        if (viaConnection != null && ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
-            final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, viaConnection);
-            clientStatus.write(Type.VAR_INT, 2); // Open Inventory Achievement
-
-            clientStatus.sendToServer(Protocol1_12To1_11_1.class);
-        }
-    }
-
-    @Override
-    public void viafabricplus_trackKeyboardInteraction(Runnable interaction) {
-        this.protocolhack_keyboardInteractions.add(interaction);
-    }
-
-    @Override
-    public void viafabricplus_trackMouseInteraction(Runnable interaction) {
-        this.protocolhack_mouseInteractions.add(interaction);
+        if (getNetworkHandler() != null) InventoryPacketSender.sendOpenInventoryAchievement(getNetworkHandler());
     }
 }

@@ -2,6 +2,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.entity;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.definition.v1_8_x.IdlePacketExecutor;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.value.ValueHolder;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
@@ -95,6 +96,8 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(this.getYaw(), this.getPitch(), this.onGround));
             } else if (this.lastOnGround != this.onGround || ValueHolder.sendIdlePacket.getValue()) {
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(this.onGround));
+            } else {
+                IdlePacketExecutor.skipIdlePacket();
             }
             if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 ++this.ticksSinceLastPositionPacketSent;

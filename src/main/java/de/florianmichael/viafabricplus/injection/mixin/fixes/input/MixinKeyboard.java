@@ -1,7 +1,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.input;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.injection.access.IMinecraftClient;
+import de.florianmichael.viafabricplus.definition.v1_12_2.SyncInputExecutor;
 import de.florianmichael.viafabricplus.value.ValueHolder;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.Keyboard;
@@ -16,12 +16,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(Keyboard.class)
 public class MixinKeyboard {
 
-    @Shadow @Final private MinecraftClient client;
-
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;execute(Ljava/lang/Runnable;)V"))
     public void redirectSync(MinecraftClient instance, Runnable runnable) {
         if (ValueHolder.executeInputsInSync.getValue()) {
-            ((IMinecraftClient) client).viafabricplus_trackKeyboardInteraction(runnable);
+            SyncInputExecutor.trackKeyboardInteraction(runnable);
             return;
         }
 
