@@ -11,6 +11,7 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 ## Why?
 ViaFabricPlus implements ViaLegacy/ViaAprilFools clientside and adds a ton of fixes that improve the game experience, <br>
 as does [MultiConnect](https://github.com/Earthcomputer/multiconnect) from Earthcomputer.
+### Important: The focus on ViaFabricPlus is on client side fixes, so reporting bugs and contributing is welcome.
 
 ## Dependencies
 
@@ -31,6 +32,16 @@ ViaFabricPlus splits into two major parts:
 | ViaFabricPlus           | Core of the project, all fixes here are stable and have been tested many times                                                                                                                                                         |
 | ViaFabricPlus-Visual    | Addon for the core, it adds only visual changes between the versions like old textures, <br>optional and not necessary for the gameplay, but recommended.                                                                              |
 
+## Setting up a Workspace
+ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
+1. Clone the repository using `git clone https://github.com/FlorianMichael/ViaFabricPlus`.
+2. CD into the local repository.
+3. Run `./gradlew genSources`.
+4. Open the folder as a Gradle project in your preferred IDE.
+5. Run the mod.
+
+### Tip for developing Addons: the installAddons task automatically copies all built Addons to the run/mods folder of the main project
+
 ## Values
 Values are optional settings that can turn fixes on and off, originally they were used for debugging<br>
 ![](/image/values.png)
@@ -43,7 +54,7 @@ package net.example;
 
 import de.florianmichael.viafabricplus.ViaFabricPlusAddon;
 
-public static class ViaFabricPlusExampleAddon implements ViaFabricPlusAddon {
+public class ViaFabricPlusExampleAddon implements ViaFabricPlusAddon {
     
     @Override
     public void onPreLoad() {
