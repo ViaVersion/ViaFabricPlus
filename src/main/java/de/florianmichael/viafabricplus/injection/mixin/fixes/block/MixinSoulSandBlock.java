@@ -1,13 +1,13 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.block;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.definition.v1_14_4.SoulSandVelocityHandler;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoulSandBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -23,10 +23,7 @@ public class MixinSoulSandBlock extends Block {
         super.onEntityCollision(state, world, pos, entity);
 
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            final Vec3d velocity = entity.getVelocity();
-
-            double multiplier = 0.4D;
-            entity.setVelocity(velocity.getX() * multiplier, velocity.getY(), velocity.getZ() * multiplier);
+            SoulSandVelocityHandler.handleVelocity(entity);
         }
     }
 
