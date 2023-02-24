@@ -92,6 +92,7 @@
     "fixes.screen.screenhandler.MixinBrewingStandScreenHandler_FuelSlot",
     "fixes.screen.screenhandler.MixinPlayerScreenHandler",
     "fixes.screen.screenhandler.MixinScreenHandler",
+    "sodium.MixinChunkTracker",
     "viaaprilfools.MixinProtocol1_16to20w14infinite",
     "vialegacy.MixinProtocol1_8to1_7_6_10",
     "vialoadingbase.MixinCustomViaConfig",
