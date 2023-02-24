@@ -83,6 +83,12 @@ To load the addon you have to specify the addon main class as entrypoint in your
 }
 ```
 
+## Alternatives
+- [ClientViaVersion](https://github.com/Gerrygames/ClientViaVersion): Discontinued 5zig plugin.
+- [multiconnect](https://www.curseforge.com/minecraft/mc-mods/multiconnect): Fabric mod for connecting to older
+  versions: down to 1.11 (stable) and 1.8 (experimental).
+- [ViaFabric](https://www.curseforge.com/minecraft/mc-mods/viafabric): Fork of ViaFabric porting it to Forge.
+
 ## WARNING
 **I cannot guarantee that this mod is allowed on every (or even any) server. This mod may cause problems with anti cheat
 plugins. USE AT OWN RISK**
