@@ -29,8 +29,9 @@ public class MixinSoulSandBlock extends Block {
 
     @Override
     public float getVelocityMultiplier() {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4))
+        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return 1.0F;
+        }
         return super.getVelocityMultiplier();
     }
 }

@@ -4,7 +4,9 @@ public class IdlePacketExecutor {
     private static Runnable skipIdlePacketExecute;
 
     public static void skipIdlePacket() {
-        skipIdlePacketExecute.run();
+        if (skipIdlePacketExecute != null) {
+            skipIdlePacketExecute.run();
+        }
     }
 
     public static void registerIdlePacketSkipExecute(final Runnable runnable) {
