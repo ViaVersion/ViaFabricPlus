@@ -14,7 +14,7 @@ import de.florianmichael.viafabricplus.platform.ViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.provider.*;
 import de.florianmichael.viafabricplus.util.SavingSystem;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.api.SubPlatform;
+import de.florianmichael.vialoadingbase.platform.SubPlatform;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.util.AttributeKey;
 import net.fabricmc.loader.api.FabricLoader;
@@ -69,13 +69,13 @@ public class ViaFabricPlus {
 
         builder = builder.runDirectory(RUN_DIRECTORY);
         builder = builder.nativeVersion(SharedConstants.getProtocolVersion());
-        builder = builder.singlePlayerProvider(() -> {
+        builder = builder.forceNativeVersionCondition(() -> {
             if (MinecraftClient.getInstance() == null) return true;
 
             return MinecraftClient.getInstance().isInSingleplayer();
         });
         builder = builder.eventLoop(new DefaultEventLoop());
-        builder = builder.dumpCreator(() -> {
+        builder = builder.dumpSupplier(() -> {
             final JsonObject parentNode = new JsonObject();
             final JsonArray modsNode = new JsonArray();
             for (ModContainer mod : FabricLoader.getInstance().getAllMods()) {
@@ -104,7 +104,7 @@ public class ViaFabricPlus {
             parentNode.addProperty("native version", SharedConstants.getProtocolVersion());
             return parentNode;
         });
-        builder = builder.viaProviderCreator(providers -> {
+        builder = builder.providers(providers -> {
             providers.use(MovementTransmitterProvider.class, new ViaFabricPlusMovementTransmitterProvider());
             providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());
 
@@ -116,7 +116,7 @@ public class ViaFabricPlus {
             providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
             providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
         });
-        builder = builder.protocolReloader(protocolVersion -> {
+        builder = builder.onProtocolReload(protocolVersion -> {
             FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(viaFabricPlusAddon -> viaFabricPlusAddon.onChangeVersion(protocolVersion));
             ItemReleaseVersionDefinition.reload(protocolVersion);
         });

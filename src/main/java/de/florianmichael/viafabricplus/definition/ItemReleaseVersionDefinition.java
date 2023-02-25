@@ -2,7 +2,7 @@ package de.florianmichael.viafabricplus.definition;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.platform.ProtocolRange;
-import de.florianmichael.vialoadingbase.api.version.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;

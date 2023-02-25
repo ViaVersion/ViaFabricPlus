@@ -7,7 +7,7 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.value.AbstractValue;
 import de.florianmichael.viafabricplus.value.ValueHolder;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.api.version.InternalProtocolList;
+import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 
 import java.io.*;
 

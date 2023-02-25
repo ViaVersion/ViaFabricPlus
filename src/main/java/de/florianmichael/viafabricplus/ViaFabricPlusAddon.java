@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus;
 
-import de.florianmichael.vialoadingbase.api.version.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 
 public interface ViaFabricPlusAddon {
 

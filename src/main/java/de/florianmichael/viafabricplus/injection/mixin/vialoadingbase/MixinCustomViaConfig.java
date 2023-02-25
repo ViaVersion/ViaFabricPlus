@@ -1,7 +1,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.vialoadingbase;
 
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
-import de.florianmichael.vialoadingbase.internal.viaversion.CustomViaConfig;
+import de.florianmichael.vialoadingbase.defaults.viaversion.CustomViaConfig;
 import org.spongepowered.asm.mixin.Mixin;
 
 import java.io.File;

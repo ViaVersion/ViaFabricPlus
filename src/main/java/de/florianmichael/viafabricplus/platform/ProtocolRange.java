@@ -1,8 +1,8 @@
 package de.florianmichael.viafabricplus.platform;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.api.version.ComparableProtocolVersion;
-import de.florianmichael.vialoadingbase.api.version.InternalProtocolList;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 
 public class ProtocolRange {
     private final ComparableProtocolVersion lowerBound;
@@ -34,13 +34,6 @@ public class ProtocolRange {
         if (this.upperBound != null && protocolVersion.getIndex() > upperBound.getIndex())
             return false;
         return true;
-    }
-
-    public ProtocolRange[] inverse() {
-        return new ProtocolRange[] {
-                ProtocolRange.andNewer(lowerBound),
-                ProtocolRange.andOlder(upperBound)
-        };
     }
 
     @Override

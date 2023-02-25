@@ -1,7 +1,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.item;
 
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.api.version.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import org.spongepowered.asm.mixin.Mixin;

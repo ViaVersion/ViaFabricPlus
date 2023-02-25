@@ -2,7 +2,7 @@ package de.florianmichael.viafabricplus.screen;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.api.version.InternalProtocolList;
+import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;

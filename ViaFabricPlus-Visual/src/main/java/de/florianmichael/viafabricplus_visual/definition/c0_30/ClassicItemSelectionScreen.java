@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus_visual.definition.c0_30;
 
-import de.florianmichael.vialoadingbase.api.version.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.PositionedSoundInstance;

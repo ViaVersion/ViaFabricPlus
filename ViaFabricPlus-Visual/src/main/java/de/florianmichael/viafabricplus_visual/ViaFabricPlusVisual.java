@@ -6,9 +6,8 @@ import de.florianmichael.viafabricplus.platform.ProtocolRange;
 import de.florianmichael.viafabricplus.value.impl.ProtocolSyncBooleanValue;
 import de.florianmichael.viafabricplus_visual.definition.c0_30.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus_visual.definition.v1_8_x.ArmorPointsDefinition;
-import de.florianmichael.vialoadingbase.api.version.ComparableProtocolVersion;
-import de.florianmichael.vialoadingbase.api.version.InternalProtocolList;
-import net.fabricmc.api.ClientModInitializer;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 public class ViaFabricPlusVisual implements ViaFabricPlusAddon {
@@ -34,7 +33,6 @@ public class ViaFabricPlusVisual implements ViaFabricPlusAddon {
 
     @Override
     public void onPostLoad() {
-        System.out.println("Test");
         ArmorPointsDefinition.load();
         ClassicItemSelectionScreen.create(InternalProtocolList.fromProtocolVersion(LegacyProtocolVersion.c0_28toc0_30));
     }
