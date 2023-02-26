@@ -33,15 +33,12 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 4. Open the folder as a Gradle project in your preferred IDE.
 5. Run the mod.
 
-### Tip for developing Addons: the installAddons task automatically copies all built Addons to the run/mods folder of the main project
-
 ## Values
 Values are optional settings that can turn fixes on and off, originally they were used for debugging<br>
 ![](/image/values.png)
 
 ## Addon-API
-For ViaFabricPlus-Visual and other future addons an AddonAPI has been developed to make it easier to access ViaFabricPlus, <br>
-to make a ViaFabricPlus addon you just have to implement the ViaFabricPlusAddon interface in your main class:
+To make a ViaFabricPlus addon you just have to implement the ViaFabricPlusAddon interface in your main class:
 ```java
 package net.example;
 
@@ -79,7 +76,7 @@ public class ExampleSettingGroup extends SettingGroup {
     
     public ExampleSettingGroup() {
         super("Example");
-        ViaFabricPlus.getClassWrapper().loadGroup(this);
+        ViaFabricPlus.getClassWrapper().loadGroup(this); // should be in your onLoad method
     }
 }
 ```
