@@ -6,6 +6,7 @@ import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
+import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
 import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
 import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
 import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
@@ -119,6 +120,7 @@ public class ViaFabricPlus {
         builder = builder.onProtocolReload(protocolVersion -> {
             FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(viaFabricPlusAddon -> viaFabricPlusAddon.onChangeVersion(protocolVersion));
             ItemReleaseVersionDefinition.reload(protocolVersion);
+            ChatLengthDefinition.reload(protocolVersion);
         });
         builder.build();
 

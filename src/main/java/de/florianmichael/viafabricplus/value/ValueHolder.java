@@ -3,6 +3,7 @@ package de.florianmichael.viafabricplus.value;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.platform.ProtocolRange;
 import de.florianmichael.viafabricplus.value.impl.BooleanValue;
+import de.florianmichael.viafabricplus.value.impl.ModeValue;
 import de.florianmichael.viafabricplus.value.impl.ProtocolSyncBooleanValue;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
@@ -13,6 +14,7 @@ public class ValueHolder {
     public final static List<AbstractValue<?>> values = new ArrayList<>();
 
     // General settings
+    public static final ModeValue mainButtonOrientation = new ModeValue("Main button orientation", "Left; Top", "Right; Top", "Left; Bottom", "Right: Bottom");
     public static final BooleanValue removeNotAvailableItemsFromCreativeTab = new BooleanValue("Remove not available items from creative tab", true);
 
     // 1.19 -> 1.18.2

@@ -4,6 +4,7 @@ import de.florianmichael.viafabricplus.util.ScreenUtil;
 import de.florianmichael.viafabricplus.value.AbstractValue;
 import de.florianmichael.viafabricplus.value.ValueHolder;
 import de.florianmichael.viafabricplus.value.impl.BooleanValue;
+import de.florianmichael.viafabricplus.value.impl.ModeValue;
 import de.florianmichael.viafabricplus.value.impl.ProtocolSyncBooleanValue;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -16,6 +17,8 @@ import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
+import java.text.Format;
+import java.util.Arrays;
 
 @SuppressWarnings({"DataFlowIssue", "DuplicatedCode"})
 public class ValuesScreen extends Screen {
@@ -100,6 +103,11 @@ public class ValuesScreen extends Screen {
                     ScreenUtil.playClickSound();
                 }
             }
+            if (value instanceof ModeValue modeValue) {
+                final int currentIndex = Arrays.stream(modeValue.getOptions()).toList().indexOf(modeValue.value) + 1;
+                modeValue.setValue(currentIndex > modeValue.getOptions().length - 1 ? 0 : currentIndex);
+                ScreenUtil.playClickSound();
+            }
             return super.mouseClicked(mouseX, mouseY, button);
         }
 
@@ -111,14 +119,16 @@ public class ValuesScreen extends Screen {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
             if (value instanceof BooleanValue booleanValue) {
                 final boolean isEnabled = booleanValue.getValue();
-                drawCenteredText(matrices, textRenderer, (isEnabled ? Formatting.UNDERLINE : "") + booleanValue.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isEnabled ? Color.GREEN.getRGB() : Color.RED.getRGB());
+                drawStringWithShadow(matrices, textRenderer, booleanValue.getName(), 3, entryHeight / 2 - textRenderer.fontHeight / 2, isEnabled ? Color.GREEN.getRGB() : Color.RED.getRGB());
             } else if (value instanceof ProtocolSyncBooleanValue protocolSyncBooleanValue) {
                 final boolean isEnabled = protocolSyncBooleanValue.getValue();
                 Color color = isEnabled ? Color.GREEN : Color.RED;
                 if (protocolSyncBooleanValue.isSyncWithProtocol()) {
                     drawStringWithShadow(matrices, textRenderer, "Sync", entryWidth - textRenderer.getWidth("Sync") - 3, entryHeight / 2 - textRenderer.fontHeight / 2, Color.ORANGE.getRGB());
                 }
-                drawStringWithShadow(matrices, textRenderer, (isEnabled ? Formatting.UNDERLINE.toString() : "") + protocolSyncBooleanValue.getName(), 3, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
+                drawStringWithShadow(matrices, textRenderer, protocolSyncBooleanValue.getName(), 3, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
+            } else if (value instanceof ModeValue modeValue) {
+                drawStringWithShadow(matrices, textRenderer, modeValue.getName() + ": " + Formatting.GOLD + modeValue.getValue(), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
             }
             matrices.pop();
         }

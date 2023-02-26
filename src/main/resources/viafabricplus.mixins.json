@@ -21,6 +21,7 @@
     "fixes.MixinProfileKeysImpl",
     "fixes.MixinServerAddress",
     "fixes.MixinServerResourcePackProvider",
+    "fixes.MixinStringHelper",
     "fixes.block.MixinAbstractBlock_AbstractBlockState",
     "fixes.block.MixinAnvilBlock",
     "fixes.block.MixinBambooBlock",
@@ -79,6 +80,7 @@
     "fixes.item.MixinPickaxeItem",
     "fixes.item.MixinShovelItem",
     "fixes.item.MixinSwordItem",
+    "fixes.packet.MixinChatMessageC2SPacket",
     "fixes.packet.MixinPacketByteBuf",
     "fixes.packet.MixinUpdatePlayerAbilitiesC2SPacket",
     "fixes.screen.MixinConnectScreen_1",
@@ -94,11 +96,13 @@
     "fixes.screen.screenhandler.MixinScreenHandler",
     "sodium.MixinChunkTracker",
     "viaaprilfools.MixinProtocol1_16to20w14infinite",
+    "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinProtocol1_8to1_7_6_10",
     "vialoadingbase.MixinCustomViaConfig",
     "viaversion.MixinCommonBoss",
     "viaversion.MixinPacketWrapperImpl",
     "viaversion.MixinProtocolVersion",
+    "viaversion.protocol1_11to1_10.MixinProtocol1_11To1_10",
     "viaversion.protocol1_12to1_11_1.MixinChatItemRewriter",
     "viaversion.protocol1_13to1_12_2.MixinAbstractFenceConnectionHandler",
     "viaversion.protocol1_13to1_12_2.MixinGlassConnectionHandler",
@@ -128,6 +132,7 @@
   "client": [
     "base.MixinOptionsScreen",
     "bridge.MixinConnectScreen",
-    "bridge.MixinDownloadingTerrainScreen"
+    "bridge.MixinDownloadingTerrainScreen",
+    "fixes.screen.MixinChatScreen"
   ]
 }
