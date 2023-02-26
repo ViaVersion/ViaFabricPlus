@@ -23,7 +23,7 @@ public abstract class MixinOptionsScreen {
 
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/ClickableWidget;)Lnet/minecraft/client/gui/widget/ClickableWidget;", ordinal = 10, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     public void addValuesButton(CallbackInfo ci, GridWidget gridWidget, GridWidget.Adder adder) {
-        adder.add(this.createButton(Text.literal("ViaFabricPlus").styled(style -> style.withColor(Formatting.GOLD)).append(" ").append(" Settings..."), () -> {
+        adder.add(this.createButton(Text.literal("ViaFabricPlus").styled(style -> style.withColor(Formatting.GOLD)).append(" ").append("Settings..."), () -> {
             ValuesScreen.INSTANCE.prevScreen = (OptionsScreen) (Object) this;
             return ValuesScreen.INSTANCE;
         }));
