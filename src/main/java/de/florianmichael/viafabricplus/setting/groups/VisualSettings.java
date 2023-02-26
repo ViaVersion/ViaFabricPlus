@@ -1,9 +1,9 @@
 package de.florianmichael.viafabricplus.setting.groups;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.platform.ProtocolRange;
 import de.florianmichael.viafabricplus.setting.SettingGroup;
 import de.florianmichael.viafabricplus.setting.impl.ProtocolSyncBooleanSetting;
+import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 public class VisualSettings extends SettingGroup {

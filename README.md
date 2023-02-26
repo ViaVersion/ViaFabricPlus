@@ -37,7 +37,7 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 Values are optional settings that can turn fixes on and off, originally they were used for debugging<br>
 ![](/image/values.png)
 
-## Addon-API
+## Addons
 To make a ViaFabricPlus addon you just have to implement the ViaFabricPlusAddon interface in your main class:
 ```java
 package net.example;
@@ -66,7 +66,43 @@ To load the addon you have to specify the addon main class as entrypoint in your
 }
 ```
 
-### Create Setting Group
+### General API
+In case you need an event as soon as the idle packet is skipped in the <= 1.8, you can do that: <br>
+```java
+public class Example {
+    
+    static {
+      IdlePacketExecutor.registerIdlePacketSkipExecute(() -> {
+          // Called when the idle packet is skipped
+      });
+    }
+}
+```
+
+In case you need the release version of a material, you can do that:
+```java
+public class Example {
+    
+    static {
+      final ProtocolRange range = ItemReleaseVersionDefinition.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
+
+      // The Range class then contains all versions in which the item occurs. 
+      // You can find out how the Range class works in the ViaLoadingBase README.
+      // https://github.com/FlorianMichael/ViaLoadingBase
+    }
+}
+```
+
+To get the current Maximum Chat Length you can do this:
+```java
+public class Example {
+    
+    static {
+        final int maxLength = ChatLengthDefinition.getMaxLength();
+    }
+}
+```
+
 To create a setting group, you can simply use the SettingGroup class:
 ```java
 public class ExampleSettingGroup extends SettingGroup {

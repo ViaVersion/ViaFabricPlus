@@ -14,6 +14,7 @@
     "fixes.MixinCamera",
     "fixes.MixinClientPlayerInteractionManager",
     "fixes.MixinClientPlayNetworkHandler",
+    "fixes.MixinEntityPredicates",
     "fixes.MixinMinecraftClient",
     "fixes.MixinPendingUpdateManager",
     "fixes.MixinPlayerEntityRenderer",

@@ -1,8 +1,8 @@
 package de.florianmichael.viafabricplus.definition;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.platform.ProtocolRange;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
@@ -1289,6 +1289,10 @@ public class ItemReleaseVersionDefinition {
 
     private static void register(final Item item, final ProtocolRange... ranges) {
         itemMap.put(item, ranges);
+    }
+
+    public static Map<Item, ProtocolRange[]> getItemMap() {
+        return itemMap;
     }
 
     public static List<Item> getCurrentMap() {

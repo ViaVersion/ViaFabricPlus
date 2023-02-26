@@ -1,10 +1,10 @@
 package de.florianmichael.viafabricplus.setting.impl;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.platform.ProtocolRange;
 import de.florianmichael.viafabricplus.setting.SettingGroup;
 import de.florianmichael.viafabricplus.setting.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 
 public class ProtocolSyncBooleanSetting extends BooleanSetting {
     private final ProtocolRange protocolRange;

@@ -83,6 +83,6 @@ public abstract class MixinMinecraftClient {
 
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasRidingInventory()Z"))
     private void onInventoryKeyPressed(CallbackInfo ci) throws Exception {
-        if (getNetworkHandler() != null) InventoryPacketSender.sendOpenInventoryAchievement(getNetworkHandler());
+        if (getNetworkHandler() != null) InventoryPacketSender.sendOpenInventoryAchievement();
     }
 }
