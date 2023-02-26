@@ -33,9 +33,9 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 4. Open the folder as a Gradle project in your preferred IDE.
 5. Run the mod.
 
-## Values
-Values are optional settings that can turn fixes on and off, originally they were used for debugging<br>
-![](/image/values.png)
+## Settings
+Settings are optional settings that can turn fixes on and off, originally they were used for debugging<br>
+![](/image/settings.png)
 
 ## Addons
 To make a ViaFabricPlus addon you just have to implement the ViaFabricPlusAddon interface in your main class:
@@ -108,7 +108,7 @@ To create a setting group, you can simply use the SettingGroup class:
 public class ExampleSettingGroup extends SettingGroup {
     public final static ExampleSettingGroup INSTANCE = new ExampleSettingGroup();
     
-    public final BooleanSetting testValue = new BooleanSetting("Test", false);
+    public final BooleanSetting test = new BooleanSetting("Test", false);
     
     public ExampleSettingGroup() {
         super("Example");
