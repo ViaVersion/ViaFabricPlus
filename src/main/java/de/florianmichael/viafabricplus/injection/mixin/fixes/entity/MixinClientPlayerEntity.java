@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.definition.v1_8_x.IdlePacketExecutor;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
-import de.florianmichael.viafabricplus.value.ValueHolder;
+import de.florianmichael.viafabricplus.setting.groups.DebugSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
@@ -94,7 +94,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(this.getX(), this.getY(), this.getZ(), this.onGround));
             } else if (bl4) {
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(this.getYaw(), this.getPitch(), this.onGround));
-            } else if (this.lastOnGround != this.onGround || ValueHolder.sendIdlePacket.getValue()) {
+            } else if (this.lastOnGround != this.onGround || DebugSettings.getClassWrapper().sendIdlePacket.getValue()) {
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(this.onGround));
             } else {
                 IdlePacketExecutor.skipIdlePacket();

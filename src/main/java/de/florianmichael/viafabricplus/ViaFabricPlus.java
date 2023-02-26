@@ -9,12 +9,19 @@ import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTr
 import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
 import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
 import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
+import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
+import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
 import de.florianmichael.viafabricplus.platform.ViaAprilFoolsPlatformImpl;
 import de.florianmichael.viafabricplus.platform.ViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.provider.*;
-import de.florianmichael.viafabricplus.util.SavingSystem;
+import de.florianmichael.viafabricplus.setting.SettingGroup;
+import de.florianmichael.viafabricplus.setting.groups.DebugSettings;
+import de.florianmichael.viafabricplus.setting.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.setting.groups.VisualSettings;
+import de.florianmichael.viafabricplus.util.SettingsSave;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import de.florianmichael.vialoadingbase.platform.SubPlatform;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.util.AttributeKey;
@@ -34,6 +41,7 @@ import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.G
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,6 +51,8 @@ public class ViaFabricPlus {
     public final static AttributeKey<ClientConnection> LOCAL_MINECRAFT_CONNECTION = AttributeKey.newInstance("viafabricplus-minecraft-connection");
 
     private final static ViaFabricPlus self = new ViaFabricPlus();
+
+    private final List<SettingGroup> settingGroups = new ArrayList<>();
 
     private final SubPlatform SUB_PLATFORM_VIA_LEGACY = new SubPlatform("ViaLegacy", () -> true, ViaLegacyPlatformImpl::new, protocolVersions -> {
         final List<ProtocolVersion> legacyProtocols = new ArrayList<>(LegacyProtocolVersion.PROTOCOLS);
@@ -123,29 +133,40 @@ public class ViaFabricPlus {
             ChatLengthDefinition.reload(protocolVersion);
         });
         builder.build();
-
-        FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(ViaFabricPlusAddon::onPreLoad);
     }
 
     public void postLoad() throws Exception {
-        SavingSystem.setup();
+        FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(ViaFabricPlusAddon::onLoad);
+
+        loadGroup(
+                GeneralSettings.getClassWrapper(),
+                VisualSettings.getClassWrapper(),
+                DebugSettings.getClassWrapper()
+        );
+
+        SettingsSave.load(this);
 
         PackFormatsDefinition.load();
         ItemReleaseVersionDefinition.load();
+        ArmorPointsDefinition.load();
+
+        ClassicItemSelectionScreen.create(InternalProtocolList.fromProtocolVersion(LegacyProtocolVersion.c0_28toc0_30));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                this.close();
+                SettingsSave.save(this);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }));
-
-        FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(ViaFabricPlusAddon::onPostLoad);
     }
 
-    public void close() throws Exception {
-        SavingSystem.save();
+    public void loadGroup(final SettingGroup... groups) {
+        this.settingGroups.addAll(Arrays.asList(groups));
+    }
+
+    public List<SettingGroup> getSettingGroups() {
+        return settingGroups;
     }
 
     public static ViaFabricPlus getClassWrapper() {

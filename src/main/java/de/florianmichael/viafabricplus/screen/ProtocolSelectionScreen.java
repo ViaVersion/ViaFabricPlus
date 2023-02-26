@@ -12,7 +12,6 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 import java.awt.*;
 
@@ -89,7 +88,7 @@ public class ProtocolSelectionScreen extends Screen {
             matrices.push();
             matrices.translate(x, y - 1, 0);
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            drawCenteredText(matrices, textRenderer, (isSelected ? Formatting.UNDERLINE : "") + this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
+            drawCenteredText(matrices, textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
             matrices.pop();
         }
     }

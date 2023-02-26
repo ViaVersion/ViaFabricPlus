@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.screen.ValuesScreen;
+import de.florianmichael.viafabricplus.screen.settings.ValuesScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;

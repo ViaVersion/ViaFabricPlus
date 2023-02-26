@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes;
 
-import de.florianmichael.viafabricplus.value.ValueHolder;
+import de.florianmichael.viafabricplus.setting.groups.DebugSettings;
 import net.minecraft.client.network.PendingUpdateManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,7 +12,7 @@ public class MixinPendingUpdateManager {
 
     @Inject(method = "incrementSequence", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/PendingUpdateManager;pendingSequence:Z", shift = At.Shift.BEFORE), cancellable = true)
     public void injectIncrementSequence(CallbackInfoReturnable<PendingUpdateManager> cir) {
-        if (ValueHolder.disableSequencing.getValue()) {
+        if (DebugSettings.getClassWrapper().disableSequencing.getValue()) {
             cir.setReturnValue((PendingUpdateManager) (Object) this);
         }
     }

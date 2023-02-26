@@ -18,6 +18,11 @@
   "license": "GPL-v3",
   "icon": "assets/viafabricplus/icon.png",
   "environment": "*",
+  "entrypoints": {
+    "modmenu": [
+      "de.florianmichael.viafabricplus.integration.ModMenuImpl"
+    ]
+  },
   "mixins": [
     "viafabricplus.mixins.json"
   ],

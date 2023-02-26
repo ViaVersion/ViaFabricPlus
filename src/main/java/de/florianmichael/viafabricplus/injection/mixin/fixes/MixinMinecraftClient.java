@@ -2,7 +2,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes;
 
 import de.florianmichael.viafabricplus.definition.v1_12_2.SyncInputExecutor;
 import de.florianmichael.viafabricplus.definition.v1_8_x.InventoryPacketSender;
-import de.florianmichael.viafabricplus.value.ValueHolder;
+import de.florianmichael.viafabricplus.setting.groups.DebugSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
@@ -76,7 +76,7 @@ public abstract class MixinMinecraftClient {
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
             ordinal = 4, shift = At.Shift.BEFORE))
     public void injectTick(CallbackInfo ci) {
-        if (!ValueHolder.executeInputsInSync.getValue()) return;
+        if (!DebugSettings.getClassWrapper().executeInputsInSync.getValue()) return;
 
         SyncInputExecutor.callback();
     }

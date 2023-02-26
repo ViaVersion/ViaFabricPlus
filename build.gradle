@@ -23,7 +23,10 @@ allprojects {
 		}
 		maven {
 			name = "ViaVersion"
-			url "https://repo.viaversion.com"
+			url = "https://repo.viaversion.com"
+		}
+		maven {
+			url = "https://maven.terraformersmc.com/releases"
 		}
 	}
 }
@@ -36,7 +39,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	include project(":ViaFabricPlus-Visual")
+	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
 	libs "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
 

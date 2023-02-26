@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes;
 
-import de.florianmichael.viafabricplus.value.ValueHolder;
+import de.florianmichael.viafabricplus.setting.groups.DebugSettings;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +25,7 @@ public class MixinCamera {
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setPos(DDD)V", shift = At.Shift.BEFORE))
     public void onUpdateHeight(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        if (!ValueHolder.replaceSneaking.getValue() && ValueHolder.sneakInstant.getValue()) {
+        if (!DebugSettings.getClassWrapper().replaceSneaking.getValue() && DebugSettings.getClassWrapper().sneakInstant.getValue()) {
             cameraY = lastCameraY = focusedEntity.getStandingEyeHeight();
         }
     }
@@ -34,14 +34,14 @@ public class MixinCamera {
     public void onUpdateEyeHeight(CallbackInfo ci) {
         if (this.focusedEntity == null) return;
 
-        if (ValueHolder.replaceSneaking.getValue()) {
+        if (DebugSettings.getClassWrapper().replaceSneaking.getValue()) {
             ci.cancel();
             this.lastCameraY = this.cameraY;
 
             if (this.focusedEntity instanceof PlayerEntity player && !player.isSleeping()) {
                 if (player.isSneaking()) {
                     cameraY = 1.54F;
-                } else if (!ValueHolder.longSneaking.getValue()) {
+                } else if (!DebugSettings.getClassWrapper().longSneaking.getValue()) {
                     cameraY = 1.62F;
                 } else if (cameraY < 1.62F) {
                     float delta = 1.62F - cameraY;

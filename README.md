@@ -10,7 +10,7 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 
 ## Why?
 ViaFabricPlus implements ViaLegacy/ViaAprilFools clientside and adds a ton of fixes that improve the game experience, <br>
-as does [MultiConnect](https://github.com/Earthcomputer/multiconnect) from Earthcomputer.
+as does [multiconnect](https://github.com/Earthcomputer/multiconnect) from Earthcomputer.
 ### Important: The focus on ViaFabricPlus is on client side fixes, so reporting bugs and contributing is welcome.
 
 ## Dependencies
@@ -24,13 +24,6 @@ as does [MultiConnect](https://github.com/Earthcomputer/multiconnect) from Earth
 | ViaAprilFools  | https://github.com/RaphiMC/ViaAprilFools                   |
 | MC-Structs     | https://github.com/Lenni0451/MCStructs                     |
 | ViaLoadingBase | https://github.com/FlorianMichael/ViaLoadingBase           |
-
-## Project structure
-ViaFabricPlus splits into two major parts:
-| Part                    | Description                                                                                                                                                                                                                            |
-|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ViaFabricPlus           | Core of the project, all fixes here are stable and have been tested many times                                                                                                                                                         |
-| ViaFabricPlus-Visual    | Addon for the core, it adds only visual changes between the versions like old textures, <br>optional and not necessary for the gameplay, but recommended.                                                                              |
 
 ## Setting up a Workspace
 ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
@@ -52,18 +45,11 @@ to make a ViaFabricPlus addon you just have to implement the ViaFabricPlusAddon 
 ```java
 package net.example;
 
-import de.florianmichael.viafabricplus.ViaFabricPlusAddon;
-
 public class ViaFabricPlusExampleAddon implements ViaFabricPlusAddon {
     
     @Override
-    public void onPreLoad() {
-        // called directly after Via* is initialized
-    }
-    
-    @Override
-    public void onPostLoad() {
-        // called after Minecraft is initialized
+    public void onLoad() {
+        // called after ViaVersion and Minecraft is initialized
     }
     
     @Override
@@ -80,6 +66,21 @@ To load the addon you have to specify the addon main class as entrypoint in your
       "net.example.ViaFabricPlusExampleAddon"
     ]
   }
+}
+```
+
+### Create Setting Group
+To create a setting group, you can simply use the SettingGroup class:
+```java
+public class ExampleSettingGroup extends SettingGroup {
+    public final static ExampleSettingGroup INSTANCE = new ExampleSettingGroup();
+    
+    public final BooleanSetting testValue = new BooleanSetting("Test", false);
+    
+    public ExampleSettingGroup() {
+        super("Example");
+        ViaFabricPlus.getClassWrapper().loadGroup(this);
+    }
 }
 ```
 

@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.item;
 
-import de.florianmichael.viafabricplus.value.ValueHolder;
+import de.florianmichael.viafabricplus.setting.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import net.minecraft.item.ItemGroups;
@@ -23,12 +23,12 @@ public class MixinItemGroups {
 
     @Redirect(method = "displayParametersMatch", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/featuretoggle/FeatureSet;equals(Ljava/lang/Object;)Z"))
     private static boolean adjustLastVersionMatchCheck(FeatureSet instance, Object o) {
-        return instance.equals(o) && viafabricplus_version == ViaLoadingBase.getTargetVersion() && viafabricplus_state == ValueHolder.removeNotAvailableItemsFromCreativeTab.getValue();
+        return instance.equals(o) && viafabricplus_version == ViaLoadingBase.getTargetVersion() && viafabricplus_state == GeneralSettings.getClassWrapper().removeNotAvailableItemsFromCreativeTab.getValue();
     }
 
     @Inject(method = "updateDisplayParameters", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemGroups;updateEntries(Lnet/minecraft/resource/featuretoggle/FeatureSet;Z)V", shift = At.Shift.BEFORE))
     private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, CallbackInfoReturnable<Boolean> cir) {
         viafabricplus_version = ViaLoadingBase.getTargetVersion();
-        viafabricplus_state = ValueHolder.removeNotAvailableItemsFromCreativeTab.getValue();
+        viafabricplus_state = GeneralSettings.getClassWrapper().removeNotAvailableItemsFromCreativeTab.getValue();
     }
 }

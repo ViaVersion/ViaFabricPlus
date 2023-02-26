@@ -4,11 +4,7 @@ import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 
 public interface ViaFabricPlusAddon {
 
-    default void onPreLoad() {
-    }
-    default void onPostLoad() {
-    }
-
+    default void onLoad() {}
     default void onChangeVersion(final ComparableProtocolVersion protocolVersion) {
     }
 }

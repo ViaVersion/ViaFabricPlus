@@ -8,5 +8,4 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-include 'ViaFabricPlus-Visual'
 

@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.screen.merchant;
 
-import de.florianmichael.viafabricplus.value.ValueHolder;
+import de.florianmichael.viafabricplus.setting.groups.DebugSettings;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.MerchantScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -34,7 +34,7 @@ public abstract class MixinMerchantScreen extends HandledScreen<MerchantScreenHa
 
     @Inject(method = "syncRecipeIndex", at = @At("HEAD"))
     public void smoothOutRecipeIndex(CallbackInfo ci) {
-        if (ValueHolder.smoothOutMerchantScreens.getValue()) {
+        if (DebugSettings.getClassWrapper().smoothOutMerchantScreens.getValue()) {
             if (protocolhack_previousRecipeIndex != selectedIndex) {
                 int direction = protocolhack_previousRecipeIndex < selectedIndex ? 1 : -1;
                 for (int smooth = protocolhack_previousRecipeIndex + direction /* don't send the page we already are on */; smooth != selectedIndex; smooth += direction) {

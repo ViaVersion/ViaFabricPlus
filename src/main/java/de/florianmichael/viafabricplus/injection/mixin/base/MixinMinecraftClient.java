@@ -12,7 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinMinecraftClient {
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void postLoad(RunArgs args, CallbackInfo ci) throws Exception {
-        ViaFabricPlus.getClassWrapper().postLoad();
+    public void postLoad(RunArgs args, CallbackInfo ci) {
+        try {
+            ViaFabricPlus.getClassWrapper().postLoad();
+        } catch (Exception ignored) {}
     }
 }
