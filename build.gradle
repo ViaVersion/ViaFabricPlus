@@ -10,10 +10,8 @@ version = project.mod_version
 group = project.maven_group
 
 configurations {
-	include
-
-	implementation.extendsFrom include
-	api.extendsFrom include
+	implementation.extendsFrom libs
+	api.extendsFrom libs
 }
 
 allprojects {
@@ -38,17 +36,18 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	include project(":ViaFabricPlus-Visual")
 
-	include "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
+	libs "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
 
-	include "com.viaversion:viaversion:${project.viaversion_version}"
-	include "com.viaversion:viabackwards-common:${project.viabackwards_version}"
-	include "org.yaml:snakeyaml:1.29"
+	libs "com.viaversion:viaversion:${project.viaversion_version}"
+	libs "com.viaversion:viabackwards-common:${project.viabackwards_version}"
+	libs "org.yaml:snakeyaml:1.29"
 
-	include "com.github.RaphiMC:ViaLegacy:${project.vialegacy_version}"
-	include "com.github.RaphiMC:ViaAprilFools:${project.viaaprilfools_version}"
+	libs "com.github.RaphiMC:ViaLegacy:${project.vialegacy_version}"
+	libs "com.github.RaphiMC:ViaAprilFools:${project.viaaprilfools_version}"
 
-	include "net.lenni0451.mcstructs:text:${project.mcstructs_text_version}"
+	libs "net.lenni0451.mcstructs:text:${project.mcstructs_text_version}"
 }
 
 processResources {
@@ -68,10 +67,10 @@ java {
 }
 
 jar {
-	dependsOn configurations.include
+	dependsOn configurations.libs
 	from {
 		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-		configurations.include.collect {
+		configurations.libs.collect {
 			zipTree(it)
 		}
 	} {
@@ -79,28 +78,5 @@ jar {
 	}
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}" }
-	}
-}
-
-tasks.register("installAddons") {
-	group archivesBaseName
-	dependsOn "build"
-	doLast {
-		File base = file(".")
-		base.listFiles().each {
-			if (it.name.startsWith("ViaFabricPlus-") && it.isDirectory()) {
-				String addonName = it.name.toLowerCase() + "-" + project(it.name).version + ".jar"
-				File build = new File(it, "build" + File.separator + "libs" + File.separator + addonName)
-				File modDest = new File(base, "run" + File.separator + "mods" + File.separator + addonName)
-				if(build.exists()) {
-					if (modDest.delete())
-						println "Deleted old $addonName"
-					else
-						println "Failed to delete old $addonName version"
-					if (build.renameTo(modDest))
-						println "Copied $addonName"
-				}
-			}
-		}
 	}
 }
