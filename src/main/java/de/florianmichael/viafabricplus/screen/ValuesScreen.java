@@ -95,7 +95,7 @@ public class ValuesScreen extends Screen {
                     protocolSyncBooleanValue.setSyncWithProtocol(!protocolSyncBooleanValue.isSyncWithProtocol());
                     ScreenUtil.playClickSound();
                 }
-                if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT && !protocolSyncBooleanValue.isSyncWithProtocol()) {
+                if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
                     protocolSyncBooleanValue.setValue(!protocolSyncBooleanValue.getValue());
                     ScreenUtil.playClickSound();
                 }
@@ -113,11 +113,10 @@ public class ValuesScreen extends Screen {
                 final boolean isEnabled = booleanValue.getValue();
                 drawCenteredText(matrices, textRenderer, (isEnabled ? Formatting.UNDERLINE : "") + booleanValue.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isEnabled ? Color.GREEN.getRGB() : Color.RED.getRGB());
             } else if (value instanceof ProtocolSyncBooleanValue protocolSyncBooleanValue) {
-                final boolean isEnabled = protocolSyncBooleanValue.value;
+                final boolean isEnabled = protocolSyncBooleanValue.getValue();
                 Color color = isEnabled ? Color.GREEN : Color.RED;
                 if (protocolSyncBooleanValue.isSyncWithProtocol()) {
                     drawStringWithShadow(matrices, textRenderer, "Sync", entryWidth - textRenderer.getWidth("Sync") - 3, entryHeight / 2 - textRenderer.fontHeight / 2, Color.ORANGE.getRGB());
-                    color = color.darker().darker();
                 }
                 drawStringWithShadow(matrices, textRenderer, (isEnabled ? Formatting.UNDERLINE.toString() : "") + protocolSyncBooleanValue.getName(), 3, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
             }
