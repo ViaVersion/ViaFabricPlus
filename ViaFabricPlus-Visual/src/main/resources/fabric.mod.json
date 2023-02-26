@@ -19,7 +19,8 @@
       "de.florianmichael.viafabricplus_visual.ViaFabricPlusVisual"
     ]
   },
-  "license": "CC0-1.0",
+  "license": "GPL-v3",
+  "icon": "assets/viafabricplus-visual/icon.png",
   "environment": "*",
   "mixins": [
     "viafabricplus-visual.mixins.json"
@@ -27,9 +28,12 @@
   "depends": {
     "fabricloader": ">=0.14.11",
     "minecraft": "~1.19.3",
-    "java": ">=17"
+    "java": ">=17",
+    "viafabricplus": "*"
   },
-  "suggests": {
-    "another-mod": "*"
+  "custom": {
+    "modmenu": {
+      "parent": "viafabricplus"
+    }
   }
 }

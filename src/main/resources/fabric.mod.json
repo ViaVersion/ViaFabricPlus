@@ -15,7 +15,7 @@
     "sources": "https://github.com/FlorianMichael/ViaFabricPlus"
   },
 
-  "license": "CC0-1.0",
+  "license": "GPL-v3",
   "icon": "assets/viafabricplus/icon.png",
   "environment": "*",
   "mixins": [
