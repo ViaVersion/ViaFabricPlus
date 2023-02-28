@@ -2,7 +2,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.input;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.definition.v1_12_2.SyncInputExecutor;
-import de.florianmichael.viafabricplus.setting.groups.DebugSettings;
+import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;

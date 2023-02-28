@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.setting.AbstractSetting;
-import de.florianmichael.viafabricplus.setting.SettingGroup;
+import de.florianmichael.viafabricplus.settings.AbstractSetting;
+import de.florianmichael.viafabricplus.settings.SettingGroup;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 

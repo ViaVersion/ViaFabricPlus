@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.item;
 
-import de.florianmichael.viafabricplus.setting.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import net.minecraft.item.ItemGroups;

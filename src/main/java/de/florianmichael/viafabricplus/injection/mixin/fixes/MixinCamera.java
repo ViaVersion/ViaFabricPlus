@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes;
 
-import de.florianmichael.viafabricplus.setting.groups.DebugSettings;
+import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

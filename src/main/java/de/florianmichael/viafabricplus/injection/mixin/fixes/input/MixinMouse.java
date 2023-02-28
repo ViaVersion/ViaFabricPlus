@@ -1,7 +1,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.input;
 
 import de.florianmichael.viafabricplus.definition.v1_12_2.SyncInputExecutor;
-import de.florianmichael.viafabricplus.setting.groups.DebugSettings;
+import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import org.spongepowered.asm.mixin.Mixin;

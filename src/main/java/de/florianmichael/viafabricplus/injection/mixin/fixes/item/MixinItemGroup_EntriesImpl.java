@@ -1,7 +1,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.item;
 
 import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
-import de.florianmichael.viafabricplus.setting.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 import net.minecraft.resource.featuretoggle.FeatureSet;

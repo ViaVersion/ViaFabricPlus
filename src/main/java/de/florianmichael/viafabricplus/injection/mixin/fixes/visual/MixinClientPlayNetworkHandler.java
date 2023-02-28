@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.visual;
 
-import de.florianmichael.viafabricplus.setting.groups.VisualSettings;
+import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.s2c.play.ServerMetadataS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;

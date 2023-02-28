@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.item;
 
-import de.florianmichael.viafabricplus.setting.groups.DebugSettings;
+import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Mixin;

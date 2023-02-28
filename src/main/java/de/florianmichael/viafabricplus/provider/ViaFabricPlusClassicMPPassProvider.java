@@ -4,7 +4,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Resources;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.setting.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.storage.HandshakeStorage;
