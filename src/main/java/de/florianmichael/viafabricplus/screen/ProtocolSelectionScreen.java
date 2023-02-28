@@ -33,7 +33,7 @@ public class ProtocolSelectionScreen extends Screen {
     protected void init() {
         super.init();
 
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, textRenderer.fontHeight + 2));
+        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, textRenderer.fontHeight + 4));
         this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(0, height - 20).size(20, 20).build());
     }
 
@@ -87,6 +87,7 @@ public class ProtocolSelectionScreen extends Screen {
 
             matrices.push();
             matrices.translate(x, y - 1, 0);
+
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
             drawCenteredText(matrices, textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
             matrices.pop();
