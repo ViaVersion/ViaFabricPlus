@@ -1,7 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.block;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.definition.MCConstants;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -11,9 +10,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(SoulSandBlock.class)
 public class MixinSoulSandBlock extends Block {
+
+    @Unique
+    private boolean viafabricplus_forceValue;
 
     public MixinSoulSandBlock(Settings settings) {
         super(settings);
@@ -25,14 +28,15 @@ public class MixinSoulSandBlock extends Block {
 
         if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             final Vec3d velocity = entity.getVelocity();
-
-            entity.setVelocity(velocity.getX() * MCConstants.getSoulSandMultiplier(), velocity.getY(), velocity.getZ() * MCConstants.getSoulSandMultiplier());
+            this.viafabricplus_forceValue = true;
+            entity.setVelocity(velocity.getX() * this.getVelocityMultiplier(), velocity.getY(), velocity.getZ() * this.getVelocityMultiplier());
+            this.viafabricplus_forceValue = false;
         }
     }
 
     @Override
     public float getVelocityMultiplier() {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4) && !this.viafabricplus_forceValue) {
             return 1.0F;
         }
         return super.getVelocityMultiplier();
