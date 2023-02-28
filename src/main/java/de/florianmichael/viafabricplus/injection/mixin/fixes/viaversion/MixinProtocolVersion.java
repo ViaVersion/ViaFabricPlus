@@ -29,7 +29,7 @@ public abstract class MixinProtocolVersion {
         protocolhack_remaps.put("1.16.4/5", new Pair<>("1.16.4-1.16.5", null));
         protocolhack_remaps.put("1.18/1.18.1", new Pair<>("1.18-1.18.1", null));
         protocolhack_remaps.put("1.19.1/2", new Pair<>("1.19.1-1.19.2", null));
-        protocolhack_remaps.put("1.19.4", new Pair<>("23w06a", null));
+        protocolhack_remaps.put("1.19.4", new Pair<>("1.19.4-pre1", null));
     }
 
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
