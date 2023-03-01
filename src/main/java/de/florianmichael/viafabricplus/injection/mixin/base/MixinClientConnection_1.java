@@ -39,8 +39,8 @@ public class MixinClientConnection_1 {
 
             new ProtocolPipelineImpl(user);
 
-            channel.pipeline().addBefore("encoder", NettyConstants.HANDLER_ENCODER_NAME, new VLBViaDecodeHandler(user));
-            channel.pipeline().addBefore("decoder", NettyConstants.HANDLER_DECODER_NAME, new VLBViaEncodeHandler(user));
+            channel.pipeline().addBefore("encoder", NettyConstants.HANDLER_ENCODER_NAME, new VLBViaEncodeHandler(user));
+            channel.pipeline().addBefore("decoder", NettyConstants.HANDLER_DECODER_NAME, new VLBViaDecodeHandler(user));
 
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
                 user.getProtocolInfo().getPipeline().add(PreNettyBaseProtocol.INSTANCE);
