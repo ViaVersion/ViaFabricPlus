@@ -38,14 +38,14 @@ public class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", ordinal = 1))
     public String replaceAddress(InetSocketAddress instance) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17)) return field_33737.getAddress();
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17)) return field_33737.getAddress();
 
         return instance.getHostString();
     }
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getPort()I"))
     public int replacePort(InetSocketAddress instance) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17)) return field_33737.getPort();
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17)) return field_33737.getPort();
 
         return instance.getPort();
     }
@@ -59,11 +59,11 @@ public class MixinConnectScreen_1 {
             return;
         }
 
-        if (ViaLoadingBase.getTargetVersion().isOlderThan(ProtocolVersion.v1_19)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_19)) {
             return; // This disables the chat session emulation for all versions <= 1.18.2
         }
 
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             try {
                 final PlayerKeyPair playerKeyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().get().orElse(null);
                 if (playerKeyPair != null) {
@@ -72,7 +72,7 @@ public class MixinConnectScreen_1 {
 
                     userConnection.put(new ChatSession1_19_2(userConnection, profileKey, playerKeyPair.privateKey()));
 
-                    if (ViaLoadingBase.getTargetVersion() == ProtocolVersion.v1_19) {
+                    if (ViaLoadingBase.getClassWrapper().getTargetVersion() == ProtocolVersion.v1_19) {
                         final byte[] legacyKey = ((IPublicKeyData) (Object) publicKeyData).viafabricplus_get1_19_0Key().array();
                         if (legacyKey != null) {
                             userConnection.put(new ChatSession1_19_0(userConnection, profileKey, playerKeyPair.privateKey(), legacyKey));

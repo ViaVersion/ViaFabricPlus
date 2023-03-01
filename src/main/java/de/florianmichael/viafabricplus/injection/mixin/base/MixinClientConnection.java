@@ -37,7 +37,7 @@ public class MixinClientConnection implements IClientConnection {
 
     @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
     private void storeEncryptionCiphers(Cipher decryptionCipher, Cipher encryptionCipher, CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             ci.cancel();
             this.viafabricplus_decryptionCipher = decryptionCipher;
             this.viafabricplus_encryptionCipher = encryptionCipher;

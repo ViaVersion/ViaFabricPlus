@@ -37,10 +37,10 @@ public class MixinServerResourcePackProvider {
     @Inject(method = "getDownloadHeaders", at = @At("TAIL"), cancellable = true)
     private static void removeHeaders(CallbackInfoReturnable<Map<String, String>> cir) {
         final LinkedHashMap<String, String> modifiableMap = new LinkedHashMap<>(cir.getReturnValue());
-        if (ViaLoadingBase.getTargetVersion().isOlderThan(ProtocolVersion.v1_14)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_14)) {
             modifiableMap.remove("X-Minecraft-Version-ID");
         }
-        if (ViaLoadingBase.getTargetVersion().isOlderThan(ProtocolVersion.v1_13)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_13)) {
             modifiableMap.remove("X-Minecraft-Pack-Format");
             modifiableMap.remove("User-Agent");
         }
@@ -56,10 +56,10 @@ public class MixinServerResourcePackProvider {
     @Redirect(method = "verifyFile", at = @At(value = "INVOKE", target = "Lcom/google/common/hash/HashCode;toString()Ljava/lang/String;", remap = false))
     public String revertHashAlgorithm(HashCode instance) {
         try {
-            if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 //noinspection deprecation
                 return Hashing.sha1().hashBytes(Files.toByteArray(protocolhack_trackedFile)).toString();
-            } else if (ViaLoadingBase.getTargetVersion().isOlderThan(ProtocolVersion.v1_18)) {
+            } else if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_18)) {
                 return DigestUtils.sha1Hex(new FileInputStream(protocolhack_trackedFile));
             }
         } catch (IOException ignored) {
@@ -69,7 +69,7 @@ public class MixinServerResourcePackProvider {
 
     @Redirect(method = "verifyFile", at = @At(value = "INVOKE", target = "Ljava/lang/String;toLowerCase(Ljava/util/Locale;)Ljava/lang/String;"))
     public String disableIgnoreCase(String instance, Locale locale) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return instance;
         }
 

@@ -18,7 +18,7 @@ public class MixinEnderPearlItem {
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void injectUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && user.getAbilities().creativeMode) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && user.getAbilities().creativeMode) {
             ci.setReturnValue(TypedActionResult.pass(user.getStackInHand(hand)));
         }
     }

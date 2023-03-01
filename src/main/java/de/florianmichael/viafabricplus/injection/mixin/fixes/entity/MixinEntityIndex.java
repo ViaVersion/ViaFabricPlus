@@ -25,12 +25,12 @@ public class MixinEntityIndex<T extends EntityLike> {
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Ljava/util/Map;containsKey(Ljava/lang/Object;)Z", remap = false))
     private boolean allowDuplicateUuid(Map<UUID, T> instance, Object o) {
-        return instance.containsKey(o) && ViaLoadingBase.getTargetVersion().isNewerThan(ProtocolVersion.v1_16_4);
+        return instance.containsKey(o) && ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThan(ProtocolVersion.v1_16_4);
     }
 
     @Inject(method = "size", at = @At("HEAD"), cancellable = true)
     private void returnRealSize(CallbackInfoReturnable<Integer> cir) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(this.idToEntity.size());
         }
     }

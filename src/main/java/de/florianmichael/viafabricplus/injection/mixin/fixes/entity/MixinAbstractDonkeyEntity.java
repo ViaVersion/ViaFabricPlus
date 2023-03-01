@@ -33,7 +33,7 @@ public abstract class MixinAbstractDonkeyEntity extends AbstractHorseEntity {
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     public void fixInteraction(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             ItemStack lv = player.getStackInHand(hand);
             if (!this.isBaby()) {
                 if (this.isTame() && player.shouldCancelInteraction()) {

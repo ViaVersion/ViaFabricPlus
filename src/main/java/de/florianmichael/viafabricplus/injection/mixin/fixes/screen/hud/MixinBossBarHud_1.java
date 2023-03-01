@@ -12,7 +12,7 @@ public class MixinBossBarHud_1 {
 
     @Redirect(method = "updateProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ClientBossBar;setPercent(F)V"))
     public void nullSafety(ClientBossBar instance, float percent) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             if (instance != null) instance.setPercent(percent);
         }
     }

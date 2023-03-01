@@ -16,7 +16,7 @@ public class MixinSugarCaneBlock {
 
     @Redirect(method = "canPlaceAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isIn(Lnet/minecraft/registry/tag/TagKey;)Z"))
     public boolean changePlaceTarget(BlockState instance, TagKey<Block> tagKey) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17)) {
             return instance.isOf(Blocks.GRASS_BLOCK) || instance.isOf(Blocks.DIRT) || instance.isOf(Blocks.COARSE_DIRT) || instance.isOf(Blocks.PODZOL);
         }
         return instance.isIn(tagKey);

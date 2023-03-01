@@ -75,11 +75,11 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             double f = this.getZ() - this.lastZ;
             double g = this.getYaw() - this.lastYaw;
             double h = this.getPitch() - this.lastPitch;
-            if (ViaLoadingBase.getTargetVersion().isNewerThan(ProtocolVersion.v1_8)) {
+            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThan(ProtocolVersion.v1_8)) {
                 ++this.ticksSinceLastPositionPacketSent;
             }
             double n = MathHelper.square(2.05E-4);
-            if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
+            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
                 n = 9.0E-4D;
             }
             boolean bl3 = MathHelper.squaredMagnitude(d, e, f) > n || this.ticksSinceLastPositionPacketSent >= 20;
@@ -99,7 +99,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             } else {
                 IdlePacketExecutor.skipIdlePacket();
             }
-            if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 ++this.ticksSinceLastPositionPacketSent;
             }
 
@@ -121,7 +121,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Inject(method = "swingHand", at = @At("HEAD"), cancellable = true)
     public void injectSwingHand(Hand hand, CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && protocolhack_areSwingCanceledThisTick) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && protocolhack_areSwingCanceledThisTick) {
             ci.cancel();
         }
 
@@ -134,7 +134,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             at = @At(value = "FIELD", target = "Lnet/minecraft/client/input/Input;sneaking:Z", ordinal = 0)
     )
     private void injectTickMovement(CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             if (this.input.sneaking) {
                 this.input.movementSideways = (float) ((double) this.input.movementSideways / 0.3D);
                 this.input.movementForward = (float) ((double) this.input.movementForward / 0.3D);
@@ -146,7 +146,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isWalking()Z")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
     public boolean redirectIsSneakingWhileSwimming(ClientPlayerEntity _this) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
             return false;
         } else {
             return _this.isSwimming();
@@ -155,7 +155,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Redirect(method = "isWalking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSubmergedInWater()Z"))
     public boolean easierUnderwaterSprinting(ClientPlayerEntity instance) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
             return false;
         }
         return instance.isSubmergedInWater();
@@ -163,7 +163,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Redirect(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z", ordinal = 0))
     private boolean disableSprintSneak(Input input) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
             return input.movementForward >= 0.8F;
         }
 
@@ -172,7 +172,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z"))
     private boolean redirectTickMovement(ClientPlayerEntity self) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return false; // Disable all water related movement
         }
 
@@ -181,7 +181,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSprintingPacket()V"))
     public void removeSprintingPacket(ClientPlayerEntity instance) {
-        if (ViaLoadingBase.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             sendSprintingPacket();
         }
     }

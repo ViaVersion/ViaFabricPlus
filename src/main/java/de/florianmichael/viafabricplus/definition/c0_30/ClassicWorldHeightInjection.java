@@ -34,7 +34,7 @@ public class ClassicWorldHeightInjection {
                     parentRemapper.handle(wrapper);
                     if (wrapper.isCancelled()) return;
 
-                    if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                    if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                         for (Tag dimension : wrapper.get(Type.NBT, 0).<CompoundTag>get("minecraft:dimension_type").<ListTag>get("value")) {
                             changeDimensionTagHeight(wrapper.user(), ((CompoundTag) dimension).get("element"));
                         }
@@ -53,7 +53,7 @@ public class ClassicWorldHeightInjection {
                     parentRemapper.handle(wrapper);
                     if (wrapper.isCancelled()) return;
 
-                    if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                    if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                         changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NBT, 0));
                     }
                 });
@@ -69,7 +69,7 @@ public class ClassicWorldHeightInjection {
                     parentRemapper.handle(wrapper);
                     if (wrapper.isCancelled()) return;
 
-                    if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                    if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                         wrapper.resetReader();
                         final Chunk chunk = wrapper.read(new Chunk1_17Type(16));
                         wrapper.write(new Chunk1_17Type(chunk.getSections().length), chunk);
@@ -163,7 +163,7 @@ public class ClassicWorldHeightInjection {
             @Override
             public void register() {
                 handler(wrapper -> {
-                    if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                    if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                         classicLightHandler.handle(wrapper);
                     } else {
                         parentRemapper.handle(wrapper);

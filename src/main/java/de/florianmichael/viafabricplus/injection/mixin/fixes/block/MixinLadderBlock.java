@@ -32,7 +32,7 @@ public class MixinLadderBlock {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             switch (state.get(LadderBlock.FACING)) {
                 case NORTH -> ci.setReturnValue(viafabricplus_north_shape_v1_8_x);
                 case SOUTH -> ci.setReturnValue(viafabricplus_south_shape_v1_8_x);

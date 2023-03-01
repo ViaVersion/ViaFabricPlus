@@ -32,24 +32,24 @@ public class MixinDebugHud {
             final UserConnection userConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
 
             information.add("Pipeline count: " + userConnection.getProtocolInfo().getPipeline().pipes().size());
-            information.add("Target version: " + ViaLoadingBase.getTargetVersion().getName() + " (" + ViaLoadingBase.getTargetVersion().getVersion() + ")");
+            information.add("Target version: " + ViaLoadingBase.getClassWrapper().getTargetVersion().getName() + " (" + ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion() + ")");
 
-            if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
+            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
                 final EntityTracker entityTracker1_7_10 = userConnection.get(EntityTracker.class);
                 if (entityTracker1_7_10 != null) {
                     information.add("Entity Tracker (" + ProtocolVersion.v1_7_6.getName() + "): " + entityTracker1_7_10.getTrackedEntities().size());
                 }
-                if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
+                if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
                     final net.raphimc.vialegacy.protocols.release.protocol1_6_1to1_5_2.storage.EntityTracker entityTracker1_5_2 = userConnection.get(net.raphimc.vialegacy.protocols.release.protocol1_6_1to1_5_2.storage.EntityTracker.class);
                     if (entityTracker1_5_2 != null) {
                         information.add("Entity Tracker (" + LegacyProtocolVersion.r1_5_2.getName() + "): " + entityTracker1_5_2.getTrackedEntities().size());
                     }
-                    if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
+                    if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
                         final net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.storage.EntityTracker entityTracker1_2_4_5 = userConnection.get(net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.storage.EntityTracker.class);
                         if (entityTracker1_2_4_5 != null) {
                             information.add("Entity Tracker (" + LegacyProtocolVersion.r1_2_4tor1_2_5.getName() + "): " + entityTracker1_2_4_5.getTrackedEntities().size());
                         }
-                        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_1)) {
+                        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_1)) {
                             final SeedStorage seedStorage = userConnection.get(SeedStorage.class);
                             if (seedStorage != null) {
                                 information.add("World Seed (" + LegacyProtocolVersion.r1_1.getName() + "): " + seedStorage.seed);

@@ -17,7 +17,7 @@ public class MixinPlayerEntityRenderer {
 
     @Inject(method = "getPositionOffset*", at = @At("RETURN"), cancellable = true)
     private void injectGetPositionOffset(AbstractClientPlayerEntity player, float delta, CallbackInfoReturnable<Vec3d> ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             if (player.getSleepingDirection() != null) {
                 ci.setReturnValue(ci.getReturnValue().subtract(player.getSleepingDirection().getOffsetX() * 0.4, 0, player.getSleepingDirection().getOffsetZ() * 0.4));
             }
@@ -27,6 +27,6 @@ public class MixinPlayerEntityRenderer {
     @Redirect(method = "getPositionOffset(Lnet/minecraft/client/network/AbstractClientPlayerEntity;F)Lnet/minecraft/util/math/Vec3d;",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isInSneakingPose()Z"))
     private boolean redirectGetPositionOffset(AbstractClientPlayerEntity player) {
-        return (ViaLoadingBase.getTargetVersion().isNewerThan(ProtocolVersion.v1_11_1)) && player.isInSneakingPose();
+        return (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThan(ProtocolVersion.v1_11_1)) && player.isInSneakingPose();
     }
 }

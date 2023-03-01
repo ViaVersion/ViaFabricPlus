@@ -65,7 +65,7 @@ public class PackFormatsDefinition {
     }
 
     public static GameVersion current() {
-        final int targetVersion = ViaLoadingBase.getTargetVersion().getOriginalVersion();
+        final int targetVersion = ViaLoadingBase.getClassWrapper().getTargetVersion().getOriginalVersion();
         if (!protocolMap.containsKey(targetVersion)) return SharedConstants.getGameVersion();
         return protocolMap.get(targetVersion);
     }

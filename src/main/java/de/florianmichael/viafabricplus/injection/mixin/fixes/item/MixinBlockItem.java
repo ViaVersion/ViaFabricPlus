@@ -23,7 +23,7 @@ public class MixinBlockItem {
 
     @Inject(method = "canPlace", at = @At("HEAD"), cancellable = true)
     private void injectCanPlace(ItemPlacementContext context, BlockState state, CallbackInfoReturnable<Boolean> ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             Block block = state.getBlock();
             if (block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST) {
                 World world = context.getWorld();

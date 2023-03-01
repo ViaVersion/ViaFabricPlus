@@ -17,7 +17,7 @@ public class MixinMiningToolItem {
     @Inject(method = "getMiningSpeedMultiplier", at = @At("RETURN"), cancellable = true)
     public void changeHoeEffectiveBlocks(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
         //noinspection ConstantValue
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2) && (Object) this instanceof HoeItem) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2) && (Object) this instanceof HoeItem) {
             cir.setReturnValue(1.0F);
         }
     }

@@ -26,7 +26,7 @@ public class MixinKeyboard {
 
     @Redirect(method = "processF3", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendCommand(Ljava/lang/String;)Z", ordinal = 0))
     public boolean replaceSpectatorCommand(ClientPlayNetworkHandler instance, String command) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
             return false;
         }
         return instance.sendCommand(command);

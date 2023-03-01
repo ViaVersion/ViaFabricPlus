@@ -14,7 +14,7 @@ public class MixinEntityPredicates {
     @SuppressWarnings("target")
     @Redirect(method = "method_5915(Lnet/minecraft/entity/Entity;Lnet/minecraft/scoreboard/AbstractTeam;Lnet/minecraft/scoreboard/AbstractTeam$CollisionRule;Lnet/minecraft/entity/Entity;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isMainPlayer()Z"))
     private static boolean makeMainPlayerUnpushable(PlayerEntity player) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return false;
         }
         return player.isMainPlayer();

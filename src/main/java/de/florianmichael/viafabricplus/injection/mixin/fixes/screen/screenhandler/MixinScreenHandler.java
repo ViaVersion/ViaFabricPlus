@@ -20,7 +20,7 @@ public class MixinScreenHandler implements IScreenHandler {
 
     @Inject(method = "internalOnSlotClick", at = @At("HEAD"), cancellable = true)
     private void injectInternalOnSlotClick(int slot, int clickData, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && actionType == SlotActionType.SWAP && clickData == 40) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && actionType == SlotActionType.SWAP && clickData == 40) {
             ci.cancel();
         }
     }

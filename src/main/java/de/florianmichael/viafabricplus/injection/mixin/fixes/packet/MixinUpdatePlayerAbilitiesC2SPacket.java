@@ -27,7 +27,7 @@ public class MixinUpdatePlayerAbilitiesC2SPacket {
 
         byte b = 0;
 
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             if (this.flying) b = (byte) (b | 2); // Minecraft
 
             if (abilities.invulnerable) b |= 1;

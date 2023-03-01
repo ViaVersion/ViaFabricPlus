@@ -18,12 +18,12 @@ public class MixinBrewingStandScreenHandler_FuelSlot extends Slot {
 
     @Inject(method = "matches(Lnet/minecraft/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
     private static void removeFuelSlot(CallbackInfoReturnable<Boolean> ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8))
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8))
             ci.setReturnValue(false);
     }
 
     @Override
     public boolean isEnabled() {
-        return ViaLoadingBase.getTargetVersion().isNewerThan(ProtocolVersion.v1_8);
+        return ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThan(ProtocolVersion.v1_8);
     }
 }

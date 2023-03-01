@@ -22,7 +22,7 @@ public class MixinClientLoginNetworkHandler {
 
     @Inject(method = "joinServerSession", at = @At("HEAD"), cancellable = true)
     public void dontVerifySessionIfCracked(String serverId, CallbackInfoReturnable<Text> cir) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             if (!connection.channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get().get(ProtocolMetadataStorage.class).authenticate) {
                 cir.setReturnValue(null);
             }

@@ -16,7 +16,7 @@ public class MixinBambooBlock {
 
     @Inject(method = "isShapeFullCube", at = @At("HEAD"), cancellable = true)
     public void changeFullCube(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17)) {
             cir.setReturnValue(true);
         }
     }

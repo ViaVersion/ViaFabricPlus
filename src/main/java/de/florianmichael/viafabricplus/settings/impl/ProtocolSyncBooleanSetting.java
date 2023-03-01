@@ -29,7 +29,7 @@ public class ProtocolSyncBooleanSetting extends BooleanSetting {
 
     @Override
     public Boolean getValue() {
-        if (GeneralSettings.getClassWrapper().automaticallyChangeValuesBasedOnTheCurrentVersion.getValue()) return this.getProtocolRange().contains(ViaLoadingBase.getTargetVersion());
+        if (GeneralSettings.getClassWrapper().automaticallyChangeValuesBasedOnTheCurrentVersion.getValue()) return this.getProtocolRange().contains(ViaLoadingBase.getClassWrapper().getTargetVersion());
 
         return super.getValue();
     }

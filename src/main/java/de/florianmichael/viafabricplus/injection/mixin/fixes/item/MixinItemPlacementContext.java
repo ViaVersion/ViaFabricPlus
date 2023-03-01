@@ -20,9 +20,9 @@ public class MixinItemPlacementContext {
         final ItemPlacementContext self = (ItemPlacementContext) (Object) this;
         final PlayerEntity player = self.getPlayer();
 
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2) && player != null) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2) && player != null) {
             final BlockPos placementPos = self.getBlockPos();
-            final double blockPosCenterFactor = ViaLoadingBase.getTargetVersion().isNewerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
+            final double blockPosCenterFactor = ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
 
             if (Math.abs(player.getX() - (placementPos.getX() + blockPosCenterFactor)) < 2 && Math.abs(player.getZ() - (placementPos.getZ() + blockPosCenterFactor)) < 2) {
                 final double eyeY = player.getY() + player.getEyeHeight(player.getPose());

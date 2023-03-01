@@ -25,7 +25,7 @@ public class MixinBedBlock {
 
     @Inject(method = "bounceEntity", at = @At("HEAD"), cancellable = true)
     public void injectBounceEntity(Entity entity, CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             ci.cancel();
         }
     }
@@ -33,7 +33,7 @@ public class MixinBedBlock {
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaLoadingBase.getClassWrapper() != null) {
-            if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
                 cir.setReturnValue(viafabricplus_bed_shape_v1_13_2);
             }
         }

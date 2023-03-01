@@ -14,7 +14,7 @@ public class MixinLightBlock {
     // Not relevant for GamePlay
     @Redirect(method = "onUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isCreativeLevelTwoOp()Z"))
     public boolean removeIf(PlayerEntity instance) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             return true;
         }
         return instance.isCreativeLevelTwoOp();

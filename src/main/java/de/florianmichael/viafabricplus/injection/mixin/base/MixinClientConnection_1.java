@@ -6,8 +6,8 @@ import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.platform.PreNettyConstants;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.netty.CustomViaDecodeHandler;
-import de.florianmichael.vialoadingbase.netty.CustomViaEncodeHandler;
+import de.florianmichael.vialoadingbase.netty.VLBViaDecodeHandler;
+import de.florianmichael.vialoadingbase.netty.VLBViaEncodeHandler;
 import de.florianmichael.vialoadingbase.netty.NettyConstants;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
@@ -39,10 +39,10 @@ public class MixinClientConnection_1 {
 
             new ProtocolPipelineImpl(user);
 
-            channel.pipeline().addBefore("encoder", NettyConstants.HANDLER_ENCODER_NAME, new CustomViaEncodeHandler(user));
-            channel.pipeline().addBefore("decoder", NettyConstants.HANDLER_DECODER_NAME, new CustomViaDecodeHandler(user));
+            channel.pipeline().addBefore("encoder", NettyConstants.HANDLER_ENCODER_NAME, new VLBViaDecodeHandler(user));
+            channel.pipeline().addBefore("decoder", NettyConstants.HANDLER_DECODER_NAME, new VLBViaEncodeHandler(user));
 
-            if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
                 user.getProtocolInfo().getPipeline().add(PreNettyBaseProtocol.INSTANCE);
 
                 channel.pipeline().addBefore("prepender", PreNettyConstants.HANDLER_ENCODER_NAME, new PreNettyEncoder(user));

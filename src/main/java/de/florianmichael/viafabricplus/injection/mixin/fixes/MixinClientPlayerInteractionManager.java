@@ -53,7 +53,7 @@ public abstract class MixinClientPlayerInteractionManager {
 
     @Inject(method = "attackEntity", at = @At("HEAD"))
     private void injectAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && player instanceof IClientPlayerEntity) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && player instanceof IClientPlayerEntity) {
             player.swingHand(Hand.MAIN_HAND);
             ((IClientPlayerEntity) player).viafabricplus_cancelSwingOnce();
         }
@@ -73,7 +73,7 @@ public abstract class MixinClientPlayerInteractionManager {
         if (type == SlotActionType.QUICK_CRAFT) return true;
 
         // quick move always uses empty stack for verification since 1.12
-        if (type == SlotActionType.QUICK_MOVE && ViaLoadingBase.getTargetVersion().isNewerThan(ProtocolVersion.v1_11_1)) return true;
+        if (type == SlotActionType.QUICK_MOVE && ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThan(ProtocolVersion.v1_11_1)) return true;
 
         // pickup with slot -999 (outside window) to throw items always uses empty stack for verification
         return type == SlotActionType.PICKUP && slot == -999;
@@ -82,7 +82,7 @@ public abstract class MixinClientPlayerInteractionManager {
     @Redirect(method = "clickSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V"))
     private void modifySlotClickPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
         try {
-            if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
+            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
                 ItemStack slotItemBeforeModification;
 
                 if (this.protocolhack_shouldEmpty(clickSlot.getActionType(), clickSlot.getSlot()))
@@ -119,7 +119,7 @@ public abstract class MixinClientPlayerInteractionManager {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;syncSelectedSlot()V"),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;sendSequencedPacket(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/network/SequencedPacketCreator;)V", ordinal = 0)))
     private void redirectInteractItem(ClientPlayNetworkHandler clientPlayNetworkHandler, Packet<?> packet) {
-        if (ViaLoadingBase.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_17)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_17)) {
             clientPlayNetworkHandler.sendPacket(packet);
         }
     }
@@ -139,7 +139,7 @@ public abstract class MixinClientPlayerInteractionManager {
 
     @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
     public void cacheActionResult(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             this.protocolhack_actionResult = this.interactBlockInternal(player, hand, hitResult);
 
             if (this.protocolhack_actionResult == ActionResult.FAIL) {
@@ -150,7 +150,7 @@ public abstract class MixinClientPlayerInteractionManager {
 
     @Redirect(method = "method_41933", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlockInternal(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;"))
     public ActionResult provideCachedResult(ClientPlayerInteractionManager instance, ClientPlayerEntity player, Hand hand, BlockHitResult hitResult) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return this.protocolhack_actionResult;
         }
         return interactBlockInternal(player, hand, hitResult);

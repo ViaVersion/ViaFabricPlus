@@ -27,6 +27,6 @@ public abstract class MixinGlassConnectionHandler extends AbstractFenceConnectio
         if (states != 0) return states;
 
         ProtocolInfo protocolInfo = user.getProtocolInfo();
-        return ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && protocolInfo.getServerProtocolVersion() != -1 ? 0xF : states;
+        return ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && protocolInfo.getServerProtocolVersion() != -1 ? 0xF : states;
     }
 }

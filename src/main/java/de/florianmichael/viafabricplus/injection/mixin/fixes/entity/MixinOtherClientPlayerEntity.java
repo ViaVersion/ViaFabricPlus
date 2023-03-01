@@ -20,7 +20,7 @@ public class MixinOtherClientPlayerEntity extends AbstractClientPlayerEntity {
 
     @Inject(method = "updatePose", at = @At("HEAD"))
     public void injectUpdatePose(CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             super.updatePose();
         }
     }

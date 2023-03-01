@@ -28,7 +28,7 @@ public abstract class MixinItemStack {
     private void modifyMiningSpeedMultiplier(BlockState state, CallbackInfoReturnable<Float> ci) {
         final Item toolItem = ((ItemStack) (Object) this).getItem();
 
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2) && toolItem instanceof HoeItem) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2) && toolItem instanceof HoeItem) {
             ci.setReturnValue(1F);
         }
     }
@@ -37,7 +37,7 @@ public abstract class MixinItemStack {
             slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/entity/attribute/EntityAttribute;", ordinal = 0)),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeBaseValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D", ordinal = 0))
     private double redirectGetTooltip(PlayerEntity player, EntityAttribute attribute) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 0;
         } else {
             return player.getAttributeBaseValue(attribute);

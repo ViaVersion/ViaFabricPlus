@@ -14,7 +14,7 @@ public class MixinCreeperEntity {
 
     @Redirect(method = "interactMob", at = @At(value = "FIELD", target = "Lnet/minecraft/sound/SoundEvents;ITEM_FIRECHARGE_USE:Lnet/minecraft/sound/SoundEvent;"))
     public SoundEvent fixSound() {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             return SoundEvents.ITEM_FLINTANDSTEEL_USE;
         }
         return SoundEvents.ITEM_FIRECHARGE_USE;

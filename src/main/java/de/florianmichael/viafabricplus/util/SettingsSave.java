@@ -35,7 +35,7 @@ public class SettingsSave {
 
         try (final FileWriter fw = new FileWriter(CONFIG_FILE)) {
             final JsonObject parentNode = new JsonObject();
-            parentNode.addProperty("protocol", ViaLoadingBase.getTargetVersion().getVersion());
+            parentNode.addProperty("protocol", ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion());
             for (SettingGroup group : viaFabricPlus.getSettingGroups()) {
                 for (AbstractSetting<?> setting : group.getSettings()) {
                     setting.write(parentNode);

@@ -13,6 +13,6 @@ public class MixinAnimalEntity {
 
     @Redirect(method = "interactMob", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isClient:Z"))
     public boolean redirectInteractMob(World instance) {
-        return instance.isClient && ViaLoadingBase.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_15);
+        return instance.isClient && ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 }

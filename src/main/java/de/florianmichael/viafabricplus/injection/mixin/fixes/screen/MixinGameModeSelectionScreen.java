@@ -24,10 +24,10 @@ public class MixinGameModeSelectionScreen {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixUIWidth(CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
             final List<GameModeSelectionScreen.GameModeSelection> gameModeSelections = Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList();
-            if (ViaLoadingBase.getTargetVersion().isOlderThan(LegacyProtocolVersion.r1_3_1tor1_3_2)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
-            if (ViaLoadingBase.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
+            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(LegacyProtocolVersion.r1_3_1tor1_3_2)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
+            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
 
             protocolhack_unwrappedGameModes = gameModeSelections.toArray(GameModeSelectionScreen.GameModeSelection[]::new);
             UI_WIDTH = protocolhack_unwrappedGameModes.length * 31 - 5;
@@ -36,7 +36,7 @@ public class MixinGameModeSelectionScreen {
 
     @Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;VALUES:[Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;"))
     public GameModeSelectionScreen.GameModeSelection[] removeNewerGameModes() {
-        if (ViaLoadingBase.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
             return protocolhack_unwrappedGameModes;
         }
         return GameModeSelectionScreen.GameModeSelection.values();

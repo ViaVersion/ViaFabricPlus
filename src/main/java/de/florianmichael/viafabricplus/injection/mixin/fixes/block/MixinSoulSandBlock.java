@@ -26,7 +26,7 @@ public class MixinSoulSandBlock extends Block {
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         super.onEntityCollision(state, world, pos, entity);
 
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             final Vec3d velocity = entity.getVelocity();
             this.viafabricplus_forceValue = true;
             entity.setVelocity(velocity.getX() * this.getVelocityMultiplier(), velocity.getY(), velocity.getZ() * this.getVelocityMultiplier());
@@ -36,7 +36,7 @@ public class MixinSoulSandBlock extends Block {
 
     @Override
     public float getVelocityMultiplier() {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4) && !this.viafabricplus_forceValue) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4) && !this.viafabricplus_forceValue) {
             return 1.0F;
         }
         return super.getVelocityMultiplier();

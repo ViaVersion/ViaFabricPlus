@@ -18,7 +18,7 @@ public class MixinServerAddress {
 
     @Inject(method = "parse", at = @At("RETURN"), cancellable = true)
     private static void fixAddress(String address, CallbackInfoReturnable<ServerAddress> cir) {
-        if (!cir.getReturnValue().equals(INVALID) && ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (!cir.getReturnValue().equals(INVALID) && ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(AllowedAddressResolver.DEFAULT.redirectResolver.lookupRedirect(cir.getReturnValue()).orElse(cir.getReturnValue()));
         }
     }

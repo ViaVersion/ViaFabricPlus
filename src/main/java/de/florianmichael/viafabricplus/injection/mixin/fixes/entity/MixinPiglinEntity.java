@@ -18,7 +18,7 @@ public abstract class MixinPiglinEntity {
 
     @Inject(method = "getActiveEyeHeight", at = @At("HEAD"), cancellable = true)
     public void changeEyeHeight(EntityPose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             cir.setReturnValue(this.isBaby() ? 0.93F : 1.74F);
         }
     }

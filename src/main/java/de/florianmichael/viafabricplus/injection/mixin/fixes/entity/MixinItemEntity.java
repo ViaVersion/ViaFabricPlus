@@ -13,7 +13,7 @@ public class MixinItemEntity {
 
     @Inject(method = "applyWaterBuoyancy", at = @At("HEAD"), cancellable = true)
     public void injectApplyWaterBuoyancy(CallbackInfo ci) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             ci.cancel();
         }
     }

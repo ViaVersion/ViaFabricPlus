@@ -1,15 +1,15 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialoadingbase;
 
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
-import de.florianmichael.vialoadingbase.defaults.viaversion.CustomViaConfig;
+import de.florianmichael.vialoadingbase.defaults.viaversion.VLBViaConfig;
 import org.spongepowered.asm.mixin.Mixin;
 
 import java.io.File;
 
-@Mixin(value = CustomViaConfig.class, remap = false)
-public abstract class MixinCustomViaConfig extends AbstractViaConfig {
+@Mixin(value = VLBViaConfig.class, remap = false)
+public abstract class MixinVLBViaConfig extends AbstractViaConfig {
 
-    protected MixinCustomViaConfig(File configFile) {
+    protected MixinVLBViaConfig(File configFile) {
         super(configFile);
     }
 

@@ -83,7 +83,7 @@ public class ProtocolSelectionScreen extends Screen {
 
         @Override
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            final boolean isSelected = ViaLoadingBase.getTargetVersion().getVersion() == protocolVersion.getVersion();
+            final boolean isSelected = ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion() == protocolVersion.getVersion();
 
             matrices.push();
             matrices.translate(x, y - 1, 0);

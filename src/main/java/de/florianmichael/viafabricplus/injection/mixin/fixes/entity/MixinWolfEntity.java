@@ -17,7 +17,7 @@ public class MixinWolfEntity {
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/WolfEntity;getHealth()F"))
     public float rewriteHealth(WolfEntity instance) {
         float health = instance.getHealth();
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get().get(Meta18Storage.class).getHealthDataMap().getOrDefault(instance.getId(), health);
         }
         return health;

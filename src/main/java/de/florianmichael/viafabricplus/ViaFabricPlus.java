@@ -86,35 +86,6 @@ public class ViaFabricPlus {
             return MinecraftClient.getInstance().isInSingleplayer();
         });
         builder = builder.eventLoop(new DefaultEventLoop());
-        builder = builder.dumpSupplier(() -> {
-            final JsonObject parentNode = new JsonObject();
-            final JsonArray modsNode = new JsonArray();
-            for (ModContainer mod : FabricLoader.getInstance().getAllMods()) {
-                final JsonObject modNode = new JsonObject();
-                modNode.addProperty("id", mod.getMetadata().getId());
-                modNode.addProperty("name", mod.getMetadata().getName());
-                modNode.addProperty("version", mod.getMetadata().getVersion().getFriendlyString());
-
-                final JsonArray authorsNode = new JsonArray();
-                for (Person author : mod.getMetadata().getAuthors()) {
-                    final JsonObject infoNode = new JsonObject();
-
-                    final JsonObject contactNode = new JsonObject();
-                    author.getContact().asMap().forEach(contactNode::addProperty);
-                    if (contactNode.size() != 0) {
-                        infoNode.add("contact", contactNode);
-                    }
-                    infoNode.addProperty("name", author.getName());
-
-                    authorsNode.add(infoNode);
-                }
-                modNode.add("author", authorsNode);
-                modsNode.add(modNode);
-            }
-            parentNode.add("mods", modsNode);
-            parentNode.addProperty("native version", SharedConstants.getProtocolVersion());
-            return parentNode;
-        });
         builder = builder.providers(providers -> {
             providers.use(MovementTransmitterProvider.class, new ViaFabricPlusMovementTransmitterProvider());
             providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());

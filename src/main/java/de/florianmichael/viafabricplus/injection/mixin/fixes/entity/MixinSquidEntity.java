@@ -14,7 +14,7 @@ public class MixinSquidEntity {
 
     @Inject(method = "canBeLeashedBy", at = @At("HEAD"), cancellable = true)
     public void injectCanBeLeashedBy(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(false);
         }
     }

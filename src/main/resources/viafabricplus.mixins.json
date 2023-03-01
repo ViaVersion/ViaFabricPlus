@@ -98,7 +98,7 @@
     "fixes.viaaprilfools.MixinProtocol1_16to20w14infinite",
     "fixes.vialegacy.MixinExtensionProtocolMetadataStorage",
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
-    "fixes.vialoadingbase.MixinCustomViaConfig",
+    "fixes.vialoadingbase.MixinVLBViaConfig",
     "fixes.viaversion.MixinCommonBoss",
     "fixes.viaversion.MixinPacketWrapperImpl",
     "fixes.viaversion.MixinProtocolVersion",

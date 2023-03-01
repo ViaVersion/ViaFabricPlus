@@ -23,7 +23,7 @@ public class MixinSwordItem extends ToolItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ItemStack itemStack = user.getStackInHand(hand);
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
@@ -33,7 +33,7 @@ public class MixinSwordItem extends ToolItem {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return UseAction.BLOCK;
         }
         return super.getUseAction(stack);
@@ -41,7 +41,7 @@ public class MixinSwordItem extends ToolItem {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 72000;
         }
         return super.getMaxUseTime(stack);

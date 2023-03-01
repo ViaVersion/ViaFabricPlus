@@ -20,7 +20,7 @@ public class MixinVexEntity extends HostileEntity {
 
     @Inject(method = "getHeightOffset", at = @At("HEAD"), cancellable = true)
     public void changeHeightOffset(CallbackInfoReturnable<Double> cir) {
-        if (ViaLoadingBase.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             cir.setReturnValue(0.0);
         }
     }
