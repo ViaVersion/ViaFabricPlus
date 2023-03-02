@@ -27,6 +27,7 @@ public class VisualSettings extends SettingGroup {
 
     // a1_0_15 -> c0_28toc0_30
     public final ProtocolSyncBooleanSetting replaceCreativeInventory = new ProtocolSyncBooleanSetting(this, "Replace creative inventory", ProtocolRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));
+    public final ProtocolSyncBooleanSetting oldWalkingAnimation = new ProtocolSyncBooleanSetting(this, "Old walking animation", ProtocolRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));
 
     public VisualSettings() {
         super("Visual");

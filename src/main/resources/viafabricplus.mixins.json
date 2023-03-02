@@ -134,6 +134,7 @@
     "bridge.MixinConnectScreen",
     "bridge.MixinDownloadingTerrainScreen",
     "fixes.screen.MixinChatScreen",
+    "fixes.visual.MixinBipedEntityModel",
     "fixes.visual.MixinChatHud",
     "fixes.visual.MixinChatScreen",
     "fixes.visual.MixinClientPlayerEntity",
