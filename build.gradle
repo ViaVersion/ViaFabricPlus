@@ -26,6 +26,10 @@ allprojects {
 			url = "https://repo.viaversion.com"
 		}
 		maven {
+			name = "Lenni0451"
+			url "https://maven.lenni0451.net/releases"
+		}
+		maven {
 			url = "https://maven.terraformersmc.com/releases"
 		}
 	}
@@ -45,10 +49,10 @@ dependencies {
 
 	libs "com.viaversion:viaversion:${project.viaversion_version}"
 	libs "com.viaversion:viabackwards-common:${project.viabackwards_version}"
-	libs "org.yaml:snakeyaml:1.29"
+	libs "org.yaml:snakeyaml:2.0"
 
-	libs "com.github.RaphiMC:ViaLegacy:${project.vialegacy_version}"
-	libs "com.github.RaphiMC:ViaAprilFools:${project.viaaprilfools_version}"
+	libs "net.raphimc:ViaLegacy:${project.vialegacy_version}"
+	libs "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
 
 	libs "net.lenni0451.mcstructs:text:${project.mcstructs_text_version}"
 }
