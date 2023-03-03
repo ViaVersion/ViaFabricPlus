@@ -1,6 +1,7 @@
 package de.florianmichael.viafabricplus.definition.c0_30;
 
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -19,7 +20,7 @@ import java.util.List;
 @SuppressWarnings("DataFlowIssue")
 public class ClassicItemSelectionScreen extends Screen {
 
-    public static ClassicItemSelectionScreen INSTANCE;
+    public static ClassicItemSelectionScreen INSTANCE = new ClassicItemSelectionScreen();
 
     private final static int MAX_ROW_DIVIDER = 9;
     private final static int ITEM_XY_BOX_DIMENSION_CLASSIC = 25;
@@ -28,11 +29,6 @@ public class ClassicItemSelectionScreen extends Screen {
 
     public Item[][] itemGrid = null;
     public ItemStack selectedItem = null;
-
-    public static void create(final ComparableProtocolVersion version) {
-        ClassicItemSelectionScreen.INSTANCE = new ClassicItemSelectionScreen();
-        ClassicItemSelectionScreen.INSTANCE.reload(version);
-    }
 
     public ClassicItemSelectionScreen() {
         super(Text.literal("Classic item selection"));
@@ -84,19 +80,19 @@ public class ClassicItemSelectionScreen extends Screen {
                 allowedItems.add(Items.POPPY);
                 allowedItems.add(Items.DANDELION);
                 allowedItems.add(Items.RED_MUSHROOM);
-                if (version == LegacyProtocolVersion.c0_30cpe) {
-                    allowedItems.add(Items.MAGMA_BLOCK);
-                    allowedItems.add(Items.QUARTZ_PILLAR);
-                    allowedItems.add(Items.SANDSTONE_STAIRS);
-                    allowedItems.add(Items.STONE_BRICKS);
-                    allowedItems.add(Items.COBBLESTONE_SLAB);
-                    allowedItems.add(Items.ICE);
-                    allowedItems.add(Items.SNOW);
-                    allowedItems.add(Items.BEDROCK);
-                    allowedItems.add(Items.WATER_BUCKET);
-                    allowedItems.add(Items.LAVA_BUCKET);
-                }
             }
+        }
+        if (version.isEqualTo(LegacyProtocolVersion.c0_30cpe)) {
+            allowedItems.add(Items.MAGMA_BLOCK);
+            allowedItems.add(Items.QUARTZ_PILLAR);
+            allowedItems.add(Items.SANDSTONE_STAIRS);
+            allowedItems.add(Items.STONE_BRICKS);
+            allowedItems.add(Items.COBBLESTONE_SLAB);
+            allowedItems.add(Items.ICE);
+            allowedItems.add(Items.SNOW);
+            allowedItems.add(Items.BEDROCK);
+            allowedItems.add(Items.WATER_BUCKET);
+            allowedItems.add(Items.LAVA_BUCKET);
         }
 
         itemGrid = new Item[MathHelper.ceil(allowedItems.size() / (double) MAX_ROW_DIVIDER)][MAX_ROW_DIVIDER];

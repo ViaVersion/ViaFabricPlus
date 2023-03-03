@@ -51,19 +51,16 @@ public class ViaFabricPlus {
     private final SubPlatform SUB_PLATFORM_VIA_LEGACY = new SubPlatform("ViaLegacy", () -> true, ViaLegacyPlatformImpl::new, protocolVersions -> {
         final List<ProtocolVersion> legacyProtocols = new ArrayList<>(LegacyProtocolVersion.PROTOCOLS);
         Collections.reverse(legacyProtocols);
+
         legacyProtocols.remove(LegacyProtocolVersion.c0_30cpe);
-        final int c0_28toc0_30Index = legacyProtocols.indexOf(LegacyProtocolVersion.c0_28toc0_30);
-        legacyProtocols.add(c0_28toc0_30Index + 1, LegacyProtocolVersion.c0_30cpe);
+        legacyProtocols.add(legacyProtocols.indexOf(LegacyProtocolVersion.c0_28toc0_30) + 1, LegacyProtocolVersion.c0_30cpe);
+
         protocolVersions.addAll(legacyProtocols);
     });
     private final SubPlatform SUB_PLATFORM_VIA_APRIL_FOOLS = new SubPlatform("ViaAprilFools", () -> true, ViaAprilFoolsPlatformImpl::new, protocolVersions -> {
-        final int v1_14Index = protocolVersions.indexOf(ProtocolVersion.v1_14);
-        final int v1_16Index = protocolVersions.indexOf(ProtocolVersion.v1_16);
-        final int v1_16_2Index = protocolVersions.indexOf(ProtocolVersion.v1_16_2);
-
-        protocolVersions.add(v1_14Index + 1,AprilFoolsProtocolVersion.s3d_shareware);
-        protocolVersions.add(v1_16Index + 1, AprilFoolsProtocolVersion.s20w14infinite);
-        protocolVersions.add(v1_16_2Index + 1, AprilFoolsProtocolVersion.sCombatTest8c);
+        protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_14) + 1,AprilFoolsProtocolVersion.s3d_shareware);
+        protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_16) + 1, AprilFoolsProtocolVersion.s20w14infinite);
+        protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_16_2) + 1, AprilFoolsProtocolVersion.sCombatTest8c);
     });
 
     public void preLoad() {
@@ -96,6 +93,9 @@ public class ViaFabricPlus {
             FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(viaFabricPlusAddon -> viaFabricPlusAddon.onChangeVersion(protocolVersion));
             ItemReleaseVersionDefinition.reload(protocolVersion);
             ChatLengthDefinition.reload(protocolVersion);
+            if (protocolVersion.isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                ClassicItemSelectionScreen.INSTANCE.reload(protocolVersion);
+            }
         });
         builder.build();
     }
@@ -116,8 +116,6 @@ public class ViaFabricPlus {
         PackFormatsDefinition.load();
         ItemReleaseVersionDefinition.load();
         ArmorPointsDefinition.load();
-
-        ClassicItemSelectionScreen.create(InternalProtocolList.fromProtocolVersion(LegacyProtocolVersion.c0_28toc0_30));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
