@@ -27,9 +27,10 @@ allprojects {
 		}
 		maven {
 			name = "Lenni0451"
-			url "https://maven.lenni0451.net/releases"
+			url = "https://maven.lenni0451.net/releases"
 		}
 		maven {
+			name = "TerraformersMC"
 			url = "https://maven.terraformersmc.com/releases"
 		}
 	}
@@ -42,6 +43,7 @@ loom {
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
@@ -49,7 +51,7 @@ dependencies {
 
 	libs "com.viaversion:viaversion:${project.viaversion_version}"
 	libs "com.viaversion:viabackwards-common:${project.viabackwards_version}"
-	libs "org.yaml:snakeyaml:2.0"
+	libs "org.yaml:snakeyaml:${project.snake_yml_version}"
 
 	libs "net.raphimc:ViaLegacy:${project.vialegacy_version}"
 	libs "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
