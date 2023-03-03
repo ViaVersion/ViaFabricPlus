@@ -2,8 +2,6 @@ package de.florianmichael.viafabricplus;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.libs.gson.JsonArray;
-import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
@@ -16,9 +14,7 @@ import de.florianmichael.viafabricplus.platform.ViaAprilFoolsPlatformImpl;
 import de.florianmichael.viafabricplus.platform.ViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.provider.*;
 import de.florianmichael.viafabricplus.settings.SettingGroup;
-import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
-import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
-import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.settings.groups.*;
 import de.florianmichael.viafabricplus.util.SettingsSave;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
@@ -26,8 +22,6 @@ import de.florianmichael.vialoadingbase.platform.SubPlatform;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.util.AttributeKey;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.api.metadata.Person;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
@@ -111,6 +105,8 @@ public class ViaFabricPlus {
 
         loadGroup(
                 GeneralSettings.getClassWrapper(),
+                BridgeSettings.getClassWrapper(),
+                MPPassSettings.getClassWrapper(),
                 VisualSettings.getClassWrapper(),
                 DebugSettings.getClassWrapper()
         );

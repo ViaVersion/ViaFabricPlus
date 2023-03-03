@@ -129,7 +129,7 @@
     "defaultRequire": 1
   },
   "client": [
-    "base.MixinOptionsScreen",
+    "bridge.MixinOptionsScreen",
     "bridge.MixinConnectScreen",
     "bridge.MixinDownloadingTerrainScreen",
     "fixes.screen.MixinChatScreen",

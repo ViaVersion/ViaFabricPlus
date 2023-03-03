@@ -3,6 +3,8 @@ package de.florianmichael.viafabricplus.injection.mixin.bridge;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.settings.groups.BridgeSettings;
+import de.florianmichael.viafabricplus.util.ScreenUtil;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
@@ -17,18 +19,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mixin(DebugHud.class)
 public class MixinDebugHud {
 
     @Inject(method = "getLeftText", at = @At("RETURN"))
     public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
-        if (MinecraftClient.getInstance().isInSingleplayer()) return;
+        if (MinecraftClient.getInstance().isInSingleplayer() || !BridgeSettings.getClassWrapper().showExtraInformationInDebugHud.getValue()) return;
 
         final List<String> information = new ArrayList<>();
         if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-            information.add("");
-            information.add(Formatting.GOLD + "[ViaFabricPlus]");
             final UserConnection userConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
 
             information.add("Pipeline count: " + userConnection.getProtocolInfo().getPipeline().pipes().size());
@@ -58,8 +59,7 @@ public class MixinDebugHud {
                     }
                 }
             }
-            information.add("");
         }
-        cir.getReturnValue().addAll(information);
+        cir.getReturnValue().addAll(information.stream().map(ScreenUtil::prefixedMessage).toList());
     }
 }

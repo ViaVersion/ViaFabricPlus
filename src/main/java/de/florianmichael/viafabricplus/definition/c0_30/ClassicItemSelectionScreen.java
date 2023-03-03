@@ -40,7 +40,7 @@ public class ClassicItemSelectionScreen extends Screen {
 
     public void reload(final ComparableProtocolVersion version) {
         final List<Item> allowedItems = new ArrayList<>();
-        allowedItems.add(Items.OAK_WOOD);
+        allowedItems.add(Items.OAK_LOG);
         allowedItems.add(Items.OAK_PLANKS);
         allowedItems.add(Items.STONE);
         allowedItems.add(Items.COBBLESTONE);
@@ -92,6 +92,9 @@ public class ClassicItemSelectionScreen extends Screen {
                     allowedItems.add(Items.COBBLESTONE_SLAB);
                     allowedItems.add(Items.ICE);
                     allowedItems.add(Items.SNOW);
+                    allowedItems.add(Items.BEDROCK);
+                    allowedItems.add(Items.WATER_BUCKET);
+                    allowedItems.add(Items.LAVA_BUCKET);
                 }
             }
         }
