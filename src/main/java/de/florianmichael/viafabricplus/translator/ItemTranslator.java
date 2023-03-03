@@ -7,8 +7,8 @@ import com.viaversion.viaversion.api.protocol.ProtocolPathEntry;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
+import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocol.packet.PacketWrapperImpl;
-import de.florianmichael.viafabricplus.injection.access.IPacketWrapperImpl;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.netty.buffer.Unpooled;
 import net.minecraft.item.ItemStack;
@@ -36,10 +36,11 @@ public class ItemTranslator {
         final PacketWrapper wrapper = new PacketWrapperImpl(id, emptyBuf, user);
         try {
             wrapper.apply(Direction.SERVERBOUND, State.PLAY, 0, protocolPath.stream().map(ProtocolPathEntry::protocol).collect(Collectors.toList()));
+
+            wrapper.read(Type.SHORT);
+            return wrapper.read(Type.ITEM);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        return (Item) ((IPacketWrapperImpl) wrapper).viafabricplus_readableObjects().stream().filter(typeObjectPair -> Item.class.equals(typeObjectPair.key().getOutputClass())).findFirst().orElse(null).value();
     }
 }

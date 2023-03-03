@@ -100,7 +100,6 @@
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
     "fixes.vialoadingbase.MixinVLBViaConfig",
     "fixes.viaversion.MixinCommonBoss",
-    "fixes.viaversion.MixinPacketWrapperImpl",
     "fixes.viaversion.MixinProtocolVersion",
     "fixes.viaversion.protocol1_11to1_10.MixinProtocol1_11To1_10",
     "fixes.viaversion.protocol1_12to1_11_1.MixinChatItemRewriter",
