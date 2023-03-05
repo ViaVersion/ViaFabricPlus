@@ -10,9 +10,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.function.Supplier;
 
@@ -23,17 +20,11 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
         super(settings, blockEntityTypeSupplier);
     }
 
-    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void changeShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
-            cir.setReturnValue(VoxelShapes.fullCube());
+            return VoxelShapes.fullCube();
         }
-    }
-
-    @Inject(method = "getRenderType", at = @At("HEAD"), cancellable = true)
-    public void changeRenderType(BlockState state, CallbackInfoReturnable<BlockRenderType> cir) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
-            cir.setReturnValue(BlockRenderType.MODEL);
-        }
+        return super.getCollisionShape(state, world, pos, context);
     }
 }

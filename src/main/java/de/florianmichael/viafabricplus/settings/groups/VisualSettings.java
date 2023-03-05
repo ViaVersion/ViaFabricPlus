@@ -28,6 +28,9 @@ public class VisualSettings extends SettingGroup {
     // r1_0_0tor1_0_1 -> b1_8tob1_8_1
     public final ProtocolSyncBooleanSetting replaceHurtSoundWithOOFSound = new ProtocolSyncBooleanSetting(this, "Replace hurt sound with OOF sound", ProtocolRange.andOlder(LegacyProtocolVersion.b1_8tob1_8_1));
 
+    // b1_8tob1_8_1 -> b1_7tob1_7_3
+    public final ProtocolSyncBooleanSetting removeNewerHudElements = new ProtocolSyncBooleanSetting(this, "Remove newer HUD elements", ProtocolRange.andOlder(LegacyProtocolVersion.b1_7tob1_7_3));
+
     // a1_0_15 -> c0_28toc0_30
     public final ProtocolSyncBooleanSetting replaceCreativeInventory = new ProtocolSyncBooleanSetting(this, "Replace creative inventory", ProtocolRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));
     public final ProtocolSyncBooleanSetting oldWalkingAnimation = new ProtocolSyncBooleanSetting(this, "Old walking animation", ProtocolRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));

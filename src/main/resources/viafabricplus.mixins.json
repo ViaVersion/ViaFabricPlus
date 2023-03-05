@@ -133,16 +133,13 @@
     "bridge.MixinConnectScreen",
     "bridge.MixinDownloadingTerrainScreen",
     "bridge.MixinOptionsScreen",
-    "fixes.MixinChestBlockEntityRenderer",
-    "fixes.screen.MixinChatScreen",
     "fixes.MixinBipedEntityModel",
-    "fixes.screen.hud.MixinChatHud",
-    "fixes.visual.MixinChatScreen",
-    "fixes.visual.MixinClientPlayerEntity",
-    "fixes.visual.MixinClientPlayNetworkHandler",
+    "fixes.MixinInGameHud",
+    "fixes.MixinItemRenderer",
+    "fixes.screen.MixinChatScreen",
     "fixes.screen.MixinCommandBlockScreen",
     "fixes.screen.MixinCreativeInventoryScreen",
-    "fixes.MixinItemRenderer",
-    "fixes.screen.MixinJigsawBlockScreen"
+    "fixes.screen.MixinJigsawBlockScreen",
+    "fixes.screen.hud.MixinChatHud"
   ]
 }
