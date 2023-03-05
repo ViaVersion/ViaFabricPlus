@@ -30,6 +30,7 @@
     "fixes.block.MixinBlockView",
     "fixes.block.MixinBrewingStandBlock",
     "fixes.block.MixinCauldronBlock",
+    "fixes.block.MixinChestBlock",
     "fixes.block.MixinEndPortalBlock",
     "fixes.block.MixinEndPortalFrameBlock",
     "fixes.block.MixinFarmlandBlock",
@@ -129,18 +130,19 @@
     "defaultRequire": 1
   },
   "client": [
-    "bridge.MixinOptionsScreen",
     "bridge.MixinConnectScreen",
     "bridge.MixinDownloadingTerrainScreen",
+    "bridge.MixinOptionsScreen",
+    "fixes.MixinChestBlockEntityRenderer",
     "fixes.screen.MixinChatScreen",
-    "fixes.visual.MixinBipedEntityModel",
-    "fixes.visual.MixinChatHud",
+    "fixes.MixinBipedEntityModel",
+    "fixes.screen.hud.MixinChatHud",
     "fixes.visual.MixinChatScreen",
     "fixes.visual.MixinClientPlayerEntity",
     "fixes.visual.MixinClientPlayNetworkHandler",
-    "fixes.visual.MixinCommandBlockScreen",
-    "fixes.visual.MixinCreativeInventoryScreen",
-    "fixes.visual.MixinItemRenderer",
-    "fixes.visual.MixinJigsawBlockScreen"
+    "fixes.screen.MixinCommandBlockScreen",
+    "fixes.screen.MixinCreativeInventoryScreen",
+    "fixes.MixinItemRenderer",
+    "fixes.screen.MixinJigsawBlockScreen"
   ]
 }

@@ -1,13 +1,17 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.definition.LegacySounds;
+import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -78,6 +82,14 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private void injectGetAttackCooldownProgress(CallbackInfoReturnable<Float> ci) {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.setReturnValue(1f);
+        }
+    }
+
+    // Copyright Gaming32 - LICENSE_GENERAL_MIT file
+    @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
+    public void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
+        if (VisualSettings.getClassWrapper().replaceHurtSoundWithOOFSound.getValue()) {
+            cir.setReturnValue(LegacySounds.RANDOM_HURT);
         }
     }
 }

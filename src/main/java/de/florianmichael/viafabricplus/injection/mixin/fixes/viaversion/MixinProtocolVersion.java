@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.HashMap;
 import java.util.Map;
 
-// Copyright RaphiMC/RK_01 - GPL v3 LICENSE
+// Copyright RaphiMC/RK_01 - LICENSE file
 @Mixin(value = ProtocolVersion.class, remap = false)
 public abstract class MixinProtocolVersion {
 

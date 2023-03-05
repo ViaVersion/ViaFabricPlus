@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
-// Copyright RaphiMC/RK_01 - GPL v3 LICENSE
+// Copyright RaphiMC/RK_01 - LICENSE file
 @Mixin(value = WorldPackets.class, remap = false)
 public abstract class MixinWorldPackets1_17 {
 

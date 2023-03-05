@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-// Copyright RaphiMC/RK_01 - GPL v3 LICENSE
+// Copyright RaphiMC/RK_01 - LICENSE file
 @Mixin(value = Chunk1_8Type.class, remap = false)
 public abstract class MixinChunk1_8Type {
 

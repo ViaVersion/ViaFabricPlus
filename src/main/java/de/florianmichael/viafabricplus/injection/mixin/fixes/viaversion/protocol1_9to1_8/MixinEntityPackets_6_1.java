@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-// Copyright RaphiMC/RK_01 - GPL v3 LICENSE
+// Copyright RaphiMC/RK_01 - LICENSE file
 @Mixin(targets = "com.viaversion.viaversion.protocols.protocol1_9to1_8.packets.EntityPackets$6$1", remap = false)
 public abstract class MixinEntityPackets_6_1 {
 

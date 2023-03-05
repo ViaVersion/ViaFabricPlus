@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-// Copyright RaphiMC/RK_01 - GPL v3 LICENSE
+// Copyright RaphiMC/RK_01 - LICENSE file
 @Mixin(value = MetadataRewriter1_9To1_8.class, remap = false)
 public abstract class MixinMetadataRewriter1_9To1_8 {
 

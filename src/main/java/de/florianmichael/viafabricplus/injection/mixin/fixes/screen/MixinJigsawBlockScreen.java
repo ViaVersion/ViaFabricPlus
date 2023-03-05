@@ -1,4 +1,4 @@
-package de.florianmichael.viafabricplus.injection.mixin.fixes.visual;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.screen;
 
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import net.minecraft.block.entity.JigsawBlockEntity;

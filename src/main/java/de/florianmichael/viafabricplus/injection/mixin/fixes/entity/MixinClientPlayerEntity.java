@@ -2,9 +2,11 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.entity;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
 import de.florianmichael.viafabricplus.definition.v1_8_x.IdlePacketExecutor;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
+import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
@@ -184,6 +186,14 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             sendSprintingPacket();
         }
+    }
+
+    @Override
+    public int getArmor() {
+        if (VisualSettings.getClassWrapper().emulateArmorHud.getValue()) {
+            return ArmorPointsDefinition.sum();
+        }
+        return super.getArmor();
     }
 
     @Override

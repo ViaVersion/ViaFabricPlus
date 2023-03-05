@@ -2,6 +2,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
@@ -126,5 +127,10 @@ public abstract class MixinClientPlayNetworkHandler {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             instance.warn(s, o);
         }
+    }
+
+    @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))
+    public boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
+        return instance.isSecureChatEnforced() || VisualSettings.getClassWrapper().disableSecureChatWarning.getValue();
     }
 }

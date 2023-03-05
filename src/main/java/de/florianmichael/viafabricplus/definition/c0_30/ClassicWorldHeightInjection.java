@@ -23,7 +23,7 @@ import java.util.BitSet;
 import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
-// Copyright RaphiMC/RK_01 - GPL v3 LICENSE
+// Copyright RaphiMC/RK_01 - LICENSE file
 public class ClassicWorldHeightInjection {
 
     public static PacketHandler handleJoinGame(final PacketHandler parentRemapper) {

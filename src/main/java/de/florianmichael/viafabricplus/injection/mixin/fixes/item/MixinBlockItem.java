@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-// Copyright Earthcomputer - MIT LICENSE
+// Copyright (c) 2019 Joseph Burton (Earthcomputer) - LICENSE_multiconnect file
 @Mixin(BlockItem.class)
 public class MixinBlockItem {
 

@@ -85,7 +85,7 @@ jar {
 	} {
 		exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA"
 	}
-	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}" }
-	}
+	from("LICENSE") { rename { "${it}_${project.archivesBaseName}" } }
+	from("LICENSE_multiconnect") { rename { "${it}_${project.archivesBaseName}" } }
+	from("LICENSE_GENERAL_MIT") { rename { "${it}_${project.archivesBaseName}" } }
 }

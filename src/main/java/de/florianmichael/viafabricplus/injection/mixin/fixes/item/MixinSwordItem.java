@@ -13,7 +13,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 
-// Copyright Earthcomputer - MIT LICENSE
+// Copyright (c) 2019 Joseph Burton (Earthcomputer) - LICENSE_multiconnect file
 @Mixin(SwordItem.class)
 public class MixinSwordItem extends ToolItem {
 
