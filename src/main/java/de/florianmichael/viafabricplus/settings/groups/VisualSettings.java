@@ -10,7 +10,7 @@ public class VisualSettings extends SettingGroup {
     public final static VisualSettings self = new VisualSettings();
 
     // 1.19.2 -> 1.19
-    public final ProtocolSyncBooleanSetting disableSecureChatWarning = new ProtocolSyncBooleanSetting(this, "Disable secure chat  warning", ProtocolRange.andOlder(ProtocolVersion.v1_19));
+    public final ProtocolSyncBooleanSetting disableSecureChatWarning = new ProtocolSyncBooleanSetting(this, "Disable secure chat warning", ProtocolRange.andOlder(ProtocolVersion.v1_19));
 
     // 1.19 -> 1.18.2
     public final ProtocolSyncBooleanSetting hideSignatureIndicator = new ProtocolSyncBooleanSetting(this, "Hide signature indicator", ProtocolRange.andOlder(ProtocolVersion.v1_18_2));

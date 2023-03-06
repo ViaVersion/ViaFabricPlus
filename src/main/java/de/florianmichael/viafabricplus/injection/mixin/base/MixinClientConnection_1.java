@@ -5,8 +5,8 @@ import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.platform.PreNettyConstants;
+import de.florianmichael.viafabricplus.platform.VFPVLBViaDecodeHandler;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.netty.VLBViaDecodeHandler;
 import de.florianmichael.vialoadingbase.netty.VLBViaEncodeHandler;
 import de.florianmichael.vialoadingbase.netty.NettyConstants;
 import io.netty.channel.Channel;
@@ -40,7 +40,7 @@ public class MixinClientConnection_1 {
             new ProtocolPipelineImpl(user);
 
             channel.pipeline().addBefore("encoder", NettyConstants.HANDLER_ENCODER_NAME, new VLBViaEncodeHandler(user));
-            channel.pipeline().addBefore("decoder", NettyConstants.HANDLER_DECODER_NAME, new VLBViaDecodeHandler(user));
+            channel.pipeline().addBefore("decoder", NettyConstants.HANDLER_DECODER_NAME, new VFPVLBViaDecodeHandler(user));
 
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
                 user.getProtocolInfo().getPipeline().add(PreNettyBaseProtocol.INSTANCE);
