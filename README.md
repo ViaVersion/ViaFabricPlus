@@ -8,13 +8,19 @@ If you encounter any issues, please report them on the
 If you just want to talk or need help with ViaFabricPlus feel free to join my
 [Discord](https://discord.gg/BwWhCHUKDf).
 
+## To-do list
+- [ ] ClassiCube implementation for MP Pass 
+- [ ] BetaCraft server list screen
+- [ ] ViaBedrock implementation
+- [ ] Window click interactions in <= 1.16.5
+- [ ] More extensions for Classic Protocol Extensions protocol
+
 ## Why?
 ViaFabricPlus implements ViaLegacy/ViaAprilFools clientside and adds a ton of fixes that improve the game experience, <br>
 as does [multiconnect](https://github.com/Earthcomputer/multiconnect) from Earthcomputer.
 ### Important: The focus on ViaFabricPlus is on client side fixes, so reporting bugs and contributing is welcome.
 
 ## Dependencies
-
 | Dependency     | Download                                                   |
 |----------------|------------------------------------------------------------|
 | ViaVersion     | https://github.com/ViaVersion/ViaVersion                   |
