@@ -17,7 +17,7 @@ public class MixinConnectionData_NeighbourUpdater {
 
     @Inject(method = "updateBlock", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
     public void preventBlockSpam(int x, int y, int z, List<BlockChangeRecord1_8> records, CallbackInfo ci, int blockState, int newBlockState) {
-        if (!DebugSettings.getClassWrapper().preventBlockSpam.getValue()) return;
+        if (!DebugSettings.getClassWrapper().cancelEqualBlockChangeUpdates.getValue()) return;
         if (blockState == newBlockState) ci.cancel();
     }
 }

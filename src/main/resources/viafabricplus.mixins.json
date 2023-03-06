@@ -105,6 +105,7 @@
     "fixes.viaversion.protocol1_11to1_10.MixinProtocol1_11To1_10",
     "fixes.viaversion.protocol1_12to1_11_1.MixinChatItemRewriter",
     "fixes.viaversion.protocol1_13to1_12_2.MixinAbstractFenceConnectionHandler",
+    "fixes.viaversion.protocol1_13to1_12_2.MixinConnectionData",
     "fixes.viaversion.protocol1_13to1_12_2.MixinConnectionData_NeighbourUpdater",
     "fixes.viaversion.protocol1_13to1_12_2.MixinGlassConnectionHandler",
     "fixes.viaversion.protocol1_13to1_12_2.MixinWorldPackets1_13",
