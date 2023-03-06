@@ -1,5 +1,6 @@
 package de.florianmichael.viafabricplus;
 
+import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
@@ -88,6 +89,8 @@ public class ViaFabricPlus {
             providers.use(EncryptionProvider.class, new ViaFabricPlusEncryptionProvider());
             providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
             providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
+
+            Via.getManager().setDebug(true);
         });
         builder = builder.onProtocolReload(protocolVersion -> {
             FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(viaFabricPlusAddon -> viaFabricPlusAddon.onChangeVersion(protocolVersion));

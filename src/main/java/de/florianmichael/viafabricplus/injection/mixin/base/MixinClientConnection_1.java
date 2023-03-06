@@ -5,6 +5,8 @@ import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.platform.PreNettyConstants;
+import de.florianmichael.viafabricplus.platform.VFPPreNettyDecoder;
+import de.florianmichael.viafabricplus.platform.VFPPreNettyEncoder;
 import de.florianmichael.viafabricplus.platform.VFPVLBViaDecodeHandler;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.netty.VLBViaEncodeHandler;
@@ -13,8 +15,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
 import net.minecraft.network.ClientConnection;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialegacy.netty.PreNettyDecoder;
-import net.raphimc.vialegacy.netty.PreNettyEncoder;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.baseprotocols.PreNettyBaseProtocol;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,8 +45,8 @@ public class MixinClientConnection_1 {
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
                 user.getProtocolInfo().getPipeline().add(PreNettyBaseProtocol.INSTANCE);
 
-                channel.pipeline().addBefore("prepender", PreNettyConstants.HANDLER_ENCODER_NAME, new PreNettyEncoder(user));
-                channel.pipeline().addBefore("splitter", PreNettyConstants.HANDLER_DECODER_NAME, new PreNettyDecoder(user));
+                channel.pipeline().addBefore("prepender", PreNettyConstants.HANDLER_ENCODER_NAME, new VFPPreNettyEncoder(user));
+                channel.pipeline().addBefore("splitter", PreNettyConstants.HANDLER_DECODER_NAME, new VFPPreNettyDecoder(user));
             }
         }
     }
