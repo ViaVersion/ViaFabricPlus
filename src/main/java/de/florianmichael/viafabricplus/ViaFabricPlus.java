@@ -89,8 +89,6 @@ public class ViaFabricPlus {
             providers.use(EncryptionProvider.class, new ViaFabricPlusEncryptionProvider());
             providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
             providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
-
-            Via.getManager().setDebug(true);
         });
         builder = builder.onProtocolReload(protocolVersion -> {
             FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(viaFabricPlusAddon -> viaFabricPlusAddon.onChangeVersion(protocolVersion));
