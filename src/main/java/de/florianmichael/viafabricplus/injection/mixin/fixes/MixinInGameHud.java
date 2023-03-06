@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(InGameHud.class)
 public abstract class MixinInGameHud {
@@ -39,10 +40,11 @@ public abstract class MixinInGameHud {
         if (VisualSettings.getClassWrapper().removeNewerHudElements.getValue()) ci.cancel();
     }
 
-    @Redirect(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;getHeartCount(Lnet/minecraft/entity/LivingEntity;)I"))
-    private int removeHungerBar(InGameHud instance, LivingEntity entity) {
-        if (VisualSettings.getClassWrapper().removeNewerHudElements.getValue()) return 1;
-        return getHeartCount(entity);
+    @Inject(method = "getHeartCount", at = @At("HEAD"), cancellable = true)
+    public void removeHungerBar(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
+        if (VisualSettings.getClassWrapper().removeNewerHudElements.getValue()) {
+            cir.setReturnValue(1);
+        }
     }
 
     // Moving down all remaining elements
