@@ -3,6 +3,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.item;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -47,12 +48,11 @@ public abstract class MixinItemStack {
     @SuppressWarnings({"InvalidInjectorMethodSignature", "MixinAnnotationTarget"})
     @ModifyVariable(method = "getAttributeModifiers", ordinal = 0, at = @At(value = "STORE", ordinal = 1))
     private Multimap<EntityAttribute, EntityAttributeModifier> modifyVariableGetAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> modifiers) {
-        if (modifiers.isEmpty()) {
-            return modifiers;
-        }
+        if (!DebugSettings.getClassWrapper().replaceAttributeModifiers.getValue() || modifiers.isEmpty()) return modifiers;
+
         modifiers = HashMultimap.create(modifiers);
         modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-        OptionalDouble defaultAttackDamage = protocolhack_getDefaultAttackDamage(getItem());
+        OptionalDouble defaultAttackDamage = viafabricplus_getDefaultAttackDamage(getItem());
         if (defaultAttackDamage.isPresent()) {
             modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Weapon Modifier", defaultAttackDamage.getAsDouble(), EntityAttributeModifier.Operation.ADDITION));
         }
@@ -63,7 +63,7 @@ public abstract class MixinItemStack {
     }
 
     @Unique
-    private OptionalDouble protocolhack_getDefaultAttackDamage(Item item) {
+    private OptionalDouble viafabricplus_getDefaultAttackDamage(Item item) {
         if (item instanceof ToolItem) {
             ToolMaterial material = ((ToolItem) item).getMaterial();
             int materialBonus;
