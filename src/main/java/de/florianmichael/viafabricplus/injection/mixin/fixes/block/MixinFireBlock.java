@@ -1,6 +1,6 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2023 FlorianMichael/MrLookAtMe (EnZaXD) and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
