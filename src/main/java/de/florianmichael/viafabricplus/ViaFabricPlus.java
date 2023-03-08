@@ -102,8 +102,6 @@ public class ViaFabricPlus {
     }
 
     public void postLoad() throws Exception {
-        FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(ViaFabricPlusAddon::onLoad);
-
         loadGroup(
                 GeneralSettings.getClassWrapper(),
                 BridgeSettings.getClassWrapper(),
@@ -111,6 +109,8 @@ public class ViaFabricPlus {
                 VisualSettings.getClassWrapper(),
                 DebugSettings.getClassWrapper()
         );
+
+        FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(ViaFabricPlusAddon::onLoad);
 
         SettingsSave.load(this);
 
