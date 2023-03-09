@@ -35,7 +35,6 @@ public class DebugSettings extends SettingGroup {
     // 1.13 -> 1.12.2
     public final ProtocolSyncBooleanSetting executeInputsInSync = new ProtocolSyncBooleanSetting(this, "Execute inputs in sync", ProtocolRange.andOlder(ProtocolVersion.v1_12_2));
     public final ProtocolSyncBooleanSetting sneakInstant = new ProtocolSyncBooleanSetting(this, "Sneak instant", new ProtocolRange(ProtocolVersion.v1_12_2, ProtocolVersion.v1_8));
-    public final ProtocolSyncBooleanSetting cancelEqualBlockChangeUpdates = new ProtocolSyncBooleanSetting(this, "Cancel equal block change updates", ProtocolRange.andOlder(ProtocolVersion.v1_12_2));
 
     // 1.12 -> 1.11.1-1.11.2
     public final ProtocolSyncBooleanSetting sendOpenInventoryPacket = new ProtocolSyncBooleanSetting(this, "Send open inventory packet", ProtocolRange.andOlder(ProtocolVersion.v1_11_1));

@@ -25,8 +25,8 @@ import de.florianmichael.viafabricplus.util.ScreenUtil;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
-import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 import net.raphimc.vialegacy.protocols.release.protocol1_2_1_3to1_1.storage.SeedStorage;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.storage.EntityTracker;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,7 +36,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mixin(DebugHud.class)
 public class MixinDebugHud {
@@ -71,6 +70,12 @@ public class MixinDebugHud {
                             final SeedStorage seedStorage = userConnection.get(SeedStorage.class);
                             if (seedStorage != null) {
                                 information.add("World Seed (" + LegacyProtocolVersion.r1_1.getName() + "): " + seedStorage.seed);
+                            }
+                            if (ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(LegacyProtocolVersion.c0_30cpe)) {
+                                final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = userConnection.get(ExtensionProtocolMetadataStorage.class);
+                                if (extensionProtocolMetadataStorage != null) {
+                                    information.add("Classic extensions (" + LegacyProtocolVersion.c0_30cpe.getName() + "): " + extensionProtocolMetadataStorage.getExtensionCount());
+                                }
                             }
                         }
                     }

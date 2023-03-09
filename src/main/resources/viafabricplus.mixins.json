@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "de.florianmichael.viafabricplus.injection.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
+  "client": [
     "base.MixinClientConnection",
     "base.MixinClientConnection_1",
     "base.MixinClientLoginNetworkHandler",
@@ -101,7 +101,6 @@
     "fixes.vialegacy.MixinClientboundPacketsc0_30cpe",
     "fixes.vialegacy.MixinExtensionProtocolMetadataStorage",
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
-    "fixes.vialegacy.MixinProtocolb1_8_0_1tob1_7_0_3",
     "fixes.vialegacy.MixinProtocolc0_30toc0_30cpe",
     "fixes.vialoadingbase.MixinVLBViaConfig",
     "fixes.viaversion.MixinCommonBoss",
@@ -109,8 +108,6 @@
     "fixes.viaversion.protocol1_11to1_10.MixinProtocol1_11To1_10",
     "fixes.viaversion.protocol1_12to1_11_1.MixinChatItemRewriter",
     "fixes.viaversion.protocol1_13to1_12_2.MixinAbstractFenceConnectionHandler",
-    "fixes.viaversion.protocol1_13to1_12_2.MixinConnectionData",
-    "fixes.viaversion.protocol1_13to1_12_2.MixinConnectionData_NeighbourUpdater",
     "fixes.viaversion.protocol1_13to1_12_2.MixinGlassConnectionHandler",
     "fixes.viaversion.protocol1_13to1_12_2.MixinWorldPackets1_13",
     "fixes.viaversion.protocol1_14to1_13_2.MixinInventoryPackets_2",
@@ -130,12 +127,7 @@
     "fixes.viaversion.protocol1_9to1_8.MixinEntityTracker1_9",
     "fixes.viaversion.protocol1_9to1_8.MixinMetadataRewriter1_9To1_8",
     "fixes.viaversion.protocol1_9to1_8.MixinMovementTracker",
-    "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "client": [
+    "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "bridge.MixinConnectScreen",
     "bridge.MixinDownloadingTerrainScreen",
     "bridge.MixinOptionsScreen",
@@ -147,5 +139,8 @@
     "fixes.screen.MixinCreativeInventoryScreen",
     "fixes.screen.MixinJigsawBlockScreen",
     "fixes.screen.hud.MixinChatHud"
-  ]
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
