@@ -48,6 +48,11 @@ public class SettingsScreen extends Screen {
         super(Text.literal("Values"));
     }
 
+    public static SettingsScreen get(final Screen prevScreen) {
+        SettingsScreen.INSTANCE.prevScreen = prevScreen;
+        return SettingsScreen.INSTANCE;
+    }
+
     @Override
     protected void init() {
         super.init();

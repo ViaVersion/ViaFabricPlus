@@ -41,7 +41,7 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 
 ## Settings
 Settings are optional settings that can turn fixes on and off, originally they were used for debugging<br>
-![](/image/settings.png)
+![](/.github/images/settings.png)
 
 ## Addons
 To make a ViaFabricPlus addon you just have to implement the ViaFabricPlusAddon interface in your main class:
