@@ -8,7 +8,13 @@ If you encounter any issues, please report them on the
 If you just want to talk or need help with ViaFabricPlus feel free to join my
 [Discord](https://discord.gg/BwWhCHUKDf).
 
-## Feature and To-do list
+## Basic Features
+- [x] ViaVersion implementation
+- [x] ViaBackwards implementation
+- [x] ViaLegacy implementation
+- [x] ViaAprilFools implementation
+
+## Clientside related Fixes
 - [x] Bounding boxes for all versions
 - [x] Entity interaction and movement related packet fixes
 - [x] Sync and async mouse/keyboard handling in <= 1.12.2
@@ -16,7 +22,7 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 - [x] Filter item creative tabs for only available items
 - [x] Combat system in <= 1.8
 - [x] Tons of modifications to ViaVersion to make it more legit (Metadata fixes, broken packets, edge-cases)
-- [x] Visual and screen related changes (Remove newer Command Block features, fix GameModeSelection, ...)
+- [x] Visual and screen related changes (newer Command Block features, GameMode selection, ...)
 - [x] ViaAprilFools and ViaLegacy extensions to make it more legit
 - [x] Chat signatures (secure login) for all versions (1.19.0, 1.19.1, 1.19.2)
 - [x] Address parsing for all minecraft versions
@@ -27,14 +33,16 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 - [x] Implementing non-sequenced block placement in <= 1.18.2
 - [x] Animation related fixes (1.7 Sneaking, c0.30 walking animation, ...)
 - [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
-- [ ] More extensions for Classic Protocol Extensions protocol
-- [ ] ClassiCube implementation for MP Pass 
-- [ ] BetaCraft server list screen
+
+## TODO
 - [ ] ViaBedrock implementation
+- [ ] ClassiCube implementation for MP Pass
+- [ ] BetaCraft server list screen
+- [ ] More extensions for Classic Protocol Extensions protocol
 - [ ] Window click interactions in <= 1.16.5
 
 ## Custom classic protocol extensions
-- WeatherType extension (version 1)
+- **WeatherType** extension (version **1**)
 
 ## Why?
 ViaFabricPlus implements ViaLegacy/ViaAprilFools clientside and adds a ton of fixes that improve the game experience, <br>
