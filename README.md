@@ -8,12 +8,33 @@ If you encounter any issues, please report them on the
 If you just want to talk or need help with ViaFabricPlus feel free to join my
 [Discord](https://discord.gg/BwWhCHUKDf).
 
-## To-do list
+## Feature and To-do list
+- [x] Bounding boxes for all versions
+- [x] Entity interaction and movement related packet fixes
+- [x] Sync and async mouse/keyboard handling in <= 1.12.2
+- [x] Mining speeds and item attributes
+- [x] Filter item creative tabs for only available items
+- [x] Combat system in <= 1.8
+- [x] Tons of modifications to ViaVersion to make it more legit (Metadata fixes, broken packets, edge-cases)
+- [x] Visual and screen related changes (Remove newer Command Block features, fix GameModeSelection, ...)
+- [x] ViaAprilFools and ViaLegacy extensions to make it more legit
+- [x] Chat signatures (secure login) for all versions (1.19.0, 1.19.1, 1.19.2)
+- [x] Address parsing for all minecraft versions
+- [x] PackFormats and HTTP Header for all resource pack versions
+- [x] Raytrace related fixes in <= 1.8
+- [x] Implementing HUD changes for <= b1.7.3
+- [x] Chat lengths of all versions
+- [x] Implementing non-sequenced block placement in <= 1.18.2
+- [x] Animation related fixes (1.7 Sneaking, c0.30 walking animation, ...)
+- [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
+- [ ] More extensions for Classic Protocol Extensions protocol
 - [ ] ClassiCube implementation for MP Pass 
 - [ ] BetaCraft server list screen
 - [ ] ViaBedrock implementation
 - [ ] Window click interactions in <= 1.16.5
-- [ ] More extensions for Classic Protocol Extensions protocol
+
+## Custom classic protocol extensions
+- WeatherType extension (version 1)
 
 ## Why?
 ViaFabricPlus implements ViaLegacy/ViaAprilFools clientside and adds a ton of fixes that improve the game experience, <br>
@@ -29,6 +50,7 @@ as does [multiconnect](https://github.com/Earthcomputer/multiconnect) from Earth
 | ViaLegacy      | https://github.com/RaphiMC/ViaLegacy                       |
 | ViaAprilFools  | https://github.com/RaphiMC/ViaAprilFools                   |
 | MC-Structs     | https://github.com/Lenni0451/MCStructs                     |
+| Reflect        | https://github.com/Lenni0451/Reflect                       |
 | ViaLoadingBase | https://github.com/FlorianMichael/ViaLoadingBase           |
 
 ## Setting up a Workspace
