@@ -51,10 +51,12 @@ public class MixinProtocolc0_30toc0_30cpe extends AbstractProtocol<ClientboundPa
                     changeRainState.write(Type.FLOAT, 0F); // unused
                     changeRainState.sendRaw();
 
-                    final PacketWrapper changeRainType = PacketWrapper.create(ClientboundPackets1_19_3.GAME_EVENT, wrapper.user());
-                    changeRainType.write(Type.BYTE, (byte) 7);
-                    changeRainType.write(Type.FLOAT, weatherType == WeatherTypes.RAINING ? 0F : 1F);
-                    changeRainType.sendRaw();
+                    if (weatherType == WeatherTypes.RAINING || weatherType == WeatherTypes.SNOWING) {
+                        final PacketWrapper changeRainType = PacketWrapper.create(ClientboundPackets1_19_3.GAME_EVENT, wrapper.user());
+                        changeRainType.write(Type.BYTE, (byte) 7);
+                        changeRainType.write(Type.FLOAT, weatherType == WeatherTypes.RAINING ? 0F : 1F);
+                        changeRainType.sendRaw();
+                    }
                 });
             }
         });
