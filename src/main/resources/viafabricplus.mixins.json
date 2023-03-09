@@ -101,6 +101,7 @@
     "fixes.vialegacy.MixinClientboundPacketsc0_30cpe",
     "fixes.vialegacy.MixinExtensionProtocolMetadataStorage",
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
+    "fixes.vialegacy.MixinProtocolb1_8_0_1tob1_7_0_3",
     "fixes.vialegacy.MixinProtocolc0_30toc0_30cpe",
     "fixes.vialoadingbase.MixinVLBViaConfig",
     "fixes.viaversion.MixinCommonBoss",
