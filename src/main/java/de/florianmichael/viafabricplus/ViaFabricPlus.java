@@ -25,6 +25,7 @@ import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
 import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
 import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.definition.c0_30.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
 import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
 import de.florianmichael.viafabricplus.platform.ViaAprilFoolsPlatformImpl;
@@ -80,6 +81,8 @@ public class ViaFabricPlus {
     });
 
     public void preLoad() {
+        CustomClassicProtocolExtensions.forceLoad();
+
         ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
 
         builder = builder.subPlatform(SUB_PLATFORM_VIA_LEGACY);
@@ -132,6 +135,7 @@ public class ViaFabricPlus {
         PackFormatsDefinition.load();
         ItemReleaseVersionDefinition.load();
         ArmorPointsDefinition.load();
+        PackFormatsDefinition.checkOutdated(SharedConstants.getProtocolVersion());
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {

@@ -71,14 +71,14 @@ public class PackFormatsDefinition {
     }
 
     public static void checkOutdated(final int nativeVersion) {
-        if (!protocolMap.containsKey(nativeVersion))
+        if (!protocolMap.containsKey(nativeVersion)) {
             throw new RuntimeException("The current version has no pack format registered");
+        }
 
         final GameVersion gameVersion = protocolMap.get(nativeVersion);
-        if (!gameVersion.getName().equals(SharedConstants.getGameVersion().getName()) ||
-                !gameVersion.getId().equals(SharedConstants.getGameVersion().getId()) ||
-                gameVersion.getPackVersion(PackType.RESOURCE) != SharedConstants.getGameVersion().getPackVersion(PackType.RESOURCE))
+        if (!gameVersion.getName().equals(SharedConstants.getGameVersion().getName()) || !gameVersion.getId().equals(SharedConstants.getGameVersion().getId()) || gameVersion.getPackVersion(PackType.RESOURCE) != SharedConstants.getGameVersion().getPackVersion(PackType.RESOURCE)) {
             throw new RuntimeException("The current version has no pack format registered");
+        }
     }
 
     public static GameVersion current() {
