@@ -26,8 +26,12 @@ allprojects {
 			url = "https://repo.viaversion.com"
 		}
 		maven {
-			name = "Lenni0451"
+			name = "Lenni0451 releases"
 			url = "https://maven.lenni0451.net/releases"
+		}
+		maven {
+			name = "Lenni0451 snapshots"
+			url = "https://maven.lenni0451.net/snapshots"
 		}
 		maven {
 			name = "TerraformersMC"
