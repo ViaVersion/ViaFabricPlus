@@ -28,6 +28,7 @@ import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PlayerKeyPair;
 import net.minecraft.network.encryption.PlayerPublicKey;
 import org.spongepowered.asm.mixin.Final;
@@ -69,15 +70,17 @@ public class MixinConnectScreen_1 {
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/Packet;)V", ordinal = 1, shift = At.Shift.BEFORE))
     public void setupConnectionSessions(CallbackInfo ci) {
-        final UserConnection userConnection = field_2416.connection.channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_19)) {
+            return; // This disables the chat session emulation for all versions <= 1.18.2
+        }
+
+        final ClientConnection connection = field_2416.connection;
+        if (connection == null) return;
+        final UserConnection userConnection = connection.channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
 
         if (userConnection == null) {
             ViaLoadingBase.LOGGER.log(Level.WARNING, "ViaVersion userConnection is null");
             return;
-        }
-
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_19)) {
-            return; // This disables the chat session emulation for all versions <= 1.18.2
         }
 
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {

@@ -13,6 +13,7 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 - [x] ViaBackwards implementation
 - [x] ViaLegacy implementation
 - [x] ViaAprilFools implementation
+- [x] BetaCraft implementation for MP Pass
 
 ## Clientside related Fixes
 - [x] Bounding boxes for all versions
