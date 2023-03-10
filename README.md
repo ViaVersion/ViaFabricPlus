@@ -41,6 +41,8 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 - [ ] BetaCraft server list screen
 - [ ] More extensions for Classic Protocol Extensions protocol
 - [ ] Window click interactions in <= 1.16.5
+- [ ] Classic command system
+- [ ] More API for C-CPE
 
 ## Custom classic protocol extensions
 - **WeatherType** extension (version **1**)
