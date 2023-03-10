@@ -6,9 +6,8 @@
   "name": "ViaFabricPlus",
   "description": " Clientside ViaVersion, ViaLegacy and ViaAprilFools implementation with clientside fixes for Fabric",
   "authors": [
-    "FlorianMichael",
-    "EnZaXD",
-    "JesseUwU"
+    "FlorianMichael/EnZaXD",
+    "Johannes/Sumandora"
   ],
   "contact": {
     "homepage": "https://github.com/FlorianMichael/",

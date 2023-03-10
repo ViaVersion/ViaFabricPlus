@@ -35,12 +35,12 @@ public class CustomClassicProtocolExtensions {
     public final static Map<Integer, ClientboundPacketsc0_30cpe> CUSTOM_PACKETS = new HashMap<>();
     public static ClientboundPacketsc0_30cpe EXT_WEATHER_TYPE;
 
-    public static void forceLoad() {
+    public static void reflect() {
         EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
     }
 
     public static ClientboundPacketsc0_30cpe createNewPacket(final ClassicProtocolExtension classicProtocolExtension, final int packetId, final BiConsumer<UserConnection, ByteBuf> packetSplitter) {
-        final ClientboundPacketsc0_30cpe packet = Enums.newInstance(ClientboundPacketsc0_30cpe.class, classicProtocolExtension.getName(), ClassicProtocolExtension.values().length, new Class[] { int.class, BiConsumer.class }, new Object[]{ packetId, packetSplitter });
+        final ClientboundPacketsc0_30cpe packet = Enums.newInstance(ClientboundPacketsc0_30cpe.class, classicProtocolExtension.getName(), ClassicProtocolExtension.values().length, new Class[] { int.class, BiConsumer.class }, new Object[] { packetId, packetSplitter });
         Enums.addEnumInstance(ClientboundPacketsc0_30cpe.class, packet);
         CUSTOM_PACKETS.put(packetId, packet);
         return packet;

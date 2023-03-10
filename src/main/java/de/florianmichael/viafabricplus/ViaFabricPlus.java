@@ -81,7 +81,7 @@ public class ViaFabricPlus {
     });
 
     public void preLoad() {
-        CustomClassicProtocolExtensions.forceLoad();
+        CustomClassicProtocolExtensions.reflect();
 
         ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
 
