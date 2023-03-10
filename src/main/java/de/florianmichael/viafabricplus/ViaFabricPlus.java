@@ -37,7 +37,6 @@ import de.florianmichael.viafabricplus.settings.groups.*;
 import de.florianmichael.viafabricplus.util.SettingsSave;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.SubPlatform;
-import io.netty.channel.DefaultEventLoop;
 import io.netty.util.AttributeKey;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
@@ -97,7 +96,6 @@ public class ViaFabricPlus {
 
             return MinecraftClient.getInstance().isInSingleplayer();
         });
-        builder = builder.eventLoop(new DefaultEventLoop());
         builder = builder.providers(providers -> {
             providers.use(MovementTransmitterProvider.class, new ViaFabricPlusMovementTransmitterProvider());
             providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());
