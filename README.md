@@ -14,7 +14,6 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 - [x] ViaLegacy implementation
 - [x] ViaAprilFools implementation
 - [x] BetaCraft implementation for MP Pass
-- [x] Classic command system
 
 ## Clientside related Fixes
 - [x] Bounding boxes for all versions

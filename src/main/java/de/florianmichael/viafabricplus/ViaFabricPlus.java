@@ -138,7 +138,9 @@ public class ViaFabricPlus {
         PackFormatsDefinition.load();
         ItemReleaseVersionDefinition.load();
         ArmorPointsDefinition.load();
+
         PackFormatsDefinition.checkOutdated(SharedConstants.getProtocolVersion());
+
         ClassicProtocolCommands.load();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
