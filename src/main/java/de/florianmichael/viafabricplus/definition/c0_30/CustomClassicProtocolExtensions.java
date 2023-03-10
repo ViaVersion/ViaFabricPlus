@@ -18,6 +18,8 @@
 package de.florianmichael.viafabricplus.definition.c0_30;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.reflect.Enums;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.ClientboundPacketsc0_30cpe;
@@ -37,6 +39,11 @@ public class CustomClassicProtocolExtensions {
 
     public static void reflect() {
         EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
+    }
+
+    public static void onAddServerExtension(final ClassicProtocolExtension extension) {
+        if (extension == ClassicProtocolExtension.LONGER_MESSAGES) ChatLengthDefinition.expand();
+        if (extension == ClassicProtocolExtension.CUSTOM_BLOCKS) ClassicItemSelectionScreen.INSTANCE.reload(ViaLoadingBase.getClassWrapper().getTargetVersion(), true);
     }
 
     public static ClientboundPacketsc0_30cpe createNewPacket(final ClassicProtocolExtension classicProtocolExtension, final int packetId, final BiConsumer<UserConnection, ByteBuf> packetSplitter) {

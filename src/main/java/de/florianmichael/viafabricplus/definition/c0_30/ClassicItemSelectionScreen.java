@@ -51,7 +51,7 @@ public class ClassicItemSelectionScreen extends Screen {
         super(Text.literal("Classic item selection"));
     }
 
-    public void reload(final ComparableProtocolVersion version) {
+    public void reload(final ComparableProtocolVersion version, final boolean hasCustomBlocksV1) {
         final List<Item> allowedItems = new ArrayList<>();
         allowedItems.add(Items.OAK_LOG);
         allowedItems.add(Items.OAK_PLANKS);
@@ -99,10 +99,10 @@ public class ClassicItemSelectionScreen extends Screen {
                 allowedItems.add(Items.RED_MUSHROOM);
             }
         }
-        if (version.isEqualTo(LegacyProtocolVersion.c0_30cpe)) {
+        if (hasCustomBlocksV1) {
             allowedItems.add(Items.MAGMA_BLOCK);
             allowedItems.add(Items.QUARTZ_PILLAR);
-            allowedItems.add(Items.SANDSTONE_STAIRS);
+            allowedItems.add(Items.SANDSTONE);
             allowedItems.add(Items.STONE_BRICKS);
             allowedItems.add(Items.COBBLESTONE_SLAB);
             allowedItems.add(Items.ICE);

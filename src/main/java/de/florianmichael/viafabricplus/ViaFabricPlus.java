@@ -26,6 +26,7 @@ import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
 import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.definition.c0_30.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolCommands;
 import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
 import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
 import de.florianmichael.viafabricplus.platform.ViaAprilFoolsPlatformImpl;
@@ -44,6 +45,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicCustomCommandProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
@@ -107,13 +109,14 @@ public class ViaFabricPlus {
             providers.use(EncryptionProvider.class, new ViaFabricPlusEncryptionProvider());
             providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
             providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
+            providers.use(ClassicCustomCommandProvider.class, new ViaFabricPlusClassicCustomCommandProvider());
         });
         builder = builder.onProtocolReload(protocolVersion -> {
             FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(viaFabricPlusAddon -> viaFabricPlusAddon.onChangeVersion(protocolVersion));
             ItemReleaseVersionDefinition.reload(protocolVersion);
             ChatLengthDefinition.reload(protocolVersion);
             if (protocolVersion.isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                ClassicItemSelectionScreen.INSTANCE.reload(protocolVersion);
+                ClassicItemSelectionScreen.INSTANCE.reload(protocolVersion, false);
             }
         });
         builder.build();
@@ -136,6 +139,7 @@ public class ViaFabricPlus {
         ItemReleaseVersionDefinition.load();
         ArmorPointsDefinition.load();
         PackFormatsDefinition.checkOutdated(SharedConstants.getProtocolVersion());
+        ClassicProtocolCommands.load();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {

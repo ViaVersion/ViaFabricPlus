@@ -47,6 +47,12 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 ## Custom classic protocol extensions
 - **WeatherType** extension (version **1**)
 
+## Classic protocol commands
+To better control the Classic Protocol, there are a few clientside commands, the command prefix is **/v**: <br>
+- **/vhelp** - Displays all commands, available from: **c0.28-c0.30**
+- **/vsettime <Time (Long)>** - Changes the Clientside World Time, available from: **c0.28-c0.30**
+- **/vlistextensions** - Displays all classic protocol extensions, available in: **c0.30 CPE**
+
 ## Why?
 ViaFabricPlus implements ViaLegacy/ViaAprilFools clientside and adds a ton of fixes that improve the game experience, <br>
 as does [multiconnect](https://github.com/Earthcomputer/multiconnect) from Earthcomputer.
