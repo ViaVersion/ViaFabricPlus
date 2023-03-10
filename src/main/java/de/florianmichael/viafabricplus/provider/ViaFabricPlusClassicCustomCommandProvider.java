@@ -20,6 +20,7 @@ package de.florianmichael.viafabricplus.provider;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolCommands;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ICommand;
+import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import net.raphimc.vialegacy.ViaLegacy;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicCustomCommandProvider;
 
@@ -30,6 +31,8 @@ public class ViaFabricPlusClassicCustomCommandProvider extends ClassicCustomComm
 
     @Override
     public boolean handleChatMessage(UserConnection user, String message) {
+        if (!GeneralSettings.getClassWrapper().allowClassicProtocolCommandUsage.getValue()) return super.handleChatMessage(user, message);
+
         try {
             if (message.startsWith(ClassicProtocolCommands.COMMAND_PREFIX)) {
                 message = message.substring(ClassicProtocolCommands.COMMAND_PREFIX.length());
