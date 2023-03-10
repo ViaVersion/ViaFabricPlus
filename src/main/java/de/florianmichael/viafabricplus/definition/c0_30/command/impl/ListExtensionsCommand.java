@@ -24,7 +24,7 @@ import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 
-public class ListExtensions implements ICommand {
+public class ListExtensionsCommand implements ICommand {
     @Override
     public String name() {
         return "listextensions";

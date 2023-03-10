@@ -17,9 +17,9 @@
  */
 package de.florianmichael.viafabricplus.definition.c0_30.command;
 
-import de.florianmichael.viafabricplus.definition.c0_30.command.impl.Help;
-import de.florianmichael.viafabricplus.definition.c0_30.command.impl.ListExtensions;
-import de.florianmichael.viafabricplus.definition.c0_30.command.impl.SetTime;
+import de.florianmichael.viafabricplus.definition.c0_30.command.impl.HelpCommand;
+import de.florianmichael.viafabricplus.definition.c0_30.command.impl.ListExtensionsCommand;
+import de.florianmichael.viafabricplus.definition.c0_30.command.impl.SetTimeCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +29,8 @@ public class ClassicProtocolCommands {
     public final static List<ICommand> commands = new ArrayList<>();
 
     public static void load() {
-        commands.add(new Help());
-        commands.add(new SetTime());
-        commands.add(new ListExtensions());
+        commands.add(new HelpCommand());
+        commands.add(new SetTimeCommand());
+        commands.add(new ListExtensionsCommand());
     }
 }

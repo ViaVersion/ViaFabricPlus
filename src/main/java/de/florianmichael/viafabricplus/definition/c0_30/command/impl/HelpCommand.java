@@ -17,40 +17,29 @@
  */
 package de.florianmichael.viafabricplus.definition.c0_30.command.impl;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolCommands;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ICommand;
 import net.minecraft.util.Formatting;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;
 
-public class SetTime implements ICommand {
+public class HelpCommand implements ICommand {
+
     @Override
     public String name() {
-        return "settime";
+        return "help";
     }
 
     @Override
     public String description() {
-        return "<Time (Long)>";
+        return null;
     }
 
     @Override
-    public void execute(String[] args) throws Exception {
-        final UserConnection connection = currentViaConnection();
-        if (!connection.has(TimeLockStorage.class)) {
-            this.sendFeedback(Formatting.RED + "This command is only for <=" + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName());
-            return;
-        }
-        try {
-            if (args.length == 1) {
-                final long time = Long.parseLong(args[0]) % 24_000L;
-                connection.get(TimeLockStorage.class).setTime(time);
-                this.sendFeedback(Formatting.GREEN + "Time has been set to " + Formatting.GOLD + time);
-            } else {
-                this.sendUsage();
-            }
-        } catch (Throwable ignored) {
-            this.sendUsage();
+    public void execute(String[] args) {
+        sendFeedback(Formatting.GREEN + " Loaded " + Formatting.GOLD + (ClassicProtocolCommands.commands.size() - 1) + Formatting.GREEN + " commands");
+
+        for (ICommand command : ClassicProtocolCommands.commands) {
+            if (command.name().equals(name())) continue;
+            command.sendUsage();
         }
     }
 }
