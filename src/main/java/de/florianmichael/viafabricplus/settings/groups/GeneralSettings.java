@@ -31,6 +31,7 @@ public class GeneralSettings extends SettingGroup {
 
     public GeneralSettings() {
         super("General");
+        mainButtonOrientation.setValue(1); // Default value
     }
 
     public static GeneralSettings getClassWrapper() {
