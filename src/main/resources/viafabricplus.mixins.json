@@ -69,6 +69,7 @@
     "fixes.entity.MixinPlayerEntity",
     "fixes.entity.MixinSquidEntity",
     "fixes.entity.MixinVexEntity",
+    "fixes.entity.MixinWolfEntity",
     "fixes.input.MixinKeyboard",
     "fixes.input.MixinKeyboardInput",
     "fixes.input.MixinMouse",
@@ -138,10 +139,12 @@
     "fixes.viaversion.protocol1_9to1_8.MixinEntityTracker1_9",
     "fixes.viaversion.protocol1_9to1_8.MixinMetadataRewriter1_9To1_8",
     "fixes.viaversion.protocol1_9to1_8.MixinMovementTracker",
-    "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
-    "fixes.entity.MixinWolfEntity"
+    "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "fixes.block.MixinAbstractBlock"
+  ]
 }

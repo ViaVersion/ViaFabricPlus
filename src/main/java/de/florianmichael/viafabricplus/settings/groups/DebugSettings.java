@@ -48,6 +48,9 @@ public class DebugSettings extends SettingGroup {
     public final ProtocolSyncBooleanSetting replaceSneaking = new ProtocolSyncBooleanSetting(this, "Replace sneaking", ProtocolRange.andOlder(ProtocolVersion.v1_7_6));
     public final ProtocolSyncBooleanSetting longSneaking = new ProtocolSyncBooleanSetting(this, "Long sneaking", ProtocolRange.andOlder(ProtocolVersion.v1_7_6));
 
+    // r1_5tor1_5_1 -> r1_4_6tor1_4_7
+    public final ProtocolSyncBooleanSetting legacyMiningSpeeds = new ProtocolSyncBooleanSetting(this, "Legacy mining speeds", ProtocolRange.andOlder(LegacyProtocolVersion.r1_4_6tor1_4_7));
+
     public DebugSettings() {
         super("Debug");
     }
