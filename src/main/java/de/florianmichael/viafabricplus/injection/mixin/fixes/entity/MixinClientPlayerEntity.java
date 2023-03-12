@@ -74,7 +74,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     private double lastZ;
     @Unique
-    private boolean protocolhack_areSwingCanceledThisTick = false;
+    private boolean viafabricplus_areSwingCanceledThisTick = false;
 
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
@@ -140,11 +140,11 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Inject(method = "swingHand", at = @At("HEAD"), cancellable = true)
     public void injectSwingHand(Hand hand, CallbackInfo ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && protocolhack_areSwingCanceledThisTick) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && viafabricplus_areSwingCanceledThisTick) {
             ci.cancel();
         }
 
-        protocolhack_areSwingCanceledThisTick = false;
+        viafabricplus_areSwingCanceledThisTick = false;
     }
 
     @Inject(
@@ -215,6 +215,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Override
     public void viafabricplus_cancelSwingOnce() {
-        protocolhack_areSwingCanceledThisTick = true;
+        viafabricplus_areSwingCanceledThisTick = true;
     }
 }

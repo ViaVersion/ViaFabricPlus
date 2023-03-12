@@ -37,7 +37,7 @@ public class MixinPaneBlock extends HorizontalConnectingBlock {
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return protocolhack_get1_8Shape(state);
+            return viafabricplus_get1_8Shape(state);
         }
         return super.getOutlineShape(state, world, pos, context);
     }
@@ -45,7 +45,7 @@ public class MixinPaneBlock extends HorizontalConnectingBlock {
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return protocolhack_get1_8Shape(state);
+            return viafabricplus_get1_8Shape(state);
         }
         return super.getCollisionShape(state, world, pos, context);
     }
@@ -69,7 +69,7 @@ public class MixinPaneBlock extends HorizontalConnectingBlock {
     private final VoxelShape viafabricplus_north_south_combined_shape_v1_8_x = Block.createCuboidShape(7, 0, 0, 9, 16, 16);
 
     @Unique
-    public VoxelShape protocolhack_get1_8Shape(BlockState state) {
+    public VoxelShape viafabricplus_get1_8Shape(BlockState state) {
         VoxelShape finalShape = VoxelShapes.empty();
 
         final boolean isNorthFacing = state.get(NORTH);

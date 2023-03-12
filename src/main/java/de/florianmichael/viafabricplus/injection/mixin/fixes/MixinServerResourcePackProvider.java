@@ -44,7 +44,7 @@ import java.util.Map;
 public class MixinServerResourcePackProvider {
 
     @Unique
-    private File protocolhack_trackedFile;
+    private File viafabricplus_trackedFile;
 
     @Redirect(method = "getDownloadHeaders", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;getGameVersion()Lnet/minecraft/GameVersion;"))
     private static GameVersion editHeaders() {
@@ -67,7 +67,7 @@ public class MixinServerResourcePackProvider {
 
     @Inject(method = "verifyFile", at = @At("HEAD"))
     public void keepFile(String expectedSha1, File file, CallbackInfoReturnable<Boolean> cir) {
-        protocolhack_trackedFile = file;
+        viafabricplus_trackedFile = file;
     }
 
     @Redirect(method = "verifyFile", at = @At(value = "INVOKE", target = "Lcom/google/common/hash/HashCode;toString()Ljava/lang/String;", remap = false))
@@ -75,9 +75,9 @@ public class MixinServerResourcePackProvider {
         try {
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 //noinspection deprecation
-                return Hashing.sha1().hashBytes(Files.toByteArray(protocolhack_trackedFile)).toString();
+                return Hashing.sha1().hashBytes(Files.toByteArray(viafabricplus_trackedFile)).toString();
             } else if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_18)) {
-                return DigestUtils.sha1Hex(new FileInputStream(protocolhack_trackedFile));
+                return DigestUtils.sha1Hex(new FileInputStream(viafabricplus_trackedFile));
             }
         } catch (IOException ignored) {
         }

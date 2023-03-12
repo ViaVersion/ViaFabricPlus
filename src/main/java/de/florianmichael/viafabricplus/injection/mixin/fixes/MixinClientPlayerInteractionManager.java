@@ -62,11 +62,12 @@ public abstract class MixinClientPlayerInteractionManager {
     @Shadow protected abstract ActionResult interactBlockInternal(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult);
 
     @Shadow @Final private ClientPlayNetworkHandler networkHandler;
-    @Unique
-    private ItemStack protocolhack_oldCursorStack;
 
     @Unique
-    private List<ItemStack> protocolhack_oldItems;
+    private ItemStack viafabricplus_oldCursorStack;
+
+    @Unique
+    private List<ItemStack> viafabricplus_oldItems;
 
     @Inject(method = "attackEntity", at = @At("HEAD"))
     private void injectAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
@@ -79,13 +80,13 @@ public abstract class MixinClientPlayerInteractionManager {
     @ModifyVariable(method = "clickSlot", at = @At(value = "STORE"), ordinal = 0)
     private List<ItemStack> captureOldItems(List<ItemStack> oldItems) {
         assert client.player != null;
-        protocolhack_oldCursorStack = client.player.currentScreenHandler.getCursorStack().copy();
-        return this.protocolhack_oldItems = oldItems;
+        viafabricplus_oldCursorStack = client.player.currentScreenHandler.getCursorStack().copy();
+        return this.viafabricplus_oldItems = oldItems;
     }
 
     // Special Cases
     @Unique
-    private boolean protocolhack_shouldEmpty(final SlotActionType type, final int slot) {
+    private boolean viafabricplus_shouldEmpty(final SlotActionType type, final int slot) {
         // quick craft always uses empty stack for verification
         if (type == SlotActionType.QUICK_CRAFT) return true;
 
@@ -102,12 +103,12 @@ public abstract class MixinClientPlayerInteractionManager {
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
                 ItemStack slotItemBeforeModification;
 
-                if (this.protocolhack_shouldEmpty(clickSlot.getActionType(), clickSlot.getSlot()))
+                if (this.viafabricplus_shouldEmpty(clickSlot.getActionType(), clickSlot.getSlot()))
                     slotItemBeforeModification = ItemStack.EMPTY;
-                else if (clickSlot.getSlot() < 0 || clickSlot.getSlot() >= protocolhack_oldItems.size())
-                    slotItemBeforeModification = protocolhack_oldCursorStack;
+                else if (clickSlot.getSlot() < 0 || clickSlot.getSlot() >= viafabricplus_oldItems.size())
+                    slotItemBeforeModification = viafabricplus_oldCursorStack;
                 else
-                    slotItemBeforeModification = protocolhack_oldItems.get(clickSlot.getSlot());
+                    slotItemBeforeModification = viafabricplus_oldItems.get(clickSlot.getSlot());
 
                 final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, networkHandler.getConnection().channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get());
 
@@ -121,8 +122,8 @@ public abstract class MixinClientPlayerInteractionManager {
 
                 clickSlotPacket.sendToServer(Protocol1_17To1_16_4.class);
 
-                protocolhack_oldCursorStack = null;
-                protocolhack_oldItems = null;
+                viafabricplus_oldCursorStack = null;
+                viafabricplus_oldItems = null;
 
                 return;
             }
@@ -152,15 +153,15 @@ public abstract class MixinClientPlayerInteractionManager {
     }
 
     @Unique
-    private ActionResult protocolhack_actionResult;
+    private ActionResult viafabricplus_actionResult;
 
     @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
     public void cacheActionResult(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            this.protocolhack_actionResult = this.interactBlockInternal(player, hand, hitResult);
+            this.viafabricplus_actionResult = this.interactBlockInternal(player, hand, hitResult);
 
-            if (this.protocolhack_actionResult == ActionResult.FAIL) {
-                cir.setReturnValue(this.protocolhack_actionResult);
+            if (this.viafabricplus_actionResult == ActionResult.FAIL) {
+                cir.setReturnValue(this.viafabricplus_actionResult);
             }
         }
     }
@@ -168,7 +169,7 @@ public abstract class MixinClientPlayerInteractionManager {
     @Redirect(method = "method_41933", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlockInternal(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;"))
     public ActionResult provideCachedResult(ClientPlayerInteractionManager instance, ClientPlayerEntity player, Hand hand, BlockHitResult hitResult) {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return this.protocolhack_actionResult;
+            return this.viafabricplus_actionResult;
         }
         return interactBlockInternal(player, hand, hitResult);
     }

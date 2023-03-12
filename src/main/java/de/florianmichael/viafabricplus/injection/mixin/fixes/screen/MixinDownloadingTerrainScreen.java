@@ -40,7 +40,7 @@ public class MixinDownloadingTerrainScreen extends Screen {
     @Shadow private boolean closeOnNextTick;
     @Shadow private boolean ready;
     @Unique
-    private int protocolhack_tickCounter;
+    private int viafabricplus_tickCounter;
 
     public MixinDownloadingTerrainScreen(Text title) {
         super(title);
@@ -49,9 +49,9 @@ public class MixinDownloadingTerrainScreen extends Screen {
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void injectTick(CallbackInfo ci) {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
-            protocolhack_tickCounter++;
+            viafabricplus_tickCounter++;
 
-            if (protocolhack_tickCounter % 20 == 0) {
+            if (viafabricplus_tickCounter % 20 == 0) {
                 MinecraftClient.getInstance().getNetworkHandler().sendPacket(new KeepAliveC2SPacket(0));
             }
         }

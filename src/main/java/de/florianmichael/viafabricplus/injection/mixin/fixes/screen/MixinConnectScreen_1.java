@@ -93,7 +93,7 @@ public class MixinConnectScreen_1 {
                     userConnection.put(new ChatSession1_19_2(userConnection, profileKey, playerKeyPair.privateKey()));
 
                     if (ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(ProtocolVersion.v1_19)) {
-                        final byte[] legacyKey = ((IPublicKeyData) (Object) publicKeyData).viafabricplus_get1_19_0Key().array();
+                        final byte[] legacyKey = ((IPublicKeyData) (Object) publicKeyData).viafabricplus_getV1Key().array();
                         if (legacyKey != null) {
                             userConnection.put(new ChatSession1_19_0(userConnection, profileKey, playerKeyPair.privateKey(), legacyKey));
                         } else {

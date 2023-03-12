@@ -28,15 +28,15 @@ import java.nio.ByteBuffer;
 public class MixinPlayerPublicKey_PublicKeyData implements IPublicKeyData {
 
     @Unique
-    private ByteBuffer protocolhack_1_19_0Key;
+    private ByteBuffer viafabricplus_v1_key;
 
     @Override
-    public ByteBuffer viafabricplus_get1_19_0Key() {
-        return protocolhack_1_19_0Key;
+    public ByteBuffer viafabricplus_getV1Key() {
+        return viafabricplus_v1_key;
     }
 
     @Override
-    public void viafabricplus_set1_19_0Key(ByteBuffer byteBuffer) {
-        this.protocolhack_1_19_0Key = byteBuffer;
+    public void viafabricplus_setV1Key(ByteBuffer byteBuffer) {
+        this.viafabricplus_v1_key = byteBuffer;
     }
 }

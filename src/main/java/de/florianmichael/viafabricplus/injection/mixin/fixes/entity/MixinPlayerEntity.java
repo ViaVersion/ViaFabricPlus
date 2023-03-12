@@ -43,7 +43,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Unique
-    private static final EntityDimensions protocolhack_SNEAKING_DIMENSIONS_1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
+    private static final EntityDimensions viafabricplus_SNEAKING_DIMENSIONS_1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
     @Shadow
     @Final
     private PlayerAbilities abilities;
@@ -81,7 +81,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 ci.setReturnValue(PlayerEntity.STANDING_DIMENSIONS);
             } else if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-                ci.setReturnValue(protocolhack_SNEAKING_DIMENSIONS_1_13_2);
+                ci.setReturnValue(viafabricplus_SNEAKING_DIMENSIONS_1_13_2);
             }
         }
     }
