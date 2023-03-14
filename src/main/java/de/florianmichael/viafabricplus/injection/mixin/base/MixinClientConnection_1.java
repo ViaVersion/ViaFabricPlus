@@ -79,9 +79,9 @@ public class MixinClientConnection_1 {
 
     @Inject(method = "initChannel", at = @At("TAIL"))
     public void hackNettyPipeline(Channel channel, CallbackInfo ci) {
-        final boolean isBedrock = ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest);
+        final boolean rakNet = ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest);
 
-        if (channel instanceof SocketChannel || isBedrock) {
+        if (channel instanceof SocketChannel || rakNet) {
             final UserConnection user = new UserConnectionImpl(channel, true);
             channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).set(user);
             channel.attr(ViaFabricPlus.LOCAL_MINECRAFT_CONNECTION).set(field_11663);
@@ -91,7 +91,7 @@ public class MixinClientConnection_1 {
             channel.pipeline().addBefore("encoder", NettyConstants.HANDLER_ENCODER_NAME, new VLBViaEncodeHandler(user));
             channel.pipeline().addBefore("decoder", NettyConstants.HANDLER_DECODER_NAME, new VFPVLBViaDecodeHandler(user));
 
-            if (isBedrock) {
+            if (rakNet) {
                 user.getProtocolInfo().getPipeline().add(BedrockBaseProtocol.INSTANCE);
 
                 channel.pipeline().replace("splitter", BedrockRakNetConstants.BATCH_LENGTH_HANDLER_NAME, new BatchLengthCodec());
@@ -108,8 +108,6 @@ public class MixinClientConnection_1 {
                 // Pinging in RakNet is something different
                 if (RakNetPingSessions.isPingSession(address.getAddress())) {
                     RakNetPingSessions.pingSessions.remove(address.getAddress());
-                    Via.getPlatform().getLogger().info("ViaFabricPlus is capturing RakNet/Ping protocol");
-
                     { // Temporary fix for the ping encoder
                         final RakClientChannel rakChannel = (RakClientChannel) channel;
 
@@ -129,10 +127,6 @@ public class MixinClientConnection_1 {
 
                 channel.pipeline().addBefore("prepender", PreNettyConstants.HANDLER_ENCODER_NAME, new VFPPreNettyEncoder(user));
                 channel.pipeline().addBefore("splitter", PreNettyConstants.HANDLER_DECODER_NAME, new VFPPreNettyDecoder(user));
-            }
-
-            for (String name : channel.pipeline().names()) {
-                System.out.println(name);
             }
         }
     }
