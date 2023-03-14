@@ -42,7 +42,7 @@ public class MixinCamera {
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setPos(DDD)V", shift = At.Shift.BEFORE))
     public void onUpdateHeight(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        if (!DebugSettings.getClassWrapper().replaceSneaking.getValue() && DebugSettings.getClassWrapper().sneakInstant.getValue()) {
+        if (!DebugSettings.INSTANCE.replaceSneaking.getValue() && DebugSettings.INSTANCE.sneakInstant.getValue()) {
             cameraY = lastCameraY = focusedEntity.getStandingEyeHeight();
         }
     }
@@ -51,14 +51,14 @@ public class MixinCamera {
     public void onUpdateEyeHeight(CallbackInfo ci) {
         if (this.focusedEntity == null) return;
 
-        if (DebugSettings.getClassWrapper().replaceSneaking.getValue()) {
+        if (DebugSettings.INSTANCE.replaceSneaking.getValue()) {
             ci.cancel();
             this.lastCameraY = this.cameraY;
 
             if (this.focusedEntity instanceof PlayerEntity player && !player.isSleeping()) {
                 if (player.isSneaking()) {
                     cameraY = 1.54F;
-                } else if (!DebugSettings.getClassWrapper().longSneaking.getValue()) {
+                } else if (!DebugSettings.INSTANCE.longSneaking.getValue()) {
                     cameraY = 1.62F;
                 } else if (cameraY < 1.62F) {
                     float delta = 1.62F - cameraY;

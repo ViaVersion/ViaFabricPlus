@@ -30,7 +30,7 @@ public class MixinItemCooldownManager {
 
     @Inject(method = "set", at = @At("HEAD"), cancellable = true)
     public void injectSet(Item item, int duration, CallbackInfo ci) {
-        if (DebugSettings.getClassWrapper().removeCooldowns.getValue()) {
+        if (DebugSettings.INSTANCE.removeCooldowns.getValue()) {
             ci.cancel();
         }
     }

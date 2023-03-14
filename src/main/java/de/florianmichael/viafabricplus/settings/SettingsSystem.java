@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.event.InitializeSettingsListener;
+import de.florianmichael.viafabricplus.event.InitializeSettingsCallback;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.groups.*;
@@ -41,14 +41,14 @@ public class SettingsSystem {
 
     public void init() {
         addGroup(
-                GeneralSettings.getClassWrapper(),
-                BridgeSettings.getClassWrapper(),
-                MPPassSettings.getClassWrapper(),
-                VisualSettings.getClassWrapper(),
-                DebugSettings.getClassWrapper()
+                GeneralSettings.INSTANCE,
+                BridgeSettings.INSTANCE,
+                MPPassSettings.INSTANCE,
+                VisualSettings.INSTANCE,
+                DebugSettings.INSTANCE
         );
 
-        ViaFabricPlus.INSTANCE.getEventDispatcher().post(new InitializeSettingsListener.InitializeSettingsEvent());
+        InitializeSettingsCallback.EVENT.invoker().onInitializeSettings();
 
         loadConfig();
         Runtime.getRuntime().addShutdownHook(new Thread(this::save));

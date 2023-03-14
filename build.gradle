@@ -53,10 +53,9 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	libs "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
-	libs "com.github.FlorianMichael:DietrichEvents:${project.dietrichevents_version}"
 	libs("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
 		exclude group: "io.netty", module: "netty-common"
 		exclude group: "io.netty", module: "netty-buffer"
@@ -74,6 +73,8 @@ dependencies {
 
 	libs "net.lenni0451.mcstructs:text:${project.mcstructs_text_version}"
 	libs "net.lenni0451:Reflect:${project.reflect_version}"
+
+	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 }
 
 processResources {

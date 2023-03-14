@@ -23,12 +23,16 @@ import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemPr
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionListener;
-import de.florianmichael.viafabricplus.event.FinishViaLoadingBaseStartupListener;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.event.FinishViaLoadingBaseStartupCallback;
 import de.florianmichael.viafabricplus.vialoadingbase.platform.ViaAprilFoolsPlatformImpl;
 import de.florianmichael.viafabricplus.vialoadingbase.platform.ViaBedrockPlatformImpl;
 import de.florianmichael.viafabricplus.vialoadingbase.platform.ViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.vialoadingbase.provider.*;
+import de.florianmichael.viafabricplus.vialoadingbase.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
+import de.florianmichael.viafabricplus.vialoadingbase.provider.vialegacy.*;
+import de.florianmichael.viafabricplus.vialoadingbase.provider.viaversion.ViaFabricPlusHandItemProvider;
+import de.florianmichael.viafabricplus.vialoadingbase.provider.viaversion.ViaFabricPlusMovementTransmitterProvider;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.SubPlatform;
 import io.netty.util.AttributeKey;
@@ -94,8 +98,9 @@ public class ViaLoadingBaseStartup {
             providers.use(ClassicCustomCommandProvider.class, new ViaFabricPlusClassicCustomCommandProvider());
             providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
         });
-        builder = builder.onProtocolReload(protocolVersion -> ViaFabricPlus.INSTANCE.getEventDispatcher().post(new ChangeProtocolVersionListener.ChangeProtocolVersionEvent(protocolVersion)));
+        builder = builder.onProtocolReload(protocolVersion -> ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(protocolVersion));
         builder.build();
-        ViaFabricPlus.INSTANCE.getEventDispatcher().post(new FinishViaLoadingBaseStartupListener.FinishViaLoadingBaseStartupEvent());
+
+        FinishViaLoadingBaseStartupCallback.EVENT.invoker().onFinishViaLoadingBaseStartup();
     }
 }

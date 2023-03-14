@@ -148,6 +148,6 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))
     public boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
-        return instance.isSecureChatEnforced() || VisualSettings.getClassWrapper().disableSecureChatWarning.getValue();
+        return instance.isSecureChatEnforced() || VisualSettings.INSTANCE.disableSecureChatWarning.getValue();
     }
 }

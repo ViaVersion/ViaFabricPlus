@@ -17,10 +17,8 @@
  */
 package de.florianmichael.viafabricplus.definition.c0_30;
 
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionListener;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
-import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -44,7 +42,7 @@ public class ClassicItemSelectionScreen extends Screen {
     public static void create() {
         INSTANCE = new ClassicItemSelectionScreen();
 
-        ViaFabricPlus.INSTANCE.getEventDispatcher().subscribe(ChangeProtocolVersionListener.class, protocolVersion -> {
+        ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
             if (protocolVersion.isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 INSTANCE.reload(protocolVersion, false);
             }

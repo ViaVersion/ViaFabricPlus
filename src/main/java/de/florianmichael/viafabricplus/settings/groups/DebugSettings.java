@@ -24,7 +24,7 @@ import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 public class DebugSettings extends SettingGroup {
-    public static final DebugSettings self = new DebugSettings();
+    public final static DebugSettings INSTANCE = new DebugSettings();
 
     // 1.19 -> 1.18.2
     public final ProtocolSyncBooleanSetting disableSequencing = new ProtocolSyncBooleanSetting(this, "Disable sequencing", ProtocolRange.andOlder(ProtocolVersion.v1_18_2));
@@ -53,9 +53,5 @@ public class DebugSettings extends SettingGroup {
 
     public DebugSettings() {
         super("Debug");
-    }
-
-    public static DebugSettings getClassWrapper() {
-        return DebugSettings.self;
     }
 }

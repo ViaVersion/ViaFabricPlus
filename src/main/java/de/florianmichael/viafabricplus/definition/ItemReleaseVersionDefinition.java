@@ -18,8 +18,7 @@
 package de.florianmichael.viafabricplus.definition;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionListener;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.minecraft.item.Item;
@@ -40,10 +39,10 @@ public class ItemReleaseVersionDefinition {
     public static void create() {
         INSTANCE = new ItemReleaseVersionDefinition();
 
-        ViaFabricPlus.INSTANCE.getEventDispatcher().subscribe(ChangeProtocolVersionListener.class, (protocolVersion -> {
+        ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
             INSTANCE.currentMap.clear();
             INSTANCE.currentMap.addAll(Registries.ITEM.stream().filter(item -> INSTANCE.contains(item, protocolVersion)).toList());
-        }));
+        });
     }
 
     private final Map<Item, ProtocolRange[]> itemMap = new HashMap<>();

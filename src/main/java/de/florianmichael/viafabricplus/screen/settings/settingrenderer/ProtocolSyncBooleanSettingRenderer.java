@@ -62,7 +62,7 @@ public class ProtocolSyncBooleanSettingRenderer extends AbstractSettingRenderer 
         final int length = textRenderer.drawWithShadow(matrices, Formatting.GRAY + this.value.getName(), 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
 
         textRenderer.drawWithShadow(matrices, "(" + this.value.getProtocolRange().toString() + ")", length + 2, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
-        if (GeneralSettings.getClassWrapper().automaticallyChangeValuesBasedOnTheCurrentVersion.getValue()) color = color.darker().darker();
+        if (GeneralSettings.INSTANCE.automaticallyChangeValuesBasedOnTheCurrentVersion.getValue()) color = color.darker().darker();
         textRenderer.drawWithShadow(matrices, text, entryWidth - textRenderer.getWidth(text) - 3 - 3, entryHeight / 2F - textRenderer.fontHeight / 2F, color.getRGB());
 
         matrices.pop();

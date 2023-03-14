@@ -43,7 +43,7 @@ public class MixinDebugHud {
 
     @Inject(method = "getLeftText", at = @At("RETURN"))
     public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
-        if (MinecraftClient.getInstance().isInSingleplayer() || !BridgeSettings.getClassWrapper().showExtraInformationInDebugHud.getValue()) return;
+        if (MinecraftClient.getInstance().isInSingleplayer() || !BridgeSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) return;
 
         final List<String> information = new ArrayList<>();
         if (MinecraftClient.getInstance().getNetworkHandler() != null) {

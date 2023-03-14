@@ -99,14 +99,14 @@ public abstract class MixinMinecraftClient {
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
             ordinal = 4, shift = At.Shift.BEFORE))
     public void injectTick(CallbackInfo ci) {
-        if (!DebugSettings.getClassWrapper().executeInputsInSync.getValue()) return;
+        if (!DebugSettings.INSTANCE.executeInputsInSync.getValue()) return;
 
         SyncInputExecutor.callback();
     }
 
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasRidingInventory()Z"))
     private void onInventoryKeyPressed(CallbackInfo ci) throws Exception {
-        if (getNetworkHandler() != null && DebugSettings.getClassWrapper().sendOpenInventoryPacket.getValue()) {
+        if (getNetworkHandler() != null && DebugSettings.INSTANCE.sendOpenInventoryPacket.getValue()) {
             final UserConnection viaConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ViaLoadingBaseStartup.LOCAL_VIA_CONNECTION).get();
 
             if (viaConnection != null && ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_11_1)) {

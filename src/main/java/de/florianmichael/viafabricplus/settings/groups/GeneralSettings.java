@@ -22,7 +22,7 @@ import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.type_impl.ModeSetting;
 
 public class GeneralSettings extends SettingGroup {
-    private final static GeneralSettings self = new GeneralSettings();
+    public final static GeneralSettings INSTANCE = new GeneralSettings();
 
     public final ModeSetting mainButtonOrientation = new ModeSetting(this, "Main button orientation", "Left; Top", "Right; Top", "Left; Bottom", "Right: Bottom");
     public final BooleanSetting removeNotAvailableItemsFromCreativeTab = new BooleanSetting(this, "Remove not available items from creative tab", true);
@@ -32,9 +32,5 @@ public class GeneralSettings extends SettingGroup {
     public GeneralSettings() {
         super("General");
         mainButtonOrientation.setValue(1); // Default value
-    }
-
-    public static GeneralSettings getClassWrapper() {
-        return GeneralSettings.self;
     }
 }

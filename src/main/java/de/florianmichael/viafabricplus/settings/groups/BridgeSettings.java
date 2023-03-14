@@ -21,7 +21,7 @@ import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
 
 public class BridgeSettings extends SettingGroup {
-    private final static BridgeSettings self = new BridgeSettings();
+    public final static BridgeSettings INSTANCE = new BridgeSettings();
 
     public final BooleanSetting optionsButtonInGameOptions = new BooleanSetting(this, "Options button in game options", true);
     public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, "Show extra information in Debug Hud", true);
@@ -29,9 +29,5 @@ public class BridgeSettings extends SettingGroup {
 
     public BridgeSettings() {
         super("Bridge");
-    }
-
-    public static BridgeSettings getClassWrapper() {
-        return BridgeSettings.self;
     }
 }

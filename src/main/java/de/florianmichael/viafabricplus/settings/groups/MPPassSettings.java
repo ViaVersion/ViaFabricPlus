@@ -21,7 +21,7 @@ import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
 
 public class MPPassSettings extends SettingGroup {
-    private final static MPPassSettings self = new MPPassSettings();
+    public final static MPPassSettings INSTANCE = new MPPassSettings();
 
     public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, "Use BetaCraft authentication", true);
     public final BooleanSetting allowViaLegacyToCallJoinServerToVerifySession = new BooleanSetting(this, "Allow ViaLegacy to call joinServer() to verify session", true);
@@ -29,9 +29,5 @@ public class MPPassSettings extends SettingGroup {
 
     public MPPassSettings() {
         super("MP Pass");
-    }
-
-    public static MPPassSettings getClassWrapper() {
-        return MPPassSettings.self;
     }
 }

@@ -19,9 +19,8 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.entity;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
-import de.florianmichael.viafabricplus.event.SkipIdlePacketListener;
+import de.florianmichael.viafabricplus.event.SkipIdlePacketCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
@@ -114,10 +113,10 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(this.getX(), this.getY(), this.getZ(), this.onGround));
             } else if (bl4) {
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(this.getYaw(), this.getPitch(), this.onGround));
-            } else if (this.lastOnGround != this.onGround || DebugSettings.getClassWrapper().sendIdlePacket.getValue()) {
+            } else if (this.lastOnGround != this.onGround || DebugSettings.INSTANCE.sendIdlePacket.getValue()) {
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(this.onGround));
             } else {
-                ViaFabricPlus.INSTANCE.getEventDispatcher().post(new SkipIdlePacketListener.SkipIdlePacketEvent());
+                SkipIdlePacketCallback.EVENT.invoker().onSkipIdlePacket();
             }
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 ++this.ticksSinceLastPositionPacketSent;
@@ -208,7 +207,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Override
     public int getArmor() {
-        if (VisualSettings.getClassWrapper().emulateArmorHud.getValue()) {
+        if (VisualSettings.INSTANCE.emulateArmorHud.getValue()) {
             return ArmorPointsDefinition.sum();
         }
         return super.getArmor();

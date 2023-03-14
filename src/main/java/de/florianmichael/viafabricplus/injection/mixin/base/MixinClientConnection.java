@@ -18,9 +18,9 @@
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
-import de.florianmichael.viafabricplus.vialoadingbase.platform.pre_netty.PreNettyConstants;
-import de.florianmichael.viafabricplus.vialoadingbase.platform.raknet.BedrockRakNetConstants;
-import de.florianmichael.viafabricplus.vialoadingbase.platform.raknet.RakNetPingSessions;
+import de.florianmichael.viafabricplus.vialoadingbase.constants.PreNettyConstants;
+import de.florianmichael.viafabricplus.vialoadingbase.constants.BedrockRakNetConstants;
+import de.florianmichael.viafabricplus.vialoadingbase.platform.viabedrock.RakNetPingSessions;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.event.PipelineReorderEvent;
 import io.netty.bootstrap.AbstractBootstrap;

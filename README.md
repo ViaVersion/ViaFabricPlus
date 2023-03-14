@@ -83,45 +83,33 @@ Settings are optional settings that can turn fixes on and off, originally they w
 ![](/.github/images/settings.png)
 
 ## Addons
-To make a ViaFabricPlus addon you just have to implement the ViaFabricPlusAddon interface in your main class:
+There is no real addon base, to create addons you can simply use the Fabric system, and then interact with ViaFabricPlus via the **EventDispatcher**.
 ```java
-package net.example;
+public class ViaFabricPlusExampleAddon implements ClientModInitializer {
 
-public class ViaFabricPlusExampleAddon implements ViaFabricPlusAddon {
-    
-    @Override
-    public void onLoad() {
-        // called after ViaVersion and Minecraft is initialized
-    }
-    
-    @Override
-    public void onChangeVersion(ComparableProtocolVersion protocolVersion) {
-        // called when the user changes the target version in the gui
-    }
-}
-```
-To load the addon you have to specify the addon main class as entrypoint in your *fabric.mod.json*:
-```json
-{
-  "entrypoints": {
-    "viafabricplus": [
-      "net.example.ViaFabricPlusExampleAddon"
-    ]
+  @Override
+  public void onInitializeClient() {
+    ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
+      System.out.println("Version changed to " + protocolVersion.getName());
+    });
   }
 }
 ```
+#### ViaFabricPlus has 7 events at the moment:
+| Callback class name                  | Description                                                                                |
+|--------------------------------------|--------------------------------------------------------------------------------------------|
+| ChangeProtocolVersionCallback        | Called when the user changes the target version in the screen                              |
+| FinishMinecraftLoadCallback          | Called when Minecraft is finished with loading all its components                          |
+| FinishViaLoadingBaseStartupCallback  | Called when ViaLoadingBase and Via* is loaded and ready to use                             |
+| InitializeSettingsCallback           | Called after the default setting groups are loaded and before the setting config is loaded |
+| LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)       |
+| PreLoadCallback                      | Called before everything (Pre-pre load)                                                    |
+| SkipIdlePacketCallback               | In case you need an event as soon as the idle packet is skipped in the <= 1.8              |
 
 ### General API
-In case you need an event as soon as the idle packet is skipped in the <= 1.8, you can do that: <br>
-```java
-IdlePacketExecutor.registerIdlePacketSkipExecute(() -> {
-    // Called when the idle packet is skipped
-});
-```
-
 In case you need the release version of a material, you can do that:
 ```java
-final ProtocolRange range = ItemReleaseVersionDefinition.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
+final ProtocolRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
 
 // The Range class then contains all versions in which the item occurs. 
 // You can find out how the Range class works in the ViaLoadingBase README.
@@ -137,7 +125,7 @@ public class ExampleSettingGroup extends SettingGroup {
     
     public ExampleSettingGroup() {
         super("Example");
-        ViaFabricPlus.getClassWrapper().loadGroup(this); // should be in your onLoad method
+        ViaFabricPlus.INSTANCE.getSettingsSystem().addGroup(this); // should be in your onLoad method
     }
 }
 ```
@@ -172,7 +160,34 @@ public void onLoad() {
 ```
 
 #### Implementing custom classic protocol extensions:
+```java
+public class ExampleExtensionSupport implements ClientModInitializer {
 
+  public static ClientboundPacketsc0_30cpe EXT_CLICK_DISTANCE;
+
+  @Override
+  public void onInitializeClient() {
+    PreLoadCallback.EVENT.register(() -> {
+      CustomClassicProtocolExtensions.allowExtension(ClassicProtocolExtension.CLICK_DISTANCE); // Register extension as supported
+
+      EXT_CLICK_DISTANCE = CustomClassicProtocolExtensions.createNewPacket(ClassicProtocolExtension.CLICK_DISTANCE, 0x12, (user, buf) -> buf.readShort());
+    });
+
+    FinishViaLoadingBaseStartupCallback.EVENT.register(() -> {
+      Via.getManager().getProtocolManager().getProtocol(Protocolc0_30toc0_30cpe.class).registerClientbound(EXT_CLICK_DISTANCE, null, new PacketHandlers() {
+        @Override
+        protected void register() {
+          handler(wrapper -> {
+            wrapper.cancel();
+            final short distance = wrapper.read(Type.SHORT);
+            // Do your stuff...
+          });
+        }
+      }, true);
+    });
+  }
+}
+```
 
 ## Alternatives
 - [ClientViaVersion](https://github.com/Gerrygames/ClientViaVersion): Discontinued 5zig plugin.

@@ -29,7 +29,7 @@ public class MixinPendingUpdateManager {
 
     @Inject(method = "incrementSequence", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/PendingUpdateManager;pendingSequence:Z", shift = At.Shift.BEFORE), cancellable = true)
     public void injectIncrementSequence(CallbackInfoReturnable<PendingUpdateManager> cir) {
-        if (DebugSettings.getClassWrapper().disableSequencing.getValue()) {
+        if (DebugSettings.INSTANCE.disableSequencing.getValue()) {
             cir.setReturnValue((PendingUpdateManager) (Object) this);
         }
     }

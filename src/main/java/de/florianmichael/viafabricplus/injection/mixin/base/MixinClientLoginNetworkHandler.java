@@ -17,7 +17,6 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.network.ClientLoginNetworkHandler;

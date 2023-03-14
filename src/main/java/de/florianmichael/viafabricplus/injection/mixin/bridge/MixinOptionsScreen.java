@@ -48,7 +48,7 @@ public abstract class MixinOptionsScreen extends Screen {
 
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/ClickableWidget;)Lnet/minecraft/client/gui/widget/ClickableWidget;", ordinal = 10, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     public void addValuesButton(CallbackInfo ci, GridWidget gridWidget, GridWidget.Adder adder) {
-        if (BridgeSettings.getClassWrapper().optionsButtonInGameOptions.getValue()) {
+        if (BridgeSettings.INSTANCE.optionsButtonInGameOptions.getValue()) {
             adder.add(this.createButton(Text.literal("ViaFabricPlus").styled(style -> style.withColor(Formatting.GOLD)).append(" ").append("Settings..."), () -> SettingsScreen.get((OptionsScreen) (Object) this)));
 
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && MinecraftClient.getInstance().player != null) {

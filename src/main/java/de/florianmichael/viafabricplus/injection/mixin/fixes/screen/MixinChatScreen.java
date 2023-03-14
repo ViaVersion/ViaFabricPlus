@@ -42,7 +42,7 @@ public class MixinChatScreen {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;getIndicatorAt(DD)Lnet/minecraft/client/gui/hud/MessageIndicator;"))
     public MessageIndicator removeIndicator(ChatHud instance, double mouseX, double mouseY) {
-        if (VisualSettings.getClassWrapper().hideSignatureIndicator.getValue()) {
+        if (VisualSettings.INSTANCE.hideSignatureIndicator.getValue()) {
             return null;
         }
         return instance.getIndicatorAt(mouseX, mouseY);

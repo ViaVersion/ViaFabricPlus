@@ -31,7 +31,7 @@ public class MixinItemGroup_EntriesImpl {
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isEnabled(Lnet/minecraft/resource/featuretoggle/FeatureSet;)Z"))
     public boolean removeUnknownItems(Item instance, FeatureSet featureSet) {
-        if (!GeneralSettings.getClassWrapper().removeNotAvailableItemsFromCreativeTab.getValue() || MinecraftClient.getInstance().isInSingleplayer()) return instance.isEnabled(featureSet);
+        if (!GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue() || MinecraftClient.getInstance().isInSingleplayer()) return instance.isEnabled(featureSet);
         if (ItemReleaseVersionDefinition.INSTANCE.getCurrentMap().contains(instance)) return instance.isEnabled(featureSet);
 
         return false;

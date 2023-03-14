@@ -35,9 +35,9 @@ public class HelpCommand implements ICommand {
 
     @Override
     public void execute(String[] args) {
-        sendFeedback(Formatting.GREEN + "Loaded " + Formatting.GOLD + (ClassicProtocolCommands.commands.size() - 1) + Formatting.GREEN + " commands");
+        sendFeedback(Formatting.GREEN + "Loaded " + Formatting.GOLD + (ClassicProtocolCommands.INSTANCE.commands.size() - 1) + Formatting.GREEN + " commands");
 
-        for (ICommand command : ClassicProtocolCommands.commands) {
+        for (ICommand command : ClassicProtocolCommands.INSTANCE.commands) {
             if (command.name().equals(name())) continue;
             command.sendUsage();
         }

@@ -31,7 +31,7 @@ public class MixinCreativeInventoryScreen {
 
     @Inject(method = "init", at = @At("RETURN"))
     public void replaceCreativeMenu(CallbackInfo ci) {
-        if (VisualSettings.getClassWrapper().replaceCreativeInventory.getValue()) {
+        if (VisualSettings.INSTANCE.replaceCreativeInventory.getValue()) {
             MinecraftClient.getInstance().setScreen(ClassicItemSelectionScreen.INSTANCE);
         }
     }

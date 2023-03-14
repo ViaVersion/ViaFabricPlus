@@ -105,7 +105,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     // Copyright Gaming32 - LICENSE_GENERAL_MIT file
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
     public void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
-        if (VisualSettings.getClassWrapper().replaceHurtSoundWithOOFSound.getValue()) {
+        if (VisualSettings.INSTANCE.replaceHurtSoundWithOOFSound.getValue()) {
             cir.setReturnValue(LegacySounds.RANDOM_HURT);
         }
     }

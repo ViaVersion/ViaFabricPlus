@@ -18,9 +18,7 @@
 package de.florianmichael.viafabricplus.definition;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionListener;
-import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import net.minecraft.client.MinecraftClient;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
@@ -30,7 +28,7 @@ public class ChatLengthDefinition {
     public static void create() {
         INSTANCE = new ChatLengthDefinition();
 
-        ViaFabricPlus.INSTANCE.getEventDispatcher().subscribe(ChangeProtocolVersionListener.class, protocolVersion -> {
+        ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
             INSTANCE.maxLength = 256;
             if (protocolVersion.isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
                 INSTANCE.maxLength = 100;

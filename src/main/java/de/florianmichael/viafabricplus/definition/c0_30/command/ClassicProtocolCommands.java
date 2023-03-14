@@ -26,11 +26,15 @@ import java.util.List;
 
 public class ClassicProtocolCommands {
     public final static String COMMAND_PREFIX = "/v";
-    public final static List<ICommand> commands = new ArrayList<>();
+    public static ClassicProtocolCommands INSTANCE;
 
-    public static void load() {
-        commands.add(new HelpCommand());
-        commands.add(new SetTimeCommand());
-        commands.add(new ListExtensionsCommand());
+    public final List<ICommand> commands = new ArrayList<>();
+
+    public static void create() {
+        INSTANCE = new ClassicProtocolCommands();
+
+        INSTANCE.commands.add(new HelpCommand());
+        INSTANCE.commands.add(new SetTimeCommand());
+        INSTANCE.commands.add(new ListExtensionsCommand());
     }
 }

@@ -31,7 +31,7 @@ public class MixinConnectScreen {
 
     @Inject(method = "render", at = @At("RETURN"))
     public void renderClassicProgress(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (!BridgeSettings.getClassWrapper().showClassicLoadingProgressInConnectScreen.getValue()) return;
+        if (!BridgeSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) return;
 
         ClassicProgressRenderer.renderProgress(matrices);
     }

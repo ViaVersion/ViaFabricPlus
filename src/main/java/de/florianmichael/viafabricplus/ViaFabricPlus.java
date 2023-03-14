@@ -17,7 +17,6 @@
  */
 package de.florianmichael.viafabricplus;
 
-import de.florianmichael.dietrichevents.EventDispatcher;
 import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
 import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
 import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
@@ -25,8 +24,8 @@ import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScre
 import de.florianmichael.viafabricplus.definition.c0_30.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolCommands;
 import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
-import de.florianmichael.viafabricplus.event.FinishMinecraftLoadListener;
-import de.florianmichael.viafabricplus.event.LoadListener;
+import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
+import de.florianmichael.viafabricplus.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.settings.SettingsSystem;
 import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
 
@@ -36,11 +35,10 @@ public class ViaFabricPlus {
     public final static File RUN_DIRECTORY = new File("ViaFabricPlus");
     public final static ViaFabricPlus INSTANCE = new ViaFabricPlus();
 
-    private final EventDispatcher eventDispatcher = new EventDispatcher();
     private final SettingsSystem settingsSystem = new SettingsSystem();
 
     public void init() {
-        eventDispatcher.subscribe(FinishMinecraftLoadListener.class, () -> {
+        FinishMinecraftLoadCallback.EVENT.register(() -> {
             settingsSystem.init();
 
             // General definitions
@@ -51,16 +49,12 @@ public class ViaFabricPlus {
             // Classic Stuff
             ChatLengthDefinition.create();
             ClassicItemSelectionScreen.create();
-            ClassicProtocolCommands.load();
+            ClassicProtocolCommands.create();
         });
-        eventDispatcher.post(new LoadListener.LoadEvent());
+        PreLoadCallback.EVENT.invoker().onLoad();
 
         CustomClassicProtocolExtensions.create();
         new ViaLoadingBaseStartup();
-    }
-
-    public EventDispatcher getEventDispatcher() {
-        return eventDispatcher;
     }
 
     public SettingsSystem getSettingsSystem() {

@@ -18,16 +18,14 @@
 package de.florianmichael.viafabricplus.definition.c0_30;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.dietrichevents.EventDispatcher;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
-import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionListener;
-import de.florianmichael.viafabricplus.event.LoadListener;
+import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.reflect.Enums;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.ClientboundPacketsc0_30cpe;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
+import org.lwjgl.openal.AL;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,12 +36,14 @@ import java.util.function.BiConsumer;
 public class CustomClassicProtocolExtensions {
     public static CustomClassicProtocolExtensions INSTANCE;
 
+    public static ClientboundPacketsc0_30cpe EXT_WEATHER_TYPE;
+
     public static void create() {
         CustomClassicProtocolExtensions.INSTANCE = new CustomClassicProtocolExtensions();
 
         EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
 
-        ViaFabricPlus.INSTANCE.getEventDispatcher().subscribe(LoadClassicProtocolExtensionListener.class, (classicProtocolExtension) -> {
+        LoadClassicProtocolExtensionCallback.EVENT.register(classicProtocolExtension -> {
             if (classicProtocolExtension == ClassicProtocolExtension.LONGER_MESSAGES) ChatLengthDefinition.INSTANCE.expand();
             if (classicProtocolExtension == ClassicProtocolExtension.CUSTOM_BLOCKS) ClassicItemSelectionScreen.INSTANCE.reload(ViaLoadingBase.getClassWrapper().getTargetVersion(), true);
         });
@@ -52,7 +52,9 @@ public class CustomClassicProtocolExtensions {
     public final List<ClassicProtocolExtension> ALLOWED_EXTENSIONS = Arrays.asList(ClassicProtocolExtension.ENV_WEATHER_TYPE);
     public final Map<Integer, ClientboundPacketsc0_30cpe> CUSTOM_PACKETS = new HashMap<>();
 
-    public static ClientboundPacketsc0_30cpe EXT_WEATHER_TYPE;
+    public static void allowExtension(final ClassicProtocolExtension classicProtocolExtension) {
+        INSTANCE.ALLOWED_EXTENSIONS.add(classicProtocolExtension);
+    }
 
     public static ClientboundPacketsc0_30cpe createNewPacket(final ClassicProtocolExtension classicProtocolExtension, final int packetId, final BiConsumer<UserConnection, ByteBuf> packetSplitter) {
         final ClientboundPacketsc0_30cpe packet = Enums.newInstance(ClientboundPacketsc0_30cpe.class, classicProtocolExtension.getName(), ClassicProtocolExtension.values().length, new Class[] { int.class, BiConsumer.class }, new Object[] { packetId, packetSplitter });

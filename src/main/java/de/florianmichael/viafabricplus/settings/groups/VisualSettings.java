@@ -24,7 +24,7 @@ import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 public class VisualSettings extends SettingGroup {
-    public final static VisualSettings self = new VisualSettings();
+    public final static VisualSettings INSTANCE = new VisualSettings();
 
     // 1.19.2 -> 1.19
     public final ProtocolSyncBooleanSetting disableSecureChatWarning = new ProtocolSyncBooleanSetting(this, "Disable secure chat warning", ProtocolRange.andOlder(ProtocolVersion.v1_19));
@@ -54,9 +54,5 @@ public class VisualSettings extends SettingGroup {
 
     public VisualSettings() {
         super("Visual");
-    }
-
-    public static VisualSettings getClassWrapper() {
-        return VisualSettings.self;
     }
 }
