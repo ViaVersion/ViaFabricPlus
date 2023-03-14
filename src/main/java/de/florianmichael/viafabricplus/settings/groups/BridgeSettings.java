@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.settings.groups;
 
-import de.florianmichael.viafabricplus.settings.SettingGroup;
-import de.florianmichael.viafabricplus.settings.impl.BooleanSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
+import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
 
 public class BridgeSettings extends SettingGroup {
     private final static BridgeSettings self = new BridgeSettings();

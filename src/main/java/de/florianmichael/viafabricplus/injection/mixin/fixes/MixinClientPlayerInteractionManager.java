@@ -25,8 +25,9 @@ import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.Protocol1_17To1_
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
-import de.florianmichael.viafabricplus.provider.ViaFabricPlusHandItemProvider;
-import de.florianmichael.viafabricplus.translator.ItemTranslator;
+import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
+import de.florianmichael.viafabricplus.vialoadingbase.provider.ViaFabricPlusHandItemProvider;
+import de.florianmichael.viafabricplus.util.ItemTranslator;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -110,7 +111,7 @@ public abstract class MixinClientPlayerInteractionManager {
                 else
                     slotItemBeforeModification = viafabricplus_oldItems.get(clickSlot.getSlot());
 
-                final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, networkHandler.getConnection().channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get());
+                final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, networkHandler.getConnection().channel.attr(ViaLoadingBaseStartup.LOCAL_VIA_CONNECTION).get());
 
                 clickSlotPacket.write(Type.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
                 clickSlotPacket.write(Type.SHORT, (short) clickSlot.getSlot());

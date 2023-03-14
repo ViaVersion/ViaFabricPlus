@@ -29,19 +29,19 @@ public class MixinClassicProtocolExtension {
 
     @Inject(method = "supportsVersion", at = @At("HEAD"), cancellable = true)
     public void allowExtensions_supportsVersion(int version, CallbackInfoReturnable<Boolean> cir) {
-        if (CustomClassicProtocolExtensions.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this))
+        if (CustomClassicProtocolExtensions.INSTANCE.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this))
             cir.setReturnValue(true);
     }
 
     @Inject(method = "isSupported", at = @At("HEAD"), cancellable = true)
     public void allowExtensions_isSupported(CallbackInfoReturnable<Boolean> cir) {
-        if (CustomClassicProtocolExtensions.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this))
+        if (CustomClassicProtocolExtensions.INSTANCE.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this))
             cir.setReturnValue(true);
     }
 
     @Inject(method = "getHighestSupportedVersion", at = @At("HEAD"), cancellable = true)
     public void allowExtensions_getHighestSupportedVersion(CallbackInfoReturnable<Integer> cir) {
-        if (CustomClassicProtocolExtensions.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this))
+        if (CustomClassicProtocolExtensions.INSTANCE.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this))
             cir.setReturnValue(1);
     }
 }

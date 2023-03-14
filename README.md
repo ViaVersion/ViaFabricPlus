@@ -142,6 +142,38 @@ public class ExampleSettingGroup extends SettingGroup {
 }
 ```
 
+#### Implementing classic protocol commands:
+```java
+public class ExampleCommand implements ICommand {
+
+    @Override
+    public String name() {
+        return "example";
+    }
+
+    @Override
+    public String description() {
+        return null;
+    }
+
+    @Override
+    public void execute(String[] args) {
+    }
+}
+```
+and then you register the command in your onLoad method:
+```java
+// addon main [...]
+
+@Override
+public void onLoad() {
+    ClassicProtocolCommands.commands.add(new ExampleCommand());
+}
+```
+
+#### Implementing custom classic protocol extensions:
+
+
 ## Alternatives
 - [ClientViaVersion](https://github.com/Gerrygames/ClientViaVersion): Discontinued 5zig plugin.
 - [multiconnect](https://www.curseforge.com/minecraft/mc-mods/multiconnect): Fabric mod for connecting to older

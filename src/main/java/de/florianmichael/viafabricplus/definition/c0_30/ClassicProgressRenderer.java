@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.definition.c0_30;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.Window;
@@ -29,7 +30,7 @@ public class ClassicProgressRenderer extends DrawableHelper {
 
     public static void renderProgress(final MatrixStack matrices) {
         if (MinecraftClient.getInstance().getNetworkHandler() == null) return;
-        final UserConnection connection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
+        final UserConnection connection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ViaLoadingBaseStartup.LOCAL_VIA_CONNECTION).get();
         if (connection == null) return;
         final ClassicProgressStorage classicProgressStorage = connection.get(ClassicProgressStorage.class);
         if (classicProgressStorage == null) return;

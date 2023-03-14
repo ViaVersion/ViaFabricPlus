@@ -18,8 +18,8 @@
 package de.florianmichael.viafabricplus.settings.groups;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.settings.SettingGroup;
-import de.florianmichael.viafabricplus.settings.impl.ProtocolSyncBooleanSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
+import de.florianmichael.viafabricplus.settings.type_impl.ProtocolSyncBooleanSetting;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 

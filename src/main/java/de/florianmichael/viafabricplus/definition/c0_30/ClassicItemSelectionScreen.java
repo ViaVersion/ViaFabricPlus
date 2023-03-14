@@ -17,6 +17,8 @@
  */
 package de.florianmichael.viafabricplus.definition.c0_30;
 
+import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionListener;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.MinecraftClient;
@@ -37,7 +39,17 @@ import java.util.List;
 @SuppressWarnings("DataFlowIssue")
 public class ClassicItemSelectionScreen extends Screen {
 
-    public static ClassicItemSelectionScreen INSTANCE = new ClassicItemSelectionScreen();
+    public static ClassicItemSelectionScreen INSTANCE;
+
+    public static void create() {
+        INSTANCE = new ClassicItemSelectionScreen();
+
+        ViaFabricPlus.INSTANCE.getEventDispatcher().subscribe(ChangeProtocolVersionListener.class, protocolVersion -> {
+            if (protocolVersion.isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                INSTANCE.reload(protocolVersion, false);
+            }
+        });
+    }
 
     private final static int MAX_ROW_DIVIDER = 9;
     private final static int ITEM_XY_BOX_DIMENSION_CLASSIC = 25;

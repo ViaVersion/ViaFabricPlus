@@ -28,6 +28,6 @@ public class MixinStringHelper {
 
     @ModifyConstant(method = "truncateChat", constant = @Constant(intValue = 256))
     private static int expandChatLength(int constant) {
-        return ChatLengthDefinition.getMaxLength();
+        return ChatLengthDefinition.INSTANCE.getMaxLength();
     }
 }

@@ -19,8 +19,9 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.entity;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
-import de.florianmichael.viafabricplus.definition.v1_8_x.IdlePacketExecutor;
+import de.florianmichael.viafabricplus.event.SkipIdlePacketListener;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
@@ -116,7 +117,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             } else if (this.lastOnGround != this.onGround || DebugSettings.getClassWrapper().sendIdlePacket.getValue()) {
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(this.onGround));
             } else {
-                IdlePacketExecutor.skipIdlePacket();
+                ViaFabricPlus.INSTANCE.getEventDispatcher().post(new SkipIdlePacketListener.SkipIdlePacketEvent());
             }
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 ++this.ticksSinceLastPositionPacketSent;

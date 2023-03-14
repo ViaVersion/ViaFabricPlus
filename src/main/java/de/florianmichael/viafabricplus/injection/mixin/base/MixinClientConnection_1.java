@@ -17,19 +17,19 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
-import de.florianmichael.viafabricplus.platform.pre_netty.PreNettyConstants;
-import de.florianmichael.viafabricplus.platform.pre_netty.VFPPreNettyDecoder;
-import de.florianmichael.viafabricplus.platform.pre_netty.VFPPreNettyEncoder;
-import de.florianmichael.viafabricplus.platform.VFPVLBViaDecodeHandler;
-import de.florianmichael.viafabricplus.platform.raknet.*;
-import de.florianmichael.viafabricplus.platform.raknet.library_fix.FixedUnconnectedPingEncoder;
-import de.florianmichael.viafabricplus.platform.raknet.library_fix.FixedUnconnectedPongDecoder;
+import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
+import de.florianmichael.viafabricplus.vialoadingbase.platform.pre_netty.PreNettyConstants;
+import de.florianmichael.viafabricplus.vialoadingbase.platform.pre_netty.VFPPreNettyDecoder;
+import de.florianmichael.viafabricplus.vialoadingbase.platform.pre_netty.VFPPreNettyEncoder;
+import de.florianmichael.viafabricplus.vialoadingbase.platform.VFPVLBViaDecodeHandler;
+import de.florianmichael.viafabricplus.vialoadingbase.platform.raknet.*;
+import de.florianmichael.viafabricplus.vialoadingbase.platform.raknet.library_fix.FixedUnconnectedPingEncoder;
+import de.florianmichael.viafabricplus.vialoadingbase.platform.raknet.library_fix.FixedUnconnectedPongDecoder;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.netty.VLBViaEncodeHandler;
 import de.florianmichael.vialoadingbase.netty.NettyConstants;
@@ -83,8 +83,8 @@ public class MixinClientConnection_1 {
 
         if (channel instanceof SocketChannel || rakNet) {
             final UserConnection user = new UserConnectionImpl(channel, true);
-            channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).set(user);
-            channel.attr(ViaFabricPlus.LOCAL_MINECRAFT_CONNECTION).set(field_11663);
+            channel.attr(ViaLoadingBaseStartup.LOCAL_VIA_CONNECTION).set(user);
+            channel.attr(ViaLoadingBaseStartup.LOCAL_MINECRAFT_CONNECTION).set(field_11663);
 
             new ProtocolPipelineImpl(user);
 

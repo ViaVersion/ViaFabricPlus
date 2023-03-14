@@ -28,6 +28,6 @@ public class MixinChatMessageC2SPacket {
 
     @ModifyConstant(method = "write", constant = @Constant(intValue = 256))
     public int expandChatLength(int constant) {
-        return ChatLengthDefinition.getMaxLength();
+        return ChatLengthDefinition.INSTANCE.getMaxLength();
     }
 }

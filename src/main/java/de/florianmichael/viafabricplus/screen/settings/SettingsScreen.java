@@ -22,11 +22,11 @@ import de.florianmichael.viafabricplus.screen.settings.settingrenderer.BooleanSe
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ModeSettingRenderer;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ProtocolSyncBooleanSettingRenderer;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
-import de.florianmichael.viafabricplus.settings.AbstractSetting;
-import de.florianmichael.viafabricplus.settings.SettingGroup;
-import de.florianmichael.viafabricplus.settings.impl.BooleanSetting;
-import de.florianmichael.viafabricplus.settings.impl.ModeSetting;
-import de.florianmichael.viafabricplus.settings.impl.ProtocolSyncBooleanSetting;
+import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
+import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
+import de.florianmichael.viafabricplus.settings.type_impl.ModeSetting;
+import de.florianmichael.viafabricplus.settings.type_impl.ProtocolSyncBooleanSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -90,7 +90,7 @@ public class SettingsScreen extends Screen {
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
-            for (SettingGroup group : ViaFabricPlus.getClassWrapper().getSettingGroups()) {
+            for (SettingGroup group : ViaFabricPlus.INSTANCE.getSettingsSystem().getGroups()) {
                 this.addEntry(new TitleRenderer(group.getName()));
                 for (AbstractSetting<?> setting : group.getSettings()) {
                     try {

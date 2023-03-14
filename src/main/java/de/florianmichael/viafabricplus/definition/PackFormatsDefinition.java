@@ -68,6 +68,8 @@ public class PackFormatsDefinition {
         registerVersion(ProtocolVersion.v1_8, 1, "1.8.9");
         registerVersion(ProtocolVersion.v1_7_6, 1, "1.7.10");
         registerVersion(ProtocolVersion.v1_7_1, 1, "1.7.5");
+
+        checkOutdated(SharedConstants.getProtocolVersion());
     }
 
     public static void checkOutdated(final int nativeVersion) {

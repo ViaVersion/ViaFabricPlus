@@ -29,8 +29,8 @@ public class MixinClientboundPacketsc0_30cpe {
 
     @Inject(method = "getPacket", at = @At("HEAD"), cancellable = true)
     private static void addCustomPackets(int id, CallbackInfoReturnable<ClientboundPacketsc0_30cpe> cir) {
-        if (CustomClassicProtocolExtensions.CUSTOM_PACKETS.containsKey(id)) {
-            cir.setReturnValue(CustomClassicProtocolExtensions.CUSTOM_PACKETS.get(id));
+        if (CustomClassicProtocolExtensions.INSTANCE.CUSTOM_PACKETS.containsKey(id)) {
+            cir.setReturnValue(CustomClassicProtocolExtensions.INSTANCE.CUSTOM_PACKETS.get(id));
         }
     }
 }

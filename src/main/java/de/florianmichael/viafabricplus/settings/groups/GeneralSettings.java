@@ -17,9 +17,9 @@
  */
 package de.florianmichael.viafabricplus.settings.groups;
 
-import de.florianmichael.viafabricplus.settings.SettingGroup;
-import de.florianmichael.viafabricplus.settings.impl.BooleanSetting;
-import de.florianmichael.viafabricplus.settings.impl.ModeSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
+import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
+import de.florianmichael.viafabricplus.settings.type_impl.ModeSetting;
 
 public class GeneralSettings extends SettingGroup {
     private final static GeneralSettings self = new GeneralSettings();

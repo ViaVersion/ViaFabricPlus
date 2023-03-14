@@ -21,6 +21,7 @@ import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
+import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicCustomCommandProvider;
@@ -44,7 +45,7 @@ public interface ICommand {
     }
 
     default UserConnection currentViaConnection() {
-        return MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
+        return MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ViaLoadingBaseStartup.LOCAL_VIA_CONNECTION).get();
     }
 
     void execute(String[] args) throws Exception;

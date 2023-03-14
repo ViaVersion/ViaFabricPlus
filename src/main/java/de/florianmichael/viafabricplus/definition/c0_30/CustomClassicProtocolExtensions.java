@@ -18,7 +18,11 @@
 package de.florianmichael.viafabricplus.definition.c0_30;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.dietrichevents.EventDispatcher;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
+import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionListener;
+import de.florianmichael.viafabricplus.event.LoadListener;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.reflect.Enums;
@@ -32,24 +36,28 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class CustomClassicProtocolExtensions {
-    public final static List<ClassicProtocolExtension> ALLOWED_EXTENSIONS = Arrays.asList(ClassicProtocolExtension.ENV_WEATHER_TYPE);
+    public static CustomClassicProtocolExtensions INSTANCE;
 
-    public final static Map<Integer, ClientboundPacketsc0_30cpe> CUSTOM_PACKETS = new HashMap<>();
-    public static ClientboundPacketsc0_30cpe EXT_WEATHER_TYPE;
+    public static void create() {
+        CustomClassicProtocolExtensions.INSTANCE = new CustomClassicProtocolExtensions();
 
-    public static void reflect() {
         EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
+
+        ViaFabricPlus.INSTANCE.getEventDispatcher().subscribe(LoadClassicProtocolExtensionListener.class, (classicProtocolExtension) -> {
+            if (classicProtocolExtension == ClassicProtocolExtension.LONGER_MESSAGES) ChatLengthDefinition.INSTANCE.expand();
+            if (classicProtocolExtension == ClassicProtocolExtension.CUSTOM_BLOCKS) ClassicItemSelectionScreen.INSTANCE.reload(ViaLoadingBase.getClassWrapper().getTargetVersion(), true);
+        });
     }
 
-    public static void onAddServerExtension(final ClassicProtocolExtension extension) {
-        if (extension == ClassicProtocolExtension.LONGER_MESSAGES) ChatLengthDefinition.expand();
-        if (extension == ClassicProtocolExtension.CUSTOM_BLOCKS) ClassicItemSelectionScreen.INSTANCE.reload(ViaLoadingBase.getClassWrapper().getTargetVersion(), true);
-    }
+    public final List<ClassicProtocolExtension> ALLOWED_EXTENSIONS = Arrays.asList(ClassicProtocolExtension.ENV_WEATHER_TYPE);
+    public final Map<Integer, ClientboundPacketsc0_30cpe> CUSTOM_PACKETS = new HashMap<>();
+
+    public static ClientboundPacketsc0_30cpe EXT_WEATHER_TYPE;
 
     public static ClientboundPacketsc0_30cpe createNewPacket(final ClassicProtocolExtension classicProtocolExtension, final int packetId, final BiConsumer<UserConnection, ByteBuf> packetSplitter) {
         final ClientboundPacketsc0_30cpe packet = Enums.newInstance(ClientboundPacketsc0_30cpe.class, classicProtocolExtension.getName(), ClassicProtocolExtension.values().length, new Class[] { int.class, BiConsumer.class }, new Object[] { packetId, packetSplitter });
         Enums.addEnumInstance(ClientboundPacketsc0_30cpe.class, packet);
-        CUSTOM_PACKETS.put(packetId, packet);
+        INSTANCE.CUSTOM_PACKETS.put(packetId, packet);
         return packet;
     }
 }

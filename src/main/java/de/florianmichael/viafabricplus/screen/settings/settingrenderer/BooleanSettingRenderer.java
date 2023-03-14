@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.screen.settings.settingrenderer;
 
 import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
-import de.florianmichael.viafabricplus.settings.impl.BooleanSetting;
+import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

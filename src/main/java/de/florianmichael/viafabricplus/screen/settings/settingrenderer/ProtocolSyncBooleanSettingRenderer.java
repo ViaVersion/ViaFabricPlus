@@ -18,11 +18,8 @@
 package de.florianmichael.viafabricplus.screen.settings.settingrenderer;
 
 import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
-import de.florianmichael.viafabricplus.settings.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
-import de.florianmichael.viafabricplus.settings.impl.BooleanSetting;
-import de.florianmichael.viafabricplus.settings.impl.ModeSetting;
-import de.florianmichael.viafabricplus.settings.impl.ProtocolSyncBooleanSetting;
+import de.florianmichael.viafabricplus.settings.type_impl.ProtocolSyncBooleanSetting;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -32,7 +29,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.awt.*;
-import java.util.Arrays;
 
 public class ProtocolSyncBooleanSettingRenderer extends AbstractSettingRenderer {
     private final ProtocolSyncBooleanSetting value;

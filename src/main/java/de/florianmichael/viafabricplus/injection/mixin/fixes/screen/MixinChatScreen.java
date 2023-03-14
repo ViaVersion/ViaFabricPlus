@@ -37,7 +37,7 @@ public class MixinChatScreen {
 
     @Inject(method = "init", at = @At("RETURN"))
     public void changeChatLength(CallbackInfo ci) {
-        this.chatField.setMaxLength(ChatLengthDefinition.getMaxLength());
+        this.chatField.setMaxLength(ChatLengthDefinition.INSTANCE.getMaxLength());
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;getIndicatorAt(DD)Lnet/minecraft/client/gui/hud/MessageIndicator;"))

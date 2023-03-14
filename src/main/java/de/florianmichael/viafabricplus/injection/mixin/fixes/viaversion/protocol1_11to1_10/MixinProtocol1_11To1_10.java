@@ -27,6 +27,6 @@ public class MixinProtocol1_11To1_10 {
 
     @ModifyConstant(method = "lambda$register$0", constant = @Constant(intValue = 100))
     private static int changeMaxChatLength(int constant) {
-        return ChatLengthDefinition.getMaxLength();
+        return ChatLengthDefinition.INSTANCE.getMaxLength();
     }
 }

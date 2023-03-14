@@ -18,6 +18,8 @@
 package de.florianmichael.viafabricplus.definition;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionListener;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.minecraft.item.Item;
@@ -33,21 +35,27 @@ import java.util.*;
  * @copyright FlorianMichael as Jesse - 2020-2023
  */
 public class ItemReleaseVersionDefinition {
-    private final static Map<Item, ProtocolRange[]> itemMap = new HashMap<>();
-    private final static List<Item> currentMap = new ArrayList<>();
+    public static ItemReleaseVersionDefinition INSTANCE;
 
-    public static void reload(final ComparableProtocolVersion protocolVersion) {
-        currentMap.clear();
-        currentMap.addAll(Registries.ITEM.stream().filter(item -> ItemReleaseVersionDefinition.contains(item, protocolVersion)).toList());
+    public static void create() {
+        INSTANCE = new ItemReleaseVersionDefinition();
+
+        ViaFabricPlus.INSTANCE.getEventDispatcher().subscribe(ChangeProtocolVersionListener.class, (protocolVersion -> {
+            INSTANCE.currentMap.clear();
+            INSTANCE.currentMap.addAll(Registries.ITEM.stream().filter(item -> INSTANCE.contains(item, protocolVersion)).toList());
+        }));
     }
 
-    public static boolean contains(final Item item, final ComparableProtocolVersion protocolVersion) {
+    private final Map<Item, ProtocolRange[]> itemMap = new HashMap<>();
+    private final List<Item> currentMap = new ArrayList<>();
+
+    public boolean contains(final Item item, final ComparableProtocolVersion protocolVersion) {
         if (!itemMap.containsKey(item)) return true;
 
         return Arrays.stream(itemMap.get(item)).anyMatch(protocolRange -> protocolRange.contains(protocolVersion));
     }
 
-    public static void load() {
+    public void load() {
         register(Items.IRON_GOLEM_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19_3));
         register(Items.SNOW_GOLEM_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19_3));
 
@@ -1300,19 +1308,19 @@ public class ItemReleaseVersionDefinition {
         register(Items.SPONGE, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_19a_06));
     }
 
-    private static void register(final Item item, final ProtocolRange range) {
+    private void register(final Item item, final ProtocolRange range) {
         itemMap.put(item, new ProtocolRange[]{range});
     }
 
-    private static void register(final Item item, final ProtocolRange... ranges) {
+    private void register(final Item item, final ProtocolRange... ranges) {
         itemMap.put(item, ranges);
     }
 
-    public static Map<Item, ProtocolRange[]> getItemMap() {
+    public Map<Item, ProtocolRange[]> getItemMap() {
         return itemMap;
     }
 
-    public static List<Item> getCurrentMap() {
+    public List<Item> getCurrentMap() {
         return currentMap;
     }
 }

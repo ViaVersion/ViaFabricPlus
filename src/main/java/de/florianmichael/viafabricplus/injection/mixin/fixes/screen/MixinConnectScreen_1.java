@@ -24,6 +24,7 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
 import de.florianmichael.viafabricplus.definition.v1_19_0.storage.ChatSession1_19_0;
 import de.florianmichael.viafabricplus.definition.v1_19_2.storage.ChatSession1_19_2;
+import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;
@@ -76,7 +77,7 @@ public class MixinConnectScreen_1 {
 
         final ClientConnection connection = field_2416.connection;
         if (connection == null || connection.channel == null) return;
-        final UserConnection userConnection = connection.channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
+        final UserConnection userConnection = connection.channel.attr(ViaLoadingBaseStartup.LOCAL_VIA_CONNECTION).get();
 
         if (userConnection == null) {
             ViaLoadingBase.LOGGER.log(Level.WARNING, "ViaVersion userConnection is null");

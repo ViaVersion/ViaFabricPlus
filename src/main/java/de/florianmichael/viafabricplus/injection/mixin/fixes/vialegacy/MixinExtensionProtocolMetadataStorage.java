@@ -17,9 +17,9 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
 
-import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
-import de.florianmichael.viafabricplus.definition.c0_30.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;
+import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionListener;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 import org.spongepowered.asm.mixin.Final;
@@ -38,7 +38,7 @@ public class MixinExtensionProtocolMetadataStorage implements IExtensionProtocol
 
     @Inject(method = "addServerExtension", at = @At("RETURN"))
     public void updateChatLengthDefinition(ClassicProtocolExtension extension, int version, CallbackInfo ci) {
-        CustomClassicProtocolExtensions.onAddServerExtension(extension);
+        ViaFabricPlus.INSTANCE.getEventDispatcher().post(new LoadClassicProtocolExtensionListener.LoadClassicProtocolExtensionEvent(extension));
     }
 
     @Override
