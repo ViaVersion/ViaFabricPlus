@@ -55,7 +55,6 @@ import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
 
 import java.io.File;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
