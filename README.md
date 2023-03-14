@@ -1,5 +1,5 @@
 # ViaFabricPlus
-Clientside ViaVersion, ViaLegacy and ViaAprilFools implementation with clientside fixes for Fabric
+Clientside ViaVersion, ViaLegacy, ViaBedrock and ViaAprilFools implementation with clientside fixes for Fabric
 ### This project has nothing to do with the original ViaFabric and is therefore also not compact
 
 ## Contact
@@ -13,6 +13,7 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 - [x] ViaBackwards implementation
 - [x] ViaLegacy implementation
 - [x] ViaAprilFools implementation
+- [x] (Beta) ViaBedrock implementation
 - [x] BetaCraft implementation for MP Pass
 
 ## Clientside related Fixes
@@ -36,7 +37,7 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 - [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
 
 ## TODO
-- [ ] ViaBedrock implementation
+- [ ] Bedrock account auth for ViaBedrock
 - [ ] ClassiCube implementation for MP Pass
 - [ ] BetaCraft server list screen
 - [ ] More extensions for Classic Protocol Extensions protocol
@@ -64,6 +65,7 @@ as does [multiconnect](https://github.com/Earthcomputer/multiconnect) from Earth
 | Snake YAML     | https://mvnrepository.com/artifact/org.yaml/snakeyaml/1.33 |
 | ViaLegacy      | https://github.com/RaphiMC/ViaLegacy                       |
 | ViaAprilFools  | https://github.com/RaphiMC/ViaAprilFools                   |
+| ViaBedrock     | https://github.com/RaphiMC/ViaBedrock                      |
 | MC-Structs     | https://github.com/Lenni0451/MCStructs                     |
 | Reflect        | https://github.com/Lenni0451/Reflect                       |
 | ViaLoadingBase | https://github.com/FlorianMichael/ViaLoadingBase           |

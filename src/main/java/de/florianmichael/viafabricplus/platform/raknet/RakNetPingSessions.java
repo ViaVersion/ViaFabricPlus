@@ -15,20 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protocol1_13to1_12_2;
+package de.florianmichael.viafabricplus.platform.raknet;
 
-import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.packets.WorldPackets;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
-// Copyright RaphiMC/RK_01 - LICENSE file
-@Mixin(value = WorldPackets.class, remap = false)
-public abstract class MixinWorldPackets1_13 {
+public class RakNetPingSessions {
+    public final static List<InetAddress> pingSessions = new ArrayList<>();
 
-    @Inject(method = "toNewId", at = @At(value = "RETURN", ordinal = 2), cancellable = true)
-    private static void returnAirDefault(int oldId, CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(0);
+    public static void storePingSession(final InetAddress address) {
+        pingSessions.add(address);
+    }
+
+    public static boolean isPingSession(final InetAddress address) {
+        return pingSessions.contains(address);
     }
 }

@@ -22,6 +22,7 @@ import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.minecraft.client.network.AllowedAddressResolver;
 import net.minecraft.client.network.ServerAddress;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,7 +42,7 @@ public class MixinServerAddress {
 
     @Inject(method = "parse", at = @At("RETURN"), cancellable = true)
     private static void fixAddress(String address, CallbackInfoReturnable<ServerAddress> cir) {
-        if (!cir.getReturnValue().equals(INVALID) && viafabricplus_srvRange.contains(ViaLoadingBase.getClassWrapper().getTargetVersion())) {
+        if (!cir.getReturnValue().equals(INVALID) && (viafabricplus_srvRange.contains(ViaLoadingBase.getClassWrapper().getTargetVersion()) || ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest))) {
             cir.setReturnValue(AllowedAddressResolver.DEFAULT.redirectResolver.lookupRedirect(cir.getReturnValue()).orElse(cir.getReturnValue()));
         }
     }

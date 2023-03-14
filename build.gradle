@@ -37,6 +37,10 @@ allprojects {
 			name = "TerraformersMC"
 			url = "https://maven.terraformersmc.com/releases"
 		}
+		maven {
+			name = "OpenCollab Snapshots"
+			url = "https://repo.opencollab.dev/maven-snapshots/"
+		}
 	}
 }
 
@@ -59,9 +63,16 @@ dependencies {
 
 	libs "net.raphimc:ViaLegacy:${project.vialegacy_version}"
 	libs "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
+	libs "net.raphimc:ViaBedrock:${project.viabedrock_version}"
 
 	libs "net.lenni0451.mcstructs:text:${project.mcstructs_text_version}"
 	libs "net.lenni0451:Reflect:${project.reflect_version}"
+	libs("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR1-SNAPSHOT") {
+		exclude group: "io.netty", module: "netty-common"
+		exclude group: "io.netty", module: "netty-buffer"
+		exclude group: "io.netty", module: "netty-codec"
+		exclude group: "io.netty", module: "netty-transport"
+	}
 }
 
 processResources {

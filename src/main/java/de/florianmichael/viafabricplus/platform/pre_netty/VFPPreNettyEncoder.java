@@ -15,30 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.platform;
+package de.florianmichael.viafabricplus.platform.pre_netty;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import net.raphimc.vialegacy.netty.PreNettyDecoder;
+import net.raphimc.vialegacy.netty.PreNettyEncoder;
 
-import java.util.List;
+public class VFPPreNettyEncoder extends PreNettyEncoder {
 
-public class VFPPreNettyDecoder extends PreNettyDecoder {
-
-    public VFPPreNettyDecoder(UserConnection user) {
+    public VFPPreNettyEncoder(UserConnection user) {
         super(user);
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
+    protected void encode(ChannelHandlerContext ctx, ByteBuf in, ByteBuf out) {
         if (Via.getManager().isDebug()) {
-            if (!in.isReadable() || in.readableBytes() <= 0) {
-                return;
-            }
-            Via.getPlatform().getLogger().info("Decoding pre netty packet: " + in.copy().readUnsignedByte());
+            final ByteBuf myBuf = in.copy();
+            Type.VAR_INT.readPrimitive(myBuf); // length
+            Via.getPlatform().getLogger().info("Encoding pre netty packet: " + (Type.VAR_INT.readPrimitive(myBuf) & 255));
         }
-        super.decode(ctx, in, out);
+        super.encode(ctx, in, out);
     }
 }

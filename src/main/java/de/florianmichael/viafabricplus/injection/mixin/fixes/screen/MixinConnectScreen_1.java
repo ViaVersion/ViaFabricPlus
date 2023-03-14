@@ -75,7 +75,7 @@ public class MixinConnectScreen_1 {
         }
 
         final ClientConnection connection = field_2416.connection;
-        if (connection == null) return;
+        if (connection == null || connection.channel == null) return;
         final UserConnection userConnection = connection.channel.attr(ViaFabricPlus.LOCAL_VIA_CONNECTION).get();
 
         if (userConnection == null) {

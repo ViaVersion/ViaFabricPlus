@@ -5,11 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "base.MixinClientConnection",
-    "base.MixinClientConnection_1",
     "base.MixinClientLoginNetworkHandler",
     "base.MixinMain",
     "base.MixinMinecraftClient",
     "base.MixinMultiplayerScreen",
+    "base.MixinMultiplayerServerListPinger",
     "bridge.MixinConnectScreen",
     "bridge.MixinDebugHud",
     "bridge.MixinDownloadingTerrainScreen",
@@ -145,6 +145,8 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "fixes.block.MixinAbstractBlock"
+    "base.MixinClientConnection_1",
+    "fixes.block.MixinAbstractBlock",
+    "fixes.vialegacy.MixinBedrockProtocol"
   ]
 }

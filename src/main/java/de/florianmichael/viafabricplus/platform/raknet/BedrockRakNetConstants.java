@@ -15,10 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.platform;
+package de.florianmichael.viafabricplus.platform.raknet;
 
-public class PreNettyConstants {
+public class BedrockRakNetConstants {
 
-    public static final String HANDLER_DECODER_NAME = "via-legacy-decoder";
-    public static final String HANDLER_ENCODER_NAME = "via-legacy-encoder";
+    public static final String DISCONNECT_HANDLER_NAME = "disconnect_handler";
+    public static final String FRAME_ENCAPSULATION_HANDLER_NAME = "frame_encapsulation";
+    public static final String PING_ENCAPSULATION_HANDLER_NAME = "ping_encapsulation";
+    public static final String PACKET_ENCAPSULATION_HANDLER_NAME = "packet_encapsulation";
+    public static final String BATCH_LENGTH_HANDLER_NAME = "batch_length";
+    public static final String COMPRESSION_HANDLER_NAME = "compression";
+    public static final String ENCRYPTION_HANDLER_NAME = "encryption";
 }

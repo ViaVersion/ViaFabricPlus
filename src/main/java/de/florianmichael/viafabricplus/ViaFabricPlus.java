@@ -30,6 +30,7 @@ import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolC
 import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
 import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
 import de.florianmichael.viafabricplus.platform.ViaAprilFoolsPlatformImpl;
+import de.florianmichael.viafabricplus.platform.ViaBedrockPlatformImpl;
 import de.florianmichael.viafabricplus.platform.ViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.provider.*;
 import de.florianmichael.viafabricplus.settings.SettingGroup;
@@ -43,6 +44,8 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicCustomCommandProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
@@ -52,6 +55,7 @@ import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -80,12 +84,14 @@ public class ViaFabricPlus {
         protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_16) + 1, AprilFoolsProtocolVersion.s20w14infinite);
         protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_16_2) + 1, AprilFoolsProtocolVersion.sCombatTest8c);
     });
+    private final SubPlatform SUB_PLATFORM_VIA_BEDROCK = new SubPlatform("ViaBedrock", () -> true, ViaBedrockPlatformImpl::new, protocolVersions -> protocolVersions.add(BedrockProtocolVersion.bedrockLatest));
 
     public void preLoad() {
         CustomClassicProtocolExtensions.reflect();
 
         ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
 
+        builder = builder.subPlatform(SUB_PLATFORM_VIA_BEDROCK, 0);
         builder = builder.subPlatform(SUB_PLATFORM_VIA_LEGACY);
         builder = builder.subPlatform(SUB_PLATFORM_VIA_APRIL_FOOLS);
 
@@ -108,6 +114,7 @@ public class ViaFabricPlus {
             providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
             providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
             providers.use(ClassicCustomCommandProvider.class, new ViaFabricPlusClassicCustomCommandProvider());
+            providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
         });
         builder = builder.onProtocolReload(protocolVersion -> {
             FabricLoader.getInstance().getEntrypoints("viafabricplus", ViaFabricPlusAddon.class).forEach(viaFabricPlusAddon -> viaFabricPlusAddon.onChangeVersion(protocolVersion));
