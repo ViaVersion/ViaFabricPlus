@@ -58,18 +58,19 @@ It should work fine with most if not all mods and modpacks.
 - [ ] Window click interactions in <= 1.16.5
 
 ## Dependencies
-| Dependency     | Download                                                   |
-|----------------|------------------------------------------------------------|
-| Fabric API     | https://github.com/fabricMC/fabric                         |
-| ViaVersion     | https://github.com/ViaVersion/ViaVersion                   |
-| ViaBackwards   | https://github.com/ViaVersion/ViaBackwards                 |
-| Snake YAML     | https://mvnrepository.com/artifact/org.yaml/snakeyaml/1.33 |
-| ViaLegacy      | https://github.com/RaphiMC/ViaLegacy                       |
-| ViaAprilFools  | https://github.com/RaphiMC/ViaAprilFools                   |
-| ViaBedrock     | https://github.com/RaphiMC/ViaBedrock                      |
-| MC-Structs     | https://github.com/Lenni0451/MCStructs                     |
-| Reflect        | https://github.com/Lenni0451/Reflect                       |
-| ViaLoadingBase | https://github.com/FlorianMichael/ViaLoadingBase           |
+| Dependency             | Download                                                   |
+|------------------------|------------------------------------------------------------|
+| Fabric API             | https://github.com/fabricMC/fabric                         |
+| ViaVersion             | https://github.com/ViaVersion/ViaVersion                   |
+| ViaBackwards           | https://github.com/ViaVersion/ViaBackwards                 |
+| Snake YAML             | https://mvnrepository.com/artifact/org.yaml/snakeyaml/1.33 |
+| ViaLegacy              | https://github.com/RaphiMC/ViaLegacy                       |
+| ViaAprilFools          | https://github.com/RaphiMC/ViaAprilFools                   |
+| ViaBedrock             | https://github.com/RaphiMC/ViaBedrock                      |
+| MC-Structs             | https://github.com/Lenni0451/MCStructs                     |
+| Reflect                | https://github.com/Lenni0451/Reflect                       |
+| ViaLoadingBase         | https://github.com/FlorianMichael/ViaLoadingBase           |
+| Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop       |
 
 ## Setting up a Workspace
 ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
@@ -137,9 +138,14 @@ public class ExampleSettingGroup extends SettingGroup {
     
     public ExampleSettingGroup() {
         super("Example");
-        ViaFabricPlus.INSTANCE.getSettingsSystem().addGroup(this); // should be in your onLoad method
     }
 }
+```
+and then you register the setting group in your onLoad method:
+```java
+PreLoadCallback.EVENT.register(() -> {
+    ViaFabricPlus.INSTANCE.getSettingsSystem().addGroup(ExampleSettingGroup.INSTANCE);
+});
 ```
 
 #### Implementing classic protocol commands:
