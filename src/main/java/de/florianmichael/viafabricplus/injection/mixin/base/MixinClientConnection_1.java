@@ -21,15 +21,15 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
-import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
-import de.florianmichael.viafabricplus.vialoadingbase.constants.BedrockRakNetConstants;
-import de.florianmichael.viafabricplus.vialoadingbase.constants.PreNettyConstants;
-import de.florianmichael.viafabricplus.vialoadingbase.platform.vialegacy.VFPPreNettyDecoder;
-import de.florianmichael.viafabricplus.vialoadingbase.platform.vialegacy.VFPPreNettyEncoder;
-import de.florianmichael.viafabricplus.vialoadingbase.replacement.VFPVLBViaDecodeHandler;
-import de.florianmichael.viafabricplus.vialoadingbase.platform.viabedrock.*;
-import de.florianmichael.viafabricplus.vialoadingbase.platform.viabedrock.library_fix.FixedUnconnectedPingEncoder;
-import de.florianmichael.viafabricplus.vialoadingbase.platform.viabedrock.library_fix.FixedUnconnectedPongDecoder;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocolhack.constants.BedrockRakNetConstants;
+import de.florianmichael.viafabricplus.protocolhack.constants.PreNettyConstants;
+import de.florianmichael.viafabricplus.protocolhack.platform.vialegacy.VFPPreNettyDecoder;
+import de.florianmichael.viafabricplus.protocolhack.platform.vialegacy.VFPPreNettyEncoder;
+import de.florianmichael.viafabricplus.protocolhack.replacement.VFPVLBViaDecodeHandler;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.*;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.library_fix.FixedUnconnectedPingEncoder;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.library_fix.FixedUnconnectedPongDecoder;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.netty.VLBViaEncodeHandler;
 import de.florianmichael.vialoadingbase.netty.NettyConstants;
@@ -83,8 +83,8 @@ public class MixinClientConnection_1 {
 
         if (channel instanceof SocketChannel || rakNet) {
             final UserConnection user = new UserConnectionImpl(channel, true);
-            channel.attr(ViaLoadingBaseStartup.LOCAL_VIA_CONNECTION).set(user);
-            channel.attr(ViaLoadingBaseStartup.LOCAL_MINECRAFT_CONNECTION).set(field_11663);
+            channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).set(user);
+            channel.attr(ProtocolHack.LOCAL_MINECRAFT_CONNECTION).set(field_11663);
 
             new ProtocolPipelineImpl(user);
 

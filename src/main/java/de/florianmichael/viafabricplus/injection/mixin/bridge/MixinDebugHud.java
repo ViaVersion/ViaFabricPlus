@@ -18,27 +18,13 @@
 package de.florianmichael.viafabricplus.injection.mixin.bridge;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.groups.BridgeSettings;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
-import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import net.lenni0451.reflect.stream.RStream;
-import net.lenni0451.reflect.stream.field.FieldStream;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
-import net.raphimc.viabedrock.api.chunk.BedrockChunk;
-import net.raphimc.viabedrock.api.model.entity.Entity;
-import net.raphimc.viabedrock.protocol.BedrockProtocol;
-import net.raphimc.viabedrock.protocol.storage.BlobCache;
-import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
-import net.raphimc.vialegacy.protocols.release.protocol1_2_1_3to1_1.storage.SeedStorage;
-import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.storage.EntityTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -46,8 +32,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Mixin(DebugHud.class)
 public class MixinDebugHud {
@@ -58,7 +42,7 @@ public class MixinDebugHud {
 
         final List<String> information = new ArrayList<>();
         if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-            final UserConnection userConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ViaLoadingBaseStartup.LOCAL_VIA_CONNECTION).get();
+            final UserConnection userConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
 
             information.add("");
             information.add(ScreenUtil.prefixedMessage("").trim());

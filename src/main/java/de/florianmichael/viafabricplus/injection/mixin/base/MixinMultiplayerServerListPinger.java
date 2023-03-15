@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.vialoadingbase.platform.viabedrock.RakNetPingSessions;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.RakNetPingSessions;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;

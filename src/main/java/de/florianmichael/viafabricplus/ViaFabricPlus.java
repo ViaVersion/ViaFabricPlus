@@ -27,8 +27,8 @@ import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
 import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.information.InformationSystem;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.SettingsSystem;
-import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
 
 import java.io.File;
 
@@ -57,7 +57,7 @@ public class ViaFabricPlus {
         PreLoadCallback.EVENT.invoker().onLoad();
 
         CustomClassicProtocolExtensions.create();
-        new ViaLoadingBaseStartup();
+        new ProtocolHack();
     }
 
     public SettingsSystem getSettingsSystem() {

@@ -17,7 +17,6 @@ ViaFabricPlus is structured to interfere with mods as little as possible.
 It should work fine with most if not all mods and modpacks.
 
 ### Known incompatibilities:
-
 - ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)***
 - ***[multiconnect](https://github.com/Earthcomputer/multiconnect)***
 - ***[Krypton](https://github.com/astei/krypton)***
@@ -79,9 +78,9 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 3. Run `./gradlew genSources`.
 4. Open the folder as a Gradle project in your preferred IDE.
 5. Run the mod.
-
 ## Settings
 Settings are optional settings that can turn fixes on and off, originally they were used for debugging<br>
+
 ![](/.github/images/settings.png)
 
 # Classic stuff

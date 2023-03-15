@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.network.ClientLoginNetworkHandler;
 import net.minecraft.network.ClientConnection;
@@ -40,7 +40,7 @@ public class MixinClientLoginNetworkHandler {
     @Inject(method = "joinServerSession", at = @At("HEAD"), cancellable = true)
     public void dontVerifySessionIfCracked(String serverId, CallbackInfoReturnable<Text> cir) {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
-            if (!connection.channel.attr(ViaLoadingBaseStartup.LOCAL_VIA_CONNECTION).get().get(ProtocolMetadataStorage.class).authenticate) {
+            if (!connection.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get().get(ProtocolMetadataStorage.class).authenticate) {
                 cir.setReturnValue(null);
             }
         }
