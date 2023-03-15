@@ -3,9 +3,8 @@ Clientside ViaVersion, ViaLegacy, ViaBedrock and ViaAprilFools implementation wi
 ### This project has nothing to do with the original ViaFabric and is therefore also not compact
 
 ## Why?
-ViaFabricPlus is supposed to be an alternative to [multiconnect](https://github.com/Earthcomputer/multiconnect) that offers more compactness and more clientside improvements, <br>
-as ViaFabricPlus implements all Via platforms (ViaVersion, ViaBackwards, ViaLegacy, ViaAprilFools, ViaBedrock) and adds tons <br>
-of clientside fixes and QoL improvements like old rendering for all platforms. 
+ViaFabricPlus is supposed to be an alternative to [multiconnect](https://github.com/Earthcomputer/multiconnect) that offers more compactness and more clientside improvements,
+as ViaFabricPlus implements all Via platforms (ViaVersion, ViaBackwards, ViaLegacy, ViaAprilFools, ViaBedrock) and adds tons of clientside fixes and QoL improvements like old rendering for all platforms. 
 
 ## Contact
 If you encounter any issues, please report them on the
