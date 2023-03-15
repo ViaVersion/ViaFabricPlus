@@ -31,7 +31,9 @@
     "minecraft": "~1.19.3",
     "java": ">=17"
   },
-  "suggests": {
-    "another-mod": "*"
+  "breaks": {
+    "viafabric": "*",
+    "multiconnect": "*",
+    "krypton": "*"
   }
 }

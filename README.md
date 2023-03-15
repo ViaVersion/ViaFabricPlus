@@ -2,11 +2,26 @@
 Clientside ViaVersion, ViaLegacy, ViaBedrock and ViaAprilFools implementation with clientside fixes for Fabric
 ### This project has nothing to do with the original ViaFabric and is therefore also not compact
 
+## Why?
+ViaFabricPlus is supposed to be an alternative to [multiconnect](https://github.com/Earthcomputer/multiconnect) that offers more compactness and more clientside improvements, <br>
+as ViaFabricPlus implements all Via platforms (ViaVersion, ViaBackwards, ViaLegacy, ViaAprilFools, ViaBedrock) and adds tons <br>
+of clientside fixes and QoL improvements like old rendering for all platforms. 
+
 ## Contact
 If you encounter any issues, please report them on the
 [issue tracker](https://github.com/FlorianMichael/ViaFabricPlus/issues).  
 If you just want to talk or need help with ViaFabricPlus feel free to join my
 [Discord](https://discord.gg/BwWhCHUKDf).
+
+## Compatibility
+ViaFabricPlus is structured to interfere with mods as little as possible.
+It should work fine with most if not all mods and modpacks.
+
+### Known incompatibilities:
+
+- ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)***
+- ***[multiconnect](https://github.com/Earthcomputer/multiconnect)***
+- ***[Krypton](https://github.com/astei/krypton)***
 
 ## Basic Features
 - [x] ViaVersion implementation
@@ -43,23 +58,10 @@ If you just want to talk or need help with ViaFabricPlus feel free to join my
 - [ ] More extensions for Classic Protocol Extensions protocol
 - [ ] Window click interactions in <= 1.16.5
 
-## Custom classic protocol extensions
-- **WeatherType** extension (version **1**)
-
-## Classic protocol commands
-To better control the Classic Protocol, there are a few clientside commands, the command prefix is **/v**: <br>
-- **/vhelp** - Displays all commands, available from: **c0.28-c0.30**
-- **/vsettime <Time (Long)>** - Changes the Clientside World Time, available from: **c0.28-c0.30**
-- **/vlistextensions** - Displays all classic protocol extensions, available in: **c0.30 CPE**
-
-## Why?
-ViaFabricPlus implements ViaLegacy/ViaAprilFools clientside and adds a ton of fixes that improve the game experience, <br>
-as does [multiconnect](https://github.com/Earthcomputer/multiconnect) from Earthcomputer.
-### Important: The focus on ViaFabricPlus is on client side fixes, so reporting bugs and contributing is welcome.
-
 ## Dependencies
 | Dependency     | Download                                                   |
 |----------------|------------------------------------------------------------|
+| Fabric API     | https://github.com/fabricMC/fabric                         |
 | ViaVersion     | https://github.com/ViaVersion/ViaVersion                   |
 | ViaBackwards   | https://github.com/ViaVersion/ViaBackwards                 |
 | Snake YAML     | https://mvnrepository.com/artifact/org.yaml/snakeyaml/1.33 |
@@ -82,8 +84,19 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 Settings are optional settings that can turn fixes on and off, originally they were used for debugging<br>
 ![](/.github/images/settings.png)
 
+# Classic stuff
+## Custom protocol extensions
+ViaFabricPlus implements new Classic Extensions into the CPE protocol of ViaLegacy which are rather client side. <br>
+- **WeatherType** extension (version **1**)
+
+## Protocol commands
+To better control the Classic Protocol, there are a few clientside commands, the command prefix is **/v**: <br>
+- **/vhelp** - Displays all commands, available from: **c0.28-c0.30**
+- **/vsettime <Time (Long)>** - Changes the Clientside World Time, available from: **c0.28-c0.30**
+- **/vlistextensions** - Displays all classic protocol extensions, available in: **c0.30 CPE**
+
 ## Addons
-There is no real addon base, to create addons you can simply use the Fabric system, and then interact with ViaFabricPlus via the **EventDispatcher**.
+There is no real addon base, to create addons you can simply use the event system, which uses Fabric's Event-API.
 ```java
 public class ViaFabricPlusExampleAddon implements ClientModInitializer {
 
@@ -104,10 +117,10 @@ public class ViaFabricPlusExampleAddon implements ClientModInitializer {
 | InitializeSettingsCallback           | Called after the default setting groups are loaded and before the setting config is loaded |
 | LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)       |
 | PreLoadCallback                      | Called before everything (Pre-pre load)                                                    |
-| SkipIdlePacketCallback               | In case you need an event as soon as the idle packet is skipped in the <= 1.8              |
+| SkipIdlePacketCallback               | Called as soon as the idle packet is skipped in the <= 1.8                                 |
 
 ### General API
-In case you need the release version of a material, you can do that:
+#### Get the release version of an material:
 ```java
 final ProtocolRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
 
@@ -116,7 +129,7 @@ final ProtocolRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().g
 // https://github.com/FlorianMichael/ViaLoadingBase
 ```
 
-To create a setting group, you can simply use the SettingGroup class:
+#### Creating own settings for the settings screen:
 ```java
 public class ExampleSettingGroup extends SettingGroup {
     public final static ExampleSettingGroup INSTANCE = new ExampleSettingGroup();
@@ -151,12 +164,9 @@ public class ExampleCommand implements ICommand {
 ```
 and then you register the command in your onLoad method:
 ```java
-// addon main [...]
-
-@Override
-public void onLoad() {
+PreLoadCallback.EVENT.register(() -> {
     ClassicProtocolCommands.commands.add(new ExampleCommand());
-}
+});
 ```
 
 #### Implementing custom classic protocol extensions:
