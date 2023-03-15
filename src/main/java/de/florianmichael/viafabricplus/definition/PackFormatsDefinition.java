@@ -17,12 +17,12 @@
  */
 package de.florianmichael.viafabricplus.definition;
 
-import com.mojang.bridge.game.PackType;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
+import net.minecraft.resource.ResourceType;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -32,6 +32,7 @@ public class PackFormatsDefinition {
     private final static Map<Integer, GameVersion> protocolMap = new HashMap<>();
 
     public static void load() {
+        registerVersion(ProtocolVersion.v1_19_4, 12, "1.19.4");
         registerVersion(ProtocolVersion.v1_19_3, 12, "1.19.3");
         registerVersion(ProtocolVersion.v1_19_1, 9, "1.19.2");
         registerVersion(ProtocolVersion.v1_19, 9, "1.19");
@@ -78,7 +79,7 @@ public class PackFormatsDefinition {
         }
 
         final GameVersion gameVersion = protocolMap.get(nativeVersion);
-        if (!gameVersion.getName().equals(SharedConstants.getGameVersion().getName()) || !gameVersion.getId().equals(SharedConstants.getGameVersion().getId()) || gameVersion.getPackVersion(PackType.RESOURCE) != SharedConstants.getGameVersion().getPackVersion(PackType.RESOURCE)) {
+        if (!gameVersion.getName().equals(SharedConstants.getGameVersion().getName()) || !gameVersion.getId().equals(SharedConstants.getGameVersion().getId()) || gameVersion.getResourceVersion(ResourceType.SERVER_DATA) != SharedConstants.getGameVersion().getResourceVersion(ResourceType.SERVER_DATA)) {
             throw new RuntimeException("The current version has no pack format registered");
         }
     }
@@ -116,8 +117,8 @@ public class PackFormatsDefinition {
             }
 
             @Override
-            public int getPackVersion(PackType packType) {
-                if (packType == PackType.RESOURCE) {
+            public int getResourceVersion(ResourceType type) {
+                if (type == ResourceType.SERVER_DATA) {
                     return packFormat;
                 }
                 throw new UnsupportedOperationException();

@@ -22,28 +22,43 @@ import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.resource.featuretoggle.FeatureSet;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ItemGroups.class)
-public class MixinItemGroups {
+@Mixin(ItemGroup.DisplayContext.class)
+public class MixinItemGroup_DisplayContext implements IItemGroup_DisplayContext {
 
-    @Shadow @Nullable private static ItemGroup.@Nullable DisplayContext displayContext;
+    @Unique
+    private static ComparableProtocolVersion viafabricplus_version;
 
-    @Inject(method = "updateDisplayContext", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemGroups;updateEntries(Lnet/minecraft/item/ItemGroup$DisplayContext;)V", shift = At.Shift.BEFORE))
-    private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, RegistryWrapper.WrapperLookup lookup, CallbackInfoReturnable<Boolean> cir) {
-        final IItemGroup_DisplayContext accessor = (IItemGroup_DisplayContext) (Object) displayContext;
+    @Unique
+    private static boolean viafabricplus_state;
 
-        accessor.viafabricplus_setVersion(ViaLoadingBase.getClassWrapper().getTargetVersion());
-        accessor.viafabricplus_setState(GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue());
+    @Redirect(method = "doesNotMatch", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/featuretoggle/FeatureSet;equals(Ljava/lang/Object;)Z"))
+    private boolean adjustLastVersionMatchCheck(FeatureSet instance, Object o) {
+        return instance.equals(o) && viafabricplus_version == ViaLoadingBase.getClassWrapper().getTargetVersion() && viafabricplus_state == GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue();
+    }
+
+    @Override
+    public ComparableProtocolVersion viafabricplus_getVersion() {
+        return viafabricplus_version;
+    }
+
+    @Override
+    public void viafabricplus_setVersion(ComparableProtocolVersion comparableProtocolVersion) {
+        viafabricplus_version = comparableProtocolVersion;
+    }
+
+    @Override
+    public boolean viafabricplus_isState() {
+        return viafabricplus_state;
+    }
+
+    @Override
+    public void viafabricplus_setState(boolean state) {
+        viafabricplus_state = state;
     }
 }

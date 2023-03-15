@@ -162,7 +162,7 @@ public class ClassicItemSelectionScreen extends Screen {
         final int renderY = halfHeight - boxHeight / 2;
 
         fill(matrices, renderX, renderY, renderX + boxWidth, renderY + boxHeight, Integer.MIN_VALUE);
-        drawCenteredText(matrices, textRenderer, "Select block", renderX + boxWidth / 2, renderY + SIDE_OFFSET, -1);
+        drawCenteredTextWithShadow(matrices, textRenderer, "Select block", renderX + boxWidth / 2, renderY + SIDE_OFFSET, -1);
         selectedItem = null;
 
         int y = SIDE_OFFSET + SIDE_OFFSET;
@@ -175,7 +175,7 @@ public class ClassicItemSelectionScreen extends Screen {
                     fill(matrices, renderX + x, renderY + y, renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC, renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC, Integer.MAX_VALUE);
                     selectedItem = item.getDefaultStack();
                 }
-                MinecraftClient.getInstance().getItemRenderer().renderGuiItemIcon(item.getDefaultStack(), renderX + x + ITEM_XY_BOX_DIMENSION_MODERN / 4, renderY + y + ITEM_XY_BOX_DIMENSION_MODERN / 4);
+                MinecraftClient.getInstance().getItemRenderer().renderGuiItemIcon(matrices, item.getDefaultStack(), renderX + x + ITEM_XY_BOX_DIMENSION_MODERN / 4, renderY + y + ITEM_XY_BOX_DIMENSION_MODERN / 4);
                 x += ITEM_XY_BOX_DIMENSION_CLASSIC;
             }
             y += ITEM_XY_BOX_DIMENSION_CLASSIC;

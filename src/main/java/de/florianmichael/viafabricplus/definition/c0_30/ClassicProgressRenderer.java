@@ -35,7 +35,7 @@ public class ClassicProgressRenderer extends DrawableHelper {
         if (classicProgressStorage == null) return;
 
         final Window window = MinecraftClient.getInstance().getWindow();
-        drawCenteredText(
+        drawCenteredTextWithShadow(
                 matrices,
                 MinecraftClient.getInstance().textRenderer,
                 "[ViaFabricPlus] " + classicProgressStorage.status,

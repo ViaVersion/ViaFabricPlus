@@ -18,6 +18,8 @@
 package de.florianmichael.viafabricplus.screen;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
+import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.MinecraftClient;
@@ -52,6 +54,8 @@ public class ProtocolSelectionScreen extends Screen {
 
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, textRenderer.fontHeight + 4));
         this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(0, height - 20).size(20, 20).build());
+
+        this.addDrawableChild(ButtonWidget.builder(Text.literal("Settings"), button -> client.setScreen(SettingsScreen.get(this))).position(0, 0).size(98, 20).build());
     }
 
     @Override
@@ -60,9 +64,9 @@ public class ProtocolSelectionScreen extends Screen {
 
         matrices.push();
         matrices.scale(2F, 2F, 2F);
-        drawCenteredText(matrices, textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
+        drawCenteredTextWithShadow(matrices, textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.pop();
-        drawCenteredText(matrices, textRenderer, "https://github.com/FlorianMichael/ViaFabricPlus", width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
+        drawCenteredTextWithShadow(matrices, textRenderer, "https://github.com/FlorianMichael/ViaFabricPlus", width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
     }
 
     @Override
@@ -106,7 +110,7 @@ public class ProtocolSelectionScreen extends Screen {
             matrices.translate(x, y - 1, 0);
 
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            drawCenteredText(matrices, textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
+            drawCenteredTextWithShadow(matrices, textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
             matrices.pop();
         }
     }

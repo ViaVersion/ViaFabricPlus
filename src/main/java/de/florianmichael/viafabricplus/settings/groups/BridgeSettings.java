@@ -23,7 +23,7 @@ import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
 public class BridgeSettings extends SettingGroup {
     public final static BridgeSettings INSTANCE = new BridgeSettings();
 
-    public final BooleanSetting optionsButtonInGameOptions = new BooleanSetting(this, "Options button in game options", true);
+    public final BooleanSetting showSuperSecretSettings = new BooleanSetting(this, "Show Super Secret Settings", true);
     public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, "Show extra information in Debug Hud", true);
     public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, "Show classic loading progress in connect screen", true);
 

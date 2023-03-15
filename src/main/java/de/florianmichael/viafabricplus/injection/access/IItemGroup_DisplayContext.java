@@ -15,20 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.base;
+package de.florianmichael.viafabricplus.injection.access;
 
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import net.minecraft.client.main.Main;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 
-@Mixin(Main.class)
-public class MixinMain {
+public interface IItemGroup_DisplayContext {
 
-    @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;initCrashReport()V"))
-    private static void preLoad(CallbackInfo ci) {
-        ViaFabricPlus.INSTANCE.init();
-    }
+    ComparableProtocolVersion viafabricplus_getVersion();
+    void viafabricplus_setVersion(final ComparableProtocolVersion comparableProtocolVersion);
+
+    boolean viafabricplus_isState();
+    void viafabricplus_setState(final boolean state);
 }
