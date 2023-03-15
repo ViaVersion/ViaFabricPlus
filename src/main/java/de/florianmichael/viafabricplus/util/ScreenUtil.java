@@ -31,4 +31,23 @@ public class ScreenUtil {
     public static String prefixedMessage(final String message) {
         return Formatting.GOLD + "[ViaFabricPlus] " + Formatting.WHITE + message;
     }
+
+    public static String format(double a) {
+        return String.format("%.2f", a);
+    }
+
+    public static String formatBytes(long value) {
+        final double bytes = value;
+
+        if (value < 1024L)
+            return value + " B";
+        else if (value < 1024L * 1024L)
+            return format((bytes / 1024.0)) + " Kb";
+        else if (value < 1024L * 1024L * 1024L)
+            return format((bytes / 1024.0 / 1024.0)) + " Mb";
+        else if (value < 1024L * 1024L * 1024L * 1024L)
+            return format((bytes / 1024.0 / 1024.0 / 1024.0)) + " Gb";
+        else
+            return format((bytes / 1024.0 / 1024.0 / 1024.0 / 1024.0)) + " Tb";
+    }
 }

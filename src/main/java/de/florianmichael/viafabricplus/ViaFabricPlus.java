@@ -26,6 +26,7 @@ import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolC
 import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
 import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.event.PreLoadCallback;
+import de.florianmichael.viafabricplus.information.InformationSystem;
 import de.florianmichael.viafabricplus.settings.SettingsSystem;
 import de.florianmichael.viafabricplus.vialoadingbase.ViaLoadingBaseStartup;
 
@@ -36,10 +37,12 @@ public class ViaFabricPlus {
     public final static ViaFabricPlus INSTANCE = new ViaFabricPlus();
 
     private final SettingsSystem settingsSystem = new SettingsSystem();
+    private final InformationSystem informationSystem = new InformationSystem();
 
     public void init() {
         FinishMinecraftLoadCallback.EVENT.register(() -> {
             settingsSystem.init();
+            informationSystem.init();
 
             // General definitions
             PackFormatsDefinition.load();
@@ -59,5 +62,9 @@ public class ViaFabricPlus {
 
     public SettingsSystem getSettingsSystem() {
         return settingsSystem;
+    }
+
+    public InformationSystem getInformationSystem() {
+        return informationSystem;
     }
 }
