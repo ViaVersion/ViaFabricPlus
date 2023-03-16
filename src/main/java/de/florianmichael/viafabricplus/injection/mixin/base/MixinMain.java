@@ -29,6 +29,6 @@ public class MixinMain {
 
     @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;initCrashReport()V"))
     private static void preLoad(CallbackInfo ci) {
-//        ViaFabricPlus.INSTANCE.init();
+        ViaFabricPlus.INSTANCE.init();
     }
 }

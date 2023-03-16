@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.settings.base;
 
 import com.google.gson.JsonObject;
+import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
 
 public abstract class AbstractSetting<T> {
     private final String name;
@@ -33,6 +34,8 @@ public abstract class AbstractSetting<T> {
 
         parent.getSettings().add(this);
     }
+
+    public abstract AbstractSettingRenderer makeSettingRenderer();
 
     public abstract void write(final JsonObject object);
     public abstract void read(final JsonObject object);

@@ -19,12 +19,14 @@ package de.florianmichael.viafabricplus.screen.settings;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.BooleanSettingRenderer;
+import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ButtonSettingRenderer;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ModeSettingRenderer;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ProtocolSyncBooleanSettingRenderer;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
+import de.florianmichael.viafabricplus.settings.type_impl.ButtonSetting;
 import de.florianmichael.viafabricplus.settings.type_impl.ModeSetting;
 import de.florianmichael.viafabricplus.settings.type_impl.ProtocolSyncBooleanSetting;
 import net.minecraft.client.MinecraftClient;
@@ -58,7 +60,7 @@ public class SettingsScreen extends Screen {
         super.init();
 
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, (textRenderer.fontHeight + 2) * 2));
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(0, height - 20).size(20, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(0, 0).size(20, 20).build());
     }
 
     @Override
@@ -79,25 +81,14 @@ public class SettingsScreen extends Screen {
 
     public static class SlotList extends AlwaysSelectedEntryListWidget<AbstractSettingRenderer> {
 
-        public static final Map<Class<? extends AbstractSetting<?>>, Class<? extends AbstractSettingRenderer>> RENDERER = new HashMap<>() {
-            {
-                put(BooleanSetting.class, BooleanSettingRenderer.class);
-                put(ProtocolSyncBooleanSetting.class, ProtocolSyncBooleanSettingRenderer.class);
-                put(ModeSetting.class, ModeSettingRenderer.class);
-            }
-        };
-
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             for (SettingGroup group : ViaFabricPlus.INSTANCE.getSettingsSystem().getGroups()) {
                 this.addEntry(new TitleRenderer(group.getName()));
+
                 for (AbstractSetting<?> setting : group.getSettings()) {
-                    try {
-                        this.addEntry(RENDERER.get(setting.getClass()).getConstructor(setting.getClass()).newInstance(setting));
-                    } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-                        throw new RuntimeException(e);
-                    }
+                    this.addEntry(setting.makeSettingRenderer());
                 }
             }
         }

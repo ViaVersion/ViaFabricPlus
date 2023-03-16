@@ -18,6 +18,8 @@
 package de.florianmichael.viafabricplus.settings.type_impl;
 
 import com.google.gson.JsonObject;
+import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
+import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ModeSettingRenderer;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 
@@ -29,6 +31,11 @@ public class ModeSetting extends AbstractSetting<String> {
     public ModeSetting(SettingGroup parent, String name, String... options) {
         super(parent, name, options[0]);
         this.options = options;
+    }
+
+    @Override
+    public AbstractSettingRenderer makeSettingRenderer() {
+        return new ModeSettingRenderer(this);
     }
 
     @Override

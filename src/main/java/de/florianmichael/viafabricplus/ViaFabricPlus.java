@@ -32,11 +32,10 @@ import de.florianmichael.viafabricplus.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.information.InformationSystem;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.SettingsSystem;
-import net.fabricmc.api.ClientModInitializer;
 
 import java.io.File;
 
-public class ViaFabricPlus implements ClientModInitializer {
+public class ViaFabricPlus {
     public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public final static File RUN_DIRECTORY = new File("ViaFabricPlus");
 
@@ -45,8 +44,12 @@ public class ViaFabricPlus implements ClientModInitializer {
     private final SettingsSystem settingsSystem = new SettingsSystem();
     private final InformationSystem informationSystem = new InformationSystem();
 
-    @Override
-    public void onInitializeClient() {
+    public void init() {
+        PreLoadCallback.EVENT.invoker().onLoad();
+
+        CustomClassicProtocolExtensions.create();
+        new ProtocolHack();
+
         FinishMinecraftLoadCallback.EVENT.register(() -> {
             // General settings
             settingsSystem.init();
@@ -65,10 +68,6 @@ public class ViaFabricPlus implements ClientModInitializer {
             // Bedrock Stuff
             BedrockAccountManager.INSTANCE.load();
         });
-        PreLoadCallback.EVENT.invoker().onLoad();
-
-        CustomClassicProtocolExtensions.create();
-        new ProtocolHack();
     }
 
     public SettingsSystem getSettingsSystem() {

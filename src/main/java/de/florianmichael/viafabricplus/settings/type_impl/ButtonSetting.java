@@ -19,30 +19,28 @@ package de.florianmichael.viafabricplus.settings.type_impl;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
-import de.florianmichael.viafabricplus.screen.settings.settingrenderer.BooleanSettingRenderer;
+import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ButtonSettingRenderer;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 
-public class BooleanSetting extends AbstractSetting<Boolean> {
+public class ButtonSetting extends AbstractSetting<Runnable> {
 
-    public BooleanSetting(SettingGroup parent, String name, Boolean defaultValue) {
-        super(parent, name, defaultValue);
+    public ButtonSetting(SettingGroup parent, String name, Runnable onClick) {
+        super(parent, name, onClick);
     }
 
     @Override
     public AbstractSettingRenderer makeSettingRenderer() {
-        return new BooleanSettingRenderer(this);
+        return new ButtonSettingRenderer(this);
+    }
+
+    public String displayValue() {
+        return getName();
     }
 
     @Override
-    public void write(JsonObject object) {
-        object.addProperty(getName(), getValue());
-    }
+    public void write(JsonObject object) {}
 
     @Override
-    public void read(JsonObject object) {
-        if (!object.has(getName())) return;
-
-        setValue(object.get(getName()).getAsBoolean());
-    }
+    public void read(JsonObject object) {}
 }

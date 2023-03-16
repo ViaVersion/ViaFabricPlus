@@ -40,6 +40,7 @@ public class SettingsSystem {
         addGroup(
                 GeneralSettings.INSTANCE,
                 BridgeSettings.INSTANCE,
+                BedrockSettings.INSTANCE,
                 MPPassSettings.INSTANCE,
                 VisualSettings.INSTANCE,
                 DebugSettings.INSTANCE

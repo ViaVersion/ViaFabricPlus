@@ -60,51 +60,14 @@ public class ProtocolSelectionScreen extends Screen {
         RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(INSTANCE));
     }
 
-    private ButtonWidget bedrockAuthentication;
-
     @Override
     protected void init() {
         super.init();
 
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, textRenderer.fontHeight + 4));
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(0, height - 20).size(20, 20).build());
+        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height - 25, textRenderer.fontHeight + 4));
+        this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(0, 0).size(20, 20).build());
 
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("Settings"), button -> client.setScreen(SettingsScreen.get(this))).position(0, 0).size(98, 20).build());
-        this.addDrawableChild(bedrockAuthentication = ButtonWidget.builder(getBedrockAuthenticationText(), button -> {
-            CompletableFuture.runAsync(() -> {
-                try {
-                    BedrockAccountManager.INSTANCE.setAccount(MinecraftAuth.requestBedrockLogin(msaDeviceCode -> {
-                        client.execute(() -> this.client.setScreen(new NoticeScreen(() -> {
-                            ProtocolSelectionScreen.open(new MultiplayerScreen(new TitleScreen()));
-                            Thread.currentThread().interrupt();
-                        }, Text.literal("Microsoft Bedrock login"), Text.literal("Your webbrowser should've opened.\nPlease enter the following Code: " + msaDeviceCode.userCode() + "\nClosing this screen will cancel the process!"), Text.literal("Cancel"), false)));
-                        try {
-                            Util.getOperatingSystem().open(new URI(msaDeviceCode.verificationUri()));
-                        } catch (URISyntaxException e) {
-                            e.printStackTrace();
-                        }
-                    }));
-                    ProtocolSelectionScreen.open(new MultiplayerScreen(new TitleScreen()));
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-            });
-        }).position(width - 98, 0).size(98, 20).build());
-    }
-
-    public Text getBedrockAuthenticationText() {
-        if (BedrockAccountManager.INSTANCE.getAccount() != null) {
-            return Text.literal(BedrockAccountManager.INSTANCE.getAccount().displayName());
-        }
-        return Text.literal("Set Bedrock Account");
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (bedrockAuthentication != null) {
-            bedrockAuthentication.setMessage(getBedrockAuthenticationText());
-        }
+        this.addDrawableChild(ButtonWidget.builder(Text.literal("Settings"), button -> client.setScreen(SettingsScreen.get(this))).position(width - 98, 0).size(98, 20).build());
     }
 
     @Override
