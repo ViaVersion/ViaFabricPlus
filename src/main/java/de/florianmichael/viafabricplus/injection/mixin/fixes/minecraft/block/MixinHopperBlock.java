@@ -48,14 +48,14 @@ public class MixinHopperBlock {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaLoadingBase.getClassWrapper() != null && ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(viafabricplus_hopper_shape_v1_12_2);
         }
     }
 
     @Inject(method = "getRaycastShape", at = @At("HEAD"), cancellable = true)
     public void injectGetRaycastShape(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaLoadingBase.getClassWrapper() != null && ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(viafabricplus_inside_shape_v1_12_2);
         }
     }

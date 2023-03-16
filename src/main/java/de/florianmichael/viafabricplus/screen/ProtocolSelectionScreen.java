@@ -17,22 +17,33 @@
  */
 package de.florianmichael.viafabricplus.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountManager;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Util;
+import net.raphimc.mcauth.MinecraftAuth;
 
 import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings({"DataFlowIssue", "DuplicatedCode"})
 public class ProtocolSelectionScreen extends Screen {
@@ -45,8 +56,11 @@ public class ProtocolSelectionScreen extends Screen {
 
     public static void open(final Screen current) {
         INSTANCE.prevScreen = current;
-        MinecraftClient.getInstance().setScreen(INSTANCE);
+
+        RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(INSTANCE));
     }
+
+    private ButtonWidget bedrockAuthentication;
 
     @Override
     protected void init() {
@@ -56,6 +70,41 @@ public class ProtocolSelectionScreen extends Screen {
         this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(0, height - 20).size(20, 20).build());
 
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Settings"), button -> client.setScreen(SettingsScreen.get(this))).position(0, 0).size(98, 20).build());
+        this.addDrawableChild(bedrockAuthentication = ButtonWidget.builder(getBedrockAuthenticationText(), button -> {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    BedrockAccountManager.INSTANCE.setAccount(MinecraftAuth.requestBedrockLogin(msaDeviceCode -> {
+                        client.execute(() -> this.client.setScreen(new NoticeScreen(() -> {
+                            ProtocolSelectionScreen.open(new MultiplayerScreen(new TitleScreen()));
+                            Thread.currentThread().interrupt();
+                        }, Text.literal("Microsoft Bedrock login"), Text.literal("Your webbrowser should've opened.\nPlease enter the following Code: " + msaDeviceCode.userCode() + "\nClosing this screen will cancel the process!"), Text.literal("Cancel"), false)));
+                        try {
+                            Util.getOperatingSystem().open(new URI(msaDeviceCode.verificationUri()));
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }));
+                    ProtocolSelectionScreen.open(new MultiplayerScreen(new TitleScreen()));
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            });
+        }).position(width - 98, 0).size(98, 20).build());
+    }
+
+    public Text getBedrockAuthenticationText() {
+        if (BedrockAccountManager.INSTANCE.getAccount() != null) {
+            return Text.literal(BedrockAccountManager.INSTANCE.getAccount().displayName());
+        }
+        return Text.literal("Set Bedrock Account");
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (bedrockAuthentication != null) {
+            bedrockAuthentication.setMessage(getBedrockAuthenticationText());
+        }
     }
 
     @Override

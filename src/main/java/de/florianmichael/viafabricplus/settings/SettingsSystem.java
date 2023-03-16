@@ -17,8 +17,6 @@
  */
 package de.florianmichael.viafabricplus.settings;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.event.InitializeSettingsCallback;
@@ -34,7 +32,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class SettingsSystem {
-    private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private final File CONFIG_FILE = new File(ViaFabricPlus.RUN_DIRECTORY, "settings.json");
 
     private final List<SettingGroup> groups = new ArrayList<>();
@@ -62,7 +59,7 @@ public class SettingsSystem {
         if (CONFIG_FILE.exists()) {
             final JsonObject parentNode;
             try {
-                parentNode = GSON.fromJson(new FileReader(CONFIG_FILE), JsonObject.class).getAsJsonObject();
+                parentNode = ViaFabricPlus.GSON.fromJson(new FileReader(CONFIG_FILE), JsonObject.class).getAsJsonObject();
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -93,7 +90,7 @@ public class SettingsSystem {
                     setting.write(parentNode);
                 }
             }
-            fw.write(GSON.toJson(parentNode));
+            fw.write(ViaFabricPlus.GSON.toJson(parentNode));
             fw.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);

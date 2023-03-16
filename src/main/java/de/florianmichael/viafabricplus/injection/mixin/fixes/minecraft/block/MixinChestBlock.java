@@ -39,7 +39,7 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
+        if (ViaLoadingBase.getClassWrapper() != null && ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             return VoxelShapes.fullCube();
         }
         return super.getCollisionShape(state, world, pos, context);

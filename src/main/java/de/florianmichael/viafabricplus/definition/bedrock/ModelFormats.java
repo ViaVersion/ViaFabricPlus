@@ -15,20 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.base;
+package de.florianmichael.viafabricplus.definition.bedrock;
 
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import net.minecraft.client.main.Main;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.raphimc.viabedrock.protocol.data.enums.bedrock.MovementMode;
 
-@Mixin(Main.class)
-public class MixinMain {
+public class ModelFormats {
 
-    @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;initCrashReport()V"))
-    private static void preLoad(CallbackInfo ci) {
-//        ViaFabricPlus.INSTANCE.init();
+    public static String formatMovementMode(final int movementMode) {
+        if (movementMode == MovementMode.CLIENT) return "Client";
+        if (movementMode == MovementMode.SERVER) return "Server";
+
+        return "Server with rewind";
     }
 }

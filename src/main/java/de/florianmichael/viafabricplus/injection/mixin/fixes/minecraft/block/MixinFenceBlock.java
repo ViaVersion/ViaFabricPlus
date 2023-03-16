@@ -51,7 +51,7 @@ public class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (ViaLoadingBase.getClassWrapper() != null && ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return viafabricplus_fence_shape_b1_8_1;
         }
         return super.getCollisionShape(state, world, pos, context);
@@ -59,7 +59,7 @@ public class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (ViaLoadingBase.getClassWrapper() != null && ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return VoxelShapes.fullCube();
         }
         return super.getOutlineShape(state, world, pos, context);

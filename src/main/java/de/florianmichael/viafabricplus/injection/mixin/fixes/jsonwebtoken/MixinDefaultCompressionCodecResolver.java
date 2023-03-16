@@ -15,20 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.base;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.jsonwebtoken;
 
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import net.minecraft.client.main.Main;
+import io.jsonwebtoken.impl.compression.DefaultCompressionCodecResolver;
+import io.jsonwebtoken.impl.compression.DeflateCompressionCodec;
+import io.jsonwebtoken.impl.compression.GzipCompressionCodec;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(Main.class)
-public class MixinMain {
+import java.util.Arrays;
+import java.util.List;
 
-    @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;initCrashReport()V"))
-    private static void preLoad(CallbackInfo ci) {
-//        ViaFabricPlus.INSTANCE.init();
+@Mixin(value = DefaultCompressionCodecResolver.class, remap = false)
+public class MixinDefaultCompressionCodecResolver {
+
+    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lio/jsonwebtoken/impl/lang/Services;loadAll(Ljava/lang/Class;)Ljava/util/List;"))
+    public List<Object> fixServicesSupport(Class<Object> implementations) {
+        return Arrays.asList(new GzipCompressionCodec(), new DeflateCompressionCodec());
     }
 }

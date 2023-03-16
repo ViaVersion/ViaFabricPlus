@@ -18,6 +18,9 @@
   "icon": "assets/viafabricplus/icon.png",
   "environment": "*",
   "entrypoints": {
+    "client": [
+      "de.florianmichael.viafabricplus.ViaFabricPlus"
+    ],
     "modmenu": [
       "de.florianmichael.viafabricplus.integration.ModMenuImpl"
     ]

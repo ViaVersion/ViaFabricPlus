@@ -30,6 +30,7 @@ import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.World;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -80,7 +81,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         if (pose == EntityPose.CROUCHING) {
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 ci.setReturnValue(PlayerEntity.STANDING_DIMENSIONS);
-            } else if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            } else if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2) || ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
                 ci.setReturnValue(viafabricplus_SNEAKING_DIMENSIONS_1_13_2);
             }
         }

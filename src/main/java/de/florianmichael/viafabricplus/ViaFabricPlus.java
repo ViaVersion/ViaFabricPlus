@@ -17,9 +17,12 @@
  */
 package de.florianmichael.viafabricplus;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
 import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
 import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
+import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountManager;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.definition.c0_30.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolCommands;
@@ -29,18 +32,23 @@ import de.florianmichael.viafabricplus.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.information.InformationSystem;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.SettingsSystem;
+import net.fabricmc.api.ClientModInitializer;
 
 import java.io.File;
 
-public class ViaFabricPlus {
+public class ViaFabricPlus implements ClientModInitializer {
+    public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public final static File RUN_DIRECTORY = new File("ViaFabricPlus");
+
     public final static ViaFabricPlus INSTANCE = new ViaFabricPlus();
 
     private final SettingsSystem settingsSystem = new SettingsSystem();
     private final InformationSystem informationSystem = new InformationSystem();
 
-    public void init() {
+    @Override
+    public void onInitializeClient() {
         FinishMinecraftLoadCallback.EVENT.register(() -> {
+            // General settings
             settingsSystem.init();
             informationSystem.init();
 
@@ -53,6 +61,9 @@ public class ViaFabricPlus {
             ChatLengthDefinition.create();
             ClassicItemSelectionScreen.create();
             ClassicProtocolCommands.create();
+
+            // Bedrock Stuff
+            BedrockAccountManager.INSTANCE.load();
         });
         PreLoadCallback.EVENT.invoker().onLoad();
 

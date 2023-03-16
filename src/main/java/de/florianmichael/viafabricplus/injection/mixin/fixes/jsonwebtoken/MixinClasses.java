@@ -15,20 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.base;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.jsonwebtoken;
 
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import net.minecraft.client.main.Main;
+import io.jsonwebtoken.lang.Classes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(Main.class)
-public class MixinMain {
+@Mixin(value = Classes.class, remap = false)
+public class MixinClasses {
 
-    @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;initCrashReport()V"))
-    private static void preLoad(CallbackInfo ci) {
-//        ViaFabricPlus.INSTANCE.init();
+    @Inject(method = "forName", at = @At("HEAD"), cancellable = true)
+    private static void fixServicesSupport(String fqcn, CallbackInfoReturnable<Class<Object>> cir) throws ClassNotFoundException {
+        cir.setReturnValue((Class<Object>) Class.forName(fqcn));
     }
 }

@@ -15,20 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.base;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.viabedrock;
 
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import net.minecraft.client.main.Main;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.definition.bedrock.JoinGameStorage;
+import net.raphimc.viabedrock.protocol.BedrockProtocol;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Main.class)
-public class MixinMain {
+@Mixin(value = BedrockProtocol.class, remap = false)
+public class MixinBedrockProtocol {
 
-    @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;initCrashReport()V"))
-    private static void preLoad(CallbackInfo ci) {
-//        ViaFabricPlus.INSTANCE.init();
+    @Inject(method = "init", at = @At("RETURN"))
+    public void hookStorages(UserConnection user, CallbackInfo ci) {
+        user.put(new JoinGameStorage(user));
     }
 }

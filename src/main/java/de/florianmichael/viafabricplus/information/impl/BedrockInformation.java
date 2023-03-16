@@ -18,6 +18,8 @@
 package de.florianmichael.viafabricplus.information.impl;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.definition.bedrock.JoinGameStorage;
+import de.florianmichael.viafabricplus.definition.bedrock.ModelFormats;
 import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
@@ -28,6 +30,7 @@ import net.raphimc.viabedrock.api.chunk.BedrockChunk;
 import net.raphimc.viabedrock.api.model.entity.Entity;
 import net.raphimc.viabedrock.protocol.storage.BlobCache;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
+import net.raphimc.viabedrock.protocol.storage.GameSessionStorage;
 
 import java.util.List;
 import java.util.Map;
@@ -79,6 +82,19 @@ public class BedrockInformation extends AbstractInformationGroup {
             if (entities != 0) {
                 output.add("Entity Tracker: " + entities);
             }
+        }
+        final JoinGameStorage joinGameStorage = userConnection.get(JoinGameStorage.class);
+        if (!joinGameStorage.getLevelId().isEmpty() || joinGameStorage.getSeed() != 0 || joinGameStorage.getEnchantmentSeed() != 0) {
+            if (!output.isEmpty()) output.add("");
+            output.add("Join Game:");
+        }
+        if (joinGameStorage.getSeed() != 0) output.add("World Seed: " + joinGameStorage.getSeed());
+        if (!joinGameStorage.getLevelId().isEmpty()) output.add("Level Id: " + joinGameStorage.getLevelId());
+        if (joinGameStorage.getEnchantmentSeed() != 0) output.add("Enchantment Seed: " + joinGameStorage.getEnchantmentSeed());
+
+        final GameSessionStorage gameSessionStorage = userConnection.get(GameSessionStorage.class);
+        if (gameSessionStorage != null) {
+            output.add("Movement mode: " + ModelFormats.formatMovementMode(gameSessionStorage.getMovementMode()));
         }
     }
 }
