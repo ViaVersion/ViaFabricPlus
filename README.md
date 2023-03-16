@@ -34,7 +34,7 @@ It should work fine with most if not all mods and modpacks.
 - [x] ViaBackwards implementation
 - [x] ViaLegacy implementation
 - [x] ViaAprilFools implementation
-- [x] (Beta) ViaBedrock implementation
+- [x] ViaBedrock implementation
 - [x] BetaCraft implementation for MP Pass
 
 ## Clientside related Fixes
@@ -58,7 +58,6 @@ It should work fine with most if not all mods and modpacks.
 - [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
 
 ## TODO
-- [ ] Bedrock account auth for ViaBedrock
 - [ ] ClassiCube implementation for MP Pass
 - [ ] BetaCraft server list screen
 - [ ] More extensions for Classic Protocol Extensions protocol
