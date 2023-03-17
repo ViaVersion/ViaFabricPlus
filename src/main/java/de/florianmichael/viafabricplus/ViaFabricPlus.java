@@ -24,7 +24,7 @@ import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
 import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
 import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountManager;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScreen;
-import de.florianmichael.viafabricplus.definition.c0_30.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.definition.c0_30.protocol.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolCommands;
 import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
 import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;

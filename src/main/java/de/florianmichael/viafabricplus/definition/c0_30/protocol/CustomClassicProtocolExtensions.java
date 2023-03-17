@@ -15,17 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.c0_30;
+package de.florianmichael.viafabricplus.definition.c0_30.protocol;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
+import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.reflect.Enums;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.ClientboundPacketsc0_30cpe;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
-import org.lwjgl.openal.AL;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -15,42 +15,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.bedrock;
+package de.florianmichael.viafabricplus.definition.v1_19_2.storage;
 
 import com.viaversion.viaversion.api.connection.StoredObject;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.minecraft.ProfileKey;
+import de.florianmichael.viafabricplus.definition.v1_19_2.MessageSigner;
 
-public class JoinGameStorage extends StoredObject {
+import java.security.PrivateKey;
 
-    private long seed;
-    private String levelId;
-    private long enchantmentSeed;
+public abstract class AbstractChatSession extends StoredObject {
+    private final ProfileKey profileKey;
+    private final PrivateKey privateKey;
 
-    public JoinGameStorage(UserConnection user) {
+    private final MessageSigner signer;
+
+    public AbstractChatSession(UserConnection user, final ProfileKey profileKey, final PrivateKey privateKey) {
         super(user);
+        this.profileKey = profileKey;
+        this.privateKey = privateKey;
+
+        this.signer = MessageSigner.create(privateKey, "SHA256withRSA");
     }
 
-    public long getSeed() {
-        return seed;
+    public ProfileKey getProfileKey() {
+        return profileKey;
     }
 
-    public void setSeed(long seed) {
-        this.seed = seed;
+    public PrivateKey getPrivateKey() {
+        return privateKey;
     }
 
-    public String getLevelId() {
-        return levelId;
-    }
-
-    public void setLevelId(String levelId) {
-        this.levelId = levelId;
-    }
-
-    public long getEnchantmentSeed() {
-        return enchantmentSeed;
-    }
-
-    public void setEnchantmentSeed(long enchantmentSeed) {
-        this.enchantmentSeed = enchantmentSeed;
+    public MessageSigner getSigner() {
+        return signer;
     }
 }

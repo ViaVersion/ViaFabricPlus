@@ -1,6 +1,6 @@
 /*
- * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/MrLookAtMe (EnZaXD) and contributors
+ * This file is part of ViaProxy - https://github.com/RaphiMC/ViaProxy
+ * Copyright (C) 2023 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +23,12 @@ import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;
 import com.viaversion.viaversion.protocols.protocol1_16_2to1_16_1.ClientboundPackets1_16_2;
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.Protocol1_17To1_16_4;
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.packets.EntityPackets;
-import de.florianmichael.viafabricplus.definition.c0_30.ClassicWorldHeightInjection;
+import de.florianmichael.viafabricplus.definition.c0_30.protocol.ClassicWorldHeightInjection;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
-// Copyright RaphiMC/RK_01 - LICENSE file
 @Mixin(value = EntityPackets.class, remap = false)
 public abstract class MixinEntityPackets1_17 {
 

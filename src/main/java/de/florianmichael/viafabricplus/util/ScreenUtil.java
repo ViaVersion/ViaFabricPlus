@@ -37,17 +37,15 @@ public class ScreenUtil {
     }
 
     public static String formatBytes(long value) {
-        final double bytes = value;
-
         if (value < 1024L)
             return value + " B";
         else if (value < 1024L * 1024L)
-            return format((bytes / 1024.0)) + " Kb";
+            return format(((double) value / 1024.0)) + " Kb";
         else if (value < 1024L * 1024L * 1024L)
-            return format((bytes / 1024.0 / 1024.0)) + " Mb";
+            return format(((double) value / 1024.0 / 1024.0)) + " Mb";
         else if (value < 1024L * 1024L * 1024L * 1024L)
-            return format((bytes / 1024.0 / 1024.0 / 1024.0)) + " Gb";
+            return format(((double) value / 1024.0 / 1024.0 / 1024.0)) + " Gb";
         else
-            return format((bytes / 1024.0 / 1024.0 / 1024.0 / 1024.0)) + " Tb";
+            return format(((double) value / 1024.0 / 1024.0 / 1024.0 / 1024.0)) + " Tb";
     }
 }

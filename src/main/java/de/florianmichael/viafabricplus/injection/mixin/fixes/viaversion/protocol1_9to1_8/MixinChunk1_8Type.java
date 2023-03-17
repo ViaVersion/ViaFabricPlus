@@ -1,6 +1,6 @@
 /*
- * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/MrLookAtMe (EnZaXD) and contributors
+ * This file is part of ViaProxy - https://github.com/RaphiMC/ViaProxy
+ * Copyright (C) 2023 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-// Copyright RaphiMC/RK_01 - LICENSE file
 @Mixin(value = Chunk1_8Type.class, remap = false)
 public abstract class MixinChunk1_8Type {
 

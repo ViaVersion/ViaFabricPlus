@@ -20,7 +20,8 @@ package de.florianmichael.viafabricplus.definition.v1_19_0.storage;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import de.florianmichael.viafabricplus.definition.v1_19_0.JsonHelper;
-import de.florianmichael.viafabricplus.definition.v1_19_0.MessageMetadataModel;
+import de.florianmichael.viafabricplus.definition.v1_19_2.model.MessageMetadataModel;
+import de.florianmichael.viafabricplus.definition.v1_19_2.storage.AbstractChatSession;
 import net.lenni0451.mcstructs.text.components.StringComponent;
 import net.lenni0451.mcstructs.text.serializer.TextComponentSerializer;
 

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.c0_30;
+package de.florianmichael.viafabricplus.definition.c0_30.protocol;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -40,7 +40,6 @@ import java.util.BitSet;
 import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
-// Copyright RaphiMC/RK_01 - LICENSE file
 public class ClassicWorldHeightInjection {
 
     public static PacketHandler handleJoinGame(final PacketHandler parentRemapper) {

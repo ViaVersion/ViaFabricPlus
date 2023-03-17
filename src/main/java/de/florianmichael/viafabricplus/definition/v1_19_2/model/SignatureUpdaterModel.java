@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.v1_19_0.model;
+package de.florianmichael.viafabricplus.definition.v1_19_2.model;
 
-public interface SignatureUpdatableModel {
+public interface SignatureUpdaterModel {
 
-    void update(final SignatureUpdaterModel updater);
+    void update(final byte[] data);
 }

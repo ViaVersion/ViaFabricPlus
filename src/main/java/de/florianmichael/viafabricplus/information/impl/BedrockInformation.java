@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.information.impl;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.definition.bedrock.JoinGameStorage;
+import de.florianmichael.viafabricplus.definition.bedrock.storage.JoinGameStorage;
 import de.florianmichael.viafabricplus.definition.bedrock.ModelFormats;
 import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.util.ScreenUtil;

@@ -15,13 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition;
+package de.florianmichael.viafabricplus.definition.v1_19_2.model;
 
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
-
-public class LegacySounds {
-
-    public static final Identifier RANDOM_HURT_ID = new Identifier("viafabricplus", "random.hurt");
-    public static final SoundEvent RANDOM_HURT = SoundEvent.of(RANDOM_HURT_ID);
+public record MessageMetadataModel(String plain, long timestamp, long salt) {
 }

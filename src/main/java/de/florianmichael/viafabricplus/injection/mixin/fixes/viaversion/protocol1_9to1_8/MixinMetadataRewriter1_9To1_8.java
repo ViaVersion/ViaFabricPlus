@@ -1,6 +1,6 @@
 /*
- * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/MrLookAtMe (EnZaXD) and contributors
+ * This file is part of ViaProxy - https://github.com/RaphiMC/ViaProxy
+ * Copyright (C) 2023 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-// Copyright RaphiMC/RK_01 - LICENSE file
 @Mixin(value = MetadataRewriter1_9To1_8.class, remap = false)
 public abstract class MixinMetadataRewriter1_9To1_8 {
 

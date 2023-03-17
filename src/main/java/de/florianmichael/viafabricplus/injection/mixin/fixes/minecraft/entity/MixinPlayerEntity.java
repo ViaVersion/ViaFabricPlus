@@ -18,7 +18,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.definition.LegacySounds;
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.entity.EntityDimensions;
@@ -29,6 +28,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
@@ -44,7 +44,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Unique
-    private static final EntityDimensions viafabricplus_SNEAKING_DIMENSIONS_1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
+    private static final EntityDimensions viafabricplus_sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
+
+    @Unique
+    private static final SoundEvent viafabricplus_random_hurt = SoundEvent.of(new Identifier("viafabricplus", "random.hurt"));
+
     @Shadow
     @Final
     private PlayerAbilities abilities;
@@ -82,7 +86,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
             if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 ci.setReturnValue(PlayerEntity.STANDING_DIMENSIONS);
             } else if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2) || ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
-                ci.setReturnValue(viafabricplus_SNEAKING_DIMENSIONS_1_13_2);
+                ci.setReturnValue(viafabricplus_sneaking_dimensions_v1_13_2);
             }
         }
     }
@@ -103,11 +107,10 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    // Copyright Gaming32 - LICENSE_GENERAL_MIT file
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
     public void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
         if (VisualSettings.INSTANCE.replaceHurtSoundWithOOFSound.getValue()) {
-            cir.setReturnValue(LegacySounds.RANDOM_HURT);
+            cir.setReturnValue(viafabricplus_random_hurt);
         }
     }
 }

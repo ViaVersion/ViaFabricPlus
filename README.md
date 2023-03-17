@@ -85,17 +85,33 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 3. Run `./gradlew genSources`.
 4. Open the folder as a Gradle project in your preferred IDE.
 5. Run the mod.
-## Settings
-Settings are optional settings that can turn fixes on and off, originally they were used for debugging<br>
 
+## Settings and GUI
+In the multiplayer screen you will find the ViaFabricPlus button in the upper left corner by default, it is the main button, <br>
+click on it, and you will see the Protocol selection, there you can choose the Minecraft version you want to connect to, <br>
+in the upper left corner you can go to the Settings.
+
+![](/.github/images/multiplayer.png)
+![](/.github/images/protocol.png)
+
+### Settings are optional settings that can turn fixes on and off, originally they were used for debugging<br>
 ![](/.github/images/settings.png)
 
-# Classic stuff
-## Custom protocol extensions
+## Bedrock edition
+Keep in mind that the Java -> Bedrock support is still in beta phase, and therefore many things are not implemented <br>
+yet and there is no guarantee that everything will work as it should.
+
+![](/.github/images/bedrock.png)
+
+To log in to a Bedrock account you can press the button **"Click to set account for Bedrock edition"** in the settings, <br>
+then you can log in via device login, the account logged in there will be stored in **~/ViaFabricPlus/bedrock.account**.
+
+## Classic stuff
+### Custom protocol extensions
 ViaFabricPlus implements new Classic Extensions into the CPE protocol of ViaLegacy which are rather client side. <br>
 - **WeatherType** extension (version **1**)
 
-## Protocol commands
+### Protocol commands
 To better control the Classic Protocol, there are a few clientside commands, the command prefix is **/v**: <br>
 - **/vhelp** - Displays all commands, available from: **c0.28-c0.30**
 - **/vsettime <Time (Long)>** - Changes the Clientside World Time, available from: **c0.28-c0.30**

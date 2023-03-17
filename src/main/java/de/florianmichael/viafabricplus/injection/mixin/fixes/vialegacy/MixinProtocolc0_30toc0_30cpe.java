@@ -22,7 +22,7 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_19_3to1_19_1.ClientboundPackets1_19_3;
-import de.florianmichael.viafabricplus.definition.c0_30.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.definition.c0_30.protocol.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.definition.c0_30.model.WeatherTypes;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.ClientboundPacketsc0_28;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.ServerboundPacketsc0_28;

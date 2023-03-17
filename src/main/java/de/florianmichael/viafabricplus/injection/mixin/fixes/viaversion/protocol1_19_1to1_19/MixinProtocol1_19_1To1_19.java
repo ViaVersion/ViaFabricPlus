@@ -32,7 +32,7 @@ import com.viaversion.viaversion.protocols.protocol1_19_3to1_19_1.storage.Receiv
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.ClientboundPackets1_19;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.ServerboundPackets1_19;
 import com.viaversion.viaversion.util.Pair;
-import de.florianmichael.viafabricplus.definition.v1_19_0.MessageMetadataModel;
+import de.florianmichael.viafabricplus.definition.v1_19_2.model.MessageMetadataModel;
 import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
 import de.florianmichael.viafabricplus.definition.v1_19_0.storage.ChatSession1_19_0;
 import org.spongepowered.asm.mixin.Mixin;

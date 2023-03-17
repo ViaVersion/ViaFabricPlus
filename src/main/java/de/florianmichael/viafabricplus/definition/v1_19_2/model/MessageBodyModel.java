@@ -15,12 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.v1_19_2;
+package de.florianmichael.viafabricplus.definition.v1_19_2.model;
 
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingOutputStream;
 import com.viaversion.viaversion.api.minecraft.PlayerMessageSignature;
-import de.florianmichael.viafabricplus.definition.v1_19_0.MessageMetadataModel;
+import de.florianmichael.viafabricplus.definition.v1_19_2.model.MessageMetadataModel;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
