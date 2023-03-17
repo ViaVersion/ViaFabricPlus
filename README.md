@@ -232,6 +232,6 @@ public class ExampleExtensionSupport implements ClientModInitializer {
   versions: down to 1.11 (stable) and 1.8 (experimental).
 - [ViaFabric](https://www.curseforge.com/minecraft/mc-mods/viafabric): Client-side and server-side ViaVersion implementation for Fabric
 
-## WARNING
+## ⚠️ WARNING ⚠️
 **I cannot guarantee that this mod is allowed on every (or even any) server. This mod may cause problems with anti cheat
 plugins. USE AT OWN RISK**
