@@ -21,6 +21,8 @@ import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import net.raphimc.mcauth.MinecraftAuth;
 import net.raphimc.mcauth.step.bedrock.StepMCChain;
+import net.raphimc.mcauth.util.MicrosoftConstants;
+import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.io.*;
 
@@ -36,6 +38,10 @@ public class BedrockAccountManager {
             try {
                 mcChain = ViaFabricPlus.GSON.fromJson(new FileReader(ACCOUNT_FILE), JsonObject.class).getAsJsonObject();
                 account = MinecraftAuth.Bedrock.Title.MC_CHAIN.fromJson(mcChain);
+
+                try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
+                    account = MinecraftAuth.Bedrock.Title.MC_CHAIN.refresh(httpClient, account);
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
