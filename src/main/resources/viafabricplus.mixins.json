@@ -144,7 +144,6 @@
     "fixes.jsonwebtoken.MixinClasses",
     "fixes.jsonwebtoken.MixinDefaultCompressionCodecResolver",
     "fixes.jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "fixes.minecraft.item.MixinItemGroup_DisplayContext",
     "fixes.viabedrock.MixinBedrockProtocol",
     "fixes.viabedrock.MixinJoinPackets"
   ],

@@ -17,7 +17,6 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import de.florianmichael.viafabricplus.injection.access.IItemGroup_DisplayContext;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
@@ -31,19 +30,32 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemGroups.class)
-public class MixinItemGroups {
+public abstract class MixinItemGroups {
 
     @Shadow @Nullable private static ItemGroup.@Nullable DisplayContext displayContext;
 
-    @Inject(method = "updateDisplayContext", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemGroups;updateEntries(Lnet/minecraft/item/ItemGroup$DisplayContext;)V", shift = At.Shift.BEFORE))
-    private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, RegistryWrapper.WrapperLookup lookup, CallbackInfoReturnable<Boolean> cir) {
-        final IItemGroup_DisplayContext accessor = (IItemGroup_DisplayContext) (Object) displayContext;
+    @Shadow
+    protected static void updateEntries(ItemGroup.DisplayContext displayContext) {
+    }
+    @Unique
+    private static ComparableProtocolVersion viafabricplus_version;
 
-        accessor.viafabricplus_setVersion(ViaLoadingBase.getClassWrapper().getTargetVersion());
-        accessor.viafabricplus_setState(GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue());
+    @Unique
+    private static boolean viafabricplus_state;
+
+    @Inject(method = "updateDisplayContext", at = @At("HEAD"), cancellable = true)
+    private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, RegistryWrapper.WrapperLookup lookup, CallbackInfoReturnable<Boolean> cir) {
+        if (viafabricplus_version != ViaLoadingBase.getClassWrapper().getTargetVersion() || viafabricplus_state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue()) {
+            viafabricplus_version = ViaLoadingBase.getClassWrapper().getTargetVersion();
+            viafabricplus_state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue();
+
+            displayContext = new ItemGroup.DisplayContext(enabledFeatures, operatorEnabled, lookup);
+            updateEntries(displayContext);
+
+            cir.setReturnValue(true);
+        }
     }
 }
