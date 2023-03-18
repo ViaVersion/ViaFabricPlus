@@ -38,6 +38,7 @@ public class ItemReleaseVersionDefinition {
 
     public static void create() {
         INSTANCE = new ItemReleaseVersionDefinition();
+        INSTANCE.load();
 
         ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
             INSTANCE.currentMap.clear();
@@ -55,6 +56,49 @@ public class ItemReleaseVersionDefinition {
     }
 
     public void load() {
+        register(Items.CHERRY_PLANKS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_SAPLING, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SUSPICIOUS_SAND, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_LOG, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.STRIPPED_CHERRY_LOG, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.STRIPPED_CHERRY_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_LEAVES, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.TORCHFLOWER, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.PINK_PETALS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.DECORATED_POT, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_FENCE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_BUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_PRESSURE_PLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_DOOR, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_TRAPDOOR, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_FENCE_GATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_CHEST_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_SIGN, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_HANGING_SIGN, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SNIFFER_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.TORCHFLOWER_SEEDS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.BRUSH, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.POTTERY_SHARD_ARCHER, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.POTTERY_SHARD_PRIZE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.POTTERY_SHARD_ARMS_UP, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.POTTERY_SHARD_SKULL, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.COAST_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.VEX_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.RIB_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+
         register(Items.IRON_GOLEM_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19_3));
         register(Items.SNOW_GOLEM_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19_3));
 
