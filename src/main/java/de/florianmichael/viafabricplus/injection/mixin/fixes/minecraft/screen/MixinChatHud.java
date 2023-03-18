@@ -1,6 +1,6 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2023 FlorianMichael/MrLookAtMe (EnZaXD) and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.hud;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import net.minecraft.client.gui.hud.ChatHud;
