@@ -33,7 +33,7 @@ public class V1_7_10Information extends AbstractInformationGroup {
 
     @Override
     public void applyInformation(UserConnection userConnection, List<String> output) {
-        if (userConnection.has(net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.storage.EntityTracker.class)) {
+        if (userConnection.has(EntityTracker.class)) {
             final int entities = userConnection.get(EntityTracker.class).getTrackedEntities().size();
             if (entities != 0) output.add("Entity Tracker: " + entities);
         }
