@@ -38,7 +38,7 @@ public class ModeSettingRenderer extends AbstractSettingRenderer {
 
     @Override
     public Text getNarration() {
-        return Text.literal(this.value.getName());
+        return this.value.getName();
     }
 
     @Override
@@ -50,15 +50,10 @@ public class ModeSettingRenderer extends AbstractSettingRenderer {
     }
 
     @Override
-    public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        matrices.push();
-        matrices.translate(x, y, 0);
-        DrawableHelper.fill(matrices, 0, 0, entryWidth - 4 /* int i = this.left + (this.width - entryWidth) / 2; int j = this.left + (this.width + entryWidth) / 2; */, entryHeight, Integer.MIN_VALUE);
+    public void renderSetting(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        textRenderer.drawWithShadow(matrices, Formatting.GRAY + this.value.getName(), 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
+        textRenderer.drawWithShadow(matrices, this.value.getName().formatted(Formatting.GRAY), 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
         textRenderer.drawWithShadow(matrices, this.value.getValue(), entryWidth - textRenderer.getWidth(this.value.getValue()) - 3 - 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
-
-        matrices.pop();
     }
 }

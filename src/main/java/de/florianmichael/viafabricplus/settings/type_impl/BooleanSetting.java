@@ -22,10 +22,12 @@ import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.BooleanSettingRenderer;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 public class BooleanSetting extends AbstractSetting<Boolean> {
 
-    public BooleanSetting(SettingGroup parent, String name, Boolean defaultValue) {
+    public BooleanSetting(SettingGroup parent, MutableText name, Boolean defaultValue) {
         super(parent, name, defaultValue);
     }
 
@@ -36,13 +38,13 @@ public class BooleanSetting extends AbstractSetting<Boolean> {
 
     @Override
     public void write(JsonObject object) {
-        object.addProperty(getName(), getValue());
+        object.addProperty(getTranslationKey(), getValue());
     }
 
     @Override
     public void read(JsonObject object) {
-        if (!object.has(getName())) return;
+        if (!object.has(getTranslationKey())) return;
 
-        setValue(object.get(getName()).getAsBoolean());
+        setValue(object.get(getTranslationKey()).getAsBoolean());
     }
 }

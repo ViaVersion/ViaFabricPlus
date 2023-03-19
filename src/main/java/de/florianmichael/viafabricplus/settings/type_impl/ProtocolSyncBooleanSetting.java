@@ -24,11 +24,12 @@ import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
+import net.minecraft.text.MutableText;
 
 public class ProtocolSyncBooleanSetting extends BooleanSetting {
     private final ProtocolRange protocolRange;
 
-    public ProtocolSyncBooleanSetting(SettingGroup parent, String name, ProtocolRange protocolRange) {
+    public ProtocolSyncBooleanSetting(SettingGroup parent, MutableText name, ProtocolRange protocolRange) {
         super(parent, name, true);
 
         this.protocolRange = protocolRange;
@@ -41,14 +42,14 @@ public class ProtocolSyncBooleanSetting extends BooleanSetting {
 
     @Override
     public void write(JsonObject object) {
-        object.addProperty(getName(), getValue());
+        object.addProperty(getTranslationKey(), getValue());
     }
 
     @Override
     public void read(JsonObject object) {
-        if (!object.has(getName())) return;
+        if (!object.has(getTranslationKey())) return;
 
-        setValue(object.get(getName()).getAsBoolean());
+        setValue(object.get(getTranslationKey()).getAsBoolean());
     }
 
     @Override

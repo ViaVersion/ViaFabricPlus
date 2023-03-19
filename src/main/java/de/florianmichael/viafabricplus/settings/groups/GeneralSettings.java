@@ -20,14 +20,20 @@ package de.florianmichael.viafabricplus.settings.groups;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.type_impl.ModeSetting;
+import net.minecraft.text.Text;
 
 public class GeneralSettings extends SettingGroup {
     public final static GeneralSettings INSTANCE = new GeneralSettings();
 
-    public final ModeSetting mainButtonOrientation = new ModeSetting(this, "Main button orientation", "Left; Top", "Right; Top", "Left; Bottom", "Right: Bottom");
-    public final BooleanSetting removeNotAvailableItemsFromCreativeTab = new BooleanSetting(this, "Remove not available items from creative tab", true);
-    public final BooleanSetting allowClassicProtocolCommandUsage = new BooleanSetting(this, "Allow classic protocol command usage", true);
-    public final BooleanSetting automaticallyChangeValuesBasedOnTheCurrentVersion = new BooleanSetting(this, "Automatically change Settings based on the current version", true);
+    public final ModeSetting mainButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.main"),
+            Text.translatable("words.viafabricplus.lt"),
+            Text.translatable("words.viafabricplus.rt"),
+            Text.translatable("words.viafabricplus.lb"),
+            Text.translatable("words.viafabricplus.rb")
+    );
+    public final BooleanSetting removeNotAvailableItemsFromCreativeTab = new BooleanSetting(this, Text.translatable("general.viafabricplus.creative"), true);
+    public final BooleanSetting allowClassicProtocolCommandUsage = new BooleanSetting(this, Text.translatable("general.viafabricplus.classiccommands"), true);
+    public final BooleanSetting automaticallyChangeValuesBasedOnTheCurrentVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.protocolsync"), true);
 
     public GeneralSettings() {
         super("General");

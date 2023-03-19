@@ -17,8 +17,20 @@
  */
 package de.florianmichael.viafabricplus.screen.settings;
 
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
+import net.minecraft.client.util.math.MatrixStack;
 
 public abstract class AbstractSettingRenderer extends AlwaysSelectedEntryListWidget.Entry<AbstractSettingRenderer> {
 
+    public abstract void renderSetting(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta);
+
+    @Override
+    public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        matrices.push();
+        matrices.translate(x, y, 0);
+        DrawableHelper.fill(matrices, 0, 0, entryWidth - 4 /* int i = this.left + (this.width - entryWidth) / 2; int j = this.left + (this.width + entryWidth) / 2; */, entryHeight, Integer.MIN_VALUE);
+        renderSetting(matrices, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
+        matrices.pop();
+    }
 }

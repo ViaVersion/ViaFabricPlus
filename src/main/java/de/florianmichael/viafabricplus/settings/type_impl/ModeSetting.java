@@ -22,13 +22,15 @@ import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ModeSettingRenderer;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 import java.util.Arrays;
 
-public class ModeSetting extends AbstractSetting<String> {
-    private final String[] options;
+public class ModeSetting extends AbstractSetting<MutableText> {
+    private final MutableText[] options;
 
-    public ModeSetting(SettingGroup parent, String name, String... options) {
+    public ModeSetting(SettingGroup parent, MutableText name, MutableText... options) {
         super(parent, name, options[0]);
         this.options = options;
     }
@@ -40,14 +42,14 @@ public class ModeSetting extends AbstractSetting<String> {
 
     @Override
     public void write(JsonObject object) {
-        object.addProperty(getName(), getValue());
+        object.addProperty(getTranslationKey(), Arrays.stream(options).toList().indexOf(getValue()));
     }
 
     @Override
     public void read(JsonObject object) {
-        if (!object.has(getName())) return;
+        if (!object.has(getTranslationKey())) return;
 
-        setValue(object.get(getName()).getAsString());
+        setValue(object.get(getTranslationKey()).getAsInt());
     }
 
     public void setValue(int index) {
@@ -58,7 +60,7 @@ public class ModeSetting extends AbstractSetting<String> {
         return Arrays.stream(options).toList().indexOf(getValue());
     }
 
-    public String[] getOptions() {
+    public MutableText[] getOptions() {
         return options;
     }
 }

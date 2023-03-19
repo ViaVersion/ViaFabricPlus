@@ -19,13 +19,14 @@ package de.florianmichael.viafabricplus.settings.groups;
 
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
+import net.minecraft.text.Text;
 
 public class MPPassSettings extends SettingGroup {
     public final static MPPassSettings INSTANCE = new MPPassSettings();
 
-    public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, "Use BetaCraft authentication", true);
-    public final BooleanSetting allowViaLegacyToCallJoinServerToVerifySession = new BooleanSetting(this, "Allow ViaLegacy to call joinServer() to verify session", true);
-    public final BooleanSetting disconnectIfJoinServerCallFails = new BooleanSetting(this, "Disconnect if joinServer() call fails", true);
+    public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.betacraft"), true);
+    public final BooleanSetting allowViaLegacyToCallJoinServerToVerifySession = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.verify"), true);
+    public final BooleanSetting disconnectIfJoinServerCallFails = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.fail"), true);
 
     public MPPassSettings() {
         super("MP Pass");

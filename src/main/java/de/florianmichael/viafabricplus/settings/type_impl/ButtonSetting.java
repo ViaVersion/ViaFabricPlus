@@ -22,10 +22,11 @@ import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ButtonSettingRenderer;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
+import net.minecraft.text.MutableText;
 
 public class ButtonSetting extends AbstractSetting<Runnable> {
 
-    public ButtonSetting(SettingGroup parent, String name, Runnable onClick) {
+    public ButtonSetting(SettingGroup parent, MutableText name, Runnable onClick) {
         super(parent, name, onClick);
     }
 
@@ -34,7 +35,7 @@ public class ButtonSetting extends AbstractSetting<Runnable> {
         return new ButtonSettingRenderer(this);
     }
 
-    public String displayValue() {
+    public MutableText displayValue() {
         return getName();
     }
 

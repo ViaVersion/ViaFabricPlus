@@ -19,13 +19,14 @@ package de.florianmichael.viafabricplus.settings.groups;
 
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
+import net.minecraft.text.Text;
 
 public class BridgeSettings extends SettingGroup {
     public final static BridgeSettings INSTANCE = new BridgeSettings();
 
-    public final BooleanSetting showSuperSecretSettings = new BooleanSetting(this, "Show Super Secret Settings", true);
-    public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, "Show extra information in Debug Hud", true);
-    public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, "Show classic loading progress in connect screen", true);
+    public final BooleanSetting showSuperSecretSettings = new BooleanSetting(this, Text.translatable("bridge.viafabricplus.secret"), true);
+    public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, Text.translatable("bridge.viafabricplus.extrainformation"), true);
+    public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, Text.translatable("bridge.viafabricplus.classicloading"), true);
 
     public BridgeSettings() {
         super("Bridge");

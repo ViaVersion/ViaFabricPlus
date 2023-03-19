@@ -35,7 +35,7 @@ public class ButtonSettingRenderer extends AbstractSettingRenderer {
 
     @Override
     public Text getNarration() {
-        return Text.literal(this.value.getName());
+        return this.value.getName();
     }
 
     @Override
@@ -46,14 +46,9 @@ public class ButtonSettingRenderer extends AbstractSettingRenderer {
     }
 
     @Override
-    public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        matrices.push();
-        matrices.translate(x, y, 0);
-        DrawableHelper.fill(matrices, 0, 0, entryWidth - 4 /* int i = this.left + (this.width - entryWidth) / 2; int j = this.left + (this.width + entryWidth) / 2; */, entryHeight, Integer.MIN_VALUE);
+    public void renderSetting(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         DrawableHelper.drawCenteredTextWithShadow(matrices, textRenderer, this.value.displayValue(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
-
-        matrices.pop();
     }
 }

@@ -19,14 +19,17 @@ package de.florianmichael.viafabricplus.settings.base;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 
 public abstract class AbstractSetting<T> {
-    private final String name;
+    private final MutableText name;
     private final T defaultValue;
 
     public T value;
 
-    public AbstractSetting(final SettingGroup parent, final String name, final T defaultValue) {
+    public AbstractSetting(final SettingGroup parent, final MutableText name, final T defaultValue) {
         this.name = name;
         this.defaultValue = defaultValue;
 
@@ -40,8 +43,12 @@ public abstract class AbstractSetting<T> {
     public abstract void write(final JsonObject object);
     public abstract void read(final JsonObject object);
 
-    public String getName() {
+    public MutableText getName() {
         return name;
+    }
+
+    public String getTranslationKey() {
+        return ((TranslatableTextContent) name.getContent()).getKey();
     }
 
     public T getDefaultValue() {

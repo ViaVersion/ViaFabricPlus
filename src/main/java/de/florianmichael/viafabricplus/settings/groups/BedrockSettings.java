@@ -26,6 +26,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
@@ -38,13 +39,13 @@ import java.util.concurrent.CompletableFuture;
 public class BedrockSettings extends SettingGroup {
     public final static BedrockSettings INSTANCE = new BedrockSettings();
 
-    public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, "Click to set account for Bedrock edition", () -> CompletableFuture.runAsync(() -> {
+    public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, Text.translatable("bedrock.viafabricplus.set"), () -> CompletableFuture.runAsync(() -> {
         try {
             BedrockAccountManager.INSTANCE.setAccount(MinecraftAuth.requestBedrockLogin(msaDeviceCode -> {
                 MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> {
                     MinecraftClient.getInstance().setScreen(SettingsScreen.get(new MultiplayerScreen(new TitleScreen())));
                     Thread.currentThread().interrupt();
-                }, Text.literal("Microsoft Bedrock login"), Text.literal("Your browser should have opened.\nPlease enter the following Code: " + Formatting.BOLD + msaDeviceCode.userCode() + Formatting.RESET + "\nClosing this screen will cancel the process!"), Text.literal("Cancel"), false)));
+                }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.userCode()), Text.translatable("words.viafabricplus.cancel"), false)));
                 try {
                     Util.getOperatingSystem().open(new URI(msaDeviceCode.verificationUri()));
                 } catch (URISyntaxException e) {
@@ -57,9 +58,9 @@ public class BedrockSettings extends SettingGroup {
         }
     })) {
         @Override
-        public String displayValue() {
+        public MutableText displayValue() {
             if (BedrockAccountManager.INSTANCE.getAccount() != null) {
-                return super.displayValue() + ", current: " + BedrockAccountManager.INSTANCE.getAccount().displayName();
+                return Text.literal("Bedrock account: " + BedrockAccountManager.INSTANCE.getAccount().displayName());
             }
             return super.displayValue();
         }

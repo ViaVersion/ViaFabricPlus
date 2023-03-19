@@ -20,6 +20,13 @@ If you encounter any issues, please report them on the
 [issue tracker](https://github.com/FlorianMichael/ViaFabricPlus/issues).  
 Contributions in the form of pull requests are always welcome, please just stick to my code style and make sure your code is easy to update and compatible with other mods.
 
+## Translations
+Translations for other languages are always welcome, in ~/resources/assets/viafabricplus/lang you can find all translations,
+if you know a language well, feel free to make a PR and add translations for that language <br>
+
+**Currently supported languages**:
+- English
+
 ## Compatibility
 ViaFabricPlus is structured to interfere with mods as little as possible.
 It should work fine with most if not all mods and modpacks.

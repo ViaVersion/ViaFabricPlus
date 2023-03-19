@@ -1,0 +1,50 @@
+{
+  "words.viafabricplus.settings": "Settings",
+  "words.viafabricplus.on": "On",
+  "words.viafabricplus.off": "Off",
+  "words.viafabricplus.lt": "Left; Top",
+  "words.viafabricplus.rt": "Right; Top",
+  "words.viafabricplus.lb": "Left; Bottom",
+  "words.viafabricplus.rb": "Right; Bottom",
+  "words.viafabricplus.cancel": "Cancel",
+
+  "bedrock.viafabricplus.set": "Click to set account for Bedrock edition",
+
+  "bridge.viafabricplus.secret": "Show Super Secret Settings",
+  "bridge.viafabricplus.extrainformation": "Show extra information in Debug Hud",
+  "bridge.viafabricplus.classicloading": "Show classic loading progress in connect screen",
+
+  "debug.viafabricplus.sequence": "Disable sequencing",
+  "debug.viafabricplus.merchant": "Smooth out merchant screens",
+  "debug.viafabricplus.postfix": "Execute inputs in sync",
+  "debug.viafabricplus.sneakinstant": "Sneak instant",
+  "debug.viafabricplus.inventory": "Send open inventory packet",
+  "debug.viafabricplus.cooldown": "Remove cooldowns",
+  "debug.viafabricplus.idle": "Send idle packet",
+  "debug.viafabricplus.attribute": "Replace attribute modifiers",
+  "debug.viafabricplus.replacesneak": "Replace sneaking",
+  "debug.viafabricplus.longsneak": "Long sneaking",
+  "debug.viafabricplus.legacypseeds": "Legacy mining speeds",
+
+  "general.viafabricplus.main": "Main button orientation",
+  "general.viafabricplus.creative": "Remove not available items from creative tab",
+  "general.viafabricplus.classiccommands": "Allow classic protocol command usage",
+  "general.viafabricplus.protocolsync": "Automatically change Settings based on the current version",
+
+  "mppass.viafabricplus.betacraft": "Use BetaCraft authentication",
+  "mppass.viafabricplus.verify": "Allow ViaLegacy to call joinServer() to verify session",
+  "mppass.viafabricplus.fail": "Disconnect if joinServer() call fails",
+
+  "visual.viafabricplus.secure": "Disable secure chat warning",
+  "visual.viafabricplus.indicator": "Hide signature indicator",
+  "visual.viafabricplus.jigsaw": "Remove newer features from Jigsaw screen",
+  "visual.viafabricplus.stoneslab": "Replace petrified oak slab",
+  "visual.viafabricplus.armor": "Emulate Armor hud",
+  "visual.viafabricplus.command": "Remove newer features from Command block screen",
+  "visual.viafabricplus.oof": "Replace hurt sound with OOF sound",
+  "visual.viafabricplus.betahud": "Remove newer HUD elements",
+  "visual.viafabricplus.classic": "Replace creative inventory",
+  "visual.viafabricplus.walkanimation": "Old walking animation",
+
+  "bedrocklogin.viafabricplus.text": "Your browser should have opened.\nPlease enter the following Code: %s\nClosing this screen will cancel the process!"
+}
