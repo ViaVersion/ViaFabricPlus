@@ -38,7 +38,10 @@ public class TitleRenderer extends AbstractSettingRenderer {
 
     @Override
     public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        matrices.push();
+        matrices.translate(x, y, 0);
         renderSetting(matrices, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
+        matrices.pop();
     }
 
     @Override
