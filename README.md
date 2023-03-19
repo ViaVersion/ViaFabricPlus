@@ -35,6 +35,7 @@ It should work fine with most if not all mods and modpacks.
 - ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)***
 - ***[multiconnect](https://github.com/Earthcomputer/multiconnect)***
 - ***[Krypton](https://github.com/astei/krypton)***
+- ***[Raknetify](https://github.com/RelativityMC/raknetify/tree/master)***
 
 ## Basic Features
 - [x] ViaVersion implementation
