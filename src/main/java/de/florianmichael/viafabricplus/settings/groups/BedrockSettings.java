@@ -50,6 +50,9 @@ public class BedrockSettings extends SettingGroup {
                     Util.getOperatingSystem().open(new URI(msaDeviceCode.verificationUri()));
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
+                    MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> {
+                        Thread.currentThread().interrupt();
+                    }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("words.viafabricplus.cancel"), false)));
                 }
             }));
             ProtocolSelectionScreen.open(new MultiplayerScreen(new TitleScreen()));
