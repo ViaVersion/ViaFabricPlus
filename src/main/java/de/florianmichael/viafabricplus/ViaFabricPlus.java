@@ -48,6 +48,8 @@ public class ViaFabricPlus {
         PreLoadCallback.EVENT.invoker().onLoad();
 
         CustomClassicProtocolExtensions.create();
+        ClassicItemSelectionScreen.create();
+
         new ProtocolHack();
 
         FinishMinecraftLoadCallback.EVENT.register(() -> {
@@ -62,7 +64,6 @@ public class ViaFabricPlus {
 
             // Classic Stuff
             ChatLengthDefinition.create();
-            ClassicItemSelectionScreen.create();
             ClassicProtocolCommands.create();
 
             // Bedrock Stuff

@@ -60,7 +60,7 @@ public class SettingsScreen extends Screen {
         super.init();
 
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, (textRenderer.fontHeight + 2) * 2));
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(0, 0).size(20, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
     }
 
     @Override
