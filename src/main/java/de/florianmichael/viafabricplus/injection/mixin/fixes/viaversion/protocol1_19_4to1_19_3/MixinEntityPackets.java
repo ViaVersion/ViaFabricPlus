@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(EntityPackets.class)
+@Mixin(value = EntityPackets.class, remap = false)
 public abstract class MixinEntityPackets extends EntityRewriter<ClientboundPackets1_19_3, Protocol1_19_4To1_19_3> {
 
     public MixinEntityPackets(Protocol1_19_4To1_19_3 protocol) {

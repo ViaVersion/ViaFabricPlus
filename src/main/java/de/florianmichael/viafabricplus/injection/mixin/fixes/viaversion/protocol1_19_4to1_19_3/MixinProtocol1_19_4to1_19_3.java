@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Protocol1_19_4To1_19_3.class)
+@Mixin(value = Protocol1_19_4To1_19_3.class, remap = false)
 public class MixinProtocol1_19_4to1_19_3 {
 
     @Inject(method = "init", at = @At("RETURN"))
