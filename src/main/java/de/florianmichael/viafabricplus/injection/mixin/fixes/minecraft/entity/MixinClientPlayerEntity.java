@@ -205,6 +205,19 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         }
     }
 
+    @Redirect(method = "autoJump", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;inverseSqrt(F)F"))
+    public float useFastInverse(float x) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+            final float var1 = 0.5F * x;
+            int var2 = Float.floatToIntBits(x);
+            var2 = 1597463007 - (var2 >> 1);
+            x = Float.intBitsToFloat(var2);
+
+            return x * (1.5F - var1 * x * x);
+        }
+        return MathHelper.inverseSqrt(x);
+    }
+
     @Override
     public int getArmor() {
         if (VisualSettings.INSTANCE.emulateArmorHud.getValue()) {

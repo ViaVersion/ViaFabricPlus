@@ -18,7 +18,10 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.mojang.authlib.GameProfile;
+import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.definition.v1_19_4.DismountRequestTracker;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
@@ -66,6 +69,8 @@ public abstract class MixinClientPlayNetworkHandler {
     @Shadow public abstract void onSimulationDistance(SimulationDistanceS2CPacket packet);
 
     @Shadow public abstract void onEntityVelocityUpdate(EntityVelocityUpdateS2CPacket packet);
+
+    @Shadow @Final private ClientConnection connection;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixPlayerListOrdering(MinecraftClient client, Screen screen, ClientConnection connection, ServerInfo serverInfo, GameProfile profile, WorldSession worldSession, CallbackInfo ci) {
@@ -143,6 +148,18 @@ public abstract class MixinClientPlayNetworkHandler {
     public void removeNewWarning(Logger instance, String s, Object o) {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             instance.warn(s, o);
+        }
+    }
+
+    @Inject(method = "onPlayerPositionLook", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER))
+    public void dismountIfRequested(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_4)) return;
+
+        if (connection.channel.hasAttr(ProtocolHack.LOCAL_VIA_CONNECTION)) {
+            final UserConnection userConnection = connection.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
+            if (userConnection.get(DismountRequestTracker.class).getDismountRequests().poll().equals(Boolean.TRUE)) {
+                client.player.dismountVehicle();
+            }
         }
     }
 

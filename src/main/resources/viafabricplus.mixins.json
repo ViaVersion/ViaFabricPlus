@@ -15,6 +15,9 @@
     "bridge.MixinDebugHud",
     "bridge.MixinDownloadingTerrainScreen",
     "bridge.MixinOptionsScreen",
+    "fixes.jsonwebtoken.MixinClasses",
+    "fixes.jsonwebtoken.MixinDefaultCompressionCodecResolver",
+    "fixes.jsonwebtoken.MixinDefaultJwtParserBuilder",
     "fixes.minecraft.MixinBipedEntityModel",
     "fixes.minecraft.MixinCamera",
     "fixes.minecraft.MixinClientPlayerInteractionManager",
@@ -93,6 +96,7 @@
     "fixes.minecraft.packet.MixinChatMessageC2SPacket",
     "fixes.minecraft.packet.MixinPacketByteBuf",
     "fixes.minecraft.packet.MixinUpdatePlayerAbilitiesC2SPacket",
+    "fixes.minecraft.screen.MixinChatHud",
     "fixes.minecraft.screen.MixinChatScreen",
     "fixes.minecraft.screen.MixinCommandBlockScreen",
     "fixes.minecraft.screen.MixinConnectScreen_1",
@@ -102,7 +106,6 @@
     "fixes.minecraft.screen.MixinGameModeSelectionScreen_GameModeSelection",
     "fixes.minecraft.screen.MixinJigsawBlockScreen",
     "fixes.minecraft.screen.MixinStructureBlockScreen_1",
-    "fixes.minecraft.screen.MixinChatHud",
     "fixes.minecraft.screen.merchant.MixinMerchantScreen",
     "fixes.minecraft.screen.merchant.MixinMerchantScreenHandler",
     "fixes.minecraft.screen.screenhandler.MixinBrewingStandScreenHandler_FuelSlot",
@@ -110,6 +113,8 @@
     "fixes.minecraft.screen.screenhandler.MixinScreenHandler",
     "fixes.sodium.MixinChunkTracker",
     "fixes.viaaprilfools.MixinProtocol1_16to20w14infinite",
+    "fixes.viabedrock.MixinBedrockProtocol",
+    "fixes.viabedrock.MixinJoinPackets",
     "fixes.vialegacy.MixinClassicProtocolExtension",
     "fixes.vialegacy.MixinClientboundPacketsc0_30cpe",
     "fixes.vialegacy.MixinExtensionProtocolMetadataStorage",
@@ -140,14 +145,13 @@
     "fixes.viaversion.protocol1_9to1_8.MixinEntityTracker1_9",
     "fixes.viaversion.protocol1_9to1_8.MixinMetadataRewriter1_9To1_8",
     "fixes.viaversion.protocol1_9to1_8.MixinMovementTracker",
-    "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
-    "fixes.jsonwebtoken.MixinClasses",
-    "fixes.jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "fixes.jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "fixes.viabedrock.MixinBedrockProtocol",
-    "fixes.viabedrock.MixinJoinPackets"
+    "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "fixes.viaversion.protocol1_19_4to1_19_3.MixinEntityPackets",
+    "fixes.viaversion.protocol1_19_4to1_19_3.MixinProtocol1_19_4to1_19_3"
+  ]
 }
