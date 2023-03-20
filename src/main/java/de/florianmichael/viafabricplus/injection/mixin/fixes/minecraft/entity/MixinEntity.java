@@ -68,7 +68,7 @@ public abstract class MixinEntity {
     @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)
     public void injectGetVelocityAffectingPos(CallbackInfoReturnable<BlockPos> cir) {
         if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - 1, pos.z));
+            cir.setReturnValue(new BlockPos(pos.x, getBoundingBox().minY - 1, pos.z));
         }
     }
 

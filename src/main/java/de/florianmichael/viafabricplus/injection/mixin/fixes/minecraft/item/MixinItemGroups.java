@@ -1,6 +1,6 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2023 FlorianMichael/MrLookAtMe (EnZaXD) and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,42 +20,32 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.resource.featuretoggle.FeatureSet;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemGroups.class)
-public abstract class MixinItemGroups {
+public class MixinItemGroups {
 
-    @Shadow @Nullable private static ItemGroup.@Nullable DisplayContext displayContext;
-
-    @Shadow
-    protected static void updateEntries(ItemGroup.DisplayContext displayContext) {
-    }
     @Unique
     private static ComparableProtocolVersion viafabricplus_version;
 
     @Unique
     private static boolean viafabricplus_state;
 
-    @Inject(method = "updateDisplayContext", at = @At("HEAD"), cancellable = true)
-    private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, RegistryWrapper.WrapperLookup lookup, CallbackInfoReturnable<Boolean> cir) {
-        if (viafabricplus_version != ViaLoadingBase.getClassWrapper().getTargetVersion() || viafabricplus_state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue()) {
-            viafabricplus_version = ViaLoadingBase.getClassWrapper().getTargetVersion();
-            viafabricplus_state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue();
+    @Redirect(method = "displayParametersMatch", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/featuretoggle/FeatureSet;equals(Ljava/lang/Object;)Z"))
+    private static boolean adjustLastVersionMatchCheck(FeatureSet instance, Object o) {
+        return instance.equals(o) && viafabricplus_version == ViaLoadingBase.getClassWrapper().getTargetVersion() && viafabricplus_state == GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue();
+    }
 
-            displayContext = new ItemGroup.DisplayContext(enabledFeatures, operatorEnabled, lookup);
-            updateEntries(displayContext);
-
-            cir.setReturnValue(true);
-        }
+    @Inject(method = "updateDisplayParameters", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemGroups;updateEntries(Lnet/minecraft/resource/featuretoggle/FeatureSet;Z)V", shift = At.Shift.BEFORE))
+    private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, CallbackInfoReturnable<Boolean> cir) {
+        viafabricplus_version = ViaLoadingBase.getClassWrapper().getTargetVersion();
+        viafabricplus_state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue();
     }
 }

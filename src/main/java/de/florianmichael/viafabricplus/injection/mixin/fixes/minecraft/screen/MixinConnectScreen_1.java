@@ -74,7 +74,7 @@ public class MixinConnectScreen_1 {
         return instance.getPort();
     }
 
-    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", ordinal = 1, shift = At.Shift.BEFORE))
+    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/Packet;)V", ordinal = 1, shift = At.Shift.BEFORE))
     public void setupConnectionSessions(CallbackInfo ci) {
         final ClientConnection connection = field_2416.connection;
         if (connection == null || connection.channel == null) return;

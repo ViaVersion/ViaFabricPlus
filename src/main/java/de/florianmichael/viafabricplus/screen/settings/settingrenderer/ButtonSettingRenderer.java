@@ -49,6 +49,6 @@ public class ButtonSettingRenderer extends AbstractSettingRenderer {
     public void renderSetting(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        DrawableHelper.drawCenteredTextWithShadow(matrices, textRenderer, this.value.displayValue(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+        DrawableHelper.drawCenteredText(matrices, textRenderer, this.value.displayValue(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
     }
 }
