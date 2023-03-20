@@ -18,10 +18,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.mojang.authlib.GameProfile;
-import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.definition.v1_19_4.DismountRequestTracker;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.injection.access.IPlayerPositionLookS2CPacket;
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
@@ -32,14 +30,12 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.util.telemetry.WorldSession;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -50,7 +46,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(ClientPlayNetworkHandler.class)
@@ -153,13 +148,8 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Inject(method = "onPlayerPositionLook", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER))
     public void dismountIfRequested(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_4)) return;
-
-        if (connection.channel.hasAttr(ProtocolHack.LOCAL_VIA_CONNECTION)) {
-            final UserConnection userConnection = connection.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
-            if (userConnection.get(DismountRequestTracker.class).getDismountRequests().poll().equals(Boolean.TRUE)) {
-                client.player.dismountVehicle();
-            }
+        if (((IPlayerPositionLookS2CPacket) packet).viafabricplus_isDismountVehicle()) {
+            client.player.dismountVehicle();
         }
     }
 

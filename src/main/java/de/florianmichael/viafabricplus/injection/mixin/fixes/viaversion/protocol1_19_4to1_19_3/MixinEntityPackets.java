@@ -1,6 +1,6 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/MrLookAtMe (EnZaXD) and contributors
+ * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.ClientboundPac
 import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.Protocol1_19_4To1_19_3;
 import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.packets.EntityPackets;
 import com.viaversion.viaversion.rewriter.EntityRewriter;
-import de.florianmichael.viafabricplus.definition.v1_19_4.DismountRequestTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -49,10 +48,7 @@ public abstract class MixinEntityPackets extends EntityRewriter<ClientboundPacke
                 map(Type.FLOAT); // Pitch
                 map(Type.BYTE); // Relative arguments
                 map(Type.VAR_INT); // Id
-                handler(wrapper -> {
-                    final boolean dismountVehicle = wrapper.read(Type.BOOLEAN);
-                    wrapper.user().get(DismountRequestTracker.class).getDismountRequests().add(dismountVehicle);
-                });
+                map(Type.BOOLEAN); // Dismount vehicle - handling in MC
             }
         }, true);
     }
