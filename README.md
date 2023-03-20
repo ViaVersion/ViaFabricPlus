@@ -71,6 +71,12 @@ It should work fine with most if not all mods and modpacks.
 - [ ] More extensions for Classic Protocol Extensions protocol
 - [ ] Window click interactions in <= 1.16.5
 
+## Backports
+Basically there are no backports, the last version of ViaFabricPlus that supported a specific Minecraft version is also the last one that exists for that Minecraft version. <br>
+However, if a version between two Minecraft versions is too unstable, I will definitely make backports, you can find them only on modrinth/curseforge, <br>
+they do not have their own releases, current backports (named after their branch):
+- [1.19.3](https://modrinth.com/mod/viafabricplus/version/0.0.0)
+
 ## Dependencies
 | Dependency             | Download                                                   |
 |------------------------|------------------------------------------------------------|
