@@ -7,7 +7,7 @@
   <a href="https://modrinth.com/mod/viafabricplus"><img src="https://img.shields.io/badge/dynamic/json?color=158000&label=downloads&prefix=+%20&query=downloads&url=https://api.modrinth.com/v2/project/rIC2XJV4&logo=modrinth"></a>
   <a href="https://curseforge.com/minecraft/mc-mods/viafabricplus"><img src="https://cf.way2muchnoise.eu/full_830604_downloads.svg"></a>
 
-#### Fabric mod to connect to EVERY minecraft server version (Release, Alpha, Beta, Classic, AprilFools, Bedrock) with QoL fixes to the gameplay
+#### Fabric mod to connect to EVERY minecraft server version (Release, Beta, Alpha, Classic, AprilFools, Bedrock) with QoL fixes to the gameplay
 This project has nothing to do with the original ViaFabric and is therefore also not compact
 </div>
 
@@ -41,7 +41,7 @@ It should work fine with most if not all mods and modpacks.
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - Alpha (a1.0.15 - a1.2.6)
 - Beta (b1.0 - b1.8.1)
-- Release (1.0.0 - 1.7.10)
+- Release (1.0.0 - latest)
 - AprilFools (3D Shareware, 20w14infinite, Combat Test 8C)
 - Bedrock (latest)
 
@@ -64,8 +64,7 @@ It should work fine with most if not all mods and modpacks.
 - [x] Implementing non-sequenced block placement in <= 1.18.2
 - [x] Animation related fixes (1.7 Sneaking, c0.30 walking animation, ...)
 - [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
-
-## TODO
+#### TODO:
 - [ ] ClassiCube implementation for MP Pass
 - [ ] BetaCraft server list screen
 - [ ] More extensions for Classic Protocol Extensions protocol
