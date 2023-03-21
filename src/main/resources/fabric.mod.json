@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "ViaFabricPlus",
-  "description": "Clientside ViaVersion, ViaLegacy, ViaBedrock and ViaAprilFools implementation with clientside fixes for Fabric",
+  "description": "Fabric mod to connect to EVERY minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay",
   "authors": [
     "FlorianMichael/EnZaXD"
   ],

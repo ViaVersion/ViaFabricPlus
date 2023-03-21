@@ -15,36 +15,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.base;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import de.florianmichael.viafabricplus.definition.ServerAddressReplacement;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import java.net.InetSocketAddress;
-import java.util.Optional;
 
 @Mixin(MultiplayerServerListPinger.class)
 public class MixinMultiplayerServerListPinger {
 
-    @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;Z)Lnet/minecraft/network/ClientConnection;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void trackSessions(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress, Optional optional, InetSocketAddress inetSocketAddress) {
-        final ComparableProtocolVersion version = ((IServerInfo) entry).viafabricplus_forcedVersion();
-        if (version != null) {
-            ProtocolHack.getForcedVersions().put(inetSocketAddress, version);
-        }
+    @Unique
+    private ServerInfo viafabricplus_lastConnect;
 
-        if (ProtocolHack.isEqualToOrForced(inetSocketAddress, BedrockProtocolVersion.bedrockLatest)) {
-            ProtocolHack.getRakNetPingSessions().add(inetSocketAddress);
-        }
+    @Inject(method = "add", at = @At("HEAD"))
+    public void track(ServerInfo entry, Runnable saver, CallbackInfo ci) {
+        viafabricplus_lastConnect = entry;
+    }
+
+    @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
+    public ServerAddress doOwnParse(String address) {
+        return ServerAddressReplacement.parse(((IServerInfo) viafabricplus_lastConnect).viafabricplus_forcedVersion(), address);
     }
 }

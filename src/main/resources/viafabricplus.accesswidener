@@ -4,5 +4,6 @@ accessible field net/minecraft/client/network/AllowedAddressResolver redirectRes
 accessible field net/minecraft/item/Item ATTACK_DAMAGE_MODIFIER_ID Ljava/util/UUID;
 accessible field net/minecraft/client/gui/screen/ConnectScreen connection Lnet/minecraft/network/ClientConnection;
 accessible field net/minecraft/network/ClientConnection channel Lio/netty/channel/Channel;
+accessible field net/minecraft/client/network/ServerAddress INVALID Lnet/minecraft/client/network/ServerAddress;
 
 accessible class net/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection

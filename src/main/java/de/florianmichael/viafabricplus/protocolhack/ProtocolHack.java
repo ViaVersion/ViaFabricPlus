@@ -67,6 +67,7 @@ public class ProtocolHack {
 
     public static ComparableProtocolVersion getTargetVersion() {
         if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().getNetworkHandler() == null) return getTargetVersion(null);
+
         return getTargetVersion(MinecraftClient.getInstance().getNetworkHandler().getConnection().channel);
     }
 
@@ -84,13 +85,13 @@ public class ProtocolHack {
         return rakNetPingSessions;
     }
 
-    public static boolean isSelectedOrForced(final InetSocketAddress socketAddress, final ProtocolVersion version) {
+    public static boolean isEqualToOrForced(final InetSocketAddress socketAddress, final ProtocolVersion version) {
         if (forcedVersions.containsKey(socketAddress)) return forcedVersions.get(socketAddress).isEqualTo(version);
 
         return ProtocolHack.getTargetVersion().isEqualTo(version);
     }
 
-    public static boolean isOrOlderSelectedOrForced(final InetSocketAddress socketAddress, final ProtocolVersion version) {
+    public static boolean isOlderThanOrEqualToOrForced(final InetSocketAddress socketAddress, final ProtocolVersion version) {
         if (forcedVersions.containsKey(socketAddress)) return forcedVersions.get(socketAddress).isOlderThanOrEqualTo(version);
 
         return ProtocolHack.getTargetVersion().isEqualTo(version);
