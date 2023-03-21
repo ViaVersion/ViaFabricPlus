@@ -20,7 +20,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.input;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.definition.v1_12_2.SyncInputExecutor;
 import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -43,7 +43,7 @@ public class MixinKeyboard {
 
     @Redirect(method = "processF3", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendCommand(Ljava/lang/String;)Z", ordinal = 0))
     public boolean replaceSpectatorCommand(ClientPlayNetworkHandler instance, String command) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
             return false;
         }
         return instance.sendCommand(command);

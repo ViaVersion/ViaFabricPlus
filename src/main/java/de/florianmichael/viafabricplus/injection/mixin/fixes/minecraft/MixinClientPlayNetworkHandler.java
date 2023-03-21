@@ -22,7 +22,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IPlayerPositionLookS2CPacket;
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -77,14 +77,14 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixPlayerListOrdering(MinecraftClient client, Screen screen, ClientConnection connection, ServerInfo serverInfo, GameProfile profile, WorldSession worldSession, CallbackInfo ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             this.listedPlayerListEntries = new LinkedHashSet<>();
         }
     }
 
     @Inject(method = "onPing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
     private void onPing(PlayPingS2CPacket packet, CallbackInfo ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_17)) {
+        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_17)) {
             return;
         }
 
@@ -101,14 +101,14 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Inject(method = "onChunkLoadDistance", at = @At("RETURN"))
     public void emulateSimulationDistance(ChunkLoadDistanceS2CPacket packet, CallbackInfo ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             this.onSimulationDistance(new SimulationDistanceS2CPacket(packet.getDistance()));
         }
     }
 
     @Inject(method = "onEntitySpawn", at = @At("TAIL"))
     public void forceEntityVelocity(EntitySpawnS2CPacket packet, CallbackInfo ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             if (packet.getEntityType() == EntityType.ITEM || packet.getEntityType() == EntityType.ARROW || packet.getEntityType() == EntityType.SPECTRAL_ARROW || packet.getEntityType() == EntityType.TRIDENT) {
                 onEntityVelocityUpdate(new EntityVelocityUpdateS2CPacket(packet.getId(), new Vec3d(packet.getVelocityX(), packet.getVelocityY(), packet.getVelocityZ())));
             }
@@ -117,7 +117,7 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Inject(method = { "onGameJoin", "onPlayerRespawn" }, at = @At("TAIL"))
     private void injectOnOnGameJoinOrRespawn(CallbackInfo ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             assert player != null;
             onEntityStatus(new EntityStatusS2CPacket(player, (byte) 28));
@@ -126,14 +126,14 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Redirect(method = "onPlayerSpawnPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;setReady()V"))
     public void moveDownloadingTerrainClosing(DownloadingTerrainScreen instance) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19)) {
+        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19)) {
             instance.setReady();
         }
     }
 
     @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
     public void closeDownloadingTerrain(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_18_2) && MinecraftClient.getInstance().currentScreen instanceof DownloadingTerrainScreen) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_18_2) && MinecraftClient.getInstance().currentScreen instanceof DownloadingTerrainScreen) {
             MinecraftClient.getInstance().setScreen(null);
         }
     }
@@ -141,7 +141,7 @@ public abstract class MixinClientPlayNetworkHandler {
     @SuppressWarnings("InvalidInjectorMethodSignature")
     @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = BoatEntity.class))
     public Class<?> dontChangePlayerYaw(Object entity, Class<?> constant) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
             return Integer.class;
         }
         return constant;
@@ -149,7 +149,7 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Redirect(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
     public void removeNewWarning(Logger instance, String s, Object o) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             instance.warn(s, o);
         }
     }
@@ -163,7 +163,7 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
     public void forceSendKeepAlive(ClientPlayNetworkHandler instance, Packet<ServerPlayPacketListener> packet, BooleanSupplier sendCondition, Duration expirationTime) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             sendPacket(packet);
             return;
         }

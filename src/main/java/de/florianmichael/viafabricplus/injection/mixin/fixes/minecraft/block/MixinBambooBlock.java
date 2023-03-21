@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.BambooBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +33,7 @@ public class MixinBambooBlock {
 
     @Inject(method = "isShapeFullCube", at = @At("HEAD"), cancellable = true)
     public void changeFullCube(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17)) {
             cir.setReturnValue(true);
         }
     }

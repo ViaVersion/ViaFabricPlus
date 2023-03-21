@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.mob.PiglinEntity;
@@ -35,7 +35,7 @@ public abstract class MixinPiglinEntity {
 
     @Inject(method = "getActiveEyeHeight", at = @At("HEAD"), cancellable = true)
     public void changeEyeHeight(EntityPose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             cir.setReturnValue(this.isBaby() ? 0.93F : 1.74F);
         }
     }

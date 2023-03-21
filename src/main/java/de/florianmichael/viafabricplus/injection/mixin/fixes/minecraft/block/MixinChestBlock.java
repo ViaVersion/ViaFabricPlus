@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
@@ -39,7 +39,7 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             return VoxelShapes.fullCube();
         }
         return super.getCollisionShape(state, world, pos, context);

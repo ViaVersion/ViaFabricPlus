@@ -22,7 +22,7 @@ import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ProtocolSyncBooleanSettingRenderer;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.minecraft.text.MutableText;
 
@@ -54,7 +54,7 @@ public class ProtocolSyncBooleanSetting extends BooleanSetting {
 
     @Override
     public Boolean getValue() {
-        if (GeneralSettings.INSTANCE.automaticallyChangeValuesBasedOnTheCurrentVersion.getValue()) return this.getProtocolRange().contains(ViaLoadingBase.getClassWrapper().getTargetVersion());
+        if (GeneralSettings.INSTANCE.automaticallyChangeValuesBasedOnTheCurrentVersion.getValue()) return this.getProtocolRange().contains(ProtocolHack.getTargetVersion());
 
         return super.getValue();
     }

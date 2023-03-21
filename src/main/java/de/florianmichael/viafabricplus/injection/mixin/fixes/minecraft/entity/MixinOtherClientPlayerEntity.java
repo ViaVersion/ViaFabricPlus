@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -37,7 +37,7 @@ public class MixinOtherClientPlayerEntity extends AbstractClientPlayerEntity {
 
     @Inject(method = "updatePose", at = @At("HEAD"))
     public void injectUpdatePose(CallbackInfo ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             super.updatePose();
         }
     }

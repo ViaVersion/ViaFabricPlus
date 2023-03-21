@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AbstractDonkeyEntity;
@@ -50,7 +50,7 @@ public abstract class MixinAbstractDonkeyEntity extends AbstractHorseEntity {
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     public void fixInteraction(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             ItemStack lv = player.getStackInHand(hand);
             if (!this.isBaby()) {
                 if (this.isTame() && player.shouldCancelInteraction()) {

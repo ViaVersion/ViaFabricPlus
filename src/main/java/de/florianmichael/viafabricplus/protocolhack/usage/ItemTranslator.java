@@ -26,6 +26,7 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocol.packet.PacketWrapperImpl;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.netty.buffer.Unpooled;
 import net.minecraft.item.ItemStack;

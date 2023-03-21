@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.packet;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.network.PacketByteBuf;
@@ -44,7 +44,7 @@ public class MixinUpdatePlayerAbilitiesC2SPacket {
 
         byte b = 0;
 
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             if (this.flying) b = (byte) (b | 2); // Minecraft
 
             if (abilities.invulnerable) b |= 1;

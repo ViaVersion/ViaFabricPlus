@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.packet;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IPlayerPositionLookS2CPacket;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,7 +36,7 @@ public class MixinPlayerPositionLookS2CPacket implements IPlayerPositionLookS2CP
 
     @Inject(method = "<init>(Lnet/minecraft/network/PacketByteBuf;)V", at = @At("RETURN"))
     public void readDismountVehicle(PacketByteBuf buf, CallbackInfo ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             viafabricplus_dismountVehicle = buf.readBoolean();
         }
     }

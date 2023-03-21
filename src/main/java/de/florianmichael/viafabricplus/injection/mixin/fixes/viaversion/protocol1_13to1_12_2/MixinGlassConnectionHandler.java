@@ -23,7 +23,7 @@ import com.viaversion.viaversion.api.minecraft.Position;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.blockconnections.AbstractFenceConnectionHandler;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.blockconnections.GlassConnectionHandler;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -44,6 +44,6 @@ public abstract class MixinGlassConnectionHandler extends AbstractFenceConnectio
         if (states != 0) return states;
 
         ProtocolInfo protocolInfo = user.getProtocolInfo();
-        return ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && protocolInfo.getServerProtocolVersion() != -1 ? 0xF : states;
+        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && protocolInfo.getServerProtocolVersion() != -1 ? 0xF : states;
     }
 }

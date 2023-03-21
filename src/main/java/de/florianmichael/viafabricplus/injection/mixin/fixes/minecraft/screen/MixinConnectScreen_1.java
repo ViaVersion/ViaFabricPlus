@@ -24,11 +24,14 @@ import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
 import de.florianmichael.viafabricplus.definition.v1_19_0.storage.ChatSession1_19_0;
 import de.florianmichael.viafabricplus.definition.v1_19_2.storage.ChatSession1_19_2;
+import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PlayerKeyPair;
 import net.minecraft.network.encryption.PlayerPublicKey;
@@ -44,6 +47,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.net.InetSocketAddress;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
@@ -58,9 +62,13 @@ public class MixinConnectScreen_1 {
     @Shadow
     ConnectScreen field_2416;
 
+    @Final
+    @Shadow
+    ServerInfo field_40415;
+
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", ordinal = 1))
     public String replaceAddress(InetSocketAddress instance) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17) || ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest))
+        if (ProtocolHack.isOrOlderSelectedOrForced(instance, ProtocolVersion.v1_17) || ProtocolHack.isSelectedOrForced(instance, BedrockProtocolVersion.bedrockLatest))
             return field_33737.getAddress();
 
         return instance.getHostString();
@@ -68,10 +76,20 @@ public class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getPort()I"))
     public int replacePort(InetSocketAddress instance) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17) || ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest))
+        if (ProtocolHack.isOrOlderSelectedOrForced(instance, ProtocolVersion.v1_17) || ProtocolHack.isSelectedOrForced(instance, BedrockProtocolVersion.bedrockLatest))
             return field_33737.getPort();
 
         return instance.getPort();
+    }
+
+    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
+    public Object mapSocketAddress(Optional<InetSocketAddress> instance) {
+        final InetSocketAddress address = instance.get();
+        final ComparableProtocolVersion forcedVersion = ((IServerInfo) field_40415).viafabricplus_forcedVersion();
+        if (forcedVersion != null) {
+            ProtocolHack.getForcedVersions().put(address, forcedVersion);
+        }
+        return address;
     }
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", ordinal = 1, shift = At.Shift.BEFORE))
@@ -84,7 +102,7 @@ public class MixinConnectScreen_1 {
             ViaLoadingBase.LOGGER.log(Level.WARNING, "ViaVersion userConnection is null");
             return;
         }
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolHack.getTargetVersion(connection.channel).isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
             final StepMCChain.MCChain account = BedrockAccountHandler.INSTANCE.getAccount();
 
             if (account != null) {
@@ -93,10 +111,10 @@ public class MixinConnectScreen_1 {
             return;
         }
 
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThan(ProtocolVersion.v1_19)) {
+        if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_19)) {
             return; // This disables the chat session emulation for all versions <= 1.18.2
         }
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             try {
                 final PlayerKeyPair playerKeyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().get().orElse(null);
                 if (playerKeyPair != null) {
@@ -105,7 +123,7 @@ public class MixinConnectScreen_1 {
 
                     userConnection.put(new ChatSession1_19_2(userConnection, profileKey, playerKeyPair.privateKey()));
 
-                    if (ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(ProtocolVersion.v1_19)) {
+                    if (ProtocolHack.getTargetVersion().isEqualTo(ProtocolVersion.v1_19)) {
                         final byte[] legacyKey = ((IPublicKeyData) (Object) publicKeyData).viafabricplus_getV1Key().array();
                         if (legacyKey != null) {
                             userConnection.put(new ChatSession1_19_0(userConnection, profileKey, playerKeyPair.privateKey(), legacyKey));

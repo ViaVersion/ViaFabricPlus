@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -41,25 +41,25 @@ public abstract class MixinAbstractBlock_AbstractBlockState {
     public void changeHardness(BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
         final BlockState state = this.asBlockState();
 
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             if (state.getBlock() instanceof InfestedBlock) {
                 cir.setReturnValue(0.75F);
             }
         }
 
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             if (state.getBlock() == Blocks.END_STONE_BRICKS || state.getBlock() == Blocks.END_STONE_BRICK_SLAB || state.getBlock() == Blocks.END_STONE_BRICK_STAIRS || state.getBlock() == Blocks.END_STONE_BRICK_WALL) {
                 cir.setReturnValue(0.8F);
             }
         }
 
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             if (state.getBlock() == Blocks.PISTON || state.getBlock() == Blocks.STICKY_PISTON || state.getBlock() == Blocks.PISTON_HEAD) {
                 cir.setReturnValue(0.5F);
             }
         }
 
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             if (state.getBlock() instanceof InfestedBlock) {
                 cir.setReturnValue(0F);
             }

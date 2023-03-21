@@ -7,6 +7,7 @@
   "words.viafabricplus.lb": "Left; Bottom",
   "words.viafabricplus.rb": "Right; Bottom",
   "words.viafabricplus.cancel": "Cancel",
+  "words.viafabricplus.cancelreset": "Cancel and reset",
 
   "bedrock.viafabricplus.set": "Click to set account for Bedrock edition",
 
@@ -47,5 +48,7 @@
   "visual.viafabricplus.walkanimation": "Old walking animation",
 
   "bedrocklogin.viafabricplus.text": "Your browser should have opened.\nPlease enter the following Code: %s\nClosing this screen will cancel the process!",
-  "bedrocklogin.viafabricplus.error": "An error has occurred! See the latest.log for more information,\nplease report the bug at: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues"
+  "bedrocklogin.viafabricplus.error": "An error has occurred! See the latest.log for more information,\nplease report the bug at: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+
+  "forceversion.viafabricplus.title": "Please select the version with which the server should be pinged/connected"
 }

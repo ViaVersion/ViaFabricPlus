@@ -23,6 +23,7 @@ import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.groups.*;
 import de.florianmichael.viafabricplus.util.FileSaver;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 

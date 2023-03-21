@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.*;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
@@ -41,7 +41,7 @@ public class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     private void injectOnUse(CallbackInfoReturnable<ActionResult> ci) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
             ci.setReturnValue(ActionResult.SUCCESS);
         }
     }
@@ -51,7 +51,7 @@ public class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return viafabricplus_fence_shape_b1_8_1;
         }
         return super.getCollisionShape(state, world, pos, context);
@@ -59,7 +59,7 @@ public class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return VoxelShapes.fullCube();
         }
         return super.getOutlineShape(state, world, pos, context);

@@ -17,11 +17,8 @@
  */
 package de.florianmichael.viafabricplus.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -31,23 +28,24 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.awt.*;
+import java.util.List;
+import java.util.function.Consumer;
 
 @SuppressWarnings({"DataFlowIssue", "DuplicatedCode"})
-public class ProtocolSelectionScreen extends Screen {
-    private final static ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
-    public Screen prevScreen;
+public class ForceVersionScreen extends Screen {
+    private final Screen prevScreen;
+    private final Consumer<ComparableProtocolVersion> selectionConsumer;
 
-    protected ProtocolSelectionScreen() {
-        super(Text.literal("Protocol selection"));
-    }
+    public ForceVersionScreen(final Screen prevScreen, final Consumer<ComparableProtocolVersion> selectionConsumer) {
+        super(Text.literal("Force version"));
 
-    public static void open(final Screen current) {
-        INSTANCE.prevScreen = current;
-
-        RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(INSTANCE));
+        this.prevScreen = prevScreen;
+        this.selectionConsumer = selectionConsumer;
     }
 
     @Override
@@ -55,9 +53,6 @@ public class ProtocolSelectionScreen extends Screen {
         super.init();
 
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, textRenderer.fontHeight + 4));
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
-
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("words.viafabricplus.settings"), button -> client.setScreen(SettingsScreen.get(this))).position(width - 98 - 5, 5).size(98, 20).build());
     }
 
     @Override
@@ -69,7 +64,7 @@ public class ProtocolSelectionScreen extends Screen {
         matrices.scale(2F, 2F, 2F);
         drawCenteredTextWithShadow(matrices, textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.pop();
-        drawCenteredTextWithShadow(matrices, textRenderer, "https://github.com/FlorianMichael/ViaFabricPlus", width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
+        drawCenteredTextWithShadow(matrices, textRenderer, Text.translatable("forceversion.viafabricplus.title"), width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
     }
 
     @Override
@@ -77,19 +72,47 @@ public class ProtocolSelectionScreen extends Screen {
         client.setScreen(prevScreen);
     }
 
-    public static class SlotList extends AlwaysSelectedEntryListWidget<ProtocolSlot> {
+    public class SlotList extends AlwaysSelectedEntryListWidget<DummyProtocolSlot> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
-            InternalProtocolList.getProtocols().stream().map(ProtocolSlot::new).forEach(this::addEntry);
+            this.addEntry(new ResetProtocolSlot());
+            InternalProtocolList.getProtocols().stream().map(ViaProtocolSlot::new).forEach(this::addEntry);
         }
     }
 
-    public static class ProtocolSlot extends AlwaysSelectedEntryListWidget.Entry<ProtocolSlot> {
+
+    public abstract static class DummyProtocolSlot extends AlwaysSelectedEntryListWidget.Entry<DummyProtocolSlot> {
+    }
+
+    public class ResetProtocolSlot extends DummyProtocolSlot {
+
+        @Override
+        public Text getNarration() {
+            return Text.translatable("words.viafabricplus.cancelreset");
+        }
+
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            ForceVersionScreen.this.selectionConsumer.accept(null);
+            MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            ForceVersionScreen.this.close();
+            return super.mouseClicked(mouseX, mouseY, button);
+        }
+
+        @Override
+        public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+            drawCenteredTextWithShadow(matrices, textRenderer, ((MutableText) getNarration()).formatted(Formatting.GOLD), x + entryWidth / 2, y + entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+        }
+    }
+
+    public class ViaProtocolSlot extends DummyProtocolSlot {
         private final ProtocolVersion protocolVersion;
 
-        public ProtocolSlot(final ProtocolVersion protocolVersion) {
+        public ViaProtocolSlot(final ProtocolVersion protocolVersion) {
             this.protocolVersion = protocolVersion;
         }
 
@@ -100,21 +123,16 @@ public class ProtocolSelectionScreen extends Screen {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            ViaLoadingBase.getClassWrapper().reload(this.protocolVersion);
+            ForceVersionScreen.this.selectionConsumer.accept(InternalProtocolList.fromProtocolVersion(protocolVersion));
             MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            ForceVersionScreen.this.close();
             return super.mouseClicked(mouseX, mouseY, button);
         }
 
         @Override
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            final boolean isSelected = ProtocolHack.getTargetVersion().getVersion() == protocolVersion.getVersion();
-
-            matrices.push();
-            matrices.translate(x, y - 1, 0);
-
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            drawCenteredTextWithShadow(matrices, textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
-            matrices.pop();
+            drawCenteredTextWithShadow(matrices, textRenderer, this.protocolVersion.getName(), x + entryWidth / 2, y - 1 + entryHeight / 2 - textRenderer.fontHeight / 2, -1);
         }
     }
 }

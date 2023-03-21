@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.minecraft.client.network.AllowedAddressResolver;
 import net.minecraft.client.network.ServerAddress;
@@ -35,15 +35,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerAddress.class)
 public class MixinServerAddress {
 
-    @Shadow @Final private static ServerAddress INVALID;
-
-    @Unique
-    private final static ProtocolRange viafabricplus_srvRange = new ProtocolRange(ProtocolVersion.v1_16_4, LegacyProtocolVersion.r1_3_1tor1_3_2);
-
-    @Inject(method = "parse", at = @At("RETURN"), cancellable = true)
-    private static void fixAddress(String address, CallbackInfoReturnable<ServerAddress> cir) {
-        if (!cir.getReturnValue().equals(INVALID) && (viafabricplus_srvRange.contains(ViaLoadingBase.getClassWrapper().getTargetVersion()) || ViaLoadingBase.getClassWrapper().getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest))) {
-            cir.setReturnValue(AllowedAddressResolver.DEFAULT.redirectResolver.lookupRedirect(cir.getReturnValue()).orElse(cir.getReturnValue()));
-        }
-    }
+//    @Shadow @Final private static ServerAddress INVALID;
+//
+//    @Unique
+//    private final static ProtocolRange viafabricplus_srvRange = new ProtocolRange(ProtocolVersion.v1_16_4, LegacyProtocolVersion.r1_3_1tor1_3_2);
+//
+//    @Inject(method = "parse", at = @At("RETURN"), cancellable = true)
+//    private static void fixAddress(String address, CallbackInfoReturnable<ServerAddress> cir) {
+//        if (!cir.getReturnValue().equals(INVALID) && (viafabricplus_srvRange.contains(ProtocolHack.getTargetVersion()) || ProtocolHack.getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest))) {
+//            cir.setReturnValue(AllowedAddressResolver.DEFAULT.redirectResolver.lookupRedirect(cir.getReturnValue()).orElse(cir.getReturnValue()));
+//        }
+//    }
 }

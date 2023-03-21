@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
@@ -48,8 +48,8 @@ public abstract class MixinItemGroups {
 
     @Inject(method = "updateDisplayContext", at = @At("HEAD"), cancellable = true)
     private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, RegistryWrapper.WrapperLookup lookup, CallbackInfoReturnable<Boolean> cir) {
-        if (viafabricplus_version != ViaLoadingBase.getClassWrapper().getTargetVersion() || viafabricplus_state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue()) {
-            viafabricplus_version = ViaLoadingBase.getClassWrapper().getTargetVersion();
+        if (viafabricplus_version != ProtocolHack.getTargetVersion() || viafabricplus_state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue()) {
+            viafabricplus_version = ProtocolHack.getTargetVersion();
             viafabricplus_state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue();
 
             displayContext = new ItemGroup.DisplayContext(enabledFeatures, operatorEnabled, lookup);

@@ -21,7 +21,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.reflect.Enums;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.ClientboundPacketsc0_30cpe;
@@ -45,7 +45,7 @@ public class CustomClassicProtocolExtensions {
 
         LoadClassicProtocolExtensionCallback.EVENT.register(classicProtocolExtension -> {
             if (classicProtocolExtension == ClassicProtocolExtension.LONGER_MESSAGES) ChatLengthDefinition.INSTANCE.expand();
-            if (classicProtocolExtension == ClassicProtocolExtension.CUSTOM_BLOCKS) ClassicItemSelectionScreen.INSTANCE.reload(ViaLoadingBase.getClassWrapper().getTargetVersion(), true);
+            if (classicProtocolExtension == ClassicProtocolExtension.CUSTOM_BLOCKS) ClassicItemSelectionScreen.INSTANCE.reload(ProtocolHack.getTargetVersion(), true);
         });
     }
 

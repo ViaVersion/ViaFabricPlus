@@ -15,20 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack.platform.viabedrock;
+package de.florianmichael.viafabricplus.injection.access;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 
-public class RakNetPingSessions {
-    public final static List<InetAddress> pingSessions = new ArrayList<>();
+public interface IServerInfo {
 
-    public static void storePingSession(final InetAddress address) {
-        pingSessions.add(address);
-    }
-
-    public static boolean isPingSession(final InetAddress address) {
-        return pingSessions.contains(address);
-    }
+    ComparableProtocolVersion viafabricplus_forcedVersion();
+    void viafabricplus_forceVersion(ComparableProtocolVersion version);
 }

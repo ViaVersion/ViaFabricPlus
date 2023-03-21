@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.definition;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
@@ -85,7 +85,7 @@ public class PackFormatsDefinition {
     }
 
     public static GameVersion current() {
-        final int targetVersion = ViaLoadingBase.getClassWrapper().getTargetVersion().getOriginalVersion();
+        final int targetVersion = ProtocolHack.getTargetVersion().getOriginalVersion();
         if (!protocolMap.containsKey(targetVersion)) return SharedConstants.getGameVersion();
         return protocolMap.get(targetVersion);
     }

@@ -24,7 +24,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.util.math.BlockPos;
@@ -42,9 +42,9 @@ public class MixinItemPlacementContext {
         final ItemPlacementContext self = (ItemPlacementContext) (Object) this;
         final PlayerEntity player = self.getPlayer();
 
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2) && player != null) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2) && player != null) {
             final BlockPos placementPos = self.getBlockPos();
-            final double blockPosCenterFactor = ViaLoadingBase.getClassWrapper().getTargetVersion().isNewerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
+            final double blockPosCenterFactor = ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
 
             if (Math.abs(player.getX() - (placementPos.getX() + blockPosCenterFactor)) < 2 && Math.abs(player.getZ() - (placementPos.getZ() + blockPosCenterFactor)) < 2) {
                 final double eyeY = player.getY() + player.getEyeHeight(player.getPose());

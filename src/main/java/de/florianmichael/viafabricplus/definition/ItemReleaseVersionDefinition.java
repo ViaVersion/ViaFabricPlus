@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.definition;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.minecraft.item.Item;
@@ -40,7 +40,7 @@ public class ItemReleaseVersionDefinition {
     public static void create() {
         INSTANCE = new ItemReleaseVersionDefinition();
         INSTANCE.load();
-        INSTANCE.update(ViaLoadingBase.getClassWrapper().getTargetVersion());
+        INSTANCE.update(ProtocolHack.getTargetVersion());
 
         ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> INSTANCE.update(protocolVersion));
     }

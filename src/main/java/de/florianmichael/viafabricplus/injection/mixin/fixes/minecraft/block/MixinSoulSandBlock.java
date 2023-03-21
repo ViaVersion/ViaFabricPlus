@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoulSandBlock;
@@ -43,7 +43,7 @@ public class MixinSoulSandBlock extends Block {
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         super.onEntityCollision(state, world, pos, entity);
 
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             final Vec3d velocity = entity.getVelocity();
             this.viafabricplus_forceValue = true;
             entity.setVelocity(velocity.getX() * this.getVelocityMultiplier(), velocity.getY(), velocity.getZ() * this.getVelocityMultiplier());
@@ -53,7 +53,7 @@ public class MixinSoulSandBlock extends Block {
 
     @Override
     public float getVelocityMultiplier() {
-        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4) && !this.viafabricplus_forceValue) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4) && !this.viafabricplus_forceValue) {
             return 1.0F;
         }
         return super.getVelocityMultiplier();

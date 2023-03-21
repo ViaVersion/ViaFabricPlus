@@ -23,7 +23,7 @@ import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.groups.BridgeSettings;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
 import org.spongepowered.asm.mixin.Mixin;
@@ -49,7 +49,7 @@ public class MixinDebugHud {
             information.add(ScreenUtil.prefixedMessage("").trim());
 
             for (AbstractInformationGroup group : ViaFabricPlus.INSTANCE.getInformationSystem().getGroups()) {
-                if (group.getProtocolRange() != null && !group.getProtocolRange().contains(ViaLoadingBase.getClassWrapper().getTargetVersion())) continue;
+                if (group.getProtocolRange() != null && !group.getProtocolRange().contains(ProtocolHack.getTargetVersion())) continue;
 
                 final List<String> groupInformation = new ArrayList<>();
                 group.applyInformation(userConnection, groupInformation);

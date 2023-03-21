@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.protocolhack;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
@@ -33,8 +34,11 @@ import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabri
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.*;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusMovementTransmitterProvider;
+import de.florianmichael.viafabricplus.protocolhack.replacement.ViaFabricPlusVLBBaseVersionProvider;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.platform.SubPlatform;
+import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
@@ -50,13 +54,47 @@ import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.provider
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.net.InetSocketAddress;
+import java.util.*;
 
 public class ProtocolHack {
     public final static AttributeKey<UserConnection> LOCAL_VIA_CONNECTION = AttributeKey.newInstance("viafabricplus-via-connection");
     public final static AttributeKey<ClientConnection> LOCAL_MINECRAFT_CONNECTION = AttributeKey.newInstance("viafabricplus-minecraft-connection");
+    public final static AttributeKey<ComparableProtocolVersion> FORCED_VERSION = AttributeKey.newInstance("viafabricplus-forced-version");
+
+    private final static Map<InetSocketAddress, ComparableProtocolVersion> forcedVersions = new HashMap<>();
+    private final static List<InetSocketAddress> rakNetPingSessions = new ArrayList<>();
+
+    public static ComparableProtocolVersion getTargetVersion() {
+        if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().getNetworkHandler() == null) return getTargetVersion(null);
+        return getTargetVersion(MinecraftClient.getInstance().getNetworkHandler().getConnection().channel);
+    }
+
+    public static ComparableProtocolVersion getTargetVersion(final Channel channel) {
+        if (channel != null && channel.hasAttr(FORCED_VERSION)) return channel.attr(FORCED_VERSION).get();
+
+        return ViaLoadingBase.getClassWrapper().getTargetVersion();
+    }
+
+    public static Map<InetSocketAddress, ComparableProtocolVersion> getForcedVersions() {
+        return forcedVersions;
+    }
+
+    public static List<InetSocketAddress> getRakNetPingSessions() {
+        return rakNetPingSessions;
+    }
+
+    public static boolean isSelectedOrForced(final InetSocketAddress socketAddress, final ProtocolVersion version) {
+        if (forcedVersions.containsKey(socketAddress)) return forcedVersions.get(socketAddress).isEqualTo(version);
+
+        return ProtocolHack.getTargetVersion().isEqualTo(version);
+    }
+
+    public static boolean isOrOlderSelectedOrForced(final InetSocketAddress socketAddress, final ProtocolVersion version) {
+        if (forcedVersions.containsKey(socketAddress)) return forcedVersions.get(socketAddress).isOlderThanOrEqualTo(version);
+
+        return ProtocolHack.getTargetVersion().isEqualTo(version);
+    }
 
     public ProtocolHack() {
         ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
@@ -97,6 +135,8 @@ public class ProtocolHack {
             providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
             providers.use(ClassicCustomCommandProvider.class, new ViaFabricPlusClassicCustomCommandProvider());
             providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
+
+            providers.use(VersionProvider.class, new ViaFabricPlusVLBBaseVersionProvider());
         });
         builder = builder.onProtocolReload(protocolVersion -> ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(protocolVersion));
         builder.build();
