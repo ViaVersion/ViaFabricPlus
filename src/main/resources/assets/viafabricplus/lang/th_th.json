@@ -7,6 +7,7 @@
   "words.viafabricplus.lb": "ซ้าย; Bottom",
   "words.viafabricplus.rb": "ขวา; Bottom",
   "words.viafabricplus.cancel": "ยกเลิก",
+  "words.viafabricplus.cancelreset": "ยกเลิกและรีเซ็ต",
 
   "bedrock.viafabricplus.set": "คลิกเพื่อเชื่อมต่อบัญชี Bedrock Edition",
 
@@ -47,5 +48,7 @@
   "visual.viafabricplus.walkanimation": "ท่าทางการเดินแบบเก่า",
 
   "bedrocklogin.viafabricplus.text": "บราวเซอร์เปิดแล้ว \nกรุณาใส่โคดด่านล่าง Code: %s\nหากปิดหน้าเกมการดำเนินการจะถูกยกเลิก",
-  "bedrocklogin.viafabricplus.error": "พบข้อผิดพลาด ดูที่ไฟล์ latest.log เพื่อดูรายละอียดเพิ่มเติม,\nกรุณาแจ้งบัคที่ at: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues"
+  "bedrocklogin.viafabricplus.error": "พบข้อผิดพลาด ดูที่ไฟล์ latest.log เพื่อดูรายละอียดเพิ่มเติม,\nกรุณาแจ้งบัคที่ at: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+
+  "forceversion.viafabricplus.title": "โปรดเลือกเวอร์ชันที่ต้องการเชื่อมต่อ"
 }
