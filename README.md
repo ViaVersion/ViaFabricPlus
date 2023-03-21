@@ -37,13 +37,13 @@ It should work fine with most if not all mods and modpacks.
 - ***[Krypton](https://github.com/astei/krypton)***
 - ***[Raknetify](https://github.com/RelativityMC/raknetify/tree/master)***
 
-## Basic Features
-- [x] ViaVersion implementation
-- [x] ViaBackwards implementation
-- [x] ViaLegacy implementation
-- [x] ViaAprilFools implementation
-- [x] ViaBedrock implementation
-- [x] BetaCraft implementation for MP Pass
+## Supported Server versions
+- Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
+- Alpha (a1.0.15 - a1.2.6)
+- Beta (b1.0 - b1.8.1)
+- Release (1.0.0 - 1.7.10)
+- AprilFools (3D Shareware, 20w14infinite, Combat Test 8C)
+- Bedrock (latest)
 
 ## Clientside related Fixes
 - [x] Bounding boxes for all versions
