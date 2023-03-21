@@ -24,6 +24,7 @@ Translations for other languages are always welcome, in **~/resources/assets/via
 if you know a language well, feel free to make a PR and add translations for that language <br>
 **Currently supported languages**:
 - English
+- Thai
 
 ## Compatibility
 ViaFabricPlus is structured to interfere with mods as little as possible.
