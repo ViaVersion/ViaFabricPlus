@@ -105,6 +105,13 @@ in the upper left corner you can go to the Settings.
 ![](/.github/images/multiplayer.png)
 ![](/.github/images/protocol.png)
 
+In the Add/Edit Server screen there is a button where you can select a specific version for this server, when you ping or connect to this server, <br>
+ViaFabricPlus will use the version set there, the versions are stored in the servers.dat too
+
+![](/.github/images/force.png)
+
+If you don't want to specify a specific version anymore, you can simply press the button and select **"Cancel and reset"**.
+
 ### Settings are optional settings that can turn fixes on and off, originally they were used for debugging<br>
 ![](/.github/images/settings.png)
 
