@@ -70,7 +70,6 @@ public class MixinConnectScreen_1 {
     public String replaceAddress(InetSocketAddress instance) {
         if (ProtocolHack.isOlderThanOrEqualToOrForced(instance, ProtocolVersion.v1_17) || ProtocolHack.isEqualToOrForced(instance, BedrockProtocolVersion.bedrockLatest))
             return field_33737.getAddress();
-
         return instance.getHostString();
     }
 
@@ -78,7 +77,6 @@ public class MixinConnectScreen_1 {
     public int replacePort(InetSocketAddress instance) {
         if (ProtocolHack.isOlderThanOrEqualToOrForced(instance, ProtocolVersion.v1_17) || ProtocolHack.isEqualToOrForced(instance, BedrockProtocolVersion.bedrockLatest))
             return field_33737.getPort();
-
         return instance.getPort();
     }
 
@@ -86,9 +84,7 @@ public class MixinConnectScreen_1 {
     public Object mapSocketAddress(Optional<InetSocketAddress> instance) {
         final InetSocketAddress address = instance.get();
         final ComparableProtocolVersion forcedVersion = ((IServerInfo) field_40415).viafabricplus_forcedVersion();
-        if (forcedVersion != null) {
-            ProtocolHack.getForcedVersions().put(address, forcedVersion);
-        }
+        if (forcedVersion != null) ProtocolHack.getForcedVersions().put(address, forcedVersion);
         return address;
     }
 

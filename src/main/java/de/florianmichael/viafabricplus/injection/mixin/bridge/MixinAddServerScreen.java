@@ -44,8 +44,7 @@ public class MixinAddServerScreen extends Screen {
     @Inject(method = "init", at = @At("RETURN"))
     public void injectButton(CallbackInfo ci) {
         final ComparableProtocolVersion forcedVersion = ((IServerInfo) server).viafabricplus_forcedVersion();
-        this.addDrawableChild(ButtonWidget.
-                builder(Text.literal(forcedVersion == null ? "Set version for this server" :forcedVersion.getName()), button ->
+        this.addDrawableChild(ButtonWidget.builder(Text.literal(forcedVersion == null ? "Set version for this server" :forcedVersion.getName()), button ->
                         client.setScreen(new ForceVersionScreen(this, version -> ((IServerInfo) server).viafabricplus_forceVersion(version)))).
                 position(width - (forcedVersion == null ? 150 : 98) - 5, 5).size(forcedVersion == null ? 150 : 98, 20).build());
     }
