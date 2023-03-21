@@ -47,8 +47,11 @@ public class ViaFabricPlus {
     public void init() {
         PreLoadCallback.EVENT.invoker().onLoad();
 
+        // Classic Stuff
         CustomClassicProtocolExtensions.create();
         ClassicItemSelectionScreen.create();
+        ChatLengthDefinition.create();
+        ClassicProtocolCommands.create();
 
         new ProtocolHack();
 
@@ -61,10 +64,6 @@ public class ViaFabricPlus {
             PackFormatsDefinition.load();
             ItemReleaseVersionDefinition.create();
             ArmorPointsDefinition.load();
-
-            // Classic Stuff
-            ChatLengthDefinition.create();
-            ClassicProtocolCommands.create();
 
             // Bedrock Stuff
             BedrockAccountManager.INSTANCE.load();
