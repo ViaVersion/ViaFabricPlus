@@ -21,7 +21,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
-import de.florianmichael.viafabricplus.util.ItemTranslator;
+import de.florianmichael.viafabricplus.protocolhack.usage.ItemTranslator;
 import net.minecraft.item.ItemStack;
 
 public class ViaFabricPlusHandItemProvider extends HandItemProvider {

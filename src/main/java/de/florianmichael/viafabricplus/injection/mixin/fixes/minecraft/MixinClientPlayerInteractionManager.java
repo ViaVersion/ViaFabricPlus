@@ -26,7 +26,7 @@ import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
-import de.florianmichael.viafabricplus.util.ItemTranslator;
+import de.florianmichael.viafabricplus.protocolhack.usage.ItemTranslator;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;

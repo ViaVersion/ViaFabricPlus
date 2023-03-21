@@ -19,31 +19,20 @@ package de.florianmichael.viafabricplus.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountManager;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
-import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Util;
-import net.raphimc.mcauth.MinecraftAuth;
 
 import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings({"DataFlowIssue", "DuplicatedCode"})
 public class ProtocolSelectionScreen extends Screen {

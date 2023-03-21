@@ -18,24 +18,26 @@
 package de.florianmichael.viafabricplus.settings;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.event.InitializeSettingsCallback;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.groups.*;
+import de.florianmichael.viafabricplus.util.FileSaver;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SettingsSystem {
-    private final File CONFIG_FILE = new File(ViaFabricPlus.RUN_DIRECTORY, "settings.json");
-
+public class SettingsSystem extends FileSaver {
     private final List<SettingGroup> groups = new ArrayList<>();
 
+    public SettingsSystem() {
+        super("settings.json");
+    }
+
+    @Override
     public void init() {
         addGroup(
                 GeneralSettings.INSTANCE,
@@ -48,54 +50,33 @@ public class SettingsSystem {
 
         InitializeSettingsCallback.EVENT.invoker().onInitializeSettings();
 
-        loadConfig();
-        Runtime.getRuntime().addShutdownHook(new Thread(this::save));
+        super.init();
+    }
+
+    @Override
+    public void write(JsonObject object) {
+        object.addProperty("protocol", ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion());
+        for (SettingGroup group : groups) {
+            for (AbstractSetting<?> setting : group.getSettings()) {
+                setting.write(object);
+            }
+        }
+    }
+
+    @Override
+    public void read(JsonObject object) {
+        if (object.has("protocol")) {
+            ViaLoadingBase.getClassWrapper().reload(InternalProtocolList.fromProtocolId(object.get("protocol").getAsInt()));
+        }
+        for (SettingGroup group : groups) {
+            for (AbstractSetting<?> setting : group.getSettings()) {
+                setting.read(object);
+            }
+        }
     }
 
     public void addGroup(final SettingGroup... groups) {
         Collections.addAll(this.groups, groups);
-    }
-
-    public void loadConfig() {
-        if (CONFIG_FILE.exists()) {
-            final JsonObject parentNode;
-            try {
-                parentNode = ViaFabricPlus.GSON.fromJson(new FileReader(CONFIG_FILE), JsonObject.class).getAsJsonObject();
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            if (parentNode.has("protocol")) {
-                ViaLoadingBase.getClassWrapper().reload(InternalProtocolList.fromProtocolId(parentNode.get("protocol").getAsInt()));
-            }
-            for (SettingGroup group : groups) {
-                for (AbstractSetting<?> setting : group.getSettings()) {
-                    setting.read(parentNode);
-                }
-            }
-        }
-    }
-
-    public void save() {
-        CONFIG_FILE.delete();
-        try {
-            CONFIG_FILE.createNewFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try (final FileWriter fw = new FileWriter(CONFIG_FILE)) {
-            final JsonObject parentNode = new JsonObject();
-            parentNode.addProperty("protocol", ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion());
-            for (SettingGroup group : groups) {
-                for (AbstractSetting<?> setting : group.getSettings()) {
-                    setting.write(parentNode);
-                }
-            }
-            fw.write(ViaFabricPlus.GSON.toJson(parentNode));
-            fw.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public List<SettingGroup> getGroups() {

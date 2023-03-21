@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.settings.groups;
 
-import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountManager;
+import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.screen.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
@@ -28,7 +28,6 @@ import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 import net.raphimc.mcauth.MinecraftAuth;
 
@@ -41,7 +40,7 @@ public class BedrockSettings extends SettingGroup {
 
     public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, Text.translatable("bedrock.viafabricplus.set"), () -> CompletableFuture.runAsync(() -> {
         try {
-            BedrockAccountManager.INSTANCE.setAccount(MinecraftAuth.requestBedrockLogin(msaDeviceCode -> {
+            BedrockAccountHandler.INSTANCE.setAccount(MinecraftAuth.requestBedrockLogin(msaDeviceCode -> {
                 MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> {
                     MinecraftClient.getInstance().setScreen(SettingsScreen.get(new MultiplayerScreen(new TitleScreen())));
                     Thread.currentThread().interrupt();
@@ -62,8 +61,8 @@ public class BedrockSettings extends SettingGroup {
     })) {
         @Override
         public MutableText displayValue() {
-            if (BedrockAccountManager.INSTANCE.getAccount() != null) {
-                return Text.literal("Bedrock account: " + BedrockAccountManager.INSTANCE.getAccount().displayName());
+            if (BedrockAccountHandler.INSTANCE.getAccount() != null) {
+                return Text.literal("Bedrock account: " + BedrockAccountHandler.INSTANCE.getAccount().displayName());
             }
             return super.displayValue();
         }
