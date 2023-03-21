@@ -193,7 +193,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
                         }
                     }
 
-                    if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+                    if (ProtocolHack.getTargetVersion(channel).isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
                         user.getProtocolInfo().getPipeline().add(PreNettyBaseProtocol.INSTANCE);
 
                         channel.pipeline().addBefore("prepender", PreNettyConstants.HANDLER_ENCODER_NAME, new VFPPreNettyEncoder(user));

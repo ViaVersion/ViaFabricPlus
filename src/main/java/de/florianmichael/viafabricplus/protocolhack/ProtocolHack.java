@@ -94,7 +94,7 @@ public class ProtocolHack {
     public static boolean isOlderThanOrEqualToOrForced(final InetSocketAddress socketAddress, final ProtocolVersion version) {
         if (forcedVersions.containsKey(socketAddress)) return forcedVersions.get(socketAddress).isOlderThanOrEqualTo(version);
 
-        return ProtocolHack.getTargetVersion().isEqualTo(version);
+        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(version);
     }
 
     public ProtocolHack() {
