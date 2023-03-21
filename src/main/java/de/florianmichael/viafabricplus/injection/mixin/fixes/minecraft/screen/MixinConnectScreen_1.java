@@ -21,6 +21,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
 import de.florianmichael.viafabricplus.definition.v1_19_0.storage.ChatSession1_19_0;
 import de.florianmichael.viafabricplus.definition.v1_19_2.storage.ChatSession1_19_2;
@@ -84,7 +85,10 @@ public class MixinConnectScreen_1 {
     public Object mapSocketAddress(Optional<InetSocketAddress> instance) {
         final InetSocketAddress address = instance.get();
         final ComparableProtocolVersion forcedVersion = ((IServerInfo) field_40415).viafabricplus_forcedVersion();
-        if (forcedVersion != null) ProtocolHack.getForcedVersions().put(address, forcedVersion);
+        if (forcedVersion != null) {
+            ProtocolHack.getForcedVersions().put(address, forcedVersion);
+            ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(forcedVersion);
+        }
         return address;
     }
 

@@ -148,15 +148,15 @@ public class ViaFabricPlusExampleAddon implements ClientModInitializer {
 }
 ```
 #### ViaFabricPlus has 7 events at the moment:
-| Callback class name                  | Description                                                                                |
-|--------------------------------------|--------------------------------------------------------------------------------------------|
-| ChangeProtocolVersionCallback        | Called when the user changes the target version in the screen                              |
-| FinishMinecraftLoadCallback          | Called when Minecraft is finished with loading all its components                          |
-| FinishViaLoadingBaseStartupCallback  | Called when ViaLoadingBase and Via* is loaded and ready to use                             |
-| InitializeSettingsCallback           | Called after the default setting groups are loaded and before the setting config is loaded |
-| LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)       |
-| PreLoadCallback                      | Called before everything (Pre-pre load)                                                    |
-| SkipIdlePacketCallback               | Called as soon as the idle packet is skipped in the <= 1.8                                 |
+| Callback class name                  | Description                                                                                                                                                                                                   |
+|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ChangeProtocolVersionCallback        | Called when the user changes the target version in the screen, or if you connect to a server for which a specific version has been selected, you disconnect, the event for the actual version is also called. |
+| FinishMinecraftLoadCallback          | Called when Minecraft is finished with loading all its components                                                                                                                                             |
+| FinishViaLoadingBaseStartupCallback  | Called when ViaLoadingBase and Via* is loaded and ready to use                                                                                                                                                |
+| InitializeSettingsCallback           | Called after the default setting groups are loaded and before the setting config is loaded                                                                                                                    |
+| LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)                                                                                                                          |
+| PreLoadCallback                      | Called before everything (Pre-pre load)                                                                                                                                                                       |
+| SkipIdlePacketCallback               | Called as soon as the idle packet is skipped in the <= 1.8                                                                                                                                                    |
 
 ### General API
 #### Get the release version of an material:

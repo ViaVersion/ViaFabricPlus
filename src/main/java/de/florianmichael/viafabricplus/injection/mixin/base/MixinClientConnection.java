@@ -20,6 +20,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.constants.PreNettyConstants;
 import de.florianmichael.viafabricplus.protocolhack.constants.BedrockRakNetConstants;
@@ -32,6 +33,7 @@ import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.library_
 import de.florianmichael.viafabricplus.protocolhack.platform.vialegacy.VFPPreNettyDecoder;
 import de.florianmichael.viafabricplus.protocolhack.platform.vialegacy.VFPPreNettyEncoder;
 import de.florianmichael.viafabricplus.protocolhack.replacement.ViaFabricPlusVLBViaDecodeHandler;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.event.PipelineReorderEvent;
 import de.florianmichael.vialoadingbase.netty.NettyConstants;
 import de.florianmichael.vialoadingbase.netty.VLBViaEncodeHandler;
@@ -52,6 +54,7 @@ import net.minecraft.network.NetworkSide;
 import net.minecraft.network.encryption.PacketDecryptor;
 import net.minecraft.network.encryption.PacketEncryptor;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.text.Text;
 import net.minecraft.util.Lazy;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.netty.*;
@@ -221,6 +224,11 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         super.channelRegistered(ctx);
 
         channelActive(ctx);
+    }
+
+    @Inject(method = "disconnect", at = @At("RETURN"))
+    public void resetStorages(Text disconnectReason, CallbackInfo ci) {
+        ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(ViaLoadingBase.getClassWrapper().getTargetVersion());
     }
 
     @Override
