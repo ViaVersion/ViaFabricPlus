@@ -31,13 +31,15 @@ public abstract class FileSaver {
 
     public void init() {
         if (file.exists()) {
-            final JsonObject parentNode;
+            JsonObject parentNode = null;
             try {
                 parentNode = ViaFabricPlus.GSON.fromJson(new FileReader(file), JsonObject.class).getAsJsonObject();
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            read(parentNode);
+            if (parentNode != null) {
+                read(parentNode);
+            }
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -45,7 +47,7 @@ public abstract class FileSaver {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
 
             try (final FileWriter fw = new FileWriter(file)) {
@@ -54,7 +56,7 @@ public abstract class FileSaver {
                 fw.write(ViaFabricPlus.GSON.toJson(parentNode));
                 fw.flush();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }));
     }
