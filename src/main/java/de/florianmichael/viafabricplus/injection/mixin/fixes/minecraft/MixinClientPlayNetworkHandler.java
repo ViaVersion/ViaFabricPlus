@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IPlayerPositionLookS2CPacket;
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
@@ -33,6 +34,9 @@ import net.minecraft.client.util.telemetry.WorldSession;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.listener.ServerPlayPacketListener;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.KeepAliveC2SPacket;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.math.Vec3d;
@@ -44,8 +48,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.time.Duration;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(ClientPlayNetworkHandler.class)
@@ -65,7 +71,9 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Shadow public abstract void onEntityVelocityUpdate(EntityVelocityUpdateS2CPacket packet);
 
-    @Shadow @Final private ClientConnection connection;
+    @Shadow protected abstract void sendPacket(Packet<ServerPlayPacketListener> packet, BooleanSupplier sendCondition, Duration expirationTime);
+
+    @Shadow public abstract void sendPacket(Packet<?> packet);
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixPlayerListOrdering(MinecraftClient client, Screen screen, ClientConnection connection, ServerInfo serverInfo, GameProfile profile, WorldSession worldSession, CallbackInfo ci) {
@@ -151,6 +159,15 @@ public abstract class MixinClientPlayNetworkHandler {
         if (((IPlayerPositionLookS2CPacket) packet).viafabricplus_isDismountVehicle()) {
             client.player.dismountVehicle();
         }
+    }
+
+    @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
+    public void forceSendKeepAlive(ClientPlayNetworkHandler instance, Packet<ServerPlayPacketListener> packet, BooleanSupplier sendCondition, Duration expirationTime) {
+        if (ViaLoadingBase.getClassWrapper().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+            sendPacket(packet);
+            return;
+        }
+        sendPacket(packet, sendCondition, expirationTime);
     }
 
     @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))

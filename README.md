@@ -7,7 +7,7 @@
   <a href="https://modrinth.com/mod/viafabricplus"><img src="https://img.shields.io/badge/dynamic/json?color=158000&label=downloads&prefix=+%20&query=downloads&url=https://api.modrinth.com/v2/project/rIC2XJV4&logo=modrinth"></a>
   <a href="https://curseforge.com/minecraft/mc-mods/viafabricplus"><img src="https://cf.way2muchnoise.eu/full_830604_downloads.svg"></a>
 
-#### Clientside ViaVersion, ViaLegacy, ViaBedrock and ViaAprilFools implementation with clientside fixes for Fabric
+#### Fabric mod to connect to EVERY minecraft server version (Release, Alpha, Beta, Classic, AprilFools, Bedrock) with QoL fixes to the gameplay
 This project has nothing to do with the original ViaFabric and is therefore also not compact
 </div>
 
