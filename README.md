@@ -7,7 +7,7 @@
   <a href="https://modrinth.com/mod/viafabricplus"><img src="https://img.shields.io/badge/dynamic/json?color=158000&label=downloads&prefix=+%20&query=downloads&url=https://api.modrinth.com/v2/project/rIC2XJV4&logo=modrinth"></a>
   <a href="https://curseforge.com/minecraft/mc-mods/viafabricplus"><img src="https://cf.way2muchnoise.eu/full_830604_downloads.svg"></a>
 
-#### Fabric mod to connect to EVERY minecraft server version (Release, Beta, Alpha, Classic, AprilFools, Bedrock) with QoL fixes to the gameplay
+#### Fabric mod to connect to EVERY minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay
 This project has nothing to do with the original ViaFabric and is therefore also not compact
 </div>
 
@@ -19,11 +19,9 @@ as ViaFabricPlus implements all Via platforms (ViaVersion, ViaBackwards, ViaLega
 If you encounter any issues, please report them on the
 [issue tracker](https://github.com/FlorianMichael/ViaFabricPlus/issues).  
 Contributions in the form of pull requests are always welcome, please just stick to my code style and make sure your code is easy to update and compatible with other mods.
-
-## Translations
-Translations for other languages are always welcome, in ~/resources/assets/viafabricplus/lang you can find all translations,
+### Translations
+Translations for other languages are always welcome, in **~/resources/assets/viafabricplus/lang** you can find all translations, <br>
 if you know a language well, feel free to make a PR and add translations for that language <br>
-
 **Currently supported languages**:
 - English
 
@@ -38,12 +36,12 @@ It should work fine with most if not all mods and modpacks.
 - ***[Raknetify](https://github.com/RelativityMC/raknetify/tree/master)***
 
 ## Supported Server versions
-- Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
-- Alpha (a1.0.15 - a1.2.6)
+- Release (1.0.0 - 1.19.4)
 - Beta (b1.0 - b1.8.1)
-- Release (1.0.0 - latest)
-- AprilFools (3D Shareware, 20w14infinite, Combat Test 8C)
-- Bedrock (latest)
+- Alpha (a1.0.15 - a1.2.6)
+- Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
+- Snapshots (3D Shareware, 20w14infinite, Combat Test 8C)
+- Bedrock (1.19.70)
 
 ## Clientside related Fixes
 - [x] Bounding boxes for all versions
@@ -52,9 +50,8 @@ It should work fine with most if not all mods and modpacks.
 - [x] Mining speeds and item attributes
 - [x] Filter item creative tabs for only available items
 - [x] Combat system in <= 1.8
-- [x] Tons of modifications to ViaVersion to make it more legit (Metadata fixes, broken packets, edge-cases)
+- [x] Tons of modifications to ViaVersion, ViaAprilFools, ViaLegacy and ViaBedrock to make it more legit (Metadata fixes, broken packets, edge-cases)
 - [x] Visual and screen related changes (newer Command Block features, GameMode selection, ...)
-- [x] ViaAprilFools and ViaLegacy extensions to make it more legit
 - [x] Chat signatures (secure login) for all versions (1.19.0, 1.19.1, 1.19.2)
 - [x] Address parsing for all minecraft versions
 - [x] PackFormats and HTTP Header for all resource pack versions
@@ -103,7 +100,6 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 In the multiplayer screen you will find the ViaFabricPlus button in the upper left corner by default, it is the main button, <br>
 click on it, and you will see the Protocol selection, there you can choose the Minecraft version you want to connect to, <br>
 in the upper left corner you can go to the Settings.
-
 ![](/.github/images/multiplayer.png)
 ![](/.github/images/protocol.png)
 
@@ -113,7 +109,6 @@ in the upper left corner you can go to the Settings.
 ## Bedrock edition
 Keep in mind that the Java -> Bedrock support is still in beta phase, and therefore many things are not implemented <br>
 yet and there is no guarantee that everything will work as it should.
-
 ![](/.github/images/bedrock.png)
 
 To log in to a Bedrock account you can press the button **"Click to set account for Bedrock edition"** in the settings, <br>
