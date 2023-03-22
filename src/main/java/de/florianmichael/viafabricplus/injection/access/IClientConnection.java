@@ -28,6 +28,8 @@ public interface IClientConnection {
 
     void viafabricplus_setupPreNettyEncryption();
 
+    void viafabricplus_captureAddress(final InetSocketAddress socketAddress);
+
     void viafabricplus_enableZLibCompression();
     void viafabricplus_enableSnappyCompression();
     void viafabricplus_enableAesGcmEncryption(final SecretKey secretKey) throws InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException;

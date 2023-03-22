@@ -102,6 +102,9 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Unique
     private boolean viafabricplus_compressionEnabled = false;
 
+    @Unique
+    private InetSocketAddress viafabricplus_capturedAddress;
+
     @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
     private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
         channel.pipeline().fireUserEventTriggered(new PipelineReorderEvent());
@@ -123,6 +126,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Overwrite
     public static ClientConnection connect(InetSocketAddress address, boolean useEpoll) {
         final ClientConnection clientConnection = new ClientConnection(NetworkSide.CLIENTBOUND);
+        ((IClientConnection) clientConnection).viafabricplus_captureAddress(address);
 
         final Class<? extends AbstractChannel> channelType = Epoll.isAvailable() && useEpoll ? EpollSocketChannel.class : NioSocketChannel.class;
         final Lazy<? extends MultithreadEventLoopGroup> lazy = Epoll.isAvailable() && useEpoll ? EPOLL_CLIENT_IO_GROUP : CLIENT_IO_GROUP;
@@ -181,7 +185,6 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
                         // Pinging in RakNet is something different
                         if (ProtocolHack.getRakNetPingSessions().contains(address)) {
-                            ProtocolHack.getRakNetPingSessions().remove(address);
                             { // Temporary fix for the ping encoder
                                 final RakClientChannel rakChannel = (RakClientChannel) channel;
 
@@ -223,8 +226,9 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         super.channelRegistered(ctx);
 
-        if (ProtocolHack.getTargetVersion(channel).isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolHack.getRakNetPingSessions().contains(viafabricplus_capturedAddress)) {
             channelActive(ctx);
+            ProtocolHack.getRakNetPingSessions().remove(viafabricplus_capturedAddress);
         }
     }
 
@@ -238,6 +242,11 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         this.encrypted = true;
         this.channel.pipeline().addBefore(PreNettyConstants.HANDLER_DECODER_NAME, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
         this.channel.pipeline().addBefore(PreNettyConstants.HANDLER_ENCODER_NAME, "encrypt", new PacketEncryptor(this.viafabricplus_encryptionCipher));
+    }
+
+    @Override
+    public void viafabricplus_captureAddress(InetSocketAddress socketAddress) {
+        viafabricplus_capturedAddress = socketAddress;
     }
 
     @Override
