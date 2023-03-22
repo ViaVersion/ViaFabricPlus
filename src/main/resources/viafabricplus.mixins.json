@@ -147,7 +147,9 @@
     "fixes.viaversion.protocol1_9to1_8.MixinEntityTracker1_9",
     "fixes.viaversion.protocol1_9to1_8.MixinMetadataRewriter1_9To1_8",
     "fixes.viaversion.protocol1_9to1_8.MixinMovementTracker",
-    "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread"
+    "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
+    "fixes.minecraft.item.MixinArmorItem",
+    "fixes.minecraft.item.MixinElytraItem"
   ],
   "injectors": {
     "defaultRequire": 1

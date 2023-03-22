@@ -118,7 +118,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     public boolean viafabricplus_isSprinting;
 
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setMovementSpeed(F)V"))
-    public void updateFlyingSpeed(CallbackInfo ci) {
+    public void trackOldField(CallbackInfo ci) {
         viafabricplus_isSprinting = this.isSprinting();
     }
 
