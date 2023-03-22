@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.definition.ServerAddressReplacement;
+import de.florianmichael.viafabricplus.definition.TileServerAddress;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerAddress;
@@ -42,6 +42,6 @@ public class MixinMultiplayerScreen {
 
     @Redirect(method = "connect(Lnet/minecraft/client/network/ServerInfo;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
     public ServerAddress doOwnParse(String address) {
-        return ServerAddressReplacement.parse(((IServerInfo) viafabricplus_lastConnect).viafabricplus_forcedVersion(), address);
+        return TileServerAddress.parse(((IServerInfo) viafabricplus_lastConnect).viafabricplus_forcedVersion(), address);
     }
 }
