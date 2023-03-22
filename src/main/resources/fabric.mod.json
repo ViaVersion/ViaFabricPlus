@@ -33,6 +33,7 @@
   "breaks": {
     "viafabric": "*",
     "multiconnect": "*",
-    "krypton": "*"
+    "krypton": "*",
+    "raknetify": "*"
   }
 }
