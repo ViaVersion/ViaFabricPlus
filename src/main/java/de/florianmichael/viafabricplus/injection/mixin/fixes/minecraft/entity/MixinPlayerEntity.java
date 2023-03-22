@@ -113,4 +113,20 @@ public abstract class MixinPlayerEntity extends LivingEntity {
             cir.setReturnValue(viafabricplus_random_hurt);
         }
     }
+
+    @Unique
+    public boolean viafabricplus_isSprinting;
+
+    @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setMovementSpeed(F)V"))
+    public void updateFlyingSpeed(CallbackInfo ci) {
+        viafabricplus_isSprinting = this.isSprinting();
+    }
+
+    @Redirect(method = "getOffGroundSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isSprinting()Z"))
+    public boolean useOldField(PlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+            return viafabricplus_isSprinting;
+        }
+        return instance.isSprinting();
+    }
 }
