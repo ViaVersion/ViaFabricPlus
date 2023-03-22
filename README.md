@@ -25,6 +25,7 @@ if you know a language well, feel free to make a PR and add translations for tha
 **Currently supported languages**:
 - English
 - Thai
+- Simplified Chinese
 
 ## Compatibility
 ViaFabricPlus is structured to interfere with mods as little as possible.
