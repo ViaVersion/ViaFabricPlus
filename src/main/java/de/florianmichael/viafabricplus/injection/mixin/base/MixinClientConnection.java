@@ -223,7 +223,9 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         super.channelRegistered(ctx);
 
-        channelActive(ctx);
+        if (ProtocolHack.getTargetVersion(channel).isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
+            channelActive(ctx);
+        }
     }
 
     @Inject(method = "disconnect", at = @At("RETURN"))
