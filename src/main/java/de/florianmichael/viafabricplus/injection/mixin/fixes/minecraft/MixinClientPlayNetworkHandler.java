@@ -18,9 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.injection.access.IPlayerPositionLookS2CPacket;
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
@@ -36,7 +34,6 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.ServerPlayPacketListener;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.play.KeepAliveC2SPacket;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.math.Vec3d;
@@ -151,13 +148,6 @@ public abstract class MixinClientPlayNetworkHandler {
     public void removeNewWarning(Logger instance, String s, Object o) {
         if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             instance.warn(s, o);
-        }
-    }
-
-    @Inject(method = "onPlayerPositionLook", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER))
-    public void dismountIfRequested(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
-        if (((IPlayerPositionLookS2CPacket) packet).viafabricplus_isDismountVehicle()) {
-            client.player.dismountVehicle();
         }
     }
 

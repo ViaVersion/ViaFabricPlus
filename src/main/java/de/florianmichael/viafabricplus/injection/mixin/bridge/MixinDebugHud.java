@@ -52,7 +52,9 @@ public class MixinDebugHud {
                 if (group.getProtocolRange() != null && !group.getProtocolRange().contains(ProtocolHack.getTargetVersion())) continue;
 
                 final List<String> groupInformation = new ArrayList<>();
-                group.applyInformation(userConnection, groupInformation);
+                try {
+                    group.applyInformation(userConnection, groupInformation);
+                } catch (Exception ignored) {}
                 if (groupInformation.isEmpty()) continue;
 
                 information.add(group.getProtocolRange() == null ? "General" : group.getProtocolRange().toString());

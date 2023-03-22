@@ -17,10 +17,12 @@
  */
 package de.florianmichael.viafabricplus.information.impl;
 
+import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.definition.bedrock.storage.JoinGameStorage;
 import de.florianmichael.viafabricplus.definition.bedrock.ModelFormats;
 import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
+import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.lenni0451.reflect.stream.RStream;
@@ -28,6 +30,7 @@ import net.lenni0451.reflect.stream.field.FieldStream;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.api.chunk.BedrockChunk;
 import net.raphimc.viabedrock.api.model.entity.Entity;
+import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 import net.raphimc.viabedrock.protocol.storage.BlobCache;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
 import net.raphimc.viabedrock.protocol.storage.GameSessionStorage;
@@ -35,6 +38,7 @@ import net.raphimc.viabedrock.protocol.storage.GameSessionStorage;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class BedrockInformation extends AbstractInformationGroup {
 
@@ -44,11 +48,11 @@ public class BedrockInformation extends AbstractInformationGroup {
 
     @Override
     public void applyInformation(UserConnection userConnection, List<String> output) {
-        final BlobCache blobCache = userConnection.get(BlobCache.class);
+        final ViaFabricPlusBlobCacheProvider blobCache = (ViaFabricPlusBlobCacheProvider) Via.getManager().getProviders().get(BlobCacheProvider.class);
         if (blobCache != null) {
-            final long totalSize = blobCache.getTotalSize();
-            final int blobCount = blobCache.getBlobCount();
-            final int pendingCount = blobCache.getPendingCount();
+            final long totalSize = blobCache.getSize();
+            final int blobCount = blobCache.getBlobs().size();
+            final int pendingCount = RStream.of(userConnection.get(BlobCache.class)).fields().by("pending").<Map<Long, CompletableFuture<byte[]>>>get().size();
 
             if (totalSize != 0 || blobCount != 0 || pendingCount != 0) {
                 output.add("Blob Cache:");

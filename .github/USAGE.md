@@ -1,4 +1,4 @@
-## Settings and GUI
+# Settings and GUI
 In the multiplayer screen you will find the ViaFabricPlus button in the upper left corner by default, it is the main button, <br>
 click on it, and you will see the Protocol selection, there you can choose the Minecraft version you want to connect to, <br>
 in the upper left corner you can go to the Settings.

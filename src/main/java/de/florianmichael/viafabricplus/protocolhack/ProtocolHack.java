@@ -30,6 +30,7 @@ import de.florianmichael.viafabricplus.protocolhack.platform.ViaAprilFoolsPlatfo
 import de.florianmichael.viafabricplus.protocolhack.platform.ViaBedrockPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.platform.ViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.provider.*;
+import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.*;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
@@ -45,6 +46,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicCustomCommandProvider;
@@ -124,6 +126,8 @@ public class ProtocolHack {
             return MinecraftClient.getInstance().isInSingleplayer();
         });
         builder = builder.providers(providers -> {
+            providers.use(VersionProvider.class, new ViaFabricPlusVLBBaseVersionProvider());
+
             providers.use(MovementTransmitterProvider.class, new ViaFabricPlusMovementTransmitterProvider());
             providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());
 
@@ -135,9 +139,9 @@ public class ProtocolHack {
             providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
             providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
             providers.use(ClassicCustomCommandProvider.class, new ViaFabricPlusClassicCustomCommandProvider());
-            providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
 
-            providers.use(VersionProvider.class, new ViaFabricPlusVLBBaseVersionProvider());
+            providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
+            providers.use(BlobCacheProvider.class, new ViaFabricPlusBlobCacheProvider());
         });
         builder = builder.onProtocolReload(protocolVersion -> ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(protocolVersion));
         builder.build();
