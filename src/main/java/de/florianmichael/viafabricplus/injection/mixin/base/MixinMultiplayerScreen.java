@@ -44,7 +44,7 @@ public class MixinMultiplayerScreen extends Screen {
             case 0 -> builder = builder.position(5, 5);
             case 1 -> builder = builder.position(width - 98 - 5, 5);
             case 2 -> builder = builder.position(5, height - 20 - 5);
-            case 5 -> builder = builder.position(width - 98 - 5, height - 20 - 5);
+            case 3 -> builder = builder.position(width - 98 - 5, height - 20 - 5);
         }
 
         this.addDrawableChild(builder.size(98, 20).build());
