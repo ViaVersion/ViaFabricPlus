@@ -26,6 +26,7 @@ if you know a language well, feel free to make a PR and add translations for tha
 - English
 - Thai
 - Simplified Chinese
+- Japanese
 
 ## Compatibility
 ViaFabricPlus is structured to interfere with mods as little as possible.
