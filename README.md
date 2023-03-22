@@ -11,27 +11,55 @@
 This project has nothing to do with the original ViaFabric and is therefore also not compact
 </div>
 
-## Why?
+# Why?
 ViaFabricPlus is supposed to be an alternative to [multiconnect](https://github.com/Earthcomputer/multiconnect) that offers more compactness and more clientside improvements,
 as ViaFabricPlus implements all Via platforms (ViaVersion, ViaBackwards, ViaLegacy, ViaAprilFools, ViaBedrock) and adds tons of clientside fixes and QoL improvements like old rendering for all platforms. 
 
-## Issues and Contributions
-If you encounter any issues, please report them on the
-[issue tracker](https://github.com/FlorianMichael/ViaFabricPlus/issues).  
+# For developers and translators
 Contributions in the form of pull requests are always welcome, please just stick to my code style and make sure your code is easy to update and compatible with other mods.
+
 ### Translations
 Translations for other languages are always welcome, in **~/resources/assets/viafabricplus/lang** you can find all translations, <br>
 if you know a language well, feel free to make a PR and add translations for that language <br>
+
 **Currently supported languages**:
 - English
-- Thai
-- Simplified Chinese
-- Japanese
+- Thai (by **NyaruToru#5701**)
+- Simplified Chinese (by **[yingcan](https://github.com/x-yingcan-x)**)
+- Japanese (by **[U5KUN](https://github.com/U5KUN)**)
+
+### Dependencies
+| Dependency             | Download                                                   |
+|------------------------|------------------------------------------------------------|
+| Fabric API             | https://github.com/fabricMC/fabric                         |
+| ViaVersion             | https://github.com/ViaVersion/ViaVersion                   |
+| ViaBackwards           | https://github.com/ViaVersion/ViaBackwards                 |
+| Snake YAML             | https://mvnrepository.com/artifact/org.yaml/snakeyaml/1.33 |
+| ViaLegacy              | https://github.com/RaphiMC/ViaLegacy                       |
+| ViaAprilFools          | https://github.com/RaphiMC/ViaAprilFools                   |
+| ViaBedrock             | https://github.com/RaphiMC/ViaBedrock                      |
+| MC-Structs             | https://github.com/Lenni0451/MCStructs                     |
+| Reflect                | https://github.com/Lenni0451/Reflect                       |
+| ViaLoadingBase         | https://github.com/FlorianMichael/ViaLoadingBase           |
+| Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop       |
+
+### Setting up a Workspace
+ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
+1. Clone the repository using `git clone https://github.com/FlorianMichael/ViaFabricPlus`.
+2. CD into the local repository.
+3. Run `./gradlew genSources`.
+4. Open the folder as a Gradle project in your preferred IDE.
+5. Run the mod.
+
+## To learn more about the API and about addons, you can simply click [here](.github/DEVELOPER_API.md)
+
+# For users
+If you encounter any issues, please report them on the
+[issue tracker](https://github.com/FlorianMichael/ViaFabricPlus/issues).
 
 ## Compatibility
 ViaFabricPlus is structured to interfere with mods as little as possible.
 It should work fine with most if not all mods and modpacks.
-
 ### Known incompatibilities:
 - ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)***
 - ***[multiconnect](https://github.com/Earthcomputer/multiconnect)***
@@ -76,29 +104,6 @@ However, if a version between two Minecraft versions is too unstable, I will def
 they do not have their own releases, current backports (named after their branch):
 - [1.19.3](https://modrinth.com/mod/viafabricplus/version/0.0.0)
 
-## Dependencies
-| Dependency             | Download                                                   |
-|------------------------|------------------------------------------------------------|
-| Fabric API             | https://github.com/fabricMC/fabric                         |
-| ViaVersion             | https://github.com/ViaVersion/ViaVersion                   |
-| ViaBackwards           | https://github.com/ViaVersion/ViaBackwards                 |
-| Snake YAML             | https://mvnrepository.com/artifact/org.yaml/snakeyaml/1.33 |
-| ViaLegacy              | https://github.com/RaphiMC/ViaLegacy                       |
-| ViaAprilFools          | https://github.com/RaphiMC/ViaAprilFools                   |
-| ViaBedrock             | https://github.com/RaphiMC/ViaBedrock                      |
-| MC-Structs             | https://github.com/Lenni0451/MCStructs                     |
-| Reflect                | https://github.com/Lenni0451/Reflect                       |
-| ViaLoadingBase         | https://github.com/FlorianMichael/ViaLoadingBase           |
-| Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop       |
-
-## Setting up a Workspace
-ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
-1. Clone the repository using `git clone https://github.com/FlorianMichael/ViaFabricPlus`.
-2. CD into the local repository.
-3. Run `./gradlew genSources`.
-4. Open the folder as a Gradle project in your preferred IDE.
-5. Run the mod.
-
 ## Settings and GUI
 In the multiplayer screen you will find the ViaFabricPlus button in the upper left corner by default, it is the main button, <br>
 click on it, and you will see the Protocol selection, there you can choose the Minecraft version you want to connect to, <br>
@@ -135,115 +140,6 @@ To better control the Classic Protocol, there are a few clientside commands, the
 - **/vhelp** - Displays all commands, available from: **c0.28-c0.30**
 - **/vsettime <Time (Long)>** - Changes the Clientside World Time, available from: **c0.28-c0.30**
 - **/vlistextensions** - Displays all classic protocol extensions, available in: **c0.30 CPE**
-
-## Addons
-There is no real addon base, to create addons you can simply use the event system, which uses Fabric's Event-API.
-```java
-public class ViaFabricPlusExampleAddon implements ClientModInitializer {
-
-  @Override
-  public void onInitializeClient() {
-    ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
-      System.out.println("Version changed to " + protocolVersion.getName());
-    });
-  }
-}
-```
-#### ViaFabricPlus has 7 events at the moment:
-| Callback class name                  | Description                                                                                                                                                                                                   |
-|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ChangeProtocolVersionCallback        | Called when the user changes the target version in the screen, or if you connect to a server for which a specific version has been selected, you disconnect, the event for the actual version is also called. |
-| FinishMinecraftLoadCallback          | Called when Minecraft is finished with loading all its components                                                                                                                                             |
-| FinishViaLoadingBaseStartupCallback  | Called when ViaLoadingBase and Via* is loaded and ready to use                                                                                                                                                |
-| InitializeSettingsCallback           | Called after the default setting groups are loaded and before the setting config is loaded                                                                                                                    |
-| LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)                                                                                                                          |
-| PreLoadCallback                      | Called before everything (Pre-pre load)                                                                                                                                                                       |
-| SkipIdlePacketCallback               | Called as soon as the idle packet is skipped in the <= 1.8                                                                                                                                                    |
-
-### General API
-#### Get the release version of an material:
-```java
-final ProtocolRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
-
-// The Range class then contains all versions in which the item occurs. 
-// You can find out how the Range class works in the ViaLoadingBase README.
-// https://github.com/FlorianMichael/ViaLoadingBase
-```
-
-#### Creating own settings for the settings screen:
-```java
-public class ExampleSettingGroup extends SettingGroup {
-    public final static ExampleSettingGroup INSTANCE = new ExampleSettingGroup();
-    
-    public final BooleanSetting test = new BooleanSetting("Test", false);
-    
-    public ExampleSettingGroup() {
-        super("Example");
-    }
-}
-```
-and then you register the setting group in your onLoad method:
-```java
-PreLoadCallback.EVENT.register(() -> {
-    ViaFabricPlus.INSTANCE.getSettingsSystem().addGroup(ExampleSettingGroup.INSTANCE);
-});
-```
-
-#### Implementing classic protocol commands:
-```java
-public class ExampleCommand implements ICommand {
-
-    @Override
-    public String name() {
-        return "example";
-    }
-
-    @Override
-    public String description() {
-        return null;
-    }
-
-    @Override
-    public void execute(String[] args) {
-    }
-}
-```
-and then you register the command in your onLoad method:
-```java
-PreLoadCallback.EVENT.register(() -> {
-    ClassicProtocolCommands.commands.add(new ExampleCommand());
-});
-```
-
-#### Implementing custom classic protocol extensions:
-```java
-public class ExampleExtensionSupport implements ClientModInitializer {
-
-  public static ClientboundPacketsc0_30cpe EXT_CLICK_DISTANCE;
-
-  @Override
-  public void onInitializeClient() {
-    PreLoadCallback.EVENT.register(() -> {
-      CustomClassicProtocolExtensions.allowExtension(ClassicProtocolExtension.CLICK_DISTANCE); // Register extension as supported
-
-      EXT_CLICK_DISTANCE = CustomClassicProtocolExtensions.createNewPacket(ClassicProtocolExtension.CLICK_DISTANCE, 0x12, (user, buf) -> buf.readShort());
-    });
-
-    FinishViaLoadingBaseStartupCallback.EVENT.register(() -> {
-      Via.getManager().getProtocolManager().getProtocol(Protocolc0_30toc0_30cpe.class).registerClientbound(EXT_CLICK_DISTANCE, null, new PacketHandlers() {
-        @Override
-        protected void register() {
-          handler(wrapper -> {
-            wrapper.cancel();
-            final short distance = wrapper.read(Type.SHORT);
-            // Do your stuff...
-          });
-        }
-      }, true);
-    });
-  }
-}
-```
 
 ## Alternatives
 - [ClientViaVersion](https://github.com/Gerrygames/ClientViaVersion): Discontinued 5zig plugin.
