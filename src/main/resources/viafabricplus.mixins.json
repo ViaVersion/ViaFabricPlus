@@ -78,8 +78,10 @@
     "fixes.minecraft.input.MixinKeyboard",
     "fixes.minecraft.input.MixinKeyboardInput",
     "fixes.minecraft.input.MixinMouse",
+    "fixes.minecraft.item.MixinArmorItem",
     "fixes.minecraft.item.MixinAxeItem",
     "fixes.minecraft.item.MixinBlockItem",
+    "fixes.minecraft.item.MixinElytraItem",
     "fixes.minecraft.item.MixinEnderPearlItem",
     "fixes.minecraft.item.MixinFireworkRocketItem",
     "fixes.minecraft.item.MixinHeldItemRenderer",
@@ -147,9 +149,7 @@
     "fixes.viaversion.protocol1_9to1_8.MixinEntityTracker1_9",
     "fixes.viaversion.protocol1_9to1_8.MixinMetadataRewriter1_9To1_8",
     "fixes.viaversion.protocol1_9to1_8.MixinMovementTracker",
-    "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
-    "fixes.minecraft.item.MixinArmorItem",
-    "fixes.minecraft.item.MixinElytraItem"
+    "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread"
   ],
   "injectors": {
     "defaultRequire": 1
