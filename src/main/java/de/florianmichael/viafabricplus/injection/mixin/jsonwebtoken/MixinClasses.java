@@ -15,19 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.jsonwebtoken;
+package de.florianmichael.viafabricplus.injection.mixin.jsonwebtoken;
 
-import io.jsonwebtoken.gson.io.GsonDeserializer;
-import io.jsonwebtoken.impl.DefaultJwtParserBuilder;
+import io.jsonwebtoken.lang.Classes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = DefaultJwtParserBuilder.class, remap = false)
-public class MixinDefaultJwtParserBuilder {
+@Mixin(value = Classes.class, remap = false)
+public class MixinClasses {
 
-    @Redirect(method = "build", at = @At(value = "INVOKE", target = "Lio/jsonwebtoken/impl/lang/Services;loadFirst(Ljava/lang/Class;)Ljava/lang/Object;"))
-    public Object fixServicesSupport(Class<Object> result) {
-        return new GsonDeserializer<>();
+    @Inject(method = "forName", at = @At("HEAD"), cancellable = true)
+    private static void fixServicesSupport(String fqcn, CallbackInfoReturnable<Class<Object>> cir) throws ClassNotFoundException {
+        cir.setReturnValue((Class<Object>) Class.forName(fqcn));
     }
 }
