@@ -28,6 +28,7 @@ public interface IClientConnection {
 
     void viafabricplus_setupPreNettyEncryption();
 
+    InetSocketAddress viafabricplus_capturedAddress();
     void viafabricplus_captureAddress(final InetSocketAddress socketAddress);
 
     void viafabricplus_enableZLibCompression();
