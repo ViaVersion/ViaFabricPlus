@@ -7,12 +7,12 @@
   "words.viafabricplus.lb": "左下",
   "words.viafabricplus.rb": "右下",
   "words.viafabricplus.cancel": "キャンセル",
-  "words.viafabricplus.cancelreset": "リセット",
+  "words.viafabricplus.cancelreset": "リセットして閉じる",
 
   "bedrock.viafabricplus.set": "クリックしてBedrock edition用のアカウントを用意",
 
-  "bridge.viafabricplus.secret": "隠し設定を表示",
-  "bridge.viafabricplus.extrainformation": "デバッグ画面に追加情報を表示",
+  "bridge.viafabricplus.secret": "Super Secret Settingsを表示",
+  "bridge.viafabricplus.extrainformation": "サーバーに接続するバージョンを選択",
   "bridge.viafabricplus.classicloading": "接続画面に昔の読み込み進行情報を表示",
 
   "debug.viafabricplus.sequence": "優先順位付けを無効化",

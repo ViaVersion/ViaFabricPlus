@@ -1,0 +1,54 @@
+{
+  "words.viafabricplus.settings": "Einstellungen",
+  "words.viafabricplus.on": "An",
+  "words.viafabricplus.off": "Aus",
+  "words.viafabricplus.lt": "Links, Oben",
+  "words.viafabricplus.rt": "Rechts, Oben",
+  "words.viafabricplus.lb": "Links, Unten",
+  "words.viafabricplus.rb": "Rechts, Unten",
+  "words.viafabricplus.cancel": "Abbrechen",
+  "words.viafabricplus.cancelreset": "Abbrechen und zurücksetzen",
+
+  "bedrock.viafabricplus.set": "Klicke, um den den Bedrock-Account zu setzen",
+
+  "bridge.viafabricplus.secret": "Super Secret Settings",
+  "bridge.viafabricplus.extrainformation": "Zusätzliche Informationen im Debug-HUD anzeigen",
+  "bridge.viafabricplus.classicloading": "Lade-Fortschritt in der Classic anzeigen",
+
+  "debug.viafabricplus.sequence": "Sequencing deaktivieren",
+  "debug.viafabricplus.merchant": "Smooth out merchant screens",
+  "debug.viafabricplus.postfix": "Inputs Sync ausführen",
+  "debug.viafabricplus.sneakinstant": "Instant Sneak",
+  "debug.viafabricplus.inventory": "Inventory-Open Paket senden",
+  "debug.viafabricplus.cooldown": "Cooldowns entfernen",
+  "debug.viafabricplus.idle": "IDLE-Paket senden",
+  "debug.viafabricplus.attribute": "Attribute-Modifier entfernen",
+  "debug.viafabricplus.replacesneak": "Sneaken anpassen",
+  "debug.viafabricplus.longsneak": "Langes Sneaken",
+  "debug.viafabricplus.legacypseeds": "Legacy Abbaugeschwindigkeiten",
+
+  "general.viafabricplus.main": "Position des Haupt-Buttons",
+  "general.viafabricplus.creative": "Nicht verfügbare Items von Kreativ-Tab entfernen",
+  "general.viafabricplus.classiccommands": "Classic Protocol Command-Nutzung erlauben",
+  "general.viafabricplus.protocolsync": "Einstellungen automatisch an die aktuelle Version anpassen",
+
+  "mppass.viafabricplus.betacraft": "BetaCraft-Authentisierung nutzen",
+  "mppass.viafabricplus.verify": "Erlaube ViaLegacy, joinServer() aufzurufen, um die Session zu verifizieren",
+  "mppass.viafabricplus.fail": "Disconnecten, wenn der joinServer()-Aufruf einen Fehler wirft",
+
+  "visual.viafabricplus.secure": "Sichere-Chat-Warnung ausschalten",
+  "visual.viafabricplus.indicator": "Signatur-Indikator anzeigen",
+  "visual.viafabricplus.jigsaw": "Neuere Features vom Jigsaw-Screen entfernen",
+  "visual.viafabricplus.stoneslab": "Petrified oak slab entfernen",
+  "visual.viafabricplus.armor": "Rüstungs-HUD emulieren",
+  "visual.viafabricplus.command": "Neuere Features vom Command-Block-Screen entfernen",
+  "visual.viafabricplus.oof": "Schaden-Sound durch OOF-Sound ersetzen",
+  "visual.viafabricplus.betahud": "Neuere HUD-Elemente entfernen",
+  "visual.viafabricplus.classic": "Kreativ-Inventar ersetzen",
+  "visual.viafabricplus.walkanimation": "Alte Lauf-Animation",
+
+  "bedrocklogin.viafabricplus.text": "Dein Browser sollte sich jetzt geöffnet haben.\nBitte gib den folgenden Code ein: %s\nWenn du diesen Bildschirm schließt, wird der Prozess abgebrochen.",
+  "bedrocklogin.viafabricplus.error": "Ein Fehler ist aufgetreten! In der latest.log sind genauere Informationen;\bitte Melde den Fehler unter: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+
+  "forceversion.viafabricplus.title": "Bitte wähle die Version, die beim Verbinden mit dem Server verwendet werden soll"
+}
