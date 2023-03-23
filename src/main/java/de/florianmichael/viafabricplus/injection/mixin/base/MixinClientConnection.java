@@ -22,7 +22,7 @@ import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.constants.PreNettyConstants;
 import de.florianmichael.viafabricplus.protocolhack.constants.BedrockRakNetConstants;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.RakNetClientConnection;
+import de.florianmichael.viafabricplus.protocolhack.PipelineInjector;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.event.PipelineReorderEvent;
 import io.netty.channel.*;
@@ -90,7 +90,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         ((IClientConnection) clientConnection).viafabricplus_captureAddress(address);
 
         if (ProtocolHack.getForcedVersions().containsKey(address) ? (ProtocolHack.getForcedVersions().get(address).getVersion() == BedrockProtocolVersion.bedrockLatest.getVersion()) : ProtocolHack.getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
-            RakNetClientConnection.connect(clientConnection, address, lazy, class_);
+            PipelineInjector.connectRakNet(clientConnection, address, lazy, class_);
             cir.setReturnValue(clientConnection);
         }
     }

@@ -28,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(MultiplayerServerListPinger.class)
 public class MixinMultiplayerServerListPinger {
@@ -35,13 +36,26 @@ public class MixinMultiplayerServerListPinger {
     @Unique
     private ServerInfo viafabricplus_lastConnect;
 
+    @Unique
+    private ServerAddress viafabricplus_wrappedAddress;
+
     @Inject(method = "add", at = @At("HEAD"))
     public void track(ServerInfo entry, Runnable saver, CallbackInfo ci) {
         viafabricplus_lastConnect = entry;
     }
 
-    @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
-    public ServerAddress doOwnParse(String address) {
-        return TileServerAddress.parse(((IServerInfo) viafabricplus_lastConnect).viafabricplus_forcedVersion(), address);
+    @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AllowedAddressResolver;resolve(Lnet/minecraft/client/network/ServerAddress;)Ljava/util/Optional;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    public void doOwnParse(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress) {
+        viafabricplus_wrappedAddress = TileServerAddress.parse(((IServerInfo) viafabricplus_lastConnect).viafabricplus_forcedVersion(), serverAddress.getAddress());
+    }
+
+    @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;getAddress()Ljava/lang/String;"))
+    public String replaceWithWrappedAddress(ServerAddress instance) {
+        return viafabricplus_wrappedAddress.getAddress();
+    }
+
+    @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;getPort()I"))
+    public int replaceWithWrappedPort(ServerAddress instance) {
+        return viafabricplus_wrappedAddress.getPort();
     }
 }
