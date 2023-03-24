@@ -43,8 +43,7 @@ public class ClassiCubeAccount {
 
     public void login(ILoginProcessHandler processHandler) throws LoginException {
         final ClassiCubeAuthenticationTokenRequest initialTokenRequest = new ClassiCubeAuthenticationTokenRequest();
-        final ClassiCubeAuthenticationResponse initialTokenResponse = initialTokenRequest.send()
-                .join();
+        final ClassiCubeAuthenticationResponse initialTokenResponse = initialTokenRequest.send().join();
 
         // There should NEVER be any errors on the initial token response!
         if (initialTokenResponse.shouldError()) {
@@ -54,8 +53,7 @@ public class ClassiCubeAccount {
         }
 
         final ClassiCubeAuthenticationLoginRequest loginRequest = new ClassiCubeAuthenticationLoginRequest(initialTokenResponse, this.username, this.password);
-        final ClassiCubeAuthenticationResponse loginResponse = loginRequest.send()
-                .join();
+        final ClassiCubeAuthenticationResponse loginResponse = loginRequest.send().join();
 
         if (loginResponse.shouldError()) {
             final String errorDisplay = loginResponse.getErrorDisplay();

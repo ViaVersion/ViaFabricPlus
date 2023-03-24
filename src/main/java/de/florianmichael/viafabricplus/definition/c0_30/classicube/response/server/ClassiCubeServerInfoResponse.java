@@ -12,6 +12,10 @@ public class ClassiCubeServerInfoResponse extends ClassiCubeResponse {
         this.servers = servers;
     }
 
+    public Set<ClassiCubeServerInfo> getServers() {
+        return servers;
+    }
+
     public static ClassiCubeServerInfoResponse fromJson(final String json) {
         return GSON.fromJson(json, ClassiCubeServerInfoResponse.class);
     }

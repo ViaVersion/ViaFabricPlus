@@ -28,8 +28,7 @@ public class ClassiCubeAuthenticationData {
     }
 
     public String getRequestBody() {
-        final StringBuilder builder = new StringBuilder("username=")
-                .append(username);
+        final StringBuilder builder = new StringBuilder("username=").append(username);
 
         builder.append("&password=");
         builder.append(password);
