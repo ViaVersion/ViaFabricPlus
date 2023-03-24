@@ -21,11 +21,11 @@
   "debug.viafabricplus.sneakinstant": "スニーク瞬間",
   "debug.viafabricplus.inventory": "インベントリが開いたことをパケット送信",
   "debug.viafabricplus.cooldown": "クールダウンを削除",
-  "debug.viafabricplus.idle": "放置パケットを送信",
+  "debug.viafabricplus.idle": "無操作パケットを送信",
   "debug.viafabricplus.attribute": "属性修飾子を置換",
   "debug.viafabricplus.replacesneak": "スニークの置換",
   "debug.viafabricplus.longsneak": "長いスニーク",
-  "debug.viafabricplus.legacypseeds": "従来の採掘速度",
+  "debug.viafabricplus.legacypseeds": "以前の採掘速度",
 
   "general.viafabricplus.main": "メインボタンの位置",
   "general.viafabricplus.creative": "利用不可能なアイテムをクリエイティブタブから削除",
