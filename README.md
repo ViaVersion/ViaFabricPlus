@@ -28,6 +28,7 @@ if you know a language well, feel free to make a PR and add translations for tha
 - Thai (by **[NyaruToru#5701](https://github.com/NyaruToru)**)
 - Simplified Chinese (by **[yingcan](https://github.com/x-yingcan-x)**)
 - Japanese (by **[U5KUN](https://github.com/U5KUN)**)
+- Luxembourgish (by **[Graf]()**)
 
 ### Dependencies
 | Dependency             | Download                                                   |

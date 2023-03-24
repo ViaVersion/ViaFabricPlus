@@ -21,11 +21,11 @@
   "debug.viafabricplus.sneakinstant": "スニーク瞬間",
   "debug.viafabricplus.inventory": "インベントリが開いたことをパケット送信",
   "debug.viafabricplus.cooldown": "クールダウンを削除",
-  "debug.viafabricplus.idle": "放置パケットを送信",
+  "debug.viafabricplus.idle": "無操作パケットを送信",
   "debug.viafabricplus.attribute": "属性修飾子を置換",
   "debug.viafabricplus.replacesneak": "スニークの置換",
   "debug.viafabricplus.longsneak": "長いスニーク",
-  "debug.viafabricplus.legacypseeds": "従来の採掘速度",
+  "debug.viafabricplus.legacypseeds": "以前の採掘速度",
 
   "general.viafabricplus.main": "メインボタンの位置",
   "general.viafabricplus.creative": "利用不可能なアイテムをクリエイティブタブから削除",
@@ -50,5 +50,5 @@
   "bedrocklogin.viafabricplus.text": "ブラウザが開きました。\nブラウザに次のコードを入力してください: %s\nこの画面を閉じるとログインが中断されます。",
   "bedrocklogin.viafabricplus.error": "エラーが発生しました! 詳細についてはlasted.logを確認してください。\nまた、下記の場所でバグを報告してください。 \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
 
-  "forceversion.viafabricplus.title": "サーバーに接続するバージョンをせ"
+  "forceversion.viafabricplus.title": "サーバーに接続するバージョンを選択"
 }
