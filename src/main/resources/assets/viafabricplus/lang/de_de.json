@@ -9,7 +9,7 @@
   "words.viafabricplus.cancel": "Abbrechen",
   "words.viafabricplus.cancelreset": "Abbrechen und zurücksetzen",
 
-  "bedrock.viafabricplus.set": "Klicke, um den den Bedrock-Account zu setzen",
+  "bedrock.viafabricplus.set": "Klicke, um den Bedrock-Account zu setzen",
 
   "bridge.viafabricplus.secret": "Super Secret Settings",
   "bridge.viafabricplus.extrainformation": "Zusätzliche Informationen im Debug-HUD anzeigen",
@@ -34,7 +34,7 @@
 
   "mppass.viafabricplus.betacraft": "BetaCraft-Authentisierung nutzen",
   "mppass.viafabricplus.verify": "Erlaube ViaLegacy, joinServer() aufzurufen, um die Session zu verifizieren",
-  "mppass.viafabricplus.fail": "Disconnecten, wenn der joinServer()-Aufruf einen Fehler wirft",
+  "mppass.viafabricplus.fail": "Verbindung trennen, wenn der joinServer()-Aufruf einen Fehler wirft",
 
   "visual.viafabricplus.secure": "Sichere-Chat-Warnung ausschalten",
   "visual.viafabricplus.indicator": "Signatur-Indikator anzeigen",

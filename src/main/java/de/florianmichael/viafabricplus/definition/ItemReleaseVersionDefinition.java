@@ -29,11 +29,6 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 import java.util.*;
 
-/**
- * Assigns to each Minecraft version the version in which the respective block or item was added
- *
- * @copyright FlorianMichael as Jesse - 2020-2023
- */
 public class ItemReleaseVersionDefinition {
     public static ItemReleaseVersionDefinition INSTANCE;
 
