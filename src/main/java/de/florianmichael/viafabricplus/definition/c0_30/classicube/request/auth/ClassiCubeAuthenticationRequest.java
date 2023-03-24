@@ -7,9 +7,5 @@ import java.util.concurrent.CompletableFuture;
 
 public abstract class ClassiCubeAuthenticationRequest extends ClassiCubeRequest {
 
-    public ClassiCubeAuthenticationRequest() {
-        super(token);
-    }
-
     public abstract CompletableFuture<ClassiCubeAuthenticationResponse> send();
 }
