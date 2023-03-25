@@ -1,0 +1,54 @@
+{
+  "words.viafabricplus.settings": "Налаштування",
+  "words.viafabricplus.on": "Ввімкнути",
+  "words.viafabricplus.off": "Вимкнути",
+  "words.viafabricplus.lt": "Зліва; Зверху",
+  "words.viafabricplus.rt": "Справа; Зверху",
+  "words.viafabricplus.lb": "Зліва; Знизу",
+  "words.viafabricplus.rb": "Справа; Знизу",
+  "words.viafabricplus.cancel": "Відмінити",
+  "words.viafabricplus.cancelreset": "Відмінити і відновити",
+
+  "bedrock.viafabricplus.set": "Нажміть, щоб встановити аккаунт для Bedrock",
+
+  "bridge.viafabricplus.secret": "Показати Супер Секретні Налаштування(Super Secret Settings)",
+  "bridge.viafabricplus.extrainformation": "Показати додаткову інформацію на екрані відладки",
+  "bridge.viafabricplus.classicloading": "Показати класичний прогрес завантаження на екрані підключення",
+
+  "debug.viafabricplus.sequence": "Вимкнути послідовності",
+  "debug.viafabricplus.merchant": "Згладити екрани крамарів",
+  "debug.viafabricplus.postfix": "Виконувати введення синхронно",
+  "debug.viafabricplus.sneakinstant": "Миттєво крастися",
+  "debug.viafabricplus.inventory": "Відправляти пакет відкривання інвентарю",
+  "debug.viafabricplus.cooldown": "Прибрати кулдауни",
+  "debug.viafabricplus.idle": "Надіслави пакет неактивності",
+  "debug.viafabricplus.attribute": "Замінити атрибути модифікаторів",
+  "debug.viafabricplus.replacesneak": "Замінювати підкрадання",
+  "debug.viafabricplus.longsneak": "Довге підкрадання",
+  "debug.viafabricplus.legacypseeds": "Стара швидкість копання",
+
+  "general.viafabricplus.main": "орієнтація головної кнопки",
+  "general.viafabricplus.creative": "Видалити недоступні предмети з меню креативу",
+  "general.viafabricplus.classiccommands": "Дозволити використання команд класичного протоколу",
+  "general.viafabricplus.protocolsync": "Автоматично змінювати налаштування для вибраної версії",
+
+  "mppass.viafabricplus.betacraft": "Використовувати аутентикацію BetaCraft",
+  "mppass.viafabricplus.verify": "Дозвольте ViaLegacy викликати joinServer() для перевірки сеансу",
+  "mppass.viafabricplus.fail": "Від’єднайтеся, якщо виклик joinServer() не вдається",
+
+  "visual.viafabricplus.secure": "Прибрати застереження чату",
+  "visual.viafabricplus.indicator": "Сховати ідикатор підпису",
+  "visual.viafabricplus.jigsaw": "Видаліть нові функції з екрана блоку пазлу",
+  "visual.viafabricplus.stoneslab": "Замінити окам'янілу дубову плиту",
+  "visual.viafabricplus.armor": "Емулювати екран обладунків",
+  "visual.viafabricplus.command": "Видалити новіші функції з екрана командного блоку",
+  "visual.viafabricplus.oof": "Замініть звук болю на звук OOF",
+  "visual.viafabricplus.betahud": "Видаліть новіші елементи HUD",
+  "visual.viafabricplus.classic": "Замінити інвентар креативу",
+  "visual.viafabricplus.walkanimation": "Стара анімація ходьби",
+
+  "bedrocklogin.viafabricplus.text": "Ваш браузер мав відкритися.\nБудь ласка, введіть наступний код: %s\nЯкщо закрити цей екран, процес буде скасовано!",
+  "bedrocklogin.viafabricplus.error": "Сталася помилка! Дивіться latest.log для отримання додаткової інформації,\nбудь ласка, повідомте про помилку за адресою: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+
+  "forceversion.viafabricplus.title": "Будь ласка, виберіть версію, з якою сервер має пінгуватися/підключатися"
+}
