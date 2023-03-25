@@ -48,7 +48,7 @@
   "visual.viafabricplus.walkanimation": "ท่าทางการเดินแบบเก่า",
 
   "bedrocklogin.viafabricplus.text": "บราวเซอร์เปิดแล้ว \nกรุณาใส่โค้ด: %s\nหากปิดหน้าเกมการดำเนินการจะถูกยกเลิก",
-  "bedrocklogin.viafabricplus.error": "พบข้อผิดพลาด ดูที่ไฟล์ latest.log เพื่อดูรายละอียดเพิ่มเติม,\nกรุณาแจ้งบัคที่ at: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "พบข้อผิดพลาด ดูที่ไฟล์ latest.log เพื่อดูรายละอียดเพิ่มเติม,\nกรุณาแจ้งบัคที่  \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "โปรดเลือกเวอร์ชันที่ต้องการเชื่อมต่อ"
 }

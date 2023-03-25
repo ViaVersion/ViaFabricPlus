@@ -7,7 +7,7 @@
   "words.viafabricplus.lb": "左下",
   "words.viafabricplus.rb": "右下",
   "words.viafabricplus.cancel": "取消",
-  "words.viafabricplus.cancelreset": "Cancel and reset",
+  "words.viafabricplus.cancelreset": "返回并重置",
 
   "bedrock.viafabricplus.set": "点击以设置基岩版账号",
 
@@ -27,7 +27,7 @@
   "debug.viafabricplus.longsneak": "Long sneaking",
   "debug.viafabricplus.legacypseeds": "远古版本挖掘速度",
 
-  "general.viafabricplus.main": "服务器选择界面内按钮位置",
+  "general.viafabricplus.main": "模组按钮位置",
   "general.viafabricplus.creative": "从创造模式选项内移除不可用的物品",
   "general.viafabricplus.classiccommands": "允许使用旧版命令协议",
   "general.viafabricplus.protocolsync": "自动根据所选版本调整设置",
@@ -40,15 +40,15 @@
   "visual.viafabricplus.indicator": "隐藏聊天签名提示",
   "visual.viafabricplus.jigsaw": "从拼图方块界面中移除新版本特性",
   "visual.viafabricplus.stoneslab": "替换石化橡木台阶",
-  "visual.viafabricplus.armor": "Emulate Armor hud",
+  "visual.viafabricplus.armor": "模拟护甲值（护甲值不显示请打开）",
   "visual.viafabricplus.command": "从命令方块编辑界面中移除新版本特性",
   "visual.viafabricplus.oof": "将受伤音效替换为旧版本的“oof/噢！”",
-  "visual.viafabricplus.betahud": "移除新HUD要素（包括饥饿值、护甲值）",
+  "visual.viafabricplus.betahud": "移除新 HUD 要素（包括饥饿值、护甲值）",
   "visual.viafabricplus.classic": "将创造模式物品栏替换为旧版本样式",
   "visual.viafabricplus.walkanimation": "旧版行走动画",
 
   "bedrocklogin.viafabricplus.text": "你的浏览器现在应该打开了。\n请输入这个代码： %s\n关闭这个屏幕等于取消操作！",
-  "bedrocklogin.viafabricplus.error": "An error has occurred! See the latest.log for more information,\nplease report the bug at: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "发生错误！详情请查看 latest.log \n请在这个链接反馈BUG： \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
 
-  "forceversion.viafabricplus.title": "Please select the version with which the server should be pinged/connected"
+  "forceversion.viafabricplus.title": "请选择连接这个服务器应该使用的版本"
 }

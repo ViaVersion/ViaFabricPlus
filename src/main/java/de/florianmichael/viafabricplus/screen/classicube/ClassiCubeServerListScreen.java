@@ -85,7 +85,7 @@ public class ClassiCubeServerListScreen extends Screen {
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, (textRenderer.fontHeight + 4) * 3));
         this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
 
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("Logout"), button -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("words.viafabricplus.logout"), button -> {
             client.setScreen(prevScreen);
             ClassiCubeAccountHandler.INSTANCE.setAccount(null);
             SERVERS.clear();
@@ -106,7 +106,7 @@ public class ClassiCubeServerListScreen extends Screen {
         matrices.scale(2F, 2F, 2F);
         drawCenteredTextWithShadow(matrices, textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.pop();
-        drawCenteredTextWithShadow(matrices, textRenderer, Text.literal("Logged in as " + ClassiCubeAccountHandler.INSTANCE.getAccount().username), width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
+        drawCenteredTextWithShadow(matrices, textRenderer, Text.literal("ClassiCube Profile: " + ClassiCubeAccountHandler.INSTANCE.getAccount().username), width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
     }
 
     public static class SlotList extends AlwaysSelectedEntryListWidget<ServerSlot> {
