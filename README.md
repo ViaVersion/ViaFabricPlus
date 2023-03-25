@@ -94,7 +94,6 @@ It should work fine with most if not all mods and modpacks.
 - [x] Animation related fixes (1.7 Sneaking, c0.30 walking animation, ...)
 - [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
 #### TODO:
-- [ ] ClassiCube implementation for MP Pass
 - [ ] BetaCraft server list screen
 - [ ] More extensions for Classic Protocol Extensions protocol
 - [ ] Window click interactions in <= 1.16.5

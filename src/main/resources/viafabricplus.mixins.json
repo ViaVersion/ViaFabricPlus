@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "base.MixinClientConnection",
+    "base.MixinClientConnection_1",
     "base.MixinClientLoginNetworkHandler",
     "base.MixinMain",
     "base.MixinMinecraftClient",
@@ -16,9 +17,6 @@
     "bridge.MixinDownloadingTerrainScreen",
     "bridge.MixinOptionsScreen",
     "bridge.MixinServerInfo",
-    "jsonwebtoken.MixinClasses",
-    "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder",
     "fixes.minecraft.MixinBipedEntityModel",
     "fixes.minecraft.MixinCamera",
     "fixes.minecraft.MixinClientPlayerInteractionManager",
@@ -150,9 +148,14 @@
     "fixes.viaversion.protocol1_9to1_8.MixinMetadataRewriter1_9To1_8",
     "fixes.viaversion.protocol1_9to1_8.MixinMovementTracker",
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
-    "base.MixinClientConnection_1"
+    "jsonwebtoken.MixinClasses",
+    "jsonwebtoken.MixinDefaultCompressionCodecResolver",
+    "jsonwebtoken.MixinDefaultJwtParserBuilder"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "base.MixinSharedConstants"
+  ]
 }

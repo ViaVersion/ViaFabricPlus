@@ -35,6 +35,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class MixinServerInfo implements IServerInfo {
 
     @Shadow public String name;
+
     @Unique
     private ComparableProtocolVersion viafabricplus_forcedVersion = null;
 

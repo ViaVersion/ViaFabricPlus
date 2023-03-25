@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
+import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
@@ -32,7 +32,7 @@ public class MixinItemGroup_EntriesImpl {
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isEnabled(Lnet/minecraft/resource/featuretoggle/FeatureSet;)Z"))
     public boolean removeUnknownItems(Item instance, FeatureSet featureSet) {
         if (!GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue() || MinecraftClient.getInstance().isInSingleplayer()) return instance.isEnabled(featureSet);
-        if (ItemReleaseVersionDefinition.INSTANCE.getCurrentMap().contains(instance)) return instance.isEnabled(featureSet);
+        if (ItemReleaseVersionMappings.INSTANCE.getCurrentMap().contains(instance)) return instance.isEnabled(featureSet);
 
         return false;
     }

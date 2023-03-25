@@ -4,7 +4,9 @@ import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.ClassiCu
 import de.florianmichael.viafabricplus.definition.c0_30.classicube.response.ClassiCubeResponse;
 
 import javax.annotation.Nullable;
+import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The class containing the response from the ClassiCube authentication service.
@@ -15,40 +17,36 @@ public class ClassiCubeAuthenticationResponse extends ClassiCubeResponse {
     @Nullable public final String token;
     @Nullable public final String username;
     public final boolean authenticated;
+    public final Set<String> errors;
 
-    public ClassiCubeAuthenticationResponse(@Nullable String token, @Nullable String username, boolean authenticated, Set<ClassiCubeError> errors) {
+    public ClassiCubeAuthenticationResponse(@Nullable String token, @Nullable String username, boolean authenticated, Set<String> errors) {
         this.token = token;
         this.username = username;
         this.authenticated = authenticated;
         this.errors = errors;
     }
 
-    public final Set<ClassiCubeError> errors;
-
     public boolean shouldError() {
-        return errors.size() > 0 &&
-                errors.stream().anyMatch(e -> e.fatal);
+        return errors.size() > 0;
     }
 
     public String getErrorDisplay() {
         final StringBuilder builder = new StringBuilder();
 
-        for (ClassiCubeError error : this.errors) {
-            builder.append(error.description)
-                    .append("\n");
+        for (String error : this.errors) {
+            builder.append(ClassiCubeError.valueOf(error.toUpperCase()).description.getString()).append("\n");
         }
 
         return builder.toString()
                 .trim();
     }
 
-    public boolean mfaRequired() {
-        return this.errors.stream().anyMatch(e -> e == ClassiCubeError.LOGIN_CODE);
+    public Set<ClassiCubeError> errors() {
+        return this.errors.stream().map(s -> ClassiCubeError.valueOf(s.toUpperCase(Locale.ROOT))).collect(Collectors.toSet());
     }
 
-    public boolean isJustMfaError() {
-        return mfaRequired() &&
-                this.errors.stream().anyMatch(e -> e != ClassiCubeError.LOGIN_CODE);
+    public boolean mfaRequired() {
+        return this.errors().stream().anyMatch(e -> e == ClassiCubeError.LOGIN_CODE);
     }
 
     public static ClassiCubeAuthenticationResponse fromJson(final String json) {

@@ -52,6 +52,7 @@ public class VisualSettings extends SettingGroup {
     // a1_0_15 -> c0_28toc0_30
     public final ProtocolSyncBooleanSetting replaceCreativeInventory = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.classic"), ProtocolRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));
     public final ProtocolSyncBooleanSetting oldWalkingAnimation = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.walkanimation"), ProtocolRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));
+    public final ProtocolSyncBooleanSetting fixSodiumChunkRendering = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.sodium"), ProtocolRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));
 
     public VisualSettings() {
         super("Visual");

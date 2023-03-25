@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
+import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
 import net.minecraft.util.StringHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -28,6 +28,6 @@ public class MixinStringHelper {
 
     @ModifyConstant(method = "truncateChat", constant = @Constant(intValue = 256))
     private static int expandChatLength(int constant) {
-        return ChatLengthDefinition.INSTANCE.getMaxLength();
+        return ChatLengthCalculation.INSTANCE.getMaxLength();
     }
 }

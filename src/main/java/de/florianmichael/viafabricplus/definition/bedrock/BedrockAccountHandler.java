@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.definition.bedrock;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.util.FileSaver;
 import net.raphimc.mcauth.MinecraftAuth;
 import net.raphimc.mcauth.step.bedrock.StepMCChain;
@@ -43,6 +44,8 @@ public class BedrockAccountHandler extends FileSaver {
 
     @Override
     public void write(JsonObject object) {
+        if (account == null) return;
+
         for (Map.Entry<String, JsonElement> entry : account.toJson().entrySet()) {
             object.add(entry.getKey(), entry.getValue());
         }
@@ -56,7 +59,7 @@ public class BedrockAccountHandler extends FileSaver {
                 account = MinecraftAuth.Bedrock.Title.MC_CHAIN.refresh(httpClient, account);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            ViaFabricPlus.LOGGER.error("Failed to log into Bedrock account!", e);
         }
     }
 

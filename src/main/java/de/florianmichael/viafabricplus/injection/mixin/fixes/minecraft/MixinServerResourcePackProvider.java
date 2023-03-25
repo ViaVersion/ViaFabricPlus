@@ -21,7 +21,7 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
+import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.GameVersion;
 import net.minecraft.client.resource.ServerResourcePackProvider;
@@ -48,7 +48,7 @@ public class MixinServerResourcePackProvider {
 
     @Redirect(method = "getDownloadHeaders", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;getGameVersion()Lnet/minecraft/GameVersion;"))
     private static GameVersion editHeaders() {
-        return PackFormatsDefinition.current();
+        return PackFormatsMappings.current();
     }
 
     @Inject(method = "getDownloadHeaders", at = @At("TAIL"), cancellable = true)

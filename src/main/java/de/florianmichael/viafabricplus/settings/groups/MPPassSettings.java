@@ -27,6 +27,7 @@ public class MPPassSettings extends SettingGroup {
     public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.betacraft"), true);
     public final BooleanSetting allowViaLegacyToCallJoinServerToVerifySession = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.verify"), true);
     public final BooleanSetting disconnectIfJoinServerCallFails = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.fail"), true);
+    public final BooleanSetting forceCPEIfUsingClassiCube = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.classicube"), true);
 
     public MPPassSettings() {
         super("MP Pass");

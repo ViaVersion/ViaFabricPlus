@@ -19,25 +19,28 @@ package de.florianmichael.viafabricplus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
-import de.florianmichael.viafabricplus.definition.ItemReleaseVersionDefinition;
-import de.florianmichael.viafabricplus.definition.PackFormatsDefinition;
+import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
+import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
+import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
-import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.screen.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.definition.c0_30.classicube.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.definition.c0_30.protocol.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolCommands;
-import de.florianmichael.viafabricplus.definition.v1_8_x.ArmorPointsDefinition;
+import de.florianmichael.viafabricplus.mappings.ArmorPointsMappings;
 import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.information.InformationSystem;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.SettingsSystem;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
 public class ViaFabricPlus {
     public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public final static Logger LOGGER = LogManager.getLogger("ViaFabricPlus");
     public final static File RUN_DIRECTORY = new File("ViaFabricPlus");
 
     public final static ViaFabricPlus INSTANCE = new ViaFabricPlus();
@@ -51,9 +54,12 @@ public class ViaFabricPlus {
         // Classic Stuff
         CustomClassicProtocolExtensions.create();
         ClassicItemSelectionScreen.create();
-        ChatLengthDefinition.create();
+        ChatLengthCalculation.create();
         ClassicProtocolCommands.create();
         ClassiCubeAccountHandler.create();
+
+        // Bedrock Stuff
+        BedrockAccountHandler.create();
 
         new ProtocolHack();
 
@@ -62,13 +68,10 @@ public class ViaFabricPlus {
             settingsSystem.init();
             informationSystem.init();
 
-            // General definitions
-            PackFormatsDefinition.load();
-            ItemReleaseVersionDefinition.create();
-            ArmorPointsDefinition.load();
-
-            // Bedrock Stuff
-            BedrockAccountHandler.create();
+            // Mappings
+            PackFormatsMappings.load();
+            ItemReleaseVersionMappings.create();
+            ArmorPointsMappings.load();
         });
     }
 

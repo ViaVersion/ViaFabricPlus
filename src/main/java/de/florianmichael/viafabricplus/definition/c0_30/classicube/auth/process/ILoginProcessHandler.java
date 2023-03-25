@@ -6,4 +6,5 @@ public interface ILoginProcessHandler {
 
     void handleMfa(final ClassiCubeAccount account);
     void handleSuccessfulLogin(final ClassiCubeAccount account);
+    void handleException(final Throwable throwable);
 }

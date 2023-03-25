@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition;
+package de.florianmichael.viafabricplus.mappings;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
@@ -29,11 +29,11 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 import java.util.*;
 
-public class ItemReleaseVersionDefinition {
-    public static ItemReleaseVersionDefinition INSTANCE;
+public class ItemReleaseVersionMappings {
+    public static ItemReleaseVersionMappings INSTANCE;
 
     public static void create() {
-        INSTANCE = new ItemReleaseVersionDefinition();
+        INSTANCE = new ItemReleaseVersionMappings();
         INSTANCE.load();
         INSTANCE.update(ProtocolHack.getTargetVersion());
 

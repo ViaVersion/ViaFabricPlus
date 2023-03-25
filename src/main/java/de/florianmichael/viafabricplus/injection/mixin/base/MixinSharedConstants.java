@@ -15,18 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protocol1_11to1_10;
+package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
+import de.florianmichael.viafabricplus.screen.classicube.ClassiCubeLoginScreen;
+import net.minecraft.SharedConstants;
+import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "com.viaversion.viaversion.protocols.protocol1_11to1_10.Protocol1_11To1_10$13", remap = false)
-public class MixinProtocol1_11To1_10 {
+@Mixin(SharedConstants.class)
+public class MixinSharedConstants {
 
-    @ModifyConstant(method = "lambda$register$0", constant = @Constant(intValue = 100))
-    private static int changeMaxChatLength(int constant) {
-        return ChatLengthCalculation.INSTANCE.getMaxLength();
+    @Inject(method = "isValidChar", at = @At("HEAD"), cancellable = true)
+    private static void allowEveryCharacter(char chr, CallbackInfoReturnable<Boolean> cir) {
+        if (MinecraftClient.getInstance().currentScreen instanceof ClassiCubeLoginScreen) cir.setReturnValue(true);
     }
 }

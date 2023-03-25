@@ -19,31 +19,31 @@ package de.florianmichael.viafabricplus.definition;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import net.minecraft.client.MinecraftClient;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 
-public class ChatLengthDefinition {
-    public static ChatLengthDefinition INSTANCE;
+public class ChatLengthCalculation {
+    public static ChatLengthCalculation INSTANCE;
+
+    private int maxLength = 256;
 
     public static void create() {
-        INSTANCE = new ChatLengthDefinition();
+        INSTANCE = new ChatLengthCalculation();
 
         ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
             INSTANCE.maxLength = 256;
             if (protocolVersion.isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
                 INSTANCE.maxLength = 100;
 
-                if (protocolVersion.isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                    INSTANCE.maxLength = 64 - MinecraftClient.getInstance().getSession().getUsername().length() - 2;
-                }
+                if (protocolVersion.isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) INSTANCE.maxLength = 64 - MinecraftClient.getInstance().getSession().getUsername().length() - 2;
             }
         });
-    }
 
-    private int maxLength = 256;
-
-    public void expand() {
-        maxLength = Short.MAX_VALUE * 2;
+        LoadClassicProtocolExtensionCallback.EVENT.register(classicProtocolExtension -> {
+            if (classicProtocolExtension == ClassicProtocolExtension.LONGER_MESSAGES) INSTANCE.maxLength = Short.MAX_VALUE * 2;
+        });
     }
 
     public int getMaxLength() {

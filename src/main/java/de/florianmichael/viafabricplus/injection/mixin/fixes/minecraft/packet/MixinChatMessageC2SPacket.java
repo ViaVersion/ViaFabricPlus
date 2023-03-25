@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.packet;
 
-import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
+import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -28,6 +28,6 @@ public class MixinChatMessageC2SPacket {
 
     @ModifyConstant(method = "write", constant = @Constant(intValue = 256))
     public int expandChatLength(int constant) {
-        return ChatLengthDefinition.INSTANCE.getMaxLength();
+        return ChatLengthCalculation.INSTANCE.getMaxLength();
     }
 }

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition;
+package de.florianmichael.viafabricplus.mappings;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PackFormatsDefinition {
+public class PackFormatsMappings {
     private final static Map<Integer, GameVersion> protocolMap = new HashMap<>();
 
     public static void load() {

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.v1_8_x;
+package de.florianmichael.viafabricplus.mappings;
 
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.ArmorType;
 import net.minecraft.client.MinecraftClient;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ArmorPointsDefinition {
+public class ArmorPointsMappings {
     public static final List<Item> ARMOR_ITEMS_IN_1_8 = Arrays.asList(
             Items.LEATHER_HELMET,
             Items.LEATHER_CHESTPLATE,
@@ -66,6 +66,6 @@ public class ArmorPointsDefinition {
     }
 
     public static int sum() {
-        return MinecraftClient.getInstance().player.getInventory().armor.stream().mapToInt(ArmorPointsDefinition::getArmorPoints).sum();
+        return MinecraftClient.getInstance().player.getInventory().armor.stream().mapToInt(ArmorPointsMappings::getArmorPoints).sum();
     }
 }

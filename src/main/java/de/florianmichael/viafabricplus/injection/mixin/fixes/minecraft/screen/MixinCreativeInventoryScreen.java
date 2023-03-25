@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.screen.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;

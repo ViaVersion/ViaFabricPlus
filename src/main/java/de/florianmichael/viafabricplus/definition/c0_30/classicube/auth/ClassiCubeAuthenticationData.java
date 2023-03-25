@@ -1,6 +1,8 @@
 package de.florianmichael.viafabricplus.definition.c0_30.classicube.auth;
 
 import javax.annotation.Nullable;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Contains the authentication data that will be used in the URL parameters of the /api/login request.
@@ -28,16 +30,16 @@ public class ClassiCubeAuthenticationData {
     }
 
     public String getRequestBody() {
-        final StringBuilder builder = new StringBuilder("username=").append(username);
+        final StringBuilder builder = new StringBuilder("username=").append(URLEncoder.encode(username, StandardCharsets.UTF_8));
 
         builder.append("&password=");
-        builder.append(password);
+        builder.append(URLEncoder.encode(password, StandardCharsets.UTF_8));
         builder.append("&token=");
-        builder.append(previousToken);
+        builder.append(URLEncoder.encode(previousToken, StandardCharsets.UTF_8));
 
         if (loginCode != null) {
             builder.append("&login_code=");
-            builder.append(loginCode);
+            builder.append(URLEncoder.encode(loginCode, StandardCharsets.UTF_8));
         }
 
         return builder.toString();

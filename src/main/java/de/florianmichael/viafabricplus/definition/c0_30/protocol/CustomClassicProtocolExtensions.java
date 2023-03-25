@@ -18,8 +18,7 @@
 package de.florianmichael.viafabricplus.definition.c0_30.protocol;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.definition.ChatLengthDefinition;
-import de.florianmichael.viafabricplus.definition.c0_30.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.screen.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.ByteBuf;
@@ -44,7 +43,6 @@ public class CustomClassicProtocolExtensions {
         EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
 
         LoadClassicProtocolExtensionCallback.EVENT.register(classicProtocolExtension -> {
-            if (classicProtocolExtension == ClassicProtocolExtension.LONGER_MESSAGES) ChatLengthDefinition.INSTANCE.expand();
             if (classicProtocolExtension == ClassicProtocolExtension.CUSTOM_BLOCKS) ClassicItemSelectionScreen.INSTANCE.reload(ProtocolHack.getTargetVersion(), true);
         });
     }

@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.definition.TileServerAddress;
+import de.florianmichael.viafabricplus.definition.v1_14_4.LegacyServerAddress;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.minecraft.client.network.ServerAddress;
@@ -46,7 +46,7 @@ public class MixinMultiplayerServerListPinger {
 
     @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AllowedAddressResolver;resolve(Lnet/minecraft/client/network/ServerAddress;)Ljava/util/Optional;"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void doOwnParse(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress) {
-        viafabricplus_wrappedAddress = TileServerAddress.parse(((IServerInfo) viafabricplus_lastConnect).viafabricplus_forcedVersion(), serverAddress.getAddress());
+        viafabricplus_wrappedAddress = LegacyServerAddress.parse(((IServerInfo) viafabricplus_lastConnect).viafabricplus_forcedVersion(), serverAddress.getAddress());
     }
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;getAddress()Ljava/lang/String;"))

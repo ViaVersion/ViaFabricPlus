@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.constants.PreNettyConstants;
 import de.florianmichael.viafabricplus.protocolhack.constants.BedrockRakNetConstants;
@@ -108,6 +109,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Inject(method = "disconnect", at = @At("RETURN"))
     public void resetStorages(Text disconnectReason, CallbackInfo ci) {
         ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(ViaLoadingBase.getClassWrapper().getTargetVersion());
+        DisconnectConnectionCallback.EVENT.invoker().onDisconnect();
     }
 
     @Override

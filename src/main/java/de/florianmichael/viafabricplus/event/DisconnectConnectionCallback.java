@@ -15,18 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protocol1_11to1_10;
+package de.florianmichael.viafabricplus.event;
 
-import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
-@Mixin(targets = "com.viaversion.viaversion.protocols.protocol1_11to1_10.Protocol1_11To1_10$13", remap = false)
-public class MixinProtocol1_11To1_10 {
+public interface DisconnectConnectionCallback {
 
-    @ModifyConstant(method = "lambda$register$0", constant = @Constant(intValue = 100))
-    private static int changeMaxChatLength(int constant) {
-        return ChatLengthCalculation.INSTANCE.getMaxLength();
-    }
+    Event<DisconnectConnectionCallback> EVENT = EventFactory.createArrayBacked(DisconnectConnectionCallback.class, listeners -> () -> {
+        for (DisconnectConnectionCallback listener : listeners) {
+            listener.onDisconnect();
+        }
+    });
+
+    void onDisconnect();
 }

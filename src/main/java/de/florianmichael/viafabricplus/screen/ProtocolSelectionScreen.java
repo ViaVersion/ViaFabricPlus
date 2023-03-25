@@ -19,8 +19,13 @@ package de.florianmichael.viafabricplus.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.definition.c0_30.classicube.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.ClassiCubeAccount;
+import de.florianmichael.viafabricplus.screen.classicube.ClassiCubeLoginScreen;
+import de.florianmichael.viafabricplus.screen.classicube.ClassiCubeServerListScreen;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.util.ScreenUtil;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.MinecraftClient;
@@ -54,10 +59,18 @@ public class ProtocolSelectionScreen extends Screen {
     protected void init() {
         super.init();
 
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, textRenderer.fontHeight + 4));
+        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height - 30, textRenderer.fontHeight + 4));
         this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("words.viafabricplus.settings"), button -> client.setScreen(SettingsScreen.get(this))).position(width - 98 - 5, 5).size(98, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("ClassiCube"), button -> {
+            final ClassiCubeAccount classiCubeAccount = ClassiCubeAccountHandler.INSTANCE.getAccount();
+            if (classiCubeAccount == null || classiCubeAccount.token == null) {
+                client.setScreen(ClassiCubeLoginScreen.get(this));
+                return;
+            }
+            client.setScreen(ClassiCubeServerListScreen.get(this));
+        }).position(width - 98 - 5, height - 25).size(98, 20).build());
     }
 
     @Override
@@ -101,7 +114,7 @@ public class ProtocolSelectionScreen extends Screen {
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
             ViaLoadingBase.getClassWrapper().reload(this.protocolVersion);
-            MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            ScreenUtil.playClickSound();
             return super.mouseClicked(mouseX, mouseY, button);
         }
 

@@ -35,6 +35,7 @@
   "mppass.viafabricplus.betacraft": "Use BetaCraft authentication",
   "mppass.viafabricplus.verify": "Allow ViaLegacy to call joinServer() to verify session",
   "mppass.viafabricplus.fail": "Disconnect if joinServer() call fails",
+  "mppass.viafabricplus.classicube": "Force CPE Version if using ClassiCube MP Pass",
 
   "visual.viafabricplus.secure": "Disable secure chat warning",
   "visual.viafabricplus.indicator": "Hide signature indicator",
@@ -46,9 +47,19 @@
   "visual.viafabricplus.betahud": "Remove newer HUD elements",
   "visual.viafabricplus.classic": "Replace creative inventory",
   "visual.viafabricplus.walkanimation": "Old walking animation",
+  "visual.viafabricplus.sodium": "Fix Sodium Chunk renderer",
 
   "bedrocklogin.viafabricplus.text": "Your browser should have opened.\nPlease enter the following Code: %s\nClosing this screen will cancel the process!",
   "bedrocklogin.viafabricplus.error": "An error has occurred! See the latest.log for more information,\nplease report the bug at: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
 
-  "forceversion.viafabricplus.title": "Please select the version with which the server should be pinged/connected"
+  "forceversion.viafabricplus.title": "Please select the version with which the server should be pinged/connected",
+
+  "classicube.viafabricplus.account": "You can create an account here: https://www.classicube.net/",
+  "classicube.viafabricplus.loading": "Loading profile information and server list...",
+
+  "classicube.viafabricplus.error.token": "Incorrect token. Is your ViaFabricPlus out of date?",
+  "classicube.viafabricplus.error.username": "Invalid username.",
+  "classicube.viafabricplus.error.password": "Invalid password.",
+  "classicube.viafabricplus.error.verification": "User hasn't verified their E-mail address yet.",
+  "classicube.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your E-mail."
 }

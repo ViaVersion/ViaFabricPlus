@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition;
+package de.florianmichael.viafabricplus.definition.v1_14_4;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
@@ -25,7 +25,7 @@ import net.minecraft.client.network.ServerAddress;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
-public class TileServerAddress {
+public class LegacyServerAddress {
     private final static ProtocolRange SRV_RANGE = new ProtocolRange(ProtocolVersion.v1_16_4, LegacyProtocolVersion.r1_3_1tor1_3_2);
 
     public static ServerAddress parse(final ComparableProtocolVersion version, String address) {
