@@ -106,7 +106,7 @@
     "fixes.minecraft.screen.MixinGameModeSelectionScreen_GameModeSelection",
     "fixes.minecraft.screen.MixinJigsawBlockScreen",
     "fixes.minecraft.screen.MixinMultiplayerScreen",
-    "fixes.minecraft.screen.MixinMultiplayerServerListPinger",
+    "fixes.minecraft.MixinMultiplayerServerListPinger",
     "fixes.minecraft.screen.MixinStructureBlockScreen_1",
     "fixes.minecraft.screen.merchant.MixinMerchantScreen",
     "fixes.minecraft.screen.merchant.MixinMerchantScreenHandler",

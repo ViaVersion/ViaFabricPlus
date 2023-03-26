@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.definition.v1_14_4;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.platform.ProtocolRange;
 import net.minecraft.client.network.AllowedAddressResolver;
@@ -26,11 +27,12 @@ import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 public class LegacyServerAddress {
-    private final static ProtocolRange SRV_RANGE = new ProtocolRange(ProtocolVersion.v1_16_4, LegacyProtocolVersion.r1_3_1tor1_3_2);
+    private final static ProtocolRange SRV_RANGE = new ProtocolRange(LegacyProtocolVersion.r1_3_1tor1_3_2, ProtocolVersion.v1_16_4);
 
-    public static ServerAddress parse(final ComparableProtocolVersion version, String address) {
+    public static ServerAddress parse(ComparableProtocolVersion version, String address) {
+        if (version == null) version = ViaLoadingBase.getClassWrapper().getTargetVersion();
         final ServerAddress mc = ServerAddress.parse(address);
-        if (version != null && (SRV_RANGE.contains(version) || version.isEqualTo(BedrockProtocolVersion.bedrockLatest))) {
+        if (SRV_RANGE.contains(version) || version.isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
             if (!mc.equals(ServerAddress.INVALID)) {
                 return AllowedAddressResolver.DEFAULT.redirectResolver.lookupRedirect(mc).orElse(mc);
             }
