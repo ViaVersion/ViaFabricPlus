@@ -8,12 +8,13 @@
   "words.viafabricplus.rb": "Справа; Знизу",
   "words.viafabricplus.cancel": "Відмінити",
   "words.viafabricplus.cancelreset": "Відмінити і відновити",
+  "words.viafabricplus.logout": "Вийти",
 
   "bedrock.viafabricplus.set": "Нажміть, щоб встановити аккаунт для Bedrock",
 
-  "bridge.viafabricplus.secret": "Показати Супер Секретні Налаштування(Super Secret Settings)",
-  "bridge.viafabricplus.extrainformation": "Показати додаткову інформацію на екрані відладки",
-  "bridge.viafabricplus.classicloading": "Показати класичний прогрес завантаження на екрані підключення",
+  "bridge.viafabricplus.secret": "Показувати Супер Секретні Налаштування",
+  "bridge.viafabricplus.extrainformation": "Показувати додаткову інформацію на екрані відладки",
+  "bridge.viafabricplus.classicloading": "Показувати класичний прогрес завантаження на екрані підключення",
 
   "debug.viafabricplus.sequence": "Вимкнути послідовності",
   "debug.viafabricplus.merchant": "Згладити екрани крамарів",
@@ -27,14 +28,15 @@
   "debug.viafabricplus.longsneak": "Довге підкрадання",
   "debug.viafabricplus.legacypseeds": "Стара швидкість копання",
 
-  "general.viafabricplus.main": "орієнтація головної кнопки",
+  "general.viafabricplus.main": "Орієнтація головної кнопки",
   "general.viafabricplus.creative": "Видалити недоступні предмети з меню креативу",
   "general.viafabricplus.classiccommands": "Дозволити використання команд класичного протоколу",
   "general.viafabricplus.protocolsync": "Автоматично змінювати налаштування для вибраної версії",
 
   "mppass.viafabricplus.betacraft": "Використовувати аутентикацію BetaCraft",
   "mppass.viafabricplus.verify": "Дозвольте ViaLegacy викликати joinServer() для перевірки сеансу",
-  "mppass.viafabricplus.fail": "Від’єднайтеся, якщо виклик joinServer() не вдається",
+  "mppass.viafabricplus.fail": "Від’єднатися, якщо виклик joinServer() не вдається",
+  "mppass.viafabricplus.classicube": "Примусово встановити версію CPE, якщо використовується ClassiCube MP Pass",
 
   "visual.viafabricplus.secure": "Прибрати застереження чату",
   "visual.viafabricplus.indicator": "Сховати ідикатор підпису",
@@ -46,9 +48,19 @@
   "visual.viafabricplus.betahud": "Видаліть новіші елементи HUD",
   "visual.viafabricplus.classic": "Замінити інвентар креативу",
   "visual.viafabricplus.walkanimation": "Стара анімація ходьби",
+  "visual.viafabricplus.sodium": "Полагодити рендер чанків Содіуму",
 
   "bedrocklogin.viafabricplus.text": "Ваш браузер мав відкритися.\nБудь ласка, введіть наступний код: %s\nЯкщо закрити цей екран, процес буде скасовано!",
   "bedrocklogin.viafabricplus.error": "Сталася помилка! Дивіться latest.log для отримання додаткової інформації,\nбудь ласка, повідомте про помилку за адресою: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "Будь ласка, виберіть версію, з якою сервер має пінгуватися/підключатися"
+
+  "classicube.viafabricplus.account": "Ви можете створити аккаунт тут: https://www.classicube.net/",
+  "classicube.viafabricplus.loading": "Завантажуємо інформацію профілю та список серверів...",
+
+  "classicube.viafabricplus.error.token": "Неправильний токен. Чи ваша версія ViaFabricPlus найновіша?",
+  "classicube.viafabricplus.error.username": "Неправильний нікнейм.",
+  "classicube.viafabricplus.error.password": "Неправильний пароль.",
+  "classicube.viafabricplus.error.verification": "Користувач ще не підтвердив емейл.",
+  "classicube.viafabricplus.error.logincode": "Потрібна багатофакторна автентифікація. Будь ласка, перевірте свою електронну пошту."
 }
