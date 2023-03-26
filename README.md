@@ -26,10 +26,11 @@ if you know a language well, feel free to make a PR and add translations for tha
 - English (by **[FlorianMichael](https://github.com/FlorianMichael)**)
 - German (by **[FlorianMichael](https://github.com/FlorianMichael)** and **[J0J0HA](https://github.com/J0J0HA)**)
 - Thai (by **[NyaruToru](https://github.com/NyaruToru)**)
-- Simplified Chinese (by **[yingcan](https://github.com/x-yingcan-x)**)
+- Simplified Chinese (by **[yingcan](https://github.com/x-yingcan-x)** and **[luluxiaoyu](https://github.com/luluxiaoyu)**)
 - Japanese (by **[U5KUN](https://github.com/U5KUN)**)
 - Luxembourgish (by **[Graf]()**)
 - Ukrainian (by **[Fundi1330](https://github.com/Fundi1330)**)
+- Traditional Chinese (by **[luluxiaoyu](https://github.com/luluxiaoyu)**)
 
 ### Dependencies
 | Dependency             | Download                                                   |

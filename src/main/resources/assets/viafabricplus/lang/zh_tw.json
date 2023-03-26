@@ -1,0 +1,65 @@
+{
+  "words.viafabricplus.settings": "設定",
+  "words.viafabricplus.on": "開啟",
+  "words.viafabricplus.off": "關閉",
+  "words.viafabricplus.lt": "左上",
+  "words.viafabricplus.rt": "右上",
+  "words.viafabricplus.lb": "左下",
+  "words.viafabricplus.rb": "右下",
+  "words.viafabricplus.cancel": "取消",
+  "words.viafabricplus.cancelreset": "返回並重置",
+
+  "bedrock.viafabricplus.set": "點擊這裡以登入基岩版帳號",
+
+  "bridge.viafabricplus.secret": "顯示“Super Secret Settings”（超級秘密設定）",
+  "bridge.viafabricplus.extrainformation": "在\u00a76[調試]\u00a7r（F3）中顯示額外資訊",
+  "bridge.viafabricplus.classicloading": "在連接伺服器時使用舊版加載進度顯示",
+
+  "debug.viafabricplus.sequence": "禁用排序",
+  "debug.viafabricplus.merchant": "平滑荧幕顯示",
+  "debug.viafabricplus.postfix": "同步執行輸入",
+  "debug.viafabricplus.sneakinstant": "瞬間潜行",
+  "debug.viafabricplus.inventory": "發送“打開物品欄”數据包",
+  "debug.viafabricplus.cooldown": "移除攻擊冷卻",
+  "debug.viafabricplus.idle": "發送“空閒”數据包",
+  "debug.viafabricplus.attribute": "替換内容修飾符為舊版本樣式",
+  "debug.viafabricplus.replacesneak": "替換潜行樣式",
+  "debug.viafabricplus.longsneak": "一直潜行",
+  "debug.viafabricplus.legacypseeds": "遠古版本挖掘速度",
+
+  "general.viafabricplus.main": "模組按鈕位置",
+  "general.viafabricplus.creative": "從創造模式選項內移除不可用的物品",
+  "general.viafabricplus.classiccommands": "允許使用舊版命令協定",
+  "general.viafabricplus.protocolsync": "自動根據所選版本調整設定",
+
+  "mppass.viafabricplus.betacraft": "使用 BetaCraft 身份驗證",
+  "mppass.viafabricplus.verify": "允許 ViaLegacy 調用 joinServer() 來驗證會話",
+  "mppass.viafabricplus.fail": "joinServer() 調用失敗時斷開連接",
+  "mppass.viafabricplus.classicube": "如果使用ClassicCube MP Pass，則強制CPE版本",
+
+  "visual.viafabricplus.secure": "禁用安全聊天警告",
+  "visual.viafabricplus.indicator": "隱藏聊天簽名提示",
+  "visual.viafabricplus.jigsaw": "從方塊介面中移除新版本特性",
+  "visual.viafabricplus.stoneslab": "替換石化橡木臺階",
+  "visual.viafabricplus.armor": "類比護甲值（護甲值不顯示請打開）",
+  "visual.viafabricplus.command": "從命令方塊編輯介面中移除新版本特性",
+  "visual.viafabricplus.oof": "將受傷音效替換為舊版本的“oof/噢！”",
+  "visual.viafabricplus.betahud": "移除新HUD要素（包括饑餓值、護甲值）",
+  "visual.viafabricplus.classic": "將創造模式物品欄替換為舊版本樣式",
+  "visual.viafabricplus.walkanimation": "舊版行走動畫",
+  "visual.viafabricplus.sodium": "修復鈉（Sodium）渲染器",
+
+  "bedrocklogin.viafabricplus.text": "你的瀏覽器現在應該已經打開了。\n請輸入這個程式碼： %s\n關閉這個荧幕等於取消操作。",
+  "bedrocklogin.viafabricplus.error": "發生錯誤！ 詳情請查看 latest.log \n請在這個網站報告BUG： \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+
+  "forceversion.viafabricplus.title": "請選擇連接這個伺服器所要使用的版本",
+
+  "classicube.viafabricplus.account": "您可以在此處創建帳戶: https://www.classicube.net/",
+  "classicube.viafabricplus.loading": "正在加載个人資訊和伺服器列表",
+
+  "classicube.viafabricplus.error.token": "Token不正確。 你的ViaFabricPlus已經過時了嗎？",
+  "classicube.viafabricplus.error.username": "無效的用戶名",
+  "classicube.viafabricplus.error.password": "無效的密碼",
+  "classicube.viafabricplus.error.verification": "用戶尚未驗證其電子郵件。",
+  "classicube.viafabricplus.error.logincode": "已請求身份驗證。 請檢查您的電子郵件！"
+}
