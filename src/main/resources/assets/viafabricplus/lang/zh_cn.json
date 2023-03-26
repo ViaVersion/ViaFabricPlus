@@ -13,10 +13,10 @@
 
   "bridge.viafabricplus.secret": "显示 “Super Secret Settings”（超级秘密设置）",
   "bridge.viafabricplus.extrainformation": "在\u00a76[调试]\u00a7r（F3）中显示额外信息",
-  "bridge.viafabricplus.classicloading": "在连接服务器时显示旧版加载进度",
+  "bridge.viafabricplus.classicloading": "在连接服务器时使用旧版进度显示",
 
-  "debug.viafabricplus.sequence": "Disable sequencing",
-  "debug.viafabricplus.merchant": "Smooth out merchant screens",
+  "debug.viafabricplus.sequence": "禁用排序",
+  "debug.viafabricplus.merchant": "平滑屏幕",
   "debug.viafabricplus.postfix": "同步执行输入",
   "debug.viafabricplus.sneakinstant": "瞬间潜行",
   "debug.viafabricplus.inventory": "发送“打开物品栏”数据包",
@@ -24,7 +24,7 @@
   "debug.viafabricplus.idle": "发送“空闲”数据包",
   "debug.viafabricplus.attribute": "替换属性修饰符为旧版本样式",
   "debug.viafabricplus.replacesneak": "替换潜行样式",
-  "debug.viafabricplus.longsneak": "Long sneaking",
+  "debug.viafabricplus.longsneak": "保持潜行",
   "debug.viafabricplus.legacypseeds": "远古版本挖掘速度",
 
   "general.viafabricplus.main": "模组按钮位置",
@@ -35,6 +35,7 @@
   "mppass.viafabricplus.betacraft": "使用 BetaCraft 身份验证",
   "mppass.viafabricplus.verify": "允许 ViaLegacy 调用 joinServer() 来验证会话",
   "mppass.viafabricplus.fail": "joinServer() 调用失败时断开连接",
+  "mppass.viafabricplus.classicube": "如果使用ClassicCube MP Pass，则强制CPE版本",
 
   "visual.viafabricplus.secure": "禁用安全聊天警告",
   "visual.viafabricplus.indicator": "隐藏聊天签名提示",
@@ -43,12 +44,22 @@
   "visual.viafabricplus.armor": "模拟护甲值（护甲值不显示请打开）",
   "visual.viafabricplus.command": "从命令方块编辑界面中移除新版本特性",
   "visual.viafabricplus.oof": "将受伤音效替换为旧版本的“oof/噢！”",
-  "visual.viafabricplus.betahud": "移除新 HUD 要素（包括饥饿值、护甲值）",
+  "visual.viafabricplus.betahud": "移除新的 HUD 要素（包括饥饿值、护甲值）",
   "visual.viafabricplus.classic": "将创造模式物品栏替换为旧版本样式",
   "visual.viafabricplus.walkanimation": "旧版行走动画",
+  "visual.viafabricplus.sodium": "修复钠（Sodium）渲染器",
 
   "bedrocklogin.viafabricplus.text": "你的浏览器现在应该打开了。\n请输入这个代码： %s\n关闭这个屏幕等于取消操作！",
   "bedrocklogin.viafabricplus.error": "发生错误！详情请查看 latest.log \n请在这个链接反馈BUG： \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
 
-  "forceversion.viafabricplus.title": "请选择连接这个服务器应该使用的版本"
+  "forceversion.viafabricplus.title": "请选择连接这个服务器应该使用的版本",
+  
+  "classicube.viafabricplus.account": "您可以这里创建一个账户: https://www.classicube.net/",
+  "classicube.viafabricplus.loading": "正在加载个人信息和服务器列表···",
+
+  "classicube.viafabricplus.error.token": "Token不正确。 你的ViaFabricPlus是否已经过时？",
+  "classicube.viafabricplus.error.username": "无效的用户名",
+  "classicube.viafabricplus.error.password": "无效的密码",
+  "classicube.viafabricplus.error.verification": "用戶尚未验证电子邮箱地址。",
+  "classicube.viafabricplus.error.logincode": "已请求身份验证。 请查看你的电子邮箱！"
 }
