@@ -59,6 +59,7 @@ public class ClassiCubeMFAScreen extends Screen {
         mfaField.setPlaceholder(Text.literal("MFA"));
 
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Login"), button -> {
+            status = Text.translatable("classicube.viafabricplus.loading");
             ClassiCubeAccountHandler.INSTANCE.getAccount().login(new ILoginProcessHandler() {
                 @Override
                 public void handleMfa(ClassiCubeAccount account) {
@@ -94,7 +95,7 @@ public class ClassiCubeMFAScreen extends Screen {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         drawCenteredTextWithShadow(matrices, this.textRenderer, this.title, this.width / 2, 70, 16777215);
-        drawCenteredTextWithShadow(matrices, this.textRenderer, this.status, this.width / 2, 70 + textRenderer.fontHeight, 16777215);
+        drawCenteredTextWithShadow(matrices, this.textRenderer, this.status, this.width / 2, 1, 16777215);
         super.render(matrices, mouseX, mouseY, delta);
     }
 }

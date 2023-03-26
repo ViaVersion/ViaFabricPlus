@@ -54,13 +54,14 @@ public class ViaFabricPlus {
         // Classic Stuff
         CustomClassicProtocolExtensions.create();
         ClassicItemSelectionScreen.create();
-        ChatLengthCalculation.create();
         ClassicProtocolCommands.create();
         ClassiCubeAccountHandler.create();
 
         // Bedrock Stuff
         BedrockAccountHandler.create();
 
+        // Protocol Translator
+        ChatLengthCalculation.create();
         new ProtocolHack();
 
         FinishMinecraftLoadCallback.EVENT.register(() -> {

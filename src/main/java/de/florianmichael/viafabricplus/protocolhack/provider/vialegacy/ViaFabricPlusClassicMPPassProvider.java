@@ -29,10 +29,7 @@ public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
 
     @Override
     public String getMpPass(UserConnection user) {
-        if (classiCubeMPPass != null) {
-            System.out.println(classiCubeMPPass);
-            return classiCubeMPPass;
-        }
+        if (classiCubeMPPass != null) return classiCubeMPPass;
 
         if (MPPassSettings.INSTANCE.useBetaCraftAuthentication.getValue()) {
             final HandshakeStorage handshakeStorage = user.get(HandshakeStorage.class);

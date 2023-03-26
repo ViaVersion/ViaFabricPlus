@@ -63,7 +63,7 @@ public class ClassiCubeAccount {
                     processHandler.handleException(throwable1);
                     return;
                 }
-                if (initialTokenResponse.mfaRequired()) {
+                if (loginResponse.mfaRequired()) {
                     processHandler.handleMfa(this);
                     return;
                 }
