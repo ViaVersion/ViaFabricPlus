@@ -36,7 +36,8 @@
   "mppass.viafabricplus.betacraft": "Use BetaCraft authentication",
   "mppass.viafabricplus.verify": "Allow ViaLegacy to call joinServer() to verify session",
   "mppass.viafabricplus.fail": "Disconnect if joinServer() call fails",
-  "mppass.viafabricplus.classicube": "Force CPE Version if using ClassiCube MP Pass",
+  "mppass.viafabricplus.classicube": "Force CPE Version if using ClassiCube",
+  "mppass.viafabricplus.spoof": "Spoof Username to ClassiCube Name if using ClassiCube",
 
   "visual.viafabricplus.secure": "Disable secure chat warning",
   "visual.viafabricplus.indicator": "Hide signature indicator",

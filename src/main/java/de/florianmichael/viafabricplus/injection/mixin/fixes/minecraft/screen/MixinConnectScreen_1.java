@@ -21,12 +21,15 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
+import de.florianmichael.viafabricplus.definition.c0_30.classicube.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
 import de.florianmichael.viafabricplus.definition.v1_19_0.storage.ChatSession1_19_0;
 import de.florianmichael.viafabricplus.definition.v1_19_2.storage.ChatSession1_19_2;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
+import de.florianmichael.viafabricplus.settings.groups.MPPassSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
 import net.minecraft.client.MinecraftClient;
@@ -36,6 +39,8 @@ import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PlayerKeyPair;
 import net.minecraft.network.encryption.PlayerPublicKey;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
 import net.raphimc.mcauth.step.bedrock.StepMCChain;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.storage.AuthChainData;
@@ -81,6 +86,15 @@ public class MixinConnectScreen_1 {
             return field_33737.getPort();
         }
         return instance.getPort();
+    }
+
+    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", ordinal = 1))
+    public void spoofUserName(ClientConnection instance, Packet<?> packet) {
+        if (!MPPassSettings.INSTANCE.spoofUserNameIfUsingClassiCube.getValue()) return;
+
+        if (ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null && ClassiCubeAccountHandler.INSTANCE.getAccount() != null) {
+            instance.send(new LoginHelloC2SPacket(ClassiCubeAccountHandler.INSTANCE.getAccount().username, Optional.ofNullable(MinecraftClient.getInstance().getSession().getUuidOrNull())));
+        }
     }
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
