@@ -24,9 +24,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,9 +33,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EndPortalBlock.class)
 public abstract class MixinEndPortalBlock extends BlockWithEntity {
 
-    @Shadow
-    @Final
-    protected static VoxelShape SHAPE;
     @Unique
     private final VoxelShape viafabricplus_shape_v1_8_x = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 1.0, 16.0);
 
@@ -58,10 +53,5 @@ public abstract class MixinEndPortalBlock extends BlockWithEntity {
         else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(viafabricplus_shape_v1_16_5);
         }
-    }
-
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return SHAPE;
     }
 }
