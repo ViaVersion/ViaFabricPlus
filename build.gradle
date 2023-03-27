@@ -83,6 +83,8 @@ dependencies {
 	libs "net.lenni0451.mcstructs:text:${project.mcstructs_text_version}"
 	libs "net.lenni0451:Reflect:${project.reflect_version}"
 
+	libs "com.github.allinkdev:BetacraftServerListParser:1.2.1"
+
 	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 }
 

@@ -17,14 +17,14 @@
  */
 package de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta;
 
-import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
+import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class TitleRenderer extends AbstractSettingRenderer {
+public class TitleRenderer extends MappedSlotEntry {
     private final String name;
 
     public TitleRenderer(String name) {
@@ -40,12 +40,12 @@ public class TitleRenderer extends AbstractSettingRenderer {
     public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         matrices.push();
         matrices.translate(x, y, 0);
-        renderSetting(matrices, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
+        mappedRenderer(matrices, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
         matrices.pop();
     }
 
     @Override
-    public void renderSetting(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRenderer(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         textRenderer.drawWithShadow(matrices, Formatting.BOLD + this.name, 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);

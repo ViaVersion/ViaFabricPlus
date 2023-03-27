@@ -90,11 +90,12 @@ public class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", ordinal = 1))
     public void spoofUserName(ClientConnection instance, Packet<?> packet) {
-        if (!MPPassSettings.INSTANCE.spoofUserNameIfUsingClassiCube.getValue()) return;
-
-        if (ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null && ClassiCubeAccountHandler.INSTANCE.getAccount() != null) {
+        if (MPPassSettings.INSTANCE.spoofUserNameIfUsingClassiCube.getValue() && ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null && ClassiCubeAccountHandler.INSTANCE.getAccount() != null) {
             instance.send(new LoginHelloC2SPacket(ClassiCubeAccountHandler.INSTANCE.getAccount().username, Optional.ofNullable(MinecraftClient.getInstance().getSession().getUuidOrNull())));
+            return;
         }
+
+        instance.send(packet);
     }
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))

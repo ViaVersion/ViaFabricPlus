@@ -18,12 +18,11 @@
 package de.florianmichael.viafabricplus.settings.type_impl;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
+import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.BooleanSettingRenderer;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 
 public class BooleanSetting extends AbstractSetting<Boolean> {
 
@@ -32,7 +31,7 @@ public class BooleanSetting extends AbstractSetting<Boolean> {
     }
 
     @Override
-    public AbstractSettingRenderer makeSettingRenderer() {
+    public MappedSlotEntry makeSettingRenderer() {
         return new BooleanSettingRenderer(this);
     }
 

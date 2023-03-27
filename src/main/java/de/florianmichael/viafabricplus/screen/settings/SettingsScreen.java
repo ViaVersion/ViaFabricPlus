@@ -18,17 +18,10 @@
 package de.florianmichael.viafabricplus.screen.settings;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.screen.settings.settingrenderer.BooleanSettingRenderer;
-import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ButtonSettingRenderer;
-import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ModeSettingRenderer;
-import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ProtocolSyncBooleanSettingRenderer;
+import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
-import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
-import de.florianmichael.viafabricplus.settings.type_impl.ButtonSetting;
-import de.florianmichael.viafabricplus.settings.type_impl.ModeSetting;
-import de.florianmichael.viafabricplus.settings.type_impl.ProtocolSyncBooleanSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -37,9 +30,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 
 @SuppressWarnings({"DataFlowIssue", "DuplicatedCode"})
 public class SettingsScreen extends Screen {
@@ -47,7 +37,7 @@ public class SettingsScreen extends Screen {
     public Screen prevScreen;
 
     protected SettingsScreen() {
-        super(Text.literal("Values"));
+        super(Text.literal("Setting"));
     }
 
     public static SettingsScreen get(final Screen prevScreen) {
@@ -80,7 +70,7 @@ public class SettingsScreen extends Screen {
         client.setScreen(prevScreen);
     }
 
-    public static class SlotList extends AlwaysSelectedEntryListWidget<AbstractSettingRenderer> {
+    public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);

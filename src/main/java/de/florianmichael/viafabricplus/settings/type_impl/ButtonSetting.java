@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.settings.type_impl;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
+import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ButtonSettingRenderer;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
@@ -31,7 +31,7 @@ public class ButtonSetting extends AbstractSetting<Runnable> {
     }
 
     @Override
-    public AbstractSettingRenderer makeSettingRenderer() {
+    public MappedSlotEntry makeSettingRenderer() {
         return new ButtonSettingRenderer(this);
     }
 

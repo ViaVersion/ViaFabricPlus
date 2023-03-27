@@ -17,19 +17,18 @@
  */
 package de.florianmichael.viafabricplus.screen.settings.settingrenderer;
 
-import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
+import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.awt.*;
 
-public class BooleanSettingRenderer extends AbstractSettingRenderer {
+public class BooleanSettingRenderer extends MappedSlotEntry {
     private final BooleanSetting value;
 
     public BooleanSettingRenderer(BooleanSetting value) {
@@ -49,7 +48,7 @@ public class BooleanSettingRenderer extends AbstractSettingRenderer {
     }
 
     @Override
-    public void renderSetting(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRenderer(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         final Text text = this.value.getValue() ? Text.translatable("words.viafabricplus.on") : Text.translatable("words.viafabricplus.off");

@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.settings.type_impl;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
+import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ProtocolSyncBooleanSettingRenderer;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
@@ -36,7 +36,7 @@ public class ProtocolSyncBooleanSetting extends BooleanSetting {
     }
 
     @Override
-    public AbstractSettingRenderer makeSettingRenderer() {
+    public MappedSlotEntry makeSettingRenderer() {
         return new ProtocolSyncBooleanSettingRenderer(this);
     }
 

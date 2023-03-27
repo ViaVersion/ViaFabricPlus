@@ -18,9 +18,8 @@
 package de.florianmichael.viafabricplus.settings.base;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.screen.settings.AbstractSettingRenderer;
+import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
 
 public abstract class AbstractSetting<T> {
@@ -38,7 +37,7 @@ public abstract class AbstractSetting<T> {
         parent.getSettings().add(this);
     }
 
-    public abstract AbstractSettingRenderer makeSettingRenderer();
+    public abstract MappedSlotEntry makeSettingRenderer();
 
     public abstract void write(final JsonObject object);
     public abstract void read(final JsonObject object);

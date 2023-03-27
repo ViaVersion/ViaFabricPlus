@@ -25,6 +25,7 @@ import de.florianmichael.viafabricplus.definition.c0_30.classicube.request.serve
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.screen.ProtocolSelectionScreen;
+import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import de.florianmichael.viafabricplus.settings.groups.MPPassSettings;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
@@ -59,19 +60,15 @@ public class ClassiCubeServerListScreen extends Screen {
     }
 
     public static void open(final Screen prevScreen, final ILoginProcessHandler loginProcessHandler) {
-        if (ClassiCubeServerListScreen.SERVERS.isEmpty()) {
-            final ClassiCubeServerListRequest request = new ClassiCubeServerListRequest(ClassiCubeAccountHandler.INSTANCE.getAccount());
-            request.send().whenComplete((server, throwable) -> {
-                if (throwable != null) {
-                    loginProcessHandler.handleException(throwable);
-                    return;
-                }
-                ClassiCubeServerListScreen.SERVERS.addAll(server.getServers());
-                RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(ClassiCubeServerListScreen.get(prevScreen)));
-            });
-            return;
-        }
-        MinecraftClient.getInstance().setScreen(ClassiCubeServerListScreen.get(prevScreen));
+        final ClassiCubeServerListRequest request = new ClassiCubeServerListRequest(ClassiCubeAccountHandler.INSTANCE.getAccount());
+        request.send().whenComplete((server, throwable) -> {
+            if (throwable != null) {
+                loginProcessHandler.handleException(throwable);
+                return;
+            }
+            ClassiCubeServerListScreen.SERVERS.addAll(server.getServers());
+            RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(ClassiCubeServerListScreen.get(prevScreen)));
+        });
     }
 
     public ClassiCubeServerListScreen() {
@@ -109,7 +106,7 @@ public class ClassiCubeServerListScreen extends Screen {
         drawCenteredTextWithShadow(matrices, textRenderer, Text.literal("ClassiCube Profile: " + ClassiCubeAccountHandler.INSTANCE.getAccount().username), width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
     }
 
-    public static class SlotList extends AlwaysSelectedEntryListWidget<ServerSlot> {
+    public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
@@ -129,7 +126,7 @@ public class ClassiCubeServerListScreen extends Screen {
     }
 
 
-    public static class ServerSlot extends AlwaysSelectedEntryListWidget.Entry<ServerSlot> {
+    public static class ServerSlot extends MappedSlotEntry {
         private final ClassiCubeServerInfo classiCubeServerInfo;
 
         public ServerSlot(ClassiCubeServerInfo classiCubeServerInfo) {
@@ -157,20 +154,13 @@ public class ClassiCubeServerListScreen extends Screen {
         }
 
         @Override
-        public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            matrices.push();
-            matrices.translate(x, y, 0);
-
-            DrawableHelper.fill(matrices, 0, 0, entryWidth - 4 /* int i = this.left + (this.width - entryWidth) / 2; int j = this.left + (this.width + entryWidth) / 2; */, entryHeight, Integer.MIN_VALUE);
-
+        public void mappedRenderer(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
             drawCenteredTextWithShadow(matrices, textRenderer, classiCubeServerInfo.name(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
             drawTextWithShadow(matrices, textRenderer, classiCubeServerInfo.software().replace('&', Formatting.FORMATTING_CODE_PREFIX), 1, 1, -1);
             final String playerText = classiCubeServerInfo.players() + "/" + classiCubeServerInfo.maxplayers();
             drawTextWithShadow(matrices, textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 132 */ - 1, 1, -1);
-
-            matrices.pop();
         }
     }
 }

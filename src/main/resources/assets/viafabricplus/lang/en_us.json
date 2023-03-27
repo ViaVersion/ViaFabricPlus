@@ -9,6 +9,8 @@
   "words.viafabricplus.cancel": "Cancel",
   "words.viafabricplus.cancelreset": "Cancel and reset",
   "words.viafabricplus.logout": "Logout",
+  "words.viafabricplus.online": "Online Mode",
+  "words.viafabricplus.reset": "Reset",
 
   "bedrock.viafabricplus.set": "Click to set account for Bedrock edition",
 
@@ -63,5 +65,10 @@
   "classicube.viafabricplus.error.username": "Invalid username.",
   "classicube.viafabricplus.error.password": "Invalid password.",
   "classicube.viafabricplus.error.verification": "User hasn't verified their E-mail address yet.",
-  "classicube.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your E-mail."
+  "classicube.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your E-mail.",
+
+  "classicube.viafabricplus.warning": "This feature will send API requests to the ClassiCube API.",
+
+  "betacraft.viafabricplus.warning": "Pressing this button will send API requests to \"betacraft.uk/serverlist\".",
+  "betacraft.viafabricplus.error": "Something went wrong! Please try again later"
 }
