@@ -61,7 +61,7 @@
   "classicube.viafabricplus.account": "ここでアカウントを作成できます: https://www.classicube.net/",
   "classicube.viafabricplus.loading": "プロファイル情報とサーバーリストを読み込んでいます...",
 
-  "classicube.viafabricplus.error.token": "トークンが正しくありません。ViaFabric Plusの更新を確認してください。",
+  "classicube.viafabricplus.error.token": "トークンが正しくありません。ViaFabricPlusの更新を確認してください。",
   "classicube.viafabricplus.error.username": "無効なユーザー名です。",
   "classicube.viafabricplus.error.password": "無効なバスワードです。.",
   "classicube.viafabricplus.error.verification": "このアカウントは、まだメール認証が行われていません。",

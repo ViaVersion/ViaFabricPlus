@@ -56,7 +56,7 @@
   "bedrocklogin.viafabricplus.text": "Ваш браузер мав відкритися.\nБудь ласка, введіть наступний код: %s\nЯкщо закрити цей екран, процес буде скасовано!",
   "bedrocklogin.viafabricplus.error": "Сталася помилка! Дивіться latest.log для отримання додаткової інформації,\nбудь ласка, повідомте про помилку за адресою: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
 
-  "forceversion.viafabricplus.title": "Будь ласка, виберіть версію, з якою сервер має пінгуватися/підключатися"
+  "forceversion.viafabricplus.title": "Будь ласка, виберіть версію, з якою сервер має пінгуватися/підключатися",
 
   "classicube.viafabricplus.account": "Ви можете створити аккаунт тут: https://www.classicube.net/",
   "classicube.viafabricplus.loading": "Завантажуємо інформацію профілю та список серверів...",
@@ -65,7 +65,7 @@
   "classicube.viafabricplus.error.username": "Неправильний нікнейм.",
   "classicube.viafabricplus.error.password": "Неправильний пароль.",
   "classicube.viafabricplus.error.verification": "Користувач ще не підтвердив емейл.",
-  "classicube.viafabricplus.error.logincode": "Потрібна багатофакторна автентифікація. Будь ласка, перевірте свою електронну пошту."
+  "classicube.viafabricplus.error.logincode": "Потрібна багатофакторна автентифікація. Будь ласка, перевірте свою електронну пошту.",
 
   "classicube.viafabricplus.warning": "Ця фішка надішле API запит до ClassiCube API.",
 
