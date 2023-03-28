@@ -23,6 +23,7 @@ import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.type_impl.ButtonSetting;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
@@ -41,10 +42,14 @@ public class BedrockSettings extends SettingGroup {
     public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, Text.translatable("bedrock.viafabricplus.set"), () -> CompletableFuture.runAsync(() -> {
         try {
             BedrockAccountHandler.INSTANCE.setAccount(MinecraftAuth.requestBedrockLogin(msaDeviceCode -> {
-                MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> {
-                    MinecraftClient.getInstance().setScreen(SettingsScreen.get(new MultiplayerScreen(new TitleScreen())));
-                    Thread.currentThread().interrupt();
-                }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.userCode()), Text.translatable("words.viafabricplus.cancel"), false)));
+                MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new ConfirmScreen(consumer -> {
+                    if (consumer) {
+                        MinecraftClient.getInstance().keyboard.setClipboard(msaDeviceCode.userCode());
+                    } else {
+                        MinecraftClient.getInstance().setScreen(SettingsScreen.get(new MultiplayerScreen(new TitleScreen())));
+                        Thread.currentThread().interrupt();
+                    }
+                }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.userCode()), Text.translatable("words.viafabricplus.copy"), Text.translatable("words.viafabricplus.cancel"))));
                 try {
                     Util.getOperatingSystem().open(new URI(msaDeviceCode.verificationUri()));
                 } catch (URISyntaxException e) {

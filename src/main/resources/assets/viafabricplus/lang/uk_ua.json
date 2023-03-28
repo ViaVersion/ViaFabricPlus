@@ -9,6 +9,8 @@
   "words.viafabricplus.cancel": "Відмінити",
   "words.viafabricplus.cancelreset": "Відмінити і відновити",
   "words.viafabricplus.logout": "Вийти",
+  "words.viafabricplus.online": "Онлайн режим",
+  "words.viafabricplus.reset": "Зкинути",
 
   "bedrock.viafabricplus.set": "Нажміть, щоб встановити аккаунт для Bedrock",
 
@@ -37,6 +39,7 @@
   "mppass.viafabricplus.verify": "Дозвольте ViaLegacy викликати joinServer() для перевірки сеансу",
   "mppass.viafabricplus.fail": "Від’єднатися, якщо виклик joinServer() не вдається",
   "mppass.viafabricplus.classicube": "Примусово встановити версію CPE, якщо використовується ClassiCube MP Pass",
+  "mppass.viafabricplus.spoof": "Підмінити ім'я користувача на ім'я ClassiCube, якщо використовується ClassiCube",
 
   "visual.viafabricplus.secure": "Прибрати застереження чату",
   "visual.viafabricplus.indicator": "Сховати ідикатор підпису",
@@ -63,4 +66,9 @@
   "classicube.viafabricplus.error.password": "Неправильний пароль.",
   "classicube.viafabricplus.error.verification": "Користувач ще не підтвердив емейл.",
   "classicube.viafabricplus.error.logincode": "Потрібна багатофакторна автентифікація. Будь ласка, перевірте свою електронну пошту."
+
+  "classicube.viafabricplus.warning": "Ця фішка надішле API запит до ClassiCube API.",
+
+  "betacraft.viafabricplus.warning": "Нажимаючи цю кнопку ви надішлете API запит до \"betacraft.uk/serverlist\".",
+  "betacraft.viafabricplus.error": "Щось пішло не так! Будь ласка, спробуйте знову пізніше"
 }

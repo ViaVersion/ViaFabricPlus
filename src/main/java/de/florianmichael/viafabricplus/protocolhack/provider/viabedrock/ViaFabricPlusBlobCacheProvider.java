@@ -17,7 +17,6 @@
  */
 package de.florianmichael.viafabricplus.protocolhack.provider.viabedrock;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
 import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 
 import java.util.HashMap;
@@ -33,7 +32,7 @@ public class ViaFabricPlusBlobCacheProvider extends BlobCacheProvider {
     }
 
     @Override
-    public byte[] addBlob(final UserConnection user, final long hash, final byte[] compressedBlob) {
+    public byte[] addBlob(final long hash, final byte[] compressedBlob) {
         synchronized (this.blobs) {
             if (this.blobs.containsKey(hash)) { // In case the server overwrites a blob
                 size -= this.blobs.get(hash).length;
@@ -45,14 +44,14 @@ public class ViaFabricPlusBlobCacheProvider extends BlobCacheProvider {
     }
 
     @Override
-    public boolean hasBlob(final UserConnection user, final long hash) {
+    public boolean hasBlob(final long hash) {
         synchronized (this.blobs) {
             return this.blobs.containsKey(hash);
         }
     }
 
     @Override
-    public byte[] getBlob(final UserConnection user, final long hash) {
+    public byte[] getBlob(final long hash) {
         synchronized (this.blobs) {
             return this.blobs.get(hash);
         }
