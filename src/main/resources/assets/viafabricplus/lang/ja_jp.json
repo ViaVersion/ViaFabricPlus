@@ -8,11 +8,14 @@
   "words.viafabricplus.rb": "右下",
   "words.viafabricplus.cancel": "キャンセル",
   "words.viafabricplus.cancelreset": "リセットして閉じる",
+  "words.viafabricplus.logout": "ログアウト",
+  "words.viafabricplus.online": "オンラインモード",
+  "words.viafabricplus.reset": "リセット",
 
   "bedrock.viafabricplus.set": "クリックしてBedrock edition用のアカウントを用意",
 
   "bridge.viafabricplus.secret": "Super Secret Settingsを表示",
-  "bridge.viafabricplus.extrainformation": "サーバーに接続するバージョンを選択",
+  "bridge.viafabricplus.extrainformation": "デバッグ画面に追加情報を表示",
   "bridge.viafabricplus.classicloading": "接続画面に昔の読み込み進行情報を表示",
 
   "debug.viafabricplus.sequence": "優先順位付けを無効化",
@@ -21,11 +24,11 @@
   "debug.viafabricplus.sneakinstant": "スニーク瞬間",
   "debug.viafabricplus.inventory": "インベントリが開いたことをパケット送信",
   "debug.viafabricplus.cooldown": "クールダウンを削除",
-  "debug.viafabricplus.idle": "無操作パケットを送信",
+  "debug.viafabricplus.idle": "放置パケットを送信",
   "debug.viafabricplus.attribute": "属性修飾子を置換",
   "debug.viafabricplus.replacesneak": "スニークの置換",
   "debug.viafabricplus.longsneak": "長いスニーク",
-  "debug.viafabricplus.legacypseeds": "以前の採掘速度",
+  "debug.viafabricplus.legacypseeds": "従来の採掘速度",
 
   "general.viafabricplus.main": "メインボタンの位置",
   "general.viafabricplus.creative": "利用不可能なアイテムをクリエイティブタブから削除",
@@ -35,6 +38,8 @@
   "mppass.viafabricplus.betacraft": "BetaCraft認証を使用",
   "mppass.viafabricplus.verify": "ViaLegacyがjoinServer()を呼び出してセッションを検証することを許可",
   "mppass.viafabricplus.fail": "joinServer() の呼び出し失敗時に切断",
+  "mppass.viafabricplus.classicube": "ClassiCubeを使用している場合は CPEバージョンを強制",
+  "mppass.viafabricplus.spoof": "ClassiCubeを使用している場合はClassiCubeのユーザー名に変更",
 
   "visual.viafabricplus.secure": "安全なチャットの警告を無効",
   "visual.viafabricplus.indicator": "チャットの非署名表示を隠す",
@@ -46,9 +51,24 @@
   "visual.viafabricplus.betahud": "新しいHUD要素を削除",
   "visual.viafabricplus.classic": "クリエイティブインベントリの置換",
   "visual.viafabricplus.walkanimation": "以前の歩行アニメーション",
+  "visual.viafabricplus.sodium": "Sodiumのチャンク描画を修正",
 
   "bedrocklogin.viafabricplus.text": "ブラウザが開きました。\nブラウザに次のコードを入力してください: %s\nこの画面を閉じるとログインが中断されます。",
   "bedrocklogin.viafabricplus.error": "エラーが発生しました! 詳細についてはlasted.logを確認してください。\nまた、下記の場所でバグを報告してください。 \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "サーバーに接続するバージョンを選択"
+  
+   "classicube.viafabricplus.account": "ここでアカウントを作成できます: https://www.classicube.net/",
+  "classicube.viafabricplus.loading": "プロファイル情報とサーバーリストを読み込んでいます...",
+
+  "classicube.viafabricplus.error.token": "トークンが正しくありません。ViaFabric Plusの更新を確認してください。",
+  "classicube.viafabricplus.error.username": "無効なユーザー名です。",
+  "classicube.viafabricplus.error.password": "無効なバスワードです。.",
+  "classicube.viafabricplus.error.verification": "このアカウントは、まだメール認証が行われていません。",
+  "classicube.viafabricplus.error.logincode": "多要素認証が要求されました。 メールを確認してください。",
+
+  "classicube.viafabricplus.warning": "この機能は、APIリクエストを ClassiCube APIに送信します。",
+
+  "betacraft.viafabricplus.warning": "このボタンを押すと、API リクエストが\"betacraft.uk/serverlist\"に送信されます。",
+  "betacraft.viafabricplus.error": "エラーが発生しました。 後でもう一度試してください。"
 }
