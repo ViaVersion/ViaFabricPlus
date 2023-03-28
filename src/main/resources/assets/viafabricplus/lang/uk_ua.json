@@ -67,7 +67,7 @@
   "classicube.viafabricplus.error.verification": "Користувач ще не підтвердив емейл.",
   "classicube.viafabricplus.error.logincode": "Потрібна багатофакторна автентифікація. Будь ласка, перевірте свою електронну пошту."
   
-  "classicube.viafabricplus.warning": "This feature will send API requests to the ClassiCube API.",
+  "classicube.viafabricplus.warning": "Ця фішка надішле API запит до ClassiCube API.",
 
   "betacraft.viafabricplus.warning": "Нажимаючи цю кнопку ви надішлете API запит до \"betacraft.uk/serverlist\".",
   "betacraft.viafabricplus.error": "Щось пішло не так! Будь ласка, спробуйте знову пізніше"
