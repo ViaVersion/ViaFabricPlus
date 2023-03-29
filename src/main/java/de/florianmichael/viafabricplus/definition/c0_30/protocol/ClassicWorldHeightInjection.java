@@ -1,6 +1,6 @@
 /*
- * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * This file is part of ViaProxy - https://github.com/RaphiMC/ViaProxy
+ * Copyright (C) 2023 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,85 +39,69 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-@SuppressWarnings("DataFlowIssue")
 public class ClassicWorldHeightInjection {
 
-    public static PacketHandler handleJoinGame(final PacketHandler parentRemapper) {
-        return new PacketHandlers() {
-            @Override
-            public void register() {
-                handler(wrapper -> {
-                    parentRemapper.handle(wrapper);
-                    if (wrapper.isCancelled()) return;
+    public static PacketHandler handleJoinGame(final PacketHandler parentHandler) {
+        return wrapper -> {
+            parentHandler.handle(wrapper);
+            if (wrapper.isCancelled()) return;
 
-                    if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                        for (Tag dimension : wrapper.get(Type.NBT, 0).<CompoundTag>get("minecraft:dimension_type").<ListTag>get("value")) {
-                            changeDimensionTagHeight(wrapper.user(), ((CompoundTag) dimension).get("element"));
-                        }
-                        changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NBT, 1));
-                    }
-                });
+            if (ProtocolHack.getTargetVersion(wrapper.user().getChannel()).isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                for (Tag dimension : wrapper.get(Type.NBT, 0).<CompoundTag>get("minecraft:dimension_type").<ListTag>get("value")) {
+                    changeDimensionTagHeight(wrapper.user(), ((CompoundTag) dimension).get("element"));
+                }
+                changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NBT, 1));
             }
         };
     }
 
-    public static PacketHandler handleRespawn(final PacketHandler parentRemapper) {
-        return new PacketHandlers() {
-            @Override
-            public void register() {
-                handler(wrapper -> {
-                    parentRemapper.handle(wrapper);
-                    if (wrapper.isCancelled()) return;
+    public static PacketHandler handleRespawn(final PacketHandler parentHandler) {
+        return wrapper -> {
+            parentHandler.handle(wrapper);
+            if (wrapper.isCancelled()) return;
 
-                    if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                        changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NBT, 0));
-                    }
-                });
+            if (ProtocolHack.getTargetVersion(wrapper.user().getChannel()).isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NBT, 0));
             }
         };
     }
 
-    public static PacketHandler handleChunkData(final PacketHandler parentRemapper) {
-        return new PacketHandlers() {
-            @Override
-            public void register() {
-                handler(wrapper -> {
-                    parentRemapper.handle(wrapper);
-                    if (wrapper.isCancelled()) return;
+    public static PacketHandler handleChunkData(final PacketHandler parentHandler) {
+        return wrapper -> {
+            parentHandler.handle(wrapper);
+            if (wrapper.isCancelled()) return;
 
-                    if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                        wrapper.resetReader();
-                        final Chunk chunk = wrapper.read(new Chunk1_17Type(16));
-                        wrapper.write(new Chunk1_17Type(chunk.getSections().length), chunk);
+            if (ProtocolHack.getTargetVersion(wrapper.user().getChannel()).isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                wrapper.resetReader();
+                final Chunk chunk = wrapper.read(new Chunk1_17Type(16));
+                wrapper.write(new Chunk1_17Type(chunk.getSections().length), chunk);
 
-                        final ClassicWorldHeightProvider heightProvider = Via.getManager().getProviders().get(ClassicWorldHeightProvider.class);
-                        if (chunk.getSections().length < heightProvider.getMaxChunkSectionCount(wrapper.user())) { // Increase available sections to match new world height
-                            final ChunkSection[] newArray = new ChunkSection[heightProvider.getMaxChunkSectionCount(wrapper.user())];
-                            System.arraycopy(chunk.getSections(), 0, newArray, 0, chunk.getSections().length);
-                            chunk.setSections(newArray);
-                        }
+                final ClassicWorldHeightProvider heightProvider = Via.getManager().getProviders().get(ClassicWorldHeightProvider.class);
+                if (chunk.getSections().length < heightProvider.getMaxChunkSectionCount(wrapper.user())) { // Increase available sections to match new world height
+                    final ChunkSection[] newArray = new ChunkSection[heightProvider.getMaxChunkSectionCount(wrapper.user())];
+                    System.arraycopy(chunk.getSections(), 0, newArray, 0, chunk.getSections().length);
+                    chunk.setSections(newArray);
+                }
 
-                        final BitSet chunkMask = new BitSet();
-                        for (int i = 0; i < chunk.getSections().length; i++) {
-                            if (chunk.getSections()[i] != null) chunkMask.set(i);
-                        }
-                        chunk.setChunkMask(chunkMask);
+                final BitSet chunkMask = new BitSet();
+                for (int i = 0; i < chunk.getSections().length; i++) {
+                    if (chunk.getSections()[i] != null) chunkMask.set(i);
+                }
+                chunk.setChunkMask(chunkMask);
 
-                        final int[] newBiomeData = new int[chunk.getSections().length * 4 * 4 * 4];
-                        System.arraycopy(chunk.getBiomeData(), 0, newBiomeData, 0, chunk.getBiomeData().length);
-                        for (int i = 64; i < chunk.getSections().length * 4; i++) { // copy top layer of old biome data all the way to max world height
-                            System.arraycopy(chunk.getBiomeData(), chunk.getBiomeData().length - 16, newBiomeData, i * 16, 16);
-                        }
-                        chunk.setBiomeData(newBiomeData);
+                final int[] newBiomeData = new int[chunk.getSections().length * 4 * 4 * 4];
+                System.arraycopy(chunk.getBiomeData(), 0, newBiomeData, 0, chunk.getBiomeData().length);
+                for (int i = 64; i < chunk.getSections().length * 4; i++) { // copy top layer of old biome data all the way to max world height
+                    System.arraycopy(chunk.getBiomeData(), chunk.getBiomeData().length - 16, newBiomeData, i * 16, 16);
+                }
+                chunk.setBiomeData(newBiomeData);
 
-                        chunk.setHeightMap(new CompoundTag()); // rip heightmap :(
-                    }
-                });
+                chunk.setHeightMap(new CompoundTag()); // rip heightmap :(
             }
         };
     }
 
-    public static PacketHandler handleUpdateLight(final PacketHandler parentRemapper) {
+    public static PacketHandler handleUpdateLight(final PacketHandler parentHandler) {
         final PacketHandler classicLightHandler = new PacketHandlers() {
             @Override
             public void register() {
@@ -146,8 +130,9 @@ public class ClassicWorldHeightInjection {
 
                     int skyLightCount = 16;
                     int blockLightCount = sectionYCount;
-                    if (lightArrays.size() == 18) {
+                    if (lightArrays.size() == 16 + 0 + 2) {
                         blockLightCount = 0;
+                    } else if (lightArrays.size() == 16 + sectionYCount + 2) {
                     } else if (lightArrays.size() == sectionYCount + sectionYCount + 2) {
                         skyLightCount = sectionYCount;
                     }
@@ -175,16 +160,11 @@ public class ClassicWorldHeightInjection {
             }
         };
 
-        return new PacketHandlers() {
-            @Override
-            public void register() {
-                handler(wrapper -> {
-                    if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                        classicLightHandler.handle(wrapper);
-                    } else {
-                        parentRemapper.handle(wrapper);
-                    }
-                });
+        return wrapper -> {
+            if (ProtocolHack.getTargetVersion(wrapper.user().getChannel()).isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                classicLightHandler.handle(wrapper);
+            } else {
+                parentHandler.handle(wrapper);
             }
         };
     }
