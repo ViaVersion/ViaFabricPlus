@@ -149,6 +149,6 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         if (this.encrypted) throw new IllegalStateException("Encryption is already enabled");
         this.encrypted = true;
 
-        this.channel.pipeline().addAfter(BedrockRakNetConstants.FRAME_ENCAPSULATION_HANDLER_NAME, BedrockRakNetConstants.ENCRYPTION_HANDLER_NAME, new AesGcmEncryption(secretKey));
+        this.channel.pipeline().addAfter(BedrockRakNetConstants.FRAME_ENCAPSULATION_HANDLER_NAME, BedrockRakNetConstants.ENCRYPTION_HANDLER_NAME, new AesEncryption(secretKey));
     }
 }
