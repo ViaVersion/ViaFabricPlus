@@ -17,8 +17,11 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.google.common.net.HostAndPort;
 import de.florianmichael.viafabricplus.definition.v1_14_4.LegacyServerAddress;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
+import net.lenni0451.reflect.Fields;
+import net.lenni0451.reflect.stream.RStream;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
@@ -33,29 +36,9 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(MultiplayerServerListPinger.class)
 public class MixinMultiplayerServerListPinger {
 
-    @Unique
-    private ServerInfo viafabricplus_lastConnect;
-
-    @Unique
-    private ServerAddress viafabricplus_wrappedAddress;
-
-    @Inject(method = "add", at = @At("HEAD"))
-    public void track(ServerInfo entry, Runnable saver, CallbackInfo ci) {
-        viafabricplus_lastConnect = entry;
-    }
-
     @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AllowedAddressResolver;resolve(Lnet/minecraft/client/network/ServerAddress;)Ljava/util/Optional;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void doOwnParse(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress) {
-        viafabricplus_wrappedAddress = LegacyServerAddress.parse(((IServerInfo) viafabricplus_lastConnect).viafabricplus_forcedVersion(), serverAddress.getAddress());
-    }
-
-    @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;getAddress()Ljava/lang/String;"))
-    public String replaceWithWrappedAddress(ServerAddress instance) {
-        return viafabricplus_wrappedAddress.getAddress();
-    }
-
-    @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;getPort()I"))
-    public int replaceWithWrappedPort(ServerAddress instance) {
-        return viafabricplus_wrappedAddress.getPort();
+    public void mapParsing(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress) {
+        final ServerAddress remapped = LegacyServerAddress.parse(((IServerInfo) entry).viafabricplus_forcedVersion(), serverAddress.getAddress() + ":" + serverAddress.getPort());
+        RStream.of(serverAddress).fields().filter(HostAndPort.class).by(0).set(RStream.of(remapped).fields().filter(HostAndPort.class).by(0).get());
     }
 }
