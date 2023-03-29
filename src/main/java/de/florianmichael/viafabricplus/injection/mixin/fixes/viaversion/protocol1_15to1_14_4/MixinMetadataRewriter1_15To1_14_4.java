@@ -43,11 +43,10 @@ public abstract class MixinMetadataRewriter1_15To1_14_4 extends EntityRewriter<C
 
     @Inject(method = "handleMetadata", at = @At(value = "INVOKE", target = "Ljava/util/List;remove(Ljava/lang/Object;)Z", shift = At.Shift.BEFORE), remap = false)
     public void trackHealth(int entityId, EntityType type, Metadata metadata, List<Metadata> metadatas, UserConnection connection, CallbackInfo ci) {
-        final Meta18Storage meta18Storage = protocol.get(Meta18Storage.class);
-        if (meta18Storage == null) {
+        if (protocol.get(Meta18Storage.class) == null) {
+            protocol.put(new Meta18Storage(connection));
             Via.getPlatform().getLogger().severe("Metadata 18 storage is missing!");
-            return;
         }
-        meta18Storage.getHealthDataMap().put(entityId, (Float) metadata.getValue());
+        protocol.get(Meta18Storage.class).getHealthDataMap().put(entityId, (Float) metadata.getValue());
     }
 }

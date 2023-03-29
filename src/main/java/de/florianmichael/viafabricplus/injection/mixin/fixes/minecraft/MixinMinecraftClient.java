@@ -68,7 +68,7 @@ public abstract class MixinMinecraftClient {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;isAccepted()Z", ordinal = 0))
     private boolean preventGenericInteract(ActionResult instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-            return true;
+            return false;
         }
 
         return instance.isAccepted();
