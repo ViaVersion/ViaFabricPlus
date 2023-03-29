@@ -39,6 +39,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Map;
+
 @Mixin(WallBlock.class)
 public class MixinWallBlock extends Block {
 
@@ -101,6 +103,10 @@ public class MixinWallBlock extends Block {
     @Shadow
     @Final
     public static EnumProperty<WallShape> SOUTH_SHAPE;
+    @Shadow
+    @Final
+    private Map<BlockState, VoxelShape> shapeMap;
+
     public MixinWallBlock(Settings settings) {
         super(settings);
     }
@@ -161,6 +167,11 @@ public class MixinWallBlock extends Block {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(viafabricplus_cip_shape_by_index_v1_12_2[viafabricplus_getShapeIndex_v1_12_2(state)]);
         }
+    }
+
+    @Override
+    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+        return this.shapeMap.get(state); // Always use the real outline shape for culling
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)

@@ -105,6 +105,15 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
+    @ModifyConstant(method = "getActiveEyeHeight", constant = @Constant(floatValue = 1.27f))
+    private float modifySneakEyeHeight(float prevEyeHeight) {
+        if (ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_13_2)) {
+            return prevEyeHeight;
+        } else {
+            return 1.54f;
+        }
+    }
+
     @Unique
     public boolean viafabricplus_isSprinting;
 
