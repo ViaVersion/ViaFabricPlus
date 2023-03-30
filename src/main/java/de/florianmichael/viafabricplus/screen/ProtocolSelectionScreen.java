@@ -80,7 +80,7 @@ public class ProtocolSelectionScreen extends Screen {
             if (BetaCraftScreen.SERVER_LIST == null) {
                 CompletableFuture.runAsync(() -> BetacraftServerList.getFuture().whenComplete((betacraftServerList, throwable) -> {
                     if (throwable != null) {
-                        MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> RenderSystem.recordRenderCall(() -> client.setScreen(BetaCraftScreen.get(this))), Text.literal("Microsoft Bedrock login"), Text.translatable("betacraft.viafabricplus.error"), Text.translatable("words.viafabricplus.cancel"), false)));
+                        MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> RenderSystem.recordRenderCall(() -> client.setScreen(this)), Text.literal("Betacraft"), Text.translatable("betacraft.viafabricplus.error").append("\n" + throwable.getMessage()), Text.translatable("words.viafabricplus.cancel"), false)));
                         return;
                     }
                     BetaCraftScreen.SERVER_LIST = betacraftServerList;
