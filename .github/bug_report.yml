@@ -1,0 +1,56 @@
+name: Bug Report
+description: Report a bug in ViaFabricPlus
+labels: [bug]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Before reporting a bug, please see if using latest build from https://github.com/FlorianMichael/ViaFabricPlus/actions fixes your issue.**
+        Whenever you see fit, you can upload images or videos to any of the text fields.
+
+  - type: textarea
+    attributes:
+      label: General Information
+      description: |
+        Please provide the information below
+      placeholder: |
+        Names of all Mods: XYZ
+        Minecraft Version: XYZ
+        Mod-Loader: XYZ
+        Selected Version: XYZ
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Bug Description
+      description: |
+        Describe the unexpected behavior.
+        If you want to attach screenshots, use the comment field at the bottom of the page.
+      placeholder: |
+        Example: "Joining server xy causes my game to crash."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+      description: |
+        List the steps on how we can reproduce the issue. Make sure I can easily understand what you mean with each step.
+      placeholder: |
+        Example:
+        1. Joining server xy with version 1.14.4
+        2. Game crashes
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: |
+        Describe what exactly you expected to happen.
+      placeholder: |
+        Example: "the game should not crash when I join server xy."
+    validations:
+      required: true
