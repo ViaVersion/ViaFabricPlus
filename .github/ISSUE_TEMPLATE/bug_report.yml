@@ -13,12 +13,9 @@ body:
     attributes:
       label: General Information
       description: |
-        Please provide the information below
+        Please provide a list of all installed mods
       placeholder: |
-        Names of all Mods: XYZ
-        Minecraft Version: XYZ
-        Mod-Loader: XYZ
-        Selected Version: XYZ
+        Example: "ViaFabricPlus, Fabric-API, Quilted-Fabric-API, ModMenu"
     validations:
       required: true
 
