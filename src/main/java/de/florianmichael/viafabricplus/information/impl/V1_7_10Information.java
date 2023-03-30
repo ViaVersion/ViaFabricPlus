@@ -20,7 +20,7 @@ package de.florianmichael.viafabricplus.information.impl;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
-import de.florianmichael.vialoadingbase.platform.ProtocolRange;
+import de.florianmichael.vialoadingbase.model.ProtocolRange;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.storage.EntityTracker;
 
 import java.util.List;

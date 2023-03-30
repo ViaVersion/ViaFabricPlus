@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.event;
 
-import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 

@@ -23,7 +23,7 @@ import de.florianmichael.viafabricplus.screen.settings.settingrenderer.ProtocolS
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.vialoadingbase.platform.ProtocolRange;
+import de.florianmichael.vialoadingbase.model.ProtocolRange;
 import net.minecraft.text.MutableText;
 
 public class ProtocolSyncBooleanSetting extends BooleanSetting {

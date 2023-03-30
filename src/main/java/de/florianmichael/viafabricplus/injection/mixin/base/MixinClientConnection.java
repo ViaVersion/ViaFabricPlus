@@ -25,7 +25,7 @@ import de.florianmichael.viafabricplus.protocolhack.constants.BedrockRakNetConst
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.PipelineInjector;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.event.PipelineReorderEvent;
+import de.florianmichael.vialoadingbase.netty.event.PipelineReorderEvent;
 import io.netty.channel.*;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PacketDecryptor;
@@ -108,7 +108,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "disconnect", at = @At("RETURN"))
     public void resetStorages(Text disconnectReason, CallbackInfo ci) {
-        ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(ViaLoadingBase.getClassWrapper().getTargetVersion());
+        ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(ViaLoadingBase.getInstance().getTargetVersion());
         DisconnectConnectionCallback.EVENT.invoker().onDisconnect();
     }
 

@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.access;
 
-import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 
 public interface IServerInfo {
 

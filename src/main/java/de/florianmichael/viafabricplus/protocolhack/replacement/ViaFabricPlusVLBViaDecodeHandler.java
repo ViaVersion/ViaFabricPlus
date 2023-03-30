@@ -21,7 +21,7 @@ import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.exception.CancelCodecException;
 import com.viaversion.viaversion.util.PipelineUtil;
-import de.florianmichael.vialoadingbase.netty.VLBViaDecodeHandler;
+import de.florianmichael.vialoadingbase.netty.handler.VLBViaDecodeHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 

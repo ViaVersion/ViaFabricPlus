@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.information;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.vialoadingbase.platform.ProtocolRange;
+import de.florianmichael.vialoadingbase.model.ProtocolRange;
 
 import java.util.List;
 

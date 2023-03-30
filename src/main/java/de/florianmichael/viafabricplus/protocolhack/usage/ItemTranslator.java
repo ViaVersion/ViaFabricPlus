@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 public class ItemTranslator {
 
     public static Item minecraftToViaVersion(final UserConnection user, final ItemStack stack, final int targetVersion) {
-        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ViaLoadingBase.getClassWrapper().getNativeVersion(), targetVersion);
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ViaLoadingBase.getInstance().getNativeVersion(), targetVersion);
         if (protocolPath == null) return null;
 
         final CreativeInventoryActionC2SPacket dummyPacket = new CreativeInventoryActionC2SPacket(36, stack);

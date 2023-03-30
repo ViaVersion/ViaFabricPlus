@@ -33,7 +33,7 @@ public class GeneralInformation extends AbstractInformationGroup {
     @Override
     public void applyInformation(UserConnection userConnection, List<String> output) {
         output.add("Pipeline count: " + userConnection.getProtocolInfo().getPipeline().pipes().size());
-        output.add("Selected version (in the GUI): " + ViaLoadingBase.getClassWrapper().getTargetVersion().getName() + " (" + ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion() + ")");
+        output.add("Selected version (in the GUI): " + ViaLoadingBase.getInstance().getTargetVersion().getName() + " (" + ViaLoadingBase.getInstance().getTargetVersion().getVersion() + ")");
         output.add("Connected version: " + ProtocolHack.getTargetVersion().getName() + " (" + ProtocolHack.getTargetVersion().getVersion() + ")");
     }
 }

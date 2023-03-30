@@ -37,8 +37,8 @@ import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabri
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusMovementTransmitterProvider;
 import de.florianmichael.viafabricplus.protocolhack.replacement.ViaFabricPlusVLBBaseVersionProvider;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
-import de.florianmichael.vialoadingbase.platform.SubPlatform;
+import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.model.Platform;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import net.minecraft.SharedConstants;
@@ -76,7 +76,7 @@ public class ProtocolHack {
     public static ComparableProtocolVersion getTargetVersion(final Channel channel) {
         if (channel != null && channel.hasAttr(FORCED_VERSION)) return channel.attr(FORCED_VERSION).get();
 
-        return ViaLoadingBase.getClassWrapper().getTargetVersion();
+        return ViaLoadingBase.getInstance().getTargetVersion();
     }
 
     public static Map<InetSocketAddress, ComparableProtocolVersion> getForcedVersions() {
@@ -102,8 +102,8 @@ public class ProtocolHack {
     public ProtocolHack() {
         ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
 
-        builder = builder.subPlatform(new SubPlatform("ViaBedrock", () -> true, ViaBedrockPlatformImpl::new, protocolVersions -> protocolVersions.add(BedrockProtocolVersion.bedrockLatest)), 0);
-        builder = builder.subPlatform(new SubPlatform("ViaLegacy", () -> true, ViaLegacyPlatformImpl::new, protocolVersions -> {
+        builder = builder.platform(new Platform("ViaBedrock", () -> true, ViaBedrockPlatformImpl::new, protocolVersions -> protocolVersions.add(BedrockProtocolVersion.bedrockLatest)), 0);
+        builder = builder.platform(new Platform("ViaLegacy", () -> true, ViaLegacyPlatformImpl::new, protocolVersions -> {
             final List<ProtocolVersion> legacyProtocols = new ArrayList<>(LegacyProtocolVersion.PROTOCOLS);
             Collections.reverse(legacyProtocols);
 
@@ -112,7 +112,7 @@ public class ProtocolHack {
 
             protocolVersions.addAll(legacyProtocols);
         }));
-        builder = builder.subPlatform(new SubPlatform("ViaAprilFools", () -> true, ViaAprilFoolsPlatformImpl::new, protocolVersions -> {
+        builder = builder.platform(new Platform("ViaAprilFools", () -> true, ViaAprilFoolsPlatformImpl::new, protocolVersions -> {
             protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_14) + 1, AprilFoolsProtocolVersion.s3d_shareware);
             protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_16) + 1, AprilFoolsProtocolVersion.s20w14infinite);
             protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_16_2) + 1, AprilFoolsProtocolVersion.sCombatTest8c);

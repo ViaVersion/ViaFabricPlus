@@ -19,8 +19,8 @@ package de.florianmichael.viafabricplus.definition.v1_14_4;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
-import de.florianmichael.vialoadingbase.platform.ProtocolRange;
+import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
+import de.florianmichael.vialoadingbase.model.ProtocolRange;
 import net.minecraft.client.network.AllowedAddressResolver;
 import net.minecraft.client.network.ServerAddress;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
@@ -30,7 +30,7 @@ public class LegacyServerAddress {
     private final static ProtocolRange SRV_RANGE = new ProtocolRange(ProtocolVersion.v1_16_4, LegacyProtocolVersion.r1_3_1tor1_3_2);
 
     public static ServerAddress parse(ComparableProtocolVersion version, String address) {
-        if (version == null) version = ViaLoadingBase.getClassWrapper().getTargetVersion();
+        if (version == null) version = ViaLoadingBase.getInstance().getTargetVersion();
         final ServerAddress mc = ServerAddress.parse(address);
         if (SRV_RANGE.contains(version) || version.isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
             if (!mc.equals(ServerAddress.INVALID)) {

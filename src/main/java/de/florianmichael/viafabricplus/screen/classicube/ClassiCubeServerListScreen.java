@@ -28,10 +28,9 @@ import de.florianmichael.viafabricplus.screen.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import de.florianmichael.viafabricplus.settings.groups.MPPassSettings;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
-import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -145,7 +144,7 @@ public class ClassiCubeServerListScreen extends Screen {
             ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = classiCubeServerInfo.mppass();
 
             if (MPPassSettings.INSTANCE.forceCPEIfUsingClassiCube.getValue()) {
-                ((IServerInfo) entry).viafabricplus_forceVersion(InternalProtocolList.fromProtocolVersion(LegacyProtocolVersion.c0_30cpe));
+                ((IServerInfo) entry).viafabricplus_forceVersion(ViaLoadingBase.fromProtocolVersion(LegacyProtocolVersion.c0_30cpe));
             }
 
             ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry);

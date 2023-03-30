@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialoadingbase;
 
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
-import de.florianmichael.vialoadingbase.defaults.viaversion.VLBViaConfig;
+import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaConfig;
 import org.spongepowered.asm.mixin.Mixin;
 
 import java.io.File;

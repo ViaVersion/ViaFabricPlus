@@ -24,7 +24,7 @@ import de.florianmichael.viafabricplus.definition.bedrock.ModelFormats;
 import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
-import de.florianmichael.vialoadingbase.platform.ProtocolRange;
+import de.florianmichael.vialoadingbase.model.ProtocolRange;
 import net.lenni0451.reflect.stream.RStream;
 import net.lenni0451.reflect.stream.field.FieldStream;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;

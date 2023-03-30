@@ -31,7 +31,7 @@ import de.florianmichael.viafabricplus.protocolhack.platform.vialegacy.VFPPreNet
 import de.florianmichael.viafabricplus.protocolhack.platform.vialegacy.VFPPreNettyEncoder;
 import de.florianmichael.viafabricplus.protocolhack.replacement.ViaFabricPlusVLBViaDecodeHandler;
 import de.florianmichael.vialoadingbase.netty.NettyConstants;
-import de.florianmichael.vialoadingbase.netty.VLBViaEncodeHandler;
+import de.florianmichael.vialoadingbase.netty.handler.VLBViaEncodeHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.EpollDatagramChannel;

@@ -18,13 +18,12 @@
 package de.florianmichael.viafabricplus.screen;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.platform.ComparableProtocolVersion;
-import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
@@ -33,7 +32,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.awt.*;
-import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings({"DataFlowIssue", "DuplicatedCode"})
@@ -78,7 +76,7 @@ public class ForceVersionScreen extends Screen {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             this.addEntry(new ResetProtocolSlot());
-            InternalProtocolList.getProtocols().stream().map(ViaProtocolSlot::new).forEach(this::addEntry);
+            ViaLoadingBase.getProtocols().stream().map(ViaProtocolSlot::new).forEach(this::addEntry);
         }
     }
 
@@ -123,7 +121,7 @@ public class ForceVersionScreen extends Screen {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            ForceVersionScreen.this.selectionConsumer.accept(InternalProtocolList.fromProtocolVersion(protocolVersion));
+            ForceVersionScreen.this.selectionConsumer.accept(ViaLoadingBase.fromProtocolVersion(protocolVersion));
             MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             ForceVersionScreen.this.close();
             return super.mouseClicked(mouseX, mouseY, button);

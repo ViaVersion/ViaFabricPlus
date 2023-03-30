@@ -23,9 +23,7 @@ import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.groups.*;
 import de.florianmichael.viafabricplus.util.FileSaver;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,7 +54,7 @@ public class SettingsSystem extends FileSaver {
 
     @Override
     public void write(JsonObject object) {
-        object.addProperty("protocol", ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion());
+        object.addProperty("protocol", ViaLoadingBase.getInstance().getTargetVersion().getVersion());
         for (SettingGroup group : groups) {
             for (AbstractSetting<?> setting : group.getSettings()) {
                 setting.write(object);
@@ -67,7 +65,7 @@ public class SettingsSystem extends FileSaver {
     @Override
     public void read(JsonObject object) {
         if (object.has("protocol")) {
-            ViaLoadingBase.getClassWrapper().reload(InternalProtocolList.fromProtocolId(object.get("protocol").getAsInt()));
+            ViaLoadingBase.getInstance().reload(ViaLoadingBase.fromProtocolId(object.get("protocol").getAsInt()));
         }
         for (SettingGroup group : groups) {
             for (AbstractSetting<?> setting : group.getSettings()) {

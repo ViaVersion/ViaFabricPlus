@@ -28,7 +28,6 @@ import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.NoticeScreen;
@@ -119,7 +118,7 @@ public class ProtocolSelectionScreen extends Screen {
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
-            InternalProtocolList.getProtocols().stream().map(ProtocolSlot::new).forEach(this::addEntry);
+            ViaLoadingBase.getProtocols().stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }
     }
 
@@ -137,7 +136,7 @@ public class ProtocolSelectionScreen extends Screen {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            ViaLoadingBase.getClassWrapper().reload(this.protocolVersion);
+            ViaLoadingBase.getInstance().reload(this.protocolVersion);
             ScreenUtil.playClickSound();
             return super.mouseClicked(mouseX, mouseY, button);
         }
