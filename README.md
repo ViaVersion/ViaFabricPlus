@@ -70,7 +70,7 @@ It should work fine with most if not all mods and modpacks.
 - ***[Krypton](https://github.com/astei/krypton)***
 
 ## Supported Server versions
-- Release (1.0.0 - 1.20 [23w12a])
+- Release (1.0.0 - 1.20 [23w13a])
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
