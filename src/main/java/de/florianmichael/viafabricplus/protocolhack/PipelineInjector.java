@@ -86,9 +86,9 @@ public class PipelineInjector {
     /**
      * This method represents the rak net connection for bedrock edition, it's a replacement of the ClientConnection#connect method
      */
-    public static void connectRakNet(final ClientConnection clientConnection, final InetSocketAddress address, final Lazy<? extends MultithreadEventLoopGroup> lazy, final Class<? extends AbstractChannel> channelType) {
+    public static void connectRakNet(final ClientConnection clientConnection, final InetSocketAddress address, final Lazy lazy, final Class channelType) {
         Bootstrap nettyBoostrap = new Bootstrap();
-        nettyBoostrap = nettyBoostrap.group(lazy.get());
+        nettyBoostrap = nettyBoostrap.group((EventLoopGroup) lazy.get());
         nettyBoostrap = nettyBoostrap.handler(new ChannelInitializer<>() {
             @Override
             protected void initChannel(@NotNull Channel channel) throws Exception {
