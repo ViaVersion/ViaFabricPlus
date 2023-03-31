@@ -11,6 +11,7 @@
     "base.MixinMinecraftClient",
     "base.MixinMultiplayerScreen",
     "base.MixinMultiplayerServerListPinger",
+    "base.MixinSharedConstants",
     "bridge.MixinAddServerScreen",
     "bridge.MixinConnectScreen",
     "bridge.MixinDebugHud",
@@ -24,6 +25,7 @@
     "fixes.minecraft.MixinInGameHud",
     "fixes.minecraft.MixinItemRenderer",
     "fixes.minecraft.MixinMinecraftClient",
+    "fixes.minecraft.MixinMultiplayerServerListPinger",
     "fixes.minecraft.MixinPendingUpdateManager",
     "fixes.minecraft.MixinPlayerEntityRenderer",
     "fixes.minecraft.MixinPlayerPublicKey_PublicKeyData",
@@ -106,7 +108,6 @@
     "fixes.minecraft.screen.MixinGameModeSelectionScreen_GameModeSelection",
     "fixes.minecraft.screen.MixinJigsawBlockScreen",
     "fixes.minecraft.screen.MixinMultiplayerScreen",
-    "fixes.minecraft.MixinMultiplayerServerListPinger",
     "fixes.minecraft.screen.MixinStructureBlockScreen_1",
     "fixes.minecraft.screen.merchant.MixinMerchantScreen",
     "fixes.minecraft.screen.merchant.MixinMerchantScreenHandler",
@@ -149,10 +150,12 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "base.MixinSharedConstants"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "fixes.vialegacy.MixinViaLegacyConfig"
+  ]
 }

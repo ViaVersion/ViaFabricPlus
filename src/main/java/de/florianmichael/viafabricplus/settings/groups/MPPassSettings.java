@@ -29,6 +29,7 @@ public class MPPassSettings extends SettingGroup {
     public final BooleanSetting disconnectIfJoinServerCallFails = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.fail"), true);
     public final BooleanSetting forceCPEIfUsingClassiCube = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.classicube"), true);
     public final BooleanSetting spoofUserNameIfUsingClassiCube = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.spoof"), true);
+    public final BooleanSetting allowViaLegacyToLoadSkinsInLegacyVersions = new BooleanSetting(this, Text.translatable("mppass.viafabricplus.skin"), true);
 
     public MPPassSettings() {
         super("MP Pass");

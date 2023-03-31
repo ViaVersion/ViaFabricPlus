@@ -41,6 +41,7 @@
   "mppass.viafabricplus.fail": "Disconnect if joinServer() call fails",
   "mppass.viafabricplus.classicube": "Force CPE Version if using ClassiCube",
   "mppass.viafabricplus.spoof": "Spoof Username to ClassiCube Name if using ClassiCube",
+  "mppass.viafabricplus.skin": "Allow ViaLegacy to load skins in legacy versions",
 
   "visual.viafabricplus.secure": "Disable secure chat warning",
   "visual.viafabricplus.indicator": "Hide signature indicator",
