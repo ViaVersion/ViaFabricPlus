@@ -11,6 +11,7 @@
   "words.viafabricplus.logout": "Вийти",
   "words.viafabricplus.online": "Онлайн режим",
   "words.viafabricplus.reset": "Зкинути",
+  "words.viafabricplus.copy": "Зкопіювати код",
 
   "bedrock.viafabricplus.set": "Нажміть, щоб встановити аккаунт для Bedrock",
 
@@ -40,6 +41,7 @@
   "mppass.viafabricplus.fail": "Від’єднатися, якщо виклик joinServer() не вдається",
   "mppass.viafabricplus.classicube": "Примусово встановити версію CPE, якщо використовується ClassiCube MP Pass",
   "mppass.viafabricplus.spoof": "Підмінити ім'я користувача на ім'я ClassiCube, якщо використовується ClassiCube",
+  "mppass.viafabricplus.skin": "Дозволити ViaLegacy завантажувати скіни в старих версіх",
 
   "visual.viafabricplus.secure": "Прибрати застереження чату",
   "visual.viafabricplus.indicator": "Сховати ідикатор підпису",
