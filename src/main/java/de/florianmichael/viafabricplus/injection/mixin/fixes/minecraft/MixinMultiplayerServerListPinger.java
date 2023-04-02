@@ -20,16 +20,13 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 import com.google.common.net.HostAndPort;
 import de.florianmichael.viafabricplus.definition.v1_14_4.LegacyServerAddress;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import net.lenni0451.reflect.Fields;
 import net.lenni0451.reflect.stream.RStream;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -38,7 +35,7 @@ public class MixinMultiplayerServerListPinger {
 
     @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AllowedAddressResolver;resolve(Lnet/minecraft/client/network/ServerAddress;)Ljava/util/Optional;"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void mapParsing(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress) {
-        final ServerAddress remapped = LegacyServerAddress.parse(((IServerInfo) entry).viafabricplus_forcedVersion(), serverAddress.getAddress() + ":" + serverAddress.getPort());
+        final ServerAddress remapped = LegacyServerAddress.parse(((IServerInfo) entry).viafabricplus_forcedVersion(), serverAddress.hostAndPort.toString());
         RStream.of(serverAddress).fields().filter(HostAndPort.class).by(0).set(RStream.of(remapped).fields().filter(HostAndPort.class).by(0).get());
     }
 }
