@@ -17,15 +17,21 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
+import de.florianmichael.viafabricplus.definition.v1_14_4.LegacyServerAddress;
+import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.screen.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.network.ServerAddress;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MultiplayerScreen.class)
@@ -48,5 +54,18 @@ public class MixinMultiplayerScreen extends Screen {
         }
 
         this.addDrawableChild(builder.size(98, 20).build());
+    }
+
+    @Unique
+    private ServerInfo viafabricplus_lastConnect;
+
+    @Inject(method = "connect(Lnet/minecraft/client/network/ServerInfo;)V", at = @At("HEAD"))
+    public void track(ServerInfo entry, CallbackInfo ci) {
+        viafabricplus_lastConnect = entry;
+    }
+
+    @Redirect(method = "connect(Lnet/minecraft/client/network/ServerInfo;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
+    public ServerAddress doOwnParse(String address) {
+        return LegacyServerAddress.parse(((IServerInfo) viafabricplus_lastConnect).viafabricplus_forcedVersion(), address);
     }
 }

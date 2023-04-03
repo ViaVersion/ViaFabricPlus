@@ -107,7 +107,6 @@
     "fixes.minecraft.screen.MixinGameModeSelectionScreen",
     "fixes.minecraft.screen.MixinGameModeSelectionScreen_GameModeSelection",
     "fixes.minecraft.screen.MixinJigsawBlockScreen",
-    "fixes.minecraft.screen.MixinMultiplayerScreen",
     "fixes.minecraft.screen.MixinStructureBlockScreen_1",
     "fixes.minecraft.screen.merchant.MixinMerchantScreen",
     "fixes.minecraft.screen.merchant.MixinMerchantScreenHandler",
@@ -150,12 +149,10 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder",
+    "fixes.vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "fixes.vialegacy.MixinViaLegacyConfig"
-  ]
+  }
 }
