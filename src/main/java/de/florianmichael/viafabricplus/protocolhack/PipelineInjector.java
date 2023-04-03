@@ -78,6 +78,7 @@ public class PipelineInjector {
 
             channel.pipeline().addBefore("splitter", PreNettyConstants.VIA_LEGACY_CODEC_NAME, new ViaFabricPlusPreNettyLengthCodec(user));
 
+            // MC Pipeline doesn't like codecs
             channel.pipeline().remove("prepender");
             channel.pipeline().addAfter("splitter", "prepender", new SizePrepender());
         }

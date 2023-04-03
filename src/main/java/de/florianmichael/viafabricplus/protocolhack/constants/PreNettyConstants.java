@@ -19,5 +19,5 @@ package de.florianmichael.viafabricplus.protocolhack.constants;
 
 public class PreNettyConstants {
 
-    public static final String VIA_LEGACY_CODEC_NAME = "via-legacy-codec";
+    public static final String VIA_LEGACY_CODEC_NAME = "vialegacy-pre-netty-length-codecc";
 }
