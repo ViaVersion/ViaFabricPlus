@@ -108,7 +108,7 @@ public abstract class MixinMinecraftClient {
         if (getNetworkHandler() != null && DebugSettings.INSTANCE.sendOpenInventoryPacket.getValue()) {
             final UserConnection viaConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
 
-            if (viaConnection != null && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+            if (viaConnection != null && viaConnection.getProtocolInfo().getPipeline().contains(Protocol1_12To1_11_1.class)) {
                 final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, viaConnection);
                 clientStatus.write(Type.VAR_INT, 2); // Open Inventory Achievement
 
