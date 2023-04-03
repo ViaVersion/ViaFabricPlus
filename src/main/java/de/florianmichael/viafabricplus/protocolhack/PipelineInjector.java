@@ -27,11 +27,9 @@ import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.PingEnca
 import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.RakMessageEncapsulationCodec;
 import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.library_fix.FixedUnconnectedPingEncoder;
 import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.library_fix.FixedUnconnectedPongDecoder;
-import de.florianmichael.viafabricplus.protocolhack.platform.vialegacy.VFPPreNettyDecoder;
-import de.florianmichael.viafabricplus.protocolhack.platform.vialegacy.VFPPreNettyEncoder;
-import de.florianmichael.viafabricplus.protocolhack.replacement.ViaFabricPlusVLBViaDecodeHandler;
+import de.florianmichael.viafabricplus.protocolhack.platform.vialegacy.ViaFabricPlusPreNettyLengthCodec;
+import de.florianmichael.viafabricplus.protocolhack.replacement.ViaFabricPlusVLBViaCodec;
 import de.florianmichael.vialoadingbase.netty.NettyConstants;
-import de.florianmichael.vialoadingbase.netty.handler.VLBViaEncodeHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.EpollDatagramChannel;
@@ -40,6 +38,7 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
+import net.minecraft.network.SizePrepender;
 import net.minecraft.util.Lazy;
 import net.raphimc.viabedrock.netty.BatchLengthCodec;
 import net.raphimc.viabedrock.netty.PacketEncapsulationCodec;
@@ -72,14 +71,15 @@ public class PipelineInjector {
 
         new ProtocolPipelineImpl(user);
 
-        channel.pipeline().addBefore("encoder", NettyConstants.HANDLER_ENCODER_NAME, new VLBViaEncodeHandler(user));
-        channel.pipeline().addBefore("decoder", NettyConstants.HANDLER_DECODER_NAME, new ViaFabricPlusVLBViaDecodeHandler(user));
+        channel.pipeline().addBefore("decoder", NettyConstants.VIA_CODEC_NAME, new ViaFabricPlusVLBViaCodec(user));
 
         if (ProtocolHack.getTargetVersion(channel).isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             user.getProtocolInfo().getPipeline().add(PreNettyBaseProtocol.INSTANCE);
 
-            channel.pipeline().addBefore("prepender", PreNettyConstants.HANDLER_ENCODER_NAME, new VFPPreNettyEncoder(user));
-            channel.pipeline().addBefore("splitter", PreNettyConstants.HANDLER_DECODER_NAME, new VFPPreNettyDecoder(user));
+            channel.pipeline().addBefore("splitter", PreNettyConstants.VIA_LEGACY_CODEC_NAME, new ViaFabricPlusPreNettyLengthCodec(user));
+
+            channel.pipeline().remove("prepender");
+            channel.pipeline().addAfter("splitter", "prepender", new SizePrepender());
         }
     }
 

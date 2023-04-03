@@ -19,6 +19,5 @@ package de.florianmichael.viafabricplus.protocolhack.constants;
 
 public class PreNettyConstants {
 
-    public static final String HANDLER_DECODER_NAME = "via-legacy-decoder";
-    public static final String HANDLER_ENCODER_NAME = "via-legacy-encoder";
+    public static final String VIA_LEGACY_CODEC_NAME = "via-legacy-codec";
 }

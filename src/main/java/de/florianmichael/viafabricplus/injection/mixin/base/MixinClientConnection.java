@@ -25,7 +25,7 @@ import de.florianmichael.viafabricplus.protocolhack.constants.BedrockRakNetConst
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.PipelineInjector;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.netty.event.PipelineReorderEvent;
+import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
 import io.netty.channel.*;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PacketDecryptor;
@@ -74,7 +74,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
     private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
-        channel.pipeline().fireUserEventTriggered(new PipelineReorderEvent());
+        channel.pipeline().fireUserEventTriggered(new CompressionReorderEvent());
     }
 
     @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
@@ -114,8 +114,8 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Override
     public void viafabricplus_setupPreNettyEncryption() {
-        this.channel.pipeline().addBefore(PreNettyConstants.HANDLER_DECODER_NAME, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
-        this.channel.pipeline().addBefore(PreNettyConstants.HANDLER_ENCODER_NAME, "encrypt", new PacketEncryptor(this.viafabricplus_encryptionCipher));
+        this.channel.pipeline().addBefore(PreNettyConstants.VIA_LEGACY_CODEC_NAME, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
+        this.channel.pipeline().addBefore(PreNettyConstants.VIA_LEGACY_CODEC_NAME, "encrypt", new PacketEncryptor(this.viafabricplus_encryptionCipher));
     }
 
     @Override

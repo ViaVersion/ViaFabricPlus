@@ -15,30 +15,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack.platform.vialegacy;
+package de.florianmichael.viafabricplus.protocolhack.replacement;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.exception.CancelCodecException;
+import com.viaversion.viaversion.util.PipelineUtil;
+import de.florianmichael.vialoadingbase.netty.VLBViaCodec;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import net.raphimc.vialegacy.netty.PreNettyDecoder;
 
 import java.util.List;
+import java.util.logging.Level;
 
-public class VFPPreNettyDecoder extends PreNettyDecoder {
+public class ViaFabricPlusVLBViaCodec extends VLBViaCodec {
 
-    public VFPPreNettyDecoder(UserConnection user) {
-        super(user);
+    public ViaFabricPlusVLBViaCodec(UserConnection info) {
+        super(info);
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
-        if (Via.getManager().isDebug()) {
-            if (!in.isReadable() || in.readableBytes() <= 0) {
-                return;
-            }
-            Via.getPlatform().getLogger().info("Decoding pre netty packet: " + in.copy().readUnsignedByte());
+    protected void decode(ChannelHandlerContext ctx, ByteBuf bytebuf, List<Object> out) throws Exception {
+        try {
+            super.decode(ctx, bytebuf, out);
+        } catch (Throwable e) {
+            if (PipelineUtil.containsCause(e, CancelCodecException.class)) throw e;
+            Via.getPlatform().getLogger().log(Level.SEVERE, "ViaLoadingBase Packet Error occurred", e);
+            e.printStackTrace();
         }
-        super.decode(ctx, in, out);
     }
 }

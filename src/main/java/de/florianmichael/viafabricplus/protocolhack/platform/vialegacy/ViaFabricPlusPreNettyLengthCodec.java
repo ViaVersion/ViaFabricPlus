@@ -22,12 +22,25 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import net.raphimc.vialegacy.netty.PreNettyEncoder;
+import net.raphimc.vialegacy.netty.PreNettyLengthCodec;
 
-public class VFPPreNettyEncoder extends PreNettyEncoder {
+import java.util.List;
 
-    public VFPPreNettyEncoder(UserConnection user) {
+public class ViaFabricPlusPreNettyLengthCodec extends PreNettyLengthCodec {
+
+    public ViaFabricPlusPreNettyLengthCodec(UserConnection user) {
         super(user);
+    }
+
+    @Override
+    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
+        if (Via.getManager().isDebug()) {
+            if (!in.isReadable() || in.readableBytes() <= 0) {
+                return;
+            }
+            Via.getPlatform().getLogger().info("Decoding pre netty packet: " + in.copy().readUnsignedByte());
+        }
+        super.decode(ctx, in, out);
     }
 
     @Override
