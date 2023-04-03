@@ -75,7 +75,7 @@ dependencies {
 		exclude group: "io.jsonwebtoken", module: "jjwt-impl"
 		exclude group: "io.jsonwebtoken", module: "jjwt-gson"
 	}
-	libs "io.netty:netty-codec-http:4.1.90.Final" // Some people don't know how to define dependencies properly in a build.gradle
+	libs "io.netty:netty-codec-http:${project.netty_codec_http_version}" // Some people don't know how to define dependencies properly in a build.gradle
 	libs ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
 		exclude group: "com.google.code.gson", module: "gson"
 		exclude group: "org.slf4j", module: "slf4j-api"
