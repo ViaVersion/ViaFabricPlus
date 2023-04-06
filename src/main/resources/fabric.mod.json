@@ -30,6 +30,9 @@
     "minecraft": "~1.19.4",
     "java": ">=17"
   },
+  "recommends": {
+    "bedrockskinutility": ">=1.5.0"
+  },
   "breaks": {
     "viafabric": "*",
     "multiconnect": "*",
