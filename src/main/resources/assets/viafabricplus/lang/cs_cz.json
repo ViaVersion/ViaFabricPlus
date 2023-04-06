@@ -1,0 +1,76 @@
+{
+  "words.viafabricplus.settings": "Nastavení",
+  "words.viafabricplus.on": "Ano",
+  "words.viafabricplus.off": "Ne",
+  "words.viafabricplus.lt": "Vlevo nahoře",
+  "words.viafabricplus.rt": "Vpravo nahoře",
+  "words.viafabricplus.lb": "Vlevo dole",
+  "words.viafabricplus.rb": "Vpravo dole",
+  "words.viafabricplus.cancel": "Zrušit",
+  "words.viafabricplus.cancelreset": "Zrušit a resetovat",
+  "words.viafabricplus.logout": "Odhlásit se",
+  "words.viafabricplus.online": "Online Mode",
+  "words.viafabricplus.reset": "Resetovat",
+  "words.viafabricplus.copy": "Kopírovat kód",
+
+  "bedrock.viafabricplus.set": "Kliknutím zvolíš účet pro Bedrock edici",
+
+  "bridge.viafabricplus.secret": "Zobrazit \"Super Secret Settings\"",
+  "bridge.viafabricplus.extrainformation": "Zobrazit více informací v ladící obrazovce",
+  "bridge.viafabricplus.classicloading": "Zobrazit progres načítání mapy při připojování ke classic serveru",
+
+  "debug.viafabricplus.sequence": "Vypnout sekvencování",
+  "debug.viafabricplus.merchant": "Smooth out merchant screens",
+  "debug.viafabricplus.postfix": "Spustit vstupy v synchronizaci",
+  "debug.viafabricplus.sneakinstant": "Instantní plížení",
+  "debug.viafabricplus.inventory": "Odesílat packet otevření inventáře",
+  "debug.viafabricplus.cooldown": "Odstranit cooldowny",
+  "debug.viafabricplus.idle": "Odesílat idle packet",
+  "debug.viafabricplus.attribute": "Nahradit modifiery atributů",
+  "debug.viafabricplus.replacesneak": "Nahradit plížení",
+  "debug.viafabricplus.longsneak": "Dlouhé plížení",
+  "debug.viafabricplus.legacypseeds": "Staré rychlosti těžení",
+
+  "general.viafabricplus.main": "Umístění hlavního tlačítka",
+  "general.viafabricplus.creative": "Odstranit nedostupné předměty z inventáře tvořivé hry",
+  "general.viafabricplus.classiccommands": "Povolit classic příkazy",
+  "general.viafabricplus.protocolsync": "Automaticky změnit nastavení podle zvolené verze",
+
+  "mppass.viafabricplus.betacraft": "Použít BetaCraft systém přihlašování",
+  "mppass.viafabricplus.verify": "Umožnit ViaLegacy zavolat joinServer() pro ověření relace",
+  "mppass.viafabricplus.fail": "Odpojit, pokud se zavolání joinServer() nepodaří",
+  "mppass.viafabricplus.classicube": "Změnit verzi na CPE při používání ClassiCube",
+  "mppass.viafabricplus.spoof": "Změnit uživatelské jméno na ClassiCube jméno při používání ClassiCube",
+  "mppass.viafabricplus.skin": "Umožnit ViaLegacy k načtení skinů ve starých verzích",
+
+  "visual.viafabricplus.secure": "Vypnout varování \"zabezpečeného\" chatu",
+  "visual.viafabricplus.indicator": "Nezobrazovat indikátory \"zabezpečeného\" chatu",
+  "visual.viafabricplus.jigsaw": "Odstranit novější funkce z bloku skládačky",
+  "visual.viafabricplus.stoneslab": "Vyměnit \"Zkamenělý dubový půlblok\"",
+  "visual.viafabricplus.armor": "Emulovat hud Armoru",
+  "visual.viafabricplus.command": "Odstranit novější funkce z příkazového bloku",
+  "visual.viafabricplus.oof": "Vyměnit zvuk zranění s \"OOF\" zvukem",
+  "visual.viafabricplus.betahud": "Odstranit novější prvky z HUD",
+  "visual.viafabricplus.classic": "Vyměnit inventář tvořivé hry",
+  "visual.viafabricplus.walkanimation": "Stará chodící animace",
+  "visual.viafabricplus.sodium": "Opravit Chunk renderer v Sodium módu",
+
+  "bedrocklogin.viafabricplus.text": "Váš webový prohlížeč by se měl spustit.\nProsím zadejte tento Kód: %s\nZavření této obrazovky zruší tento proces!",
+  "bedrocklogin.viafabricplus.error": "Nastala chyba. Podívejte se na latest.log pro více informací,\nprosím nahlašte tuto chybu zde (nejlépe v angličtině): \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+
+  "forceversion.viafabricplus.title": "Prosím zvolte verzi s kterou se bude server pingovat/připojovat",
+
+  "classicube.viafabricplus.account": "Můžete si vytvořit účet zde: https://www.classicube.net/",
+  "classicube.viafabricplus.loading": "Načítaní informace účtu a seznam serverů...",
+
+  "classicube.viafabricplus.error.token": "Neplatný token. Je vaše verze modu ViaFabricPlus zastaralá?",
+  "classicube.viafabricplus.error.username": "Neplatné uživatelské jméno.",
+  "classicube.viafabricplus.error.password": "Neplatné heslo.",
+  "classicube.viafabricplus.error.verification": "Uživatel si ještě neverifikoval svoji E-mailovou adresu.",
+  "classicube.viafabricplus.error.logincode": "Je požadováno více-fázové ověření. Prosím zkontrolujte si svůj E-mail.",
+
+  "classicube.viafabricplus.warning": "Tato funkce pošle API requesty do ClassiCube API.",
+
+  "betacraft.viafabricplus.warning": "Zmácknutí tohoto tlačítka pošle API requesty do \"betacraft.uk/serverlist\".",
+  "betacraft.viafabricplus.error": "Něco se pokazilo! Zkuste to prosím znovu později"
+}
