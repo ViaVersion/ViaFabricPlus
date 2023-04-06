@@ -31,6 +31,7 @@ if you know a language well, feel free to make a PR and add translations for tha
 - Luxembourgish (by **[Graf]()**)
 - Ukrainian (by **[Fundi1330](https://github.com/Fundi1330)**)
 - Traditional Chinese (by **[luluxiaoyu](https://github.com/luluxiaoyu)**)
+- Czech (by **[MIOGMIOG](https://github.com/MIOGMIOG)**)
 
 ### Dependencies
 | Dependency             | Download                                                   |
