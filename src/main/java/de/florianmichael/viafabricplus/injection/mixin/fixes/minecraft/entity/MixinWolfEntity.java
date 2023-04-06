@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.definition.v1_14_4.Meta18Storage;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -35,7 +36,9 @@ public class MixinWolfEntity {
     public float rewriteHealth(WolfEntity instance) {
         float health = instance.getHealth();
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            return MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get().get(Meta18Storage.class).getHealthDataMap().getOrDefault(instance.getId(), health);
+            final UserConnection userConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
+            if (!userConnection.has(Meta18Storage.class)) userConnection.put(new Meta18Storage(userConnection));
+            return userConnection.get(Meta18Storage.class).getHealthDataMap().getOrDefault(instance.getId(), health);
         }
         return health;
     }
