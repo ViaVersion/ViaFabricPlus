@@ -15,9 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack.constants;
+package de.florianmichael.viafabricplus.protocolhack.provider.vialoadingbase;
 
-public class PreNettyConstants {
+import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.vialoadingbase.provider.VLBBaseVersionProvider;
 
-    public static final String VIA_LEGACY_CODEC_NAME = "vialegacy-pre-netty-length-codecc";
+public class ViaFabricPlusVLBBaseVersionProvider extends VLBBaseVersionProvider {
+
+    @Override
+    public int getClosestServerProtocol(UserConnection connection) throws Exception {
+        if (connection.isClientSide()) {
+            return ProtocolHack.getTargetVersion(connection.getChannel()).getVersion();
+        }
+        return super.getClosestServerProtocol(connection);
+    }
 }

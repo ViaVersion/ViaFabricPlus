@@ -122,6 +122,7 @@
     "fixes.vialegacy.MixinExtensionProtocolMetadataStorage",
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
     "fixes.vialegacy.MixinProtocolc0_30toc0_30cpe",
+    "fixes.vialegacy.MixinViaLegacyConfig",
     "fixes.vialoadingbase.MixinVLBViaConfig",
     "fixes.viaversion.MixinCommonBoss",
     "fixes.viaversion.MixinProtocolVersion",
@@ -149,8 +150,7 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "fixes.vialegacy.MixinViaLegacyConfig"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder"
   ],
   "injectors": {
     "defaultRequire": 1
