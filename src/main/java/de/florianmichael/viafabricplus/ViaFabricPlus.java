@@ -62,7 +62,7 @@ public class ViaFabricPlus {
 
         // Protocol Translator
         ChatLengthCalculation.create();
-        new ProtocolHack();
+        ProtocolHack.init();
 
         FinishMinecraftLoadCallback.EVENT.register(() -> {
             // General settings

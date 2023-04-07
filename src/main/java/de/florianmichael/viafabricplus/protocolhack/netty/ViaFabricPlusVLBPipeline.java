@@ -15,14 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack;
+package de.florianmichael.viafabricplus.protocolhack.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.DisconnectHandler;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.PingEncapsulationCodec;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.RakMessageEncapsulationCodec;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.library_fix.FixedUnconnectedPingEncoder;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.library_fix.FixedUnconnectedPongDecoder;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.RakNetClientConnection;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.handler.PingEncapsulationCodec;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.handler.RakMessageEncapsulationCodec;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.handler.library_fix.FixedUnconnectedPingEncoder;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.handler.library_fix.FixedUnconnectedPongDecoder;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.netty.VLBPipeline;
 import io.netty.channel.ChannelHandlerContext;
@@ -42,14 +43,16 @@ import org.cloudburstmc.netty.handler.codec.raknet.common.UnconnectedPongDecoder
 import java.net.InetSocketAddress;
 
 public class ViaFabricPlusVLBPipeline extends VLBPipeline {
-    public final static String DISCONNECT_HANDLER_NAME = "disconnect_handler";
-    public final static String FRAME_ENCAPSULATION_HANDLER_NAME = "frame_encapsulation";
-    public final static String PING_ENCAPSULATION_HANDLER_NAME = "ping_encapsulation";
-    public final static String PACKET_ENCAPSULATION_HANDLER_NAME = "packet_encapsulation";
-    public final static String BATCH_LENGTH_HANDLER_NAME = "batch_length";
-    public final static String COMPRESSION_HANDLER_NAME = "compression";
-    public final static String ENCRYPTION_HANDLER_NAME = "encryption";
+    // ViaBedrock (RakNet and Codec based)
+    public final static String VIA_BEDROCK_DISCONNECT_HANDLER_NAME = "via-bedrock-disconnect-handler";
+    public final static String VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME = "via-bedrock-frame-encapsulation";
+    public final static String VIA_BEDROCK_PING_ENCAPSULATION_HANDLER_NAME = "via-bedrock-ping-encapsulation";
+    public final static String VIA_BEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME = "via-bedrock-packet-encapsulation";
+    public final static String VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME = "via-bedrock-batch_length";
+    public final static String VIA_BEDROCK_COMPRESSION_HANDLER_NAME = "via-bedrock-compression";
+    public final static String VIA_BEDROCK_ENCRYPTION_HANDLER_NAME = "via-bedrock-encryption";
 
+    // ViaLegacy (pre Netty)
     public static final String VIA_LEGACY_DECODER_HANDLER_NAME = "via-legacy-decoder";
     public static final String VIA_LEGACY_ENCODER_HANDLER_NAME = "via-legacy-encoder";
 
@@ -65,26 +68,30 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        // ViaLoadingBase
         super.handlerAdded(ctx);
 
         final ChannelPipeline pipeline = ctx.channel().pipeline();
 
+        // ViaLegacy
         if (this.version.isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             getInfo().getProtocolInfo().getPipeline().add(PreNettyBaseProtocol.INSTANCE);
 
             pipeline.addBefore("splitter", VIA_LEGACY_DECODER_HANDLER_NAME, new PreNettyLengthPrepender(getInfo()));
             pipeline.addBefore("prepender", VIA_LEGACY_ENCODER_HANDLER_NAME, new PreNettyLengthRemover(getInfo()));
         }
-        
+
+        // ViaBedrock
         if (this.version.isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
             getInfo().getProtocolInfo().getPipeline().add(BedrockBaseProtocol.INSTANCE);
 
-            pipeline.replace("splitter", BATCH_LENGTH_HANDLER_NAME, new BatchLengthCodec());
+            pipeline.replace("splitter", VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, new BatchLengthCodec());
 
-            pipeline.addBefore(BATCH_LENGTH_HANDLER_NAME, DISCONNECT_HANDLER_NAME, new DisconnectHandler());
-            pipeline.addAfter(DISCONNECT_HANDLER_NAME, FRAME_ENCAPSULATION_HANDLER_NAME, new RakMessageEncapsulationCodec());
-            pipeline.addAfter(BATCH_LENGTH_HANDLER_NAME, PACKET_ENCAPSULATION_HANDLER_NAME, new PacketEncapsulationCodec());
+            pipeline.addBefore(VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, VIA_BEDROCK_DISCONNECT_HANDLER_NAME, RakNetClientConnection.DISCONNECT_HANDLER);
+            pipeline.addAfter(VIA_BEDROCK_DISCONNECT_HANDLER_NAME, VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, new RakMessageEncapsulationCodec());
+            pipeline.addAfter(VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, VIA_BEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME, new PacketEncapsulationCodec());
 
+            // Replaced by the codecs
             pipeline.remove("prepender");
             pipeline.remove("timeout");
 
@@ -97,10 +104,10 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
                     rakChannel.parent().pipeline().replace(UnconnectedPongDecoder.NAME, UnconnectedPongDecoder.NAME, new FixedUnconnectedPongDecoder(rakChannel));
                 }
 
-                pipeline.replace(FRAME_ENCAPSULATION_HANDLER_NAME, PING_ENCAPSULATION_HANDLER_NAME, new PingEncapsulationCodec(address));
+                pipeline.replace(VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, VIA_BEDROCK_PING_ENCAPSULATION_HANDLER_NAME, new PingEncapsulationCodec(address));
 
-                pipeline.remove(PACKET_ENCAPSULATION_HANDLER_NAME);
-                pipeline.remove(BATCH_LENGTH_HANDLER_NAME);
+                pipeline.remove(VIA_BEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);
+                pipeline.remove(VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME);
             }
         }
     }
