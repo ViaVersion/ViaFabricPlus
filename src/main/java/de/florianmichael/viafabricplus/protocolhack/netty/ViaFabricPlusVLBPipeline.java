@@ -19,11 +19,11 @@ package de.florianmichael.viafabricplus.protocolhack.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.RakNetClientConnection;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.handler.PingEncapsulationCodec;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.handler.RakMessageEncapsulationCodec;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.handler.library_fix.FixedUnconnectedPingEncoder;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.handler.library_fix.FixedUnconnectedPongDecoder;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.DisconnectHandle;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.codec.PingEncapsulationCodec;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.codec.RakMessageEncapsulationCodec;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.codec.library_fix.FixedUnconnectedPingEncoder;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.codec.library_fix.FixedUnconnectedPongDecoder;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.netty.VLBPipeline;
 import io.netty.channel.ChannelHandlerContext;
@@ -87,7 +87,7 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
 
             pipeline.replace("splitter", VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, new BatchLengthCodec());
 
-            pipeline.addBefore(VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, VIA_BEDROCK_DISCONNECT_HANDLER_NAME, RakNetClientConnection.DISCONNECT_HANDLER);
+            pipeline.addBefore(VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, VIA_BEDROCK_DISCONNECT_HANDLER_NAME, new DisconnectHandle());
             pipeline.addAfter(VIA_BEDROCK_DISCONNECT_HANDLER_NAME, VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, new RakMessageEncapsulationCodec());
             pipeline.addAfter(VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, VIA_BEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME, new PacketEncapsulationCodec());
 

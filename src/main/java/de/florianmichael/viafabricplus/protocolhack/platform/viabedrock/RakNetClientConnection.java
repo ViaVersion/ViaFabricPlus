@@ -35,20 +35,6 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RakNetClientConnection {
-    public final static ChannelOutboundHandlerAdapter DISCONNECT_HANDLER = new ChannelOutboundHandlerAdapter() {
-        private boolean calledDisconnect = false;
-
-        @Override
-        public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
-            if (ctx.channel().isActive() && !this.calledDisconnect) {
-                this.calledDisconnect = true;
-                ctx.disconnect(promise); // Send disconnect notification to the server and close the channel
-            } else {
-                super.close(ctx, promise);
-            }
-        }
-    };
-
     public static void connectRakNet(final ClientConnection clientConnection, final InetSocketAddress address, final Lazy lazy, final Class channelType) {
         Bootstrap nettyBoostrap = new Bootstrap();
         nettyBoostrap = nettyBoostrap.group((EventLoopGroup) lazy.get());
