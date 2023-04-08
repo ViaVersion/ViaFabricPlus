@@ -28,6 +28,7 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.FinishViaLoadingBaseStartupCallback;
+import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLBPipeline;
 import de.florianmichael.viafabricplus.protocolhack.platform.ViaAprilFoolsPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.platform.ViaBedrockPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.platform.ViaLegacyPlatformImpl;
@@ -41,18 +42,11 @@ import de.florianmichael.viafabricplus.protocolhack.provider.vialoadingbase.ViaF
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.model.Platform;
-import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
-import io.netty.channel.epoll.EpollDatagramChannel;
-import io.netty.channel.epoll.EpollSocketChannel;
-import io.netty.channel.socket.nio.NioDatagramChannel;
-import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.AttributeKey;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.network.NetworkSide;
-import net.minecraft.util.Lazy;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
@@ -64,13 +58,9 @@ import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.provide
 import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
-import org.cloudburstmc.netty.channel.raknet.RakChannelFactory;
-import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
-import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class ProtocolHack {
     public final static AttributeKey<UserConnection> LOCAL_VIA_CONNECTION = AttributeKey.newInstance("viafabricplus-via-connection");
@@ -112,10 +102,7 @@ public class ProtocolHack {
         return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(version);
     }
 
-    /**
-     * This method adds the channel handlers required for ViaVersion, ViaBackwards, ViaAprilFools and ViaLegacy, it also tracks the Via and Minecraft Connection
-     */
-    public static void hookProtocolHack(final ClientConnection connection, final Channel channel, final InetSocketAddress address) {
+    public static void injectVLBPipeline(final ClientConnection connection, final Channel channel, final InetSocketAddress address) {
         if (ProtocolHack.getForcedVersions().containsKey(address)) {
             channel.attr(ProtocolHack.FORCED_VERSION).set(ProtocolHack.getForcedVersions().get(address));
             ProtocolHack.getForcedVersions().remove(address);
@@ -129,40 +116,7 @@ public class ProtocolHack {
         channel.pipeline().addLast(new ViaFabricPlusVLBPipeline(user, address, ProtocolHack.getTargetVersion(channel)));
     }
 
-    /**
-     * This method represents the rak net connection for bedrock edition, it's a replacement of the ClientConnection#connect method
-     */
-    public static void connectRakNet(final ClientConnection clientConnection, final InetSocketAddress address, final Lazy lazy, final Class channelType) {
-        Bootstrap nettyBoostrap = new Bootstrap();
-        nettyBoostrap = nettyBoostrap.group((EventLoopGroup) lazy.get());
-        nettyBoostrap = nettyBoostrap.handler(new ChannelInitializer<>() {
-            @Override
-            protected void initChannel(@NotNull Channel channel) throws Exception {
-                try {
-                    channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, 11);
-                    channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, 4_000L);
-                    channel.config().setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
-                    channel.config().setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());
-                } catch (Exception ignored) {
-                }
-                ChannelPipeline channelPipeline = channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30));
-                ClientConnection.addHandlers(channelPipeline, NetworkSide.CLIENTBOUND);
-
-                channelPipeline.addLast("packet_handler", clientConnection);
-
-                hookProtocolHack(clientConnection, channel, address);
-            }
-        });
-        nettyBoostrap = nettyBoostrap.channelFactory(channelType == EpollSocketChannel.class ? RakChannelFactory.client(EpollDatagramChannel.class) : RakChannelFactory.client(NioDatagramChannel.class));
-
-        if (ProtocolHack.getRakNetPingSessions().contains(address)) {
-            nettyBoostrap.bind(new InetSocketAddress(0)).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE).syncUninterruptibly();
-        } else {
-            nettyBoostrap.connect(address.getAddress(), address.getPort()).syncUninterruptibly();
-        }
-    }
-
-    public ProtocolHack() {
+    public static void init() {
         ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
 
         builder = builder.platform(new Platform("ViaBedrock", () -> true, ViaBedrockPlatformImpl::new, protocolVersions -> protocolVersions.add(BedrockProtocolVersion.bedrockLatest)), 0);

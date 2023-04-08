@@ -21,8 +21,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
 
-public class DisconnectHandler extends ChannelOutboundHandlerAdapter {
-
+public class DisconnectHandle extends ChannelOutboundHandlerAdapter {
     private boolean calledDisconnect = false;
 
     @Override
@@ -34,5 +33,4 @@ public class DisconnectHandler extends ChannelOutboundHandlerAdapter {
             super.close(ctx, promise);
         }
     }
-
 }

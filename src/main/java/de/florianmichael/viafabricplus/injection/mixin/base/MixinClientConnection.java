@@ -21,7 +21,8 @@ import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.ViaFabricPlusVLBPipeline;
+import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLBPipeline;
+import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.RakNetClientConnection;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
 import io.netty.channel.*;
@@ -89,7 +90,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         ((IClientConnection) clientConnection).viafabricplus_captureAddress(address);
 
         if (ProtocolHack.getForcedVersions().containsKey(address) ? (ProtocolHack.getForcedVersions().get(address).getVersion() == BedrockProtocolVersion.bedrockLatest.getVersion()) : ProtocolHack.getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
-            ProtocolHack.connectRakNet(clientConnection, address, lazy, class_);
+            RakNetClientConnection.connectRakNet(clientConnection, address, lazy, class_);
             cir.setReturnValue(clientConnection);
         }
     }
@@ -131,7 +132,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         if (this.viafabricplus_compressionEnabled) throw new IllegalStateException("Compression is already enabled");
         this.viafabricplus_compressionEnabled = true;
 
-        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.BATCH_LENGTH_HANDLER_NAME, ViaFabricPlusVLBPipeline.COMPRESSION_HANDLER_NAME, new ZLibCompression());
+        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, ViaFabricPlusVLBPipeline.VIA_BEDROCK_COMPRESSION_HANDLER_NAME, new ZLibCompression());
     }
 
     @Override
@@ -139,7 +140,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         if (this.viafabricplus_compressionEnabled) throw new IllegalStateException("Compression is already enabled");
         this.viafabricplus_compressionEnabled = true;
 
-        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.BATCH_LENGTH_HANDLER_NAME, ViaFabricPlusVLBPipeline.COMPRESSION_HANDLER_NAME, new SnappyCompression());
+        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, ViaFabricPlusVLBPipeline.VIA_BEDROCK_COMPRESSION_HANDLER_NAME, new SnappyCompression());
     }
 
     @Override
@@ -147,6 +148,6 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         if (this.encrypted) throw new IllegalStateException("Encryption is already enabled");
         this.encrypted = true;
 
-        this.channel.pipeline().addAfter(ViaFabricPlusVLBPipeline.FRAME_ENCAPSULATION_HANDLER_NAME, ViaFabricPlusVLBPipeline.ENCRYPTION_HANDLER_NAME, new AesEncryption(secretKey));
+        this.channel.pipeline().addAfter(ViaFabricPlusVLBPipeline.VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, ViaFabricPlusVLBPipeline.VIA_BEDROCK_ENCRYPTION_HANDLER_NAME, new AesEncryption(secretKey));
     }
 }
