@@ -32,6 +32,7 @@ if you know a language well, feel free to make a PR and add translations for tha
 - Ukrainian (by **[Fundi1330](https://github.com/Fundi1330)**)
 - Traditional Chinese (by **[luluxiaoyu](https://github.com/luluxiaoyu)**)
 - Czech (by **[MIOGMIOG](https://github.com/MIOGMIOG)**)
+- Polish (by **[Blayung](https://github.com/Blayung)**)
 
 ### Dependencies
 | Dependency             | Download                                                   |
