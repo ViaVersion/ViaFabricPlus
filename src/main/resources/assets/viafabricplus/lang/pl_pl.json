@@ -1,0 +1,76 @@
+{
+  "words.viafabricplus.settings": "Ustawienia",
+  "words.viafabricplus.on": "Wł.",
+  "words.viafabricplus.off": "Wył.",
+  "words.viafabricplus.lt": "Lewy górny róg",
+  "words.viafabricplus.rt": "Prawy górny róg",
+  "words.viafabricplus.lb": "Lewy dolny róg",
+  "words.viafabricplus.rb": "Prawy dolny róg",
+  "words.viafabricplus.cancel": "Anuluj",
+  "words.viafabricplus.cancelreset": "Anuluj i resetuj",
+  "words.viafabricplus.logout": "Wyloguj się",
+  "words.viafabricplus.online": "Tryb online",
+  "words.viafabricplus.reset": "Resetuj",
+  "words.viafabricplus.copy": "Kopiuj kod",
+
+  "bedrock.viafabricplus.set": "Naciśnij, aby ustawić konto dla minecraft bedrock edition",
+
+  "bridge.viafabricplus.secret": "Pokazuj Super Secret Settings",
+  "bridge.viafabricplus.extrainformation": "Pokazuj dodatkowe informacje w interfejsie debugowania",
+  "bridge.viafabricplus.classicloading": "Pokazuj klasyczny pasek ładowania w ekranie łączenia",
+
+  "debug.viafabricplus.sequence": "Wyłącz sekwencjonowanie",
+  "debug.viafabricplus.merchant": "Wygładź ekrany kupców",
+  "debug.viafabricplus.postfix": "Wykonuj dane wejściowe w synchronizacji",
+  "debug.viafabricplus.sneakinstant": "Kucaj natychmiastowo",
+  "debug.viafabricplus.inventory": "Wysyłaj pakiety otwierania ekwipunku",
+  "debug.viafabricplus.cooldown": "Usuń odstępy pomiędzy uderzeniami",
+  "debug.viafabricplus.idle": "Wysyłaj pakiety bezczynności",
+  "debug.viafabricplus.attribute": "Zamień modyfikatory atrybutów",
+  "debug.viafabricplus.replacesneak": "Zamień kucanie",
+  "debug.viafabricplus.longsneak": "Długie kucanie",
+  "debug.viafabricplus.legacypseeds": "Stare prędkości kopania",
+
+  "general.viafabricplus.main": "Lokalizacja głównego przycisku",
+  "general.viafabricplus.creative": "Usuwaj niedostępne przedmioty z ekwipunku trybu kreatywnego",
+  "general.viafabricplus.classiccommands": "Zezwalaj na używanie klasycznego protokołu komend",
+  "general.viafabricplus.protocolsync": "Automatycznie zmieniaj ustawienia na podstawie obecnej wersji gry",
+
+  "mppass.viafabricplus.betacraft": "Używaj uwierzytelniania BetaCraft",
+  "mppass.viafabricplus.verify": "Zezwalaj na to, żeby ViaLegacy mogło używać joinServer(), aby weryfikować sesję",
+  "mppass.viafabricplus.fail": "Rozłącz się, jeżeli wywołanie joinServer() się nie powiedzie",
+  "mppass.viafabricplus.classicube": "Wymuszaj wersję CPE podczas korzystania z ClassiCube",
+  "mppass.viafabricplus.spoof": "Fałszuj nazwę użytkownika na nazwę ClassiCube podczas korzystania z ClassiCube",
+  "mppass.viafabricplus.skin": "Zezwalaj na to, żeby ViaLegacy ładowało skiny w starszych wersjach gry",
+
+  "visual.viafabricplus.secure": "Wyłącz ostrzeżenie dotyczące bezpiecznego czatu",
+  "visual.viafabricplus.indicator": "Ukryj wskaźnik podpisywania czatu",
+  "visual.viafabricplus.jigsaw": "Usuń nowsze funkcje ekranu bloku konstrukcyjnego",
+  "visual.viafabricplus.stoneslab": "Zamień skamieniałą płytę dębową",
+  "visual.viafabricplus.armor": "Emuluj hud zbroi",
+  "visual.viafabricplus.command": "Usuń nowsze funkcje ekranu bloku komend",
+  "visual.viafabricplus.oof": "Zamień dźwięk otrzymywania obrażeń na \"OOF!\"",
+  "visual.viafabricplus.betahud": "Usuń nowsze elementy interfejsu",
+  "visual.viafabricplus.classic": "Zamień ekwipunek trybu kreatywnego",
+  "visual.viafabricplus.walkanimation": "Stara animacja chodzenia",
+  "visual.viafabricplus.sodium": "Napraw renderowanie chunków sodium",
+
+  "bedrocklogin.viafabricplus.text": "Powinna ci się otworzyć przeglądarka.\nProszę, wpisz ten kod: %s\nZamykanie tego ekranu będzie anulowało proces!",
+  "bedrocklogin.viafabricplus.error": "Wystąpił błąd! Zobacz latest.log po więcej informacji.\nProszę, zgłoś ten problem tutaj:\nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+
+  "forceversion.viafabricplus.title": "Wybierz wersję, z którą chcesz pingować/łączyć się do serwera",
+
+  "classicube.viafabricplus.account": "Możesz utworzyć swoje konto tutaj: https://www.classicube.net",
+  "classicube.viafabricplus.loading": "Ładowanie informacji profilu i listy serwerów...",
+
+  "classicube.viafabricplus.error.token": "Niepoprawny token. Czy ViaFabricPlus nie jest przestarzałe? Spróbuj aktualizować tą modyfikację.",
+  "classicube.viafabricplus.error.username": "Niepoprawna nazwa użytkownika.",
+  "classicube.viafabricplus.error.password": "Niepoprawne hasło.",
+  "classicube.viafabricplus.error.verification": "Użytkownik jeszcze nie zweryfikował swojego adresu e-mail.",
+  "classicube.viafabricplus.error.logincode": "Wymagane jest uwierzytelnianie wieloskładnikowe. Proszę, sprawdź swój e-mail.",
+
+  "classicube.viafabricplus.warning": "Ta funkcja będzie wysyłała zapytania api do ClassiCube api.",
+
+  "betacraft.viafabricplus.warning": "Naciskanie tego przycisku wyśle zapytanie api do tego adresu: https://betacraft.uk/serverlist",
+  "betacraft.viafabricplus.error": "Coś poszło nie tak! Proszę, spróbuj ponownie później."
+}
