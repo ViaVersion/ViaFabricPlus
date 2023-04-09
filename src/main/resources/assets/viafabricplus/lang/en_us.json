@@ -54,6 +54,7 @@
   "visual.viafabricplus.classic": "Replace creative inventory",
   "visual.viafabricplus.walkanimation": "Old walking animation",
   "visual.viafabricplus.sodium": "Fix Sodium Chunk renderer",
+  "visual.viafabricplus.chunkborderfix": "Fix Chunk borders",
 
   "bedrocklogin.viafabricplus.text": "Your browser should have opened.\nPlease enter the following Code: %s\nClosing this screen will cancel the process!",
   "bedrocklogin.viafabricplus.error": "An error has occurred! See the latest.log for more information,\nplease report the bug at: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",

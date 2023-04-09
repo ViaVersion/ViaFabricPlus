@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialoadingbase;
 
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
+import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaConfig;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -38,5 +39,10 @@ public abstract class MixinVLBViaConfig extends AbstractViaConfig {
     @Override
     public boolean isShieldBlocking() {
         return false;
+    }
+
+    @Override
+    public boolean isChunkBorderFix() {
+        return GeneralSettings.INSTANCE.fixChunkBorders.getValue();
     }
 }
