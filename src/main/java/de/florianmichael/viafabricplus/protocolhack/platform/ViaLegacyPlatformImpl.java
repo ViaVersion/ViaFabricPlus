@@ -41,4 +41,9 @@ public class ViaLegacyPlatformImpl implements ViaLegacyPlatform {
     public File getDataFolder() {
         return Via.getPlatform().getDataFolder();
     }
+
+    @Override
+    public String getCpeAppName() {
+        return "ClassiCube 1.3.5";
+    }
 }

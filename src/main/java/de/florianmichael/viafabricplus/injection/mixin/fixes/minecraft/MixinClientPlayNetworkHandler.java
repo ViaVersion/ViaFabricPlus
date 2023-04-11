@@ -66,8 +66,6 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Shadow public abstract void onSimulationDistance(SimulationDistanceS2CPacket packet);
 
-    @Shadow public abstract void onEntityVelocityUpdate(EntityVelocityUpdateS2CPacket packet);
-
     @Shadow protected abstract void sendPacket(Packet<ServerPlayPacketListener> packet, BooleanSupplier sendCondition, Duration expirationTime);
 
     @Shadow public abstract void sendPacket(Packet<?> packet);
