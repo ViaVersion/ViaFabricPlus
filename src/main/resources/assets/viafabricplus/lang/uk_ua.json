@@ -54,6 +54,7 @@
   "visual.viafabricplus.classic": "Замінити інвентар креативу",
   "visual.viafabricplus.walkanimation": "Стара анімація ходьби",
   "visual.viafabricplus.sodium": "Полагодити рендер чанків Содіуму",
+  "visual.viafabricplus.chunkborderfix": "Полагодити границі чанків",
 
   "bedrocklogin.viafabricplus.text": "Ваш браузер мав відкритися.\nБудь ласка, введіть наступний код: %s\nЯкщо закрити цей екран, процес буде скасовано!",
   "bedrocklogin.viafabricplus.error": "Сталася помилка! Дивіться latest.log для отримання додаткової інформації,\nбудь ласка, повідомте про помилку за адресою: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
