@@ -103,15 +103,6 @@ public abstract class MixinClientPlayNetworkHandler {
         }
     }
 
-    @Inject(method = "onEntitySpawn", at = @At("TAIL"))
-    public void forceEntityVelocity(EntitySpawnS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            if (packet.getEntityType() == EntityType.ITEM || packet.getEntityType() == EntityType.ARROW || packet.getEntityType() == EntityType.SPECTRAL_ARROW || packet.getEntityType() == EntityType.TRIDENT) {
-                onEntityVelocityUpdate(new EntityVelocityUpdateS2CPacket(packet.getId(), new Vec3d(packet.getVelocityX(), packet.getVelocityY(), packet.getVelocityZ())));
-            }
-        }
-    }
-
     @Inject(method = { "onGameJoin", "onPlayerRespawn" }, at = @At("TAIL"))
     private void injectOnOnGameJoinOrRespawn(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
