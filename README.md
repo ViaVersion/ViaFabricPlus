@@ -7,7 +7,7 @@
   <a href="https://modrinth.com/mod/viafabricplus"><img src="https://img.shields.io/badge/dynamic/json?color=158000&label=downloads&prefix=+%20&query=downloads&url=https://api.modrinth.com/v2/project/rIC2XJV4&logo=modrinth"></a>
   <a href="https://curseforge.com/minecraft/mc-mods/viafabricplus"><img src="https://cf.way2muchnoise.eu/full_830604_downloads.svg"></a>
 
-#### Fabric mod to connect to EVERY minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay
+#### Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay
 This project has nothing to do with the original ViaFabric and is therefore also not compact
 </div>
 
@@ -89,7 +89,7 @@ It should work fine with most if not all mods and modpacks.
 - [x] Tons of modifications to ViaVersion, ViaAprilFools, ViaLegacy and ViaBedrock to make it more legit (Metadata fixes, broken packets, edge-cases)
 - [x] Visual and screen related changes (newer Command Block features, GameMode selection, ...)
 - [x] Chat signatures (secure login) for all versions (1.19.0, 1.19.1, 1.19.2)
-- [x] Address parsing for all minecraft versions
+- [x] Address parsing for all Minecraft versions
 - [x] PackFormats and HTTP Header for all resource pack versions
 - [x] Raytrace related fixes in <= 1.8
 - [x] Implementing HUD changes for <= b1.7.3

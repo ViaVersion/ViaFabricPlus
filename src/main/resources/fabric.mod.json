@@ -4,13 +4,14 @@
   "version": "${version}",
 
   "name": "ViaFabricPlus",
-  "description": "Fabric mod to connect to EVERY minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay",
+  "description": "Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay",
   "authors": [
     "FlorianMichael/EnZaXD"
   ],
   "contact": {
     "homepage": "https://github.com/FlorianMichael/",
-    "sources": "https://github.com/FlorianMichael/ViaFabricPlus"
+    "sources": "https://github.com/FlorianMichael/ViaFabricPlus",
+    "issues": "https://github.com/FlorianMichael/ViaFabricPlus/issues"
   },
 
   "license": "GPL-v3",
