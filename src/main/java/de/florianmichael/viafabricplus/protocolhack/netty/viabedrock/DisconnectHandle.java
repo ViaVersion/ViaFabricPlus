@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack.platform.viabedrock;
+package de.florianmichael.viafabricplus.protocolhack.netty.viabedrock;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;

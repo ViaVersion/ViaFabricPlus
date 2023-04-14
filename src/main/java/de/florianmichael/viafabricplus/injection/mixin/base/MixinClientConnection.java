@@ -22,7 +22,7 @@ import de.florianmichael.viafabricplus.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLBPipeline;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.RakNetClientConnection;
+import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.RakNetClientConnection;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
 import io.netty.channel.*;

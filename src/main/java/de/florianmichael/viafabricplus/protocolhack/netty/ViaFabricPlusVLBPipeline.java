@@ -19,11 +19,11 @@ package de.florianmichael.viafabricplus.protocolhack.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.DisconnectHandle;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.codec.PingEncapsulationCodec;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.codec.RakMessageEncapsulationCodec;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.codec.library_fix.FixedUnconnectedPingEncoder;
-import de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.codec.library_fix.FixedUnconnectedPongDecoder;
+import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.DisconnectHandle;
+import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.PingEncapsulationCodec;
+import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.RakMessageEncapsulationCodec;
+import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.library_fix.FixedUnconnectedPingEncoder;
+import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.library_fix.FixedUnconnectedPongDecoder;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.netty.VLBPipeline;
 import io.netty.channel.ChannelHandlerContext;

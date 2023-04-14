@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.platform.viabedrock.codec.library_fix;
+package de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.library_fix;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
