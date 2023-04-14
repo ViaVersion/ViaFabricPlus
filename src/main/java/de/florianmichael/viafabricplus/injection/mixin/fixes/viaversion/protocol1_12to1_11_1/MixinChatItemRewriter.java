@@ -18,10 +18,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protocol1_12to1_11_1;
 
 import com.viaversion.viaversion.api.Via;
-import com.viaversion.viaversion.api.minecraft.nbt.BinaryTagIO;
-import com.viaversion.viaversion.libs.opennbt.tag.builtin.CompoundTag;
 import com.viaversion.viaversion.protocols.protocol1_12to1_11_1.ChatItemRewriter;
-import net.raphimc.vialegacy.util.ViaStringTagReader1_11_2;
+import net.lenni0451.mcstructs.snbt.SNbtSerializer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -36,8 +34,7 @@ public abstract class MixinChatItemRewriter {
     @Redirect(method = "toClient", at = @At(value = "INVOKE", target = "Ljava/util/regex/Pattern;matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;"))
     private static Matcher rewriteShowItem(Pattern pattern, CharSequence input) {
         try {
-            final CompoundTag tag = ViaStringTagReader1_11_2.getTagFromJson(input.toString());
-            input = BinaryTagIO.writeString(tag);
+            input = SNbtSerializer.V1_12.serialize(SNbtSerializer.V1_8.deserialize(input.toString()));
         } catch (Throwable e) {
             Via.getPlatform().getLogger().log(Level.WARNING, "Error converting 1.11.2 nbt to 1.12.2 nbt: '" + input + "'", e);
         }
