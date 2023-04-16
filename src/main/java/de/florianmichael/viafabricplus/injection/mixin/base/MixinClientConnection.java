@@ -78,7 +78,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
     private void storeEncryptionCiphers(Cipher decryptionCipher, Cipher encryptionCipher, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+        if (ProtocolHack.getTargetVersion(channel).isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             ci.cancel();
             this.viafabricplus_decryptionCipher = decryptionCipher;
             this.viafabricplus_encryptionCipher = encryptionCipher;
