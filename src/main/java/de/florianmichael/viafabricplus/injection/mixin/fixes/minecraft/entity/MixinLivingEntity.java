@@ -104,16 +104,6 @@ public abstract class MixinLivingEntity extends Entity {
         return self.isSprinting();
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
-    private double redirectFluidHeight(LivingEntity instance, TagKey<Fluid> tagKey) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2) && tagKey == FluidTags.WATER) {
-            if (instance.getFluidHeight(tagKey) > 0) {
-                return 1;
-            }
-        }
-        return instance.getFluidHeight(tagKey);
-    }
-
     @Inject(method = "applyFluidMovingSpeed", at = @At("HEAD"), cancellable = true)
     private void modifySwimSprintFallSpeed(double gravity, boolean movingDown, Vec3d velocity, CallbackInfoReturnable<Vec3d> ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2) && !hasNoGravity()) {
