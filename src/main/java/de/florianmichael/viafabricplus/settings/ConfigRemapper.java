@@ -15,20 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
+package de.florianmichael.viafabricplus.settings;
 
-import de.florianmichael.viafabricplus.settings.groups.AuthenticationSettings;
-import net.raphimc.vialegacy.ViaLegacyConfig;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+@Deprecated
+public class ConfigRemapper {
 
-@Mixin(value = ViaLegacyConfig.class, remap = false)
-public class MixinViaLegacyConfig {
+    /**
+     * Remaps the old config format to the new one, will be removed in the future
+     */
+    public static String remapp(String key) {
+        if (key.equals("bedrock.viafabricplus.set")) key = "authentication.viafabricplus.bedrock";
+        if (key.startsWith("mppass")) key = key.replace("mppass", "authentication");
+        if (key.equals("visual.viafabricplus.chunkborderfix")) key = "experimental.viafabricplus.chunkborderfix";
+        if (key.startsWith("bridge")) key = key.replace("bridge", "general");
 
-    @Inject(method = "isLegacySkinLoading", at = @At("HEAD"), cancellable = true)
-    public void overwriteValue(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(AuthenticationSettings.INSTANCE.allowViaLegacyToLoadSkinsInLegacyVersions.getValue());
+        return key;
     }
 }

@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.bridge;
+package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.settings.groups.BridgeSettings;
+import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
@@ -39,7 +39,7 @@ public abstract class MixinOptionsScreen extends Screen {
 
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/Widget;)Lnet/minecraft/client/gui/widget/Widget;", ordinal = 10, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     public void addValuesButton(CallbackInfo ci, GridWidget gridWidget, GridWidget.Adder adder) {
-        if (BridgeSettings.INSTANCE.showSuperSecretSettings.getValue() && MinecraftClient.getInstance().player != null) {
+        if (GeneralSettings.INSTANCE.showSuperSecretSettings.getValue() && MinecraftClient.getInstance().player != null) {
             this.addDrawableChild(ButtonWidget.builder(Text.literal("Super Secret Settings..."), button -> MinecraftClient.getInstance().gameRenderer.cycleSuperSecretSetting()).dimensions(this.width / 2 + 5, this.height / 6 + 18, 150, 20).build());
         }
     }

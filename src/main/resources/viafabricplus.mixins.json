@@ -12,12 +12,12 @@
     "base.MixinMultiplayerScreen",
     "base.MixinMultiplayerServerListPinger",
     "base.MixinSharedConstants",
-    "bridge.MixinAddServerScreen",
-    "bridge.MixinConnectScreen",
-    "bridge.MixinDebugHud",
-    "bridge.MixinDownloadingTerrainScreen",
-    "bridge.MixinOptionsScreen",
-    "bridge.MixinServerInfo",
+    "base.MixinAddServerScreen",
+    "base.MixinConnectScreen",
+    "base.MixinDebugHud",
+    "base.MixinDownloadingTerrainScreen",
+    "base.MixinOptionsScreen",
+    "base.MixinServerInfo",
     "fixes.minecraft.MixinBipedEntityModel",
     "fixes.minecraft.MixinCamera",
     "fixes.minecraft.MixinClientPlayerInteractionManager",
@@ -130,6 +130,7 @@
     "fixes.viaversion.protocol1_12to1_11_1.MixinChatItemRewriter",
     "fixes.viaversion.protocol1_13to1_12_2.MixinAbstractFenceConnectionHandler",
     "fixes.viaversion.protocol1_13to1_12_2.MixinGlassConnectionHandler",
+    "fixes.viaversion.protocol1_13to1_12_2.MixinSkullHandler",
     "fixes.viaversion.protocol1_13to1_12_2.MixinWorldPackets1_13",
     "fixes.viaversion.protocol1_14to1_13_2.MixinInventoryPackets_2",
     "fixes.viaversion.protocol1_15to1_14_4.MixinMetadataRewriter1_15To1_14_4",
@@ -150,8 +151,7 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "fixes.viaversion.protocol1_13to1_12_2.MixinSkullHandler"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder"
   ],
   "injectors": {
     "defaultRequire": 1

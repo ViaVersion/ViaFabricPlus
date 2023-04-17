@@ -9,11 +9,13 @@
   "words.viafabricplus.cancel": "ยกเลิก",
   "words.viafabricplus.cancelreset": "ยกเลิกและรีเซ็ต",
 
-  "bedrock.viafabricplus.set": "คลิกเพื่อเชื่อมต่อบัญชี Bedrock Edition",
-
-  "bridge.viafabricplus.secret": "แสดงสุดยอดตั่งค่า",
-  "bridge.viafabricplus.extrainformation": "แสดงมากขึ้นใน ดีบักโหมด",
-  "bridge.viafabricplus.classicloading": "แสดงหน้าโหลดคลาสสิค",
+  "general.viafabricplus.secret": "แสดงสุดยอดตั่งค่า",
+  "general.viafabricplus.extrainformation": "แสดงมากขึ้นใน ดีบักโหมด",
+  "general.viafabricplus.classicloading": "แสดงหน้าโหลดคลาสสิค",
+  "general.viafabricplus.main": "การวางแนวปุ่มหลัก",
+  "general.viafabricplus.creative": "ลบไอเท็มที่ไม่มีใน creative tab",
+  "general.viafabricplus.classiccommands": "อนุญาติคำสั่งแบบคลาสสิค",
+  "general.viafabricplus.protocolsync": "เปลี่ยนการตั้งค่าโดยอัตโนมัติตามเวอร์ชันปัจจุบัน",
 
   "debug.viafabricplus.sequence": "ปิดใช้งานการจัดลำดับ",
   "debug.viafabricplus.merchant": "ปรับหน้าจอร้านค้าให้เรียบ",
@@ -27,14 +29,10 @@
   "debug.viafabricplus.longsneak": "ย่องยาว",
   "debug.viafabricplus.legacypseeds": "ความเร็วการขุดแบบดั้งเดิม",
 
-  "general.viafabricplus.main": "การวางแนวปุ่มหลัก",
-  "general.viafabricplus.creative": "ลบไอเท็มที่ไม่มีใน creative tab",
-  "general.viafabricplus.classiccommands": "อนุญาติคำสั่งแบบคลาสสิค",
-  "general.viafabricplus.protocolsync": "เปลี่ยนการตั้งค่าโดยอัตโนมัติตามเวอร์ชันปัจจุบัน",
-
-  "mppass.viafabricplus.betacraft": "ใช้ BetaCraft ยืนยันตัวตน",
-  "mppass.viafabricplus.verify": "อนุญาติให้ ViaLegacy ในการเรียก joinServer() เพื่อยืนยัน",
-  "mppass.viafabricplus.fail": "ตัดการเชื่อมต่อหาก joinServer() ผิดพลาด",
+  "authentication.viafabricplus.betacraft": "ใช้ BetaCraft ยืนยันตัวตน",
+  "authentication.viafabricplus.verify": "อนุญาติให้ ViaLegacy ในการเรียก joinServer() เพื่อยืนยัน",
+  "authentication.viafabricplus.fail": "ตัดการเชื่อมต่อหาก joinServer() ผิดพลาด",
+  "authentication.viafabricplus.bedrock": "คลิกเพื่อเชื่อมต่อบัญชี Bedrock Edition",
 
   "visual.viafabricplus.secure": "ลบคำเตือนแชท",
   "visual.viafabricplus.indicator": "ซ่อนตัวบ่งชี้ลายเซ็น",

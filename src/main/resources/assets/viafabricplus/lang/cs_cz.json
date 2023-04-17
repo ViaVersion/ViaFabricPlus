@@ -13,11 +13,15 @@
   "words.viafabricplus.reset": "Resetovat",
   "words.viafabricplus.copy": "Kopírovat kód",
 
-  "bedrock.viafabricplus.set": "Kliknutím zvolíš účet pro Bedrock edici",
+  "general.viafabricplus.secret": "Zobrazit \"Super Secret Settings\"",
+  "general.viafabricplus.extrainformation": "Zobrazit více informací v ladící obrazovce",
+  "general.viafabricplus.classicloading": "Zobrazit progres načítání mapy při připojování ke classic serveru",
+  "general.viafabricplus.main": "Umístění hlavního tlačítka",
+  "general.viafabricplus.creative": "Odstranit nedostupné předměty z inventáře tvořivé hry",
+  "general.viafabricplus.classiccommands": "Povolit classic příkazy",
+  "general.viafabricplus.protocolsync": "Automaticky změnit nastavení podle zvolené verze",
 
-  "bridge.viafabricplus.secret": "Zobrazit \"Super Secret Settings\"",
-  "bridge.viafabricplus.extrainformation": "Zobrazit více informací v ladící obrazovce",
-  "bridge.viafabricplus.classicloading": "Zobrazit progres načítání mapy při připojování ke classic serveru",
+  "experimental.viafabricplus.chunkborderfix": "Opravit okraje chunků",
 
   "debug.viafabricplus.sequence": "Vypnout sekvencování",
   "debug.viafabricplus.merchant": "Smooth out merchant screens",
@@ -31,17 +35,13 @@
   "debug.viafabricplus.longsneak": "Dlouhé plížení",
   "debug.viafabricplus.legacypseeds": "Staré rychlosti těžení",
 
-  "general.viafabricplus.main": "Umístění hlavního tlačítka",
-  "general.viafabricplus.creative": "Odstranit nedostupné předměty z inventáře tvořivé hry",
-  "general.viafabricplus.classiccommands": "Povolit classic příkazy",
-  "general.viafabricplus.protocolsync": "Automaticky změnit nastavení podle zvolené verze",
-
-  "mppass.viafabricplus.betacraft": "Použít BetaCraft systém přihlašování",
-  "mppass.viafabricplus.verify": "Umožnit ViaLegacy zavolat joinServer() pro ověření relace",
-  "mppass.viafabricplus.fail": "Odpojit, pokud se zavolání joinServer() nepodaří",
-  "mppass.viafabricplus.classicube": "Změnit verzi na CPE při používání ClassiCube",
-  "mppass.viafabricplus.spoof": "Změnit uživatelské jméno na ClassiCube jméno při používání ClassiCube",
-  "mppass.viafabricplus.skin": "Umožnit ViaLegacy k načtení skinů ve starých verzích",
+  "authentication.viafabricplus.betacraft": "Použít BetaCraft systém přihlašování",
+  "authentication.viafabricplus.verify": "Umožnit ViaLegacy zavolat joinServer() pro ověření relace",
+  "authentication.viafabricplus.fail": "Odpojit, pokud se zavolání joinServer() nepodaří",
+  "authentication.viafabricplus.classicube": "Změnit verzi na CPE při používání ClassiCube",
+  "authentication.viafabricplus.spoof": "Změnit uživatelské jméno na ClassiCube jméno při používání ClassiCube",
+  "authentication.viafabricplus.skin": "Umožnit ViaLegacy k načtení skinů ve starých verzích",
+  "authentication.viafabricplus.bedrock": "Kliknutím zvolíš účet pro Bedrock edici",
 
   "visual.viafabricplus.secure": "Vypnout varování \"zabezpečeného\" chatu",
   "visual.viafabricplus.indicator": "Nezobrazovat indikátory \"zabezpečeného\" chatu",
@@ -54,7 +54,6 @@
   "visual.viafabricplus.classic": "Vyměnit inventář tvořivé hry",
   "visual.viafabricplus.walkanimation": "Stará chodící animace",
   "visual.viafabricplus.sodium": "Opravit renderer chunků v Sodium módu",
-  "visual.viafabricplus.chunkborderfix": "Opravit okraje chunků",
 
   "bedrocklogin.viafabricplus.text": "Váš webový prohlížeč by se měl spustit.\nProsím zadejte tento Kód: %s\nZavření této obrazovky zruší tento proces!",
   "bedrocklogin.viafabricplus.error": "Nastala chyba. Podívejte se do souboru latest.log pro více informací,\nprosím nahlašte tuto chybu zde (nejlépe v angličtině): \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",

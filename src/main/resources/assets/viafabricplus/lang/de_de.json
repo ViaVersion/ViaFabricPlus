@@ -9,11 +9,13 @@
   "words.viafabricplus.cancel": "Abbrechen",
   "words.viafabricplus.cancelreset": "Abbrechen und zurücksetzen",
 
-  "bedrock.viafabricplus.set": "Klicke, um den Bedrock-Account zu setzen",
-
-  "bridge.viafabricplus.secret": "Super Secret Settings",
-  "bridge.viafabricplus.extrainformation": "Zusätzliche Informationen im Debug-HUD anzeigen",
-  "bridge.viafabricplus.classicloading": "Lade-Fortschritt in der Classic anzeigen",
+  "general.viafabricplus.secret": "Super Secret Settings",
+  "general.viafabricplus.extrainformation": "Zusätzliche Informationen im Debug-HUD anzeigen",
+  "general.viafabricplus.classicloading": "Lade-Fortschritt in der Classic anzeigen",
+  "general.viafabricplus.main": "Position des Haupt-Buttons",
+  "general.viafabricplus.creative": "Nicht verfügbare Items von Kreativ-Tab entfernen",
+  "general.viafabricplus.classiccommands": "Classic Protocol Command-Nutzung erlauben",
+  "general.viafabricplus.protocolsync": "Einstellungen automatisch an die aktuelle Version anpassen",
 
   "debug.viafabricplus.sequence": "Sequencing deaktivieren",
   "debug.viafabricplus.merchant": "Smooth out merchant screens",
@@ -27,14 +29,10 @@
   "debug.viafabricplus.longsneak": "Langes Sneaken",
   "debug.viafabricplus.legacypseeds": "Legacy Abbaugeschwindigkeiten",
 
-  "general.viafabricplus.main": "Position des Haupt-Buttons",
-  "general.viafabricplus.creative": "Nicht verfügbare Items von Kreativ-Tab entfernen",
-  "general.viafabricplus.classiccommands": "Classic Protocol Command-Nutzung erlauben",
-  "general.viafabricplus.protocolsync": "Einstellungen automatisch an die aktuelle Version anpassen",
-
-  "mppass.viafabricplus.betacraft": "BetaCraft-Authentisierung nutzen",
-  "mppass.viafabricplus.verify": "Erlaube ViaLegacy, joinServer() aufzurufen, um die Session zu verifizieren",
-  "mppass.viafabricplus.fail": "Verbindung trennen, wenn der joinServer()-Aufruf einen Fehler wirft",
+  "authentication.viafabricplus.betacraft": "BetaCraft-Authentisierung nutzen",
+  "authentication.viafabricplus.verify": "Erlaube ViaLegacy, joinServer() aufzurufen, um die Session zu verifizieren",
+  "authentication.viafabricplus.fail": "Verbindung trennen, wenn der joinServer()-Aufruf einen Fehler wirft",
+  "authentication.viafabricplus.bedrock": "Klicke, um den Bedrock-Account zu setzen",
 
   "visual.viafabricplus.secure": "Sichere-Chat-Warnung ausschalten",
   "visual.viafabricplus.indicator": "Signatur-Indikator anzeigen",

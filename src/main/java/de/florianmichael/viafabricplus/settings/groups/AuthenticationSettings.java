@@ -21,6 +21,7 @@ import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.screen.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
+import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.type_impl.ButtonSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
@@ -36,10 +37,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.CompletableFuture;
 
-public class BedrockSettings extends SettingGroup {
-    public final static BedrockSettings INSTANCE = new BedrockSettings();
+public class AuthenticationSettings extends SettingGroup {
+    public final static AuthenticationSettings INSTANCE = new AuthenticationSettings();
 
-    public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, Text.translatable("bedrock.viafabricplus.set"), () -> CompletableFuture.runAsync(() -> {
+    public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.betacraft"), true);
+    public final BooleanSetting allowViaLegacyToCallJoinServerToVerifySession = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.verify"), true);
+    public final BooleanSetting disconnectIfJoinServerCallFails = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.fail"), true);
+    public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, Text.translatable("authentication.viafabricplus.bedrock"), () -> CompletableFuture.runAsync(() -> {
         try {
             BedrockAccountHandler.INSTANCE.setAccount(MinecraftAuth.requestBedrockLogin(msaDeviceCode -> {
                 MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new ConfirmScreen(consumer -> {
@@ -70,8 +74,12 @@ public class BedrockSettings extends SettingGroup {
             return super.displayValue();
         }
     };
+    public final BooleanSetting forceCPEIfUsingClassiCube = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.classicube"), true);
+    public final BooleanSetting spoofUserNameIfUsingClassiCube = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.spoof"), true);
+    public final BooleanSetting allowViaLegacyToLoadSkinsInLegacyVersions = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.skin"), true);
 
-    public BedrockSettings() {
-        super("Bedrock");
+    
+    public AuthenticationSettings() {
+        super("MP Pass");
     }
 }

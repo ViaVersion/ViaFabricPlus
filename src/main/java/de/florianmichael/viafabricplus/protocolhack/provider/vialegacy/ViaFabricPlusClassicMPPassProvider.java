@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.protocolhack.provider.vialegacy;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.definition.c0_30.BetaCraftImpl;
-import de.florianmichael.viafabricplus.settings.groups.MPPassSettings;
+import de.florianmichael.viafabricplus.settings.groups.AuthenticationSettings;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.storage.HandshakeStorage;
 
@@ -31,7 +31,7 @@ public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
     public String getMpPass(UserConnection user) {
         if (classiCubeMPPass != null) return classiCubeMPPass;
 
-        if (MPPassSettings.INSTANCE.useBetaCraftAuthentication.getValue()) {
+        if (AuthenticationSettings.INSTANCE.useBetaCraftAuthentication.getValue()) {
             final HandshakeStorage handshakeStorage = user.get(HandshakeStorage.class);
             return BetaCraftImpl.getBetaCraftMpPass(user, user.getProtocolInfo().getUsername(), handshakeStorage.getHostname(), handshakeStorage.getPort());
         } else {

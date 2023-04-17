@@ -15,15 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.bridge;
+package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.settings.groups.BridgeSettings;
+import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,7 +38,7 @@ public class MixinDebugHud {
 
     @Inject(method = "getLeftText", at = @At("RETURN"))
     public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
-        if (MinecraftClient.getInstance().isInSingleplayer() || !BridgeSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) return;
+        if (MinecraftClient.getInstance().isInSingleplayer() || !GeneralSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) return;
 
         final List<String> information = new ArrayList<>();
         if (MinecraftClient.getInstance().getNetworkHandler() != null) {

@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.groups.ExperimentalSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -102,6 +103,16 @@ public abstract class MixinLivingEntity extends Entity {
             return false;
         }
         return self.isSprinting();
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
+    private double redirectFluidHeight(LivingEntity instance, TagKey<Fluid> tagKey) {
+        if (ExperimentalSettings.INSTANCE.waterMovementEdgeDetection.getValue() && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2) && tagKey == FluidTags.WATER) {
+            if (instance.getFluidHeight(tagKey) > 0) {
+                return 1;
+            }
+        }
+        return instance.getFluidHeight(tagKey);
     }
 
     @Inject(method = "applyFluidMovingSpeed", at = @At("HEAD"), cancellable = true)

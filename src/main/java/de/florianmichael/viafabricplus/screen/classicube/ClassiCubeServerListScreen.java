@@ -26,7 +26,7 @@ import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.screen.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
-import de.florianmichael.viafabricplus.settings.groups.MPPassSettings;
+import de.florianmichael.viafabricplus.settings.groups.AuthenticationSettings;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
@@ -143,7 +143,7 @@ public class ClassiCubeServerListScreen extends Screen {
             final ServerInfo entry = new ServerInfo(classiCubeServerInfo.name(), serverAddress.getAddress(), false);
             ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = classiCubeServerInfo.mppass();
 
-            if (MPPassSettings.INSTANCE.forceCPEIfUsingClassiCube.getValue()) {
+            if (AuthenticationSettings.INSTANCE.forceCPEIfUsingClassiCube.getValue()) {
                 ((IServerInfo) entry).viafabricplus_forceVersion(ViaLoadingBase.fromProtocolVersion(LegacyProtocolVersion.c0_30cpe));
             }
 

@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.settings.base;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
+import de.florianmichael.viafabricplus.settings.ConfigRemapper;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableTextContent;
 
@@ -47,7 +48,7 @@ public abstract class AbstractSetting<T> {
     }
 
     public String getTranslationKey() {
-        return ((TranslatableTextContent) name.getContent()).getKey();
+        return ConfigRemapper.remapp(((TranslatableTextContent) name.getContent()).getKey());
     }
 
     public T getDefaultValue() {

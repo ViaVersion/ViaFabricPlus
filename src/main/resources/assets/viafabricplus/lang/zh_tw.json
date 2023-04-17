@@ -9,11 +9,13 @@
   "words.viafabricplus.cancel": "取消",
   "words.viafabricplus.cancelreset": "返回並重置",
 
-  "bedrock.viafabricplus.set": "點擊這裡以登入基岩版帳號",
-
-  "bridge.viafabricplus.secret": "顯示“Super Secret Settings”（超級秘密設定）",
-  "bridge.viafabricplus.extrainformation": "在\u00a76[調試]\u00a7r（F3）中顯示額外資訊",
-  "bridge.viafabricplus.classicloading": "在連接伺服器時使用舊版加載進度顯示",
+  "general.viafabricplus.secret": "顯示“Super Secret Settings”（超級秘密設定）",
+  "general.viafabricplus.extrainformation": "在\u00a76[調試]\u00a7r（F3）中顯示額外資訊",
+  "general.viafabricplus.classicloading": "在連接伺服器時使用舊版加載進度顯示",
+  "general.viafabricplus.main": "模組按鈕位置",
+  "general.viafabricplus.creative": "從創造模式選項內移除不可用的物品",
+  "general.viafabricplus.classiccommands": "允許使用舊版命令協定",
+  "general.viafabricplus.protocolsync": "自動根據所選版本調整設定",
 
   "debug.viafabricplus.sequence": "禁用排序",
   "debug.viafabricplus.merchant": "平滑荧幕顯示",
@@ -27,15 +29,11 @@
   "debug.viafabricplus.longsneak": "一直潜行",
   "debug.viafabricplus.legacypseeds": "遠古版本挖掘速度",
 
-  "general.viafabricplus.main": "模組按鈕位置",
-  "general.viafabricplus.creative": "從創造模式選項內移除不可用的物品",
-  "general.viafabricplus.classiccommands": "允許使用舊版命令協定",
-  "general.viafabricplus.protocolsync": "自動根據所選版本調整設定",
-
-  "mppass.viafabricplus.betacraft": "使用 BetaCraft 身份驗證",
-  "mppass.viafabricplus.verify": "允許 ViaLegacy 調用 joinServer() 來驗證會話",
-  "mppass.viafabricplus.fail": "joinServer() 調用失敗時斷開連接",
-  "mppass.viafabricplus.classicube": "如果使用ClassicCube MP Pass，則強制CPE版本",
+  "authentication.viafabricplus.betacraft": "使用 BetaCraft 身份驗證",
+  "authentication.viafabricplus.verify": "允許 ViaLegacy 調用 joinServer() 來驗證會話",
+  "authentication.viafabricplus.fail": "joinServer() 調用失敗時斷開連接",
+  "authentication.viafabricplus.classicube": "如果使用ClassicCube MP Pass，則強制CPE版本",
+  "authentication.viafabricplus.bedrock": "點擊這裡以登入基岩版帳號",
 
   "visual.viafabricplus.secure": "禁用安全聊天警告",
   "visual.viafabricplus.indicator": "隱藏聊天簽名提示",

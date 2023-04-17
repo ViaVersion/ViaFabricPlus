@@ -21,14 +21,13 @@ import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.type_impl.BooleanSetting;
 import net.minecraft.text.Text;
 
-public class BridgeSettings extends SettingGroup {
-    public final static BridgeSettings INSTANCE = new BridgeSettings();
+public class ExperimentalSettings extends SettingGroup {
+    public final static ExperimentalSettings INSTANCE = new ExperimentalSettings();
 
-    public final BooleanSetting showSuperSecretSettings = new BooleanSetting(this, Text.translatable("bridge.viafabricplus.secret"), true);
-    public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, Text.translatable("bridge.viafabricplus.extrainformation"), true);
-    public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, Text.translatable("bridge.viafabricplus.classicloading"), true);
+    public final BooleanSetting fixChunkBorders = new BooleanSetting(this, Text.translatable("experimental.viafabricplus.chunkborderfix"), true);
+    public final BooleanSetting waterMovementEdgeDetection = new BooleanSetting(this, Text.translatable("experimental.viafabricplus.watermovement"), true);
 
-    public BridgeSettings() {
-        super("Bridge");
+    public ExperimentalSettings() {
+        super("Experimental");
     }
 }

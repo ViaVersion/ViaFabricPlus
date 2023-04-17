@@ -13,11 +13,13 @@
   "words.viafabricplus.reset": "重置",
   "words.viafabricplus.copy": "复制代码",
 
-  "bedrock.viafabricplus.set": "点击以设置基岩版账号",
-
-  "bridge.viafabricplus.secret": "显示 “Super Secret Settings”（超级秘密设置）",
-  "bridge.viafabricplus.extrainformation": "在\u00a76[调试]\u00a7r（F3）中显示额外信息",
-  "bridge.viafabricplus.classicloading": "在连接服务器时使用旧版进度显示",
+  "general.viafabricplus.secret": "显示 “Super Secret Settings”（超级秘密设置）",
+  "general.viafabricplus.extrainformation": "在\u00a76[调试]\u00a7r（F3）中显示额外信息",
+  "general.viafabricplus.classicloading": "在连接服务器时使用旧版进度显示",
+  "general.viafabricplus.main": "模组按钮位置",
+  "general.viafabricplus.creative": "从创造模式选项内移除不可用的物品",
+  "general.viafabricplus.classiccommands": "允许使用旧版命令协议",
+  "general.viafabricplus.protocolsync": "自动根据所选版本调整设置",
 
   "debug.viafabricplus.sequence": "禁用排序",
   "debug.viafabricplus.merchant": "平滑屏幕",
@@ -31,17 +33,13 @@
   "debug.viafabricplus.longsneak": "保持潜行",
   "debug.viafabricplus.legacypseeds": "远古版本挖掘速度",
 
-  "general.viafabricplus.main": "模组按钮位置",
-  "general.viafabricplus.creative": "从创造模式选项内移除不可用的物品",
-  "general.viafabricplus.classiccommands": "允许使用旧版命令协议",
-  "general.viafabricplus.protocolsync": "自动根据所选版本调整设置",
-
-  "mppass.viafabricplus.betacraft": "使用 BetaCraft 身份验证",
-  "mppass.viafabricplus.verify": "允许 ViaLegacy 调用 joinServer() 来验证会话",
-  "mppass.viafabricplus.fail": "joinServer() 调用失败时断开连接",
-  "mppass.viafabricplus.classicube": "如果使用 ClassicCube MP Pass，则强制 CPE 版本",
-  "mppass.viafabricplus.spoof": "如果使用 ClassiCube ，则显示为 ClassiCube 名称",
-  "mppass.viafabricplus.skin": "允许 ViaLegacy 加载旧版本皮肤",
+  "authentication.viafabricplus.betacraft": "使用 BetaCraft 身份验证",
+  "authentication.viafabricplus.verify": "允许 ViaLegacy 调用 joinServer() 来验证会话",
+  "authentication.viafabricplus.fail": "joinServer() 调用失败时断开连接",
+  "authentication.viafabricplus.classicube": "如果使用 ClassicCube MP Pass，则强制 CPE 版本",
+  "authentication.viafabricplus.spoof": "如果使用 ClassiCube ，则显示为 ClassiCube 名称",
+  "authentication.viafabricplus.skin": "允许 ViaLegacy 加载旧版本皮肤",
+  "authentication.viafabricplus.bedrock": "点击以设置基岩版账号",
 
   "visual.viafabricplus.secure": "禁用安全聊天警告",
   "visual.viafabricplus.indicator": "隐藏聊天签名提示",

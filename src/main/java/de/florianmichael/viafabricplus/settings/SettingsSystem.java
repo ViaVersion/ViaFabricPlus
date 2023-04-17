@@ -40,9 +40,8 @@ public class SettingsSystem extends FileSaver {
     public void init() {
         addGroup(
                 GeneralSettings.INSTANCE,
-                BridgeSettings.INSTANCE,
-                BedrockSettings.INSTANCE,
-                MPPassSettings.INSTANCE,
+                ExperimentalSettings.INSTANCE,
+                AuthenticationSettings.INSTANCE,
                 VisualSettings.INSTANCE,
                 DebugSettings.INSTANCE
         );

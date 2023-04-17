@@ -13,11 +13,16 @@
   "words.viafabricplus.reset": "Reset",
   "words.viafabricplus.copy": "Copy code",
 
-  "bedrock.viafabricplus.set": "Click to set account for Bedrock edition",
+  "general.viafabricplus.secret": "Show Super Secret Settings",
+  "general.viafabricplus.extrainformation": "Show extra information in Debug Hud",
+  "general.viafabricplus.classicloading": "Show classic loading progress in connect screen",
+  "general.viafabricplus.main": "Main button orientation",
+  "general.viafabricplus.creative": "Remove not available items from creative tab",
+  "general.viafabricplus.classiccommands": "Allow classic protocol command usage",
+  "general.viafabricplus.protocolsync": "Automatically change Settings based on the current version",
 
-  "bridge.viafabricplus.secret": "Show Super Secret Settings",
-  "bridge.viafabricplus.extrainformation": "Show extra information in Debug Hud",
-  "bridge.viafabricplus.classicloading": "Show classic loading progress in connect screen",
+  "experimental.viafabricplus.chunkborderfix": "Fix Chunk borders",
+  "experimental.viafabricplus.watermovement": "Water movement edge detection",
 
   "debug.viafabricplus.sequence": "Disable sequencing",
   "debug.viafabricplus.merchant": "Smooth out merchant screens",
@@ -31,17 +36,13 @@
   "debug.viafabricplus.longsneak": "Long sneaking",
   "debug.viafabricplus.legacypseeds": "Legacy mining speeds",
 
-  "general.viafabricplus.main": "Main button orientation",
-  "general.viafabricplus.creative": "Remove not available items from creative tab",
-  "general.viafabricplus.classiccommands": "Allow classic protocol command usage",
-  "general.viafabricplus.protocolsync": "Automatically change Settings based on the current version",
-
-  "mppass.viafabricplus.betacraft": "Use BetaCraft authentication",
-  "mppass.viafabricplus.verify": "Allow ViaLegacy to call joinServer() to verify session",
-  "mppass.viafabricplus.fail": "Disconnect if joinServer() call fails",
-  "mppass.viafabricplus.classicube": "Force CPE Version if using ClassiCube",
-  "mppass.viafabricplus.spoof": "Spoof Username to ClassiCube Name if using ClassiCube",
-  "mppass.viafabricplus.skin": "Allow ViaLegacy to load skins in legacy versions",
+  "authentication.viafabricplus.betacraft": "Use BetaCraft authentication",
+  "authentication.viafabricplus.verify": "Allow ViaLegacy to call joinServer() to verify session",
+  "authentication.viafabricplus.fail": "Disconnect if joinServer() call fails",
+  "authentication.viafabricplus.classicube": "Force CPE Version if using ClassiCube",
+  "authentication.viafabricplus.spoof": "Spoof Username to ClassiCube Name if using ClassiCube",
+  "authentication.viafabricplus.skin": "Allow ViaLegacy to load skins in legacy versions",
+  "authentication.viafabricplus.bedrock": "Click to set account for Bedrock edition",
 
   "visual.viafabricplus.secure": "Disable secure chat warning",
   "visual.viafabricplus.indicator": "Hide signature indicator",
@@ -54,7 +55,6 @@
   "visual.viafabricplus.classic": "Replace creative inventory",
   "visual.viafabricplus.walkanimation": "Old walking animation",
   "visual.viafabricplus.sodium": "Fix Sodium Chunk renderer",
-  "visual.viafabricplus.chunkborderfix": "Fix Chunk borders",
 
   "bedrocklogin.viafabricplus.text": "Your browser should have opened.\nPlease enter the following Code: %s\nClosing this screen will cancel the process!",
   "bedrocklogin.viafabricplus.error": "An error has occurred! See the latest.log for more information,\nplease report the bug at: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
