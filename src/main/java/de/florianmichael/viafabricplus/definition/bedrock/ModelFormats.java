@@ -17,13 +17,13 @@
  */
 package de.florianmichael.viafabricplus.definition.bedrock;
 
-import net.raphimc.viabedrock.protocol.data.enums.bedrock.MovementMode;
+import net.raphimc.viabedrock.protocol.data.enums.bedrock.ServerMovementModes;
 
 public class ModelFormats {
 
     public static String formatMovementMode(final int movementMode) {
-        if (movementMode == MovementMode.CLIENT) return "Client";
-        if (movementMode == MovementMode.SERVER) return "Server";
+        if (movementMode == ServerMovementModes.CLIENT) return "Client";
+        if (movementMode == ServerMovementModes.SERVER) return "Server";
 
         return "Server with rewind";
     }
