@@ -39,12 +39,8 @@ public class MixinMultiplayerServerListPinger {
     @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;Z)Lnet/minecraft/network/ClientConnection;"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void trackSessions(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress, Optional optional, InetSocketAddress inetSocketAddress) {
         final ComparableProtocolVersion version = ((IServerInfo) entry).viafabricplus_forcedVersion();
-        if (version != null) {
-            ProtocolHack.getForcedVersions().put(inetSocketAddress, version);
-        }
 
-        if (ProtocolHack.isEqualToOrForced(inetSocketAddress, BedrockProtocolVersion.bedrockLatest)) {
-            ProtocolHack.getRakNetPingSessions().add(inetSocketAddress);
-        }
+        if (version != null) ProtocolHack.getForcedVersions().put(inetSocketAddress, version);
+        if (ProtocolHack.isEqualToOrForced(inetSocketAddress, BedrockProtocolVersion.bedrockLatest)) ProtocolHack.getRakNetPingSessions().add(inetSocketAddress);
     }
 }
