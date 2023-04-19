@@ -23,6 +23,7 @@
 
   "experimental.viafabricplus.chunkborderfix": "Fix Chunk borders",
   "experimental.viafabricplus.watermovement": "Water movement edge detection",
+  "experimental.viafabricplus.fontcachefix": "Fix Font Cache",
 
   "debug.viafabricplus.sequence": "Disable sequencing",
   "debug.viafabricplus.merchant": "Smooth out merchant screens",

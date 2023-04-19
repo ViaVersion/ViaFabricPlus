@@ -20,6 +20,7 @@ package de.florianmichael.viafabricplus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
+import de.florianmichael.viafabricplus.definition.v1_12_2.FontCacheFix;
 import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
@@ -62,6 +63,7 @@ public class ViaFabricPlus {
 
         // Protocol Translator
         ChatLengthCalculation.create();
+        FontCacheFix.init();
         ProtocolHack.init();
 
         FinishMinecraftLoadCallback.EVENT.register(() -> {

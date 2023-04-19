@@ -6,5 +6,7 @@ accessible field net/minecraft/client/gui/screen/ConnectScreen connection Lnet/m
 accessible field net/minecraft/network/ClientConnection channel Lio/netty/channel/Channel;
 accessible field net/minecraft/client/network/ServerAddress INVALID Lnet/minecraft/client/network/ServerAddress;
 accessible field net/minecraft/client/network/ServerAddress hostAndPort Lcom/google/common/net/HostAndPort;
+accessible field net/minecraft/client/MinecraftClient fontManager Lnet/minecraft/client/font/FontManager;
+accessible field net/minecraft/client/font/FontManager fontStorages Ljava/util/Map;
 
 accessible class net/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection
