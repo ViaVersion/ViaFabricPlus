@@ -15,28 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.v1_12_2;
+package de.florianmichael.viafabricplus.injection.access;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class SyncInputExecutor {
-    private final static ConcurrentLinkedDeque<Runnable> keyboardInteractions = new ConcurrentLinkedDeque<>();
-    private final static ConcurrentLinkedDeque<Runnable> mouseInteractions = new ConcurrentLinkedDeque<>();
+public interface IMinecraftClient {
 
-    public static void callback() {
-        while (!mouseInteractions.isEmpty()) {
-            mouseInteractions.poll().run();
-        }
-        while (!keyboardInteractions.isEmpty()) {
-            keyboardInteractions.poll().run();
-        }
-    }
-
-    public static void trackKeyboardInteraction(Runnable interaction) {
-        keyboardInteractions.add(interaction);
-    }
-
-    public static void trackMouseInteraction(Runnable interaction) {
-        mouseInteractions.add(interaction);
-    }
+    ConcurrentLinkedDeque<Runnable> viafabricplus_getMouseInteractions();
+    ConcurrentLinkedDeque<Runnable> viafabricplus_getKeyboardInteractions();
 }

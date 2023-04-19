@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.input;
 
-import de.florianmichael.viafabricplus.definition.v1_12_2.SyncInputExecutor;
+import de.florianmichael.viafabricplus.injection.access.IMinecraftClient;
 import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
@@ -31,7 +31,7 @@ public class MixinMouse {
     @Redirect(method = { "method_29615", "method_22685", "method_22684" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;execute(Ljava/lang/Runnable;)V"))
     public void redirectSync(MinecraftClient instance, Runnable runnable) {
         if (DebugSettings.INSTANCE.executeInputsInSync.getValue()) {
-            SyncInputExecutor.trackMouseInteraction(runnable);
+            ((IMinecraftClient) MinecraftClient.getInstance()).viafabricplus_getMouseInteractions().add(runnable);
             return;
         }
 

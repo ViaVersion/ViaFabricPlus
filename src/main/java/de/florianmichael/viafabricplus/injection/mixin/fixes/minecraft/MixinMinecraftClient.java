@@ -22,10 +22,9 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_12to1_11_1.Protocol1_12To1_11_1;
 import com.viaversion.viaversion.protocols.protocol1_9_3to1_9_1_2.ServerboundPackets1_9_3;
-import de.florianmichael.viafabricplus.definition.v1_12_2.SyncInputExecutor;
+import de.florianmichael.viafabricplus.injection.access.IMinecraftClient;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -37,14 +36,17 @@ import net.minecraft.util.Hand;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 @Mixin(MinecraftClient.class)
-public abstract class MixinMinecraftClient {
+public abstract class MixinMinecraftClient implements IMinecraftClient {
 
     @Shadow
     @Nullable
@@ -94,13 +96,24 @@ public abstract class MixinMinecraftClient {
         }
     }
 
+    @Unique
+    private final ConcurrentLinkedDeque<Runnable> viafabricplus_mouseInteractions = new ConcurrentLinkedDeque<>();
+
+    @Unique
+    private final ConcurrentLinkedDeque<Runnable> viafabricplus_keyboardInteractions = new ConcurrentLinkedDeque<>();
+
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
             ordinal = 4, shift = At.Shift.BEFORE))
     public void injectTick(CallbackInfo ci) {
         if (!DebugSettings.INSTANCE.executeInputsInSync.getValue()) return;
 
-        SyncInputExecutor.callback();
+        while (!viafabricplus_mouseInteractions.isEmpty()) {
+            viafabricplus_mouseInteractions.poll().run();
+        }
+        while (!viafabricplus_keyboardInteractions.isEmpty()) {
+            viafabricplus_keyboardInteractions.poll().run();
+        }
     }
 
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasRidingInventory()Z"))
@@ -115,5 +128,15 @@ public abstract class MixinMinecraftClient {
                 clientStatus.sendToServer(Protocol1_12To1_11_1.class);
             }
         }
+    }
+
+    @Override
+    public ConcurrentLinkedDeque<Runnable> viafabricplus_getMouseInteractions() {
+        return this.viafabricplus_mouseInteractions;
+    }
+
+    @Override
+    public ConcurrentLinkedDeque<Runnable> viafabricplus_getKeyboardInteractions() {
+        return this.viafabricplus_keyboardInteractions;
     }
 }

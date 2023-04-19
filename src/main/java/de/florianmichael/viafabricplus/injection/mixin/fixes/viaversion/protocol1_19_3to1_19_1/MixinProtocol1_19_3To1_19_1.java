@@ -314,7 +314,7 @@ public class MixinProtocol1_19_3To1_19_1 extends AbstractProtocol<ClientboundPac
                             );
 
                             wrapper.write(Type.BYTE_ARRAY_PRIMITIVE, signature);
-                            wrapper.write(Type.BOOLEAN, false); // Signed Preview - not implemented yet, but i could do it
+                            wrapper.write(Type.BOOLEAN, false); // Signed Preview - not implemented yet, but I could do it
                         }
                     }
                 });
