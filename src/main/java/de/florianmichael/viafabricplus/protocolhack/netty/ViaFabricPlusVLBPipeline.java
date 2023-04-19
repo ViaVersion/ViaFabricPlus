@@ -30,7 +30,6 @@ import de.florianmichael.vialoadingbase.netty.VLBPipeline;
 import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
-import net.lenni0451.reflect.stream.RStream;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.netty.BatchLengthCodec;
 import net.raphimc.viabedrock.netty.PacketEncapsulationCodec;
@@ -121,7 +120,7 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
         if (evt.getClass().getName().equals("me.steinborn.krypton.mod.shared.misc.KryptonPipelineEvent")) {
             if (evt.toString().equals("COMPRESSION_ENABLED")) {
                 super.userEventTriggered(ctx, new CompressionReorderEvent());
-                ViaFabricPlus.LOGGER.info("Compression has been re-sorted after \"Krypton\"");
+                ViaFabricPlus.LOGGER.info("Compression has been re-ordered after \"Krypton\"");
                 return;
             }
         }

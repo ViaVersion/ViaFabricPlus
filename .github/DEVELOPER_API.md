@@ -21,6 +21,7 @@ public class ViaFabricPlusExampleAddon implements ClientModInitializer {
 | LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)                                                                                                                          |
 | PreLoadCallback                      | Called before everything (Pre-pre load)                                                                                                                                                                       |
 | SkipIdlePacketCallback               | Called as soon as the idle packet is skipped in the <= 1.8                                                                                                                                                    |
+| ViaLoadingBaseBuilderCallback        | Called when Via* is initialized                                                                                                                                                                               |              
 
 ### General API
 #### Get the release version of an material:

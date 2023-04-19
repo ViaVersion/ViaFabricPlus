@@ -29,6 +29,7 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.FinishViaLoadingBaseStartupCallback;
+import de.florianmichael.viafabricplus.event.ViaLoadingBaseBuilderCallback;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLBPipeline;
 import de.florianmichael.viafabricplus.protocolhack.platform.ViaAprilFoolsPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.platform.ViaBedrockPlatformImpl;
@@ -164,6 +165,7 @@ public class ProtocolHack {
             providers.use(BlobCacheProvider.class, new ViaFabricPlusBlobCacheProvider());
         });
         builder = builder.onProtocolReload(protocolVersion -> ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(protocolVersion));
+        ViaLoadingBaseBuilderCallback.EVENT.invoker().onBuildViaLoadingBase(builder);
         builder.build();
 
         FinishViaLoadingBaseStartupCallback.EVENT.invoker().onFinishViaLoadingBaseStartup();
