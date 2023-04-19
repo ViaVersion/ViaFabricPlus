@@ -17,15 +17,139 @@
  */
 package de.florianmichael.viafabricplus.protocolhack.provider.vialoadingbase;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.provider.VLBBaseVersionProvider;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.*;
+import io.netty.channel.epoll.Epoll;
+import io.netty.channel.epoll.EpollSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ServerAddress;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.network.NetworkSide;
+import net.minecraft.network.NetworkState;
+import net.minecraft.network.listener.ClientQueryPacketListener;
+import net.minecraft.network.packet.c2s.handshake.HandshakeC2SPacket;
+import net.minecraft.network.packet.c2s.query.QueryRequestC2SPacket;
+import net.minecraft.network.packet.s2c.query.QueryPongS2CPacket;
+import net.minecraft.network.packet.s2c.query.QueryResponseS2CPacket;
+import net.minecraft.text.Text;
+import net.minecraft.util.Lazy;
+import org.jetbrains.annotations.NotNull;
+
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class ViaFabricPlusVLBBaseVersionProvider extends VLBBaseVersionProvider {
+
+    // Based on https://github.com/ViaVersion/ViaFabric/blob/main/viafabric-mc119/src/main/java/com/viaversion/fabric/mc119/service/ProtocolAutoDetector.java
+    private final static LoadingCache<InetSocketAddress, CompletableFuture<ProtocolVersion>> AUTO_DETECTION_CACHE = CacheBuilder.newBuilder().
+            expireAfterWrite(30, TimeUnit.SECONDS).
+            build(CacheLoader.from(address -> {
+                CompletableFuture<ProtocolVersion> future = new CompletableFuture<>();
+
+                try {
+                    final ClientConnection clientConnection = new ClientConnection(NetworkSide.CLIENTBOUND);
+                    final boolean useEpoll = Epoll.isAvailable() && MinecraftClient.getInstance().options.shouldUseNativeTransport();
+
+                    final Class class_ = useEpoll ? EpollSocketChannel.class : NioSocketChannel.class;
+                    final Lazy lazy = useEpoll ? ClientConnection.EPOLL_CLIENT_IO_GROUP : ClientConnection.CLIENT_IO_GROUP;
+
+                    final ChannelFuture channelFuture = new Bootstrap().group((EventLoopGroup) lazy.get()).handler(new ChannelInitializer<>() {
+                        protected void initChannel(@NotNull Channel channel) {
+                            try {
+                                channel.config().setOption(ChannelOption.TCP_NODELAY, true);
+                                channel.config().setOption(ChannelOption.IP_TOS, 0x18);
+                            } catch (ChannelException ignored) {
+                            }
+
+                            ChannelPipeline channelPipeline = channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30));
+                            ClientConnection.addHandlers(channelPipeline, NetworkSide.CLIENTBOUND);
+                            channelPipeline.addLast("packet_handler", clientConnection);
+                        }
+                    }).channel(class_).connect(address);
+
+                    channelFuture.addListener(future1 -> {
+                        if (!future1.isSuccess()) {
+                            future.completeExceptionally(future1.cause());
+                        } else {
+                            channelFuture.channel().eventLoop().execute(() -> { // needs to execute after channel init
+                                clientConnection.setPacketListener(new ClientQueryPacketListener() {
+                                    @Override
+                                    public void onResponse(QueryResponseS2CPacket packet) {
+                                        if (packet.metadata() != null && packet.metadata().version().isPresent()) {
+                                            final ProtocolVersion version = ViaLoadingBase.fromProtocolId(packet.metadata().version().get().protocolVersion());
+                                            future.complete(version);
+
+                                            ViaFabricPlus.LOGGER.info("Auto-detected " + version + " for " + address);
+                                        } else {
+                                            future.completeExceptionally(new IllegalArgumentException("Null version in query response"));
+                                        }
+                                        clientConnection.disconnect(Text.empty());
+                                    }
+
+                                    @Override
+                                    public void onPong(QueryPongS2CPacket packet) {
+                                        clientConnection.disconnect(Text.literal("Pong not requested!"));
+                                    }
+
+                                    @Override
+                                    public void onDisconnected(Text reason) {
+                                        future.completeExceptionally(new IllegalStateException(reason.getString()));
+                                    }
+
+                                    @Override
+                                    public boolean isConnectionOpen() {
+                                        return channelFuture.channel().isOpen();
+                                    }
+                                });
+
+                                clientConnection.send(new HandshakeC2SPacket(address.getHostString(), address.getPort(), NetworkState.STATUS));
+                                clientConnection.send(new QueryRequestC2SPacket());
+                            });
+                        }
+                    });
+                } catch (Throwable throwable) { // You never know...
+                    future.completeExceptionally(throwable);
+                }
+
+                return future;
+            }));
 
     @Override
     public int getClosestServerProtocol(UserConnection connection) throws Exception {
         if (connection.isClientSide()) {
+            if (GeneralSettings.INSTANCE.autoDetectVersion.getValue()) {
+                final SocketAddress target = connection.getChannel().remoteAddress();
+                if (target instanceof final InetSocketAddress socketAddress) {
+                    AUTO_DETECTION_CACHE.get(socketAddress).whenComplete((version, throwable) -> {
+                        if (throwable != null) {
+                            throwable.printStackTrace();
+                            return;
+                        }
+                        if (version != null) {
+                            final ComparableProtocolVersion remapped = ViaLoadingBase.fromProtocolId(version.getVersion());
+                            if (remapped != null) {
+                                ProtocolHack.getForcedVersions().put(socketAddress, remapped);
+                            }
+                        }
+                    });
+                }
+            }
             return ProtocolHack.getTargetVersion(connection.getChannel()).getVersion();
         }
         return super.getClosestServerProtocol(connection);

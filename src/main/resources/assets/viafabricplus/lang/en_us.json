@@ -20,6 +20,7 @@
   "general.viafabricplus.creative": "Remove not available items from creative tab",
   "general.viafabricplus.classiccommands": "Allow classic protocol command usage",
   "general.viafabricplus.protocolsync": "Automatically change Settings based on the current version",
+  "general.viafabricplus.autodetect": "Auto detect version",
 
   "experimental.viafabricplus.chunkborderfix": "Fix Chunk borders",
   "experimental.viafabricplus.watermovement": "Water movement edge detection",
