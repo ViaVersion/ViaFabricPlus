@@ -582,6 +582,14 @@ public class ItemReleaseVersionMappings {
         register(Items.TURTLE_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.WHITE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.YELLOW_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.OAK_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.SPRUCE_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.BIRCH_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.JUNGLE_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.ACACIA_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.CHERRY_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.DARK_OAK_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.MANGROVE_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
 
         register(Items.BLACK_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.BLACK_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
@@ -945,7 +953,6 @@ public class ItemReleaseVersionMappings {
         register(Items.BIRCH_PLANKS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.BIRCH_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.BIRCH_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
-        register(Items.BIRCH_WOOD, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.EMERALD_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.WRITABLE_BOOK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.COCOA_BEANS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
@@ -956,13 +963,10 @@ public class ItemReleaseVersionMappings {
         register(Items.JUNGLE_PLANKS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.JUNGLE_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.JUNGLE_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
-        register(Items.JUNGLE_WOOD, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
-        register(Items.OAK_WOOD, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.SANDSTONE_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
         register(Items.SPRUCE_PLANKS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.SPRUCE_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.SPRUCE_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
-        register(Items.SPRUCE_WOOD, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.TRIPWIRE_HOOK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.WRITTEN_BOOK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
 
