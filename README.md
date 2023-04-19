@@ -15,6 +15,9 @@ This project has nothing to do with the original ViaFabric and is therefore also
 ViaFabricPlus is supposed to be an alternative to [multiconnect](https://github.com/Earthcomputer/multiconnect) that offers more compactness and more clientside improvements,
 as ViaFabricPlus implements all Via platforms (ViaVersion, ViaBackwards, ViaLegacy, ViaAprilFools, ViaBedrock) and adds tons of clientside fixes and QoL improvements like old rendering for all platforms. 
 
+## History
+ViaFabricPlus has been around since 2019, but it was never a standalone mod, it was always part of my utility mods, most recently it was in a project with several devs, since development ended I decided to release it as a standalone mod.
+
 # For developers and translators
 Contributions in the form of pull requests are always welcome, please just stick to my code style and make sure your code is easy to update and compatible with other mods.
 
@@ -105,12 +108,6 @@ It should work fine with most if not all mods and modpacks.
 #### TODO:
 - [ ] More extensions for Classic Protocol Extensions protocol
 - [ ] Window click interactions in <= 1.16.5
-
-## Backports
-Basically there are no backports, the last version of ViaFabricPlus that supported a specific Minecraft version is also the last one that exists for that Minecraft version. <br>
-However, if a version between two Minecraft versions is too unstable, I will definitely make backports, you can find them only on modrinth/curseforge, <br>
-they do not have their own releases, current backports (named after their branch):
-- [1.19.3](https://modrinth.com/mod/viafabricplus/version/0.0.0)
 
 ## Classic stuff
 ### Custom protocol extensions
