@@ -55,48 +55,48 @@ public class ItemReleaseVersionMappings {
     }
 
     public void load() {
-        register(Items.CHERRY_PLANKS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_SAPLING, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.SUSPICIOUS_SAND, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.BRUSH, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_BUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_CHEST_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_DOOR, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_FENCE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_FENCE_GATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_HANGING_SIGN, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_LEAVES, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.CHERRY_LOG, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_PLANKS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_PRESSURE_PLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_SAPLING, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_SIGN, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_TRAPDOOR, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.CHERRY_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.COAST_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.DECORATED_POT, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.PINK_PETALS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.POTTERY_SHARD_ARCHER, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.POTTERY_SHARD_ARMS_UP, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.POTTERY_SHARD_PRIZE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.POTTERY_SHARD_SKULL, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.RIB_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SNIFFER_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.STRIPPED_CHERRY_LOG, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.STRIPPED_CHERRY_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_LEAVES, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.TORCHFLOWER, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.PINK_PETALS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.DECORATED_POT, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_FENCE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_BUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_PRESSURE_PLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_DOOR, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_TRAPDOOR, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_FENCE_GATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_CHEST_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_SIGN, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.CHERRY_HANGING_SIGN, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.SNIFFER_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.TORCHFLOWER_SEEDS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.BRUSH, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.POTTERY_SHARD_ARCHER, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.POTTERY_SHARD_PRIZE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.POTTERY_SHARD_ARMS_UP, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.POTTERY_SHARD_SKULL, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.COAST_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.VEX_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SUSPICIOUS_SAND, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.RIB_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.TORCHFLOWER, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.TORCHFLOWER_SEEDS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.VEX_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
 
         register(Items.IRON_GOLEM_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19_3));
         register(Items.SNOW_GOLEM_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19_3));
@@ -104,7 +104,6 @@ public class ItemReleaseVersionMappings {
         register(Items.ACACIA_CHEST_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.ALLAY_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.BIRCH_CHEST_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19));
-        register(Items.TADPOLE_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.DARK_OAK_CHEST_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.DISC_FRAGMENT_5, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.ECHO_SHARD, ProtocolRange.andNewer(ProtocolVersion.v1_19));
@@ -113,8 +112,8 @@ public class ItemReleaseVersionMappings {
         register(Items.GOAT_HORN, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.JUNGLE_CHEST_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.MANGROVE_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19));
-        register(Items.MANGROVE_CHEST_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.MANGROVE_BUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_19));
+        register(Items.MANGROVE_CHEST_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.MANGROVE_DOOR, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.MANGROVE_FENCE, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.MANGROVE_FENCE_GATE, ProtocolRange.andNewer(ProtocolVersion.v1_19));
@@ -149,52 +148,34 @@ public class ItemReleaseVersionMappings {
         register(Items.SPRUCE_CHEST_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.STRIPPED_MANGROVE_LOG, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.STRIPPED_MANGROVE_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_19));
+        register(Items.TADPOLE_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.TADPOLE_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.VERDANT_FROGLIGHT, ProtocolRange.andNewer(ProtocolVersion.v1_19));
         register(Items.WARDEN_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19));
 
         register(Items.MUSIC_DISC_OTHERSIDE, ProtocolRange.andNewer(ProtocolVersion.v1_18));
 
-        register(Items.AMETHYST_SHARD, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.SMALL_AMETHYST_BUD, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.MEDIUM_AMETHYST_BUD, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.LARGE_AMETHYST_BUD, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.AMETHYST_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.AMETHYST_CLUSTER, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.AMETHYST_SHARD, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.AXOLOTL_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.AXOLOTL_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.AZALEA, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.AZALEA_LEAVES, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.BIG_DRIPLEAF, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.AMETHYST_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.COPPER_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.RAW_COPPER_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.RAW_GOLD_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.RAW_IRON_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.AXOLOTL_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.BUDDING_AMETHYST, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.BUNDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.CALCITE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.BLACK_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.BLUE_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.BROWN_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.BUDDING_AMETHYST, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.BUNDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.CALCITE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.CYAN_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.GRAY_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.GREEN_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.LIGHT_BLUE_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.LIGHT_GRAY_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.LIME_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.MAGENTA_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.ORANGE_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.PINK_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.PURPLE_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.RED_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.WHITE_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
-        register(Items.YELLOW_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.CHISELED_DEEPSLATE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.COBBLED_DEEPSLATE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.COBBLED_DEEPSLATE_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.COBBLED_DEEPSLATE_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.COBBLED_DEEPSLATE_WALL, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.COPPER_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.COPPER_INGOT, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.COPPER_ORE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.CRACKED_DEEPSLATE_BRICKS, ProtocolRange.andNewer(ProtocolVersion.v1_17));
@@ -202,6 +183,7 @@ public class ItemReleaseVersionMappings {
         register(Items.CUT_COPPER, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.CUT_COPPER_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.CUT_COPPER_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.CYAN_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.DEEPSLATE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.DEEPSLATE_BRICK_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.DEEPSLATE_BRICK_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_17));
@@ -232,27 +214,43 @@ public class ItemReleaseVersionMappings {
         register(Items.GLOW_LICHEN, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.GLOW_SQUID_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.GOAT_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.GRAY_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.GREEN_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.HANGING_ROOTS, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.INFESTED_DEEPSLATE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.LARGE_AMETHYST_BUD, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.LIGHT, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.LIGHT_BLUE_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.LIGHT_GRAY_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.LIGHTNING_ROD, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.LIME_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.MAGENTA_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.MEDIUM_AMETHYST_BUD, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.MOSS_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.MOSS_CARPET, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.ORANGE_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.OXIDIZED_COPPER, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.OXIDIZED_CUT_COPPER, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.OXIDIZED_CUT_COPPER_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.OXIDIZED_CUT_COPPER_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.PINK_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.POINTED_DRIPSTONE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.POLISHED_DEEPSLATE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.POLISHED_DEEPSLATE_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.POLISHED_DEEPSLATE_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.POLISHED_DEEPSLATE_WALL, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.POWDER_SNOW_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.PURPLE_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.RAW_COPPER, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.RAW_COPPER_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.RAW_GOLD, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.RAW_GOLD_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.RAW_IRON, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.RAW_IRON_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.RED_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.ROOTED_DIRT, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.SCULK_SENSOR, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.SMALL_AMETHYST_BUD, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.SMALL_DRIPLEAF, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.SMOOTH_BASALT, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.SPORE_BLOSSOM, ProtocolRange.andNewer(ProtocolVersion.v1_17));
@@ -279,15 +277,15 @@ public class ItemReleaseVersionMappings {
         register(Items.WEATHERED_CUT_COPPER, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.WEATHERED_CUT_COPPER_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_17));
         register(Items.WEATHERED_CUT_COPPER_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.WHITE_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
+        register(Items.YELLOW_CANDLE, ProtocolRange.andNewer(ProtocolVersion.v1_17));
 
         register(Items.ANCIENT_DEBRIS, ProtocolRange.andNewer(ProtocolVersion.v1_16));
-        register(Items.PIGLIN_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.BASALT, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.BLACKSTONE, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.BLACKSTONE_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.BLACKSTONE_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.BLACKSTONE_WALL, ProtocolRange.andNewer(ProtocolVersion.v1_16));
-        register(Items.NETHERITE_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.CHAIN, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.CHISELED_NETHER_BRICKS, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.CHISELED_POLISHED_BLACKSTONE, ProtocolRange.andNewer(ProtocolVersion.v1_16));
@@ -316,6 +314,7 @@ public class ItemReleaseVersionMappings {
         register(Items.NETHER_GOLD_ORE, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.NETHER_SPROUTS, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.NETHERITE_AXE, ProtocolRange.andNewer(ProtocolVersion.v1_16));
+        register(Items.NETHERITE_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.NETHERITE_BOOTS, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.NETHERITE_CHESTPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.NETHERITE_HELMET, ProtocolRange.andNewer(ProtocolVersion.v1_16));
@@ -326,6 +325,7 @@ public class ItemReleaseVersionMappings {
         register(Items.NETHERITE_SCRAP, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.NETHERITE_SHOVEL, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.NETHERITE_SWORD, ProtocolRange.andNewer(ProtocolVersion.v1_16));
+        register(Items.PIGLIN_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.PIGLIN_BRUTE_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.PIGLIN_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_16));
         register(Items.POLISHED_BASALT, ProtocolRange.andNewer(ProtocolVersion.v1_16));
@@ -387,11 +387,6 @@ public class ItemReleaseVersionMappings {
         register(Items.ANDESITE_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.ANDESITE_WALL, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.BAMBOO, ProtocolRange.andNewer(ProtocolVersion.v1_14));
-        register(Items.FLOWER_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
-        register(Items.CREEPER_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
-        register(Items.SKULL_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
-        register(Items.GLOBE_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
-        register(Items.MOJANG_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.BARREL, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.BELL, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.BIRCH_SIGN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
@@ -405,6 +400,7 @@ public class ItemReleaseVersionMappings {
         register(Items.CAT_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.COMPOSTER, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.CORNFLOWER, ProtocolRange.andNewer(ProtocolVersion.v1_14));
+        register(Items.CREEPER_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.CROSSBOW, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.CUT_RED_SANDSTONE_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.CUT_SANDSTONE_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_14));
@@ -416,7 +412,9 @@ public class ItemReleaseVersionMappings {
         register(Items.END_STONE_BRICK_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.END_STONE_BRICK_WALL, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.FLETCHING_TABLE, ProtocolRange.andNewer(ProtocolVersion.v1_14));
+        register(Items.FLOWER_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.FOX_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_14));
+        register(Items.GLOBE_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.GRANITE_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.GRANITE_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.GRANITE_WALL, ProtocolRange.andNewer(ProtocolVersion.v1_14));
@@ -428,6 +426,7 @@ public class ItemReleaseVersionMappings {
         register(Items.LECTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.LILY_OF_THE_VALLEY, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.LOOM, ProtocolRange.andNewer(ProtocolVersion.v1_14));
+        register(Items.MOJANG_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.MOSSY_COBBLESTONE_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.MOSSY_COBBLESTONE_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.MOSSY_STONE_BRICK_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_14));
@@ -450,6 +449,7 @@ public class ItemReleaseVersionMappings {
         register(Items.RED_SANDSTONE_WALL, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.SANDSTONE_WALL, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.SCAFFOLDING, ProtocolRange.andNewer(ProtocolVersion.v1_14));
+        register(Items.SKULL_BANNER_PATTERN, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.SMITHING_TABLE, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.SMOKER, ProtocolRange.andNewer(ProtocolVersion.v1_14));
         register(Items.SMOOTH_QUARTZ_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_14));
@@ -475,25 +475,19 @@ public class ItemReleaseVersionMappings {
         register(Items.ACACIA_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.BIRCH_PRESSURE_PLATE, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.BIRCH_TRAPDOOR, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.BLACK_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.BLUE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.BIRCH_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.BLUE_ICE, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.BRAIN_CORAL, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.BRAIN_CORAL_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.BRAIN_CORAL_FAN, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.BROWN_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.BUBBLE_CORAL, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.BUBBLE_CORAL_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.BUBBLE_CORAL_FAN, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.COD_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.PUFFERFISH_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.SALMON_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.TROPICAL_FISH_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.CARVED_PUMPKIN, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.CHIPPED_ANVIL, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.COD_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.COD_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.CONDUIT, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.CYAN_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.DAMAGED_ANVIL, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.DARK_OAK_PRESSURE_PLATE, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.DARK_OAK_TRAPDOOR, ProtocolRange.andNewer(ProtocolVersion.v1_13));
@@ -523,32 +517,27 @@ public class ItemReleaseVersionMappings {
         register(Items.FIRE_CORAL, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.FIRE_CORAL_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.FIRE_CORAL_FAN, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.GRAY_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.GREEN_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.HEART_OF_THE_SEA, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.HORN_CORAL, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.HORN_CORAL_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.HORN_CORAL_FAN, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.JUNGLE_PRESSURE_PLATE, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.JUNGLE_TRAPDOOR, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.JUNGLE_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.KELP, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.LIGHT_BLUE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.LIGHT_GRAY_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.LIME_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.MAGENTA_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.MUSHROOM_STEM, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.NAUTILUS_SHELL, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.ORANGE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.OAK_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         //register(Items.PETRIFIED_OAK_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_13)); it's right, but the item exists in another form before, so it's actually wrong
         register(Items.PHANTOM_MEMBRANE, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.PHANTOM_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.PINK_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.PRISMARINE_BRICK_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.PRISMARINE_BRICK_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.PRISMARINE_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.PRISMARINE_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.PUFFERFISH_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.PUFFERFISH_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.PURPLE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.SALMON_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.SALMON_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.SCUTE, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.SEA_PICKLE, ProtocolRange.andNewer(ProtocolVersion.v1_13));
@@ -560,6 +549,7 @@ public class ItemReleaseVersionMappings {
         register(Items.SMOOTH_STONE, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.SPRUCE_PRESSURE_PLATE, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.SPRUCE_TRAPDOOR, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.SPRUCE_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.STRIPPED_ACACIA_LOG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.STRIPPED_ACACIA_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.STRIPPED_BIRCH_LOG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
@@ -573,6 +563,7 @@ public class ItemReleaseVersionMappings {
         register(Items.STRIPPED_SPRUCE_LOG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.STRIPPED_SPRUCE_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.TRIDENT, ProtocolRange.andNewer(ProtocolVersion.v1_13));
+        register(Items.TROPICAL_FISH_BUCKET, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.TROPICAL_FISH_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.TUBE_CORAL, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.TUBE_CORAL_BLOCK, ProtocolRange.andNewer(ProtocolVersion.v1_13));
@@ -580,64 +571,69 @@ public class ItemReleaseVersionMappings {
         register(Items.TURTLE_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.TURTLE_HELMET, ProtocolRange.andNewer(ProtocolVersion.v1_13));
         register(Items.TURTLE_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.WHITE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.YELLOW_BED, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.OAK_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.SPRUCE_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.BIRCH_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.JUNGLE_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.ACACIA_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.CHERRY_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.DARK_OAK_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
-        register(Items.MANGROVE_WOOD, ProtocolRange.andNewer(ProtocolVersion.v1_13));
 
+        register(Items.BLACK_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.BLACK_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.BLACK_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.BLACK_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.BLUE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.BLUE_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.BLUE_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.BLUE_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.BROWN_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.BROWN_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.BROWN_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.BROWN_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.CYAN_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.CYAN_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.CYAN_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.CYAN_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.GRAY_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.GRAY_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.GRAY_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.GRAY_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.GREEN_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.GREEN_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.GREEN_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.GREEN_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.KNOWLEDGE_BOOK, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.LIGHT_BLUE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.LIGHT_BLUE_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.LIGHT_BLUE_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.LIGHT_BLUE_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.LIGHT_GRAY_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.LIGHT_GRAY_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.LIGHT_GRAY_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.LIGHT_GRAY_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.LIME_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.LIME_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.LIME_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.LIME_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.MAGENTA_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.MAGENTA_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.MAGENTA_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.MAGENTA_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.ORANGE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.ORANGE_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.ORANGE_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.ORANGE_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.PARROT_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.PINK_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.PINK_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.PINK_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.PINK_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.PURPLE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.PURPLE_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.PURPLE_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.PURPLE_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.RED_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.RED_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.RED_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.WHITE_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.WHITE_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.WHITE_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.WHITE_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
+        register(Items.YELLOW_BED, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.YELLOW_CONCRETE, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.YELLOW_CONCRETE_POWDER, ProtocolRange.andNewer(ProtocolVersion.v1_12));
         register(Items.YELLOW_GLAZED_TERRACOTTA, ProtocolRange.andNewer(ProtocolVersion.v1_12));
@@ -648,6 +644,7 @@ public class ItemReleaseVersionMappings {
         register(Items.CYAN_SHULKER_BOX, ProtocolRange.andNewer(ProtocolVersion.v1_11));
         register(Items.DONKEY_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_11));
         register(Items.EVOKER_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_11));
+        register(Items.FILLED_MAP, ProtocolRange.andNewer(ProtocolVersion.v1_11));
         register(Items.GRAY_SHULKER_BOX, ProtocolRange.andNewer(ProtocolVersion.v1_11));
         register(Items.GREEN_SHULKER_BOX, ProtocolRange.andNewer(ProtocolVersion.v1_11));
         register(Items.HUSK_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_11));
@@ -657,7 +654,6 @@ public class ItemReleaseVersionMappings {
         register(Items.LIME_SHULKER_BOX, ProtocolRange.andNewer(ProtocolVersion.v1_11));
         register(Items.LLAMA_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_11));
         register(Items.MAGENTA_SHULKER_BOX, ProtocolRange.andNewer(ProtocolVersion.v1_11));
-        register(Items.FILLED_MAP, ProtocolRange.andNewer(ProtocolVersion.v1_11));
         register(Items.MULE_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_11));
         register(Items.OBSERVER, ProtocolRange.andNewer(ProtocolVersion.v1_11));
         register(Items.ORANGE_SHULKER_BOX, ProtocolRange.andNewer(ProtocolVersion.v1_11));
@@ -694,8 +690,8 @@ public class ItemReleaseVersionMappings {
         register(Items.CHORUS_PLANT, ProtocolRange.andNewer(ProtocolVersion.v1_9));
         register(Items.DARK_OAK_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_9));
         register(Items.DIRT_PATH, ProtocolRange.andNewer(ProtocolVersion.v1_9));
-        register(Items.DRAGON_HEAD, ProtocolRange.andNewer(ProtocolVersion.v1_9));
         register(Items.DRAGON_BREATH, ProtocolRange.andNewer(ProtocolVersion.v1_9));
+        register(Items.DRAGON_HEAD, ProtocolRange.andNewer(ProtocolVersion.v1_9));
         register(Items.ELYTRA, ProtocolRange.andNewer(ProtocolVersion.v1_9));
         register(Items.END_CRYSTAL, ProtocolRange.andNewer(ProtocolVersion.v1_9));
         register(Items.END_ROD, ProtocolRange.andNewer(ProtocolVersion.v1_9));
@@ -720,32 +716,20 @@ public class ItemReleaseVersionMappings {
         register(Items.ACACIA_FENCE_GATE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.ANDESITE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.ARMOR_STAND, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.BLACK_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.BLUE_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.BROWN_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.CYAN_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.GRAY_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.GREEN_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.LIGHT_BLUE_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.LIGHT_GRAY_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.LIME_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.MAGENTA_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.ORANGE_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.PINK_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.PURPLE_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.RED_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.WHITE_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.YELLOW_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.BARRIER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.BIRCH_DOOR, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.BIRCH_FENCE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.BIRCH_FENCE_GATE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.BLACK_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.BLUE_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.BROWN_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.CHISELED_RED_SANDSTONE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.COARSE_DIRT, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.COOKED_MUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.COOKED_RABBIT, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.CREEPER_HEAD, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.CUT_RED_SANDSTONE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.CYAN_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.DARK_OAK_DOOR, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.DARK_OAK_FENCE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.DARK_OAK_FENCE_GATE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
@@ -754,11 +738,20 @@ public class ItemReleaseVersionMappings {
         register(Items.ELDER_GUARDIAN_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.ENDERMITE_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.GRANITE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.GRAY_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.GREEN_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.GUARDIAN_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.IRON_TRAPDOOR, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.JUNGLE_DOOR, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.JUNGLE_FENCE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.JUNGLE_FENCE_GATE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.LIGHT_BLUE_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.LIGHT_GRAY_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.LIME_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.MAGENTA_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.MUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.ORANGE_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.PINK_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.PLAYER_HEAD, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.POLISHED_ANDESITE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.POLISHED_DIORITE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
@@ -767,12 +760,13 @@ public class ItemReleaseVersionMappings {
         register(Items.PRISMARINE_BRICKS, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.PRISMARINE_CRYSTALS, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.PRISMARINE_SHARD, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.PURPLE_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.RABBIT, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.RABBIT_FOOT, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.RABBIT_HIDE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.RABBIT_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.RABBIT_STEW, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.RABBIT_FOOT, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.MUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_8));
-        register(Items.RABBIT, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.RED_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.RED_SANDSTONE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.RED_SANDSTONE_SLAB, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.RED_SANDSTONE_STAIRS, ProtocolRange.andNewer(ProtocolVersion.v1_8));
@@ -784,7 +778,9 @@ public class ItemReleaseVersionMappings {
         register(Items.SPRUCE_FENCE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.SPRUCE_FENCE_GATE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.WET_SPONGE, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.WHITE_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.WITHER_SKELETON_SKULL, ProtocolRange.andNewer(ProtocolVersion.v1_8));
+        register(Items.YELLOW_BANNER, ProtocolRange.andNewer(ProtocolVersion.v1_8));
         register(Items.ZOMBIE_HEAD, ProtocolRange.andNewer(ProtocolVersion.v1_8));
 
         register(Items.ACACIA_BUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
@@ -804,6 +800,8 @@ public class ItemReleaseVersionMappings {
         register(Items.BLUE_STAINED_GLASS_PANE, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.BROWN_STAINED_GLASS, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.BROWN_STAINED_GLASS_PANE, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
+        register(Items.COMMAND_BLOCK_MINECART, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
+        register(Items.COOKED_SALMON, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.CYAN_STAINED_GLASS, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.CYAN_STAINED_GLASS_PANE, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.DARK_OAK_BUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
@@ -831,7 +829,6 @@ public class ItemReleaseVersionMappings {
         register(Items.LIME_STAINED_GLASS_PANE, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.MAGENTA_STAINED_GLASS, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.MAGENTA_STAINED_GLASS_PANE, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
-        register(Items.COMMAND_BLOCK_MINECART, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.ORANGE_STAINED_GLASS, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.ORANGE_STAINED_GLASS_PANE, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.ORANGE_TULIP, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
@@ -845,12 +842,12 @@ public class ItemReleaseVersionMappings {
         register(Items.PUFFERFISH, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.PURPLE_STAINED_GLASS, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.PURPLE_STAINED_GLASS_PANE, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
-        register(Items.SALMON, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.RED_SAND, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.RED_STAINED_GLASS, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.RED_STAINED_GLASS_PANE, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.RED_TULIP, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.ROSE_BUSH, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
+        register(Items.SALMON, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.SPRUCE_BUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.SUNFLOWER, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.TALL_GRASS, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
@@ -860,15 +857,14 @@ public class ItemReleaseVersionMappings {
         register(Items.WHITE_TULIP, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.YELLOW_STAINED_GLASS, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
         register(Items.YELLOW_STAINED_GLASS_PANE, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
-        register(Items.COOKED_SALMON, ProtocolRange.andNewer(ProtocolVersion.v1_7_1));
 
         register(Items.BLACK_CARPET, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
         register(Items.BLACK_TERRACOTTA, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
-        register(Items.COAL_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
         register(Items.BLUE_CARPET, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
         register(Items.BLUE_TERRACOTTA, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
         register(Items.BROWN_CARPET, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
         register(Items.BROWN_TERRACOTTA, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
+        register(Items.COAL_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
         register(Items.CYAN_CARPET, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
         register(Items.CYAN_TERRACOTTA, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
         register(Items.DIAMOND_HORSE_ARMOR, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
@@ -905,23 +901,23 @@ public class ItemReleaseVersionMappings {
         register(Items.YELLOW_TERRACOTTA, ProtocolRange.andNewer(LegacyProtocolVersion.r1_6_1));
 
         register(Items.ACTIVATOR_RAIL, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
-        register(Items.QUARTZ_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
-        register(Items.REDSTONE_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.CHISELED_QUARTZ_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
+        register(Items.COMPARATOR, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.DAYLIGHT_DETECTOR, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.DROPPER, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.HEAVY_WEIGHTED_PRESSURE_PLATE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.HOPPER, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
-        register(Items.LIGHT_WEIGHTED_PRESSURE_PLATE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.HOPPER_MINECART, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
-        register(Items.TNT_MINECART, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
+        register(Items.LIGHT_WEIGHTED_PRESSURE_PLATE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.NETHER_BRICK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
-        register(Items.QUARTZ, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.NETHER_QUARTZ_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
+        register(Items.QUARTZ, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
+        register(Items.QUARTZ_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.QUARTZ_PILLAR, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
         register(Items.QUARTZ_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.QUARTZ_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
-        register(Items.COMPARATOR, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
+        register(Items.REDSTONE_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
+        register(Items.TNT_MINECART, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
         register(Items.TRAPPED_CHEST, ProtocolRange.andNewer(LegacyProtocolVersion.r1_5tor1_5_1));
 
         register(Items.ANVIL, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
@@ -932,14 +928,16 @@ public class ItemReleaseVersionMappings {
         register(Items.CARROT_ON_A_STICK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.COBBLESTONE_WALL, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.COMMAND_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
-        register(Items.MAP, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.ENCHANTED_BOOK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.FIREWORK_ROCKET, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.FIREWORK_STAR, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.FLOWER_POT, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.GOLDEN_CARROT, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.ITEM_FRAME, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
+        register(Items.MAP, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.MOSSY_COBBLESTONE_WALL, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
+        // "[The disc was] made available in survival" Is this the release in which it was added or made available?
+        register(Items.MUSIC_DISC_WAIT, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.NETHER_BRICK_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.NETHER_STAR, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.OAK_BUTTON, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
@@ -947,16 +945,13 @@ public class ItemReleaseVersionMappings {
         register(Items.POTATO, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.PUMPKIN_PIE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
         register(Items.WITCH_SPAWN_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
-        // "[The disc was] made available in survival" Is this the release in which it was added or made available?
-        register(Items.MUSIC_DISC_WAIT, ProtocolRange.andNewer(LegacyProtocolVersion.r1_4_2));
 
         register(Items.BIRCH_PLANKS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.BIRCH_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.BIRCH_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
-        register(Items.EMERALD_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
-        register(Items.WRITABLE_BOOK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.COCOA_BEANS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.EMERALD, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
+        register(Items.EMERALD_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.EMERALD_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.ENCHANTED_GOLDEN_APPLE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.ENDER_CHEST, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
@@ -968,18 +963,19 @@ public class ItemReleaseVersionMappings {
         register(Items.SPRUCE_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.SPRUCE_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.TRIPWIRE_HOOK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
+        register(Items.WRITABLE_BOOK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
         register(Items.WRITTEN_BOOK, ProtocolRange.andNewer(LegacyProtocolVersion.r1_3_1tor1_3_2));
 
+        register(Items.CHISELED_SANDSTONE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
         register(Items.CHISELED_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
+        register(Items.CUT_SANDSTONE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
+        register(Items.EXPERIENCE_BOTTLE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
         register(Items.FIRE_CHARGE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
         register(Items.JUNGLE_LEAVES, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
         register(Items.JUNGLE_LOG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
         register(Items.JUNGLE_SAPLING, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
         register(Items.OCELOT_SPAWN_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
-        register(Items.CHISELED_SANDSTONE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
-        register(Items.CUT_SANDSTONE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
         register(Items.REDSTONE_LAMP, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
-        register(Items.EXPERIENCE_BOTTLE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_2_1tor1_2_3));
 
         register(Items.BLAZE_SPAWN_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_1));
         register(Items.CAVE_SPIDER_SPAWN_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_1));
@@ -999,22 +995,24 @@ public class ItemReleaseVersionMappings {
         register(Items.SQUID_SPAWN_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_1));
         register(Items.VILLAGER_SPAWN_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_1));
         register(Items.WOLF_SPAWN_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_1));
-        register(Items.ZOMBIFIED_PIGLIN_SPAWN_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_1));
         register(Items.ZOMBIE_SPAWN_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_1));
+        register(Items.ZOMBIFIED_PIGLIN_SPAWN_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_1));
 
-        register(Items.GHAST_TEAR, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.BLAZE_ROD, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.NETHER_WART, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.GOLD_NUGGET, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.GLASS_BOTTLE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.POTION, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.SPLASH_POTION, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.SPIDER_EYE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.FERMENTED_SPIDER_EYE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
         register(Items.BLAZE_POWDER, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.MAGMA_CREAM, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.GLISTERING_MELON_SLICE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.BLAZE_ROD, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.BREWING_STAND, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.CAULDRON, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.DRAGON_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.ENCHANTING_TABLE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.END_PORTAL_FRAME, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.END_STONE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
         register(Items.ENDER_EYE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.FERMENTED_SPIDER_EYE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.GHAST_TEAR, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.GLASS_BOTTLE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.GLISTERING_MELON_SLICE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.GOLD_NUGGET, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.MAGMA_CREAM, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
         register(Items.MUSIC_DISC_11, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
         register(Items.MUSIC_DISC_BLOCKS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
         register(Items.MUSIC_DISC_CHIRP, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
@@ -1024,59 +1022,57 @@ public class ItemReleaseVersionMappings {
         register(Items.MUSIC_DISC_STAL, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
         register(Items.MUSIC_DISC_STRAD, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
         register(Items.MUSIC_DISC_WARD, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.BREWING_STAND, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.ENCHANTING_TABLE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.NETHER_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
         register(Items.NETHER_BRICK_FENCE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
         register(Items.NETHER_BRICK_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.END_PORTAL_FRAME, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.END_STONE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.DRAGON_EGG, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
-        register(Items.CAULDRON, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.NETHER_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.NETHER_WART, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.POTION, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.SPIDER_EYE, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.SPLASH_POTION, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
 
         // b1.9-pre1
-        register(Items.MYCELIUM, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
         register(Items.LILY_PAD, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
+        register(Items.MYCELIUM, ProtocolRange.andNewer(LegacyProtocolVersion.r1_0_0tor1_0_1));
 
-        register(Items.STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
-        register(Items.MOSSY_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.CRACKED_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.INFESTED_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.INFESTED_MOSSY_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.INFESTED_CRACKED_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.INFESTED_STONE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.BEEF, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
         register(Items.BRICK_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.BRICK_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
         register(Items.BROWN_MUSHROOM_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.RED_MUSHROOM_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.MUSHROOM_STEM, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.CHICKEN, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.COOKED_BEEF, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.COOKED_CHICKEN, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.CRACKED_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.ENDER_PEARL, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.GLASS_PANE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.INFESTED_COBBLESTONE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.INFESTED_CRACKED_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.INFESTED_MOSSY_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.INFESTED_STONE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.INFESTED_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.IRON_BARS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
         register(Items.MELON, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
         register(Items.MELON_SEEDS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.PUMPKIN_SEEDS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.IRON_BARS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.GLASS_PANE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.OAK_FENCE_GATE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.BRICK_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.STONE_BRICK_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.CHICKEN, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.COOKED_CHICKEN, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.BEEF, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.COOKED_BEEF, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.ENDER_PEARL, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
         register(Items.MELON_SLICE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.MOSSY_STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.MUSHROOM_STEM, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.OAK_FENCE_GATE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.PUMPKIN_SEEDS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.RED_MUSHROOM_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
         register(Items.ROTTEN_FLESH, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.VINE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
-        register(Items.INFESTED_COBBLESTONE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
         register(Items.STONE_BRICK_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.STONE_BRICK_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
+        register(Items.STONE_BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
+        register(Items.VINE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_8tob1_8_1));
 
         register(Items.PISTON, ProtocolRange.andNewer(LegacyProtocolVersion.b1_7tob1_7_3));
-        register(Items.STICKY_PISTON, ProtocolRange.andNewer(LegacyProtocolVersion.b1_7tob1_7_3));
         register(Items.SHEARS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_7tob1_7_3));
+        register(Items.STICKY_PISTON, ProtocolRange.andNewer(LegacyProtocolVersion.b1_7tob1_7_3));
 
         register(Items.DEAD_BUSH, ProtocolRange.andNewer(LegacyProtocolVersion.b1_6tob1_6_6));
-        register(Items.GRASS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_6tob1_6_6));
         register(Items.FERN, ProtocolRange.andNewer(LegacyProtocolVersion.b1_6tob1_6_6));
-        register(Items.OAK_TRAPDOOR, ProtocolRange.andNewer(LegacyProtocolVersion.b1_6tob1_6_6));
+        register(Items.GRASS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_6tob1_6_6));
         register(Items.MAP, ProtocolRange.andNewer(LegacyProtocolVersion.b1_6tob1_6_6));
+        register(Items.OAK_TRAPDOOR, ProtocolRange.andNewer(LegacyProtocolVersion.b1_6tob1_6_6));
 
         register(Items.BIRCH_SAPLING, ProtocolRange.andNewer(LegacyProtocolVersion.b1_5tob1_5_2));
         register(Items.COBWEB, ProtocolRange.andNewer(LegacyProtocolVersion.b1_5tob1_5_2));
@@ -1084,62 +1080,62 @@ public class ItemReleaseVersionMappings {
         register(Items.POWERED_RAIL, ProtocolRange.andNewer(LegacyProtocolVersion.b1_5tob1_5_2));
         register(Items.SPRUCE_SAPLING, ProtocolRange.andNewer(LegacyProtocolVersion.b1_5tob1_5_2));
 
-        register(Items.TRAPPED_CHEST, ProtocolRange.andNewer(LegacyProtocolVersion.b1_4tob1_4_1));
         register(Items.COOKIE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_4tob1_4_1));
+        register(Items.TRAPPED_CHEST, ProtocolRange.andNewer(LegacyProtocolVersion.b1_4tob1_4_1));
 
-        register(Items.RED_BED, ProtocolRange.andNewer(LegacyProtocolVersion.b1_3tob1_3_1));
-        register(Items.REPEATER, ProtocolRange.andNewer(LegacyProtocolVersion.b1_3tob1_3_1));
         register(Items.COBBLESTONE_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.b1_3tob1_3_1), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
         register(Items.OAK_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.b1_3tob1_3_1));
+        register(Items.RED_BED, ProtocolRange.andNewer(LegacyProtocolVersion.b1_3tob1_3_1));
+        register(Items.REPEATER, ProtocolRange.andNewer(LegacyProtocolVersion.b1_3tob1_3_1));
         register(Items.SANDSTONE_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.b1_3tob1_3_1));
 
-        register(Items.CAKE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.DISPENSER, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.LAPIS_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.LAPIS_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.NOTE_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.SANDSTONE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.SPRUCE_LOG, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.BIRCH_LOG, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.SPRUCE_LEAVES, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
         register(Items.BIRCH_LEAVES, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.BIRCH_LOG, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.BLACK_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.BLUE_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
         register(Items.BONE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
         register(Items.BONE_MEAL, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.LAPIS_LAZULI, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.COCOA_BEANS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.INK_SAC, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.BROWN_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.CAKE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
         register(Items.CHARCOAL, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.COCOA_BEANS, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.CYAN_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.DISPENSER, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.GRAY_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.GREEN_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.INK_SAC, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.LAPIS_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.LAPIS_LAZULI, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.LAPIS_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.LIGHT_BLUE_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.LIGHT_GRAY_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.LIME_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.MAGENTA_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.NOTE_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.ORANGE_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.PINK_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.PURPLE_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.RED_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.SANDSTONE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.SPRUCE_LEAVES, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
+        register(Items.SPRUCE_LOG, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
         register(Items.SUGAR, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
         register(Items.WHITE_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.ORANGE_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.MAGENTA_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.LIGHT_BLUE_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
         register(Items.YELLOW_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.LIME_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.PINK_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.GRAY_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.LIGHT_GRAY_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.CYAN_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.PURPLE_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.BLUE_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.BROWN_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.GREEN_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.RED_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
-        register(Items.BLACK_DYE, ProtocolRange.andNewer(LegacyProtocolVersion.b1_2_0tob1_2_2));
 
-        register(Items.NETHERRACK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
-        register(Items.SOUL_SAND, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
-        register(Items.GLOWSTONE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
         register(Items.CARVED_PUMPKIN, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
-        register(Items.JACK_O_LANTERN, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
         register(Items.CLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
-        register(Items.GLOWSTONE_DUST, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
-        register(Items.COOKED_COD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
         register(Items.COD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
+        register(Items.COOKED_COD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
+        register(Items.GLOWSTONE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
+        register(Items.GLOWSTONE_DUST, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
+        register(Items.JACK_O_LANTERN, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
+        register(Items.NETHERRACK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
         register(Items.PUMPKIN, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
+        register(Items.SOUL_SAND, ProtocolRange.andNewer(LegacyProtocolVersion.a1_2_0toa1_2_1_1));
 
-        register(Items.FISHING_ROD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_1_0toa1_1_2_1));
         register(Items.COMPASS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_1_0toa1_1_2_1));
+        register(Items.FISHING_ROD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_1_0toa1_1_2_1));
 
         // Indev with former 20100223 (it's not known)
         register(Items.PAINTING, ProtocolRange.andNewer(LegacyProtocolVersion.a1_1_0toa1_1_2_1));
@@ -1147,21 +1143,21 @@ public class ItemReleaseVersionMappings {
         register(Items.OAK_FENCE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_17toa1_0_17_4));
 
         // a1.0.14 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.JUKEBOX, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.CHEST_MINECART, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.EGG, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.FURNACE_MINECART, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.JUKEBOX, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.MUSIC_DISC_13, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.MUSIC_DISC_CAT, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.CHEST_MINECART, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.FURNACE_MINECART, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // a1.0.11 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.SUGAR_CANE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.CLAY, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.PAPER, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.BOOK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.CLAY_BALL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.SLIME_BALL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.BRICK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.CLAY, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.CLAY_BALL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.PAPER, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.SLIME_BALL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.SUGAR_CANE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // a1.0.8 (doesn't have multiplayer, so we assign it to the next multiplayer version)
         register(Items.LEATHER, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
@@ -1182,11 +1178,11 @@ public class ItemReleaseVersionMappings {
         // a1.0.1 (doesn't have multiplayer, so we assign it to the next multiplayer version)
         register(Items.IRON_DOOR, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.LEVER, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.OAK_PRESSURE_PLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.REDSTONE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.REDSTONE_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.REDSTONE_TORCH, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.STONE_BUTTON, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.OAK_PRESSURE_PLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.STONE_PRESSURE_PLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 20100629 (doesn't have multiplayer, so we assign it to the next multiplayer version)
@@ -1194,162 +1190,162 @@ public class ItemReleaseVersionMappings {
         register(Items.OAK_STAIRS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 20100625-2 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.SPAWNER, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.SADDLE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.SPAWNER, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 20100624 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.RAIL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.OAK_DOOR, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.MINECART, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.OAK_DOOR, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.RAIL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 20100615 (doesn't have multiplayer, so we assign it to the next multiplayer version)
         register(Items.BUCKET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.WATER_BUCKET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.LAVA_BUCKET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.WATER_BUCKET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 20100607 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.OAK_SIGN, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.LADDER, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.OAK_SIGN, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 20100227-1 (doesn't have multiplayer, so we assign it to the next multiplayer version)
         register(Items.GOLDEN_APPLE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 20100219 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.FURNACE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.FLINT, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.PORKCHOP, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.COOKED_PORKCHOP, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.FLINT, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.FURNACE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.PORKCHOP, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 20100212-1 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.CHAINMAIL_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.CHAINMAIL_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.CHAINMAIL_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.CHAINMAIL_BOOTS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_BOOTS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.GOLDEN_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.GOLDEN_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.GOLDEN_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.GOLDEN_BOOTS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.DIAMOND_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.DIAMOND_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.DIAMOND_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.CHAINMAIL_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.CHAINMAIL_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.CHAINMAIL_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.DIAMOND_BOOTS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.DIAMOND_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.DIAMOND_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.DIAMOND_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.GOLDEN_BOOTS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.GOLDEN_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.GOLDEN_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.GOLDEN_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_BOOTS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 20100206 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.FARMLAND, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.WHEAT_SEEDS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.BREAD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.STONE_HOE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.WOODEN_HOE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_HOE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.GOLDEN_HOE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.DIAMOND_HOE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.FARMLAND, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.GOLDEN_HOE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_HOE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.STONE_HOE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.WHEAT, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.WHEAT_SEEDS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.WOODEN_HOE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 0.31 20100130 (doesn't have multiplayer, so we assign it to the next multiplayer version)
+        register(Items.BOWL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.CRAFTING_TABLE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.GOLDEN_SWORD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.FEATHER, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.GOLDEN_AXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.GOLDEN_PICKAXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.GOLDEN_SHOVEL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.BOWL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.MUSHROOM_STEW, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.GOLDEN_SWORD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.GUNPOWDER, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.MUSHROOM_STEW, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.STRING, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.FEATHER, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Infdev 0.31 20100129 (doesn't have multiplayer, so we assign it to the next multiplayer version)
         register(Items.STICK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Indev 0.31 20100128 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.DIAMOND_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.DIAMOND_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.COAL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.DIAMOND, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.DIAMOND_AXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.DIAMOND_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.DIAMOND_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.DIAMOND_PICKAXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.DIAMOND_SHOVEL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.DIAMOND_SWORD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.GOLD_INGOT, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.IRON_INGOT, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.WOODEN_SWORD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.WOODEN_AXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.WOODEN_PICKAXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.WOODEN_SHOVEL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.STONE_SWORD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.STONE_AXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.STONE_PICKAXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.STONE_SHOVEL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.DIAMOND_SWORD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.DIAMOND_AXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.DIAMOND_PICKAXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.DIAMOND_SHOVEL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.STONE_SWORD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.WOODEN_AXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.WOODEN_PICKAXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.WOODEN_SHOVEL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.WOODEN_SWORD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Indev 0.31 20091231-2 (doesn't have multiplayer, so we assign it to the next multiplayer version)
+        register(Items.APPLE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_AXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_BOOTS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.IRON_PICKAXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.IRON_SHOVEL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.IRON_SWORD, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_AXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_PICKAXE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.IRON_BOOTS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.LEATHER_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.LEATHER_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.LEATHER_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.LEATHER_BOOTS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
-        register(Items.APPLE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.LEATHER_CHESTPLATE, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.LEATHER_HELMET, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.LEATHER_LEGGINGS, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Indev 0.31 20100124-1 (doesn't have multiplayer, so we assign it to the next multiplayer version)
         register(Items.CHEST, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Indev 0.31 20100122 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.BOW, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.ARROW, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.BOW, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Indev 0.31 20100110 (doesn't have multiplayer, so we assign it to the next multiplayer version)
         register(Items.FLINT_AND_STEEL, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Indev 0.31 20091223-2 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.TORCH, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.STONE_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.TORCH, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
         // Cave game tech test? I literally have no idea
-        register(Items.GRASS_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
         register(Items.BEDROCK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
+        register(Items.GRASS_BLOCK, ProtocolRange.andNewer(LegacyProtocolVersion.a1_0_15));
 
-        register(Items.TNT, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
         register(Items.OBSIDIAN, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
+        register(Items.TNT, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
 
         // 0.26 SURVIVAL TEST (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.IRON_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
-        register(Items.GOLD_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
-        register(Items.COAL_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
-        register(Items.MOSSY_COBBLESTONE, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
         register(Items.BOOKSHELF, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
         register(Items.BRICKS, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
+        register(Items.COAL_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
+        register(Items.GOLD_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
+        register(Items.IRON_ORE, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
+        register(Items.MOSSY_COBBLESTONE, ProtocolRange.andNewer(LegacyProtocolVersion.c0_28toc0_30));
 
 
-        register(Items.WHITE_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.ORANGE_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.MAGENTA_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.LIGHT_BLUE_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.YELLOW_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.LIME_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.PINK_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
-        register(Items.GRAY_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.LIGHT_GRAY_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.CYAN_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
-        register(Items.PURPLE_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.BLUE_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
-        register(Items.BROWN_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
-        register(Items.GREEN_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
-        register(Items.RED_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
         register(Items.BLACK_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.SMOOTH_STONE_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.POPPY, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.DANDELION, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
-        register(Items.RED_MUSHROOM, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.BLUE_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
         register(Items.BROWN_MUSHROOM, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
+        register(Items.BROWN_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
+        register(Items.CYAN_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
+        register(Items.DANDELION, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.GRAY_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.GREEN_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
+        register(Items.LIGHT_BLUE_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.LIGHT_GRAY_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.LIME_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.MAGENTA_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.ORANGE_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.PINK_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27), ProtocolRange.singleton(LegacyProtocolVersion.c0_30cpe));
+        register(Items.POPPY, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.PURPLE_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.RED_MUSHROOM, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.RED_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.SMOOTH_STONE_SLAB, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.WHITE_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
+        register(Items.YELLOW_WOOL, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_20ac0_27));
 
         register(Items.SPONGE, ProtocolRange.andNewer(LegacyProtocolVersion.c0_0_19a_06));
     }
