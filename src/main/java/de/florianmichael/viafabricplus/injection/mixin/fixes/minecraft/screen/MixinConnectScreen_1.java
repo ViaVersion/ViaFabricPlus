@@ -20,22 +20,18 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.definition.c0_30.classicube.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
 import de.florianmichael.viafabricplus.definition.v1_19_0.storage.ChatSession1_19_0;
 import de.florianmichael.viafabricplus.definition.v1_19_2.storage.ChatSession1_19_2;
-import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.settings.groups.AuthenticationSettings;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PlayerKeyPair;
 import net.minecraft.network.encryption.PlayerPublicKey;
@@ -55,7 +51,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.net.InetSocketAddress;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
 public class MixinConnectScreen_1 {
@@ -101,7 +96,7 @@ public class MixinConnectScreen_1 {
         final UserConnection userConnection = connection.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
 
         if (userConnection == null) {
-            ViaLoadingBase.LOGGER.log(Level.WARNING, "ViaVersion userConnection is null");
+            ViaFabricPlus.LOGGER.warn("ViaVersion userConnection is null");
             return;
         }
         if (ProtocolHack.getTargetVersion(connection.channel).isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
@@ -130,14 +125,14 @@ public class MixinConnectScreen_1 {
                         if (legacyKey != null) {
                             userConnection.put(new ChatSession1_19_0(userConnection, profileKey, playerKeyPair.privateKey(), legacyKey));
                         } else {
-                            ViaLoadingBase.LOGGER.log(Level.WARNING, "Mojang removed the legacy key");
+                            ViaFabricPlus.LOGGER.warn("Mojang removed the legacy key");
                         }
                     }
                 } else {
-                    ViaLoadingBase.LOGGER.log(Level.WARNING, "Failed to fetch the key pair");
+                    ViaFabricPlus.LOGGER.warn("Failed to fetch the key pair");
                 }
             } catch (InterruptedException | ExecutionException e) {
-                ViaLoadingBase.LOGGER.log(Level.WARNING, "Failed to fetch the key pair");
+                ViaFabricPlus.LOGGER.warn("Failed to fetch the key pair");
             }
         }
     }
