@@ -20,14 +20,14 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.packet;
 import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(ChatMessageC2SPacket.class)
 public class MixinChatMessageC2SPacket {
 
-    @ModifyConstant(method = "write", constant = @Constant(intValue = 256))
-    public int expandChatLength(int constant) {
+    @ModifyArg(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/PacketByteBuf;writeString(Ljava/lang/String;I)Lnet/minecraft/network/PacketByteBuf;"))
+    public int modifyChatLength(int maxLength) {
         return ChatLengthCalculation.INSTANCE.getMaxLength();
     }
 }
