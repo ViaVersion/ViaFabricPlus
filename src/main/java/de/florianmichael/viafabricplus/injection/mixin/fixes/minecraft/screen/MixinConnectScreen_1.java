@@ -29,6 +29,7 @@ import de.florianmichael.viafabricplus.definition.v1_19_2.storage.ChatSession1_1
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.settings.groups.AuthenticationSettings;
+import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
@@ -93,13 +94,15 @@ public class MixinConnectScreen_1 {
     public void setupConnectionSessions(CallbackInfo ci) {
         final ClientConnection connection = field_2416.connection;
         if (connection == null || connection.channel == null) return;
-        final UserConnection userConnection = connection.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
 
+        final UserConnection userConnection = connection.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
         if (userConnection == null) {
             ViaFabricPlus.LOGGER.warn("ViaVersion userConnection is null");
             return;
         }
-        if (ProtocolHack.getTargetVersion(connection.channel).isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
+        final ComparableProtocolVersion targetVersion = ProtocolHack.getTargetVersion(connection.channel);
+
+        if (targetVersion.isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
             final StepMCChain.MCChain account = BedrockAccountHandler.INSTANCE.getAccount();
 
             if (account != null) {
@@ -108,10 +111,10 @@ public class MixinConnectScreen_1 {
             return;
         }
 
-        if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_19)) {
+        if (targetVersion.isOlderThan(ProtocolVersion.v1_19)) {
             return; // This disables the chat session emulation for all versions <= 1.18.2
         }
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (targetVersion.isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             try {
                 final PlayerKeyPair playerKeyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().get().orElse(null);
                 if (playerKeyPair != null) {
@@ -120,7 +123,7 @@ public class MixinConnectScreen_1 {
 
                     userConnection.put(new ChatSession1_19_2(userConnection, profileKey, playerKeyPair.privateKey()));
 
-                    if (ProtocolHack.getTargetVersion().isEqualTo(ProtocolVersion.v1_19)) {
+                    if (targetVersion.isEqualTo(ProtocolVersion.v1_19)) {
                         final byte[] legacyKey = ((IPublicKeyData) (Object) publicKeyData).viafabricplus_getV1Key().array();
                         if (legacyKey != null) {
                             userConnection.put(new ChatSession1_19_0(userConnection, profileKey, playerKeyPair.privateKey(), legacyKey));
