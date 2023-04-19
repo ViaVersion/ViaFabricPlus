@@ -27,14 +27,14 @@ import net.minecraft.util.math.BlockPos;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class ViaFabricPlusPlayerLookTargetProvider extends PlayerLookTargetProvider {
+
     @Override
     public @Nullable Position getPlayerLookTarget(UserConnection info) {
-        HitResult crosshairTarget = MinecraftClient.getInstance().crosshairTarget;
-        if (crosshairTarget instanceof BlockHitResult blockHitResult) {
-            BlockPos pos = blockHitResult.getBlockPos();
+        if (MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult blockHitResult) {
+            final BlockPos pos = blockHitResult.getBlockPos();
             return new Position(pos.getX(), pos.getY(), pos.getZ());
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
