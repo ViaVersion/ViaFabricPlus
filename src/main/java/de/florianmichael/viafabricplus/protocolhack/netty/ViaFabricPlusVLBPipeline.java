@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.protocolhack.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.DisconnectHandle;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.PingEncapsulationCodec;
@@ -26,8 +27,10 @@ import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.libra
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.library_fix.FixedUnconnectedPongDecoder;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.netty.VLBPipeline;
+import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
+import net.lenni0451.reflect.stream.RStream;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.netty.BatchLengthCodec;
 import net.raphimc.viabedrock.netty.PacketEncapsulationCodec;
@@ -110,6 +113,19 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
                 pipeline.remove(VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME);
             }
         }
+    }
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        // Bypass, because Krypton overwrites the entire compression instead of modifying the handlers.
+        if (evt.getClass().getName().equals("me.steinborn.krypton.mod.shared.misc.KryptonPipelineEvent")) {
+            if (evt.toString().equals("COMPRESSION_ENABLED")) {
+                super.userEventTriggered(ctx, new CompressionReorderEvent());
+                ViaFabricPlus.LOGGER.info("Compression has been re-sorted after \"Krypton\"");
+                return;
+            }
+        }
+        super.userEventTriggered(ctx, evt);
     }
 
     @Override

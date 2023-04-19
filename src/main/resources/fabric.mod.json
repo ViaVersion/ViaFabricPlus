@@ -34,7 +34,6 @@
   },
   "breaks": {
     "viafabric": "*",
-    "multiconnect": "*",
-    "krypton": "*"
+    "multiconnect": "*"
   }
 }
