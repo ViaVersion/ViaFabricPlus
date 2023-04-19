@@ -68,10 +68,6 @@ public class MixinConnectScreen_1 {
     @Shadow
     ConnectScreen field_2416;
 
-    @Final
-    @Shadow
-    ServerInfo field_40415;
-
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", ordinal = 0))
     public String replaceAddress(InetSocketAddress instance) {
         if (ProtocolHack.isOlderThanOrEqualToOrForced(instance, ProtocolVersion.v1_17) || ProtocolHack.isEqualToOrForced(instance, BedrockProtocolVersion.bedrockLatest)) {
@@ -96,17 +92,6 @@ public class MixinConnectScreen_1 {
         }
 
         instance.send(packet);
-    }
-
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
-    public Object mapSocketAddress(Optional<InetSocketAddress> instance) {
-        final InetSocketAddress address = instance.get();
-        final ComparableProtocolVersion forcedVersion = ((IServerInfo) field_40415).viafabricplus_forcedVersion();
-        if (forcedVersion != null) {
-            ProtocolHack.getForcedVersions().put(address, forcedVersion);
-            ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(forcedVersion);
-        }
-        return address;
     }
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", ordinal = 1, shift = At.Shift.BEFORE))

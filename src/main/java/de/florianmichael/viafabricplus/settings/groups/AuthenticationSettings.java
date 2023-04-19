@@ -80,6 +80,6 @@ public class AuthenticationSettings extends SettingGroup {
 
     
     public AuthenticationSettings() {
-        super("MP Pass");
+        super("Authentication");
     }
 }

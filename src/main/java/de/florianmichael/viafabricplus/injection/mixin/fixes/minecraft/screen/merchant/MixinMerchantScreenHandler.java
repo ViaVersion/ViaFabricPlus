@@ -31,7 +31,7 @@ public class MixinMerchantScreenHandler {
     @Inject(method = "switchTo", at = @At("HEAD"), cancellable = true)
     private void injectSwitchTo(int recipeId, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            ci.cancel(); // no lmao?
+            ci.cancel();
         }
     }
 }

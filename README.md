@@ -80,6 +80,9 @@ It should work fine with most if not all mods and modpacks.
 - Bedrock (1.19.70)
 
 ## Clientside related Fixes
+<details>
+  <summary>Click to open</summary>
+
 - [x] Bounding boxes for all versions
 - [x] Entity interaction and movement related packet fixes
 - [x] Sync and async mouse/keyboard handling in <= 1.12.2
@@ -97,6 +100,8 @@ It should work fine with most if not all mods and modpacks.
 - [x] Implementing non-sequenced block placement in <= 1.18.2
 - [x] Animation related fixes (1.7 Sneaking, c0.30 walking animation, ...)
 - [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
+</details>
+
 #### TODO:
 - [ ] More extensions for Classic Protocol Extensions protocol
 - [ ] Window click interactions in <= 1.16.5
