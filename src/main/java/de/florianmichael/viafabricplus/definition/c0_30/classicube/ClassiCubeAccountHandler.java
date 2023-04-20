@@ -58,7 +58,11 @@ public class ClassiCubeAccountHandler extends FileSaver {
         try {
             account = ClassiCubeAccount.fromJson(object);
         } catch (Exception e) {
-            ViaFabricPlus.LOGGER.error("Failed to log into ClassiCube account!", e);
+            if (System.getProperty("VFPDebug") != null) {
+                ViaFabricPlus.LOGGER.error("Failed to log into ClassiCube account!", e);
+            } else {
+                ViaFabricPlus.LOGGER.error("Failed to log into ClassiCube account! Use -DVFPDebug to show the log");
+            }
         }
     }
 

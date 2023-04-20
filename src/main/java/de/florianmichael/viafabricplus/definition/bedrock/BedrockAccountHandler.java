@@ -59,7 +59,11 @@ public class BedrockAccountHandler extends FileSaver {
                 account = MinecraftAuth.Bedrock.Title.MC_CHAIN.refresh(httpClient, account);
             }
         } catch (Exception e) {
-            ViaFabricPlus.LOGGER.error("Failed to log into Bedrock account!", e);
+            if (System.getProperty("VFPDebug") != null) {
+                ViaFabricPlus.LOGGER.error("Failed to log into Bedrock account!", e);
+            } else {
+                ViaFabricPlus.LOGGER.error("Failed to log into Bedrock account! Use -DVFPDebug to show the log");
+            }
         }
     }
 

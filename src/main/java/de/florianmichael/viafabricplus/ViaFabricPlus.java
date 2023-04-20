@@ -55,14 +55,17 @@ public class ViaFabricPlus {
         // Classic Stuff
         CustomClassicProtocolExtensions.create();
         ClassicProtocolCommands.create();
-        ClassiCubeAccountHandler.create();
+        ClassicItemSelectionScreen.create();
 
-        // Bedrock Stuff
+        // Account Handler
+        ClassiCubeAccountHandler.create();
         BedrockAccountHandler.create();
 
-        // Protocol Translator
+        // Fixes which requires to be loaded pre
         ChatLengthCalculation.create();
         FontCacheFix.init();
+
+        // Protocol Translator
         ProtocolHack.init();
 
         FinishMinecraftLoadCallback.EVENT.register(() -> {
@@ -70,9 +73,7 @@ public class ViaFabricPlus {
             settingsSystem.init();
             informationSystem.init();
 
-            // Stuff which requires Minecraft to be initialized
-            ClassicItemSelectionScreen.create();
-
+            // Mappings which requires Minecraft to be initialized
             PackFormatsMappings.load();
             ItemReleaseVersionMappings.create();
             ArmorPointsMappings.load();
