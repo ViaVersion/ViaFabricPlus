@@ -6,6 +6,7 @@
   <a href="https://discord.gg/BwWhCHUKDf"><img src="https://img.shields.io/discord/1033745845809586356?color=0098DB&label=Discord&logo=discord&logoColor=0098DB"></a> <br />
   <a href="https://modrinth.com/mod/viafabricplus"><img src="https://img.shields.io/badge/dynamic/json?color=158000&label=downloads&prefix=+%20&query=downloads&url=https://api.modrinth.com/v2/project/rIC2XJV4&logo=modrinth"></a>
   <a href="https://curseforge.com/minecraft/mc-mods/viafabricplus"><img src="https://cf.way2muchnoise.eu/full_830604_downloads.svg"></a>
+  <a href="https://github.com/FlorianMichael/ViaFabricPlus/actions/workflows/build.yml"><img src="https://github.com/FlorianMichael/ViaFabricPlus/actions/workflows/build.yml/badge.svg?branch=main"></a>  
 
 #### Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay
 This project has nothing to do with the original ViaFabric and is therefore also not compact
