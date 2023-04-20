@@ -36,11 +36,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class RakNetClientConnection {
     public static void connectRakNet(final ClientConnection clientConnection, final InetSocketAddress address, final Lazy lazy, final Class channelType) {
-        Bootstrap nettyBoostrap = new Bootstrap();
-        nettyBoostrap = nettyBoostrap.group((EventLoopGroup) lazy.get());
-        nettyBoostrap = nettyBoostrap.handler(new ChannelInitializer<>() {
+        final Bootstrap nettyBoostrap = new Bootstrap().group((EventLoopGroup) lazy.get()).handler(new ChannelInitializer<>() {
             @Override
-            protected void initChannel(@NotNull Channel channel) throws Exception {
+            protected void initChannel(@NotNull Channel channel) {
                 try {
                     channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, 11);
                     channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, 4_000L);
@@ -55,8 +53,7 @@ public class RakNetClientConnection {
 
                 ProtocolHack.injectVLBPipeline(clientConnection, channel, address);
             }
-        });
-        nettyBoostrap = nettyBoostrap.channelFactory(channelType == EpollSocketChannel.class ? RakChannelFactory.client(EpollDatagramChannel.class) : RakChannelFactory.client(NioDatagramChannel.class));
+        }).channelFactory(channelType == EpollSocketChannel.class ? RakChannelFactory.client(EpollDatagramChannel.class) : RakChannelFactory.client(NioDatagramChannel.class));
 
         if (ProtocolHack.getRakNetPingSessions().contains(address)) {
             nettyBoostrap.bind(new InetSocketAddress(0)).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE).syncUninterruptibly();

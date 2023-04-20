@@ -37,7 +37,9 @@ public class ChatLengthCalculation {
             if (protocolVersion.isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
                 INSTANCE.maxLength = 100;
 
-                if (protocolVersion.isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) INSTANCE.maxLength = 64 - MinecraftClient.getInstance().getSession().getUsername().length() - 2;
+                if (protocolVersion.isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                    INSTANCE.maxLength = 64 - MinecraftClient.getInstance().getSession().getUsername().length() - 2;
+                }
             }
         });
 

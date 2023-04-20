@@ -35,7 +35,6 @@ import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ServerAddress;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.NetworkState;
@@ -45,10 +44,8 @@ import net.minecraft.network.packet.c2s.query.QueryRequestC2SPacket;
 import net.minecraft.network.packet.s2c.query.QueryPongS2CPacket;
 import net.minecraft.network.packet.s2c.query.QueryResponseS2CPacket;
 import net.minecraft.text.Text;
-import net.minecraft.util.Lazy;
 import org.jetbrains.annotations.NotNull;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.concurrent.CompletableFuture;
@@ -66,10 +63,7 @@ public class ViaFabricPlusVLBBaseVersionProvider extends VLBBaseVersionProvider 
                     final ClientConnection clientConnection = new ClientConnection(NetworkSide.CLIENTBOUND);
                     final boolean useEpoll = Epoll.isAvailable() && MinecraftClient.getInstance().options.shouldUseNativeTransport();
 
-                    final Class class_ = useEpoll ? EpollSocketChannel.class : NioSocketChannel.class;
-                    final Lazy lazy = useEpoll ? ClientConnection.EPOLL_CLIENT_IO_GROUP : ClientConnection.CLIENT_IO_GROUP;
-
-                    final ChannelFuture channelFuture = new Bootstrap().group((EventLoopGroup) lazy.get()).handler(new ChannelInitializer<>() {
+                    final ChannelFuture channelFuture = new Bootstrap().group((useEpoll ? ClientConnection.EPOLL_CLIENT_IO_GROUP : ClientConnection.CLIENT_IO_GROUP).get()).handler(new ChannelInitializer<>() {
                         protected void initChannel(@NotNull Channel channel) {
                             try {
                                 channel.config().setOption(ChannelOption.TCP_NODELAY, true);
@@ -81,7 +75,7 @@ public class ViaFabricPlusVLBBaseVersionProvider extends VLBBaseVersionProvider 
                             ClientConnection.addHandlers(channelPipeline, NetworkSide.CLIENTBOUND);
                             channelPipeline.addLast("packet_handler", clientConnection);
                         }
-                    }).channel(class_).connect(address);
+                    }).channel(useEpoll ? EpollSocketChannel.class : NioSocketChannel.class).connect(address);
 
                     channelFuture.addListener(future1 -> {
                         if (!future1.isSuccess()) {

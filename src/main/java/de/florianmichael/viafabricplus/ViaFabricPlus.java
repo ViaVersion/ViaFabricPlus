@@ -54,7 +54,6 @@ public class ViaFabricPlus {
 
         // Classic Stuff
         CustomClassicProtocolExtensions.create();
-        ClassicItemSelectionScreen.create();
         ClassicProtocolCommands.create();
         ClassiCubeAccountHandler.create();
 
@@ -71,7 +70,9 @@ public class ViaFabricPlus {
             settingsSystem.init();
             informationSystem.init();
 
-            // Mappings
+            // Stuff which requires Minecraft to be initialized
+            ClassicItemSelectionScreen.create();
+
             PackFormatsMappings.load();
             ItemReleaseVersionMappings.create();
             ArmorPointsMappings.load();
