@@ -9,72 +9,11 @@
   <a href="https://github.com/FlorianMichael/ViaFabricPlus/actions/workflows/build.yml"><img src="https://github.com/FlorianMichael/ViaFabricPlus/actions/workflows/build.yml/badge.svg?branch=main"></a>  
 
 #### Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay
-This project has nothing to do with the original ViaFabric and is therefore also not compact
 </div>
 
-# Why?
-ViaFabricPlus is supposed to be an alternative to [multiconnect](https://github.com/Earthcomputer/multiconnect) that offers more compactness and more clientside improvements,
-as ViaFabricPlus implements all Via platforms (ViaVersion, ViaBackwards, ViaLegacy, ViaAprilFools, ViaBedrock) and adds tons of clientside fixes and QoL improvements like old rendering for all platforms. 
-
-## History
-ViaFabricPlus has been around since 2019, but it was never a standalone mod, it was always part of my utility mods, most recently it was in a project with several devs, since development ended I decided to release it as a standalone mod.
-
-# For developers and translators
-Contributions in the form of pull requests are always welcome, please just stick to my code style and make sure your code is easy to update and compatible with other mods.
-
-### Translations
-Translations for other languages are always welcome, in **~/resources/assets/viafabricplus/lang** you can find all translations, <br>
-if you know a language well, feel free to make a PR and add translations for that language <br>
-
-**Currently supported languages**:
-- English (by **[FlorianMichael](https://github.com/FlorianMichael)**)
-- German (by **[FlorianMichael](https://github.com/FlorianMichael)** and **[J0J0HA](https://github.com/J0J0HA)**)
-- Thai (by **[NyaruToru](https://github.com/NyaruToru)**)
-- Simplified Chinese (by **[yingcan](https://github.com/x-yingcan-x)** and **[luluxiaoyu](https://github.com/luluxiaoyu)**)
-- Japanese (by **[U5KUN](https://github.com/U5KUN)**)
-- Luxembourgish (by **[Graf]()**)
-- Ukrainian (by **[Fundi1330](https://github.com/Fundi1330)**)
-- Traditional Chinese (by **[luluxiaoyu](https://github.com/luluxiaoyu)**)
-- Czech (by **[MIOGMIOG](https://github.com/MIOGMIOG)**)
-- Polish (by **[Blayung](https://github.com/Blayung)**)
-
-### Dependencies
-| Dependency             | Download                                                   |
-|------------------------|------------------------------------------------------------|
-| Fabric API             | https://github.com/fabricMC/fabric                         |
-| ViaVersion             | https://github.com/ViaVersion/ViaVersion                   |
-| ViaBackwards           | https://github.com/ViaVersion/ViaBackwards                 |
-| Snake YAML             | https://mvnrepository.com/artifact/org.yaml/snakeyaml/1.33 |
-| ViaLegacy              | https://github.com/RaphiMC/ViaLegacy                       |
-| ViaAprilFools          | https://github.com/RaphiMC/ViaAprilFools                   |
-| ViaBedrock             | https://github.com/RaphiMC/ViaBedrock                      |
-| MC-Structs             | https://github.com/Lenni0451/MCStructs                     |
-| Reflect                | https://github.com/Lenni0451/Reflect                       |
-| ViaLoadingBase         | https://github.com/FlorianMichael/ViaLoadingBase           |
-| Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop       |
-
-### Setting up a Workspace
-ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
-1. Clone the repository using `git clone https://github.com/FlorianMichael/ViaFabricPlus`.
-2. CD into the local repository.
-3. Run `./gradlew genSources`.
-4. Open the folder as a Gradle project in your preferred IDE.
-5. Run the mod.
-
-## To learn more about the API and about addons, you can simply click [here](.github/DEVELOPER_API.md)
-
-# For users
-## To learn more about how to use this mod, you can simply click [here](.github/USAGE.md)
-### If you encounter any issues, please report them on the [issue tracker](https://github.com/FlorianMichael/ViaFabricPlus/issues).
-
-## Compatibility
-ViaFabricPlus is structured to interfere with mods as little as possible.
-It should work fine with most if not all mods and modpacks.
-### Known incompatibilities:
-- ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)***
-- ***[multiconnect](https://github.com/Earthcomputer/multiconnect)***
-
-## Supported Server versions
+# Why another protocol translator?
+ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomputer/multiconnect), and it also promises more compactness and stability. ViaFabricPlus can do everything multiconnect could do, but supports more Minecraft versions (listed below) and has more protocol changes implemented.
+### Supported Server versions
 - Release (1.0.0 - 1.20 [23w14a])
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
@@ -82,7 +21,15 @@ It should work fine with most if not all mods and modpacks.
 - Snapshots (3D Shareware, 20w14infinite, Combat Test 8C)
 - Bedrock (1.19.70)
 
-## Clientside related Fixes
+# For users
+### Detailed instructions for use are available here [here](.github/USAGE.md)
+### If you encounter any issues, please report them on the [issue tracker](https://github.com/FlorianMichael/ViaFabricPlus/issues).
+
+## Known incompatibilities
+- ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)***
+- ***[multiconnect](https://github.com/Earthcomputer/multiconnect)***
+
+## List of all clientside related fixes
 <details>
   <summary>Click to open</summary>
 
@@ -105,10 +52,6 @@ It should work fine with most if not all mods and modpacks.
 - [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
 </details>
 
-#### TODO:
-- [ ] More extensions for Classic Protocol Extensions protocol
-- [ ] Window click interactions in <= 1.16.5
-
 ## Classic stuff
 ### Custom protocol extensions
 ViaFabricPlus implements new Classic Extensions into the CPE protocol of ViaLegacy which are rather client side. <br>
@@ -120,11 +63,56 @@ To better control the Classic Protocol, there are a few clientside commands, the
 - **/vsettime <Time (Long)>** - Changes the Clientside World Time, available from: **c0.28-c0.30**
 - **/vlistextensions** - Displays all classic protocol extensions, available in: **c0.30 CPE**
 
-## Alternatives
-- [ClientViaVersion](https://github.com/Gerrygames/ClientViaVersion): Discontinued 5zig plugin.
-- [multiconnect](https://www.curseforge.com/minecraft/mc-mods/multiconnect): Fabric mod for connecting to older
-  versions: down to 1.11 (stable) and 1.8 (experimental).
-- [ViaFabric](https://www.curseforge.com/minecraft/mc-mods/viafabric): Client-side and server-side ViaVersion implementation for Fabric
+
+# For developers and translators
+Contributions in the form of pull requests are always welcome, please just stick to my code style and make sure your code is easy to update and compatible with other mods.
+
+### Translations
+Translations for other languages are always welcome, in **~/resources/assets/viafabricplus/lang** you can find all translations, <br>
+if you know a language well, feel free to make a PR and add translations for that language <br>
+<details>
+  <summary>Currently supported languages</summary>
+
+  - English (by **[FlorianMichael](https://github.com/FlorianMichael)**)
+  - German (by **[FlorianMichael](https://github.com/FlorianMichael)** and **[J0J0HA](https://github.com/J0J0HA)**)
+  - Thai (by **[NyaruToru](https://github.com/NyaruToru)**)
+  - Simplified Chinese (by **[yingcan](https://github.com/x-yingcan-x)** and **[luluxiaoyu](https://github.com/luluxiaoyu)**)
+  - Japanese (by **[U5KUN](https://github.com/U5KUN)**)
+  - Luxembourgish (by **[Graf]()**)
+  - Ukrainian (by **[Fundi1330](https://github.com/Fundi1330)**)
+  - Traditional Chinese (by **[luluxiaoyu](https://github.com/luluxiaoyu)**)
+  - Czech (by **[MIOGMIOG](https://github.com/MIOGMIOG)**)
+  - Polish (by **[Blayung](https://github.com/Blayung)**)
+</details>
+
+### Dependencies
+<details>
+  <summary>Click to get a list of all dependencies</summary>
+
+| Dependency             | Download                                                   |
+|------------------------|------------------------------------------------------------|
+| Fabric API             | https://github.com/fabricMC/fabric                         |
+| ViaVersion             | https://github.com/ViaVersion/ViaVersion                   |
+| ViaBackwards           | https://github.com/ViaVersion/ViaBackwards                 |
+| Snake YAML             | https://mvnrepository.com/artifact/org.yaml/snakeyaml/1.33 |
+| ViaLegacy              | https://github.com/RaphiMC/ViaLegacy                       |
+| ViaAprilFools          | https://github.com/RaphiMC/ViaAprilFools                   |
+| ViaBedrock             | https://github.com/RaphiMC/ViaBedrock                      |
+| MC-Structs             | https://github.com/Lenni0451/MCStructs                     |
+| Reflect                | https://github.com/Lenni0451/Reflect                       |
+| ViaLoadingBase         | https://github.com/FlorianMichael/ViaLoadingBase           |
+| Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop       |
+</details>
+
+### Setting up a Workspace
+ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
+1. Clone the repository using `git clone https://github.com/FlorianMichael/ViaFabricPlus`.
+2. CD into the local repository.
+3. Run `./gradlew genSources`.
+4. Open the folder as a Gradle project in your preferred IDE.
+5. Run the mod.
+
+### To learn more about the API and about addons, you can simply click [here](.github/DEVELOPER_API.md)
 
 ## ⚠️ WARNING ⚠️
 **I cannot guarantee that this mod is allowed on every (or even any) server. This mod may cause problems with anti cheat
