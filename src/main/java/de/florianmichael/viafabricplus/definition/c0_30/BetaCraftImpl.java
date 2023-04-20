@@ -21,7 +21,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Resources;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.util.ScreenUtil;
 import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
 
 import java.net.InetAddress;
@@ -38,7 +38,7 @@ public class BetaCraftImpl {
             if (mppass.contains("FAILED") || mppass.contains("SERVER NOT FOUND")) return "0";
             return mppass;
         } catch (Throwable e) {
-            ViaFabricPlus.LOGGER.error("An unknown error occurred while authenticating with BetaCraft");
+            ScreenUtil.crash("An unknown error occurred while authenticating with BetaCraft", e);
         }
         return "0";
     }

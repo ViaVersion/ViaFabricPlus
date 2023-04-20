@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.util;
 
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
@@ -30,6 +31,14 @@ public class ScreenUtil {
 
     public static String prefixedMessage(final String message) {
         return Formatting.GOLD + "[ViaFabricPlus] " + Formatting.WHITE + message;
+    }
+
+    public static void crash(final String message, final Throwable e) {
+        if (System.getProperty("VFPDebug") != null) {
+            ViaFabricPlus.LOGGER.error(message, e);
+        } else {
+            ViaFabricPlus.LOGGER.error(message + ", Use -DVFPDebug to show the log");
+        }
     }
 
     public static String format(double a) {

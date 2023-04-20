@@ -19,8 +19,8 @@ package de.florianmichael.viafabricplus.definition.bedrock;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.util.FileSaver;
+import de.florianmichael.viafabricplus.util.ScreenUtil;
 import net.raphimc.mcauth.MinecraftAuth;
 import net.raphimc.mcauth.step.bedrock.StepMCChain;
 import net.raphimc.mcauth.util.MicrosoftConstants;
@@ -59,11 +59,8 @@ public class BedrockAccountHandler extends FileSaver {
                 account = MinecraftAuth.Bedrock.Title.MC_CHAIN.refresh(httpClient, account);
             }
         } catch (Exception e) {
-            if (System.getProperty("VFPDebug") != null) {
-                ViaFabricPlus.LOGGER.error("Failed to log into Bedrock account!", e);
-            } else {
-                ViaFabricPlus.LOGGER.error("Failed to log into Bedrock account! Use -DVFPDebug to show the log");
-            }
+
+            ScreenUtil.crash("Failed to log into Bedrock account!", e);
         }
     }
 

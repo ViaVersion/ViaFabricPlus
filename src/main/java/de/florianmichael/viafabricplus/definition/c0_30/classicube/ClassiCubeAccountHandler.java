@@ -19,11 +19,11 @@ package de.florianmichael.viafabricplus.definition.c0_30.classicube;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.ClassiCubeAccount;
 import de.florianmichael.viafabricplus.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.util.FileSaver;
+import de.florianmichael.viafabricplus.util.ScreenUtil;
 
 import java.util.Map;
 
@@ -58,11 +58,7 @@ public class ClassiCubeAccountHandler extends FileSaver {
         try {
             account = ClassiCubeAccount.fromJson(object);
         } catch (Exception e) {
-            if (System.getProperty("VFPDebug") != null) {
-                ViaFabricPlus.LOGGER.error("Failed to log into ClassiCube account!", e);
-            } else {
-                ViaFabricPlus.LOGGER.error("Failed to log into ClassiCube account! Use -DVFPDebug to show the log");
-            }
+            ScreenUtil.crash("Failed to log into ClassiCube account!", e);
         }
     }
 
