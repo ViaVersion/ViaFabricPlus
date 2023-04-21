@@ -53,7 +53,7 @@ public abstract class MixinItemStack {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
             this.empty = false;
             final ItemStack self = (ItemStack) (Object) this;
-            this.empty = self == EMPTY || this.getItem() == null || self.isOf(Items.AIR) && count != 0;
+            this.empty = self == EMPTY || this.getItem() == null || self.isOf(Items.AIR) || count == 0;
             ci.cancel();
         }
     }
