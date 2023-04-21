@@ -129,6 +129,7 @@
     "fixes.vialegacy.MixinViaLegacyConfig",
     "fixes.vialoadingbase.MixinVLBViaConfig",
     "fixes.viaversion.MixinCommonBoss",
+    "fixes.viaversion.MixinNBTType",
     "fixes.viaversion.MixinProtocolVersion",
     "fixes.viaversion.protocol1_11to1_10.MixinProtocol1_11To1_10",
     "fixes.viaversion.protocol1_12to1_11_1.MixinChatItemRewriter",
