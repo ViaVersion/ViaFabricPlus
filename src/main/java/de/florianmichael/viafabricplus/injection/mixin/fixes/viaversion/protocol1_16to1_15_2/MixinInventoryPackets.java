@@ -56,6 +56,6 @@ public class MixinInventoryPackets extends ItemRewriter<ClientboundPackets1_15, 
         protocol.registerServerbound(ServerboundPackets1_16.CLOSE_WINDOW, ServerboundPackets1_14.CLOSE_WINDOW, wrapper -> {
             InventoryTracker1_16 inventoryTracker = wrapper.user().get(InventoryTracker1_16.class);
             ((IInventoryTracker1_16) inventoryTracker).viafabricplus_setInventoryOpen(false);
-        });
+        }, true);
     }
 }
