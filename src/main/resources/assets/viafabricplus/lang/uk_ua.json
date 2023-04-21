@@ -20,8 +20,11 @@
   "general.viafabricplus.creative": "Видалити недоступні предмети з меню креативу",
   "general.viafabricplus.classiccommands": "Дозволити використання команд класичного протоколу",
   "general.viafabricplus.protocolsync": "Автоматично змінювати налаштування для вибраної версії",
+  "general.viafabricplus.autodetect": "Автоматично відсліджувати версію",
 
   "experimental.viafabricplus.chunkborderfix": "Полагодити границі чанків",
+  "experimental.viafabricplus.watermovement": "Виявлення краю руху води",
+  "experimental.viafabricplus.fontcachefix": "Полагодити кеш шрифтів",
 
   "debug.viafabricplus.sequence": "Вимкнути послідовності",
   "debug.viafabricplus.merchant": "Згладити екрани крамарів",
