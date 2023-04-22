@@ -157,10 +157,7 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "fixes.viaversion.protocol1_16to1_15_2.MixinEntityPackets",
-    "fixes.viaversion.protocol1_16to1_15_2.MixinInventoryPackets",
-    "fixes.viaversion.protocol1_16to1_15_2.MixinInventoryTracker1_16"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder"
   ],
   "injectors": {
     "defaultRequire": 1
