@@ -64,7 +64,6 @@ dependencies {
 	libs "com.viaversion:viaversion:${project.viaversion_version}"
 	libs "com.viaversion:viabackwards-common:${project.viabackwards_version}"
 	libs "org.yaml:snakeyaml:${project.snake_yml_version}"
-	libs "org.jsoup:jsoup:1.15.4"
 
 	libs "net.raphimc:ViaLegacy:${project.vialegacy_version}"
 	libs "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
