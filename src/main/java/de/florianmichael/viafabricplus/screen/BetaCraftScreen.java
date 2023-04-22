@@ -17,9 +17,9 @@
  */
 package de.florianmichael.viafabricplus.screen;
 
-import com.github.allinkdev.betacraftserverlistparser.BetacraftServerList;
-import com.github.allinkdev.betacraftserverlistparser.Server;
-import com.github.allinkdev.betacraftserverlistparser.Version;
+import de.florianmichael.classic4j.model.betacraft.BCServerInfo;
+import de.florianmichael.classic4j.model.betacraft.BCServerList;
+import de.florianmichael.classic4j.model.betacraft.BCVersion;
 import de.florianmichael.viafabricplus.definition.v1_14_4.LegacyServerAddress;
 import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
@@ -40,7 +40,7 @@ import java.awt.*;
 import java.util.List;
 
 public class BetaCraftScreen extends Screen {
-    public static BetacraftServerList SERVER_LIST;
+    public static BCServerList SERVER_LIST;
     public final static BetaCraftScreen INSTANCE = new BetaCraftScreen();
     public Screen prevScreen;
 
@@ -88,11 +88,11 @@ public class BetaCraftScreen extends Screen {
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
-            for (Version value : Version.values()) {
-                final List<Server> servers = SERVER_LIST.getServersOfVersion(value);
+            for (BCVersion value : BCVersion.values()) {
+                final List<BCServerInfo> servers = SERVER_LIST.serversOfVersion(value);
                 if (servers.isEmpty()) continue;
                 addEntry(new TitleRenderer(value.name()));
-                for (Server server : servers) {
+                for (BCServerInfo server : servers) {
                     addEntry(new ServerSlot(server));
                 }
             }
@@ -110,21 +110,21 @@ public class BetaCraftScreen extends Screen {
     }
 
     public static class ServerSlot extends MappedSlotEntry {
-        private final Server server;
+        private final BCServerInfo server;
 
-        public ServerSlot(Server server) {
+        public ServerSlot(BCServerInfo server) {
             this.server = server;
         }
 
         @Override
         public Text getNarration() {
-            return Text.literal(server.getName());
+            return Text.literal(server.name());
         }
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            final ServerAddress serverAddress = LegacyServerAddress.parse(null, server.getHost() + ":" + server.getPort());
-            final ServerInfo entry = new ServerInfo(server.getName(), serverAddress.getAddress(), false);
+            final ServerAddress serverAddress = LegacyServerAddress.parse(null, server.host() + ":" + server.port());
+            final ServerInfo entry = new ServerInfo(server.name(), serverAddress.getAddress(), false);
 
             ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry);
             ScreenUtil.playClickSound();
@@ -134,12 +134,12 @@ public class BetaCraftScreen extends Screen {
         @Override
         public void mappedRenderer(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            drawCenteredTextWithShadow(matrices, textRenderer, server.getName() + Formatting.DARK_GRAY + " [" + server.getGameVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+            drawCenteredTextWithShadow(matrices, textRenderer, server.name() + Formatting.DARK_GRAY + " [" + server.gameVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
-            if (server.isOnlineMode()) {
+            if (server.onlineMode()) {
                 drawTextWithShadow(matrices, textRenderer, Text.translatable("words.viafabricplus.online").formatted(Formatting.GREEN), 1, 1, -1);
             }
-            final String playerText = server.getPlayerCount() + "/" + server.getPlayerLimit();
+            final String playerText = server.playerCount() + "/" + server.playerLimit();
             drawTextWithShadow(matrices, textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 132 */ - 1, 1, -1);
         }
     }

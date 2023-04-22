@@ -59,10 +59,12 @@ dependencies {
 		exclude group: "io.netty", module: "netty-codec"
 		exclude group: "io.netty", module: "netty-transport"
 	}
+	libs "com.github.FlorianMichael:Classic4J:${project.classic4j_version}"
 
 	libs "com.viaversion:viaversion:${project.viaversion_version}"
 	libs "com.viaversion:viabackwards-common:${project.viabackwards_version}"
 	libs "org.yaml:snakeyaml:${project.snake_yml_version}"
+	libs "org.jsoup:jsoup:1.15.4"
 
 	libs "net.raphimc:ViaLegacy:${project.vialegacy_version}"
 	libs "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
@@ -80,8 +82,6 @@ dependencies {
 
 	libs "net.lenni0451.mcstructs:text:${project.mcstructs_text_version}"
 	libs "net.lenni0451:Reflect:${project.reflect_version}"
-
-	libs "com.github.allinkdev:BetacraftServerListParser:${project.betacraft_version}"
 
 	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 }

@@ -18,11 +18,12 @@
 package de.florianmichael.viafabricplus.screen.classicube;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.process.ILoginProcessHandler;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.data.ClassiCubeServerInfo;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.request.server.ClassiCubeServerListRequest;
+import de.florianmichael.classic4j.api.LoginProcessHandler;
+import de.florianmichael.classic4j.handler.classicube.server.CCServerListRequest;
+import de.florianmichael.classic4j.model.classicube.CCServerInfo;
+import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
+import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.screen.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
@@ -49,7 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassiCubeServerListScreen extends Screen {
-    public final static List<ClassiCubeServerInfo> SERVERS = new ArrayList<>();
+    public final static List<CCServerInfo> SERVERS = new ArrayList<>();
     private final static ClassiCubeServerListScreen INSTANCE = new ClassiCubeServerListScreen();
     public Screen prevScreen;
 
@@ -58,16 +59,11 @@ public class ClassiCubeServerListScreen extends Screen {
         return ClassiCubeServerListScreen.INSTANCE;
     }
 
-    public static void open(final Screen prevScreen, final ILoginProcessHandler loginProcessHandler) {
-        final ClassiCubeServerListRequest request = new ClassiCubeServerListRequest(ClassiCubeAccountHandler.INSTANCE.getAccount());
-        request.send().whenComplete((server, throwable) -> {
-            if (throwable != null) {
-                loginProcessHandler.handleException(throwable);
-                return;
-            }
-            ClassiCubeServerListScreen.SERVERS.addAll(server.getServers());
+    public static void open(final Screen prevScreen, final LoginProcessHandler loginProcessHandler) {
+        Classic4JImpl.INSTANCE.classiCubeHandler().requestServerList(ClassiCubeAccountHandler.INSTANCE.getAccount(), ccServerList -> {
+            ClassiCubeServerListScreen.SERVERS.addAll(ccServerList.servers());
             RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(ClassiCubeServerListScreen.get(prevScreen)));
-        });
+        }, loginProcessHandler::handleException);
     }
 
     public ClassiCubeServerListScreen() {
@@ -102,7 +98,7 @@ public class ClassiCubeServerListScreen extends Screen {
         matrices.scale(2F, 2F, 2F);
         drawCenteredTextWithShadow(matrices, textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.pop();
-        drawCenteredTextWithShadow(matrices, textRenderer, Text.literal("ClassiCube Profile: " + ClassiCubeAccountHandler.INSTANCE.getAccount().username), width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
+        drawCenteredTextWithShadow(matrices, textRenderer, Text.literal("ClassiCube Profile: " + ClassiCubeAccountHandler.INSTANCE.getAccount().username()), width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
     }
 
     public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {
@@ -126,9 +122,9 @@ public class ClassiCubeServerListScreen extends Screen {
 
 
     public static class ServerSlot extends MappedSlotEntry {
-        private final ClassiCubeServerInfo classiCubeServerInfo;
+        private final CCServerInfo classiCubeServerInfo;
 
-        public ServerSlot(ClassiCubeServerInfo classiCubeServerInfo) {
+        public ServerSlot(CCServerInfo classiCubeServerInfo) {
             this.classiCubeServerInfo = classiCubeServerInfo;
         }
 
@@ -141,7 +137,7 @@ public class ClassiCubeServerListScreen extends Screen {
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
             final ServerAddress serverAddress = ServerAddress.parse(classiCubeServerInfo.ip() + ":" + classiCubeServerInfo.port());
             final ServerInfo entry = new ServerInfo(classiCubeServerInfo.name(), serverAddress.getAddress(), false);
-            ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = classiCubeServerInfo.mppass();
+            ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = classiCubeServerInfo.mpPass();
 
             if (AuthenticationSettings.INSTANCE.forceCPEIfUsingClassiCube.getValue()) {
                 ((IServerInfo) entry).viafabricplus_forceVersion(ViaLoadingBase.fromProtocolVersion(LegacyProtocolVersion.c0_30cpe));
@@ -158,7 +154,7 @@ public class ClassiCubeServerListScreen extends Screen {
             drawCenteredTextWithShadow(matrices, textRenderer, classiCubeServerInfo.name(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
             drawTextWithShadow(matrices, textRenderer, classiCubeServerInfo.software().replace('&', Formatting.FORMATTING_CODE_PREFIX), 1, 1, -1);
-            final String playerText = classiCubeServerInfo.players() + "/" + classiCubeServerInfo.maxplayers();
+            final String playerText = classiCubeServerInfo.players() + "/" + classiCubeServerInfo.maxPlayers();
             drawTextWithShadow(matrices, textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 132 */ - 1, 1, -1);
         }
     }

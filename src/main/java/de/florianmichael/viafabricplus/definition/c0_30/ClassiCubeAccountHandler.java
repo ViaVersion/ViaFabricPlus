@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.c0_30.classicube;
+package de.florianmichael.viafabricplus.definition.c0_30;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.ClassiCubeAccount;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.viafabricplus.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.util.FileSaver;
@@ -35,7 +35,7 @@ public class ClassiCubeAccountHandler extends FileSaver {
         ClassiCubeAccountHandler.INSTANCE.init();
     }
 
-    private ClassiCubeAccount account;
+    private CCAccount account;
 
     public ClassiCubeAccountHandler() {
         super("classicube.account");
@@ -48,7 +48,7 @@ public class ClassiCubeAccountHandler extends FileSaver {
         if (account == null) return;
 
         account.token = null; // Token has to be created next time
-        for (Map.Entry<String, JsonElement> entry : account.toJson().entrySet()) {
+        for (Map.Entry<String, JsonElement> entry : account.asJson().entrySet()) {
             object.add(entry.getKey(), entry.getValue());
         }
     }
@@ -56,17 +56,17 @@ public class ClassiCubeAccountHandler extends FileSaver {
     @Override
     public void read(JsonObject object) {
         try {
-            account = ClassiCubeAccount.fromJson(object);
+            account = CCAccount.fromJson(object);
         } catch (Exception e) {
             ScreenUtil.crash("Failed to log into ClassiCube account!", e);
         }
     }
 
-    public ClassiCubeAccount getAccount() {
+    public CCAccount getAccount() {
         return account;
     }
 
-    public void setAccount(ClassiCubeAccount account) {
+    public void setAccount(CCAccount account) {
         this.account = account;
     }
 }

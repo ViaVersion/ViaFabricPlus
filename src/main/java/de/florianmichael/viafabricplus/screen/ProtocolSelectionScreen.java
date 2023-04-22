@@ -17,11 +17,11 @@
  */
 package de.florianmichael.viafabricplus.screen;
 
-import com.github.allinkdev.betacraftserverlistparser.BetacraftServerList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.ClassiCubeAccount;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
+import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import de.florianmichael.viafabricplus.screen.classicube.ClassiCubeLoginScreen;
 import de.florianmichael.viafabricplus.screen.classicube.ClassiCubeServerListScreen;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
@@ -39,7 +39,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 import java.awt.*;
-import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings({"DataFlowIssue", "DuplicatedCode"})
 public class ProtocolSelectionScreen extends Screen {
@@ -64,7 +63,7 @@ public class ProtocolSelectionScreen extends Screen {
         this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("words.viafabricplus.settings"), button -> client.setScreen(SettingsScreen.get(this))).position(width - 98 - 5, 5).size(98, 20).build());
-        final ClassiCubeAccount classiCubeAccount = ClassiCubeAccountHandler.INSTANCE.getAccount();
+        final CCAccount classiCubeAccount = ClassiCubeAccountHandler.INSTANCE.getAccount();
         ButtonWidget.Builder classiCubeBuilder = ButtonWidget.builder(Text.literal("ClassiCube"), button -> {
             if (classiCubeAccount == null || classiCubeAccount.token == null) {
                 client.setScreen(ClassiCubeLoginScreen.get(this));
@@ -78,14 +77,11 @@ public class ProtocolSelectionScreen extends Screen {
         this.addDrawableChild(classiCubeBuilder.build());
         ButtonWidget.Builder betaCraftBuilder = ButtonWidget.builder(Text.literal("BetaCraft"), button -> {
             if (BetaCraftScreen.SERVER_LIST == null) {
-                CompletableFuture.runAsync(() -> BetacraftServerList.getFuture().whenComplete((betacraftServerList, throwable) -> {
-                    if (throwable != null) {
-                        MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> RenderSystem.recordRenderCall(() -> client.setScreen(this)), Text.literal("Betacraft"), Text.translatable("betacraft.viafabricplus.error").append("\n" + throwable.getMessage()), Text.translatable("words.viafabricplus.cancel"), false)));
-                        return;
-                    }
-                    BetaCraftScreen.SERVER_LIST = betacraftServerList;
+                Classic4JImpl.INSTANCE.betaCraftHandler().requestServerList(bcServerList -> {
+                    BetaCraftScreen.SERVER_LIST = bcServerList;
+
                     RenderSystem.recordRenderCall(() -> client.setScreen(BetaCraftScreen.get(this)));
-                }));
+                }, throwable -> MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> RenderSystem.recordRenderCall(() -> client.setScreen(this)), Text.literal("Betacraft"), Text.translatable("betacraft.viafabricplus.error").append("\n" + throwable.getMessage()), Text.translatable("words.viafabricplus.cancel"), false))));
             } else client.setScreen(BetaCraftScreen.get(this));
 
             button.setMessage(Text.literal("BetaCraft"));

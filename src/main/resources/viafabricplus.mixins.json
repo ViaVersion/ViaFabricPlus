@@ -157,7 +157,8 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder",
+    "classic4j.MixinCCAuthenticationResponse"
   ],
   "injectors": {
     "defaultRequire": 1

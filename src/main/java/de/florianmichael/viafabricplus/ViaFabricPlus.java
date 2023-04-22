@@ -25,7 +25,7 @@ import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.screen.ClassicItemSelectionScreen;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.definition.c0_30.protocol.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolCommands;
 import de.florianmichael.viafabricplus.mappings.ArmorPointsMappings;

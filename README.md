@@ -102,6 +102,7 @@ if you know a language well, feel free to make a PR and add translations for tha
 | Reflect                | https://github.com/Lenni0451/Reflect                       |
 | ViaLoadingBase         | https://github.com/FlorianMichael/ViaLoadingBase           |
 | Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop       |
+| Classic4J              | https://github.com/FlorianMichael/Classic4J                |
 </details>
 
 ### Setting up a Workspace

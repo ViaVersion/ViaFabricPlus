@@ -18,9 +18,10 @@
 package de.florianmichael.viafabricplus.screen.classicube;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.ClassiCubeAccount;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.process.ILoginProcessHandler;
+import de.florianmichael.classic4j.api.LoginProcessHandler;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
+import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -58,24 +59,24 @@ public class ClassiCubeLoginScreen extends Screen {
         nameField.setPlaceholder(Text.literal("Name"));
         passwordField.setPlaceholder(Text.literal("Password"));
 
-        final ClassiCubeAccount classiCubeAccount = ClassiCubeAccountHandler.INSTANCE.getAccount();
+        final CCAccount classiCubeAccount = ClassiCubeAccountHandler.INSTANCE.getAccount();
         if (classiCubeAccount != null) {
-            nameField.setText(classiCubeAccount.username);
-            passwordField.setText(classiCubeAccount.password);
+            nameField.setText(classiCubeAccount.username());
+            passwordField.setText(classiCubeAccount.password());
         }
 
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Login"), button -> {
-            ClassiCubeAccountHandler.INSTANCE.setAccount(new ClassiCubeAccount(nameField.getText(), passwordField.getText()));
+            ClassiCubeAccountHandler.INSTANCE.setAccount(new CCAccount(nameField.getText(), passwordField.getText()));
             status = Text.translatable("classicube.viafabricplus.loading");
 
-            ClassiCubeAccountHandler.INSTANCE.getAccount().login(new ILoginProcessHandler() {
+            Classic4JImpl.INSTANCE.classiCubeHandler().requestAuthentication(ClassiCubeAccountHandler.INSTANCE.getAccount(), null, new LoginProcessHandler() {
                 @Override
-                public void handleMfa(ClassiCubeAccount account) {
+                public void handleMfa(CCAccount account) {
                     RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(ClassiCubeMFAScreen.get(prevScreen)));
                 }
 
                 @Override
-                public void handleSuccessfulLogin(ClassiCubeAccount account) {
+                public void handleSuccessfulLogin(CCAccount account) {
                     RenderSystem.recordRenderCall(() -> ClassiCubeServerListScreen.open(MinecraftClient.getInstance().currentScreen, this));
                 }
 
@@ -84,7 +85,7 @@ public class ClassiCubeLoginScreen extends Screen {
                     throwable.printStackTrace();
                     status = Text.literal(throwable.getMessage());
                 }
-            }, null);
+            });
         }).position(width / 2 - 75, passwordField.getY() + (20 * 4) + 5).size(150, 20).build());
     }
 

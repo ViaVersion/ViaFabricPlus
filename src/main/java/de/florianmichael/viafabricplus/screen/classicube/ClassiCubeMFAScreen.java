@@ -18,10 +18,11 @@
 package de.florianmichael.viafabricplus.screen.classicube;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.ClassiCubeAccount;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.ClassiCubeError;
-import de.florianmichael.viafabricplus.definition.c0_30.classicube.auth.process.ILoginProcessHandler;
+import de.florianmichael.classic4j.api.LoginProcessHandler;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCError;
+import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import de.florianmichael.viafabricplus.screen.ProtocolSelectionScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -42,7 +43,8 @@ public class ClassiCubeMFAScreen extends Screen {
 
     public static ClassiCubeMFAScreen get(final Screen prevScreen) {
         ClassiCubeMFAScreen.INSTANCE.prevScreen = prevScreen;
-        ClassiCubeMFAScreen.INSTANCE.status = ClassiCubeError.LOGIN_CODE.description;
+        ClassiCubeMFAScreen.INSTANCE.status = Classic4JImpl.fromError(CCError.LOGIN_CODE);
+
         return ClassiCubeMFAScreen.INSTANCE;
     }
 
@@ -60,14 +62,16 @@ public class ClassiCubeMFAScreen extends Screen {
 
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Login"), button -> {
             status = Text.translatable("classicube.viafabricplus.loading");
-            ClassiCubeAccountHandler.INSTANCE.getAccount().login(new ILoginProcessHandler() {
+            final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
+
+            Classic4JImpl.INSTANCE.classiCubeHandler().requestAuthentication(account, mfaField.getText(), new LoginProcessHandler() {
                 @Override
-                public void handleMfa(ClassiCubeAccount account) {
+                public void handleMfa(CCAccount account) {
                     // Not implemented in this case
                 }
 
                 @Override
-                public void handleSuccessfulLogin(ClassiCubeAccount account) {
+                public void handleSuccessfulLogin(CCAccount account) {
                     RenderSystem.recordRenderCall(() -> ClassiCubeServerListScreen.open(MinecraftClient.getInstance().currentScreen, this));
                 }
 
@@ -75,7 +79,7 @@ public class ClassiCubeMFAScreen extends Screen {
                 public void handleException(Throwable throwable) {
                     status = Text.literal(throwable.getMessage());
                 }
-            }, mfaField.getText());
+            });
         }).position(width / 2 - 75, mfaField.getY() + (20 * 4) + 5).size(150, 20).build());
     }
 
