@@ -76,9 +76,6 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
         return instance.isAccepted();
     }
 
-    /**
-     * This code removes the cooldown if
-     */
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 1))
     public int unwrapOperation(MinecraftClient instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
@@ -117,15 +114,19 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
     }
 
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasRidingInventory()Z"))
-    private void onInventoryKeyPressed(CallbackInfo ci) throws Exception {
+    private void onInventoryKeyPressed(CallbackInfo ci) {
         if (getNetworkHandler() != null && DebugSettings.INSTANCE.sendOpenInventoryPacket.getValue()) {
             final UserConnection viaConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
 
             if (viaConnection != null && viaConnection.getProtocolInfo().getPipeline().contains(Protocol1_12To1_11_1.class)) {
-                final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, viaConnection);
-                clientStatus.write(Type.VAR_INT, 2); // Open Inventory Achievement
+                viaConnection.getChannel().eventLoop().submit(() -> {
+                    final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, viaConnection);
+                    clientStatus.write(Type.VAR_INT, 2); // Open Inventory Achievement
 
-                clientStatus.sendToServer(Protocol1_12To1_11_1.class);
+                    try {
+                        clientStatus.sendToServer(Protocol1_12To1_11_1.class);
+                    } catch (Exception ignored) {}
+                });
             }
         }
     }

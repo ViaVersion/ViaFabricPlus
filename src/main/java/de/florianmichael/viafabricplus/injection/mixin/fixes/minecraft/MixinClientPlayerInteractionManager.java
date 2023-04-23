@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
@@ -99,35 +100,36 @@ public abstract class MixinClientPlayerInteractionManager {
 
     @Redirect(method = "clickSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
     private void modifySlotClickPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
-        try {
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
-                ItemStack slotItemBeforeModification;
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
+            ItemStack slotItemBeforeModification;
 
-                if (this.viafabricplus_shouldEmpty(clickSlot.getActionType(), clickSlot.getSlot()))
-                    slotItemBeforeModification = ItemStack.EMPTY;
-                else if (clickSlot.getSlot() < 0 || clickSlot.getSlot() >= viafabricplus_oldItems.size())
-                    slotItemBeforeModification = viafabricplus_oldCursorStack;
-                else
-                    slotItemBeforeModification = viafabricplus_oldItems.get(clickSlot.getSlot());
+            if (this.viafabricplus_shouldEmpty(clickSlot.getActionType(), clickSlot.getSlot()))
+                slotItemBeforeModification = ItemStack.EMPTY;
+            else if (clickSlot.getSlot() < 0 || clickSlot.getSlot() >= viafabricplus_oldItems.size())
+                slotItemBeforeModification = viafabricplus_oldCursorStack;
+            else
+                slotItemBeforeModification = viafabricplus_oldItems.get(clickSlot.getSlot());
 
-                final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, networkHandler.getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get());
+            final UserConnection viaConnection = networkHandler.getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
+            viaConnection.getChannel().eventLoop().submit(() -> {
+                final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, viaConnection);
 
                 clickSlotPacket.write(Type.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
                 clickSlotPacket.write(Type.SHORT, (short) clickSlot.getSlot());
                 clickSlotPacket.write(Type.BYTE, (byte) clickSlot.getButton());
-                assert client.player != null;
                 clickSlotPacket.write(Type.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId());
                 clickSlotPacket.write(Type.VAR_INT, clickSlot.getActionType().ordinal());
                 clickSlotPacket.write(Type.FLAT_VAR_INT_ITEM, ItemTranslator.minecraftToViaVersion(clickSlotPacket.user(), slotItemBeforeModification, ProtocolVersion.v1_16.getVersion()));
 
-                clickSlotPacket.sendToServer(Protocol1_17To1_16_4.class);
+                try {
+                    clickSlotPacket.sendToServer(Protocol1_17To1_16_4.class);
+                } catch (Exception ignored) {}
+            });
 
-                viafabricplus_oldCursorStack = null;
-                viafabricplus_oldItems = null;
+            viafabricplus_oldCursorStack = null;
+            viafabricplus_oldItems = null;
 
-                return;
-            }
-        } catch (Exception ignored) {
+            return;
         }
 
         instance.sendPacket(packet);
