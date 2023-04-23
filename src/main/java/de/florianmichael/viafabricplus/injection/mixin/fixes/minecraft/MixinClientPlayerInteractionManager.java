@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
@@ -111,15 +112,22 @@ public abstract class MixinClientPlayerInteractionManager {
                 slotItemBeforeModification = viafabricplus_oldItems.get(clickSlot.getSlot());
 
             final UserConnection viaConnection = networkHandler.getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
+            final short syncId = (short) clickSlot.getSyncId();
+            final short slot = (short) clickSlot.getSlot();
+            final byte button = (byte) clickSlot.getButton();
+            final short lastActionId = ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId();
+            final int actionType = clickSlot.getActionType().ordinal();
+            final Item item = ItemTranslator.minecraftToViaVersion(viaConnection, slotItemBeforeModification, ProtocolVersion.v1_16.getVersion());
+
             viaConnection.getChannel().eventLoop().submit(() -> {
                 final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, viaConnection);
 
-                clickSlotPacket.write(Type.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
-                clickSlotPacket.write(Type.SHORT, (short) clickSlot.getSlot());
-                clickSlotPacket.write(Type.BYTE, (byte) clickSlot.getButton());
-                clickSlotPacket.write(Type.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId());
-                clickSlotPacket.write(Type.VAR_INT, clickSlot.getActionType().ordinal());
-                clickSlotPacket.write(Type.FLAT_VAR_INT_ITEM, ItemTranslator.minecraftToViaVersion(clickSlotPacket.user(), slotItemBeforeModification, ProtocolVersion.v1_16.getVersion()));
+                clickSlotPacket.write(Type.UNSIGNED_BYTE, syncId);
+                clickSlotPacket.write(Type.SHORT, slot);
+                clickSlotPacket.write(Type.BYTE, button);
+                clickSlotPacket.write(Type.SHORT, lastActionId);
+                clickSlotPacket.write(Type.VAR_INT, actionType);
+                clickSlotPacket.write(Type.FLAT_VAR_INT_ITEM, item);
 
                 try {
                     clickSlotPacket.sendToServer(Protocol1_17To1_16_4.class);
