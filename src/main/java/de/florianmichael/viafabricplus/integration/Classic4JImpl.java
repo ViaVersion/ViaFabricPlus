@@ -18,14 +18,13 @@
 package de.florianmichael.viafabricplus.integration;
 
 import com.mojang.authlib.exceptions.AuthenticationException;
-import de.florianmichael.classic4j.Classic4J;
+import de.florianmichael.classic4j.api.JoinServerInterface;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCError;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
 public class Classic4JImpl {
-
-    public final static Classic4J INSTANCE = new Classic4J(serverId -> {
+    public final static JoinServerInterface JOIN_SERVER_CALL = serverId -> {
         final MinecraftClient mc = MinecraftClient.getInstance();
 
         try {
@@ -33,7 +32,7 @@ public class Classic4JImpl {
         } catch (AuthenticationException e) {
             e.printStackTrace();
         }
-    });
+    };
 
     public static Text fromError(final CCError error) {
         switch (error) {

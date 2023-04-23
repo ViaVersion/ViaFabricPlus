@@ -19,9 +19,9 @@ package de.florianmichael.viafabricplus.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import de.florianmichael.viafabricplus.screen.classicube.ClassiCubeLoginScreen;
 import de.florianmichael.viafabricplus.screen.classicube.ClassiCubeServerListScreen;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
@@ -77,7 +77,7 @@ public class ProtocolSelectionScreen extends Screen {
         this.addDrawableChild(classiCubeBuilder.build());
         ButtonWidget.Builder betaCraftBuilder = ButtonWidget.builder(Text.literal("BetaCraft"), button -> {
             if (BetaCraftScreen.SERVER_LIST == null) {
-                Classic4JImpl.INSTANCE.betaCraftHandler().requestServerList(bcServerList -> {
+                BetaCraftHandler.requestServerList(bcServerList -> {
                     BetaCraftScreen.SERVER_LIST = bcServerList;
 
                     RenderSystem.recordRenderCall(() -> client.setScreen(BetaCraftScreen.get(this)));

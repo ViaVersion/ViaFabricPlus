@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.classic4j;
 
-import de.florianmichael.classic4j.handler.classicube.auth.base.CCAuthenticationResponse;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCError;
+import de.florianmichael.classic4j.request.classicube.auth.base.CCAuthenticationResponse;
 import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

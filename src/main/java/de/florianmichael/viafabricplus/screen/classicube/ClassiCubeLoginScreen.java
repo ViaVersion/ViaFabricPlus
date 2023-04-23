@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.screen.classicube;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
@@ -69,7 +70,7 @@ public class ClassiCubeLoginScreen extends Screen {
             ClassiCubeAccountHandler.INSTANCE.setAccount(new CCAccount(nameField.getText(), passwordField.getText()));
             status = Text.translatable("classicube.viafabricplus.loading");
 
-            Classic4JImpl.INSTANCE.classiCubeHandler().requestAuthentication(ClassiCubeAccountHandler.INSTANCE.getAccount(), null, new LoginProcessHandler() {
+            ClassiCubeHandler.requestAuthentication(ClassiCubeAccountHandler.INSTANCE.getAccount(), null, new LoginProcessHandler() {
                 @Override
                 public void handleMfa(CCAccount account) {
                     RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(ClassiCubeMFAScreen.get(prevScreen)));

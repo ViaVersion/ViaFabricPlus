@@ -18,8 +18,8 @@
 package de.florianmichael.viafabricplus.screen.classicube;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
-import de.florianmichael.classic4j.handler.classicube.server.CCServerListRequest;
 import de.florianmichael.classic4j.model.classicube.CCServerInfo;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
@@ -60,7 +60,7 @@ public class ClassiCubeServerListScreen extends Screen {
     }
 
     public static void open(final Screen prevScreen, final LoginProcessHandler loginProcessHandler) {
-        Classic4JImpl.INSTANCE.classiCubeHandler().requestServerList(ClassiCubeAccountHandler.INSTANCE.getAccount(), ccServerList -> {
+        ClassiCubeHandler.requestServerList(ClassiCubeAccountHandler.INSTANCE.getAccount(), ccServerList -> {
             ClassiCubeServerListScreen.SERVERS.addAll(ccServerList.servers());
             RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(ClassiCubeServerListScreen.get(prevScreen)));
         }, loginProcessHandler::handleException);
