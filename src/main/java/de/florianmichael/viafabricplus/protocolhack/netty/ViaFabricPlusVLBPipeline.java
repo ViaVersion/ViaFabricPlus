@@ -77,15 +77,15 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
 
         // ViaLegacy
         if (this.version.isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
-            getInfo().getProtocolInfo().getPipeline().add(PreNettyBaseProtocol.INSTANCE);
+            getUser().getProtocolInfo().getPipeline().add(PreNettyBaseProtocol.INSTANCE);
 
-            pipeline.addBefore("splitter", VIA_LEGACY_DECODER_HANDLER_NAME, new PreNettyLengthPrepender(getInfo()));
-            pipeline.addBefore("prepender", VIA_LEGACY_ENCODER_HANDLER_NAME, new PreNettyLengthRemover(getInfo()));
+            pipeline.addBefore("splitter", VIA_LEGACY_DECODER_HANDLER_NAME, new PreNettyLengthPrepender(getUser()));
+            pipeline.addBefore("prepender", VIA_LEGACY_ENCODER_HANDLER_NAME, new PreNettyLengthRemover(getUser()));
         }
 
         // ViaBedrock
         if (this.version.isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
-            getInfo().getProtocolInfo().getPipeline().add(BedrockBaseProtocol.INSTANCE);
+            getUser().getProtocolInfo().getPipeline().add(BedrockBaseProtocol.INSTANCE);
 
             pipeline.replace("splitter", VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, new BatchLengthCodec());
 
