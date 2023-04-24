@@ -20,9 +20,6 @@
   "entrypoints": {
     "modmenu": [
       "de.florianmichael.viafabricplus.integration.ModMenuImpl"
-    ],
-    "main": [
-      "de.florianmichael.viafabricplus.ViaFabricPlus"
     ]
   },
   "mixins": [

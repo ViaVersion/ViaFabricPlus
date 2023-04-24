@@ -34,13 +34,12 @@ import de.florianmichael.viafabricplus.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.information.InformationSystem;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.SettingsSystem;
-import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
-public class ViaFabricPlus implements ModInitializer {
+public class ViaFabricPlus {
     public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public final static Logger LOGGER = LogManager.getLogger("ViaFabricPlus");
     public final static File RUN_DIRECTORY = new File("ViaFabricPlus");
@@ -69,6 +68,8 @@ public class ViaFabricPlus implements ModInitializer {
         ProtocolHack.init();
 
         FinishMinecraftLoadCallback.EVENT.register(() -> {
+            ClassicItemSelectionScreen.create();
+
             // General settings
             settingsSystem.init();
             informationSystem.init();
@@ -86,11 +87,5 @@ public class ViaFabricPlus implements ModInitializer {
 
     public InformationSystem getInformationSystem() {
         return informationSystem;
-    }
-
-    // #68 - ViaFabricPlus make minecraft crash when run with Iceberg
-    @Override
-    public void onInitialize() {
-        ClassicItemSelectionScreen.create();
     }
 }
