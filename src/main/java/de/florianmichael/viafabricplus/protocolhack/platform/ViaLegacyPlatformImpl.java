@@ -26,7 +26,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 public class ViaLegacyPlatformImpl implements ViaLegacyPlatform {
-    private static final Logger LOGGER = new JLoggerToLog4j(LogManager.getLogger("ViaLegacy"));
+    private final static Logger LOGGER = new JLoggerToLog4j(LogManager.getLogger("ViaLegacy"));
 
     public ViaLegacyPlatformImpl() {
         this.init(this.getDataFolder());

@@ -40,10 +40,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinAnvilBlock {
 
     @Unique
-    private static final VoxelShape viafabricplus_x_axis_shape_v1_12_2 = Block.createCuboidShape(0, 0, 2, 16, 16, 14);
+    private final static VoxelShape viafabricplus_x_axis_shape_v1_12_2 = Block.createCuboidShape(0, 0, 2, 16, 16, 14);
 
     @Unique
-    private static final VoxelShape viafabricplus_z_axis_shape_v1_12_2 = Block.createCuboidShape(2, 0, 0, 14, 16, 16);
+    private final static VoxelShape viafabricplus_z_axis_shape_v1_12_2 = Block.createCuboidShape(2, 0, 0, 14, 16, 16);
 
     @Shadow
     @Final

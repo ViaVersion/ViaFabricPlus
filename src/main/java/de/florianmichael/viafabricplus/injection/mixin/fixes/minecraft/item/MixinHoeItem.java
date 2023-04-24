@@ -37,7 +37,7 @@ import java.util.Set;
 public abstract class MixinHoeItem extends MiningToolItem {
 
     @Unique
-    private static final Set<Block> viafabricplus_EFFECTIVE_BLOCKS_1165 = ImmutableSet.of(
+    private final static Set<Block> viafabricplus_EFFECTIVE_BLOCKS_1165 = ImmutableSet.of(
             Blocks.NETHER_WART_BLOCK,
             Blocks.WARPED_WART_BLOCK,
             Blocks.HAY_BLOCK,

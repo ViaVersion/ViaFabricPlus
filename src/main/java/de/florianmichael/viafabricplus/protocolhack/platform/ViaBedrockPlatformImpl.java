@@ -26,7 +26,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 public class ViaBedrockPlatformImpl implements ViaBedrockPlatform {
-    private static final Logger LOGGER = new JLoggerToLog4j(LogManager.getLogger("ViaBedrock"));
+    private final static Logger LOGGER = new JLoggerToLog4j(LogManager.getLogger("ViaBedrock"));
 
     public ViaBedrockPlatformImpl() {
         this.init(this.getDataFolder());

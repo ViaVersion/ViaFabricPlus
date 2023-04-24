@@ -26,7 +26,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 public class ViaAprilFoolsPlatformImpl implements ViaAprilFoolsPlatform {
-    private static final Logger LOGGER = new JLoggerToLog4j(LogManager.getLogger("ViaAprilFools"));
+    private final static Logger LOGGER = new JLoggerToLog4j(LogManager.getLogger("ViaAprilFools"));
 
     public ViaAprilFoolsPlatformImpl() {
         this.init(this.getDataFolder());

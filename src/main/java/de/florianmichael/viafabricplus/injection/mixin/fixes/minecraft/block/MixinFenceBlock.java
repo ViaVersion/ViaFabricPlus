@@ -47,7 +47,7 @@ public class MixinFenceBlock extends HorizontalConnectingBlock {
     }
 
     @Unique
-    private static final VoxelShape viafabricplus_fence_shape_b1_8_1 = Block.createCuboidShape(0, 0, 0, 16, 32, 16);
+    private final static VoxelShape viafabricplus_fence_shape_b1_8_1 = Block.createCuboidShape(0, 0, 0, 16, 32, 16);
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {

@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ArmorPointsMappings {
-    public static final List<Item> ARMOR_ITEMS_IN_1_8 = Arrays.asList(
+    public final static List<Item> ARMOR_ITEMS_IN_1_8 = Arrays.asList(
             Items.LEATHER_HELMET,
             Items.LEATHER_CHESTPLATE,
             Items.LEATHER_BOOTS,

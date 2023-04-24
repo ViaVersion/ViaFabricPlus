@@ -44,10 +44,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Unique
-    private static final EntityDimensions viafabricplus_sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
+    private final static EntityDimensions viafabricplus_sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
 
     @Unique
-    private static final SoundEvent viafabricplus_random_hurt = SoundEvent.of(new Identifier("viafabricplus", "random.hurt"));
+    private final static SoundEvent viafabricplus_random_hurt = SoundEvent.of(new Identifier("viafabricplus", "random.hurt"));
 
     @Shadow
     @Final

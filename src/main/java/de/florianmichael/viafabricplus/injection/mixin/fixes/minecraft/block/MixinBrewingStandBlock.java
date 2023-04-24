@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinBrewingStandBlock {
 
     @Unique
-    private static final VoxelShape viafabricplus_base_shape_v1_12_2 = VoxelShapes.union(
+    private final static VoxelShape viafabricplus_base_shape_v1_12_2 = VoxelShapes.union(
             Block.createCuboidShape(0, 0, 0, 16, 2, 16) /* Base */,
             Block.createCuboidShape(7, 0, 7, 9, 14, 9) /* Stick */
     );

@@ -45,7 +45,7 @@ import java.util.Map;
 public class MixinWallBlock extends Block {
 
     @Unique
-    private static final VoxelShape[] viafabricplus_shape_by_index_v1_12_2 = new VoxelShape[]{
+    private final static VoxelShape[] viafabricplus_shape_by_index_v1_12_2 = new VoxelShape[]{
             Block.createCuboidShape(4, 0, 4, 12, 16, 12),
             Block.createCuboidShape(4, 0, 4, 12, 16, 16),
             Block.createCuboidShape(0, 0, 4, 12, 16, 12),
@@ -69,7 +69,7 @@ public class MixinWallBlock extends Block {
     };
 
     @Unique
-    private static final VoxelShape[] viafabricplus_cip_shape_by_index_v1_12_2 = new VoxelShape[]{
+    private final static VoxelShape[] viafabricplus_cip_shape_by_index_v1_12_2 = new VoxelShape[]{
             Block.createCuboidShape(4, 0, 4, 12, 24, 12),
             Block.createCuboidShape(4, 0, 4, 12, 24, 16),
             Block.createCuboidShape(0, 0, 4, 12, 24, 12),

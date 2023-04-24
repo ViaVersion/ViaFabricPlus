@@ -46,7 +46,7 @@ import java.net.InetSocketAddress;
 
 public class ViaFabricPlusVLBPipeline extends VLBPipeline {
     // ViaBedrock (RakNet and Codec based)
-    public final static String VIA_BEDROCK_DISCONNECT_HANDLER_NAME = "via-bedrock-disconnect-handler";
+    public final static String VIA_BEDROCK_DISCONNECT_ADAPTER_NAME = "via-bedrock-disconnect-adapter";
     public final static String VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME = "via-bedrock-frame-encapsulation";
     public final static String VIA_BEDROCK_PING_ENCAPSULATION_HANDLER_NAME = "via-bedrock-ping-encapsulation";
     public final static String VIA_BEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME = "via-bedrock-packet-encapsulation";
@@ -55,8 +55,8 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
     public final static String VIA_BEDROCK_ENCRYPTION_HANDLER_NAME = "via-bedrock-encryption";
 
     // ViaLegacy (pre Netty)
-    public static final String VIA_LEGACY_DECODER_HANDLER_NAME = "via-legacy-decoder";
-    public static final String VIA_LEGACY_ENCODER_HANDLER_NAME = "via-legacy-encoder";
+    public final static String VIA_LEGACY_PRE_NETTY_LENGTH_PREPENDER_HANDLER_NAME = "via-legacy-decoder";
+    public final static String VIA_LEGACY_PRE_NETTY_LENGTH_REMOVER_HANDLER_NAME = "via-legacy-encoder";
 
     private final InetSocketAddress address;
     private final ComparableProtocolVersion version;
@@ -79,8 +79,8 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
         if (this.version.isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             getUser().getProtocolInfo().getPipeline().add(PreNettyBaseProtocol.INSTANCE);
 
-            pipeline.addBefore("splitter", VIA_LEGACY_DECODER_HANDLER_NAME, new PreNettyLengthPrepender(getUser()));
-            pipeline.addBefore("prepender", VIA_LEGACY_ENCODER_HANDLER_NAME, new PreNettyLengthRemover(getUser()));
+            pipeline.addBefore("splitter", VIA_LEGACY_PRE_NETTY_LENGTH_PREPENDER_HANDLER_NAME, new PreNettyLengthPrepender(getUser()));
+            pipeline.addBefore("prepender", VIA_LEGACY_PRE_NETTY_LENGTH_REMOVER_HANDLER_NAME, new PreNettyLengthRemover(getUser()));
         }
 
         // ViaBedrock
@@ -89,8 +89,8 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
 
             pipeline.replace("splitter", VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, new BatchLengthCodec());
 
-            pipeline.addBefore(VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, VIA_BEDROCK_DISCONNECT_HANDLER_NAME, new DisconnectAdapter());
-            pipeline.addAfter(VIA_BEDROCK_DISCONNECT_HANDLER_NAME, VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, new RakMessageEncapsulationCodec());
+            pipeline.addBefore(VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, VIA_BEDROCK_DISCONNECT_ADAPTER_NAME, new DisconnectAdapter());
+            pipeline.addAfter(VIA_BEDROCK_DISCONNECT_ADAPTER_NAME, VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, new RakMessageEncapsulationCodec());
             pipeline.addAfter(VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, VIA_BEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME, new PacketEncapsulationCodec());
 
             // Replaced by the codecs

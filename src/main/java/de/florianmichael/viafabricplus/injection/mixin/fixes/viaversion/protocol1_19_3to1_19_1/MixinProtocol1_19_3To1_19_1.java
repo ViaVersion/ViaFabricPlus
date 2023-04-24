@@ -55,16 +55,16 @@ import java.util.UUID;
 public class MixinProtocol1_19_3To1_19_1 extends AbstractProtocol<ClientboundPackets1_19_1, ClientboundPackets1_19_3, ServerboundPackets1_19_1, ServerboundPackets1_19_3> {
 
     @Unique
-    private static final ByteArrayType.OptionalByteArrayType OPTIONAL_MESSAGE_SIGNATURE_BYTES_TYPE = new ByteArrayType.OptionalByteArrayType(256);
+    private final static ByteArrayType.OptionalByteArrayType OPTIONAL_MESSAGE_SIGNATURE_BYTES_TYPE = new ByteArrayType.OptionalByteArrayType(256);
 
     @Unique
-    private static final ByteArrayType MESSAGE_SIGNATURE_BYTES_TYPE = new ByteArrayType(256);
+    private final static ByteArrayType MESSAGE_SIGNATURE_BYTES_TYPE = new ByteArrayType(256);
 
     @Unique
-    private static final BitSetType ACKNOWLEDGED_BIT_SET_TYPE = new BitSetType(20);
+    private final static BitSetType ACKNOWLEDGED_BIT_SET_TYPE = new BitSetType(20);
 
     @Unique
-    private static final UUID ZERO_UUID = new UUID(0, 0);
+    private final static UUID ZERO_UUID = new UUID(0, 0);
 
     @Inject(method = "registerPackets", at = @At("RETURN"))
     public void fixKeys(CallbackInfo ci) {

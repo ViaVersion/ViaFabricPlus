@@ -39,7 +39,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinSnowBlock {
 
     @Unique
-    private static final VoxelShape[] viafabricplus_layers_to_shape_v1_12_2 = new VoxelShape[]{
+    private final static VoxelShape[] viafabricplus_layers_to_shape_v1_12_2 = new VoxelShape[]{
             Block.createCuboidShape(0, -0.00001 /* Bypass for Minecraft-Fixes */, 0, 16, 0, 16),
             Block.createCuboidShape(0, 0, 0, 16, 2, 16),
             Block.createCuboidShape(0, 0, 0, 16, 4, 16),

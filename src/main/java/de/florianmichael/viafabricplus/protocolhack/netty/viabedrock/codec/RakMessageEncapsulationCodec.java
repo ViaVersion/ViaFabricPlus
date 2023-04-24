@@ -28,7 +28,7 @@ import java.util.List;
 
 public class RakMessageEncapsulationCodec extends MessageToMessageCodec<RakMessage, ByteBuf> {
 
-    private static final int FRAME_ID = 0xFE;
+    private final static int FRAME_ID = 0xFE;
 
     @Override
     protected void encode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {

@@ -39,7 +39,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinFarmlandBlock extends Block {
 
     @Unique
-    private static final VoxelShape viafabricplus_shape_v1_9_4 = VoxelShapes.fullCube();
+    private final static VoxelShape viafabricplus_shape_v1_9_4 = VoxelShapes.fullCube();
     @Shadow
     @Final
     protected static VoxelShape SHAPE;

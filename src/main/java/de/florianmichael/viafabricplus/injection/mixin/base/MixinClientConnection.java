@@ -113,8 +113,8 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Override
     public void viafabricplus_setupPreNettyEncryption() {
-        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_LEGACY_DECODER_HANDLER_NAME, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
-        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_LEGACY_ENCODER_HANDLER_NAME, "encrypt", new PacketEncryptor(this.viafabricplus_encryptionCipher));
+        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_LEGACY_PRE_NETTY_LENGTH_PREPENDER_HANDLER_NAME, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
+        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_LEGACY_PRE_NETTY_LENGTH_REMOVER_HANDLER_NAME, "encrypt", new PacketEncryptor(this.viafabricplus_encryptionCipher));
     }
 
     @Override

@@ -36,16 +36,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinLadderBlock {
 
     @Unique
-    private static final VoxelShape viafabricplus_east_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 2, 16, 16);
+    private final static VoxelShape viafabricplus_east_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 2, 16, 16);
 
     @Unique
-    private static final VoxelShape viafabricplus_west_shape_v1_8_x = Block.createCuboidShape(14, 0, 0, 16, 16, 16);
+    private final static VoxelShape viafabricplus_west_shape_v1_8_x = Block.createCuboidShape(14, 0, 0, 16, 16, 16);
 
     @Unique
-    private static final VoxelShape viafabricplus_south_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 16, 16, 2);
+    private final static VoxelShape viafabricplus_south_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 16, 16, 2);
 
     @Unique
-    private static final VoxelShape viafabricplus_north_shape_v1_8_x = Block.createCuboidShape(0, 0, 14, 16, 16, 16);
+    private final static VoxelShape viafabricplus_north_shape_v1_8_x = Block.createCuboidShape(0, 0, 14, 16, 16, 16);
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
