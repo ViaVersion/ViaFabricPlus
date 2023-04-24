@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinProtocol1_9_1To1_9 extends AbstractProtocol<ClientboundPackets1_9, ClientboundPackets1_9, ServerboundPackets1_9, ServerboundPackets1_9> {
 
     @Inject(method = "registerPackets", at = @At("RETURN"))
-    public void furry(CallbackInfo ci) {
+    public void clearInputBuffer(CallbackInfo ci) {
         registerClientbound(ClientboundPackets1_9.CHUNK_DATA, wrapper -> {
             wrapper.passthrough(new Chunk1_9_1_2Type(wrapper.user().get(ClientWorld.class)));
             wrapper.clearInputBuffer();
