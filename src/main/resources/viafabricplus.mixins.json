@@ -19,6 +19,7 @@
     "base.MixinOptionsScreen",
     "base.MixinServerInfo",
     "base.MixinSharedConstants",
+    "classic4j.MixinCCAuthenticationResponse",
     "fixes.minecraft.MixinBipedEntityModel",
     "fixes.minecraft.MixinCamera",
     "fixes.minecraft.MixinClientPlayerInteractionManager",
@@ -158,7 +159,7 @@
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
     "jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "classic4j.MixinCCAuthenticationResponse"
+    "fixes.viaversion.protocol1_9_1to1_9.MixinProtocol1_9_1To1_9"
   ],
   "injectors": {
     "defaultRequire": 1
