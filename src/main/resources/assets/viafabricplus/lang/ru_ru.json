@@ -1,0 +1,82 @@
+{
+  "words.viafabricplus.settings": "Настройки",
+  "words.viafabricplus.on": "Вкл",
+  "words.viafabricplus.off": "Выкл",
+  "words.viafabricplus.lt": "Слева сверху",
+  "words.viafabricplus.rt": "Справа сверху",
+  "words.viafabricplus.lb": "Слева снизу",
+  "words.viafabricplus.rb": "Справа снизу",
+  "words.viafabricplus.cancel": "Назад",
+  "words.viafabricplus.cancelreset": "Сбросить версию",
+  "words.viafabricplus.logout": "Выйти",
+  "words.viafabricplus.online": "Лицензионный",
+  "words.viafabricplus.reset": "Сброс",
+  "words.viafabricplus.copy": "Копировать код",
+
+  "general.viafabricplus.secret": "Вернуть Super Secret Settings",
+  "general.viafabricplus.extrainformation": "Показывать дополнительную информацию на экране отладки",
+  "general.viafabricplus.classicloading": "Экран загрузки Classic при подключении",
+  "general.viafabricplus.main": "Позиция кнопки",
+  "general.viafabricplus.creative": "Удалить недоступные предметы из творческого инвентаря",
+  "general.viafabricplus.classiccommands": "Разрешить использование протокола команд Classic",
+  "general.viafabricplus.protocolsync": "Автоматически подстраивать настройки к текущей версии",
+  "general.viafabricplus.autodetect": "Определять версию автоматически",
+
+  "experimental.viafabricplus.chunkborderfix": "Исправлять границы чанков",
+  "experimental.viafabricplus.watermovement": "Проверять уровень воды для прыжка",
+  "experimental.viafabricplus.fontcachefix": "Исправить кэширование шрифтов",
+
+  "debug.viafabricplus.sequence": "Отключить последовательность",
+  "debug.viafabricplus.merchant": "Ускорить интерфейс старых жителей",
+  "debug.viafabricplus.postfix": "Синхронизировать ввод",
+  "debug.viafabricplus.sneakinstant": "Моментальное приседание",
+  "debug.viafabricplus.inventory": "Отправлять пакет открытия инвентаря",
+  "debug.viafabricplus.cooldown": "Убрать задержку атаки",
+  "debug.viafabricplus.idle": "Отправлять пакет бездействия",
+  "debug.viafabricplus.attribute": "Заменять модификаторы атрибутов",
+  "debug.viafabricplus.replacesneak": "Заменять приседание",
+  "debug.viafabricplus.longsneak": "Долгое приседание",
+  "debug.viafabricplus.legacypseeds": "Старая скорость добычи блоков",
+
+  "authentication.viafabricplus.betacraft": "Использовать аутентификацию BetaCraft",
+  "authentication.viafabricplus.verify": "Разрешить ViaLegacy вызов joinServer() для проверки сессии",
+  "authentication.viafabricplus.fail": "Отключаться в случае сбоя вызова joinServer()",
+  "authentication.viafabricplus.classicube": "Устанавливать версию CPE при использовании ClassiCube",
+  "authentication.viafabricplus.spoof": "Имя пользователя ClassiCube при его использовании",
+  "authentication.viafabricplus.skin": "Разрешить ViaLegacy загружать скины в старых версиях",
+  "authentication.viafabricplus.bedrock": "Нажмите для настройки учётной записи Bedrock Edition",
+
+  "visual.viafabricplus.secure": "Удалять уведомления о безопасности чата",
+  "visual.viafabricplus.indicator": "Скрывать индикатор цифровой подписи в чате",
+  "visual.viafabricplus.jigsaw": "Старый блок головоломки",
+  "visual.viafabricplus.stoneslab": "Старая окаменевшая дубовая плита",
+  "visual.viafabricplus.armor": "Эмулировать интерфейс брони",
+  "visual.viafabricplus.command": "Старый командный блок",
+  "visual.viafabricplus.oof": "Старый звук получения урона",
+  "visual.viafabricplus.betahud": "Старый интерфейс",
+  "visual.viafabricplus.classic": "Старый творческий инвентарь",
+  "visual.viafabricplus.walkanimation": "Старая анимация ходьбы",
+  "visual.viafabricplus.sodium": "Исправить рендеринг чанков Sodium",
+
+  "bedrocklogin.viafabricplus.text": "Сейчас должен открыться браузер.\nВведите следующий код: %s\nЗакрытие этого экрана приведёт к отмене процесса!",
+  "bedrocklogin.viafabricplus.error": "Произошла ошибка. Проверьте latest.log для получения дополнительных сведений.\nПожалуйста, сообщите о ней разработчику:\nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+
+  "forceversion.viafabricplus.title": "Укажите версию для проверки связи с сервером и подключения к нему.",
+
+  "classicube.viafabricplus.account": "Создать учётную запись можно здесь: https://www.classicube.net",
+  "classicube.viafabricplus.loading": "Загрузка профиля и списка серверов...",
+
+  "classicube.viafabricplus.error.token": "Некорректный токен. Возможно, версия ViaFabricPlus устарела.",
+  "classicube.viafabricplus.error.username": "Неверное имя пользователя.",
+  "classicube.viafabricplus.error.password": "Неверный пароль.",
+  "classicube.viafabricplus.error.verification": "Пользователь ещё не подтвердил свой адрес электронной почты.",
+  "classicube.viafabricplus.error.logincode": "Запрошена многофакторная аутентификация. Проверьте вашу электронную почту.",
+
+  "classicube.viafabricplus.warning": "Эта функция отправит запросы API к ClassiCube API.",
+
+  "betacraft.viafabricplus.warning": "Нажатие этой кнопки отправит запрос API к \"betacraft.uk/serverlist\".",
+  "betacraft.viafabricplus.error": "Что-то пошло не так. Повторите попытку позже.",
+
+  "modmenu.summaryTranslation.viafabricplus": "Мод для подключения к серверам любых версий.",
+  "modmenu.descriptionTranslation.viafabricplus": "Мод Fabric для подключения к серверам §lлюбых§r версий Minecraft (Classic, Alpha, Beta, снапшоты, релизы и даже Bedrock), содержащий приятные исправления для улучшения игрового процесса."
+}
