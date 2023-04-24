@@ -39,6 +39,14 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
+/**
+ * TODO | Protocol translation
+ *  - BucketItem#use canPlaceOn in <= 1.13 is missing
+ *  - Cobwebs in <= b1.7.3 are broken
+ *  - Window interactions in <= 1.16.5 are unlegit
+ *  - Entity hitboxes and eye heights has changed
+ *  - Crafting Recipes are missing in ViaVersion
+ */
 public class ViaFabricPlus {
     public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public final static Logger LOGGER = LogManager.getLogger("ViaFabricPlus");
@@ -67,14 +75,16 @@ public class ViaFabricPlus {
         // Protocol Translator
         ProtocolHack.init();
 
+        // Stuff which requires Minecraft to be initialized
         FinishMinecraftLoadCallback.EVENT.register(() -> {
+            // Has to be loaded before the settings system in order to catch the ChangeProtocolVersionCallback call
             ClassicItemSelectionScreen.create();
 
             // General settings
             settingsSystem.init();
             informationSystem.init();
 
-            // Mappings which requires Minecraft to be initialized
+            // Version related mappings
             PackFormatsMappings.load();
             ItemReleaseVersionMappings.create();
             ArmorPointsMappings.load();
