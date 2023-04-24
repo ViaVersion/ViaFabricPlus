@@ -55,7 +55,6 @@ public class ViaFabricPlus {
         // Classic Stuff
         CustomClassicProtocolExtensions.create();
         ClassicProtocolCommands.create();
-        ClassicItemSelectionScreen.create();
 
         // Account Handler
         ClassiCubeAccountHandler.create();
@@ -69,6 +68,8 @@ public class ViaFabricPlus {
         ProtocolHack.init();
 
         FinishMinecraftLoadCallback.EVENT.register(() -> {
+            ClassicItemSelectionScreen.create();
+
             // General settings
             settingsSystem.init();
             informationSystem.init();
