@@ -34,11 +34,8 @@ import java.util.UUID;
 
 public class ChatSession1_19_0 extends AbstractChatSession {
 
-    private final byte[] legacyKey;
-
-    public ChatSession1_19_0(UserConnection user, ProfileKey profileKey, PrivateKey privateKey, byte[] legacyKey) {
+    public ChatSession1_19_0(UserConnection user, ProfileKey profileKey, PrivateKey privateKey) {
         super(user, profileKey, privateKey);
-        this.legacyKey = legacyKey;
     }
 
     public byte[] sign(final UUID sender, final MessageMetadataModel messageMetadata) {
@@ -53,9 +50,5 @@ public class ChatSession1_19_0 extends AbstractChatSession {
             updater.update(data);
             updater.update(JsonHelper.toSortedString(TextComponentSerializer.V1_18.serializeJson(new StringComponent(messageMetadata.plain()))).getBytes(StandardCharsets.UTF_8));
         });
-    }
-
-    public byte[] getLegacyKey() {
-        return legacyKey;
     }
 }

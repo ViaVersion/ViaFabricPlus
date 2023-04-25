@@ -49,22 +49,14 @@ public class MixinProtocol1_19_1To1_19 extends AbstractProtocol<ClientboundPacke
     public void injectRegisterPackets(CallbackInfo ci) {
         this.registerServerbound(State.LOGIN, ServerboundLoginPackets.HELLO.getId(), ServerboundLoginPackets.HELLO.getId(), new PacketHandlers() {
             public void register() {
-                this.map(Type.STRING);
-                this.map(Type.OPTIONAL_PROFILE_KEY);
+                map(Type.STRING);
+                read(Type.OPTIONAL_PROFILE_KEY);
                 handler(wrapper -> {
                     final ChatSession1_19_0 chatSession1190 = wrapper.user().get(ChatSession1_19_0.class);
-                    if (chatSession1190 != null) {
-                        final ProfileKey profileKey = wrapper.get(Type.OPTIONAL_PROFILE_KEY, 0);
-                        if (profileKey != null) {
-                            wrapper.set(Type.OPTIONAL_PROFILE_KEY, 0, new ProfileKey(
-                                    profileKey.expiresAt(),
-                                    profileKey.publicKey(),
-                                    chatSession1190.getLegacyKey()
-                            ));
-                        }
-                    }
+
+                    wrapper.write(Type.OPTIONAL_PROFILE_KEY, chatSession1190 == null ? null : chatSession1190.getProfileKey());
                 });
-                this.read(Type.OPTIONAL_UUID);
+                read(Type.OPTIONAL_UUID);
             }
         }, true);
         this.registerClientbound(State.LOGIN, ClientboundLoginPackets.HELLO.getId(), ClientboundLoginPackets.HELLO.getId(), new PacketHandlers() {
@@ -90,18 +82,7 @@ public class MixinProtocol1_19_1To1_19 extends AbstractProtocol<ClientboundPacke
 
                     final ChatSession1_19_0 chatSession1190 = wrapper.user().get(ChatSession1_19_0.class);
                     if (chatSession1190 != null) {
-                        if (sender == null) {
-                            throw new IllegalStateException("ViaVersion didn't track the connected UUID correctly, please check your BaseProtocol1_7");
-                        }
-
-                        wrapper.set(Type.BYTE_ARRAY_PRIMITIVE, 0, chatSession1190.sign(
-                                sender,
-                                new MessageMetadataModel(
-                                        message,
-                                        timestamp,
-                                        salt
-                                )
-                        ));
+                        wrapper.set(Type.BYTE_ARRAY_PRIMITIVE, 0, chatSession1190.sign(sender, new MessageMetadataModel(message, timestamp, salt)));
                     }
                 });
                 map(Type.BOOLEAN); // Signed preview
@@ -125,42 +106,21 @@ public class MixinProtocol1_19_1To1_19 extends AbstractProtocol<ClientboundPacke
                     final long salt = wrapper.get(Type.LONG, 1);
 
                     final ChatSession1_19_0 chatSession1190 = wrapper.user().get(ChatSession1_19_0.class);
-                    if (chatSession1190 != null) {
-                        if (sender == null) {
-                            throw new IllegalStateException("ViaVersion didn't track the connected UUID correctly, please check your BaseProtocol1_7");
-                        }
+                    final CommandArgumentsProvider commandArgumentsProvider = Via.getManager().getProviders().get(CommandArgumentsProvider.class);
 
-                        // Make sure we implemented the command signing
-                        final CommandArgumentsProvider commandArgumentsProvider = Via.getManager().getProviders().get(CommandArgumentsProvider.class);
+                    if (chatSession1190 != null) {
                         if (commandArgumentsProvider != null) {
-                            // Removing new signatures
-                            {
-                                final int signatures = wrapper.get(Type.VAR_INT, 0);
-                                for (int i = 0; i < signatures; i++) {
-                                    wrapper.read(Type.STRING); // Argument name
-                                    wrapper.read(Type.BYTE_ARRAY_PRIMITIVE); // Signature
-                                }
+                            final int signatures = wrapper.get(Type.VAR_INT, 0);
+                            for (int i = 0; i < signatures; i++) {
+                                wrapper.read(Type.STRING); // Argument name
+                                wrapper.read(Type.BYTE_ARRAY_PRIMITIVE); // Signature
                             }
 
-                            // Signing arguments
-                            {
-                                final ReceivedMessagesStorage messagesStorage = wrapper.user().get(ReceivedMessagesStorage.class);
-                                if (messagesStorage != null) {
-                                    for (Pair<String, String> argument : commandArgumentsProvider.getSignedArguments(command)) {
-                                        final byte[] signature = chatSession1190.sign(
-                                                sender,
-                                                new MessageMetadataModel(
-                                                        argument.value(),
-                                                        timestamp,
-                                                        salt
-                                                )
-                                        );
+                            for (Pair<String, String> argument : commandArgumentsProvider.getSignedArguments(command)) {
+                                final byte[] signature = chatSession1190.sign(sender, new MessageMetadataModel(argument.value(), timestamp, salt));
 
-
-                                        wrapper.write(Type.STRING, argument.key());
-                                        wrapper.write(Type.BYTE_ARRAY_PRIMITIVE, signature);
-                                    }
-                                }
+                                wrapper.write(Type.STRING, argument.key());
+                                wrapper.write(Type.BYTE_ARRAY_PRIMITIVE, signature);
                             }
                         }
                     }

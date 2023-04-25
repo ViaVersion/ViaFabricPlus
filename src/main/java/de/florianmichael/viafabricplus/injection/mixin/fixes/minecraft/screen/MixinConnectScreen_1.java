@@ -97,7 +97,6 @@ public class MixinConnectScreen_1 {
 
         final UserConnection userConnection = connection.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
         if (userConnection == null) {
-            ViaFabricPlus.LOGGER.warn("ViaVersion userConnection is null");
             return;
         }
         final ComparableProtocolVersion targetVersion = ProtocolHack.getTargetVersion(connection.channel);
@@ -120,14 +119,13 @@ public class MixinConnectScreen_1 {
                 final PlayerKeyPair playerKeyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().get().orElse(null);
                 if (playerKeyPair != null) {
                     final PlayerPublicKey.PublicKeyData publicKeyData = playerKeyPair.publicKey().data();
-                    final ProfileKey profileKey = new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature());
 
-                    userConnection.put(new ChatSession1_19_2(userConnection, profileKey, playerKeyPair.privateKey()));
+                    userConnection.put(new ChatSession1_19_2(userConnection, new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature()), playerKeyPair.privateKey()));
 
                     if (targetVersion.isEqualTo(ProtocolVersion.v1_19)) {
                         final byte[] legacyKey = ((IPublicKeyData) (Object) publicKeyData).viafabricplus_getV1Key().array();
                         if (legacyKey != null) {
-                            userConnection.put(new ChatSession1_19_0(userConnection, profileKey, playerKeyPair.privateKey(), legacyKey));
+                            userConnection.put(new ChatSession1_19_0(userConnection, new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey), playerKeyPair.privateKey()));
                         } else {
                             ViaFabricPlus.LOGGER.warn("Mojang removed the legacy key");
                         }
