@@ -180,7 +180,7 @@ public class MixinProtocol1_19_3To1_19_1 extends AbstractProtocol<ClientboundPac
                         final long timestamp = wrapper.get(Type.LONG, 0);
                         final long salt = wrapper.get(Type.LONG, 1);
 
-                        final byte[] signature = chatSession1192.sign(sender, new MessageMetadataModel(message, +timestamp, salt), messagesStorage.lastSignatures());
+                        final byte[] signature = chatSession1192.sign(sender, new MessageMetadataModel(message, timestamp, salt), messagesStorage.lastSignatures());
 
                         wrapper.write(Type.BYTE_ARRAY_PRIMITIVE, signature);
                         wrapper.write(Type.BOOLEAN, false); // Signed Preview - not implemented yet, but I could do it

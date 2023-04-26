@@ -22,8 +22,7 @@ import de.florianmichael.viafabricplus.settings.type_impl.ButtonSetting;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 
 public class ButtonSettingRenderer extends MappedSlotEntry {
@@ -46,9 +45,9 @@ public class ButtonSettingRenderer extends MappedSlotEntry {
     }
 
     @Override
-    public void mappedRenderer(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRenderer(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        DrawableHelper.drawCenteredTextWithShadow(matrices, textRenderer, this.value.displayValue(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+        context.drawCenteredTextWithShadow(textRenderer, this.value.displayValue(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
     }
 }

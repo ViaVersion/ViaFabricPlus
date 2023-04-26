@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.definition.c0_30.ClassicProgressRenderer;
 import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,9 +31,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinConnectScreen {
 
     @Inject(method = "render", at = @At("RETURN"))
-    public void renderClassicProgress(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    public void renderClassicProgress(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (!GeneralSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) return;
 
-        ClassicProgressRenderer.renderProgress(matrices);
+        ClassicProgressRenderer.renderProgress(context);
     }
 }

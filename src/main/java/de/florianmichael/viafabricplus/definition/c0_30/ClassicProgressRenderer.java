@@ -20,14 +20,13 @@ package de.florianmichael.viafabricplus.definition.c0_30;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
-import net.minecraft.client.util.math.MatrixStack;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.storage.ClassicProgressStorage;
 
-public class ClassicProgressRenderer extends DrawableHelper {
+public class ClassicProgressRenderer {
 
-    public static void renderProgress(final MatrixStack matrices) {
+    public static void renderProgress(final DrawContext context) {
         if (MinecraftClient.getInstance().getNetworkHandler() == null) return;
         final UserConnection connection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
         if (connection == null) return;
@@ -35,8 +34,7 @@ public class ClassicProgressRenderer extends DrawableHelper {
         if (classicProgressStorage == null) return;
 
         final Window window = MinecraftClient.getInstance().getWindow();
-        drawCenteredTextWithShadow(
-                matrices,
+        context.drawCenteredTextWithShadow(
                 MinecraftClient.getInstance().textRenderer,
                 "[ViaFabricPlus] " + classicProgressStorage.status,
                 window.getScaledWidth() / 2,

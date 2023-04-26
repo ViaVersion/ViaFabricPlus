@@ -55,7 +55,7 @@ public abstract class MixinAbstractDonkeyEntity extends AbstractHorseEntity {
             if (!this.isBaby()) {
                 if (this.isTame() && player.shouldCancelInteraction()) {
                     this.openInventory(player);
-                    cir.setReturnValue(ActionResult.success(this.world.isClient));
+                    cir.setReturnValue(ActionResult.success(this.getWorld().isClient));
                 }
                 if (this.hasPassengers()) {
                     cir.setReturnValue(super.interactMob(player, hand));
@@ -67,7 +67,7 @@ public abstract class MixinAbstractDonkeyEntity extends AbstractHorseEntity {
                 }
                 if (!this.isTame()) {
                     this.playAngrySound();
-                    cir.setReturnValue(ActionResult.success(this.world.isClient));
+                    cir.setReturnValue(ActionResult.success(this.getWorld().isClient));
                 }
                 if (!this.hasChest() && lv.isOf(Blocks.CHEST.asItem())) {
                     this.setHasChest(true);
@@ -76,18 +76,18 @@ public abstract class MixinAbstractDonkeyEntity extends AbstractHorseEntity {
                         lv.decrement(1);
                     }
                     this.onChestedStatusChanged();
-                    cir.setReturnValue(ActionResult.success(this.world.isClient));
+                    cir.setReturnValue(ActionResult.success(this.getWorld().isClient));
                 }
                 if (!this.isBaby() && !this.isSaddled() && lv.isOf(Items.SADDLE)) {
                     this.openInventory(player);
-                    cir.setReturnValue(ActionResult.success(this.world.isClient));
+                    cir.setReturnValue(ActionResult.success(this.getWorld().isClient));
                 }
             }
             if (this.isBaby()) {
                 cir.setReturnValue(super.interactMob(player, hand));
             }
             this.putPlayerOnBack(player);
-            cir.setReturnValue(ActionResult.success(this.world.isClient));
+            cir.setReturnValue(ActionResult.success(this.getWorld().isClient));
         }
     }
 }

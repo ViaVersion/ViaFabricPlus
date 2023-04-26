@@ -79,10 +79,10 @@ public class ItemReleaseVersionMappings {
         register(Items.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.PINK_PETALS, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.POTTERY_SHARD_ARCHER, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.POTTERY_SHARD_ARMS_UP, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.POTTERY_SHARD_PRIZE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
-        register(Items.POTTERY_SHARD_SKULL, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.ARCHER_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.ARMS_UP_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.PRIZE_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
+        register(Items.SKULL_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.RIB_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.SNIFFER_SPAWN_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));

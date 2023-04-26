@@ -105,16 +105,16 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             bl4 = g != 0.0 || h != 0.0;
             if (this.hasVehicle()) {
                 Vec3d vec3d = this.getVelocity();
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Full(vec3d.x, -999.0, vec3d.z, this.getYaw(), this.getPitch(), this.onGround));
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Full(vec3d.x, -999.0, vec3d.z, this.getYaw(), this.getPitch(), this.isOnGround()));
                 bl3 = false;
             } else if (bl3 && bl4) {
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Full(this.getX(), this.getY(), this.getZ(), this.getYaw(), this.getPitch(), this.onGround));
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Full(this.getX(), this.getY(), this.getZ(), this.getYaw(), this.getPitch(), this.isOnGround()));
             } else if (bl3) {
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(this.getX(), this.getY(), this.getZ(), this.onGround));
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(this.getX(), this.getY(), this.getZ(), this.isOnGround()));
             } else if (bl4) {
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(this.getYaw(), this.getPitch(), this.onGround));
-            } else if (this.lastOnGround != this.onGround || DebugSettings.INSTANCE.sendIdlePacket.getValue()) {
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(this.onGround));
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(this.getYaw(), this.getPitch(), this.isOnGround()));
+            } else if (this.lastOnGround != this.isOnGround() || DebugSettings.INSTANCE.sendIdlePacket.getValue()) {
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(this.isOnGround()));
             } else {
                 SkipIdlePacketCallback.EVENT.invoker().onSkipIdlePacket();
             }
@@ -132,7 +132,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
                 this.lastYaw = this.getYaw();
                 this.lastPitch = this.getPitch();
             }
-            this.lastOnGround = this.onGround;
+            this.lastOnGround = this.isOnGround();
             this.autoJumpEnabled = this.client.options.getAutoJump().getValue();
         }
         return false;
