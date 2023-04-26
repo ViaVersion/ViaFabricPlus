@@ -60,6 +60,9 @@ public class ClassiCubeLoginScreen extends Screen {
         nameField.setPlaceholder(Text.literal("Name"));
         passwordField.setPlaceholder(Text.literal("Password"));
 
+        nameField.setMaxLength(Integer.MAX_VALUE);
+        passwordField.setMaxLength(Integer.MAX_VALUE);
+
         final CCAccount classiCubeAccount = ClassiCubeAccountHandler.INSTANCE.getAccount();
         if (classiCubeAccount != null) {
             nameField.setText(classiCubeAccount.username());
