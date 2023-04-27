@@ -27,6 +27,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,7 +43,8 @@ public class MixinGameModeSelectionScreen {
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixUIWidth(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
-            final List<GameModeSelectionScreen.GameModeSelection> gameModeSelections = Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList();
+            final List<GameModeSelectionScreen.GameModeSelection> gameModeSelections = new ArrayList<>(Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList());
+
             if (ProtocolHack.getTargetVersion().isOlderThan(LegacyProtocolVersion.r1_3_1tor1_3_2)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
             if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
 
