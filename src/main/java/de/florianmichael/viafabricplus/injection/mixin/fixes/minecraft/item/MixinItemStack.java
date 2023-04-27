@@ -28,6 +28,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -35,7 +36,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.OptionalDouble;
 
-@SuppressWarnings("ConstantValue")
 @Mixin(value = ItemStack.class, priority = 1)
 public abstract class MixinItemStack {
 
@@ -46,22 +46,14 @@ public abstract class MixinItemStack {
 
     @Shadow private int count;
 
-    @Shadow private boolean empty;
-
-    @Inject(method = "updateEmptyState", at = @At("HEAD"), cancellable = true)
-    public void allowNegativeItems(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
-            this.empty = false;
-            final ItemStack self = (ItemStack) (Object) this;
-            this.empty = self == EMPTY || this.getItem() == null || self.isOf(Items.AIR) || count == 0;
-            ci.cancel();
-        }
-    }
+    @Shadow @Final @Deprecated private @Nullable Item item;
 
     @Inject(method = "isEmpty", at = @At("HEAD"), cancellable = true)
     public void dontRecalculateState(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
-            cir.setReturnValue(this.empty);
+            final ItemStack self = (ItemStack) (Object) this;
+
+            cir.setReturnValue(self == EMPTY || this.item == null || this.item == Items.AIR || count == 0);
         }
     }
 

@@ -32,6 +32,7 @@ public class PackFormatsMappings {
     private final static Map<Integer, GameVersion> protocolMap = new HashMap<>();
 
     public static void load() {
+        registerVersion(ProtocolVersion.v1_20, 15, "23w17a");
         registerVersion(ProtocolVersion.v1_19_4, 13, "1.19.4");
         registerVersion(ProtocolVersion.v1_19_3, 12, "1.19.3");
         registerVersion(ProtocolVersion.v1_19_1, 9, "1.19.2");
@@ -95,7 +96,7 @@ public class PackFormatsMappings {
     }
 
     private static void registerVersion(final ProtocolVersion version, final int packFormat, final String name, final String id) {
-        protocolMap.put(version.getVersion(), new GameVersion() {
+        protocolMap.put(version.getOriginalVersion(), new GameVersion() {
             @Override
             public SaveVersion getSaveVersion() {
                 return null;
@@ -113,7 +114,7 @@ public class PackFormatsMappings {
 
             @Override
             public int getProtocolVersion() {
-                return version.getVersion();
+                return version.getOriginalVersion();
             }
 
             @Override

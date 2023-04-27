@@ -23,6 +23,7 @@ import de.florianmichael.viafabricplus.settings.type_impl.ProtocolSyncBooleanSet
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -49,16 +50,16 @@ public class ProtocolSyncBooleanSettingRenderer extends MappedSlotEntry {
     }
 
     @Override
-    public void mappedRenderer(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRenderer(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         final Text text = this.value.getValue() ? Text.translatable("words.viafabricplus.on") : Text.translatable("words.viafabricplus.off");
         Color color = this.value.getValue() ? Color.GREEN : Color.RED;
 
-        final int length = textRenderer.drawWithShadow(matrices, this.value.getName().formatted(Formatting.GRAY), 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
+        final int length = context.drawTextWithShadow(textRenderer, this.value.getName().formatted(Formatting.GRAY), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
-        textRenderer.drawWithShadow(matrices, "(" + this.value.getProtocolRange().toString() + ")", length + 2, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
+        context.drawTextWithShadow(textRenderer, "(" + this.value.getProtocolRange().toString() + ")", length + 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
         if (GeneralSettings.INSTANCE.automaticallyChangeValuesBasedOnTheCurrentVersion.getValue()) color = color.darker().darker();
-        textRenderer.drawWithShadow(matrices, text, entryWidth - textRenderer.getWidth(text) - 3 - 3, entryHeight / 2F - textRenderer.fontHeight / 2F, color.getRGB());
+        context.drawTextWithShadow(textRenderer, text, entryWidth - textRenderer.getWidth(text) - 3 - 3, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
     }
 }

@@ -20,6 +20,7 @@ package de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta;
 import de.florianmichael.viafabricplus.screen.base.MappedSlotEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -37,17 +38,18 @@ public class TitleRenderer extends MappedSlotEntry {
     }
 
     @Override
-    public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        final MatrixStack matrices = context.getMatrices();
         matrices.push();
         matrices.translate(x, y, 0);
-        mappedRenderer(matrices, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
+        mappedRenderer(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
         matrices.pop();
     }
 
     @Override
-    public void mappedRenderer(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRenderer(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        textRenderer.drawWithShadow(matrices, Formatting.BOLD + this.name, 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
+        context.drawTextWithShadow(textRenderer, Formatting.BOLD + this.name, 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
     }
 }

@@ -22,6 +22,7 @@ import de.florianmichael.viafabricplus.settings.type_impl.ModeSetting;
 import de.florianmichael.viafabricplus.util.ScreenUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -49,10 +50,10 @@ public class ModeSettingRenderer extends MappedSlotEntry {
     }
 
     @Override
-    public void mappedRenderer(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRenderer(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        textRenderer.drawWithShadow(matrices, this.value.getName().formatted(Formatting.GRAY), 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
-        textRenderer.drawWithShadow(matrices, this.value.getValue(), entryWidth - textRenderer.getWidth(this.value.getValue()) - 3 - 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
+        context.drawTextWithShadow(textRenderer, this.value.getName().formatted(Formatting.GRAY), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+        context.drawTextWithShadow(textRenderer, this.value.getValue(), entryWidth - textRenderer.getWidth(this.value.getValue()) - 3 - 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
     }
 }

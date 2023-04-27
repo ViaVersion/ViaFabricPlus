@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import net.minecraft.block.entity.JigsawBlockEntity;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.JigsawBlockScreen;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -61,7 +62,7 @@ public class MixinJigsawBlockScreen extends Screen {
     }
 
     @Inject(method = "render", at = @At("HEAD"))
-    public void injectRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    public void injectRender(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeNewerFeaturesFromJigsawScreen.getValue()) {
             nameField.setText(targetField.getText());
         }

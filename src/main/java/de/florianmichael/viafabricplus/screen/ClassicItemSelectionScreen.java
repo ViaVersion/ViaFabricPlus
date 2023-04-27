@@ -20,6 +20,7 @@ package de.florianmichael.viafabricplus.screen;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
@@ -151,7 +152,7 @@ public class ClassicItemSelectionScreen extends Screen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         final int halfWidth = this.width / 2;
         final int halfHeight = this.height / 2;
 
@@ -161,8 +162,8 @@ public class ClassicItemSelectionScreen extends Screen {
         final int renderX = halfWidth - boxWidth / 2;
         final int renderY = halfHeight - boxHeight / 2;
 
-        fill(matrices, renderX, renderY, renderX + boxWidth, renderY + boxHeight, Integer.MIN_VALUE);
-        drawCenteredTextWithShadow(matrices, textRenderer, "Select block", renderX + boxWidth / 2, renderY + SIDE_OFFSET, -1);
+        context.fill(renderX, renderY, renderX + boxWidth, renderY + boxHeight, Integer.MIN_VALUE);
+        context.drawCenteredTextWithShadow(textRenderer, "Select block", renderX + boxWidth / 2, renderY + SIDE_OFFSET, -1);
         selectedItem = null;
 
         int y = SIDE_OFFSET + SIDE_OFFSET;
@@ -172,14 +173,14 @@ public class ClassicItemSelectionScreen extends Screen {
                 if (item == null) continue;
 
                 if (mouseX > renderX + x && mouseY > renderY + y && mouseX < renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC && mouseY < renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC) {
-                    fill(matrices, renderX + x, renderY + y, renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC, renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC, Integer.MAX_VALUE);
+                    context.fill(renderX + x, renderY + y, renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC, renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC, Integer.MAX_VALUE);
                     selectedItem = item.getDefaultStack();
                 }
-                MinecraftClient.getInstance().getItemRenderer().renderGuiItemIcon(matrices, item.getDefaultStack(), renderX + x + ITEM_XY_BOX_DIMENSION_MODERN / 4, renderY + y + ITEM_XY_BOX_DIMENSION_MODERN / 4);
+                context.drawItem(item.getDefaultStack(), renderX + x + ITEM_XY_BOX_DIMENSION_MODERN / 4, renderY + y + ITEM_XY_BOX_DIMENSION_MODERN / 4);
                 x += ITEM_XY_BOX_DIMENSION_CLASSIC;
             }
             y += ITEM_XY_BOX_DIMENSION_CLASSIC;
         }
-        super.render(matrices, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
     }
 }
