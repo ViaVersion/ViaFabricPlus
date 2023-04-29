@@ -23,8 +23,6 @@ import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.DisconnectAdapter;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.PingEncapsulationCodec;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.RakMessageEncapsulationCodec;
-import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.library_fix.FixedUnconnectedPingEncoder;
-import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.library_fix.FixedUnconnectedPongDecoder;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.netty.VLBPipeline;
 import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
@@ -38,9 +36,6 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.netty.PreNettyLengthPrepender;
 import net.raphimc.vialegacy.netty.PreNettyLengthRemover;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.baseprotocols.PreNettyBaseProtocol;
-import org.cloudburstmc.netty.channel.raknet.RakClientChannel;
-import org.cloudburstmc.netty.handler.codec.raknet.common.UnconnectedPingEncoder;
-import org.cloudburstmc.netty.handler.codec.raknet.common.UnconnectedPongDecoder;
 
 import java.net.InetSocketAddress;
 
@@ -99,13 +94,6 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
 
             // Pinging in RakNet is something different
             if (ProtocolHack.getRakNetPingSessions().contains(address)) {
-                { // Temporary fix for the ping encoder
-                    final RakClientChannel rakChannel = (RakClientChannel) ctx.channel();
-
-                    rakChannel.parent().pipeline().replace(UnconnectedPingEncoder.NAME, UnconnectedPingEncoder.NAME, new FixedUnconnectedPingEncoder(rakChannel));
-                    rakChannel.parent().pipeline().replace(UnconnectedPongDecoder.NAME, UnconnectedPongDecoder.NAME, new FixedUnconnectedPongDecoder(rakChannel));
-                }
-
                 pipeline.replace(VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, VIA_BEDROCK_PING_ENCAPSULATION_HANDLER_NAME, new PingEncapsulationCodec(address));
 
                 pipeline.remove(VIA_BEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);
