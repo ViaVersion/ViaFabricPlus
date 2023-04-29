@@ -13,13 +13,18 @@
   "words.viafabricplus.reset": "重置",
   "words.viafabricplus.copy": "复制代码",
 
-  "general.viafabricplus.secret": "显示 “Super Secret Settings”（超级秘密设置）",
+  "general.viafabricplus.secret": "显示“Super Secret Settings”（超级秘密设置）",
   "general.viafabricplus.extrainformation": "在\u00a76[调试]\u00a7r（F3）中显示额外信息",
   "general.viafabricplus.classicloading": "在连接服务器时使用旧版进度显示",
   "general.viafabricplus.main": "模组按钮位置",
   "general.viafabricplus.creative": "从创造模式选项内移除不可用的物品",
   "general.viafabricplus.classiccommands": "允许使用旧版命令协议",
   "general.viafabricplus.protocolsync": "自动根据所选版本调整设置",
+  "general.viafabricplus.autodetect": "自动检测版本",
+
+  "experimental.viafabricplus.chunkborderfix": "修复区块边界",
+  "experimental.viafabricplus.watermovement": "水中移动边缘检测",
+  "experimental.viafabricplus.fontcachefix": "修复字体缓存",
 
   "debug.viafabricplus.sequence": "禁用排序",
   "debug.viafabricplus.merchant": "平滑屏幕",
@@ -53,19 +58,19 @@
   "visual.viafabricplus.walkanimation": "旧版行走动画",
   "visual.viafabricplus.sodium": "修复钠（Sodium）渲染器",
 
-  "bedrocklogin.viafabricplus.text": "你的浏览器现在应该打开了。\n请输入这个代码： %s\n关闭这个屏幕等于取消操作！",
-  "bedrocklogin.viafabricplus.error": "发生错误！详情请查看 latest.log \n请在这个链接反馈BUG： \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.text": "你的浏览器现在应该打开了。\n请输入这个代码：%s\n关闭这个屏幕等于取消操作！",
+  "bedrocklogin.viafabricplus.error": "发生错误！详情请查看 latest.log\n请在这个链接反馈BUG：\nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "请选择连接这个服务器要使用的版本",
 
   "classicube.viafabricplus.account": "您可以这里创建一个账户: https://www.classicube.net/",
   "classicube.viafabricplus.loading": "正在加载个人信息和服务器列表···",
 
-  "classicube.viafabricplus.error.token": "Token 不正确。 你的 ViaFabricPlus 是否已经过时？",
+  "classicube.viafabricplus.error.token": "Token 不正确。你的 ViaFabricPlus 是否已经过时？",
   "classicube.viafabricplus.error.username": "无效的用户名",
   "classicube.viafabricplus.error.password": "无效的密码",
   "classicube.viafabricplus.error.verification": "用戶尚未验证电子邮箱地址。",
-  "classicube.viafabricplus.error.logincode": "已请求身份验证。 请查看你的电子邮箱！",
+  "classicube.viafabricplus.error.logincode": "已请求身份验证。请查看你的电子邮箱！",
 
   "classicube.viafabricplus.warning": "该功能会向 ClassiCube API 发送请求。",
 
