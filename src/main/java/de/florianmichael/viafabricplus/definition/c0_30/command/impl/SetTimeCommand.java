@@ -17,13 +17,14 @@
  */
 package de.florianmichael.viafabricplus.definition.c0_30.command.impl;
 
+import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.definition.c0_30.command.ICommand;
+import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicViaSubCommand;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;
 
-public class SetTimeCommand implements ICommand {
+public class SetTimeCommand extends ClassicViaSubCommand {
     @Override
     public String name() {
         return "settime";
@@ -31,15 +32,19 @@ public class SetTimeCommand implements ICommand {
 
     @Override
     public String description() {
-        return "<Time (Long)>";
+        return "Changes the time (Only for <= " + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName() + ")";
     }
 
     @Override
-    public void execute(String[] args) throws Exception {
+    public String usage() {
+        return name() + " " + "<Time (Long)>";
+    }
+
+    @Override
+    public boolean execute(ViaCommandSender sender, String[] args) {
         final UserConnection connection = currentViaConnection();
         if (!connection.has(TimeLockStorage.class)) {
-            this.sendFeedback(Formatting.RED + "This command is only for <=" + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName());
-            return;
+            return false;
         }
         try {
             if (args.length == 1) {
@@ -47,10 +52,11 @@ public class SetTimeCommand implements ICommand {
                 connection.get(TimeLockStorage.class).setTime(time);
                 this.sendFeedback(Formatting.GREEN + "Time has been set to " + Formatting.GOLD + time);
             } else {
-                this.sendUsage();
+                return false;
             }
         } catch (Throwable ignored) {
-            this.sendUsage();
+            return false;
         }
+        return true;
     }
 }

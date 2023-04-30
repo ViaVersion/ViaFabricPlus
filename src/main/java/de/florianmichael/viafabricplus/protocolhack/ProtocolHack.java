@@ -17,10 +17,16 @@
  */
 package de.florianmichael.viafabricplus.protocolhack;
 
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
+import com.viaversion.viaversion.libs.gson.JsonArray;
+import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.PlayerLookTargetProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
@@ -30,6 +36,7 @@ import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgume
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.FinishViaLoadingBaseStartupCallback;
 import de.florianmichael.viafabricplus.event.ViaLoadingBaseBuilderCallback;
+import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLBViaCommandHandler;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLBPipeline;
 import de.florianmichael.viafabricplus.protocolhack.platform.ViaAprilFoolsPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.platform.ViaBedrockPlatformImpl;
@@ -47,6 +54,9 @@ import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import de.florianmichael.vialoadingbase.model.Platform;
 import io.netty.channel.*;
 import io.netty.util.AttributeKey;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
@@ -119,6 +129,19 @@ public class ProtocolHack {
         channel.pipeline().addLast(new ViaFabricPlusVLBPipeline(user, address, ProtocolHack.getTargetVersion(channel)));
     }
 
+    private static void initCommands() {
+        // Adding ViaVersion commands
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+            final ViaFabricPlusVLBViaCommandHandler commandHandler = (ViaFabricPlusVLBViaCommandHandler) Via.getManager().getCommandHandler();
+
+            final RequiredArgumentBuilder<FabricClientCommandSource, String> executor = RequiredArgumentBuilder.
+                    <FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
+
+            dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viaversion").then(executor).executes(commandHandler::execute));
+            dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viafabricplus").then(executor).executes(commandHandler::execute));
+        });
+    }
+
     public static void init() {
         ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
 
@@ -159,14 +182,44 @@ public class ProtocolHack {
             providers.use(EncryptionProvider.class, new ViaFabricPlusEncryptionProvider());
             providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
             providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
-            providers.use(ClassicCustomCommandProvider.class, new ViaFabricPlusClassicCustomCommandProvider());
 
             providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
             providers.use(BlobCacheProvider.class, new ViaFabricPlusBlobCacheProvider());
         });
         builder = builder.onProtocolReload(protocolVersion -> ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(protocolVersion));
+        builder = builder.dumpSupplier(() -> {
+            JsonObject platformSpecific = new JsonObject();
+            JsonArray mods = new JsonArray();
+            FabricLoader.getInstance().getAllMods().stream().map((mod) -> {
+                JsonObject jsonMod = new JsonObject();
+                jsonMod.addProperty("id", mod.getMetadata().getId());
+                jsonMod.addProperty("name", mod.getMetadata().getName());
+                jsonMod.addProperty("version", mod.getMetadata().getVersion().getFriendlyString());
+                JsonArray authors = new JsonArray();
+                mod.getMetadata().getAuthors().stream().map(it -> {
+                    JsonObject info = new JsonObject();
+                    JsonObject contact = new JsonObject();
+                    it.getContact().asMap().forEach(contact::addProperty);
+
+                    if (contact.size() != 0) info.add("contact", contact);
+                    info.addProperty("name", it.getName());
+
+                    return info;
+                }).forEach(authors::add);
+                jsonMod.add("authors", authors);
+
+                return jsonMod;
+            }).forEach(mods::add);
+
+            platformSpecific.add("mods", mods);
+            platformSpecific.addProperty("native version", SharedConstants.getProtocolVersion());
+            return platformSpecific;
+        });
+        builder = builder.managerBuilderConsumer(viaManagerBuilder -> viaManagerBuilder.commandHandler(new ViaFabricPlusVLBViaCommandHandler()));
+
         ViaLoadingBaseBuilderCallback.EVENT.invoker().onBuildViaLoadingBase(builder);
         builder.build();
+        initCommands();
 
         FinishViaLoadingBaseStartupCallback.EVENT.invoker().onFinishViaLoadingBaseStartup();
     }

@@ -17,14 +17,16 @@
  */
 package de.florianmichael.viafabricplus.definition.c0_30.command.impl;
 
+import com.viaversion.viaversion.api.command.ViaCommandSender;
+import com.viaversion.viaversion.api.command.ViaSubCommand;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.definition.c0_30.command.ICommand;
+import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicViaSubCommand;
 import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 
-public class ListExtensionsCommand implements ICommand {
+public class ListExtensionsCommand extends ClassicViaSubCommand {
     @Override
     public String name() {
         return "listextensions";
@@ -32,18 +34,16 @@ public class ListExtensionsCommand implements ICommand {
 
     @Override
     public String description() {
-        return null;
+        return "Shows all classic extensions (only for " + LegacyProtocolVersion.c0_30cpe.getName() + ")";
     }
 
     @Override
-    public void execute(String[] args) throws Exception {
+    public boolean execute(ViaCommandSender sender, String[] args) {
         final UserConnection connection = currentViaConnection();
         if (!connection.has(ExtensionProtocolMetadataStorage.class)) {
-            this.sendFeedback(Formatting.RED + "This command is only for " + LegacyProtocolVersion.c0_30cpe.getName());
-            return;
+            return false;
         }
-        ((IExtensionProtocolMetadataStorage) connection.get(ExtensionProtocolMetadataStorage.class)).getServerExtensions().forEach((extension, version) -> {
-            this.sendFeedback(Formatting.GREEN + extension.getName() + Formatting.GOLD + " v" + version);
-        });
+        ((IExtensionProtocolMetadataStorage) connection.get(ExtensionProtocolMetadataStorage.class)).getServerExtensions().forEach((extension, version) -> this.sendFeedback(Formatting.GREEN + extension.getName() + Formatting.GOLD + " v" + version));
+        return true;
     }
 }

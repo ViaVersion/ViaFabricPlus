@@ -27,7 +27,6 @@ import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.screen.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.definition.c0_30.protocol.CustomClassicProtocolExtensions;
-import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicProtocolCommands;
 import de.florianmichael.viafabricplus.mappings.ArmorPointsMappings;
 import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.event.PreLoadCallback;
@@ -62,7 +61,6 @@ public class ViaFabricPlus {
 
         // Classic Stuff
         CustomClassicProtocolExtensions.create();
-        ClassicProtocolCommands.create();
 
         // Account Handler
         ClassiCubeAccountHandler.create();

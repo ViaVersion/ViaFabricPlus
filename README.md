@@ -52,18 +52,6 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
 </details>
 
-## Classic stuff
-### Custom protocol extensions
-ViaFabricPlus implements new Classic Extensions into the CPE protocol of ViaLegacy which are rather client side. <br>
-- **WeatherType** extension (version **1**)
-
-### Protocol commands
-To better control the Classic Protocol, there are a few clientside commands, the command prefix is **/v**: <br>
-- **/vhelp** - Displays all commands, available from: **c0.28-c0.30**
-- **/vsettime <Time (Long)>** - Changes the Clientside World Time, available from: **c0.28-c0.30**
-- **/vlistextensions** - Displays all classic protocol extensions, available in: **c0.30 CPE**
-
-
 # For developers and translators
 Contributions in the form of pull requests are always welcome, please just stick to my code style and make sure your code is easy to update and compatible with other mods.
 

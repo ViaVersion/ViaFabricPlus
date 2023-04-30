@@ -13,6 +13,12 @@ ViaFabricPlus will use the version set there, the versions are stored in the ser
 
 If you don't want to specify a specific version anymore, you can simply press the button and select **"Cancel and reset"**.
 
+## Commands
+You can use the ViaVersion commands with **/viafabricplus** or **/viaversion**, and a few classic only commands are also implemented:
+- **/viafabricplus settime <Time (Long)>** - Changes the Clientside World Time, available from: **c0.28-c0.30**
+- **/viafabricplus listextensions** - Displays all classic protocol extensions, available in: **c0.30 CPE**
+
+
 ### Settings are optional settings that can turn fixes on and off, originally they were used for debugging<br>
 ![](images/settings.png)
 

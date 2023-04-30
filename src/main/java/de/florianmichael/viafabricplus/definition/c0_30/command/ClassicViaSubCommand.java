@@ -18,20 +18,16 @@
 package de.florianmichael.viafabricplus.definition.c0_30.command;
 
 import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.command.ViaSubCommand;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.util.ScreenUtil;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.util.ScreenUtil;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicCustomCommandProvider;
 
-@SuppressWarnings("DataFlowIssue")
-public interface ICommand {
+public abstract class ClassicViaSubCommand extends ViaSubCommand {
 
-    String name();
-    String description();
-
-    default void sendFeedback(final String message) {
+    public void sendFeedback(final String message) {
         try {
             Via.getManager().getProviders().get(ClassicCustomCommandProvider.class).sendFeedback(currentViaConnection(), ScreenUtil.prefixedMessage(message));
         } catch (Exception e) {
@@ -39,13 +35,7 @@ public interface ICommand {
         }
     }
 
-    default void sendUsage() {
-        sendFeedback(Formatting.RED + "Use: " + ClassicProtocolCommands.COMMAND_PREFIX + name() + (description() != null ? " " + description() : ""));
-    }
-
-    default UserConnection currentViaConnection() {
+    public UserConnection currentViaConnection() {
         return MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
     }
-
-    void execute(String[] args) throws Exception;
 }
