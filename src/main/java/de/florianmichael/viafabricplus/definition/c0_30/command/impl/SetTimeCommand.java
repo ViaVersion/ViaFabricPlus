@@ -42,15 +42,16 @@ public class SetTimeCommand extends ClassicViaSubCommand {
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
-        final UserConnection connection = currentViaConnection();
+        final UserConnection connection = getUser();
         if (!connection.has(TimeLockStorage.class)) {
-            return false;
+            sendMessage(sender, Formatting.RED + "Only for <= " + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName());
+            return true;
         }
         try {
             if (args.length == 1) {
                 final long time = Long.parseLong(args[0]) % 24_000L;
                 connection.get(TimeLockStorage.class).setTime(time);
-                this.sendFeedback(Formatting.GREEN + "Time has been set to " + Formatting.GOLD + time);
+                sendMessage(sender, Formatting.GREEN + "Time has been set to " + Formatting.GOLD + time);
             } else {
                 return false;
             }

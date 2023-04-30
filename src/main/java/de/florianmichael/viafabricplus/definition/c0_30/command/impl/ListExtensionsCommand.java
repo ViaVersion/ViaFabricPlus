@@ -18,7 +18,6 @@
 package de.florianmichael.viafabricplus.definition.c0_30.command.impl;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
-import com.viaversion.viaversion.api.command.ViaSubCommand;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicViaSubCommand;
 import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;
@@ -39,11 +38,14 @@ public class ListExtensionsCommand extends ClassicViaSubCommand {
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
-        final UserConnection connection = currentViaConnection();
+        final UserConnection connection = getUser();
         if (!connection.has(ExtensionProtocolMetadataStorage.class)) {
-            return false;
+            sendMessage(sender, Formatting.RED + "Only for " + LegacyProtocolVersion.c0_30cpe.getName());
+            return true;
         }
-        ((IExtensionProtocolMetadataStorage) connection.get(ExtensionProtocolMetadataStorage.class)).getServerExtensions().forEach((extension, version) -> this.sendFeedback(Formatting.GREEN + extension.getName() + Formatting.GOLD + " v" + version));
+        ((IExtensionProtocolMetadataStorage) connection.get(ExtensionProtocolMetadataStorage.class)).getServerExtensions().forEach((extension, version) -> {
+            sendMessage(sender, Formatting.GREEN + extension.getName() + Formatting.GOLD + " v" + version);
+        });
         return true;
     }
 }

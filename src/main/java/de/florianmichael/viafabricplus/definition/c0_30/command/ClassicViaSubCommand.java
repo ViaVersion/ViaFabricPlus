@@ -17,25 +17,14 @@
  */
 package de.florianmichael.viafabricplus.definition.c0_30.command;
 
-import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.util.ScreenUtil;
 import net.minecraft.client.MinecraftClient;
-import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicCustomCommandProvider;
 
 public abstract class ClassicViaSubCommand extends ViaSubCommand {
 
-    public void sendFeedback(final String message) {
-        try {
-            Via.getManager().getProviders().get(ClassicCustomCommandProvider.class).sendFeedback(currentViaConnection(), ScreenUtil.prefixedMessage(message));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public UserConnection currentViaConnection() {
+    public UserConnection getUser() {
         return MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
     }
 }
