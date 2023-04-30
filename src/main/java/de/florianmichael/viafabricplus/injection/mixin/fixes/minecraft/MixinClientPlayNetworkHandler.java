@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
@@ -29,14 +30,12 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.util.telemetry.WorldSession;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.ServerPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.util.math.Vec3d;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -152,5 +151,13 @@ public abstract class MixinClientPlayNetworkHandler {
     @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))
     public boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
         return instance.isSecureChatEnforced() || VisualSettings.INSTANCE.disableSecureChatWarning.getValue();
+    }
+
+    @Inject(method = "onSetTradeOffers", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
+    public void checkLoginPacket(SetTradeOffersS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2) && this.client.player == null) {
+            ViaFabricPlus.LOGGER.error("Server tried to send Play packet in Login process, dropping \"SetTradeOffers\"");
+            ci.cancel();
+        }
     }
 }
