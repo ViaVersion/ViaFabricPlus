@@ -41,6 +41,8 @@ public class MixinConnectScreen_1 {
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
     public Object mapSocketAddress(Optional<InetSocketAddress> instance) {
         final InetSocketAddress address = instance.get();
+        if (field_40415 == null) return address;
+
         final ComparableProtocolVersion forcedVersion = ((IServerInfo) field_40415).viafabricplus_forcedVersion();
         if (forcedVersion != null) {
             ProtocolHack.getForcedVersions().put(address, forcedVersion);

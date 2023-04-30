@@ -38,14 +38,14 @@ public class MixinJoinPackets {
         return seed;
     }
 
-    @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 54))
+    @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 56))
     private static Object trackLevelId(PacketWrapper instance, Type<StringType> tType) throws Exception {
         final Object levelId = instance.read(tType);
         instance.user().get(JoinGameStorage.class).setLevelId((String) levelId);
         return levelId;
     }
 
-    @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 62))
+    @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 64))
     private static Object trackEnchantmentSeed(PacketWrapper instance, Type<VarIntType> tType) throws Exception {
         final Object enchantmentSeed = instance.read(tType);
         instance.user().get(JoinGameStorage.class).setEnchantmentSeed((Integer) enchantmentSeed);

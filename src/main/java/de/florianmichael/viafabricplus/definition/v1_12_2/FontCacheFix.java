@@ -24,6 +24,7 @@ import de.florianmichael.viafabricplus.injection.access.IFontStorage;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.groups.ExperimentalSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.Glyph;
@@ -37,20 +38,22 @@ import java.util.function.Supplier;
 public class FontCacheFix {
     public final static boolean DASH_LOADER = FabricLoader.getInstance().isModLoaded("dashloader");
 
+    private static ComparableProtocolVersion protocolVersion;
+
     public static void init() {
         if (DASH_LOADER) return;
 
-        ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> MinecraftClient.getInstance().fontManager.fontStorages.values().forEach(fontStorage -> {
-            RenderSystem.recordRenderCall(() -> {
-                ((IFontStorage) fontStorage).viafabricplus_clearCaches();
-            });
-        }));
+        ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
+            FontCacheFix.protocolVersion = protocolVersion;
+
+            MinecraftClient.getInstance().fontManager.fontStorages.values().forEach(fontStorage -> RenderSystem.recordRenderCall(() -> ((IFontStorage) fontStorage).viafabricplus_clearCaches()));
+        });
     }
 
     public static boolean shouldReplaceFontRenderer() {
-        if (ViaLoadingBase.getInstance() == null || DASH_LOADER) return false;
+        if (ViaLoadingBase.getInstance() == null || DASH_LOADER || protocolVersion == null) return false;
 
-        return ExperimentalSettings.INSTANCE.fixFontCache.getValue() && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2);
+        return ExperimentalSettings.INSTANCE.fixFontCache.getValue() && protocolVersion.isOlderThanOrEqualTo(ProtocolVersion.v1_12_2);
     }
 
     public enum BuiltinEmptyGlyph1_12_2 implements Glyph {

@@ -17,24 +17,14 @@
  */
 package de.florianmichael.viafabricplus.definition.c0_30.command;
 
-import de.florianmichael.viafabricplus.definition.c0_30.command.impl.HelpCommand;
-import de.florianmichael.viafabricplus.definition.c0_30.command.impl.ListExtensionsCommand;
-import de.florianmichael.viafabricplus.definition.c0_30.command.impl.SetTimeCommand;
+import com.viaversion.viaversion.api.command.ViaSubCommand;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.client.MinecraftClient;
 
-import java.util.ArrayList;
-import java.util.List;
+public abstract class ClassicViaSubCommand extends ViaSubCommand {
 
-public class ClassicProtocolCommands {
-    public final static String COMMAND_PREFIX = "/v";
-    public static ClassicProtocolCommands INSTANCE;
-
-    public final List<ICommand> commands = new ArrayList<>();
-
-    public static void create() {
-        INSTANCE = new ClassicProtocolCommands();
-
-        INSTANCE.commands.add(new HelpCommand());
-        INSTANCE.commands.add(new SetTimeCommand());
-        INSTANCE.commands.add(new ListExtensionsCommand());
+    public UserConnection getUser() {
+        return MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
     }
 }

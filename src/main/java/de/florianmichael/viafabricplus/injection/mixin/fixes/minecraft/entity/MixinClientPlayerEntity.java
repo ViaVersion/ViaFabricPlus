@@ -113,7 +113,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(this.getX(), this.getY(), this.getZ(), this.isOnGround()));
             } else if (bl4) {
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(this.getYaw(), this.getPitch(), this.isOnGround()));
-            } else if (this.lastOnGround != this.isOnGround() || DebugSettings.INSTANCE.sendIdlePacket.getValue()) {
+            } else if ((this.lastOnGround != this.isOnGround() && !DebugSettings.INSTANCE.sendIdlePacket.getValue()) || DebugSettings.INSTANCE.sendIdlePacket.getValue()) {
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(this.isOnGround()));
             } else {
                 SkipIdlePacketCallback.EVENT.invoker().onSkipIdlePacket();

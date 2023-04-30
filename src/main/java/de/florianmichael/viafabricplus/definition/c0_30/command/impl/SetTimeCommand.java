@@ -17,13 +17,14 @@
  */
 package de.florianmichael.viafabricplus.definition.c0_30.command.impl;
 
+import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.definition.c0_30.command.ICommand;
+import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicViaSubCommand;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;
 
-public class SetTimeCommand implements ICommand {
+public class SetTimeCommand extends ClassicViaSubCommand {
     @Override
     public String name() {
         return "settime";
@@ -31,26 +32,32 @@ public class SetTimeCommand implements ICommand {
 
     @Override
     public String description() {
-        return "<Time (Long)>";
+        return "Changes the time (Only for <= " + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName() + ")";
     }
 
     @Override
-    public void execute(String[] args) throws Exception {
-        final UserConnection connection = currentViaConnection();
+    public String usage() {
+        return name() + " " + "<Time (Long)>";
+    }
+
+    @Override
+    public boolean execute(ViaCommandSender sender, String[] args) {
+        final UserConnection connection = getUser();
         if (!connection.has(TimeLockStorage.class)) {
-            this.sendFeedback(Formatting.RED + "This command is only for <=" + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName());
-            return;
+            sendMessage(sender, Formatting.RED + "Only for <= " + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName());
+            return true;
         }
         try {
             if (args.length == 1) {
                 final long time = Long.parseLong(args[0]) % 24_000L;
                 connection.get(TimeLockStorage.class).setTime(time);
-                this.sendFeedback(Formatting.GREEN + "Time has been set to " + Formatting.GOLD + time);
+                sendMessage(sender, Formatting.GREEN + "Time has been set to " + Formatting.GOLD + time);
             } else {
-                this.sendUsage();
+                return false;
             }
         } catch (Throwable ignored) {
-            this.sendUsage();
+            return false;
         }
+        return true;
     }
 }
