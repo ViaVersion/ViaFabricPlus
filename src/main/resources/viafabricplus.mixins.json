@@ -20,6 +20,7 @@
     "base.MixinServerInfo",
     "base.MixinSharedConstants",
     "classic4j.MixinCCAuthenticationResponse",
+    "fixes.authlib.MixinKeyPairResponse",
     "fixes.minecraft.MixinBipedEntityModel",
     "fixes.minecraft.MixinCamera",
     "fixes.minecraft.MixinClientPlayerInteractionManager",
@@ -158,10 +159,14 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "fixes.authlib.MixinKeyPairResponse"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "fixes.minecraft.entity.MixinBoatEntity",
+    "fixes.minecraft.entity.MixinCamelEntity",
+    "fixes.minecraft.item.MixinBrushItem"
+  ]
 }

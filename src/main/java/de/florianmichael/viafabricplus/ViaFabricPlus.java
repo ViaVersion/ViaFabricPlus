@@ -40,21 +40,9 @@ import java.io.File;
 
 /**
  * TODO | Port
- *  - 23w12a:
- *   - Wolf interactions
- *   - Camel interactions
- *   - Boat Passengers Riding Offset
- *   - Note Block
- *  - 23w13a:
- *   - ApplyBrushTransform im ItemRenderer
- *   - AbstractHorse sounds
- *   - BrushItem use Duration von 225 -> 200
- *   - DoorBlock don't had Nether Wood
- *  - 23w14a:
  *   - Sign interactions
  *   - TakeItemEntityPacket isEmpty case
  *   - Entity#move has changed
- *   - SwordItem destroy speed
  * <p>
  * TODO | Protocol translation
  *  - BucketItem#use canPlaceOn in <= 1.13 is missing
