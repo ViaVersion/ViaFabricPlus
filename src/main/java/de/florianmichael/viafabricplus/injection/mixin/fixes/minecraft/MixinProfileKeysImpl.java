@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
+import de.florianmichael.viafabricplus.injection.access.IKeyPairResponse;
 import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
 import net.minecraft.client.util.ProfileKeysImpl;
 import net.minecraft.network.encryption.PlayerPublicKey;
@@ -31,7 +32,6 @@ public class MixinProfileKeysImpl {
 
     @Inject(method = "decodeKeyPairResponse", at = @At("RETURN"))
     private static void trackLegacyKey(KeyPairResponse keyPairResponse, CallbackInfoReturnable<PlayerPublicKey.PublicKeyData> cir) {
-//        ((IPublicKeyData) (Object) cir.getReturnValue()).viafabricplus_setV1Key(keyPairResponse.getLegacyPublicKeySignature());
-        // TODO | Track Key
+        ((IPublicKeyData) (Object) cir.getReturnValue()).viafabricplus_setV1Key(((IKeyPairResponse) keyPairResponse).viafabricplus_getLegacyPublicKeySignature());
     }
 }
