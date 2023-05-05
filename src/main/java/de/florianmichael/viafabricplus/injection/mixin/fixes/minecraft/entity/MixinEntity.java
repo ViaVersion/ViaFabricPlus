@@ -20,10 +20,13 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FenceGateBlock;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -67,8 +70,11 @@ public abstract class MixinEntity {
 
     @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)
     public void injectGetVelocityAffectingPos(CallbackInfoReturnable<BlockPos> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - 1, pos.z));
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
+            cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - 0.5000001, pos.z));
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+                cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - 1, pos.z));
+            }
         }
     }
 
@@ -162,6 +168,23 @@ public abstract class MixinEntity {
     public void revertOnLanding(Entity instance) {
         if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19)) {
             instance.onLanding();
+        }
+    }
+
+    @Inject(method = "getPosWithYOffset", at = @At("HEAD"), cancellable = true)
+    public void changeLogic(float offset, CallbackInfoReturnable<BlockPos> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
+            final BlockPos blockPos = new BlockPos(MathHelper.floor(this.pos.x), MathHelper.floor(this.pos.y - (double)offset), MathHelper.floor(this.pos.z));
+
+            if (this.world.getBlockState(blockPos).isAir()) {
+                final BlockPos downBlockPos = blockPos.down();
+                BlockState blockState = this.world.getBlockState(downBlockPos);
+
+                if (blockState.isIn(BlockTags.FENCES) || blockState.isIn(BlockTags.WALLS) || blockState.getBlock() instanceof FenceGateBlock) {
+                    cir.setReturnValue(downBlockPos);
+                }
+            }
+            cir.setReturnValue(blockPos);
         }
     }
 }

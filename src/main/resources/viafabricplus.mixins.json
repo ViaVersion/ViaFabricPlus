@@ -165,6 +165,7 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "fixes.minecraft.block.MixinAbstractSignBlock",
     "fixes.minecraft.entity.MixinBoatEntity",
     "fixes.minecraft.entity.MixinCamelEntity",
     "fixes.minecraft.item.MixinBrushItem"

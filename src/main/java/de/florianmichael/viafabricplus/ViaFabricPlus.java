@@ -40,9 +40,7 @@ import java.io.File;
 
 /**
  * TODO | Port
- *   - Sign interactions
  *   - TakeItemEntityPacket isEmpty case
- *   - Entity#move has changed
  * <p>
  * TODO | Protocol translation
  *  - BucketItem#use canPlaceOn in <= 1.13 is missing
