@@ -29,6 +29,7 @@ import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.PlayerLookTargetProvider;
+import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.provider.PlayerAbilitiesProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
@@ -48,6 +49,7 @@ import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.*;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusMovementTransmitterProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialoadingbase.ViaFabricPlusVLBBaseVersionProvider;
+import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusPlayerAbilitiesProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusPlayerLookTargetProvider;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
@@ -173,6 +175,7 @@ public class ProtocolHack {
             providers.use(MovementTransmitterProvider.class, new ViaFabricPlusMovementTransmitterProvider());
             providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());
             providers.use(PlayerLookTargetProvider.class, new ViaFabricPlusPlayerLookTargetProvider());
+            providers.use(PlayerAbilitiesProvider.class, new ViaFabricPlusPlayerAbilitiesProvider());
 
             providers.use(CommandArgumentsProvider.class, new ViaFabricPlusCommandArgumentsProvider());
 

@@ -20,8 +20,11 @@
   "general.viafabricplus.creative": "Usuwaj niedostępne przedmioty z ekwipunku trybu kreatywnego",
   "general.viafabricplus.classiccommands": "Zezwalaj na używanie klasycznego protokołu komend",
   "general.viafabricplus.protocolsync": "Automatycznie zmieniaj ustawienia na podstawie obecnej wersji gry",
+  "general.viafabricplus.autodetect": "Automatycznie wykrywaj wersję gry",
 
   "experimental.viafabricplus.chunkborderfix": "Napraw granice chunków",
+  "experimental.viafabricplus.watermovement": "Wykrywanie krawędzi ruchu wody",
+  "experimental.viafabricplus.fontcachefix": "Napraw pamięć tymczasową czcionek",
 
   "debug.viafabricplus.sequence": "Wyłącz sekwencjonowanie",
   "debug.viafabricplus.merchant": "Wygładź ekrany kupców",
