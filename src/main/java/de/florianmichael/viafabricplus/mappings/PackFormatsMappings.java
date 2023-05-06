@@ -32,6 +32,7 @@ public class PackFormatsMappings {
     private final static Map<Integer, GameVersion> protocolMap = new HashMap<>();
 
     public static void load() {
+        registerVersion(ProtocolVersion.v1_20, 15, "23w18a");
         registerVersion(ProtocolVersion.v1_19_4, 13, "1.19.4");
         registerVersion(ProtocolVersion.v1_19_3, 12, "1.19.3");
         registerVersion(ProtocolVersion.v1_19_1, 9, "1.19.2");
