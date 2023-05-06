@@ -140,7 +140,7 @@ public class BetaCraftScreen extends Screen {
                 drawTextWithShadow(matrices, textRenderer, Text.translatable("words.viafabricplus.online").formatted(Formatting.GREEN), 1, 1, -1);
             }
             final String playerText = server.playerCount() + "/" + server.playerLimit();
-            drawTextWithShadow(matrices, textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 132 */ - 1, 1, -1);
+            drawTextWithShadow(matrices, textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from MappedSlotEntry#32 */ - 1, 1, -1);
         }
     }
 }

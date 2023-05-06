@@ -32,6 +32,9 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.raphimc.mcauth.MinecraftAuth;
+import net.raphimc.mcauth.step.msa.StepMsaDeviceCode;
+import net.raphimc.mcauth.util.MicrosoftConstants;
+import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -45,22 +48,24 @@ public class AuthenticationSettings extends SettingGroup {
     public final BooleanSetting disconnectIfJoinServerCallFails = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.fail"), true);
     public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, Text.translatable("authentication.viafabricplus.bedrock"), () -> CompletableFuture.runAsync(() -> {
         try {
-            BedrockAccountHandler.INSTANCE.setAccount(MinecraftAuth.requestBedrockLogin(msaDeviceCode -> {
-                MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new ConfirmScreen(consumer -> {
-                    if (consumer) {
-                        MinecraftClient.getInstance().keyboard.setClipboard(msaDeviceCode.userCode());
-                    } else {
-                        MinecraftClient.getInstance().setScreen(SettingsScreen.get(new MultiplayerScreen(new TitleScreen())));
-                        Thread.currentThread().interrupt();
+            try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
+                BedrockAccountHandler.INSTANCE.setAccount(MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
+                    MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new ConfirmScreen(consumer -> {
+                        if (consumer) {
+                            MinecraftClient.getInstance().keyboard.setClipboard(msaDeviceCode.userCode());
+                        } else {
+                            MinecraftClient.getInstance().setScreen(SettingsScreen.get(new MultiplayerScreen(new TitleScreen())));
+                            Thread.currentThread().interrupt();
+                        }
+                    }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.userCode()), Text.translatable("words.viafabricplus.copy"), Text.translatable("words.viafabricplus.cancel"))));
+                    try {
+                        Util.getOperatingSystem().open(new URI(msaDeviceCode.verificationUri()));
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                        MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("words.viafabricplus.cancel"), false)));
                     }
-                }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.userCode()), Text.translatable("words.viafabricplus.copy"), Text.translatable("words.viafabricplus.cancel"))));
-                try {
-                    Util.getOperatingSystem().open(new URI(msaDeviceCode.verificationUri()));
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                    MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("words.viafabricplus.cancel"), false)));
-                }
-            }));
+                })));
+            }
             ProtocolSelectionScreen.open(new MultiplayerScreen(new TitleScreen()));
         } catch (Throwable e) {
             e.printStackTrace();
@@ -78,7 +83,7 @@ public class AuthenticationSettings extends SettingGroup {
     public final BooleanSetting spoofUserNameIfUsingClassiCube = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.spoof"), true);
     public final BooleanSetting allowViaLegacyToLoadSkinsInLegacyVersions = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.skin"), true);
 
-    
+
     public AuthenticationSettings() {
         super("Authentication");
     }
