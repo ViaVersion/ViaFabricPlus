@@ -18,8 +18,8 @@
 package de.florianmichael.viafabricplus.base.settings.groups;
 
 import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
-import de.florianmichael.viafabricplus.base.screen.impl.base.ProtocolSelectionScreen;
-import de.florianmichael.viafabricplus.base.screen.impl.settings.SettingsScreen;
+import de.florianmichael.viafabricplus.ui.screen.impl.base.ProtocolSelectionScreen;
+import de.florianmichael.viafabricplus.ui.screen.impl.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.base.settings.type_impl.BooleanSetting;
 import de.florianmichael.viafabricplus.base.settings.type_impl.ButtonSetting;

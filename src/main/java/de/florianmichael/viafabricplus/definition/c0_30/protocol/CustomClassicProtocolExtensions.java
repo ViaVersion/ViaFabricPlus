@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.definition.c0_30.protocol;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.base.screen.impl.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.ui.screen.impl.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.base.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.ByteBuf;
