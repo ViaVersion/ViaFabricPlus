@@ -19,10 +19,10 @@ package de.florianmichael.viafabricplus.protocolhack.provider.vialegacy;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.settings.groups.AuthenticationSettings;
-import de.florianmichael.viafabricplus.util.ScreenUtil;
+import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
 
 public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
@@ -37,7 +37,8 @@ public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
             mc.getSessionService().joinServer(mc.getSession().getProfile(), mc.getSession().getAccessToken(), serverId);
         } catch (Exception e) {
             if (AuthenticationSettings.INSTANCE.disconnectIfJoinServerCallFails.getValue()) {
-                user.getChannel().attr(ProtocolHack.LOCAL_MINECRAFT_CONNECTION).get().disconnect(Text.literal(ScreenUtil.prefixedMessage("ViaLegacy fails to verify your session! Please log in into an Account or disable the BetaCraft authentication in the ViaFabricPlus Settings")));
+                user.getChannel().attr(ProtocolHack.LOCAL_MINECRAFT_CONNECTION).get().
+                        disconnect(Text.literal(Formatting.GOLD + "[ViaFabricPlus] " + Formatting.WHITE + Text.translatable("authentication.viafabricplus.error")));
             } else {
                 e.printStackTrace();
             }

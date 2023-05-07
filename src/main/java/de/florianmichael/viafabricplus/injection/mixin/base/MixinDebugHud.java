@@ -19,12 +19,12 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
+import de.florianmichael.viafabricplus.base.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
-import de.florianmichael.viafabricplus.util.ScreenUtil;
+import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
+import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -45,7 +45,7 @@ public class MixinDebugHud {
             final UserConnection userConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
 
             information.add("");
-            information.add(ScreenUtil.prefixedMessage("").trim());
+            information.add(Formatting.GOLD + "[ViaFabricPlus] " + Formatting.WHITE);
 
             for (AbstractInformationGroup group : ViaFabricPlus.INSTANCE.getInformationSystem().getGroups()) {
                 if (group.getProtocolRange() != null && !group.getProtocolRange().contains(ProtocolHack.getTargetVersion())) continue;

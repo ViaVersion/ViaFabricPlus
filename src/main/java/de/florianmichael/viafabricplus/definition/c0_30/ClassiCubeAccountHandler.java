@@ -20,10 +20,10 @@ package de.florianmichael.viafabricplus.definition.c0_30;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
-import de.florianmichael.viafabricplus.event.DisconnectConnectionCallback;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.base.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import de.florianmichael.viafabricplus.util.FileSaver;
-import de.florianmichael.viafabricplus.util.ScreenUtil;
+import de.florianmichael.viafabricplus.base.FileSaver;
 
 import java.util.Map;
 
@@ -58,7 +58,7 @@ public class ClassiCubeAccountHandler extends FileSaver {
         try {
             account = CCAccount.fromJson(object);
         } catch (Exception e) {
-            ScreenUtil.crash("Failed to log into ClassiCube account!", e);
+            ViaFabricPlus.LOGGER.warn("No ClassiCube account could be found");
         }
     }
 

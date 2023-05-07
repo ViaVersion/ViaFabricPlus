@@ -28,7 +28,7 @@ import de.florianmichael.viafabricplus.definition.v1_19_0.storage.ChatSession1_1
 import de.florianmichael.viafabricplus.definition.v1_19_2.storage.ChatSession1_19_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import de.florianmichael.viafabricplus.settings.groups.AuthenticationSettings;
+import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;

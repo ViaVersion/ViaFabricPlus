@@ -34,9 +34,9 @@ import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemPr
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.event.FinishViaLoadingBaseStartupCallback;
-import de.florianmichael.viafabricplus.event.ViaLoadingBaseBuilderCallback;
+import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.base.event.FinishViaLoadingBaseStartupCallback;
+import de.florianmichael.viafabricplus.base.event.ViaLoadingBaseBuilderCallback;
 import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLBViaCommandHandler;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLBPipeline;
 import de.florianmichael.viafabricplus.protocolhack.platform.ViaAprilFoolsPlatformImpl;

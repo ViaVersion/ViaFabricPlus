@@ -12,6 +12,7 @@
   "words.viafabricplus.online": "Online Mode",
   "words.viafabricplus.reset": "Reset",
   "words.viafabricplus.copy": "Copy code",
+  "words.viafabricplus.error": "Something went wrong! Please try again later",
 
   "general.viafabricplus.secret": "Show Super Secret Settings",
   "general.viafabricplus.extrainformation": "Show extra information in Debug Hud",
@@ -45,6 +46,7 @@
   "authentication.viafabricplus.spoof": "Spoof Username to ClassiCube Name if using ClassiCube",
   "authentication.viafabricplus.skin": "Allow ViaLegacy to load skins in legacy versions",
   "authentication.viafabricplus.bedrock": "Click to set account for Bedrock edition",
+  "authentication.viafabricplus.error": "ViaFabricPlus failed to verify your session! Please log in into an Account or disable the BetaCraft authentication in the ViaFabricPlus Settings",
 
   "visual.viafabricplus.secure": "Disable secure chat warning",
   "visual.viafabricplus.indicator": "Hide signature indicator",
@@ -74,6 +76,5 @@
 
   "classicube.viafabricplus.warning": "This feature will send API requests to the ClassiCube API.",
 
-  "betacraft.viafabricplus.warning": "Pressing this button will send API requests to \"betacraft.uk/serverlist\".",
-  "betacraft.viafabricplus.error": "Something went wrong! Please try again later"
+  "betacraft.viafabricplus.warning": "Pressing this button will send API requests to \"betacraft.uk/serverlist\"."
 }

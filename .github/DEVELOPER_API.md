@@ -52,32 +52,6 @@ PreLoadCallback.EVENT.register(() -> {
 });
 ```
 
-#### Implementing classic protocol commands:
-```java
-public class ExampleCommand implements ICommand {
-
-    @Override
-    public String name() {
-        return "example";
-    }
-
-    @Override
-    public String description() {
-        return null;
-    }
-
-    @Override
-    public void execute(String[] args) {
-    }
-}
-```
-and then you register the command in your onLoad method:
-```java
-PreLoadCallback.EVENT.register(() -> {
-    ClassicProtocolCommands.commands.add(new ExampleCommand());
-});
-```
-
 #### Implementing custom classic protocol extensions:
 ```java
 public class ExampleExtensionSupport implements ClientModInitializer {

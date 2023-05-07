@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.sodium;
 
-import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;

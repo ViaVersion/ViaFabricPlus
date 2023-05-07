@@ -18,8 +18,8 @@
 package de.florianmichael.viafabricplus.definition;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
+import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.base.event.LoadClassicProtocolExtensionCallback;
 import net.minecraft.client.MinecraftClient;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;

@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.event.DisconnectConnectionCallback;
+import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.base.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLBPipeline;

@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.screen.classicube.ClassiCubeLoginScreen;
+import de.florianmichael.viafabricplus.base.screen.impl.thirdparty.classicube.ClassiCubeLoginScreen;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;

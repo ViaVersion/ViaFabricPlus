@@ -19,10 +19,9 @@ package de.florianmichael.viafabricplus.definition.v1_12_2;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.settings.groups.ExperimentalSettings;
+import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.fabricmc.loader.api.FabricLoader;

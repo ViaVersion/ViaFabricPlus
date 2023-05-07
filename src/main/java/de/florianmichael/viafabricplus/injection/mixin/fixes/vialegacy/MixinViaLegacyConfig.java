@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
 
-import de.florianmichael.viafabricplus.settings.groups.AuthenticationSettings;
+import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
 import net.raphimc.vialegacy.ViaLegacyConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

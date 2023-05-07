@@ -20,11 +20,9 @@ package de.florianmichael.viafabricplus.protocolhack.provider.vialegacy;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.classic4j.JSPBetaCraftHandler;
 import de.florianmichael.viafabricplus.integration.Classic4JImpl;
-import de.florianmichael.viafabricplus.settings.groups.AuthenticationSettings;
+import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.storage.HandshakeStorage;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
 
