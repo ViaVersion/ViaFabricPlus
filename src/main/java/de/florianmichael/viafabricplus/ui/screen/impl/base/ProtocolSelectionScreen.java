@@ -19,7 +19,6 @@ package de.florianmichael.viafabricplus.ui.screen.impl.base;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.classic4j.BetaCraftHandler;
-import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.ui.screen.VFPScreen;
 import de.florianmichael.viafabricplus.ui.screen.impl.thirdparty.classicube.ClassiCubeLoginScreen;
@@ -55,15 +54,16 @@ public class ProtocolSelectionScreen extends VFPScreen {
 
         // ClassiCube
 
-        final CCAccount classiCubeAccount = ClassiCubeAccountHandler.INSTANCE.getAccount();
+        final boolean loggedIn = ClassiCubeAccountHandler.INSTANCE.getAccount() != null;
+
         ButtonWidget.Builder classiCubeBuilder = ButtonWidget.builder(Text.literal("ClassiCube"), button -> {
-            if (classiCubeAccount == null || classiCubeAccount.token == null) {
+            if (!loggedIn) {
                 ClassiCubeLoginScreen.INSTANCE.open(prevScreen);
                 return;
             }
             ClassiCubeServerListScreen.INSTANCE.open(prevScreen);
         }).position(width - 98 - 5, height - 25).size(98, 20);
-        if (classiCubeAccount == null || classiCubeAccount.token == null) {
+        if (!loggedIn) {
             classiCubeBuilder = classiCubeBuilder.tooltip(Tooltip.of(Text.translatable("classicube.viafabricplus.warning")));
         }
         this.addDrawableChild(classiCubeBuilder.build());

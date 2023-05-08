@@ -37,6 +37,9 @@ public class ClassiCubeAccountHandler extends FileSaver {
 
     private CCAccount account;
 
+    private String username;
+    private String password;
+
     public ClassiCubeAccountHandler() {
         super("classicube.account");
 
@@ -45,28 +48,33 @@ public class ClassiCubeAccountHandler extends FileSaver {
 
     @Override
     public void write(JsonObject object) {
-        if (account == null) return;
-
-        account.token = null; // Token has to be created next time
-        for (Map.Entry<String, JsonElement> entry : account.asJson().entrySet()) {
-            object.add(entry.getKey(), entry.getValue());
-        }
+        object.addProperty("username", username);
+        object.addProperty("password", password);
     }
 
     @Override
     public void read(JsonObject object) {
-        try {
-            account = CCAccount.fromJson(object);
-        } catch (Exception e) {
-            ViaFabricPlus.LOGGER.warn("No ClassiCube account could be found");
-        }
+        if (object.has("username")) username = object.get("username").getAsString();
+        if (object.has("password")) password = object.get("password").getAsString();
     }
 
     public CCAccount getAccount() {
         return account;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public void setAccount(CCAccount account) {
         this.account = account;
+        if (account != null) {
+            username = account.username();
+            password = account.password();
+        }
     }
 }

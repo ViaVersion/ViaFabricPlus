@@ -32,7 +32,6 @@ import net.minecraft.text.Text;
 
 public class ClassiCubeLoginScreen extends VFPScreen {
     public final static ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
-    public Screen prevScreen;
 
     public ClassiCubeLoginScreen() {
         super("ClassiCube Login", false);
@@ -64,11 +63,8 @@ public class ClassiCubeLoginScreen extends VFPScreen {
         nameField.setMaxLength(Integer.MAX_VALUE);
         passwordField.setMaxLength(Integer.MAX_VALUE);
 
-        final CCAccount classiCubeAccount = ClassiCubeAccountHandler.INSTANCE.getAccount();
-        if (classiCubeAccount != null) {
-            nameField.setText(classiCubeAccount.username());
-            passwordField.setText(classiCubeAccount.password());
-        }
+        nameField.setText(ClassiCubeAccountHandler.INSTANCE.getUsername());
+        passwordField.setText(ClassiCubeAccountHandler.INSTANCE.getPassword());
 
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Login"), button -> {
             ClassiCubeAccountHandler.INSTANCE.setAccount(new CCAccount(nameField.getText(), passwordField.getText()));
@@ -104,6 +100,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
 
     @Override
     public void close() {
+        ClassiCubeAccountHandler.INSTANCE.setAccount(null);
         ProtocolSelectionScreen.INSTANCE.open(prevScreen);
     }
 
