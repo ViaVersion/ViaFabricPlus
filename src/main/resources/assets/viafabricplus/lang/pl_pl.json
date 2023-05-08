@@ -12,6 +12,7 @@
   "words.viafabricplus.online": "Tryb online",
   "words.viafabricplus.reset": "Resetuj",
   "words.viafabricplus.copy": "Kopiuj kod",
+  "betacraft.viafabricplus.error": "Coś poszło nie tak! Proszę, spróbuj ponownie później",
 
   "general.viafabricplus.secret": "Pokazuj Super Secret Settings",
   "general.viafabricplus.extrainformation": "Pokazuj dodatkowe informacje w interfejsie debugowania",
@@ -45,6 +46,7 @@
   "authentication.viafabricplus.spoof": "Fałszuj nazwę użytkownika na nazwę ClassiCube podczas korzystania z ClassiCube",
   "authentication.viafabricplus.skin": "Zezwalaj na to, żeby ViaLegacy ładowało skiny w starszych wersjach gry",
   "authentication.viafabricplus.bedrock": "Naciśnij, aby ustawić konto dla minecraft bedrock edition",
+  "authentication.viafabricplus.error": "Nie udało się zweryfikować twojej sesji! Proszę, zaloguj się na jakieś konto, albo wyłącz weryfikację BetaCraft w ustawieniach ViaFabricPlus",
 
   "visual.viafabricplus.secure": "Wyłącz ostrzeżenie dotyczące bezpiecznego czatu",
   "visual.viafabricplus.indicator": "Ukryj wskaźnik podpisywania czatu",
@@ -74,6 +76,5 @@
 
   "classicube.viafabricplus.warning": "Ta funkcja będzie wysyłała zapytania api do ClassiCube api.",
 
-  "betacraft.viafabricplus.warning": "Naciskanie tego przycisku wyśle zapytanie api do tego adresu: https://betacraft.uk/serverlist",
-  "betacraft.viafabricplus.error": "Coś poszło nie tak! Proszę, spróbuj ponownie później."
+  "betacraft.viafabricplus.warning": "Naciskanie tego przycisku wyśle zapytanie api do tego adresu: https://betacraft.uk/serverlist"
 }
