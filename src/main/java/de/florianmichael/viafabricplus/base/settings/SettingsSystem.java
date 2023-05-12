@@ -24,6 +24,7 @@ import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.base.settings.groups.*;
 import de.florianmichael.viafabricplus.base.FileSaver;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,7 +65,9 @@ public class SettingsSystem extends FileSaver {
     @Override
     public void read(JsonObject object) {
         if (object.has("protocol")) {
-            ViaLoadingBase.getInstance().reload(ViaLoadingBase.fromProtocolId(object.get("protocol").getAsInt()));
+            final ComparableProtocolVersion protocolVersion = ViaLoadingBase.fromProtocolId(object.get("protocol").getAsInt());
+
+            if (protocolVersion != null) ViaLoadingBase.getInstance().reload(protocolVersion);
         }
         for (SettingGroup group : groups) {
             for (AbstractSetting<?> setting : group.getSettings()) {
