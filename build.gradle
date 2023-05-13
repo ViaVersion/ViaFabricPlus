@@ -56,7 +56,11 @@ dependencies {
 	libs "com.github.FlorianMichael:Classic4J:${project.classic4j_version}"
 
 	libs "com.viaversion:viaversion:${project.viaversion_version}"
-	libs "com.viaversion:viabackwards-common:${project.viabackwards_version}"
+	libs ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
+		exclude group: "com.viaversion", module: "viaversion"
+		exclude group: "io.netty", module: "netty-all"
+		exclude group: "com.google.guava", module: "guava"
+	}
 	libs "org.yaml:snakeyaml:${project.snake_yml_version}"
 
 	libs ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
