@@ -19,8 +19,8 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.definition.v1_14_4.LegacyServerAddress;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.screen.ProtocolSelectionScreen;
-import de.florianmichael.viafabricplus.settings.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.ui.screen.impl.base.ProtocolSelectionScreen;
+import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -43,7 +43,7 @@ public class MixinMultiplayerScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     public void addProtocolSelectionButton(CallbackInfo ci) {
-        ButtonWidget.Builder builder = ButtonWidget.builder(Text.literal("ViaFabricPlus"), button -> ProtocolSelectionScreen.open(this));
+        ButtonWidget.Builder builder = ButtonWidget.builder(Text.literal("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this));
 
         final int orientation = GeneralSettings.INSTANCE.mainButtonOrientation.getIndex();
         switch (orientation) {

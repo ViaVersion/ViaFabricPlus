@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.settings.groups.ExperimentalSettings;
+import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;

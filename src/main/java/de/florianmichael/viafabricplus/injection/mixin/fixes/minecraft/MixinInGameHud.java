@@ -17,8 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
-import net.minecraft.client.gui.DrawContext;
+import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.JumpingMount;
@@ -41,17 +40,17 @@ public abstract class MixinInGameHud {
     // Removing newer elements
 
     @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
-    public void removeExperienceBar(DrawContext context, int x, CallbackInfo ci) {
+    public void removeExperienceBar(MatrixStack matrices, int x, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) ci.cancel();
     }
 
     @Inject(method = "renderMountJumpBar", at = @At("HEAD"), cancellable = true)
-    public void removeMountJumpBar(JumpingMount mount, DrawContext context, int x, CallbackInfo ci) {
+    public void removeMountJumpBar(JumpingMount mount, MatrixStack matrices, int x, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) ci.cancel();
     }
 
     @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
-    public void removeMountHealth(DrawContext context, CallbackInfo ci) {
+    public void removeMountHealth(MatrixStack matrices, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) ci.cancel();
     }
 
@@ -70,7 +69,7 @@ public abstract class MixinInGameHud {
         return scaledHeight;
     }
 
-    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"), slice = @Slice(
+    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V"), slice = @Slice(
                     from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 1)
     private int moveArmor(int old) {
@@ -78,7 +77,7 @@ public abstract class MixinInGameHud {
         return old;
     }
 
-    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"), slice = @Slice(
+    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V"), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"),
             to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 2)
     private int moveArmorDown(int old) {
@@ -86,7 +85,7 @@ public abstract class MixinInGameHud {
         return old;
     }
 
-    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"), slice = @Slice(
+    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V"), slice = @Slice(
                     from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 2),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V")), index = 1)
     private int moveAir(int old) {

@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.input;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IMinecraftClient;
-import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
+import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;

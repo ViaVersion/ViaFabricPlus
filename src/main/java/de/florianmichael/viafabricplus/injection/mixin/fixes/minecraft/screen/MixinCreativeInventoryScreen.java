@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.screen.ClassicItemSelectionScreen;
-import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.ui.screen.impl.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import org.spongepowered.asm.mixin.Mixin;

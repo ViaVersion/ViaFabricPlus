@@ -17,7 +17,11 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemModels;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;

@@ -19,22 +19,18 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.mappings.ArmorPointsMappings;
-import de.florianmichael.viafabricplus.event.SkipIdlePacketCallback;
+import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
+import de.florianmichael.viafabricplus.definition.v1_8.ArmorPointCalculation;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
-import de.florianmichael.viafabricplus.settings.groups.DebugSettings;
-import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,28 +47,17 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Shadow
     public Input input;
-    @Shadow
-    private float lastYaw;
-    @Shadow
-    private float lastPitch;
-    @Shadow
-    @Final
-    public ClientPlayNetworkHandler networkHandler;
-    @Shadow
-    private boolean autoJumpEnabled;
+
     @Shadow
     @Final
     protected MinecraftClient client;
+
     @Shadow
     private boolean lastOnGround;
+
     @Shadow
     private int ticksSinceLastPositionPacketSent;
-    @Shadow
-    private double lastX;
-    @Shadow
-    private double lastBaseY;
-    @Shadow
-    private double lastZ;
+
     @Unique
     private boolean viafabricplus_areSwingCanceledThisTick = false;
 
@@ -80,62 +65,38 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         super(world, profile);
     }
 
-    @Shadow
-    protected abstract boolean isCamera();
-
     @Shadow protected abstract void sendSprintingPacket();
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isCamera()Z"))
-    public boolean fixMovement(ClientPlayerEntity instance) {
-        if (this.isCamera()) {
-            boolean bl4;
-            double d = this.getX() - this.lastX;
-            double e = this.getY() - this.lastBaseY;
-            double f = this.getZ() - this.lastZ;
-            double g = this.getYaw() - this.lastYaw;
-            double h = this.getPitch() - this.lastPitch;
-            if (ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_8)) {
-                ++this.ticksSinceLastPositionPacketSent;
-            }
-            double n = MathHelper.square(2.05E-4);
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
-                n = 9.0E-4D;
-            }
-            boolean bl3 = MathHelper.squaredMagnitude(d, e, f) > n || this.ticksSinceLastPositionPacketSent >= 20;
-            bl4 = g != 0.0 || h != 0.0;
-            if (this.hasVehicle()) {
-                Vec3d vec3d = this.getVelocity();
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Full(vec3d.x, -999.0, vec3d.z, this.getYaw(), this.getPitch(), this.isOnGround()));
-                bl3 = false;
-            } else if (bl3 && bl4) {
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Full(this.getX(), this.getY(), this.getZ(), this.getYaw(), this.getPitch(), this.isOnGround()));
-            } else if (bl3) {
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(this.getX(), this.getY(), this.getZ(), this.isOnGround()));
-            } else if (bl4) {
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(this.getYaw(), this.getPitch(), this.isOnGround()));
-            } else if ((this.lastOnGround != this.isOnGround() && !DebugSettings.INSTANCE.sendIdlePacket.getValue()) || DebugSettings.INSTANCE.sendIdlePacket.getValue()) {
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(this.isOnGround()));
-            } else {
-                SkipIdlePacketCallback.EVENT.invoker().onSkipIdlePacket();
-            }
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
-                ++this.ticksSinceLastPositionPacketSent;
-            }
-
-            if (bl3) {
-                this.lastX = this.getX();
-                this.lastBaseY = this.getY();
-                this.lastZ = this.getZ();
-                this.ticksSinceLastPositionPacketSent = 0;
-            }
-            if (bl4) {
-                this.lastYaw = this.getYaw();
-                this.lastPitch = this.getPitch();
-            }
-            this.lastOnGround = this.isOnGround();
-            this.autoJumpEnabled = this.client.options.getAutoJump().getValue();
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;square(D)D"))
+    public double changeMagnitude(double n) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
+            n = 9.0E-4D;
         }
-        return false;
+        return MathHelper.square(n);
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;ticksSinceLastPositionPacketSent:I", ordinal = 0))
+    public int revertLastPositionPacketSentIncrementor(ClientPlayerEntity instance) {
+        // Mixin calls the redirector and sets the original field to the return value of the redirector + 1, therefore the -1 results, so we truncate the + 1 again and the field does not change
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            return ticksSinceLastPositionPacketSent - 1;
+        }
+        return ticksSinceLastPositionPacketSent;
+    }
+
+    @Inject(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
+    public void incrementLastPositionPacketSentCounter(CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            ++this.ticksSinceLastPositionPacketSent;
+        }
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z", ordinal = 0))
+    public boolean sendIdlePacket(ClientPlayerEntity instance) {
+        if (DebugSettings.INSTANCE.sendIdlePacket.getValue()) {
+            return !onGround;
+        }
+        return lastOnGround;
     }
 
     @Inject(method = "swingHand", at = @At("HEAD"), cancellable = true)
@@ -221,7 +182,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Override
     public int getArmor() {
         if (VisualSettings.INSTANCE.emulateArmorHud.getValue()) {
-            return ArmorPointsMappings.sum();
+            return ArmorPointCalculation.sum();
         }
         return super.getArmor();
     }

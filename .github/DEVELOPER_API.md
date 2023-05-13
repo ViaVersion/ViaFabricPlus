@@ -11,7 +11,7 @@ public class ViaFabricPlusExampleAddon implements ClientModInitializer {
   }
 }
 ```
-#### ViaFabricPlus has 8 events at the moment:
+#### ViaFabricPlus has 7 events at the moment:
 | Callback class name                  | Description                                                                                                                                                                                                   |
 |--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ChangeProtocolVersionCallback        | Called when the user changes the target version in the screen, or if you connect to a server for which a specific version has been selected, you disconnect, the event for the actual version is also called. |
@@ -20,11 +20,10 @@ public class ViaFabricPlusExampleAddon implements ClientModInitializer {
 | InitializeSettingsCallback           | Called after the default setting groups are loaded and before the setting config is loaded                                                                                                                    |
 | LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)                                                                                                                          |
 | PreLoadCallback                      | Called before everything (Pre-pre load)                                                                                                                                                                       |
-| SkipIdlePacketCallback               | Called as soon as the idle packet is skipped in the <= 1.8                                                                                                                                                    |
 | ViaLoadingBaseBuilderCallback        | Called when Via* is initialized                                                                                                                                                                               |              
 
 ### General API
-#### Get the release version of an material:
+#### Get the release version of a material:
 ```java
 final ProtocolRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
 
@@ -49,32 +48,6 @@ and then you register the setting group in your onLoad method:
 ```java
 PreLoadCallback.EVENT.register(() -> {
     ViaFabricPlus.INSTANCE.getSettingsSystem().addGroup(ExampleSettingGroup.INSTANCE);
-});
-```
-
-#### Implementing classic protocol commands:
-```java
-public class ExampleCommand implements ICommand {
-
-    @Override
-    public String name() {
-        return "example";
-    }
-
-    @Override
-    public String description() {
-        return null;
-    }
-
-    @Override
-    public void execute(String[] args) {
-    }
-}
-```
-and then you register the command in your onLoad method:
-```java
-PreLoadCallback.EVENT.register(() -> {
-    ClassicProtocolCommands.commands.add(new ExampleCommand());
 });
 ```
 

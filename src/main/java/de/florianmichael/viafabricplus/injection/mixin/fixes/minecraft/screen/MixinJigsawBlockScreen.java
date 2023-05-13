@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import net.minecraft.block.entity.JigsawBlockEntity;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
