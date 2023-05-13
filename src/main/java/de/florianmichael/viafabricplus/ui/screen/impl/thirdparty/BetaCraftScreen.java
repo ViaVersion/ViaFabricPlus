@@ -26,6 +26,7 @@ import de.florianmichael.viafabricplus.ui.screen.VFPScreen;
 import de.florianmichael.viafabricplus.ui.screen.impl.settings.settingrenderer.meta.TitleRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -62,12 +63,10 @@ public class BetaCraftScreen extends VFPScreen {
         this.renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
 
-        final MatrixStack matrices = context.getMatrices();
-
-        this.renderTitle(matrices);
+        this.renderTitle(context);
     }
 
-    public class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {
+    public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
@@ -110,20 +109,20 @@ public class BetaCraftScreen extends VFPScreen {
             final ServerAddress serverAddress = LegacyServerAddress.parse(null, server.host() + ":" + server.port());
             final ServerInfo entry = new ServerInfo(server.name(), serverAddress.getAddress(), false);
 
-            ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry);
-            playClickSound();
+            ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false);
+            super.mappedMouseClicked(mouseX, mouseY, button);
         }
 
         @Override
-        public void mappedRenderer(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            drawCenteredTextWithShadow(matrices, textRenderer, server.name() + Formatting.DARK_GRAY + " [" + server.gameVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+            context.drawCenteredTextWithShadow(textRenderer, server.name() + Formatting.DARK_GRAY + " [" + server.gameVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
             if (server.onlineMode()) {
-                drawTextWithShadow(matrices, textRenderer, Text.translatable("words.viafabricplus.online").formatted(Formatting.GREEN), 1, 1, -1);
+                context.drawTextWithShadow(textRenderer, Text.translatable("words.viafabricplus.online").formatted(Formatting.GREEN), 1, 1, -1);
             }
             final String playerText = server.playerCount() + "/" + server.playerLimit();
-            drawTextWithShadow(matrices, textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from MappedSlotEntry#32 */ - 1, 1, -1);
+            context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 152 */ - 1, 1, -1);
         }
     }
 }

@@ -105,9 +105,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
         this.renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
 
-        final MatrixStack matrices = context.getMatrices();
-
-        this.renderTitle(matrices);
+        this.renderTitle(context);
     }
 
     public static class SlotList extends AlwaysSelectedEntryListWidget<ProtocolSlot> {

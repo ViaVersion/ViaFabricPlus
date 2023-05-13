@@ -85,12 +85,10 @@ public class ClassiCubeServerListScreen extends VFPScreen {
         this.renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
 
-        final MatrixStack matrices = context.getMatrices();
-
         final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
         if (account == null) return;
 
-        this.renderTitle(matrices, Text.of("ClassiCube Profile: " + account.username()));
+        this.renderTitle(context, Text.of("ClassiCube Profile: " + account.username()));
     }
 
     public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {
@@ -135,7 +133,8 @@ public class ClassiCubeServerListScreen extends VFPScreen {
                 ((IServerInfo) entry).viafabricplus_forceVersion(ViaLoadingBase.fromProtocolVersion(LegacyProtocolVersion.c0_30cpe));
             }
 
-            ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry);
+            ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false);
+            super.mappedMouseClicked(mouseX, mouseY, button);
         }
 
         @Override

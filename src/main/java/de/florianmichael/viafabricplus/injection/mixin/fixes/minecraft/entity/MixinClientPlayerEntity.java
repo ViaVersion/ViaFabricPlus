@@ -94,7 +94,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z", ordinal = 0))
     public boolean sendIdlePacket(ClientPlayerEntity instance) {
         if (DebugSettings.INSTANCE.sendIdlePacket.getValue()) {
-            return !onGround;
+            return !isOnGround();
         }
         return lastOnGround;
     }

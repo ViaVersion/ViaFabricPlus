@@ -55,9 +55,7 @@ public class ForceVersionScreen extends VFPScreen {
         this.renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
 
-        final MatrixStack matrices = context.getMatrices();
-
-        this.renderTitle(matrices, Text.translatable("forceversion.viafabricplus.title"));
+        this.renderTitle(context, Text.translatable("forceversion.viafabricplus.title"));
     }
 
     public class SlotList extends AlwaysSelectedEntryListWidget<DummyProtocolSlot> {

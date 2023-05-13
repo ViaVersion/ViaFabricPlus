@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.ui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -57,17 +58,19 @@ public class VFPScreen extends Screen {
         MinecraftClient.getInstance().setScreen(prevScreen);
     }
 
-    public void renderTitle(final MatrixStack matrices) {
-        renderTitle(matrices, Text.of("https://github.com/FlorianMichael/ViaFabricPlus"));
+    public void renderTitle(final DrawContext context) {
+        renderTitle(context, Text.of("https://github.com/FlorianMichael/ViaFabricPlus"));
     }
 
-    public void renderTitle(final MatrixStack matrices, final Text subTitle) {
+    public void renderTitle(final DrawContext context, final Text subTitle) {
+        final MatrixStack matrices = context.getMatrices();
+
         matrices.push();
         matrices.scale(2F, 2F, 2F);
-        drawCenteredTextWithShadow(matrices, textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
+        context.drawCenteredTextWithShadow(textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.pop();
 
-        drawCenteredTextWithShadow(matrices, textRenderer, subTitle, width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
+        context.drawCenteredTextWithShadow(textRenderer, subTitle, width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
     }
 
     public static void playClickSound() {

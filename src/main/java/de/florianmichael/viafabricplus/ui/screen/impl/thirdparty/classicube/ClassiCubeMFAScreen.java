@@ -26,13 +26,10 @@ import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler
 import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import de.florianmichael.viafabricplus.ui.screen.VFPScreen;
 import de.florianmichael.viafabricplus.ui.screen.impl.base.ProtocolSelectionScreen;
-import de.florianmichael.viafabricplus.screen.ProtocolSelectionScreen;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 public class ClassiCubeMFAScreen extends VFPScreen {
