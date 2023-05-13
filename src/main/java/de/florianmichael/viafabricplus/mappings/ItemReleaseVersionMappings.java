@@ -55,6 +55,34 @@ public class ItemReleaseVersionMappings {
     }
 
     public void load() {
+        register(Items.CALIBRATED_SCULK_SENSOR, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.PITCHER_PLANT, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.SNIFFER_EGG, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.SUSPICIOUS_GRAVEL, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.PITCHER_POD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.HOST_ARMOR_TRIM_SMITHING_TEMPLATE, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.ANGLER_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.BLADE_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.BREWER_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.BURN_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.DANGER_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.EXPLORER_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.FRIEND_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.HEART_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.HEARTBREAK_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.HOWL_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.MINER_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.MOURNER_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.PLENTY_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.SHEAF_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.SHELTER_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.SNORT_POTTERY_SHERD, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+        register(Items.MUSIC_DISC_RELIC, ProtocolRange.andNewer(ProtocolVersion.v1_20));
+
         register(Items.BRUSH, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.CHERRY_BOAT, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
         register(Items.CHERRY_BUTTON, ProtocolRange.andNewer(ProtocolVersion.v1_19_4));
