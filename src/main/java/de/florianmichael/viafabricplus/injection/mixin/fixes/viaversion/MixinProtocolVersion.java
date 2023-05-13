@@ -45,7 +45,7 @@ public abstract class MixinProtocolVersion {
         viafabricplus_remaps.put("1.16.4/5", new Pair<>("1.16.4-1.16.5", null));
         viafabricplus_remaps.put("1.18/1.18.1", new Pair<>("1.18-1.18.1", null));
         viafabricplus_remaps.put("1.19.1/2", new Pair<>("1.19.1-1.19.2", null));
-        viafabricplus_remaps.put("1.20", new Pair<>("23w18a", null));
+        viafabricplus_remaps.put("1.20", new Pair<>("1.20-pre1", null));
     }
 
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
