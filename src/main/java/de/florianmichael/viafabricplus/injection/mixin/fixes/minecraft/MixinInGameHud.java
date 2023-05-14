@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
@@ -63,10 +64,10 @@ public abstract class MixinInGameHud {
 
     // Moving down all remaining elements
 
-    @Redirect(method = "renderStatusBars", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/InGameHud;scaledHeight:I", opcode = Opcodes.GETFIELD))
-    private int moveHealthDown(InGameHud instance) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) return scaledHeight + 6;
-        return scaledHeight;
+    @ModifyExpressionValue(method = "renderStatusBars", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/InGameHud;scaledHeight:I", opcode = Opcodes.GETFIELD))
+    private int moveHealthDown(int originalValue) {
+        if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) return originalValue + 6;
+        return originalValue;
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V"), slice = @Slice(

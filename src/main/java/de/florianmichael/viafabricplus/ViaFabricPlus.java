@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
 import de.florianmichael.viafabricplus.definition.v1_12_2.FontCacheFix;
 import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
@@ -57,6 +58,7 @@ public class ViaFabricPlus {
     private final InformationSystem informationSystem = new InformationSystem();
 
     public void init() {
+        MixinExtrasBootstrap.init();
         PreLoadCallback.EVENT.invoker().onLoad();
 
         // Classic Stuff

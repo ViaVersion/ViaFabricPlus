@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
@@ -109,11 +110,9 @@ public abstract class MixinClientPlayNetworkHandler {
         }
     }
 
-    @Redirect(method = "onPlayerSpawnPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;setReady()V"))
-    public void moveDownloadingTerrainClosing(DownloadingTerrainScreen instance) {
-        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19)) {
-            instance.setReady();
-        }
+    @WrapWithCondition(method = "onPlayerSpawnPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;setReady()V"))
+    public boolean moveDownloadingTerrainClosing(DownloadingTerrainScreen instance) {
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19);
     }
 
     @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
@@ -132,11 +131,9 @@ public abstract class MixinClientPlayNetworkHandler {
         return constant;
     }
 
-    @Redirect(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
-    public void removeNewWarning(Logger instance, String s, Object o) {
-        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3)) {
-            instance.warn(s, o);
-        }
+    @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
+    public boolean removeWarning(Logger instance, String s, Object o) {
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3);
     }
 
     @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))

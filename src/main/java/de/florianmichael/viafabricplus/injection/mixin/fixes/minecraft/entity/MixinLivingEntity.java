@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
@@ -88,13 +89,11 @@ public abstract class MixinLivingEntity extends Entity {
         return movingDown;
     }
 
-    @Redirect(method = "travel",
+    @WrapWithCondition(method = "travel",
             slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/effect/StatusEffects;LEVITATION:Lnet/minecraft/entity/effect/StatusEffect;", ordinal = 0)),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;onLanding()V", ordinal = 0))
-    private void dontResetLevitationFallDistance(LivingEntity instance) {
-        if (ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_12_2)) {
-            instance.onLanding();
-        }
+    private boolean dontResetLevitationFallDistance(LivingEntity instance) {
+        return ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_12_2);
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSprinting()Z", ordinal = 0))
