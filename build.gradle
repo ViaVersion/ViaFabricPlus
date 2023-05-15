@@ -7,12 +7,8 @@ version = project.mod_version
 group = project.maven_group
 
 configurations {
-	implementation.extendsFrom libs
-	api.extendsFrom libs
-
-	implementation.extendsFrom bundleMod
-	include.extendsFrom bundleMod
-	annotationProcessor.extendsFrom bundleMod
+	implementation.extendsFrom library
+	api.extendsFrom library
 }
 
 allprojects {
@@ -55,47 +51,46 @@ dependencies {
 
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
-	libs "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
-	libs "com.github.FlorianMichael:Classic4J:${project.classic4j_version}"
+	library "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
+	library "com.github.FlorianMichael:Classic4J:${project.classic4j_version}"
 
-	libs "com.viaversion:viaversion:${project.viaversion_version}"
-	libs ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
+	library "com.viaversion:viaversion:${project.viaversion_version}"
+	library ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
 		exclude group: "com.viaversion", module: "viaversion"
 		exclude group: "io.netty", module: "netty-all"
 		exclude group: "com.google.guava", module: "guava"
 	}
-	libs "org.yaml:snakeyaml:${project.snake_yml_version}"
+	library "org.yaml:snakeyaml:${project.snake_yml_version}"
 
-	libs ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
+	library ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
 		exclude group: "net.lenni0451.mcstructs", module: "text"
 	}
-	libs "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
-	libs ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
+	library "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
+	library ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
 		exclude group: "net.lenni0451.mcstructs", module: "text"
 		exclude group: "io.jsonwebtoken", module: "jjwt-impl"
 		exclude group: "io.jsonwebtoken", module: "jjwt-gson"
 	}
-	libs ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
+	library ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
 		exclude group: "com.google.code.gson", module: "gson"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
 
-	libs("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
+	library("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
 		exclude group: "io.netty", module: "netty-common"
 		exclude group: "io.netty", module: "netty-buffer"
 		exclude group: "io.netty", module: "netty-codec"
 		exclude group: "io.netty", module: "netty-transport"
 	}
 
-	libs ("net.lenni0451.mcstructs:text:${project.mcstructs_text_version}") {
+	library ("net.lenni0451.mcstructs:text:${project.mcstructs_text_version}") {
 		exclude group: "com.google.code.gson", module: "gson"
 	}
-	libs "net.lenni0451:Reflect:${project.reflect_version}"
+	library "net.lenni0451:Reflect:${project.reflect_version}"
 
-	bundleMod "com.github.LlamaLad7:MixinExtras:${project.mixin_extras_version}"
-
-	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
+	include implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))
 }
 
 processResources {
@@ -118,10 +113,10 @@ java {
 }
 
 jar {
-	dependsOn configurations.libs
+	dependsOn configurations.library
 	from {
 		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-		configurations.libs.collect {
+		configurations.library.collect {
 			zipTree(it)
 		}
 	} {
