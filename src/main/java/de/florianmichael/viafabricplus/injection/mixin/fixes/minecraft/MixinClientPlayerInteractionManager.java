@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
@@ -29,7 +30,6 @@ import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
 import de.florianmichael.viafabricplus.protocolhack.usage.ItemTranslator;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -61,9 +61,12 @@ public abstract class MixinClientPlayerInteractionManager {
     @Final
     private MinecraftClient client;
 
-    @Shadow protected abstract ActionResult interactBlockInternal(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult);
+    @Shadow
+    protected abstract ActionResult interactBlockInternal(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult);
 
-    @Shadow @Final private ClientPlayNetworkHandler networkHandler;
+    @Shadow
+    @Final
+    private ClientPlayNetworkHandler networkHandler;
 
     @Unique
     private ItemStack viafabricplus_oldCursorStack;
@@ -93,14 +96,15 @@ public abstract class MixinClientPlayerInteractionManager {
         if (type == SlotActionType.QUICK_CRAFT) return true;
 
         // quick move always uses empty stack for verification since 1.12
-        if (type == SlotActionType.QUICK_MOVE && ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_11_1)) return true;
+        if (type == SlotActionType.QUICK_MOVE && ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_11_1))
+            return true;
 
         // pickup with slot -999 (outside window) to throw items always uses empty stack for verification
         return type == SlotActionType.PICKUP && slot == -999;
     }
 
-    @Redirect(method = "clickSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
-    private void modifySlotClickPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
+    @WrapWithCondition(method = "clickSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
+    private boolean modifySlotClickPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
             ItemStack slotItemBeforeModification;
 
@@ -131,16 +135,15 @@ public abstract class MixinClientPlayerInteractionManager {
 
                 try {
                     clickSlotPacket.sendToServer(Protocol1_17To1_16_4.class);
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             });
 
             viafabricplus_oldCursorStack = null;
             viafabricplus_oldItems = null;
-
-            return;
+            return false;
         }
-
-        instance.sendPacket(packet);
+        return true;
     }
 
     @Redirect(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0),
