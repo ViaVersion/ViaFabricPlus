@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
@@ -56,13 +57,11 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
 
     @Shadow @Nullable public abstract ClientPlayNetworkHandler getNetworkHandler();
 
-    @Redirect(method = "doItemUse",
+    @WrapWithCondition(method = "doItemUse",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactItem(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;resetEquipProgress(Lnet/minecraft/util/Hand;)V", ordinal = 0))
-    private void redirectDoItemUse(HeldItemRenderer heldItemRenderer, Hand hand) {
-        if (ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_8) || !(player.getStackInHand(hand).getItem() instanceof SwordItem)) {
-            heldItemRenderer.resetEquipProgress(hand);
-        }
+    public boolean removeEquipProgressReset(HeldItemRenderer instance, Hand hand) {
+        return ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_8) || !(player.getStackInHand(hand).getItem() instanceof SwordItem);
     }
 
     @Redirect(method = "doItemUse",

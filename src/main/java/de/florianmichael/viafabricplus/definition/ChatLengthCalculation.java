@@ -44,7 +44,9 @@ public class ChatLengthCalculation {
         });
 
         LoadClassicProtocolExtensionCallback.EVENT.register(classicProtocolExtension -> {
-            if (classicProtocolExtension == ClassicProtocolExtension.LONGER_MESSAGES) INSTANCE.maxLength = Short.MAX_VALUE * 2;
+            if (classicProtocolExtension == ClassicProtocolExtension.LONGER_MESSAGES) {
+                INSTANCE.maxLength = Short.MAX_VALUE * 2;
+            }
         });
     }
 

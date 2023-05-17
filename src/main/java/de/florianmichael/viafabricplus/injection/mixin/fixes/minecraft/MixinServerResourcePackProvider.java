@@ -89,7 +89,6 @@ public class MixinServerResourcePackProvider {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return instance;
         }
-
         return instance.toLowerCase(locale);
     }
 }

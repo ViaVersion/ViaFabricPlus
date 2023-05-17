@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
@@ -29,7 +30,6 @@ import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
 import de.florianmichael.viafabricplus.protocolhack.usage.ItemTranslator;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -61,9 +61,12 @@ public abstract class MixinClientPlayerInteractionManager {
     @Final
     private MinecraftClient client;
 
-    @Shadow protected abstract ActionResult interactBlockInternal(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult);
+    @Shadow
+    protected abstract ActionResult interactBlockInternal(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult);
 
-    @Shadow @Final private ClientPlayNetworkHandler networkHandler;
+    @Shadow
+    @Final
+    private ClientPlayNetworkHandler networkHandler;
 
     @Unique
     private ItemStack viafabricplus_oldCursorStack;
@@ -99,8 +102,8 @@ public abstract class MixinClientPlayerInteractionManager {
         return type == SlotActionType.PICKUP && slot == -999;
     }
 
-    @Redirect(method = "clickSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
-    private void modifySlotClickPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
+    @WrapWithCondition(method = "clickSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
+    private boolean modifySlotClickPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
             ItemStack slotItemBeforeModification;
 
@@ -131,25 +134,22 @@ public abstract class MixinClientPlayerInteractionManager {
 
                 try {
                     clickSlotPacket.sendToServer(Protocol1_17To1_16_4.class);
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             });
 
             viafabricplus_oldCursorStack = null;
             viafabricplus_oldItems = null;
-
-            return;
+            return false;
         }
-
-        instance.sendPacket(packet);
+        return true;
     }
 
-    @Redirect(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0),
+    @WrapWithCondition(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0),
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;syncSelectedSlot()V"),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;sendSequencedPacket(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/network/SequencedPacketCreator;)V", ordinal = 0)))
-    private void redirectInteractItem(ClientPlayNetworkHandler clientPlayNetworkHandler, Packet<?> packet) {
-        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_17)) {
-            clientPlayNetworkHandler.sendPacket(packet);
-        }
+    private boolean redirectInteractItem(ClientPlayNetworkHandler instance, Packet<?> packet) {
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_17);
     }
 
     @Inject(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0, shift = At.Shift.BEFORE))

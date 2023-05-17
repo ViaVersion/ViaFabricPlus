@@ -33,7 +33,7 @@ public class ViaFabricPlusViaCommandSender implements ViaCommandSender {
 
     @Override
     public boolean hasPermission(String s) {
-        return source.hasPermissionLevel(4);
+        return true;
     }
 
     @Override
