@@ -23,6 +23,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -50,7 +51,7 @@ public abstract class MixinItemStack {
 
     @Inject(method = "isEmpty", at = @At("HEAD"), cancellable = true)
     public void dontRecalculateState(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
+        if (MinecraftClient.getInstance() != null && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
             final ItemStack self = (ItemStack) (Object) this;
 
             cir.setReturnValue(self == EMPTY || this.item == null || this.item == Items.AIR || count == 0);
