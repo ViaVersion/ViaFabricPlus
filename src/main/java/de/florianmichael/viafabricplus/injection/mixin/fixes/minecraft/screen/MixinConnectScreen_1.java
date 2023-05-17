@@ -66,7 +66,7 @@ public class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", ordinal = 0))
     public String replaceAddress(InetSocketAddress instance) {
-        if (ProtocolHack.isOlderThanOrEqualToOrForced(instance, ProtocolVersion.v1_17) || ProtocolHack.isEqualToOrForced(instance, BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolHack.getTargetVersion(instance).isOlderThanOrEqualTo(ProtocolVersion.v1_17) || ProtocolHack.getTargetVersion(instance).isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
             return field_33737.getAddress();
         }
         return instance.getHostName();
@@ -74,7 +74,7 @@ public class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getPort()I"))
     public int replacePort(InetSocketAddress instance) {
-        if (ProtocolHack.isOlderThanOrEqualToOrForced(instance, ProtocolVersion.v1_17) || ProtocolHack.isEqualToOrForced(instance, BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolHack.getTargetVersion(instance).isOlderThanOrEqualTo(ProtocolVersion.v1_17) || ProtocolHack.getTargetVersion(instance).isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
             return field_33737.getPort();
         }
         return instance.getPort();

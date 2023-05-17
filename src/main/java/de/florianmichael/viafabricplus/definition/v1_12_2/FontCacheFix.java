@@ -57,10 +57,7 @@ public class FontCacheFix {
 
     public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
 
-        VERY_MISSING(() -> BuiltinEmptyGlyph1_12_2.createRectImage((x, y) -> {
-            boolean bl = x == 0 || x + 1 == 5 || y == 0 || y + 1 == 8;
-            return bl ? -1 : 0;
-        }));
+        VERY_MISSING(() -> BuiltinEmptyGlyph1_12_2.createRectImage((x, y) -> x == 0 || x + 1 == 5 || y == 0 || y + 1 == 8 ? -1 : 0));
 
         final NativeImage image;
 
@@ -71,9 +68,9 @@ public class FontCacheFix {
         private static NativeImage createRectImage(BuiltinEmptyGlyph1_12_2.ColorSupplier colorSupplier) {
             final NativeImage nativeImage = new NativeImage(NativeImage.Format.RGBA, 5, 8, false);
 
-            for (int i = 0; i < 8; ++i) {
-                for (int j = 0; j < 5; ++j) {
-                    nativeImage.setColor(j, i, colorSupplier.getColor(j, i));
+            for (int y = 0; y < 8; ++y) {
+                for (int x = 0; x < 5; ++x) {
+                    nativeImage.setColor(x, y, colorSupplier.getColor(x, y));
                 }
             }
             nativeImage.untrack();
@@ -88,6 +85,7 @@ public class FontCacheFix {
         @Override
         public GlyphRenderer bake(Function<RenderableGlyph, GlyphRenderer> function) {
             return function.apply(new RenderableGlyph() {
+
                 @Override
                 public int getWidth() {
                     return BuiltinEmptyGlyph1_12_2.this.image.getWidth();
@@ -118,7 +116,7 @@ public class FontCacheFix {
         @FunctionalInterface
         interface ColorSupplier {
 
-            int getColor(int var1, int var2);
+            int getColor(int x, int y);
         }
     }
 }
