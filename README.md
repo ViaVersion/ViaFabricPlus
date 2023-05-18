@@ -14,12 +14,12 @@
 # Why another protocol translator?
 ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomputer/multiconnect), and it also promises more compactness and stability. ViaFabricPlus can do everything multiconnect could do, but supports more Minecraft versions (listed below) and has more protocol changes implemented.
 ### Supported Server versions
-- Release (1.0.0 - 1.20 [1.20-pre1])
+- Release (1.0.0 - 1.20 [1.20-pre2])
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - Snapshots (3D Shareware, 20w14infinite, Combat Test 8C)
-- Bedrock (1.19.70)
+- Bedrock (1.19.80)
 
 # For users
 ### Detailed instructions for use are available here [here](.github/USAGE.md)
