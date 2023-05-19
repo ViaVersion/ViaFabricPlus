@@ -89,7 +89,7 @@ public abstract class MixinLivingEntity extends Entity {
         return movingDown;
     }
 
-    @WrapWithCondition(method = "travel",
+    @WrapWithCondition(method = "tickMovement",
             slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/effect/StatusEffects;LEVITATION:Lnet/minecraft/entity/effect/StatusEffect;", ordinal = 0)),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;onLanding()V", ordinal = 0))
     private boolean dontResetLevitationFallDistance(LivingEntity instance) {
