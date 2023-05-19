@@ -32,9 +32,13 @@ import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RakNetClientConnection {
+    private final static List<InetSocketAddress> rakNetPingSessions = new ArrayList<>();
+
     public static void connectRakNet(final ClientConnection clientConnection, final InetSocketAddress address, final Lazy lazy, final Class channelType) {
         final Bootstrap nettyBoostrap = new Bootstrap().group((EventLoopGroup) lazy.get()).handler(new ChannelInitializer<>() {
             @Override
@@ -55,10 +59,14 @@ public class RakNetClientConnection {
             }
         }).channelFactory(channelType == EpollSocketChannel.class ? RakChannelFactory.client(EpollDatagramChannel.class) : RakChannelFactory.client(NioDatagramChannel.class));
 
-        if (ProtocolHack.getRakNetPingSessions().contains(address)) {
+        if (getRakNetPingSessions().contains(address)) {
             nettyBoostrap.bind(new InetSocketAddress(0)).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE).syncUninterruptibly();
         } else {
             nettyBoostrap.connect(address.getAddress(), address.getPort()).syncUninterruptibly();
         }
+    }
+
+    public static List<InetSocketAddress> getRakNetPingSessions() {
+        return rakNetPingSessions;
     }
 }

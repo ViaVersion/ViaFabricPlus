@@ -70,6 +70,8 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Shadow public abstract void sendPacket(Packet<?> packet);
 
+    @Shadow @Final private ClientConnection connection;
+
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixPlayerListOrdering(MinecraftClient client, Screen screen, ClientConnection connection, ServerInfo serverInfo, GameProfile profile, WorldSession worldSession, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
@@ -152,7 +154,7 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Inject(method = "onSetTradeOffers", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
     public void checkLoginPacket(SetTradeOffersS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2) && this.client.player == null) {
+        if (ProtocolHack.getTargetVersion(connection.channel).isOlderThanOrEqualTo(ProtocolVersion.v1_13_2) && this.client.player == null) {
             ViaFabricPlus.LOGGER.error("Server tried to send Play packet in Login process, dropping \"SetTradeOffers\"");
             ci.cancel();
         }

@@ -82,38 +82,32 @@ public class ProtocolHack {
     public final static AttributeKey<ComparableProtocolVersion> FORCED_VERSION = AttributeKey.newInstance("viafabricplus-forced-version");
 
     private final static Map<InetSocketAddress, ComparableProtocolVersion> forcedVersions = new HashMap<>();
-    private final static List<InetSocketAddress> rakNetPingSessions = new ArrayList<>();
 
     public static ComparableProtocolVersion getTargetVersion() {
-        if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().getNetworkHandler() == null) return getTargetVersion(null);
+        if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().getNetworkHandler() == null) {
+            return getTargetVersion((Channel) null);
+        }
 
         return getTargetVersion(MinecraftClient.getInstance().getNetworkHandler().getConnection().channel);
     }
 
     public static ComparableProtocolVersion getTargetVersion(final Channel channel) {
-        if (channel != null && channel.hasAttr(FORCED_VERSION)) return channel.attr(FORCED_VERSION).get();
+        if (channel != null && channel.hasAttr(FORCED_VERSION)) {
+            return channel.attr(FORCED_VERSION).get();
+        }
 
         return ViaLoadingBase.getInstance().getTargetVersion();
     }
 
+    public static ComparableProtocolVersion getTargetVersion(final InetSocketAddress socketAddress) {
+        if (forcedVersions.containsKey(socketAddress)) {
+            return forcedVersions.get(socketAddress);
+        }
+        return getTargetVersion();
+    }
+
     public static Map<InetSocketAddress, ComparableProtocolVersion> getForcedVersions() {
         return forcedVersions;
-    }
-
-    public static List<InetSocketAddress> getRakNetPingSessions() {
-        return rakNetPingSessions;
-    }
-
-    public static boolean isEqualToOrForced(final InetSocketAddress socketAddress, final ProtocolVersion version) {
-        if (forcedVersions.containsKey(socketAddress)) return forcedVersions.get(socketAddress).isEqualTo(version);
-
-        return ProtocolHack.getTargetVersion().isEqualTo(version);
-    }
-
-    public static boolean isOlderThanOrEqualToOrForced(final InetSocketAddress socketAddress, final ProtocolVersion version) {
-        if (forcedVersions.containsKey(socketAddress)) return forcedVersions.get(socketAddress).isOlderThanOrEqualTo(version);
-
-        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(version);
     }
 
     public static void injectVLBPipeline(final ClientConnection connection, final Channel channel, final InetSocketAddress address) {

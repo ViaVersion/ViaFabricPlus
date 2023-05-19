@@ -19,8 +19,8 @@ package de.florianmichael.viafabricplus.protocolhack.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.DisconnectAdapter;
+import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.RakNetClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.PingEncapsulationCodec;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.codec.RakMessageEncapsulationCodec;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
@@ -50,8 +50,8 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
     public final static String VIA_BEDROCK_ENCRYPTION_HANDLER_NAME = "via-bedrock-encryption";
 
     // ViaLegacy (pre Netty)
-    public final static String VIA_LEGACY_PRE_NETTY_LENGTH_PREPENDER_HANDLER_NAME = "via-legacy-decoder";
-    public final static String VIA_LEGACY_PRE_NETTY_LENGTH_REMOVER_HANDLER_NAME = "via-legacy-encoder";
+    public final static String VIA_LEGACY_PRE_NETTY_LENGTH_PREPENDER_HANDLER_NAME = "via-legacy-pre-netty-length-prepender";
+    public final static String VIA_LEGACY_PRE_NETTY_LENGTH_REMOVER_HANDLER_NAME = "via-legacy-pre-netty-length-remover";
 
     private final InetSocketAddress address;
     private final ComparableProtocolVersion version;
@@ -93,7 +93,7 @@ public class ViaFabricPlusVLBPipeline extends VLBPipeline {
             pipeline.remove("timeout");
 
             // Pinging in RakNet is something different
-            if (ProtocolHack.getRakNetPingSessions().contains(address)) {
+            if (RakNetClientConnection.getRakNetPingSessions().contains(address)) {
                 pipeline.replace(VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, VIA_BEDROCK_PING_ENCAPSULATION_HANDLER_NAME, new PingEncapsulationCodec(address));
 
                 pipeline.remove(VIA_BEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);

@@ -99,9 +99,9 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         super.channelRegistered(ctx);
 
-        if (ProtocolHack.getRakNetPingSessions().contains(viafabricplus_capturedAddress)) {
+        if (RakNetClientConnection.getRakNetPingSessions().contains(viafabricplus_capturedAddress)) {
             channelActive(ctx);
-            ProtocolHack.getRakNetPingSessions().remove(viafabricplus_capturedAddress);
+            RakNetClientConnection.getRakNetPingSessions().remove(viafabricplus_capturedAddress);
         }
     }
 

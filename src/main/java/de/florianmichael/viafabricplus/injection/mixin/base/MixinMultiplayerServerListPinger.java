@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.RakNetClientConnection;
 import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.minecraft.client.network.ServerAddress;
@@ -40,7 +41,11 @@ public class MixinMultiplayerServerListPinger {
     public void trackSessions(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress, Optional optional, InetSocketAddress inetSocketAddress) {
         final ComparableProtocolVersion version = ((IServerInfo) entry).viafabricplus_forcedVersion();
 
-        if (version != null) ProtocolHack.getForcedVersions().put(inetSocketAddress, version);
-        if (ProtocolHack.isEqualToOrForced(inetSocketAddress, BedrockProtocolVersion.bedrockLatest)) ProtocolHack.getRakNetPingSessions().add(inetSocketAddress);
+        if (version != null) {
+            ProtocolHack.getForcedVersions().put(inetSocketAddress, version);
+        }
+        if (ProtocolHack.getTargetVersion(inetSocketAddress).isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
+            RakNetClientConnection.getRakNetPingSessions().add(inetSocketAddress);
+        }
     }
 }
