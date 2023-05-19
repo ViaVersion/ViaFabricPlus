@@ -26,7 +26,7 @@ import java.security.NoSuchAlgorithmException;
 
 public interface IClientConnection {
 
-    void viafabricplus_setupPreNettyEncryption();
+    void viafabricplus_setupPreNettyDecryption();
 
     InetSocketAddress viafabricplus_capturedAddress();
     void viafabricplus_captureAddress(final InetSocketAddress socketAddress);

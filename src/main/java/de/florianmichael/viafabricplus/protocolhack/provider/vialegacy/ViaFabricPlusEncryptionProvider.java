@@ -29,7 +29,7 @@ public class ViaFabricPlusEncryptionProvider extends EncryptionProvider {
     public void enableDecryption(UserConnection user) {
         final ClientConnection clientConnection = user.getChannel().attr(ProtocolHack.LOCAL_MINECRAFT_CONNECTION).get();
         if (clientConnection != null) {
-            ((IClientConnection) clientConnection).viafabricplus_setupPreNettyEncryption();
+            ((IClientConnection) clientConnection).viafabricplus_setupPreNettyDecryption();
         }
     }
 }
