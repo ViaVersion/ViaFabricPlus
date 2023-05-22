@@ -62,7 +62,8 @@ Contributions in the form of pull requests are always welcome, please just stick
 Translations for other languages are always welcome, in **~/resources/assets/viafabricplus/lang** you can find all translations, <br>
 if you know a language well, feel free to make a PR and add translations for that language <br>
 
-### Dependencies (for compiling only, **you do not need to install these on the client!**)
+### Dependencies
+For compiling only! **You do not need to install these!**
 <details>
   <summary>Click to get a list of all dependencies</summary>
 
