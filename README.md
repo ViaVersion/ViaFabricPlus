@@ -19,7 +19,7 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - Snapshots (3D Shareware, 20w14infinite, Combat Test 8C)
-- Bedrock (1.19.70)
+- Bedrock (1.19.80)
 
 # For users
 ### Detailed instructions for use are available here [here](.github/USAGE.md)
@@ -29,6 +29,8 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)***
 - ***[multiconnect](https://github.com/Earthcomputer/multiconnect)***
 - ***[krypton](https://github.com/astei/krypton)***
+- ***[MemoryLeakFix](https://github.com/fxmorin/MemoryLeakFix)***
+- ***[ReplayMod](https://www.replaymod.com/)***
 
 ## List of all clientside related fixes
 <details>
@@ -61,6 +63,7 @@ Translations for other languages are always welcome, in **~/resources/assets/via
 if you know a language well, feel free to make a PR and add translations for that language <br>
 
 ### Dependencies
+For compiling only! **You do not need to install these!**
 <details>
   <summary>Click to get a list of all dependencies</summary>
 

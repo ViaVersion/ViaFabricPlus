@@ -63,9 +63,6 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     private Cipher viafabricplus_decryptionCipher;
 
     @Unique
-    private Cipher viafabricplus_encryptionCipher;
-
-    @Unique
     private boolean viafabricplus_compressionEnabled = false;
 
     @Unique
@@ -81,7 +78,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         if (ProtocolHack.getTargetVersion(channel).isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             ci.cancel();
             this.viafabricplus_decryptionCipher = decryptionCipher;
-            this.viafabricplus_encryptionCipher = encryptionCipher;
+            this.viafabricplus_setupPreNettyEncryption(encryptionCipher);
         }
     }
 
@@ -111,10 +108,16 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         DisconnectConnectionCallback.EVENT.invoker().onDisconnect();
     }
 
+    @Unique
+    public void viafabricplus_setupPreNettyEncryption(final Cipher encryptionCipher) {
+        this.encrypted = true;
+        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_LEGACY_PRE_NETTY_LENGTH_REMOVER_HANDLER_NAME, "encrypt", new PacketEncryptor(encryptionCipher));
+    }
+
     @Override
-    public void viafabricplus_setupPreNettyEncryption() {
+    public void viafabricplus_setupPreNettyDecryption() {
+        this.encrypted = true;
         this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_LEGACY_PRE_NETTY_LENGTH_PREPENDER_HANDLER_NAME, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
-        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_LEGACY_PRE_NETTY_LENGTH_REMOVER_HANDLER_NAME, "encrypt", new PacketEncryptor(this.viafabricplus_encryptionCipher));
     }
 
     @Override
