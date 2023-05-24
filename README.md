@@ -63,6 +63,7 @@ Translations for other languages are always welcome, in **~/resources/assets/via
 if you know a language well, feel free to make a PR and add translations for that language <br>
 
 ### Dependencies
+For compiling only! **You do not need to install these!**
 <details>
   <summary>Click to get a list of all dependencies</summary>
 
