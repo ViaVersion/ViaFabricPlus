@@ -86,7 +86,6 @@ public class MixinConnectScreen_1 {
             instance.send(new LoginHelloC2SPacket(ClassiCubeAccountHandler.INSTANCE.getAccount().username(), Optional.ofNullable(MinecraftClient.getInstance().getSession().getUuidOrNull())));
             return;
         }
-
         instance.send(packet);
     }
 
@@ -96,9 +95,8 @@ public class MixinConnectScreen_1 {
         if (connection == null || connection.channel == null) return;
 
         final UserConnection userConnection = connection.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
-        if (userConnection == null) {
-            return;
-        }
+        if (userConnection == null) return;
+
         final ComparableProtocolVersion targetVersion = ProtocolHack.getTargetVersion(connection.channel);
 
         if (targetVersion.isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
@@ -115,27 +113,20 @@ public class MixinConnectScreen_1 {
             return; // This disables the chat session emulation for all versions <= 1.18.2
         }
         if (targetVersion.isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
-            try {
-                final PlayerKeyPair playerKeyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().get().orElse(null);
-                if (playerKeyPair != null) {
-                    final PlayerPublicKey.PublicKeyData publicKeyData = playerKeyPair.publicKey().data();
+            MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().thenAcceptAsync(optional -> optional.ifPresentOrElse(playerKeyPair -> {
+                final PlayerPublicKey.PublicKeyData publicKeyData = playerKeyPair.publicKey().data();
 
-                    userConnection.put(new ChatSession1_19_2(userConnection, new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature()), playerKeyPair.privateKey()));
+                userConnection.put(new ChatSession1_19_2(userConnection, new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature()), playerKeyPair.privateKey()));
 
-                    if (targetVersion.isEqualTo(ProtocolVersion.v1_19)) {
-                        final byte[] legacyKey = ((IPublicKeyData) (Object) publicKeyData).viafabricplus_getV1Key().array();
-                        if (legacyKey != null) {
-                            userConnection.put(new ChatSession1_19_0(userConnection, new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey), playerKeyPair.privateKey()));
-                        } else {
-                            ViaFabricPlus.LOGGER.warn("Mojang removed the legacy key");
-                        }
+                if (targetVersion.isEqualTo(ProtocolVersion.v1_19)) {
+                    final var legacyKey = ((IPublicKeyData) (Object) publicKeyData).viafabricplus_getV1Key();
+                    if (legacyKey != null) {
+                        userConnection.put(new ChatSession1_19_0(userConnection, new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey.array()), playerKeyPair.privateKey()));
+                    } else {
+                        ViaFabricPlus.LOGGER.error("Failed to get v1 key, can't setup ChatSession_0");
                     }
-                } else {
-                    ViaFabricPlus.LOGGER.warn("Failed to fetch the key pair");
                 }
-            } catch (InterruptedException | ExecutionException e) {
-                ViaFabricPlus.LOGGER.warn("Failed to fetch the key pair");
-            }
+            }, () -> ViaFabricPlus.LOGGER.error("Failed to fetch keyPair, can't setup ChatSession")));
         }
     }
 }
