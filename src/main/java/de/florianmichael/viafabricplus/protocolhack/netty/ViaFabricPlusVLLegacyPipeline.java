@@ -50,8 +50,6 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
             ctx.pipeline().remove(VIABEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);
             ctx.pipeline().remove(this.lengthSplitterName());
         }
-
-        System.out.println(ctx.pipeline().names());
     }
 
     @Override

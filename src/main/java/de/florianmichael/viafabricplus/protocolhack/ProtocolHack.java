@@ -29,6 +29,7 @@ import de.florianmichael.viafabricplus.base.event.FinishViaVersionStartupCallbac
 import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLCommandHandler;
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLInjector;
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLLoader;
+import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaVersionPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
 import io.netty.channel.*;
 import io.netty.util.AttributeKey;
@@ -114,7 +115,7 @@ public class ProtocolHack {
     }
 
     public static void init() {
-        ViaLoader.init(null, new ViaFabricPlusVLLoader(), new ViaFabricPlusVLInjector(), new ViaFabricPlusVLCommandHandler(), ViaBackwardsPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new, ViaBedrockPlatformImpl::new);
+        ViaLoader.init(new ViaFabricPlusViaVersionPlatformImpl(null), new ViaFabricPlusVLLoader(), new ViaFabricPlusVLInjector(), new ViaFabricPlusVLCommandHandler(), ViaBackwardsPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new, ViaBedrockPlatformImpl::new);
         initCommands();
 
         FinishViaVersionStartupCallback.EVENT.invoker().onFinishViaVersionStartup();

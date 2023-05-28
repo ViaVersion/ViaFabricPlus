@@ -142,7 +142,6 @@ public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
                     });
                 }
             }
-            System.out.println(ProtocolHack.getTargetVersion(connection.getChannel()).getName());
             return ProtocolHack.getTargetVersion(connection.getChannel()).getVersion();
         }
         return super.getClosestServerProtocol(connection);
