@@ -23,8 +23,8 @@ import de.florianmichael.viafabricplus.base.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.base.settings.groups.*;
 import de.florianmichael.viafabricplus.base.FileSaver;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +54,7 @@ public class SettingsSystem extends FileSaver {
 
     @Override
     public void write(JsonObject object) {
-        object.addProperty("protocol", ViaLoadingBase.getInstance().getTargetVersion().getVersion());
+        object.addProperty("protocol", ProtocolHack.getTargetVersion().getVersion());
         for (SettingGroup group : groups) {
             for (AbstractSetting<?> setting : group.getSettings()) {
                 setting.write(object);
@@ -65,9 +65,9 @@ public class SettingsSystem extends FileSaver {
     @Override
     public void read(JsonObject object) {
         if (object.has("protocol")) {
-            final ComparableProtocolVersion protocolVersion = ViaLoadingBase.fromProtocolId(object.get("protocol").getAsInt());
+            final VersionEnum protocolVersion = VersionEnum.fromProtocolId(object.get("protocol").getAsInt());
 
-            if (protocolVersion != null) ViaLoadingBase.getInstance().reload(protocolVersion);
+            if (protocolVersion != null) ProtocolHack.setTargetVersion(protocolVersion);
         }
         for (SettingGroup group : groups) {
             for (AbstractSetting<?> setting : group.getSettings()) {

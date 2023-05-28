@@ -19,11 +19,11 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.resource.featuretoggle.FeatureSet;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -41,7 +41,7 @@ public abstract class MixinItemGroups {
     protected static void updateEntries(ItemGroup.DisplayContext displayContext) {
     }
     @Unique
-    private static ComparableProtocolVersion viafabricplus_version;
+    private static VersionEnum viafabricplus_version;
 
     @Unique
     private static boolean viafabricplus_state;

@@ -18,17 +18,17 @@
 package de.florianmichael.viafabricplus.ui.information.impl;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ui.information.AbstractInformationGroup;
-import de.florianmichael.vialoadingbase.model.ProtocolRange;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.storage.EntityTracker;
+import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialoader.util.VersionRange;
 
 import java.util.List;
 
 public class V1_7_10Information extends AbstractInformationGroup {
 
     public V1_7_10Information() {
-        super(ProtocolRange.andOlder(ProtocolVersion.v1_7_6));
+        super(VersionRange.andOlder(VersionEnum.r1_7_6tor1_7_10));
     }
 
     @Override

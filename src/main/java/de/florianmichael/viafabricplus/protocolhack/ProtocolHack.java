@@ -22,56 +22,26 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
-import com.viaversion.viaversion.libs.gson.JsonArray;
-import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.PlayerLookTargetProvider;
-import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.provider.PlayerAbilitiesProvider;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.base.event.FinishViaLoadingBaseStartupCallback;
-import de.florianmichael.viafabricplus.base.event.ViaLoadingBaseBuilderCallback;
-import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLBViaCommandHandler;
-import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLBPipeline;
-import de.florianmichael.viafabricplus.protocolhack.platform.ViaAprilFoolsPlatformImpl;
-import de.florianmichael.viafabricplus.protocolhack.platform.ViaBedrockPlatformImpl;
-import de.florianmichael.viafabricplus.protocolhack.platform.ViaLegacyPlatformImpl;
-import de.florianmichael.viafabricplus.protocolhack.provider.*;
-import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.*;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusMovementTransmitterProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.vialoadingbase.ViaFabricPlusVLBBaseVersionProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusPlayerAbilitiesProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusPlayerLookTargetProvider;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
-import de.florianmichael.vialoadingbase.model.Platform;
+import de.florianmichael.viafabricplus.base.event.FinishViaVersionStartupCallback;
+import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLCommandHandler;
+import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLInjector;
+import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLLoader;
+import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
 import io.netty.channel.*;
 import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
-import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
-import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
-import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
-import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
-import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
-import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
-import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
+import net.raphimc.vialoader.ViaLoader;
+import net.raphimc.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
+import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
+import net.raphimc.vialoader.impl.platform.ViaBedrockPlatformImpl;
+import net.raphimc.vialoader.impl.platform.ViaLegacyPlatformImpl;
+import net.raphimc.vialoader.util.VersionEnum;
 
 import java.net.InetSocketAddress;
 import java.util.*;
@@ -79,11 +49,12 @@ import java.util.*;
 public class ProtocolHack {
     public final static AttributeKey<UserConnection> LOCAL_VIA_CONNECTION = AttributeKey.newInstance("viafabricplus-via-connection");
     public final static AttributeKey<ClientConnection> LOCAL_MINECRAFT_CONNECTION = AttributeKey.newInstance("viafabricplus-minecraft-connection");
-    public final static AttributeKey<ComparableProtocolVersion> FORCED_VERSION = AttributeKey.newInstance("viafabricplus-forced-version");
+    public final static AttributeKey<VersionEnum> FORCED_VERSION = AttributeKey.newInstance("viafabricplus-forced-version");
 
-    private final static Map<InetSocketAddress, ComparableProtocolVersion> forcedVersions = new HashMap<>();
+    private final static Map<InetSocketAddress, VersionEnum> forcedVersions = new HashMap<>();
+    public static VersionEnum targetVersion = VersionEnum.r1_19_4;
 
-    public static ComparableProtocolVersion getTargetVersion() {
+    public static VersionEnum getTargetVersion() {
         if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().getNetworkHandler() == null) {
             return getTargetVersion((Channel) null);
         }
@@ -91,22 +62,22 @@ public class ProtocolHack {
         return getTargetVersion(MinecraftClient.getInstance().getNetworkHandler().getConnection().channel);
     }
 
-    public static ComparableProtocolVersion getTargetVersion(final Channel channel) {
-        if (channel != null && channel.hasAttr(FORCED_VERSION)) {
-            return channel.attr(FORCED_VERSION).get();
-        }
-
-        return ViaLoadingBase.getInstance().getTargetVersion();
-    }
-
-    public static ComparableProtocolVersion getTargetVersion(final InetSocketAddress socketAddress) {
+    public static VersionEnum getTargetVersion(final InetSocketAddress socketAddress) {
         if (forcedVersions.containsKey(socketAddress)) {
             return forcedVersions.get(socketAddress);
         }
         return getTargetVersion();
     }
 
-    public static Map<InetSocketAddress, ComparableProtocolVersion> getForcedVersions() {
+    public static VersionEnum getTargetVersion(final Channel channel) {
+        if (channel != null && channel.hasAttr(FORCED_VERSION)) {
+            return channel.attr(FORCED_VERSION).get();
+        }
+
+        return targetVersion;
+    }
+
+    public static Map<InetSocketAddress, VersionEnum> getForcedVersions() {
         return forcedVersions;
     }
 
@@ -121,13 +92,13 @@ public class ProtocolHack {
 
         new ProtocolPipelineImpl(user);
 
-        channel.pipeline().addLast(new ViaFabricPlusVLBPipeline(user, address, ProtocolHack.getTargetVersion(channel)));
+        channel.pipeline().addLast(new ViaFabricPlusVLLegacyPipeline(user, ProtocolHack.getTargetVersion(channel), address));
     }
 
     private static void initCommands() {
         // Adding ViaVersion commands
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            final ViaFabricPlusVLBViaCommandHandler commandHandler = (ViaFabricPlusVLBViaCommandHandler) Via.getManager().getCommandHandler();
+            final ViaFabricPlusVLCommandHandler commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
 
             final RequiredArgumentBuilder<FabricClientCommandSource, String> executor = RequiredArgumentBuilder.
                     <FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
@@ -137,86 +108,15 @@ public class ProtocolHack {
         });
     }
 
+    public static void setTargetVersion(VersionEnum targetVersion) {
+        ProtocolHack.targetVersion = targetVersion;
+        ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(targetVersion);
+    }
+
     public static void init() {
-        ViaLoadingBase.ViaLoadingBaseBuilder builder = ViaLoadingBase.ViaLoadingBaseBuilder.create();
-
-        builder = builder.platform(new Platform("ViaBedrock", () -> true, ViaBedrockPlatformImpl::new, protocolVersions -> protocolVersions.add(BedrockProtocolVersion.bedrockLatest)), 0);
-        builder = builder.platform(new Platform("ViaLegacy", () -> true, ViaLegacyPlatformImpl::new, protocolVersions -> {
-            final List<ProtocolVersion> legacyProtocols = new ArrayList<>(LegacyProtocolVersion.PROTOCOLS);
-            Collections.reverse(legacyProtocols);
-
-            legacyProtocols.remove(LegacyProtocolVersion.c0_30cpe);
-            legacyProtocols.add(legacyProtocols.indexOf(LegacyProtocolVersion.c0_28toc0_30) + 1, LegacyProtocolVersion.c0_30cpe);
-
-            protocolVersions.addAll(legacyProtocols);
-        }));
-        builder = builder.platform(new Platform("ViaAprilFools", () -> true, ViaAprilFoolsPlatformImpl::new, protocolVersions -> {
-            protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_14) + 1, AprilFoolsProtocolVersion.s3d_shareware);
-            protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_16) + 1, AprilFoolsProtocolVersion.s20w14infinite);
-            protocolVersions.add(protocolVersions.indexOf(ProtocolVersion.v1_16_2) + 1, AprilFoolsProtocolVersion.sCombatTest8c);
-        }));
-
-        builder = builder.runDirectory(ViaFabricPlus.RUN_DIRECTORY);
-        builder = builder.nativeVersion(SharedConstants.getProtocolVersion());
-        builder = builder.forceNativeVersionCondition(() -> {
-            if (MinecraftClient.getInstance() == null) return true;
-
-            return MinecraftClient.getInstance().isInSingleplayer();
-        });
-        builder = builder.providers(providers -> {
-            providers.use(VersionProvider.class, new ViaFabricPlusVLBBaseVersionProvider());
-
-            providers.use(MovementTransmitterProvider.class, new ViaFabricPlusMovementTransmitterProvider());
-            providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());
-            providers.use(PlayerLookTargetProvider.class, new ViaFabricPlusPlayerLookTargetProvider());
-            providers.use(PlayerAbilitiesProvider.class, new ViaFabricPlusPlayerAbilitiesProvider());
-
-            providers.use(CommandArgumentsProvider.class, new ViaFabricPlusCommandArgumentsProvider());
-
-            providers.use(OldAuthProvider.class, new ViaFabricPlusOldAuthProvider());
-            providers.use(ClassicWorldHeightProvider.class, new ViaFabricPlusClassicWorldHeightProvider());
-            providers.use(EncryptionProvider.class, new ViaFabricPlusEncryptionProvider());
-            providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
-            providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
-
-            providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
-            providers.use(BlobCacheProvider.class, new ViaFabricPlusBlobCacheProvider());
-        });
-        builder = builder.onProtocolReload(protocolVersion -> ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(protocolVersion));
-        builder = builder.dumpSupplier(() -> {
-            JsonObject platformSpecific = new JsonObject();
-            JsonArray mods = new JsonArray();
-            FabricLoader.getInstance().getAllMods().stream().map((mod) -> {
-                JsonObject jsonMod = new JsonObject();
-                jsonMod.addProperty("id", mod.getMetadata().getId());
-                jsonMod.addProperty("name", mod.getMetadata().getName());
-                jsonMod.addProperty("version", mod.getMetadata().getVersion().getFriendlyString());
-                JsonArray authors = new JsonArray();
-                mod.getMetadata().getAuthors().stream().map(it -> {
-                    JsonObject info = new JsonObject();
-                    JsonObject contact = new JsonObject();
-                    it.getContact().asMap().forEach(contact::addProperty);
-
-                    if (contact.size() != 0) info.add("contact", contact);
-                    info.addProperty("name", it.getName());
-
-                    return info;
-                }).forEach(authors::add);
-                jsonMod.add("authors", authors);
-
-                return jsonMod;
-            }).forEach(mods::add);
-
-            platformSpecific.add("mods", mods);
-            platformSpecific.addProperty("native version", SharedConstants.getProtocolVersion());
-            return platformSpecific;
-        });
-        builder = builder.managerBuilderConsumer(viaManagerBuilder -> viaManagerBuilder.commandHandler(new ViaFabricPlusVLBViaCommandHandler()));
-
-        ViaLoadingBaseBuilderCallback.EVENT.invoker().onBuildViaLoadingBase(builder);
-        builder.build();
+        ViaLoader.init(null, new ViaFabricPlusVLLoader(), new ViaFabricPlusVLInjector(), new ViaFabricPlusVLCommandHandler(), ViaBackwardsPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new, ViaBedrockPlatformImpl::new);
         initCommands();
 
-        FinishViaLoadingBaseStartupCallback.EVENT.invoker().onFinishViaLoadingBaseStartup();
+        FinishViaVersionStartupCallback.EVENT.invoker().onFinishViaVersionStartup();
     }
 }

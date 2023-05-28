@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.EntityType;
@@ -40,7 +41,7 @@ public abstract class MixinCowEntity extends AnimalEntity {
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     public void injectInteractMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2) && player.getAbilities().creativeMode) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2) && player.getAbilities().creativeMode) {
             cir.setReturnValue(super.interactMob(player, hand));
         }
     }

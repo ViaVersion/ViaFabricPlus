@@ -21,6 +21,7 @@ import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicViaSubCommand;
 import net.minecraft.util.Formatting;
+import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;
 
@@ -32,7 +33,7 @@ public class SetTimeCommand extends ClassicViaSubCommand {
 
     @Override
     public String description() {
-        return "Changes the time (Only for <= " + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName() + ")";
+        return "Changes the time (Only for <= " + VersionEnum.a1_0_16toa1_0_16_2.getName() + ")";
     }
 
     @Override
@@ -44,7 +45,7 @@ public class SetTimeCommand extends ClassicViaSubCommand {
     public boolean execute(ViaCommandSender sender, String[] args) {
         final UserConnection connection = getUser();
         if (!connection.has(TimeLockStorage.class)) {
-            sendMessage(sender, Formatting.RED + "Only for <= " + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName());
+            sendMessage(sender, Formatting.RED + "Only for <= " + VersionEnum.a1_0_16toa1_0_16_2.getName());
             return true;
         }
         try {

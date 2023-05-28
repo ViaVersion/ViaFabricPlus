@@ -15,30 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack.platform;
+package de.florianmichael.viafabricplus.base.event;
 
-import com.viaversion.viaversion.api.Via;
-import de.florianmichael.vialoadingbase.util.JLoggerToLog4j;
-import net.raphimc.viaaprilfools.platform.ViaAprilFoolsPlatform;
-import org.apache.logging.log4j.LogManager;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
-import java.io.File;
-import java.util.logging.Logger;
+public interface FinishViaVersionStartupCallback {
 
-public class ViaAprilFoolsPlatformImpl implements ViaAprilFoolsPlatform {
-    private final static Logger LOGGER = new JLoggerToLog4j(LogManager.getLogger("ViaAprilFools"));
+    Event<FinishViaVersionStartupCallback> EVENT = EventFactory.createArrayBacked(FinishViaVersionStartupCallback.class, listeners -> () -> {
+        for (FinishViaVersionStartupCallback listener : listeners) {
+            listener.onFinishViaVersionStartup();
+        }
+    });
 
-    public ViaAprilFoolsPlatformImpl() {
-        this.init(this.getDataFolder());
-    }
-
-    @Override
-    public Logger getLogger() {
-        return LOGGER;
-    }
-
-    @Override
-    public File getDataFolder() {
-        return Via.getPlatform().getDataFolder();
-    }
+    void onFinishViaVersionStartup();
 }

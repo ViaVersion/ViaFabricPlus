@@ -21,10 +21,8 @@ import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.base.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLBPipeline;
+import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.RakNetClientConnection;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
 import io.netty.channel.*;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PacketDecryptor;
@@ -32,9 +30,10 @@ import net.minecraft.network.encryption.PacketEncryptor;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.text.Text;
 import net.minecraft.util.Lazy;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.netty.*;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialoader.netty.VLLegacyPipeline;
+import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -70,12 +69,12 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
     private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
-        channel.pipeline().fireUserEventTriggered(new CompressionReorderEvent());
+        channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
     }
 
     @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
     private void storeEncryptionCiphers(Cipher decryptionCipher, Cipher encryptionCipher, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion(channel).isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+        if (ProtocolHack.getTargetVersion(channel).isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
             ci.cancel();
             this.viafabricplus_decryptionCipher = decryptionCipher;
             this.viafabricplus_setupPreNettyEncryption(encryptionCipher);
@@ -86,7 +85,8 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     private static void captureAddress(InetSocketAddress address, boolean useEpoll, CallbackInfoReturnable<ClientConnection> cir, final ClientConnection clientConnection, Class class_, Lazy lazy) {
         ((IClientConnection) clientConnection).viafabricplus_captureAddress(address);
 
-        if (ProtocolHack.getForcedVersions().containsKey(address) ? (ProtocolHack.getForcedVersions().get(address).getVersion() == BedrockProtocolVersion.bedrockLatest.getVersion()) : ProtocolHack.getTargetVersion().isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolHack.getForcedVersions().containsKey(address) ? (ProtocolHack.getForcedVersions().get(address).getVersion() == VersionEnum.bedrockLatest.getVersion()) :
+                ProtocolHack.getTargetVersion() == VersionEnum.bedrockLatest) {
             RakNetClientConnection.connectRakNet(clientConnection, address, lazy, class_);
             cir.setReturnValue(clientConnection);
         }
@@ -104,20 +104,20 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "disconnect", at = @At("RETURN"))
     public void resetStorages(Text disconnectReason, CallbackInfo ci) {
-        ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(ViaLoadingBase.getInstance().getTargetVersion());
+        ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(ProtocolHack.getTargetVersion());
         DisconnectConnectionCallback.EVENT.invoker().onDisconnect();
     }
 
     @Unique
     public void viafabricplus_setupPreNettyEncryption(final Cipher encryptionCipher) {
         this.encrypted = true;
-        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_LEGACY_PRE_NETTY_LENGTH_REMOVER_HANDLER_NAME, "encrypt", new PacketEncryptor(encryptionCipher));
+        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "encrypt", new PacketEncryptor(encryptionCipher));
     }
 
     @Override
     public void viafabricplus_setupPreNettyDecryption() {
         this.encrypted = true;
-        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_LEGACY_PRE_NETTY_LENGTH_PREPENDER_HANDLER_NAME, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
+        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_PREPENDER_NAME, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
     }
 
     @Override
@@ -135,7 +135,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         if (this.viafabricplus_compressionEnabled) throw new IllegalStateException("Compression is already enabled");
         this.viafabricplus_compressionEnabled = true;
 
-        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, ViaFabricPlusVLBPipeline.VIA_BEDROCK_COMPRESSION_HANDLER_NAME, new ZLibCompression());
+        this.channel.pipeline().addBefore("splitter", ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME, new ZLibCompression());
     }
 
     @Override
@@ -143,7 +143,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         if (this.viafabricplus_compressionEnabled) throw new IllegalStateException("Compression is already enabled");
         this.viafabricplus_compressionEnabled = true;
 
-        this.channel.pipeline().addBefore(ViaFabricPlusVLBPipeline.VIA_BEDROCK_BATCH_LENGTH_HANDLER_NAME, ViaFabricPlusVLBPipeline.VIA_BEDROCK_COMPRESSION_HANDLER_NAME, new SnappyCompression());
+        this.channel.pipeline().addBefore("splitter", ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME, new SnappyCompression());
     }
 
     @Override
@@ -151,6 +151,6 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         if (this.encrypted) throw new IllegalStateException("Encryption is already enabled");
         this.encrypted = true;
 
-        this.channel.pipeline().addAfter(ViaFabricPlusVLBPipeline.VIA_BEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, ViaFabricPlusVLBPipeline.VIA_BEDROCK_ENCRYPTION_HANDLER_NAME, new AesEncryption(secretKey));
+        this.channel.pipeline().addAfter(ViaFabricPlusVLLegacyPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, ViaFabricPlusVLLegacyPipeline.VIABEDROCK_ENCRYPTION_HANDLER_NAME, new AesEncryption(secretKey));
     }
 }

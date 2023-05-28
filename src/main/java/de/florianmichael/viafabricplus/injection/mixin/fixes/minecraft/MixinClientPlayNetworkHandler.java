@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.authlib.GameProfile;
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
@@ -74,14 +75,14 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixPlayerListOrdering(MinecraftClient client, Screen screen, ClientConnection connection, ServerInfo serverInfo, GameProfile profile, WorldSession worldSession, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             this.listedPlayerListEntries = new LinkedHashSet<>();
         }
     }
 
     @Inject(method = "onPing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
     private void onPing(PlayPingS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_17)) {
+        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_17)) {
             return;
         }
 
@@ -98,14 +99,14 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Inject(method = "onChunkLoadDistance", at = @At("RETURN"))
     public void emulateSimulationDistance(ChunkLoadDistanceS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
             this.onSimulationDistance(new SimulationDistanceS2CPacket(packet.getDistance()));
         }
     }
 
     @Inject(method = { "onGameJoin", "onPlayerRespawn" }, at = @At("TAIL"))
     private void injectOnOnGameJoinOrRespawn(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             assert player != null;
             onEntityStatus(new EntityStatusS2CPacket(player, (byte) 28));
@@ -114,12 +115,12 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @WrapWithCondition(method = "onPlayerSpawnPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;setReady()V"))
     public boolean moveDownloadingTerrainClosing(DownloadingTerrainScreen instance) {
-        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19);
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19);
     }
 
     @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
     public void closeDownloadingTerrain(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_18_2) && MinecraftClient.getInstance().currentScreen instanceof DownloadingTerrainScreen) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2) && MinecraftClient.getInstance().currentScreen instanceof DownloadingTerrainScreen) {
             MinecraftClient.getInstance().setScreen(null);
         }
     }
@@ -127,7 +128,7 @@ public abstract class MixinClientPlayNetworkHandler {
     @SuppressWarnings("InvalidInjectorMethodSignature")
     @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = BoatEntity.class))
     public Class<?> dontChangePlayerYaw(Object entity, Class<?> constant) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2)) {
             return Integer.class;
         }
         return constant;
@@ -135,12 +136,12 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
     public boolean removeWarning(Logger instance, String s, Object o) {
-        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_19_3);
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_3);
     }
 
     @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
     public void forceSendKeepAlive(ClientPlayNetworkHandler instance, Packet<ServerPlayPacketListener> packet, BooleanSupplier sendCondition, Duration expirationTime) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
             sendPacket(packet);
             return;
         }
@@ -154,7 +155,7 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Inject(method = "onSetTradeOffers", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
     public void checkLoginPacket(SetTradeOffersS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion(connection.channel).isOlderThanOrEqualTo(ProtocolVersion.v1_13_2) && this.client.player == null) {
+        if (ProtocolHack.getTargetVersion(connection.channel).isOlderThanOrEqualTo(VersionEnum.r1_13_2) && this.client.player == null) {
             ViaFabricPlus.LOGGER.error("Server tried to send Play packet in Login process, dropping \"SetTradeOffers\"");
             ci.cancel();
         }

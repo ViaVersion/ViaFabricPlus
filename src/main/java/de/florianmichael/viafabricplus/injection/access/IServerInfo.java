@@ -17,10 +17,10 @@
  */
 package de.florianmichael.viafabricplus.injection.access;
 
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
+import net.raphimc.vialoader.util.VersionEnum;
 
 public interface IServerInfo {
 
-    ComparableProtocolVersion viafabricplus_forcedVersion();
-    void viafabricplus_forceVersion(ComparableProtocolVersion version);
+    VersionEnum viafabricplus_forcedVersion();
+    void viafabricplus_forceVersion(VersionEnum version);
 }

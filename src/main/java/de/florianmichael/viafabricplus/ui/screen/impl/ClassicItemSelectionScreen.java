@@ -19,13 +19,12 @@ package de.florianmichael.viafabricplus.ui.screen.impl;
 
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.ui.screen.VFPScreen;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.MathHelper;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class ClassicItemSelectionScreen extends VFPScreen {
         INSTANCE = new ClassicItemSelectionScreen();
 
         ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
-            if (protocolVersion.isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+            if (protocolVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
                 INSTANCE.reload(protocolVersion, false);
             }
         });
@@ -57,7 +56,7 @@ public class ClassicItemSelectionScreen extends VFPScreen {
         super("Classic item selection", false);
     }
 
-    public void reload(final ComparableProtocolVersion version, final boolean hasCustomBlocksV1) {
+    public void reload(final VersionEnum version, final boolean hasCustomBlocksV1) {
         final List<Item> allowedItems = new ArrayList<>();
         allowedItems.add(Items.OAK_LOG);
         allowedItems.add(Items.OAK_PLANKS);
@@ -79,9 +78,9 @@ public class ClassicItemSelectionScreen extends VFPScreen {
         allowedItems.add(Items.OAK_SAPLING);
         allowedItems.add(Items.BOOKSHELF);
         allowedItems.add(Items.TNT);
-        if (version.isNewerThan(LegacyProtocolVersion.c0_0_19a_06)) {
+        if (version.isNewerThan(VersionEnum.c0_0_19a_06)) {
             allowedItems.add(Items.SPONGE);
-            if (version.isNewerThan(LegacyProtocolVersion.c0_0_20ac0_27)) {
+            if (version.isNewerThan(VersionEnum.c0_0_20ac0_27)) {
                 allowedItems.add(Items.WHITE_WOOL);
                 allowedItems.add(Items.ORANGE_WOOL);
                 allowedItems.add(Items.MAGENTA_WOOL);

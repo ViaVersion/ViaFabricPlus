@@ -19,6 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -50,7 +51,7 @@ public abstract class MixinItemStack {
 
     @Inject(method = "updateEmptyState", at = @At("HEAD"), cancellable = true)
     public void allowNegativeItems(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
             this.empty = false;
             final ItemStack self = (ItemStack) (Object) this;
             this.empty = self == EMPTY || this.getItem() == null || self.isOf(Items.AIR) || count == 0;
@@ -60,7 +61,7 @@ public abstract class MixinItemStack {
 
     @Inject(method = "isEmpty", at = @At("HEAD"), cancellable = true)
     public void dontRecalculateState(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
             cir.setReturnValue(this.empty);
         }
     }
@@ -69,7 +70,7 @@ public abstract class MixinItemStack {
     private void modifyMiningSpeedMultiplier(BlockState state, CallbackInfoReturnable<Float> ci) {
         final Item toolItem = ((ItemStack) (Object) this).getItem();
 
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2) && toolItem instanceof HoeItem) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2) && toolItem instanceof HoeItem) {
             ci.setReturnValue(1F);
         }
     }
@@ -78,7 +79,7 @@ public abstract class MixinItemStack {
             slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/entity/attribute/EntityAttribute;", ordinal = 0)),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeBaseValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D", ordinal = 0))
     private double redirectGetTooltip(PlayerEntity player, EntityAttribute attribute) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 0;
         } else {
             return player.getAttributeBaseValue(attribute);

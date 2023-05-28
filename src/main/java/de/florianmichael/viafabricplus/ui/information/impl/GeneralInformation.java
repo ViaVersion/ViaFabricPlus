@@ -20,7 +20,6 @@ package de.florianmichael.viafabricplus.ui.information.impl;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ui.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class GeneralInformation extends AbstractInformationGroup {
     @Override
     public void applyInformation(UserConnection userConnection, List<String> output) {
         output.add("Pipeline count: " + userConnection.getProtocolInfo().getPipeline().pipes().size());
-        output.add("Selected version (in the GUI): " + ViaLoadingBase.getInstance().getTargetVersion().getName() + " (" + ViaLoadingBase.getInstance().getTargetVersion().getVersion() + ")");
+        output.add("Selected version (in the GUI): " + ProtocolHack.targetVersion.getName() + " (" + ProtocolHack.targetVersion.getVersion() + ")");
         output.add("Connected version: " + ProtocolHack.getTargetVersion().getName() + " (" + ProtocolHack.getTargetVersion().getVersion() + ")");
     }
 }

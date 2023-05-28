@@ -53,8 +53,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
-	library "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
 	library "com.github.FlorianMichael:Classic4J:${project.classic4j_version}"
+	library "net.raphimc:ViaLoader:${project.vialoader_version}"
 
 	library "com.viaversion:viaversion:${project.viaversion_version}"
 	library ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {

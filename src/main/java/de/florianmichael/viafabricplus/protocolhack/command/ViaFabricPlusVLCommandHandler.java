@@ -23,14 +23,14 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import de.florianmichael.viafabricplus.definition.c0_30.command.impl.ListExtensionsCommand;
 import de.florianmichael.viafabricplus.definition.c0_30.command.impl.SetTimeCommand;
-import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaCommandHandler;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.raphimc.vialoader.impl.viaversion.VLCommandHandler;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ViaFabricPlusVLBViaCommandHandler extends VLBViaCommandHandler {
+public class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
 
-    public ViaFabricPlusVLBViaCommandHandler() {
+    public ViaFabricPlusVLCommandHandler() {
         super();
 
         this.registerSubCommand(new ListExtensionsCommand());

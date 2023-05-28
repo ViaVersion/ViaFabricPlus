@@ -15,19 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack.provider.vialoadingbase;
+package de.florianmichael.viafabricplus.protocolhack.provider.viaversion;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
-import de.florianmichael.vialoadingbase.provider.VLBBaseVersionProvider;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -44,6 +41,7 @@ import net.minecraft.network.packet.c2s.query.QueryRequestC2SPacket;
 import net.minecraft.network.packet.s2c.query.QueryPongS2CPacket;
 import net.minecraft.network.packet.s2c.query.QueryResponseS2CPacket;
 import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;
@@ -51,13 +49,13 @@ import java.net.SocketAddress;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-public class ViaFabricPlusVLBBaseVersionProvider extends VLBBaseVersionProvider {
+public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
 
     // Based on https://github.com/ViaVersion/ViaFabric/blob/main/viafabric-mc119/src/main/java/com/viaversion/fabric/mc119/service/ProtocolAutoDetector.java
-    private final static LoadingCache<InetSocketAddress, CompletableFuture<ProtocolVersion>> AUTO_DETECTION_CACHE = CacheBuilder.newBuilder().
+    private final static LoadingCache<InetSocketAddress, CompletableFuture<VersionEnum>> AUTO_DETECTION_CACHE = CacheBuilder.newBuilder().
             expireAfterWrite(30, TimeUnit.SECONDS).
             build(CacheLoader.from(address -> {
-                CompletableFuture<ProtocolVersion> future = new CompletableFuture<>();
+                CompletableFuture<VersionEnum> future = new CompletableFuture<>();
 
                 try {
                     final ClientConnection clientConnection = new ClientConnection(NetworkSide.CLIENTBOUND);
@@ -86,7 +84,7 @@ public class ViaFabricPlusVLBBaseVersionProvider extends VLBBaseVersionProvider 
                                     @Override
                                     public void onResponse(QueryResponseS2CPacket packet) {
                                         if (packet.metadata() != null && packet.metadata().version().isPresent()) {
-                                            final ProtocolVersion version = ViaLoadingBase.fromProtocolId(packet.metadata().version().get().protocolVersion());
+                                            final VersionEnum version = VersionEnum.fromProtocolId(packet.metadata().version().get().protocolVersion());
                                             future.complete(version);
 
                                             ViaFabricPlus.LOGGER.info("Auto-detected " + version + " for " + address);
@@ -126,7 +124,7 @@ public class ViaFabricPlusVLBBaseVersionProvider extends VLBBaseVersionProvider 
 
     @Override
     public int getClosestServerProtocol(UserConnection connection) throws Exception {
-        if (connection.isClientSide()) {
+        if (connection.isClientSide() && !MinecraftClient.getInstance().isInSingleplayer()) {
             if (GeneralSettings.INSTANCE.autoDetectVersion.getValue()) {
                 final SocketAddress target = connection.getChannel().remoteAddress();
                 if (target instanceof final InetSocketAddress socketAddress) {
@@ -136,7 +134,7 @@ public class ViaFabricPlusVLBBaseVersionProvider extends VLBBaseVersionProvider 
                             return;
                         }
                         if (version != null) {
-                            final ComparableProtocolVersion remapped = ViaLoadingBase.fromProtocolId(version.getVersion());
+                            final VersionEnum remapped = VersionEnum.fromProtocolId(version.getVersion());
                             if (remapped != null) {
                                 ProtocolHack.getForcedVersions().put(socketAddress, remapped);
                             }
@@ -144,6 +142,7 @@ public class ViaFabricPlusVLBBaseVersionProvider extends VLBBaseVersionProvider 
                     });
                 }
             }
+            System.out.println(ProtocolHack.getTargetVersion(connection.getChannel()).getName());
             return ProtocolHack.getTargetVersion(connection.getChannel()).getVersion();
         }
         return super.getClosestServerProtocol(connection);

@@ -20,6 +20,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protoco
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.Position;
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.blockconnections.AbstractFenceConnectionHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -41,7 +42,7 @@ public abstract class MixinAbstractFenceConnectionHandler {
     @Overwrite
     public byte getStates(UserConnection user, Position position, int blockState) {
         byte states = 0;
-        boolean pre1_12 = ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_12);
+        boolean pre1_12 = ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_12);
         if (connects(BlockFace.EAST, getBlockData(user, position.getRelative(BlockFace.EAST)), pre1_12)) states |= 1;
         if (connects(BlockFace.NORTH, getBlockData(user, position.getRelative(BlockFace.NORTH)), pre1_12)) states |= 2;
         if (connects(BlockFace.SOUTH, getBlockData(user, position.getRelative(BlockFace.SOUTH)), pre1_12)) states |= 4;

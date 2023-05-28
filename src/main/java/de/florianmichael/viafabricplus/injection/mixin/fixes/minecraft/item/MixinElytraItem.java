@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.EquipmentSlot;
@@ -43,7 +44,7 @@ public class MixinElytraItem extends Item {
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     public void implementLegacyAction(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
             ItemStack itemStack = user.getStackInHand(hand);
             EquipmentSlot equipmentSlot = MobEntity.getPreferredEquipmentSlot(itemStack);
             ItemStack itemStack2 = user.getEquippedStack(equipmentSlot);

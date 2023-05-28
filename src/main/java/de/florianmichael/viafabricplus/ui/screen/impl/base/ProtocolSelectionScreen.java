@@ -17,7 +17,6 @@
  */
 package de.florianmichael.viafabricplus.ui.screen.impl.base;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.ui.screen.VFPScreen;
@@ -26,7 +25,6 @@ import de.florianmichael.viafabricplus.ui.screen.impl.thirdparty.classicube.Clas
 import de.florianmichael.viafabricplus.ui.screen.impl.thirdparty.BetaCraftScreen;
 import de.florianmichael.viafabricplus.ui.screen.impl.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -34,8 +32,10 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.VersionEnum;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class ProtocolSelectionScreen extends VFPScreen {
     public final static ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
@@ -109,38 +109,38 @@ public class ProtocolSelectionScreen extends VFPScreen {
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
-            ViaLoadingBase.getProtocols().stream().map(ProtocolSlot::new).forEach(this::addEntry);
+            VersionEnum.SORTED_VERSIONS.stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }
     }
 
     public static class ProtocolSlot extends AlwaysSelectedEntryListWidget.Entry<ProtocolSlot> {
-        private final ProtocolVersion protocolVersion;
+        private final VersionEnum versionEnum;
 
-        public ProtocolSlot(final ProtocolVersion protocolVersion) {
-            this.protocolVersion = protocolVersion;
+        public ProtocolSlot(final VersionEnum versionEnum) {
+            this.versionEnum = versionEnum;
         }
 
         @Override
         public Text getNarration() {
-            return Text.literal(this.protocolVersion.getName());
+            return Text.literal(this.versionEnum.getName());
         }
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            ViaLoadingBase.getInstance().reload(this.protocolVersion);
+            ProtocolHack.setTargetVersion(this.versionEnum);
             playClickSound();
             return super.mouseClicked(mouseX, mouseY, button);
         }
 
         @Override
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            final boolean isSelected = ProtocolHack.getTargetVersion().getVersion() == protocolVersion.getVersion();
+            final boolean isSelected = ProtocolHack.getTargetVersion().getVersion() == versionEnum.getVersion();
 
             matrices.push();
             matrices.translate(x, y - 1, 0);
 
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            drawCenteredTextWithShadow(matrices, textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
+            drawCenteredTextWithShadow(matrices, textRenderer, this.versionEnum.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
             matrices.pop();
         }
     }

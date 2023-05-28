@@ -23,16 +23,16 @@ import de.florianmichael.viafabricplus.definition.bedrock.storage.JoinGameStorag
 import de.florianmichael.viafabricplus.definition.bedrock.ModelFormats;
 import de.florianmichael.viafabricplus.ui.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
-import de.florianmichael.vialoadingbase.model.ProtocolRange;
 import net.lenni0451.reflect.stream.RStream;
 import net.lenni0451.reflect.stream.field.FieldStream;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.api.chunk.BedrockChunk;
 import net.raphimc.viabedrock.api.model.entity.Entity;
 import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 import net.raphimc.viabedrock.protocol.storage.BlobCache;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
 import net.raphimc.viabedrock.protocol.storage.GameSessionStorage;
+import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialoader.util.VersionRange;
 
 import java.util.List;
 import java.util.Map;
@@ -42,7 +42,7 @@ import java.util.concurrent.CompletableFuture;
 public class BedrockInformation extends AbstractInformationGroup {
 
     public BedrockInformation() {
-        super(ProtocolRange.singleton(BedrockProtocolVersion.bedrockLatest));
+        super(VersionRange.singleton(VersionEnum.bedrockLatest));
     }
 
     @Override

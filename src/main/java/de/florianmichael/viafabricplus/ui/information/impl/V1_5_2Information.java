@@ -19,16 +19,16 @@ package de.florianmichael.viafabricplus.ui.information.impl;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ui.information.AbstractInformationGroup;
-import de.florianmichael.vialoadingbase.model.ProtocolRange;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.release.protocol1_6_1to1_5_2.storage.EntityTracker;
+import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialoader.util.VersionRange;
 
 import java.util.List;
 
 public class V1_5_2Information extends AbstractInformationGroup {
 
     public V1_5_2Information() {
-        super(ProtocolRange.andOlder(LegacyProtocolVersion.r1_5_2));
+        super(VersionRange.andOlder(VersionEnum.r1_5_2));
     }
 
     @Override

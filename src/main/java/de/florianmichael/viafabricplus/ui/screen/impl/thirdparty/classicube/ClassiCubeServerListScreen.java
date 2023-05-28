@@ -29,7 +29,6 @@ import de.florianmichael.viafabricplus.ui.screen.VFPScreen;
 import de.florianmichael.viafabricplus.ui.screen.impl.base.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.ui.screen.MappedSlotEntry;
 import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.ConnectScreen;
@@ -41,7 +40,7 @@ import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +128,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
             ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = classiCubeServerInfo.mpPass();
 
             if (AuthenticationSettings.INSTANCE.forceCPEIfUsingClassiCube.getValue()) {
-                ((IServerInfo) entry).viafabricplus_forceVersion(ViaLoadingBase.fromProtocolVersion(LegacyProtocolVersion.c0_30cpe));
+                ((IServerInfo) entry).viafabricplus_forceVersion(VersionEnum.c0_30cpe);
             }
 
             ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry);

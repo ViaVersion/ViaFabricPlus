@@ -17,10 +17,9 @@
  */
 package de.florianmichael.viafabricplus.ui.screen.impl.base;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ui.screen.VFPScreen;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -29,13 +28,15 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.raphimc.vialoader.util.VersionEnum;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class ForceVersionScreen extends VFPScreen {
-    private final Consumer<ComparableProtocolVersion> selectionConsumer;
+    private final Consumer<VersionEnum> selectionConsumer;
 
-    public ForceVersionScreen(final Screen prevScreen, final Consumer<ComparableProtocolVersion> selectionConsumer) {
+    public ForceVersionScreen(final Screen prevScreen, final Consumer<VersionEnum> selectionConsumer) {
         super("Force version", false);
 
         this.prevScreen = prevScreen;
@@ -63,7 +64,7 @@ public class ForceVersionScreen extends VFPScreen {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             this.addEntry(new ResetProtocolSlot());
-            ViaLoadingBase.getProtocols().stream().map(ViaProtocolSlot::new).forEach(this::addEntry);
+            VersionEnum.SORTED_VERSIONS.stream().map(ViaProtocolSlot::new).forEach(this::addEntry);
         }
     }
 
@@ -96,20 +97,20 @@ public class ForceVersionScreen extends VFPScreen {
     }
 
     public class ViaProtocolSlot extends DummyProtocolSlot {
-        private final ProtocolVersion protocolVersion;
+        private final VersionEnum versionEnum;
 
-        public ViaProtocolSlot(final ProtocolVersion protocolVersion) {
-            this.protocolVersion = protocolVersion;
+        public ViaProtocolSlot(final VersionEnum versionEnum) {
+            this.versionEnum = versionEnum;
         }
 
         @Override
         public Text getNarration() {
-            return Text.literal(this.protocolVersion.getName());
+            return Text.literal(this.versionEnum.getName());
         }
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            selectionConsumer.accept(ViaLoadingBase.fromProtocolVersion(protocolVersion));
+            selectionConsumer.accept(versionEnum);
             playClickSound();
             close();
 
@@ -119,7 +120,7 @@ public class ForceVersionScreen extends VFPScreen {
         @Override
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            drawCenteredTextWithShadow(matrices, textRenderer, this.protocolVersion.getName(), x + entryWidth / 2, y - 1 + entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+            drawCenteredTextWithShadow(matrices, textRenderer, this.versionEnum.getName(), x + entryWidth / 2, y - 1 + entryHeight / 2 - textRenderer.fontHeight / 2, -1);
         }
     }
 }

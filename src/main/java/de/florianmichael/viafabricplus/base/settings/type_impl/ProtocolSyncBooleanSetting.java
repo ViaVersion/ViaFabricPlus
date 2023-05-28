@@ -23,13 +23,13 @@ import de.florianmichael.viafabricplus.ui.screen.impl.settings.settingrenderer.P
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.vialoadingbase.model.ProtocolRange;
 import net.minecraft.text.MutableText;
+import net.raphimc.vialoader.util.VersionRange;
 
 public class ProtocolSyncBooleanSetting extends BooleanSetting {
-    private final ProtocolRange protocolRange;
+    private final VersionRange protocolRange;
 
-    public ProtocolSyncBooleanSetting(SettingGroup parent, MutableText name, ProtocolRange protocolRange) {
+    public ProtocolSyncBooleanSetting(SettingGroup parent, MutableText name, VersionRange protocolRange) {
         super(parent, name, true);
 
         this.protocolRange = protocolRange;
@@ -59,7 +59,7 @@ public class ProtocolSyncBooleanSetting extends BooleanSetting {
         return super.getValue();
     }
 
-    public ProtocolRange getProtocolRange() {
+    public VersionRange getProtocolRange() {
         return protocolRange;
     }
 }

@@ -20,11 +20,10 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.RakNetClientConnection;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -39,12 +38,12 @@ public class MixinMultiplayerServerListPinger {
 
     @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;Z)Lnet/minecraft/network/ClientConnection;"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void trackSessions(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress, Optional optional, InetSocketAddress inetSocketAddress) {
-        final ComparableProtocolVersion version = ((IServerInfo) entry).viafabricplus_forcedVersion();
+        final VersionEnum version = ((IServerInfo) entry).viafabricplus_forcedVersion();
 
         if (version != null) {
             ProtocolHack.getForcedVersions().put(inetSocketAddress, version);
         }
-        if (ProtocolHack.getTargetVersion(inetSocketAddress).isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolHack.getTargetVersion(inetSocketAddress) == VersionEnum.bedrockLatest) {
             RakNetClientConnection.getRakNetPingSessions().add(inetSocketAddress);
         }
     }

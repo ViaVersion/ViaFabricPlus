@@ -18,15 +18,15 @@
 package de.florianmichael.viafabricplus.ui.information;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.vialoadingbase.model.ProtocolRange;
+import net.raphimc.vialoader.util.VersionRange;
 
 import java.util.List;
 
 public abstract class AbstractInformationGroup {
-    private final ProtocolRange protocolRange;
+    private final VersionRange versionRange;
 
-    public AbstractInformationGroup(final ProtocolRange protocolRange) {
-        this.protocolRange = protocolRange;
+    public AbstractInformationGroup(final VersionRange versionRange) {
+        this.versionRange = versionRange;
     }
 
     public abstract void applyInformation(final UserConnection userConnection, final List<String> output);
@@ -48,7 +48,7 @@ public abstract class AbstractInformationGroup {
             return format(((double) value / 1024.0 / 1024.0 / 1024.0 / 1024.0)) + " Tb";
     }
 
-    public ProtocolRange getProtocolRange() {
-        return protocolRange;
+    public VersionRange getVersionRange() {
+        return versionRange;
     }
 }

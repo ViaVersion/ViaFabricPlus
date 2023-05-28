@@ -18,10 +18,9 @@
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.nbt.NbtCompound;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,15 +36,15 @@ public class MixinServerInfo implements IServerInfo {
     @Shadow public String name;
 
     @Unique
-    private ComparableProtocolVersion viafabricplus_forcedVersion = null;
+    private VersionEnum viafabricplus_forcedVersion = null;
 
     @Override
-    public ComparableProtocolVersion viafabricplus_forcedVersion() {
+    public VersionEnum viafabricplus_forcedVersion() {
         return viafabricplus_forcedVersion;
     }
 
     @Override
-    public void viafabricplus_forceVersion(ComparableProtocolVersion version) {
+    public void viafabricplus_forceVersion(VersionEnum version) {
         viafabricplus_forcedVersion = version;
     }
 
@@ -60,7 +59,7 @@ public class MixinServerInfo implements IServerInfo {
     private static void loadForcedVersion(NbtCompound root, CallbackInfoReturnable<ServerInfo> cir, ServerInfo serverInfo) {
         if (root.contains("viafabricplus_forcedversion")) {
             try {
-                ((IServerInfo) serverInfo).viafabricplus_forceVersion(ViaLoadingBase.fromProtocolId(root.getInt("viafabricplus_forcedversion")));
+                ((IServerInfo) serverInfo).viafabricplus_forceVersion(VersionEnum.fromProtocolId(root.getInt("viafabricplus_forcedversion")));
             } catch (Exception ignored) {
                 // Version doesn't exist anymore
             }

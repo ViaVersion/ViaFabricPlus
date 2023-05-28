@@ -48,7 +48,7 @@ public class MixinDebugHud {
             information.add(Formatting.GOLD + "[ViaFabricPlus] " + Formatting.WHITE);
 
             for (AbstractInformationGroup group : ViaFabricPlus.INSTANCE.getInformationSystem().getGroups()) {
-                if (group.getProtocolRange() != null && !group.getProtocolRange().contains(ProtocolHack.getTargetVersion())) continue;
+                if (group.getVersionRange() != null && !group.getVersionRange().contains(ProtocolHack.getTargetVersion())) continue;
 
                 final List<String> groupInformation = new ArrayList<>();
                 try {
@@ -56,7 +56,7 @@ public class MixinDebugHud {
                 } catch (Exception ignored) {}
                 if (groupInformation.isEmpty()) continue;
 
-                information.add(group.getProtocolRange() == null ? "General" : group.getProtocolRange().toString());
+                information.add(group.getVersionRange() == null ? "General" : group.getVersionRange().toString());
                 information.addAll(groupInformation);
                 information.add("");
             }
