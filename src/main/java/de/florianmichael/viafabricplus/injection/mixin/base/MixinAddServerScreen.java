@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.ui.screen.impl.base.ForceVersionScreen;
+import de.florianmichael.viafabricplus.screen.impl.base.ForceVersionScreen;
 import net.minecraft.client.gui.screen.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;

@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.ui.information.AbstractInformationGroup;
+import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import net.minecraft.client.MinecraftClient;

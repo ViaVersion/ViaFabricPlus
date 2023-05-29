@@ -75,6 +75,8 @@ public class ProtocolHack {
             return channel.attr(FORCED_VERSION).get();
         }
 
+        if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().isInSingleplayer()) return VersionEnum.r1_19_4;
+
         return targetVersion;
     }
 

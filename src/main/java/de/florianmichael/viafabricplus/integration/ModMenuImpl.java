@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.integration;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import de.florianmichael.viafabricplus.ui.screen.impl.settings.SettingsScreen;
+import de.florianmichael.viafabricplus.screen.impl.settings.SettingsScreen;
 
 public class ModMenuImpl implements ModMenuApi {
 
