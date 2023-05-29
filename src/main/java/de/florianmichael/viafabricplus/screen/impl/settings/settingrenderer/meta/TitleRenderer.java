@@ -34,7 +34,7 @@ public class TitleRenderer extends MappedSlotEntry {
 
     @Override
     public Text getNarration() {
-        return Text.literal(this.name);
+        return Text.literal(I18n.translate(this.name));
     }
 
     @Override
