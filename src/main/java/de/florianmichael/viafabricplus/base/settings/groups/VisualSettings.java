@@ -57,6 +57,6 @@ public class VisualSettings extends SettingGroup {
     public final ProtocolSyncBooleanSetting fixSodiumChunkRendering = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.sodium"), VersionRange.andOlder(VersionEnum.c0_28toc0_30));
 
     public VisualSettings() {
-        super("Visual");
+        super("settings.viafabricplus.visual");
     }
 }

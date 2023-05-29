@@ -9,6 +9,12 @@
   "words.viafabricplus.cancel": "ยกเลิก",
   "words.viafabricplus.cancelreset": "ยกเลิกและรีเซ็ต",
 
+  "settings.viafabricplus.authentication": "Authentication",
+  "settings.viafabricplus.experimental": "Experimental",
+  "settings.viafabricplus.visual": "Visual",
+  "settings.viafabricplus.debug": "Debug",
+  "settings.viafabricplus.general": "General",
+
   "general.viafabricplus.secret": "แสดงสุดยอดตั่งค่า",
   "general.viafabricplus.extrainformation": "แสดงมากขึ้นใน ดีบักโหมด",
   "general.viafabricplus.classicloading": "แสดงหน้าโหลดคลาสสิค",

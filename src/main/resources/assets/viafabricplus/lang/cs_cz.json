@@ -13,6 +13,12 @@
   "words.viafabricplus.reset": "Resetovat",
   "words.viafabricplus.copy": "Kopírovat kód",
 
+  "settings.viafabricplus.authentication": "Authentication",
+  "settings.viafabricplus.experimental": "Experimental",
+  "settings.viafabricplus.visual": "Visual",
+  "settings.viafabricplus.debug": "Debug",
+  "settings.viafabricplus.general": "General",
+
   "general.viafabricplus.secret": "Zobrazit \"Super Secret Settings\"",
   "general.viafabricplus.extrainformation": "Zobrazit více informací v ladící obrazovce",
   "general.viafabricplus.classicloading": "Zobrazit progres načítání mapy při připojování ke classic serveru",

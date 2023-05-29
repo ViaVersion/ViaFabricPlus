@@ -29,6 +29,6 @@ public class ExperimentalSettings extends SettingGroup {
     public final BooleanSetting fixFontCache = new BooleanSetting(this, Text.translatable("experimental.viafabricplus.fontcachefix"), true);
 
     public ExperimentalSettings() {
-        super("Experimental");
+        super("settings.viafabricplus.experimental");
     }
 }

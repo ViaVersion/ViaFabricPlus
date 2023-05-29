@@ -9,6 +9,12 @@
   "words.viafabricplus.cancel": "Abbrechen",
   "words.viafabricplus.cancelreset": "Abbrechen und zurücksetzen",
 
+  "settings.viafabricplus.authentication": "Authentication",
+  "settings.viafabricplus.experimental": "Experimental",
+  "settings.viafabricplus.visual": "Visual",
+  "settings.viafabricplus.debug": "Debug",
+  "settings.viafabricplus.general": "General",
+
   "general.viafabricplus.secret": "Super Secret Settings",
   "general.viafabricplus.extrainformation": "Zusätzliche Informationen im Debug-HUD anzeigen",
   "general.viafabricplus.classicloading": "Lade-Fortschritt in der Classic anzeigen",

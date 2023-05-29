@@ -12,6 +12,12 @@
     "words.viafabricplus.online": "Online Mód",
     "words.viafabricplus.reset": "Visszaállítás",
     "words.viafabricplus.copy": "Kód másolása",
+
+    "settings.viafabricplus.authentication": "Authentication",
+    "settings.viafabricplus.experimental": "Experimental",
+    "settings.viafabricplus.visual": "Visual",
+    "settings.viafabricplus.debug": "Debug",
+    "settings.viafabricplus.general": "General",
   
     "general.viafabricplus.secret": "Super Secret Settings mutatása",
     "general.viafabricplus.extrainformation": "Extra információ mutatása a Debug HUD-ban",

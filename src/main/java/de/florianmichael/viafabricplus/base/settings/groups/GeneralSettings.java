@@ -40,7 +40,7 @@ public class GeneralSettings extends SettingGroup {
     public final BooleanSetting autoDetectVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.autodetect"), false);
 
     public GeneralSettings() {
-        super("General");
+        super("settings.viafabricplus.general");
         mainButtonOrientation.setValue(1); // Default value
     }
 }
