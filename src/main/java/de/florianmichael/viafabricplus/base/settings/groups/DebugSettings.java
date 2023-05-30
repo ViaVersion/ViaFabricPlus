@@ -56,6 +56,6 @@ public class DebugSettings extends SettingGroup {
     public final ProtocolSyncBooleanSetting legacyMiningSpeeds = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.legacypseeds"), VersionRange.andOlder(VersionEnum.r1_4_6tor1_4_7));
 
     public DebugSettings() {
-        super("settings.viafabricplus.debug");
+        super(Text.translatable("settings.viafabricplus.debug"));
     }
 }

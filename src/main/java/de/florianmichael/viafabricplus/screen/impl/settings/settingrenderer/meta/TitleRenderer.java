@@ -25,15 +25,15 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class TitleRenderer extends MappedSlotEntry {
-    private final String name;
+    private final Text name;
 
-    public TitleRenderer(String name) {
+    public TitleRenderer(Text name) {
         this.name = name;
     }
 
     @Override
     public Text getNarration() {
-        return Text.translatable(this.name);
+        return this.name;
     }
 
     @Override
@@ -48,6 +48,6 @@ public class TitleRenderer extends MappedSlotEntry {
     public void mappedRender(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        textRenderer.drawWithShadow(matrices, Text.translatable(this.name).formatted(Formatting.BOLD), 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
+        textRenderer.drawWithShadow(matrices, this.name.copy().formatted(Formatting.BOLD), 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
     }
 }

@@ -19,12 +19,13 @@ package de.florianmichael.viafabricplus.base.settings.base;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.text.Text;
 
 public class SettingGroup {
     private final List<AbstractSetting<?>> settings = new ArrayList<>();
-    private final String name;
+    private final Text name;
 
-    public SettingGroup(String name) {
+    public SettingGroup(Text name) {
         this.name = name;
     }
 
@@ -32,7 +33,7 @@ public class SettingGroup {
         return settings;
     }
 
-    public String getName() {
+    public Text getName() {
         return name;
     }
 }
