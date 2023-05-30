@@ -73,7 +73,7 @@ public class BetaCraftScreen extends VFPScreen {
             for (BCVersion value : BCVersion.values()) {
                 final List<BCServerInfo> servers = SERVER_LIST.serversOfVersion(value);
                 if (servers.isEmpty()) continue;
-                addEntry(new TitleRenderer(value.name()));
+                addEntry(new TitleRenderer(Text.literal(value.name())));
                 for (BCServerInfo server : servers) {
                     addEntry(new ServerSlot(server));
                 }

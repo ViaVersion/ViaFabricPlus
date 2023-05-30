@@ -85,6 +85,6 @@ public class AuthenticationSettings extends SettingGroup {
 
 
     public AuthenticationSettings() {
-        super("Authentication");
+        super(Text.translatable("settings.viafabricplus.authentication"));
     }
 }
