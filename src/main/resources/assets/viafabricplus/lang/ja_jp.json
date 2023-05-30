@@ -12,12 +12,6 @@
   "words.viafabricplus.online": "オンラインモード",
   "words.viafabricplus.reset": "リセット",
 
-  "settings.viafabricplus.authentication": "Authentication",
-  "settings.viafabricplus.experimental": "Experimental",
-  "settings.viafabricplus.visual": "Visual",
-  "settings.viafabricplus.debug": "Debug",
-  "settings.viafabricplus.general": "General",
-
   "general.viafabricplus.secret": "Super Secret Settingsを表示",
   "general.viafabricplus.extrainformation": "デバッグ画面に追加情報を表示",
   "general.viafabricplus.classicloading": "接続画面に昔の読み込み進行情報を表示",

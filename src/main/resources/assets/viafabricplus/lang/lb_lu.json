@@ -9,12 +9,6 @@
   "words.viafabricplus.cancel": "Ofbriechen",
   "words.viafabricplus.cancelreset": "Ofbriechen an zerecksetzen",
 
-  "settings.viafabricplus.authentication": "Authentication",
-  "settings.viafabricplus.experimental": "Experimental",
-  "settings.viafabricplus.visual": "Visual",
-  "settings.viafabricplus.debug": "Debug",
-  "settings.viafabricplus.general": "General",
-
   "general.viafabricplus.secret": "Super Secret Settings",
   "general.viafabricplus.extrainformation": "Zousätzlech Informatiounen am Debug-HUD Unweisen",
   "general.viafabricplus.classicloading": "Lued-Fortschrett an der Classic Unweisen",

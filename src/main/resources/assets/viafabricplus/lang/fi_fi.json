@@ -14,12 +14,6 @@
   "words.viafabricplus.copy": "Kopioi koodi",
   "words.viafabricplus.error": "Jotain meni vikaan! Yritä myöhemmin uudelleen.",
 
-  "settings.viafabricplus.authentication": "Authentication",
-  "settings.viafabricplus.experimental": "Experimental",
-  "settings.viafabricplus.visual": "Visual",
-  "settings.viafabricplus.debug": "Debug",
-  "settings.viafabricplus.general": "General",
-
   "general.viafabricplus.secret": "Näytä Super Secret Settings",
   "general.viafabricplus.extrainformation": "Näytä enemmän tietoa Debug-näkymässä",
   "general.viafabricplus.classicloading": "Näytä klassinen latauksen tila Yhdistetään -näytössä",

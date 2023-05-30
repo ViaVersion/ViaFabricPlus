@@ -13,12 +13,6 @@
   "words.viafabricplus.reset": "重置",
   "words.viafabricplus.copy": "复制代码",
 
-  "settings.viafabricplus.authentication": "Authentication",
-  "settings.viafabricplus.experimental": "Experimental",
-  "settings.viafabricplus.visual": "Visual",
-  "settings.viafabricplus.debug": "Debug",
-  "settings.viafabricplus.general": "General",
-
   "general.viafabricplus.secret": "显示 “Super Secret Settings”（超级秘密设置）",
   "general.viafabricplus.extrainformation": "在\u00a76 [调试]\u00a7r 中显示额外信息",
   "general.viafabricplus.classicloading": "在连接服务器时使用旧版加载进度条",

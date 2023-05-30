@@ -13,12 +13,6 @@
   "words.viafabricplus.reset": "Réinitialiser",
   "words.viafabricplus.copy": "Copier le code",
 
-  "settings.viafabricplus.authentication": "Authentication",
-  "settings.viafabricplus.experimental": "Experimental",
-  "settings.viafabricplus.visual": "Visual",
-  "settings.viafabricplus.debug": "Debug",
-  "settings.viafabricplus.general": "General",
-
   "general.viafabricplus.secret": "Montrer les Super Secret Settings",
   "general.viafabricplus.extrainformation": "Afficher des informations supplémentaires dans le Hud de debug",
   "general.viafabricplus.classicloading": "Afficher la progression du chargement classique dans l'écran de connexion",

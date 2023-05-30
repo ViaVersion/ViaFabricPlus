@@ -14,12 +14,6 @@
   "words.viafabricplus.copy": "Зкопіювати код",
   "words.viafabricplus.error": "Щось пішло не так! Спробуйте будь ласка пізніше",
 
-  "settings.viafabricplus.authentication": "Authentication",
-  "settings.viafabricplus.experimental": "Experimental",
-  "settings.viafabricplus.visual": "Visual",
-  "settings.viafabricplus.debug": "Debug",
-  "settings.viafabricplus.general": "General",
-
   "general.viafabricplus.secret": "Показувати Супер Секретні Налаштування",
   "general.viafabricplus.extrainformation": "Показувати додаткову інформацію на екрані відладки",
   "general.viafabricplus.classicloading": "Показувати класичний прогрес завантаження на екрані підключення",

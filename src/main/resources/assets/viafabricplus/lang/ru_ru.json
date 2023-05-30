@@ -13,12 +13,6 @@
   "words.viafabricplus.reset": "Сброс",
   "words.viafabricplus.copy": "Копировать код",
 
-  "settings.viafabricplus.authentication": "Authentication",
-  "settings.viafabricplus.experimental": "Experimental",
-  "settings.viafabricplus.visual": "Visual",
-  "settings.viafabricplus.debug": "Debug",
-  "settings.viafabricplus.general": "General",
-
   "general.viafabricplus.secret": "Вернуть Super Secret Settings",
   "general.viafabricplus.extrainformation": "Показывать дополнительную информацию на экране отладки",
   "general.viafabricplus.classicloading": "Экран загрузки Classic при подключении",

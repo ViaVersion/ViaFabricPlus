@@ -23,7 +23,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.client.resource.language.I18n;
 
 public class TitleRenderer extends MappedSlotEntry {
     private final String name;
@@ -34,7 +33,7 @@ public class TitleRenderer extends MappedSlotEntry {
 
     @Override
     public Text getNarration() {
-        return Text.literal(I18n.translate(this.name));
+        return Text.translatable(this.name);
     }
 
     @Override
@@ -49,6 +48,6 @@ public class TitleRenderer extends MappedSlotEntry {
     public void mappedRender(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        textRenderer.drawWithShadow(matrices, Formatting.BOLD + I18n.translate(this.name), 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
+        textRenderer.drawWithShadow(matrices, Text.translatable(this.name).formatted(Formatting.BOLD), 3, entryHeight / 2F - textRenderer.fontHeight / 2F, -1);
     }
 }
