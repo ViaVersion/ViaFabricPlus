@@ -26,8 +26,6 @@ import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler
 import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.impl.base.ProtocolSelectionScreen;
-import de.florianmichael.viafabricplus.ui.screen.VFPScreen;
-import de.florianmichael.viafabricplus.ui.screen.impl.base.ProtocolSelectionScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;

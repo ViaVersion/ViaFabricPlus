@@ -19,13 +19,7 @@ package de.florianmichael.viafabricplus.screen.impl;
 
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.ui.screen.VFPScreen;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

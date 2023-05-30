@@ -1,6 +1,5 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.BlockState;
@@ -14,6 +13,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,7 +25,7 @@ public class MixinAbstractSignBlock {
 
     @Redirect(method = "onUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/SignBlockEntity;isWaxed()Z", ordinal = 1))
     public boolean removeCondition(SignBlockEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             return false;
         }
         return instance.isWaxed();
@@ -33,7 +33,7 @@ public class MixinAbstractSignBlock {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     public void changeSignApplicators(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_19_4)) return;
+        if (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_19_4)) return;
 
         // Remove HoneycombItem interactions
         if (world.getBlockEntity(pos) instanceof SignBlockEntity signBlockEntity && world.isClient) {

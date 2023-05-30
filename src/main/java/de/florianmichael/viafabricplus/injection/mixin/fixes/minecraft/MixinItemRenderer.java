@@ -17,12 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemModels;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
@@ -47,12 +42,5 @@ public class MixinItemRenderer {
         if (VisualSettings.INSTANCE.replacePetrifiedOakSlab.getValue() && world != null /* world is null in gui rendering */ && stack.isOf(Items.PETRIFIED_OAK_SLAB)) {
             cir.setReturnValue(this.models.getModelManager().getMissingModel());
         }
-    }
-
-    @Redirect(method = "renderGuiItemOverlay(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I"))
-    public int recolor(TextRenderer instance, String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10) && text.startsWith("-")) color = -43213;
-        return instance.draw(text, x, y, color, shadow, matrix, vertexConsumers, layerType, backgroundColor, light);
     }
 }
