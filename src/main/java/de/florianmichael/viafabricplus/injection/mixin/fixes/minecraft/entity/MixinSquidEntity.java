@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.passive.SquidEntity;
@@ -31,7 +32,7 @@ public class MixinSquidEntity {
 
     @Inject(method = "canBeLeashedBy", at = @At("HEAD"), cancellable = true)
     public void injectCanBeLeashedBy(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
             cir.setReturnValue(false);
         }
     }

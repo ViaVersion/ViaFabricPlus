@@ -20,6 +20,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protoco
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.Position;
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.blockconnections.AbstractFenceConnectionHandler;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.blockconnections.GlassConnectionHandler;
@@ -44,6 +45,6 @@ public abstract class MixinGlassConnectionHandler extends AbstractFenceConnectio
         if (states != 0) return states;
 
         ProtocolInfo protocolInfo = user.getProtocolInfo();
-        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && protocolInfo.getServerProtocolVersion() != -1 ? 0xF : states;
+        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && protocolInfo.getServerProtocolVersion() != -1 ? 0xF : states;
     }
 }

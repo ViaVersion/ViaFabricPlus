@@ -18,13 +18,13 @@
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.ui.screen.impl.base.ForceVersionScreen;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
+import de.florianmichael.viafabricplus.screen.impl.base.ForceVersionScreen;
 import net.minecraft.client.gui.screen.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -43,7 +43,7 @@ public class MixinAddServerScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     public void injectButton(CallbackInfo ci) {
-        final ComparableProtocolVersion forcedVersion = ((IServerInfo) server).viafabricplus_forcedVersion();
+        final VersionEnum forcedVersion = ((IServerInfo) server).viafabricplus_forcedVersion();
         this.addDrawableChild(ButtonWidget.builder(Text.literal(forcedVersion == null ? "Set version for this server" : forcedVersion.getName()), button ->
                         client.setScreen(new ForceVersionScreen(this, version -> ((IServerInfo) server).viafabricplus_forceVersion(version)))).
                 position(width - (forcedVersion == null ? 150 : 98) - 5, 5).size(forcedVersion == null ? 150 : 98, 20).build());

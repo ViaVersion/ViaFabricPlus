@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.LightBlock;
@@ -31,7 +32,7 @@ public class MixinLightBlock {
     // Not relevant for GamePlay
     @Redirect(method = "onUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isCreativeLevelTwoOp()Z"))
     public boolean removeIf(PlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             return true;
         }
         return instance.isCreativeLevelTwoOp();

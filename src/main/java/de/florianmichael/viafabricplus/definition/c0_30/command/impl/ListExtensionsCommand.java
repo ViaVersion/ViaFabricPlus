@@ -22,7 +22,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.definition.c0_30.command.ClassicViaSubCommand;
 import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;
 import net.minecraft.util.Formatting;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 
 public class ListExtensionsCommand extends ClassicViaSubCommand {
@@ -33,14 +33,14 @@ public class ListExtensionsCommand extends ClassicViaSubCommand {
 
     @Override
     public String description() {
-        return "Shows all classic extensions (only for " + LegacyProtocolVersion.c0_30cpe.getName() + ")";
+        return "Shows all classic extensions (only for " + VersionEnum.c0_30cpe.getName() + ")";
     }
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
         final UserConnection connection = getUser();
         if (!connection.has(ExtensionProtocolMetadataStorage.class)) {
-            sendMessage(sender, Formatting.RED + "Only for " + LegacyProtocolVersion.c0_30cpe.getName());
+            sendMessage(sender, Formatting.RED + "Only for " + VersionEnum.c0_30cpe.getName());
             return true;
         }
         ((IExtensionProtocolMetadataStorage) connection.get(ExtensionProtocolMetadataStorage.class)).getServerExtensions().forEach((extension, version) -> {

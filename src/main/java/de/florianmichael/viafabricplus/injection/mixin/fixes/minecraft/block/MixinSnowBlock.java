@@ -17,13 +17,13 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.SnowBlock;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -57,7 +57,7 @@ public class MixinSnowBlock {
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (MinecraftClient.getInstance() != null && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(viafabricplus_layers_to_shape_v1_12_2[state.get(LAYERS) - 1]);
         }
     }

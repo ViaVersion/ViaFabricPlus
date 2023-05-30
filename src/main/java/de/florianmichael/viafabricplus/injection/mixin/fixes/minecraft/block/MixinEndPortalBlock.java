@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.*;
@@ -47,10 +48,10 @@ public abstract class MixinEndPortalBlock extends BlockWithEntity {
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (MinecraftClient.getInstance() == null) return;
 
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             cir.setReturnValue(viafabricplus_shape_v1_8_x);
         }
-        else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
             cir.setReturnValue(viafabricplus_shape_v1_16_5);
         }
     }

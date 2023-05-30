@@ -17,13 +17,13 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FarmlandBlock;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -51,7 +51,7 @@ public class MixinFarmlandBlock extends Block {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (MinecraftClient.getInstance() != null && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_9_3tor1_9_4)) {
             cir.setReturnValue(viafabricplus_shape_v1_9_4);
         }
     }

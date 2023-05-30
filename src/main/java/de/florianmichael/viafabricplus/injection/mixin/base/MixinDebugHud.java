@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.ui.information.AbstractInformationGroup;
+import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
@@ -48,7 +48,7 @@ public class MixinDebugHud {
             information.add(Formatting.GOLD + "[ViaFabricPlus] " + Formatting.WHITE);
 
             for (AbstractInformationGroup group : ViaFabricPlus.INSTANCE.getInformationSystem().getGroups()) {
-                if (group.getProtocolRange() != null && !group.getProtocolRange().contains(ProtocolHack.getTargetVersion())) continue;
+                if (group.getVersionRange() != null && !group.getVersionRange().contains(ProtocolHack.getTargetVersion())) continue;
 
                 final List<String> groupInformation = new ArrayList<>();
                 try {
@@ -56,7 +56,7 @@ public class MixinDebugHud {
                 } catch (Exception ignored) {}
                 if (groupInformation.isEmpty()) continue;
 
-                information.add(group.getProtocolRange() == null ? "General" : group.getProtocolRange().toString());
+                information.add(group.getVersionRange() == null ? "General" : group.getVersionRange().toString());
                 information.addAll(groupInformation);
                 information.add("");
             }

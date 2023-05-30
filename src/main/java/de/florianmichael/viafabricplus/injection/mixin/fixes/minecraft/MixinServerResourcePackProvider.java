@@ -20,6 +20,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -54,10 +55,10 @@ public class MixinServerResourcePackProvider {
     @Inject(method = "getDownloadHeaders", at = @At("TAIL"), cancellable = true)
     private static void removeHeaders(CallbackInfoReturnable<Map<String, String>> cir) {
         final LinkedHashMap<String, String> modifiableMap = new LinkedHashMap<>(cir.getReturnValue());
-        if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_14)) {
+        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_14)) {
             modifiableMap.remove("X-Minecraft-Version-ID");
         }
-        if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_13)) {
+        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_13)) {
             modifiableMap.remove("X-Minecraft-Pack-Format");
             modifiableMap.remove("User-Agent");
         }
@@ -73,10 +74,10 @@ public class MixinServerResourcePackProvider {
     @Redirect(method = "verifyFile", at = @At(value = "INVOKE", target = "Lcom/google/common/hash/HashCode;toString()Ljava/lang/String;", remap = false))
     public String revertHashAlgorithm(HashCode instance) {
         try {
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
                 //noinspection deprecation
                 return Hashing.sha1().hashBytes(Files.toByteArray(viafabricplus_trackedFile)).toString();
-            } else if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_18)) {
+            } else if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_18tor1_18_1)) {
                 return DigestUtils.sha1Hex(new FileInputStream(viafabricplus_trackedFile));
             }
         } catch (IOException ignored) {
@@ -86,7 +87,7 @@ public class MixinServerResourcePackProvider {
 
     @Redirect(method = "verifyFile", at = @At(value = "INVOKE", target = "Ljava/lang/String;toLowerCase(Ljava/util/Locale;)Ljava/lang/String;"))
     public String disableIgnoreCase(String instance, Locale locale) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return instance;
         }
         return instance.toLowerCase(locale);

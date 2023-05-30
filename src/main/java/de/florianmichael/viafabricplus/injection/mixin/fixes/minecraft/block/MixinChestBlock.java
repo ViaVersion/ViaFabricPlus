@@ -21,11 +21,11 @@ import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -40,7 +40,7 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (MinecraftClient.getInstance() != null && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_2)) {
             return VoxelShapes.fullCube();
         }
         return super.getCollisionShape(state, world, pos, context);

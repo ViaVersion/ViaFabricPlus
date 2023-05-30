@@ -20,8 +20,8 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.minecraft.client.network.ServerInfo;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -43,7 +43,7 @@ public class MixinConnectScreen_1 {
         final InetSocketAddress address = instance.get();
         if (field_40415 == null) return address;
 
-        final ComparableProtocolVersion forcedVersion = ((IServerInfo) field_40415).viafabricplus_forcedVersion();
+        final VersionEnum forcedVersion = ((IServerInfo) field_40415).viafabricplus_forcedVersion();
         if (forcedVersion != null) {
             ProtocolHack.getForcedVersions().put(address, forcedVersion);
             ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(forcedVersion);

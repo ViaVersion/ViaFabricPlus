@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.definition.v1_14_4.LegacyServerAddress;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.ui.screen.impl.base.ProtocolSelectionScreen;
+import de.florianmichael.viafabricplus.screen.impl.base.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;

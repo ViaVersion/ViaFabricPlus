@@ -129,7 +129,6 @@
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
     "fixes.vialegacy.MixinProtocolc0_30toc0_30cpe",
     "fixes.vialegacy.MixinViaLegacyConfig",
-    "fixes.vialoadingbase.MixinVLBViaConfig",
     "fixes.viaversion.MixinCommonBoss",
     "fixes.viaversion.MixinNBTType",
     "fixes.viaversion.MixinProtocolVersion",

@@ -22,6 +22,7 @@ import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.network.ClientLoginNetworkHandler;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.storage.ProtocolMetadataStorage;
 import org.spongepowered.asm.mixin.Final;
@@ -39,7 +40,7 @@ public class MixinClientLoginNetworkHandler {
 
     @Inject(method = "joinServerSession", at = @At("HEAD"), cancellable = true)
     public void dontVerifySessionIfCracked(String serverId, CallbackInfoReturnable<Text> cir) {
-        if (ProtocolHack.getTargetVersion(connection.channel).isOlderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+        if (ProtocolHack.getTargetVersion(connection.channel).isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
             if (!connection.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get().get(ProtocolMetadataStorage.class).authenticate) {
                 cir.setReturnValue(null);
             }

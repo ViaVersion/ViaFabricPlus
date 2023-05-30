@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.mappings;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.GameVersion;
@@ -32,44 +33,44 @@ public class PackFormatsMappings {
     private final static Map<Integer, GameVersion> protocolMap = new HashMap<>();
 
     public static void load() {
-        registerVersion(ProtocolVersion.v1_20, 15, "1.20 Pre-release 5", "1.20-pre5");
-        registerVersion(ProtocolVersion.v1_19_4, 13, "1.19.4");
-        registerVersion(ProtocolVersion.v1_19_3, 12, "1.19.3");
-        registerVersion(ProtocolVersion.v1_19_1, 9, "1.19.2");
-        registerVersion(ProtocolVersion.v1_19, 9, "1.19");
-        registerVersion(ProtocolVersion.v1_18_2, 8, "1.18.2");
-        registerVersion(ProtocolVersion.v1_18, 8, "1.18");
-        registerVersion(ProtocolVersion.v1_17_1, 7, "1.17.1");
-        registerVersion(ProtocolVersion.v1_17, 7, "1.17");
-        registerVersion(ProtocolVersion.v1_16_4, 6, "1.16.5");
-        registerVersion(ProtocolVersion.v1_16_3, 6, "1.16.3");
-        registerVersion(ProtocolVersion.v1_16_2, 6, "1.16.2");
-        registerVersion(ProtocolVersion.v1_16_1, 5, "1.16.1");
-        registerVersion(ProtocolVersion.v1_16, 5, "1.16");
-        registerVersion(ProtocolVersion.v1_15_2, 5, "1.15.2");
-        registerVersion(ProtocolVersion.v1_15_1, 5, "1.15.1");
-        registerVersion(ProtocolVersion.v1_15, 5, "1.15");
-        registerVersion(ProtocolVersion.v1_14_4, 4, "1.14.4");
-        registerVersion(ProtocolVersion.v1_14_3, 4, "1.14.3");
-        registerVersion(ProtocolVersion.v1_14_2, 4, "1.14.2", "1.14.2 / f647ba8dc371474797bee24b2b312ff4");
-        registerVersion(ProtocolVersion.v1_14_1, 4, "1.14.1", "1.14.1 / a8f78b0d43c74598a199d6d80cda413f");
-        registerVersion(ProtocolVersion.v1_14, 4, "1.14", "1.14 / 5dac5567e13e46bdb0c1d90aa8d8b3f7");
-        registerVersion(ProtocolVersion.v1_13_2, 4, "1.13.2"); // ids weren't sent over the http headers back then, why care...
-        registerVersion(ProtocolVersion.v1_13_1, 4, "1.13.1");
-        registerVersion(ProtocolVersion.v1_13, 4, "1.13");
-        registerVersion(ProtocolVersion.v1_12_2, 3, "1.12.2");
-        registerVersion(ProtocolVersion.v1_12_1, 3, "1.12.1");
-        registerVersion(ProtocolVersion.v1_12, 3, "1.12");
-        registerVersion(ProtocolVersion.v1_11_1, 3, "1.11.2");
-        registerVersion(ProtocolVersion.v1_11, 3, "1.11");
-        registerVersion(ProtocolVersion.v1_10, 2, "1.10.2");
-        registerVersion(ProtocolVersion.v1_9_3, 2, "1.9.4");
-        registerVersion(ProtocolVersion.v1_9_2, 2, "1.9.2");
-        registerVersion(ProtocolVersion.v1_9_1, 2, "1.9.1");
-        registerVersion(ProtocolVersion.v1_9, 2, "1.9");
-        registerVersion(ProtocolVersion.v1_8, 1, "1.8.9");
-        registerVersion(ProtocolVersion.v1_7_6, 1, "1.7.10");
-        registerVersion(ProtocolVersion.v1_7_1, 1, "1.7.5");
+        registerVersion(VersionEnum.r1_20, 15, "1.20 Pre-release 7", "1.20-pre7");
+        registerVersion(VersionEnum.r1_19_4, 13, "1.19.4");
+        registerVersion(VersionEnum.r1_19_3, 12, "1.19.3");
+        registerVersion(VersionEnum.r1_19_1tor1_19_2, 9, "1.19.2");
+        registerVersion(VersionEnum.r1_19, 9, "1.19");
+        registerVersion(VersionEnum.r1_18_2, 8, "1.18.2");
+        registerVersion(VersionEnum.r1_18tor1_18_1, 8, "1.18");
+        registerVersion(VersionEnum.r1_17_1, 7, "1.17.1");
+        registerVersion(VersionEnum.r1_17, 7, "1.17");
+        registerVersion(VersionEnum.r1_16_4tor1_16_5, 6, "1.16.5");
+        registerVersion(VersionEnum.r1_16_3, 6, "1.16.3");
+        registerVersion(VersionEnum.r1_16_2, 6, "1.16.2");
+        registerVersion(VersionEnum.r1_16_1, 5, "1.16.1");
+        registerVersion(VersionEnum.r1_16, 5, "1.16");
+        registerVersion(VersionEnum.r1_15_2, 5, "1.15.2");
+        registerVersion(VersionEnum.r1_15_1, 5, "1.15.1");
+        registerVersion(VersionEnum.r1_15, 5, "1.15");
+        registerVersion(VersionEnum.r1_14_4, 4, "1.14.4");
+        registerVersion(VersionEnum.r1_14_3, 4, "1.14.3");
+        registerVersion(VersionEnum.r1_14_2, 4, "1.14.2", "1.14.2 / f647ba8dc371474797bee24b2b312ff4");
+        registerVersion(VersionEnum.r1_14_1, 4, "1.14.1", "1.14.1 / a8f78b0d43c74598a199d6d80cda413f");
+        registerVersion(VersionEnum.r1_14, 4, "1.14", "1.14 / 5dac5567e13e46bdb0c1d90aa8d8b3f7");
+        registerVersion(VersionEnum.r1_13_2, 4, "1.13.2"); // ids weren't sent over the http headers back then, why care...
+        registerVersion(VersionEnum.r1_13_1, 4, "1.13.1");
+        registerVersion(VersionEnum.r1_13, 4, "1.13");
+        registerVersion(VersionEnum.r1_12_2, 3, "1.12.2");
+        registerVersion(VersionEnum.r1_12_1, 3, "1.12.1");
+        registerVersion(VersionEnum.r1_12, 3, "1.12");
+        registerVersion(VersionEnum.r1_11_1to1_11_2, 3, "1.11.2");
+        registerVersion(VersionEnum.r1_11, 3, "1.11");
+        registerVersion(VersionEnum.r1_10, 2, "1.10.2");
+        registerVersion(VersionEnum.r1_9_3tor1_9_4, 2, "1.9.4");
+        registerVersion(VersionEnum.r1_9_2, 2, "1.9.2");
+        registerVersion(VersionEnum.r1_9_1, 2, "1.9.1");
+        registerVersion(VersionEnum.r1_9, 2, "1.9");
+        registerVersion(VersionEnum.r1_8, 1, "1.8.9");
+        registerVersion(VersionEnum.r1_7_6tor1_7_10, 1, "1.7.10");
+        registerVersion(VersionEnum.r1_7_2tor1_7_5, 1, "1.7.5");
 
         checkOutdated(SharedConstants.getProtocolVersion());
     }
@@ -91,12 +92,12 @@ public class PackFormatsMappings {
         return protocolMap.get(targetVersion);
     }
 
-    private static void registerVersion(final ProtocolVersion version, final int packFormat, final String name) {
+    private static void registerVersion(final VersionEnum version, final int packFormat, final String name) {
         registerVersion(version, packFormat, name, name);
     }
 
-    private static void registerVersion(final ProtocolVersion version, final int packFormat, final String name, final String id) {
-        protocolMap.put(version.getOriginalVersion(), new GameVersion() {
+    private static void registerVersion(final VersionEnum version, final int packFormat, final String name, final String id) {
+        protocolMap.put(version.getProtocol().getOriginalVersion(), new GameVersion() {
             @Override
             public SaveVersion getSaveVersion() {
                 return null;
@@ -114,7 +115,7 @@ public class PackFormatsMappings {
 
             @Override
             public int getProtocolVersion() {
-                return version.getOriginalVersion();
+                return version.getProtocol().getOriginalVersion();
             }
 
             @Override

@@ -23,6 +23,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,7 +46,7 @@ public class MixinSwordItem extends ToolItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             ItemStack itemStack = user.getStackInHand(hand);
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
@@ -55,7 +56,7 @@ public class MixinSwordItem extends ToolItem {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return UseAction.BLOCK;
         }
         return super.getUseAction(stack);
@@ -63,7 +64,7 @@ public class MixinSwordItem extends ToolItem {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 72000;
         }
         return super.getMaxUseTime(stack);

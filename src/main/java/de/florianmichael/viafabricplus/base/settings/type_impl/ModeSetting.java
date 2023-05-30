@@ -18,8 +18,8 @@
 package de.florianmichael.viafabricplus.base.settings.type_impl;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.ui.screen.MappedSlotEntry;
-import de.florianmichael.viafabricplus.ui.screen.impl.settings.settingrenderer.ModeSettingRenderer;
+import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.screen.impl.settings.settingrenderer.ModeSettingRenderer;
 import de.florianmichael.viafabricplus.base.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
 import net.minecraft.text.MutableText;

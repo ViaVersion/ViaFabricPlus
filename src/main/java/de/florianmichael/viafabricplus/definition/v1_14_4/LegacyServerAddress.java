@@ -17,22 +17,19 @@
  */
 package de.florianmichael.viafabricplus.definition.v1_14_4;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
-import de.florianmichael.vialoadingbase.model.ProtocolRange;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.network.AllowedAddressResolver;
 import net.minecraft.client.network.ServerAddress;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialoader.util.VersionRange;
 
 public class LegacyServerAddress {
-    private final static ProtocolRange SRV_RANGE = new ProtocolRange(ProtocolVersion.v1_16_4, LegacyProtocolVersion.r1_3_1tor1_3_2);
+    private final static VersionRange SRV_RANGE = new VersionRange(VersionEnum.r1_16_4tor1_16_5, VersionEnum.r1_3_1tor1_3_2);
 
-    public static ServerAddress parse(ComparableProtocolVersion version, String address) {
-        if (version == null) version = ViaLoadingBase.getInstance().getTargetVersion();
+    public static ServerAddress parse(VersionEnum version, String address) {
+        if (version == null) version = ProtocolHack.getTargetVersion();
         final ServerAddress mc = ServerAddress.parse(address);
-        if (SRV_RANGE.contains(version) || version.isEqualTo(BedrockProtocolVersion.bedrockLatest)) {
+        if (SRV_RANGE.contains(version) || version == VersionEnum.bedrockLatest) {
             if (!mc.equals(ServerAddress.INVALID)) {
                 return AllowedAddressResolver.DEFAULT.redirectResolver.lookupRedirect(mc).orElse(mc);
             }

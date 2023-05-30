@@ -17,10 +17,12 @@
  */
 package de.florianmichael.viafabricplus.definition;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.base.event.LoadClassicProtocolExtensionCallback;
 import net.minecraft.client.MinecraftClient;
+import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 
@@ -34,10 +36,10 @@ public class ChatLengthCalculation {
 
         ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
             INSTANCE.maxLength = 256;
-            if (protocolVersion.isOlderThanOrEqualTo(ProtocolVersion.v1_10)) {
+            if (protocolVersion.isOlderThanOrEqualTo(VersionEnum.r1_10)) {
                 INSTANCE.maxLength = 100;
 
-                if (protocolVersion.isOlderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                if (protocolVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
                     INSTANCE.maxLength = 64 - MinecraftClient.getInstance().getSession().getUsername().length() - 2;
                 }
             }

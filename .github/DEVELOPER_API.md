@@ -5,27 +5,26 @@ public class ViaFabricPlusExampleAddon implements ClientModInitializer {
 
   @Override
   public void onInitializeClient() {
-    ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
-      System.out.println("Version changed to " + protocolVersion.getName());
+    ChangeProtocolVersionCallback.EVENT.register(versionEnum -> {
+      System.out.println("Version changed to " + versionEnum.getName());
     });
   }
 }
 ```
-#### ViaFabricPlus has 7 events at the moment:
+#### ViaFabricPlus has 6 events at the moment:
 | Callback class name                  | Description                                                                                                                                                                                                   |
 |--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ChangeProtocolVersionCallback        | Called when the user changes the target version in the screen, or if you connect to a server for which a specific version has been selected, you disconnect, the event for the actual version is also called. |
 | FinishMinecraftLoadCallback          | Called when Minecraft is finished with loading all its components                                                                                                                                             |
-| FinishViaLoadingBaseStartupCallback  | Called when ViaLoadingBase and Via* is loaded and ready to use                                                                                                                                                |
+| FinishViaVersionStartupCallback      | Called when ViaVersion is loaded and ready to use                                                                                                                                                             |
 | InitializeSettingsCallback           | Called after the default setting groups are loaded and before the setting config is loaded                                                                                                                    |
 | LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)                                                                                                                          |
 | PreLoadCallback                      | Called before everything (Pre-pre load)                                                                                                                                                                       |
-| ViaLoadingBaseBuilderCallback        | Called when Via* is initialized                                                                                                                                                                               |              
 
 ### General API
 #### Get the release version of a material:
 ```java
-final ProtocolRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
+final VersionRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
 
 // The Range class then contains all versions in which the item occurs. 
 // You can find out how the Range class works in the ViaLoadingBase README.

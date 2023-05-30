@@ -17,9 +17,11 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.gui.screen.GameModeSelectionScreen;
+import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -42,11 +44,11 @@ public class MixinGameModeSelectionScreen {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixUIWidth(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
             final List<GameModeSelectionScreen.GameModeSelection> gameModeSelections = new ArrayList<>(Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList());
 
-            if (ProtocolHack.getTargetVersion().isOlderThan(LegacyProtocolVersion.r1_3_1tor1_3_2)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
-            if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
+            if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_3_1tor1_3_2)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
+            if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
 
             viafabricplus_unwrappedGameModes = gameModeSelections.toArray(GameModeSelectionScreen.GameModeSelection[]::new);
             UI_WIDTH = viafabricplus_unwrappedGameModes.length * 31 - 5;
@@ -55,7 +57,7 @@ public class MixinGameModeSelectionScreen {
 
     @Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;VALUES:[Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;"))
     public GameModeSelectionScreen.GameModeSelection[] removeNewerGameModes() {
-        if (ProtocolHack.getTargetVersion().isOlderThan(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
             return viafabricplus_unwrappedGameModes;
         }
         return GameModeSelectionScreen.GameModeSelection.values();

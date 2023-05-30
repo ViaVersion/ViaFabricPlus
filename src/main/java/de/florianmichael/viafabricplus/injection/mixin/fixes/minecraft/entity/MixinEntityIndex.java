@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -42,12 +43,12 @@ public class MixinEntityIndex<T extends EntityLike> {
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Ljava/util/Map;containsKey(Ljava/lang/Object;)Z", remap = false))
     private boolean allowDuplicateUuid(Map<UUID, T> instance, Object o) {
-        return instance.containsKey(o) && ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_16_4);
+        return instance.containsKey(o) && ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_16_4tor1_16_5);
     }
 
     @Inject(method = "size", at = @At("HEAD"), cancellable = true)
     private void returnRealSize(CallbackInfoReturnable<Integer> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
             cir.setReturnValue(this.idToEntity.size());
         }
     }

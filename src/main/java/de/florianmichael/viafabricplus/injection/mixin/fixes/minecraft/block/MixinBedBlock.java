@@ -17,14 +17,13 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -44,14 +43,14 @@ public class MixinBedBlock {
 
     @Inject(method = "bounceEntity", at = @At("HEAD"), cancellable = true)
     public void injectBounceEntity(Entity entity, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
             ci.cancel();
         }
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (MinecraftClient.getInstance() != null && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             cir.setReturnValue(viafabricplus_bed_shape_v1_13_2);
         }
     }

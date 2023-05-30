@@ -21,6 +21,7 @@ import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_16_2to1_16_1.ServerboundPackets1_16_2;
@@ -76,7 +77,7 @@ public abstract class MixinClientPlayerInteractionManager {
 
     @Inject(method = "attackEntity", at = @At("HEAD"))
     private void injectAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8) && player instanceof IClientPlayerEntity) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && player instanceof IClientPlayerEntity) {
             player.swingHand(Hand.MAIN_HAND);
             ((IClientPlayerEntity) player).viafabricplus_cancelSwingOnce();
         }
@@ -96,7 +97,7 @@ public abstract class MixinClientPlayerInteractionManager {
         if (type == SlotActionType.QUICK_CRAFT) return true;
 
         // quick move always uses empty stack for verification since 1.12
-        if (type == SlotActionType.QUICK_MOVE && ProtocolHack.getTargetVersion().isNewerThan(ProtocolVersion.v1_11_1)) return true;
+        if (type == SlotActionType.QUICK_MOVE && ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_11_1to1_11_2)) return true;
 
         // pickup with slot -999 (outside window) to throw items always uses empty stack for verification
         return type == SlotActionType.PICKUP && slot == -999;
@@ -104,7 +105,7 @@ public abstract class MixinClientPlayerInteractionManager {
 
     @WrapWithCondition(method = "clickSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
     private boolean modifySlotClickPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5) && packet instanceof ClickSlotC2SPacket clickSlot) {
             ItemStack slotItemBeforeModification;
 
             if (this.viafabricplus_shouldEmpty(clickSlot.getActionType(), clickSlot.getSlot()))
@@ -120,7 +121,7 @@ public abstract class MixinClientPlayerInteractionManager {
             final byte button = (byte) clickSlot.getButton();
             final short lastActionId = ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId();
             final int actionType = clickSlot.getActionType().ordinal();
-            final Item item = ItemTranslator.minecraftToViaVersion(viaConnection, slotItemBeforeModification, ProtocolVersion.v1_16.getVersion());
+            final Item item = ItemTranslator.minecraftToViaVersion(viaConnection, slotItemBeforeModification, VersionEnum.r1_16.getVersion());
 
             viaConnection.getChannel().eventLoop().submit(() -> {
                 final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, viaConnection);
@@ -149,7 +150,7 @@ public abstract class MixinClientPlayerInteractionManager {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;syncSelectedSlot()V"),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;sendSequencedPacket(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/network/SequencedPacketCreator;)V", ordinal = 0)))
     private boolean redirectInteractItem(ClientPlayNetworkHandler instance, Packet<?> packet) {
-        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_17);
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_17);
     }
 
     @Inject(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0, shift = At.Shift.BEFORE))
@@ -167,7 +168,7 @@ public abstract class MixinClientPlayerInteractionManager {
 
     @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
     public void cacheActionResult(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             this.viafabricplus_actionResult = this.interactBlockInternal(player, hand, hitResult);
 
             if (this.viafabricplus_actionResult == ActionResult.FAIL) {
@@ -178,7 +179,7 @@ public abstract class MixinClientPlayerInteractionManager {
 
     @Redirect(method = "method_41933", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlockInternal(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;"))
     public ActionResult provideCachedResult(ClientPlayerInteractionManager instance, ClientPlayerEntity player, Hand hand, BlockHitResult hitResult) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             return this.viafabricplus_actionResult;
         }
         return interactBlockInternal(player, hand, hitResult);

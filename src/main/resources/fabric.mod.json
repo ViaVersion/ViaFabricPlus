@@ -33,6 +33,9 @@
     "java": ">=17"
   },
   "breaks": {
-    "viafabric": "*"
+    "viafabric": "*",
+    "multiconnect": "*",
+    "memoryleakfix": "*",
+    "krypton": "<=0.2.2"
   }
 }

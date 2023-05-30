@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.base.settings.base;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.ui.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableTextContent;
 

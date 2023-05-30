@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -30,6 +31,6 @@ public class MixinAnimalEntity {
 
     @Redirect(method = "interactMob", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isClient:Z"))
     public boolean redirectInteractMob(World instance) {
-        return instance.isClient && ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ProtocolVersion.v1_15);
+        return instance.isClient && ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_15);
     }
 }

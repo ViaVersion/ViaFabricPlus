@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.BlockState;
@@ -34,7 +35,7 @@ public class MixinMiningToolItem {
     @Inject(method = "getMiningSpeedMultiplier", at = @At("RETURN"), cancellable = true)
     public void changeHoeEffectiveBlocks(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
         //noinspection ConstantValue
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_15_2) && (Object) this instanceof HoeItem) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2) && (Object) this instanceof HoeItem) {
             cir.setReturnValue(1.0F);
         }
     }

@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.merchant;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.screen.MerchantScreenHandler;
@@ -30,7 +31,7 @@ public class MixinMerchantScreenHandler {
 
     @Inject(method = "switchTo", at = @At("HEAD"), cancellable = true)
     private void injectSwitchTo(int recipeId, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             ci.cancel();
         }
     }

@@ -18,18 +18,18 @@
 package de.florianmichael.viafabricplus.definition.v1_12_2;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
 import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.Glyph;
 import net.minecraft.client.font.GlyphRenderer;
 import net.minecraft.client.font.RenderableGlyph;
 import net.minecraft.client.texture.NativeImage;
+import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -37,7 +37,7 @@ import java.util.function.Supplier;
 public class FontCacheFix {
     public final static boolean DASH_LOADER = FabricLoader.getInstance().isModLoaded("dashloader");
 
-    private static ComparableProtocolVersion protocolVersion;
+    private static VersionEnum protocolVersion;
 
     public static void init() {
         if (DASH_LOADER) return;
@@ -50,9 +50,9 @@ public class FontCacheFix {
     }
 
     public static boolean shouldReplaceFontRenderer() {
-        if (ViaLoadingBase.getInstance() == null || DASH_LOADER || protocolVersion == null) return false;
+        if (DASH_LOADER || protocolVersion == null) return false;
 
-        return ExperimentalSettings.INSTANCE.fixFontCache.getValue() && protocolVersion.isOlderThanOrEqualTo(ProtocolVersion.v1_12_2);
+        return ExperimentalSettings.INSTANCE.fixFontCache.getValue() && protocolVersion.isOlderThanOrEqualTo(VersionEnum.r1_12_2);
     }
 
     public enum BuiltinEmptyGlyph1_12_2 implements Glyph {

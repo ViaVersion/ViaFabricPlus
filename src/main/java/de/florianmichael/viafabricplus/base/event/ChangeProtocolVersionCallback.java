@@ -17,9 +17,9 @@
  */
 package de.florianmichael.viafabricplus.base.event;
 
-import de.florianmichael.vialoadingbase.model.ComparableProtocolVersion;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.raphimc.vialoader.util.VersionEnum;
 
 public interface ChangeProtocolVersionCallback {
 
@@ -29,5 +29,5 @@ public interface ChangeProtocolVersionCallback {
         }
     });
 
-    void onChangeProtocolVersion(final ComparableProtocolVersion protocolVersion);
+    void onChangeProtocolVersion(final VersionEnum protocolVersion);
 }

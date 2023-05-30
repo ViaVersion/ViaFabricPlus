@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.ItemEntity;
@@ -30,7 +31,7 @@ public class MixinItemEntity {
 
     @Inject(method = "applyWaterBuoyancy", at = @At("HEAD"), cancellable = true)
     public void injectApplyWaterBuoyancy(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             ci.cancel();
         }
     }
