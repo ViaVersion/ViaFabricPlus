@@ -49,7 +49,7 @@ public class AuthenticationSettings extends SettingGroup {
     public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, Text.translatable("authentication.viafabricplus.bedrock"), () -> CompletableFuture.runAsync(() -> {
         try {
             try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
-                BedrockAccountHandler.INSTANCE.setAccount(MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
+                final var mcChain = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
                     MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new ConfirmScreen(consumer -> {
                         if (consumer) {
                             MinecraftClient.getInstance().keyboard.setClipboard(msaDeviceCode.userCode());
@@ -64,17 +64,19 @@ public class AuthenticationSettings extends SettingGroup {
                         e.printStackTrace();
                         MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("words.viafabricplus.cancel"), false)));
                     }
-                })));
+                }));
+                BedrockAccountHandler.INSTANCE.setAccount(mcChain, MinecraftAuth.BEDROCK_PLAY_FAB_TOKEN.getFromInput(httpClient, mcChain.prevResult().fullXblSession()));
             }
             ProtocolSelectionScreen.INSTANCE.open(new MultiplayerScreen(new TitleScreen()));
         } catch (Throwable e) {
             e.printStackTrace();
+            MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("words.viafabricplus.cancel"), false)));
         }
     })) {
         @Override
         public MutableText displayValue() {
-            if (BedrockAccountHandler.INSTANCE.getAccount() != null) {
-                return Text.literal("Bedrock account: " + BedrockAccountHandler.INSTANCE.getAccount().displayName());
+            if (BedrockAccountHandler.INSTANCE.getMcChain() != null) {
+                return Text.literal("Bedrock account: " + BedrockAccountHandler.INSTANCE.getMcChain().displayName());
             }
             return super.displayValue();
         }

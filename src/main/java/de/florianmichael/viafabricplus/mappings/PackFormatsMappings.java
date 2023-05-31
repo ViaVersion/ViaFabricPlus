@@ -33,7 +33,7 @@ public class PackFormatsMappings {
     private final static Map<Integer, GameVersion> protocolMap = new HashMap<>();
 
     public static void load() {
-        registerVersion(VersionEnum.r1_20, 15, "1.20 Pre-release 7", "1.20-pre7");
+        registerVersion(VersionEnum.r1_20, 15, "1.20 Release Candidate 1", "1.20-rc1");
         registerVersion(VersionEnum.r1_19_4, 13, "1.19.4");
         registerVersion(VersionEnum.r1_19_3, 12, "1.19.3");
         registerVersion(VersionEnum.r1_19_1tor1_19_2, 9, "1.19.2");
