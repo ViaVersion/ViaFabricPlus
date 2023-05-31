@@ -1,5 +1,6 @@
 plugins {
 	id "fabric-loom" version "1.1-SNAPSHOT"
+	id "maven-publish"
 }
 
 archivesBaseName = project.archives_base_name
@@ -123,4 +124,26 @@ jar {
 		exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA"
 	}
 	from("LICENSE") { rename { "${it}_${project.archivesBaseName}" } }
+}
+
+publishing {
+	repositories {
+		maven {
+			name = "Via"
+			url = "https://repo.viaversion.com/"
+			credentials(PasswordCredentials)
+			authentication {
+				basic(BasicAuthentication)
+			}
+		}
+	}
+	publications {
+		maven(MavenPublication) {
+			groupId = project.maven_group
+			artifactId = project.archives_base_name
+			version = project.mod_version
+
+			from components.java
+		}
+	}
 }
