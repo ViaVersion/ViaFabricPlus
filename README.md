@@ -93,6 +93,37 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 4. Open the folder as a Gradle project in your preferred IDE.
 5. Run the mod.
 
+### Include via Gradle/Maven
+```groovy
+repositories {
+    maven { 
+        name = "ViaVersion"
+        url = "https://repo.viaversion.com"
+    }
+}
+
+dependencies {
+    implementation "de.florianmichael:viafabricplus:2.7.3" // Get latest version from releases
+}
+```
+
+```xml
+<repositories>
+    <repository>
+        <id>viaversion</id>
+        <url>https://repo.viaversion.com</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>de.florianmichael</groupId>
+        <artifactId>viafabricplus</artifactId>
+        <version>2.7.3</version> <!-- Get latest version from releases -->
+    </dependency>
+</dependencies>
+```
+
 ### To learn more about the API and about addons, you can simply click [here](.github/DEVELOPER_API.md)
 
 ## ⚠️ WARNING ⚠️
