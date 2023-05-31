@@ -27,8 +27,7 @@ public class ViaFabricPlusExampleAddon implements ClientModInitializer {
 final VersionRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
 
 // The Range class then contains all versions in which the item occurs. 
-// You can find out how the Range class works in the ViaLoadingBase README.
-// https://github.com/FlorianMichael/ViaLoadingBase
+// https://github.com/ViaVersion/ViaLoader
 ```
 
 #### Creating own settings for the settings screen:
