@@ -13,6 +13,12 @@
   "words.viafabricplus.reset": "Зкинути",
   "words.viafabricplus.copy": "Зкопіювати код",
   "words.viafabricplus.error": "Щось пішло не так! Спробуйте будь ласка пізніше",
+  
+  "settings.viafabricplus.authentication": "Авторизація",
+  "settings.viafabricplus.experimental": "Експериментальне",
+  "settings.viafabricplus.visual": "Візуальне",
+  "settings.viafabricplus.debug": "Дебаг",
+  "settings.viafabricplus.general": "Загальне",
 
   "general.viafabricplus.secret": "Показувати Супер Секретні Налаштування",
   "general.viafabricplus.extrainformation": "Показувати додаткову інформацію на екрані відладки",
@@ -46,6 +52,7 @@
   "authentication.viafabricplus.spoof": "Підмінити ім'я користувача на ім'я ClassiCube, якщо використовується ClassiCube",
   "authentication.viafabricplus.skin": "Дозволити ViaLegacy завантажувати скіни в старих версіх",
   "authentication.viafabricplus.bedrock": "Нажміть, щоб встановити аккаунт для Bedrock",
+  "authentication.viafabricplus.error": "ViaFabricPlus не змогла підтвердити вашу сесію! Будь ласка ввійдіть у ваш аккаунт або вимкніть авторизацію BetaCraft у налаштуваннях ViaFabricPlus",
 
   "visual.viafabricplus.secure": "Прибрати застереження чату",
   "visual.viafabricplus.indicator": "Сховати ідикатор підпису",
@@ -75,6 +82,5 @@
 
   "classicube.viafabricplus.warning": "Ця фішка надішле API запит до ClassiCube API.",
 
-  "betacraft.viafabricplus.warning": "Нажимаючи цю кнопку ви надішлете API запит до \"betacraft.uk/serverlist\".",
-  "betacraft.viafabricplus.error": "Щось пішло не так! Будь ласка, спробуйте знову пізніше"
+  "betacraft.viafabricplus.warning": "Нажимаючи цю кнопку ви надішлете API запит до \"betacraft.uk/serverlist\"."
 }
