@@ -12,6 +12,13 @@
   "words.viafabricplus.online": "Лицензионный",
   "words.viafabricplus.reset": "Сброс",
   "words.viafabricplus.copy": "Копировать код",
+  "words.viafabricplus.error": "Что-то пошло не так. Повторите попытку позже.",
+
+  "settings.viafabricplus.authentication": "Аутентификация",
+  "settings.viafabricplus.experimental": "Экспериментальные",
+  "settings.viafabricplus.visual": "Внешний вид",
+  "settings.viafabricplus.debug": "Отладка",
+  "settings.viafabricplus.general": "Основные",
 
   "general.viafabricplus.secret": "Вернуть Super Secret Settings",
   "general.viafabricplus.extrainformation": "Показывать дополнительную информацию на экране отладки",
@@ -45,6 +52,7 @@
   "authentication.viafabricplus.spoof": "Имя пользователя ClassiCube при его использовании",
   "authentication.viafabricplus.skin": "Разрешить ViaLegacy загружать скины в старых версиях",
   "authentication.viafabricplus.bedrock": "Нажмите для настройки учётной записи Bedrock Edition",
+  "authentication.viafabricplus.error": "Не удалось проверить вашу сессию. Войдите в свою учётную запись или отключите аутентификацию BetaCraft в настройках ViaFabricPlus.",
 
   "visual.viafabricplus.secure": "Удалять уведомления о безопасности чата",
   "visual.viafabricplus.indicator": "Скрывать индикатор цифровой подписи в чате",
@@ -75,7 +83,6 @@
   "classicube.viafabricplus.warning": "Эта функция отправит запросы API к ClassiCube API.",
 
   "betacraft.viafabricplus.warning": "Нажатие этой кнопки отправит запрос API к \"betacraft.uk/serverlist\".",
-  "betacraft.viafabricplus.error": "Что-то пошло не так. Повторите попытку позже.",
 
   "modmenu.summaryTranslation.viafabricplus": "Мод для подключения к серверам любых версий.",
   "modmenu.descriptionTranslation.viafabricplus": "Мод Fabric для подключения к серверам §lлюбых§r версий Minecraft (Classic, Alpha, Beta, снапшоты, релизы и даже Bedrock), содержащий приятные исправления для улучшения игрового процесса."

@@ -14,6 +14,12 @@
   "words.viafabricplus.copy": "Kopiuj kod",
   "words.viafabricplus.error": "Coś poszło nie tak! Proszę, spróbuj ponownie później",
 
+  "settings.viafabricplus.authentication": "Uwierzytelnianie",
+  "settings.viafabricplus.experimental": "Eksperymenty",
+  "settings.viafabricplus.visual": "Wizualne",
+  "settings.viafabricplus.debug": "Debugowanie",
+  "settings.viafabricplus.general": "Ogólne",
+
   "general.viafabricplus.secret": "Pokazuj Super Secret Settings",
   "general.viafabricplus.extrainformation": "Pokazuj dodatkowe informacje w interfejsie debugowania",
   "general.viafabricplus.classicloading": "Pokazuj klasyczny pasek ładowania w ekranie łączenia",

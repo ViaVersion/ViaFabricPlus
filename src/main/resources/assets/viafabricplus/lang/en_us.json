@@ -14,6 +14,12 @@
   "words.viafabricplus.copy": "Copy code",
   "words.viafabricplus.error": "Something went wrong! Please try again later",
 
+  "settings.viafabricplus.authentication": "Authentication",
+  "settings.viafabricplus.experimental": "Experimental",
+  "settings.viafabricplus.visual": "Visual",
+  "settings.viafabricplus.debug": "Debug",
+  "settings.viafabricplus.general": "General",
+
   "general.viafabricplus.secret": "Show Super Secret Settings",
   "general.viafabricplus.extrainformation": "Show extra information in Debug Hud",
   "general.viafabricplus.classicloading": "Show classic loading progress in connect screen",

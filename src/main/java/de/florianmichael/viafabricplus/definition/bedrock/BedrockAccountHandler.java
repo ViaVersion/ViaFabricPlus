@@ -17,16 +17,14 @@
  */
 package de.florianmichael.viafabricplus.definition.bedrock;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.FileSaver;
 import net.raphimc.mcauth.MinecraftAuth;
 import net.raphimc.mcauth.step.bedrock.StepMCChain;
+import net.raphimc.mcauth.step.bedrock.playfab.StepPlayFabToken;
 import net.raphimc.mcauth.util.MicrosoftConstants;
 import org.apache.http.impl.client.CloseableHttpClient;
-
-import java.util.Map;
 
 public class BedrockAccountHandler extends FileSaver {
     public static BedrockAccountHandler INSTANCE;
@@ -36,7 +34,8 @@ public class BedrockAccountHandler extends FileSaver {
         BedrockAccountHandler.INSTANCE.init();
     }
 
-    private StepMCChain.MCChain account;
+    private StepMCChain.MCChain mcChain;
+    private StepPlayFabToken.PlayFabToken playFabToken;
 
     public BedrockAccountHandler() {
         super("bedrock.account");
@@ -44,30 +43,39 @@ public class BedrockAccountHandler extends FileSaver {
 
     @Override
     public void write(JsonObject object) {
-        if (account == null) return;
+        if (mcChain == null) return;
 
-        for (Map.Entry<String, JsonElement> entry : account.toJson().entrySet()) {
-            object.add(entry.getKey(), entry.getValue());
-        }
+        object.add("mc-chain", mcChain.toJson());
+        object.add("play-fab-token", playFabToken.toJson());
     }
 
     @Override
     public void read(JsonObject object) {
         try {
-            account = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.fromJson(object);
+            mcChain = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.fromJson(object.get("mc-chain").getAsJsonObject());
             try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
-                account = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.refresh(httpClient, account);
+                mcChain = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.refresh(httpClient, mcChain);
+            }
+
+            playFabToken = MinecraftAuth.BEDROCK_PLAY_FAB_TOKEN.fromJson(object.get("play-fab-token").getAsJsonObject());
+            try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
+                playFabToken = MinecraftAuth.BEDROCK_PLAY_FAB_TOKEN.refresh(httpClient, playFabToken);
             }
         } catch (Exception e) {
             ViaFabricPlus.LOGGER.warn("No Bedrock account could be found");
         }
     }
 
-    public StepMCChain.MCChain getAccount() {
-        return account;
+    public void setAccount(final StepMCChain.MCChain mcChain, final StepPlayFabToken.PlayFabToken playFabToken) {
+        this.mcChain = mcChain;
+        this.playFabToken = playFabToken;
     }
 
-    public void setAccount(StepMCChain.MCChain account) {
-        this.account = account;
+    public StepMCChain.MCChain getMcChain() {
+        return mcChain;
+    }
+
+    public StepPlayFabToken.PlayFabToken getPlayFabToken() {
+        return playFabToken;
     }
 }

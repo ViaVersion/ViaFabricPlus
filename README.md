@@ -14,7 +14,7 @@
 # Why another protocol translator?
 ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomputer/multiconnect), and it also promises more compactness and stability. ViaFabricPlus can do everything multiconnect could do, but supports more Minecraft versions (listed below) and has more protocol changes implemented.
 ### Supported Server versions
-- Release (1.0.0 - 1.20 [1.20-pre7])
+- Release (1.0.0 - 1.20 [1.20-rc1])
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
@@ -75,12 +75,12 @@ For compiling only! **You do not need to install these!**
 | ViaVersion             | https://github.com/ViaVersion/ViaVersion                   |
 | ViaBackwards           | https://github.com/ViaVersion/ViaBackwards                 |
 | Snake YAML             | https://mvnrepository.com/artifact/org.yaml/snakeyaml/1.33 |
-| ViaLegacy              | https://github.com/RaphiMC/ViaLegacy                       |
-| ViaAprilFools          | https://github.com/RaphiMC/ViaAprilFools                   |
-| ViaBedrock             | https://github.com/RaphiMC/ViaBedrock                      |
+| ViaLegacy              | https://github.com/ViaVersion/ViaLegacy                    |
+| ViaAprilFools          | https://github.com/ViaVersion/ViaAprilFools                |
+| ViaBedrock             | https://github.com/ViaVersion/ViaBedrock                   |
 | MC-Structs             | https://github.com/Lenni0451/MCStructs                     |
 | Reflect                | https://github.com/Lenni0451/Reflect                       |
-| ViaLoadingBase         | https://github.com/FlorianMichael/ViaLoadingBase           |
+| ViaLoader              | https://github.com/ViaVersion/ViaLoader                    |
 | Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop       |
 | Classic4J              | https://github.com/FlorianMichael/Classic4J                |
 </details>
@@ -92,6 +92,37 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 3. Run `./gradlew genSources`.
 4. Open the folder as a Gradle project in your preferred IDE.
 5. Run the mod.
+
+### Include via Gradle/Maven
+```groovy
+repositories {
+    maven { 
+        name = "ViaVersion"
+        url = "https://repo.viaversion.com"
+    }
+}
+
+dependencies {
+    implementation "de.florianmichael:viafabricplus:2.7.3" // Get latest version from releases
+}
+```
+
+```xml
+<repositories>
+    <repository>
+        <id>viaversion</id>
+        <url>https://repo.viaversion.com</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>de.florianmichael</groupId>
+        <artifactId>viafabricplus</artifactId>
+        <version>2.7.3</version> <!-- Get latest version from releases -->
+    </dependency>
+</dependencies>
+```
 
 ### To learn more about the API and about addons, you can simply click [here](.github/DEVELOPER_API.md)
 

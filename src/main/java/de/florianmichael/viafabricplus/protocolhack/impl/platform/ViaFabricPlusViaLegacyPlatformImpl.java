@@ -15,25 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.base.settings.base;
+package de.florianmichael.viafabricplus.protocolhack.impl.platform;
 
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.text.Text;
+import net.raphimc.vialoader.impl.platform.ViaLegacyPlatformImpl;
 
-public class SettingGroup {
-    private final List<AbstractSetting<?>> settings = new ArrayList<>();
-    private final Text name;
+public class ViaFabricPlusViaLegacyPlatformImpl extends ViaLegacyPlatformImpl {
 
-    public SettingGroup(Text name) {
-        this.name = name;
-    }
-
-    public List<AbstractSetting<?>> getSettings() {
-        return settings;
-    }
-
-    public Text getName() {
-        return name;
+    @Override
+    public String getCpeAppName() {
+        return "ViaFabricPlus";
     }
 }

@@ -36,6 +36,7 @@
     "fixes.minecraft.MixinProfileKeysImpl",
     "fixes.minecraft.MixinServerResourcePackProvider",
     "fixes.minecraft.MixinStringHelper",
+    "fixes.minecraft.MixinTextRenderer",
     "fixes.minecraft.block.MixinAbstractBlock",
     "fixes.minecraft.block.MixinAbstractBlock_AbstractBlockState",
     "fixes.minecraft.block.MixinAnvilBlock",

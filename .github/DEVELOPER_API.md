@@ -22,13 +22,18 @@ public class ViaFabricPlusExampleAddon implements ClientModInitializer {
 | PreLoadCallback                      | Called before everything (Pre-pre load)                                                                                                                                                                       |
 
 ### General API
+#### Add CustomPayload channels for versions below 1.13
+In order to receive custom payloads with custom channels in versions below 1.13, you need to register them, that's what you do:
+```java
+Protocol1_13To1_12_2.MAPPINGS.getChannelMappings().put("FML|HS", "fml:hs");
+```
+
 #### Get the release version of a material:
 ```java
 final VersionRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
 
 // The Range class then contains all versions in which the item occurs. 
-// You can find out how the Range class works in the ViaLoadingBase README.
-// https://github.com/FlorianMichael/ViaLoadingBase
+// https://github.com/ViaVersion/ViaLoader
 ```
 
 #### Creating own settings for the settings screen:
