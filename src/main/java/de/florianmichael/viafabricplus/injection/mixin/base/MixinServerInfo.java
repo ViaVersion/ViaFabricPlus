@@ -70,4 +70,30 @@ public class MixinServerInfo implements IServerInfo {
     public void trackForcedVersion(ServerInfo serverInfo, CallbackInfo ci) {
         viafabricplus_forceVersion(((IServerInfo) serverInfo).viafabricplus_forcedVersion());
     }
+
+    @Unique
+    private boolean viafabricplus_enabled;
+
+    @Override
+    public boolean viafabricplus_enabled() {
+        return viafabricplus_enabled;
+    }
+
+    @Override
+    public void viafabricplus_enable() {
+        viafabricplus_enabled = true;
+    }
+
+    @Unique
+    private int viafabricplus_translatingVersion;
+
+    @Override
+    public int viafabricplus_translatingVersion() {
+        return viafabricplus_translatingVersion;
+    }
+
+    @Override
+    public void viafabricplus_setTranslatingVersion(int version) {
+        viafabricplus_translatingVersion = version;
+    }
 }

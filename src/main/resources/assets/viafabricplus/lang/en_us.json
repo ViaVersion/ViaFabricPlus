@@ -13,6 +13,7 @@
   "words.viafabricplus.reset": "Reset",
   "words.viafabricplus.copy": "Copy code",
   "words.viafabricplus.error": "Something went wrong! Please try again later",
+  "words.viafabricplus.translate": "Via translates to: %s",
 
   "settings.viafabricplus.authentication": "Authentication",
   "settings.viafabricplus.experimental": "Experimental",
@@ -27,6 +28,7 @@
   "general.viafabricplus.creative": "Remove not available items from creative tab",
   "general.viafabricplus.protocolsync": "Automatically change Settings based on the current version",
   "general.viafabricplus.autodetect": "Auto detect version",
+  "general.viafabricplus.advertised": "Show advertised/server version in Multiplayer",
 
   "experimental.viafabricplus.chunkborderfix": "Fix Chunk borders",
   "experimental.viafabricplus.watermovement": "Water movement edge detection",

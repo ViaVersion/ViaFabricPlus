@@ -23,4 +23,10 @@ public interface IServerInfo {
 
     VersionEnum viafabricplus_forcedVersion();
     void viafabricplus_forceVersion(VersionEnum version);
+
+    boolean viafabricplus_enabled();
+    void viafabricplus_enable();
+
+    int viafabricplus_translatingVersion();
+    void viafabricplus_setTranslatingVersion(final int version);
 }
