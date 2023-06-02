@@ -18,7 +18,6 @@
   "general.viafabricplus.classicloading": "Zobrazit progres načítání mapy při připojování ke classic serveru",
   "general.viafabricplus.main": "Umístění hlavního tlačítka",
   "general.viafabricplus.creative": "Odstranit nedostupné předměty z inventáře tvořivé hry",
-  "general.viafabricplus.classiccommands": "Povolit classic příkazy",
   "general.viafabricplus.protocolsync": "Automaticky změnit nastavení podle zvolené verze",
 
   "experimental.viafabricplus.chunkborderfix": "Opravit okraje chunků",

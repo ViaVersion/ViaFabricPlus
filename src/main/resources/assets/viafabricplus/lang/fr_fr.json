@@ -18,7 +18,6 @@
   "general.viafabricplus.classicloading": "Afficher la progression du chargement classique dans l'écran de connexion",
   "general.viafabricplus.main": "Orientation du bouton principal",
   "general.viafabricplus.creative": "Supprimer les éléments non disponibles de l'inventaire créatif",
-  "general.viafabricplus.classiccommands": "Autoriser l'utilisation de la commande de protocole classique",
   "general.viafabricplus.protocolsync": "Modifier automatiquement les paramètres en fonction de la version utilisée",
   "general.viafabricplus.autodetect": "Détecter automatiquement la version",
 
