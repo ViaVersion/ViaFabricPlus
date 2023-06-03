@@ -175,16 +175,18 @@ public abstract class MixinEntity {
     @Inject(method = "getPosWithYOffset", at = @At("HEAD"), cancellable = true)
     public void changeLogic(float offset, CallbackInfoReturnable<BlockPos> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
-            final BlockPos blockPos = new BlockPos(MathHelper.floor(this.pos.x), MathHelper.floor(this.pos.y - (double)offset), MathHelper.floor(this.pos.z));
-
+            int i = MathHelper.floor(this.pos.x);
+            int j = MathHelper.floor(this.pos.y - (double)offset);
+            int k = MathHelper.floor(this.pos.z);
+            BlockPos blockPos = new BlockPos(i, j, k);
             if (this.world.getBlockState(blockPos).isAir()) {
-                final BlockPos downBlockPos = blockPos.down();
-                BlockState blockState = this.world.getBlockState(downBlockPos);
-
+                BlockPos blockPos2 = blockPos.down();
+                BlockState blockState = this.world.getBlockState(blockPos2);
                 if (blockState.isIn(BlockTags.FENCES) || blockState.isIn(BlockTags.WALLS) || blockState.getBlock() instanceof FenceGateBlock) {
-                    cir.setReturnValue(downBlockPos);
+                    cir.setReturnValue(blockPos2);
                 }
             }
+
             cir.setReturnValue(blockPos);
         }
     }
