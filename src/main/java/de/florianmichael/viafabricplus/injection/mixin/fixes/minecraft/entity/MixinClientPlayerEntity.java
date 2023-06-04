@@ -19,7 +19,6 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.mojang.authlib.GameProfile;
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
 import de.florianmichael.viafabricplus.definition.v1_8.ArmorPointCalculation;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
@@ -165,6 +164,14 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_3)) {
             sendSprintingPacket();
         }
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
+    public boolean alwaysSendPacket(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
+            return false;
+        }
+        return isClimbing();
     }
 
     @Redirect(method = "autoJump", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;inverseSqrt(F)F"))
