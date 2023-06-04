@@ -82,7 +82,7 @@ public abstract class MixinClientPlayerInteractionManager {
     @Inject(method = "breakBlock", at = @At("TAIL"))
     public void resetBlockBreaking(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_3)) {
-            this.currentBreakingPos = new BlockPos(this.currentBreakingPos.getX(), this.client.world.getBottomY() - 1, this.currentBreakingPos.getZ());
+            this.currentBreakingPos = new BlockPos(this.currentBreakingPos.getX(), -1, this.currentBreakingPos.getZ());
         }
     }
 
