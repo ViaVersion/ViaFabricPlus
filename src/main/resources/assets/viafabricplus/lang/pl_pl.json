@@ -14,6 +14,7 @@
   "words.viafabricplus.copy": "Kopiuj kod",
   "words.viafabricplus.error": "Coś poszło nie tak! Proszę, spróbuj ponownie później",
   "words.viafabricplus.translate": "Via tłumaczy na: %s",
+  "words.viafabricplus.serverversion": "Wersja serwera: %s",
 
   "settings.viafabricplus.authentication": "Uwierzytelnianie",
   "settings.viafabricplus.experimental": "Eksperymenty",
