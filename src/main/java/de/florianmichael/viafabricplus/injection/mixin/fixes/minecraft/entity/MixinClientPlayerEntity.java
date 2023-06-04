@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.world.GameMode;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
 import de.florianmichael.viafabricplus.definition.v1_8.ArmorPointCalculation;
@@ -168,7 +169,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
     public boolean alwaysSendPacket(ClientPlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_1)) {
             return false;
         }
         return isClimbing();
@@ -185,6 +186,14 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             return x * (1.5F - var1 * x * x);
         }
         return MathHelper.inverseSqrt(x);
+    }
+
+    @Override
+    public boolean isCreative() {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+            return client.interactionManager.getCurrentGameMode() == GameMode.CREATIVE;
+        }
+        return super.isCreative();
     }
 
     @Override
