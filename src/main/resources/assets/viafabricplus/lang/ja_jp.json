@@ -17,7 +17,6 @@
   "general.viafabricplus.classicloading": "接続画面に昔の読み込み進行情報を表示",
   "general.viafabricplus.main": "メインボタンの位置",
   "general.viafabricplus.creative": "利用不可能なアイテムをクリエイティブタブから削除",
-  "general.viafabricplus.classiccommands": "従来のプロトコルコマンドの使用を許可",
   "general.viafabricplus.protocolsync": "選択中のバージョンに基づいて設定を自動的に変更",
 
   "debug.viafabricplus.sequence": "優先順位付けを無効化",

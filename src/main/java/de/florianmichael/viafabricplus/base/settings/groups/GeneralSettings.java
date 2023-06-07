@@ -32,12 +32,12 @@ public class GeneralSettings extends SettingGroup {
             Text.translatable("words.viafabricplus.rb")
     );
     public final BooleanSetting removeNotAvailableItemsFromCreativeTab = new BooleanSetting(this, Text.translatable("general.viafabricplus.creative"), true);
-    public final BooleanSetting allowClassicProtocolCommandUsage = new BooleanSetting(this, Text.translatable("general.viafabricplus.classiccommands"), true);
     public final BooleanSetting automaticallyChangeValuesBasedOnTheCurrentVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.protocolsync"), true);
     public final BooleanSetting showSuperSecretSettings = new BooleanSetting(this, Text.translatable("general.viafabricplus.secret"), true);
     public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, Text.translatable("general.viafabricplus.extrainformation"), true);
     public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, Text.translatable("general.viafabricplus.classicloading"), true);
     public final BooleanSetting autoDetectVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.autodetect"), false);
+    public final BooleanSetting showAdvertisedServerVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.advertised"), true);
 
     public GeneralSettings() {
         super(Text.translatable("settings.viafabricplus.general"));

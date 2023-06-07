@@ -13,6 +13,8 @@
   "words.viafabricplus.reset": "Resetuj",
   "words.viafabricplus.copy": "Kopiuj kod",
   "words.viafabricplus.error": "Coś poszło nie tak! Proszę, spróbuj ponownie później",
+  "words.viafabricplus.translate": "Via tłumaczy na: %s",
+  "words.viafabricplus.serverversion": "Wersja serwera: %s",
 
   "settings.viafabricplus.authentication": "Uwierzytelnianie",
   "settings.viafabricplus.experimental": "Eksperymenty",
@@ -25,9 +27,9 @@
   "general.viafabricplus.classicloading": "Pokazuj klasyczny pasek ładowania w ekranie łączenia",
   "general.viafabricplus.main": "Lokalizacja głównego przycisku",
   "general.viafabricplus.creative": "Usuwaj niedostępne przedmioty z ekwipunku trybu kreatywnego",
-  "general.viafabricplus.classiccommands": "Zezwalaj na używanie klasycznego protokołu komend",
   "general.viafabricplus.protocolsync": "Automatycznie zmieniaj ustawienia na podstawie obecnej wersji gry",
   "general.viafabricplus.autodetect": "Automatycznie wykrywaj wersję gry",
+  "general.viafabricplus.advertised": "Pokazuj informacje dotyczące tłumaczenia pakietów po najechaniu na ikonę pingu w menu multiplayer",
 
   "experimental.viafabricplus.chunkborderfix": "Napraw granice chunków",
   "experimental.viafabricplus.watermovement": "Wykrywanie krawędzi ruchu wody",

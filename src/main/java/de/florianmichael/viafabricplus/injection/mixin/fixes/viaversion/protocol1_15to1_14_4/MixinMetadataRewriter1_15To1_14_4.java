@@ -21,7 +21,7 @@ import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.entities.EntityType;
 import com.viaversion.viaversion.api.minecraft.metadata.Metadata;
-import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.ClientboundPackets1_14;
+import com.viaversion.viaversion.protocols.protocol1_14_4to1_14_3.ClientboundPackets1_14_4;
 import com.viaversion.viaversion.protocols.protocol1_15to1_14_4.Protocol1_15To1_14_4;
 import com.viaversion.viaversion.protocols.protocol1_15to1_14_4.metadata.MetadataRewriter1_15To1_14_4;
 import com.viaversion.viaversion.rewriter.EntityRewriter;
@@ -35,7 +35,7 @@ import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(MetadataRewriter1_15To1_14_4.class)
-public abstract class MixinMetadataRewriter1_15To1_14_4 extends EntityRewriter<ClientboundPackets1_14, Protocol1_15To1_14_4> {
+public abstract class MixinMetadataRewriter1_15To1_14_4 extends EntityRewriter<ClientboundPackets1_14_4, Protocol1_15To1_14_4> {
 
     public MixinMetadataRewriter1_15To1_14_4(Protocol1_15To1_14_4 protocol) {
         super(protocol);

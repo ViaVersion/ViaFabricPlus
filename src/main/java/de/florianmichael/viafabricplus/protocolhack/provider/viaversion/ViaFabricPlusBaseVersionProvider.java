@@ -53,7 +53,7 @@ public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
 
     // Based on https://github.com/ViaVersion/ViaFabric/blob/main/viafabric-mc119/src/main/java/com/viaversion/fabric/mc119/service/ProtocolAutoDetector.java
     private final static LoadingCache<InetSocketAddress, CompletableFuture<VersionEnum>> AUTO_DETECTION_CACHE = CacheBuilder.newBuilder().
-            expireAfterWrite(30, TimeUnit.SECONDS).
+            expireAfterWrite(10, TimeUnit.MINUTES).
             build(CacheLoader.from(address -> {
                 CompletableFuture<VersionEnum> future = new CompletableFuture<>();
 

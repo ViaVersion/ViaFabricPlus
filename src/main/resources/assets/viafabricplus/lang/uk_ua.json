@@ -13,6 +13,7 @@
   "words.viafabricplus.reset": "Зкинути",
   "words.viafabricplus.copy": "Зкопіювати код",
   "words.viafabricplus.error": "Щось пішло не так! Спробуйте будь ласка пізніше",
+  "words.viafabricplus.translate": "Via переклади до: %s",
   
   "settings.viafabricplus.authentication": "Авторизація",
   "settings.viafabricplus.experimental": "Експериментальне",
@@ -25,9 +26,9 @@
   "general.viafabricplus.classicloading": "Показувати класичний прогрес завантаження на екрані підключення",
   "general.viafabricplus.main": "Орієнтація головної кнопки",
   "general.viafabricplus.creative": "Видалити недоступні предмети з меню креативу",
-  "general.viafabricplus.classiccommands": "Дозволити використання команд класичного протоколу",
   "general.viafabricplus.protocolsync": "Автоматично змінювати налаштування для вибраної версії",
   "general.viafabricplus.autodetect": "Автоматично відсліджувати версію",
+  "general.viafabricplus.advertised": "Показувати рекламовану/серверну версію в багатокористувацькій грі",
 
   "experimental.viafabricplus.chunkborderfix": "Полагодити границі чанків",
   "experimental.viafabricplus.watermovement": "Виявлення краю руху води",

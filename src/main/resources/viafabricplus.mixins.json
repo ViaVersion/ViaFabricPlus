@@ -16,6 +16,8 @@
     "base.MixinMinecraftClient",
     "base.MixinMultiplayerScreen",
     "base.MixinMultiplayerServerListPinger",
+    "base.MixinMultiplayerServerListPinger_1",
+    "base.MixinMultiplayerServerListWidget_ServerEntry",
     "base.MixinOptionsScreen",
     "base.MixinServerInfo",
     "base.MixinSharedConstants",

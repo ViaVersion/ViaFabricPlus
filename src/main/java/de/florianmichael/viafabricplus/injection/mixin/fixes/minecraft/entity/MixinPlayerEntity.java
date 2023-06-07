@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import net.minecraft.util.Hand;
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.EntityDimensions;
@@ -31,7 +31,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -113,6 +112,13 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         } else {
             return 1.54f;
         }
+    }
+
+    @Redirect(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
+    public void dontSwingHand(PlayerEntity instance, Hand hand) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) return;
+
+        instance.swingHand(hand);
     }
 
     @Unique

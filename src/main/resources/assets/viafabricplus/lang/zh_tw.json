@@ -18,7 +18,6 @@
   "general.viafabricplus.classicloading": "在連接伺服器時使用舊版進度顯示",
   "general.viafabricplus.main": "模組按鈕位置",
   "general.viafabricplus.creative": "從創造模式物品欄內移除不可用的物品",
-  "general.viafabricplus.classiccommands": "允許使用舊版指令協議",
   "general.viafabricplus.protocolsync": "自動根據所選版本調整設定",
   "general.viafabricplus.autodetect": "自動偵測版本",
 

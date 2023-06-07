@@ -22,7 +22,6 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_16_2to1_16_1.ServerboundPackets1_16_2;
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.Protocol1_17To1_16_4;
@@ -44,6 +43,7 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -69,11 +69,21 @@ public abstract class MixinClientPlayerInteractionManager {
     @Final
     private ClientPlayNetworkHandler networkHandler;
 
+    @Shadow
+    private BlockPos currentBreakingPos;
+
     @Unique
     private ItemStack viafabricplus_oldCursorStack;
 
     @Unique
     private List<ItemStack> viafabricplus_oldItems;
+
+    @Inject(method = "breakBlock", at = @At("TAIL"))
+    public void resetBlockBreaking(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_3)) {
+            this.currentBreakingPos = new BlockPos(this.currentBreakingPos.getX(), -1, this.currentBreakingPos.getZ());
+        }
+    }
 
     @Inject(method = "attackEntity", at = @At("HEAD"))
     private void injectAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {

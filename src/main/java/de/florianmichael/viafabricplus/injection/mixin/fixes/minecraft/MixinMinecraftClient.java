@@ -27,7 +27,6 @@ import de.florianmichael.viafabricplus.injection.access.IMinecraftClient;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -74,6 +73,14 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
         }
 
         return instance.isAccepted();
+    }
+
+    @Redirect(method = "handleBlockBreaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
+    public boolean allowBlockBreakAndItemUsageAtTheSameTime(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+            return false;
+        }
+        return instance.isUsingItem();
     }
 
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 1))
