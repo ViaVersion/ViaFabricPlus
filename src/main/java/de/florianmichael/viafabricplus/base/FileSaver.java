@@ -46,8 +46,7 @@ public abstract class FileSaver {
             file.delete();
             try {
                 file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ignored) {
             }
 
             try (final FileWriter fw = new FileWriter(file)) {

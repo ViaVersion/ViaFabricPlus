@@ -53,7 +53,7 @@ public class ProtocolHack {
     public final static AttributeKey<VersionEnum> FORCED_VERSION = AttributeKey.newInstance("viafabricplus-forced-version");
 
     private final static Map<InetSocketAddress, VersionEnum> forcedVersions = new HashMap<>();
-    public static VersionEnum targetVersion = VersionEnum.r1_19_4;
+    public static VersionEnum targetVersion = VersionEnum.r1_20;
 
     public static VersionEnum getTargetVersion() {
         if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().getNetworkHandler() == null) {
@@ -75,7 +75,7 @@ public class ProtocolHack {
             return channel.attr(FORCED_VERSION).get();
         }
 
-        if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().isInSingleplayer()) return VersionEnum.r1_19_4;
+        if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().isInSingleplayer()) return VersionEnum.r1_20;
 
         return targetVersion;
     }
