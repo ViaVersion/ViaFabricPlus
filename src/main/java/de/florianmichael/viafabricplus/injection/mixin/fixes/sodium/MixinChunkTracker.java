@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.sodium;
 
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
-import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,10 +28,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(targets = "me.jellysquid.mods.sodium.client.render.chunk.ChunkTracker", remap = false)
 public abstract class MixinChunkTracker {
 
-    @Redirect(method = "recalculateChunks", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/Long2BooleanOpenHashMap;get(J)Z"))
-    private boolean modifyRenderCondition(Long2BooleanOpenHashMap instance, long k) {
+    @Redirect(method = "recalculateChunks", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/Long2IntOpenHashMap;get(J)I"))
+    private int modifyRenderCondition(Long2IntOpenHashMap instance, long k) {
         if (VisualSettings.INSTANCE.fixSodiumChunkRendering.getValue()) {
-            return instance.getOrDefault(k, false);
+            return instance.getOrDefault(k, -1);
         }
 
         return instance.get(k);
