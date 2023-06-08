@@ -19,7 +19,7 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - Snapshots (3D Shareware, 20w14infinite, Combat Test 8C)
-- Bedrock (1.19.80)
+- Bedrock (1.20.0)
 
 ### If you want to talk with me, feel free to join my [Discord](https://discord.gg/BwWhCHUKDf)
 
