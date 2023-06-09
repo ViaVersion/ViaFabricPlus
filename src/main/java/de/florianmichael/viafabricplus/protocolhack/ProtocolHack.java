@@ -24,6 +24,7 @@ import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.base.event.FinishViaVersionStartupCallback;
 import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLCommandHandler;
@@ -32,7 +33,7 @@ import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLLoader;
 import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaVersionPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
@@ -45,7 +46,8 @@ import net.raphimc.vialoader.impl.platform.ViaBedrockPlatformImpl;
 import net.raphimc.vialoader.util.VersionEnum;
 
 import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProtocolHack {
     public final static AttributeKey<UserConnection> LOCAL_VIA_CONNECTION = AttributeKey.newInstance("viafabricplus-via-connection");
@@ -117,7 +119,7 @@ public class ProtocolHack {
     }
 
     public static void init() {
-        ViaLoader.init(new ViaFabricPlusViaVersionPlatformImpl(null), new ViaFabricPlusVLLoader(), new ViaFabricPlusVLInjector(), new ViaFabricPlusVLCommandHandler(), ViaBackwardsPlatformImpl::new, ViaFabricPlusViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new, ViaBedrockPlatformImpl::new);
+        ViaLoader.init(new ViaFabricPlusViaVersionPlatformImpl(ViaFabricPlus.RUN_DIRECTORY), new ViaFabricPlusVLLoader(), new ViaFabricPlusVLInjector(), new ViaFabricPlusVLCommandHandler(), ViaBackwardsPlatformImpl::new, ViaFabricPlusViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new, ViaBedrockPlatformImpl::new);
         initCommands();
 
         FinishViaVersionStartupCallback.EVENT.invoker().onFinishViaVersionStartup();

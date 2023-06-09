@@ -19,20 +19,20 @@ package de.florianmichael.viafabricplus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
-import de.florianmichael.viafabricplus.definition.v1_12_2.FontCacheFix;
-import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
-import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
-import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
-import de.florianmichael.viafabricplus.screen.impl.ClassicItemSelectionScreen;
-import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.definition.c0_30.protocol.CustomClassicProtocolExtensions;
-import de.florianmichael.viafabricplus.definition.v1_8.ArmorPointCalculation;
 import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.base.event.PreLoadCallback;
-import de.florianmichael.viafabricplus.information.InformationSystem;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.SettingsSystem;
+import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
+import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
+import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.definition.c0_30.protocol.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.definition.v1_12_2.FontCacheFix;
+import de.florianmichael.viafabricplus.definition.v1_8.ArmorPointCalculation;
+import de.florianmichael.viafabricplus.information.InformationSystem;
+import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
+import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.screen.impl.ClassicItemSelectionScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,6 +60,9 @@ public class ViaFabricPlus {
     private final InformationSystem informationSystem = new InformationSystem();
 
     public void init() {
+        // Load overriding jars first so other code can access the new classes
+        ViaJarReplacer.loadOverridingJars();
+
         PreLoadCallback.EVENT.invoker().onLoad();
 
         // Classic Stuff
