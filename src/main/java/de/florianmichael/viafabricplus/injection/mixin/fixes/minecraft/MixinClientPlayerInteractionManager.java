@@ -201,7 +201,7 @@ public abstract class MixinClientPlayerInteractionManager {
 
     @Inject(method = "sendSequencedPacket", at = @At("HEAD"))
     public void handleBlockAcknowledgements(ClientWorld world, SequencedPacketCreator packetCreator, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_18_2, VersionEnum.r1_14_4) && packetCreator instanceof PlayerActionC2SPacket playerActionC2SPacket) {
+        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_14_4, VersionEnum.r1_18_2) && packetCreator instanceof PlayerActionC2SPacket playerActionC2SPacket) {
             ClientPlayerInteractionManager1_18_2.trackBlockAction(playerActionC2SPacket.getAction(), playerActionC2SPacket.getPos());
         }
     }
