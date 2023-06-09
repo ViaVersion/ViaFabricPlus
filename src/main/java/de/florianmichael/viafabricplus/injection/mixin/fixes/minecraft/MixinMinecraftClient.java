@@ -124,11 +124,11 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasRidingInventory()Z"))
     private void onInventoryKeyPressed(CallbackInfo ci) {
         if (getNetworkHandler() != null && DebugSettings.INSTANCE.sendOpenInventoryPacket.getValue()) {
-            final UserConnection viaConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
+            final UserConnection userConnection = ProtocolHack.getMainUserConnection();
 
-            if (viaConnection != null && viaConnection.getProtocolInfo().getPipeline().contains(Protocol1_12To1_11_1.class)) {
-                viaConnection.getChannel().eventLoop().submit(() -> {
-                    final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, viaConnection);
+            if (userConnection != null && userConnection.getProtocolInfo().getPipeline().contains(Protocol1_12To1_11_1.class)) {
+                userConnection.getChannel().eventLoop().submit(() -> {
+                    final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, userConnection);
                     clientStatus.write(Type.VAR_INT, 2); // Open Inventory Achievement
 
                     try {

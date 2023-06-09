@@ -33,7 +33,7 @@ import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
-import de.florianmichael.viafabricplus.protocolhack.usage.ItemTranslator;
+import de.florianmichael.viafabricplus.protocolhack.util.ItemTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -129,7 +129,7 @@ public abstract class MixinClientPlayerInteractionManager {
             else
                 slotItemBeforeModification = viafabricplus_oldItems.get(clickSlot.getSlot());
 
-            final UserConnection viaConnection = networkHandler.getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
+            final UserConnection userConnection = networkHandler.getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
             final short syncId = (short) clickSlot.getSyncId();
             final short slot = (short) clickSlot.getSlot();
             final byte button = (byte) clickSlot.getButton();
@@ -137,8 +137,8 @@ public abstract class MixinClientPlayerInteractionManager {
             final int actionType = clickSlot.getActionType().ordinal();
             final Item item = ItemTranslator.minecraftToViaVersion(slotItemBeforeModification, VersionEnum.r1_16.getVersion());
 
-            viaConnection.getChannel().eventLoop().submit(() -> {
-                final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, viaConnection);
+            userConnection.getChannel().eventLoop().submit(() -> {
+                final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, userConnection);
 
                 clickSlotPacket.write(Type.UNSIGNED_BYTE, syncId);
                 clickSlotPacket.write(Type.SHORT, slot);

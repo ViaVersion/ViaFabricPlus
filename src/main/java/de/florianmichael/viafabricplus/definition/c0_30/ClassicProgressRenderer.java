@@ -28,7 +28,7 @@ public class ClassicProgressRenderer {
 
     public static void renderProgress(final DrawContext context) {
         if (MinecraftClient.getInstance().getNetworkHandler() == null) return;
-        final UserConnection connection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
+        final UserConnection connection = ProtocolHack.getMainUserConnection();
         if (connection == null) return;
         final ClassicProgressStorage classicProgressStorage = connection.get(ClassicProgressStorage.class);
         if (classicProgressStorage == null) return;

@@ -15,9 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack.usage;
+package de.florianmichael.viafabricplus.protocolhack.util;
 
 import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.ProtocolPathEntry;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BlockStateTranslator {
+    private final static UserConnection DUMMY_USER_CONNECTION = new UserConnectionImpl(null, false);
 
     public static int translateBlockState1_18(int oldId) {
         final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), ProtocolVersion.v1_18_2.getVersion());
@@ -45,7 +47,7 @@ public class BlockStateTranslator {
         inputData.writeVarInt(oldId);
 
         try {
-            var wrapper = PacketWrapper.create(ClientboundPackets1_18.BLOCK_CHANGE, inputData.asByteBuf(), new UserConnectionImpl(null, true));
+            var wrapper = PacketWrapper.create(ClientboundPackets1_18.BLOCK_CHANGE, inputData.asByteBuf(), DUMMY_USER_CONNECTION);
             wrapper.apply(Direction.CLIENTBOUND, State.PLAY, 0, protocolPath.stream().map(ProtocolPathEntry::protocol).collect(Collectors.toList()), true);
 
             wrapper.read(Type.POSITION1_14);

@@ -43,7 +43,6 @@ import java.io.File;
  *   - TakeItemEntityPacket isEmpty case
  * <p>
  * TODO | Protocol translation
- *  - BucketItem#use canPlaceOn in <= 1.13 is missing
  *  - Cobwebs in <= b1.7.3 are broken
  *  - Window interactions in <= 1.16.5 are unlegit
  *  - Entity hitboxes and eye heights has changed

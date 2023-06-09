@@ -19,20 +19,37 @@ package de.florianmichael.viafabricplus.definition.v1_18_2;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocolhack.util.BlockStateTranslator;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.raphimc.vialoader.util.VersionEnum;
 
-public class ClientPlayerInteractionManager1_18_2 {
-    private final static Object2ObjectLinkedOpenHashMap<Pair<BlockPos, PlayerActionC2SPacket.Action>, PositionAndRotation> unAckedActions = new Object2ObjectLinkedOpenHashMap<>();
+import java.util.function.Consumer;
 
-    public final static String ACK_TRANSFORMER_IDENTIFIER = "viafabricplus:acknowledge_player_digging";
+public class ClientPlayerInteractionManager1_18_2 {
+    public final static Consumer<PacketByteBuf> OLD_PACKET_HANDLER = data -> {
+        try {
+            final var pos = data.readBlockPos();
+            final var blockState = Block.STATE_IDS.get(BlockStateTranslator.translateBlockState1_18(data.readVarInt()));
+            final var action = data.readEnumConstant(PlayerActionC2SPacket.Action.class);
+            final var allGood = data.readBoolean();
+
+            //noinspection DataFlowIssue
+            ClientPlayerInteractionManager1_18_2.handleBlockBreakAck(MinecraftClient.getInstance().getNetworkHandler().getWorld(), pos, blockState, action, allGood);
+        } catch (Exception e) {
+            ViaFabricPlus.LOGGER.error("Failed to read BlockBreakAck packet data", e);
+        }
+    };
+
+    private final static Object2ObjectLinkedOpenHashMap<Pair<BlockPos, PlayerActionC2SPacket.Action>, PositionAndRotation> UN_ACKED_ACTIONS = new Object2ObjectLinkedOpenHashMap<>();
 
     public static void trackBlockAction(final PlayerActionC2SPacket.Action action, final BlockPos blockPos) {
         final var player = MinecraftClient.getInstance().player;
@@ -42,14 +59,14 @@ public class ClientPlayerInteractionManager1_18_2 {
         if (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_16_2)) {
             rotation = null;
         }
-        unAckedActions.put(new Pair<>(blockPos, action), new PositionAndRotation(player.getPos().x, player.getPos().y, player.getPos().z, rotation));
+        UN_ACKED_ACTIONS.put(new Pair<>(blockPos, action), new PositionAndRotation(player.getPos().x, player.getPos().y, player.getPos().z, rotation));
     }
 
     public static void handleBlockBreakAck(final ClientWorld world, final BlockPos blockPos, final BlockState blockState, final PlayerActionC2SPacket.Action action, final boolean allGood) {
         final var player = MinecraftClient.getInstance().player;
         if (player == null) return;
 
-        final var next = unAckedActions.remove(new Pair<>(blockPos, action));
+        final var next = UN_ACKED_ACTIONS.remove(new Pair<>(blockPos, action));
         final var blockStateFromPos = world.getBlockState(blockPos);
 
         if ((next == null || !allGood || action != PlayerActionC2SPacket.Action.START_DESTROY_BLOCK && blockStateFromPos != blockState) && blockStateFromPos != blockState) {
@@ -63,9 +80,9 @@ public class ClientPlayerInteractionManager1_18_2 {
             }
         }
 
-        while (unAckedActions.size() >= 50) {
-            ViaFabricPlus.LOGGER.error("Too many unacked block actions, dropping {}", unAckedActions.firstKey());
-            unAckedActions.removeFirst();
+        while (UN_ACKED_ACTIONS.size() >= 50) {
+            ViaFabricPlus.LOGGER.error("Too many unacked block actions, dropping {}", UN_ACKED_ACTIONS.firstKey());
+            UN_ACKED_ACTIONS.removeFirst();
         }
     }
 

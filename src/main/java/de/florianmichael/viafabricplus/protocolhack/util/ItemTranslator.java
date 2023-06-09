@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack.usage;
+package de.florianmichael.viafabricplus.protocolhack.util;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ItemTranslator {
+    private final static UserConnection DUMMY_USER_CONNECTION = new UserConnectionImpl(null, false);
 
     public static Item minecraftToViaVersion(final ItemStack stack, final int targetVersion) {
         final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), targetVersion);
@@ -51,7 +52,7 @@ public class ItemTranslator {
         final int id = NetworkState.PLAY.getPacketId(NetworkSide.SERVERBOUND, dummyPacket);
 
         try {
-            final PacketWrapper wrapper = new PacketWrapperImpl(id, emptyBuf, new UserConnectionImpl(null, true));
+            final PacketWrapper wrapper = new PacketWrapperImpl(id, emptyBuf, DUMMY_USER_CONNECTION);
             wrapper.apply(Direction.SERVERBOUND, State.PLAY, 0, protocolPath.stream().map(ProtocolPathEntry::protocol).collect(Collectors.toList()));
 
             wrapper.read(Type.SHORT);

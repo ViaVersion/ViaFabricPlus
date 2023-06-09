@@ -42,7 +42,7 @@ public class MixinDebugHud {
 
         final List<String> information = new ArrayList<>();
         if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-            final UserConnection userConnection = MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
+            final UserConnection userConnection = ProtocolHack.getMainUserConnection();
 
             information.add("");
             information.add(Formatting.GOLD + "[ViaFabricPlus] " + Formatting.WHITE);

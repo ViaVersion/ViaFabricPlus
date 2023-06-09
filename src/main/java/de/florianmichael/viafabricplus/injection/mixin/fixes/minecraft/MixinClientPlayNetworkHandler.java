@@ -19,14 +19,9 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.authlib.GameProfile;
-import de.florianmichael.viafabricplus.definition.v1_18_2.ClientPlayerInteractionManager1_18_2;
-import de.florianmichael.viafabricplus.protocolhack.usage.BlockStateTranslator;
-import net.minecraft.block.Block;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
-import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.definition.PacketSyncBase;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
@@ -36,14 +31,19 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.util.telemetry.WorldSession;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.ServerPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.screen.ScreenHandler;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.slf4j.Logger;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -64,17 +64,25 @@ public abstract class MixinClientPlayNetworkHandler {
     public abstract void onEntityStatus(EntityStatusS2CPacket packet);
 
     @Mutable
-    @Shadow @Final private Set<PlayerListEntry> listedPlayerListEntries;
+    @Shadow
+    @Final
+    private Set<PlayerListEntry> listedPlayerListEntries;
 
-    @Shadow public abstract void onSimulationDistance(SimulationDistanceS2CPacket packet);
+    @Shadow
+    public abstract void onSimulationDistance(SimulationDistanceS2CPacket packet);
 
-    @Shadow protected abstract void sendPacket(Packet<ServerPlayPacketListener> packet, BooleanSupplier sendCondition, Duration expirationTime);
+    @Shadow
+    protected abstract void sendPacket(Packet<ServerPlayPacketListener> packet, BooleanSupplier sendCondition, Duration expirationTime);
 
-    @Shadow public abstract void sendPacket(Packet<?> packet);
+    @Shadow
+    public abstract void sendPacket(Packet<?> packet);
 
-    @Shadow @Final private ClientConnection connection;
+    @Shadow
+    @Final
+    private ClientConnection connection;
 
-    @Shadow private ClientWorld world;
+    @Shadow
+    private ClientWorld world;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixPlayerListOrdering(MinecraftClient client, Screen screen, ClientConnection connection, ServerInfo serverInfo, GameProfile profile, WorldSession worldSession, CallbackInfo ci) {
@@ -107,7 +115,7 @@ public abstract class MixinClientPlayNetworkHandler {
         }
     }
 
-    @Inject(method = { "onGameJoin", "onPlayerRespawn" }, at = @At("TAIL"))
+    @Inject(method = {"onGameJoin", "onPlayerRespawn"}, at = @At("TAIL"))
     private void injectOnOnGameJoinOrRespawn(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
@@ -169,15 +177,13 @@ public abstract class MixinClientPlayNetworkHandler {
         final var channel = packet.getChannel().toString();
         final var data = packet.getData();
 
-        if (channel.equals(ClientPlayerInteractionManager1_18_2.ACK_TRANSFORMER_IDENTIFIER)) {
-            final var pos = data.readBlockPos();
-            final var blockState = Block.STATE_IDS.get(BlockStateTranslator.translateBlockState1_18(data.readVarInt()));
-            final var action = data.readEnumConstant(PlayerActionC2SPacket.Action.class);
-            final var allGood = data.readBoolean();
+        if (channel.equals(PacketSyncBase.PACKET_SYNC_IDENTIFIER)) {
+            final var uuid = data.readString();
 
-            ClientPlayerInteractionManager1_18_2.handleBlockBreakAck(world, pos, blockState, action, allGood);
-
-            ci.cancel();
+            if (PacketSyncBase.has(uuid)) {
+                PacketSyncBase.get(uuid).accept(data);
+                ci.cancel();
+            }
         }
     }
 }

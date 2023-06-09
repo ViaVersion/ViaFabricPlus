@@ -24,6 +24,7 @@ import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPacke
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.ClientboundPackets1_19;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.Protocol1_19To1_18_2;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.packets.WorldPackets;
+import de.florianmichael.viafabricplus.definition.PacketSyncBase;
 import de.florianmichael.viafabricplus.definition.v1_18_2.ClientPlayerInteractionManager1_18_2;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,7 +42,10 @@ public class MixinWorldPackets {
             }
 
             wrapper.resetReader();
-            wrapper.write(Type.STRING, ClientPlayerInteractionManager1_18_2.ACK_TRANSFORMER_IDENTIFIER);
+            final String uuid = PacketSyncBase.track(ClientPlayerInteractionManager1_18_2.OLD_PACKET_HANDLER);
+
+            wrapper.write(Type.STRING, PacketSyncBase.PACKET_SYNC_IDENTIFIER);
+            wrapper.write(Type.STRING, uuid);
         });
     }
 }

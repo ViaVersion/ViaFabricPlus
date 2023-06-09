@@ -20,11 +20,10 @@ package de.florianmichael.viafabricplus.definition.c0_30.command;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.client.MinecraftClient;
 
 public abstract class ClassicViaSubCommand extends ViaSubCommand {
 
     public UserConnection getUser() {
-        return MinecraftClient.getInstance().getNetworkHandler().getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
+        return ProtocolHack.getMainUserConnection();
     }
 }
