@@ -162,15 +162,14 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "mixins": [
+    "jsonwebtoken.MixinDefaultJwtParserBuilder",
     "fixes.minecraft.block.MixinAbstractSignBlock",
     "fixes.minecraft.entity.MixinBoatEntity",
     "fixes.minecraft.entity.MixinCamelEntity",
-    "fixes.minecraft.item.MixinBrushItem"
-  ]
+    "fixes.minecraft.item.MixinBrushItem",
+    "fixes.viaversion.protocol1_19to1_18_2.MixinWorldPackets"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

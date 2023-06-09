@@ -21,6 +21,10 @@ import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import de.florianmichael.viafabricplus.definition.v1_18_2.ClientPlayerInteractionManager1_18_2;
+import net.minecraft.client.network.SequencedPacketCreator;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_16_2to1_16_1.ServerboundPackets1_16_2;
@@ -131,7 +135,7 @@ public abstract class MixinClientPlayerInteractionManager {
             final byte button = (byte) clickSlot.getButton();
             final short lastActionId = ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId();
             final int actionType = clickSlot.getActionType().ordinal();
-            final Item item = ItemTranslator.minecraftToViaVersion(viaConnection, slotItemBeforeModification, VersionEnum.r1_16.getVersion());
+            final Item item = ItemTranslator.minecraftToViaVersion(slotItemBeforeModification, VersionEnum.r1_16.getVersion());
 
             viaConnection.getChannel().eventLoop().submit(() -> {
                 final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, viaConnection);
@@ -193,5 +197,12 @@ public abstract class MixinClientPlayerInteractionManager {
             return this.viafabricplus_actionResult;
         }
         return interactBlockInternal(player, hand, hitResult);
+    }
+
+    @Inject(method = "sendSequencedPacket", at = @At("HEAD"))
+    public void handleBlockAcknowledgements(ClientWorld world, SequencedPacketCreator packetCreator, CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_18_2, VersionEnum.r1_14_4) && packetCreator instanceof PlayerActionC2SPacket playerActionC2SPacket) {
+            ClientPlayerInteractionManager1_18_2.trackBlockAction(playerActionC2SPacket.getAction(), playerActionC2SPacket.getPos());
+        }
     }
 }

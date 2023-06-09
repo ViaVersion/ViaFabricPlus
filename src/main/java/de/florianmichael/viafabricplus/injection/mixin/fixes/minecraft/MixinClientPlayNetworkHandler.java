@@ -19,8 +19,12 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.authlib.GameProfile;
+import de.florianmichael.viafabricplus.definition.v1_18_2.ClientPlayerInteractionManager1_18_2;
+import de.florianmichael.viafabricplus.protocolhack.usage.BlockStateTranslator;
+import net.minecraft.block.Block;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -39,10 +43,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.screen.ScreenHandler;
 import org.slf4j.Logger;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -72,6 +73,8 @@ public abstract class MixinClientPlayNetworkHandler {
     @Shadow public abstract void sendPacket(Packet<?> packet);
 
     @Shadow @Final private ClientConnection connection;
+
+    @Shadow private ClientWorld world;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixPlayerListOrdering(MinecraftClient client, Screen screen, ClientConnection connection, ServerInfo serverInfo, GameProfile profile, WorldSession worldSession, CallbackInfo ci) {
@@ -157,6 +160,23 @@ public abstract class MixinClientPlayNetworkHandler {
     public void checkLoginPacket(SetTradeOffersS2CPacket packet, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion(connection.channel).isOlderThanOrEqualTo(VersionEnum.r1_13_2) && this.client.player == null) {
             ViaFabricPlus.LOGGER.error("Server tried to send Play packet in Login process, dropping \"SetTradeOffers\"");
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "onCustomPayload", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
+    public void handlePseudoPackets(CustomPayloadS2CPacket packet, CallbackInfo ci) {
+        final var channel = packet.getChannel().toString();
+        final var data = packet.getData();
+
+        if (channel.equals(ClientPlayerInteractionManager1_18_2.ACK_TRANSFORMER_IDENTIFIER)) {
+            final var pos = data.readBlockPos();
+            final var blockState = Block.STATE_IDS.get(BlockStateTranslator.translateBlockState1_18(data.readVarInt()));
+            final var action = data.readEnumConstant(PlayerActionC2SPacket.Action.class);
+            final var allGood = data.readBoolean();
+
+            ClientPlayerInteractionManager1_18_2.handleBlockBreakAck(world, pos, blockState, action, allGood);
+
             ci.cancel();
         }
     }

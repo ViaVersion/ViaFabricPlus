@@ -18,47 +18,42 @@
 package de.florianmichael.viafabricplus.protocolhack.usage;
 
 import com.viaversion.viaversion.api.Via;
-import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.ProtocolPathEntry;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
-import com.viaversion.viaversion.protocol.packet.PacketWrapperImpl;
+import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPackets1_18;
 import io.netty.buffer.Unpooled;
 import net.minecraft.SharedConstants;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.NetworkSide;
-import net.minecraft.network.NetworkState;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ItemTranslator {
+public class BlockStateTranslator {
 
-    public static Item minecraftToViaVersion(final ItemStack stack, final int targetVersion) {
-        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), targetVersion);
-        if (protocolPath == null) return null;
+    public static int translateBlockState1_18(int oldId) {
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), ProtocolVersion.v1_18_2.getVersion());
+        if (protocolPath == null) return oldId;
 
-        final CreativeInventoryActionC2SPacket dummyPacket = new CreativeInventoryActionC2SPacket(36, stack);
-        final PacketByteBuf emptyBuf = new PacketByteBuf(Unpooled.buffer());
-        dummyPacket.write(emptyBuf);
-
-        final int id = NetworkState.PLAY.getPacketId(NetworkSide.SERVERBOUND, dummyPacket);
+        final PacketByteBuf inputData = new PacketByteBuf(Unpooled.buffer());
+        inputData.writeBlockPos(new BlockPos(0, 0, 0));
+        inputData.writeVarInt(oldId);
 
         try {
-            final PacketWrapper wrapper = new PacketWrapperImpl(id, emptyBuf, new UserConnectionImpl(null, true));
-            wrapper.apply(Direction.SERVERBOUND, State.PLAY, 0, protocolPath.stream().map(ProtocolPathEntry::protocol).collect(Collectors.toList()));
+            var wrapper = PacketWrapper.create(ClientboundPackets1_18.BLOCK_CHANGE, inputData.asByteBuf(), new UserConnectionImpl(null, true));
+            wrapper.apply(Direction.CLIENTBOUND, State.PLAY, 0, protocolPath.stream().map(ProtocolPathEntry::protocol).collect(Collectors.toList()), true);
 
-            wrapper.read(Type.SHORT);
-            return wrapper.read(Type.ITEM);
+            wrapper.read(Type.POSITION1_14);
+            return wrapper.read(Type.VAR_INT);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+
+        return oldId;
     }
 }
