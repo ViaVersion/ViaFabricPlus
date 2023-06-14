@@ -14,6 +14,7 @@
   "words.viafabricplus.copy": "Зкопіювати код",
   "words.viafabricplus.error": "Щось пішло не так! Спробуйте будь ласка пізніше",
   "words.viafabricplus.translate": "Via переклади до: %s",
+  "words.viafabricplus.serverversion": "Версія серверу: %s",
   
   "settings.viafabricplus.authentication": "Авторизація",
   "settings.viafabricplus.experimental": "Експериментальне",
