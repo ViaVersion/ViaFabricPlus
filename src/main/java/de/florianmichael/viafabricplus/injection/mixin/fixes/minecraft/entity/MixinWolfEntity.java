@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import net.raphimc.vialoader.util.VersionEnum;
-import de.florianmichael.viafabricplus.definition.v1_14_4.Meta18Storage;
+import de.florianmichael.viafabricplus.definition.Meta18Storage;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.passive.WolfEntity;
 import org.spongepowered.asm.mixin.Mixin;

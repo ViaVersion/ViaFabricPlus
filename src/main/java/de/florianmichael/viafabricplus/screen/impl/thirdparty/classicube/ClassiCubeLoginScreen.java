@@ -22,7 +22,7 @@ import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.viafabricplus.screen.impl.base.ProtocolSelectionScreen;
-import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.definition.classic.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;

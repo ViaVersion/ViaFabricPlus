@@ -21,7 +21,7 @@ import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import de.florianmichael.viafabricplus.definition.v1_18_2.ClientPlayerInteractionManager1_18_2;
+import de.florianmichael.viafabricplus.definition.ClientPlayerInteractionManager1_18_2;
 import net.minecraft.client.network.SequencedPacketCreator;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;

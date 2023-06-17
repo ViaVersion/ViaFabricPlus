@@ -21,7 +21,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.world.GameMode;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
-import de.florianmichael.viafabricplus.definition.v1_8.ArmorPointCalculation;
+import de.florianmichael.viafabricplus.definition.ArmorPointCalculation;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
