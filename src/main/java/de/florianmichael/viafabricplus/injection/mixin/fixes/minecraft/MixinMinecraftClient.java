@@ -111,7 +111,7 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
             ordinal = 4, shift = At.Shift.BEFORE))
     public void injectTick(CallbackInfo ci) {
-        if (!DebugSettings.INSTANCE.executeInputsInSync.getValue()) return;
+        if (!DebugSettings.INSTANCE.executeInputsInSync.isEnabled()) return;
 
         while (!viafabricplus_mouseInteractions.isEmpty()) {
             viafabricplus_mouseInteractions.poll().run();
@@ -123,7 +123,7 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
 
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasRidingInventory()Z"))
     private void onInventoryKeyPressed(CallbackInfo ci) {
-        if (getNetworkHandler() != null && DebugSettings.INSTANCE.sendOpenInventoryPacket.getValue()) {
+        if (getNetworkHandler() != null && DebugSettings.INSTANCE.sendOpenInventoryPacket.isEnabled()) {
             final UserConnection userConnection = ProtocolHack.getMainUserConnection();
 
             if (userConnection != null && userConnection.getProtocolInfo().getPipeline().contains(Protocol1_12To1_11_1.class)) {

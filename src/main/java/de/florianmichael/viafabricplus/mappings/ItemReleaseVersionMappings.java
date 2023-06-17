@@ -53,33 +53,33 @@ public class ItemReleaseVersionMappings {
     }
 
     public void load() {
-        register(Items.CALIBRATED_SCULK_SENSOR, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.PITCHER_PLANT, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.SNIFFER_EGG, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.SUSPICIOUS_GRAVEL, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.PITCHER_POD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.HOST_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.ANGLER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.BLADE_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.BREWER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.BURN_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.DANGER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.EXPLORER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.FRIEND_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.HEART_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.HEARTBREAK_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.HOWL_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.MINER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.MOURNER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.PLENTY_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.SHEAF_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.SHELTER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.SNORT_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20));
-        register(Items.MUSIC_DISC_RELIC, VersionRange.andNewer(VersionEnum.r1_20));
+        register(Items.CALIBRATED_SCULK_SENSOR, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.PITCHER_PLANT, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.SNIFFER_EGG, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.SUSPICIOUS_GRAVEL, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.PITCHER_POD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.HOST_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.ANGLER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.BLADE_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.BREWER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.BURN_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.DANGER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.EXPLORER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.FRIEND_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.HEART_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.HEARTBREAK_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.HOWL_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.MINER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.MOURNER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.PLENTY_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.SHEAF_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.SHELTER_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.SNORT_POTTERY_SHERD, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
+        register(Items.MUSIC_DISC_RELIC, VersionRange.andNewer(VersionEnum.r1_20tor1_20_1));
 
         register(Items.BRUSH, VersionRange.andNewer(VersionEnum.r1_19_4));
         register(Items.CHERRY_BOAT, VersionRange.andNewer(VersionEnum.r1_19_4));
@@ -122,7 +122,9 @@ public class ItemReleaseVersionMappings {
         register(Items.TORCHFLOWER_SEEDS, VersionRange.andNewer(VersionEnum.r1_19_4));
         register(Items.VEX_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_19_4));
         register(Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_19_4));
-        register(Items.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_19_4));           register(Items.IRON_GOLEM_SPAWN_EGG, VersionRange.andNewer(VersionEnum.r1_19_3));
+        register(Items.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, VersionRange.andNewer(VersionEnum.r1_19_4));
+
+        register(Items.IRON_GOLEM_SPAWN_EGG, VersionRange.andNewer(VersionEnum.r1_19_3));
         register(Items.SNOW_GOLEM_SPAWN_EGG, VersionRange.andNewer(VersionEnum.r1_19_3));
 
         register(Items.ACACIA_CHEST_BOAT, VersionRange.andNewer(VersionEnum.r1_19));
@@ -1347,7 +1349,6 @@ public class ItemReleaseVersionMappings {
         register(Items.GOLD_ORE, VersionRange.andNewer(VersionEnum.c0_28toc0_30));
         register(Items.IRON_ORE, VersionRange.andNewer(VersionEnum.c0_28toc0_30));
         register(Items.MOSSY_COBBLESTONE, VersionRange.andNewer(VersionEnum.c0_28toc0_30));
-
 
         register(Items.BLACK_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
         register(Items.BLUE_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27), VersionRange.singleton(VersionEnum.c0_30cpe));

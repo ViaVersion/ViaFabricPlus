@@ -30,7 +30,7 @@ public abstract class MixinChunkTracker {
 
     @Redirect(method = "recalculateChunks", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/Long2IntOpenHashMap;get(J)I"))
     private int modifyRenderCondition(Long2IntOpenHashMap instance, long k) {
-        if (VisualSettings.INSTANCE.fixSodiumChunkRendering.getValue()) {
+        if (VisualSettings.INSTANCE.fixSodiumChunkRendering.isEnabled()) {
             return instance.getOrDefault(k, -1);
         }
 

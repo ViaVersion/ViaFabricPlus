@@ -161,7 +161,7 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))
     public boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
-        return instance.isSecureChatEnforced() || VisualSettings.INSTANCE.disableSecureChatWarning.getValue();
+        return instance.isSecureChatEnforced() || VisualSettings.INSTANCE.disableSecureChatWarning.isEnabled();
     }
 
     @Inject(method = "onSetTradeOffers", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)

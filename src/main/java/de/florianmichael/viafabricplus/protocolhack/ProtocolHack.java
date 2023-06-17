@@ -73,7 +73,7 @@ public class ProtocolHack {
     /**
      * This field stores the target version that you set in the GUI
      */
-    public static VersionEnum targetVersion = VersionEnum.r1_20;
+    public static VersionEnum targetVersion = VersionEnum.r1_20tor1_20_1;
 
     /**
      * This method is used when you need the target version after connecting to the server.
@@ -112,7 +112,7 @@ public class ProtocolHack {
             return channel.attr(FORCED_VERSION).get();
         }
 
-        if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().isInSingleplayer()) return VersionEnum.r1_20;
+        if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().isInSingleplayer()) return VersionEnum.r1_20tor1_20_1;
 
         return targetVersion;
     }

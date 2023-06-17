@@ -34,7 +34,7 @@ public class MixinKeyboard {
 
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;execute(Ljava/lang/Runnable;)V"))
     public void redirectSync(MinecraftClient instance, Runnable runnable) {
-        if (DebugSettings.INSTANCE.executeInputsInSync.getValue()) {
+        if (DebugSettings.INSTANCE.executeInputsInSync.isEnabled()) {
             ((IMinecraftClient) MinecraftClient.getInstance()).viafabricplus_getKeyboardInteractions().add(runnable);
             return;
         }

@@ -42,22 +42,22 @@ public abstract class MixinInGameHud {
 
     @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
     public void removeExperienceBar(DrawContext context, int x, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) ci.cancel();
+        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) ci.cancel();
     }
 
     @Inject(method = "renderMountJumpBar", at = @At("HEAD"), cancellable = true)
     public void removeMountJumpBar(JumpingMount mount, DrawContext context, int x, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) ci.cancel();
+        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) ci.cancel();
     }
 
     @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
     public void removeMountHealth(DrawContext context, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) ci.cancel();
+        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) ci.cancel();
     }
 
     @Inject(method = "getHeartCount", at = @At("HEAD"), cancellable = true)
     public void removeHungerBar(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) {
+        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) {
             cir.setReturnValue(1);
         }
     }
@@ -66,7 +66,7 @@ public abstract class MixinInGameHud {
 
     @ModifyExpressionValue(method = "renderStatusBars", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/InGameHud;scaledHeight:I", opcode = Opcodes.GETFIELD))
     private int moveHealthDown(int originalValue) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) return originalValue + 6;
+        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return originalValue + 6;
         return originalValue;
     }
 
@@ -74,7 +74,7 @@ public abstract class MixinInGameHud {
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"),
             to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 1)
     private int moveArmor(int old) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) return scaledWidth - old - 9;
+        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return scaledWidth - old - 9;
         return old;
     }
 
@@ -82,7 +82,7 @@ public abstract class MixinInGameHud {
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"),
             to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 2)
     private int moveArmorDown(int old) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) return scaledWidth - 39 + 6;
+        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return scaledWidth - 39 + 6;
         return old;
     }
 
@@ -90,7 +90,7 @@ public abstract class MixinInGameHud {
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 2),
             to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V")), index = 1)
     private int moveAir(int old) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.getValue()) return scaledWidth - old - 9;
+        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return scaledWidth - old - 9;
         return old;
     }
 }
