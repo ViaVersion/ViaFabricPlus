@@ -6,7 +6,13 @@
   "name": "ViaFabricPlus",
   "description": "Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay",
   "authors": [
-    "FlorianMichael/EnZaXD"
+    {
+      "name": "FlorianMichael/EnZaXD",
+      "contact": {
+        "email": "florian.michael07@gmail.com",
+        "homepage": "https://github.com/FlorianMichael"
+      }
+    }
   ],
   "contact": {
     "homepage": "https://github.com/ViaVersion/",

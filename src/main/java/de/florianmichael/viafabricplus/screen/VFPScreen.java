@@ -59,7 +59,7 @@ public class VFPScreen extends Screen {
     }
 
     public void renderTitle(final DrawContext context) {
-        renderTitle(context, Text.of("https://github.com/FlorianMichael/ViaFabricPlus"));
+        renderTitle(context, Text.of("https://github.com/ViaVersion/ViaFabricPlus"));
     }
 
     public void renderTitle(final DrawContext context, final Text subTitle) {
