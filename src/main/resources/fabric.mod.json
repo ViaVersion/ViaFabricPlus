@@ -16,7 +16,7 @@
 
   "license": "GPL-v3",
   "icon": "assets/viafabricplus/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "modmenu": [
       "de.florianmichael.viafabricplus.integration.ModMenuImpl"
