@@ -30,7 +30,7 @@ public class MixinChatHud {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHudLine$Visible;indicator()Lnet/minecraft/client/gui/hud/MessageIndicator;"), require = 0)
     public MessageIndicator removeIndicators(ChatHudLine.Visible instance) {
-        if (VisualSettings.INSTANCE.hideSignatureIndicator.getValue()) {
+        if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
             return null;
         }
         return instance.indicator();

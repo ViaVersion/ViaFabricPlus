@@ -15,6 +15,7 @@
   "words.viafabricplus.error": "Something went wrong! Please try again later",
   "words.viafabricplus.translate": "Via translates to: %s",
   "words.viafabricplus.serverversion": "Server version: %s",
+  "words.viafabricplus.auto": "Auto",
 
   "settings.viafabricplus.authentication": "Authentication",
   "settings.viafabricplus.experimental": "Experimental",
@@ -27,7 +28,6 @@
   "general.viafabricplus.classicloading": "Show classic loading progress in connect screen",
   "general.viafabricplus.main": "Main button orientation",
   "general.viafabricplus.creative": "Remove not available items from creative tab",
-  "general.viafabricplus.protocolsync": "Automatically change Settings based on the current version",
   "general.viafabricplus.autodetect": "Auto detect version",
   "general.viafabricplus.advertised": "Show advertised/server version in Multiplayer",
 

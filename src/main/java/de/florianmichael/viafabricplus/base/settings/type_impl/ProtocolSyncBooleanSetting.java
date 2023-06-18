@@ -18,19 +18,22 @@
 package de.florianmichael.viafabricplus.base.settings.type_impl;
 
 import com.google.gson.JsonObject;
+import de.florianmichael.viafabricplus.base.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
 import de.florianmichael.viafabricplus.screen.impl.settings.settingrenderer.ProtocolSyncBooleanSettingRenderer;
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
-import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.text.MutableText;
 import net.raphimc.vialoader.util.VersionRange;
 
-public class ProtocolSyncBooleanSetting extends BooleanSetting {
+public class ProtocolSyncBooleanSetting extends AbstractSetting<Integer> {
+    public final static int AUTO = 2;
+    public final static int ENABLED = 0;
+
     private final VersionRange protocolRange;
 
     public ProtocolSyncBooleanSetting(SettingGroup parent, MutableText name, VersionRange protocolRange) {
-        super(parent, name, true);
+        super(parent, name, 2);
 
         this.protocolRange = protocolRange;
     }
@@ -49,14 +52,22 @@ public class ProtocolSyncBooleanSetting extends BooleanSetting {
     public void read(JsonObject object) {
         if (!object.has(getTranslationKey())) return;
 
-        setValue(object.get(getTranslationKey()).getAsBoolean());
+        if (object.get(getTranslationKey()).isJsonPrimitive() && object.get(getTranslationKey()).getAsJsonPrimitive().isBoolean()) { // Migrate configs, will be removed in the future
+            setValue(AUTO);
+            return;
+        }
+
+        setValue(object.get(getTranslationKey()).getAsInt());
     }
 
-    @Override
-    public Boolean getValue() {
-        if (GeneralSettings.INSTANCE.automaticallyChangeValuesBasedOnTheCurrentVersion.getValue()) return this.getProtocolRange().contains(ProtocolHack.getTargetVersion());
+    public boolean isAuto() {
+        return getValue() == AUTO;
+    }
 
-        return super.getValue();
+    public boolean isEnabled() {
+        if (isAuto()) return this.getProtocolRange().contains(ProtocolHack.getTargetVersion());
+
+        return getValue() == ENABLED;
     }
 
     public VersionRange getProtocolRange() {

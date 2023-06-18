@@ -39,7 +39,7 @@ public class MixinItemRenderer {
 
     @Inject(method = "getModel", at = @At("HEAD"), cancellable = true)
     public void removeModel(ItemStack stack, World world, LivingEntity entity, int seed, CallbackInfoReturnable<BakedModel> cir) {
-        if (VisualSettings.INSTANCE.replacePetrifiedOakSlab.getValue() && world != null /* world is null in gui rendering */ && stack.isOf(Items.PETRIFIED_OAK_SLAB)) {
+        if (VisualSettings.INSTANCE.replacePetrifiedOakSlab.isEnabled() && world != null /* world is null in gui rendering */ && stack.isOf(Items.PETRIFIED_OAK_SLAB)) {
             cir.setReturnValue(this.models.getModelManager().getMissingModel());
         }
     }

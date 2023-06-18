@@ -22,7 +22,7 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.FileSaver;
 import net.raphimc.mcauth.MinecraftAuth;
 import net.raphimc.mcauth.step.bedrock.StepMCChain;
-import net.raphimc.mcauth.step.bedrock.playfab.StepPlayFabToken;
+import net.raphimc.mcauth.step.bedrock.StepPlayFabToken;
 import net.raphimc.mcauth.util.MicrosoftConstants;
 import org.apache.http.impl.client.CloseableHttpClient;
 

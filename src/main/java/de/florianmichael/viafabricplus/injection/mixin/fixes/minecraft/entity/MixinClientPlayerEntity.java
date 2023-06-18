@@ -21,7 +21,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.world.GameMode;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
-import de.florianmichael.viafabricplus.definition.v1_8.ArmorPointCalculation;
+import de.florianmichael.viafabricplus.definition.ArmorPointCalculation;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -94,7 +94,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z", ordinal = 0))
     public boolean sendIdlePacket(ClientPlayerEntity instance) {
-        if (DebugSettings.INSTANCE.sendIdlePacket.getValue()) {
+        if (DebugSettings.INSTANCE.sendIdlePacket.isEnabled()) {
             return !isOnGround();
         }
         return lastOnGround;
@@ -198,7 +198,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Override
     public int getArmor() {
-        if (VisualSettings.INSTANCE.emulateArmorHud.getValue()) {
+        if (VisualSettings.INSTANCE.emulateArmorHud.isEnabled()) {
             return ArmorPointCalculation.sum();
         }
         return super.getArmor();

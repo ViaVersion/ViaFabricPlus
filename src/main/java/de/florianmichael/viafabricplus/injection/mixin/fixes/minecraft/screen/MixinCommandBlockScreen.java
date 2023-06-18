@@ -43,7 +43,7 @@ public abstract class MixinCommandBlockScreen {
 
     @Inject(method = "init", at = @At("TAIL"))
     private void injectInit(CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerFeaturesFromCommandBlockScreen.getValue()) {
+        if (VisualSettings.INSTANCE.removeNewerFeaturesFromCommandBlockScreen.isEnabled()) {
             modeButton.visible = false;
             conditionalModeButton.visible = false;
             redstoneTriggerButton.visible = false;

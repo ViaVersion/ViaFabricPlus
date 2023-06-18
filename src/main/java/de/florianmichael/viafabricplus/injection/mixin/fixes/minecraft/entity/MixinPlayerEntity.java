@@ -100,7 +100,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
     public void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
-        if (VisualSettings.INSTANCE.replaceHurtSoundWithOOFSound.getValue()) {
+        if (VisualSettings.INSTANCE.replaceHurtSoundWithOOFSound.isEnabled()) {
             cir.setReturnValue(viafabricplus_random_hurt);
         }
     }

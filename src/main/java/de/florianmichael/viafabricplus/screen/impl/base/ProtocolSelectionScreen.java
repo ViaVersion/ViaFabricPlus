@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.screen.impl.base;
 
 import de.florianmichael.classic4j.BetaCraftHandler;
-import de.florianmichael.viafabricplus.definition.c0_30.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.definition.classic.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.impl.thirdparty.classicube.ClassiCubeLoginScreen;
 import de.florianmichael.viafabricplus.screen.impl.thirdparty.classicube.ClassiCubeServerListScreen;
@@ -28,8 +28,6 @@ import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.NoticeScreen;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;

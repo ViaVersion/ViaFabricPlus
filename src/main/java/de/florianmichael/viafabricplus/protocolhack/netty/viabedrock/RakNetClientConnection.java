@@ -39,7 +39,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RakNetClientConnection {
     private final static List<InetSocketAddress> rakNetPingSessions = new ArrayList<>();
 
-    public static void connectRakNet(final ClientConnection clientConnection, final InetSocketAddress address, final Lazy lazy, final Class channelType) {
+    public static ChannelFuture connectRakNet(final ClientConnection clientConnection, final InetSocketAddress address, final Lazy lazy, final Class channelType) {
         final Bootstrap nettyBoostrap = new Bootstrap().group((EventLoopGroup) lazy.get()).handler(new ChannelInitializer<>() {
             @Override
             protected void initChannel(@NotNull Channel channel) {
@@ -60,9 +60,9 @@ public class RakNetClientConnection {
         }).channelFactory(channelType == EpollSocketChannel.class ? RakChannelFactory.client(EpollDatagramChannel.class) : RakChannelFactory.client(NioDatagramChannel.class));
 
         if (getRakNetPingSessions().contains(address)) {
-            nettyBoostrap.bind(new InetSocketAddress(0)).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE).syncUninterruptibly();
+            return nettyBoostrap.bind(new InetSocketAddress(0)).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
         } else {
-            nettyBoostrap.connect(address.getAddress(), address.getPort()).syncUninterruptibly();
+            return nettyBoostrap.connect(address.getAddress(), address.getPort());
         }
     }
 

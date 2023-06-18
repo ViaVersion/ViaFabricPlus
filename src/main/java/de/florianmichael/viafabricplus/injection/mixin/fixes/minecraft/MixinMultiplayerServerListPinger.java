@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.google.common.net.HostAndPort;
-import de.florianmichael.viafabricplus.definition.v1_14_4.LegacyServerAddress;
+import de.florianmichael.viafabricplus.definition.LegacyServerAddress;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import net.lenni0451.reflect.stream.RStream;
 import net.minecraft.client.network.MultiplayerServerListPinger;

@@ -18,12 +18,10 @@
 package de.florianmichael.viafabricplus.screen.impl.settings.settingrenderer;
 
 import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
-import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import de.florianmichael.viafabricplus.base.settings.type_impl.ProtocolSyncBooleanSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -43,20 +41,20 @@ public class ProtocolSyncBooleanSettingRenderer extends MappedSlotEntry {
 
     @Override
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-        this.value.setValue(!this.value.getValue());
+        this.value.setValue(this.value.getValue() + 1);
+        if (this.value.getValue() % 3 == 0) this.value.setValue(0);
     }
 
     @Override
     public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        final Text text = this.value.getValue() ? Text.translatable("words.viafabricplus.on") : Text.translatable("words.viafabricplus.off");
-        Color color = this.value.getValue() ? Color.GREEN : Color.RED;
+        final Text text = Text.translatable("words.viafabricplus." + (this.value.isAuto() ? "auto" : this.value.isEnabled() ? "on" : "off"));
+        Color color = this.value.isAuto() ? Color.ORANGE : this.value.isEnabled() ? Color.GREEN : Color.RED;
 
         final int length = context.drawTextWithShadow(textRenderer, this.value.getName().formatted(Formatting.GRAY), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
         context.drawTextWithShadow(textRenderer, "(" + this.value.getProtocolRange().toString() + ")", length + 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
-        if (GeneralSettings.INSTANCE.automaticallyChangeValuesBasedOnTheCurrentVersion.getValue()) color = color.darker().darker();
         context.drawTextWithShadow(textRenderer, text, entryWidth - textRenderer.getWidth(text) - 3 - 3, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
     }
 }

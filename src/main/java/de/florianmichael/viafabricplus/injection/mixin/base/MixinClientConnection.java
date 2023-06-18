@@ -24,6 +24,8 @@ import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.RakNetClientConnection;
 import io.netty.channel.*;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PacketDecryptor;
 import net.minecraft.network.encryption.PacketEncryptor;
@@ -81,14 +83,12 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         }
     }
 
-    @Inject(method = "connect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Lazy;get()Ljava/lang/Object;", shift = At.Shift.BEFORE), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void captureAddress(InetSocketAddress address, boolean useEpoll, CallbackInfoReturnable<ClientConnection> cir, final ClientConnection clientConnection, Class class_, Lazy lazy) {
-        ((IClientConnection) clientConnection).viafabricplus_captureAddress(address);
+    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Lazy;get()Ljava/lang/Object;", shift = At.Shift.BEFORE), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void captureAddress(InetSocketAddress address, boolean useEpoll, ClientConnection connection, CallbackInfoReturnable<ChannelFuture> cir, Class class_, Lazy lazy) {
+        ((IClientConnection) connection).viafabricplus_captureAddress(address);
 
-        if (ProtocolHack.getForcedVersions().containsKey(address) ? (ProtocolHack.getForcedVersions().get(address).getVersion() == VersionEnum.bedrockLatest.getVersion()) :
-                ProtocolHack.getTargetVersion() == VersionEnum.bedrockLatest) {
-            RakNetClientConnection.connectRakNet(clientConnection, address, lazy, class_);
-            cir.setReturnValue(clientConnection);
+        if (ProtocolHack.getTargetVersion(address) == VersionEnum.bedrockLatest) {
+            cir.setReturnValue(RakNetClientConnection.connectRakNet(connection, address, lazy, class_));
         }
     }
 

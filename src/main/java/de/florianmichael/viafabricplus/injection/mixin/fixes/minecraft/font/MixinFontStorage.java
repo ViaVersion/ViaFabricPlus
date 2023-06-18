@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.font;
 
-import de.florianmichael.viafabricplus.definition.v1_12_2.FontCacheFix;
+import de.florianmichael.viafabricplus.definition.FontCacheFix;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
 import net.minecraft.client.font.Font;
 import net.minecraft.client.font.FontStorage;

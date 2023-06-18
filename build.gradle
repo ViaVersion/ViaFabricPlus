@@ -57,7 +57,6 @@ dependencies {
 	library "com.github.FlorianMichael:Classic4J:${project.classic4j_version}"
 	library ("net.raphimc:ViaLoader:${project.vialoader_version}") {
 		exclude group: "org.slf4j", module: "slf4j-api"
-		exclude group: "org.yaml", module: "snakeyaml"
 	}
 
 	library "com.viaversion:viaversion:${project.viaversion_version}"
@@ -66,10 +65,9 @@ dependencies {
 		exclude group: "io.netty", module: "netty-all"
 		exclude group: "com.google.guava", module: "guava"
 	}
-	library "org.yaml:snakeyaml:${project.snake_yml_version}"
 
 	library ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
-		exclude group: "net.lenni0451.mcstructs", module: "text"
+		exclude group: "com.google.code.gson", module: "gson"
 	}
 	library "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
 	library ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
@@ -89,9 +87,6 @@ dependencies {
 		exclude group: "io.netty", module: "netty-transport"
 	}
 
-	library ("net.lenni0451.mcstructs:text:${project.mcstructs_text_version}") {
-		exclude group: "com.google.code.gson", module: "gson"
-	}
 	library "net.lenni0451:Reflect:${project.reflect_version}"
 
 	include implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))

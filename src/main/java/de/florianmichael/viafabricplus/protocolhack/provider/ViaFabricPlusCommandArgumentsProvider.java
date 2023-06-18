@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.protocolhack.provider;
 
 import com.viaversion.viaversion.util.Pair;
-import de.florianmichael.viafabricplus.definition.v1_19_0.provider.CommandArgumentsProvider;
+import de.florianmichael.viafabricplus.definition.signatures.v1_19_0.provider.CommandArgumentsProvider;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.command.argument.SignedArgumentList;

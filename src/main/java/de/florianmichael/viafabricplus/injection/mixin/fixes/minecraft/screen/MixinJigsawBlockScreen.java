@@ -51,7 +51,7 @@ public class MixinJigsawBlockScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     public void injectInit(CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerFeaturesFromJigsawScreen.getValue()) {
+        if (VisualSettings.INSTANCE.removeNewerFeaturesFromJigsawScreen.isEnabled()) {
             nameField.active = false;
             jointRotationButton.active = false;
             int index = children().indexOf(jointRotationButton);
@@ -63,7 +63,7 @@ public class MixinJigsawBlockScreen extends Screen {
 
     @Inject(method = "render", at = @At("HEAD"))
     public void injectRender(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerFeaturesFromJigsawScreen.getValue()) {
+        if (VisualSettings.INSTANCE.removeNewerFeaturesFromJigsawScreen.isEnabled()) {
             nameField.setText(targetField.getText());
         }
     }
