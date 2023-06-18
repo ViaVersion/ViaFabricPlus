@@ -69,7 +69,7 @@
   "visual.viafabricplus.sodium": "Fix Sodium Chunk renderer",
 
   "bedrocklogin.viafabricplus.text": "Your browser should have opened.\nPlease enter the following Code: %s\nClosing this screen will cancel the process!",
-  "bedrocklogin.viafabricplus.error": "An error has occurred! See the latest.log for more information,\nplease report the bug at: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "An error has occurred! See the latest.log for more information,\nplease report the bug at: \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "Please select the version with which the server should be pinged/connected",
 

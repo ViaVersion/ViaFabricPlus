@@ -69,7 +69,7 @@
   "visual.viafabricplus.sodium": "Napraw renderowanie chunków sodium",
 
   "bedrocklogin.viafabricplus.text": "Powinna ci się otworzyć przeglądarka.\nProszę, wpisz ten kod: %s\nZamykanie tego ekranu będzie anulowało proces!",
-  "bedrocklogin.viafabricplus.error": "Wystąpił błąd! Zobacz latest.log po więcej informacji.\nProszę, zgłoś ten problem tutaj:\nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "Wystąpił błąd! Zobacz latest.log po więcej informacji.\nProszę, zgłoś ten problem tutaj:\nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "Wybierz wersję, z którą chcesz pingować/łączyć się do serwera",
 

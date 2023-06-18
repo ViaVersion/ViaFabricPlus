@@ -51,7 +51,7 @@
   "visual.viafabricplus.sodium": "Sodiumのチャンク描画を修正",
 
   "bedrocklogin.viafabricplus.text": "ブラウザが開きました。\nブラウザに次のコードを入力してください: %s\nこの画面を閉じるとログインが中断されます。",
-  "bedrocklogin.viafabricplus.error": "エラーが発生しました! 詳細についてはlasted.logを確認してください。\nまた、下記の場所でバグを報告してください。 \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "エラーが発生しました! 詳細についてはlasted.logを確認してください。\nまた、下記の場所でバグを報告してください。 \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "サーバーに接続するバージョンを選択",
 

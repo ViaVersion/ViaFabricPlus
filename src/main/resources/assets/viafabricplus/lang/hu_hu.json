@@ -58,7 +58,7 @@
     "visual.viafabricplus.sodium": "Sodium Chunk renderelő megjavítása",
   
     "bedrocklogin.viafabricplus.text": "A böngésződnek meg kellett volna nyílnia.\nKérlek írd be a következő kódot: %s\nEzen képernyő bezárása leállítja a folyamatot!",
-    "bedrocklogin.viafabricplus.error": "Hiba történt! További információért lásd a latest.log-ot,\nkérlek, jelentsd a bug-ot itt: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+    "bedrocklogin.viafabricplus.error": "Hiba történt! További információért lásd a latest.log-ot,\nkérlek, jelentsd a bug-ot itt: \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
   
     "forceversion.viafabricplus.title": "Kérlek, válaszd ki azt a verziót, amellyel a szervert pingelni/csatlakozni kell",
   

@@ -45,7 +45,7 @@
   "visual.viafabricplus.walkanimation": "Aal Laaf-Animatioun",
 
   "bedrocklogin.viafabricplus.text": "Däin Browser sollt elo opgaangen sinn.\nGeff w.e.g. den heien Code an: %s\nWann du desse Bildschirm zoumesst, gett den Prozess ofgebrach.",
-  "bedrocklogin.viafabricplus.error": "En Fehler ist opgetrieden! An der latest.log sin genauer Informatiounen;\n.e.g. Meld den Fehler enner: \nhttps://github.com/FloriUnMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "En Fehler ist opgetrieden! An der latest.log sin genauer Informatiounen;\n.e.g. Meld den Fehler enner: \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "W.e.g. wähl die Versioun, die bäim Verbannen mat dem Server benotzt ginn soll"
 }

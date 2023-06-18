@@ -69,7 +69,7 @@
     "visual.viafabricplus.sodium": "修復鈉（Sodium）渲染器",
   
     "bedrocklogin.viafabricplus.text": "你的瀏覽器現在應該打開了。\n請輸入這個程式碼：%s\n關閉這個螢幕等於取消操作！",
-    "bedrocklogin.viafabricplus.error": "發生錯誤！詳情請查看 latest.log\n請在這個連結回饋 BUG：\nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+    "bedrocklogin.viafabricplus.error": "發生錯誤！詳情請查看 latest.log\n請在這個連結回饋 BUG：\nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
   
     "forceversion.viafabricplus.title": "請選擇連接這個伺服器要使用的版本",
   

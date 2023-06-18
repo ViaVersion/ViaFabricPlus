@@ -60,7 +60,7 @@
   "visual.viafabricplus.sodium": "Korjaa Sodium:in chunk-renderöijä",
 
   "bedrocklogin.viafabricplus.text": "Selaimesi taisi aueta.\nKirjoita seuraava koodi: %s\nNäytön sulkeminen aiheuttaa prosessin loppumisen!",
-  "bedrocklogin.viafabricplus.error": "Virhe tapahtui! Katso latest.log lisätietoja varten,\nole hyvä, ja raportoi bugi täällä: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "Virhe tapahtui! Katso latest.log lisätietoja varten,\nole hyvä, ja raportoi bugi täällä: \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "Ole hyvä ja valitse versio, jolla palvelimelle pitäisi liittyä",
 

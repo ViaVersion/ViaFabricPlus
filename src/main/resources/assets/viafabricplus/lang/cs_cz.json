@@ -55,7 +55,7 @@
   "visual.viafabricplus.sodium": "Opravit renderer chunků v Sodium módu",
 
   "bedrocklogin.viafabricplus.text": "Váš webový prohlížeč by se měl spustit.\nProsím zadejte tento Kód: %s\nZavření této obrazovky zruší tento proces!",
-  "bedrocklogin.viafabricplus.error": "Nastala chyba. Podívejte se do souboru latest.log pro více informací,\nprosím nahlašte tuto chybu zde (nejlépe v angličtině): \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "Nastala chyba. Podívejte se do souboru latest.log pro více informací,\nprosím nahlašte tuto chybu zde (nejlépe v angličtině): \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "Prosím zvolte verzi s kterou se bude server pingovat/připojovat",
 

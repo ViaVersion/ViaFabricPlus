@@ -58,7 +58,7 @@
   "visual.viafabricplus.sodium": "Corriger le rendu de chunk de Sodium",
 
   "bedrocklogin.viafabricplus.text": "Votre navigateur devrait s'être ouvert. Veuillez entrer le code suivant: %s. Fermer cette fenêtre annulera le processus!",
-  "bedrocklogin.viafabricplus.error": "Une erreur s'est produite ! Veuillez consulter latest.log pour plus d'informations. Veuillez signaler le bogue à l'adresse : \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "Une erreur s'est produite ! Veuillez consulter latest.log pour plus d'informations. Veuillez signaler le bogue à l'adresse : \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "Veuillez sélectionner la version avec laquelle le serveur doit être pingé/connecté",
 
