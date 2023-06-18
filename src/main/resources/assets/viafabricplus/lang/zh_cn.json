@@ -15,6 +15,7 @@
   "words.viafabricplus.error": "出错了！请稍后再试",
   "words.viafabricplus.translate": "连接所用版本: %s",
   "words.viafabricplus.serverversion": "服务器版本： %s",
+  "words.viafabricplus.auto": "自动",
 
   "settings.viafabricplus.authentication": "身份与认证",
   "settings.viafabricplus.experimental": "实验性功能",
@@ -27,7 +28,6 @@
   "general.viafabricplus.classicloading": "在连接服务器时使用旧版加载进度条",
   "general.viafabricplus.main": "模组按钮位置",
   "general.viafabricplus.creative": "从创造模式选项中移除不可用的物品",
-  "general.viafabricplus.protocolsync": "自动根据所选版本调整设置",
   "general.viafabricplus.autodetect": "自动检测版本",
   "general.viafabricplus.advertised": "在 服务器列表-延迟 中显示 连接所用版本/服务器版本",
 
@@ -84,6 +84,5 @@
 
   "classicube.viafabricplus.warning": "该功能会向 ClassiCube API 发送请求",
 
-  "betacraft.viafabricplus.warning": "点击这个按钮会向 “betacraft.uk/serverlist” 发送 API 请求",
-  "betacraft.viafabricplus.error": "出错了！请稍后再试！"
+  "betacraft.viafabricplus.warning": "点击这个按钮会向 “betacraft.uk/serverlist” 发送 API 请求"
 }
