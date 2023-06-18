@@ -9,9 +9,9 @@
     "FlorianMichael/EnZaXD"
   ],
   "contact": {
-    "homepage": "https://github.com/FlorianMichael/",
-    "sources": "https://github.com/FlorianMichael/ViaFabricPlus",
-    "issues": "https://github.com/FlorianMichael/ViaFabricPlus/issues"
+    "homepage": "https://github.com/ViaVersion/",
+    "sources": "https://github.com/ViaVersion/ViaFabricPlus",
+    "issues": "https://github.com/ViaVersion/ViaFabricPlus/issues"
   },
 
   "license": "GPL-v3",
@@ -27,8 +27,8 @@
   ],
   "accessWidener": "viafabricplus.accesswidener",
   "depends": {
-    "fabricloader": ">=0.14.11",
-    "fabric-api": "*",
+    "fabricloader": ">=0.14.21",
+    "fabric-api": ">=0.83.0+1.20.1",
     "minecraft": "~1.20.1",
     "java": ">=17"
   },
