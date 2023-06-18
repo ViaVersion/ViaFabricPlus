@@ -66,7 +66,7 @@
   "visual.viafabricplus.sodium": "Исправить рендеринг чанков Sodium",
 
   "bedrocklogin.viafabricplus.text": "Сейчас должен открыться браузер.\nВведите следующий код: %s\nЗакрытие этого экрана приведёт к отмене процесса!",
-  "bedrocklogin.viafabricplus.error": "Произошла ошибка. Проверьте latest.log для получения дополнительных сведений.\nПожалуйста, сообщите о ней разработчику:\nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "Произошла ошибка. Проверьте latest.log для получения дополнительных сведений.\nПожалуйста, сообщите о ней разработчику:\nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "Укажите версию для проверки связи с сервером и подключения к нему.",
 

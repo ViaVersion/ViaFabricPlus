@@ -25,7 +25,7 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 
 # For users
 ### Detailed instructions for use are available here [here](.github/USAGE.md)
-### If you encounter any issues, please report them on the [issue tracker](https://github.com/FlorianMichael/ViaFabricPlus/issues) or on the ViaVersion [Discord](https://discord.gg/viaversion)
+### If you encounter any issues, please report them on the [issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues) or on the ViaVersion [Discord](https://discord.gg/viaversion)
 
 ## Known incompatibilities
 - ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)***
@@ -87,7 +87,7 @@ For compiling only! **You do not need to install these!**
 
 ### Setting up a Workspace
 ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
-1. Clone the repository using `git clone https://github.com/FlorianMichael/ViaFabricPlus`.
+1. Clone the repository using `git clone https://github.com/ViaVersion/ViaFabricPlus`.
 2. CD into the local repository.
 3. Run `./gradlew genSources`.
 4. Open the folder as a Gradle project in your preferred IDE.

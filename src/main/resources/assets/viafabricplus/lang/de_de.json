@@ -45,7 +45,7 @@
   "visual.viafabricplus.walkanimation": "Alte Lauf-Animation",
 
   "bedrocklogin.viafabricplus.text": "Dein Browser sollte sich jetzt geöffnet haben.\nBitte gib den folgenden Code ein: %s\nWenn du diesen Bildschirm schließt, wird der Prozess abgebrochen.",
-  "bedrocklogin.viafabricplus.error": "Ein Fehler ist aufgetreten! In der latest.log sind genauere Informationen;\bitte Melde den Fehler unter: \nhttps://github.com/FlorianMichael/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "Ein Fehler ist aufgetreten! In der latest.log sind genauere Informationen;\bitte Melde den Fehler unter: \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
 
   "forceversion.viafabricplus.title": "Bitte wähle die Version, die beim Verbinden mit dem Server verwendet werden soll"
 }
