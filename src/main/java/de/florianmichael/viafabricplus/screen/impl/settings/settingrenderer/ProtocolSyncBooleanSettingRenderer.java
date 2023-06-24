@@ -26,6 +26,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class ProtocolSyncBooleanSettingRenderer extends MappedSlotEntry {
     private final ProtocolSyncBooleanSetting value;
@@ -54,7 +55,7 @@ public class ProtocolSyncBooleanSettingRenderer extends MappedSlotEntry {
 
         final int length = context.drawTextWithShadow(textRenderer, this.value.getName().formatted(Formatting.GRAY), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
-        context.drawTextWithShadow(textRenderer, "(" + this.value.getProtocolRange().toString() + ")", length + 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+        context.drawTextWithShadow(textRenderer, Arrays.toString(this.value.getProtocolRange()).replace("[", "(").replace("]", ")"), length + 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
         context.drawTextWithShadow(textRenderer, text, entryWidth - textRenderer.getWidth(text) - 3 - 3, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
     }
 }

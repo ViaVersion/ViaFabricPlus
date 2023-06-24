@@ -45,7 +45,7 @@ public class DebugSettings extends SettingGroup {
 
     // 1.9 -> 1.8.x
     public final ProtocolSyncBooleanSetting removeCooldowns = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.cooldown"), VersionRange.andOlder(VersionEnum.r1_8));
-    public final ProtocolSyncBooleanSetting sendIdlePacket = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.idle"), new VersionRange(VersionEnum.r1_8, VersionEnum.r1_3_1tor1_3_2));
+    public final ProtocolSyncBooleanSetting sendIdlePacket = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.idle"), new VersionRange(VersionEnum.r1_8, VersionEnum.r1_4_2), VersionRange.andOlder(VersionEnum.r1_2_4tor1_2_5));
     public final ProtocolSyncBooleanSetting replaceAttributeModifiers = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.attribute"), VersionRange.andOlder(VersionEnum.r1_8));
 
     // 1.8.x -> 1.7.6

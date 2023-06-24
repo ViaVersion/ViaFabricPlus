@@ -30,9 +30,9 @@ public class ProtocolSyncBooleanSetting extends AbstractSetting<Integer> {
     public final static int AUTO = 2;
     public final static int ENABLED = 0;
 
-    private final VersionRange protocolRange;
+    private final VersionRange[] protocolRange;
 
-    public ProtocolSyncBooleanSetting(SettingGroup parent, MutableText name, VersionRange protocolRange) {
+    public ProtocolSyncBooleanSetting(SettingGroup parent, MutableText name, VersionRange... protocolRange) {
         super(parent, name, 2);
 
         this.protocolRange = protocolRange;
@@ -65,12 +65,20 @@ public class ProtocolSyncBooleanSetting extends AbstractSetting<Integer> {
     }
 
     public boolean isEnabled() {
-        if (isAuto()) return this.getProtocolRange().contains(ProtocolHack.getTargetVersion());
+        if (isAuto()) {
+            if (getProtocolRange().length == 1) {
+                return getProtocolRange()[0].contains(ProtocolHack.getTargetVersion());
+            } else {
+                for (VersionRange versionRange : getProtocolRange()) {
+                    if (versionRange.contains(ProtocolHack.getTargetVersion())) return true;
+                }
+            }
+        }
 
         return getValue() == ENABLED;
     }
 
-    public VersionRange getProtocolRange() {
+    public VersionRange[] getProtocolRange() {
         return protocolRange;
     }
 }
