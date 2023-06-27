@@ -32,11 +32,11 @@
   "general.viafabricplus.advertised": "在 服务器列表-延迟 中显示 连接所用版本/服务器版本",
 
   "experimental.viafabricplus.chunkborderfix": "修复区块边界",
-  "experimental.viafabricplus.watermovement": "水流边缘检测",
+  "experimental.viafabricplus.watermovement": "水中移动边缘检测",
   "experimental.viafabricplus.fontcachefix": "修复字体缓存",
 
-  "debug.viafabricplus.sequence": "禁用序列",
-  "debug.viafabricplus.merchant": "平滑商人屏幕",
+  "debug.viafabricplus.sequence": "禁用排序",
+  "debug.viafabricplus.merchant": "平滑屏幕",
   "debug.viafabricplus.postfix": "同步执行输入",
   "debug.viafabricplus.sneakinstant": "瞬间潜行",
   "debug.viafabricplus.inventory": "发送“打开物品栏”数据包",
