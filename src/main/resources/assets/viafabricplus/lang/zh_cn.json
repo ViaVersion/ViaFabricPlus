@@ -36,7 +36,7 @@
   "experimental.viafabricplus.fontcachefix": "修复字体缓存",
 
   "debug.viafabricplus.sequence": "禁用排序",
-  "debug.viafabricplus.merchant": "平滑屏幕",
+  "debug.viafabricplus.merchant": "平滑商人屏幕",
   "debug.viafabricplus.postfix": "同步执行输入",
   "debug.viafabricplus.sneakinstant": "瞬间潜行",
   "debug.viafabricplus.inventory": "发送“打开物品栏”数据包",
