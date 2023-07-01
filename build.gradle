@@ -8,7 +8,6 @@ version = project.mod_version
 group = project.maven_group
 
 configurations {
-	implementation.extendsFrom library
 	api.extendsFrom library
 }
 
@@ -52,9 +51,9 @@ dependencies {
 
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
+	modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
-	library "com.github.FlorianMichael:Classic4J:${project.classic4j_version}"
+	library "de.florianmichael:Classic4J:${project.classic4j_version}"
 	library ("net.raphimc:ViaLoader:${project.vialoader_version}") {
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
