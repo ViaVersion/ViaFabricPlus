@@ -123,6 +123,7 @@
     "fixes.minecraft.screen.MixinGameModeSelectionScreen",
     "fixes.minecraft.screen.MixinGameModeSelectionScreen_GameModeSelection",
     "fixes.minecraft.screen.MixinJigsawBlockScreen",
+    "fixes.minecraft.screen.MixinScreen",
     "fixes.minecraft.screen.MixinStructureBlockScreen_1",
     "fixes.minecraft.screen.merchant.MixinMerchantScreen",
     "fixes.minecraft.screen.merchant.MixinMerchantScreenHandler",
@@ -148,6 +149,7 @@
     "fixes.viaversion.protocol1_13to1_12_2.MixinGlassConnectionHandler",
     "fixes.viaversion.protocol1_13to1_12_2.MixinSkullHandler",
     "fixes.viaversion.protocol1_13to1_12_2.MixinWorldPackets1_13",
+    "fixes.viaversion.protocol1_14to1_13_2.MixinInventoryPackets",
     "fixes.viaversion.protocol1_14to1_13_2.MixinInventoryPackets_2",
     "fixes.viaversion.protocol1_15to1_14_4.MixinMetadataRewriter1_15To1_14_4",
     "fixes.viaversion.protocol1_16_2to1_16_1.MixinWorldPackets_2",
@@ -167,8 +169,7 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "fixes.viaversion.protocol1_14to1_13_2.MixinInventoryPackets"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder"
   ],
   "injectors": {
     "defaultRequire": 1
