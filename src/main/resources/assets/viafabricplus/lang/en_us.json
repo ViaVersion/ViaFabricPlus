@@ -22,6 +22,7 @@
   "settings.viafabricplus.visual": "Visual",
   "settings.viafabricplus.debug": "Debug",
   "settings.viafabricplus.general": "General",
+  "settings.viafabricplus.bedrock": "Bedrock",
 
   "general.viafabricplus.secret": "Show Super Secret Settings",
   "general.viafabricplus.extrainformation": "Show extra information in Debug Hud",
@@ -30,6 +31,9 @@
   "general.viafabricplus.creative": "Remove not available items from creative tab",
   "general.viafabricplus.autodetect": "Auto detect version",
   "general.viafabricplus.advertised": "Show advertised/server version in Multiplayer",
+
+  "bedrock.viafabricplus.confirmtransfer": "Open prompt GUI to confirm transferring to other servers",
+  "bedrock.viafabricplus.authentication": "Click to set account for Bedrock edition",
 
   "experimental.viafabricplus.chunkborderfix": "Fix Chunk borders",
   "experimental.viafabricplus.watermovement": "Water movement edge detection",
@@ -53,7 +57,6 @@
   "authentication.viafabricplus.classicube": "Force CPE Version if using ClassiCube",
   "authentication.viafabricplus.spoof": "Spoof Username to ClassiCube Name if using ClassiCube",
   "authentication.viafabricplus.skin": "Allow ViaLegacy to load skins in legacy versions",
-  "authentication.viafabricplus.bedrock": "Click to set account for Bedrock edition",
   "authentication.viafabricplus.error": "ViaFabricPlus failed to verify your session! Please log in into an Account or disable the BetaCraft authentication in the ViaFabricPlus Settings",
 
   "visual.viafabricplus.secure": "Disable secure chat warning",
@@ -70,6 +73,7 @@
 
   "bedrocklogin.viafabricplus.text": "Your browser should have opened.\nPlease enter the following Code: %s\nClosing this screen will cancel the process!",
   "bedrocklogin.viafabricplus.error": "An error has occurred! See the latest.log for more information,\nplease report the bug at: \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
+  "bedrockplay.viafabricplus.confirmtransfer": "Do you want to transfer to the following server?\n%s\n\nThis will disconnect the current server and connect to the new one.",
 
   "forceversion.viafabricplus.title": "Please select the version with which the server should be pinged/connected",
 

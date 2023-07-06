@@ -28,6 +28,7 @@ import de.florianmichael.viafabricplus.definition.signatures.v1_19_0.provider.Co
 import de.florianmichael.viafabricplus.protocolhack.provider.ViaFabricPlusCommandArgumentsProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
+import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusTransferProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.*;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusBaseVersionProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
@@ -36,6 +37,7 @@ import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabri
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusPlayerLookTargetProvider;
 import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;
+import net.raphimc.viabedrock.protocol.providers.TransferProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
@@ -68,5 +70,6 @@ public class ViaFabricPlusVLLoader extends VLLoader {
 
         providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
         providers.use(BlobCacheProvider.class, new ViaFabricPlusBlobCacheProvider());
+        providers.use(TransferProvider.class, new ViaFabricPlusTransferProvider());
     }
 }

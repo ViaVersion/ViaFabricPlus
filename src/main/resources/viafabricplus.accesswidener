@@ -10,6 +10,7 @@ accessible field net/minecraft/client/MinecraftClient fontManager Lnet/minecraft
 accessible field net/minecraft/client/font/FontManager fontStorages Ljava/util/Map;
 accessible field net/minecraft/network/ClientConnection EPOLL_CLIENT_IO_GROUP Lnet/minecraft/util/Lazy;
 accessible field net/minecraft/network/ClientConnection LOCAL_CLIENT_IO_GROUP Lnet/minecraft/util/Lazy;
+accessible field net/minecraft/client/gui/screen/GameMenuScreen exitButton Lnet/minecraft/client/gui/widget/ButtonWidget;
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 

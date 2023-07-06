@@ -42,6 +42,7 @@ public class SettingsSystem extends FileSaver {
         addGroup(
                 GeneralSettings.INSTANCE,
                 ExperimentalSettings.INSTANCE,
+                BedrockSettings.INSTANCE,
                 AuthenticationSettings.INSTANCE,
                 VisualSettings.INSTANCE,
                 DebugSettings.INSTANCE
