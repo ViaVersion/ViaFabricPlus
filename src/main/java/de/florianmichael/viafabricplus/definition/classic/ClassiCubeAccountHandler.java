@@ -21,7 +21,7 @@ import com.google.gson.JsonObject;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.viafabricplus.base.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import de.florianmichael.viafabricplus.base.FileSaver;
+import de.florianmichael.viafabricplus.base.file.FileSaver;
 
 public class ClassiCubeAccountHandler extends FileSaver {
     public static ClassiCubeAccountHandler INSTANCE;

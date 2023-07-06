@@ -22,7 +22,7 @@ import de.florianmichael.viafabricplus.base.event.InitializeSettingsCallback;
 import de.florianmichael.viafabricplus.base.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.base.settings.groups.*;
-import de.florianmichael.viafabricplus.base.FileSaver;
+import de.florianmichael.viafabricplus.base.file.FileSaver;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.raphimc.vialoader.util.VersionEnum;
 

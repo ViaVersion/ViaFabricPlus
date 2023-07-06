@@ -39,7 +39,7 @@ public class MixinInventoryPackets extends ItemRewriter<ClientboundPackets1_19_4
 
     @Inject(method = "registerPackets", at = @At("RETURN"))
     public void handleLegacySmithingScreen(CallbackInfo ci) {
-        protocol.registerClientbound(ClientboundPackets1_19_4.OPEN_WINDOW, wrapper -> {
+        protocol.registerClientbound(ClientboundPackets1_19_4.OPEN_WINDOW, ClientboundPackets1_19_4.OPEN_WINDOW, wrapper -> {
             final var windowId = wrapper.read(Type.VAR_INT);
             final int typeId = wrapper.read(Type.VAR_INT);
             var title = wrapper.read(Type.COMPONENT);
@@ -53,6 +53,6 @@ public class MixinInventoryPackets extends ItemRewriter<ClientboundPackets1_19_4
                 wrapper.write(Type.VAR_INT, windowId);
                 wrapper.write(Type.COMPONENT, title);
             }
-        });
+        }, true);
     }
 }
