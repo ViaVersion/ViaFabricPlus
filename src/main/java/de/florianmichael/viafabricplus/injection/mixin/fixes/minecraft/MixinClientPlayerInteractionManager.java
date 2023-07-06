@@ -167,13 +167,13 @@ public abstract class MixinClientPlayerInteractionManager {
         return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_17);
     }
 
-    @Inject(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0, shift = At.Shift.BEFORE))
-    public void injectInteractItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(method = "interactItem", at = @At("HEAD"))
+    public void trackLastUsedItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         ViaFabricPlusHandItemProvider.lastUsedItem = player.getStackInHand(hand).copy();
     }
 
-    @Inject(method = "interactBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;sendSequencedPacket(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/network/SequencedPacketCreator;)V", shift = At.Shift.BEFORE))
-    public void injectInteractBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(method = "interactBlock", at = @At("HEAD"))
+    public void trackLastUsedBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
         ViaFabricPlusHandItemProvider.lastUsedItem = player.getStackInHand(hand).copy();
     }
 
