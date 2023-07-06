@@ -28,7 +28,7 @@ import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.ClientboundPackets1_14;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.packets.InventoryPackets;
 import de.florianmichael.viafabricplus.definition.PacketSyncBase;
-import de.florianmichael.viafabricplus.definition.ScreenHandlerEmulator1_13_2;
+import de.florianmichael.viafabricplus.definition.screen.CustomScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.Unpooled;
 import net.minecraft.SharedConstants;
@@ -64,7 +64,7 @@ public class MixinInventoryPackets {
                 fakeOpenWindow.read(Type.VAR_INT);
                 fakeOpenWindow.read(Type.VAR_INT);
 
-                final String uuid = PacketSyncBase.track(ScreenHandlerEmulator1_13_2.OLD_PACKET_HANDLER);
+                final String uuid = PacketSyncBase.track(CustomScreenHandler.TRIPLE_CHEST_HANDLER);
 
                 wrapper.write(Type.STRING, uuid);
                 wrapper.write(Type.SHORT, windowId);
