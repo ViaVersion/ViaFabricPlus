@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protocol1_20to1_19_4;
 
+import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.ClientboundPackets1_19_4;
 import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.ServerboundPackets1_19_4;
@@ -39,19 +40,35 @@ public class MixinInventoryPackets extends ItemRewriter<ClientboundPackets1_19_4
 
     @Inject(method = "registerPackets", at = @At("RETURN"))
     public void handleLegacySmithingScreen(CallbackInfo ci) {
-        protocol.registerClientbound(ClientboundPackets1_19_4.OPEN_WINDOW, ClientboundPackets1_19_4.OPEN_WINDOW, wrapper -> {
-            final var windowId = wrapper.read(Type.VAR_INT);
-            final int typeId = wrapper.read(Type.VAR_INT);
-            var title = wrapper.read(Type.COMPONENT);
+        protocol.registerClientbound(ClientboundPackets1_19_4.OPEN_WINDOW, ClientboundPackets1_19_4.OPEN_WINDOW, new PacketHandlers() {
+            @Override
+            protected void register() {
+                map(Type.VAR_INT); // Window ID
+                map(Type.VAR_INT); // Type ID
+                map(Type.COMPONENT); // Title
 
-            if (typeId == 20) {
-                wrapper.clearPacket();
-                wrapper.setPacketType(ClientboundPackets1_19_4.PLUGIN_MESSAGE);
+                handler(wrapper -> {
+                    final var windowId = wrapper.get(Type.VAR_INT, 0);
+                    final var typeId = wrapper.get(Type.VAR_INT, 1);
+                    final var title = wrapper.get(Type.COMPONENT, 0);
 
-                wrapper.write(Type.STRING, PacketSyncBase.PACKET_SYNC_IDENTIFIER);
-                wrapper.write(Type.STRING, PacketSyncBase.track(CustomScreenHandler.LEGACY_SMITHING_HANDLER));
-                wrapper.write(Type.VAR_INT, windowId);
-                wrapper.write(Type.COMPONENT, title);
+                    if (typeId == 20) {
+                        wrapper.clearPacket();
+                        wrapper.setPacketType(ClientboundPackets1_19_4.PLUGIN_MESSAGE);
+
+                        wrapper.write(Type.STRING, PacketSyncBase.PACKET_SYNC_IDENTIFIER);
+                        wrapper.write(Type.STRING, PacketSyncBase.track(CustomScreenHandler.LEGACY_SMITHING_HANDLER));
+                        wrapper.write(Type.VAR_INT, windowId);
+                        wrapper.write(Type.COMPONENT, title);
+                    } else {
+                        final var mappedId = protocol.getMappingData().getMenuMappings().getNewId(typeId);
+                        if (mappedId == -1) {
+                            wrapper.cancel();
+                        } else {
+                            wrapper.set(Type.VAR_INT, 1, mappedId);
+                        }
+                    }
+                });
             }
         }, true);
     }
