@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.base.settings.groups;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.base.settings.type_impl.BooleanSetting;
 import de.florianmichael.viafabricplus.base.settings.type_impl.ButtonSetting;
@@ -44,6 +45,7 @@ public class BedrockSettings extends SettingGroup {
     public final static BedrockSettings INSTANCE = new BedrockSettings();
 
     public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, Text.translatable("bedrock.viafabricplus.authentication"), () -> CompletableFuture.runAsync(() -> {
+        final var prevScreen = MinecraftClient.getInstance().currentScreen;
         try {
             try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
                 final var mcChain = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
@@ -51,7 +53,7 @@ public class BedrockSettings extends SettingGroup {
                         if (consumer) {
                             MinecraftClient.getInstance().keyboard.setClipboard(msaDeviceCode.userCode());
                         } else {
-                            SettingsScreen.INSTANCE.open(new MultiplayerScreen(new TitleScreen()));
+                            MinecraftClient.getInstance().setScreen(prevScreen);
                             Thread.currentThread().interrupt();
                         }
                     }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.userCode()), Text.translatable("words.viafabricplus.copy"), Text.translatable("words.viafabricplus.cancel"))));
@@ -64,7 +66,7 @@ public class BedrockSettings extends SettingGroup {
                 }));
                 BedrockAccountHandler.INSTANCE.setAccount(mcChain, MinecraftAuth.BEDROCK_PLAY_FAB_TOKEN.getFromInput(httpClient, mcChain.prevResult().fullXblSession()));
             }
-            ProtocolSelectionScreen.INSTANCE.open(new MultiplayerScreen(new TitleScreen()));
+            RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(prevScreen));
         } catch (Throwable e) {
             e.printStackTrace();
             MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("words.viafabricplus.cancel"), false)));
