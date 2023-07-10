@@ -31,7 +31,7 @@ public class CharacterMappings {
     public static Map<String, Map<String, List<Integer>>> forbiddenCharacters1_19_4To1_20 = new HashMap<>();
 
     public static void load() {
-        final JsonObject file = ViaFabricPlus.GSON.fromJson(new InputStreamReader(CharacterMappings.class.getResourceAsStream("/assets/viafabricplus/characters1_19_4To1_20.json")), JsonObject.class);
+        final JsonObject file = ViaFabricPlus.GSON.fromJson(new InputStreamReader(CharacterMappings.class.getResourceAsStream("/assets/viafabricplus/characters1_19_4to1_20.json")), JsonObject.class);
         for (Map.Entry<String, JsonElement> layer1 : file.entrySet()) { // missing / uniform / bitmap
             final Map<String, List<Integer>> typeStorage = new HashMap<>();
             for (Map.Entry<String, JsonElement> layer2 : layer1.getValue().getAsJsonObject().entrySet()) { // blank / space / unicode
