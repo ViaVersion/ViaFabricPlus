@@ -30,7 +30,6 @@
 
   "experimental.viafabricplus.chunkborderfix": "Исправлять границы чанков",
   "experimental.viafabricplus.watermovement": "Проверять уровень воды для прыжка",
-  "experimental.viafabricplus.fontcachefix": "Исправить кэширование шрифтов",
 
   "debug.viafabricplus.sequence": "Отключить последовательность",
   "debug.viafabricplus.merchant": "Ускорить интерфейс старых жителей",

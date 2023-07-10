@@ -18,39 +18,31 @@
 package de.florianmichael.viafabricplus.definition;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.raphimc.vialoader.util.VersionEnum;
+import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
-import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.Glyph;
 import net.minecraft.client.font.GlyphRenderer;
 import net.minecraft.client.font.RenderableGlyph;
-import net.minecraft.client.texture.NativeImage;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
-public class FontCacheFix {
+public class FontRenderer1_12_2 {
     public final static boolean DASH_LOADER = FabricLoader.getInstance().isModLoaded("dashloader");
-
-    private static VersionEnum protocolVersion;
 
     public static void init() {
         if (DASH_LOADER) return;
 
-        ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
-            FontCacheFix.protocolVersion = protocolVersion;
-
-            MinecraftClient.getInstance().fontManager.fontStorages.values().forEach(fontStorage -> RenderSystem.recordRenderCall(() -> ((IFontStorage) fontStorage).viafabricplus_clearCaches()));
-        });
+        ChangeProtocolVersionCallback.EVENT.register(protocolVersion ->
+                MinecraftClient.getInstance().fontManager.fontStorages.values().forEach(fontStorage ->
+                        RenderSystem.recordRenderCall(() -> ((IFontStorage) fontStorage).viafabricplus_clearCaches())));
     }
 
     public static boolean shouldReplaceFontRenderer() {
-        if (DASH_LOADER || protocolVersion == null) return false;
-
-        return ExperimentalSettings.INSTANCE.fixFontCache.getValue() && protocolVersion.isOlderThanOrEqualTo(VersionEnum.r1_12_2);
+        if (DASH_LOADER) return false;
+        return VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled();
     }
 
     public enum BuiltinEmptyGlyph1_12_2 implements Glyph {

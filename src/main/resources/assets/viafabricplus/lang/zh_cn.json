@@ -33,7 +33,6 @@
 
   "experimental.viafabricplus.chunkborderfix": "修复区块边界",
   "experimental.viafabricplus.watermovement": "水中移动边缘检测",
-  "experimental.viafabricplus.fontcachefix": "修复字体缓存",
 
   "debug.viafabricplus.sequence": "禁用排序",
   "debug.viafabricplus.merchant": "平滑商人屏幕",

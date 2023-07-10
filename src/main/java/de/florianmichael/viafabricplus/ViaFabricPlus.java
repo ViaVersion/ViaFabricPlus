@@ -27,7 +27,7 @@ import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
 import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.definition.classic.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.definition.classic.protocol.CustomClassicProtocolExtensions;
-import de.florianmichael.viafabricplus.definition.FontCacheFix;
+import de.florianmichael.viafabricplus.definition.FontRenderer1_12_2;
 import de.florianmichael.viafabricplus.definition.ArmorPointCalculation;
 import de.florianmichael.viafabricplus.information.InformationSystem;
 import de.florianmichael.viafabricplus.mappings.CharacterMappings;
@@ -78,7 +78,7 @@ public class ViaFabricPlus {
         // Fixes which requires to be loaded pre
         ChatLengthCalculation.create();
         CharacterMappings.load();
-        FontCacheFix.init();
+        FontRenderer1_12_2.init();
 
         // Protocol Translator
         ProtocolHack.init();

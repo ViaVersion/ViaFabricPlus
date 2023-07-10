@@ -26,7 +26,6 @@ public class ExperimentalSettings extends SettingGroup {
 
     public final BooleanSetting fixChunkBorders = new BooleanSetting(this, Text.translatable("experimental.viafabricplus.chunkborderfix"), true);
     public final BooleanSetting waterMovementEdgeDetection = new BooleanSetting(this, Text.translatable("experimental.viafabricplus.watermovement"), true);
-    public final BooleanSetting fixFontCache = new BooleanSetting(this, Text.translatable("experimental.viafabricplus.fontcachefix"), true);
 
     public ExperimentalSettings() {
         super(Text.translatable("settings.viafabricplus.experimental"));

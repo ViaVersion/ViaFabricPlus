@@ -37,7 +37,6 @@
 
   "experimental.viafabricplus.chunkborderfix": "Napraw granice chunków",
   "experimental.viafabricplus.watermovement": "Wykrywanie krawędzi ruchu wody",
-  "experimental.viafabricplus.fontcachefix": "Napraw pamięć tymczasową czcionek",
 
   "debug.viafabricplus.sequence": "Wyłącz sekwencjonowanie",
   "debug.viafabricplus.merchant": "Wygładź ekrany kupców",

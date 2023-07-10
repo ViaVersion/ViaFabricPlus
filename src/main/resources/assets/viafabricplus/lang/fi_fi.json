@@ -24,7 +24,6 @@
 
   "experimental.viafabricplus.chunkborderfix": "Korjaa chunk-rajat",
   "experimental.viafabricplus.watermovement": "Vesi-liikkeen reunan havaitseminen",
-  "experimental.viafabricplus.fontcachefix": "Korjaa fontti-välimuisti",
 
   "debug.viafabricplus.sequence": "Poista jaksotuksen käyttö",
   "debug.viafabricplus.merchant": "Pehmennä kauppias-näyttöjä",

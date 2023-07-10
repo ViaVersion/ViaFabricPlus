@@ -18,12 +18,9 @@
 package de.florianmichael.viafabricplus.base.settings.groups;
 
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.base.settings.type_impl.ProtocolSyncBooleanSetting;
 import net.minecraft.text.Text;
-import net.raphimc.vialoader.util.VersionEnum;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class VisualSettings extends SettingGroup {
@@ -40,7 +37,8 @@ public class VisualSettings extends SettingGroup {
 
     // 1.13 -> 1.12.2
     public final ProtocolSyncBooleanSetting replacePetrifiedOakSlab = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.stoneslab"), new VersionRange(VersionEnum.r1_12_2, VersionEnum.r1_3_1tor1_3_2));
-
+    public final ProtocolSyncBooleanSetting changeFontRendererBehaviour = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.fontrendererbehaviour"), VersionRange.andOlder(VersionEnum.r1_12_2));
+    
     // 1.9 -> 1.8.x
     public final ProtocolSyncBooleanSetting emulateArmorHud = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.armor"), VersionRange.andOlder(VersionEnum.r1_8));
     public final ProtocolSyncBooleanSetting removeNewerFeaturesFromCommandBlockScreen = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.command"), VersionRange.andOlder(VersionEnum.r1_8));
