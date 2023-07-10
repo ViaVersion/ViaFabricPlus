@@ -30,6 +30,7 @@ import de.florianmichael.viafabricplus.definition.classic.protocol.CustomClassic
 import de.florianmichael.viafabricplus.definition.FontCacheFix;
 import de.florianmichael.viafabricplus.definition.ArmorPointCalculation;
 import de.florianmichael.viafabricplus.information.InformationSystem;
+import de.florianmichael.viafabricplus.mappings.CharacterMappings;
 import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -76,6 +77,7 @@ public class ViaFabricPlus {
 
         // Fixes which requires to be loaded pre
         ChatLengthCalculation.create();
+        CharacterMappings.load();
         FontCacheFix.init();
 
         // Protocol Translator

@@ -55,29 +55,11 @@ public class FontCacheFix {
 
     public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
 
-        VERY_MISSING(() -> BuiltinEmptyGlyph1_12_2.createRectImage((x, y) -> x == 0 || x + 1 == 5 || y == 0 || y + 1 == 8 ? -1 : 0));
-
-        final NativeImage image;
-
-        BuiltinEmptyGlyph1_12_2(Supplier<NativeImage> imageSupplier) {
-            this.image = imageSupplier.get();
-        }
-
-        private static NativeImage createRectImage(BuiltinEmptyGlyph1_12_2.ColorSupplier colorSupplier) {
-            final NativeImage nativeImage = new NativeImage(NativeImage.Format.RGBA, 5, 8, false);
-
-            for (int y = 0; y < 8; ++y) {
-                for (int x = 0; x < 5; ++x) {
-                    nativeImage.setColor(x, y, colorSupplier.getColor(x, y));
-                }
-            }
-            nativeImage.untrack();
-            return nativeImage;
-        }
+        VERY_MISSING;
 
         @Override
         public float getAdvance() {
-            return this.image.getWidth() + 1;
+            return 1;
         }
 
         @Override
@@ -86,12 +68,12 @@ public class FontCacheFix {
 
                 @Override
                 public int getWidth() {
-                    return BuiltinEmptyGlyph1_12_2.this.image.getWidth();
+                    return 0;
                 }
 
                 @Override
                 public int getHeight() {
-                    return BuiltinEmptyGlyph1_12_2.this.image.getHeight();
+                    return 0;
                 }
 
                 @Override
@@ -101,7 +83,6 @@ public class FontCacheFix {
 
                 @Override
                 public void upload(int x, int y) {
-                    BuiltinEmptyGlyph1_12_2.this.image.upload(0, x, y, false);
                 }
 
                 @Override
@@ -109,12 +90,6 @@ public class FontCacheFix {
                     return true;
                 }
             });
-        }
-
-        @FunctionalInterface
-        interface ColorSupplier {
-
-            int getColor(int x, int y);
         }
     }
 }
