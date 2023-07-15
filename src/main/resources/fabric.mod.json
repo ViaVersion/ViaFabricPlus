@@ -41,7 +41,7 @@
   "breaks": {
     "viafabric": "*",
     "multiconnect": "*",
-    "memoryleakfix": "*",
+    "memoryleakfix": "<=1.1.0",
     "krypton": "<=0.2.2"
   }
 }
