@@ -31,7 +31,6 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)***
 - ***[multiconnect](https://github.com/Earthcomputer/multiconnect)***
 - ***[krypton](https://github.com/astei/krypton)***
-- ***[MemoryLeakFix](https://github.com/fxmorin/MemoryLeakFix)***
 - ***[ReplayMod](https://www.replaymod.com/)***
 
 ## List of all clientside related fixes
