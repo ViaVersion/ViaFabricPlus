@@ -31,7 +31,6 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)***
 - ***[multiconnect](https://github.com/Earthcomputer/multiconnect)***
 - ***[krypton](https://github.com/astei/krypton)***
-- ***[MemoryLeakFix](https://github.com/fxmorin/MemoryLeakFix)***
 - ***[ReplayMod](https://www.replaymod.com/)***
 
 ## List of all clientside related fixes
@@ -126,6 +125,8 @@ dependencies {
 
 ### To learn more about the API and about addons, you can simply click [here](.github/DEVELOPER_API.md)
 
-## ⚠️ WARNING ⚠️
-**I cannot guarantee that this mod is allowed on every (or even any) server. This mod may cause problems with anti cheat
-plugins. USE AT OWN RISK**
+
+## Disclaimer
+
+It cannot be guaranteed that this mod is allowed on specific servers as it can possibly cause problems with anti-cheat plugins.\
+***(USE ONLY WITH CAUTION!)***
