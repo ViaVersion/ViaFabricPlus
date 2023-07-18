@@ -58,7 +58,7 @@
   "authentication.viafabricplus.classicube": "如果使用ClassicCube MP Pass，则强制CPE版本",
   "authentication.viafabricplus.spoof": "如果使用ClassiCube，则将用户名显示为ClassiCube名称",
   "authentication.viafabricplus.skin": "允许ViaLegacy加载旧版本皮肤",
-  "authentication.viafabricplus.error": "ViaFabricPlus验证你会话失败！请登录一个账户或在设置中关闭“使用BetaCraft进行身份验证”",
+  "authentication.viafabricplus.error": "ViaFabricPlus验证你的会话失败！请登录一个账户或在设置中关闭“使用BetaCraft进行身份验证”",
 
   "visual.viafabricplus.secure": "禁用安全聊天警告",
   "visual.viafabricplus.indicator": "隐藏聊天签名提示",
