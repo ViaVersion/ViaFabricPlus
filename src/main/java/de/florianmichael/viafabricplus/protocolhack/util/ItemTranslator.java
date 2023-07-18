@@ -22,11 +22,11 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.ProtocolPathEntry;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.packet.PacketWrapperImpl;
+import com.viaversion.viaversion.protocols.protocol1_9to1_8.storage.InventoryTracker;
 import io.netty.buffer.Unpooled;
 import net.minecraft.SharedConstants;
 import net.minecraft.item.ItemStack;
@@ -34,6 +34,10 @@ import net.minecraft.network.NetworkSide;
 import net.minecraft.network.NetworkState;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.minecraft.registry.Registries;
+import net.raphimc.vialegacy.protocols.beta.protocol1_0_0_1tob1_8_0_1.ClientboundPacketsb1_8;
+import net.raphimc.vialegacy.protocols.release.protocol1_4_4_5to1_4_2.types.Types1_4_2;
+import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.storage.WindowTracker;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,24 +46,56 @@ public class ItemTranslator {
     private final static UserConnection DUMMY_USER_CONNECTION = new UserConnectionImpl(null, false);
 
     public static Item minecraftToViaVersion(final ItemStack stack, final int targetVersion) {
+        return minecraftToViaVersion(stack, Type.ITEM, targetVersion);
+    }
+
+    public static Item minecraftToViaVersion(final ItemStack stack, final Type<Item> item, final int targetVersion) {
         final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), targetVersion);
         if (protocolPath == null) return null;
 
-        final CreativeInventoryActionC2SPacket dummyPacket = new CreativeInventoryActionC2SPacket(36, stack);
-        final PacketByteBuf emptyBuf = new PacketByteBuf(Unpooled.buffer());
+        final var dummyPacket = new CreativeInventoryActionC2SPacket(36, stack);
+        final var emptyBuf = new PacketByteBuf(Unpooled.buffer());
         dummyPacket.write(emptyBuf);
 
         final int id = NetworkState.PLAY.getPacketId(NetworkSide.SERVERBOUND, dummyPacket);
 
         try {
-            final PacketWrapper wrapper = new PacketWrapperImpl(id, emptyBuf, DUMMY_USER_CONNECTION);
+            final var wrapper = new PacketWrapperImpl(id, emptyBuf, DUMMY_USER_CONNECTION);
             wrapper.apply(Direction.SERVERBOUND, State.PLAY, 0, protocolPath.stream().map(ProtocolPathEntry::protocol).collect(Collectors.toList()));
 
             wrapper.read(Type.SHORT);
-            return wrapper.read(Type.ITEM);
+            return wrapper.read(item);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static ItemStack viaVersionToMinecraft(final Item item, final int targetVersion) {
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), targetVersion);
+        if (protocolPath == null) return null;
+
+        DUMMY_USER_CONNECTION.put(new WindowTracker(DUMMY_USER_CONNECTION));
+        DUMMY_USER_CONNECTION.put(new InventoryTracker());
+
+        try {
+            final var wrapper = new PacketWrapperImpl(ClientboundPacketsb1_8.SET_SLOT.getId(), null, DUMMY_USER_CONNECTION);
+            wrapper.write(Type.BYTE, (byte) 0); // Window ID
+            wrapper.write(Type.SHORT, (short) 0); // Slot
+            wrapper.write(Types1_4_2.NBTLESS_ITEM, item); // Item
+
+            wrapper.resetReader();
+
+            wrapper.apply(Direction.CLIENTBOUND, State.PLAY, 0, protocolPath.stream().map(ProtocolPathEntry::protocol).collect(Collectors.toList()), true);
+
+            wrapper.read(Type.UNSIGNED_BYTE);
+            wrapper.read(Type.VAR_INT);
+            wrapper.read(Type.SHORT);
+
+            final var viaItem = wrapper.read(Type.FLAT_VAR_INT_ITEM);
+            return new ItemStack(() -> Registries.ITEM.get(viaItem.identifier()), viaItem.amount());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
