@@ -1,4 +1,6 @@
 {
+  "modmenu.descriptionTranslation.viafabricplus": "一个Fabric模组，可连接到任何版本的Minecraft服务器（正式版，Beta版，Alpha版，Classic版，快照版，基岩版）并对游戏玩法进行了QoL修正",
+
   "words.viafabricplus.settings": "设置",
   "words.viafabricplus.on": "开",
   "words.viafabricplus.off": "关",
@@ -22,14 +24,18 @@
   "settings.viafabricplus.visual": "特性模拟",
   "settings.viafabricplus.debug": "特殊",
   "settings.viafabricplus.general": "全局",
+  "settings.viafabricplus.bedrock": "基岩版",
 
   "general.viafabricplus.secret": "显示“Super Secret Settings”（超级秘密设置）",
-  "general.viafabricplus.extrainformation": "在\u00a76 [调试]\u00a7r 中显示额外信息",
+  "general.viafabricplus.extrainformation": "在§6[调试]§r中显示额外信息",
   "general.viafabricplus.classicloading": "在连接服务器时使用旧版加载进度条",
   "general.viafabricplus.main": "模组按钮位置",
   "general.viafabricplus.creative": "从创造模式选项卡中移除不可用的物品",
   "general.viafabricplus.autodetect": "自动检测版本",
-  "general.viafabricplus.advertised": "在 服务器列表-延迟 中显示 连接所用版本/服务器版本",
+  "general.viafabricplus.advertised": "在服务器列表-延迟中显示连接所用版本/服务器版本",
+
+  "bedrock.viafabricplus.confirmtransfer": "显示“确认转移到其他服务器”提示",
+  "bedrock.viafabricplus.authentication": "点此连接到基岩版账户",
 
   "experimental.viafabricplus.chunkborderfix": "修复区块边界",
   "experimental.viafabricplus.watermovement": "水中移动边缘检测",
@@ -46,42 +52,43 @@
   "debug.viafabricplus.longsneak": "长时间潜行",
   "debug.viafabricplus.legacypseeds": "远古版本挖掘速度",
 
-  "authentication.viafabricplus.betacraft": "使用 BetaCraft 身份验证",
-  "authentication.viafabricplus.verify": "允许 ViaLegacy 调用 joinServer() 来验证会话",
-  "authentication.viafabricplus.fail": "joinServer() 调用失败时断开连接",
-  "authentication.viafabricplus.classicube": "如果使用 ClassicCube MP Pass，则强制 CPE 版本",
-  "authentication.viafabricplus.spoof": "如果使用 ClassiCube ，则显示为 ClassiCube 名称",
-  "authentication.viafabricplus.skin": "允许 ViaLegacy 加载旧版本皮肤",
-  "authentication.viafabricplus.bedrock": "点击以设置基岩版账户",
-  "authentication.viafabricplus.error": "ViaFabricPlus 验证您的会话失败!请登录一个账户或在设置中禁用 BetaCraft 身份验证",
+  "authentication.viafabricplus.betacraft": "使用BetaCraft进行身份验证",
+  "authentication.viafabricplus.verify": "允许ViaLegacy调用joinServer()来验证会话",
+  "authentication.viafabricplus.fail": "调用joinServer()失败时断开连接",
+  "authentication.viafabricplus.classicube": "如果使用ClassicCube MP Pass，则强制CPE版本",
+  "authentication.viafabricplus.spoof": "如果使用ClassiCube，则将用户名显示为ClassiCube名称",
+  "authentication.viafabricplus.skin": "允许ViaLegacy加载旧版本皮肤",
+  "authentication.viafabricplus.error": "ViaFabricPlus验证你会话失败！请登录一个账户或在设置中关闭“使用BetaCraft进行身份验证”",
 
   "visual.viafabricplus.secure": "禁用安全聊天警告",
   "visual.viafabricplus.indicator": "隐藏聊天签名提示",
-  "visual.viafabricplus.jigsaw": "从\u00a7o拼图方块\u00a7r界面中移除新版本特性",
-  "visual.viafabricplus.stoneslab": "替换\u00a7o石化橡木台阶",
-  "visual.viafabricplus.armor": "Emulate Armor hud/\u00a78模拟护甲值",
-  "visual.viafabricplus.command": "从\u00a7o命令方块\u00a7r编辑界面中移除新版本特性",
-  "visual.viafabricplus.oof": "将受伤音效替换为旧版本的 “oof/噢！”",
-  "visual.viafabricplus.betahud": "移除新的 HUD 要素",
+  "visual.viafabricplus.jigsaw": "从§o拼图方块§r界面中移除新版本特性",
+  "visual.viafabricplus.stoneslab": "替换§o石化橡木台阶",
+  "visual.viafabricplus.armor": "模拟护甲值",
+  "visual.viafabricplus.command": "从§o命令方块§r编辑界面中移除新版本特性",
+  "visual.viafabricplus.oof": "将受伤音效替换为旧版本的“噢！”",
+  "visual.viafabricplus.betahud": "移除较新的HUD元素",
   "visual.viafabricplus.classic": "将创造模式物品栏替换为旧版本样式",
   "visual.viafabricplus.walkanimation": "旧版行走动画",
-  "visual.viafabricplus.sodium": "修复 钠/Sodium 渲染器",
+  "visual.viafabricplus.sodium": "修复钠(Sodium)渲染器",
+  "visual.viafabricplus.fontrendererbehaviour": "更改字体渲染器行为",
 
   "bedrocklogin.viafabricplus.text": "你的浏览器现在应该打开了。\n请输入这个代码：%s\n关闭这个屏幕等于取消操作！",
-  "bedrocklogin.viafabricplus.error": "发生错误！详情请查看 latest.log\n请在这个链接反馈 BUG：\nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
+  "bedrocklogin.viafabricplus.error": "发生错误！详情请查看latest.log\n请到下面的链接反馈错误：\nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
+  "bedrockplay.viafabricplus.confirmtransfer": "你想要转移到以下服务器吗？\n%s\n\n这将断开与当前服务器的连接并连接到新的服务器。",
 
   "forceversion.viafabricplus.title": "请选择连接这个服务器要使用的版本",
 
   "classicube.viafabricplus.account": "你可以这里创建一个账户：https://www.classicube.net",
   "classicube.viafabricplus.loading": "正在加载个人信息和服务器列表……",
 
-  "classicube.viafabricplus.error.token": "Token 不正确。你的 ViaFabricPlus 是否为最新版？",
+  "classicube.viafabricplus.error.token": "Token不正确。你的ViaFabricPlus是否为最新版？",
   "classicube.viafabricplus.error.username": "无效用户名",
   "classicube.viafabricplus.error.password": "无效密码",
-  "classicube.viafabricplus.error.verification": "用戶尚未验证电子邮箱地址！",
+  "classicube.viafabricplus.error.verification": "用户尚未验证电子邮箱地址！",
   "classicube.viafabricplus.error.logincode": "已请求身份验证。请查看你的电子邮箱！",
 
-  "classicube.viafabricplus.warning": "该功能会向 ClassiCube API 发送请求",
+  "classicube.viafabricplus.warning": "该功能会向ClassiCube API发送API请求",
 
-  "betacraft.viafabricplus.warning": "点击这个按钮会向 “betacraft.uk/serverlist” 发送 API 请求"
+  "betacraft.viafabricplus.warning": "点击这个按钮会向“betacraft.uk/serverlist”发送API请求"
 }
