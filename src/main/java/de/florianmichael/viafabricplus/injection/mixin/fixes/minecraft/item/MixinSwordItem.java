@@ -56,7 +56,7 @@ public class MixinSwordItem extends ToolItem {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.b1_8tob1_8_1, VersionEnum.r1_8)) {
             return UseAction.BLOCK;
         }
         return super.getUseAction(stack);
