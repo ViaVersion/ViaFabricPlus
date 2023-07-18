@@ -32,6 +32,6 @@ public class ViaFabricPlusHandItemProvider extends HandItemProvider {
         if (lastUsedItem == null) {
             return null;
         }
-        return ItemTranslator.minecraftToViaVersion(lastUsedItem, VersionEnum.r1_8.getVersion());
+        return ItemTranslator.MC_TO_VIA_LATEST_TO_TARGET(lastUsedItem, VersionEnum.r1_8);
     }
 }

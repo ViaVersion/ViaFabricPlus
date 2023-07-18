@@ -36,8 +36,10 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.registry.Registries;
 import net.raphimc.vialegacy.protocols.beta.protocol1_0_0_1tob1_8_0_1.ClientboundPacketsb1_8;
+import net.raphimc.vialegacy.protocols.beta.protocol1_0_0_1tob1_8_0_1.types.Typesb1_8_0_1;
 import net.raphimc.vialegacy.protocols.release.protocol1_4_4_5to1_4_2.types.Types1_4_2;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.storage.WindowTracker;
+import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,12 +47,8 @@ import java.util.stream.Collectors;
 public class ItemTranslator {
     private final static UserConnection DUMMY_USER_CONNECTION = new UserConnectionImpl(null, false);
 
-    public static Item minecraftToViaVersion(final ItemStack stack, final int targetVersion) {
-        return minecraftToViaVersion(stack, Type.ITEM, targetVersion);
-    }
-
-    public static Item minecraftToViaVersion(final ItemStack stack, final Type<Item> item, final int targetVersion) {
-        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), targetVersion);
+    public static Item MC_TO_VIA_LATEST_TO_TARGET(final ItemStack stack, final VersionEnum targetVersion) {
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), targetVersion.getVersion());
         if (protocolPath == null) return null;
 
         final var dummyPacket = new CreativeInventoryActionC2SPacket(36, stack);
@@ -64,15 +62,19 @@ public class ItemTranslator {
             wrapper.apply(Direction.SERVERBOUND, State.PLAY, 0, protocolPath.stream().map(ProtocolPathEntry::protocol).collect(Collectors.toList()));
 
             wrapper.read(Type.SHORT);
-            return wrapper.read(item);
+            if (targetVersion.isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+                return wrapper.read(Typesb1_8_0_1.CREATIVE_ITEM);
+            } else {
+                return wrapper.read(Type.ITEM);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static ItemStack viaVersionToMinecraft(final Item item, final int targetVersion) {
-        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), targetVersion);
+    public static ItemStack VIA_TO_MC_B1_8_TO_LATEST(final Item item) {
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), VersionEnum.b1_8tob1_8_1.getVersion());
         if (protocolPath == null) return null;
 
         DUMMY_USER_CONNECTION.put(new WindowTracker(DUMMY_USER_CONNECTION));

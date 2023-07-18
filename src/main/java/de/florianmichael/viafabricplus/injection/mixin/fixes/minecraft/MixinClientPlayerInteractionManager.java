@@ -135,7 +135,7 @@ public abstract class MixinClientPlayerInteractionManager {
             final byte button = (byte) clickSlot.getButton();
             final short lastActionId = ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId();
             final int actionType = clickSlot.getActionType().ordinal();
-            final Item item = ItemTranslator.minecraftToViaVersion(slotItemBeforeModification, VersionEnum.r1_16.getVersion());
+            final Item item = ItemTranslator.MC_TO_VIA_LATEST_TO_TARGET(slotItemBeforeModification, VersionEnum.r1_16);
 
             userConnection.getChannel().eventLoop().submit(() -> {
                 final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, userConnection);

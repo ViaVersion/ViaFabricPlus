@@ -24,7 +24,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.raphimc.vialegacy.protocols.alpha.protocolb1_0_1_1_1toa1_2_3_5_1_2_6.providers.AlphaInventoryProvider;
-import net.raphimc.vialegacy.protocols.beta.protocol1_0_0_1tob1_8_0_1.types.Typesb1_8_0_1;
 import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.List;
@@ -45,7 +44,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
             final var alphaItem = trackingItems.get(i);
             if (alphaItem.isEmpty()) continue;
 
-            items[i] = ItemTranslator.minecraftToViaVersion(alphaItem, Typesb1_8_0_1.CREATIVE_ITEM, VersionEnum.b1_8tob1_8_1.getVersion());
+            items[i] = ItemTranslator.MC_TO_VIA_LATEST_TO_TARGET(alphaItem, VersionEnum.b1_8tob1_8_1);
         }
         return copyItems(items);
     }
@@ -80,7 +79,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
 
     @Override
     public void addToInventory(UserConnection user, Item item) {
-        getPlayer().getInventory().insertStack(ItemTranslator.viaVersionToMinecraft(item, VersionEnum.b1_8tob1_8_1.getVersion()));
+        getPlayer().getInventory().insertStack(ItemTranslator.VIA_TO_MC_B1_8_TO_LATEST(item));
     }
 
     protected ClientPlayerEntity getPlayer() {
