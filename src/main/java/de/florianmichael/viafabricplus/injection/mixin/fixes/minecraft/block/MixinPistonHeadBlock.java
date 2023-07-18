@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import net.minecraft.state.property.BooleanProperty;
 import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -26,7 +27,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,14 +38,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PistonHeadBlock.class)
 public class MixinPistonHeadBlock extends FacingBlock {
 
+    @Shadow @Final public static BooleanProperty SHORT;
+
+    @Shadow @Final private static VoxelShape[] SHORT_HEAD_SHAPES;
+
+    @Shadow @Final private static VoxelShape[] HEAD_SHAPES;
+
     public MixinPistonHeadBlock(Settings settings) {
         super(settings);
     }
 
+    @Unique
+    private boolean viafabricplus_skipOutlineChange;
+
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            cir.setReturnValue(viafabricplus_getCoreShape_v1_8_x(state));
+        if (viafabricplus_skipOutlineChange) {
+            viafabricplus_skipOutlineChange = false;
+            return;
+        }
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11)) {
+            cir.setReturnValue(viafabricplus_getHeadShape_v1_8_x(state));
         }
     }
 
@@ -52,6 +68,7 @@ public class MixinPistonHeadBlock extends FacingBlock {
             return VoxelShapes.union(viafabricplus_getHeadShape_v1_8_x(state), viafabricplus_getCoreShape_v1_8_x(state));
         }
 
+        viafabricplus_skipOutlineChange = true;
         return super.getCollisionShape(state, world, pos, context);
     }
 
