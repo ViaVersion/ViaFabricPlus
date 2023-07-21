@@ -1,4 +1,6 @@
 {
+  "modmenu.descriptionTranslation.viafabricplus": "Fabric мод для підключення до будь-яского сервера на КОЖНІЙ версії(Реліз, Бета, Альфа, Классік, Снапшоти, Бедрок) з QoL фіксами геймплею",
+  
   "words.viafabricplus.settings": "Налаштування",
   "words.viafabricplus.on": "Ввімкнено",
   "words.viafabricplus.off": "Вимкнено",
@@ -15,12 +17,14 @@
   "words.viafabricplus.error": "Щось пішло не так! Спробуйте будь ласка пізніше",
   "words.viafabricplus.translate": "Via переклади до: %s",
   "words.viafabricplus.serverversion": "Версія серверу: %s",
+  "words.viafabricplus.auto": "Автоматично",
   
   "settings.viafabricplus.authentication": "Авторизація",
   "settings.viafabricplus.experimental": "Експериментальне",
   "settings.viafabricplus.visual": "Візуальне",
   "settings.viafabricplus.debug": "Дебаг",
   "settings.viafabricplus.general": "Загальне",
+  "settings.viafabricplus.bedrock": "Бедрок",
 
   "general.viafabricplus.secret": "Показувати Супер Секретні Налаштування",
   "general.viafabricplus.extrainformation": "Показувати додаткову інформацію на екрані відладки",
@@ -31,6 +35,9 @@
   "general.viafabricplus.autodetect": "Автоматично відсліджувати версію",
   "general.viafabricplus.advertised": "Показувати рекламовану/серверну версію в багатокористувацькій грі",
 
+  "bedrock.viafabricplus.confirmtransfer": "Відкрити GUI підказку для підтвердження переміщення до іншого серверу",
+  "bedrock.viafabricplus.authentication": "Нажміть, щоб встановити аккаунт для Bedrock",
+  
   "experimental.viafabricplus.chunkborderfix": "Полагодити границі чанків",
   "experimental.viafabricplus.watermovement": "Виявлення краю руху води",
 
@@ -52,7 +59,6 @@
   "authentication.viafabricplus.classicube": "Примусово встановити версію CPE, якщо використовується ClassiCube MP Pass",
   "authentication.viafabricplus.spoof": "Підмінити ім'я користувача на ім'я ClassiCube, якщо використовується ClassiCube",
   "authentication.viafabricplus.skin": "Дозволити ViaLegacy завантажувати скіни в старих версіх",
-  "authentication.viafabricplus.bedrock": "Нажміть, щоб встановити аккаунт для Bedrock",
   "authentication.viafabricplus.error": "ViaFabricPlus не змогла підтвердити вашу сесію! Будь ласка ввійдіть у ваш аккаунт або вимкніть авторизацію BetaCraft у налаштуваннях ViaFabricPlus",
 
   "visual.viafabricplus.secure": "Прибрати застереження чату",
@@ -66,9 +72,11 @@
   "visual.viafabricplus.classic": "Замінити інвентар креативу",
   "visual.viafabricplus.walkanimation": "Стара анімація ходьби",
   "visual.viafabricplus.sodium": "Полагодити рендер чанків Содіуму",
+    "visual.viafabricplus.fontrendererbehaviour": "Змінити поведінку рендерингу шрифта",
 
   "bedrocklogin.viafabricplus.text": "Ваш браузер мав відкритися.\nБудь ласка, введіть наступний код: %s\nЯкщо закрити цей екран, процес буде скасовано!",
   "bedrocklogin.viafabricplus.error": "Сталася помилка! Дивіться latest.log для отримання додаткової інформації,\nбудь ласка, повідомте про помилку за адресою: \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
+  "bedrockplay.viafabricplus.confirmtransfer": "Чи ви хочете переміститися на інший сервер?\n%s\n\nЦя дія відключить вас від цього і підключитьдо іншого.",
 
   "forceversion.viafabricplus.title": "Будь ласка, виберіть версію, з якою сервер має пінгуватися/підключатися",
 
