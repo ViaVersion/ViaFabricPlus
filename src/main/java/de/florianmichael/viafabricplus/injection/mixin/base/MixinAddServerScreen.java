@@ -17,8 +17,10 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
+import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.screen.impl.base.ForceVersionScreen;
+import de.florianmichael.viafabricplus.screen.impl.base.ProtocolSelectionScreen;
 import net.minecraft.client.gui.screen.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -44,8 +46,17 @@ public class MixinAddServerScreen extends Screen {
     @Inject(method = "init", at = @At("RETURN"))
     public void injectButton(CallbackInfo ci) {
         final VersionEnum forcedVersion = ((IServerInfo) server).viafabricplus_forcedVersion();
-        this.addDrawableChild(ButtonWidget.builder(Text.literal(forcedVersion == null ? "Set version for this server" : forcedVersion.getName()), button ->
-                        client.setScreen(new ForceVersionScreen(this, version -> ((IServerInfo) server).viafabricplus_forceVersion(version)))).
-                position(width - (forcedVersion == null ? 150 : 98) - 5, 5).size(forcedVersion == null ? 150 : 98, 20).build());
+
+        ButtonWidget.Builder builder = ButtonWidget.builder(Text.literal((forcedVersion == null ? "Set version for this server" : forcedVersion.getName())), button ->
+                client.setScreen(new ForceVersionScreen(this, version -> ((IServerInfo) server).viafabricplus_forceVersion(version))));
+        final int orientation = GeneralSettings.INSTANCE.mainButtonOrientation.getIndex();
+        switch (orientation) {
+            case 0 -> builder = builder.position(5, 5);
+            case 1 -> builder = builder.position(width - (forcedVersion == null ? 150 : 98) - 5, 5);
+            case 2 -> builder = builder.position(5, height - 20 - 5);
+            case 3 -> builder = builder.position(width - (forcedVersion == null ? 150 : 98) - 5, height - 20 - 5);
+        }
+
+        this.addDrawableChild(builder.size(forcedVersion == null ? 150 : 98, 20).build());
     }
 }
