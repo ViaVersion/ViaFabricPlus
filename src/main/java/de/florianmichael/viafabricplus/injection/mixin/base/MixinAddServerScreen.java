@@ -46,7 +46,7 @@ public class MixinAddServerScreen extends Screen {
     public void injectButton(CallbackInfo ci) {
         final VersionEnum forcedVersion = ((IServerInfo) server).viafabricplus_forcedVersion();
 
-        ButtonWidget.Builder builder = ButtonWidget.builder(Text.literal((forcedVersion == null ? Text.translatable("words.viafabricplus.addserverscreenbuttontitle").getString() : forcedVersion.getName())), button ->
+        ButtonWidget.Builder builder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("words.viafabricplus.addserverscreenbuttontitle") : Text.literal(forcedVersion.getName()), button ->
                 client.setScreen(new ForceVersionScreen(this, version -> ((IServerInfo) server).viafabricplus_forceVersion(version))));
 
         final int orientation = GeneralSettings.INSTANCE.addServerScreenButtonOrientation.getIndex();
