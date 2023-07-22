@@ -18,6 +18,7 @@
   "words.viafabricplus.translate": "Via tłumaczy na: %s",
   "words.viafabricplus.serverversion": "Wersja serwera: %s",
   "words.viafabricplus.auto": "Auto",
+  "words.viafabricplus.addserverscreenbuttontitle": "Ustaw wersję dla tego serwera",
 
   "settings.viafabricplus.authentication": "Uwierzytelnianie",
   "settings.viafabricplus.experimental": "Eksperymenty",
@@ -30,6 +31,7 @@
   "general.viafabricplus.extrainformation": "Pokazuj dodatkowe informacje w interfejsie debugowania",
   "general.viafabricplus.classicloading": "Pokazuj klasyczny pasek ładowania w ekranie łączenia",
   "general.viafabricplus.main": "Lokalizacja głównego przycisku",
+  "general.viafabricplus.addserverscreenbutton": "Dodaj pozycję przycisku w liście serwerów",
   "general.viafabricplus.creative": "Usuwaj niedostępne przedmioty z ekwipunku trybu kreatywnego",
   "general.viafabricplus.autodetect": "Automatycznie wykrywaj wersję gry",
   "general.viafabricplus.advertised": "Pokazuj informacje dotyczące tłumaczenia pakietów po najechaniu na ikonę pingu w menu multiplayer",
