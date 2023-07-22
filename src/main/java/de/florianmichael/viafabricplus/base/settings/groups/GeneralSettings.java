@@ -31,6 +31,12 @@ public class GeneralSettings extends SettingGroup {
             Text.translatable("words.viafabricplus.lb"),
             Text.translatable("words.viafabricplus.rb")
     );
+    public final ModeSetting addServerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.addserverscreenbutton"),
+            Text.translatable("words.viafabricplus.lt"),
+            Text.translatable("words.viafabricplus.rt"),
+            Text.translatable("words.viafabricplus.lb"),
+            Text.translatable("words.viafabricplus.rb")
+    );
     public final BooleanSetting removeNotAvailableItemsFromCreativeTab = new BooleanSetting(this, Text.translatable("general.viafabricplus.creative"), true);
     public final BooleanSetting showSuperSecretSettings = new BooleanSetting(this, Text.translatable("general.viafabricplus.secret"), true);
     public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, Text.translatable("general.viafabricplus.extrainformation"), true);
@@ -41,5 +47,6 @@ public class GeneralSettings extends SettingGroup {
     public GeneralSettings() {
         super(Text.translatable("settings.viafabricplus.general"));
         mainButtonOrientation.setValue(1); // Default value
+        addServerScreenButtonOrientation.setValue(1); // Default value
     }
 }

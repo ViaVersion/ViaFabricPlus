@@ -18,6 +18,7 @@
   "words.viafabricplus.translate": "连接所用版本：%s",
   "words.viafabricplus.serverversion": "服务器版本：%s",
   "words.viafabricplus.auto": "自动",
+  "words.viafabricplus.addserverscreenbuttontitle": "更改当前服务器版本",
 
   "settings.viafabricplus.authentication": "身份与认证",
   "settings.viafabricplus.experimental": "实验性功能",
@@ -30,6 +31,7 @@
   "general.viafabricplus.extrainformation": "在§6[调试]§r中显示额外信息",
   "general.viafabricplus.classicloading": "在连接服务器时使用旧版加载进度条",
   "general.viafabricplus.main": "模组按钮位置",
+  "general.viafabricplus.addserverscreenbutton": "编辑服务器页面按钮位置",
   "general.viafabricplus.creative": "从创造模式选项卡中移除不可用的物品",
   "general.viafabricplus.autodetect": "自动检测版本",
   "general.viafabricplus.advertised": "在服务器列表-延迟中显示连接所用版本/服务器版本",
