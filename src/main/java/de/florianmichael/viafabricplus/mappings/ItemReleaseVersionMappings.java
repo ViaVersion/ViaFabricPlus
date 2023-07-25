@@ -38,7 +38,7 @@ public class ItemReleaseVersionMappings {
         ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> INSTANCE.update(protocolVersion));
     }
 
-    private final Map<Item, VersionRange[]> itemMap = new HashMap<>();
+    private final Map<Item, VersionRange> itemMap = new HashMap<>();
     private final List<Item> currentMap = new ArrayList<>();
 
     public void update(final VersionEnum versionEnum) {
@@ -49,7 +49,7 @@ public class ItemReleaseVersionMappings {
     public boolean contains(final Item item, final VersionEnum versionEnum) {
         if (!itemMap.containsKey(item)) return true;
 
-        return Arrays.stream(itemMap.get(item)).anyMatch(versionRange -> versionRange.contains(versionEnum));
+        return itemMap.get(item).contains(versionEnum);
     }
 
     public void load() {
@@ -730,7 +730,7 @@ public class ItemReleaseVersionMappings {
         register(Items.ZOMBIE_VILLAGER_SPAWN_EGG, VersionRange.andNewer(VersionEnum.r1_11));
 
         register(Items.BONE_BLOCK, VersionRange.andNewer(VersionEnum.r1_10));
-        register(Items.MAGMA_BLOCK, VersionRange.andNewer(VersionEnum.r1_10), VersionRange.singleton(VersionEnum.c0_30cpe));
+        register(Items.MAGMA_BLOCK, VersionRange.andNewer(VersionEnum.r1_10).add(VersionRange.single(VersionEnum.c0_30cpe)));
         register(Items.NETHER_WART_BLOCK, VersionRange.andNewer(VersionEnum.r1_10));
         register(Items.POLAR_BEAR_SPAWN_EGG, VersionRange.andNewer(VersionEnum.r1_10));
         register(Items.RED_NETHER_BRICKS, VersionRange.andNewer(VersionEnum.r1_10));
@@ -970,7 +970,7 @@ public class ItemReleaseVersionMappings {
         register(Items.NETHER_QUARTZ_ORE, VersionRange.andNewer(VersionEnum.r1_5tor1_5_1));
         register(Items.QUARTZ, VersionRange.andNewer(VersionEnum.r1_5tor1_5_1));
         register(Items.QUARTZ_BLOCK, VersionRange.andNewer(VersionEnum.r1_5tor1_5_1));
-        register(Items.QUARTZ_PILLAR, VersionRange.andNewer(VersionEnum.r1_5tor1_5_1), VersionRange.singleton(VersionEnum.c0_30cpe));
+        register(Items.QUARTZ_PILLAR, VersionRange.andNewer(VersionEnum.r1_5tor1_5_1).add(VersionRange.single(VersionEnum.c0_30cpe)));
         register(Items.QUARTZ_SLAB, VersionRange.andNewer(VersionEnum.r1_5tor1_5_1));
         register(Items.QUARTZ_STAIRS, VersionRange.andNewer(VersionEnum.r1_5tor1_5_1));
         register(Items.REDSTONE_BLOCK, VersionRange.andNewer(VersionEnum.r1_5tor1_5_1));
@@ -1015,7 +1015,7 @@ public class ItemReleaseVersionMappings {
         register(Items.JUNGLE_PLANKS, VersionRange.andNewer(VersionEnum.r1_3_1tor1_3_2));
         register(Items.JUNGLE_SLAB, VersionRange.andNewer(VersionEnum.r1_3_1tor1_3_2));
         register(Items.JUNGLE_STAIRS, VersionRange.andNewer(VersionEnum.r1_3_1tor1_3_2));
-        register(Items.SANDSTONE_STAIRS, VersionRange.andNewer(VersionEnum.r1_3_1tor1_3_2), VersionRange.singleton(VersionEnum.c0_30cpe));
+        register(Items.SANDSTONE_STAIRS, VersionRange.andNewer(VersionEnum.r1_3_1tor1_3_2).add(VersionRange.single(VersionEnum.c0_30cpe)));
         register(Items.SPRUCE_PLANKS, VersionRange.andNewer(VersionEnum.r1_3_1tor1_3_2));
         register(Items.SPRUCE_SLAB, VersionRange.andNewer(VersionEnum.r1_3_1tor1_3_2));
         register(Items.SPRUCE_STAIRS, VersionRange.andNewer(VersionEnum.r1_3_1tor1_3_2));
@@ -1118,7 +1118,7 @@ public class ItemReleaseVersionMappings {
         register(Items.ROTTEN_FLESH, VersionRange.andNewer(VersionEnum.b1_8tob1_8_1));
         register(Items.STONE_BRICK_SLAB, VersionRange.andNewer(VersionEnum.b1_8tob1_8_1));
         register(Items.STONE_BRICK_STAIRS, VersionRange.andNewer(VersionEnum.b1_8tob1_8_1));
-        register(Items.STONE_BRICKS, VersionRange.andNewer(VersionEnum.b1_8tob1_8_1), VersionRange.singleton(VersionEnum.c0_30cpe));
+        register(Items.STONE_BRICKS, VersionRange.andNewer(VersionEnum.b1_8tob1_8_1).add(VersionRange.single(VersionEnum.c0_30cpe)));
         register(Items.VINE, VersionRange.andNewer(VersionEnum.b1_8tob1_8_1));
 
         register(Items.PISTON, VersionRange.andNewer(VersionEnum.b1_7tob1_7_3));
@@ -1140,7 +1140,7 @@ public class ItemReleaseVersionMappings {
         register(Items.COOKIE, VersionRange.andNewer(VersionEnum.b1_4tob1_4_1));
         register(Items.TRAPPED_CHEST, VersionRange.andNewer(VersionEnum.b1_4tob1_4_1));
 
-        register(Items.COBBLESTONE_SLAB, VersionRange.andNewer(VersionEnum.b1_3tob1_3_1), VersionRange.singleton(VersionEnum.c0_30cpe));
+        register(Items.COBBLESTONE_SLAB, VersionRange.andNewer(VersionEnum.b1_3tob1_3_1).add(VersionRange.single(VersionEnum.c0_30cpe)));
         register(Items.OAK_SLAB, VersionRange.andNewer(VersionEnum.b1_3tob1_3_1));
         register(Items.RED_BED, VersionRange.andNewer(VersionEnum.b1_3tob1_3_1));
         register(Items.REPEATER, VersionRange.andNewer(VersionEnum.b1_3tob1_3_1));
@@ -1229,8 +1229,8 @@ public class ItemReleaseVersionMappings {
         register(Items.SNOWBALL, VersionRange.andNewer(VersionEnum.a1_0_15));
 
         // a1.0.4 (doesn't have multiplayer, so we assign it to the next multiplayer version)
-        register(Items.ICE, VersionRange.andNewer(VersionEnum.a1_0_15), VersionRange.singleton(VersionEnum.c0_30cpe));
-        register(Items.SNOW, VersionRange.andNewer(VersionEnum.a1_0_15), VersionRange.singleton(VersionEnum.c0_30cpe));
+        register(Items.ICE, VersionRange.andNewer(VersionEnum.a1_0_15).add(VersionRange.single(VersionEnum.c0_30cpe)));
+        register(Items.SNOW, VersionRange.andNewer(VersionEnum.a1_0_15).add(VersionRange.single(VersionEnum.c0_30cpe)));
 
         // a1.0.1 (doesn't have multiplayer, so we assign it to the next multiplayer version)
         register(Items.IRON_DOOR, VersionRange.andNewer(VersionEnum.a1_0_15));
@@ -1382,19 +1382,19 @@ public class ItemReleaseVersionMappings {
         register(Items.MOSSY_COBBLESTONE, VersionRange.andNewer(VersionEnum.c0_28toc0_30));
 
         register(Items.BLACK_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
-        register(Items.BLUE_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27), VersionRange.singleton(VersionEnum.c0_30cpe));
-        register(Items.BROWN_MUSHROOM, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27), VersionRange.singleton(VersionEnum.c0_30cpe));
-        register(Items.BROWN_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27), VersionRange.singleton(VersionEnum.c0_30cpe));
-        register(Items.CYAN_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27), VersionRange.singleton(VersionEnum.c0_30cpe));
+        register(Items.BLUE_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27).add(VersionRange.single(VersionEnum.c0_30cpe)));
+        register(Items.BROWN_MUSHROOM, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27).add(VersionRange.single(VersionEnum.c0_30cpe)));
+        register(Items.BROWN_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27).add(VersionRange.single(VersionEnum.c0_30cpe)));
+        register(Items.CYAN_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27).add(VersionRange.single(VersionEnum.c0_30cpe)));
         register(Items.DANDELION, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
         register(Items.GRAY_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
-        register(Items.GREEN_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27), VersionRange.singleton(VersionEnum.c0_30cpe));
+        register(Items.GREEN_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27).add(VersionRange.single(VersionEnum.c0_30cpe)));
         register(Items.LIGHT_BLUE_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
         register(Items.LIGHT_GRAY_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
         register(Items.LIME_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
         register(Items.MAGENTA_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
         register(Items.ORANGE_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
-        register(Items.PINK_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27), VersionRange.singleton(VersionEnum.c0_30cpe));
+        register(Items.PINK_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27).add(VersionRange.single(VersionEnum.c0_30cpe)));
         register(Items.POPPY, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
         register(Items.PURPLE_WOOL, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
         register(Items.RED_MUSHROOM, VersionRange.andNewer(VersionEnum.c0_0_20ac0_27));
@@ -1406,15 +1406,11 @@ public class ItemReleaseVersionMappings {
         register(Items.SPONGE, VersionRange.andNewer(VersionEnum.c0_0_19a_06));
     }
 
-    private void register(final Item item, final VersionRange range) {
-        itemMap.put(item, new VersionRange[]{range});
+    private void register(final Item item, final VersionRange protocolRange) {
+        itemMap.put(item, protocolRange);
     }
 
-    private void register(final Item item, final VersionRange... ranges) {
-        itemMap.put(item, ranges);
-    }
-
-    public Map<Item, VersionRange[]> getItemMap() {
+    public Map<Item, VersionRange> getItemMap() {
         return itemMap;
     }
 

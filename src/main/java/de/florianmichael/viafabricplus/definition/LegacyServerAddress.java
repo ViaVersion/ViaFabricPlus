@@ -24,7 +24,7 @@ import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class LegacyServerAddress {
-    private final static VersionRange SRV_RANGE = new VersionRange(VersionEnum.r1_16_4tor1_16_5, VersionEnum.r1_3_1tor1_3_2);
+    private final static VersionRange SRV_RANGE = VersionRange.of(VersionEnum.r1_3_1tor1_3_2, VersionEnum.r1_16_4tor1_16_5);
 
     public static ServerAddress parse(VersionEnum version, String address) {
         if (version == null) version = ProtocolHack.getTargetVersion();

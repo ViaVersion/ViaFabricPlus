@@ -38,14 +38,14 @@ public class DebugSettings extends SettingGroup {
 
     // 1.13 -> 1.12.2
     public final ProtocolSyncBooleanSetting executeInputsInSync = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.postfix"), VersionRange.andOlder(VersionEnum.r1_12_2));
-    public final ProtocolSyncBooleanSetting sneakInstant = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.sneakinstant"), new VersionRange(VersionEnum.r1_12_2, VersionEnum.r1_8));
+    public final ProtocolSyncBooleanSetting sneakInstant = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.sneakinstant"), VersionRange.of(VersionEnum.r1_8, VersionEnum.r1_12_2));
 
     // 1.12 -> 1.11.1-1.11.2
     public final ProtocolSyncBooleanSetting sendOpenInventoryPacket = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.inventory"), VersionRange.andOlder(VersionEnum.r1_11_1to1_11_2));
 
     // 1.9 -> 1.8.x
     public final ProtocolSyncBooleanSetting removeCooldowns = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.cooldown"), VersionRange.andOlder(VersionEnum.r1_8));
-    public final ProtocolSyncBooleanSetting sendIdlePacket = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.idle"), new VersionRange(VersionEnum.r1_8, VersionEnum.r1_4_2), VersionRange.andOlder(VersionEnum.r1_2_4tor1_2_5));
+    public final ProtocolSyncBooleanSetting sendIdlePacket = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.idle"), VersionRange.of(VersionEnum.r1_4_2, VersionEnum.r1_8).add(VersionRange.andOlder(VersionEnum.r1_2_4tor1_2_5)));
     public final ProtocolSyncBooleanSetting replaceAttributeModifiers = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.attribute"), VersionRange.andOlder(VersionEnum.r1_8));
 
     // 1.8.x -> 1.7.6

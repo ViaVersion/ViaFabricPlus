@@ -42,7 +42,7 @@ import java.util.concurrent.CompletableFuture;
 public class BedrockInformation extends AbstractInformationGroup {
 
     public BedrockInformation() {
-        super(VersionRange.singleton(VersionEnum.bedrockLatest));
+        super(VersionRange.single(VersionEnum.bedrockLatest));
     }
 
     @Override

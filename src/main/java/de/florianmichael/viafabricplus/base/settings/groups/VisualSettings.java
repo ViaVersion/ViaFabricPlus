@@ -36,7 +36,7 @@ public class VisualSettings extends SettingGroup {
     public final ProtocolSyncBooleanSetting removeNewerFeaturesFromJigsawScreen = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.jigsaw"), VersionRange.andOlder(VersionEnum.r1_15_2));
 
     // 1.13 -> 1.12.2
-    public final ProtocolSyncBooleanSetting replacePetrifiedOakSlab = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.stoneslab"), new VersionRange(VersionEnum.r1_12_2, VersionEnum.r1_3_1tor1_3_2));
+    public final ProtocolSyncBooleanSetting replacePetrifiedOakSlab = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.stoneslab"), VersionRange.of(VersionEnum.r1_3_1tor1_3_2, VersionEnum.r1_12_2));
     public final ProtocolSyncBooleanSetting changeFontRendererBehaviour = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.fontrendererbehaviour"), VersionRange.andOlder(VersionEnum.r1_12_2));
     
     // 1.9 -> 1.8.x

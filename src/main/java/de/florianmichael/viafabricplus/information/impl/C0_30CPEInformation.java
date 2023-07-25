@@ -28,7 +28,7 @@ import java.util.List;
 public class C0_30CPEInformation extends AbstractInformationGroup {
 
     public C0_30CPEInformation() {
-        super(VersionRange.singleton(VersionEnum.c0_30cpe));
+        super(VersionRange.single(VersionEnum.c0_30cpe));
     }
 
     @Override
