@@ -19,18 +19,23 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.option.SimpleOption;
 import net.raphimc.vialoader.util.VersionEnum;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ChatInputSuggestor.class)
 public class MixinChatInputSuggestor {
 
+    @Shadow @Final private TextFieldWidget textField;
+
     @Redirect(method = "showCommandSuggestions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/SimpleOption;getValue()Ljava/lang/Object;"))
     public Object forceDisableAutoCompletions(SimpleOption instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        if (this.textField.getText().startsWith("/") && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             return false;
         }
         return instance.getValue();
