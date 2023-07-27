@@ -173,5 +173,8 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "fixes.minecraft.block.MixinCropBlock"
+  ]
 }
