@@ -18,10 +18,10 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -30,15 +30,20 @@ import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Optional;
 
 @SuppressWarnings("ConstantValue")
 @Mixin(LivingEntity.class)
@@ -60,6 +65,12 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Shadow
     protected abstract float getBaseMovementSpeedMultiplier();
+
+    @Shadow
+    private Optional<BlockPos> climbingPos;
+
+    @Shadow
+    protected abstract boolean canEnterTrapdoor(BlockPos pos, BlockState state);
 
     @Redirect(method = "applyMovementInput", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;jumping:Z"))
     private boolean disableJumpOnLadder(LivingEntity self) {
@@ -169,7 +180,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
     public int shieldBlockCounter(int constant) {
-        if(ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 0;
         }
         return constant;
@@ -182,4 +193,20 @@ public abstract class MixinLivingEntity extends Entity {
         }
         return instance.isClient();
     }
+
+    @Inject(method = "isClimbing", at = @At("RETURN"), cancellable = true)
+    private void allowGappedLadderClimb(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.b1_5tob1_5_2) && !cir.getReturnValueZ() && !this.isSpectator()) {
+            final BlockPos blockPos = this.getBlockPos().up();
+            final BlockState blockState = this.getWorld().getBlockState(blockPos);
+            if (blockState.isIn(BlockTags.CLIMBABLE)) {
+                this.climbingPos = Optional.of(blockPos);
+                cir.setReturnValue(true);
+            } else if (blockState.getBlock() instanceof TrapdoorBlock && this.canEnterTrapdoor(blockPos, blockState)) {
+                this.climbingPos = Optional.of(blockPos);
+                cir.setReturnValue(true);
+            }
+        }
+    }
+
 }
