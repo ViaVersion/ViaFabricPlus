@@ -23,12 +23,14 @@ import de.florianmichael.viafabricplus.screen.impl.base.ForceVersionScreen;
 import net.minecraft.client.gui.screen.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -36,7 +38,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AddServerScreen.class)
 public class MixinAddServerScreen extends Screen {
 
-    @Shadow @Final private ServerInfo server;
+    @Shadow
+    @Final
+    private ServerInfo server;
+
+    @Shadow private TextFieldWidget serverNameField;
+    @Shadow private TextFieldWidget addressField;
+
+    @Unique
+    private String viafabricplus_nameField;
+
+    @Unique
+    private String viafabricplus_addressField;
 
     public MixinAddServerScreen(Text title) {
         super(title);
@@ -46,8 +59,20 @@ public class MixinAddServerScreen extends Screen {
     public void injectButton(CallbackInfo ci) {
         final VersionEnum forcedVersion = ((IServerInfo) server).viafabricplus_forcedVersion();
 
-        ButtonWidget.Builder builder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("words.viafabricplus.addserverscreenbuttontitle") : Text.literal(forcedVersion.getName()), button ->
-                client.setScreen(new ForceVersionScreen(this, version -> ((IServerInfo) server).viafabricplus_forceVersion(version))));
+        if (viafabricplus_nameField != null && viafabricplus_addressField != null) {
+            this.serverNameField.setText(viafabricplus_nameField);
+            this.addressField.setText(viafabricplus_addressField);
+
+            viafabricplus_nameField = null;
+            viafabricplus_addressField = null;
+        }
+
+        ButtonWidget.Builder builder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("words.viafabricplus.addserverscreenbuttontitle") : Text.literal(forcedVersion.getName()), button -> {
+            viafabricplus_nameField = serverNameField.getText();
+            viafabricplus_addressField = addressField.getText();
+
+            client.setScreen(new ForceVersionScreen(this, version -> ((IServerInfo) server).viafabricplus_forceVersion(version)));
+        });
 
         final int orientation = GeneralSettings.INSTANCE.addServerScreenButtonOrientation.getIndex();
         switch (orientation) {
