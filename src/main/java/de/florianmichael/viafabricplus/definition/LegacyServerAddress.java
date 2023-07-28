@@ -24,16 +24,15 @@ import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class LegacyServerAddress {
-    private final static VersionRange SRV_RANGE = VersionRange.of(VersionEnum.r1_3_1tor1_3_2, VersionEnum.r1_16_4tor1_16_5);
+    public final static VersionRange SRV_RANGE = VersionRange.andOlder(VersionEnum.r1_2_4tor1_2_5).add(VersionRange.single(VersionEnum.bedrockLatest));
 
     public static ServerAddress parse(VersionEnum version, String address) {
         if (version == null) version = ProtocolHack.getTargetVersion();
-        final ServerAddress mc = ServerAddress.parse(address);
-        if (SRV_RANGE.contains(version) || version == VersionEnum.bedrockLatest) {
-            if (!mc.equals(ServerAddress.INVALID)) {
-                return AllowedAddressResolver.DEFAULT.redirectResolver.lookupRedirect(mc).orElse(mc);
-            }
+        final ServerAddress modern = ServerAddress.parse(address);
+        if (SRV_RANGE.contains(version) && !modern.equals(ServerAddress.INVALID)) {
+            final var addressParts = address.split(":");
+            return new ServerAddress(addressParts[0], addressParts.length > 1 ? Integer.parseInt(addressParts[1]) : 25565);
         }
-        return mc;
+        return modern;
     }
 }

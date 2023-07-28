@@ -18,8 +18,10 @@
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.definition.LegacyServerAddress;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
@@ -38,8 +40,15 @@ public class MixinConnectScreen_1 {
     @Shadow
     ServerInfo field_40415;
 
+    @Final
+    @Shadow
+    ServerAddress field_33737;
+
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
     public Object mapSocketAddress(Optional<InetSocketAddress> instance) {
+        if (LegacyServerAddress.SRV_RANGE.contains(ProtocolHack.getTargetVersion())) {
+            return new InetSocketAddress(field_33737.getAddress(), field_33737.getPort());
+        }
         final InetSocketAddress address = instance.get();
         if (field_40415 == null) return address;
 
