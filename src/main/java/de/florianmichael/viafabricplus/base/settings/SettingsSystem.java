@@ -72,6 +72,14 @@ public class SettingsSystem extends FileSaver {
         }
         for (SettingGroup group : groups) {
             for (AbstractSetting<?> setting : group.getSettings()) {
+
+                // Temp config converter
+                if (setting.getName().equals(GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getName())) {
+                    if (object.get(setting.getTranslationKey()).getAsJsonPrimitive().isBoolean()) {
+                        continue;
+                    }
+                }
+
                 setting.read(object);
             }
         }

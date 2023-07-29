@@ -25,7 +25,7 @@ import net.minecraft.text.Text;
 public class GeneralSettings extends SettingGroup {
     public final static GeneralSettings INSTANCE = new GeneralSettings();
 
-    public final ModeSetting mainButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.main"),
+    public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.multiplayerscreenbutton"),
             Text.translatable("words.viafabricplus.lt"),
             Text.translatable("words.viafabricplus.rt"),
             Text.translatable("words.viafabricplus.lb"),
@@ -37,7 +37,11 @@ public class GeneralSettings extends SettingGroup {
             Text.translatable("words.viafabricplus.lb"),
             Text.translatable("words.viafabricplus.rb")
     );
-    public final BooleanSetting removeNotAvailableItemsFromCreativeTab = new BooleanSetting(this, Text.translatable("general.viafabricplus.creative"), true);
+    public final ModeSetting removeNotAvailableItemsFromCreativeTab = new ModeSetting(this, Text.translatable("general.viafabricplus.creative"),
+            Text.translatable("words.viafabricplus.all"),
+            Text.translatable("words.viafabricplus.vanillaonly"),
+            Text.translatable("words.viafabricplus.off")
+    );
     public final BooleanSetting showSuperSecretSettings = new BooleanSetting(this, Text.translatable("general.viafabricplus.secret"), true);
     public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, Text.translatable("general.viafabricplus.extrainformation"), true);
     public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, Text.translatable("general.viafabricplus.classicloading"), true);
@@ -46,7 +50,8 @@ public class GeneralSettings extends SettingGroup {
 
     public GeneralSettings() {
         super(Text.translatable("settings.viafabricplus.general"));
-        mainButtonOrientation.setValue(1); // Default value
+
+        multiplayerScreenButtonOrientation.setValue(1); // Default value
         addServerScreenButtonOrientation.setValue(1); // Default value
     }
 }

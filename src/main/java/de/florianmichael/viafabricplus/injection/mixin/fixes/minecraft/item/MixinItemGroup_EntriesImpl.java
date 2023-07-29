@@ -21,19 +21,30 @@ import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.featuretoggle.FeatureSet;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(targets = "net.minecraft.item.ItemGroup$EntriesImpl")
 public class MixinItemGroup_EntriesImpl {
 
+    @Shadow @Final private ItemGroup group;
+
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isEnabled(Lnet/minecraft/resource/featuretoggle/FeatureSet;)Z"))
     public boolean removeUnknownItems(Item instance, FeatureSet featureSet) {
-        if (!GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue() || MinecraftClient.getInstance().isInSingleplayer()) return instance.isEnabled(featureSet);
-        if (ItemReleaseVersionMappings.INSTANCE.getCurrentMap().contains(instance)) return instance.isEnabled(featureSet);
+        final var index = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
 
+        if (index == 2 || MinecraftClient.getInstance().isInSingleplayer()) return instance.isEnabled(featureSet);
+        if (index == 1 && !Registries.ITEM_GROUP.getId(this.group).getNamespace().equals("minecraft")) return instance.isEnabled(featureSet);
+
+        if (ItemReleaseVersionMappings.INSTANCE.getCurrentMap().contains(instance)) {
+            return instance.isEnabled(featureSet);
+        }
         return false;
     }
 }

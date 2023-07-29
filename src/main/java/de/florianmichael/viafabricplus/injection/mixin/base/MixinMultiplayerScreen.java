@@ -45,7 +45,7 @@ public class MixinMultiplayerScreen extends Screen {
     public void addProtocolSelectionButton(CallbackInfo ci) {
         ButtonWidget.Builder builder = ButtonWidget.builder(Text.literal("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this));
 
-        final int orientation = GeneralSettings.INSTANCE.mainButtonOrientation.getIndex();
+        final int orientation = GeneralSettings.INSTANCE.multiplayerScreenButtonOrientation.getIndex();
         switch (orientation) {
             case 0 -> builder = builder.position(5, 5);
             case 1 -> builder = builder.position(width - 98 - 5, 5);

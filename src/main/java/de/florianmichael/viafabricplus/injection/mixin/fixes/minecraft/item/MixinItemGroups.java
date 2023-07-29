@@ -44,13 +44,13 @@ public abstract class MixinItemGroups {
     private static VersionEnum viafabricplus_version;
 
     @Unique
-    private static boolean viafabricplus_state;
+    private static int viafabricplus_state;
 
     @Inject(method = "updateDisplayContext", at = @At("HEAD"), cancellable = true)
     private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, RegistryWrapper.WrapperLookup lookup, CallbackInfoReturnable<Boolean> cir) {
-        if (viafabricplus_version != ProtocolHack.getTargetVersion() || viafabricplus_state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue()) {
+        if (viafabricplus_version != ProtocolHack.getTargetVersion() || viafabricplus_state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex()) {
             viafabricplus_version = ProtocolHack.getTargetVersion();
-            viafabricplus_state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getValue();
+            viafabricplus_state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
 
             displayContext = new ItemGroup.DisplayContext(enabledFeatures, operatorEnabled, lookup);
             updateEntries(displayContext);

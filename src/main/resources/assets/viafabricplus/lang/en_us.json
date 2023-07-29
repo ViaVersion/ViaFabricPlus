@@ -19,6 +19,8 @@
   "words.viafabricplus.serverversion": "Server version: %s",
   "words.viafabricplus.auto": "Auto",
   "words.viafabricplus.addserverscreenbuttontitle": "Set version for this server",
+  "words.viafabricplus.all": "Vanilla and Modded",
+  "words.viafabricplus.vanillaonly": "Vanilla only",
 
   "settings.viafabricplus.authentication": "Authentication",
   "settings.viafabricplus.experimental": "Experimental",
@@ -30,7 +32,7 @@
   "general.viafabricplus.secret": "Show Super Secret Settings",
   "general.viafabricplus.extrainformation": "Show extra information in Debug Hud",
   "general.viafabricplus.classicloading": "Show classic loading progress in connect screen",
-  "general.viafabricplus.main": "Main button orientation",
+  "general.viafabricplus.multiplayerscreenbutton": "Multiplayer screen button orientation",
   "general.viafabricplus.addserverscreenbutton": "Add server screen button orientation",
   "general.viafabricplus.creative": "Remove not available items from creative tab",
   "general.viafabricplus.autodetect": "Auto detect version",

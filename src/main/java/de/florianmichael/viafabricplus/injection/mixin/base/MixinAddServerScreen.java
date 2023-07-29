@@ -67,7 +67,7 @@ public class MixinAddServerScreen extends Screen {
             viafabricplus_addressField = null;
         }
 
-        ButtonWidget.Builder builder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("words.viafabricplus.addserverscreenbuttontitle") : Text.literal(forcedVersion.getName()), button -> {
+        var builder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("words.viafabricplus.addserverscreenbuttontitle") : Text.literal(forcedVersion.getName()), button -> {
             viafabricplus_nameField = serverNameField.getText();
             viafabricplus_addressField = addressField.getText();
 
