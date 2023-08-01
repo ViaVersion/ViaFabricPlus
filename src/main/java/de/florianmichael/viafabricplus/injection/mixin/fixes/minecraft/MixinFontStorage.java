@@ -74,7 +74,9 @@ public abstract class MixinFontStorage implements IFontStorage {
             fontName = "UnihexFont";
         }
         if (fontName == null) return false;
-        return viafabricplus_forbiddenCharacters.get(fontName).contains(codePoint);
+        final var forbiddenCodepoints = viafabricplus_forbiddenCharacters.get(fontName);
+        if (forbiddenCodepoints == null) return false;
+        return forbiddenCodepoints.contains(codePoint);
     }
 
     @Inject(method = "findGlyph", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/Font;getGlyph(I)Lnet/minecraft/client/font/Glyph;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
