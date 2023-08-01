@@ -74,7 +74,7 @@ public abstract class MixinFontStorage implements IFontStorage {
             fontName = "UnihexFont";
         }
         if (fontName == null) return false;
-        var forbiddenCodepoints = viafabricplus_forbiddenCharacters.get(fontName);
+        final var forbiddenCodepoints = viafabricplus_forbiddenCharacters.get(fontName);
         if (forbiddenCodepoints == null) return false;
         return forbiddenCodepoints.contains(codePoint);
     }
