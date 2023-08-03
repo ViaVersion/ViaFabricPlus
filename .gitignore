@@ -1,22 +1,26 @@
-# gradle
+# Gradle
 
 .gradle/
 build/
 out/
 classes/
 
-# eclipse
+# Eclipse
 
 *.launch
 
-# idea
+# Idea
 
 .idea/
 *.iml
 *.ipr
 *.iws
 
-# vscode
+# Minecraft
+run/
+runV2/
+
+# VScode
 
 .settings/
 .vscode/
@@ -24,10 +28,14 @@ bin/
 .classpath
 .project
 
-# macos
+# macOS
 
-*.DS_Store
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# fabric
+# Fabric
 
+*.cap
+*.rdc
 run/
