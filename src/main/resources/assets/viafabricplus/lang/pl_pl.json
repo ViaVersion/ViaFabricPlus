@@ -30,7 +30,7 @@
   "general.viafabricplus.secret": "Pokazuj Super Secret Settings",
   "general.viafabricplus.extrainformation": "Pokazuj dodatkowe informacje w interfejsie debugowania",
   "general.viafabricplus.classicloading": "Pokazuj klasyczny pasek ładowania w ekranie łączenia",
-  "general.viafabricplus.main": "Lokalizacja głównego przycisku",
+  "general.viafabricplus.multiplayerscreenbutton": "Lokalizacja przycisku w menu multiplayer",
   "general.viafabricplus.addserverscreenbutton": "Pozycja przycisku ustawiania wersji w ekranie dodawania serwerów",
   "general.viafabricplus.creative": "Usuwaj niedostępne przedmioty z ekwipunku trybu kreatywnego",
   "general.viafabricplus.autodetect": "Automatycznie wykrywaj wersję gry",
