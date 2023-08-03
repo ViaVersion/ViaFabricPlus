@@ -1,0 +1,55 @@
+/*
+ * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
+ * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package de.florianmichael.viafabricplus.injection.mixin.fixes.ipnext;
+
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.raphimc.vialoader.util.VersionEnum;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+/**
+ * <a href="https://github.com/blackd/Inventory-Profiles/tree/all-in-one">Inventory-Profiles</a> is handling the offhand slot even when
+ * ViaFabricPlus removes the slot in <= 1.8.9, so we have to cancel the handling of the offhand slot
+ * <p>
+ * Fixes <a href="https://github.com/ViaVersion/ViaFabricPlus/issues/209">ViaFabricPlus Issue 209</a>
+ */
+@Pseudo
+@Mixin(targets = "org.anti_ad.mc.ipnext.event.AutoRefillHandler$ItemSlotMonitor")
+public class MixinAutoRefillHandler_ItemSlotMonitor {
+
+    @Shadow
+    public int currentSlotId;
+
+    @Inject(method = { "checkHandle", "checkShouldHandle" }, at = @At("HEAD"), cancellable = true)
+    public void dontHandleOffhandSlot(CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            if (currentSlotId == 45) ci.cancel();
+        }
+    }
+
+    @Inject(method = "updateCurrent", at = @At(value = "FIELD", target = "Lorg/anti_ad/mc/ipnext/event/AutoRefillHandler$ItemSlotMonitor;currentSlotId:I", shift = At.Shift.AFTER), cancellable = true)
+    public void dontUpdateCurrentOffhandSlot(CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            if (currentSlotId == 45) ci.cancel();
+        }
+    }
+}

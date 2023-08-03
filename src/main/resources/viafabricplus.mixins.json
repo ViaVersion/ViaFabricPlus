@@ -23,6 +23,7 @@
     "base.MixinSharedConstants",
     "classic4j.MixinCCAuthenticationResponse",
     "fixes.authlib.MixinKeyPairResponse",
+    "fixes.ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "fixes.minecraft.MixinBipedEntityModel",
     "fixes.minecraft.MixinCamera",
     "fixes.minecraft.MixinClientPlayerInteractionManager",
@@ -52,6 +53,7 @@
     "fixes.minecraft.block.MixinBrewingStandBlock",
     "fixes.minecraft.block.MixinCauldronBlock",
     "fixes.minecraft.block.MixinChestBlock",
+    "fixes.minecraft.block.MixinCropBlock",
     "fixes.minecraft.block.MixinEndPortalBlock",
     "fixes.minecraft.block.MixinEndPortalFrameBlock",
     "fixes.minecraft.block.MixinFarmlandBlock",
@@ -173,8 +175,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "fixes.minecraft.block.MixinCropBlock"
-  ]
+  }
 }
