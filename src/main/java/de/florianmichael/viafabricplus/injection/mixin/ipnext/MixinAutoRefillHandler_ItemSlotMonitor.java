@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.ipnext;
+package de.florianmichael.viafabricplus.injection.mixin.ipnext;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.raphimc.vialoader.util.VersionEnum;

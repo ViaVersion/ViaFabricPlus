@@ -23,7 +23,6 @@
     "base.MixinSharedConstants",
     "classic4j.MixinCCAuthenticationResponse",
     "fixes.authlib.MixinKeyPairResponse",
-    "fixes.ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "fixes.minecraft.MixinBipedEntityModel",
     "fixes.minecraft.MixinCamera",
     "fixes.minecraft.MixinClientPlayerInteractionManager",
@@ -169,6 +168,7 @@
     "fixes.viaversion.protocol1_9to1_8.MixinEntityTracker1_9",
     "fixes.viaversion.protocol1_9to1_8.MixinMetadataRewriter1_9To1_8",
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
+    "ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
     "jsonwebtoken.MixinDefaultJwtParserBuilder"
