@@ -40,15 +40,17 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
-/**
- * TODO | Port
- *   - TakeItemEntityPacket isEmpty case
- * <p>
- * TODO | Protocol translation
- *  - Cobwebs in <= b1.7.3 are broken
- *  - Window interactions in <= 1.16.5 are unlegit
- *  - Entity hitboxes and eye heights has changed
- *  - Crafting Recipes are missing in ViaVersion
+/*
+ * TODO | ViaFabricPlus
+ *  - Check if relevant for protocol translation: TakeItemEntityPacket isEmpty case (1.20 -> 1.20.1 change)
+ *  - Cobwebs in <= b1.7.3 are broken (movement has been changed)
+ *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
+ *  - Entity hit boxes and eye heights has changed in almost all versions
+ *  - Crafting Recipes are missing in ViaVersion (see https://github.com/ViaVersion/ViaFabricPlus/issues/60)
+ *  - Various movement related changes (see https://github.com/ViaVersion/ViaFabricPlus/issues/189 and https://github.com/ViaVersion/ViaFabricPlus/issues/195)
+ *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
+ *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
+ *  - Bedrock scaffolding should be added as soon as ViaBedrock supports block placement (see https://github.com/ViaVersion/ViaFabricPlus/issues/204)
  */
 public class ViaFabricPlus {
     public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();

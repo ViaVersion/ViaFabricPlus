@@ -24,7 +24,7 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 ### If you want to talk with me, feel free to join my [Discord](https://discord.gg/BwWhCHUKDf)
 
 # For users
-### Detailed instructions for use are available here [here](.github/USAGE.md)
+### Detailed instructions for use are available [here](.github/USAGE.md)
 ### If you encounter any issues, please report them on the [issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues) or on the ViaVersion [Discord](https://discord.gg/viaversion)
 
 ## Known incompatibilities
@@ -32,7 +32,7 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - ***[krypton (<= 0.2.2)](https://github.com/astei/krypton)***
 - ***[MemoryLeakFix (<= 1.1.0)](https://github.com/astei/krypton)***
 
-## List of all clientside related fixes
+## List of all clientside related fixes and TODO
 <details>
   <summary>Click to open</summary>
 
@@ -54,6 +54,8 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - [x] Animation related fixes (1.7 Sneaking, c0.30 walking animation, ...)
 - [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
 </details>
+
+A detailed TODO List can be found at the class header of [this](https://github.com/ViaVersion/ViaFabricPlus/blob/main/src/main/java/de/florianmichael/viafabricplus/ViaFabricPlus.java) file
 
 # For developers and translators
 Contributions in the form of pull requests are always welcome, please just stick to my code style and make sure your code is easy to update and compatible with other mods.
@@ -77,10 +79,12 @@ For compiling only! **You do not need to install these!**
 | ViaAprilFools          | https://github.com/ViaVersion/ViaAprilFools                |
 | ViaBedrock             | https://github.com/ViaVersion/ViaBedrock                   |
 | MC-Structs             | https://github.com/Lenni0451/MCStructs                     |
+| MinecraftAuth          | https://github.com/RaphiMC/MinecraftAuth                   |
 | Reflect                | https://github.com/Lenni0451/Reflect                       |
 | ViaLoader              | https://github.com/ViaVersion/ViaLoader                    |
 | Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop       |
 | Classic4J              | https://github.com/FlorianMichael/Classic4J                |
+| MixinExtras            | https://github.com/LlamaLad7/MixinExtras                   |
 </details>
 
 ### Setting up a Workspace
@@ -101,7 +105,7 @@ repositories {
 }
 
 dependencies {
-    implementation "de.florianmichael:viafabricplus:2.7.3" // Get latest version from releases
+    implementation "de.florianmichael:viafabricplus:2.8.2" // Get latest version from releases
 }
 ```
 
@@ -117,13 +121,12 @@ dependencies {
     <dependency>
         <groupId>de.florianmichael</groupId>
         <artifactId>viafabricplus</artifactId>
-        <version>2.7.3</version> <!-- Get latest version from releases -->
+        <version>2.8.2</version> <!-- Get latest version from releases -->
     </dependency>
 </dependencies>
 ```
 
 ### To learn more about the API and about addons, you can simply click [here](.github/DEVELOPER_API.md)
-
 
 ## Disclaimer
 
