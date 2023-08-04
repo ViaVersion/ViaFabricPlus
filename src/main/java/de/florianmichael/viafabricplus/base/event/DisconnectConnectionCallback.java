@@ -20,6 +20,9 @@ package de.florianmichael.viafabricplus.base.event;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+/**
+ * This event is fired when the user disconnects from a server.
+ */
 public interface DisconnectConnectionCallback {
 
     Event<DisconnectConnectionCallback> EVENT = EventFactory.createArrayBacked(DisconnectConnectionCallback.class, listeners -> () -> {

@@ -22,6 +22,12 @@ import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableTextContent;
 
+/**
+ * This class is the base for all settings. It contains the name, the default value and the current value.
+ * Developer's should always use the implementations of this class, and not this class itself.
+ *
+ * @param <T> The type of the setting.
+ */
 public abstract class AbstractSetting<T> {
     private final MutableText name;
     private final T defaultValue;
@@ -37,6 +43,10 @@ public abstract class AbstractSetting<T> {
         parent.getSettings().add(this);
     }
 
+    /**
+     * This method is used to create a renderer for the setting.
+     * @return The renderer, see {@link MappedSlotEntry} for more details.
+     */
     public abstract MappedSlotEntry makeSettingRenderer();
 
     public abstract void write(final JsonObject object);
@@ -46,6 +56,9 @@ public abstract class AbstractSetting<T> {
         return name;
     }
 
+    /**
+     * @return The translation key of the name.
+     */
     public String getTranslationKey() {
         return ((TranslatableTextContent) name.getContent()).getKey();
     }

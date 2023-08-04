@@ -18,6 +18,7 @@
 package de.florianmichael.viafabricplus.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.NoticeScreen;
@@ -30,6 +31,10 @@ import net.minecraft.text.Text;
 
 import java.awt.*;
 
+/**
+ * This class is a wrapper for the {@link net.minecraft.client.gui.screen.Screen} class which provides some global
+ * functions and features used in all screens which are added by ViaFabricPlus
+ */
 public class VFPScreen extends Screen {
 
     private final boolean backButton;
@@ -40,6 +45,11 @@ public class VFPScreen extends Screen {
         this.backButton = backButton;
     }
 
+    /**
+     * Intended method to open a VFP screen
+     *
+     * @param prevScreen The current screen from which the VFP screen is opened
+     */
     public void open(final Screen prevScreen) {
         this.prevScreen = prevScreen;
 
@@ -62,6 +72,12 @@ public class VFPScreen extends Screen {
         renderTitle(context, Text.of("https://github.com/ViaVersion/ViaFabricPlus"));
     }
 
+    /**
+     * Renders the ViaFabricPlus title with a specific subtitle
+     *
+     * @param context The current draw context
+     * @param subTitle The subtitle which should be rendered
+     */
     public void renderTitle(final DrawContext context, final Text subTitle) {
         final MatrixStack matrices = context.getMatrices();
 
@@ -73,14 +89,25 @@ public class VFPScreen extends Screen {
         context.drawCenteredTextWithShadow(textRenderer, subTitle, width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
     }
 
+    /**
+     * Plays Minecraft's button click sound
+     */
     public static void playClickSound() {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
+    /**
+     * Opens an error screen with a specific title and throws the given throwable
+     *
+     * @param title The title of the error screen
+     * @param throwable The throwable which should be thrown
+     */
     public void showErrorScreen(final String title, final Throwable throwable) {
         MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() ->
                 RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(this)), Text.of(title),
                 Text.translatable("words.viafabricplus.error").append("\n" + throwable.getMessage()),
                 Text.translatable("words.viafabricplus.cancel"), false)));
+
+        ViaFabricPlus.LOGGER.error(throwable);
     }
 }

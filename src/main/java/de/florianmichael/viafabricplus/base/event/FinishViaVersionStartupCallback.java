@@ -20,6 +20,9 @@ package de.florianmichael.viafabricplus.base.event;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+/**
+ * This event is fired when ViaVersion's startup is finished.
+ */
 public interface FinishViaVersionStartupCallback {
 
     Event<FinishViaVersionStartupCallback> EVENT = EventFactory.createArrayBacked(FinishViaVersionStartupCallback.class, listeners -> () -> {

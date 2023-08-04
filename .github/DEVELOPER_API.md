@@ -20,6 +20,7 @@ public class ViaFabricPlusExampleAddon implements ClientModInitializer {
 | InitializeSettingsCallback           | Called after the default setting groups are loaded and before the setting config is loaded                                                                                                                    |
 | LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)                                                                                                                          |
 | PreLoadCallback                      | Called before everything (Pre-pre load)                                                                                                                                                                       |
+| DisconnectConnectionCallback         | Called when the user disconnects from a server.                                                                                                                                                               |
 
 ### General API
 #### Add CustomPayload channels for versions below 1.13

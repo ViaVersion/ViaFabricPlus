@@ -21,6 +21,9 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 
+/**
+ * This event is fired when a classic protocol extension is loaded.
+ */
 public interface LoadClassicProtocolExtensionCallback {
 
     Event<LoadClassicProtocolExtensionCallback> EVENT = EventFactory.createArrayBacked(LoadClassicProtocolExtensionCallback.class, listeners -> classicProtocolExtension -> {

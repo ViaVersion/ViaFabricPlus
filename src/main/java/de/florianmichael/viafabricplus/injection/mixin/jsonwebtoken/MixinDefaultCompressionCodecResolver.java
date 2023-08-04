@@ -27,11 +27,15 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.Arrays;
 import java.util.List;
 
+/*
+ * JsonWebToken is used by MinecraftAuth and since it's using Java services, it's not working with the fabric loader
+ * So we have to change all services usages by using the normal Java API
+ */
 @Mixin(value = DefaultCompressionCodecResolver.class, remap = false)
 public class MixinDefaultCompressionCodecResolver {
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lio/jsonwebtoken/impl/lang/Services;loadAll(Ljava/lang/Class;)Ljava/util/List;"))
-    public List<Object> fixServicesSupport(Class<Object> implementations) {
+    public List<Object> removeServicesSupport(Class<Object> implementations) {
         return Arrays.asList(new GzipCompressionCodec(), new DeflateCompressionCodec());
     }
 }

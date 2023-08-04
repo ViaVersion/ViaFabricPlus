@@ -23,10 +23,19 @@ import net.lenni0451.reflect.stream.RStream;
 
 import java.io.File;
 
+/**
+ * Allows the user to override the Via* jar files with custom ones using the "jars" folder in the run directory
+ */
 public class ViaJarReplacer {
 
+    /**
+     * The folder where the overriding jars are located
+     */
     public final static File VIA_JAR_OVERRIDING_FOLDER = new File(ViaFabricPlus.RUN_DIRECTORY, "jars");
 
+    /**
+     * Loads all overriding jars
+     */
     public static void loadOverridingJars() {
         try {
             VIA_JAR_OVERRIDING_FOLDER.mkdirs();

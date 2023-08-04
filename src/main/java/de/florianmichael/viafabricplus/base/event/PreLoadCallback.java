@@ -20,6 +20,9 @@ package de.florianmichael.viafabricplus.base.event;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+/**
+ * This event is fired before everything is loaded.
+ */
 public interface PreLoadCallback {
 
     Event<PreLoadCallback> EVENT = EventFactory.createArrayBacked(PreLoadCallback.class, listeners -> () -> {

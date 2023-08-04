@@ -21,12 +21,19 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.util.math.MatrixStack;
 
+/**
+ * This class is a wrapper for the {@link net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry} class which provides some global
+ * functions and features used in all screens which are added by ViaFabricPlus
+ */
 public abstract class MappedSlotEntry extends AlwaysSelectedEntryListWidget.Entry<MappedSlotEntry> {
 
     public abstract void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta);
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {
     }
 
+    /**
+     * Automatically plays a click sound and calls the {@link #mappedMouseClicked(double, double, int)} method
+     */
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         mappedMouseClicked(mouseX, mouseY, button);
@@ -34,9 +41,12 @@ public abstract class MappedSlotEntry extends AlwaysSelectedEntryListWidget.Entr
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    /**
+     * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(DrawContext, int, int, int, int, int, int, int, boolean, float)} method
+     */
     @Override
     public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        final MatrixStack matrices = context.getMatrices();
+        final var matrices = context.getMatrices();
 
         matrices.push();
         matrices.translate(x, y, 0);

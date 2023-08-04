@@ -20,6 +20,9 @@ package de.florianmichael.viafabricplus.base.event;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+/**
+ * This event is fired when Minecraft's loading tree is finished. This should be at the end of the {@link net.minecraft.client.MinecraftClient} constructor
+ */
 public interface FinishMinecraftLoadCallback {
 
     Event<FinishMinecraftLoadCallback> EVENT = EventFactory.createArrayBacked(FinishMinecraftLoadCallback.class, listeners -> () -> {

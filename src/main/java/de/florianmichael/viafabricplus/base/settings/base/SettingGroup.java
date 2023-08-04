@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.text.Text;
 
+/**
+ * This class represents a group of settings. It is used to group settings in the settings screen.
+ * @see AbstractSetting
+ */
 public class SettingGroup {
     private final List<AbstractSetting<?>> settings = new ArrayList<>();
     private final Text name;
@@ -29,6 +33,12 @@ public class SettingGroup {
         this.name = name;
     }
 
+    /**
+     * This list is used to store the settings of this group. It should not be touched directly by developers.
+     * The list gets filled automatically when creating a new setting (see {@link AbstractSetting}).
+     *
+     * @return The list of settings.
+     */
     public List<AbstractSetting<?>> getSettings() {
         return settings;
     }

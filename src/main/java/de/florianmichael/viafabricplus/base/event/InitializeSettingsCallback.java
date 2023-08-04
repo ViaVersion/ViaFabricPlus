@@ -20,6 +20,9 @@ package de.florianmichael.viafabricplus.base.event;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+/**
+ * This event is fired when ViaFabricPlus has initialized its settings, and before it starts reading the values from the settings file.
+ */
 public interface InitializeSettingsCallback {
 
     Event<InitializeSettingsCallback> EVENT = EventFactory.createArrayBacked(InitializeSettingsCallback.class, listeners -> () -> {

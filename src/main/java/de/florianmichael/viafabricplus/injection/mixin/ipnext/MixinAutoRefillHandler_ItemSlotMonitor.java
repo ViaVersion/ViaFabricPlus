@@ -26,11 +26,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * <a href="https://github.com/blackd/Inventory-Profiles/tree/all-in-one">Inventory-Profiles</a> is handling the offhand slot even when
+/*
+ * https://github.com/blackd/Inventory-Profiles/tree/all-in-one is handling the offhand slot even when
  * ViaFabricPlus removes the slot in <= 1.8.9, so we have to cancel the handling of the offhand slot
  * <p>
- * Fixes <a href="https://github.com/ViaVersion/ViaFabricPlus/issues/209">ViaFabricPlus Issue 209</a>
+ * Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/209
  */
 @Pseudo
 @Mixin(targets = "org.anti_ad.mc.ipnext.event.AutoRefillHandler$ItemSlotMonitor")

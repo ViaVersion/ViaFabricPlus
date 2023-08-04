@@ -22,13 +22,24 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 
 import java.io.*;
 
+/**
+ * This class can be used to save data to a file.
+ */
 public abstract class FileSaver {
     private final File file;
 
+    /**
+     * @param name The name of the file.
+     */
     public FileSaver(final String name) {
         file = new File(ViaFabricPlus.RUN_DIRECTORY, name);
     }
 
+    /**
+     * This method should be called when the file should be initialized.
+     * It will read the file and call the {@link #read(JsonObject)} method.
+     * It will also write the file when the program is closed using the {@link #write(JsonObject)}.
+     */
     public void init() {
         if (file.exists()) {
             JsonObject parentNode = null;

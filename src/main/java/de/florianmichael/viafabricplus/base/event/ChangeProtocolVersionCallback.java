@@ -21,6 +21,10 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.raphimc.vialoader.util.VersionEnum;
 
+/**
+ * This event is fired when the user changes the target version in the screen, or if the user joins a server with a different version.
+ * If the user disconnects, the event will also be fired with the current version.
+ */
 public interface ChangeProtocolVersionCallback {
 
     Event<ChangeProtocolVersionCallback> EVENT = EventFactory.createArrayBacked(ChangeProtocolVersionCallback.class, listeners -> version -> {
