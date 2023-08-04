@@ -19,6 +19,8 @@
   "words.viafabricplus.serverversion": "Wersja serwera: %s",
   "words.viafabricplus.auto": "Auto",
   "words.viafabricplus.addserverscreenbuttontitle": "Ustaw wersję dla tego serwera",
+  "words.viafabricplus.all": "Vanilla i modyfikacje",
+  "words.viafabricplus.vanillaonly": "Tylko vanilla",
 
   "settings.viafabricplus.authentication": "Uwierzytelnianie",
   "settings.viafabricplus.experimental": "Eksperymenty",
