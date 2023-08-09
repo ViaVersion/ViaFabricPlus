@@ -178,12 +178,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Redirect(method = "autoJump", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;inverseSqrt(F)F"))
     public float useFastInverse(float x) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
-            final float var1 = 0.5F * x;
-            int var2 = Float.floatToIntBits(x);
-            var2 = 1597463007 - (var2 >> 1);
-            x = Float.intBitsToFloat(var2);
+            x = Float.intBitsToFloat(1597463007 - (Float.floatToIntBits(x) >> 1));
 
-            return x * (1.5F - var1 * x * x);
+            return x * (1.5F - (0.5F * x) * x * x);
         }
         return MathHelper.inverseSqrt(x);
     }
@@ -191,6 +188,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Override
     public boolean isCreative() {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+            if (client.interactionManager == null) return super.isCreative(); // Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/216
             return client.interactionManager.getCurrentGameMode() == GameMode.CREATIVE;
         }
         return super.isCreative();
