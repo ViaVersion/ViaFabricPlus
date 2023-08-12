@@ -114,7 +114,6 @@
     "fixes.minecraft.packet.MixinUpdatePlayerAbilitiesC2SPacket",
     "fixes.minecraft.screen.MixinAnvilScreen",
     "fixes.minecraft.screen.MixinChatHud",
-    "fixes.minecraft.screen.MixinChatInputSuggestor",
     "fixes.minecraft.screen.MixinChatScreen",
     "fixes.minecraft.screen.MixinCommandBlockScreen",
     "fixes.minecraft.screen.MixinConnectScreen_1",

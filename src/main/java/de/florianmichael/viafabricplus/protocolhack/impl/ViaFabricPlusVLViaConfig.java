@@ -42,4 +42,9 @@ public class ViaFabricPlusVLViaConfig extends VLViaConfig {
     public boolean isChunkBorderFix() {
         return ExperimentalSettings.INSTANCE.fixChunkBorders.getValue();
     }
+
+    @Override
+    public int get1_13TabCompleteDelay() {
+        return 5;
+    }
 }
