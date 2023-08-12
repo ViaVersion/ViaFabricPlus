@@ -28,6 +28,7 @@ import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.storage.Inventor
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.base.event.FinishViaVersionStartupCallback;
+import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLCommandHandler;
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLInjector;
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLLoader;
@@ -39,6 +40,7 @@ import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
@@ -115,6 +117,19 @@ public class ProtocolHack {
         if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().isInSingleplayer()) return VersionEnum.r1_20tor1_20_1;
 
         return targetVersion;
+    }
+
+    /**
+     * This method is used when you need the target version while connecting to the server after Netty is started and after ViaVersion is finished loading.
+     *
+     * @param serverInfo the current server info
+     * @return the target version
+     */
+    public static VersionEnum getTargetVersion(final ServerInfo serverInfo) {
+        final var forcedVersion = ((IServerInfo) serverInfo).viafabricplus_forcedVersion();
+        if (forcedVersion == null) return  getTargetVersion();
+
+        return forcedVersion;
     }
 
     public static Map<InetSocketAddress, VersionEnum> getForcedVersions() {

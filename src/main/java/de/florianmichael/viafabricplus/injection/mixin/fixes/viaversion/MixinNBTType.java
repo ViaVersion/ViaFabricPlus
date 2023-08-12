@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class MixinNBTType {
 
     @Unique
-    private final TagLimiter viafabricplus_tag_limiter = new TagLimiter() {
+    private static final TagLimiter viafabricplus_tag_limiter = new TagLimiter() {
         private final int maxBytes = 2097152;
         private int bytes;
 
@@ -59,8 +59,8 @@ public class MixinNBTType {
         }
     };
 
-    @Redirect(method = "read(Lio/netty/buffer/ByteBuf;)Lcom/viaversion/viaversion/libs/opennbt/tag/builtin/CompoundTag;", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/libs/opennbt/tag/limiter/TagLimiter;create(II)Lcom/viaversion/viaversion/libs/opennbt/tag/limiter/TagLimiter;"))
-    public TagLimiter replaceTagLimiter(int maxBytes, int maxLevels) {
-        return this.viafabricplus_tag_limiter;
+    @Redirect(method = "read(Lio/netty/buffer/ByteBuf;Z)Lcom/viaversion/viaversion/libs/opennbt/tag/builtin/CompoundTag;", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/libs/opennbt/tag/limiter/TagLimiter;create(II)Lcom/viaversion/viaversion/libs/opennbt/tag/limiter/TagLimiter;"))
+    private static TagLimiter replaceTagLimiter(int maxBytes, int maxLevels) {
+        return viafabricplus_tag_limiter;
     }
 }

@@ -19,16 +19,20 @@ package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,5 +55,13 @@ public class MixinMultiplayerServerListWidget_ServerEntry {
             }
         }
         instance.setMultiplayerScreenTooltip(tooltipOverwrite);
+    }
+
+    @Inject(method = "protocolVersionMatches", at = @At("HEAD"), cancellable = true)
+    public void supportViaLegacyVersionRanges(CallbackInfoReturnable<Boolean> cir) {
+        final var version = ProtocolHack.getTargetVersion(server);
+        if (version.isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
+            cir.setReturnValue(LegacyProtocolVersion.getRealProtocolVersion(version.getVersion()) == server.protocolVersion);
+        }
     }
 }

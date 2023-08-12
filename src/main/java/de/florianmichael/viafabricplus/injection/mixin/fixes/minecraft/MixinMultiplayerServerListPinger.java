@@ -20,6 +20,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 import com.google.common.net.HostAndPort;
 import de.florianmichael.viafabricplus.definition.LegacyServerAddress;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.lenni0451.reflect.stream.RStream;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.minecraft.client.network.ServerAddress;
@@ -35,7 +36,7 @@ public class MixinMultiplayerServerListPinger {
 
     @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AllowedAddressResolver;resolve(Lnet/minecraft/client/network/ServerAddress;)Ljava/util/Optional;"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void mapParsing(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress) {
-        final ServerAddress remapped = LegacyServerAddress.parse(((IServerInfo) entry).viafabricplus_forcedVersion(), serverAddress.hostAndPort.toString());
+        final ServerAddress remapped = LegacyServerAddress.parse(ProtocolHack.getTargetVersion(entry), serverAddress.hostAndPort.toString());
         RStream.of(serverAddress).fields().filter(HostAndPort.class).by(0).set(RStream.of(remapped).fields().filter(HostAndPort.class).by(0).get());
     }
 }

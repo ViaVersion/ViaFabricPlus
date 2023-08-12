@@ -21,6 +21,7 @@ import de.florianmichael.classic4j.model.betacraft.BCServerInfo;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersion;
 import de.florianmichael.viafabricplus.definition.LegacyServerAddress;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.impl.settings.settingrenderer.meta.TitleRenderer;
@@ -106,7 +107,7 @@ public class BetaCraftScreen extends VFPScreen {
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-            final ServerAddress serverAddress = LegacyServerAddress.parse(null, server.host() + ":" + server.port());
+            final ServerAddress serverAddress = LegacyServerAddress.parse(ProtocolHack.getTargetVersion(), server.host() + ":" + server.port());
             final ServerInfo entry = new ServerInfo(server.name(), serverAddress.getAddress(), false);
 
             ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false);

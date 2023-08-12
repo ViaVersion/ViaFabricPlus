@@ -17,8 +17,6 @@
  */
 package de.florianmichael.viafabricplus.definition;
 
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.client.network.AllowedAddressResolver;
 import net.minecraft.client.network.ServerAddress;
 import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
@@ -27,7 +25,6 @@ public class LegacyServerAddress {
     public final static VersionRange SRV_RANGE = VersionRange.andOlder(VersionEnum.r1_2_4tor1_2_5).add(VersionRange.single(VersionEnum.bedrockLatest));
 
     public static ServerAddress parse(VersionEnum version, String address) {
-        if (version == null) version = ProtocolHack.getTargetVersion();
         final ServerAddress modern = ServerAddress.parse(address);
         if (SRV_RANGE.contains(version) && !modern.equals(ServerAddress.INVALID)) {
             final var addressParts = address.split(":");
