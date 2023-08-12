@@ -17,15 +17,20 @@
  */
 package de.florianmichael.viafabricplus.screen;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.MathHelper;
 
 /**
  * This class is a wrapper for the {@link net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry} class which provides some global
  * functions and features used in all screens which are added by ViaFabricPlus
  */
 public abstract class MappedSlotEntry extends AlwaysSelectedEntryListWidget.Entry<MappedSlotEntry> {
+    protected final static int SCISSORS_OFFSET = 4;
+    public final static int SLOT_MARGIN = 3;
 
     public abstract void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta);
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {
@@ -39,6 +44,37 @@ public abstract class MappedSlotEntry extends AlwaysSelectedEntryListWidget.Entr
         mappedMouseClicked(mouseX, mouseY, button);
         VFPScreen.playClickSound();
         return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    /**
+     * Automatically scrolls the text if it is too long to be displayed in the slot. The text will be scrolled from right to left
+     *
+     * @param context The {@link DrawContext} of the screen
+     * @param name The text which should be displayed
+     * @param x The x position of the slot
+     * @param y The y position of the slot
+     * @param entryWidth The width of the slot
+     * @param entryHeight The height of the slot
+     * @param offset The offset of the text from the left side of the slot, this is used to calculate the width of the text, which should be scrolled (Scrolling is enabled when entryWidth - offset < textWidth)
+     */
+    public void renderScrollableText(final DrawContext context, final Text name, final int x, final int y, final int entryWidth, final int entryHeight, final int offset) {
+        final var font = MinecraftClient.getInstance().textRenderer;
+
+        final var fontWidth = font.getWidth(name);
+        final var textY = entryHeight / 2 - font.fontHeight / 2;
+
+        if (fontWidth > (entryWidth - offset)) {
+            final var time = (double) Util.getMeasuringTimeMs() / 1000.0;
+            final var interpolateEnd = fontWidth - (entryWidth - offset - (SCISSORS_OFFSET + SLOT_MARGIN));
+
+            final var interpolatedValue = Math.sin((Math.PI / 2) * Math.cos(Math.PI * 2 * time / Math.max((double) interpolateEnd * 0.5, 3.0))) / 2.0 + 0.5;
+
+            context.enableScissor(x, y, x + entryWidth - offset - SCISSORS_OFFSET, y + entryHeight);
+            context.drawTextWithShadow(font, name, SLOT_MARGIN - (int) MathHelper.lerp(interpolatedValue, 0.0, interpolateEnd), textY, -1);
+            context.disableScissor();
+        } else {
+            context.drawTextWithShadow(font, name, SLOT_MARGIN, textY, -1);
+        }
     }
 
     /**

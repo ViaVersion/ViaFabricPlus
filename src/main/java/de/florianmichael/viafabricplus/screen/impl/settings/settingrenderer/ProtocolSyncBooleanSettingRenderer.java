@@ -53,9 +53,8 @@ public class ProtocolSyncBooleanSettingRenderer extends MappedSlotEntry {
         final Text text = Text.translatable("words.viafabricplus." + (this.value.isAuto() ? "auto" : this.value.isEnabled() ? "on" : "off"));
         Color color = this.value.isAuto() ? Color.ORANGE : this.value.isEnabled() ? Color.GREEN : Color.RED;
 
-        final int length = context.drawTextWithShadow(textRenderer, this.value.getName().formatted(Formatting.GRAY), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
-
-        context.drawTextWithShadow(textRenderer, this.value.getProtocolRange().toString(), length + 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
-        context.drawTextWithShadow(textRenderer, text, entryWidth - textRenderer.getWidth(text) - 3 - 3, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
+        final var offset = textRenderer.getWidth(text) + 6;
+        renderScrollableText(context, Text.of(Formatting.GRAY + this.value.getName().getString() + " " + Formatting.RESET + this.value.getProtocolRange().toString()), x, y, entryWidth, entryHeight, offset);
+        context.drawTextWithShadow(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
     }
 }
