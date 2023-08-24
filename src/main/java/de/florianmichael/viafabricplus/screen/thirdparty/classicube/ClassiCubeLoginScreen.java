@@ -15,37 +15,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.screen.impl.thirdparty.classicube;
+package de.florianmichael.viafabricplus.screen.thirdparty.classicube;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
-import de.florianmichael.classic4j.model.classicube.highlevel.CCError;
+import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.definition.classic.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.integration.Classic4JImpl;
-import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.impl.base.ProtocolSelectionScreen;
+import de.florianmichael.viafabricplus.base.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 
-public class ClassiCubeMFAScreen extends VFPScreen {
-    public final static ClassiCubeMFAScreen INSTANCE = new ClassiCubeMFAScreen();
+public class ClassiCubeLoginScreen extends VFPScreen {
+    public final static ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
 
-    public ClassiCubeMFAScreen() {
-        super("ClassiCube MFA", false);
+    public ClassiCubeLoginScreen() {
+        super("ClassiCube Login", false);
     }
 
     @Override
     public void open(Screen prevScreen) {
-        status = Classic4JImpl.fromError(CCError.LOGIN_CODE);
+        status = Text.translatable("classicube.viafabricplus.account");
+
         super.open(prevScreen);
     }
 
-    private TextFieldWidget mfaField;
+    private TextFieldWidget nameField;
+    private TextFieldWidget passwordField;
 
     private Text status;
 
@@ -53,18 +53,27 @@ public class ClassiCubeMFAScreen extends VFPScreen {
     protected void init() {
         super.init();
 
-        this.addDrawableChild(mfaField = new TextFieldWidget(textRenderer, width / 2 - 150, 70 + 10, 300, 20, Text.empty()));
+        this.addDrawableChild(nameField = new TextFieldWidget(textRenderer, width / 2 - 150, 70 + 10, 300, 20, Text.empty()));
+        this.addDrawableChild(passwordField = new TextFieldWidget(textRenderer, width / 2 - 150, nameField.getY() + 20 + 5, 300, 20, Text.empty()));
+        passwordField.setRenderTextProvider((s, integer) -> Text.literal("*".repeat(s.length())).asOrderedText());
 
-        mfaField.setPlaceholder(Text.literal("MFA"));
+        nameField.setPlaceholder(Text.literal("Name"));
+        passwordField.setPlaceholder(Text.literal("Password"));
+
+        nameField.setMaxLength(Integer.MAX_VALUE);
+        passwordField.setMaxLength(Integer.MAX_VALUE);
+
+        nameField.setText(ClassiCubeAccountHandler.INSTANCE.getUsername());
+        passwordField.setText(ClassiCubeAccountHandler.INSTANCE.getPassword());
 
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Login"), button -> {
+            ClassiCubeAccountHandler.INSTANCE.setAccount(new CCAccount(nameField.getText(), passwordField.getText()));
             status = Text.translatable("classicube.viafabricplus.loading");
-            final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
 
-            ClassiCubeHandler.requestAuthentication(account, mfaField.getText(), new LoginProcessHandler() {
+            ClassiCubeHandler.requestAuthentication(ClassiCubeAccountHandler.INSTANCE.getAccount(), null, new LoginProcessHandler() {
                 @Override
                 public void handleMfa(CCAccount account) {
-                    // Not implemented in this case
+                    ClassiCubeMFAScreen.INSTANCE.open(prevScreen);
                 }
 
                 @Override
@@ -74,17 +83,19 @@ public class ClassiCubeMFAScreen extends VFPScreen {
 
                 @Override
                 public void handleException(Throwable throwable) {
+                    throwable.printStackTrace();
                     status = Text.literal(throwable.getMessage());
                 }
             });
-        }).position(width / 2 - 75, mfaField.getY() + (20 * 4) + 5).size(150, 20).build());
+        }).position(width / 2 - 75, passwordField.getY() + (20 * 4) + 5).size(150, 20).build());
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        mfaField.tick();
+        nameField.tick();
+        passwordField.tick();
     }
 
     @Override

@@ -15,16 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.screen.impl.thirdparty;
+package de.florianmichael.viafabricplus.screen.thirdparty;
 
 import de.florianmichael.classic4j.model.betacraft.BCServerInfo;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersion;
 import de.florianmichael.viafabricplus.definition.LegacyServerAddress;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
-import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.impl.settings.settingrenderer.meta.TitleRenderer;
+import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.base.screen.VFPScreen;
+import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

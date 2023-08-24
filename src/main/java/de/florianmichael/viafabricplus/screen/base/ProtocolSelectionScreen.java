@@ -15,15 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.screen.impl.base;
+package de.florianmichael.viafabricplus.screen.base;
 
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.viafabricplus.definition.classic.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.impl.thirdparty.classicube.ClassiCubeLoginScreen;
-import de.florianmichael.viafabricplus.screen.impl.thirdparty.classicube.ClassiCubeServerListScreen;
-import de.florianmichael.viafabricplus.screen.impl.thirdparty.BetaCraftScreen;
-import de.florianmichael.viafabricplus.screen.impl.settings.SettingsScreen;
+import de.florianmichael.viafabricplus.base.screen.VFPScreen;
+import de.florianmichael.viafabricplus.screen.thirdparty.classicube.ClassiCubeLoginScreen;
+import de.florianmichael.viafabricplus.screen.thirdparty.classicube.ClassiCubeServerListScreen;
+import de.florianmichael.viafabricplus.screen.thirdparty.BetaCraftScreen;
+import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

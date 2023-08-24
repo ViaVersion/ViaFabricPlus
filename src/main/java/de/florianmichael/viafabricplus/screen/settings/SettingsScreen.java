@@ -15,19 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.screen.impl.settings;
+package de.florianmichael.viafabricplus.screen.settings;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
-import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.impl.settings.settingrenderer.meta.TitleRenderer;
+import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.base.screen.VFPScreen;
+import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
 import de.florianmichael.viafabricplus.base.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.util.math.MatrixStack;
 
 public class SettingsScreen extends VFPScreen {
     public final static SettingsScreen INSTANCE = new SettingsScreen();

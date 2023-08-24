@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.screen.impl.settings.settingrenderer;
+package de.florianmichael.viafabricplus.screen.settings.settingrenderer;
 
-import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
 import de.florianmichael.viafabricplus.base.settings.type_impl.BooleanSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

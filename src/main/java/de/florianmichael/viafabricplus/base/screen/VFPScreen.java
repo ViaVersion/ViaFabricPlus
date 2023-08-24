@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.screen;
+package de.florianmichael.viafabricplus.base.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.ViaFabricPlus;

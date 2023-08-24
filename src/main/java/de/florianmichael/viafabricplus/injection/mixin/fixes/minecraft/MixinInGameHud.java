@@ -36,8 +36,6 @@ public abstract class MixinInGameHud {
     @Shadow
     private int scaledWidth;
 
-    @Shadow private int scaledHeight;
-
     // Removing newer elements
 
     @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)

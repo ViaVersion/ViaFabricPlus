@@ -15,42 +15,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.screen.impl.settings.settingrenderer.meta;
+package de.florianmichael.viafabricplus.screen.settings.settingrenderer;
 
-import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.base.settings.type_impl.ModeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class TitleRenderer extends MappedSlotEntry {
-    private final Text name;
+import java.util.Arrays;
 
-    public TitleRenderer(Text name) {
-        this.name = name;
+public class ModeSettingRenderer extends MappedSlotEntry {
+    private final ModeSetting value;
+
+    public ModeSettingRenderer(ModeSetting value) {
+        this.value = value;
     }
 
     @Override
     public Text getNarration() {
-        return this.name;
+        return this.value.getName();
     }
 
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        final MatrixStack matrices = context.getMatrices();
-
-        matrices.push();
-        matrices.translate(x, y, 0);
-        mappedRender(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
-        matrices.pop();
+    public void mappedMouseClicked(double mouseX, double mouseY, int button) {
+        final int currentIndex = Arrays.stream(this.value.getOptions()).toList().indexOf(this.value.value) + 1;
+        this.value.setValue(currentIndex > this.value.getOptions().length - 1 ? 0 : currentIndex);
     }
 
     @Override
     public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        context.drawTextWithShadow(textRenderer, this.name.copy().formatted(Formatting.BOLD), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+        final var offset = textRenderer.getWidth(this.value.getValue()) + 6;
+        renderScrollableText(context, this.value.getName().formatted(Formatting.GRAY), x, y, entryWidth, entryHeight, offset);
+        context.drawTextWithShadow(textRenderer, this.value.getValue(), entryWidth - offset, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
     }
 }

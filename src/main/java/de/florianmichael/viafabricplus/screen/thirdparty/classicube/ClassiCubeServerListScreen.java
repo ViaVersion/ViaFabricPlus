@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.screen.impl.thirdparty.classicube;
+package de.florianmichael.viafabricplus.screen.thirdparty.classicube;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.classic4j.ClassiCubeHandler;
@@ -25,9 +25,9 @@ import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.viafabricplus.definition.classic.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.impl.base.ProtocolSelectionScreen;
-import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.base.screen.VFPScreen;
+import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
+import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
 import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

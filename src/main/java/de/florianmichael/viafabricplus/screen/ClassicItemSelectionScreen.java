@@ -15,10 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.screen.impl;
+package de.florianmichael.viafabricplus.screen;
 
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.screen.VFPScreen;
+import de.florianmichael.viafabricplus.base.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
