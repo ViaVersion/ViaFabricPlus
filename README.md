@@ -28,9 +28,13 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 ### If you encounter any issues, please report them on the [issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues) or on the ViaVersion [Discord](https://discord.gg/viaversion)
 
 ## Known incompatibilities
+### Breaks
 - ***[ViaFabric (*)](https://github.com/ViaVersion/ViaFabric)***
 - ***[krypton (<= 0.2.2)](https://github.com/astei/krypton)***
 - ***[MemoryLeakFix (<= 1.1.0)](https://github.com/astei/krypton)***
+
+### Conflicts
+- ***[DashLoader (*)](https://github.com/alphaqu/DashLoader/tree/fabric-1.20)*** - Font rendering related fixes aren't working
 
 ## List of all clientside related fixes and TODO
 <details>

@@ -35,16 +35,15 @@ public class FontRenderer1_12_2 {
     public static void init() {
         if (DASH_LOADER) return;
 
+        // Reload all font renderer storage
         ChangeProtocolVersionCallback.EVENT.register(protocolVersion ->
-                MinecraftClient.getInstance().fontManager.fontStorages.values().forEach(fontStorage ->
-                        RenderSystem.recordRenderCall(() -> ((IFontStorage) fontStorage).viafabricplus_clearCaches())));
+                MinecraftClient.getInstance().fontManager.fontStorages.values().
+                        forEach(fontStorage -> RenderSystem.recordRenderCall(() -> ((IFontStorage) fontStorage).viafabricplus_clearCaches())));
     }
 
-    public static boolean shouldReplaceFontRenderer() {
-        if (DASH_LOADER) return false;
-        return VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled();
-    }
-
+    /**
+     * Implementation of a "Very Missing" Glyph which doesn't have any rendering at all ("Missing" in <= 1.12.2)
+     */
     public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
 
         VERY_MISSING;

@@ -42,5 +42,8 @@
     "viafabric": "*",
     "memoryleakfix": "<=1.1.0",
     "krypton": "<=0.2.2"
+  },
+  "conflicts": {
+    "dashloader": "*"
   }
 }
