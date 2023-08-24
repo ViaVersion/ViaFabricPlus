@@ -11,7 +11,7 @@ public class ViaFabricPlusExampleAddon implements ClientModInitializer {
   }
 }
 ```
-#### ViaFabricPlus has 6 events at the moment:
+#### ViaFabricPlus has 7 events at the moment:
 | Callback class name                  | Description                                                                                                                                                                                                   |
 |--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ChangeProtocolVersionCallback        | Called when the user changes the target version in the screen, or if you connect to a server for which a specific version has been selected, you disconnect, the event for the actual version is also called. |
