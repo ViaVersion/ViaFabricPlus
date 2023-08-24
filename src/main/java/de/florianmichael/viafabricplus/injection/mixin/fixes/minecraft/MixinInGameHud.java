@@ -64,7 +64,8 @@ public abstract class MixinInGameHud {
 
     // Moving down all remaining elements
 
-    @ModifyExpressionValue(method = "renderStatusBars", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/InGameHud;scaledHeight:I", opcode = Opcodes.GETFIELD))
+    @ModifyExpressionValue(method = "renderStatusBars", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/InGameHud;scaledHeight:I", opcode = Opcodes.GETFIELD),
+    require = 0)
     private int moveHealthDown(int originalValue) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return originalValue + 6;
         return originalValue;
@@ -72,7 +73,8 @@ public abstract class MixinInGameHud {
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"),
-            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 1)
+            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 1,
+            require = 0)
     private int moveArmor(int old) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return scaledWidth - old - 9;
         return old;
@@ -80,7 +82,8 @@ public abstract class MixinInGameHud {
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"),
-            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 2)
+            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 2,
+            require = 0)
     private int moveArmorDown(int old) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return scaledWidth - 39 + 6;
         return old;
@@ -88,7 +91,8 @@ public abstract class MixinInGameHud {
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 2),
-            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V")), index = 1)
+            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V")), index = 1,
+            require = 0)
     private int moveAir(int old) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return scaledWidth - old - 9;
         return old;
