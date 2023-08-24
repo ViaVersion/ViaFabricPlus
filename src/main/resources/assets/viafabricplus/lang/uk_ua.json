@@ -18,6 +18,9 @@
   "words.viafabricplus.translate": "Via переклади до: %s",
   "words.viafabricplus.serverversion": "Версія серверу: %s",
   "words.viafabricplus.auto": "Автоматично",
+  "words.viafabricplus.addserverscreenbuttontitle": "Встановити версію для цього серверу",
+  "words.viafabricplus.all": "Ванілла та з Модами",
+  "words.viafabricplus.vanillaonly": "Тільки Ванілла",
   
   "settings.viafabricplus.authentication": "Авторизація",
   "settings.viafabricplus.experimental": "Експериментальне",
@@ -29,7 +32,7 @@
   "general.viafabricplus.secret": "Показувати Супер Секретні Налаштування",
   "general.viafabricplus.extrainformation": "Показувати додаткову інформацію на екрані відладки",
   "general.viafabricplus.classicloading": "Показувати класичний прогрес завантаження на екрані підключення",
-  "general.viafabricplus.main": "Орієнтація головної кнопки",
+  "general.viafabricplus.multiplayerscreenbutton": "Орієнтація кнопки мультиплеєру",
   "general.viafabricplus.creative": "Видалити недоступні предмети з меню креативу",
   "general.viafabricplus.protocolsync": "Автоматично змінювати налаштування для вибраної версії",
   "general.viafabricplus.autodetect": "Автоматично відсліджувати версію",
