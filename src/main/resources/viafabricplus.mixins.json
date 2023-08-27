@@ -112,6 +112,7 @@
     "fixes.minecraft.packet.MixinChatMessageC2SPacket",
     "fixes.minecraft.packet.MixinPacketByteBuf",
     "fixes.minecraft.packet.MixinUpdatePlayerAbilitiesC2SPacket",
+    "fixes.minecraft.screen.MixinAbstractSignEditScreen",
     "fixes.minecraft.screen.MixinAnvilScreen",
     "fixes.minecraft.screen.MixinChatHud",
     "fixes.minecraft.screen.MixinChatScreen",
