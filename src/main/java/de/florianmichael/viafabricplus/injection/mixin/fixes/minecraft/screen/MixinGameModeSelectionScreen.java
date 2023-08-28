@@ -17,12 +17,11 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Text;
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.gui.screen.GameModeSelectionScreen;
-import net.raphimc.vialoader.util.VersionEnum;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,13 +33,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @Mixin(GameModeSelectionScreen.class)
-public class MixinGameModeSelectionScreen {
+public class MixinGameModeSelectionScreen extends Screen {
 
     @Mutable
     @Shadow @Final private static int UI_WIDTH;
 
     @Unique
     private GameModeSelectionScreen.GameModeSelection[] viafabricplus_unwrappedGameModes;
+
+    public MixinGameModeSelectionScreen(Text title) {
+        super(title);
+    }
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixUIWidth(CallbackInfo ci) {
@@ -52,6 +55,13 @@ public class MixinGameModeSelectionScreen {
 
             viafabricplus_unwrappedGameModes = gameModeSelections.toArray(GameModeSelectionScreen.GameModeSelection[]::new);
             UI_WIDTH = viafabricplus_unwrappedGameModes.length * 31 - 5;
+        }
+    }
+
+    @Inject(method = "init", at = @At("HEAD"))
+    public void disableInClassic(CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) { // survival mode was added in a1.0.15
+            this.close();
         }
     }
 

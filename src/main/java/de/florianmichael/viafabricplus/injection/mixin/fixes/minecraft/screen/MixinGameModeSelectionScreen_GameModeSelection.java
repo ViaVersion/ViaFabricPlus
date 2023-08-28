@@ -18,12 +18,9 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.GameModeSelectionScreen;
-import net.raphimc.vialoader.util.VersionEnum;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -66,9 +63,7 @@ public class MixinGameModeSelectionScreen_GameModeSelection {
                         cir.setReturnValue(Optional.of(GameModeSelectionScreen.GameModeSelection.ADVENTURE));
                     }
                 }
-                case ADVENTURE -> {
-                    cir.setReturnValue(Optional.of(CREATIVE));
-                }
+                case ADVENTURE -> cir.setReturnValue(Optional.of(CREATIVE));
             }
         }
     }
