@@ -109,7 +109,10 @@ repositories {
 }
 
 dependencies {
-    implementation "de.florianmichael:viafabricplus:2.8.2" // Get latest version from releases
+    implementation ("de.florianmichael:viafabricplus:2.8.5") { // Get latest version from releases
+        exclude group: "com.terraformersmc"
+        transitive = false
+    }
 }
 ```
 
