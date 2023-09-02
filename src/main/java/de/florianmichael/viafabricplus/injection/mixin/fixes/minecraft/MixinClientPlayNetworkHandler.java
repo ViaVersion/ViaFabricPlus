@@ -21,7 +21,7 @@ import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.authlib.GameProfile;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
-import de.florianmichael.viafabricplus.definition.PacketSyncBase;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
@@ -177,11 +177,11 @@ public abstract class MixinClientPlayNetworkHandler {
         final var channel = packet.getChannel().toString();
         final var data = packet.getData();
 
-        if (channel.equals(PacketSyncBase.PACKET_SYNC_IDENTIFIER)) {
+        if (channel.equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER)) {
             final var uuid = data.readString();
 
-            if (PacketSyncBase.has(uuid)) {
-                PacketSyncBase.get(uuid).accept(data);
+            if (ClientsideFixes.hasSyncTask(uuid)) {
+                ClientsideFixes.getSyncTask(uuid).accept(data);
                 ci.cancel();
             }
         }

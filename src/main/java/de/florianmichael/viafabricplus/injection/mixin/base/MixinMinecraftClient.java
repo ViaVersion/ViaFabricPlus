@@ -17,19 +17,31 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
+import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
-public class MixinMinecraftClient {
+public abstract class MixinMinecraftClient {
+
+    @Shadow public abstract boolean isInSingleplayer();
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void postLoad(RunArgs args, CallbackInfo ci) {
         FinishMinecraftLoadCallback.EVENT.invoker().onFinishMinecraftLoad();
+    }
+
+    @Inject(method = "setWorld", at = @At("HEAD"))
+    public void preSetWorld(CallbackInfo ci) {
+        if (isInSingleplayer()) {
+            ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(VersionEnum.r1_20tor1_20_1);
+        }
     }
 }

@@ -24,7 +24,7 @@ import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.ServerboundPac
 import com.viaversion.viaversion.protocols.protocol1_20to1_19_4.Protocol1_20To1_19_4;
 import com.viaversion.viaversion.protocols.protocol1_20to1_19_4.packets.InventoryPackets;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
-import de.florianmichael.viafabricplus.definition.PacketSyncBase;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.definition.screen.CustomScreenHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -56,8 +56,8 @@ public class MixinInventoryPackets extends ItemRewriter<ClientboundPackets1_19_4
                         wrapper.clearPacket();
                         wrapper.setPacketType(ClientboundPackets1_19_4.PLUGIN_MESSAGE);
 
-                        wrapper.write(Type.STRING, PacketSyncBase.PACKET_SYNC_IDENTIFIER);
-                        wrapper.write(Type.STRING, PacketSyncBase.track(CustomScreenHandler.LEGACY_SMITHING_HANDLER));
+                        wrapper.write(Type.STRING, ClientsideFixes.PACKET_SYNC_IDENTIFIER);
+                        wrapper.write(Type.STRING, ClientsideFixes.executeSyncTask(CustomScreenHandler.LEGACY_SMITHING_HANDLER));
                         wrapper.write(Type.VAR_INT, windowId);
                         wrapper.write(Type.COMPONENT, title);
                     } else {

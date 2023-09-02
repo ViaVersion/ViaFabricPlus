@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.classic;
+package de.florianmichael.viafabricplus.definition.account;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;

@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
@@ -39,7 +39,7 @@ public class MixinChatScreen {
     @Inject(method = "init", at = @At("RETURN"))
     public void changeChatLength(CallbackInfo ci) {
         if (!MinecraftClient.getInstance().isInSingleplayer()) {
-            this.chatField.setMaxLength(ChatLengthCalculation.INSTANCE.getMaxLength());
+            this.chatField.setMaxLength(ClientsideFixes.getCurrentChatLimit());
         }
     }
 
@@ -48,6 +48,7 @@ public class MixinChatScreen {
         if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
             return null;
         }
+
         return instance.getIndicatorAt(mouseX, mouseY);
     }
 }

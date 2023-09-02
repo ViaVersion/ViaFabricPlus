@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.screen.base;
 
 import de.florianmichael.classic4j.BetaCraftHandler;
-import de.florianmichael.viafabricplus.definition.classic.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.base.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.thirdparty.classicube.ClassiCubeLoginScreen;
 import de.florianmichael.viafabricplus.screen.thirdparty.classicube.ClassiCubeServerListScreen;

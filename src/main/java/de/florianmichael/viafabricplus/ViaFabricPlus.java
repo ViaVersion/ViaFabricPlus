@@ -23,12 +23,10 @@ import de.florianmichael.viafabricplus.base.file.ViaJarReplacer;
 import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.base.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.base.settings.SettingsSystem;
-import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
-import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
-import de.florianmichael.viafabricplus.definition.classic.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
+import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
+import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.definition.classic.protocol.CustomClassicProtocolExtensions;
-import de.florianmichael.viafabricplus.definition.FontRenderer1_12_2;
-import de.florianmichael.viafabricplus.definition.ArmorPointCalculation;
 import de.florianmichael.viafabricplus.information.InformationSystem;
 import de.florianmichael.viafabricplus.mappings.CharacterMappings;
 import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
@@ -82,9 +80,8 @@ public class ViaFabricPlus {
         BedrockAccountHandler.create();
 
         // Fixes which requires to be loaded pre
-        ChatLengthCalculation.create();
+        ClientsideFixes.init();
         CharacterMappings.load();
-        FontRenderer1_12_2.init();
 
         // Protocol Translator
         ProtocolHack.init();
@@ -101,7 +98,6 @@ public class ViaFabricPlus {
             // Version related mappings
             PackFormatsMappings.load();
             ItemReleaseVersionMappings.create();
-            ArmorPointCalculation.load();
         });
     }
 

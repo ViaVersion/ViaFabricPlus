@@ -17,9 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
 import net.raphimc.vialoader.util.VersionEnum;
-import de.florianmichael.viafabricplus.definition.Meta18Storage;
+import de.florianmichael.viafabricplus.definition.tracker.WolfHealthTracker;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.passive.WolfEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,10 +33,9 @@ public class MixinWolfEntity {
     public float rewriteHealth(WolfEntity instance) {
         float health = instance.getHealth();
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-            final UserConnection userConnection = ProtocolHack.getMainUserConnection();
-            if (!userConnection.has(Meta18Storage.class)) userConnection.put(new Meta18Storage(userConnection));
-            return userConnection.get(Meta18Storage.class).getHealthDataMap().getOrDefault(instance.getId(), health);
+            return WolfHealthTracker.get().getHealthDataMap().getOrDefault(instance.getId(), health);
         }
+
         return health;
     }
 }

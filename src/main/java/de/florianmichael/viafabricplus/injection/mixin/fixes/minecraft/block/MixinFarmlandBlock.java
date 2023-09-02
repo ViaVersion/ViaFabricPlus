@@ -58,6 +58,6 @@ public class MixinFarmlandBlock extends Block {
 
     @Override
     public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
-        return SHAPE;
+        return SHAPE;  // Always use the real outline shape for culling
     }
 }

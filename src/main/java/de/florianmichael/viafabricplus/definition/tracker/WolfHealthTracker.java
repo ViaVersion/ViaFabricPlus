@@ -15,23 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition;
+package de.florianmichael.viafabricplus.definition.tracker;
 
 import com.viaversion.viaversion.api.connection.StoredObject;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Meta18Storage extends StoredObject {
+public class WolfHealthTracker extends StoredObject {
 
     private final Map<Integer, Float> healthDataMap = new HashMap<>();
 
-    public Meta18Storage(UserConnection user) {
+    public WolfHealthTracker(UserConnection user) {
         super(user);
     }
 
     public Map<Integer, Float> getHealthDataMap() {
         return healthDataMap;
+    }
+
+    public static WolfHealthTracker get() {
+        final var connection = ProtocolHack.getMainUserConnection();
+        if (connection == null) return null;
+
+        if (!connection.has(WolfHealthTracker.class)) {
+            connection.put(new WolfHealthTracker(connection));
+        }
+        return connection.get(WolfHealthTracker.class);
     }
 }

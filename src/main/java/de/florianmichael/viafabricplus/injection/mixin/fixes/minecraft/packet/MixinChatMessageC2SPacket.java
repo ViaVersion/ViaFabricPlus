@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.packet;
 
-import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,6 +32,7 @@ public class MixinChatMessageC2SPacket {
         if (MinecraftClient.getInstance().isInSingleplayer()) {
             return 256;
         }
-        return ChatLengthCalculation.INSTANCE.getMaxLength();
+
+        return ClientsideFixes.getCurrentChatLimit();
     }
 }

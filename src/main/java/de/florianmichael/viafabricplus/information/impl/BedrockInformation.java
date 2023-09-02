@@ -19,14 +19,14 @@ package de.florianmichael.viafabricplus.information.impl;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.definition.bedrock.storage.JoinGameStorage;
-import de.florianmichael.viafabricplus.definition.bedrock.ModelFormats;
+import de.florianmichael.viafabricplus.definition.tracker.bedrock.JoinGameTracker;
 import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import net.lenni0451.reflect.stream.RStream;
 import net.lenni0451.reflect.stream.field.FieldStream;
 import net.raphimc.viabedrock.api.chunk.BedrockChunk;
 import net.raphimc.viabedrock.api.model.entity.Entity;
+import net.raphimc.viabedrock.protocol.data.enums.bedrock.ServerMovementModes;
 import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 import net.raphimc.viabedrock.protocol.storage.BlobCache;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
@@ -43,6 +43,13 @@ public class BedrockInformation extends AbstractInformationGroup {
 
     public BedrockInformation() {
         super(VersionRange.single(VersionEnum.bedrockLatest));
+    }
+
+    public String formatMovementMode(final int movementMode) {
+        if (movementMode == ServerMovementModes.CLIENT) return "Client";
+        if (movementMode == ServerMovementModes.SERVER) return "Server";
+
+        return "Server with rewind";
     }
 
     @Override
@@ -86,18 +93,18 @@ public class BedrockInformation extends AbstractInformationGroup {
                 output.add("Entity Tracker: " + entities);
             }
         }
-        final JoinGameStorage joinGameStorage = userConnection.get(JoinGameStorage.class);
-        if (!joinGameStorage.getLevelId().isEmpty() || joinGameStorage.getSeed() != 0 || joinGameStorage.getEnchantmentSeed() != 0) {
+        final JoinGameTracker joinGameTracker = userConnection.get(JoinGameTracker.class);
+        if (!joinGameTracker.getLevelId().isEmpty() || joinGameTracker.getSeed() != 0 || joinGameTracker.getEnchantmentSeed() != 0) {
             if (!output.isEmpty()) output.add("");
             output.add("Join Game:");
         }
-        if (joinGameStorage.getSeed() != 0) output.add("World Seed: " + joinGameStorage.getSeed());
-        if (!joinGameStorage.getLevelId().isEmpty()) output.add("Level Id: " + joinGameStorage.getLevelId());
-        if (joinGameStorage.getEnchantmentSeed() != 0) output.add("Enchantment Seed: " + joinGameStorage.getEnchantmentSeed());
+        if (joinGameTracker.getSeed() != 0) output.add("World Seed: " + joinGameTracker.getSeed());
+        if (!joinGameTracker.getLevelId().isEmpty()) output.add("Level Id: " + joinGameTracker.getLevelId());
+        if (joinGameTracker.getEnchantmentSeed() != 0) output.add("Enchantment Seed: " + joinGameTracker.getEnchantmentSeed());
 
         final GameSessionStorage gameSessionStorage = userConnection.get(GameSessionStorage.class);
         if (gameSessionStorage != null) {
-            output.add("Movement mode: " + ModelFormats.formatMovementMode(gameSessionStorage.getMovementMode()));
+            output.add("Movement mode: " + formatMovementMode(gameSessionStorage.getMovementMode()));
         }
     }
 }

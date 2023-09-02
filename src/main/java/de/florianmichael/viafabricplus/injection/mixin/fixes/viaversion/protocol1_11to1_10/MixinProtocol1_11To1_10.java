@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protocol1_11to1_10;
 
-import de.florianmichael.viafabricplus.definition.ChatLengthCalculation;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
@@ -27,6 +27,6 @@ public class MixinProtocol1_11To1_10 {
 
     @ModifyConstant(method = "lambda$register$0", constant = @Constant(intValue = 100))
     private static int changeMaxChatLength(int constant) {
-        return ChatLengthCalculation.INSTANCE.getMaxLength();
+        return ClientsideFixes.getCurrentChatLimit();
     }
 }

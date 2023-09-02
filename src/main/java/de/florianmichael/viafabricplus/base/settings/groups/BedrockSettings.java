@@ -21,7 +21,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.base.settings.type_impl.BooleanSetting;
 import de.florianmichael.viafabricplus.base.settings.type_impl.ButtonSetting;
-import de.florianmichael.viafabricplus.definition.bedrock.BedrockAccountHandler;
+import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.NoticeScreen;

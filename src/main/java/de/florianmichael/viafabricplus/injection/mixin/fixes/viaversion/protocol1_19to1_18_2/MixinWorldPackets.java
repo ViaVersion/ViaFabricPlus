@@ -24,8 +24,8 @@ import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPacke
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.ClientboundPackets1_19;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.Protocol1_19To1_18_2;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.packets.WorldPackets;
-import de.florianmichael.viafabricplus.definition.PacketSyncBase;
 import de.florianmichael.viafabricplus.definition.ClientPlayerInteractionManager1_18_2;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -42,9 +42,9 @@ public class MixinWorldPackets {
             }
 
             wrapper.resetReader();
-            final String uuid = PacketSyncBase.track(ClientPlayerInteractionManager1_18_2.OLD_PACKET_HANDLER);
+            final var uuid = ClientsideFixes.executeSyncTask(ClientPlayerInteractionManager1_18_2.OLD_PACKET_HANDLER);
 
-            wrapper.write(Type.STRING, PacketSyncBase.PACKET_SYNC_IDENTIFIER);
+            wrapper.write(Type.STRING, ClientsideFixes.PACKET_SYNC_IDENTIFIER);
             wrapper.write(Type.STRING, uuid);
         });
     }

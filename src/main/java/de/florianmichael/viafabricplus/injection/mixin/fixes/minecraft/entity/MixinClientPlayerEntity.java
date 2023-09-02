@@ -18,10 +18,10 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.mojang.authlib.GameProfile;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import net.minecraft.world.GameMode;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
-import de.florianmichael.viafabricplus.definition.ArmorPointCalculation;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -197,7 +197,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Override
     public int getArmor() {
         if (VisualSettings.INSTANCE.emulateArmorHud.isEnabled()) {
-            return ArmorPointCalculation.sum();
+            return client.player.getInventory().armor.stream().mapToInt(ClientsideFixes::getLegacyArmorPoints).sum();
         }
         return super.getArmor();
     }

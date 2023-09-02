@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.definition.LegacyServerAddress;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
@@ -66,6 +66,6 @@ public class MixinMultiplayerScreen extends Screen {
 
     @Redirect(method = "connect(Lnet/minecraft/client/network/ServerInfo;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
     public ServerAddress doOwnParse(String address) {
-        return LegacyServerAddress.parse(ProtocolHack.getTargetVersion(viafabricplus_lastConnect), address);
+        return ClientsideFixes.parse(ProtocolHack.getTargetVersion(viafabricplus_lastConnect), address);
     }
 }

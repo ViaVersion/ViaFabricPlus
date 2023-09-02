@@ -27,7 +27,7 @@ import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.ClientboundPackets1_14;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.packets.InventoryPackets;
-import de.florianmichael.viafabricplus.definition.PacketSyncBase;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.definition.screen.CustomScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.Unpooled;
@@ -39,6 +39,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 @Mixin(value = InventoryPackets.class, remap = false)
@@ -49,7 +50,7 @@ public class MixinInventoryPackets {
         if (typeId == -1) {
             wrapper.clearPacket();
             wrapper.setPacketType(ClientboundPackets1_14.PLUGIN_MESSAGE);
-            wrapper.write(Type.STRING, PacketSyncBase.PACKET_SYNC_IDENTIFIER);
+            wrapper.write(Type.STRING, ClientsideFixes.PACKET_SYNC_IDENTIFIER);
 
             final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), ProtocolVersion.v1_13_2.getVersion());
             final var userConnection = ProtocolHack.createFakerUserConnection();
@@ -64,14 +65,14 @@ public class MixinInventoryPackets {
                 fakeOpenWindow.read(Type.VAR_INT);
                 fakeOpenWindow.read(Type.VAR_INT);
 
-                final String uuid = PacketSyncBase.track(CustomScreenHandler.TRIPLE_CHEST_HANDLER);
+                final String uuid = ClientsideFixes.executeSyncTask(CustomScreenHandler.TRIPLE_CHEST_HANDLER);
 
                 wrapper.write(Type.STRING, uuid);
                 wrapper.write(Type.SHORT, windowId);
                 wrapper.write(Type.COMPONENT, fakeOpenWindow.read(Type.COMPONENT));
                 wrapper.write(Type.SHORT, slots);
             } catch (Exception e) {
-                e.printStackTrace();
+                Via.getPlatform().getLogger().log(Level.SEVERE, "Failed to emulate Triple Chest", e);
             }
 
             ci.cancel();

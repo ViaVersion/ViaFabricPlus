@@ -15,18 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.bedrock.storage;
+package de.florianmichael.viafabricplus.definition.tracker.bedrock;
 
 import com.viaversion.viaversion.api.connection.StoredObject;
 import com.viaversion.viaversion.api.connection.UserConnection;
 
-public class JoinGameStorage extends StoredObject {
+public class JoinGameTracker extends StoredObject {
 
     private long seed;
     private String levelId;
     private long enchantmentSeed;
 
-    public JoinGameStorage(UserConnection user) {
+    public JoinGameTracker(UserConnection user) {
         super(user);
     }
 

@@ -22,7 +22,7 @@ import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCError;
-import de.florianmichael.viafabricplus.definition.classic.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import de.florianmichael.viafabricplus.base.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;

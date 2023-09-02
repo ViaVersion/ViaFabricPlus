@@ -18,7 +18,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
-import de.florianmichael.viafabricplus.definition.FontRenderer1_12_2;
+import de.florianmichael.viafabricplus.definition.BuiltinEmptyGlyph1_12_2;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
 import de.florianmichael.viafabricplus.mappings.CharacterMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -82,26 +83,26 @@ public abstract class MixinFontStorage implements IFontStorage {
 
     @Inject(method = "findGlyph", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/Font;getGlyph(I)Lnet/minecraft/client/font/Glyph;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void injectFindGlyph(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir, Glyph glyph, Iterator var3, Font font) {
-        if (FontRenderer1_12_2.DASH_LOADER || !this.id.getNamespace().equals("minecraft")) return;
+        if (ClientsideFixes.DASH_LOADER || !this.id.getNamespace().equals("minecraft")) return;
 
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             if (viafabricplus_isForbiddenCharacter(font, codePoint)) cir.setReturnValue(FontStorage.GlyphPair.MISSING);
 
             if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled() && cir.getReturnValue() == FontStorage.GlyphPair.MISSING) {
-                cir.setReturnValue(new FontStorage.GlyphPair(FontRenderer1_12_2.BuiltinEmptyGlyph1_12_2.VERY_MISSING, FontRenderer1_12_2.BuiltinEmptyGlyph1_12_2.VERY_MISSING));
+                cir.setReturnValue(new FontStorage.GlyphPair(BuiltinEmptyGlyph1_12_2.VERY_MISSING, BuiltinEmptyGlyph1_12_2.VERY_MISSING));
             }
         }
     }
 
     @Inject(method = "findGlyphRenderer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/Font;getGlyph(I)Lnet/minecraft/client/font/Glyph;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void injectFindGlyphRenderer(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir, Iterator var2, Font font) {
-        if (FontRenderer1_12_2.DASH_LOADER || !this.id.getNamespace().equals("minecraft")) return;
+        if (ClientsideFixes.DASH_LOADER || !this.id.getNamespace().equals("minecraft")) return;
 
         if (!viafabricplus_obfuscation && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             if (viafabricplus_isForbiddenCharacter(font, codePoint)) cir.setReturnValue(this.blankGlyphRenderer);
 
             if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled() && cir.getReturnValue() == this.blankGlyphRenderer) {
-                cir.setReturnValue(FontRenderer1_12_2.BuiltinEmptyGlyph1_12_2.VERY_MISSING.bake(this::getGlyphRenderer));
+                cir.setReturnValue(BuiltinEmptyGlyph1_12_2.VERY_MISSING.bake(this::getGlyphRenderer));
             }
         }
     }
