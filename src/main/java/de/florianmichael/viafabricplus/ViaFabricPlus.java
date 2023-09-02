@@ -33,6 +33,7 @@ import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.screen.ClassicItemSelectionScreen;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,6 +56,8 @@ import java.io.File;
  *  - Blit-jump is not supported in <= 1.8.9 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
  */
 public class ViaFabricPlus {
+    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_20tor1_20_1;
+
     public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public final static Logger LOGGER = LogManager.getLogger("ViaFabricPlus");
     public final static File RUN_DIRECTORY = new File("ViaFabricPlus");

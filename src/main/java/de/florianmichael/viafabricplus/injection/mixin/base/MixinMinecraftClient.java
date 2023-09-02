@@ -17,11 +17,11 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,7 +41,8 @@ public abstract class MixinMinecraftClient {
     @Inject(method = "setWorld", at = @At("HEAD"))
     public void preSetWorld(CallbackInfo ci) {
         if (isInSingleplayer()) {
-            ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(VersionEnum.r1_20tor1_20_1);
+            // We call this here, so client side fixes are disabled in singleplayer
+            ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(ViaFabricPlus.NATIVE_VERSION);
         }
     }
 }
