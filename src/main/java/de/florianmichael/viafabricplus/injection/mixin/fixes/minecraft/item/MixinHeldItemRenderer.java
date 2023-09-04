@@ -23,6 +23,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import net.minecraft.util.Arm;
 import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -43,21 +44,27 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HeldItemRenderer.class)
-public class MixinHeldItemRenderer {
+public abstract class MixinHeldItemRenderer {
 
     @Shadow
-    @Final
-    private MinecraftClient client;
+    protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
 
     @Inject(method = "renderFirstPersonItem",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getUseAction()Lnet/minecraft/util/UseAction;")),
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"))
-    private void onRenderFirstPersonItem(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        //noinspection DataFlowIssue
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && client.player.isBlocking()) {
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 2, shift = At.Shift.AFTER))
+    private void injectRenderFirstPersonItem(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            matrices.translate(-0.1F, 0.05F, 0.0F);
+
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+                final Arm arm = (hand == Hand.MAIN_HAND) ? player.getMainArm() : player.getMainArm().getOpposite();
+                applySwingOffset(matrices, arm, swingProgress);
+            }
+
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25f));
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(13.365f));
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(78.05f));
         }
     }
+
 }
