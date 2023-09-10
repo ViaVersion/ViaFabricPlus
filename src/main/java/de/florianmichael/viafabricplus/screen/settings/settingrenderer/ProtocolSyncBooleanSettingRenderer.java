@@ -49,7 +49,7 @@ public class ProtocolSyncBooleanSettingRenderer extends MappedSlotEntry {
     public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        final Text text = Text.translatable("words.viafabricplus." + (this.value.isAuto() ? "auto" : this.value.isEnabled() ? "on" : "off"));
+        final Text text = Text.translatable("misc.viafabricplus." + (this.value.isAuto() ? "auto" : this.value.isEnabled() ? "on" : "off"));
         Color color = this.value.isAuto() ? Color.ORANGE : this.value.isEnabled() ? Color.GREEN : Color.RED;
 
         final var offset = textRenderer.getWidth(text) + 6;

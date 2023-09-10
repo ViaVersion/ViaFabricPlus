@@ -50,7 +50,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
     protected void init() {
         // List and Settings
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height - 30, textRenderer.fontHeight + 4));
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("words.viafabricplus.settings"), button -> SettingsScreen.INSTANCE.open(this)).position(width - 98 - 5, 5).size(98, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("misc.viafabricplus.settings"), button -> SettingsScreen.INSTANCE.open(this)).position(width - 98 - 5, 5).size(98, 20).build());
 
         // ClassiCube
 

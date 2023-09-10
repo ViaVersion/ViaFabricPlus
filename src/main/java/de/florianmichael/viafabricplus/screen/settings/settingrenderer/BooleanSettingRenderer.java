@@ -48,7 +48,7 @@ public class BooleanSettingRenderer extends MappedSlotEntry {
     public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        final Text text = this.value.getValue() ? Text.translatable("words.viafabricplus.on") : Text.translatable("words.viafabricplus.off");
+        final Text text = this.value.getValue() ? Text.translatable("misc.viafabricplus.on") : Text.translatable("misc.viafabricplus.off");
 
         final var offset = textRenderer.getWidth(text) + 6;
         renderScrollableText(context, this.value.getName().formatted(Formatting.GRAY), x, y, entryWidth, entryHeight, offset);

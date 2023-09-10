@@ -73,7 +73,7 @@ public class ForceVersionScreen extends VFPScreen {
 
         @Override
         public Text getNarration() {
-            return Text.translatable("words.viafabricplus.cancelreset");
+            return Text.translatable("misc.viafabricplus.cancelreset");
         }
 
 

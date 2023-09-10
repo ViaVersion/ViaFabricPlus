@@ -105,8 +105,8 @@ public class VFPScreen extends Screen {
     public void showErrorScreen(final String title, final Throwable throwable) {
         MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() ->
                 RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(this)), Text.of(title),
-                Text.translatable("words.viafabricplus.error").append("\n" + throwable.getMessage()),
-                Text.translatable("words.viafabricplus.cancel"), false)));
+                Text.translatable("misc.viafabricplus.error").append("\n" + throwable.getMessage()),
+                Text.translatable("misc.viafabricplus.cancel"), false)));
 
         ViaFabricPlus.LOGGER.error(throwable);
     }

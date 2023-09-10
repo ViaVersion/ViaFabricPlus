@@ -50,8 +50,8 @@ public class MixinMultiplayerServerListWidget_ServerEntry {
             if (accessor.viafabricplus_enabled()) {
                 final var versionEnum = VersionEnum.fromProtocolId(accessor.viafabricplus_translatingVersion());
 
-                tooltipOverwrite.add(Text.translatable("words.viafabricplus.translate", versionEnum != VersionEnum.UNKNOWN ? versionEnum.getName() + " (" + versionEnum.getVersion() + ")" : accessor.viafabricplus_translatingVersion()));
-                tooltipOverwrite.add(Text.translatable("words.viafabricplus.serverversion", server.version.getString() + " (" + server.protocolVersion + ")"));
+                tooltipOverwrite.add(Text.translatable("misc.viafabricplus.translate", versionEnum != VersionEnum.UNKNOWN ? versionEnum.getName() + " (" + versionEnum.getVersion() + ")" : accessor.viafabricplus_translatingVersion()));
+                tooltipOverwrite.add(Text.translatable("misc.viafabricplus.serverversion", server.version.getString() + " (" + server.protocolVersion + ")"));
             }
         }
         instance.setMultiplayerScreenTooltip(tooltipOverwrite);

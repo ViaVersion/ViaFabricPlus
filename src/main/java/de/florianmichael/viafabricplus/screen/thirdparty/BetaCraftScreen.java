@@ -50,7 +50,7 @@ public class BetaCraftScreen extends VFPScreen {
     protected void init() {
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, (textRenderer.fontHeight + 2) * 3));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("words.viafabricplus.reset"), button -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("misc.viafabricplus.reset"), button -> {
             SERVER_LIST = null;
             client.setScreen(prevScreen);
         }).position(width - 98 - 5, 5).size(98, 20).build());
@@ -120,7 +120,7 @@ public class BetaCraftScreen extends VFPScreen {
             context.drawCenteredTextWithShadow(textRenderer, server.name() + Formatting.DARK_GRAY + " [" + server.gameVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
             if (server.onlineMode()) {
-                context.drawTextWithShadow(textRenderer, Text.translatable("words.viafabricplus.online").formatted(Formatting.GREEN), 1, 1, -1);
+                context.drawTextWithShadow(textRenderer, Text.translatable("misc.viafabricplus.online").formatted(Formatting.GREEN), 1, 1, -1);
             }
             final String playerText = server.playerCount() + "/" + server.playerLimit();
             context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 152 */ - 1, 1, -1);

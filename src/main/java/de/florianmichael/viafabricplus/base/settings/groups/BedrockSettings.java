@@ -52,12 +52,12 @@ public class BedrockSettings extends SettingGroup {
                             MinecraftClient.getInstance().setScreen(prevScreen);
                             Thread.currentThread().interrupt();
                         }
-                    }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.userCode()), Text.translatable("words.viafabricplus.copy"), Text.translatable("words.viafabricplus.cancel"))));
+                    }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.userCode()), Text.translatable("misc.viafabricplus.copy"), Text.translatable("misc.viafabricplus.cancel"))));
                     try {
                         Util.getOperatingSystem().open(new URI(msaDeviceCode.verificationUri()));
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
-                        MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("words.viafabricplus.cancel"), false)));
+                        MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("misc.viafabricplus.cancel"), false)));
                     }
                 }));
                 BedrockAccountHandler.INSTANCE.setAccount(mcChain, MinecraftAuth.BEDROCK_PLAY_FAB_TOKEN.getFromInput(httpClient, mcChain.prevResult().fullXblSession()));
@@ -65,7 +65,7 @@ public class BedrockSettings extends SettingGroup {
             RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(prevScreen));
         } catch (Throwable e) {
             e.printStackTrace();
-            MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("words.viafabricplus.cancel"), false)));
+            MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("misc.viafabricplus.cancel"), false)));
         }
     })) {
         @Override

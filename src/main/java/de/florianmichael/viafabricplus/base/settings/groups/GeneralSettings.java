@@ -26,21 +26,21 @@ public class GeneralSettings extends SettingGroup {
     public final static GeneralSettings INSTANCE = new GeneralSettings();
 
     public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.multiplayerscreenbutton"), 1,
-            Text.translatable("words.viafabricplus.lt"),
-            Text.translatable("words.viafabricplus.rt"),
-            Text.translatable("words.viafabricplus.lb"),
-            Text.translatable("words.viafabricplus.rb")
+            Text.translatable("misc.viafabricplus.lt"),
+            Text.translatable("misc.viafabricplus.rt"),
+            Text.translatable("misc.viafabricplus.lb"),
+            Text.translatable("misc.viafabricplus.rb")
     );
     public final ModeSetting addServerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.addserverscreenbutton"), 1,
-            Text.translatable("words.viafabricplus.lt"),
-            Text.translatable("words.viafabricplus.rt"),
-            Text.translatable("words.viafabricplus.lb"),
-            Text.translatable("words.viafabricplus.rb")
+            Text.translatable("misc.viafabricplus.lt"),
+            Text.translatable("misc.viafabricplus.rt"),
+            Text.translatable("misc.viafabricplus.lb"),
+            Text.translatable("misc.viafabricplus.rb")
     );
     public final ModeSetting removeNotAvailableItemsFromCreativeTab = new ModeSetting(this, Text.translatable("general.viafabricplus.creative"),
-            Text.translatable("words.viafabricplus.all"),
-            Text.translatable("words.viafabricplus.vanillaonly"),
-            Text.translatable("words.viafabricplus.off")
+            Text.translatable("misc.viafabricplus.all"),
+            Text.translatable("misc.viafabricplus.vanillaonly"),
+            Text.translatable("misc.viafabricplus.off")
     );
     public final BooleanSetting showSuperSecretSettings = new BooleanSetting(this, Text.translatable("general.viafabricplus.secret"), true);
     public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, Text.translatable("general.viafabricplus.extrainformation"), true);
@@ -48,9 +48,9 @@ public class GeneralSettings extends SettingGroup {
     public final BooleanSetting autoDetectVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.autodetect"), false);
     public final BooleanSetting showAdvertisedServerVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.advertised"), true);
     public final ModeSetting ignorePacketTranslationErrors = new ModeSetting(this, Text.translatable("general.viafabricplus.ignoreerrors"),
-            Text.translatable("words.viafabricplus.kick"),
-            Text.translatable("words.viafabricplus.cancelnotify"),
-            Text.translatable("words.viafabricplus.cancel")
+            Text.translatable("misc.viafabricplus.kick"),
+            Text.translatable("misc.viafabricplus.cancelnotify"),
+            Text.translatable("misc.viafabricplus.cancel")
     );
 
     public GeneralSettings() {
