@@ -15,24 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.classic.command;
+package de.florianmichael.viafabricplus.util;
 
-import com.viaversion.viaversion.api.command.ViaCommandSender;
-import com.viaversion.viaversion.api.command.ViaSubCommand;
-import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.util.ChatUtil;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
-public abstract class ClassicViaSubCommand extends ViaSubCommand {
+public class ChatUtil {
+    public final static String PREFIX = Formatting.WHITE + "[" + Formatting.GOLD + "ViaFabricPlus" + Formatting.WHITE + "]";
 
-    /**
-     * Automatically prefix all messages
-     */
-    public void sendMessage(final ViaCommandSender sender, final String message) {
-        ViaSubCommand.sendMessage(sender, ChatUtil.PREFIX + " " + message);
+    public static Text prefixText(final String message) {
+        return prefixText(Text.literal(message));
     }
 
-    public UserConnection getUser() {
-        return ProtocolHack.getMainUserConnection();
+    public static Text prefixText(final Text message) {
+        return Text.literal("").append(PREFIX).append(" " + message);
+    }
+
+    public static void sendPrefixedMessage(final String message) {
+        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(prefixText(message));
     }
 }

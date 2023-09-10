@@ -20,6 +20,8 @@ package de.florianmichael.viafabricplus.protocolhack.netty;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.RakNetClientConnection;
+import de.florianmichael.viafabricplus.protocolhack.netty.viaversion.ViaFabricPlusViaDecoder;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
@@ -38,6 +40,11 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
         super(user, version);
 
         this.address = address;
+    }
+
+    @Override
+    protected ChannelHandler createViaDecoder() {
+        return new ViaFabricPlusViaDecoder(this.user);
     }
 
     @Override

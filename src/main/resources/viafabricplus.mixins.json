@@ -82,6 +82,7 @@
     "fixes.minecraft.entity.MixinEntityPredicates",
     "fixes.minecraft.entity.MixinItemEntity",
     "fixes.minecraft.entity.MixinLivingEntity",
+    "fixes.minecraft.entity.MixinLockableContainerBlockEntity",
     "fixes.minecraft.entity.MixinOtherClientPlayerEntity",
     "fixes.minecraft.entity.MixinPiglinEntity",
     "fixes.minecraft.entity.MixinPlayerEntity",
@@ -170,8 +171,7 @@
     "ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "fixes.minecraft.entity.MixinLockableContainerBlockEntity"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder"
   ],
   "injectors": {
     "defaultRequire": 1

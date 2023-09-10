@@ -21,6 +21,9 @@
   "words.viafabricplus.addserverscreenbuttontitle": "Set version for this server",
   "words.viafabricplus.all": "Vanilla and Modded",
   "words.viafabricplus.vanillaonly": "Vanilla only",
+  "words.viafabricplus.kick": "Kick",
+  "words.viafabricplus.cancelnotify": "Cancel and notify",
+  "words.viafabricplus.cancel": "Cancel",
 
   "settings.viafabricplus.authentication": "Authentication",
   "settings.viafabricplus.experimental": "Experimental",
@@ -37,6 +40,7 @@
   "general.viafabricplus.creative": "Remove not available items from creative tab",
   "general.viafabricplus.autodetect": "Auto detect version",
   "general.viafabricplus.advertised": "Show advertised/server version in Multiplayer",
+  "general.viafabricplus.ignoreerrors": "Ignore packet translation errors",
 
   "bedrock.viafabricplus.confirmtransfer": "Open prompt GUI to confirm transferring to other servers",
   "bedrock.viafabricplus.authentication": "Click to set account for Bedrock edition",

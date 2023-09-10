@@ -22,9 +22,9 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
-import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -45,7 +45,7 @@ public class MixinDebugHud {
             final UserConnection userConnection = ProtocolHack.getMainUserConnection();
 
             information.add("");
-            information.add(Formatting.GOLD + "[ViaFabricPlus] " + Formatting.WHITE);
+            information.add(ChatUtil.PREFIX);
 
             for (AbstractInformationGroup group : ViaFabricPlus.INSTANCE.getInformationSystem().getGroups()) {
                 if (group.getVersionRange() != null && !group.getVersionRange().contains(ProtocolHack.getTargetVersion())) continue;

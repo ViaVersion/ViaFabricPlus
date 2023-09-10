@@ -25,13 +25,13 @@ import net.minecraft.text.Text;
 public class GeneralSettings extends SettingGroup {
     public final static GeneralSettings INSTANCE = new GeneralSettings();
 
-    public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.multiplayerscreenbutton"),
+    public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.multiplayerscreenbutton"), 1,
             Text.translatable("words.viafabricplus.lt"),
             Text.translatable("words.viafabricplus.rt"),
             Text.translatable("words.viafabricplus.lb"),
             Text.translatable("words.viafabricplus.rb")
     );
-    public final ModeSetting addServerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.addserverscreenbutton"),
+    public final ModeSetting addServerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.addserverscreenbutton"), 1,
             Text.translatable("words.viafabricplus.lt"),
             Text.translatable("words.viafabricplus.rt"),
             Text.translatable("words.viafabricplus.lb"),
@@ -47,11 +47,13 @@ public class GeneralSettings extends SettingGroup {
     public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, Text.translatable("general.viafabricplus.classicloading"), true);
     public final BooleanSetting autoDetectVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.autodetect"), false);
     public final BooleanSetting showAdvertisedServerVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.advertised"), true);
+    public final ModeSetting ignorePacketTranslationErrors = new ModeSetting(this, Text.translatable("general.viafabricplus.ignoreerrors"),
+            Text.translatable("words.viafabricplus.kick"),
+            Text.translatable("words.viafabricplus.cancelnotify"),
+            Text.translatable("words.viafabricplus.cancel")
+    );
 
     public GeneralSettings() {
         super(Text.translatable("settings.viafabricplus.general"));
-
-        multiplayerScreenButtonOrientation.setValue(1); // Default value
-        addServerScreenButtonOrientation.setValue(1); // Default value
     }
 }

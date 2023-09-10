@@ -18,8 +18,10 @@
 package de.florianmichael.viafabricplus.protocolhack.provider.vialegacy;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
+import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -31,16 +33,15 @@ public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
     public void sendAuthRequest(UserConnection user, String serverId) throws Throwable {
         if (!AuthenticationSettings.INSTANCE.allowViaLegacyToCallJoinServerToVerifySession.getValue()) return;
 
-        final MinecraftClient mc = MinecraftClient.getInstance();
-
         try {
+            final var mc = MinecraftClient.getInstance();
+
             mc.getSessionService().joinServer(mc.getSession().getProfile(), mc.getSession().getAccessToken(), serverId);
         } catch (Exception e) {
+            ViaFabricPlus.LOGGER.error("Error occurred while calling join server to verify session", e);
+
             if (AuthenticationSettings.INSTANCE.disconnectIfJoinServerCallFails.getValue()) {
-                user.getChannel().attr(ProtocolHack.LOCAL_MINECRAFT_CONNECTION).get().
-                        disconnect(Text.literal(Formatting.GOLD + "[ViaFabricPlus] " + Formatting.WHITE + Text.translatable("authentication.viafabricplus.error")));
-            } else {
-                e.printStackTrace();
+                user.getChannel().attr(ProtocolHack.LOCAL_MINECRAFT_CONNECTION).get().disconnect(ChatUtil.prefixText(Text.translatable("authentication.viafabricplus.error")));
             }
         }
     }

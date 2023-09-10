@@ -30,7 +30,11 @@ public class ModeSetting extends AbstractSetting<MutableText> {
     private final MutableText[] options;
 
     public ModeSetting(SettingGroup parent, MutableText name, MutableText... options) {
-        super(parent, name, options[0]);
+        this(parent, name, 0, options);
+    }
+
+    public ModeSetting(SettingGroup parent, MutableText name, int defaultOption, MutableText... options) {
+        super(parent, name, options[defaultOption]);
         this.options = options;
     }
 
