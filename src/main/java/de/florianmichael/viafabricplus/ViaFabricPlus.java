@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.florianmichael.viafabricplus.base.file.ViaJarReplacer;
+import de.florianmichael.viafabricplus.base.ViaJarReplacer;
 import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.base.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.base.settings.SettingsSystem;

@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.definition.account;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.base.file.FileSaver;
+import de.florianmichael.viafabricplus.util.FileSaver;
 import net.raphimc.mcauth.MinecraftAuth;
 import net.raphimc.mcauth.step.bedrock.StepMCChain;
 import net.raphimc.mcauth.step.bedrock.StepPlayFabToken;
