@@ -107,7 +107,7 @@ public class BetaCraftScreen extends VFPScreen {
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-            final ServerAddress serverAddress = ClientsideFixes.parse(ProtocolHack.getTargetVersion(), server.host() + ":" + server.port());
+            final ServerAddress serverAddress = ServerAddress.parse(server.host() + ":" + server.port());
             final ServerInfo entry = new ServerInfo(server.name(), serverAddress.getAddress(), false);
 
             ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false);

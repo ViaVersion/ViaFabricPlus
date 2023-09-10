@@ -141,22 +141,6 @@ public class ClientsideFixes {
     }
 
     /**
-     * Parses a server address and returns a {@link ServerAddress} object that is compatible with the specified version
-     *
-     * @param version The version to use
-     * @param address The address to parse
-     * @return The parsed {@link ServerAddress}
-     */
-    public static ServerAddress parse(VersionEnum version, String address) {
-        final ServerAddress modern = ServerAddress.parse(address);
-        if (LEGACY_SRV_RESOLVE.contains(version) && !modern.equals(ServerAddress.INVALID)) {
-            final var addressParts = address.split(":");
-            return new ServerAddress(addressParts[0], addressParts.length > 1 ? Integer.parseInt(addressParts[1]) : 25565);
-        }
-        return modern;
-    }
-
-    /**
      * Returns the sync task for the specified uuid and removes it from the list
      *
      * @param uuid The uuid of the sync task

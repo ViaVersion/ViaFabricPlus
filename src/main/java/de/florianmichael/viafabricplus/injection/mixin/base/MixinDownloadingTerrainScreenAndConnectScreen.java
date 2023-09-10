@@ -17,22 +17,38 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.definition.classic.ClassicProgressRenderer;
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Text;
+import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.storage.ClassicProgressStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(DownloadingTerrainScreen.class)
-public class MixinDownloadingTerrainScreen {
+@SuppressWarnings("DataFlowIssue")
+@Mixin(targets = { "net.minecraft.client.gui.screen.DownloadingTerrainScreen", "net.minecraft.client.gui.screen.ConnectScreen" })
+public class MixinDownloadingTerrainScreenAndConnectScreen extends Screen {
+
+    public MixinDownloadingTerrainScreenAndConnectScreen(Text title) {
+        super(title);
+    }
 
     @Inject(method = "render", at = @At("RETURN"))
     public void renderClassicProgress(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (!GeneralSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) return;
+        if (GeneralSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) {
+            if (client.getNetworkHandler() == null) return;
 
-        ClassicProgressRenderer.renderProgress(context);
+            final var connection = ProtocolHack.getMainUserConnection();
+            if (connection == null) return;
+
+            final var classicProgressStorage = connection.get(ClassicProgressStorage.class);
+            if (classicProgressStorage == null) return;
+
+            context.drawCenteredTextWithShadow(client.textRenderer, ChatUtil.prefixText(classicProgressStorage.status), width / 2, height / 2 - 30, -1);
+        }
     }
 }

@@ -21,6 +21,7 @@ import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.client.network.AllowedAddressResolver;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.raphimc.vialoader.util.VersionEnum;
@@ -33,6 +34,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.net.InetSocketAddress;
 import java.util.Optional;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
 public class MixinConnectScreen_1 {
 
@@ -46,17 +48,21 @@ public class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
     public Object mapSocketAddress(Optional<InetSocketAddress> instance) {
-        if (ClientsideFixes.LEGACY_SRV_RESOLVE.contains(ProtocolHack.getTargetVersion())) {
-            return new InetSocketAddress(field_33737.getAddress(), field_33737.getPort());
+        final var original = instance.orElse(null); // original invoke
+        if (field_40415 != null) {
+            // Handle forced version system
+            final VersionEnum forcedVersion = ((IServerInfo) field_40415).viafabricplus_forcedVersion();
+            if (forcedVersion != null) {
+                ProtocolHack.getForcedVersions().put(original, forcedVersion);
+                ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(forcedVersion);
+            }
         }
-        final InetSocketAddress address = instance.get();
-        if (field_40415 == null) return address;
 
-        final VersionEnum forcedVersion = ((IServerInfo) field_40415).viafabricplus_forcedVersion();
-        if (forcedVersion != null) {
-            ProtocolHack.getForcedVersions().put(address, forcedVersion);
-            ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(forcedVersion);
+        if (ClientsideFixes.LEGACY_SRV_RESOLVE.contains(ProtocolHack.getTargetVersion())) {
+            final var direct = AllowedAddressResolver.DEFAULT.addressResolver.resolve(this.field_33737).orElse(null);
+
+            if (direct != null) return direct.getInetSocketAddress();
         }
-        return address;
+        return original; // original invoke
     }
 }

@@ -26,7 +26,7 @@ import de.florianmichael.viafabricplus.base.settings.SettingsSystem;
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.definition.classic.protocol.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.definition.classic.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.information.InformationSystem;
 import de.florianmichael.viafabricplus.mappings.CharacterMappings;
 import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
