@@ -58,7 +58,7 @@ public class MixinConnectScreen_1 {
             }
         }
 
-        if (ClientsideFixes.LEGACY_SRV_RESOLVE.contains(ProtocolHack.getTargetVersion())) {
+        if (ClientsideFixes.LEGACY_SRV_RESOLVE.contains(ProtocolHack.getTargetVersion(original))) {
             final var direct = AllowedAddressResolver.DEFAULT.addressResolver.resolve(this.field_33737).orElse(null);
 
             if (direct != null) return direct.getInetSocketAddress();
