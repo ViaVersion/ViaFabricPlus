@@ -21,6 +21,8 @@
   "misc.viafabricplus.addserverscreenbuttontitle": "Ustaw wersję dla tego serwera",
   "misc.viafabricplus.all": "Vanilla i modyfikacje",
   "misc.viafabricplus.vanillaonly": "Tylko vanilla",
+  "misc.viafabricplus.kick": "Wyrzuć",
+  "misc.viafabricplus.cancelnotify": "Anuluj i powiadom",
 
   "settings.viafabricplus.authentication": "Uwierzytelnianie",
   "settings.viafabricplus.experimental": "Eksperymenty",
@@ -37,6 +39,7 @@
   "general.viafabricplus.creative": "Usuwaj niedostępne przedmioty z ekwipunku trybu kreatywnego",
   "general.viafabricplus.autodetect": "Automatycznie wykrywaj wersję gry",
   "general.viafabricplus.advertised": "Pokazuj informacje dotyczące tłumaczenia pakietów po najechaniu na ikonę pingu w menu multiplayer",
+  "general.viafabricplus.ignoreerrors": "Sposób obsługiwania błędów tłumaczenia pakietów",
 
   "bedrock.viafabricplus.confirmtransfer": "Pytaj, żeby potwierdzić przełączanie do innych serwerów",
   "bedrock.viafabricplus.authentication": "Naciśnij, aby ustawić konto dla minecraft bedrock edition",
