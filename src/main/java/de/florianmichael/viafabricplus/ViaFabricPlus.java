@@ -40,9 +40,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 
 /*
- * TODO | Port
- *  - AllayEntity, VexEntity and BoatEntity height offsets are missing?
- *
  * TODO | General
  *  - Check if relevant for protocol translation: TakeItemEntityPacket isEmpty case (1.20 -> 1.20.1 change)
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server

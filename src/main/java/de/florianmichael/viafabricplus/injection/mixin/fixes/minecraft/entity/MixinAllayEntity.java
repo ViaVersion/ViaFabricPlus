@@ -17,8 +17,10 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.world.World;
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.passive.AllayEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,12 +29,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AllayEntity.class)
-public class MixinAllayEntity {
-    
-//    @Inject(method = "getHeightOffset", at = @At("HEAD"), cancellable = true)
-//    public void changeHeightOffset(CallbackInfoReturnable<Double> cir) {
-//        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
-//            cir.setReturnValue(0.0);
-//        }
-//    }
+public abstract class MixinAllayEntity extends PathAwareEntity {
+
+    protected MixinAllayEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
+        super(entityType, world);
+    }
+
+    @Inject(method = "getUnscaledRidingOffset", at = @At("HEAD"), cancellable = true)
+    public void changeHeightOffset(CallbackInfoReturnable<Double> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
+            cir.setReturnValue(0.0);
+        }
+    }
 }
