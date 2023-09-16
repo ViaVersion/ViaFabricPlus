@@ -18,9 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.packet;
 
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.network.PacketByteBuf;
@@ -32,8 +30,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(UpdatePlayerAbilitiesC2SPacket.class)
 public class MixinUpdatePlayerAbilitiesC2SPacket {
 
-    @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/PacketByteBuf;writeByte(I)Lio/netty/buffer/ByteBuf;"))
-    public ByteBuf implementFlags(PacketByteBuf instance, int value) {
+    @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/PacketByteBuf;writeByte(I)Lnet/minecraft/network/PacketByteBuf;"))
+    public PacketByteBuf implementFlags(PacketByteBuf instance, int value) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
             final PlayerAbilities playerAbilities = MinecraftClient.getInstance().player.getAbilities();
 

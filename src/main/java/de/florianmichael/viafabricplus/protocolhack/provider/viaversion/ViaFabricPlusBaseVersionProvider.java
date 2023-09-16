@@ -31,16 +31,20 @@ import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.NetworkState;
+import net.minecraft.network.handler.PacketSizeLogger;
 import net.minecraft.network.listener.ClientQueryPacketListener;
+import net.minecraft.network.packet.c2s.handshake.ConnectionIntent;
 import net.minecraft.network.packet.c2s.handshake.HandshakeC2SPacket;
 import net.minecraft.network.packet.c2s.query.QueryRequestC2SPacket;
-import net.minecraft.network.packet.s2c.query.QueryPongS2CPacket;
+import net.minecraft.network.packet.s2c.query.PingResultS2CPacket;
 import net.minecraft.network.packet.s2c.query.QueryResponseS2CPacket;
 import net.minecraft.text.Text;
+import net.minecraft.util.profiler.PerformanceLog;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,7 +74,7 @@ public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
                             }
 
                             ChannelPipeline channelPipeline = channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30));
-                            ClientConnection.addHandlers(channelPipeline, NetworkSide.CLIENTBOUND);
+                            ClientConnection.addHandlers(channelPipeline, NetworkSide.CLIENTBOUND, new PacketSizeLogger(new PerformanceLog()));
                             channelPipeline.addLast("packet_handler", clientConnection);
                         }
                     }).channel(useEpoll ? EpollSocketChannel.class : NioSocketChannel.class).connect(address);
@@ -79,40 +83,36 @@ public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
                         if (!future1.isSuccess()) {
                             future.completeExceptionally(future1.cause());
                         } else {
-                            channelFuture.channel().eventLoop().execute(() -> { // needs to execute after channel init
-                                clientConnection.setPacketListener(new ClientQueryPacketListener() {
-                                    @Override
-                                    public void onResponse(QueryResponseS2CPacket packet) {
-                                        if (packet.metadata() != null && packet.metadata().version().isPresent()) {
-                                            final VersionEnum version = VersionEnum.fromProtocolId(packet.metadata().version().get().protocolVersion());
-                                            future.complete(version);
+                            clientConnection.connect(address.getHostString(), address.getPort(), new ClientQueryPacketListener() {
+                                @Override
+                                public void onResponse(QueryResponseS2CPacket packet) {
+                                    if (packet.metadata() != null && packet.metadata().version().isPresent()) {
+                                        final VersionEnum version = VersionEnum.fromProtocolId(packet.metadata().version().get().protocolVersion());
+                                        future.complete(version);
 
-                                            ViaFabricPlus.LOGGER.info("Auto-detected " + version + " for " + address);
-                                        } else {
-                                            future.completeExceptionally(new IllegalArgumentException("Null version in query response"));
-                                        }
-                                        clientConnection.disconnect(Text.empty());
+                                        ViaFabricPlus.LOGGER.info("Auto-detected " + version + " for " + address);
+                                    } else {
+                                        future.completeExceptionally(new IllegalArgumentException("Null version in query response"));
                                     }
+                                    clientConnection.disconnect(Text.empty());
+                                }
 
-                                    @Override
-                                    public void onPong(QueryPongS2CPacket packet) {
-                                        clientConnection.disconnect(Text.literal("Pong not requested!"));
-                                    }
+                                @Override
+                                public void onPingResult(PingResultS2CPacket packet) {
+                                    clientConnection.disconnect(Text.literal("Ping not requested!"));
+                                }
 
-                                    @Override
-                                    public void onDisconnected(Text reason) {
-                                        future.completeExceptionally(new IllegalStateException(reason.getString()));
-                                    }
+                                @Override
+                                public void onDisconnected(Text reason) {
+                                    future.completeExceptionally(new IllegalStateException(reason.getString()));
+                                }
 
-                                    @Override
-                                    public boolean isConnectionOpen() {
-                                        return channelFuture.channel().isOpen();
-                                    }
-                                });
-
-                                clientConnection.send(new HandshakeC2SPacket(address.getHostString(), address.getPort(), NetworkState.STATUS));
-                                clientConnection.send(new QueryRequestC2SPacket());
+                                @Override
+                                public boolean isConnectionOpen() {
+                                    return channelFuture.channel().isOpen();
+                                }
                             });
+                            clientConnection.send(new QueryRequestC2SPacket());
                         }
                     });
                 } catch (Throwable throwable) { // You never know...

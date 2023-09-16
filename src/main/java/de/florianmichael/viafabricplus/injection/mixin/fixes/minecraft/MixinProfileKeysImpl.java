@@ -20,7 +20,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
 import de.florianmichael.viafabricplus.injection.access.IKeyPairResponse;
 import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
-import net.minecraft.client.util.ProfileKeysImpl;
+import net.minecraft.client.session.ProfileKeysImpl;
 import net.minecraft.network.encryption.PlayerPublicKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,6 +32,6 @@ public class MixinProfileKeysImpl {
 
     @Inject(method = "decodeKeyPairResponse", at = @At("RETURN"))
     private static void trackLegacyKey(KeyPairResponse keyPairResponse, CallbackInfoReturnable<PlayerPublicKey.PublicKeyData> cir) {
-        ((IPublicKeyData) (Object) cir.getReturnValue()).viafabricplus_setV1Key(((IKeyPairResponse) keyPairResponse).viafabricplus_getLegacyPublicKeySignature());
+        ((IPublicKeyData) (Object) cir.getReturnValue()).viafabricplus_setV1Key(((IKeyPairResponse) (Object) keyPairResponse).viafabricplus_getLegacyPublicKeySignature());
     }
 }

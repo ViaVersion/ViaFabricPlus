@@ -33,6 +33,7 @@ public class PackFormatsMappings {
     private final static Map<Integer, GameVersion> protocolMap = new HashMap<>();
 
     public static void load() {
+        registerVersion(VersionEnum.r1_20_2, 18, "1.20.2 Release Candidate 1", "1.20.2-rc1");
         registerVersion(VersionEnum.r1_20tor1_20_1, 15, "1.20.1"); // 1.20 and 1.20.1 are the same, why care...
         registerVersion(VersionEnum.r1_19_4, 13, "1.19.4");
         registerVersion(VersionEnum.r1_19_3, 12, "1.19.3");
@@ -81,6 +82,8 @@ public class PackFormatsMappings {
         }
 
         final GameVersion gameVersion = protocolMap.get(nativeVersion);
+        System.out.println(SharedConstants.getGameVersion().getName() + " " + gameVersion.getName());
+        System.out.println(SharedConstants.getGameVersion().getId() + " " + gameVersion.getId());
         if (!gameVersion.getName().equals(SharedConstants.getGameVersion().getName()) || !gameVersion.getId().equals(SharedConstants.getGameVersion().getId()) || gameVersion.getResourceVersion(ResourceType.CLIENT_RESOURCES) != SharedConstants.getGameVersion().getResourceVersion(ResourceType.CLIENT_RESOURCES)) {
             throw new RuntimeException("The current version has no pack format registered");
         }

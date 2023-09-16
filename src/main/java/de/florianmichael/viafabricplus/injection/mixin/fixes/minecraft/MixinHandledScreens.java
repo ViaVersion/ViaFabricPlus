@@ -17,8 +17,6 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.definition.screen.netminecraft.LegacySmithingScreen;
-import de.florianmichael.viafabricplus.definition.screen.netminecraft.LegacySmithingScreenHandler;
 import de.florianmichael.viafabricplus.definition.screen.CustomScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -38,9 +36,6 @@ public class MixinHandledScreens {
 
     @Inject(method = "getProvider", at = @At("HEAD"), cancellable = true)
     private static <T extends ScreenHandler> void returnFakeProvider(ScreenHandlerType<T> type, CallbackInfoReturnable<HandledScreens.@Nullable Provider> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1) && type == CustomScreenHandler.LEGACY_SMITHING) {
-            cir.setReturnValue((handler, playerInventory, title) -> new LegacySmithingScreen((LegacySmithingScreenHandler) handler, playerInventory, title));
-        }
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2) && CustomScreenHandler.isTripleChestHandler(type)) {
             cir.setReturnValue((handler, playerInventory, title) -> new GenericContainerScreen((GenericContainerScreenHandler) handler, playerInventory, title));
         }

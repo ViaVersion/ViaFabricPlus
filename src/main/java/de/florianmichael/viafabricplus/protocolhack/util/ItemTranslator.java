@@ -55,7 +55,7 @@ public class ItemTranslator {
         final var emptyBuf = new PacketByteBuf(Unpooled.buffer());
         dummyPacket.write(emptyBuf);
 
-        final int id = NetworkState.PLAY.getPacketId(NetworkSide.SERVERBOUND, dummyPacket);
+        final int id = NetworkState.PLAY.getHandler(NetworkSide.SERVERBOUND).getId(dummyPacket);
 
         try {
             final var wrapper = new PacketWrapperImpl(id, emptyBuf, DUMMY_USER_CONNECTION);

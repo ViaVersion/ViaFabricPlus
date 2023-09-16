@@ -36,7 +36,7 @@ import java.util.Optional;
 @Mixin(MultiplayerServerListPinger.class)
 public class MixinMultiplayerServerListPinger {
 
-    @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;Z)Lnet/minecraft/network/ClientConnection;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void trackSessions(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress, Optional optional, InetSocketAddress inetSocketAddress) {
         final VersionEnum version = ((IServerInfo) entry).viafabricplus_forcedVersion();
 

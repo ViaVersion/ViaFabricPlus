@@ -29,10 +29,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AllayEntity.class)
 public class MixinAllayEntity {
     
-    @Inject(method = "getHeightOffset", at = @At("HEAD"), cancellable = true)
-    public void changeHeightOffset(CallbackInfoReturnable<Double> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
-            cir.setReturnValue(0.0);
-        }
-    }
+//    @Inject(method = "getHeightOffset", at = @At("HEAD"), cancellable = true)
+//    public void changeHeightOffset(CallbackInfoReturnable<Double> cir) {
+//        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
+//            cir.setReturnValue(0.0);
+//        }
+//    }
 }

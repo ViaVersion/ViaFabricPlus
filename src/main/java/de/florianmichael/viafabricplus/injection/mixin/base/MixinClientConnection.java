@@ -83,12 +83,12 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         }
     }
 
-    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Lazy;get()Ljava/lang/Object;", shift = At.Shift.BEFORE), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void captureAddress(InetSocketAddress address, boolean useEpoll, ClientConnection connection, CallbackInfoReturnable<ChannelFuture> cir, Class class_, Lazy lazy) {
+    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;", shift = At.Shift.BEFORE), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void captureAddress(InetSocketAddress address, boolean useEpoll, ClientConnection connection, CallbackInfoReturnable<ChannelFuture> cir, Class channelType, EventLoopGroup eventLoopGroup) {
         ((IClientConnection) connection).viafabricplus_captureAddress(address);
 
         if (ProtocolHack.getTargetVersion(address) == VersionEnum.bedrockLatest) {
-            cir.setReturnValue(RakNetClientConnection.connectRakNet(connection, address, lazy, class_));
+            cir.setReturnValue(RakNetClientConnection.connectRakNet(connection, address, eventLoopGroup, channelType));
         }
     }
 

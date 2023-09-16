@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(BoatEntity.class)
 public class MixinBoatEntity {
 
-    @ModifyConstant(method = "getMountedHeightOffset", constant = @Constant(doubleValue = 0.25))
-    public double modifyConstant(double constant) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
-            return 0.3;
-        }
-        return constant;
-    }
+//    @ModifyConstant(method = "getMountedHeightOffset", constant = @Constant(doubleValue = 0.25))
+//    public double modifyConstant(double constant) {
+//        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+//            return 0.3;
+//        }
+//        return constant;
+//    }
 }

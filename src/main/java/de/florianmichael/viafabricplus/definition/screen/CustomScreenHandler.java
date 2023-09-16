@@ -20,7 +20,6 @@ package de.florianmichael.viafabricplus.definition.screen;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.definition.screen.netminecraft.LegacySmithingScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.network.PacketByteBuf;
@@ -45,17 +44,6 @@ public class CustomScreenHandler {
         }
     };
 
-    public final static Consumer<PacketByteBuf> LEGACY_SMITHING_HANDLER = data -> {
-        final var byteBuf = data.asByteBuf();
-
-        try {
-            CustomScreenHandler.openLegacySmithingScreen(Type.VAR_INT.readPrimitive(byteBuf), Type.COMPONENT.read(byteBuf));
-        } catch (Exception e) {
-            ViaFabricPlus.LOGGER.error("Failed to open legacy smithing table", e);
-        }
-    };
-
-    public final static ScreenHandlerType<LegacySmithingScreenHandler> LEGACY_SMITHING = new ScreenHandlerType<>(LegacySmithingScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
     private final static Map<Integer, ScreenHandlerType<ScreenHandler>> TRIPLE_CHEST_HANDLERS = new LinkedHashMap<>();
 
     static {
@@ -63,10 +51,6 @@ public class CustomScreenHandler {
             int finalI = i;
             TRIPLE_CHEST_HANDLERS.put(i, new ScreenHandlerType<>((syncId, playerInventory) -> new GenericContainerScreenHandler(TRIPLE_CHEST_HANDLERS.get(finalI), syncId, playerInventory, finalI), FeatureFlags.VANILLA_FEATURES));
         }
-    }
-
-    public static void openLegacySmithingScreen(final int windowID, final JsonElement title) {
-        HandledScreens.open(CustomScreenHandler.LEGACY_SMITHING, MinecraftClient.getInstance(), windowID, Text.Serializer.fromJson(title.toString()));
     }
 
     public static void handleTripleChestHandler(final short windowID, final JsonElement title, final short slots) {

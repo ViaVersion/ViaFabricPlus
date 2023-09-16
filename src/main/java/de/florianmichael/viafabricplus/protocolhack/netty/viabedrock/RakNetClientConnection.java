@@ -26,7 +26,9 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
+import net.minecraft.network.handler.PacketSizeLogger;
 import net.minecraft.util.Lazy;
+import net.minecraft.util.profiler.PerformanceLog;
 import org.cloudburstmc.netty.channel.raknet.RakChannelFactory;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 import org.jetbrains.annotations.NotNull;
@@ -39,8 +41,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RakNetClientConnection {
     private final static List<InetSocketAddress> rakNetPingSessions = new ArrayList<>();
 
-    public static ChannelFuture connectRakNet(final ClientConnection clientConnection, final InetSocketAddress address, final Lazy lazy, final Class channelType) {
-        final Bootstrap nettyBoostrap = new Bootstrap().group((EventLoopGroup) lazy.get()).handler(new ChannelInitializer<>() {
+    public static ChannelFuture connectRakNet(final ClientConnection clientConnection, final InetSocketAddress address, final EventLoopGroup eventLoopGroup, final Class channelType) {
+        final Bootstrap nettyBoostrap = new Bootstrap().group(eventLoopGroup).handler(new ChannelInitializer<>() {
             @Override
             protected void initChannel(@NotNull Channel channel) {
                 try {
@@ -51,7 +53,7 @@ public class RakNetClientConnection {
                 } catch (Exception ignored) {
                 }
                 ChannelPipeline channelPipeline = channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30));
-                ClientConnection.addHandlers(channelPipeline, NetworkSide.CLIENTBOUND);
+                ClientConnection.addHandlers(channelPipeline, NetworkSide.CLIENTBOUND, clientConnection.packetSizeLogger);
 
                 channelPipeline.addLast("packet_handler", clientConnection);
 

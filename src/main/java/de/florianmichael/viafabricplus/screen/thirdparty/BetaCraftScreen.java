@@ -60,7 +60,7 @@ public class BetaCraftScreen extends VFPScreen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
+        this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
 
         this.renderTitle(context);
@@ -108,7 +108,7 @@ public class BetaCraftScreen extends VFPScreen {
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
             final ServerAddress serverAddress = ServerAddress.parse(server.host() + ":" + server.port());
-            final ServerInfo entry = new ServerInfo(server.name(), serverAddress.getAddress(), false);
+            final ServerInfo entry = new ServerInfo(server.name(), serverAddress.getAddress(), ServerInfo.ServerType.OTHER);
 
             ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false);
             super.mappedMouseClicked(mouseX, mouseY, button);

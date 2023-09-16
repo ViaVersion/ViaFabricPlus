@@ -37,7 +37,7 @@ public class ViaFabricPlusTransferProvider extends TransferProvider {
         final var mc = MinecraftClient.getInstance();
         mc.world.disconnect();
 
-        final var serverInfo = new ServerInfo(newAddress.getHostName(), newAddress.getHostName() + ":" + newAddress.getPort(), false);
+        final var serverInfo = new ServerInfo(newAddress.getHostName(), newAddress.getHostName() + ":" + newAddress.getPort(), ServerInfo.ServerType.OTHER);
         ConnectScreen.connect(new MultiplayerScreen(new TitleScreen()), mc, ServerAddress.parse(serverInfo.address), serverInfo, false);
     }
 

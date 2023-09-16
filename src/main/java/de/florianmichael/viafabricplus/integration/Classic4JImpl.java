@@ -28,7 +28,7 @@ public class Classic4JImpl {
         final MinecraftClient mc = MinecraftClient.getInstance();
 
         try {
-            mc.getSessionService().joinServer(mc.getSession().getProfile(), mc.getSession().getAccessToken(), serverId);
+            mc.getSessionService().joinServer(mc.getSession().getUuidOrNull(), mc.getSession().getAccessToken(), serverId);
         } catch (AuthenticationException e) {
             e.printStackTrace();
         }

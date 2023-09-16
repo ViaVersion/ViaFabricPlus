@@ -8,11 +8,10 @@ accessible field net/minecraft/client/network/ServerAddress INVALID Lnet/minecra
 accessible field net/minecraft/client/network/ServerAddress hostAndPort Lcom/google/common/net/HostAndPort;
 accessible field net/minecraft/client/MinecraftClient fontManager Lnet/minecraft/client/font/FontManager;
 accessible field net/minecraft/client/font/FontManager fontStorages Ljava/util/Map;
-accessible field net/minecraft/network/ClientConnection EPOLL_CLIENT_IO_GROUP Lnet/minecraft/util/Lazy;
-accessible field net/minecraft/network/ClientConnection LOCAL_CLIENT_IO_GROUP Lnet/minecraft/util/Lazy;
 accessible field net/minecraft/client/gui/screen/GameMenuScreen exitButton Lnet/minecraft/client/gui/widget/ButtonWidget;
 accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/minecraft/client/font/FontStorage$GlyphPair;
 accessible field net/minecraft/client/network/AllowedAddressResolver addressResolver Lnet/minecraft/client/network/AddressResolver;
+accessible field net/minecraft/network/ClientConnection packetSizeLogger Lnet/minecraft/network/handler/PacketSizeLogger;
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V

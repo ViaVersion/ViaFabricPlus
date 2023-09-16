@@ -36,7 +36,7 @@ public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
         try {
             final var mc = MinecraftClient.getInstance();
 
-            mc.getSessionService().joinServer(mc.getSession().getProfile(), mc.getSession().getAccessToken(), serverId);
+            mc.getSessionService().joinServer(mc.getSession().getUuidOrNull(), mc.getSession().getAccessToken(), serverId);
         } catch (Exception e) {
             ViaFabricPlus.LOGGER.error("Error occurred while calling join server to verify session", e);
 

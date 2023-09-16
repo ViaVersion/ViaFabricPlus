@@ -80,7 +80,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
+        this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
 
         final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
@@ -124,7 +124,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
             final ServerAddress serverAddress = ServerAddress.parse(classiCubeServerInfo.ip() + ":" + classiCubeServerInfo.port());
-            final ServerInfo entry = new ServerInfo(classiCubeServerInfo.name(), serverAddress.getAddress(), false);
+            final ServerInfo entry = new ServerInfo(classiCubeServerInfo.name(), serverAddress.getAddress(), ServerInfo.ServerType.OTHER);
             ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = classiCubeServerInfo.mpPass();
 
             if (AuthenticationSettings.INSTANCE.forceCPEIfUsingClassiCube.getValue()) {

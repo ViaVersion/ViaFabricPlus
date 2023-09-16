@@ -40,6 +40,9 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 
 /*
+ * TODO | Port
+ *  - AllayEntity, VexEntity and BoatEntity height offsets are missing?
+ *
  * TODO | General
  *  - Check if relevant for protocol translation: TakeItemEntityPacket isEmpty case (1.20 -> 1.20.1 change)
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
@@ -56,7 +59,7 @@ import java.io.File;
  *  - Blit-jump is not supported in <= 1.8.9 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
  */
 public class ViaFabricPlus {
-    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_20tor1_20_1;
+    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_20_2;
 
     public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public final static Logger LOGGER = LogManager.getLogger("ViaFabricPlus");

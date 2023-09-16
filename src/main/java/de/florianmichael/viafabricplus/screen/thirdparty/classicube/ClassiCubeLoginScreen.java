@@ -91,14 +91,6 @@ public class ClassiCubeLoginScreen extends VFPScreen {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        nameField.tick();
-        passwordField.tick();
-    }
-
-    @Override
     public void close() {
         ClassiCubeAccountHandler.INSTANCE.setAccount(null);
         ProtocolSelectionScreen.INSTANCE.open(prevScreen);
@@ -106,7 +98,8 @@ public class ClassiCubeLoginScreen extends VFPScreen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
+        this.renderBackground(context, mouseX, mouseY, delta);
+
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
         context.drawCenteredTextWithShadow(this.textRenderer, this.status, this.width / 2, 1, 16777215);
 
