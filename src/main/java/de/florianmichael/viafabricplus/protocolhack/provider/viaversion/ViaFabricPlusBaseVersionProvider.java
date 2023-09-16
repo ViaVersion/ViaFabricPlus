@@ -74,7 +74,7 @@ public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
                             }
 
                             ChannelPipeline channelPipeline = channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30));
-                            ClientConnection.addHandlers(channelPipeline, NetworkSide.CLIENTBOUND, new PacketSizeLogger(new PerformanceLog()));
+                            ClientConnection.addHandlers(channelPipeline, NetworkSide.CLIENTBOUND, clientConnection.packetSizeLogger);
                             channelPipeline.addLast("packet_handler", clientConnection);
                         }
                     }).channel(useEpoll ? EpollSocketChannel.class : NioSocketChannel.class).connect(address);
