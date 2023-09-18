@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.sodium;
+package de.florianmichael.viafabricplus.injection.mixin.compat.sodium;
 
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;

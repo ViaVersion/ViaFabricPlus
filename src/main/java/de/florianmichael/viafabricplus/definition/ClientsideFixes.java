@@ -22,13 +22,12 @@ import com.viaversion.viaversion.protocols.protocol1_9to1_8.ArmorType;
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.base.event.LoadClassicProtocolExtensionCallback;
+import de.florianmichael.viafabricplus.injection.MixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
-import net.minecraft.client.network.ServerAddress;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -56,11 +55,6 @@ public class ClientsideFixes {
      * Legacy versions do not support SRV records, so we need to resolve them manually
      */
     public final static VersionRange LEGACY_SRV_RESOLVE = VersionRange.andOlder(VersionEnum.r1_2_4tor1_2_5).add(VersionRange.single(VersionEnum.bedrockLatest));
-
-    /**
-     * Tracks if the client is using DashLoader, so we can skip some fixes in the font rendering since they break DashLoader
-     */
-    public final static boolean DASH_LOADER = FabricLoader.getInstance().isModLoaded("dashloader");
 
     /**
      * Contains the armor points of all armor items in legacy versions (<= 1.8.x)
@@ -124,7 +118,7 @@ public class ClientsideFixes {
                 }
             }
 
-            if (DASH_LOADER) {
+            if (!MixinPlugin.DASH_LOADER_PRESENT) {
                 // Reloads all font storages to fix the font renderer
                 for (FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
                     RenderSystem.recordRenderCall(() -> ((IFontStorage) storage).viafabricplus_clearCaches());

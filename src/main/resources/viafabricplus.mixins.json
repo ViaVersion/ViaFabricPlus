@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "de.florianmichael.viafabricplus.injection.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "de.florianmichael.viafabricplus.injection.MixinPlugin",
   "client": [
     "base.MixinAddServerScreen",
     "base.MixinClientConnection",
@@ -129,7 +130,7 @@
     "fixes.minecraft.screen.screenhandler.MixinBrewingStandScreenHandler_FuelSlot",
     "fixes.minecraft.screen.screenhandler.MixinPlayerScreenHandler",
     "fixes.minecraft.screen.screenhandler.MixinScreenHandler",
-    "fixes.sodium.MixinChunkTracker",
+    "compat.sodium.MixinChunkTracker",
     "fixes.viabedrock.MixinBedrockProtocol",
     "fixes.viabedrock.MixinJoinPackets",
     "fixes.vialegacy.MixinClassicProtocolExtension",
@@ -166,7 +167,7 @@
     "fixes.viaversion.protocol1_9to1_8.MixinEntityTracker1_9",
     "fixes.viaversion.protocol1_9to1_8.MixinMetadataRewriter1_9To1_8",
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
-    "ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
+    "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
     "jsonwebtoken.MixinDefaultJwtParserBuilder"
