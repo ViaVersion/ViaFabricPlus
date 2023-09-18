@@ -105,8 +105,10 @@ public class ClientsideFixes {
         // Reloads some clientside stuff when the protocol version changes
         ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
             // Reloads all bounding boxes
-            for (Block block : RELOADABLE_BLOCKS) {
-                block.getDefaultState().initShapeCache();
+            if (MinecraftClient.getInstance() != null && MinecraftClient.getInstance().player != null) { // Make sure that the game is loaded when reloading the cache
+                for (Block block : RELOADABLE_BLOCKS) {
+                    block.getDefaultState().initShapeCache();
+                }
             }
 
             // Calculates the current chat limit, since it changes depending on the protocol version
