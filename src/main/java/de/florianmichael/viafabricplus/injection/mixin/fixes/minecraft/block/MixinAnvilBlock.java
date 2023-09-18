@@ -17,13 +17,10 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import net.minecraft.block.*;
 import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.block.AnvilBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -38,7 +35,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AnvilBlock.class)
-public class MixinAnvilBlock {
+public class MixinAnvilBlock extends FallingBlock {
 
     @Unique
     private final static VoxelShape viafabricplus_x_axis_shape_v1_12_2 = Block.createCuboidShape(0, 0, 2, 16, 16, 14);
@@ -50,10 +47,27 @@ public class MixinAnvilBlock {
     @Final
     public static DirectionProperty FACING;
 
+    public MixinAnvilBlock(Settings settings) {
+        super(settings);
+    }
+
+    @Unique
+    private boolean viafabricplus_requireOriginalShape;
+
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+        if (viafabricplus_requireOriginalShape) {
+            viafabricplus_requireOriginalShape = false;
+            return;
+        }
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(state.get(FACING).getAxis() == Direction.Axis.X ? viafabricplus_x_axis_shape_v1_12_2 : viafabricplus_z_axis_shape_v1_12_2);
         }
+    }
+
+    @Override
+    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+        viafabricplus_requireOriginalShape = true;
+        return super.getCullingShape(state, world, pos);
     }
 }
