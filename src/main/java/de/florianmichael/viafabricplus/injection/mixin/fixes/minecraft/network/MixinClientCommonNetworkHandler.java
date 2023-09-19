@@ -19,10 +19,9 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import io.netty.buffer.Unpooled;
+import net.fabricmc.fabric.impl.networking.payload.PacketByteBufPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ServerPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.common.CommonPingS2CPacket;
@@ -79,12 +78,11 @@ public abstract class MixinClientCommonNetworkHandler {
     @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
     public void handlePseudoPackets(CustomPayloadS2CPacket packet, CallbackInfo ci) {
         final var channel = packet.payload().id().toString();
-        final var data = new PacketByteBuf(Unpooled.buffer());
-        packet.payload().write(data);
 
-        if (channel.equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER)) {
+        if (channel.equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof PacketByteBufPayload payload) {
+            final var data = payload.data();
+
             final var uuid = data.readString();
-
             if (ClientsideFixes.hasSyncTask(uuid)) {
                 ClientsideFixes.getSyncTask(uuid).accept(data);
                 ci.cancel();
