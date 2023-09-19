@@ -44,6 +44,7 @@
     "krypton": "<=0.2.2"
   },
   "conflicts": {
-    "dashloader": "*"
+    "dashloader": "*",
+    "armorskin": "*"
   }
 }

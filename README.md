@@ -35,6 +35,7 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 
 ### Conflicts
 - ***[DashLoader (*)](https://github.com/alphaqu/DashLoader/tree/fabric-1.20)*** - Font rendering related fixes aren't working
+- ***[Armor Skin (*)](https://github.com/IzzyDotExe/ArmorSkin)*** - Beta HUD changes aren't working
 
 ## List of all clientside related fixes and TODO
 <details>

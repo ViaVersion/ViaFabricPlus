@@ -17,13 +17,10 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import net.minecraft.block.*;
 import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HopperBlock;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -36,19 +33,27 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HopperBlock.class)
-public class MixinHopperBlock {
+public abstract class MixinHopperBlock extends BlockWithEntity {
 
     @Unique
     private final static VoxelShape viafabricplus_inside_shape_v1_12_2 = Block.createCuboidShape(2, 10, 2, 14, 16, 14);
 
     @Unique
-    private final static VoxelShape viafabricplus_hopper_shape_v1_12_2 = VoxelShapes.combineAndSimplify(
-            VoxelShapes.fullCube(),
-            viafabricplus_inside_shape_v1_12_2,
-            BooleanBiFunction.ONLY_FIRST);
+    private final static VoxelShape viafabricplus_hopper_shape_v1_12_2 = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), viafabricplus_inside_shape_v1_12_2, BooleanBiFunction.ONLY_FIRST);
+
+    @Unique
+    private boolean viafabricplus_requireOriginalShape;
+
+    public MixinHopperBlock(Settings settings) {
+        super(settings);
+    }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+        if (viafabricplus_requireOriginalShape) {
+            viafabricplus_requireOriginalShape = false;
+            return;
+        }
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(viafabricplus_hopper_shape_v1_12_2);
         }
@@ -59,5 +64,11 @@ public class MixinHopperBlock {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(viafabricplus_inside_shape_v1_12_2);
         }
+    }
+
+    @Override
+    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+        viafabricplus_requireOriginalShape = true;
+        return super.getCullingShape(state, world, pos);
     }
 }

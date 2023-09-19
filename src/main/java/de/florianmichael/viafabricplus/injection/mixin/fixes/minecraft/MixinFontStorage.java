@@ -83,7 +83,7 @@ public abstract class MixinFontStorage implements IFontStorage {
 
     @Inject(method = "findGlyph", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/Font;getGlyph(I)Lnet/minecraft/client/font/Glyph;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void injectFindGlyph(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir, Glyph glyph, Iterator var3, Font font) {
-        if (ClientsideFixes.DASH_LOADER || !this.id.getNamespace().equals("minecraft")) return;
+        if (!this.id.getNamespace().equals("minecraft")) return;
 
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             if (viafabricplus_isForbiddenCharacter(font, codePoint)) cir.setReturnValue(FontStorage.GlyphPair.MISSING);
@@ -96,7 +96,7 @@ public abstract class MixinFontStorage implements IFontStorage {
 
     @Inject(method = "findGlyphRenderer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/Font;getGlyph(I)Lnet/minecraft/client/font/Glyph;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void injectFindGlyphRenderer(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir, Iterator var2, Font font) {
-        if (ClientsideFixes.DASH_LOADER || !this.id.getNamespace().equals("minecraft")) return;
+        if (!this.id.getNamespace().equals("minecraft")) return;
 
         if (!viafabricplus_obfuscation && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             if (viafabricplus_isForbiddenCharacter(font, codePoint)) cir.setReturnValue(this.blankGlyphRenderer);

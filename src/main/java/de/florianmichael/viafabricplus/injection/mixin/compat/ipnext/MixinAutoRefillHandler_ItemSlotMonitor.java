@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.ipnext;
+package de.florianmichael.viafabricplus.injection.mixin.compat.ipnext;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.raphimc.vialoader.util.VersionEnum;
@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /*
  * https://github.com/blackd/Inventory-Profiles/tree/all-in-one is handling the offhand slot even when
  * ViaFabricPlus removes the slot in <= 1.8.9, so we have to cancel the handling of the offhand slot
- * <p>
+ *
  * Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/209
  */
 @Pseudo
