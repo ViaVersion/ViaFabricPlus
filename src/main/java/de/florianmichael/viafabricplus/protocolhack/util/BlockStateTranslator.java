@@ -27,6 +27,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPackets1_18;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.Unpooled;
 import net.minecraft.SharedConstants;
 import net.minecraft.network.PacketByteBuf;
@@ -36,7 +38,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BlockStateTranslator {
-    private final static UserConnection DUMMY_USER_CONNECTION = new UserConnectionImpl(null, false);
+    private final static UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createFakerUserConnection(null);
 
     public static int translateBlockState1_18(int oldId) {
         final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), ProtocolVersion.v1_18_2.getVersion());
@@ -53,7 +55,7 @@ public class BlockStateTranslator {
             wrapper.read(Type.POSITION1_14);
             return wrapper.read(Type.VAR_INT);
         } catch (Exception e) {
-            e.printStackTrace();
+            ViaFabricPlus.LOGGER.error("Failed to translate block state " + oldId + " to 1.18.2", e);
         }
 
         return oldId;

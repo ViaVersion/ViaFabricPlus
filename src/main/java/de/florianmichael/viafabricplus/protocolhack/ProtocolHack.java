@@ -25,6 +25,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.storage.InventoryTracker1_16;
+import com.viaversion.viaversion.protocols.protocol1_20_2to1_20.storage.ConfigurationState;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.base.event.FinishViaVersionStartupCallback;
@@ -186,13 +187,24 @@ public class ProtocolHack {
      * @return Creates a Fake UserConnection class with a valid protocol pipeline to emulate packets
      */
     public static UserConnection createFakerUserConnection() {
-        final var current = getMainUserConnection();
+        return createFakerUserConnection(getMainUserConnection().getChannel());
+    }
 
-        final var userConnection = new UserConnectionImpl(current.getChannel(), true);
-        userConnection.getProtocolInfo().setPipeline(new ProtocolPipelineImpl(userConnection));
-        userConnection.put(new InventoryTracker1_16());
+    /**
+     * @param channel the current channel
+     * @return Creates a Fake UserConnection class with a valid protocol pipeline to emulate packets
+     */
+    public static UserConnection createFakerUserConnection(final Channel channel) {
+        final var fake = new UserConnectionImpl(channel, true);
+        fake.getProtocolInfo().setPipeline(new ProtocolPipelineImpl(fake));
 
-        return userConnection;
+        fake.put(new InventoryTracker1_16());
+        fake.put(new ConfigurationState());
+
+        //noinspection DataFlowIssue
+        fake.get(ConfigurationState.class).setBridgePhase(ConfigurationState.BridgePhase.NONE);
+
+        return fake;
     }
 
     /**

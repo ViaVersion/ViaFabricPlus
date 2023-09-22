@@ -24,11 +24,11 @@ import com.viaversion.viaversion.api.protocol.ProtocolPathEntry;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.packet.PacketWrapperImpl;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.storage.InventoryTracker;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.Unpooled;
-import net.minecraft.SharedConstants;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.NetworkState;
@@ -45,10 +45,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ItemTranslator {
-    private final static UserConnection DUMMY_USER_CONNECTION = new UserConnectionImpl(null, false);
+    private final static UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createFakerUserConnection(null);
 
     public static Item MC_TO_VIA_LATEST_TO_TARGET(final ItemStack stack, final VersionEnum targetVersion) {
-        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), targetVersion.getVersion());
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ViaFabricPlus.NATIVE_VERSION.getVersion(), targetVersion.getVersion());
         if (protocolPath == null) return null;
 
         final var dummyPacket = new CreativeInventoryActionC2SPacket(36, stack);
@@ -68,15 +68,16 @@ public class ItemTranslator {
                 return wrapper.read(Type.ITEM);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            ViaFabricPlus.LOGGER.error("Failed to translate item", e);
         }
         return null;
     }
 
     public static ItemStack VIA_TO_MC_B1_8_TO_LATEST(final Item item) {
-        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), VersionEnum.b1_8tob1_8_1.getVersion());
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ViaFabricPlus.NATIVE_VERSION.getVersion(), VersionEnum.b1_8tob1_8_1.getVersion());
         if (protocolPath == null) return null;
 
+        // Make sure that ViaVersion doesn't track stuff and change its behaviour
         DUMMY_USER_CONNECTION.put(new WindowTracker(DUMMY_USER_CONNECTION));
         DUMMY_USER_CONNECTION.put(new InventoryTracker());
 
@@ -97,7 +98,8 @@ public class ItemTranslator {
             final var viaItem = wrapper.read(Type.FLAT_VAR_INT_ITEM);
             return new ItemStack(() -> Registries.ITEM.get(viaItem.identifier()), viaItem.amount());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            ViaFabricPlus.LOGGER.error("Failed to translate item", e);
+            return null;
         }
     }
 }
