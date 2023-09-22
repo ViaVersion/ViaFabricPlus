@@ -82,9 +82,10 @@ public class PackFormatsMappings {
         }
 
         final GameVersion gameVersion = protocolMap.get(nativeVersion);
-        System.out.println(SharedConstants.getGameVersion().getName() + " " + gameVersion.getName());
-        System.out.println(SharedConstants.getGameVersion().getId() + " " + gameVersion.getId());
         if (!gameVersion.getName().equals(SharedConstants.getGameVersion().getName()) || !gameVersion.getId().equals(SharedConstants.getGameVersion().getId()) || gameVersion.getResourceVersion(ResourceType.CLIENT_RESOURCES) != SharedConstants.getGameVersion().getResourceVersion(ResourceType.CLIENT_RESOURCES)) {
+            System.out.println("Vanilla: " + SharedConstants.getGameVersion().getName() + " , VFP: " + gameVersion.getName());
+            System.out.println("Vanilla: " + SharedConstants.getGameVersion().getId() + " , VFP: " + gameVersion.getId());
+
             throw new RuntimeException("The current version has no pack format registered");
         }
     }
