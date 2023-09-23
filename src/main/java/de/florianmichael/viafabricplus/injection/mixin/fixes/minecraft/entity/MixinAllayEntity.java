@@ -36,11 +36,11 @@ public abstract class MixinAllayEntity extends PathAwareEntity {
     }
 
     @Inject(method = "getUnscaledRidingOffset", at = @At("HEAD"), cancellable = true)
-    public void changeHeightOffset(CallbackInfoReturnable<Double> cir) {
+    public void changeHeightOffset(CallbackInfoReturnable<Float> cir) {
         final var ver = ProtocolHack.getTargetVersion();
 
         if (ver.isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            cir.setReturnValue(ver.isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2) ? 0.0 : 0.4);
+            cir.setReturnValue(ver.isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2) ? 0.0F : 0.4F);
         }
     }
 }

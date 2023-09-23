@@ -133,11 +133,4 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
         return instance.isSprinting();
     }
-
-    @Inject(method = "getUnscaledRidingOffset", at = @At("HEAD"), cancellable = true)
-    public void setStaticScale(Entity vehicle, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            cir.setReturnValue(-0.35F);
-        }
-    }
 }
