@@ -12,6 +12,7 @@ accessible field net/minecraft/client/gui/screen/GameMenuScreen exitButton Lnet/
 accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/minecraft/client/font/FontStorage$GlyphPair;
 accessible field net/minecraft/client/network/AllowedAddressResolver addressResolver Lnet/minecraft/client/network/AddressResolver;
 accessible field net/minecraft/network/ClientConnection packetSizeLogger Lnet/minecraft/network/handler/PacketSizeLogger;
+accessible field net/minecraft/entity/boss/dragon/EnderDragonEntity body Lnet/minecraft/entity/boss/dragon/EnderDragonPart;
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
