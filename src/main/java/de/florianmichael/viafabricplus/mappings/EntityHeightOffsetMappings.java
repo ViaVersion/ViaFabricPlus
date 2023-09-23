@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition;
+package de.florianmichael.viafabricplus.mappings;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.Entity;
@@ -31,7 +31,7 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.util.math.MathHelper;
 import net.raphimc.vialoader.util.VersionEnum;
 
-public class EntityHeightOffsets1_20_1 {
+public class EntityHeightOffsetMappings {
 
     public static double getMountedHeightOffset(final Entity entity) {
         double offset = entity.getHeight() * 0.75;
@@ -57,7 +57,12 @@ public class EntityHeightOffsets1_20_1 {
         } else if (entity instanceof ZoglinEntity zoglinEntity) {
             offset = (double) entity.getHeight() - (zoglinEntity.isBaby() ? 0.2 : 0.15);
         } else if (entity instanceof BoatEntity boatEntity) {
-            offset = boatEntity.getVariant() == BoatEntity.Type.BAMBOO ? 0.25 : -0.1;
+            final var version = ProtocolHack.getTargetVersion();
+            if (version.isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+                offset = -0.3;
+            } else {
+                offset = boatEntity.getVariant() == BoatEntity.Type.BAMBOO ? version.isOlderThanOrEqualTo(VersionEnum.r1_19_4) ? 0.3 : 0.25 : -0.1;
+            }
         } else if (entity instanceof StriderEntity striderEntity) {
             float var1 = Math.min(0.25F, striderEntity.limbAnimator.getSpeed());
             float var2 = striderEntity.limbAnimator.getPos();
