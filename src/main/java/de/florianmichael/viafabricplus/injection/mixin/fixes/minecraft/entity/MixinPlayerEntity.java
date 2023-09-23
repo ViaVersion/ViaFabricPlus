@@ -17,14 +17,11 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import net.minecraft.entity.*;
 import net.minecraft.util.Hand;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
@@ -135,5 +132,12 @@ public abstract class MixinPlayerEntity extends LivingEntity {
             return viafabricplus_isSprinting;
         }
         return instance.isSprinting();
+    }
+
+    @Inject(method = "getUnscaledRidingOffset", at = @At("HEAD"), cancellable = true)
+    public void setStaticScale(Entity vehicle, CallbackInfoReturnable<Float> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            cir.setReturnValue(-0.35F);
+        }
     }
 }
