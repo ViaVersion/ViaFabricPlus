@@ -36,6 +36,7 @@
     "fixes.minecraft.MixinMinecraftClient",
     "fixes.minecraft.MixinPendingUpdateManager",
     "fixes.minecraft.MixinPlayerEntityRenderer",
+    "fixes.minecraft.MixinPlayerListEntry",
     "fixes.minecraft.MixinPlayerPublicKey_PublicKeyData",
     "fixes.minecraft.MixinProfileKeysImpl",
     "fixes.minecraft.MixinServerResourcePackProvider",
@@ -58,6 +59,7 @@
     "fixes.minecraft.block.MixinFarmlandBlock",
     "fixes.minecraft.block.MixinFenceBlock",
     "fixes.minecraft.block.MixinFireBlock",
+    "fixes.minecraft.block.MixinFlowerbedBlock",
     "fixes.minecraft.block.MixinFlowerPotBlock",
     "fixes.minecraft.block.MixinHopperBlock",
     "fixes.minecraft.block.MixinLadderBlock",
@@ -98,6 +100,7 @@
     "fixes.minecraft.item.MixinBrushItem",
     "fixes.minecraft.item.MixinElytraItem",
     "fixes.minecraft.item.MixinEnderPearlItem",
+    "fixes.minecraft.item.MixinEquipment",
     "fixes.minecraft.item.MixinFireworkRocketItem",
     "fixes.minecraft.item.MixinHeldItemRenderer",
     "fixes.minecraft.item.MixinHoeItem",
@@ -170,9 +173,7 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "fixes.minecraft.block.MixinFlowerbedBlock",
-    "fixes.minecraft.item.MixinEquipment"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder"
   ],
   "injectors": {
     "defaultRequire": 1

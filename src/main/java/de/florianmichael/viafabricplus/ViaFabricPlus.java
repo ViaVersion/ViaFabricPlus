@@ -41,7 +41,6 @@ import java.io.File;
 
 /*
  * TODO | Port
- *  - Skin loading has changed (Server doesn't send the whole skin data anymore)
  *  - Entity passenger points and heights/offsets are completely broken across all entities
  *
  * TODO | General
