@@ -20,7 +20,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
-import de.florianmichael.viafabricplus.injection.access.IBoatEntity_1_8;
+import de.florianmichael.viafabricplus.injection.access.IBoatEntity;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
@@ -109,7 +109,7 @@ public abstract class MixinClientPlayNetworkHandler {
         if (!ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) return;
 
         final var entity = this.world.getEntityById(packet.getId());
-        if (entity instanceof IBoatEntity_1_8 boatEntity) {
+        if (entity instanceof IBoatEntity boatEntity) {
             boatEntity.viafabricplus_setBoatEmpty(packet.getPassengerIds().length == 0);
         }
     }

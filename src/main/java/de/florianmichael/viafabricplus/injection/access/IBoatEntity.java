@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.access;
 
-public interface IBoatEntity_1_8 {
+public interface IBoatEntity {
 
     void viafabricplus_setBoatEmpty(boolean boatEmpty);
 }

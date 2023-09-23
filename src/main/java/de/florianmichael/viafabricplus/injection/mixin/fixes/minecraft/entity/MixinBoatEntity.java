@@ -1,7 +1,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
 import de.florianmichael.viafabricplus.mappings.EntityHeightOffsetMappings;
-import de.florianmichael.viafabricplus.injection.access.IBoatEntity_1_8;
+import de.florianmichael.viafabricplus.injection.access.IBoatEntity;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -24,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BoatEntity.class)
-public abstract class MixinBoatEntity extends Entity implements IBoatEntity_1_8 {
+public abstract class MixinBoatEntity extends Entity implements IBoatEntity {
 
     @Shadow
     private double x;
@@ -83,7 +84,7 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity_1_8 
 
     @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
     private void onPushAwayFrom(Entity entity, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (this.viafabricplus_boatMovementEmulation()) {
             super.pushAwayFrom(entity);
             ci.cancel();
         }
@@ -91,7 +92,7 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity_1_8 
 
     @Inject(method = "updateTrackedPositionAndAngles", at = @At("HEAD"), cancellable = true)
     private void onUpdateTrackedPositionAndAngles(double x, double y, double z, float yaw, float pitch, int interpolationSteps, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (this.viafabricplus_boatMovementEmulation()) {
             if (hasPassengers()) {
                 this.prevX = x;
                 this.prevY = y;
@@ -132,7 +133,7 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity_1_8 
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void onTick(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (this.viafabricplus_boatMovementEmulation()) {
             super.tick();
 
             if (getDamageWobbleTicks() > 0) {
@@ -279,7 +280,7 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity_1_8 
 
     @Inject(method = "updatePassengerPosition", at = @At("HEAD"), cancellable = true)
     private void onUpdatePassengerPosition(Entity passenger, PositionUpdater positionUpdater, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (this.viafabricplus_boatMovementEmulation()) {
             if (hasPassenger(passenger)) {
                 double dx = Math.cos(this.getYaw() * Math.PI / 180) * 0.4;
                 double dz = Math.sin(this.getYaw() * Math.PI / 180) * 0.4;
@@ -291,7 +292,7 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity_1_8 
 
     @Inject(method = "onPassengerLookAround", at = @At("HEAD"), cancellable = true)
     private void onOnPassengerLookAround(Entity passenger, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (this.viafabricplus_boatMovementEmulation()) {
             // don't prevent entities looking around in the boat
             super.onPassengerLookAround(passenger);
             ci.cancel();
@@ -300,7 +301,7 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity_1_8 
 
     @Inject(method = "fall", at = @At("HEAD"))
     private void onFall(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (this.viafabricplus_boatMovementEmulation()) {
             // prevent falling from being negated
             location = BoatEntity.Location.ON_LAND;
         }
@@ -308,10 +309,15 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity_1_8 
 
     @Inject(method = "canAddPassenger", at = @At("HEAD"), cancellable = true)
     private void onCanAddPassenger(Entity passenger, CallbackInfoReturnable<Boolean> ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (this.viafabricplus_boatMovementEmulation()) {
             // only one entity can ride a boat at a time
             ci.setReturnValue(super.canAddPassenger(passenger));
         }
+    }
+
+    @Unique
+    private boolean viafabricplus_boatMovementEmulation() {
+        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && ExperimentalSettings.INSTANCE.emulateBoatMovement.getValue();
     }
 
     @Override
