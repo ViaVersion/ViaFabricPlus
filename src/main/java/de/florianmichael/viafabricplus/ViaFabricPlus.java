@@ -33,9 +33,6 @@ import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.screen.ClassicItemSelectionScreen;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Identifier;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,26 +40,10 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 
 /*
-PORTING TO 1.20.2
-
-- ClientPacketListener#handleAddObjective, new if added that could break behavior?
-- Same for handleSetScore
-- ClientHandshakePacketListenerImpl#handleGameProfile now sends brand payload and clientInformation packet.
-- NBT: "ActiveEffects" is now called "active_effects" and also does not use IDs anymore but names
-- Riding / Entity hitboxes have changed completely again
-- Player#getMyRidingOffset default value: -0.35 -> -0.6
-- AbstractMinecart#getPassengerAttachmentPoint() now no longer always returns 0 (I think we can just inject there?)
-- Boat attachnment points are completely different
-- Equipable#swapWithEquipmentSlot now has a swapWithEquipmentSlot check, looks important
-- NBT: "CustomPotionEffects" is now called "custom_potion_effects
-- ChorusFlowerBlock: has now a block-support-shape
-- DaylightDetector#use constant from 4 -> 2 ???? No idea what MS is doing there
-- PinkPetalsBlock: has no constant shape anymore, but is based on property (ka if this is important, you have to see, depending on how Via remapped this state)
-- PitcherCrop Shape calculation has changed
-- RepeaterBlock#updateShape now handles conditions that are also present clientside (do some blocks, not sure if this whole updateShape system is so important for us / that is detectable)
- */
-
-/*
+ * TODO | Port
+ *  - Skin loading has changed (Server doesn't send the whole skin data anymore)
+ *  - Entity passenger points and heights/offsets are completely broken across all entities
+ *
  * TODO | General
  *  - Check if relevant for protocol translation: TakeItemEntityPacket isEmpty case (1.20 -> 1.20.1 change)
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server

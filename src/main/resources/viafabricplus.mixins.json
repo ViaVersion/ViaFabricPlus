@@ -170,12 +170,11 @@
     "fixes.viaversion.protocol1_9to1_8.MixinViaIdleThread",
     "jsonwebtoken.MixinClasses",
     "jsonwebtoken.MixinDefaultCompressionCodecResolver",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder",
+    "fixes.minecraft.block.MixinFlowerbedBlock",
+    "fixes.minecraft.item.MixinEquipment"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "fixes.minecraft.block.MixinFlowerbedBlock"
-  ]
+  }
 }

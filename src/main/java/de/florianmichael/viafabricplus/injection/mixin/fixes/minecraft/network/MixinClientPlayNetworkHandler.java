@@ -111,7 +111,7 @@ public abstract class MixinClientPlayNetworkHandler {
     }
 
     @WrapWithCondition(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
-    public boolean removeError() {
+    public boolean removeError(Logger instance, String s, Object o) {
         return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_20_2);
     }
 
