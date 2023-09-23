@@ -15,13 +15,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractSignBlock.class)
-public class MixinAbstractSignBlock {
+public abstract class MixinAbstractSignBlock {
+
+    @Shadow protected abstract ActionResult getActionResult(boolean usedSignChanger);
 
     @Redirect(method = "onUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/SignBlockEntity;isWaxed()Z", ordinal = 1))
     public boolean removeCondition(SignBlockEntity instance) {
@@ -41,5 +44,21 @@ public class MixinAbstractSignBlock {
 
             cir.setReturnValue(!((item.isOf(Items.GLOW_INK_SAC) || item.isOf(Items.INK_SAC) || item.getItem() instanceof DyeItem) && player.canModifyBlocks()) && !signBlockEntity.isWaxed() ? ActionResult.CONSUME : ActionResult.SUCCESS);
         }
+    }
+
+    @Redirect(method = "onUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/AbstractSignBlock;getActionResult(Z)Lnet/minecraft/util/ActionResult;", ordinal = 0))
+    public ActionResult returnStaticResult_Pass(AbstractSignBlock instance, boolean usedSignChanger) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            return ActionResult.PASS;
+        }
+        return getActionResult(usedSignChanger);
+    }
+
+    @Redirect(method = "onUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/AbstractSignBlock;getActionResult(Z)Lnet/minecraft/util/ActionResult;", ordinal = 1))
+    public ActionResult returnStaticResult_Success(AbstractSignBlock instance, boolean usedSignChanger) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            return ActionResult.SUCCESS;
+        }
+        return getActionResult(usedSignChanger);
     }
 }
