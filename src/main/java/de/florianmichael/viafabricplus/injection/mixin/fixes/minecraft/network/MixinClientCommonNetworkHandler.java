@@ -17,17 +17,12 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
-import com.viaversion.viaversion.api.type.Type;
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import io.netty.buffer.ByteBufUtil;
-import net.fabricmc.fabric.impl.networking.payload.PacketByteBufPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.network.listener.ServerPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.common.CommonPingS2CPacket;
-import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
 import net.minecraft.screen.ScreenHandler;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
