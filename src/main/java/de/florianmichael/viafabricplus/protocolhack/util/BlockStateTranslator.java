@@ -25,12 +25,10 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPackets1_18;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.Unpooled;
-import net.minecraft.SharedConstants;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
@@ -41,7 +39,7 @@ public class BlockStateTranslator {
     private final static UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createFakerUserConnection(null);
 
     public static int translateBlockState1_18(int oldId) {
-        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), ProtocolVersion.v1_18_2.getVersion());
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ViaFabricPlus.NATIVE_VERSION.getVersion(), ProtocolVersion.v1_18_2.getVersion());
         if (protocolPath == null) return oldId;
 
         final PacketByteBuf inputData = new PacketByteBuf(Unpooled.buffer());

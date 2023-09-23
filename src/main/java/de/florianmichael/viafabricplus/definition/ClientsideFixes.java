@@ -24,6 +24,7 @@ import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.base.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.injection.MixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -33,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
@@ -100,6 +102,20 @@ public class ClientsideFixes {
                     Blocks.RED_STAINED_GLASS_PANE, Blocks.BLACK_STAINED_GLASS_PANE, Blocks.PISTON, Blocks.PISTON_HEAD,
                     Blocks.SNOW, Blocks.COBBLESTONE_WALL, Blocks.MOSSY_COBBLESTONE_WALL
             );
+
+            // Allows to execute tasks on the main thread
+            ClientPlayNetworking.registerGlobalReceiver(new Identifier(ClientsideFixes.PACKET_SYNC_IDENTIFIER), (client, handler, buf, responseSender) -> {
+                final var uuid = buf.readString();
+
+                if (PENDING_EXECUTION_TASKS.containsKey(uuid)) {
+                    MinecraftClient.getInstance().execute(() -> {
+                        final var task = PENDING_EXECUTION_TASKS.get(uuid);
+                        PENDING_EXECUTION_TASKS.remove(uuid);
+
+                        task.accept(buf);
+                    });
+                }
+            });
         });
 
         // Reloads some clientside stuff when the protocol version changes
@@ -134,28 +150,6 @@ public class ClientsideFixes {
                 currentChatLimit = Short.MAX_VALUE * 2;
             }
         });
-    }
-
-    /**
-     * Returns the sync task for the specified uuid and removes it from the list
-     *
-     * @param uuid The uuid of the sync task
-     * @return The sync task
-     */
-    public static Consumer<PacketByteBuf> getSyncTask(final String uuid) {
-        final var task = PENDING_EXECUTION_TASKS.get(uuid);
-        PENDING_EXECUTION_TASKS.remove(uuid);
-        return task;
-    }
-
-    /**
-     * Checks if there is a sync task for the specified uuid
-     *
-     * @param uuid The uuid to check
-     * @return True if there is a sync task, otherwise false
-     */
-    public static boolean hasSyncTask(final String uuid) {
-        return PENDING_EXECUTION_TASKS.containsKey(uuid);
     }
 
     /**

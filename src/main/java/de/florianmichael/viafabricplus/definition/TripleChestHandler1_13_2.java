@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.definition.screen;
+package de.florianmichael.viafabricplus.definition;
 
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.libs.gson.JsonElement;
@@ -24,44 +24,41 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.GenericContainerScreenHandler;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public class CustomScreenHandler {
+public class TripleChestHandler1_13_2 {
     public final static Consumer<PacketByteBuf> TRIPLE_CHEST_HANDLER = data -> {
         final var byteBuf = data.asByteBuf();
 
         try {
-            CustomScreenHandler.handleTripleChestHandler(Type.SHORT.readPrimitive(byteBuf), Type.COMPONENT.read(byteBuf), Type.SHORT.readPrimitive(byteBuf));
+            TripleChestHandler1_13_2.handleTripleChestHandler(Type.SHORT.readPrimitive(byteBuf), Type.COMPONENT.read(byteBuf), Type.SHORT.readPrimitive(byteBuf));
         } catch (Exception e) {
             ViaFabricPlus.LOGGER.error("Failed to open custom ScreenHandler with dimension 9xN", e);
         }
     };
-
-    private final static Map<Integer, ScreenHandlerType<ScreenHandler>> TRIPLE_CHEST_HANDLERS = new LinkedHashMap<>();
-
-    static {
-        for (int i = 0; i < 1000; i++) {
-            int finalI = i;
-            TRIPLE_CHEST_HANDLERS.put(i, new ScreenHandlerType<>((syncId, playerInventory) -> new GenericContainerScreenHandler(TRIPLE_CHEST_HANDLERS.get(finalI), syncId, playerInventory, finalI), FeatureFlags.VANILLA_FEATURES));
-        }
-    }
 
     public static void handleTripleChestHandler(final short windowID, final JsonElement title, final short slots) {
         int n = slots / 9;
         final int modulo = slots % 9;
         if (modulo > 0) n++;
 
-        HandledScreens.open(CustomScreenHandler.TRIPLE_CHEST_HANDLERS.get(n), MinecraftClient.getInstance(), windowID, Text.Serializer.fromJson(title.toString()));
+        final var screenHandler = new AtomicReference<ScreenHandlerType<?>>();
+        int finalN = n;
+        screenHandler.set(new TripleChestScreenHandlerType((syncId, playerInventory) -> new GenericContainerScreenHandler(screenHandler.get(), syncId, playerInventory, finalN), FeatureFlags.VANILLA_FEATURES));
+
+        HandledScreens.open(screenHandler.get(), MinecraftClient.getInstance(), windowID, Text.Serializer.fromJson(title.toString()));
     }
 
-    public static boolean isTripleChestHandler(final ScreenHandlerType<?> screenHandlerType) {
-        return TRIPLE_CHEST_HANDLERS.containsValue(screenHandlerType);
+    public static class TripleChestScreenHandlerType extends ScreenHandlerType<GenericContainerScreenHandler> {
+
+        public TripleChestScreenHandlerType(Factory<GenericContainerScreenHandler> factory, FeatureSet requiredFeatures) {
+            super(factory, requiredFeatures);
+        }
     }
 }

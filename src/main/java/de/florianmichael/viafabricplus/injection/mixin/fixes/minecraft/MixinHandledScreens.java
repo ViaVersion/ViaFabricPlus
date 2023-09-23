@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.definition.screen.CustomScreenHandler;
+import de.florianmichael.viafabricplus.definition.TripleChestHandler1_13_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
@@ -36,7 +36,7 @@ public class MixinHandledScreens {
 
     @Inject(method = "getProvider", at = @At("HEAD"), cancellable = true)
     private static <T extends ScreenHandler> void returnFakeProvider(ScreenHandlerType<T> type, CallbackInfoReturnable<HandledScreens.@Nullable Provider> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2) && CustomScreenHandler.isTripleChestHandler(type)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2) && type instanceof TripleChestHandler1_13_2.TripleChestScreenHandlerType) {
             cir.setReturnValue((handler, playerInventory, title) -> new GenericContainerScreen((GenericContainerScreenHandler) handler, playerInventory, title));
         }
     }

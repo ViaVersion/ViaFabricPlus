@@ -97,14 +97,13 @@ public abstract class MixinClientPlayNetworkHandler {
         }
     }
 
-//    @SuppressWarnings("InvalidInjectorMethodSignature")
-//    @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = BoatEntity.class))
-//    public Class<?> dontChangePlayerYaw(Object entity, Class<?> constant) {
-//        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2)) {
-//            return Integer.class;
-//        }
-//        return constant;
-//    }
+    @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = BoatEntity.class))
+    public Class<?> dontChangePlayerYaw(Object entity, Class<?> constant) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2)) {
+            return Integer.class;
+        }
+        return constant;
+    }
 
     @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
     public boolean removeWarning(Logger instance, String s, Object o) {

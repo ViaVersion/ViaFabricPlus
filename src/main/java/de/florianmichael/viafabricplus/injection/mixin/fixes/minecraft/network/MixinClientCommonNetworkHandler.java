@@ -17,8 +17,10 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
+import com.viaversion.viaversion.api.type.Type;
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import io.netty.buffer.ByteBufUtil;
 import net.fabricmc.fabric.impl.networking.payload.PacketByteBufPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
@@ -39,6 +41,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.time.Duration;
 import java.util.function.BooleanSupplier;
 
+@SuppressWarnings("UnstableApiUsage")
 @Mixin(ClientCommonNetworkHandler.class)
 public abstract class MixinClientCommonNetworkHandler {
 
@@ -73,20 +76,5 @@ public abstract class MixinClientCommonNetworkHandler {
             return;
         }
         send(packet, sendCondition, expiry);
-    }
-
-    @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
-    public void handlePseudoPackets(CustomPayloadS2CPacket packet, CallbackInfo ci) {
-        final var channel = packet.payload().id().toString();
-
-        if (channel.equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof PacketByteBufPayload payload) {
-            final var data = payload.data();
-
-            final var uuid = data.readString();
-            if (ClientsideFixes.hasSyncTask(uuid)) {
-                ClientsideFixes.getSyncTask(uuid).accept(data);
-                ci.cancel();
-            }
-        }
     }
 }
