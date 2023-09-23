@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import net.minecraft.entity.EntityDimensions;
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.block.BlockState;
@@ -34,6 +34,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
@@ -60,6 +61,8 @@ public abstract class MixinEntity {
     @Shadow
     public abstract void setVelocity(Vec3d velocity);
 
+
+    @Shadow protected abstract Vector3f getPassengerAttachmentPos(Entity passenger, EntityDimensions dimensions, float scaleFactor);
 
     @ModifyConstant(method = "movementInputToVelocity", constant = @Constant(doubleValue = 1E-7))
     private static double injectMovementInputToVelocity(double epsilon) {
@@ -189,5 +192,14 @@ public abstract class MixinEntity {
 
             cir.setReturnValue(blockPos);
         }
+    }
+
+    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
+    public Vector3f revertStaticRidingOffsetCalculation(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            return new Vector3f(0.0F, dimensions.height * 0.75F, 0.0F);
+        }
+
+        return getPassengerAttachmentPos(passenger, dimensions, scaleFactor);
     }
 }

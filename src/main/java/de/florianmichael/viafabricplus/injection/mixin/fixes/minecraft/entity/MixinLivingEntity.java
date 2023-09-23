@@ -22,10 +22,7 @@ import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
@@ -38,6 +35,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.raphimc.vialoader.util.VersionEnum;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
@@ -209,4 +207,12 @@ public abstract class MixinLivingEntity extends Entity {
         }
     }
 
+    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
+    public Vector3f revertStaticRidingOffsetCalculation(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            return new Vector3f(0.0F, entityDimensions.height * 0.75F, 0.0F);
+        }
+
+        return getPassengerAttachmentPos(entity, entityDimensions, v);
+    }
 }
