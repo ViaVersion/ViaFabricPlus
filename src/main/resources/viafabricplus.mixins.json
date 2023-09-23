@@ -72,7 +72,6 @@
     "fixes.minecraft.block.MixinSugarCaneBlock",
     "fixes.minecraft.block.MixinWallBlock",
     "fixes.minecraft.entity.MixinAbstractDonkeyEntity",
-    "fixes.minecraft.entity.MixinAllayEntity",
     "fixes.minecraft.entity.MixinAnimalEntity",
     "fixes.minecraft.entity.MixinBoatEntity",
     "fixes.minecraft.entity.MixinCamelEntity",
