@@ -110,6 +110,11 @@ public abstract class MixinClientPlayNetworkHandler {
         return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_3);
     }
 
+    @WrapWithCondition(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
+    public boolean removeError() {
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_20_2);
+    }
+
     @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))
     public boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
         return instance.isSecureChatEnforced() || VisualSettings.INSTANCE.disableSecureChatWarning.isEnabled();
