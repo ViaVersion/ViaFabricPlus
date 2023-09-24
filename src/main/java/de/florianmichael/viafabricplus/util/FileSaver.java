@@ -43,8 +43,8 @@ public abstract class FileSaver {
     public void init() {
         if (file.exists()) {
             JsonObject parentNode = null;
-            try {
-                parentNode = ViaFabricPlus.GSON.fromJson(new FileReader(file), JsonObject.class).getAsJsonObject();
+            try (final FileReader fr = new FileReader(file)) {
+                parentNode = ViaFabricPlus.GSON.fromJson(fr, JsonObject.class);
             } catch (Exception e) {
                 e.printStackTrace();
             }
