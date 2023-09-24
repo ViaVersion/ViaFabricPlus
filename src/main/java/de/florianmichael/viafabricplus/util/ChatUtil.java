@@ -29,7 +29,7 @@ public class ChatUtil {
     }
 
     public static Text prefixText(final Text message) {
-        return Text.literal("").append(PREFIX).append(" " + message);
+        return Text.literal("").append(PREFIX).append(" " + message.getString());
     }
 
     public static void sendPrefixedMessage(final String message) {
