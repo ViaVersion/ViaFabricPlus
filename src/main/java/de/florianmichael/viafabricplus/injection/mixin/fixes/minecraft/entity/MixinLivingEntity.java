@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
-import de.florianmichael.viafabricplus.mappings.EntityHeightOffsetMappings;
+import de.florianmichael.viafabricplus.definition.EntityHeightOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
@@ -211,14 +211,14 @@ public abstract class MixinLivingEntity extends Entity {
     @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
     public void replaceRidingOffset(Entity vehicle, CallbackInfoReturnable<Float> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            cir.setReturnValue((float) EntityHeightOffsetMappings.getHeightOffset((Entity) (Object) this));
+            cir.setReturnValue((float) EntityHeightOffsetsPre1_20_2.getHeightOffset((Entity) (Object) this));
         }
     }
 
     @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
     public Vector3f revertStaticRidingOffsetCalculation(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            return new Vector3f(0.0F, (float) EntityHeightOffsetMappings.getMountedHeightOffset(instance), 0.0F);
+            return EntityHeightOffsetsPre1_20_2.getMountedHeightOffset(instance, entity);
         }
         return getPassengerAttachmentPos(entity, entityDimensions, v);
     }

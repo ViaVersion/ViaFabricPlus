@@ -1,7 +1,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
-import de.florianmichael.viafabricplus.mappings.EntityHeightOffsetMappings;
+import de.florianmichael.viafabricplus.definition.EntityHeightOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.injection.access.IBoatEntity;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
@@ -284,7 +284,7 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity {
             if (hasPassenger(passenger)) {
                 double dx = Math.cos(this.getYaw() * Math.PI / 180) * 0.4;
                 double dz = Math.sin(this.getYaw() * Math.PI / 180) * 0.4;
-                passenger.setPosition(getX() + dx, getY() + EntityHeightOffsetMappings.getMountedHeightOffset(this), getZ() + dz);
+                passenger.setPosition(getX() + dx, getY() + EntityHeightOffsetsPre1_20_2.getMountedHeightOffset(this, passenger).y, getZ() + dz);
             }
             ci.cancel();
         }

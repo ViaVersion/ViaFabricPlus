@@ -16,6 +16,7 @@ accessible field net/minecraft/entity/boss/dragon/EnderDragonEntity body Lnet/mi
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
+accessible method net/minecraft/entity/passive/CamelEntity getPassengerAttachmentY (ZFLnet/minecraft/entity/EntityDimensions;F)D
 
 accessible class net/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection
 accessible class net/minecraft/client/font/FontStorage$GlyphPair
