@@ -115,6 +115,7 @@
     "fixes.minecraft.item.MixinShovelItem",
     "fixes.minecraft.item.MixinSwordItem",
     "fixes.minecraft.network.MixinClientCommonNetworkHandler",
+    "fixes.minecraft.network.MixinClientLoginNetworkHandler",
     "fixes.minecraft.network.MixinClientPlayNetworkHandler",
     "fixes.minecraft.packet.MixinChatMessageC2SPacket",
     "fixes.minecraft.packet.MixinPacketByteBuf",

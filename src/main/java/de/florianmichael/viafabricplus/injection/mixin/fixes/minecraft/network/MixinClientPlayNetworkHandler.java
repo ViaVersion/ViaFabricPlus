@@ -22,12 +22,16 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.injection.access.IBoatEntity;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.network.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.packet.BrandCustomPayload;
+import net.minecraft.network.packet.c2s.common.ClientOptionsC2SPacket;
+import net.minecraft.network.packet.c2s.common.CustomPayloadC2SPacket;
 import net.minecraft.network.packet.s2c.play.*;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.slf4j.Logger;
@@ -65,6 +69,17 @@ public abstract class MixinClientPlayNetworkHandler {
     public void fixPlayerListOrdering(MinecraftClient client, ClientConnection clientConnection, ClientConnectionState clientConnectionState, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             this.listedPlayerListEntries = new LinkedHashSet<>();
+        }
+    }
+
+    @Inject(method = "onGameJoin", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;setServerViewDistance(I)V", shift = At.Shift.AFTER))
+    public void sendBrandAndOptionPackets(GameJoinS2CPacket packet, CallbackInfo ci) {
+        // Counterpart from MixinClientLoginNetworkHandler
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            final var connection = this.getConnection();
+
+            connection.send(new ClientOptionsC2SPacket(MinecraftClient.getInstance().options.getSyncedOptions()));
+            connection.send(new CustomPayloadC2SPacket(new BrandCustomPayload(ClientBrandRetriever.getClientModName())));
         }
     }
 
