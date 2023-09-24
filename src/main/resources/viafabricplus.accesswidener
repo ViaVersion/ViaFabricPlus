@@ -13,10 +13,13 @@ accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/mi
 accessible field net/minecraft/client/network/AllowedAddressResolver addressResolver Lnet/minecraft/client/network/AddressResolver;
 accessible field net/minecraft/network/ClientConnection packetSizeLogger Lnet/minecraft/network/handler/PacketSizeLogger;
 accessible field net/minecraft/entity/boss/dragon/EnderDragonEntity body Lnet/minecraft/entity/boss/dragon/EnderDragonPart;
+accessible field net/minecraft/entity/passive/AbstractHorseEntity lastAngryAnimationProgress F
+accessible field net/minecraft/entity/vehicle/BoatEntity yawVelocity F
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
 accessible method net/minecraft/entity/passive/CamelEntity getPassengerAttachmentY (ZFLnet/minecraft/entity/EntityDimensions;F)D
+accessible method net/minecraft/entity/vehicle/BoatEntity getMaxPassengers ()I
 
 accessible class net/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection
 accessible class net/minecraft/client/font/FontStorage$GlyphPair

@@ -18,10 +18,7 @@
 package de.florianmichael.viafabricplus.definition;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.*;
@@ -29,6 +26,7 @@ import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.entity.vehicle.ChestBoatEntity;
 import net.minecraft.util.math.MathHelper;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.joml.Vector3f;
@@ -47,6 +45,22 @@ public class EntityHeightOffsetsPre1_20_2 {
             final float newYaw = passengerYaw + clampedDelta - deltaDegrees;
             passenger.setYaw(newYaw);
             passenger.setHeadYaw(newYaw);
+        } else if (entity instanceof BoatEntity boatEntity) {
+            passenger.setYaw(passenger.getYaw() + boatEntity.yawVelocity);
+            passenger.setHeadYaw(passenger.getHeadYaw() + boatEntity.yawVelocity);
+
+            passenger.setBodyYaw(entity.getYaw());
+            final float f = MathHelper.wrapDegrees(passenger.getYaw() - entity.getYaw());
+            final float g = MathHelper.clamp(f, -105.0f, 105.0f);
+            passenger.prevYaw += g - f;
+            passenger.setYaw(passenger.getYaw() + g - f);
+            passenger.setHeadYaw(passenger.getYaw());
+
+            if (passenger instanceof AnimalEntity && boatEntity.getPassengerList().size() == boatEntity.getMaxPassengers()) {
+                int j = passenger.getId() % 2 == 0 ? 90 : 270;
+                passenger.setBodyYaw(((AnimalEntity) passenger).bodyYaw + (float) j);
+                passenger.setHeadYaw(passenger.getHeadYaw() + (float) j);
+            }
         }
     }
 
@@ -65,24 +79,18 @@ public class EntityHeightOffsetsPre1_20_2 {
 
             final int passengerIndex = camelEntity.getPassengerList().indexOf(passenger);
             final boolean firstIndex = passengerIndex == 0;
-
             if (passengerIndex >= 0) {
                 float zOffset = 0.5f;
                 if (camelEntity.isRemoved()) {
                     yOffset = 0.01f;
                 } else {
                     final var fakeDimension = EntityDimensions.fixed(0F, (0.375F * camelEntity.getScaleFactor()) + (float) yOffset); // Reverts original calculation to set yOffset to our field
-
                     yOffset = camelEntity.getPassengerAttachmentY(firstIndex, 0.0f, fakeDimension, camelEntity.getScaleFactor());
                 }
 
                 if (camelEntity.getPassengerList().size() > 1) {
-                    if (!firstIndex) {
-                        zOffset = -0.7f;
-                    }
-                    if (passenger instanceof AnimalEntity) {
-                        zOffset += 0.2f;
-                    }
+                    if (!firstIndex) zOffset = -0.7f;
+                    if (passenger instanceof AnimalEntity) zOffset += 0.2f;
                 }
 
                 return new Vector3f(0, (float) yOffset, zOffset);
@@ -110,6 +118,23 @@ public class EntityHeightOffsetsPre1_20_2 {
             } else {
                 yOffset = boatEntity.getVariant() == BoatEntity.Type.BAMBOO ? 0.25 : -0.1;
             }
+
+            if (boatEntity.hasPassenger(passenger)) {
+                float xOffset = (boatEntity instanceof ChestBoatEntity) ? 0.15F : 0.0F;
+                yOffset = (boatEntity.isRemoved() ? (double) 0.01f : yOffset);
+
+                if (boatEntity.getPassengerList().size() > 1) {
+                    int i = boatEntity.getPassengerList().indexOf(passenger);
+                    xOffset = i == 0 ? 0.2f : -0.6f;
+                    if (passenger instanceof AnimalEntity) {
+                        xOffset += 0.2f;
+                    }
+                }
+
+                return new Vector3f(xOffset, (float) yOffset, 0.0F);
+            } else {
+                return new Vector3f();
+            }
         } else if (entity instanceof StriderEntity striderEntity) {
             final var var1 = Math.min(0.25F, striderEntity.limbAnimator.getSpeed());
             final var var2 = striderEntity.limbAnimator.getPos();
@@ -128,6 +153,15 @@ public class EntityHeightOffsetsPre1_20_2 {
             yOffset -= 0.25;
         } else if (entity instanceof AbstractMinecartEntity) {
             yOffset = 0.0;
+        } else if (entity instanceof AbstractHorseEntity abstractHorseEntity) {
+            if (abstractHorseEntity.lastAngryAnimationProgress > 0.0f) {
+                final float xOffset = MathHelper.sin(abstractHorseEntity.bodyYaw * ((float) Math.PI / 180));
+                final float zOffset = MathHelper.cos(abstractHorseEntity.bodyYaw * ((float) Math.PI / 180));
+
+                final float xzFactor = 0.7F * abstractHorseEntity.lastAngryAnimationProgress;
+
+                return new Vector3f(xzFactor * xOffset, (float) (yOffset + 0.15F * abstractHorseEntity.lastAngryAnimationProgress), xzFactor * zOffset);
+            }
         }
 
         return new Vector3f(0.0F, (float) yOffset, 0.0F);
