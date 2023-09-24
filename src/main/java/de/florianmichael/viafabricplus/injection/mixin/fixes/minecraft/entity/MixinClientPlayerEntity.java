@@ -185,6 +185,15 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return MathHelper.inverseSqrt(x);
     }
 
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 0))
+    public boolean removeVehicleRequirement(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            return false;
+        }
+
+        return instance.hasVehicle();
+    }
+
     @Override
     public boolean isCreative() {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
