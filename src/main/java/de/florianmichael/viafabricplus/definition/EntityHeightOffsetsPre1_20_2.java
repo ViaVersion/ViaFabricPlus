@@ -94,6 +94,8 @@ public class EntityHeightOffsetsPre1_20_2 {
                 }
 
                 return new Vector3f(0, (float) yOffset, zOffset);
+            } else {
+                return new Vector3f();
             }
         } else if (entity instanceof SnifferEntity) {
             yOffset = 1.8;
