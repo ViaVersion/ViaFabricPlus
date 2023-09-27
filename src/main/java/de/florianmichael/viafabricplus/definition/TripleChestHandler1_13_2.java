@@ -17,12 +17,9 @@
  */
 package de.florianmichael.viafabricplus.definition;
 
-import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.libs.gson.JsonElement;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.GenericContainerScreenHandler;
@@ -30,19 +27,8 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 public class TripleChestHandler1_13_2 {
-    public final static Consumer<PacketByteBuf> TRIPLE_CHEST_HANDLER = data -> {
-        final var byteBuf = data.asByteBuf();
-
-        try {
-            TripleChestHandler1_13_2.handleTripleChestHandler(Type.SHORT.readPrimitive(byteBuf), Type.COMPONENT.read(byteBuf), Type.SHORT.readPrimitive(byteBuf));
-        } catch (Exception e) {
-            ViaFabricPlus.LOGGER.error("Failed to open custom ScreenHandler with dimension 9xN", e);
-        }
-    };
-
     public static void handleTripleChestHandler(final short windowID, final JsonElement title, final short slots) {
         int n = slots / 9;
         final int modulo = slots % 9;

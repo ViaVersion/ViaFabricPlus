@@ -27,11 +27,11 @@ import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.ClientboundPackets1_14;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.packets.InventoryPackets;
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.definition.TripleChestHandler1_13_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.Unpooled;
 import net.minecraft.SharedConstants;
+import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,9 +48,7 @@ public class MixinInventoryPackets {
     @Inject(method = "lambda$registerPackets$0", at = @At(value = "INVOKE", target = "Ljava/util/logging/Logger;warning(Ljava/lang/String;)V"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private static void supportCustomSlots(PacketWrapper wrapper, CallbackInfo ci, Short windowId, String type, JsonElement title, Short slots, int typeId) {
         if (typeId == -1) {
-            wrapper.clearPacket();
-            wrapper.setPacketType(ClientboundPackets1_14.PLUGIN_MESSAGE);
-            wrapper.write(Type.STRING, ClientsideFixes.PACKET_SYNC_IDENTIFIER);
+            wrapper.cancel();
 
             final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(SharedConstants.getProtocolVersion(), ProtocolVersion.v1_13_2.getVersion());
             final var userConnection = ProtocolHack.createFakerUserConnection();
@@ -65,12 +63,9 @@ public class MixinInventoryPackets {
                 fakeOpenWindow.read(Type.VAR_INT);
                 fakeOpenWindow.read(Type.VAR_INT);
 
-                final String uuid = ClientsideFixes.executeSyncTask(TripleChestHandler1_13_2.TRIPLE_CHEST_HANDLER);
+                final var remappedTitle = fakeOpenWindow.read(Type.COMPONENT);
 
-                wrapper.write(Type.STRING, uuid);
-                wrapper.write(Type.SHORT, windowId);
-                wrapper.write(Type.COMPONENT, fakeOpenWindow.read(Type.COMPONENT));
-                wrapper.write(Type.SHORT, slots);
+                MinecraftClient.getInstance().executeSync(() -> TripleChestHandler1_13_2.handleTripleChestHandler(windowId, remappedTitle, slots));
             } catch (Exception e) {
                 Via.getPlatform().getLogger().log(Level.SEVERE, "Failed to emulate Triple Chest", e);
             }

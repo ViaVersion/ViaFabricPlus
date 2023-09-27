@@ -70,6 +70,7 @@ public abstract class MixinClientCommonNetworkHandler {
             sendPacket(packet);
             return;
         }
+
         send(packet, sendCondition, expiry);
     }
 }

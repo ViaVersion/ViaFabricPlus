@@ -24,7 +24,6 @@ import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.base.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.injection.MixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -32,16 +31,12 @@ import net.minecraft.client.font.FontStorage;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 
 /**
  * This class contains random fields and methods that are used to fix bugs on the client side
@@ -62,16 +57,6 @@ public class ClientsideFixes {
      * Contains the armor points of all armor items in legacy versions (<= 1.8.x)
      */
     private final static Map<Item, Integer> LEGACY_ARMOR_POINTS = new HashMap<>();
-
-    /**
-     * Contains all tasks that are waiting for a packet to be received, this system can be used to sync ViaVersion tasks with the correct thread
-     */
-    private final static Map<String, Consumer<PacketByteBuf>> PENDING_EXECUTION_TASKS = new ConcurrentHashMap<>();
-
-    /**
-     * This identifier is an internal identifier that is used to identify packets that are sent by ViaFabricPlus
-     */
-    public final static String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 
     /**
      * The current chat limit
@@ -102,20 +87,6 @@ public class ClientsideFixes {
                     Blocks.RED_STAINED_GLASS_PANE, Blocks.BLACK_STAINED_GLASS_PANE, Blocks.PISTON, Blocks.PISTON_HEAD,
                     Blocks.SNOW, Blocks.COBBLESTONE_WALL, Blocks.MOSSY_COBBLESTONE_WALL
             );
-
-            // Allows to execute tasks on the main thread
-            ClientPlayNetworking.registerGlobalReceiver(new Identifier(ClientsideFixes.PACKET_SYNC_IDENTIFIER), (client, handler, buf, responseSender) -> {
-                final var uuid = buf.readString();
-
-                if (PENDING_EXECUTION_TASKS.containsKey(uuid)) {
-                    MinecraftClient.getInstance().execute(() -> {
-                        final var task = PENDING_EXECUTION_TASKS.get(uuid);
-                        PENDING_EXECUTION_TASKS.remove(uuid);
-
-                        task.accept(buf);
-                    });
-                }
-            });
         });
 
         // Reloads some clientside stuff when the protocol version changes
@@ -150,18 +121,6 @@ public class ClientsideFixes {
                 currentChatLimit = Short.MAX_VALUE * 2;
             }
         });
-    }
-
-    /**
-     * Executes a sync task and returns the uuid of the task
-     *
-     * @param task The task to execute
-     * @return The uuid of the task
-     */
-    public static String executeSyncTask(final Consumer<PacketByteBuf> task) {
-        final var uuid = UUID.randomUUID().toString();
-        PENDING_EXECUTION_TASKS.put(uuid, task);
-        return uuid;
     }
 
     /**
