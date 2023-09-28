@@ -27,6 +27,7 @@ import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.packets.WorldPac
 import de.florianmichael.viafabricplus.definition.ClientPlayerInteractionManager1_18_2;
 import de.florianmichael.viafabricplus.protocolhack.util.BlockStateTranslator;
 import net.minecraft.block.Block;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
@@ -49,7 +50,7 @@ public class MixinWorldPackets {
             final var action = PlayerActionC2SPacket.Action.values()[wrapper.read(Type.VAR_INT)];
             final var allGood = wrapper.read(Type.BOOLEAN);
 
-            ClientPlayerInteractionManager1_18_2.handleBlockBreakAck(new BlockPos(pos.x(), pos.y(), pos.z()), blockState, action, allGood);
+            MinecraftClient.getInstance().executeSync(() -> ClientPlayerInteractionManager1_18_2.handleBlockBreakAck(new BlockPos(pos.x(), pos.y(), pos.z()), blockState, action, allGood));
         });
     }
 }
