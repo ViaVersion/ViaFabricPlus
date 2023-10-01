@@ -19,9 +19,12 @@ package de.florianmichael.viafabricplus.definition;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocolhack.util.BlockStateTranslator;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
@@ -29,8 +32,22 @@ import net.minecraft.util.math.Vec2f;
 import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class ClientPlayerInteractionManager1_18_2 {
+    public final static Consumer<PacketByteBuf> OLD_PACKET_HANDLER = data -> {
+        try {
+            final var pos = data.readBlockPos();
+            final var blockState = Block.STATE_IDS.get(BlockStateTranslator.translateBlockState1_18(data.readVarInt()));
+            final var action = data.readEnumConstant(PlayerActionC2SPacket.Action.class);
+            final var allGood = data.readBoolean();
+
+            ClientPlayerInteractionManager1_18_2.handleBlockBreakAck(pos, blockState, action, allGood);
+        } catch (Exception e) {
+            ViaFabricPlus.LOGGER.error("Failed to read BlockBreakAck packet data", e);
+        }
+    };
+
     private final static Object2ObjectLinkedOpenHashMap<Pair<BlockPos, PlayerActionC2SPacket.Action>, PositionAndRotation> UN_ACKED_ACTIONS = new Object2ObjectLinkedOpenHashMap<>();
 
     public static void trackBlockAction(final PlayerActionC2SPacket.Action action, final BlockPos blockPos) {

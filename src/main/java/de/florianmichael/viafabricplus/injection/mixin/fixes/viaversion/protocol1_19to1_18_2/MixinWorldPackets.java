@@ -25,11 +25,7 @@ import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.ClientboundPacke
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.Protocol1_19To1_18_2;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.packets.WorldPackets;
 import de.florianmichael.viafabricplus.definition.ClientPlayerInteractionManager1_18_2;
-import de.florianmichael.viafabricplus.protocolhack.util.BlockStateTranslator;
-import net.minecraft.block.Block;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
-import net.minecraft.util.math.BlockPos;
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -40,17 +36,16 @@ public class MixinWorldPackets {
     @Redirect(method = "register", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/protocol1_19to1_18_2/Protocol1_19To1_18_2;cancelClientbound(Lcom/viaversion/viaversion/api/protocol/packet/ClientboundPacketType;)V"))
     private static void passAcknowledgePlayerDigging(Protocol1_19To1_18_2 instance, ClientboundPacketType clientboundPacketType) {
         instance.registerClientbound(ClientboundPackets1_18.ACKNOWLEDGE_PLAYER_DIGGING, ClientboundPackets1_19.PLUGIN_MESSAGE, wrapper -> {
-            wrapper.cancel();
             if (wrapper.user().getProtocolInfo().getPipeline().contains(Protocol1_14_4To1_14_3.class)) {
+                wrapper.cancel();
                 return;
             }
 
-            final var pos = wrapper.read(Type.POSITION1_14);
-            final var blockState = Block.STATE_IDS.get(BlockStateTranslator.translateBlockState1_18(wrapper.read(Type.VAR_INT)));
-            final var action = PlayerActionC2SPacket.Action.values()[wrapper.read(Type.VAR_INT)];
-            final var allGood = wrapper.read(Type.BOOLEAN);
+            wrapper.resetReader();
+            final var uuid = ClientsideFixes.executeSyncTask(ClientPlayerInteractionManager1_18_2.OLD_PACKET_HANDLER);
 
-            MinecraftClient.getInstance().executeSync(() -> ClientPlayerInteractionManager1_18_2.handleBlockBreakAck(new BlockPos(pos.x(), pos.y(), pos.z()), blockState, action, allGood));
+            wrapper.write(Type.STRING, ClientsideFixes.PACKET_SYNC_IDENTIFIER);
+            wrapper.write(Type.STRING, uuid);
         });
     }
 }

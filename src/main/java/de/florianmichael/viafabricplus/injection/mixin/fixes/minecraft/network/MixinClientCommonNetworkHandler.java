@@ -17,12 +17,15 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.fabricmc.fabric.impl.networking.payload.PacketByteBufPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.network.listener.ServerPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.common.CommonPingS2CPacket;
+import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
 import net.minecraft.screen.ScreenHandler;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
@@ -37,9 +40,8 @@ import java.time.Duration;
 import java.util.function.BooleanSupplier;
 
 @SuppressWarnings("UnstableApiUsage")
-@Mixin(ClientCommonNetworkHandler.class)
+@Mixin(value = ClientCommonNetworkHandler.class, priority = 1 /* Has to be applied before Fabric's Networking API, so it doesn't cancel our custom-payload packets */)
 public abstract class MixinClientCommonNetworkHandler {
-
 
     @Shadow @Final protected MinecraftClient client;
 
@@ -72,5 +74,13 @@ public abstract class MixinClientCommonNetworkHandler {
         }
 
         send(packet, sendCondition, expiry);
+    }
+
+    @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At("HEAD"), cancellable = true)
+    public void handleSyncTask(CustomPayloadS2CPacket packet, CallbackInfo ci) {
+        if (packet.payload().id().toString().equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof PacketByteBufPayload payload) {
+            ClientsideFixes.handleSyncTask(payload.data());
+            ci.cancel(); // Cancel the packet, so it doesn't get processed by the client
+        }
     }
 }

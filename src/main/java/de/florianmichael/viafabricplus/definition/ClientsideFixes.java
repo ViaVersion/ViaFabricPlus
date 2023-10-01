@@ -31,12 +31,15 @@ import net.minecraft.client.font.FontStorage;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * This class contains random fields and methods that are used to fix bugs on the client side
@@ -57,6 +60,16 @@ public class ClientsideFixes {
      * Contains the armor points of all armor items in legacy versions (<= 1.8.x)
      */
     private final static Map<Item, Integer> LEGACY_ARMOR_POINTS = new HashMap<>();
+
+    /**
+     * Contains all tasks that are waiting for a packet to be received, this system can be used to sync ViaVersion tasks with the correct thread
+     */
+    private final static Map<String, Consumer<PacketByteBuf>> PENDING_EXECUTION_TASKS = new ConcurrentHashMap<>();
+
+    /**
+     * This identifier is an internal identifier that is used to identify packets that are sent by ViaFabricPlus
+     */
+    public final static String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 
     /**
      * The current chat limit
@@ -121,6 +134,33 @@ public class ClientsideFixes {
                 currentChatLimit = Short.MAX_VALUE * 2;
             }
         });
+    }
+
+    /**
+     * Executes a sync task and returns the uuid of the task
+     *
+     * @param task The task to execute
+     * @return The uuid of the task
+     */
+    public static String executeSyncTask(final Consumer<PacketByteBuf> task) {
+        final var uuid = UUID.randomUUID().toString();
+        PENDING_EXECUTION_TASKS.put(uuid, task);
+        return uuid;
+    }
+
+    public static void handleSyncTask(final PacketByteBuf buf) {
+        buf.resetReaderIndex();
+
+        final var uuid = buf.readString();
+
+        if (PENDING_EXECUTION_TASKS.containsKey(uuid)) {
+            MinecraftClient.getInstance().execute(() -> { // Execute the task on the main thread
+                final var task = PENDING_EXECUTION_TASKS.get(uuid);
+                PENDING_EXECUTION_TASKS.remove(uuid);
+
+                task.accept(buf);
+            });
+        }
     }
 
     /**
