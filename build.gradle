@@ -76,6 +76,7 @@ dependencies {
 		exclude group: "net.lenni0451.mcstructs", module: "text"
 		exclude group: "io.jsonwebtoken", module: "jjwt-impl"
 		exclude group: "io.jsonwebtoken", module: "jjwt-gson"
+		exclude group: "com.mojang", module: "brigadier"
 	}
 	library ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
 		exclude group: "com.google.code.gson", module: "gson"
