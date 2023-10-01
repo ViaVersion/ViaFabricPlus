@@ -24,6 +24,7 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_12to1_11_1.Protocol1_12To1_11_1;
 import com.viaversion.viaversion.protocols.protocol1_9_3to1_9_1_2.ServerboundPackets1_9_3;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IMinecraftClient;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
@@ -127,14 +128,14 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
             final UserConnection userConnection = ProtocolHack.getMainUserConnection();
 
             if (userConnection != null && userConnection.getProtocolInfo().getPipeline().contains(Protocol1_12To1_11_1.class)) {
-                userConnection.getChannel().eventLoop().submit(() -> {
-                    final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, userConnection);
-                    clientStatus.write(Type.VAR_INT, 2); // Open Inventory Achievement
+                final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, userConnection);
+                clientStatus.write(Type.VAR_INT, 2); // Open Inventory Achievement
 
-                    try {
-                        clientStatus.sendToServer(Protocol1_12To1_11_1.class);
-                    } catch (Exception ignored) {}
-                });
+                try {
+                    clientStatus.sendToServer(Protocol1_12To1_11_1.class);
+                } catch (Exception e) {
+                    ViaFabricPlus.LOGGER.error("Failed to send Open Inventory Packet", e);
+                }
             }
         }
     }

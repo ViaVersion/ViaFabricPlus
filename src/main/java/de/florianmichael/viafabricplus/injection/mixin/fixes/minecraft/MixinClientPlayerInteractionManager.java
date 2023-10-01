@@ -18,9 +18,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.ClientPlayerInteractionManager1_18_2;
 import net.minecraft.client.network.SequencedPacketCreator;
 import net.minecraft.client.world.ClientWorld;
@@ -129,29 +128,20 @@ public abstract class MixinClientPlayerInteractionManager {
             else
                 slotItemBeforeModification = viafabricplus_oldItems.get(clickSlot.getSlot());
 
-            final UserConnection userConnection = networkHandler.getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
-            final short syncId = (short) clickSlot.getSyncId();
-            final short slot = (short) clickSlot.getSlot();
-            final byte button = (byte) clickSlot.getButton();
-            final short lastActionId = ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId();
-            final int actionType = clickSlot.getActionType().ordinal();
-            final Item item = ItemTranslator.MC_TO_VIA_LATEST_TO_TARGET(slotItemBeforeModification, VersionEnum.r1_16);
+            final var clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, networkHandler.getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get());
 
-            userConnection.getChannel().eventLoop().submit(() -> {
-                final PacketWrapper clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, userConnection);
+            clickSlotPacket.write(Type.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
+            clickSlotPacket.write(Type.SHORT, (short) clickSlot.getSlot());
+            clickSlotPacket.write(Type.BYTE, (byte) clickSlot.getButton());
+            clickSlotPacket.write(Type.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId());
+            clickSlotPacket.write(Type.VAR_INT, clickSlot.getActionType().ordinal());
+            clickSlotPacket.write(Type.FLAT_VAR_INT_ITEM, ItemTranslator.MC_TO_VIA_LATEST_TO_TARGET(slotItemBeforeModification, VersionEnum.r1_16));
 
-                clickSlotPacket.write(Type.UNSIGNED_BYTE, syncId);
-                clickSlotPacket.write(Type.SHORT, slot);
-                clickSlotPacket.write(Type.BYTE, button);
-                clickSlotPacket.write(Type.SHORT, lastActionId);
-                clickSlotPacket.write(Type.VAR_INT, actionType);
-                clickSlotPacket.write(Type.FLAT_VAR_INT_ITEM, item);
-
-                try {
-                    clickSlotPacket.sendToServer(Protocol1_17To1_16_4.class);
-                } catch (Exception ignored) {
-                }
-            });
+            try {
+                clickSlotPacket.sendToServer(Protocol1_17To1_16_4.class);
+            } catch (Exception e) {
+                ViaFabricPlus.LOGGER.error("Failed to send Click Slot Packet", e);
+            }
 
             viafabricplus_oldCursorStack = null;
             viafabricplus_oldItems = null;
