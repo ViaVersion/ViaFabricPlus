@@ -33,37 +33,6 @@ import org.joml.Vector3f;
 
 public class EntityHeightOffsetsPre1_20_2 {
 
-    public static void clamPassengerYaw(final Entity entity, final Entity passenger) {
-        if (entity instanceof CamelEntity camelEntity) {
-            passenger.setBodyYaw(camelEntity.getYaw());
-            final float passengerYaw = passenger.getYaw();
-
-            final float deltaDegrees = MathHelper.wrapDegrees(passengerYaw - camelEntity.getYaw());
-            final float clampedDelta = MathHelper.clamp(deltaDegrees, -160.0f, 160.0f);
-            passenger.prevYaw += clampedDelta - deltaDegrees;
-
-            final float newYaw = passengerYaw + clampedDelta - deltaDegrees;
-            passenger.setYaw(newYaw);
-            passenger.setHeadYaw(newYaw);
-        } else if (entity instanceof BoatEntity boatEntity) {
-            passenger.setYaw(passenger.getYaw() + boatEntity.yawVelocity);
-            passenger.setHeadYaw(passenger.getHeadYaw() + boatEntity.yawVelocity);
-
-            passenger.setBodyYaw(entity.getYaw());
-            final float f = MathHelper.wrapDegrees(passenger.getYaw() - entity.getYaw());
-            final float g = MathHelper.clamp(f, -105.0f, 105.0f);
-            passenger.prevYaw += g - f;
-            passenger.setYaw(passenger.getYaw() + g - f);
-            passenger.setHeadYaw(passenger.getYaw());
-
-            if (passenger instanceof AnimalEntity && boatEntity.getPassengerList().size() == boatEntity.getMaxPassengers()) {
-                int j = passenger.getId() % 2 == 0 ? 90 : 270;
-                passenger.setBodyYaw(((AnimalEntity) passenger).bodyYaw + (float) j);
-                passenger.setHeadYaw(passenger.getHeadYaw() + (float) j);
-            }
-        }
-    }
-
     public static Vector3f getMountedHeightOffset(final Entity entity, final Entity passenger) {
         double yOffset = entity.getHeight() * 0.75;
 

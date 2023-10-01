@@ -34,7 +34,7 @@ public class BoatRenderer_1_8 extends EntityRenderer<BoatEntity> {
 
     public BoatRenderer_1_8(EntityRendererFactory.Context ctx) {
         super(ctx);
-        shadowRadius = 0.8f;
+        shadowRadius = 0.5F;
         model = new BoatModel_1_8(ctx.getPart(BoatModel_1_8.MODEL_LAYER));
     }
 
@@ -46,14 +46,15 @@ public class BoatRenderer_1_8 extends EntityRenderer<BoatEntity> {
     @Override
     public void render(BoatEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         matrices.push();
-        matrices.translate(0, 0.375, 0);
+        matrices.translate(0, 0.25, 0);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180 - yaw));
+
         float damageWobbleTicks = entity.getDamageWobbleTicks() - tickDelta;
         float damageWobbleStrength = entity.getDamageWobbleStrength() - tickDelta;
+
         if (damageWobbleStrength < 0) {
             damageWobbleStrength = 0;
         }
-
         if (damageWobbleTicks > 0) {
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(MathHelper.sin(damageWobbleTicks) * damageWobbleTicks * damageWobbleStrength / 10 * entity.getDamageWobbleSide()));
         }

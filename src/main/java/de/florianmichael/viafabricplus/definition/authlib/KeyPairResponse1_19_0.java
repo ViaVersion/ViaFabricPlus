@@ -8,5 +8,10 @@ import java.nio.ByteBuffer;
 This library is part of the AuthLib, we are overwriting this class to add a new field.
  */
 
-public record KeyPairResponseBypass(KeyPairResponse.KeyPair keyPair, ByteBuffer publicKeySignatureV2, ByteBuffer publicKeySignature /* own field */, String expiresAt, String refreshedAfter) {
+public record KeyPairResponse1_19_0(
+        KeyPairResponse.KeyPair keyPair,
+        ByteBuffer publicKeySignatureV2,
+        ByteBuffer publicKeySignature /* removed in 1.20-rc1 */,
+        String expiresAt,
+        String refreshedAfter) {
 }

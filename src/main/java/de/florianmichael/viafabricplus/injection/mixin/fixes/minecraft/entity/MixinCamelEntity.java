@@ -6,9 +6,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.CamelEntity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -27,10 +29,24 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
         return instance.isBaby();
     }
 
+    @Unique
+    public void viafabricplus_clamPassengerYaw(final Entity passenger) {
+        passenger.setBodyYaw(this.getYaw());
+        final float passengerYaw = passenger.getYaw();
+
+        final float deltaDegrees = MathHelper.wrapDegrees(passengerYaw - this.getYaw());
+        final float clampedDelta = MathHelper.clamp(deltaDegrees, -160.0f, 160.0f);
+        passenger.prevYaw += clampedDelta - deltaDegrees;
+
+        final float newYaw = passengerYaw + clampedDelta - deltaDegrees;
+        passenger.setYaw(newYaw);
+        passenger.setHeadYaw(newYaw);
+    }
+
     @Override
     public void onPassengerLookAround(Entity passenger) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1) && this.getControllingPassenger() != passenger) {
-            EntityHeightOffsetsPre1_20_2.clamPassengerYaw(this, passenger);
+            viafabricplus_clamPassengerYaw(passenger);
         }
     }
 
@@ -39,7 +55,7 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
         super.updatePassengerPosition(passenger, positionUpdater);
 
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            EntityHeightOffsetsPre1_20_2.clamPassengerYaw(this, passenger);
+            viafabricplus_clamPassengerYaw(passenger);
         }
     }
 }
