@@ -47,13 +47,7 @@ public class MixinYggdrasilUserApiService {
         final var response = minecraftClient.post(routeKeyPair, KeyPairResponseBypass.class);
         if (response == null) return;
 
-        final var keyPair = response.keyPair();
-        final var returnValue = new KeyPairResponse(
-                keyPair == null ? null : new KeyPairResponse.KeyPair(keyPair.privateKey(), keyPair.publicKey()),
-                response.publicKeySignatureV2(),
-                response.expiresAt(),
-                response.refreshedAfter()
-        );
+        final var returnValue = new KeyPairResponse(response.keyPair(), response.publicKeySignatureV2(), response.expiresAt(), response.refreshedAfter());
         ((IKeyPairResponse) (Object) returnValue).viafabricplus_setLegacyPublicKeySignature(response.publicKeySignature());
 
         cir.setReturnValue(returnValue);
