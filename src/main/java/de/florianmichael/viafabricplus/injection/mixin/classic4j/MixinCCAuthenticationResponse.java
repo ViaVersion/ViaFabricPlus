@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.classic4j;
 
-import de.florianmichael.classic4j.model.classicube.highlevel.CCError;
-import de.florianmichael.classic4j.request.classicube.auth.base.CCAuthenticationResponse;
+import de.florianmichael.classic4j.model.classicube.CCAuthenticationResponse;
+import de.florianmichael.classic4j.model.classicube.CCError;
 import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = CCAuthenticationResponse.class, remap = false)
 public class MixinCCAuthenticationResponse {
 
-    @Redirect(method = "getErrorDisplay", at = @At(value = "FIELD", target = "Lde/florianmichael/classic4j/model/classicube/highlevel/CCError;description:Ljava/lang/String;"))
+    @Redirect(method = "getErrorDisplay", at = @At(value = "FIELD", target = "Lde/florianmichael/classic4j/model/classicube/CCError;description:Ljava/lang/String;"))
     public String mapTranslations(CCError instance) {
         return Classic4JImpl.fromError(instance).getString();
     }

@@ -290,14 +290,6 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity {
         }
     }
 
-    @Inject(method = "updatePassengerPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;updatePassengerPosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity$PositionUpdater;)V", shift = At.Shift.AFTER), cancellable = true)
-    public void emulatePassengerOffset1_20_1(Entity passenger, PositionUpdater positionUpdater, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            EntityHeightOffsetsPre1_20_2.clamPassengerYaw(this, passenger);
-            ci.cancel();
-        }
-    }
-
     @Inject(method = "onPassengerLookAround", at = @At("HEAD"), cancellable = true)
     private void onOnPassengerLookAround(Entity passenger, CallbackInfo ci) {
         if (this.viafabricplus_boatMovementEmulation()) {
