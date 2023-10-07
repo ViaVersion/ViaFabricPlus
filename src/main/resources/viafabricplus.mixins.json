@@ -147,7 +147,7 @@
     "fixes.vialegacy.MixinProtocolc0_30toc0_30cpe",
     "fixes.vialegacy.MixinViaLegacyConfig",
     "fixes.viaversion.MixinCommonBoss",
-    "fixes.viaversion.MixinNBTType",
+    "fixes.viaversion.MixinNamedCompoundTagType",
     "fixes.viaversion.MixinProtocolVersion",
     "fixes.viaversion.protocol1_11to1_10.MixinEntityIdRewriter",
     "fixes.viaversion.protocol1_11to1_10.MixinProtocol1_11To1_10",
