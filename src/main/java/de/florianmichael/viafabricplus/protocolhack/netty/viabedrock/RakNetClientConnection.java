@@ -26,9 +26,6 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
-import net.minecraft.network.handler.PacketSizeLogger;
-import net.minecraft.util.Lazy;
-import net.minecraft.util.profiler.PerformanceLog;
 import org.cloudburstmc.netty.channel.raknet.RakChannelFactory;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +42,10 @@ public class RakNetClientConnection {
         final Bootstrap nettyBoostrap = new Bootstrap().group(eventLoopGroup).handler(new ChannelInitializer<>() {
             @Override
             protected void initChannel(@NotNull Channel channel) {
+                // Mojang Code start
+                ClientConnection.setHandlers(channel);
+                // Mojang Code end
+
                 try {
                     channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, 11);
                     channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, 4_000L);
@@ -52,10 +53,12 @@ public class RakNetClientConnection {
                     channel.config().setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());
                 } catch (Exception ignored) {
                 }
+
+                // Mojang Code start
                 ChannelPipeline channelPipeline = channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30));
                 ClientConnection.addHandlers(channelPipeline, NetworkSide.CLIENTBOUND, clientConnection.packetSizeLogger);
-
-                channelPipeline.addLast("packet_handler", clientConnection);
+                clientConnection.addFlowControlHandler(channelPipeline);
+                // Mojang Code end
 
                 ProtocolHack.injectVLBPipeline(clientConnection, channel, address);
             }

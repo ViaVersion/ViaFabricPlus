@@ -36,7 +36,7 @@ public class MixinClientConnection_1 {
     @Shadow
     ClientConnection field_11663;
 
-    @Inject(method = "initChannel", at = @At("TAIL"))
+    @Inject(method = "initChannel", at = @At("RETURN"))
     public void hackNettyPipeline(Channel channel, CallbackInfo ci) {
         if (channel instanceof SocketChannel) {
             ProtocolHack.injectVLBPipeline(field_11663, channel, ((IClientConnection) field_11663).viafabricplus_capturedAddress());
