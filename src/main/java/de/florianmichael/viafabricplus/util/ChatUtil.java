@@ -33,10 +33,6 @@ public class ChatUtil {
         return Text.empty().append(PREFIX_TEXT).append(" ").append(message);
     }
 
-    public static void sendPrefixedMessage(final String message) {
-        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(prefixText(message));
-    }
-
     public static void sendPrefixedMessage(final Text message) {
         MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(prefixText(message));
     }
