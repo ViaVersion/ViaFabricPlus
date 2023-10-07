@@ -74,7 +74,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
             if (BetaCraftScreen.SERVER_LIST == null) {
                 betaCraftButton = button;
 
-                BetaCraftHandler.requestServerList(serverList -> {
+                BetaCraftHandler.requestV1ServerList(serverList -> {
                     BetaCraftScreen.SERVER_LIST = serverList;
 
                     BetaCraftScreen.INSTANCE.open(this);
