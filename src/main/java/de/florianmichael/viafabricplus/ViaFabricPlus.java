@@ -73,6 +73,7 @@ public class ViaFabricPlus {
         // Load overriding jars first so other code can access the new classes
         ViaJarReplacer.loadOverridingJars();
 
+        // PreLoad Callback (for example to register new protocols)
         PreLoadCallback.EVENT.invoker().onLoad();
 
         // Classic Stuff
