@@ -77,18 +77,17 @@ For compiling only! **You do not need to install these!**
 | Dependency             | Download                                                   |
 |------------------------|------------------------------------------------------------|
 | Fabric API             | https://github.com/fabricMC/fabric                         |
+| Fabric Loader          | https://github.com/fabricMC/fabric-loader                  |
+| Classic4J              | https://github.com/FlorianMichael/Classic4J                |
 | ViaVersion             | https://github.com/ViaVersion/ViaVersion                   |
 | ViaBackwards           | https://github.com/ViaVersion/ViaBackwards                 |
-| Snake YAML             | https://mvnrepository.com/artifact/org.yaml/snakeyaml/1.33 |
+| ViaLoader              | https://github.com/ViaVersion/ViaLoader                    |
 | ViaLegacy              | https://github.com/ViaVersion/ViaLegacy                    |
 | ViaAprilFools          | https://github.com/ViaVersion/ViaAprilFools                |
-| ViaBedrock             | https://github.com/ViaVersion/ViaBedrock                   |
-| MC-Structs             | https://github.com/Lenni0451/MCStructs                     |
+| ViaBedrock             | https://github.com/RaphiMC/ViaBedrock                      |
 | MinecraftAuth          | https://github.com/RaphiMC/MinecraftAuth                   |
-| Reflect                | https://github.com/Lenni0451/Reflect                       |
-| ViaLoader              | https://github.com/ViaVersion/ViaLoader                    |
 | Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop       |
-| Classic4J              | https://github.com/FlorianMichael/Classic4J                |
+| Reflect                | https://github.com/Lenni0451/Reflect                       |
 | MixinExtras            | https://github.com/LlamaLad7/MixinExtras                   |
 </details>
 
