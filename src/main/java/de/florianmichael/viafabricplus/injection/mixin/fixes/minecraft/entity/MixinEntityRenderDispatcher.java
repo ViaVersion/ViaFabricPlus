@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
 import de.florianmichael.viafabricplus.definition.boat.BoatRenderer_1_8;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -38,18 +39,20 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class MixinEntityRenderDispatcher {
 
     @Unique
-    private BoatRenderer_1_8 viafabricplus_boatRenderer;
+    public BoatRenderer_1_8 viafabricplus_boatRenderer;
 
     @SuppressWarnings("unchecked")
     @Inject(method = "getRenderer", at = @At("HEAD"), cancellable = true)
     private <T extends Entity> void onGetRenderer(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && entity instanceof BoatEntity) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && ExperimentalSettings.INSTANCE.emulateBoatMovement.getValue() && entity instanceof BoatEntity) {
             ci.setReturnValue((EntityRenderer<? super T>) viafabricplus_boatRenderer);
         }
     }
 
     @Inject(method = "reload", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void onReload(ResourceManager manager, CallbackInfo ci, EntityRendererFactory.Context context) {
-        viafabricplus_boatRenderer = new BoatRenderer_1_8(context);
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && ExperimentalSettings.INSTANCE.emulateBoatMovement.getValue()) {
+            viafabricplus_boatRenderer = new BoatRenderer_1_8(context);
+        }
     }
 }
