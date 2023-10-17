@@ -17,11 +17,9 @@
  */
 package de.florianmichael.viafabricplus.screen.thirdparty;
 
-import de.florianmichael.classic4j.model.betacraft.BCServerInfo;
+import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
-import de.florianmichael.classic4j.model.betacraft.BCVersion;
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
 import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
 import de.florianmichael.viafabricplus.base.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
@@ -72,11 +70,11 @@ public class BetaCraftScreen extends VFPScreen {
             super(minecraftClient, width, height, top, bottom, entryHeight);
             if (SERVER_LIST == null) return;
 
-            for (BCVersion value : BCVersion.values()) {
-                final List<BCServerInfo> servers = SERVER_LIST.serversOfVersion(value);
+            for (BCVersionCategory value : BCVersionCategory.values()) {
+                final List<BCServerInfoSpec> servers = SERVER_LIST.serversOfVersionCategory(value);
                 if (servers.isEmpty()) continue;
                 addEntry(new TitleRenderer(Text.literal(value.name())));
-                for (BCServerInfo server : servers) {
+                for (BCServerInfoSpec server : servers) {
                     addEntry(new ServerSlot(server));
                 }
             }
@@ -94,9 +92,9 @@ public class BetaCraftScreen extends VFPScreen {
     }
 
     public static class ServerSlot extends MappedSlotEntry {
-        private final BCServerInfo server;
+        private final BCServerInfoSpec server;
 
-        public ServerSlot(BCServerInfo server) {
+        public ServerSlot(BCServerInfoSpec server) {
             this.server = server;
         }
 
@@ -107,7 +105,7 @@ public class BetaCraftScreen extends VFPScreen {
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-            final ServerAddress serverAddress = ServerAddress.parse(server.host() + ":" + server.port());
+            final ServerAddress serverAddress = ServerAddress.parse(server.socketAddress());
             final ServerInfo entry = new ServerInfo(server.name(), serverAddress.getAddress(), false);
 
             ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false);
@@ -117,8 +115,7 @@ public class BetaCraftScreen extends VFPScreen {
         @Override
         public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, server.name() + Formatting.DARK_GRAY + " [" + server.gameVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
-
+            context.drawCenteredTextWithShadow(textRenderer, server.name() + Formatting.DARK_GRAY + " [" + server.connectVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
             if (server.onlineMode()) {
                 context.drawTextWithShadow(textRenderer, Text.translatable("misc.viafabricplus.online").formatted(Formatting.GREEN), 1, 1, -1);
             }

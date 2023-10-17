@@ -17,15 +17,15 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.api.type.types.minecraft.NBTType;
+import com.viaversion.viaversion.api.type.types.minecraft.NamedCompoundTagType;
 import com.viaversion.viaversion.libs.opennbt.tag.limiter.TagLimiter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = NBTType.class, remap = false)
-public class MixinNBTType {
+@Mixin(value = NamedCompoundTagType.class, remap = false)
+public class MixinNamedCompoundTagType {
 
     @Unique
     private static final TagLimiter viafabricplus_tag_limiter = new TagLimiter() {

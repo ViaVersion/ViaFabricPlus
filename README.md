@@ -19,7 +19,7 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - Snapshots (3D Shareware, 20w14infinite, Combat Test 8C)
-- Bedrock (1.20.0)
+- Bedrock (1.20.30)
 
 ### If you want to talk with me, feel free to join my [Discord](https://discord.gg/BwWhCHUKDf)
 
@@ -110,8 +110,7 @@ repositories {
 }
 
 dependencies {
-    implementation ("de.florianmichael:viafabricplus:2.8.5") { // Get latest version from releases
-        exclude group: "com.terraformersmc"
+    implementation ("de.florianmichael:viafabricplus:2.8.7") { // Get latest version from releases
         transitive = false
     }
 }
@@ -129,7 +128,7 @@ dependencies {
     <dependency>
         <groupId>de.florianmichael</groupId>
         <artifactId>viafabricplus</artifactId>
-        <version>2.8.2</version> <!-- Get latest version from releases -->
+        <version>2.8.7</version> <!-- Get the latest version from releases -->
     </dependency>
 </dependencies>
 ```

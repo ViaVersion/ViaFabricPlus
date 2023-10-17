@@ -22,6 +22,7 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import io.netty.channel.ChannelHandlerContext;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialoader.netty.ViaDecoder;
 
@@ -41,7 +42,7 @@ public class ViaFabricPlusViaDecoder extends ViaDecoder {
             } catch (Throwable t) {
                 ViaFabricPlus.LOGGER.error("Error occurred while decoding packet in ViaDecoder", t);
                 if (mode == 1) {
-                    ChatUtil.sendPrefixedMessage(Formatting.RED + "An error occurred while decoding a packet! See more details in the logs!");
+                    ChatUtil.sendPrefixedMessage(Text.literal("An error occurred while decoding a packet! See more details in the logs!").formatted(Formatting.RED));
                 }
             }
             return;

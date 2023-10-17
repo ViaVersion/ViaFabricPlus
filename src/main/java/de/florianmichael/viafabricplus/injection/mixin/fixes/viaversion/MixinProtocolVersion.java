@@ -46,6 +46,7 @@ public abstract class MixinProtocolVersion {
         viafabricplus_remaps.put("1.18/1.18.1", new Pair<>("1.18-1.18.1", null));
         viafabricplus_remaps.put("1.19.1/2", new Pair<>("1.19.1-1.19.2", null));
         viafabricplus_remaps.put("1.20/1.20.1", new Pair<>("1.20-1.20.1", null));
+        viafabricplus_remaps.put("1.20.3", new Pair<>("23w41a", null));
     }
 
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
@@ -58,7 +59,7 @@ public abstract class MixinProtocolVersion {
         return ProtocolVersion.register(version, name);
     }
 
-    @SuppressWarnings({"UnresolvedMixinReference", "MixinAnnotationTarget", "InvalidInjectorMethodSignature"}) // Optional injection
+    @SuppressWarnings({"all"}) // Optional injection
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(IILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"), require = 0)
     private static ProtocolVersion unregisterAndRenameVersions(int version, int snapshotVersion, String name) {
         final Pair<String, VersionRange> remapEntry = viafabricplus_remaps.get(name);

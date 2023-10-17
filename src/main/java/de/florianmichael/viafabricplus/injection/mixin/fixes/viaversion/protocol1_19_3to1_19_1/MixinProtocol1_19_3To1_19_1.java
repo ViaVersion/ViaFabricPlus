@@ -50,12 +50,6 @@ import java.util.UUID;
 public class MixinProtocol1_19_3To1_19_1 extends AbstractProtocol<ClientboundPackets1_19_1, ClientboundPackets1_19_3, ServerboundPackets1_19_1, ServerboundPackets1_19_3> {
 
     @Unique
-    private final static ByteArrayType.OptionalByteArrayType OPTIONAL_MESSAGE_SIGNATURE_BYTES_TYPE = new ByteArrayType.OptionalByteArrayType(256);
-
-    @Unique
-    private final static ByteArrayType MESSAGE_SIGNATURE_BYTES_TYPE = new ByteArrayType(256);
-
-    @Unique
     private final static BitSetType ACKNOWLEDGED_BIT_SET_TYPE = new BitSetType(20);
 
     @Inject(method = "registerPackets", at = @At("RETURN"))
@@ -125,12 +119,12 @@ public class MixinProtocol1_19_3To1_19_1 extends AbstractProtocol<ClientboundPac
                     for (int i = 0; i < signatures; i++) {
                         if (signingEnabled) {
                             wrapper.read(Type.STRING); // Argument name
-                            wrapper.read(MESSAGE_SIGNATURE_BYTES_TYPE); // Signature
+                            wrapper.read(Type.SIGNATURE_BYTES); // Signature
                         } else {
                             wrapper.passthrough(Type.STRING); // Argument name
 
                             // Signature
-                            wrapper.read(MESSAGE_SIGNATURE_BYTES_TYPE);
+                            wrapper.read(Type.SIGNATURE_BYTES);
                             wrapper.write(Type.BYTE_ARRAY_PRIMITIVE, new byte[0]);
                         }
                     }
@@ -169,7 +163,7 @@ public class MixinProtocol1_19_3To1_19_1 extends AbstractProtocol<ClientboundPac
                 map(Type.STRING); // Command
                 map(Type.LONG); // Timestamp
                 map(Type.LONG); // Salt
-                read(OPTIONAL_MESSAGE_SIGNATURE_BYTES_TYPE); // Signature
+                read(Type.OPTIONAL_SIGNATURE_BYTES); // Signature
                 handler(wrapper -> {
                     final ChatSession1_19_2 chatSession1192 = wrapper.user().get(ChatSession1_19_2.class);
                     final ReceivedMessagesStorage messagesStorage = wrapper.user().get(ReceivedMessagesStorage.class);

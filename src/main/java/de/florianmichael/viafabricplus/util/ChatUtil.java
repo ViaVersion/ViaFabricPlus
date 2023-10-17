@@ -23,16 +23,21 @@ import net.minecraft.util.Formatting;
 
 public class ChatUtil {
     public final static String PREFIX = Formatting.WHITE + "[" + Formatting.GOLD + "ViaFabricPlus" + Formatting.WHITE + "]";
+    public final static Text PREFIX_TEXT = Text.literal("[").formatted(Formatting.WHITE).append(Text.literal("ViaFabricPlus").formatted(Formatting.GOLD)).append("]");
 
     public static Text prefixText(final String message) {
         return prefixText(Text.literal(message));
     }
 
     public static Text prefixText(final Text message) {
-        return Text.literal("").append(PREFIX).append(" " + message);
+        return Text.empty().append(PREFIX_TEXT).append(" ").append(message);
     }
 
     public static void sendPrefixedMessage(final String message) {
+        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(prefixText(message));
+    }
+
+    public static void sendPrefixedMessage(final Text message) {
         MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(prefixText(message));
     }
 }

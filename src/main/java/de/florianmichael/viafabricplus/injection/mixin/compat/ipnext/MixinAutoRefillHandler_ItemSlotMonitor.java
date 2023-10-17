@@ -32,6 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  *
  * Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/209
  */
+@SuppressWarnings("all")
 @Pseudo
 @Mixin(targets = "org.anti_ad.mc.ipnext.event.AutoRefillHandler$ItemSlotMonitor")
 public class MixinAutoRefillHandler_ItemSlotMonitor {
@@ -39,14 +40,14 @@ public class MixinAutoRefillHandler_ItemSlotMonitor {
     @Shadow
     public int currentSlotId;
 
-    @Inject(method = { "checkHandle", "checkShouldHandle" }, at = @At("HEAD"), cancellable = true)
+    @Inject(method = { "checkHandle", "checkShouldHandle" }, at = @At("HEAD"), cancellable = true, remap = false)
     public void dontHandleOffhandSlot(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             if (currentSlotId == 45) ci.cancel();
         }
     }
 
-    @Inject(method = "updateCurrent", at = @At(value = "FIELD", target = "Lorg/anti_ad/mc/ipnext/event/AutoRefillHandler$ItemSlotMonitor;currentSlotId:I", shift = At.Shift.AFTER), cancellable = true)
+    @Inject(method = "updateCurrent", at = @At(value = "FIELD", target = "Lorg/anti_ad/mc/ipnext/event/AutoRefillHandler$ItemSlotMonitor;currentSlotId:I", shift = At.Shift.AFTER), cancellable = true, remap = false)
     public void dontUpdateCurrentOffhandSlot(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             if (currentSlotId == 45) ci.cancel();
