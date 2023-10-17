@@ -18,12 +18,12 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowerbedBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinFlowerbedBlock {
 
     @Unique
-    private final static VoxelShape viafabricplus_shape_v1_20_1 = VoxelShapes.cuboid(0.0, 0.0, 0.0, 16.0, 3.0, 16.0);
+    private final static VoxelShape viafabricplus_shape_v1_20_1 = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 3.0, 16.0);
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void replaceShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
