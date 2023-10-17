@@ -61,6 +61,7 @@ public class ClientsideFixes {
     /**
      * Contains the armor points of all armor items in legacy versions (<= 1.8.x)
      */
+
     private final static Map<Item, Integer> LEGACY_ARMOR_POINTS = new HashMap<>();
     /**
      * Contains all tasks that are waiting for a packet to be received, this system can be used to sync ViaVersion tasks with the correct thread
@@ -101,20 +102,6 @@ public class ClientsideFixes {
                     Blocks.RED_STAINED_GLASS_PANE, Blocks.BLACK_STAINED_GLASS_PANE, Blocks.PISTON, Blocks.PISTON_HEAD,
                     Blocks.SNOW, Blocks.COBBLESTONE_WALL, Blocks.MOSSY_COBBLESTONE_WALL
             );
-
-            // Allows to execute tasks on the main thread
-            ClientPlayNetworking.registerGlobalReceiver(new Identifier(ClientsideFixes.PACKET_SYNC_IDENTIFIER), (client, handler, buf, responseSender) -> {
-                final var uuid = buf.readString();
-
-                if (PENDING_EXECUTION_TASKS.containsKey(uuid)) {
-                    MinecraftClient.getInstance().execute(() -> {
-                        final var task = PENDING_EXECUTION_TASKS.get(uuid);
-                        PENDING_EXECUTION_TASKS.remove(uuid);
-
-                        task.accept(buf);
-                    });
-                }
-            });
         });
 
         // Reloads some clientside stuff when the protocol version changes
@@ -183,21 +170,6 @@ public class ClientsideFixes {
         final var uuid = UUID.randomUUID().toString();
         PENDING_EXECUTION_TASKS.put(uuid, task);
         return uuid;
-    }
-
-    public static void handleSyncTask(final PacketByteBuf buf) {
-        buf.resetReaderIndex();
-
-        final var uuid = buf.readString();
-
-        if (PENDING_EXECUTION_TASKS.containsKey(uuid)) {
-            MinecraftClient.getInstance().execute(() -> { // Execute the task on the main thread
-                final var task = PENDING_EXECUTION_TASKS.get(uuid);
-                PENDING_EXECUTION_TASKS.remove(uuid);
-
-                task.accept(buf);
-            });
-        }
     }
 
     /**

@@ -18,8 +18,4 @@ public class MixinKeyPairResponse implements IKeyPairResponse {
         return this.viafabricplus_legacyKeySignature;
     }
 
-    @Override
-    public void viafabricplus_setLegacyPublicKeySignature(ByteBuffer signature) {
-        this.viafabricplus_legacyKeySignature = signature;
-    }
 }
