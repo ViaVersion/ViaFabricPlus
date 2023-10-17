@@ -5,5 +5,4 @@ import java.nio.ByteBuffer;
 public interface IKeyPairResponse {
 
     ByteBuffer viafabricplus_getLegacyPublicKeySignature();
-
 }

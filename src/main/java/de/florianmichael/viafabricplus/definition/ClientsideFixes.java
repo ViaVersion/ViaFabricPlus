@@ -24,7 +24,6 @@ import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.base.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.injection.MixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -34,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
@@ -61,8 +59,8 @@ public class ClientsideFixes {
     /**
      * Contains the armor points of all armor items in legacy versions (<= 1.8.x)
      */
-
     private final static Map<Item, Integer> LEGACY_ARMOR_POINTS = new HashMap<>();
+
     /**
      * Contains all tasks that are waiting for a packet to be received, this system can be used to sync ViaVersion tasks with the correct thread
      */
