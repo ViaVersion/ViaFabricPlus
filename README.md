@@ -110,7 +110,7 @@ repositories {
 }
 
 dependencies {
-    implementation ("de.florianmichael:viafabricplus:2.8.7") { // Get latest version from releases
+    implementation ("de.florianmichael:viafabricplus:2.8.7") { // Get the latest version from releases
         transitive = false
     }
 }
