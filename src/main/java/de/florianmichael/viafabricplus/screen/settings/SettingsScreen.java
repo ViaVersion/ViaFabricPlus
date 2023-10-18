@@ -32,7 +32,7 @@ public class SettingsScreen extends VFPScreen {
 
     public SettingsScreen() {
         super("Setting", true);
-        this.useDefaultSubtitle();
+        this.setupDefaultSubtitle();
     }
 
     @Override

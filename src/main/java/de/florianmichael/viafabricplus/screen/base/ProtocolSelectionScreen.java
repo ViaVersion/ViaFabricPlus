@@ -44,7 +44,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
 
     protected ProtocolSelectionScreen() {
         super("Protocol selection", true);
-        this.useDefaultSubtitle();
+        this.setupDefaultSubtitle();
     }
 
     @Override

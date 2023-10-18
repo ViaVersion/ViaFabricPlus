@@ -42,7 +42,7 @@ public class BetaCraftScreen extends VFPScreen {
 
     protected BetaCraftScreen() {
         super("BetaCraft", true);
-        this.useDefaultSubtitle();
+        this.setupDefaultSubtitle();
     }
 
     @Override

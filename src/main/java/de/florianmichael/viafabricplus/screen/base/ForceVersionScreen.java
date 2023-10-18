@@ -39,7 +39,7 @@ public class ForceVersionScreen extends VFPScreen {
         this.prevScreen = prevScreen;
         this.selectionConsumer = selectionConsumer;
 
-        this.setSubtitle(Text.translatable("forceversion.viafabricplus.title"));
+        this.setupSubtitle(Text.translatable("forceversion.viafabricplus.title"));
     }
 
     @Override

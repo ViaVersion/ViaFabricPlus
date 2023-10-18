@@ -63,8 +63,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
         super("ClassiCube ServerList", true);
         final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
         if (account != null) {
-            this.setSubtitle(Text.of(CLASSI_CUBE_SERVER_LIST_URL));
-            this.setSubtitlePressAction(ConfirmLinkScreen.opening(
+            this.setupSubtitle(Text.of(CLASSI_CUBE_SERVER_LIST_URL), ConfirmLinkScreen.opening(
                     CLASSI_CUBE_SERVER_LIST_URL,
                     this,
                     true

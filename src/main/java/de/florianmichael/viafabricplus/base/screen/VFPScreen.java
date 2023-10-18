@@ -48,35 +48,45 @@ public class VFPScreen extends Screen {
     private Text subtitle;
     private ButtonWidget.PressAction subtitlePressAction;
 
+    private PressableTextWidget subtitleWidget;
+
     public VFPScreen(final String title, final boolean backButton) {
         super(Text.of(title));
         this.backButton = backButton;
     }
 
     /***
-     * Sets the subtitle which is rendered below the title
-     * @param subtitle The subtitle which should be rendered
-     */
-    public void setSubtitle(@Nullable final Text subtitle) {
-        this.subtitle = subtitle;
-    }
-
-    /***
-     * Sets the press action which is executed when the subtitle is clicked
-     * @param subtitlePressAction The press action which should be executed
-     */
-    public void setSubtitlePressAction(@Nullable final ButtonWidget.PressAction subtitlePressAction) {
-        this.subtitlePressAction = subtitlePressAction;
-    }
-
-    /***
      * Sets the subtitle and the subtitle press action to the default values
      * The default value of the subtitle is the url to the GitHub repository of VFP
      * The default value of the subtitle press action is to open the url in a confirmation screen
+     *
      */
-    public void useDefaultSubtitle() {
-        this.setSubtitle(Text.of(MOD_URL));
-        this.setSubtitlePressAction(ConfirmLinkScreen.opening(MOD_URL, this, true));
+    public void setupDefaultSubtitle() {
+        this.setupSubtitle(Text.of(MOD_URL), ConfirmLinkScreen.opening(MOD_URL, this, true));
+    }
+
+    /***
+     * Sets the subtitle and the subtitle press action
+     *
+     * @param subtitle The subtitle which should be rendered
+     */
+    public void setupSubtitle(@Nullable final Text subtitle) {
+        this.setupSubtitle(subtitle, null);
+    }
+
+    /***
+     * Sets the subtitle and the subtitle press action
+     *
+     * @param subtitle The subtitle which should be rendered
+     * @param subtitlePressAction The press action which should be executed when the subtitle is clicked
+     */
+    public void setupSubtitle(@Nullable final Text subtitle, @Nullable final ButtonWidget.PressAction subtitlePressAction) {
+        this.subtitle = subtitle;
+        this.subtitlePressAction = subtitlePressAction;
+        if (subtitleWidget != null && subtitlePressAction == null) {
+            remove(subtitleWidget);
+            subtitleWidget = null;
+        }
     }
 
     /**
@@ -98,17 +108,15 @@ public class VFPScreen extends Screen {
 
         if (this.subtitle != null && this.subtitlePressAction != null) {
             final int subtitleWidth = textRenderer.getWidth(subtitle);
-            this.addDrawableChild(
-                    new PressableTextWidget(
-                            width / 2 - (subtitleWidth / 2),
-                            (textRenderer.fontHeight + 2) * 2 + 3,
-                            subtitleWidth,
-                            textRenderer.fontHeight + 2,
-                            subtitle,
-                            subtitlePressAction,
-                            textRenderer
-                    )
-            );
+            this.addDrawableChild(subtitleWidget = new PressableTextWidget(
+                    width / 2 - (subtitleWidth / 2),
+                    (textRenderer.fontHeight + 2) * 2 + 3,
+                    subtitleWidth,
+                    textRenderer.fontHeight + 2,
+                    subtitle,
+                    subtitlePressAction,
+                    textRenderer
+            ));
         }
     }
 
@@ -130,6 +138,15 @@ public class VFPScreen extends Screen {
         context.drawCenteredTextWithShadow(textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.pop();
 
+        renderSubtitle(context);
+    }
+
+    /**
+     * Renders the subtitle that doesn't have a press action
+     *
+     * @param context The current draw context
+     */
+    public void renderSubtitle(final DrawContext context) {
         if (subtitle != null && subtitlePressAction == null) {
             context.drawCenteredTextWithShadow(textRenderer, subtitle, width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
         }
