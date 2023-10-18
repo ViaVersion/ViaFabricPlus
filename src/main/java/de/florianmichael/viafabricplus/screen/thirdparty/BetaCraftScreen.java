@@ -26,6 +26,7 @@ import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.Titl
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -40,9 +41,15 @@ public class BetaCraftScreen extends VFPScreen {
     public static BCServerList SERVER_LIST;
     public final static BetaCraftScreen INSTANCE = new BetaCraftScreen();
 
+    private static final String BETA_CRAFT_SERVER_LIST_URL = "https://betacraft.uk/serverlist/";
+
     protected BetaCraftScreen() {
         super("BetaCraft", true);
-        this.setupDefaultSubtitle();
+        this.setupSubtitle(Text.of(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.opening(
+                BETA_CRAFT_SERVER_LIST_URL,
+                this,
+                true
+        ));
     }
 
     @Override
