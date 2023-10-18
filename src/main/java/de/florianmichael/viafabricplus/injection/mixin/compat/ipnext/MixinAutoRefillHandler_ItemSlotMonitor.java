@@ -34,20 +34,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @SuppressWarnings("all")
 @Pseudo
-@Mixin(targets = "org.anti_ad.mc.ipnext.event.AutoRefillHandler$ItemSlotMonitor")
+@Mixin(targets = "org.anti_ad.mc.ipnext.event.AutoRefillHandler$ItemSlotMonitor", remap = false)
 public class MixinAutoRefillHandler_ItemSlotMonitor {
 
     @Shadow
     public int currentSlotId;
 
-    @Inject(method = { "checkHandle", "checkShouldHandle" }, at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = { "checkHandle", "checkShouldHandle" }, at = @At("HEAD"), cancellable = true)
     public void dontHandleOffhandSlot(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             if (currentSlotId == 45) ci.cancel();
         }
     }
 
-    @Inject(method = "updateCurrent", at = @At(value = "FIELD", target = "Lorg/anti_ad/mc/ipnext/event/AutoRefillHandler$ItemSlotMonitor;currentSlotId:I", shift = At.Shift.AFTER), cancellable = true, remap = false)
+    @Inject(method = "updateCurrent", at = @At(value = "FIELD", target = "Lorg/anti_ad/mc/ipnext/event/AutoRefillHandler$ItemSlotMonitor;currentSlotId:I", shift = At.Shift.AFTER), cancellable = true)
     public void dontUpdateCurrentOffhandSlot(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             if (currentSlotId == 45) ci.cancel();
