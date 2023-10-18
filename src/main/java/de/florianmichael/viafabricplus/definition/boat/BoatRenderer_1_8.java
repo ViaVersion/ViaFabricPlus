@@ -29,7 +29,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 
 public class BoatRenderer_1_8 extends EntityRenderer<BoatEntity> {
-    private static final Identifier TEXTURE = new Identifier("viafabricplus", "textures/boat_1_8.png");
+    private final static Identifier TEXTURE = new Identifier("viafabricplus", "textures/boat_1_8.png");
     private final BoatModel_1_8 model;
 
     public BoatRenderer_1_8(EntityRendererFactory.Context ctx) {

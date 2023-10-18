@@ -41,13 +41,11 @@ public class ClassiCubeMFAScreen extends VFPScreen {
 
     @Override
     public void open(Screen prevScreen) {
-        status = Classic4JImpl.fromError(CCError.LOGIN_CODE);
+        this.setupSubtitle(Classic4JImpl.fromError(CCError.LOGIN_CODE));
         super.open(prevScreen);
     }
 
     private TextFieldWidget mfaField;
-
-    private Text status;
 
     @Override
     protected void init() {
@@ -58,7 +56,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
         mfaField.setPlaceholder(Text.literal("MFA"));
 
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Login"), button -> {
-            status = Text.translatable("classicube.viafabricplus.loading");
+            this.setupSubtitle(Text.translatable("classicube.viafabricplus.loading"));
             final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
 
             ClassiCubeHandler.requestAuthentication(account, mfaField.getText(), new LoginProcessHandler() {
@@ -74,7 +72,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
 
                 @Override
                 public void handleException(Throwable throwable) {
-                    status = Text.literal(throwable.getMessage());
+                    setupSubtitle(Text.literal(throwable.getMessage()));
                 }
             });
         }).position(width / 2 - 75, mfaField.getY() + (20 * 4) + 5).size(150, 20).build());
@@ -90,7 +88,8 @@ public class ClassiCubeMFAScreen extends VFPScreen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context, mouseX, mouseY, delta);
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
-        context.drawCenteredTextWithShadow(this.textRenderer, this.status, this.width / 2, 1, 16777215);
+
+        this.renderSubtitle(context);
 
         super.render(context, mouseX, mouseY, delta);
     }

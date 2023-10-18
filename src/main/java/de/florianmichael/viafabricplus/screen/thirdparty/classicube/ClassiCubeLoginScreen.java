@@ -34,7 +34,7 @@ import net.minecraft.text.Text;
 public class ClassiCubeLoginScreen extends VFPScreen {
     public final static ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
 
-    private static final String CLASSI_CUBE_URL = "https://www.classicube.net/";
+    private final static String CLASSI_CUBE_URL = "https://www.classicube.net/";
 
     public ClassiCubeLoginScreen() {
         super("ClassiCube Login", false);

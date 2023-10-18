@@ -40,7 +40,7 @@ import java.awt.*;
  */
 public class VFPScreen extends Screen {
 
-    private static final String MOD_URL = "https://github.com/ViaVersion/ViaFabricPlus";
+    private final static String MOD_URL = "https://github.com/ViaVersion/ViaFabricPlus";
 
     private final boolean backButton;
     public Screen prevScreen;
@@ -62,8 +62,18 @@ public class VFPScreen extends Screen {
      *
      */
     public void setupDefaultSubtitle() {
-        this.setupSubtitle(Text.of(MOD_URL), ConfirmLinkScreen.opening(MOD_URL, this, true));
+        this.setupUrlSubtitle(MOD_URL);
     }
+
+    /**
+     * Sets the subtitle and the subtitle press action to the default values
+     *
+     * @param subtitle The subtitle which should be rendered
+     */
+    public void setupUrlSubtitle(final String subtitle) {
+        this.setupSubtitle(Text.of(subtitle), ConfirmLinkScreen.opening(subtitle, this, true));
+    }
+
 
     /***
      * Sets the subtitle and the subtitle press action
@@ -83,7 +93,8 @@ public class VFPScreen extends Screen {
     public void setupSubtitle(@Nullable final Text subtitle, @Nullable final ButtonWidget.PressAction subtitlePressAction) {
         this.subtitle = subtitle;
         this.subtitlePressAction = subtitlePressAction;
-        if (subtitleWidget != null && subtitlePressAction == null) {
+
+        if (subtitleWidget != null && subtitlePressAction == null) { // Allows to remove the subtitle when calling this method twice.
             remove(subtitleWidget);
             subtitleWidget = null;
         }
@@ -162,7 +173,7 @@ public class VFPScreen extends Screen {
     /**
      * Opens an error screen with a specific title and throws the given throwable
      *
-     * @param title The title of the error screen
+     * @param title     The title of the error screen
      * @param throwable The throwable which should be thrown
      */
     public void showErrorScreen(final String title, final Throwable throwable) {

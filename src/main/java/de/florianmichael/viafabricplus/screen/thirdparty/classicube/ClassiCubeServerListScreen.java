@@ -20,7 +20,6 @@ package de.florianmichael.viafabricplus.screen.thirdparty.classicube;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
-import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
 import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
 import de.florianmichael.viafabricplus.base.screen.VFPScreen;
@@ -32,7 +31,6 @@ import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -50,7 +48,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
     public final static List<CCServerInfo> SERVER_LIST = new ArrayList<>();
     public final static ClassiCubeServerListScreen INSTANCE = new ClassiCubeServerListScreen();
 
-    private static final String CLASSI_CUBE_SERVER_LIST_URL = "https://www.classicube.net/server/list/";
+    private final static String CLASSICUBE_SERVER_LIST_URL = "https://www.classicube.net/server/list/";
 
     public static void open(final Screen prevScreen, final LoginProcessHandler loginProcessHandler) {
         ClassiCubeHandler.requestServerList(ClassiCubeAccountHandler.INSTANCE.getAccount(), ccServerList -> {
@@ -61,13 +59,10 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
     public ClassiCubeServerListScreen() {
         super("ClassiCube ServerList", true);
-        final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
+
+        final var account = ClassiCubeAccountHandler.INSTANCE.getAccount();
         if (account != null) {
-            this.setupSubtitle(Text.of(CLASSI_CUBE_SERVER_LIST_URL), ConfirmLinkScreen.opening(
-                    CLASSI_CUBE_SERVER_LIST_URL,
-                    this,
-                    true
-            ));
+            this.setupUrlSubtitle(CLASSICUBE_SERVER_LIST_URL);
         }
     }
 
@@ -94,22 +89,11 @@ public class ClassiCubeServerListScreen extends VFPScreen {
         this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         this.renderTitle(context);
-        final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
+
+        final var account = ClassiCubeAccountHandler.INSTANCE.getAccount();
         if (account != null) {
-            context.drawTextWithShadow(
-                    textRenderer,
-                    Text.of("ClassiCube Profile: "),
-                    32,
-                    6,
-                    -1
-            );
-            context.drawTextWithShadow(
-                    textRenderer,
-                    Text.of(account.username()),
-                    32,
-                    16,
-                    -1
-            );
+            context.drawTextWithShadow(textRenderer, Text.of("ClassiCube Profile:"), 32, 6, -1);
+            context.drawTextWithShadow(textRenderer, Text.of(account.username()), 32, 16, -1);
         }
     }
 

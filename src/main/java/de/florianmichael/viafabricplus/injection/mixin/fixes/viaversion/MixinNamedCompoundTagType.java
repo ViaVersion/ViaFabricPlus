@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class MixinNamedCompoundTagType {
 
     @Unique
-    private static final TagLimiter viafabricplus_tag_limiter = new TagLimiter() {
+    private final static TagLimiter viafabricplus_tag_limiter = new TagLimiter() {
         private final int maxBytes = 2097152;
         private int bytes;
 
