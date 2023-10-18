@@ -18,13 +18,13 @@
 package de.florianmichael.viafabricplus.screen.base;
 
 import de.florianmichael.classic4j.BetaCraftHandler;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.base.screen.VFPScreen;
+import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
+import de.florianmichael.viafabricplus.screen.thirdparty.BetaCraftScreen;
 import de.florianmichael.viafabricplus.screen.thirdparty.classicube.ClassiCubeLoginScreen;
 import de.florianmichael.viafabricplus.screen.thirdparty.classicube.ClassiCubeServerListScreen;
-import de.florianmichael.viafabricplus.screen.thirdparty.BetaCraftScreen;
-import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -43,7 +43,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
     private ButtonWidget betaCraftButton;
 
     protected ProtocolSelectionScreen() {
-        super("Protocol selection", true);
+        super("Protocol selection", true, true);
     }
 
     @Override

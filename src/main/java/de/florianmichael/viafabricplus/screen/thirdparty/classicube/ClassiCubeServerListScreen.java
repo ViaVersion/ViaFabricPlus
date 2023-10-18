@@ -22,16 +22,17 @@ import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
+import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.base.screen.VFPScreen;
+import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
 import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import de.florianmichael.viafabricplus.base.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
-import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
-import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -49,6 +50,8 @@ public class ClassiCubeServerListScreen extends VFPScreen {
     public final static List<CCServerInfo> SERVER_LIST = new ArrayList<>();
     public final static ClassiCubeServerListScreen INSTANCE = new ClassiCubeServerListScreen();
 
+    private static final String CLASSI_CUBE_SERVER_LIST_URL = "https://www.classicube.net/server/list/";
+
     public static void open(final Screen prevScreen, final LoginProcessHandler loginProcessHandler) {
         ClassiCubeHandler.requestServerList(ClassiCubeAccountHandler.INSTANCE.getAccount(), ccServerList -> {
             ClassiCubeServerListScreen.SERVER_LIST.addAll(ccServerList.servers());
@@ -57,7 +60,23 @@ public class ClassiCubeServerListScreen extends VFPScreen {
     }
 
     public ClassiCubeServerListScreen() {
-        super("ClassiCube ServerList", true);
+        super(
+                "ClassiCube ServerList",
+                ClassiCubeAccountHandler.INSTANCE.getAccount() == null ?
+                        Text.empty() :
+                        Text.of("ClassiCube Profile: " + ClassiCubeAccountHandler.INSTANCE.getAccount().username()),
+                button -> {
+                    final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
+                    if (account != null) {
+                        ConfirmLinkScreen.open(
+                                CLASSI_CUBE_SERVER_LIST_URL,
+                                MinecraftClient.getInstance().currentScreen,
+                                true
+                        );
+                    }
+                },
+                true
+        );
     }
 
     @Override
@@ -82,11 +101,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
-
-        final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
-        if (account == null) return;
-
-        this.renderTitle(context, Text.of("ClassiCube Profile: " + account.username()));
+        this.renderTitle(context);
     }
 
     public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {

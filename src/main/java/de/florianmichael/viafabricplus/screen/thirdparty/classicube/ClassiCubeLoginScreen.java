@@ -21,9 +21,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.base.screen.VFPScreen;
+import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -34,7 +34,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
     public final static ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
 
     public ClassiCubeLoginScreen() {
-        super("ClassiCube Login", false);
+        super("ClassiCube Login", false, false);
     }
 
     @Override

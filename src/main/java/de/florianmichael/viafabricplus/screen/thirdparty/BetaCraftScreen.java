@@ -41,7 +41,7 @@ public class BetaCraftScreen extends VFPScreen {
     public final static BetaCraftScreen INSTANCE = new BetaCraftScreen();
 
     protected BetaCraftScreen() {
-        super("BetaCraft", true);
+        super("BetaCraft", true, true);
     }
 
     @Override

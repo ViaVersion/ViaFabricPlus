@@ -53,7 +53,7 @@ public class ClassicItemSelectionScreen extends VFPScreen {
     public ItemStack selectedItem = null;
 
     public ClassicItemSelectionScreen() {
-        super("Classic item selection", false);
+        super("Classic item selection", false, false);
     }
 
     public void reload(final VersionEnum version, final boolean hasCustomBlocksV1) {

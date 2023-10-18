@@ -21,9 +21,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.PressableTextWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
@@ -37,11 +39,38 @@ import java.awt.*;
  */
 public class VFPScreen extends Screen {
 
+    private static final String MOD_URL = "https://github.com/ViaVersion/ViaFabricPlus";
+
+    private final Text subTitle;
+    private final ButtonWidget.PressAction subTitlePressAction;
     private final boolean backButton;
     public Screen prevScreen;
 
-    public VFPScreen(String title, boolean backButton) {
+    public VFPScreen(final String title, final boolean backButton, final boolean showDefaultSubTitle) {
         super(Text.of(title));
+        if (showDefaultSubTitle) {
+            this.subTitle = Text.of(MOD_URL);
+            this.subTitlePressAction = ConfirmLinkScreen.opening(MOD_URL, this, true);
+        } else {
+            this.subTitle = Text.of("");
+            this.subTitlePressAction = button -> {
+            };
+        }
+        this.backButton = backButton;
+    }
+
+    public VFPScreen(final String title, final Text subTitle, final boolean backButton) {
+        super(Text.of(title));
+        this.subTitle = subTitle;
+        this.subTitlePressAction = button -> {
+        };
+        this.backButton = backButton;
+    }
+
+    public VFPScreen(final String title, final Text subTitle, final ButtonWidget.PressAction subTitlePressAction, final boolean backButton) {
+        super(Text.of(title));
+        this.subTitle = subTitle;
+        this.subTitlePressAction = subTitlePressAction;
         this.backButton = backButton;
     }
 
@@ -61,6 +90,19 @@ public class VFPScreen extends Screen {
         if (backButton) {
             this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
         }
+
+        final int subTitleWidth = textRenderer.getWidth(subTitle);
+        this.addDrawableChild(
+                new PressableTextWidget(
+                        width / 2 - (subTitleWidth / 2),
+                        (textRenderer.fontHeight + 2) * 2 + 3,
+                        subTitleWidth,
+                        textRenderer.fontHeight + 2,
+                        subTitle,
+                        subTitlePressAction,
+                        textRenderer
+                )
+        );
     }
 
     @Override
@@ -68,25 +110,18 @@ public class VFPScreen extends Screen {
         MinecraftClient.getInstance().setScreen(prevScreen);
     }
 
-    public void renderTitle(final DrawContext context) {
-        renderTitle(context, Text.of("https://github.com/ViaVersion/ViaFabricPlus"));
-    }
-
     /**
-     * Renders the ViaFabricPlus title with a specific subtitle
+     * Renders the ViaFabricPlus title
      *
      * @param context The current draw context
-     * @param subTitle The subtitle which should be rendered
      */
-    public void renderTitle(final DrawContext context, final Text subTitle) {
+    public void renderTitle(final DrawContext context) {
         final MatrixStack matrices = context.getMatrices();
 
         matrices.push();
         matrices.scale(2F, 2F, 2F);
         context.drawCenteredTextWithShadow(textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.pop();
-
-        context.drawCenteredTextWithShadow(textRenderer, subTitle, width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
     }
 
     /**
