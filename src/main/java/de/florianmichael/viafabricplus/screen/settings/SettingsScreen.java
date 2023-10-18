@@ -20,9 +20,9 @@ package de.florianmichael.viafabricplus.screen.settings;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
 import de.florianmichael.viafabricplus.base.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
 import de.florianmichael.viafabricplus.base.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.base.settings.base.SettingGroup;
+import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -32,6 +32,7 @@ public class SettingsScreen extends VFPScreen {
 
     public SettingsScreen() {
         super("Setting", true);
+        this.setupDefaultSubtitle();
     }
 
     @Override

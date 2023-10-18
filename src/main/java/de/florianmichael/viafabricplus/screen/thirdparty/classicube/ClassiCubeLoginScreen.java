@@ -21,10 +21,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.base.screen.VFPScreen;
+import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -33,21 +34,23 @@ import net.minecraft.text.Text;
 public class ClassiCubeLoginScreen extends VFPScreen {
     public final static ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
 
+    private static final String CLASSI_CUBE_URL = "https://www.classicube.net/";
+
     public ClassiCubeLoginScreen() {
         super("ClassiCube Login", false);
     }
 
     @Override
     public void open(Screen prevScreen) {
-        status = Text.translatable("classicube.viafabricplus.account");
-
+        this.setupSubtitle(
+                Text.translatable("classicube.viafabricplus.account"),
+                ConfirmLinkScreen.opening(CLASSI_CUBE_URL, this, true)
+        );
         super.open(prevScreen);
     }
 
     private TextFieldWidget nameField;
     private TextFieldWidget passwordField;
-
-    private Text status;
 
     @Override
     protected void init() {
@@ -68,7 +71,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
 
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Login"), button -> {
             ClassiCubeAccountHandler.INSTANCE.setAccount(new CCAccount(nameField.getText(), passwordField.getText()));
-            status = Text.translatable("classicube.viafabricplus.loading");
+            this.setupSubtitle(Text.translatable("classicube.viafabricplus.loading"));
 
             ClassiCubeHandler.requestAuthentication(ClassiCubeAccountHandler.INSTANCE.getAccount(), null, new LoginProcessHandler() {
                 @Override
@@ -84,7 +87,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
                 @Override
                 public void handleException(Throwable throwable) {
                     throwable.printStackTrace();
-                    status = Text.literal(throwable.getMessage());
+                    setupSubtitle(Text.literal(throwable.getMessage()));
                 }
             });
         }).position(width / 2 - 75, passwordField.getY() + (20 * 4) + 5).size(150, 20).build());
@@ -101,8 +104,9 @@ public class ClassiCubeLoginScreen extends VFPScreen {
         this.renderBackground(context, mouseX, mouseY, delta);
 
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
-        context.drawCenteredTextWithShadow(this.textRenderer, this.status, this.width / 2, 1, 16777215);
 
         super.render(context, mouseX, mouseY, delta);
+
+        this.renderSubtitle(context);
     }
 }

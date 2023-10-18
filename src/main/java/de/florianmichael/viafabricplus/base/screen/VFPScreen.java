@@ -21,13 +21,16 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.PressableTextWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
@@ -37,12 +40,53 @@ import java.awt.*;
  */
 public class VFPScreen extends Screen {
 
+    private static final String MOD_URL = "https://github.com/ViaVersion/ViaFabricPlus";
+
     private final boolean backButton;
     public Screen prevScreen;
 
-    public VFPScreen(String title, boolean backButton) {
+    private Text subtitle;
+    private ButtonWidget.PressAction subtitlePressAction;
+
+    private PressableTextWidget subtitleWidget;
+
+    public VFPScreen(final String title, final boolean backButton) {
         super(Text.of(title));
         this.backButton = backButton;
+    }
+
+    /***
+     * Sets the subtitle and the subtitle press action to the default values
+     * The default value of the subtitle is the url to the GitHub repository of VFP
+     * The default value of the subtitle press action is to open the url in a confirmation screen
+     *
+     */
+    public void setupDefaultSubtitle() {
+        this.setupSubtitle(Text.of(MOD_URL), ConfirmLinkScreen.opening(MOD_URL, this, true));
+    }
+
+    /***
+     * Sets the subtitle and the subtitle press action
+     *
+     * @param subtitle The subtitle which should be rendered
+     */
+    public void setupSubtitle(@Nullable final Text subtitle) {
+        this.setupSubtitle(subtitle, null);
+    }
+
+    /***
+     * Sets the subtitle and the subtitle press action
+     *
+     * @param subtitle The subtitle which should be rendered
+     * @param subtitlePressAction The press action which should be executed when the subtitle is clicked
+     */
+    public void setupSubtitle(@Nullable final Text subtitle, @Nullable final ButtonWidget.PressAction subtitlePressAction) {
+        this.subtitle = subtitle;
+        this.subtitlePressAction = subtitlePressAction;
+        if (subtitleWidget != null && subtitlePressAction == null) {
+            remove(subtitleWidget);
+            subtitleWidget = null;
+        }
     }
 
     /**
@@ -61,6 +105,19 @@ public class VFPScreen extends Screen {
         if (backButton) {
             this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
         }
+
+        if (this.subtitle != null && this.subtitlePressAction != null) {
+            final int subtitleWidth = textRenderer.getWidth(subtitle);
+            this.addDrawableChild(subtitleWidget = new PressableTextWidget(
+                    width / 2 - (subtitleWidth / 2),
+                    (textRenderer.fontHeight + 2) * 2 + 3,
+                    subtitleWidth,
+                    textRenderer.fontHeight + 2,
+                    subtitle,
+                    subtitlePressAction,
+                    textRenderer
+            ));
+        }
     }
 
     @Override
@@ -68,17 +125,12 @@ public class VFPScreen extends Screen {
         MinecraftClient.getInstance().setScreen(prevScreen);
     }
 
-    public void renderTitle(final DrawContext context) {
-        renderTitle(context, Text.of("https://github.com/ViaVersion/ViaFabricPlus"));
-    }
-
     /**
-     * Renders the ViaFabricPlus title with a specific subtitle
+     * Renders the ViaFabricPlus title
      *
      * @param context The current draw context
-     * @param subTitle The subtitle which should be rendered
      */
-    public void renderTitle(final DrawContext context, final Text subTitle) {
+    public void renderTitle(final DrawContext context) {
         final MatrixStack matrices = context.getMatrices();
 
         matrices.push();
@@ -86,7 +138,18 @@ public class VFPScreen extends Screen {
         context.drawCenteredTextWithShadow(textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.pop();
 
-        context.drawCenteredTextWithShadow(textRenderer, subTitle, width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
+        renderSubtitle(context);
+    }
+
+    /**
+     * Renders the subtitle that doesn't have a press action
+     *
+     * @param context The current draw context
+     */
+    public void renderSubtitle(final DrawContext context) {
+        if (subtitle != null && subtitlePressAction == null) {
+            context.drawCenteredTextWithShadow(textRenderer, subtitle, width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
+        }
     }
 
     /**

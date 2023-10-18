@@ -17,7 +17,6 @@
  */
 package de.florianmichael.viafabricplus.screen.base;
 
-import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.base.screen.VFPScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -27,6 +26,7 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.function.Consumer;
 
@@ -38,6 +38,8 @@ public class ForceVersionScreen extends VFPScreen {
 
         this.prevScreen = prevScreen;
         this.selectionConsumer = selectionConsumer;
+
+        this.setupSubtitle(Text.translatable("forceversion.viafabricplus.title"));
     }
 
     @Override
@@ -52,7 +54,7 @@ public class ForceVersionScreen extends VFPScreen {
         this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
 
-        this.renderTitle(context, Text.translatable("forceversion.viafabricplus.title"));
+        this.renderTitle(context);
     }
 
     public class SlotList extends AlwaysSelectedEntryListWidget<DummyProtocolSlot> {
