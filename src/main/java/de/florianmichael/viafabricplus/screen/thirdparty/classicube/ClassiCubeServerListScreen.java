@@ -60,23 +60,16 @@ public class ClassiCubeServerListScreen extends VFPScreen {
     }
 
     public ClassiCubeServerListScreen() {
-        super(
-                "ClassiCube ServerList",
-                ClassiCubeAccountHandler.INSTANCE.getAccount() == null ?
-                        Text.empty() :
-                        Text.of("ClassiCube Profile: " + ClassiCubeAccountHandler.INSTANCE.getAccount().username()),
-                button -> {
-                    final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
-                    if (account != null) {
-                        ConfirmLinkScreen.open(
-                                CLASSI_CUBE_SERVER_LIST_URL,
-                                MinecraftClient.getInstance().currentScreen,
-                                true
-                        );
-                    }
-                },
-                true
-        );
+        super("ClassiCube ServerList", true);
+        final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
+        if (account != null) {
+            this.setSubtitle(Text.of(CLASSI_CUBE_SERVER_LIST_URL));
+            this.setSubtitlePressAction(ConfirmLinkScreen.opening(
+                    CLASSI_CUBE_SERVER_LIST_URL,
+                    this,
+                    true
+            ));
+        }
     }
 
     @Override
@@ -102,6 +95,23 @@ public class ClassiCubeServerListScreen extends VFPScreen {
         this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         this.renderTitle(context);
+        final CCAccount account = ClassiCubeAccountHandler.INSTANCE.getAccount();
+        if (account != null) {
+            context.drawTextWithShadow(
+                    textRenderer,
+                    Text.of("ClassiCube Profile: "),
+                    32,
+                    6,
+                    -1
+            );
+            context.drawTextWithShadow(
+                    textRenderer,
+                    Text.of(account.username()),
+                    32,
+                    16,
+                    -1
+            );
+        }
     }
 
     public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {

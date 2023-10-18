@@ -34,10 +34,12 @@ public class ForceVersionScreen extends VFPScreen {
     private final Consumer<VersionEnum> selectionConsumer;
 
     public ForceVersionScreen(final Screen prevScreen, final Consumer<VersionEnum> selectionConsumer) {
-        super("Force version", Text.translatable("forceversion.viafabricplus.title"), false);
+        super("Force version", false);
 
         this.prevScreen = prevScreen;
         this.selectionConsumer = selectionConsumer;
+
+        this.setSubtitle(Text.translatable("forceversion.viafabricplus.title"));
     }
 
     @Override

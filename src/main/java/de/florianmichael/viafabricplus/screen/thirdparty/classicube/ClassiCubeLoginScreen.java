@@ -34,7 +34,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
     public final static ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
 
     public ClassiCubeLoginScreen() {
-        super("ClassiCube Login", false, false);
+        super("ClassiCube Login", false);
     }
 
     @Override

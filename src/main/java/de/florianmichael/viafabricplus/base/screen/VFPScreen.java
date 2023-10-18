@@ -30,6 +30,7 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
@@ -41,37 +42,41 @@ public class VFPScreen extends Screen {
 
     private static final String MOD_URL = "https://github.com/ViaVersion/ViaFabricPlus";
 
-    private final Text subTitle;
-    private final ButtonWidget.PressAction subTitlePressAction;
     private final boolean backButton;
     public Screen prevScreen;
 
-    public VFPScreen(final String title, final boolean backButton, final boolean showDefaultSubTitle) {
+    private Text subtitle;
+    private ButtonWidget.PressAction subtitlePressAction;
+
+    public VFPScreen(final String title, final boolean backButton) {
         super(Text.of(title));
-        if (showDefaultSubTitle) {
-            this.subTitle = Text.of(MOD_URL);
-            this.subTitlePressAction = ConfirmLinkScreen.opening(MOD_URL, this, true);
-        } else {
-            this.subTitle = Text.of("");
-            this.subTitlePressAction = button -> {
-            };
-        }
         this.backButton = backButton;
     }
 
-    public VFPScreen(final String title, final Text subTitle, final boolean backButton) {
-        super(Text.of(title));
-        this.subTitle = subTitle;
-        this.subTitlePressAction = button -> {
-        };
-        this.backButton = backButton;
+    /***
+     * Sets the subtitle which is rendered below the title
+     * @param subtitle The subtitle which should be rendered
+     */
+    public void setSubtitle(@Nullable final Text subtitle) {
+        this.subtitle = subtitle;
     }
 
-    public VFPScreen(final String title, final Text subTitle, final ButtonWidget.PressAction subTitlePressAction, final boolean backButton) {
-        super(Text.of(title));
-        this.subTitle = subTitle;
-        this.subTitlePressAction = subTitlePressAction;
-        this.backButton = backButton;
+    /***
+     * Sets the press action which is executed when the subtitle is clicked
+     * @param subtitlePressAction The press action which should be executed
+     */
+    public void setSubtitlePressAction(@Nullable final ButtonWidget.PressAction subtitlePressAction) {
+        this.subtitlePressAction = subtitlePressAction;
+    }
+
+    /***
+     * Sets the subtitle and the subtitle press action to the default values
+     * The default value of the subtitle is the url to the GitHub repository of VFP
+     * The default value of the subtitle press action is to open the url in a confirmation screen
+     */
+    public void useDefaultSubtitle() {
+        this.setSubtitle(Text.of(MOD_URL));
+        this.setSubtitlePressAction(ConfirmLinkScreen.opening(MOD_URL, this, true));
     }
 
     /**
@@ -91,18 +96,20 @@ public class VFPScreen extends Screen {
             this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
         }
 
-        final int subTitleWidth = textRenderer.getWidth(subTitle);
-        this.addDrawableChild(
-                new PressableTextWidget(
-                        width / 2 - (subTitleWidth / 2),
-                        (textRenderer.fontHeight + 2) * 2 + 3,
-                        subTitleWidth,
-                        textRenderer.fontHeight + 2,
-                        subTitle,
-                        subTitlePressAction,
-                        textRenderer
-                )
-        );
+        if (this.subtitle != null && this.subtitlePressAction != null) {
+            final int subtitleWidth = textRenderer.getWidth(subtitle);
+            this.addDrawableChild(
+                    new PressableTextWidget(
+                            width / 2 - (subtitleWidth / 2),
+                            (textRenderer.fontHeight + 2) * 2 + 3,
+                            subtitleWidth,
+                            textRenderer.fontHeight + 2,
+                            subtitle,
+                            subtitlePressAction,
+                            textRenderer
+                    )
+            );
+        }
     }
 
     @Override
@@ -122,6 +129,10 @@ public class VFPScreen extends Screen {
         matrices.scale(2F, 2F, 2F);
         context.drawCenteredTextWithShadow(textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.pop();
+
+        if (subtitle != null && subtitlePressAction == null) {
+            context.drawCenteredTextWithShadow(textRenderer, subtitle, width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
+        }
     }
 
     /**

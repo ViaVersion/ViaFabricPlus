@@ -31,7 +31,8 @@ public class SettingsScreen extends VFPScreen {
     public final static SettingsScreen INSTANCE = new SettingsScreen();
 
     public SettingsScreen() {
-        super("Setting", true, true);
+        super("Setting", true);
+        this.useDefaultSubtitle();
     }
 
     @Override

@@ -36,7 +36,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
     public final static ClassiCubeMFAScreen INSTANCE = new ClassiCubeMFAScreen();
 
     public ClassiCubeMFAScreen() {
-        super("ClassiCube MFA", false, false);
+        super("ClassiCube MFA", false);
     }
 
     @Override

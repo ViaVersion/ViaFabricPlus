@@ -43,7 +43,8 @@ public class ProtocolSelectionScreen extends VFPScreen {
     private ButtonWidget betaCraftButton;
 
     protected ProtocolSelectionScreen() {
-        super("Protocol selection", true, true);
+        super("Protocol selection", true);
+        this.useDefaultSubtitle();
     }
 
     @Override
