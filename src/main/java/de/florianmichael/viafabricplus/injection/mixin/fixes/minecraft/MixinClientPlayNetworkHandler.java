@@ -22,6 +22,7 @@ import com.mojang.authlib.GameProfile;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
+import de.florianmichael.viafabricplus.injection.access.IBoatEntity_1_8;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
@@ -136,13 +137,23 @@ public abstract class MixinClientPlayNetworkHandler {
         }
     }
 
-    @SuppressWarnings("InvalidInjectorMethodSignature")
+    @SuppressWarnings("all")
     @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = BoatEntity.class))
     public Class<?> dontChangePlayerYaw(Object entity, Class<?> constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2)) {
             return Integer.class;
         }
         return constant;
+    }
+
+    @Inject(method = "onEntityPassengersSet", at = @At("RETURN"))
+    private void handle1_8BoatPassengers(EntityPassengersSetS2CPacket packet, CallbackInfo ci) {
+        if (!ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) return;
+
+        final var entity = this.world.getEntityById(packet.getId());
+        if (entity instanceof IBoatEntity_1_8 boatEntity) {
+            boatEntity.viafabricplus_setBoatEmpty(packet.getPassengerIds().length == 0);
+        }
     }
 
     @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))

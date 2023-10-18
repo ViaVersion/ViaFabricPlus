@@ -46,6 +46,7 @@
 
   "experimental.viafabricplus.chunkborderfix": "Fix Chunk borders",
   "experimental.viafabricplus.watermovement": "Water movement edge detection",
+  "experimental.viafabricplus.boatmovement": "Emulate boat movement and replace model",
 
   "debug.viafabricplus.sequence": "Disable sequencing",
   "debug.viafabricplus.merchant": "Smooth out merchant screens",
@@ -79,6 +80,7 @@
   "visual.viafabricplus.walkanimation": "Old walking animation",
   "visual.viafabricplus.sodium": "Fix Sodium Chunk renderer",
   "visual.viafabricplus.fontrendererbehaviour": "Change Font renderer behaviour",
+  "visual.viafabricplus.blockhitanimation": "Enable 1.7 Block hit animation",
 
   "bedrocklogin.viafabricplus.text": "Your browser should have opened.\nPlease enter the following Code: %s\nClosing this screen will cancel the process!",
   "bedrocklogin.viafabricplus.error": "An error has occurred! See the latest.log for more information,\nplease report the bug at: \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",

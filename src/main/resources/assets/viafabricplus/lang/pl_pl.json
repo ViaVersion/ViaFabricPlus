@@ -46,6 +46,7 @@
 
   "experimental.viafabricplus.chunkborderfix": "Napraw granice chunków",
   "experimental.viafabricplus.watermovement": "Wykrywanie krawędzi ruchu wody",
+  "experimental.viafabricplus.boatmovement": "Emuluj poruszanie się łódek i zamień ich model",
 
   "debug.viafabricplus.sequence": "Wyłącz sekwencjonowanie",
   "debug.viafabricplus.merchant": "Wygładź ekrany kupców",
@@ -79,6 +80,7 @@
   "visual.viafabricplus.walkanimation": "Stara animacja chodzenia",
   "visual.viafabricplus.sodium": "Napraw renderowanie chunków sodium",
   "visual.viafabricplus.fontrendererbehaviour": "Zmień sposób działania renderowania czcionek",
+  "visual.viafabricplus.blockhitanimation": "Włącz animację uderzania bloków 1.7",
 
   "bedrocklogin.viafabricplus.text": "Powinna ci się otworzyć przeglądarka.\nProszę, wpisz ten kod: %s\nZamykanie tego ekranu będzie anulowało proces!",
   "bedrocklogin.viafabricplus.error": "Wystąpił błąd! Zobacz latest.log po więcej informacji.\nProszę, zgłoś ten problem tutaj:\nhttps://github.com/ViaVersion/ViaFabricPlus/issues",

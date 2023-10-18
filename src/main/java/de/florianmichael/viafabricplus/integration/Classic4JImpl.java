@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.integration;
 
 import com.mojang.authlib.exceptions.AuthenticationException;
 import de.florianmichael.classic4j.api.JoinServerInterface;
-import de.florianmichael.classic4j.model.classicube.highlevel.CCError;
+import de.florianmichael.classic4j.model.classicube.CCError;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 

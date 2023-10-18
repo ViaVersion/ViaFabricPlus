@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
+@SuppressWarnings("all")
 public class ClassicWorldHeightInjection {
 
     public static PacketHandler handleJoinGame(final PacketHandler parentHandler) {
@@ -47,10 +48,10 @@ public class ClassicWorldHeightInjection {
             if (wrapper.isCancelled()) return;
 
             if (ProtocolHack.getTargetVersion(wrapper.user().getChannel()).isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
-                for (Tag dimension : wrapper.get(Type.NBT, 0).<CompoundTag>get("minecraft:dimension_type").<ListTag>get("value")) {
+                for (Tag dimension : wrapper.get(Type.NAMED_COMPOUND_TAG, 0).<CompoundTag>get("minecraft:dimension_type").<ListTag>get("value")) {
                     changeDimensionTagHeight(wrapper.user(), ((CompoundTag) dimension).get("element"));
                 }
-                changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NBT, 1));
+                changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NAMED_COMPOUND_TAG, 1));
             }
         };
     }
@@ -61,7 +62,7 @@ public class ClassicWorldHeightInjection {
             if (wrapper.isCancelled()) return;
 
             if (ProtocolHack.getTargetVersion(wrapper.user().getChannel()).isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
-                changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NBT, 0));
+                changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NAMED_COMPOUND_TAG, 0));
             }
         };
     }

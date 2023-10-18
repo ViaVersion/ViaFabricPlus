@@ -43,6 +43,9 @@ public class VisualSettings extends SettingGroup {
     public final ProtocolSyncBooleanSetting emulateArmorHud = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.armor"), VersionRange.andOlder(VersionEnum.r1_8));
     public final ProtocolSyncBooleanSetting removeNewerFeaturesFromCommandBlockScreen = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.command"), VersionRange.andOlder(VersionEnum.r1_8));
 
+    // 1.8.x -> r1_7_6tor1_7_10
+    public final ProtocolSyncBooleanSetting blockHitAnimation = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.blockhitanimation"), VersionRange.andOlder(VersionEnum.r1_7_6tor1_7_10));
+
     // r1_0_0tor1_0_1 -> b1_8tob1_8_1
     public final ProtocolSyncBooleanSetting replaceHurtSoundWithOOFSound = new ProtocolSyncBooleanSetting(this, Text.translatable("visual.viafabricplus.oof"), VersionRange.andOlder(VersionEnum.b1_8tob1_8_1));
 

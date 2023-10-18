@@ -27,6 +27,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPackets1_18;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import io.netty.buffer.Unpooled;
 import net.minecraft.SharedConstants;
 import net.minecraft.network.PacketByteBuf;
@@ -53,7 +54,7 @@ public class BlockStateTranslator {
             wrapper.read(Type.POSITION1_14);
             return wrapper.read(Type.VAR_INT);
         } catch (Exception e) {
-            e.printStackTrace();
+            ViaFabricPlus.LOGGER.error("Failed to translate block state " + oldId + " to 1.18.2", e);
         }
 
         return oldId;

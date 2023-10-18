@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.nio.ByteBuffer;
 
-@Mixin(KeyPairResponse.class)
+@Mixin(value = KeyPairResponse.class, remap = false)
 public class MixinKeyPairResponse implements IKeyPairResponse {
 
     @Unique

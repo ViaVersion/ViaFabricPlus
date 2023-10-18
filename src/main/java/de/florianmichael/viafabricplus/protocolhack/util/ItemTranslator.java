@@ -27,6 +27,7 @@ import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.packet.PacketWrapperImpl;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.storage.InventoryTracker;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import io.netty.buffer.Unpooled;
 import net.minecraft.SharedConstants;
 import net.minecraft.item.ItemStack;
@@ -68,7 +69,7 @@ public class ItemTranslator {
                 return wrapper.read(Type.ITEM);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            ViaFabricPlus.LOGGER.error("Failed to translate item", e);
         }
         return null;
     }
@@ -97,7 +98,8 @@ public class ItemTranslator {
             final var viaItem = wrapper.read(Type.FLAT_VAR_INT_ITEM);
             return new ItemStack(() -> Registries.ITEM.get(viaItem.identifier()), viaItem.amount());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            ViaFabricPlus.LOGGER.error("Failed to translate item", e);
+            return null;
         }
     }
 }

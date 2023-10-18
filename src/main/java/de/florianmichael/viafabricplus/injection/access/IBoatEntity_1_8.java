@@ -15,24 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack.impl.platform;
+package de.florianmichael.viafabricplus.injection.access;
 
-import com.viaversion.viaversion.configuration.AbstractViaConfig;
-import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLViaConfig;
-import net.raphimc.vialoader.impl.platform.ViaVersionPlatformImpl;
+public interface IBoatEntity_1_8 {
 
-import java.io.File;
-
-public class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatformImpl {
-
-    public ViaFabricPlusViaVersionPlatformImpl(File rootFolder) {
-        super(rootFolder);
-    }
-
-    @Override
-    protected AbstractViaConfig createConfig() {
-        final AbstractViaConfig config = new ViaFabricPlusVLViaConfig(new File(this.getDataFolder(), "viaversion.yml"));
-        config.reload();
-        return config;
-    }
+    void viafabricplus_setBoatEmpty(boolean boatEmpty);
 }

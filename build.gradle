@@ -9,6 +9,9 @@ group = project.maven_group
 
 configurations {
 	api.extendsFrom library
+
+	include.extendsFrom jij
+	implementation.extendsFrom jij
 }
 
 allprojects {
@@ -54,9 +57,6 @@ dependencies {
 	modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
 	library "de.florianmichael:Classic4J:${project.classic4j_version}"
-	library ("net.raphimc:ViaLoader:${project.vialoader_version}") {
-		exclude group: "org.slf4j", module: "slf4j-api"
-	}
 
 	library "com.viaversion:viaversion:${project.viaversion_version}"
 	library ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
@@ -65,6 +65,9 @@ dependencies {
 		exclude group: "com.google.guava", module: "guava"
 	}
 
+	library ("net.raphimc:ViaLoader:${project.vialoader_version}") {
+		exclude group: "org.slf4j", module: "slf4j-api"
+	}
 	library ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
 		exclude group: "com.google.code.gson", module: "gson"
 	}
@@ -73,6 +76,7 @@ dependencies {
 		exclude group: "net.lenni0451.mcstructs", module: "text"
 		exclude group: "io.jsonwebtoken", module: "jjwt-impl"
 		exclude group: "io.jsonwebtoken", module: "jjwt-gson"
+		exclude group: "com.mojang", module: "brigadier"
 	}
 	library ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
 		exclude group: "com.google.code.gson", module: "gson"
@@ -86,7 +90,7 @@ dependencies {
 		exclude group: "io.netty", module: "netty-transport"
 	}
 
-	library "net.lenni0451:Reflect:${project.reflect_version}"
+	jij "net.lenni0451:Reflect:${project.reflect_version}"
 
 	include implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))
 }

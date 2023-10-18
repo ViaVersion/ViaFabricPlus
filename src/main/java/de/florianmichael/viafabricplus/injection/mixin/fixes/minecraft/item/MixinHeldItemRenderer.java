@@ -23,6 +23,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
 import net.minecraft.util.Arm;
 import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -56,7 +57,7 @@ public abstract class MixinHeldItemRenderer {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             matrices.translate(-0.1F, 0.05F, 0.0F);
 
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+            if (VisualSettings.INSTANCE.blockHitAnimation.isEnabled()) {
                 final var arm = (hand == Hand.MAIN_HAND) ? player.getMainArm() : player.getMainArm().getOpposite();
                 applySwingOffset(matrices, arm, swingProgress);
             }
