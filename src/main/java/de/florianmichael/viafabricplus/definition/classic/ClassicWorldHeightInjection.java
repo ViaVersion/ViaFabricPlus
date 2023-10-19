@@ -24,11 +24,11 @@ import com.viaversion.viaversion.api.minecraft.chunks.ChunkSection;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Type;
+import com.viaversion.viaversion.api.type.types.chunk.ChunkType1_17;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.CompoundTag;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.IntTag;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.ListTag;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.Tag;
-import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.types.Chunk1_17Type;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.model.ClassicLevel;
@@ -73,8 +73,8 @@ public class ClassicWorldHeightInjection {
 
             if (ProtocolHack.getTargetVersion(wrapper.user().getChannel()).isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
                 wrapper.resetReader();
-                final Chunk chunk = wrapper.read(new Chunk1_17Type(16));
-                wrapper.write(new Chunk1_17Type(chunk.getSections().length), chunk);
+                final Chunk chunk = wrapper.read(new ChunkType1_17(16));
+                wrapper.write(new ChunkType1_17(chunk.getSections().length), chunk);
 
                 final ClassicWorldHeightProvider heightProvider = Via.getManager().getProviders().get(ClassicWorldHeightProvider.class);
                 if (chunk.getSections().length < heightProvider.getMaxChunkSectionCount(wrapper.user())) { // Increase available sections to match new world height

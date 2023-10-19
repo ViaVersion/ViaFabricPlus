@@ -17,10 +17,10 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protocol1_9_1to1_9;
 
+import com.viaversion.viaversion.api.minecraft.ClientWorld;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
+import com.viaversion.viaversion.api.type.types.chunk.ChunkType1_9_1;
 import com.viaversion.viaversion.protocols.protocol1_9_1to1_9.Protocol1_9_1To1_9;
-import com.viaversion.viaversion.protocols.protocol1_9_1to1_9.types.Chunk1_9_1_2Type;
-import com.viaversion.viaversion.protocols.protocol1_9_3to1_9_1_2.storage.ClientWorld;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.ClientboundPackets1_9;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.ServerboundPackets1_9;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,7 +34,7 @@ public class MixinProtocol1_9_1To1_9 extends AbstractProtocol<ClientboundPackets
     @Inject(method = "registerPackets", at = @At("RETURN"))
     public void clearInputBuffer(CallbackInfo ci) {
         registerClientbound(ClientboundPackets1_9.CHUNK_DATA, wrapper -> {
-            wrapper.passthrough(new Chunk1_9_1_2Type(wrapper.user().get(ClientWorld.class)));
+            wrapper.passthrough(new ChunkType1_9_1(wrapper.user().get(ClientWorld.class)));
             wrapper.clearInputBuffer();
         });
     }

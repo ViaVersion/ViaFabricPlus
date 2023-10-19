@@ -33,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/209
  */
 @Pseudo
-@Mixin(targets = "org.anti_ad.mc.ipnext.event.AutoRefillHandler$ItemSlotMonitor")
+@Mixin(targets = "org.anti_ad.mc.ipnext.event.AutoRefillHandler$ItemSlotMonitor", remap = false)
 public class MixinAutoRefillHandler_ItemSlotMonitor {
 
     @Shadow

@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.api.type.types.minecraft.NamedCompoundTagType;
+import com.viaversion.viaversion.api.type.types.misc.NamedCompoundTagType;
 import com.viaversion.viaversion.libs.opennbt.tag.limiter.TagLimiter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

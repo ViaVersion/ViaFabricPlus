@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protoco
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.minecraft.chunks.*;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.types.Chunk1_8Type;
+import com.viaversion.viaversion.api.type.types.chunk.ChunkType1_8;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,15 +28,15 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-@Mixin(value = Chunk1_8Type.class, remap = false)
-public abstract class MixinChunk1_8Type {
+@Mixin(value = ChunkType1_8.class, remap = false)
+public abstract class MixinChunkType1_8 {
 
     @Shadow
     public static Chunk deserialize(int chunkX, int chunkZ, boolean fullChunk, boolean skyLight, int bitmask, byte[] data) {
         return null;
     }
 
-    @Redirect(method = "read(Lio/netty/buffer/ByteBuf;Lcom/viaversion/viaversion/protocols/protocol1_9_3to1_9_1_2/storage/ClientWorld;)Lcom/viaversion/viaversion/api/minecraft/chunks/Chunk;", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/protocol1_9to1_8/types/Chunk1_8Type;deserialize(IIZZI[B)Lcom/viaversion/viaversion/api/minecraft/chunks/Chunk;"))
+    @Redirect(method = "read(Lio/netty/buffer/ByteBuf;Lcom/viaversion/viaversion/api/minecraft/ClientWorld;)Lcom/viaversion/viaversion/api/minecraft/chunks/Chunk;", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/type/types/chunk/ChunkType1_8;deserialize(IIZZI[B)Lcom/viaversion/viaversion/api/minecraft/chunks/Chunk;"))
     private Chunk fixAegis(int chunkX, int chunkZ, boolean fullChunk, boolean skyLight, int bitmask, byte[] data) {
         try {
             return deserialize(chunkX, chunkZ, fullChunk, skyLight, bitmask, data);
