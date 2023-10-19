@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        **Before reporting a bug, please see if using latest build from https://github.com/FlorianMichael/ViaFabricPlus/actions fixes your issue.**
+        **Before reporting a bug, please see if using latest build from https://github.com/ViaVersion/ViaFabricPlus/actions fixes your issue.**
         Whenever you see fit, you can upload images or videos to any of the text fields.
 
   - type: textarea
