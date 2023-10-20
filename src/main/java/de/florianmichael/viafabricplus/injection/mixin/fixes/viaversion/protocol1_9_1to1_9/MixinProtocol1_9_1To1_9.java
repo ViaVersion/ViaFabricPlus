@@ -34,7 +34,7 @@ public class MixinProtocol1_9_1To1_9 extends AbstractProtocol<ClientboundPackets
     @Inject(method = "registerPackets", at = @At("RETURN"))
     public void clearInputBuffer(CallbackInfo ci) {
         registerClientbound(ClientboundPackets1_9.CHUNK_DATA, wrapper -> {
-            wrapper.passthrough(new ChunkType1_9_1(wrapper.user().get(ClientWorld.class)));
+            wrapper.passthrough(ChunkType1_9_1.forEnvironment(wrapper.user().get(ClientWorld.class).getEnvironment()));
             wrapper.clearInputBuffer();
         });
     }

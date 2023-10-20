@@ -65,7 +65,7 @@ public class ItemTranslator {
             if (targetVersion.isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
                 return wrapper.read(Typesb1_8_0_1.CREATIVE_ITEM);
             } else {
-                return wrapper.read(Type.ITEM);
+                return wrapper.read(Type.ITEM1_8);
             }
         } catch (Exception e) {
             ViaFabricPlus.LOGGER.error("Failed to translate item", e);
@@ -78,7 +78,7 @@ public class ItemTranslator {
         if (protocolPath == null) return null;
 
         // Make sure that ViaVersion doesn't track stuff and change its behaviour
-        DUMMY_USER_CONNECTION.put(new WindowTracker(DUMMY_USER_CONNECTION));
+        DUMMY_USER_CONNECTION.put(new WindowTracker());
         DUMMY_USER_CONNECTION.put(new InventoryTracker());
 
         try {
@@ -95,7 +95,7 @@ public class ItemTranslator {
             wrapper.read(Type.VAR_INT);
             wrapper.read(Type.SHORT);
 
-            final var viaItem = wrapper.read(Type.FLAT_VAR_INT_ITEM);
+            final var viaItem = wrapper.read(Type.ITEM1_13_2);
             return new ItemStack(() -> Registries.ITEM.get(viaItem.identifier()), viaItem.amount());
         } catch (Exception e) {
             ViaFabricPlus.LOGGER.error("Failed to translate item", e);

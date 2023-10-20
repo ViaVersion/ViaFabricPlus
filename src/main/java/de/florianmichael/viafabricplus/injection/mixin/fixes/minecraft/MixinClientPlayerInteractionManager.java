@@ -19,15 +19,11 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.definition.ClientPlayerInteractionManager1_18_2;
-import net.minecraft.client.network.SequencedPacketCreator;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
-import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_16_2to1_16_1.ServerboundPackets1_16_2;
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.Protocol1_17To1_16_4;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.definition.ClientPlayerInteractionManager1_18_2;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -37,16 +33,20 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.client.network.SequencedPacketCreator;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -135,7 +135,7 @@ public abstract class MixinClientPlayerInteractionManager {
             clickSlotPacket.write(Type.BYTE, (byte) clickSlot.getButton());
             clickSlotPacket.write(Type.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId());
             clickSlotPacket.write(Type.VAR_INT, clickSlot.getActionType().ordinal());
-            clickSlotPacket.write(Type.FLAT_VAR_INT_ITEM, ItemTranslator.MC_TO_VIA_LATEST_TO_TARGET(slotItemBeforeModification, VersionEnum.r1_16));
+            clickSlotPacket.write(Type.ITEM1_13_2, ItemTranslator.MC_TO_VIA_LATEST_TO_TARGET(slotItemBeforeModification, VersionEnum.r1_16));
 
             try {
                 clickSlotPacket.sendToServer(Protocol1_17To1_16_4.class);

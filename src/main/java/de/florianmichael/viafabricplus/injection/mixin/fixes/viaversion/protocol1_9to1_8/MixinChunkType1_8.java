@@ -36,7 +36,7 @@ public abstract class MixinChunkType1_8 {
         return null;
     }
 
-    @Redirect(method = "read(Lio/netty/buffer/ByteBuf;Lcom/viaversion/viaversion/api/minecraft/ClientWorld;)Lcom/viaversion/viaversion/api/minecraft/chunks/Chunk;", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/type/types/chunk/ChunkType1_8;deserialize(IIZZI[B)Lcom/viaversion/viaversion/api/minecraft/chunks/Chunk;"))
+    @Redirect(method = "read(Lio/netty/buffer/ByteBuf;)Lcom/viaversion/viaversion/api/minecraft/chunks/Chunk;", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/type/types/chunk/ChunkType1_8;deserialize(IIZZI[B)Lcom/viaversion/viaversion/api/minecraft/chunks/Chunk;"))
     private Chunk fixAegis(int chunkX, int chunkZ, boolean fullChunk, boolean skyLight, int bitmask, byte[] data) {
         try {
             return deserialize(chunkX, chunkZ, fullChunk, skyLight, bitmask, data);
