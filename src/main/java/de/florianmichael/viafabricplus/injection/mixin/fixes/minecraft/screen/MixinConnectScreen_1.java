@@ -111,7 +111,7 @@ public class MixinConnectScreen_1 {
                 return;
             }
 
-            userConnection.put(new AuthChainData(userConnection, account.mojangJwt(), account.identityJwt(), account.publicKey(), account.privateKey(), deviceId, playFabId));
+            userConnection.put(new AuthChainData(account.mojangJwt(), account.identityJwt(), account.publicKey(), account.privateKey(), deviceId, playFabId));
             ViaFabricPlus.LOGGER.info("Created AuthChainData for Bedrock authentication!");
             return;
         }
