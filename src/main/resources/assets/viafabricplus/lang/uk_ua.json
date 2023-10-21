@@ -21,6 +21,8 @@
   "misc.viafabricplus.addserverscreenbuttontitle": "Встановити версію для цього серверу",
   "misc.viafabricplus.all": "Ванілла та з Модами",
   "misc.viafabricplus.vanillaonly": "Тільки Ванілла",
+  "misc.viafabricplus.kick": "Викинути",
+  "misc.viafabricplus.cancelnotify": "Відмінити й сповістити",
   
   "settings.viafabricplus.authentication": "Авторизація",
   "settings.viafabricplus.experimental": "Експериментальне",
@@ -37,12 +39,14 @@
   "general.viafabricplus.protocolsync": "Автоматично змінювати налаштування для вибраної версії",
   "general.viafabricplus.autodetect": "Автоматично відсліджувати версію",
   "general.viafabricplus.advertised": "Показувати рекламовану/серверну версію в багатокористувацькій грі",
+  "general.viafabricplus.ignoreerrors": "Ігнорувати помилки перекладу пакетів",
 
   "bedrock.viafabricplus.confirmtransfer": "Відкрити GUI підказку для підтвердження переміщення до іншого серверу",
   "bedrock.viafabricplus.authentication": "Нажміть, щоб встановити аккаунт для Bedrock",
   
   "experimental.viafabricplus.chunkborderfix": "Полагодити границі чанків",
   "experimental.viafabricplus.watermovement": "Виявлення краю руху води",
+  "experimental.viafabricplus.boatmovement": "Земулювати рух човна і замініти модель",
 
   "debug.viafabricplus.sequence": "Вимкнути послідовності",
   "debug.viafabricplus.merchant": "Згладити екрани крамарів",
@@ -75,7 +79,8 @@
   "visual.viafabricplus.classic": "Замінити інвентар креативу",
   "visual.viafabricplus.walkanimation": "Стара анімація ходьби",
   "visual.viafabricplus.sodium": "Полагодити рендер чанків Содіуму",
-    "visual.viafabricplus.fontrendererbehaviour": "Змінити поведінку рендерингу шрифта",
+  "visual.viafabricplus.fontrendererbehaviour": "Змінити поведінку рендерингу шрифта",
+  "visual.viafabricplus.blockhitanimation": "Ввімкнути анімацію удару блоку 1.7",
 
   "bedrocklogin.viafabricplus.text": "Ваш браузер мав відкритися.\nБудь ласка, введіть наступний код: %s\nЯкщо закрити цей екран, процес буде скасовано!",
   "bedrocklogin.viafabricplus.error": "Сталася помилка! Дивіться latest.log для отримання додаткової інформації,\nбудь ласка, повідомте про помилку за адресою: \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
