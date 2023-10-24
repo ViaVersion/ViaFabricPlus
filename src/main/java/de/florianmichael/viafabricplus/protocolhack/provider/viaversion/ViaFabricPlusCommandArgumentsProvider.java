@@ -15,25 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.protocolhack.provider;
+package de.florianmichael.viafabricplus.protocolhack.provider.viaversion;
 
+import com.viaversion.viaversion.api.minecraft.signature.SignableCommandArgumentsProvider;
 import com.viaversion.viaversion.util.Pair;
-import de.florianmichael.viafabricplus.definition.signatures.v1_19_0.provider.CommandArgumentsProvider;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.command.argument.SignedArgumentList;
 
+import java.util.Collections;
 import java.util.List;
 
-public class ViaFabricPlusCommandArgumentsProvider extends CommandArgumentsProvider {
+public class ViaFabricPlusCommandArgumentsProvider extends SignableCommandArgumentsProvider {
 
     @Override
-    public List<Pair<String, String>> getSignedArguments(String command) {
-        final ClientPlayNetworkHandler clientPlayNetworkHandler = MinecraftClient.getInstance().getNetworkHandler();
+    public List<Pair<String, String>> getSignableArguments(String command) {
+        final var network = MinecraftClient.getInstance().getNetworkHandler();
+        if (network != null) {
+            return SignedArgumentList.of(
+                    network.getCommandDispatcher().parse(command, network.getCommandSource())).
+                    arguments().stream().
+                    map(function -> new Pair<>(function.getNodeName(), function.value())).
+                    toList();
 
-        if (clientPlayNetworkHandler != null) {
-            return SignedArgumentList.of(clientPlayNetworkHandler.getCommandDispatcher().parse(command, clientPlayNetworkHandler.getCommandSource())).arguments().stream().map(function -> new Pair<>(function.getNodeName(), function.value())).toList();
         }
-        return super.getSignedArguments(command);
+        return Collections.emptyList();
     }
 }

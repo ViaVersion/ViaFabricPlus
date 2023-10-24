@@ -18,23 +18,18 @@
 package de.florianmichael.viafabricplus.protocolhack.impl;
 
 import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.minecraft.signature.SignableCommandArgumentsProvider;
 import com.viaversion.viaversion.api.platform.providers.ViaProviders;
 import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.PlayerLookTargetProvider;
 import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.provider.PlayerAbilitiesProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
-import de.florianmichael.viafabricplus.definition.signatures.v1_19_0.provider.CommandArgumentsProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.ViaFabricPlusCommandArgumentsProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusTransferProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.*;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusBaseVersionProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusMovementTransmitterProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusPlayerAbilitiesProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusPlayerLookTargetProvider;
+import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.*;
 import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;
 import net.raphimc.viabedrock.protocol.providers.TransferProvider;
@@ -60,8 +55,7 @@ public class ViaFabricPlusVLLoader extends VLLoader {
         providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());
         providers.use(PlayerLookTargetProvider.class, new ViaFabricPlusPlayerLookTargetProvider());
         providers.use(PlayerAbilitiesProvider.class, new ViaFabricPlusPlayerAbilitiesProvider());
-
-        providers.use(CommandArgumentsProvider.class, new ViaFabricPlusCommandArgumentsProvider());
+        providers.use(SignableCommandArgumentsProvider.class, new ViaFabricPlusCommandArgumentsProvider());
 
         providers.use(OldAuthProvider.class, new ViaFabricPlusOldAuthProvider());
         providers.use(ClassicWorldHeightProvider.class, new ViaFabricPlusClassicWorldHeightProvider());

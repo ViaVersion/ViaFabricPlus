@@ -19,14 +19,14 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
+import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_0;
+import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_1;
 import net.raphimc.mcauth.util.MicrosoftConstants;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
-import de.florianmichael.viafabricplus.definition.signatures.v1_19_0.ChatSession1_19_0;
-import de.florianmichael.viafabricplus.definition.signatures.v1_19_2.ChatSession1_19_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
@@ -49,7 +49,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.net.InetSocketAddress;
-import java.util.Optional;
 import java.util.UUID;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
@@ -120,20 +119,24 @@ public class MixinConnectScreen_1 {
             return; // This disables the chat session emulation for all versions <= 1.18.2
         }
         if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
-            MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().thenAcceptAsync(optional -> optional.ifPresentOrElse(playerKeyPair -> {
-                final PlayerPublicKey.PublicKeyData publicKeyData = playerKeyPair.publicKey().data();
+            final var profile = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
+            if (profile != null) {
+                final PlayerPublicKey.PublicKeyData publicKeyData = profile.publicKey().data();
 
-                userConnection.put(new ChatSession1_19_2(userConnection, new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature()), playerKeyPair.privateKey()));
+                final UUID playerUuid = MinecraftClient.getInstance().getSession().getUuidOrNull();
 
+                userConnection.put(new ChatSession1_19_1(playerUuid, profile.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature())));
                 if (targetVersion == VersionEnum.r1_19) {
                     final var legacyKey = ((IPublicKeyData) (Object) publicKeyData).viafabricplus_getV1Key();
                     if (legacyKey != null) {
-                        userConnection.put(new ChatSession1_19_0(userConnection, new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey.array()), playerKeyPair.privateKey()));
+                        userConnection.put(new ChatSession1_19_0(playerUuid, profile.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey.array())));
                     } else {
-                        ViaFabricPlus.LOGGER.error("Failed to get v1 key, can't setup ChatSession_0");
+                        ViaFabricPlus.LOGGER.error("Failed to fetch legacy key, can't setup ChatSession");
                     }
                 }
-            }, () -> ViaFabricPlus.LOGGER.error("Failed to fetch keyPair, can't setup ChatSession")));
+            } else {
+                ViaFabricPlus.LOGGER.error("Failed to fetch keyPair, can't setup ChatSession");
+            }
         }
     }
 }

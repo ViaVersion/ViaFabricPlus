@@ -72,17 +72,6 @@ public abstract class MixinClientPlayNetworkHandler {
         }
     }
 
-    @Inject(method = "onGameJoin", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;setServerViewDistance(I)V", shift = At.Shift.AFTER))
-    public void sendBrandAndOptionPackets(GameJoinS2CPacket packet, CallbackInfo ci) {
-        // Counterpart from MixinClientLoginNetworkHandler
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            final var connection = this.getConnection();
-
-            connection.send(new ClientOptionsC2SPacket(MinecraftClient.getInstance().options.getSyncedOptions()));
-            connection.send(new CustomPayloadC2SPacket(new BrandCustomPayload(ClientBrandRetriever.getClientModName())));
-        }
-    }
-
     @Inject(method = "onChunkLoadDistance", at = @At("RETURN"))
     public void emulateSimulationDistance(ChunkLoadDistanceS2CPacket packet, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
