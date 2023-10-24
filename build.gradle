@@ -3,44 +3,42 @@ plugins {
 	id "maven-publish"
 }
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
+base {
+	archivesName = project.archives_base_name
+	version = project.mod_version
+	group = project.maven_group
+}
 
 configurations {
-	api.extendsFrom library
+	// Jar in sources
+	api.extendsFrom jis
 
+	// Jar in jar
 	include.extendsFrom jij
 	implementation.extendsFrom jij
 }
 
-allprojects {
-	repositories {
-		mavenCentral()
-		maven {
-			name = "Jitpack"
-			url = "https://jitpack.io"
-		}
-		maven {
-			name = "ViaVersion"
-			url = "https://repo.viaversion.com"
-		}
-		maven {
-			name = "Lenni0451 releases"
-			url = "https://maven.lenni0451.net/releases"
-		}
-		maven {
-			name = "Lenni0451 snapshots"
-			url = "https://maven.lenni0451.net/snapshots"
-		}
-		maven {
-			name = "TerraformersMC"
-			url = "https://maven.terraformersmc.com/releases"
-		}
-		maven {
-			name = "OpenCollab Snapshots"
-			url = "https://repo.opencollab.dev/maven-snapshots/"
-		}
+repositories {
+	mavenCentral()
+	maven {
+		name = "Jitpack"
+		url = "https://jitpack.io"
+	}
+	maven {
+		name = "ViaVersion"
+		url = "https://repo.viaversion.com"
+	}
+	maven {
+		name = "Lenni0451"
+		url = "https://maven.lenni0451.net/everything"
+	}
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/releases"
+	}
+	maven {
+		name = "OpenCollab Snapshots"
+		url = "https://repo.opencollab.dev/maven-snapshots/"
 	}
 }
 
@@ -49,50 +47,52 @@ loom {
 }
 
 dependencies {
+	// Minecraft/Fabric
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-	modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
-	library "de.florianmichael:Classic4J:${project.classic4j_version}"
-
-	library "com.viaversion:viaversion:${project.viaversion_version}"
-	library ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
+	// ViaVersion Libraries
+	jis "com.viaversion:viaversion:${project.viaversion_version}"
+	jis ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
 		exclude group: "com.viaversion", module: "viaversion"
 		exclude group: "io.netty", module: "netty-all"
 		exclude group: "com.google.guava", module: "guava"
 	}
-
-	library ("net.raphimc:ViaLoader:${project.vialoader_version}") {
-		exclude group: "org.slf4j", module: "slf4j-api"
-	}
-	library ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
+	jis ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
 		exclude group: "com.google.code.gson", module: "gson"
 	}
-	library "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
-	library ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
+	jis "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
+	jis ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
 		exclude group: "net.lenni0451.mcstructs", module: "text"
 		exclude group: "io.jsonwebtoken", module: "jjwt-impl"
 		exclude group: "io.jsonwebtoken", module: "jjwt-gson"
 		exclude group: "com.mojang", module: "brigadier"
 	}
-	library ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
-		exclude group: "com.google.code.gson", module: "gson"
+	jis ("net.raphimc:ViaLoader:${project.vialoader_version}") {
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
 
-	library("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
+	// RaphiMC Libraries
+	jis ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
+		exclude group: "com.google.code.gson", module: "gson"
+		exclude group: "org.slf4j", module: "slf4j-api"
+	}
+	jis("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
 		exclude group: "io.netty", module: "netty-common"
 		exclude group: "io.netty", module: "netty-buffer"
 		exclude group: "io.netty", module: "netty-codec"
 		exclude group: "io.netty", module: "netty-transport"
 	}
 
+	// Lenni0451 Libraries
 	jij "net.lenni0451:Reflect:${project.reflect_version}"
 
+	// Misc Libraries
+	modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
 	include implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))
+	jis "de.florianmichael:Classic4J:${project.classic4j_version}"
 }
 
 processResources {
@@ -103,10 +103,6 @@ processResources {
 	}
 }
 
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
-}
-
 java {
 	withSourcesJar()
 
@@ -115,16 +111,23 @@ java {
 }
 
 jar {
-	dependsOn configurations.library
+	// Add all dependencies which are included using "jis" to the jar file and exclude the META-INF folder
+	dependsOn configurations.jis
 	from {
 		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-		configurations.library.collect {
+		configurations.jis.collect {
 			zipTree(it)
 		}
 	} {
 		exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA"
 	}
-	from("LICENSE") { rename { "${it}_${project.archivesBaseName}" } }
+
+	// Rename the project's license file to LICENSE_<project_name> to avoid conflicts
+	from("LICENSE") {
+		rename {
+			"${it}_${project.archivesBaseName}"
+		}
+	}
 }
 
 publishing {
