@@ -20,11 +20,9 @@ package de.florianmichael.viafabricplus.screen.classic4j.classicube;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
-import de.florianmichael.classic4j.model.classicube.CCError;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.integration.Classic4JImpl;
 import de.florianmichael.viafabricplus.screen.common.ProtocolSelectionScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -41,7 +39,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
 
     @Override
     public void open(Screen prevScreen) {
-        this.setupSubtitle(Classic4JImpl.fromError(CCError.LOGIN_CODE));
+        this.setupSubtitle(Text.translatable("classicube.viafabricplus.error.logincode"));
         super.open(prevScreen);
     }
 

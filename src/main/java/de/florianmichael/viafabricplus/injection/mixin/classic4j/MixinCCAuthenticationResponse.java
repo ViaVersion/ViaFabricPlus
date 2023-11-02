@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.classic4j;
 
 import de.florianmichael.classic4j.model.classicube.CCAuthenticationResponse;
 import de.florianmichael.classic4j.model.classicube.CCError;
-import de.florianmichael.viafabricplus.integration.Classic4JImpl;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -29,6 +29,14 @@ public class MixinCCAuthenticationResponse {
 
     @Redirect(method = "getErrorDisplay", at = @At(value = "FIELD", target = "Lde/florianmichael/classic4j/model/classicube/CCError;description:Ljava/lang/String;"))
     public String mapTranslations(CCError instance) {
-        return Classic4JImpl.fromError(instance).getString();
+        switch (instance) {
+            case TOKEN -> Text.translatable("classicube.viafabricplus.error.token").getString();
+            case USERNAME -> Text.translatable("classicube.viafabricplus.error.username").getString();
+            case PASSWORD -> Text.translatable("classicube.viafabricplus.error.password").getString();
+            case VERIFICATION -> Text.translatable("classicube.viafabricplus.error.verification").getString();
+            case LOGIN_CODE -> Text.translatable("classicube.viafabricplus.error.logincode").getString();
+        }
+
+        return instance.description;
     }
 }
