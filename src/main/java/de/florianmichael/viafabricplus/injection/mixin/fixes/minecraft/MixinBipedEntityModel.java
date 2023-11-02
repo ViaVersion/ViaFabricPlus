@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.LivingEntity;

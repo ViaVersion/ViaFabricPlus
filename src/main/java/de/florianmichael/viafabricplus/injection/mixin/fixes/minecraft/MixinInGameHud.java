@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.JumpingMount;

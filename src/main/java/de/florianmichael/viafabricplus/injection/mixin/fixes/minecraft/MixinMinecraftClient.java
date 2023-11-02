@@ -27,7 +27,7 @@ import com.viaversion.viaversion.protocols.protocol1_9_3to1_9_1_2.ServerboundPac
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IMinecraftClient;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import net.raphimc.vialoader.util.VersionEnum;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;

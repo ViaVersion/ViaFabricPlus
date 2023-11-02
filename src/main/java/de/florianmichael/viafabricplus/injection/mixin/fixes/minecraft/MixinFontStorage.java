@@ -17,9 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
-import de.florianmichael.viafabricplus.definition.BuiltinEmptyGlyph1_12_2;
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
+import de.florianmichael.viafabricplus.definition.model.BuiltinEmptyGlyph1_12_2;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
 import de.florianmichael.viafabricplus.mappings.CharacterMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;

@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.information.impl;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.definition.tracker.bedrock.JoinGameTracker;
+import de.florianmichael.viafabricplus.definition.tracker.JoinGameTracker;
 import de.florianmichael.viafabricplus.information.AbstractInformationGroup;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import net.lenni0451.reflect.stream.RStream;

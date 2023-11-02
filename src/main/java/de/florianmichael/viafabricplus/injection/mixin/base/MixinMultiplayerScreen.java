@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
-import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.screen.common.ProtocolSelectionScreen;
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;

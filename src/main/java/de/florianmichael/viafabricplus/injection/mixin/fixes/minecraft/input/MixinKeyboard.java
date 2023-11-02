@@ -18,9 +18,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.input;
 
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IMinecraftClient;
-import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;

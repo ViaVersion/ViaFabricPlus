@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;

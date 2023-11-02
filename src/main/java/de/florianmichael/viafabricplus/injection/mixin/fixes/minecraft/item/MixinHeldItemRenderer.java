@@ -23,7 +23,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.util.Arm;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;

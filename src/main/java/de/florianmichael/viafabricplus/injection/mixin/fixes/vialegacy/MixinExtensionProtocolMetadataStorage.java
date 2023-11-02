@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
 
 import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;
-import de.florianmichael.viafabricplus.base.event.LoadClassicProtocolExtensionCallback;
+import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 import org.spongepowered.asm.mixin.Final;

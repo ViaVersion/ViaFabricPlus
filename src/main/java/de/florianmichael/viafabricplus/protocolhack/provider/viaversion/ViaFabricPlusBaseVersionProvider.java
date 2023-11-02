@@ -24,7 +24,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;

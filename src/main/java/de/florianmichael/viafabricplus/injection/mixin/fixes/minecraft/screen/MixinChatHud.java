@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.hud.MessageIndicator;

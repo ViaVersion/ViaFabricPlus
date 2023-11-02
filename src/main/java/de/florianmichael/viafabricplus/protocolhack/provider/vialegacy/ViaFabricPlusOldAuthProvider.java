@@ -20,11 +20,10 @@ package de.florianmichael.viafabricplus.protocolhack.provider.vialegacy;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
+import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
 
 public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {

@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;

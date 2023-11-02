@@ -19,9 +19,9 @@ package de.florianmichael.viafabricplus.definition;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.ArmorType;
-import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
-import de.florianmichael.viafabricplus.base.event.LoadClassicProtocolExtensionCallback;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
+import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.injection.MixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IFontStorage;
 import net.minecraft.block.Block;

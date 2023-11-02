@@ -21,7 +21,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.integration.Classic4JImpl;
-import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
+import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.storage.HandshakeStorage;
 

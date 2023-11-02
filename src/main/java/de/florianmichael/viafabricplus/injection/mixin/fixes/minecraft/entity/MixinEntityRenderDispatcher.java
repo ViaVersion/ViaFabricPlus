@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
-import de.florianmichael.viafabricplus.definition.boat.BoatRenderer_1_8;
+import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
+import de.florianmichael.viafabricplus.definition.BoatRenderer_1_8;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;

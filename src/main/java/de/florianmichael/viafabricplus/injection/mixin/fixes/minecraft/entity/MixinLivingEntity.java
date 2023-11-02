@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
+import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
 import de.florianmichael.viafabricplus.definition.EntityHeightOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.BlockState;

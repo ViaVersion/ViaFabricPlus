@@ -1,6 +1,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
+import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
 import de.florianmichael.viafabricplus.definition.EntityHeightOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.injection.access.IBoatEntity;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
