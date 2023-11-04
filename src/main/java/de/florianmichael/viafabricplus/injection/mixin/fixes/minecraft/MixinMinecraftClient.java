@@ -112,7 +112,9 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
             ordinal = 4, shift = At.Shift.BEFORE))
     public void injectTick(CallbackInfo ci) {
-        if (!DebugSettings.INSTANCE.executeInputsInSync.isEnabled()) return;
+        if (!DebugSettings.INSTANCE.executeInputsInSync.isEnabled()) {
+            return;
+        }
 
         while (!viafabricplus_mouseInteractions.isEmpty()) {
             viafabricplus_mouseInteractions.poll().run();

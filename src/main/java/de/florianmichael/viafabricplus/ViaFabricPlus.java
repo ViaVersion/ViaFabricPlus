@@ -68,7 +68,9 @@ public class ViaFabricPlus {
     private final InformationSystem informationSystem = new InformationSystem();
 
     public void init() {
-        if (!RUN_DIRECTORY.exists()) RUN_DIRECTORY.mkdir();
+        if (!RUN_DIRECTORY.exists()) {
+            RUN_DIRECTORY.mkdir();
+        }
 
         // Load overriding jars first so other code can access the new classes
         ViaJarReplacer.loadOverridingJars();

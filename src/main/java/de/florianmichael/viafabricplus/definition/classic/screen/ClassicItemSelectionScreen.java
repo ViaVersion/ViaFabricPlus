@@ -175,6 +175,5 @@ public class ClassicItemSelectionScreen extends VFPScreen {
             }
             y += ITEM_XY_BOX_DIMENSION_CLASSIC;
         }
-        super.render(context, mouseX, mouseY, delta);
     }
 }
