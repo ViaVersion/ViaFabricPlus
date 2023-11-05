@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.screenhandler;
 
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
+import de.florianmichael.viafabricplus.definition.RecipesPre1_12;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.RecipeInputInventory;
@@ -44,7 +44,7 @@ public abstract class MixinCraftingScreenHandler extends AbstractRecipeScreenHan
     @Inject(method = "onContentChanged", at = @At("HEAD"))
     public void updateResultSlot(Inventory inventory, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
-            ClientsideFixes.setCraftingResultSlot(syncId, this, input);
+            RecipesPre1_12.setCraftingResultSlot(syncId, this, input);
         }
     }
 }
