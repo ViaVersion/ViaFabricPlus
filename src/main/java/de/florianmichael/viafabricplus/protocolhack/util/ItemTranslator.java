@@ -65,7 +65,11 @@ public class ItemTranslator {
             if (targetVersion.isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
                 return wrapper.read(Typesb1_8_0_1.CREATIVE_ITEM);
             } else {
-                return wrapper.read(Type.ITEM1_8);
+                if (wrapper.is(Type.ITEM1_13_2, 0)) {
+                    return wrapper.read(Type.ITEM1_13_2);
+                } else {
+                    return wrapper.read(Type.ITEM1_8);
+                }
             }
         } catch (Exception e) {
             ViaFabricPlus.LOGGER.error("Failed to translate item", e);
