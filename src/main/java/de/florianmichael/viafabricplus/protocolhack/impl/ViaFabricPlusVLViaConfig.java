@@ -47,4 +47,9 @@ public class ViaFabricPlusVLViaConfig extends VLViaConfig {
     public int get1_13TabCompleteDelay() {
         return 5;
     }
+
+    @Override
+    public boolean isSimulatePlayerTick() {
+        return false;
+    }
 }
