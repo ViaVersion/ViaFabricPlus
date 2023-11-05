@@ -136,6 +136,7 @@
     "fixes.minecraft.screen.merchant.MixinMerchantScreen",
     "fixes.minecraft.screen.merchant.MixinMerchantScreenHandler",
     "fixes.minecraft.screen.screenhandler.MixinBrewingStandScreenHandler_FuelSlot",
+    "fixes.minecraft.screen.screenhandler.MixinCraftingScreenHandler",
     "fixes.minecraft.screen.screenhandler.MixinPlayerScreenHandler",
     "fixes.minecraft.screen.screenhandler.MixinScreenHandler",
     "fixes.viabedrock.MixinBedrockProtocol",
@@ -169,10 +170,13 @@
     "fixes.viaversion.protocol1_9to1_8.MixinEntityTracker1_9",
     "fixes.viaversion.protocol1_9to1_8.MixinMetadataRewriter1_9To1_8",
     "jsonwebtoken.MixinClasses",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder",
-    "fixes.minecraft.screen.screenhandler.MixinCraftingScreenHandler"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "fixes.viaversion.protocol1_12to1_11_1.MixinProtocol1_12To1_11_1",
+    "fixes.viaversion.protocol1_13to1_12_2.MixinProtocol1_13To1_12_2"
+  ]
 }
