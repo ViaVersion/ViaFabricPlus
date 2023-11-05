@@ -17,8 +17,10 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.screenhandler;
 
+import de.florianmichael.viafabricplus.definition.ClientsideFixes;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.inventory.CraftingInventory;
@@ -26,14 +28,16 @@ import net.minecraft.screen.AbstractRecipeScreenHandler;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerScreenHandler.class)
 public abstract class MixinPlayerScreenHandler extends AbstractRecipeScreenHandler<CraftingInventory> {
+
+    @Shadow @Final private RecipeInputInventory craftingInput;
 
     public MixinPlayerScreenHandler(ScreenHandlerType<?> screenHandlerType, int i) {
         super(screenHandlerType, i);
@@ -51,9 +55,17 @@ public abstract class MixinPlayerScreenHandler extends AbstractRecipeScreenHandl
     @SuppressWarnings("InvalidInjectorMethodSignature")
     @ModifyVariable(method = "quickMove", ordinal = 0, at = @At(value = "STORE", ordinal = 0))
     private EquipmentSlot injectTransferSlot(EquipmentSlot slot) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && slot == EquipmentSlot.OFFHAND)
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && slot == EquipmentSlot.OFFHAND) {
             return EquipmentSlot.MAINHAND;
-        else
+        } else {
             return slot;
+        }
+    }
+
+    @Inject(method = "onContentChanged", at = @At("HEAD"))
+    public void updateResultSlot(Inventory inventory, CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
+            ClientsideFixes.setCraftingResultSlot(syncId, this, craftingInput);
+        }
     }
 }

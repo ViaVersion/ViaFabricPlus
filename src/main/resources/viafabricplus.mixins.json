@@ -25,6 +25,7 @@
     "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "compat.sodium.MixinChunkTracker",
     "fixes.authlib.MixinKeyPairResponse",
+    "fixes.authlib.MixinYggdrasilUserApiService",
     "fixes.minecraft.MixinBipedEntityModel",
     "fixes.minecraft.MixinCamera",
     "fixes.minecraft.MixinClientPlayerInteractionManager",
@@ -167,9 +168,9 @@
     "fixes.viaversion.protocol1_9to1_8.MixinEntityPackets_6_1",
     "fixes.viaversion.protocol1_9to1_8.MixinEntityTracker1_9",
     "fixes.viaversion.protocol1_9to1_8.MixinMetadataRewriter1_9To1_8",
-    "fixes.authlib.MixinYggdrasilUserApiService",
     "jsonwebtoken.MixinClasses",
-    "jsonwebtoken.MixinDefaultJwtParserBuilder"
+    "jsonwebtoken.MixinDefaultJwtParserBuilder",
+    "fixes.minecraft.screen.screenhandler.MixinCraftingScreenHandler"
   ],
   "injectors": {
     "defaultRequire": 1
