@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protocol1_9to1_8;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.CommandBlockProvider;
 import org.spongepowered.asm.mixin.Mixin;

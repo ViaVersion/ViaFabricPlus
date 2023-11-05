@@ -15,21 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protocol1_13to1_12_2;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.Protocol1_13To1_12_2;
-import de.florianmichael.viafabricplus.injection.access.IProtocol1_13To1_12_2;
+import com.viaversion.viaversion.api.minecraft.item.Item;
+import com.viaversion.viaversion.protocols.protocol1_11to1_10.EntityIdRewriter;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = Protocol1_13To1_12_2.class, remap = false)
-public abstract class MixinProtocol1_13To1_12_2 implements IProtocol1_13To1_12_2 {
+@Mixin(value = EntityIdRewriter.class, remap = false)
+public class MixinEntityIdRewriter {
 
-    @Shadow protected abstract void writeDeclareRecipes(PacketWrapper recipesPacket);
-
-    @Override
-    public void viafabricplus_writeDeclareRecipes(PacketWrapper recipesPacket) {
-        writeDeclareRecipes(recipesPacket);
+    @Redirect(method = "toClientItem(Lcom/viaversion/viaversion/api/minecraft/item/Item;Z)V", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/minecraft/item/Item;setAmount(I)V"))
+    private static void allowNegativeItems(Item instance, int i) {
     }
 }

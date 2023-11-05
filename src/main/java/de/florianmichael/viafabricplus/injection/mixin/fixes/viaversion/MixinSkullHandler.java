@@ -15,18 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion.protocol1_11to1_10;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.api.minecraft.item.Item;
-import com.viaversion.viaversion.protocols.protocol1_11to1_10.EntityIdRewriter;
+import com.viaversion.viaversion.libs.opennbt.tag.builtin.NumberTag;
+import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.blockentities.SkullHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = EntityIdRewriter.class, remap = false)
-public class MixinEntityIdRewriter {
+@Mixin(value = SkullHandler.class, remap = false)
+public class MixinSkullHandler {
 
-    @Redirect(method = "toClientItem(Lcom/viaversion/viaversion/api/minecraft/item/Item;Z)V", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/minecraft/item/Item;setAmount(I)V"))
-    private static void allowNegativeItems(Item instance, int i) {
+    @Inject(method = "getLong", at = @At("HEAD"), cancellable = true)
+    public void checkIfTagExists(NumberTag tag, CallbackInfoReturnable<Long> cir) {
+        if (tag == null) cir.setReturnValue(0L);
     }
 }
