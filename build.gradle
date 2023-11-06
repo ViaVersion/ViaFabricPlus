@@ -54,7 +54,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	// ViaVersion Libraries
-	jis "com.viaversion:viaversion:${project.viaversion_version}"
+	jis "com.viaversion:viaversion-common:${project.viaversion_version}"
 	jis ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
 		exclude group: "com.viaversion", module: "viaversion"
 		exclude group: "io.netty", module: "netty-all"
