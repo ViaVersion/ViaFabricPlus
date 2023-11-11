@@ -34,7 +34,7 @@ public class MixinItem {
 
     @Redirect(method = { "getMaxDamage", "isDamageable", "getItemBarStep", "getItemBarColor" }, at = @At(value = "FIELD", target = "Lnet/minecraft/item/Item;maxDamage:I"))
     public int changeCrossbowDamage(Item instance) {
-        if (instance instanceof CrossbowItem && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
+        if (instance instanceof CrossbowItem && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
             return 326;
         }
 

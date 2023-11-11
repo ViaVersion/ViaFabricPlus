@@ -211,7 +211,7 @@ public abstract class MixinLivingEntity extends Entity {
     @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
     public void replaceRidingOffset(Entity vehicle, CallbackInfoReturnable<Float> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            cir.setReturnValue((float) EntityHeightOffsetsPre1_20_2.getHeightOffset((Entity) (Object) this));
+            cir.setReturnValue((float) EntityHeightOffsetsPre1_20_2.getHeightOffset(this));
         }
     }
 

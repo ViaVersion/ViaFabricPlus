@@ -17,8 +17,12 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.authlib.GameProfile;
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.world.GameMode;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
@@ -36,10 +40,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings("ConstantValue")
@@ -167,14 +168,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         }
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
-    public boolean alwaysSendPacket(ClientPlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_1)) {
-            return false;
-        }
-        return isClimbing();
-    }
-
     @Redirect(method = "autoJump", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;inverseSqrt(F)F"))
     public float useFastInverse(float x) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
@@ -194,10 +187,45 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return instance.hasVehicle();
     }
 
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;checkFallFlying()Z"))
+    public boolean removeFallFlyingCheck(ClientPlayerEntity instance) {
+        // Elytra movement was serverside in <= 1.14.4 and got moved to the client in 1.15
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            return !this.isOnGround() && this.getVelocity().y < 0.0 && !isFallFlying();
+        }
+        return instance.checkFallFlying();
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
+    public boolean removeLadderCheck(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_1)) {
+            return false;
+        }
+        return instance.isClimbing();
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 3))
+    public boolean removeVehicleCheck(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            return false;
+        }
+        return instance.hasVehicle();
+    }
+
+    @ModifyVariable(method = "tickMovement", at = @At(value = "LOAD", ordinal = 4), ordinal = 4)
+    public boolean removeBl8Boolean(boolean value) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            return false;
+        }
+        return value;
+    }
+
     @Override
     public boolean isCreative() {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-            if (client.interactionManager == null) return super.isCreative(); // Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/216
+            if (client.interactionManager == null) {
+                return super.isCreative(); // Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/216
+            }
             return client.interactionManager.getCurrentGameMode() == GameMode.CREATIVE;
         }
         return super.isCreative();
