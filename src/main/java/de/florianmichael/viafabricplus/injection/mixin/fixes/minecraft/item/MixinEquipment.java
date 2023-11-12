@@ -18,8 +18,10 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Equipment;
+import net.minecraft.item.ItemStack;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,6 +29,23 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Equipment.class)
 public interface MixinEquipment {
+
+    @Redirect(method = "equipAndSwap", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;hasBindingCurse(Lnet/minecraft/item/ItemStack;)Z"))
+    default boolean removeBindingCurseCondition(ItemStack stack) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+            return false;
+        }
+        return EnchantmentHelper.hasBindingCurse(stack);
+    }
+
+    @Redirect(method = "equipAndSwap", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"))
+    default boolean simplifyCondition(ItemStack left, ItemStack right) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+            return !right.isEmpty();
+        }
+
+        return ItemStack.areEqual(left, right);
+    }
 
     @Redirect(method = "equipAndSwap", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isCreative()Z"))
     default boolean removeCreativeCondition(PlayerEntity instance) {
