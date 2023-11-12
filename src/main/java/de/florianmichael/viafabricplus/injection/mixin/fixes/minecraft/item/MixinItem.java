@@ -37,7 +37,6 @@ public class MixinItem {
         if (instance instanceof CrossbowItem && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
             return 326;
         }
-
         return maxDamage;
     }
 }
