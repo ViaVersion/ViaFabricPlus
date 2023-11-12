@@ -75,6 +75,7 @@ public abstract class MixinClientPlayerInteractionManager {
     @Shadow
     private BlockPos currentBreakingPos;
 
+    @Shadow private float currentBreakingProgress;
     @Unique
     private ItemStack viafabricplus_oldCursorStack;
 
@@ -193,6 +194,13 @@ public abstract class MixinClientPlayerInteractionManager {
     public void handleBlockAcknowledgements(ClientWorld world, SequencedPacketCreator packetCreator, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_14_4, VersionEnum.r1_18_2) && packetCreator instanceof PlayerActionC2SPacket playerActionC2SPacket) {
             ClientPlayerInteractionManager1_18_2.trackBlockAction(playerActionC2SPacket.getAction(), playerActionC2SPacket.getPos());
+        }
+    }
+
+    @Inject(method = "getBlockBreakingProgress", at = @At("HEAD"), cancellable = true)
+    public void changeCalculation(CallbackInfoReturnable<Integer> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+            cir.setReturnValue((int)(this.currentBreakingProgress * 10.0F) - 1);
         }
     }
 }
