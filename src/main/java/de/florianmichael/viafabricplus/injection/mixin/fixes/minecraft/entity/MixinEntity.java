@@ -177,9 +177,10 @@ public abstract class MixinEntity {
 
     @Inject(method = "getPosWithYOffset", at = @At("HEAD"), cancellable = true)
     public void changeLogic(float offset, CallbackInfoReturnable<BlockPos> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+        final VersionEnum target = ProtocolHack.getTargetVersion();
+        if (target.isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             int i = MathHelper.floor(this.pos.x);
-            int j = MathHelper.floor(this.pos.y - (double)offset);
+            int j = MathHelper.floor(this.pos.y - (double) (target.isOlderThanOrEqualTo(VersionEnum.r1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
             int k = MathHelper.floor(this.pos.z);
             BlockPos blockPos = new BlockPos(i, j, k);
             if (this.world.getBlockState(blockPos).isAir()) {
