@@ -17,12 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.authlib.GameProfile;
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.world.GameMode;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
@@ -218,6 +214,22 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             return false;
         }
         return value;
+    }
+
+    @Redirect(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isFallFlying()Z"))
+    public boolean removeElytraMovementCheck(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+            return false;
+        }
+        return instance.isFallFlying();
+    }
+
+    @Redirect(method = "canSprint", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
+    public boolean removeVehicleCondition(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
+            return false;
+        }
+        return instance.hasVehicle();
     }
 
     @Override
