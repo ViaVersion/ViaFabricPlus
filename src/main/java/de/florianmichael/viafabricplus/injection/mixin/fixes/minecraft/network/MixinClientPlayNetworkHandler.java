@@ -160,4 +160,9 @@ public abstract class MixinClientPlayNetworkHandler {
         }
         return instance.getRecipes();
     }
+
+    @WrapWithCondition(method = "setPublicSession", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
+    public boolean removeInvalidSignatureWarning(Logger instance, String s, Object o) {
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_4);
+    }
 }
