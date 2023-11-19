@@ -28,9 +28,9 @@ import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
-import net.raphimc.mcauth.MinecraftAuth;
-import net.raphimc.mcauth.step.msa.StepMsaDeviceCode;
-import net.raphimc.mcauth.util.MicrosoftConstants;
+import net.raphimc.minecraftauth.MinecraftAuth;
+import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
+import net.raphimc.minecraftauth.util.MicrosoftConstants;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.net.URI;
@@ -44,23 +44,23 @@ public class BedrockSettings extends SettingGroup {
         final var prevScreen = MinecraftClient.getInstance().currentScreen;
         try {
             try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
-                final var mcChain = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
+                final var bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
                     MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new ConfirmScreen(consumer -> {
                         if (consumer) {
-                            MinecraftClient.getInstance().keyboard.setClipboard(msaDeviceCode.userCode());
+                            MinecraftClient.getInstance().keyboard.setClipboard(msaDeviceCode.getUserCode());
                         } else {
                             MinecraftClient.getInstance().setScreen(prevScreen);
                             Thread.currentThread().interrupt();
                         }
-                    }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.userCode()), Text.translatable("misc.viafabricplus.copy"), Text.translatable("misc.viafabricplus.cancel"))));
+                    }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.getUserCode()), Text.translatable("misc.viafabricplus.copy"), Text.translatable("misc.viafabricplus.cancel"))));
                     try {
-                        Util.getOperatingSystem().open(new URI(msaDeviceCode.verificationUri()));
+                        Util.getOperatingSystem().open(new URI(msaDeviceCode.getVerificationUri()));
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                         MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("misc.viafabricplus.cancel"), false)));
                     }
                 }));
-                BedrockAccountHandler.INSTANCE.setAccount(mcChain, MinecraftAuth.BEDROCK_PLAY_FAB_TOKEN.getFromInput(httpClient, mcChain.prevResult().fullXblSession()));
+                BedrockAccountHandler.INSTANCE.setBedrockSession(bedrockSession);
             }
             RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(prevScreen));
         } catch (Throwable e) {
@@ -70,8 +70,8 @@ public class BedrockSettings extends SettingGroup {
     })) {
         @Override
         public MutableText displayValue() {
-            if (BedrockAccountHandler.INSTANCE.getMcChain() != null) {
-                return Text.literal("Bedrock account: " + BedrockAccountHandler.INSTANCE.getMcChain().displayName());
+            if (BedrockAccountHandler.INSTANCE.getBedrockSession() != null) {
+                return Text.literal("Bedrock account: " + BedrockAccountHandler.INSTANCE.getBedrockSession().getMcChain().getDisplayName());
             }
             return super.displayValue();
         }
