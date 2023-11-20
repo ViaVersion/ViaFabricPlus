@@ -183,15 +183,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return instance.hasVehicle();
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;checkFallFlying()Z"))
-    public boolean makeElytraMovementServerside(ClientPlayerEntity instance) {
-        // Elytra movement was serverside in <= 1.14.4 and got moved to the client in 1.15
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-            return !this.isOnGround() && this.getVelocity().y < 0.0 && !isFallFlying();
-        }
-        return instance.checkFallFlying();
-    }
-
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
     public boolean removeLadderCheck(ClientPlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_1)) {
