@@ -136,14 +136,6 @@ public abstract class MixinClientPlayNetworkHandler {
         return instance.isSecureChatEnforced() || VisualSettings.INSTANCE.disableSecureChatWarning.isEnabled();
     }
 
-    @Inject(method = "onSetTradeOffers", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
-    public void checkLoginPacket(SetTradeOffersS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion(getConnection().channel).isOlderThanOrEqualTo(VersionEnum.r1_13_2) && MinecraftClient.getInstance().player == null) {
-            ViaFabricPlus.LOGGER.error("Server tried to send Play packet in Login process, dropping \"SetTradeOffers\"");
-            ci.cancel();
-        }
-    }
-
     @Redirect(method = "onSynchronizeRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/SynchronizeRecipesS2CPacket;getRecipes()Ljava/util/List;"))
     public List<RecipeEntry<?>> rewriteRecipes(SynchronizeRecipesS2CPacket instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
