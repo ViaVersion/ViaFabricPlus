@@ -17,34 +17,35 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.RakNetClientConnection;
 import net.minecraft.client.network.MultiplayerServerListPinger;
-import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.util.profiler.PerformanceLog;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.net.InetSocketAddress;
-import java.util.Optional;
 
 @Mixin(MultiplayerServerListPinger.class)
-public class MixinMultiplayerServerListPinger {
+public abstract class MixinMultiplayerServerListPinger {
 
-    @Inject(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void trackSessions(ServerInfo entry, Runnable saver, CallbackInfo ci, ServerAddress serverAddress, Optional optional, InetSocketAddress inetSocketAddress) {
-        final VersionEnum version = ((IServerInfo) entry).viafabricplus_forcedVersion();
+    @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;"))
+    private ClientConnection setForcedVersion(InetSocketAddress address, boolean useEpoll, PerformanceLog packetSizeLog, @Local ServerInfo serverInfo) {
+        final VersionEnum forcedVersion = ((IServerInfo) serverInfo).viaFabricPlus$forcedVersion();
+        if (forcedVersion != null) {
+            if (packetSizeLog == null) {
+                packetSizeLog = new PerformanceLog();
+            }
 
-        if (version != null) {
-            ProtocolHack.getForcedVersions().put(inetSocketAddress, version);
+            ((IPerformanceLog) packetSizeLog).viaFabricPlus$setForcedVersion(forcedVersion);
         }
-        if (ProtocolHack.getTargetVersion(inetSocketAddress) == VersionEnum.bedrockLatest) {
-            RakNetClientConnection.getRakNetPingSessions().add(inetSocketAddress);
-        }
+
+        return ClientConnection.connect(address, useEpoll, packetSizeLog);
     }
+
 }

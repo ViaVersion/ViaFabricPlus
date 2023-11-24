@@ -48,7 +48,7 @@ public class ItemTranslator {
     private final static UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createFakerUserConnection(null);
 
     public static Item MC_TO_VIA_LATEST_TO_TARGET(final ItemStack stack, final VersionEnum targetVersion) {
-        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ViaFabricPlus.NATIVE_VERSION.getVersion(), targetVersion.getVersion());
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ProtocolHack.NATIVE_VERSION.getVersion(), targetVersion.getVersion());
         if (protocolPath == null) return null;
 
         final var dummyPacket = new CreativeInventoryActionC2SPacket(36, stack);
@@ -81,7 +81,7 @@ public class ItemTranslator {
     }
 
     public static ItemStack VIA_TO_MC_B1_8_TO_LATEST(final Item item) {
-        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ViaFabricPlus.NATIVE_VERSION.getVersion(), VersionEnum.b1_8tob1_8_1.getVersion());
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ProtocolHack.NATIVE_VERSION.getVersion(), VersionEnum.b1_8tob1_8_1.getVersion());
         if (protocolPath == null) return null;
 
         // Make sure that ViaVersion doesn't track stuff and change its behaviour

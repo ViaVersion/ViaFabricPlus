@@ -17,8 +17,6 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
@@ -28,6 +26,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinBedBlock {
 
     @Unique
-    private final static VoxelShape viafabricplus_bed_shape_v1_13_2 = Block.createCuboidShape(0, 0, 0, 16, 9, 16);
+    private final static VoxelShape viaFabricPlus$shape_r1_13_2 = Block.createCuboidShape(0, 0, 0, 16, 9, 16);
 
     @Inject(method = "bounceEntity", at = @At("HEAD"), cancellable = true)
     public void injectBounceEntity(Entity entity, CallbackInfo ci) {
@@ -51,7 +50,7 @@ public class MixinBedBlock {
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
-            cir.setReturnValue(viafabricplus_bed_shape_v1_13_2);
+            cir.setReturnValue(viaFabricPlus$shape_r1_13_2);
         }
     }
 }

@@ -21,6 +21,6 @@ import java.nio.ByteBuffer;
 
 public interface IPublicKeyData {
 
-    ByteBuffer viafabricplus_getV1Key();
-    void viafabricplus_setV1Key(final ByteBuffer oldKey);
+    ByteBuffer viaFabricPlus$getV1Key();
+    void viaFabricPlus$setV1Key(final ByteBuffer oldKey);
 }

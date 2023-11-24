@@ -10,12 +10,7 @@ base {
 }
 
 configurations {
-	// Jar in sources
-	api.extendsFrom jis
-
-	// Jar in jar
-	include.extendsFrom jij
-	implementation.extendsFrom jij
+	jij
 }
 
 repositories {
@@ -54,33 +49,33 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	// ViaVersion Libraries
-	jis "com.viaversion:viaversion-common:${project.viaversion_version}"
-	jis ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
+	jij "com.viaversion:viaversion-common:${project.viaversion_version}"
+	jij ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
 		exclude group: "com.viaversion", module: "viaversion"
 		exclude group: "io.netty", module: "netty-all"
 		exclude group: "com.google.guava", module: "guava"
 	}
-	jis ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
+	jij ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
 		exclude group: "com.google.code.gson", module: "gson"
 	}
-	jis "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
-	jis ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
+	jij "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
+	jij ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
 		exclude group: "io.netty"
 		exclude group: "io.jsonwebtoken"
 		exclude group: "net.lenni0451.mcstructs", module: "text"
 		exclude group: "com.mojang", module: "brigadier"
 	}
-	jis ("net.raphimc:ViaLoader:${project.vialoader_version}") {
+	jij ("net.raphimc:ViaLoader:${project.vialoader_version}") {
 		exclude group: "com.google.guava", module: "guava"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
 
 	// RaphiMC Libraries
-	jis ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
+	jij ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
 		exclude group: "com.google.code.gson", module: "gson"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
-	jis("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
+	jij("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
 		exclude group: "io.netty"
 	}
 
@@ -88,9 +83,15 @@ dependencies {
 	jij "net.lenni0451:Reflect:${project.reflect_version}"
 
 	// Misc Libraries
-	modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
-	include implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))
-	jis "de.florianmichael:Classic4J:${project.classic4j_version}"
+	modCompileOnly "com.terraformersmc:modmenu:${project.mod_menu_version}"
+	jij(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))
+	jij "de.florianmichael:Classic4J:${project.classic4j_version}"
+
+	afterEvaluate {
+		configurations.jij.incoming.resolutionResult.allDependencies {
+			dependencies.include(dependencies.implementation(requested.toString()))
+		}
+	}
 }
 
 processResources {
@@ -109,17 +110,6 @@ java {
 }
 
 jar {
-	// Add all dependencies which are included using "jis" to the jar file and exclude the META-INF folder
-	dependsOn configurations.jis
-	from {
-		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-		configurations.jis.collect {
-			zipTree(it)
-		}
-	} {
-		exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA"
-	}
-
 	// Rename the project's license file to LICENSE_<project_name> to avoid conflicts
 	from("LICENSE") {
 		rename {

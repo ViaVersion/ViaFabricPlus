@@ -47,7 +47,7 @@ public class MixinYggdrasilUserApiService {
         }
 
         final var keyPairResponse = new KeyPairResponse(response.keyPair(), response.publicKeySignatureV2(), response.expiresAt(), response.refreshedAfter());
-        ((IKeyPairResponse) (Object) keyPairResponse).viafabricplus_setLegacyPublicKeySignature(response.publicKeySignature());
+        ((IKeyPairResponse) (Object) keyPairResponse).viafabricplus$setLegacyPublicKeySignature(response.publicKeySignature());
 
         cir.setReturnValue(keyPairResponse);
     }

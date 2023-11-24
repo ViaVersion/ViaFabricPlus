@@ -17,19 +17,26 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.screen.classic4j.classicube.ClassiCubeLoginScreen;
-import net.minecraft.SharedConstants;
-import net.minecraft.client.MinecraftClient;
+import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
+import net.minecraft.util.profiler.PerformanceLog;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(SharedConstants.class)
-public class MixinSharedConstants {
+@Mixin(PerformanceLog.class)
+public abstract class MixinPerformanceLog implements IPerformanceLog {
 
-    @Inject(method = "isValidChar", at = @At("HEAD"), cancellable = true)
-    private static void allowEveryCharacter(char chr, CallbackInfoReturnable<Boolean> cir) {
-        if (MinecraftClient.getInstance().currentScreen instanceof ClassiCubeLoginScreen) cir.setReturnValue(true);
+    @Unique
+    private VersionEnum viaFabricPlus$forcedVersion;
+
+    @Override
+    public VersionEnum viaFabricPlus$getForcedVersion() {
+        return this.viaFabricPlus$forcedVersion;
     }
+
+    @Override
+    public void viaFabricPlus$setForcedVersion(VersionEnum version) {
+        this.viaFabricPlus$forcedVersion = version;
+    }
+
 }

@@ -18,14 +18,15 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.RecipesPre1_12;
-import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
-import de.florianmichael.viafabricplus.injection.access.IBoatEntity;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
-import net.minecraft.client.network.*;
+import net.minecraft.client.network.ClientConnectionState;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.ClientConnection;
@@ -109,16 +110,6 @@ public abstract class MixinClientPlayNetworkHandler {
             return Integer.class;
         }
         return constant;
-    }
-
-    @Inject(method = "onEntityPassengersSet", at = @At("RETURN"))
-    private void handle1_8BoatPassengers(EntityPassengersSetS2CPacket packet, CallbackInfo ci) {
-        if (!ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) return;
-
-        final var entity = this.world.getEntityById(packet.getId());
-        if (entity instanceof IBoatEntity boatEntity) {
-            boatEntity.viafabricplus_setBoatEmpty(packet.getPassengerIds().length == 0);
-        }
     }
 
     @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))

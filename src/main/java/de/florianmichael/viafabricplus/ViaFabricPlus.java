@@ -19,21 +19,20 @@ package de.florianmichael.viafabricplus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.florianmichael.viafabricplus.protocolhack.util.ViaJarReplacer;
-import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
-import de.florianmichael.viafabricplus.event.PreLoadCallback;
-import de.florianmichael.viafabricplus.settings.SettingsSystem;
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.definition.classic.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.definition.classic.screen.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
+import de.florianmichael.viafabricplus.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.information.InformationSystem;
 import de.florianmichael.viafabricplus.mappings.CharacterMappings;
 import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.definition.classic.screen.ClassicItemSelectionScreen;
-import net.raphimc.vialoader.util.VersionEnum;
+import de.florianmichael.viafabricplus.protocolhack.util.ViaJarReplacer;
+import de.florianmichael.viafabricplus.settings.SettingsSystem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,9 +56,19 @@ import java.io.File;
  *  - X/Z Face based jump movement in <= 1.13.2 is broken (https://github.com/ViaVersion/ViaFabricPlus/issues/189)
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
  *  - Blit-jump is not supported in <= 1.8.9 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
+ *
+ * TODO | Migration v3
+ *  - Fix classic login input field (MixinSharedConstants)
+ *  - Make recipe fixes dynamic instead of a data dump in java classes
+ *  - Make mixin injection methods private
+ *  - Make mixins abstract
+ *  - Rename all methods
+ *  - Use ViaProxy config patch for some clientside fixes options (Remove ViaFabricPlusVLViaConfig)
+ *  - Is de.florianmichael.viafabricplus.injection.mixin.jsonwebtoken.* still needed?
+ *  - Apply MixinAutoRefillHandler_ItemSlotMonitor only when mod is actually installed
+ *  - Make block shapes static
  */
 public class ViaFabricPlus {
-    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_20_2;
 
     public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public final static Logger LOGGER = LogManager.getLogger("ViaFabricPlus");
@@ -93,6 +102,7 @@ public class ViaFabricPlus {
         CharacterMappings.load();
 
         // Protocol Translator
+        ProtocolHack.initCommands();
         ProtocolHack.init();
 
         // Stuff which requires Minecraft to be initialized

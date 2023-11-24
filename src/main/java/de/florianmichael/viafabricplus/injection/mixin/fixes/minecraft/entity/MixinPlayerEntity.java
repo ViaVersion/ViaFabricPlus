@@ -17,18 +17,21 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.*;
-import net.minecraft.util.Hand;
-import net.raphimc.vialoader.util.VersionEnum;
-import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,10 +45,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Unique
-    private final static EntityDimensions viafabricplus_sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
+    private final static EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
 
     @Unique
-    private final static SoundEvent viafabricplus_random_hurt = SoundEvent.of(new Identifier("viafabricplus", "random.hurt"));
+    private final static SoundEvent viaFabricPlus$random_hurt = SoundEvent.of(new Identifier("viafabricplus", "random.hurt"));
 
     @Shadow
     @Final
@@ -84,7 +87,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
             if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
                 ci.setReturnValue(PlayerEntity.STANDING_DIMENSIONS);
             } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2) || ProtocolHack.getTargetVersion() == VersionEnum.bedrockLatest) {
-                ci.setReturnValue(viafabricplus_sneaking_dimensions_v1_13_2);
+                ci.setReturnValue(viaFabricPlus$sneaking_dimensions_v1_13_2);
             }
         }
     }
@@ -99,7 +102,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
     public void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
         if (VisualSettings.INSTANCE.replaceHurtSoundWithOOFSound.isEnabled()) {
-            cir.setReturnValue(viafabricplus_random_hurt);
+            cir.setReturnValue(viaFabricPlus$random_hurt);
         }
     }
 
@@ -120,17 +123,17 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     }
 
     @Unique
-    public boolean viafabricplus_isSprinting;
+    public boolean viaFabricPlus$isSprinting;
 
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setMovementSpeed(F)V"))
     public void trackOldField(CallbackInfo ci) {
-        viafabricplus_isSprinting = this.isSprinting();
+        viaFabricPlus$isSprinting = this.isSprinting();
     }
 
     @Redirect(method = "getOffGroundSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isSprinting()Z"))
     public boolean useOldField(PlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
-            return viafabricplus_isSprinting;
+            return viaFabricPlus$isSprinting;
         }
         return instance.isSprinting();
     }

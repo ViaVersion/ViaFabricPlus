@@ -17,46 +17,41 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoulSandBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SoulSandBlock.class)
-public class MixinSoulSandBlock extends Block {
-
-    @Unique
-    private boolean viafabricplus_forceValue;
+public abstract class MixinSoulSandBlock extends Block {
 
     public MixinSoulSandBlock(Settings settings) {
         super(settings);
     }
 
+    @Inject(method = "getSidesShape", at = @At("HEAD"), cancellable = true)
+    private void changeSidesShape(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> cir) {
+        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_13, VersionEnum.r1_15_2)) {
+            cir.setReturnValue(VoxelShapes.empty());
+        }
+    }
+
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        super.onEntityCollision(state, world, pos, entity);
-
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-            final Vec3d velocity = entity.getVelocity();
-            this.viafabricplus_forceValue = true;
-            entity.setVelocity(velocity.getX() * this.getVelocityMultiplier(), velocity.getY(), velocity.getZ() * this.getVelocityMultiplier());
-            this.viafabricplus_forceValue = false;
+            entity.setVelocity(entity.getVelocity().multiply(0.4D, 1, 0.4D));
         }
     }
 
-    @Override
-    public float getVelocityMultiplier() {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4) && !this.viafabricplus_forceValue) {
-            return 1.0F;
-        }
-        return super.getVelocityMultiplier();
-    }
 }

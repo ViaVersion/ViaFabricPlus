@@ -17,22 +17,18 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,28 +36,23 @@ import java.util.List;
 @Mixin(MultiplayerServerListWidget.ServerEntry.class)
 public class MixinMultiplayerServerListWidget_ServerEntry {
 
-    @Shadow @Final private ServerInfo server;
+    @Shadow
+    @Final
+    private ServerInfo server;
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;setMultiplayerScreenTooltip(Ljava/util/List;)V", ordinal = 0))
     public void showTranslatingInformation(MultiplayerScreen instance, List<Text> tooltip) {
         final List<Text> tooltipOverwrite = new ArrayList<>(tooltip);
         if (GeneralSettings.INSTANCE.showAdvertisedServerVersion.getValue()) {
             final IServerInfo accessor = ((IServerInfo) server);
-            if (accessor.viafabricplus_enabled()) {
-                final var versionEnum = VersionEnum.fromProtocolId(accessor.viafabricplus_translatingVersion());
+            if (accessor.viaFabricPlus$enabled()) {
+                final var versionEnum = VersionEnum.fromProtocolId(accessor.viaFabricPlus$translatingVersion());
 
-                tooltipOverwrite.add(Text.translatable("misc.viafabricplus.translate", versionEnum != VersionEnum.UNKNOWN ? versionEnum.getName() + " (" + versionEnum.getVersion() + ")" : accessor.viafabricplus_translatingVersion()));
+                tooltipOverwrite.add(Text.translatable("misc.viafabricplus.translate", versionEnum != VersionEnum.UNKNOWN ? versionEnum.getName() + " (" + versionEnum.getVersion() + ")" : accessor.viaFabricPlus$translatingVersion()));
                 tooltipOverwrite.add(Text.translatable("misc.viafabricplus.serverversion", server.version.getString() + " (" + server.protocolVersion + ")"));
             }
         }
         instance.setMultiplayerScreenTooltip(tooltipOverwrite);
     }
 
-    @Inject(method = "protocolVersionMatches", at = @At("HEAD"), cancellable = true)
-    public void supportViaLegacyVersionRanges(CallbackInfoReturnable<Boolean> cir) {
-        final var version = ProtocolHack.getTargetVersion(server);
-        if (version.isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
-            cir.setReturnValue(LegacyProtocolVersion.getRealProtocolVersion(version.getVersion()) == server.protocolVersion);
-        }
-    }
 }

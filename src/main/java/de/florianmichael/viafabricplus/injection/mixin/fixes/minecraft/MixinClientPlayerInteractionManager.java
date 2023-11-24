@@ -24,7 +24,7 @@ import com.viaversion.viaversion.protocols.protocol1_16_2to1_16_1.ServerboundPac
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.Protocol1_17To1_16_4;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.ClientPlayerInteractionManager1_18_2;
-import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
+import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
@@ -35,7 +35,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.network.SequencedPacketCreator;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
@@ -77,10 +76,10 @@ public abstract class MixinClientPlayerInteractionManager {
 
     @Shadow private float currentBreakingProgress;
     @Unique
-    private ItemStack viafabricplus_oldCursorStack;
+    private ItemStack viaFabricPlus$oldCursorStack;
 
     @Unique
-    private List<ItemStack> viafabricplus_oldItems;
+    private List<ItemStack> viaFabricPlus$oldItems;
 
     @Inject(method = "breakBlock", at = @At("TAIL"))
     public void resetBlockBreaking(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
@@ -89,24 +88,16 @@ public abstract class MixinClientPlayerInteractionManager {
         }
     }
 
-    @Inject(method = "attackEntity", at = @At("HEAD"))
-    private void injectAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && player instanceof IClientPlayerEntity) {
-            player.swingHand(Hand.MAIN_HAND);
-            ((IClientPlayerEntity) player).viafabricplus_cancelSwingOnce();
-        }
-    }
-
     @ModifyVariable(method = "clickSlot", at = @At(value = "STORE"), ordinal = 0)
     private List<ItemStack> captureOldItems(List<ItemStack> oldItems) {
         assert client.player != null;
-        viafabricplus_oldCursorStack = client.player.currentScreenHandler.getCursorStack().copy();
-        return this.viafabricplus_oldItems = oldItems;
+        viaFabricPlus$oldCursorStack = client.player.currentScreenHandler.getCursorStack().copy();
+        return this.viaFabricPlus$oldItems = oldItems;
     }
 
     // Special Cases
     @Unique
-    private boolean viafabricplus_shouldEmpty(final SlotActionType type, final int slot) {
+    private boolean viaFabricPlus$shouldEmpty(final SlotActionType type, final int slot) {
         // quick craft always uses empty stack for verification
         if (type == SlotActionType.QUICK_CRAFT) return true;
 
@@ -122,19 +113,19 @@ public abstract class MixinClientPlayerInteractionManager {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5) && packet instanceof ClickSlotC2SPacket clickSlot) {
             ItemStack slotItemBeforeModification;
 
-            if (this.viafabricplus_shouldEmpty(clickSlot.getActionType(), clickSlot.getSlot()))
+            if (this.viaFabricPlus$shouldEmpty(clickSlot.getActionType(), clickSlot.getSlot()))
                 slotItemBeforeModification = ItemStack.EMPTY;
-            else if (clickSlot.getSlot() < 0 || clickSlot.getSlot() >= viafabricplus_oldItems.size())
-                slotItemBeforeModification = viafabricplus_oldCursorStack;
+            else if (clickSlot.getSlot() < 0 || clickSlot.getSlot() >= viaFabricPlus$oldItems.size())
+                slotItemBeforeModification = viaFabricPlus$oldCursorStack;
             else
-                slotItemBeforeModification = viafabricplus_oldItems.get(clickSlot.getSlot());
+                slotItemBeforeModification = viaFabricPlus$oldItems.get(clickSlot.getSlot());
 
-            final var clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, networkHandler.getConnection().channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get());
+            final var clickSlotPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, ((IClientConnection)networkHandler.getConnection()).viaFabricPlus$getUserConnection());
 
             clickSlotPacket.write(Type.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
             clickSlotPacket.write(Type.SHORT, (short) clickSlot.getSlot());
             clickSlotPacket.write(Type.BYTE, (byte) clickSlot.getButton());
-            clickSlotPacket.write(Type.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viafabricplus_getAndIncrementLastActionId());
+            clickSlotPacket.write(Type.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viaFabricPlus$getAndIncrementLastActionId());
             clickSlotPacket.write(Type.VAR_INT, clickSlot.getActionType().ordinal());
             clickSlotPacket.write(Type.ITEM1_13_2, ItemTranslator.MC_TO_VIA_LATEST_TO_TARGET(slotItemBeforeModification, VersionEnum.r1_16));
 
@@ -144,8 +135,8 @@ public abstract class MixinClientPlayerInteractionManager {
                 ViaFabricPlus.LOGGER.error("Failed to send Click Slot Packet", e);
             }
 
-            viafabricplus_oldCursorStack = null;
-            viafabricplus_oldItems = null;
+            viaFabricPlus$oldCursorStack = null;
+            viaFabricPlus$oldItems = null;
             return false;
         }
         return true;
@@ -169,15 +160,15 @@ public abstract class MixinClientPlayerInteractionManager {
     }
 
     @Unique
-    private ActionResult viafabricplus_actionResult;
+    private ActionResult viaFabricPlus$actionResult;
 
     @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
     public void cacheActionResult(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            this.viafabricplus_actionResult = this.interactBlockInternal(player, hand, hitResult);
+            this.viaFabricPlus$actionResult = this.interactBlockInternal(player, hand, hitResult);
 
-            if (this.viafabricplus_actionResult == ActionResult.FAIL) {
-                cir.setReturnValue(this.viafabricplus_actionResult);
+            if (this.viaFabricPlus$actionResult == ActionResult.FAIL) {
+                cir.setReturnValue(this.viaFabricPlus$actionResult);
             }
         }
     }
@@ -185,7 +176,7 @@ public abstract class MixinClientPlayerInteractionManager {
     @Redirect(method = "method_41933", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlockInternal(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;"))
     public ActionResult provideCachedResult(ClientPlayerInteractionManager instance, ClientPlayerEntity player, Hand hand, BlockHitResult hitResult) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            return this.viafabricplus_actionResult;
+            return this.viaFabricPlus$actionResult;
         }
         return interactBlockInternal(player, hand, hitResult);
     }

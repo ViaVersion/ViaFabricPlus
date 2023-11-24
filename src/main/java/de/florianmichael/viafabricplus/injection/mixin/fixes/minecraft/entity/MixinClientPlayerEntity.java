@@ -19,12 +19,9 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.mojang.authlib.GameProfile;
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
-import net.minecraft.world.GameMode;
-import net.raphimc.vialoader.util.VersionEnum;
-import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
-import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
-import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -32,6 +29,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.GameMode;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -41,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings("ConstantValue")
 @Mixin(value = ClientPlayerEntity.class, priority = 2000)
-public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity implements IClientPlayerEntity {
+public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
 
     @Shadow
     public Input input;
@@ -57,7 +56,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     private int ticksSinceLastPositionPacketSent;
 
     @Unique
-    private boolean viafabricplus_areSwingCanceledThisTick = false;
+    private boolean viaFabricPlus$areSwingCanceledThisTick = false;
 
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
@@ -99,11 +98,11 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Inject(method = "swingHand", at = @At("HEAD"), cancellable = true)
     public void injectSwingHand(Hand hand, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && viafabricplus_areSwingCanceledThisTick) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && viaFabricPlus$areSwingCanceledThisTick) {
             ci.cancel();
         }
 
-        viafabricplus_areSwingCanceledThisTick = false;
+        viaFabricPlus$areSwingCanceledThisTick = false;
     }
 
     @Inject(
@@ -242,8 +241,4 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return super.getArmor();
     }
 
-    @Override
-    public void viafabricplus_cancelSwingOnce() {
-        viafabricplus_areSwingCanceledThisTick = true;
-    }
 }

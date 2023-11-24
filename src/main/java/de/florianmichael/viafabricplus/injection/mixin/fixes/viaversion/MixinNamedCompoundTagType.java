@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class MixinNamedCompoundTagType {
 
     @Unique
-    private final static TagLimiter viafabricplus_tag_limiter = new TagLimiter() {
+    private final static TagLimiter viaFabricPlus$tag_limiter = new TagLimiter() {
         private final int maxBytes = 2097152;
         private int bytes;
 
@@ -61,6 +61,6 @@ public class MixinNamedCompoundTagType {
 
     @Redirect(method = "read(Lio/netty/buffer/ByteBuf;Z)Lcom/viaversion/viaversion/libs/opennbt/tag/builtin/CompoundTag;", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/libs/opennbt/tag/limiter/TagLimiter;create(II)Lcom/viaversion/viaversion/libs/opennbt/tag/limiter/TagLimiter;"))
     private static TagLimiter replaceTagLimiter(int maxBytes, int maxLevels) {
-        return viafabricplus_tag_limiter;
+        return viaFabricPlus$tag_limiter;
     }
 }

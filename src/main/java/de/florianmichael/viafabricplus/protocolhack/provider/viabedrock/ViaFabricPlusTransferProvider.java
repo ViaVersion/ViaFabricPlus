@@ -33,16 +33,8 @@ import java.net.InetSocketAddress;
 
 public class ViaFabricPlusTransferProvider extends TransferProvider {
 
-    private void connect(final InetSocketAddress newAddress) {
-        final var mc = MinecraftClient.getInstance();
-        mc.world.disconnect();
-
-        final var serverInfo = new ServerInfo(newAddress.getHostName(), newAddress.getHostName() + ":" + newAddress.getPort(), ServerInfo.ServerType.OTHER);
-        ConnectScreen.connect(new MultiplayerScreen(new TitleScreen()), mc, ServerAddress.parse(serverInfo.address), serverInfo, false);
-    }
-
     @Override
-    public void connectToServer(UserConnection user, InetSocketAddress newAddress) throws Exception {
+    public void connectToServer(UserConnection user, InetSocketAddress newAddress) {
         final var mc = MinecraftClient.getInstance();
         mc.execute(() -> {
             if (BedrockSettings.INSTANCE.confirmServerTransferInBedrockEdition.getValue()) {
@@ -61,4 +53,13 @@ public class ViaFabricPlusTransferProvider extends TransferProvider {
             }
         });
     }
+
+    private void connect(final InetSocketAddress newAddress) {
+        final var mc = MinecraftClient.getInstance();
+        mc.world.disconnect();
+
+        final var serverInfo = new ServerInfo(newAddress.getHostName(), newAddress.getHostName() + ":" + newAddress.getPort(), ServerInfo.ServerType.OTHER);
+        ConnectScreen.connect(new MultiplayerScreen(new TitleScreen()), mc, ServerAddress.parse(serverInfo.address), serverInfo, false);
+    }
+
 }

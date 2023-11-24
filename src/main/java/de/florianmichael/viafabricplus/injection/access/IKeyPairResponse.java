@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 public interface IKeyPairResponse {
 
-    ByteBuffer viafabricplus_getLegacyPublicKeySignature();
+    ByteBuffer viafabricplus$getLegacyPublicKeySignature();
 
-    void viafabricplus_setLegacyPublicKeySignature(final ByteBuffer signature);
+    void viafabricplus$setLegacyPublicKeySignature(final ByteBuffer signature);
 }

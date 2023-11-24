@@ -17,13 +17,11 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -31,18 +29,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraftClient {
 
-    @Shadow public abstract boolean isInSingleplayer();
-
     @Inject(method = "<init>", at = @At("RETURN"))
     public void postLoad(RunArgs args, CallbackInfo ci) {
         FinishMinecraftLoadCallback.EVENT.invoker().onFinishMinecraftLoad();
     }
 
-    @Inject(method = "setWorld", at = @At("HEAD"))
-    public void preSetWorld(CallbackInfo ci) {
-        if (isInSingleplayer()) {
-            // We call this here, so client side fixes are disabled in singleplayer
-            ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(ViaFabricPlus.NATIVE_VERSION);
-        }
+    @Inject(method = "startIntegratedServer", at = @At("HEAD"))
+    private void disableProtocolHack(CallbackInfo ci) {
+        ProtocolHack.setTargetVersion(ProtocolHack.NATIVE_VERSION);
     }
+
 }

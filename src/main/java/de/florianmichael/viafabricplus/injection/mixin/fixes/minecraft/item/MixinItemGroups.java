@@ -17,8 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.RegistryWrapper;
@@ -41,16 +41,16 @@ public abstract class MixinItemGroups {
     protected static void updateEntries(ItemGroup.DisplayContext displayContext) {
     }
     @Unique
-    private static VersionEnum viafabricplus_version;
+    private static VersionEnum viaFabricPlus$version;
 
     @Unique
-    private static int viafabricplus_state;
+    private static int viaFabricPlus$state;
 
     @Inject(method = "updateDisplayContext", at = @At("HEAD"), cancellable = true)
     private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, RegistryWrapper.WrapperLookup lookup, CallbackInfoReturnable<Boolean> cir) {
-        if (viafabricplus_version != ProtocolHack.getTargetVersion() || viafabricplus_state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex()) {
-            viafabricplus_version = ProtocolHack.getTargetVersion();
-            viafabricplus_state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
+        if (viaFabricPlus$version != ProtocolHack.getTargetVersion() || viaFabricPlus$state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex()) {
+            viaFabricPlus$version = ProtocolHack.getTargetVersion();
+            viaFabricPlus$state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
 
             displayContext = new ItemGroup.DisplayContext(enabledFeatures, operatorEnabled, lookup);
             updateEntries(displayContext);

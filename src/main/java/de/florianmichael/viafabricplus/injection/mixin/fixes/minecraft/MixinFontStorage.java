@@ -17,13 +17,11 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import de.florianmichael.viafabricplus.definition.model.BuiltinEmptyGlyph1_12_2;
-import de.florianmichael.viafabricplus.injection.access.IFontStorage;
 import de.florianmichael.viafabricplus.mappings.CharacterMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.font.*;
-import net.minecraft.client.font.Font;
 import net.minecraft.util.Identifier;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
@@ -41,29 +39,31 @@ import java.util.List;
 import java.util.Map;
 
 @Mixin(FontStorage.class)
-public abstract class MixinFontStorage implements IFontStorage {
+public abstract class MixinFontStorage {
 
-    @Shadow protected abstract GlyphRenderer getGlyphRenderer(RenderableGlyph c);
+    @Shadow
+    protected abstract GlyphRenderer getGlyphRenderer(RenderableGlyph c);
 
-    @Shadow @Final private GlyphContainer<GlyphRenderer> glyphRendererCache;
-    @Shadow @Final private GlyphContainer<FontStorage.GlyphPair> glyphCache;
-    @Shadow private GlyphRenderer blankGlyphRenderer;
+    @Shadow
+    private GlyphRenderer blankGlyphRenderer;
 
-    @Shadow @Final private Identifier id;
+    @Shadow
+    @Final
+    private Identifier id;
 
     @Unique
-    private Map<String, List<Integer>> viafabricplus_forbiddenCharacters;
+    private Map<String, List<Integer>> viaFabricPlus$forbiddenCharacters;
 
     @Unique
-    private boolean viafabricplus_obfuscation;
+    private boolean viaFabricPlus$obfuscation;
 
     @Inject(method = "setFonts", at = @At("HEAD"))
     public void trackForbiddenCharacters(List<Font> fonts, CallbackInfo ci) {
-        viafabricplus_forbiddenCharacters = CharacterMappings.getForbiddenCharactersForID(this.id);
+        viaFabricPlus$forbiddenCharacters = CharacterMappings.getForbiddenCharactersForID(this.id);
     }
 
     @Unique
-    private boolean viafabricplus_isForbiddenCharacter(final Font font, final int codePoint) {
+    private boolean viaFabricPlus$isForbiddenCharacter(final Font font, final int codePoint) {
         String fontName = null;
         if (font instanceof BitmapFont) {
             fontName = "BitmapFont";
@@ -75,7 +75,7 @@ public abstract class MixinFontStorage implements IFontStorage {
             fontName = "UnihexFont";
         }
         if (fontName == null) return false;
-        final var forbiddenCodepoints = viafabricplus_forbiddenCharacters.get(fontName);
+        final var forbiddenCodepoints = viaFabricPlus$forbiddenCharacters.get(fontName);
         if (forbiddenCodepoints == null) return false;
         return forbiddenCodepoints.contains(codePoint);
     }
@@ -85,7 +85,7 @@ public abstract class MixinFontStorage implements IFontStorage {
         if (!this.id.getNamespace().equals("minecraft")) return;
 
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
-            if (viafabricplus_isForbiddenCharacter(font, codePoint)) cir.setReturnValue(FontStorage.GlyphPair.MISSING);
+            if (viaFabricPlus$isForbiddenCharacter(font, codePoint)) cir.setReturnValue(FontStorage.GlyphPair.MISSING);
 
             if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled() && cir.getReturnValue() == FontStorage.GlyphPair.MISSING) {
                 cir.setReturnValue(new FontStorage.GlyphPair(BuiltinEmptyGlyph1_12_2.VERY_MISSING, BuiltinEmptyGlyph1_12_2.VERY_MISSING));
@@ -97,8 +97,8 @@ public abstract class MixinFontStorage implements IFontStorage {
     public void injectFindGlyphRenderer(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir, Iterator var2, Font font) {
         if (!this.id.getNamespace().equals("minecraft")) return;
 
-        if (!viafabricplus_obfuscation && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
-            if (viafabricplus_isForbiddenCharacter(font, codePoint)) cir.setReturnValue(this.blankGlyphRenderer);
+        if (!viaFabricPlus$obfuscation && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+            if (viaFabricPlus$isForbiddenCharacter(font, codePoint)) cir.setReturnValue(this.blankGlyphRenderer);
 
             if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled() && cir.getReturnValue() == this.blankGlyphRenderer) {
                 cir.setReturnValue(BuiltinEmptyGlyph1_12_2.VERY_MISSING.bake(this::getGlyphRenderer));
@@ -113,17 +113,12 @@ public abstract class MixinFontStorage implements IFontStorage {
 
     @Inject(method = "getObfuscatedGlyphRenderer", at = @At("HEAD"))
     public void trackObfuscationState(Glyph glyph, CallbackInfoReturnable<GlyphRenderer> cir) {
-        viafabricplus_obfuscation = true;
+        viaFabricPlus$obfuscation = true;
     }
 
     @Inject(method = "getGlyphRenderer(I)Lnet/minecraft/client/font/GlyphRenderer;", at = @At("RETURN"))
     public void revertObfuscationState(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir) {
-        viafabricplus_obfuscation = false;
+        viaFabricPlus$obfuscation = false;
     }
 
-    @Override
-    public void viafabricplus_clearCaches() {
-        this.glyphRendererCache.clear();
-        this.glyphCache.clear();
-    }
 }

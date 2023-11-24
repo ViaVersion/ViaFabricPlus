@@ -22,8 +22,8 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.definition.classic.command.ClassicViaSubCommand;
 import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;
 import net.minecraft.util.Formatting;
-import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
+import net.raphimc.vialoader.util.VersionEnum;
 
 public class ListExtensionsCommand extends ClassicViaSubCommand {
     @Override
@@ -43,7 +43,7 @@ public class ListExtensionsCommand extends ClassicViaSubCommand {
             sendMessage(sender, Formatting.RED + "Only for " + VersionEnum.c0_30cpe.getName());
             return true;
         }
-        ((IExtensionProtocolMetadataStorage) connection.get(ExtensionProtocolMetadataStorage.class)).getServerExtensions().forEach((extension, version) -> {
+        ((IExtensionProtocolMetadataStorage) connection.get(ExtensionProtocolMetadataStorage.class)).viaFabricPlus$getServerExtensions().forEach((extension, version) -> {
             sendMessage(sender, Formatting.GREEN + extension.getName() + Formatting.GOLD + " v" + version);
         });
         return true;

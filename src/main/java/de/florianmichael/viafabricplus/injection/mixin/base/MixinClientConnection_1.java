@@ -17,10 +17,8 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.channel.Channel;
-import io.netty.channel.socket.SocketChannel;
 import net.minecraft.network.ClientConnection;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,9 +35,8 @@ public class MixinClientConnection_1 {
     ClientConnection field_11663;
 
     @Inject(method = "initChannel", at = @At("RETURN"))
-    public void hackNettyPipeline(Channel channel, CallbackInfo ci) {
-        if (channel instanceof SocketChannel) {
-            ProtocolHack.injectVLBPipeline(field_11663, channel, ((IClientConnection) field_11663).viafabricplus_capturedAddress());
-        }
+    private void injectViaIntoPipeline(Channel channel, CallbackInfo ci) {
+        ProtocolHack.injectViaPipeline(this.field_11663, channel);
     }
+
 }

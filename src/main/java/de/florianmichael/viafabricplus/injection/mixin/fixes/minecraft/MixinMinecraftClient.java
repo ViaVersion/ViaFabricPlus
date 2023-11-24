@@ -25,10 +25,8 @@ import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_12to1_11_1.Protocol1_12To1_11_1;
 import com.viaversion.viaversion.protocols.protocol1_9_3to1_9_1_2.ServerboundPackets1_9_3;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.injection.access.IMinecraftClient;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
-import net.raphimc.vialoader.util.VersionEnum;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -36,6 +34,7 @@ import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -49,7 +48,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 @Mixin(MinecraftClient.class)
-public abstract class MixinMinecraftClient implements IMinecraftClient {
+public abstract class MixinMinecraftClient {
 
     @Shadow
     @Nullable
@@ -103,10 +102,10 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
     }
 
     @Unique
-    private final ConcurrentLinkedDeque<Runnable> viafabricplus_mouseInteractions = new ConcurrentLinkedDeque<>();
+    private final ConcurrentLinkedDeque<Runnable> viaFabricPlus$mouseInteractions = new ConcurrentLinkedDeque<>();
 
     @Unique
-    private final ConcurrentLinkedDeque<Runnable> viafabricplus_keyboardInteractions = new ConcurrentLinkedDeque<>();
+    private final ConcurrentLinkedDeque<Runnable> viaFabricPlus$keyboardInteractions = new ConcurrentLinkedDeque<>();
 
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
@@ -116,11 +115,11 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
             return;
         }
 
-        while (!viafabricplus_mouseInteractions.isEmpty()) {
-            viafabricplus_mouseInteractions.poll().run();
+        while (!viaFabricPlus$mouseInteractions.isEmpty()) {
+            viaFabricPlus$mouseInteractions.poll().run();
         }
-        while (!viafabricplus_keyboardInteractions.isEmpty()) {
-            viafabricplus_keyboardInteractions.poll().run();
+        while (!viaFabricPlus$keyboardInteractions.isEmpty()) {
+            viaFabricPlus$keyboardInteractions.poll().run();
         }
     }
 
@@ -142,13 +141,4 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
         }
     }
 
-    @Override
-    public ConcurrentLinkedDeque<Runnable> viafabricplus_getMouseInteractions() {
-        return this.viafabricplus_mouseInteractions;
-    }
-
-    @Override
-    public ConcurrentLinkedDeque<Runnable> viafabricplus_getKeyboardInteractions() {
-        return this.viafabricplus_keyboardInteractions;
-    }
 }

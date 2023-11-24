@@ -17,14 +17,13 @@
  */
 package de.florianmichael.viafabricplus.definition;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.ArmorType;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.injection.MixinPlugin;
-import de.florianmichael.viafabricplus.injection.access.IFontStorage;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
@@ -103,30 +102,35 @@ public class ClientsideFixes {
         });
 
         // Reloads some clientside stuff when the protocol version changes
-        ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
+        ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> MinecraftClient.getInstance().execute(() -> {
+            if (MinecraftClient.getInstance() == null) return;
+
             // Reloads all bounding boxes
-            if (MinecraftClient.getInstance() != null && MinecraftClient.getInstance().player != null) { // Make sure that the game is loaded when reloading the cache
-                for (Block block : RELOADABLE_BLOCKS) {
-                    block.getDefaultState().initShapeCache();
+            for (Block block : RELOADABLE_BLOCKS) {
+                for (BlockState state : block.getStateManager().getStates()) {
+                    state.initShapeCache();
                 }
             }
 
             // Calculates the current chat limit, since it changes depending on the protocol version
-            currentChatLimit = 256;
-            if (protocolVersion.isOlderThanOrEqualTo(VersionEnum.r1_10)) {
+            if (protocolVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
+                currentChatLimit = 64 - (MinecraftClient.getInstance().getSession().getUsername().length() + 2);
+            } else if (protocolVersion.equals(VersionEnum.bedrockLatest)) {
+                currentChatLimit = 512;
+            } else if (protocolVersion.isOlderThanOrEqualTo(VersionEnum.r1_9_3tor1_9_4)) {
                 currentChatLimit = 100;
-                if (protocolVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
-                    currentChatLimit = 64 - MinecraftClient.getInstance().getSession().getUsername().length() - 2;
-                }
+            } else {
+                currentChatLimit = 256;
             }
 
             if (!MixinPlugin.DASH_LOADER_PRESENT) {
                 // Reloads all font storages to fix the font renderer
                 for (FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
-                    RenderSystem.recordRenderCall(() -> ((IFontStorage) storage).viafabricplus_clearCaches());
+                    storage.glyphRendererCache.clear();
+                    storage.glyphCache.clear();
                 }
             }
-        });
+        }));
 
         // Calculates the current chat limit, since it changes depending on the protocol version
         LoadClassicProtocolExtensionCallback.EVENT.register(classicProtocolExtension -> {

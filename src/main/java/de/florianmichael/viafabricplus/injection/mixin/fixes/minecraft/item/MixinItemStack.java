@@ -19,9 +19,8 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.raphimc.vialoader.util.VersionEnum;
-import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -29,8 +28,12 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -84,7 +87,7 @@ public abstract class MixinItemStack {
 
         modifiers = HashMultimap.create(modifiers);
         modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-        OptionalDouble defaultAttackDamage = viafabricplus_getDefaultAttackDamage(getItem());
+        OptionalDouble defaultAttackDamage = viaFabricPlus$getDefaultAttackDamage(getItem());
         if (defaultAttackDamage.isPresent()) {
             modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Weapon Modifier", defaultAttackDamage.getAsDouble(), EntityAttributeModifier.Operation.ADDITION));
         }
@@ -95,7 +98,7 @@ public abstract class MixinItemStack {
     }
 
     @Unique
-    private OptionalDouble viafabricplus_getDefaultAttackDamage(Item item) {
+    private OptionalDouble viaFabricPlus$getDefaultAttackDamage(Item item) {
         if (item instanceof ToolItem) {
             ToolMaterial material = ((ToolItem) item).getMaterial();
             int materialBonus;

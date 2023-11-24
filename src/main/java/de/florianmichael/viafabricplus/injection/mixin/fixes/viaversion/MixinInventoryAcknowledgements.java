@@ -33,22 +33,22 @@ public class MixinInventoryAcknowledgements {
     @Mutable
     @Shadow @Final private IntList ids;
     @Unique
-    private it.unimi.dsi.fastutil.ints.IntList viafabricplus_ids;
+    private it.unimi.dsi.fastutil.ints.IntList viaFabricPlus$ids;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void fixJavaIssue(CallbackInfo ci) {
         this.ids = null;
-        this.viafabricplus_ids = IntLists.synchronize(new IntArrayList());
+        this.viaFabricPlus$ids = IntLists.synchronize(new IntArrayList());
     }
 
     @Inject(method = "addId", at = @At("HEAD"), cancellable = true)
     public void forwardAdd(int id, CallbackInfo ci) {
-        viafabricplus_ids.add(id);
+        viaFabricPlus$ids.add(id);
         ci.cancel();
     }
 
     @Inject(method = "removeId", at = @At("HEAD"), cancellable = true)
     public void forwardRemove(int id, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(viafabricplus_ids.rem(id));
+        cir.setReturnValue(viaFabricPlus$ids.rem(id));
     }
 }

@@ -17,8 +17,6 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.*;
 import net.minecraft.block.cauldron.CauldronBehavior;
@@ -28,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -37,7 +36,7 @@ import java.util.Map;
 public abstract class MixinCauldronBlock extends AbstractCauldronBlock {
 
     @Unique
-    private final static VoxelShape viafabricplus_cauldron_shape_v1_12_2 = VoxelShapes.combineAndSimplify(
+    private final static VoxelShape viaFabricPlus$shape_r1_12_2 = VoxelShapes.combineAndSimplify(
             VoxelShapes.fullCube(),
             Block.createCuboidShape(2.0D, 5.0D, 2.0D, 14.0D, 16.0D, 14.0D),
             BooleanBiFunction.ONLY_FIRST
@@ -50,7 +49,7 @@ public abstract class MixinCauldronBlock extends AbstractCauldronBlock {
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            return viafabricplus_cauldron_shape_v1_12_2;
+            return viaFabricPlus$shape_r1_12_2;
         }
         return super.getOutlineShape(state, world, pos, context);
     }

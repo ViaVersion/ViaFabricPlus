@@ -17,13 +17,12 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.screenhandler;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinScreenHandler implements IScreenHandler {
 
     @Unique
-    private short viafabricplus_lastActionId = 0;
+    private short viaFabricPlus$lastActionId = 0;
 
     @Inject(method = "internalOnSlotClick", at = @At("HEAD"), cancellable = true)
     private void injectInternalOnSlotClick(int slot, int clickData, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
@@ -44,7 +43,7 @@ public class MixinScreenHandler implements IScreenHandler {
     }
 
     @Override
-    public short viafabricplus_getAndIncrementLastActionId() {
-        return ++viafabricplus_lastActionId;
+    public short viaFabricPlus$getAndIncrementLastActionId() {
+        return ++viaFabricPlus$lastActionId;
     }
 }

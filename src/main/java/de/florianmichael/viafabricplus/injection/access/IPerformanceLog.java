@@ -17,9 +17,11 @@
  */
 package de.florianmichael.viafabricplus.injection.access;
 
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import net.raphimc.vialoader.util.VersionEnum;
 
-public interface IProtocol1_13To1_12_2 {
+public interface IPerformanceLog {
 
-    void viafabricplus_writeDeclareRecipes(final PacketWrapper recipesPacket);
+    VersionEnum viaFabricPlus$getForcedVersion();
+    void viaFabricPlus$setForcedVersion(final VersionEnum version);
+
 }

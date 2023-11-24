@@ -34,12 +34,12 @@ public class ViaFabricPlusBlobCacheProvider extends BlobCacheProvider {
     @Override
     public byte[] addBlob(final long hash, final byte[] compressedBlob) {
         synchronized (this.blobs) {
-            if (this.blobs.containsKey(hash)) { // In case the server overwrites a blob
-                size -= this.blobs.get(hash).length;
-                this.blobs.remove(hash);
+            final byte[] previousBlob = this.blobs.put(hash, compressedBlob);
+            if (previousBlob != null) { // In case the server overwrites a blob
+                this.size -= previousBlob.length;
             }
-            size += compressedBlob.length;
-            return this.blobs.put(hash, compressedBlob);
+            this.size += compressedBlob.length;
+            return previousBlob;
         }
     }
 
@@ -62,6 +62,7 @@ public class ViaFabricPlusBlobCacheProvider extends BlobCacheProvider {
     }
 
     public long getSize() {
-        return size;
+        return this.size;
     }
+
 }

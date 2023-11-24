@@ -32,12 +32,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinCropBlock {
 
     @Unique
-    private final VoxelShape viafabricplus_shape_v1_8_x = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 4.0, 16.0);
+    private final VoxelShape viaFabricPlus$shape_r1_8_x = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 4.0, 16.0);
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            cir.setReturnValue(viafabricplus_shape_v1_8_x);
+            cir.setReturnValue(viaFabricPlus$shape_r1_8_x);
         }
     }
 }

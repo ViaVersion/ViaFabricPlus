@@ -17,8 +17,6 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,6 +26,7 @@ import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,8 +39,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinSnowBlock {
 
     @Unique
-    private final static VoxelShape[] viafabricplus_layers_to_shape_v1_12_2 = new VoxelShape[]{
-            Block.createCuboidShape(0, -0.00001 /* Bypass for Minecraft-Fixes */, 0, 16, 0, 16),
+    private final static VoxelShape[] viaFabricPlus$layers_to_shape_r1_12_2 = new VoxelShape[]{
+            Block.createCuboidShape(0, -0.00001 /* 0D */, 0, 16, 0, 16),
             Block.createCuboidShape(0, 0, 0, 16, 2, 16),
             Block.createCuboidShape(0, 0, 0, 16, 4, 16),
             Block.createCuboidShape(0, 0, 0, 16, 6, 16),
@@ -58,7 +57,7 @@ public class MixinSnowBlock {
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            cir.setReturnValue(viafabricplus_layers_to_shape_v1_12_2[state.get(LAYERS) - 1]);
+            cir.setReturnValue(viaFabricPlus$layers_to_shape_r1_12_2[state.get(LAYERS) - 1]);
         }
     }
 }

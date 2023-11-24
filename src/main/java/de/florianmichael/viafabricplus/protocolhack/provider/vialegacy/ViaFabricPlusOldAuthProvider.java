@@ -40,7 +40,7 @@ public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
             ViaFabricPlus.LOGGER.error("Error occurred while calling join server to verify session", e);
 
             if (AuthenticationSettings.INSTANCE.disconnectIfJoinServerCallFails.getValue()) {
-                user.getChannel().attr(ProtocolHack.LOCAL_MINECRAFT_CONNECTION).get().disconnect(ChatUtil.prefixText(Text.translatable("authentication.viafabricplus.error")));
+                user.getChannel().attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get().disconnect(ChatUtil.prefixText(Text.translatable("authentication.viafabricplus.error")));
             }
         }
     }

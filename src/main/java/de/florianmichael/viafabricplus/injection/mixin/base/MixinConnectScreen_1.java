@@ -17,24 +17,16 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.client.network.AllowedAddressResolver;
-import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.net.InetSocketAddress;
-import java.util.Optional;
-
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
 public class MixinConnectScreen_1 {
 
@@ -42,27 +34,11 @@ public class MixinConnectScreen_1 {
     @Shadow
     ServerInfo field_40415;
 
-    @Final
-    @Shadow
-    ServerAddress field_33737;
-
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
-    public Object mapSocketAddress(Optional<InetSocketAddress> instance) {
-        final var original = instance.orElse(null); // original invoke
+    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;"))
+    public void setForcedServerVersion(CallbackInfo ci) {
         if (field_40415 != null) {
-            // Handle forced version system
-            final VersionEnum forcedVersion = ((IServerInfo) field_40415).viafabricplus_forcedVersion();
-            if (forcedVersion != null) {
-                ProtocolHack.getForcedVersions().put(original, forcedVersion);
-                ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(forcedVersion);
-            }
+            ProtocolHack.setTargetVersion(((IServerInfo) field_40415).viaFabricPlus$forcedVersion());
         }
-
-        if (ClientsideFixes.LEGACY_SRV_RESOLVE.contains(ProtocolHack.getTargetVersion(original))) {
-            final var direct = AllowedAddressResolver.DEFAULT.addressResolver.resolve(this.field_33737).orElse(null);
-
-            if (direct != null) return direct.getInetSocketAddress();
-        }
-        return original; // original invoke
     }
+
 }

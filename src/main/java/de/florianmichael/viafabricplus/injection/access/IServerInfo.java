@@ -21,12 +21,13 @@ import net.raphimc.vialoader.util.VersionEnum;
 
 public interface IServerInfo {
 
-    VersionEnum viafabricplus_forcedVersion();
-    void viafabricplus_forceVersion(VersionEnum version);
+    VersionEnum viaFabricPlus$forcedVersion();
+    void viaFabricPlus$forceVersion(final VersionEnum version);
 
-    boolean viafabricplus_enabled();
-    void viafabricplus_enable();
+    boolean viaFabricPlus$enabled();
+    void viaFabricPlus$enable();
 
-    int viafabricplus_translatingVersion();
-    void viafabricplus_setTranslatingVersion(final int version);
+    int viaFabricPlus$translatingVersion();
+    void viaFabricPlus$setTranslatingVersion(final int version);
+
 }

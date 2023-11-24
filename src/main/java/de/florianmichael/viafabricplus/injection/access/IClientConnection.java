@@ -17,21 +17,17 @@
  */
 package de.florianmichael.viafabricplus.injection.access;
 
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import java.net.InetSocketAddress;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import net.raphimc.vialoader.util.VersionEnum;
 
 public interface IClientConnection {
 
-    void viafabricplus_setupPreNettyDecryption();
+    void viaFabricPlus$setupPreNettyDecryption();
 
-    InetSocketAddress viafabricplus_capturedAddress();
-    void viafabricplus_captureAddress(final InetSocketAddress socketAddress);
+    VersionEnum viaFabricPlus$getServerVersion();
+    void viaFabricPlus$setServerVersion(final VersionEnum serverVersion);
 
-    void viafabricplus_enableZLibCompression();
-    void viafabricplus_enableSnappyCompression();
-    void viafabricplus_enableAesGcmEncryption(final SecretKey secretKey) throws InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException;
+    UserConnection viaFabricPlus$getUserConnection();
+    void viaFabricPlus$setUserConnection(final UserConnection userConnection);
+
 }

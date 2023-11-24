@@ -1,6 +1,5 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import de.florianmichael.viafabricplus.definition.EntityHeightOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -30,7 +29,7 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
     }
 
     @Unique
-    public void viafabricplus_clamPassengerYaw(final Entity passenger) {
+    public void viaFabricPlus$clamPassengerYaw(final Entity passenger) {
         passenger.setBodyYaw(this.getYaw());
         final float passengerYaw = passenger.getYaw();
 
@@ -46,7 +45,7 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
     @Override
     public void onPassengerLookAround(Entity passenger) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1) && this.getControllingPassenger() != passenger) {
-            viafabricplus_clamPassengerYaw(passenger);
+            viaFabricPlus$clamPassengerYaw(passenger);
         }
     }
 
@@ -55,7 +54,7 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
         super.updatePassengerPosition(passenger, positionUpdater);
 
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            viafabricplus_clamPassengerYaw(passenger);
+            viaFabricPlus$clamPassengerYaw(passenger);
         }
     }
 }

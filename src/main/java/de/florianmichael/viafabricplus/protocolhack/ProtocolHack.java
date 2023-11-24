@@ -29,7 +29,7 @@ import com.viaversion.viaversion.protocols.protocol1_20_2to1_20.storage.Configur
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.FinishViaVersionStartupCallback;
-import de.florianmichael.viafabricplus.injection.access.IServerInfo;
+import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLCommandHandler;
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLInjector;
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLLoader;
@@ -41,17 +41,15 @@ import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBedrockPlatformImpl;
 import net.raphimc.vialoader.util.VersionEnum;
+import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
-import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This class represents the whole Protocol Translator, here all important variables are stored
@@ -60,108 +58,55 @@ public class ProtocolHack {
     /**
      * These attribute keys are used to track the main connections of Minecraft and ViaVersion, so that they can be used later during the connection to send packets.
      */
-    public final static AttributeKey<ClientConnection> LOCAL_MINECRAFT_CONNECTION = AttributeKey.newInstance("viafabricplus-minecraft-connection");
-    public final static AttributeKey<UserConnection> LOCAL_VIA_CONNECTION = AttributeKey.newInstance("viafabricplus-via-connection");
-
-    /**
-     * This list is temporary and is used during the connection to the server to create the FORCED_VERSION attribute.
-     */
-    private final static Map<InetSocketAddress, VersionEnum> forcedVersions = new HashMap<>();
+    public final static AttributeKey<ClientConnection> CLIENT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-clientconnection");
 
     /**
      * This attribute stores the forced version for the current connection (if you set a specific version in the Edit Server screen)
      */
-    public final static AttributeKey<VersionEnum> FORCED_VERSION = AttributeKey.newInstance("viafabricplus-forced-version");
+    public final static AttributeKey<VersionEnum> SERVER_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-serverversion");
+
+    /**
+     * The native version of the client
+     */
+    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_20_2;
 
     /**
      * This field stores the target version that you set in the GUI
      */
-    public static VersionEnum targetVersion = ViaFabricPlus.NATIVE_VERSION;
-
-    /**
-     * This method is used when you need the target version after connecting to the server.
-     *
-     * @return the target version
-     */
-    public static VersionEnum getTargetVersion() {
-        if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().getNetworkHandler() == null) {
-            return getTargetVersion((Channel) null);
-        }
-
-        return getTargetVersion(MinecraftClient.getInstance().getNetworkHandler().getConnection().channel);
-    }
-
-    /**
-     * This method is used when you need the target version while connecting to the server before Netty is started
-     *
-     * @param socketAddress the target address
-     * @return the target version
-     */
-    public static VersionEnum getTargetVersion(final InetSocketAddress socketAddress) {
-        if (forcedVersions.containsKey(socketAddress)) {
-            return forcedVersions.get(socketAddress);
-        }
-        return getTargetVersion();
-    }
-
-    /**
-     * This method is used when you need the target version while connecting to the server after Netty is started and before ViaVersion is finished loading.
-     *
-     * @param channel channel of the current connection
-     * @return the target version
-     */
-    public static VersionEnum getTargetVersion(final Channel channel) {
-        if (channel != null && channel.hasAttr(FORCED_VERSION)) {
-            return channel.attr(FORCED_VERSION).get();
-        }
-
-        if (MinecraftClient.getInstance() == null || MinecraftClient.getInstance().isInSingleplayer()) return ViaFabricPlus.NATIVE_VERSION;
-
-        return targetVersion;
-    }
-
-    /**
-     * This method is used when you need the target version while connecting to the server after Netty is started and after ViaVersion is finished loading.
-     *
-     * @param serverInfo the current server info
-     * @return the target version
-     */
-    public static VersionEnum getTargetVersion(final ServerInfo serverInfo) {
-        final var forcedVersion = ((IServerInfo) serverInfo).viafabricplus_forcedVersion();
-        if (forcedVersion == null) return  getTargetVersion();
-
-        return forcedVersion;
-    }
-
-    public static Map<InetSocketAddress, VersionEnum> getForcedVersions() {
-        return forcedVersions;
-    }
+    private static VersionEnum targetVersion = NATIVE_VERSION;
 
     /**
      * Injects the ViaFabricPlus pipeline with all ViaVersion elements into a Minecraft pipeline
      *
      * @param connection the Minecraft connection
-     * @param channel the current channel
-     * @param address the target address
      */
-    public static void injectVLBPipeline(final ClientConnection connection, final Channel channel, final InetSocketAddress address) {
-        if (ProtocolHack.getForcedVersions().containsKey(address)) {
-            channel.attr(ProtocolHack.FORCED_VERSION).set(ProtocolHack.getForcedVersions().get(address));
-            ProtocolHack.getForcedVersions().remove(address);
+    public static void injectViaPipeline(final ClientConnection connection, final Channel channel) {
+        final IClientConnection mixinClientConnection = (IClientConnection) connection;
+        final VersionEnum serverVersion = mixinClientConnection.viaFabricPlus$getServerVersion();
+
+        if (serverVersion != ProtocolHack.NATIVE_VERSION) {
+            channel.attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).set(connection);
+            channel.attr(ProtocolHack.SERVER_VERSION_ATTRIBUTE_KEY).set(serverVersion);
+
+            if (VersionEnum.bedrockLatest.equals(serverVersion)) {
+                channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, 11);
+                channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, 4_000L);
+                channel.config().setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
+                channel.config().setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());
+            }
+
+            final UserConnection user = new UserConnectionImpl(channel, true);
+            new ProtocolPipelineImpl(user);
+            mixinClientConnection.viaFabricPlus$setUserConnection(user);
+
+            channel.pipeline().addLast(new ViaFabricPlusVLLegacyPipeline(user, serverVersion));
         }
-        final UserConnection user = new UserConnectionImpl(channel, true);
-        channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).set(user);
-        channel.attr(ProtocolHack.LOCAL_MINECRAFT_CONNECTION).set(connection);
-
-        new ProtocolPipelineImpl(user);
-
-        channel.pipeline().addLast(new ViaFabricPlusVLLegacyPipeline(user, ProtocolHack.getTargetVersion(channel), address));
     }
 
     /**
      * Adding ViaVersion's command system into Fabric
      */
-    private static void initCommands() {
+    public static void initCommands() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             final ViaFabricPlusVLCommandHandler commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
 
@@ -174,18 +119,31 @@ public class ProtocolHack {
     }
 
     /**
-     * Sets the target version of the GUI
+     * This method is used when you need the target version after connecting to the server.
      *
-     * @param targetVersion the target version
+     * @return the target version
      */
-    public static void setTargetVersion(VersionEnum targetVersion) {
-        ProtocolHack.targetVersion = targetVersion;
-        ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(targetVersion);
+    public static VersionEnum getTargetVersion() {
+        return targetVersion;
+    }
+
+    /**
+     * Sets the target version
+     *
+     * @param newVersion the target version
+     */
+    public static void setTargetVersion(VersionEnum newVersion) {
+        if (newVersion == null) return;
+
+        final VersionEnum oldVersion = targetVersion;
+        targetVersion = newVersion;
+        if (oldVersion != newVersion) ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(targetVersion);
     }
 
     /**
      * @return Creates a Fake UserConnection class with a valid protocol pipeline to emulate packets
      */
+    @Deprecated
     public static UserConnection createFakerUserConnection() {
         return createFakerUserConnection(getMainUserConnection().getChannel());
     }
@@ -194,6 +152,7 @@ public class ProtocolHack {
      * @param channel the current channel
      * @return Creates a Fake UserConnection class with a valid protocol pipeline to emulate packets
      */
+    @Deprecated
     public static UserConnection createFakerUserConnection(final Channel channel) {
         final var fake = new UserConnectionImpl(channel, true);
         fake.getProtocolInfo().setPipeline(new ProtocolPipelineImpl(fake));
@@ -210,13 +169,12 @@ public class ProtocolHack {
     /**
      * @return Returns the current ViaVersion UserConnection via the LOCAL_VIA_CONNECTION channel attribute
      */
+    @Deprecated
     public static UserConnection getMainUserConnection() {
         final MinecraftClient client = MinecraftClient.getInstance();
         if (client.getNetworkHandler() == null) return null;
-        final var channel = client.getNetworkHandler().getConnection().channel;
-        if (!channel.hasAttr(LOCAL_VIA_CONNECTION)) return null;
 
-        return channel.attr(LOCAL_VIA_CONNECTION).get();
+        return ((IClientConnection) client.getNetworkHandler().getConnection()).viaFabricPlus$getUserConnection();
     }
 
     /**
@@ -224,8 +182,6 @@ public class ProtocolHack {
      */
     public static void init() {
         ViaLoader.init(new ViaFabricPlusViaVersionPlatformImpl(ViaFabricPlus.RUN_DIRECTORY), new ViaFabricPlusVLLoader(), new ViaFabricPlusVLInjector(), new ViaFabricPlusVLCommandHandler(), ViaBackwardsPlatformImpl::new, ViaFabricPlusViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new, ViaBedrockPlatformImpl::new);
-        initCommands();
-
         FinishViaVersionStartupCallback.EVENT.invoker().onFinishViaVersionStartup();
     }
 }

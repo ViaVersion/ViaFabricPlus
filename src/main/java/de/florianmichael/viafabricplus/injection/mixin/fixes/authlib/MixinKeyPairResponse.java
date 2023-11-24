@@ -11,15 +11,15 @@ import java.nio.ByteBuffer;
 public class MixinKeyPairResponse implements IKeyPairResponse {
 
     @Unique
-    private ByteBuffer viafabricplus_legacyKeySignature;
+    private ByteBuffer viaFabricPlus$legacyKeySignature;
 
     @Override
-    public ByteBuffer viafabricplus_getLegacyPublicKeySignature() {
-        return this.viafabricplus_legacyKeySignature;
+    public ByteBuffer viafabricplus$getLegacyPublicKeySignature() {
+        return this.viaFabricPlus$legacyKeySignature;
     }
 
     @Override
-    public void viafabricplus_setLegacyPublicKeySignature(ByteBuffer signature) {
-        this.viafabricplus_legacyKeySignature = signature;
+    public void viafabricplus$setLegacyPublicKeySignature(ByteBuffer signature) {
+        this.viaFabricPlus$legacyKeySignature = signature;
     }
 }

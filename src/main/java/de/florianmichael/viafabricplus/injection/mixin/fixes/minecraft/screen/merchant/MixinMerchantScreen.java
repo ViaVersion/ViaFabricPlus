@@ -38,7 +38,7 @@ public abstract class MixinMerchantScreen extends HandledScreen<MerchantScreenHa
     private int selectedIndex;
 
     @Unique
-    private int viafabricplus_previousRecipeIndex;
+    private int viaFabricPlus$previousRecipeIndex;
 
     public MixinMerchantScreen(MerchantScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -46,18 +46,18 @@ public abstract class MixinMerchantScreen extends HandledScreen<MerchantScreenHa
 
     @Inject(method = "init", at = @At("HEAD"))
     public void reset(CallbackInfo ci) {
-        viafabricplus_previousRecipeIndex = 0;
+        viaFabricPlus$previousRecipeIndex = 0;
     }
 
     @Inject(method = "syncRecipeIndex", at = @At("HEAD"))
     public void smoothOutRecipeIndex(CallbackInfo ci) {
         if (DebugSettings.INSTANCE.smoothOutMerchantScreens.isEnabled()) {
-            if (viafabricplus_previousRecipeIndex != selectedIndex) {
-                int direction = viafabricplus_previousRecipeIndex < selectedIndex ? 1 : -1;
-                for (int smooth = viafabricplus_previousRecipeIndex + direction /* don't send the page we already are on */; smooth != selectedIndex; smooth += direction) {
+            if (viaFabricPlus$previousRecipeIndex != selectedIndex) {
+                int direction = viaFabricPlus$previousRecipeIndex < selectedIndex ? 1 : -1;
+                for (int smooth = viaFabricPlus$previousRecipeIndex + direction /* don't send the page we already are on */; smooth != selectedIndex; smooth += direction) {
                     client.getNetworkHandler().sendPacket(new SelectMerchantTradeC2SPacket(smooth));
                 }
-                viafabricplus_previousRecipeIndex = selectedIndex;
+                viaFabricPlus$previousRecipeIndex = selectedIndex;
             }
         }
     }

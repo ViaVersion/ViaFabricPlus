@@ -57,7 +57,7 @@ public class ViaFabricPlusGameProfileFetcher extends GameProfileFetcher {
     }
 
     @Override
-    public GameProfile loadGameProfile(UUID uuid) throws Exception {
+    public GameProfile loadGameProfile(UUID uuid) {
         final var result = SESSION_SERVICE.fetchProfile(uuid, true);
         if (result == null) throw new ProfileNotFoundException();
 

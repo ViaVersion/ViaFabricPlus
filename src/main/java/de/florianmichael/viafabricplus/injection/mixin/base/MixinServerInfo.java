@@ -33,67 +33,69 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ServerInfo.class)
 public class MixinServerInfo implements IServerInfo {
 
-    @Shadow public String name;
+    @Shadow
+    public String name;
 
     @Unique
-    private VersionEnum viafabricplus_forcedVersion = null;
+    private VersionEnum viaFabricPlus$forcedVersion = null;
 
     @Override
-    public VersionEnum viafabricplus_forcedVersion() {
-        return viafabricplus_forcedVersion;
+    public VersionEnum viaFabricPlus$forcedVersion() {
+        return viaFabricPlus$forcedVersion;
     }
 
     @Override
-    public void viafabricplus_forceVersion(VersionEnum version) {
-        viafabricplus_forcedVersion = version;
+    public void viaFabricPlus$forceVersion(VersionEnum version) {
+        viaFabricPlus$forcedVersion = version;
     }
 
     @Inject(method = "toNbt", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void saveForcedVersion(CallbackInfoReturnable<NbtCompound> cir, NbtCompound nbtCompound) {
-        if (viafabricplus_forcedVersion == null) return;
+        if (viaFabricPlus$forcedVersion == null) return;
 
-        nbtCompound.putInt("viafabricplus_forcedversion", viafabricplus_forcedVersion.getVersion());
+        nbtCompound.putInt("viafabricplus_forcedversion", viaFabricPlus$forcedVersion.getOriginalVersion());
     }
 
     @Inject(method = "fromNbt", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void loadForcedVersion(NbtCompound root, CallbackInfoReturnable<ServerInfo> cir, ServerInfo serverInfo) {
         if (root.contains("viafabricplus_forcedversion")) {
-            try {
-                ((IServerInfo) serverInfo).viafabricplus_forceVersion(VersionEnum.fromProtocolId(root.getInt("viafabricplus_forcedversion")));
-            } catch (Exception ignored) {
-                // Version doesn't exist anymore
+            final VersionEnum version = VersionEnum.fromProtocolId(root.getInt("viafabricplus_forcedversion"));
+            if (VersionEnum.UNKNOWN.equals(version)) {
+                ((IServerInfo) serverInfo).viaFabricPlus$forceVersion(null);
+            } else {
+                ((IServerInfo) serverInfo).viaFabricPlus$forceVersion(version);
             }
         }
     }
 
     @Inject(method = "copyFrom", at = @At("RETURN"))
     public void trackForcedVersion(ServerInfo serverInfo, CallbackInfo ci) {
-        viafabricplus_forceVersion(((IServerInfo) serverInfo).viafabricplus_forcedVersion());
+        viaFabricPlus$forceVersion(((IServerInfo) serverInfo).viaFabricPlus$forcedVersion());
     }
 
     @Unique
-    private boolean viafabricplus_enabled;
+    private boolean viaFabricPlus$enabled;
 
     @Override
-    public boolean viafabricplus_enabled() {
-        return viafabricplus_enabled;
+    public boolean viaFabricPlus$enabled() {
+        return viaFabricPlus$enabled;
     }
 
     @Override
-    public void viafabricplus_enable() {
-        viafabricplus_enabled = true;
+    public void viaFabricPlus$enable() {
+        viaFabricPlus$enabled = true;
     }
 
     @Unique
-    private int viafabricplus_translatingVersion;
+    private int viaFabricPlus$translatingVersion;
 
     @Override
-    public int viafabricplus_translatingVersion() {
-        return viafabricplus_translatingVersion;
+    public int viaFabricPlus$translatingVersion() {
+        return viaFabricPlus$translatingVersion;
     }
 
     @Override
-    public void viafabricplus_setTranslatingVersion(int version) {
-        viafabricplus_translatingVersion = version;
+    public void viaFabricPlus$setTranslatingVersion(int version) {
+        viaFabricPlus$translatingVersion = version;
     }
 }

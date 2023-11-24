@@ -20,12 +20,11 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.GameVersion;
 import net.minecraft.client.resource.ServerResourcePackProvider;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -45,7 +44,7 @@ import java.util.Map;
 public class MixinServerResourcePackProvider {
 
     @Unique
-    private File viafabricplus_trackedFile;
+    private File viaFabricPlus$trackedFile;
 
     @Redirect(method = "getDownloadHeaders", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;getGameVersion()Lnet/minecraft/GameVersion;"))
     private static GameVersion editHeaders() {
@@ -68,7 +67,7 @@ public class MixinServerResourcePackProvider {
 
     @Inject(method = "verifyFile", at = @At("HEAD"))
     public void keepFile(String expectedSha1, File file, CallbackInfoReturnable<Boolean> cir) {
-        viafabricplus_trackedFile = file;
+        viaFabricPlus$trackedFile = file;
     }
 
     @Redirect(method = "verifyFile", at = @At(value = "INVOKE", target = "Lcom/google/common/hash/HashCode;toString()Ljava/lang/String;", remap = false))
@@ -76,9 +75,9 @@ public class MixinServerResourcePackProvider {
         try {
             if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
                 //noinspection deprecation
-                return Hashing.sha1().hashBytes(Files.toByteArray(viafabricplus_trackedFile)).toString();
+                return Hashing.sha1().hashBytes(Files.toByteArray(viaFabricPlus$trackedFile)).toString();
             } else if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_18tor1_18_1)) {
-                return DigestUtils.sha1Hex(new FileInputStream(viafabricplus_trackedFile));
+                return DigestUtils.sha1Hex(new FileInputStream(viaFabricPlus$trackedFile));
             }
         } catch (IOException ignored) {
         }

@@ -19,44 +19,26 @@ package de.florianmichael.viafabricplus.protocolhack.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.RakNetClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.netty.viaversion.ViaFabricPlusViaDecoder;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
-import net.raphimc.vialoader.netty.viabedrock.PingEncapsulationCodec;
 import net.raphimc.vialoader.util.VersionEnum;
 
-import java.net.InetSocketAddress;
-
 public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
+
     public final static String VIABEDROCK_COMPRESSION_HANDLER_NAME = "viabedrock-compression";
     public final static String VIABEDROCK_ENCRYPTION_HANDLER_NAME = "viabedrock-encryption";
+    public final static String VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME = "viabedrock-ping-encapsulation";
 
-    private final InetSocketAddress address;
-
-    public ViaFabricPlusVLLegacyPipeline(UserConnection user, VersionEnum version, final InetSocketAddress address) {
+    public ViaFabricPlusVLLegacyPipeline(UserConnection user, VersionEnum version) {
         super(user, version);
-
-        this.address = address;
     }
 
     @Override
     protected ChannelHandler createViaDecoder() {
         return new ViaFabricPlusViaDecoder(this.user);
-    }
-
-    @Override
-    public void handlerAdded(ChannelHandlerContext ctx) {
-        super.handlerAdded(ctx);
-
-        if (this.version == VersionEnum.bedrockLatest && RakNetClientConnection.getRakNetPingSessions().contains(address)) {
-            ctx.pipeline().replace(VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, new PingEncapsulationCodec(address));
-
-            ctx.pipeline().remove(VIABEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);
-            ctx.pipeline().remove(this.lengthSplitterName());
-        }
     }
 
     @Override
@@ -101,4 +83,5 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
     protected String lengthPrependerName() {
         return "prepender";
     }
+
 }

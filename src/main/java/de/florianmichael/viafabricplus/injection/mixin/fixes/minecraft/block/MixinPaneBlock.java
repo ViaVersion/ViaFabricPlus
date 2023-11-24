@@ -1,99 +1,93 @@
-/*
- * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PaneBlock.class)
-public class MixinPaneBlock extends HorizontalConnectingBlock {
+public abstract class MixinPaneBlock extends HorizontalConnectingBlock {
 
-    public MixinPaneBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Settings settings) {
+    @Unique
+    private VoxelShape[] collisionShapes1_8;
+
+    @Unique
+    private VoxelShape[] boundingShapes1_8;
+
+    protected MixinPaneBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Settings settings) {
         super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
+    }
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void initShapes(Settings settings, CallbackInfo ci) {
+        this.collisionShapes1_8 = this.createShapes1_8(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
+        this.boundingShapes1_8 = this.createShapes1_8(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            return viafabricplus_get1_8Shape(state);
+            return this.boundingShapes1_8[this.getShapeIndex(state)];
         }
+
         return super.getOutlineShape(state, world, pos, context);
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            return viafabricplus_get1_8Shape(state);
+            return this.collisionShapes1_8[this.getShapeIndex(state)];
         }
+
         return super.getCollisionShape(state, world, pos, context);
     }
 
     @Unique
-    private final VoxelShape viafabricplus_west_shape_v1_8_x = Block.createCuboidShape(0, 0, 7, 8, 16, 9);
+    private VoxelShape[] createShapes1_8(float radius1, float radius2, float height1, float offset2, float height2) {
+        final float f = 8.0F - radius1;
+        final float g = 8.0F + radius1;
+        final float h = 8.0F - radius2;
+        final float i = 8.0F + radius2;
+        final VoxelShape baseShape = Block.createCuboidShape(f, 0.0, f, g, height1, g);
+        final VoxelShape northShape = Block.createCuboidShape(h, offset2, 0.0, i, height2, i);
+        final VoxelShape southShape = Block.createCuboidShape(h, offset2, h, i, height2, 16.0);
+        final VoxelShape westShape = Block.createCuboidShape(0.0, offset2, h, i, height2, i);
+        final VoxelShape eastShape = Block.createCuboidShape(h, offset2, h, 16.0, height2, i);
+        final VoxelShape northEastCornerShape = VoxelShapes.union(northShape, eastShape);
+        final VoxelShape southWestCornerShape = VoxelShapes.union(southShape, westShape);
+        final VoxelShape[] voxelShapes = new VoxelShape[]{
+                VoxelShapes.empty(),
+                Block.createCuboidShape(h, offset2, h + 1, i, height2, 16.0D), // south
+                Block.createCuboidShape(0.0D, offset2, h, i - 1, height2, i), // west
+                southWestCornerShape,
+                Block.createCuboidShape(h, offset2, 0.0D, i, height2, i - 1), // north
+                VoxelShapes.union(southShape, northShape),
+                VoxelShapes.union(westShape, northShape),
+                VoxelShapes.union(southWestCornerShape, northShape),
+                Block.createCuboidShape(h + 1, offset2, h, 16.0D, height2, i), // east
+                VoxelShapes.union(southShape, eastShape),
+                VoxelShapes.union(westShape, eastShape),
+                VoxelShapes.union(southWestCornerShape, eastShape),
+                northEastCornerShape,
+                VoxelShapes.union(southShape, northEastCornerShape),
+                VoxelShapes.union(westShape, northEastCornerShape),
+                VoxelShapes.union(southWestCornerShape, northEastCornerShape)
+        };
 
-    @Unique
-    private final VoxelShape viafabricplus_east_shape_v1_8_x = Block.createCuboidShape(8, 0, 7, 16, 16, 9);
+        for (int j = 0; j < 16; ++j) {
+            if (j == 1 || j == 2 || j == 4 || j == 8) continue;
+            voxelShapes[j] = VoxelShapes.union(baseShape, voxelShapes[j]);
+        }
 
-    @Unique
-    private final VoxelShape viafabricplus_west_east_combined_shape_v1_8_x = Block.createCuboidShape(0, 0, 7, 16, 16, 9);
-
-    @Unique
-    private final VoxelShape viafabricplus_north_shape_v1_8_x = Block.createCuboidShape(7, 0, 0, 9, 16, 8);
-
-    @Unique
-    private final VoxelShape viafabricplus_south_shape_v1_8_x = Block.createCuboidShape(7, 0, 8, 9, 16, 16);
-
-    @Unique
-    private final VoxelShape viafabricplus_north_south_combined_shape_v1_8_x = Block.createCuboidShape(7, 0, 0, 9, 16, 16);
-
-    @Unique
-    public VoxelShape viafabricplus_get1_8Shape(BlockState state) {
-        VoxelShape finalShape = VoxelShapes.empty();
-
-        final boolean isNorthFacing = state.get(NORTH);
-        final boolean isSouthFacing = state.get(SOUTH);
-        final boolean isWestFacing = state.get(WEST);
-        final boolean isEastFacing = state.get(EAST);
-
-        if ((!isWestFacing || !isEastFacing) && (isWestFacing || isEastFacing || isNorthFacing || isSouthFacing)) {
-            if (isWestFacing)
-                finalShape = VoxelShapes.union(finalShape, viafabricplus_west_shape_v1_8_x);
-            else if (isEastFacing)
-                finalShape = VoxelShapes.union(finalShape, viafabricplus_east_shape_v1_8_x);
-        } else
-            finalShape = VoxelShapes.union(finalShape, viafabricplus_west_east_combined_shape_v1_8_x);
-
-        if ((!isNorthFacing || !isSouthFacing) && (isWestFacing || isEastFacing || isNorthFacing || isSouthFacing)) {
-            if (isNorthFacing)
-                finalShape = VoxelShapes.union(finalShape, viafabricplus_north_shape_v1_8_x);
-            else if (isSouthFacing)
-                finalShape = VoxelShapes.union(finalShape, viafabricplus_south_shape_v1_8_x);
-        } else
-            finalShape = VoxelShapes.union(finalShape, viafabricplus_north_south_combined_shape_v1_8_x);
-
-        return finalShape;
+        return voxelShapes;
     }
+
 }

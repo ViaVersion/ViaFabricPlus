@@ -23,5 +23,5 @@ import java.util.EnumMap;
 
 public interface IExtensionProtocolMetadataStorage {
 
-    EnumMap<ClassicProtocolExtension, Integer> getServerExtensions();
+    EnumMap<ClassicProtocolExtension, Integer> viaFabricPlus$getServerExtensions();
 }

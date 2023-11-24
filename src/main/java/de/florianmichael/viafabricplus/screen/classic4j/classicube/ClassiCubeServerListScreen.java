@@ -21,13 +21,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
-import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
-import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
+import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.common.ProtocolSelectionScreen;
+import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -136,7 +136,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
             ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = classiCubeServerInfo.mpPass();
 
             if (AuthenticationSettings.INSTANCE.forceCPEIfUsingClassiCube.getValue()) {
-                ((IServerInfo) entry).viafabricplus_forceVersion(VersionEnum.c0_30cpe);
+                ((IServerInfo) entry).viaFabricPlus$forceVersion(VersionEnum.c0_30cpe);
             }
 
             ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false);

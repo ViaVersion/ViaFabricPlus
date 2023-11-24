@@ -17,54 +17,66 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
+import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
-import de.florianmichael.viafabricplus.protocolhack.netty.viabedrock.RakNetClientConnection;
+import io.netty.bootstrap.AbstractBootstrap;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
+import io.netty.channel.epoll.EpollDatagramChannel;
+import io.netty.channel.epoll.EpollSocketChannel;
+import io.netty.channel.socket.nio.NioDatagramChannel;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PacketDecryptor;
 import net.minecraft.network.encryption.PacketEncryptor;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.text.Text;
-import net.raphimc.viabedrock.netty.*;
-import net.raphimc.vialoader.netty.VLLegacyPipeline;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.minecraft.util.profiler.PerformanceLog;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
-import org.spongepowered.asm.mixin.*;
+import net.raphimc.vialoader.netty.VLLegacyPipeline;
+import net.raphimc.vialoader.netty.VLPipeline;
+import net.raphimc.vialoader.netty.viabedrock.PingEncapsulationCodec;
+import net.raphimc.vialoader.util.VersionEnum;
+import org.cloudburstmc.netty.channel.raknet.RakChannelFactory;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 @Mixin(ClientConnection.class)
 public abstract class MixinClientConnection extends SimpleChannelInboundHandler<Packet<?>> implements IClientConnection {
 
-    @Shadow private Channel channel;
+    @Shadow
+    public Channel channel;
 
-    @Shadow private boolean encrypted;
+    @Shadow
+    private boolean encrypted;
 
-    @Shadow public abstract void channelActive(ChannelHandlerContext context) throws Exception;
-
-    @Unique
-    private Cipher viafabricplus_decryptionCipher;
-
-    @Unique
-    private boolean viafabricplus_compressionEnabled = false;
+    @Shadow
+    public abstract void channelActive(@NotNull ChannelHandlerContext context) throws Exception;
 
     @Unique
-    private InetSocketAddress viafabricplus_capturedAddress;
+    private UserConnection viaFabricPlus$userConnection;
+
+    @Unique
+    private VersionEnum viaFabricPlus$serverVersion;
+
+    @Unique
+    private Cipher viaFabricPlus$decryptionCipher;
+
 
     @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
     private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
@@ -73,81 +85,114 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
     private void storeEncryptionCiphers(Cipher decryptionCipher, Cipher encryptionCipher, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion(channel).isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
+        if (this.viaFabricPlus$serverVersion.isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
             ci.cancel();
-            this.viafabricplus_decryptionCipher = decryptionCipher;
-            this.viafabricplus_setupPreNettyEncryption(encryptionCipher);
-        }
-    }
-
-    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;", shift = At.Shift.BEFORE), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void captureAddress(InetSocketAddress address, boolean useEpoll, ClientConnection connection, CallbackInfoReturnable<ChannelFuture> cir, Class channelType, EventLoopGroup eventLoopGroup) {
-        ((IClientConnection) connection).viafabricplus_captureAddress(address);
-
-        if (ProtocolHack.getTargetVersion(address) == VersionEnum.bedrockLatest) {
-            cir.setReturnValue(RakNetClientConnection.connectRakNet(connection, address, eventLoopGroup, channelType));
+            this.viaFabricPlus$decryptionCipher = decryptionCipher;
+            this.viaFabricPlus$setupPreNettyEncryption(encryptionCipher);
         }
     }
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         super.channelRegistered(ctx);
-
-        if (RakNetClientConnection.getRakNetPingSessions().contains(viafabricplus_capturedAddress)) {
-            channelActive(ctx);
-            RakNetClientConnection.getRakNetPingSessions().remove(viafabricplus_capturedAddress);
+        if (VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion)) {
+            this.channelActive(ctx);
         }
     }
 
+    @Redirect(method = "channelActive", at = @At(value = "INVOKE", target = "Lio/netty/channel/SimpleChannelInboundHandler;channelActive(Lio/netty/channel/ChannelHandlerContext;)V"), remap = false)
+    private void dontCallChannelActive(SimpleChannelInboundHandler<Packet<?>> instance, ChannelHandlerContext ctx) throws Exception {
+        if (!VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion)) {
+            super.channelActive(ctx);
+        }
+    }
+
+    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE))
+    private static void setServerVersion(InetSocketAddress address, boolean useEpoll, PerformanceLog packetSizeLog, CallbackInfoReturnable<ClientConnection> cir, @Local ClientConnection clientConnection) {
+        if (packetSizeLog instanceof IPerformanceLog mixinPerformanceLog && mixinPerformanceLog.viaFabricPlus$getForcedVersion() != null) {
+            ((IClientConnection) clientConnection).viaFabricPlus$setServerVersion(mixinPerformanceLog.viaFabricPlus$getForcedVersion());
+        }
+    }
+
+    @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;resetPacketSizeLog(Lnet/minecraft/util/profiler/PerformanceLog;)V"))
+    private static void dontSetPerformanceLog(ClientConnection instance, PerformanceLog performanceLog) {
+        if (performanceLog instanceof IPerformanceLog mixinPerformanceLog && mixinPerformanceLog.viaFabricPlus$getForcedVersion() != null) {
+            return;
+        }
+
+        instance.resetPacketSizeLog(performanceLog);
+    }
+
+    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At("HEAD"))
+    private static void setServerVersion(InetSocketAddress address, boolean useEpoll, ClientConnection connection, CallbackInfoReturnable<ChannelFuture> cir) {
+        if (((IClientConnection) connection).viaFabricPlus$getServerVersion() == null) {
+            ((IClientConnection) connection).viaFabricPlus$setServerVersion(ProtocolHack.getTargetVersion());
+        }
+    }
+
+    @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;channel(Ljava/lang/Class;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false))
+    private static AbstractBootstrap<?, ?> applyRakNetChannelFactory(Bootstrap instance, Class<? extends Channel> channelTypeClass, @Local(argsOnly = true) ClientConnection clientConnection) {
+        if (VersionEnum.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getServerVersion())) {
+            return instance.channelFactory(channelTypeClass == EpollSocketChannel.class ? RakChannelFactory.client(EpollDatagramChannel.class) : RakChannelFactory.client(NioDatagramChannel.class));
+        }
+
+        return instance.channel(channelTypeClass);
+    }
+
+    @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;connect(Ljava/net/InetAddress;I)Lio/netty/channel/ChannelFuture;"))
+    private static ChannelFuture applyRakNetPing(Bootstrap instance, InetAddress inetHost, int inetPort, @Local(argsOnly = true) ClientConnection clientConnection, @Local(argsOnly = true) boolean isConnecting) {
+        if (VersionEnum.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getServerVersion()) && !isConnecting) {
+            return instance.register().syncUninterruptibly().channel().bind(new InetSocketAddress(0)).addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE, (ChannelFutureListener) f -> {
+                if (f.isSuccess()) {
+                    f.channel().pipeline().replace(VLPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, ViaFabricPlusVLLegacyPipeline.VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME, new PingEncapsulationCodec(new InetSocketAddress(inetHost, inetPort)));
+                    f.channel().pipeline().remove(VLPipeline.VIABEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);
+                    f.channel().pipeline().remove("splitter");
+                }
+            });
+        }
+
+        return instance.connect(inetHost, inetPort);
+    }
+
     @Inject(method = "disconnect", at = @At("RETURN"))
-    public void resetStorages(Text disconnectReason, CallbackInfo ci) {
-        ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(ProtocolHack.getTargetVersion());
+    private void resetStorages(Text disconnectReason, CallbackInfo ci) {
         DisconnectConnectionCallback.EVENT.invoker().onDisconnect();
     }
 
     @Unique
-    public void viafabricplus_setupPreNettyEncryption(final Cipher encryptionCipher) {
+    public void viaFabricPlus$setupPreNettyEncryption(final Cipher encryptionCipher) {
+        if (encryptionCipher == null) throw new IllegalStateException("Encryption cipher is null");
+
         this.encrypted = true;
         this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "encrypt", new PacketEncryptor(encryptionCipher));
     }
 
     @Override
-    public void viafabricplus_setupPreNettyDecryption() {
+    public void viaFabricPlus$setupPreNettyDecryption() {
+        if (this.viaFabricPlus$decryptionCipher == null) throw new IllegalStateException("Decryption cipher is null");
+
         this.encrypted = true;
-        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_PREPENDER_NAME, "decrypt", new PacketDecryptor(this.viafabricplus_decryptionCipher));
+        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_PREPENDER_NAME, "decrypt", new PacketDecryptor(this.viaFabricPlus$decryptionCipher));
     }
 
     @Override
-    public InetSocketAddress viafabricplus_capturedAddress() {
-        return viafabricplus_capturedAddress;
+    public UserConnection viaFabricPlus$getUserConnection() {
+        return this.viaFabricPlus$userConnection;
     }
 
     @Override
-    public void viafabricplus_captureAddress(InetSocketAddress socketAddress) {
-        viafabricplus_capturedAddress = socketAddress;
+    public void viaFabricPlus$setUserConnection(UserConnection userConnection) {
+        this.viaFabricPlus$userConnection = userConnection;
     }
 
     @Override
-    public void viafabricplus_enableZLibCompression() {
-        if (this.viafabricplus_compressionEnabled) throw new IllegalStateException("Compression is already enabled");
-        this.viafabricplus_compressionEnabled = true;
-
-        this.channel.pipeline().addBefore("splitter", ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME, new ZLibCompression());
+    public VersionEnum viaFabricPlus$getServerVersion() {
+        return this.viaFabricPlus$serverVersion;
     }
 
     @Override
-    public void viafabricplus_enableSnappyCompression() {
-        if (this.viafabricplus_compressionEnabled) throw new IllegalStateException("Compression is already enabled");
-        this.viafabricplus_compressionEnabled = true;
-
-        this.channel.pipeline().addBefore("splitter", ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME, new SnappyCompression());
+    public void viaFabricPlus$setServerVersion(final VersionEnum serverVersion) {
+        this.viaFabricPlus$serverVersion = serverVersion;
     }
 
-    @Override
-    public void viafabricplus_enableAesGcmEncryption(final SecretKey secretKey) throws InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-        if (this.encrypted) throw new IllegalStateException("Encryption is already enabled");
-        this.encrypted = true;
-
-        this.channel.pipeline().addAfter(ViaFabricPlusVLLegacyPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, ViaFabricPlusVLLegacyPipeline.VIABEDROCK_ENCRYPTION_HANDLER_NAME, new AesEncryption(secretKey));
-    }
 }

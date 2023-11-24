@@ -17,12 +17,18 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
+import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.ClientQueryPacketListener;
 import net.minecraft.network.packet.s2c.query.QueryResponseS2CPacket;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,19 +41,35 @@ public abstract class MixinMultiplayerServerListPinger_1 implements ClientQueryP
 
     @Final
     @Shadow
-    ClientConnection field_3774;
-
-    @Final
-    @Shadow
     ServerInfo field_3776;
+
+    @Shadow
+    @Final
+    ClientConnection field_3774;
 
     @Inject(method = "onResponse(Lnet/minecraft/network/packet/s2c/query/QueryResponseS2CPacket;)V", at = @At("HEAD"))
     public void trackTranslatingState(QueryResponseS2CPacket packet, CallbackInfo ci) {
-        if (field_3774.channel.hasAttr(ProtocolHack.LOCAL_VIA_CONNECTION)) {
-            ((IServerInfo) field_3776).viafabricplus_enable();
-
-            final var userConnection = field_3774.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
-            ((IServerInfo) field_3776).viafabricplus_setTranslatingVersion(userConnection.getProtocolInfo().getServerProtocolVersion());
+        final UserConnection userConnection = ((IClientConnection) field_3774).viaFabricPlus$getUserConnection();
+        if (userConnection != null) {
+            ((IServerInfo) field_3776).viaFabricPlus$enable();
+            ((IServerInfo) field_3776).viaFabricPlus$setTranslatingVersion(userConnection.getProtocolInfo().getServerProtocolVersion());
         }
     }
+
+    @Inject(method = "onResponse", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/ServerMetadata;version()Ljava/util/Optional;", shift = At.Shift.AFTER))
+    private void setProtocolVersion(CallbackInfo ci) {
+        final boolean isCompatible;
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
+            isCompatible = LegacyProtocolVersion.getRealProtocolVersion(((IClientConnection) this.field_3774).viaFabricPlus$getServerVersion().getVersion()) == this.field_3776.protocolVersion;
+        } else if (ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
+            isCompatible = ((IClientConnection) this.field_3774).viaFabricPlus$getServerVersion().getVersion() - BedrockProtocolVersion.PROTOCOL_ID_OVERLAP_PREVENTION_OFFSET == this.field_3776.protocolVersion;
+        } else {
+            return;
+        }
+
+        if (isCompatible) {
+            this.field_3776.protocolVersion = SharedConstants.getProtocolVersion();
+        }
+    }
+
 }

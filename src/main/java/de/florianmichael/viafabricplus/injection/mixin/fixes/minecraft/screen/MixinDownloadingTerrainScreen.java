@@ -17,14 +17,14 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import net.minecraft.network.packet.c2s.common.KeepAliveC2SPacket;
-import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.network.packet.c2s.common.KeepAliveC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,7 +40,7 @@ public class MixinDownloadingTerrainScreen extends Screen {
     @Shadow private boolean closeOnNextTick;
     @Shadow private boolean ready;
     @Unique
-    private int viafabricplus_tickCounter;
+    private int viaFabricPlus$tickCounter;
 
     public MixinDownloadingTerrainScreen(Text title) {
         super(title);
@@ -49,9 +49,9 @@ public class MixinDownloadingTerrainScreen extends Screen {
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void injectTick(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_1)) {
-            viafabricplus_tickCounter++;
+            viaFabricPlus$tickCounter++;
 
-            if (viafabricplus_tickCounter % 20 == 0) {
+            if (viaFabricPlus$tickCounter % 20 == 0) {
                 MinecraftClient.getInstance().getNetworkHandler().sendPacket(new KeepAliveC2SPacket(0));
             }
         }

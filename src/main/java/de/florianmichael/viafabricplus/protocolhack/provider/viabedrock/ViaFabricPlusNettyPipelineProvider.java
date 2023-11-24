@@ -18,42 +18,46 @@
 package de.florianmichael.viafabricplus.protocolhack.provider.viabedrock;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.injection.access.IClientConnection;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
+import io.netty.channel.Channel;
+import net.raphimc.viabedrock.netty.AesEncryption;
+import net.raphimc.viabedrock.netty.SnappyCompression;
+import net.raphimc.viabedrock.netty.ZLibCompression;
 import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;
+import net.raphimc.vialoader.netty.VLPipeline;
 
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 public class ViaFabricPlusNettyPipelineProvider extends NettyPipelineProvider {
 
     @Override
     public void enableCompression(UserConnection user, int threshold, int algorithm) {
-        final IClientConnection currentConnection = (IClientConnection) user.getChannel().attr(ProtocolHack.LOCAL_MINECRAFT_CONNECTION).get();
+        final Channel channel = user.getChannel();
 
-        try {
-            switch (algorithm) {
-                case 0 -> currentConnection.viafabricplus_enableZLibCompression();
-                case 1 -> currentConnection.viafabricplus_enableSnappyCompression();
+        if (channel.pipeline().names().contains(ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME)) {
+            throw new IllegalStateException("Compression already enabled");
+        }
 
-                default -> throw new IllegalStateException("Invalid compression algorithm: " + algorithm);
-            }
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
+        switch (algorithm) {
+            case 0 -> channel.pipeline().addBefore("splitter", ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME, new ZLibCompression());
+            case 1 -> channel.pipeline().addBefore("splitter", ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME, new SnappyCompression());
+            default -> throw new IllegalStateException("Invalid compression algorithm: " + algorithm);
         }
     }
 
     @Override
     public void enableEncryption(UserConnection user, SecretKey key) {
-        final IClientConnection currentConnection = (IClientConnection) user.getChannel().attr(ProtocolHack.LOCAL_MINECRAFT_CONNECTION).get();
+        final Channel channel = user.getChannel();
+
+        if (channel.pipeline().names().contains(ViaFabricPlusVLLegacyPipeline.VIABEDROCK_ENCRYPTION_HANDLER_NAME)) {
+            throw new IllegalStateException("Encryption already enabled");
+        }
 
         try {
-            currentConnection.viafabricplus_enableAesGcmEncryption(key);
-        } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException e) {
+            channel.pipeline().addAfter(VLPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, ViaFabricPlusVLLegacyPipeline.VIABEDROCK_ENCRYPTION_HANDLER_NAME, new AesEncryption(key));
+        } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
+
 }

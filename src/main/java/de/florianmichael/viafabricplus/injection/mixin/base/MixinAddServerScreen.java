@@ -17,9 +17,9 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
-import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.screen.common.ForceVersionScreen;
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -42,36 +42,39 @@ public class MixinAddServerScreen extends Screen {
     @Final
     private ServerInfo server;
 
-    @Shadow private TextFieldWidget serverNameField;
-    @Shadow private TextFieldWidget addressField;
+    @Shadow
+    private TextFieldWidget serverNameField;
+
+    @Shadow
+    private TextFieldWidget addressField;
 
     @Unique
-    private String viafabricplus_nameField;
+    private String viaFabricPlus$nameField;
 
     @Unique
-    private String viafabricplus_addressField;
+    private String viaFabricPlus$addressField;
 
     public MixinAddServerScreen(Text title) {
         super(title);
     }
 
     @Inject(method = "init", at = @At("RETURN"))
-    public void injectButton(CallbackInfo ci) {
-        final VersionEnum forcedVersion = ((IServerInfo) server).viafabricplus_forcedVersion();
+    private void injectButton(CallbackInfo ci) {
+        final VersionEnum forcedVersion = ((IServerInfo) server).viaFabricPlus$forcedVersion();
 
-        if (viafabricplus_nameField != null && viafabricplus_addressField != null) {
-            this.serverNameField.setText(viafabricplus_nameField);
-            this.addressField.setText(viafabricplus_addressField);
+        if (viaFabricPlus$nameField != null && viaFabricPlus$addressField != null) {
+            this.serverNameField.setText(viaFabricPlus$nameField);
+            this.addressField.setText(viaFabricPlus$addressField);
 
-            viafabricplus_nameField = null;
-            viafabricplus_addressField = null;
+            viaFabricPlus$nameField = null;
+            viaFabricPlus$addressField = null;
         }
 
         var builder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("misc.viafabricplus.addserverscreenbuttontitle") : Text.literal(forcedVersion.getName()), button -> {
-            viafabricplus_nameField = serverNameField.getText();
-            viafabricplus_addressField = addressField.getText();
+            viaFabricPlus$nameField = serverNameField.getText();
+            viaFabricPlus$addressField = addressField.getText();
 
-            client.setScreen(new ForceVersionScreen(this, version -> ((IServerInfo) server).viafabricplus_forceVersion(version)));
+            client.setScreen(new ForceVersionScreen(this, version -> ((IServerInfo) server).viaFabricPlus$forceVersion(version)));
         });
 
         final int orientation = GeneralSettings.INSTANCE.addServerScreenButtonOrientation.getIndex();

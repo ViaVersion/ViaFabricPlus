@@ -39,7 +39,7 @@ public class BlockStateTranslator {
     private final static UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createFakerUserConnection(null);
 
     public static int translateBlockState1_18(int oldId) {
-        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ViaFabricPlus.NATIVE_VERSION.getVersion(), ProtocolVersion.v1_18_2.getVersion());
+        final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ProtocolHack.NATIVE_VERSION.getVersion(), ProtocolVersion.v1_18_2.getVersion());
         if (protocolPath == null) return oldId;
 
         final PacketByteBuf inputData = new PacketByteBuf(Unpooled.buffer());

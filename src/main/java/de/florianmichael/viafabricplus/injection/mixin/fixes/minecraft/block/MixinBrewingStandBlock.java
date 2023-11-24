@@ -17,8 +17,6 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinBrewingStandBlock {
 
     @Unique
-    private final static VoxelShape viafabricplus_base_shape_v1_12_2 = VoxelShapes.union(
+    private final static VoxelShape viaFabricPlus$shape_r1_12_2 = VoxelShapes.union(
             Block.createCuboidShape(0, 0, 0, 16, 2, 16) /* Base */,
             Block.createCuboidShape(7, 0, 7, 9, 14, 9) /* Stick */
     );
@@ -46,7 +45,7 @@ public class MixinBrewingStandBlock {
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            cir.setReturnValue(viafabricplus_base_shape_v1_12_2);
+            cir.setReturnValue(viaFabricPlus$shape_r1_12_2);
         }
     }
 }
