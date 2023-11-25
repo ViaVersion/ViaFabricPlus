@@ -58,7 +58,6 @@ import java.io.File;
  *  - Blit-jump is not supported in <= 1.8.9 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
  *
  * TODO | Migration v3
- *  - Fix classic login input field (MixinSharedConstants)
  *  - Make recipe fixes dynamic instead of a data dump in java classes
  *  - Make mixin injection methods private
  *  - Make mixins abstract
@@ -67,6 +66,7 @@ import java.io.File;
  *  - Is de.florianmichael.viafabricplus.injection.mixin.jsonwebtoken.* still needed?
  *  - Apply MixinAutoRefillHandler_ItemSlotMonitor only when mod is actually installed
  *  - Make block shapes static
+ *  - Remove information package / system
  */
 public class ViaFabricPlus {
 

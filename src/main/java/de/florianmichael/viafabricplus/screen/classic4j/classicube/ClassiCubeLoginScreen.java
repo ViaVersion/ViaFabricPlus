@@ -21,6 +21,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
+import de.florianmichael.viafabricplus.injection.access.ITextFieldWidget;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.screen.common.ProtocolSelectionScreen;
@@ -65,6 +66,9 @@ public class ClassiCubeLoginScreen extends VFPScreen {
 
         nameField.setMaxLength(Integer.MAX_VALUE);
         passwordField.setMaxLength(Integer.MAX_VALUE);
+
+        ((ITextFieldWidget) nameField).viaFabricPlus$unlockForbiddenCharacters();
+        ((ITextFieldWidget) passwordField).viaFabricPlus$unlockForbiddenCharacters();
 
         nameField.setText(ClassiCubeAccountHandler.INSTANCE.getUsername());
         passwordField.setText(ClassiCubeAccountHandler.INSTANCE.getPassword());

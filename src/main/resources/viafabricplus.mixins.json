@@ -20,6 +20,7 @@
     "base.MixinMultiplayerServerListWidget_ServerEntry",
     "base.MixinOptionsScreen",
     "base.MixinServerInfo",
+    "base.MixinTextFieldWidget",
     "classic4j.MixinCCAuthenticationResponse",
     "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "fixes.authlib.MixinKeyPairResponse",
