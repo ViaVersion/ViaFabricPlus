@@ -1,6 +1,7 @@
 /*
- * This file is part of ViaProxy - https://github.com/RaphiMC/ViaProxy
- * Copyright (C) 2023 RK_01/RaphiMC and contributors
+ * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
+ * Copyright (C) 2021-2023 FlorianMichael/EnZaXD
+ * Copyright (C) 2023      RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.protocols.protocol1_16_2to1_16_1.packets.WorldPackets;
