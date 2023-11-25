@@ -43,6 +43,7 @@ import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.ClientConnection;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
@@ -60,17 +61,17 @@ public class ProtocolHack {
     /**
      * These attribute keys are used to track the main connections of Minecraft and ViaVersion, so that they can be used later during the connection to send packets.
      */
-    public final static AttributeKey<ClientConnection> CLIENT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-clientconnection");
+    public static final AttributeKey<ClientConnection> CLIENT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-clientconnection");
 
     /**
      * This attribute stores the forced version for the current connection (if you set a specific version in the Edit Server screen)
      */
-    public final static AttributeKey<VersionEnum> SERVER_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-serverversion");
+    public static final AttributeKey<VersionEnum> SERVER_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-serverversion");
 
     /**
      * The native version of the client
      */
-    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_20_2;
+    public static final VersionEnum NATIVE_VERSION = VersionEnum.r1_20_2;
 
     /**
      * This field stores the target version that you set in the GUI
@@ -84,7 +85,7 @@ public class ProtocolHack {
      */
     public static void injectViaPipeline(final ClientConnection connection, final Channel channel) {
         final IClientConnection mixinClientConnection = (IClientConnection) connection;
-        final VersionEnum serverVersion = mixinClientConnection.viaFabricPlus$getServerVersion();
+        final VersionEnum serverVersion = mixinClientConnection.viaFabricPlus$getTargetVersion();
 
         if (serverVersion != ProtocolHack.NATIVE_VERSION) {
             channel.attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).set(connection);
@@ -147,7 +148,7 @@ public class ProtocolHack {
      */
     @Deprecated
     public static UserConnection createFakerUserConnection() {
-        return createFakerUserConnection(getMainUserConnection().getChannel());
+        return createFakerUserConnection(getPlayNetworkUserConnection().getChannel());
     }
 
     /**
@@ -169,14 +170,15 @@ public class ProtocolHack {
     }
 
     /**
-     * @return Returns the current ViaVersion UserConnection via the LOCAL_VIA_CONNECTION channel attribute
+     * @return Returns the current UserConnection of the connection to the server, if the player isn't connected to a server it will return null
      */
-    @Deprecated
-    public static UserConnection getMainUserConnection() {
-        final MinecraftClient client = MinecraftClient.getInstance();
-        if (client.getNetworkHandler() == null) return null;
+    public static UserConnection getPlayNetworkUserConnection() {
+        final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
+        if (handler != null) {
+            return ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection();
+        }
 
-        return ((IClientConnection) client.getNetworkHandler().getConnection()).viaFabricPlus$getUserConnection();
+        return null;
     }
 
     /**

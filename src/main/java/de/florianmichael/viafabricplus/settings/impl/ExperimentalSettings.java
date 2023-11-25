@@ -24,7 +24,7 @@ import de.florianmichael.viafabricplus.settings.type.BooleanSetting;
 import net.minecraft.text.Text;
 
 public class ExperimentalSettings extends SettingGroup {
-    public final static ExperimentalSettings INSTANCE = new ExperimentalSettings();
+    public static final ExperimentalSettings INSTANCE = new ExperimentalSettings();
 
     public final BooleanSetting fixChunkBorders = new BooleanSetting(this, Text.translatable("experimental.viafabricplus.chunkborderfix"), true);
     public final BooleanSetting waterMovementEdgeDetection = new BooleanSetting(this, Text.translatable("experimental.viafabricplus.watermovement"), true);

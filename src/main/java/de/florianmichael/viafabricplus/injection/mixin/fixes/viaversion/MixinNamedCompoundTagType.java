@@ -27,10 +27,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = NamedCompoundTagType.class, remap = false)
-public class MixinNamedCompoundTagType {
+public abstract class MixinNamedCompoundTagType {
 
     @Unique
-    private final static TagLimiter viaFabricPlus$tag_limiter = new TagLimiter() {
+    private static final TagLimiter viaFabricPlus$tag_limiter = new TagLimiter() {
         private final int maxBytes = 2097152;
         private int bytes;
 
@@ -65,4 +65,5 @@ public class MixinNamedCompoundTagType {
     private static TagLimiter replaceTagLimiter(int maxBytes, int maxLevels) {
         return viaFabricPlus$tag_limiter;
     }
+
 }

@@ -24,10 +24,10 @@ import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_0;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_1;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.fixes.account.BedrockAccountHandler;
+import de.florianmichael.viafabricplus.fixes.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
-import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
+import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
@@ -55,7 +55,7 @@ import java.net.InetSocketAddress;
 import java.util.UUID;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
-public class MixinConnectScreen_1 {
+public abstract class MixinConnectScreen_1 {
 
     @Final
     @Shadow
@@ -66,32 +66,35 @@ public class MixinConnectScreen_1 {
     ConnectScreen field_2416;
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", ordinal = 0))
-    public String replaceAddress(InetSocketAddress instance) {
+    private String replaceAddress(InetSocketAddress instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17) || ProtocolHack.getTargetVersion() == VersionEnum.bedrockLatest) {
             return field_33737.getAddress();
         }
+
         return instance.getHostName();
     }
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getPort()I"))
-    public int replacePort(InetSocketAddress instance) {
+    private int replacePort(InetSocketAddress instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17) || ProtocolHack.getTargetVersion() == VersionEnum.bedrockLatest) {
             return field_33737.getPort();
         }
+
         return instance.getPort();
     }
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V"))
-    public void spoofUserName(ClientConnection instance, Packet<?> packet) {
+    private void spoofUserName(ClientConnection instance, Packet<?> packet) {
         if (AuthenticationSettings.INSTANCE.spoofUserNameIfUsingClassiCube.getValue() && ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null && ClassiCubeAccountHandler.INSTANCE.getAccount() != null) {
             instance.send(new LoginHelloC2SPacket(ClassiCubeAccountHandler.INSTANCE.getAccount().username(), MinecraftClient.getInstance().getSession().getUuidOrNull()));
             return;
         }
+
         instance.send(packet);
     }
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", shift = At.Shift.BEFORE))
-    public void setupConnectionSessions(CallbackInfo ci) {
+    private void setupConnectionSessions(CallbackInfo ci) {
         final ClientConnection connection = field_2416.connection;
         if (connection == null || connection.channel == null) return;
 
@@ -131,9 +134,9 @@ public class MixinConnectScreen_1 {
 
                 userConnection.put(new ChatSession1_19_1(playerUuid, profile.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature())));
                 if (targetVersion == VersionEnum.r1_19) {
-                    final var legacyKey = ((IPublicKeyData) (Object) publicKeyData).viaFabricPlus$getV1Key();
+                    final var legacyKey = ((ILegacyKeySignatureStorage) (Object) publicKeyData).viafabricplus$getLegacyPublicKeySignature();
                     if (legacyKey != null) {
-                        userConnection.put(new ChatSession1_19_0(playerUuid, profile.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey.array())));
+                        userConnection.put(new ChatSession1_19_0(playerUuid, profile.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey)));
                     } else {
                         ViaFabricPlus.LOGGER.error("Failed to fetch legacy key, can't setup ChatSession");
                     }
@@ -143,4 +146,5 @@ public class MixinConnectScreen_1 {
             }
         }
     }
+
 }

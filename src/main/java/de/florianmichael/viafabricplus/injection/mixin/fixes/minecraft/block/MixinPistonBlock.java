@@ -64,17 +64,14 @@ public abstract class MixinPistonBlock extends FacingBlock {
     @Final
     protected static VoxelShape EXTENDED_EAST_SHAPE;
 
-    @Unique
-    private static final VoxelShape _1_1_SHAPE = VoxelShapes.fullCube();
-
     protected MixinPistonBlock(Settings settings) {
         super(settings);
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_1)) {
-            cir.setReturnValue(_1_1_SHAPE);
+            cir.setReturnValue(VoxelShapes.fullCube());
         }
     }
 

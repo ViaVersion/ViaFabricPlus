@@ -26,9 +26,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = EntityIdRewriter.class, remap = false)
-public class MixinEntityIdRewriter {
+public abstract class MixinEntityIdRewriter {
 
     @Redirect(method = "toClientItem(Lcom/viaversion/viaversion/api/minecraft/item/Item;Z)V", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/minecraft/item/Item;setAmount(I)V"))
     private static void allowNegativeItems(Item instance, int i) {
     }
+
 }

@@ -35,7 +35,7 @@ import org.spongepowered.asm.mixin.Unique;
 public abstract class MixinCarpetBlock extends Block {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_r1_7_10 = Block.createCuboidShape(0.0D, -0.00001D/*0.0D*/, 0.0D, 16.0D, 0.0D, 16.0D);
+    private static final VoxelShape viaFabricPlus$shape_r1_7_10 = Block.createCuboidShape(0.0D, -0.00001D /* 0.0D */, 0.0D, 16.0D, 0.0D, 16.0D);
 
     public MixinCarpetBlock(Settings settings) {
         super(settings);

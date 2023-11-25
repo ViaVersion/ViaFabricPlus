@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import java.util.Map;
 
 @Mixin(ShovelItem.class)
-public class MixinShovelItem {
+public abstract class MixinShovelItem {
 
     @Redirect(method = "useOnBlock",
             at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0),
@@ -43,4 +43,5 @@ public class MixinShovelItem {
             return map.get(grassBlock);
         }
     }
+
 }

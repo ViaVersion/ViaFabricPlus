@@ -35,12 +35,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FireBlock.class)
-public class MixinFireBlock {
+public abstract class MixinFireBlock {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
             cir.setReturnValue(VoxelShapes.empty());
         }
     }
+
 }

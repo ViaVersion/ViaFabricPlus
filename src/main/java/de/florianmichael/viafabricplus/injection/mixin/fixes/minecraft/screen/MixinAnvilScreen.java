@@ -42,7 +42,7 @@ public abstract class MixinAnvilScreen extends ForgingScreen<AnvilScreenHandler>
     }
 
     @Inject(method = "onRenamed", at = @At("HEAD"), cancellable = true)
-    public void changePacketLogic(String name, CallbackInfo ci) {
+    private void changePacketLogic(String name, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4) && !name.isEmpty()) {
             String string = name;
             Slot slot = this.handler.getSlot(0);
@@ -55,4 +55,5 @@ public abstract class MixinAnvilScreen extends ForgingScreen<AnvilScreenHandler>
             ci.cancel();
         }
     }
+
 }

@@ -51,4 +51,5 @@ public abstract class MixinAbstractFenceConnectionHandler {
         if (connects(BlockFace.WEST, getBlockData(user, position.getRelative(BlockFace.WEST)), pre1_12)) states |= 8;
         return states;
     }
+
 }

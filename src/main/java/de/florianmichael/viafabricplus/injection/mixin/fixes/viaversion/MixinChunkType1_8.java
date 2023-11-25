@@ -52,4 +52,5 @@ public abstract class MixinChunkType1_8 {
             return new BaseChunk(chunkX, chunkZ, fullChunk, false, 65535, airSections, new int[256], new ArrayList<>());
         }
     }
+
 }

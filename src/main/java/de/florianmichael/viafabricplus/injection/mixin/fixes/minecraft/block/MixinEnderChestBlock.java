@@ -48,7 +48,7 @@ public abstract class MixinEnderChestBlock extends BlockWithEntity {
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_2)) {
             cir.setReturnValue(VoxelShapes.fullCube());
         }

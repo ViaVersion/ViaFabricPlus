@@ -27,10 +27,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Main.class)
-public class MixinMain {
+public abstract class MixinMain {
 
     @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;initCrashReport()V"))
-    private static void preLoad(CallbackInfo ci) {
-        ViaFabricPlus.INSTANCE.init();
+    private static void bootstrap(CallbackInfo ci) {
+        ViaFabricPlus.INSTANCE.bootstrap();
     }
+
 }

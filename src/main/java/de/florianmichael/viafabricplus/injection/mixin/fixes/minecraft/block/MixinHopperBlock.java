@@ -37,10 +37,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinHopperBlock extends BlockWithEntity {
 
     @Unique
-    private final static VoxelShape viaFabricPlus$inside_shape_r1_12_2 = Block.createCuboidShape(2, 10, 2, 14, 16, 14);
+    private static final VoxelShape viaFabricPlus$inside_shape_r1_12_2 = Block.createCuboidShape(2.0D, 10.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
     @Unique
-    private final static VoxelShape viaFabricPlus$hopper_shape_r1_12_2 = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), viaFabricPlus$inside_shape_r1_12_2, BooleanBiFunction.ONLY_FIRST);
+    private static final VoxelShape viaFabricPlus$hopper_shape_r1_12_2 = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), viaFabricPlus$inside_shape_r1_12_2, BooleanBiFunction.ONLY_FIRST);
 
     @Unique
     private boolean viaFabricPlus$requireOriginalShape;
@@ -50,7 +50,7 @@ public abstract class MixinHopperBlock extends BlockWithEntity {
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    public void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (viaFabricPlus$requireOriginalShape) {
             viaFabricPlus$requireOriginalShape = false;
             return;
@@ -61,7 +61,7 @@ public abstract class MixinHopperBlock extends BlockWithEntity {
     }
 
     @Inject(method = "getRaycastShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetRaycastShape(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> cir) {
+    public void changeRaycastShape(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(viaFabricPlus$inside_shape_r1_12_2);
         }
@@ -69,7 +69,9 @@ public abstract class MixinHopperBlock extends BlockWithEntity {
 
     @Override
     public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+        // Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/45
         viaFabricPlus$requireOriginalShape = true;
         return super.getCullingShape(state, world, pos);
     }
+
 }

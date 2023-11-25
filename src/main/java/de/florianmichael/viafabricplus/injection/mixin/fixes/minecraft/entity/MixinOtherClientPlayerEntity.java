@@ -32,16 +32,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(OtherClientPlayerEntity.class)
-public class MixinOtherClientPlayerEntity extends AbstractClientPlayerEntity {
+public abstract class MixinOtherClientPlayerEntity extends AbstractClientPlayerEntity {
 
     public MixinOtherClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
     }
 
     @Inject(method = "updatePose", at = @At("HEAD"))
-    public void injectUpdatePose(CallbackInfo ci) {
+    private void dontUpdatePose(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             super.updatePose();
         }
     }
+
 }

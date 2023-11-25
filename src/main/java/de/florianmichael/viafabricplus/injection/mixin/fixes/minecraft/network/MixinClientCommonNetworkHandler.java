@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.fabricmc.fabric.impl.networking.payload.PacketByteBufPayload;
 import net.minecraft.client.MinecraftClient;
@@ -69,7 +69,7 @@ public abstract class MixinClientCommonNetworkHandler {
     }
 
     @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientCommonNetworkHandler;send(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
-    public void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
+    private void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
             sendPacket(packet);
             return;
@@ -79,10 +79,11 @@ public abstract class MixinClientCommonNetworkHandler {
     }
 
     @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At("HEAD"), cancellable = true)
-    public void handleSyncTask(CustomPayloadS2CPacket packet, CallbackInfo ci) {
+    private void handleSyncTask(CustomPayloadS2CPacket packet, CallbackInfo ci) {
         if (packet.payload().id().toString().equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof PacketByteBufPayload payload) {
             ClientsideFixes.handleSyncTask(payload.data());
             ci.cancel(); // Cancel the packet, so it doesn't get processed by the client
         }
     }
+
 }

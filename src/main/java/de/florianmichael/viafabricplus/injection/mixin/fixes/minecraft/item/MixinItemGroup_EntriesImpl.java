@@ -33,12 +33,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(targets = "net.minecraft.item.ItemGroup$EntriesImpl")
-public class MixinItemGroup_EntriesImpl {
+public abstract class MixinItemGroup_EntriesImpl {
 
     @Shadow @Final private ItemGroup group;
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isEnabled(Lnet/minecraft/resource/featuretoggle/FeatureSet;)Z"))
-    public boolean removeUnknownItems(Item instance, FeatureSet featureSet) {
+    private boolean removeUnknownItems(Item instance, FeatureSet featureSet) {
         final var index = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
 
         if (index == 2 || MinecraftClient.getInstance().isInSingleplayer()) return instance.isEnabled(featureSet);
@@ -49,4 +49,5 @@ public class MixinItemGroup_EntriesImpl {
         }
         return false;
     }
+
 }

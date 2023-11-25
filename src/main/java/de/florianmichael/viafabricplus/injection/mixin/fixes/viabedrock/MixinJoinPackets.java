@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.viabedrock;
 
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
-import de.florianmichael.viafabricplus.definition.tracker.JoinGameTracker;
+import de.florianmichael.viafabricplus.fixes.tracker.JoinGameTracker;
 import net.raphimc.viabedrock.protocol.packets.JoinPackets;
 import net.raphimc.viabedrock.protocol.types.primitive.LongLEType;
 import net.raphimc.viabedrock.protocol.types.primitive.StringType;
@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = JoinPackets.class, remap = false)
-public class MixinJoinPackets {
+public abstract class MixinJoinPackets {
 
     @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 5))
     private static Object trackWorldSeed(PacketWrapper instance, Type<LongLEType> tType) throws Exception {
@@ -53,4 +53,5 @@ public class MixinJoinPackets {
         instance.user().get(JoinGameTracker.class).setEnchantmentSeed((Integer) enchantmentSeed);
         return enchantmentSeed;
     }
+
 }

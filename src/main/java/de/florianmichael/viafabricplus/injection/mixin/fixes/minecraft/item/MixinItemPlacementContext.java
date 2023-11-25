@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemPlacementContext.class)
-public class MixinItemPlacementContext {
+public abstract class MixinItemPlacementContext {
 
     @Inject(method = "getPlayerLookDirection", at = @At("HEAD"), cancellable = true)
     private void injectGetPlayerLookDirection(CallbackInfoReturnable<Direction> ci) {
@@ -60,4 +60,5 @@ public class MixinItemPlacementContext {
             ci.setReturnValue(player.getHorizontalFacing());
         }
     }
+
 }

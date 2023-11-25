@@ -27,12 +27,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PendingUpdateManager.class)
-public class MixinPendingUpdateManager {
+public abstract class MixinPendingUpdateManager {
 
     @Inject(method = "incrementSequence", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/PendingUpdateManager;pendingSequence:Z", shift = At.Shift.BEFORE), cancellable = true)
-    public void injectIncrementSequence(CallbackInfoReturnable<PendingUpdateManager> cir) {
+    private void injectIncrementSequence(CallbackInfoReturnable<PendingUpdateManager> cir) {
         if (DebugSettings.INSTANCE.disableSequencing.isEnabled()) {
             cir.setReturnValue((PendingUpdateManager) (Object) this);
         }
     }
+
 }

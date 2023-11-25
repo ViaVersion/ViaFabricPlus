@@ -29,8 +29,8 @@ import net.minecraft.text.MutableText;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class ProtocolSyncBooleanSetting extends AbstractSetting<Integer> {
-    public final static int AUTO = 2;
-    public final static int ENABLED = 0;
+    public static final int AUTO = 2;
+    public static final int ENABLED = 0;
 
     private final VersionRange protocolRange;
 

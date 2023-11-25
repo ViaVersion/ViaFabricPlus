@@ -54,7 +54,7 @@ public abstract class MixinItemStack {
     @Shadow @Final @Deprecated private @Nullable Item item;
 
     @Inject(method = "isEmpty", at = @At("HEAD"), cancellable = true)
-    public void dontRecalculateState(CallbackInfoReturnable<Boolean> cir) {
+    private void dontRecalculateState(CallbackInfoReturnable<Boolean> cir) {
         if (MinecraftClient.getInstance() != null && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
             final ItemStack self = (ItemStack) (Object) this;
 
@@ -126,4 +126,5 @@ public abstract class MixinItemStack {
 
         return OptionalDouble.empty();
     }
+
 }

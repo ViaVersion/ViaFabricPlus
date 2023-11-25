@@ -29,10 +29,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(AnimalEntity.class)
-public class MixinAnimalEntity {
+public abstract class MixinAnimalEntity {
 
     @Redirect(method = "interactMob", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isClient:Z"))
-    public boolean redirectInteractMob(World instance) {
+    private boolean redirectInteractMob(World instance) {
         return instance.isClient && ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_15);
     }
+
 }

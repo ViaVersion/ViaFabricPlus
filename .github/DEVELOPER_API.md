@@ -40,7 +40,7 @@ final VersionRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().ge
 #### Creating own settings for the settings screen:
 ```java
 public class ExampleSettingGroup extends SettingGroup {
-    public final static ExampleSettingGroup INSTANCE = new ExampleSettingGroup();
+    public static final ExampleSettingGroup INSTANCE = new ExampleSettingGroup();
     
     public final BooleanSetting test = new BooleanSetting("Test", false);
     

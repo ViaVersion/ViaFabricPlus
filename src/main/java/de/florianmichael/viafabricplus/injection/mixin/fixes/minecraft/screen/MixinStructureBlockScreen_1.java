@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.ingame.StructureBlockScreen$1")
-public class MixinStructureBlockScreen_1 extends TextFieldWidget {
+public abstract class MixinStructureBlockScreen_1 extends TextFieldWidget {
 
     public MixinStructureBlockScreen_1(TextRenderer textRenderer, int x, int y, int width, int height, TextFieldWidget copyFrom, Text text) {
         super(textRenderer, x, y, width, height, copyFrom, text);
@@ -43,4 +43,5 @@ public class MixinStructureBlockScreen_1 extends TextFieldWidget {
             ci.setReturnValue(super.charTyped(chr, keyCode));
         }
     }
+
 }

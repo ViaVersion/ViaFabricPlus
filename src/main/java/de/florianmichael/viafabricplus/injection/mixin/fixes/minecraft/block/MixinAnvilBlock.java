@@ -36,13 +36,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AnvilBlock.class)
-public class MixinAnvilBlock extends FallingBlock {
+public abstract class MixinAnvilBlock extends FallingBlock {
 
     @Unique
-    private final static VoxelShape viaFabricPlus$x_axis_shape_r1_12_2 = Block.createCuboidShape(0, 0, 2, 16, 16, 14);
+    private static final VoxelShape viaFabricPlus$x_axis_shape_r1_12_2 = Block.createCuboidShape(0.0D, 0.0D, 2.0D, 16.0D, 16.0D, 14.0D);
 
     @Unique
-    private final static VoxelShape viaFabricPlus$z_axis_shape_r1_12_2 = Block.createCuboidShape(2, 0, 0, 14, 16, 16);
+    private static final VoxelShape viaFabricPlus$z_axis_shape_r1_12_2 = Block.createCuboidShape(2.0D, 0.0D, 0.0D, 14.0D, 16.0D, 16.0D);
 
     @Shadow
     @Final
@@ -56,11 +56,12 @@ public class MixinAnvilBlock extends FallingBlock {
     private boolean viaFabricPlus$requireOriginalShape;
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    public void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (viaFabricPlus$requireOriginalShape) {
             viaFabricPlus$requireOriginalShape = false;
             return;
         }
+
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(state.get(FACING).getAxis() == Direction.Axis.X ? viaFabricPlus$x_axis_shape_r1_12_2 : viaFabricPlus$z_axis_shape_r1_12_2);
         }
@@ -68,7 +69,10 @@ public class MixinAnvilBlock extends FallingBlock {
 
     @Override
     public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+        // Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/246
+        // MoreCulling is caching the culling shape and doesn't reload it, so we have to force vanilla's shape here.
         viaFabricPlus$requireOriginalShape = true;
         return super.getCullingShape(state, world, pos);
     }
+
 }

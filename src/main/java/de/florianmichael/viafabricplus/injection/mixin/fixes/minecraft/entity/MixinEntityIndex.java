@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Mixin(EntityIndex.class)
-public class MixinEntityIndex<T extends EntityLike> {
+public abstract class MixinEntityIndex<T extends EntityLike> {
 
     @Shadow
     @Final
@@ -54,4 +54,5 @@ public class MixinEntityIndex<T extends EntityLike> {
             cir.setReturnValue(this.idToEntity.size());
         }
     }
+
 }

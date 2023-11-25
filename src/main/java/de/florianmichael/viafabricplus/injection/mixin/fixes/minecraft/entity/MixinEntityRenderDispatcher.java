@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import de.florianmichael.viafabricplus.definition.BoatRenderer_1_8;
+import de.florianmichael.viafabricplus.fixes.BoatRenderer_1_8;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -38,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(EntityRenderDispatcher.class)
-public class MixinEntityRenderDispatcher {
+public abstract class MixinEntityRenderDispatcher {
 
     @Unique
     private BoatRenderer_1_8 viaFabricPlus$boatRenderer;
@@ -55,4 +55,5 @@ public class MixinEntityRenderDispatcher {
     private void onReload(ResourceManager manager, CallbackInfo ci, EntityRendererFactory.Context context) {
         viaFabricPlus$boatRenderer = new BoatRenderer_1_8(context);
     }
+
 }

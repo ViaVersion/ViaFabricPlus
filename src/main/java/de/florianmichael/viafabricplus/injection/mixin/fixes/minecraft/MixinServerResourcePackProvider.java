@@ -43,7 +43,7 @@ import java.util.Locale;
 import java.util.Map;
 
 @Mixin(ServerResourcePackProvider.class)
-public class MixinServerResourcePackProvider {
+public abstract class MixinServerResourcePackProvider {
 
     @Unique
     private File viaFabricPlus$trackedFile;
@@ -68,12 +68,12 @@ public class MixinServerResourcePackProvider {
     }
 
     @Inject(method = "verifyFile", at = @At("HEAD"))
-    public void keepFile(String expectedSha1, File file, CallbackInfoReturnable<Boolean> cir) {
+    private void keepFile(String expectedSha1, File file, CallbackInfoReturnable<Boolean> cir) {
         viaFabricPlus$trackedFile = file;
     }
 
     @Redirect(method = "verifyFile", at = @At(value = "INVOKE", target = "Lcom/google/common/hash/HashCode;toString()Ljava/lang/String;", remap = false))
-    public String revertHashAlgorithm(HashCode instance) {
+    private String revertHashAlgorithm(HashCode instance) {
         try {
             if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
                 //noinspection deprecation
@@ -87,10 +87,11 @@ public class MixinServerResourcePackProvider {
     }
 
     @Redirect(method = "verifyFile", at = @At(value = "INVOKE", target = "Ljava/lang/String;toLowerCase(Ljava/util/Locale;)Ljava/lang/String;"))
-    public String disableIgnoreCase(String instance, Locale locale) {
+    private String disableIgnoreCase(String instance, Locale locale) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return instance;
         }
         return instance.toLowerCase(locale);
     }
+
 }

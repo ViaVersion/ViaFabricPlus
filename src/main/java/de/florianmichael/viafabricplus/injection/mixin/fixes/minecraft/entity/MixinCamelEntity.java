@@ -40,7 +40,7 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
     }
 
     @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/CamelEntity;isBaby()Z", ordinal = 0))
-    public boolean removeIfCase(CamelEntity instance) {
+    private boolean removeBabyCondition(CamelEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             return false;
         }
@@ -48,7 +48,7 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
     }
 
     @Unique
-    public void viaFabricPlus$clamPassengerYaw(final Entity passenger) {
+    private void viaFabricPlus$clamPassengerYaw(final Entity passenger) {
         passenger.setBodyYaw(this.getYaw());
         final float passengerYaw = passenger.getYaw();
 
@@ -76,4 +76,5 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
             viaFabricPlus$clamPassengerYaw(passenger);
         }
     }
+
 }

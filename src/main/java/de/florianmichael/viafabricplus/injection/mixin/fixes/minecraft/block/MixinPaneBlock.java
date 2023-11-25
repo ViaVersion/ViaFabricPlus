@@ -36,62 +36,38 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinPaneBlock extends HorizontalConnectingBlock {
 
     @Unique
-    private VoxelShape[] collisionShapes1_8;
-
-    @Unique
-    private VoxelShape[] boundingShapes1_8;
+    private VoxelShape[] viaFabricPlus$shape_r1_8;
 
     protected MixinPaneBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Settings settings) {
         super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void initShapes(Settings settings, CallbackInfo ci) {
-        this.collisionShapes1_8 = this.createShapes1_8(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
-        this.boundingShapes1_8 = this.createShapes1_8(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
-    }
+    private void initShapes1_8(Settings settings, CallbackInfo ci) {
+        final float f = 7.0F;
+        final float g = 9.0F;
+        final float h = 7.0F;
+        final float i = 9.0F;
 
-    @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            return this.boundingShapes1_8[this.getShapeIndex(state)];
-        }
+        final VoxelShape baseShape = Block.createCuboidShape(f, 0.0, f, g, (float) 16.0, g);
+        final VoxelShape northShape = Block.createCuboidShape(h, (float) 0.0, 0.0, i, (float) 16.0, i);
+        final VoxelShape southShape = Block.createCuboidShape(h, (float) 0.0, h, i, (float) 16.0, 16.0);
+        final VoxelShape westShape = Block.createCuboidShape(0.0, (float) 0.0, h, i, (float) 16.0, i);
+        final VoxelShape eastShape = Block.createCuboidShape(h, (float) 0.0, h, 16.0, (float) 16.0, i);
 
-        return super.getOutlineShape(state, world, pos, context);
-    }
-
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            return this.collisionShapes1_8[this.getShapeIndex(state)];
-        }
-
-        return super.getCollisionShape(state, world, pos, context);
-    }
-
-    @Unique
-    private VoxelShape[] createShapes1_8(float radius1, float radius2, float height1, float offset2, float height2) {
-        final float f = 8.0F - radius1;
-        final float g = 8.0F + radius1;
-        final float h = 8.0F - radius2;
-        final float i = 8.0F + radius2;
-        final VoxelShape baseShape = Block.createCuboidShape(f, 0.0, f, g, height1, g);
-        final VoxelShape northShape = Block.createCuboidShape(h, offset2, 0.0, i, height2, i);
-        final VoxelShape southShape = Block.createCuboidShape(h, offset2, h, i, height2, 16.0);
-        final VoxelShape westShape = Block.createCuboidShape(0.0, offset2, h, i, height2, i);
-        final VoxelShape eastShape = Block.createCuboidShape(h, offset2, h, 16.0, height2, i);
         final VoxelShape northEastCornerShape = VoxelShapes.union(northShape, eastShape);
         final VoxelShape southWestCornerShape = VoxelShapes.union(southShape, westShape);
-        final VoxelShape[] voxelShapes = new VoxelShape[]{
+
+        viaFabricPlus$shape_r1_8 = new VoxelShape[] {
                 VoxelShapes.empty(),
-                Block.createCuboidShape(h, offset2, h + 1, i, height2, 16.0D), // south
-                Block.createCuboidShape(0.0D, offset2, h, i - 1, height2, i), // west
+                Block.createCuboidShape(h, (float) 0.0, h + 1, i, (float) 16.0, 16.0D), // south
+                Block.createCuboidShape(0.0D, (float) 0.0, h, i - 1, (float) 16.0, i), // west
                 southWestCornerShape,
-                Block.createCuboidShape(h, offset2, 0.0D, i, height2, i - 1), // north
+                Block.createCuboidShape(h, (float) 0.0, 0.0D, i, (float) 16.0, i - 1), // north
                 VoxelShapes.union(southShape, northShape),
                 VoxelShapes.union(westShape, northShape),
                 VoxelShapes.union(southWestCornerShape, northShape),
-                Block.createCuboidShape(h + 1, offset2, h, 16.0D, height2, i), // east
+                Block.createCuboidShape(h + 1, (float) 0.0, h, 16.0D, (float) 16.0, i), // east
                 VoxelShapes.union(southShape, eastShape),
                 VoxelShapes.union(westShape, eastShape),
                 VoxelShapes.union(southWestCornerShape, eastShape),
@@ -103,10 +79,26 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock {
 
         for (int j = 0; j < 16; ++j) {
             if (j == 1 || j == 2 || j == 4 || j == 8) continue;
-            voxelShapes[j] = VoxelShapes.union(baseShape, voxelShapes[j]);
+            viaFabricPlus$shape_r1_8[j] = VoxelShapes.union(baseShape, viaFabricPlus$shape_r1_8[j]);
+        }
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            return this.viaFabricPlus$shape_r1_8[this.getShapeIndex(state)];
         }
 
-        return voxelShapes;
+        return super.getOutlineShape(state, world, pos, context);
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            return this.viaFabricPlus$shape_r1_8[this.getShapeIndex(state)];
+        }
+
+        return super.getCollisionShape(state, world, pos, context);
     }
 
 }

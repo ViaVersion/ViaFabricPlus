@@ -63,7 +63,7 @@ public abstract class MixinMinecraftClient {
     @WrapWithCondition(method = "doItemUse",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactItem(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;resetEquipProgress(Lnet/minecraft/util/Hand;)V", ordinal = 0))
-    public boolean removeEquipProgressReset(HeldItemRenderer instance, Hand hand) {
+    private boolean removeEquipProgressReset(HeldItemRenderer instance, Hand hand) {
         return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_8) || !(player.getStackInHand(hand).getItem() instanceof SwordItem);
     }
 
@@ -79,7 +79,7 @@ public abstract class MixinMinecraftClient {
     }
 
     @ModifyExpressionValue(method = "handleBlockBreaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
-    public boolean allowBlockBreakAndItemUsageAtTheSameTime(boolean original) {
+    private boolean allowBlockBreakAndItemUsageAtTheSameTime(boolean original) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
             return false;
         }
@@ -87,7 +87,7 @@ public abstract class MixinMinecraftClient {
     }
 
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 1))
-    public int unwrapOperation(MinecraftClient instance) {
+    private int unwrapOperation(MinecraftClient instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 0;
         }
@@ -95,7 +95,7 @@ public abstract class MixinMinecraftClient {
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;handleInputEvents()V", shift = At.Shift.BEFORE))
-    public void updateCooldown(CallbackInfo ci) {
+    private void updateCooldown(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             if (this.attackCooldown > 0) {
                 --this.attackCooldown;
@@ -112,7 +112,7 @@ public abstract class MixinMinecraftClient {
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
             ordinal = 4, shift = At.Shift.BEFORE))
-    public void injectTick(CallbackInfo ci) {
+    private void injectTick(CallbackInfo ci) {
         if (!DebugSettings.INSTANCE.executeInputsInSync.isEnabled()) {
             return;
         }
@@ -128,7 +128,7 @@ public abstract class MixinMinecraftClient {
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasRidingInventory()Z"))
     private void onInventoryKeyPressed(CallbackInfo ci) {
         if (getNetworkHandler() != null && DebugSettings.INSTANCE.sendOpenInventoryPacket.isEnabled()) {
-            final UserConnection userConnection = ProtocolHack.getMainUserConnection();
+            final UserConnection userConnection = ProtocolHack.getPlayNetworkUserConnection();
 
             if (userConnection != null && userConnection.getProtocolInfo().getPipeline().contains(Protocol1_12To1_11_1.class)) {
                 final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, userConnection);

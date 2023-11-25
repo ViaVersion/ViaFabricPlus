@@ -20,25 +20,23 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.authlib;
 
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
-import de.florianmichael.viafabricplus.injection.access.IKeyPairResponse;
+import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.nio.ByteBuffer;
-
 @Mixin(value = KeyPairResponse.class, remap = false)
-public class MixinKeyPairResponse implements IKeyPairResponse {
+public abstract class MixinKeyPairResponse implements ILegacyKeySignatureStorage {
 
     @Unique
-    private ByteBuffer viaFabricPlus$legacyKeySignature;
+    private byte[] viaFabricPlus$legacyKeySignature;
 
     @Override
-    public ByteBuffer viafabricplus$getLegacyPublicKeySignature() {
+    public byte[] viafabricplus$getLegacyPublicKeySignature() {
         return this.viaFabricPlus$legacyKeySignature;
     }
 
     @Override
-    public void viafabricplus$setLegacyPublicKeySignature(ByteBuffer signature) {
+    public void viafabricplus$setLegacyPublicKeySignature(byte[] signature) {
         this.viaFabricPlus$legacyKeySignature = signature;
     }
 }

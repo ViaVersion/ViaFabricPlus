@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Camera.class)
-public class MixinCamera {
+public abstract class MixinCamera {
 
     @Shadow
     private float cameraY;
@@ -43,14 +43,14 @@ public class MixinCamera {
     private Entity focusedEntity;
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setPos(DDD)V", shift = At.Shift.BEFORE))
-    public void onUpdateHeight(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
+    private void onUpdateHeight(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
         if (!DebugSettings.INSTANCE.replaceSneaking.isEnabled() && DebugSettings.INSTANCE.sneakInstant.isEnabled()) {
             cameraY = lastCameraY = focusedEntity.getStandingEyeHeight();
         }
     }
 
     @Inject(method = "updateEyeHeight", at = @At(value = "HEAD"), cancellable = true)
-    public void onUpdateEyeHeight(CallbackInfo ci) {
+    private void onUpdateEyeHeight(CallbackInfo ci) {
         if (this.focusedEntity == null) return;
 
         if (DebugSettings.INSTANCE.replaceSneaking.isEnabled()) {

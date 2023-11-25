@@ -22,10 +22,11 @@ package de.florianmichael.viafabricplus.settings.impl;
 import de.florianmichael.viafabricplus.settings.SettingGroup;
 import de.florianmichael.viafabricplus.settings.type.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.type.ModeSetting;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
 public class GeneralSettings extends SettingGroup {
-    public final static GeneralSettings INSTANCE = new GeneralSettings();
+    public static final GeneralSettings INSTANCE = new GeneralSettings();
 
     public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.multiplayerscreenbutton"), 1,
             Text.translatable("misc.viafabricplus.lt"),
@@ -57,5 +58,15 @@ public class GeneralSettings extends SettingGroup {
 
     public GeneralSettings() {
         super(Text.translatable("settings.viafabricplus.general"));
+    }
+
+    public static ButtonWidget.Builder withOrientation(final ButtonWidget.Builder builder, final int orientationIndex, final int width, final int height) {
+        return switch (orientationIndex) {
+            case 0 -> builder.position(5, 5);
+            case 1 -> builder.position(width - 98 - 5, 5);
+            case 2 -> builder.position(5, height - 20 - 5);
+            case 3 -> builder.position(width - 98 - 5, height - 20 - 5);
+            default -> builder;
+        };
     }
 }

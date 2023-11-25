@@ -49,4 +49,5 @@ public abstract class MixinGlassConnectionHandler extends AbstractFenceConnectio
         ProtocolInfo protocolInfo = user.getProtocolInfo();
         return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && protocolInfo.getServerProtocolVersion() != -1 ? 0xF : states;
     }
+
 }

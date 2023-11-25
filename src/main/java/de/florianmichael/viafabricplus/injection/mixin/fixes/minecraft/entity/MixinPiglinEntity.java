@@ -37,9 +37,10 @@ public abstract class MixinPiglinEntity {
     @Shadow public abstract boolean isBaby();
 
     @Inject(method = "getActiveEyeHeight", at = @At("HEAD"), cancellable = true)
-    public void changeEyeHeight(EntityPose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
+    private void changeEyeHeight(EntityPose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             cir.setReturnValue(this.isBaby() ? 0.93F : 1.74F);
         }
     }
+
 }

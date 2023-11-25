@@ -21,14 +21,13 @@ package de.florianmichael.viafabricplus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
-import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.definition.classic.CustomClassicProtocolExtensions;
-import de.florianmichael.viafabricplus.definition.classic.screen.ClassicItemSelectionScreen;
-import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
+import de.florianmichael.viafabricplus.fixes.account.BedrockAccountHandler;
+import de.florianmichael.viafabricplus.fixes.account.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.fixes.classic.screen.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.event.PreLoadCallback;
-import de.florianmichael.viafabricplus.information.InformationSystem;
 import de.florianmichael.viafabricplus.mappings.CharacterMappings;
 import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
@@ -61,27 +60,24 @@ import java.io.File;
  *
  * TODO | Migration v3
  *  - Make recipe fixes dynamic instead of a data dump in java classes
- *  - Make mixin injection methods private
- *  - Make mixins abstract
  *  - Rename all methods
  *  - Use ViaProxy config patch for some clientside fixes options (Remove ViaFabricPlusVLViaConfig)
- *  - Is de.florianmichael.viafabricplus.injection.mixin.jsonwebtoken.* still needed?
- *  - Apply MixinAutoRefillHandler_ItemSlotMonitor only when mod is actually installed
- *  - Make block shapes static
- *  - Remove information package / system
+ *  - Re-add Debug Hud information list
+ *  - Recode config save base to support singleton Jsons
+ *  - Rebase fixes package / change all packages
+ *  - Fix auto detect to not be a huge mess
  */
 public class ViaFabricPlus {
 
-    public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public final static Logger LOGGER = LogManager.getLogger("ViaFabricPlus");
-    public final static File RUN_DIRECTORY = new File("ViaFabricPlus");
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Logger LOGGER = LogManager.getLogger("ViaFabricPlus");
+    public static final File RUN_DIRECTORY = new File("ViaFabricPlus");
 
-    public final static ViaFabricPlus INSTANCE = new ViaFabricPlus();
+    public static final ViaFabricPlus INSTANCE = new ViaFabricPlus();
 
     private final SettingsSystem settingsSystem = new SettingsSystem();
-    private final InformationSystem informationSystem = new InformationSystem();
 
-    public void init() {
+    public void bootstrap() {
         if (!RUN_DIRECTORY.exists()) {
             RUN_DIRECTORY.mkdir();
         }
@@ -108,13 +104,12 @@ public class ViaFabricPlus {
         ProtocolHack.init();
 
         // Stuff which requires Minecraft to be initialized
-        FinishMinecraftLoadCallback.EVENT.register(() -> {
+        PostGameLoadCallback.EVENT.register(() -> {
             // Has to be loaded before the settings system in order to catch the ChangeProtocolVersionCallback call
             ClassicItemSelectionScreen.create();
 
             // General settings
             settingsSystem.init();
-            informationSystem.init();
 
             // Version related mappings
             PackFormatsMappings.load();
@@ -124,9 +119,5 @@ public class ViaFabricPlus {
 
     public SettingsSystem getSettingsSystem() {
         return settingsSystem;
-    }
-
-    public InformationSystem getInformationSystem() {
-        return informationSystem;
     }
 }

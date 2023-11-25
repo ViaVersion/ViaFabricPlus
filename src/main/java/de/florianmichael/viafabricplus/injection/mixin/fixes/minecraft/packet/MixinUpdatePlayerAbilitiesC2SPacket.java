@@ -30,10 +30,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(UpdatePlayerAbilitiesC2SPacket.class)
-public class MixinUpdatePlayerAbilitiesC2SPacket {
+public abstract class MixinUpdatePlayerAbilitiesC2SPacket {
 
     @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/PacketByteBuf;writeByte(I)Lnet/minecraft/network/PacketByteBuf;"))
-    public PacketByteBuf implementFlags(PacketByteBuf instance, int value) {
+    private PacketByteBuf implementFlags(PacketByteBuf instance, int value) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
             final PlayerAbilities playerAbilities = MinecraftClient.getInstance().player.getAbilities();
 
@@ -44,4 +44,5 @@ public class MixinUpdatePlayerAbilitiesC2SPacket {
 
         return instance.writeByte(value);
     }
+
 }

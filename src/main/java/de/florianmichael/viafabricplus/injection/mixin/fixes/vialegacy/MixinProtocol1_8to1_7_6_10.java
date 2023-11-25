@@ -25,7 +25,7 @@ import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_8.ClientboundPackets1_8;
 import com.viaversion.viaversion.protocols.protocol1_8.ServerboundPackets1_8;
-import de.florianmichael.viafabricplus.definition.tracker.TeleportTracker;
+import de.florianmichael.viafabricplus.fixes.tracker.TeleportTracker;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_6_10to1_7_2_5.ClientboundPackets1_7_2;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_6_10to1_7_2_5.ServerboundPackets1_7_2;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.Protocol1_8to1_7_6_10;
@@ -35,10 +35,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = Protocol1_8to1_7_6_10.class, remap = false)
-public class MixinProtocol1_8to1_7_6_10 extends AbstractProtocol<ClientboundPackets1_7_2, ClientboundPackets1_8, ServerboundPackets1_7_2, ServerboundPackets1_8> {
+public abstract class MixinProtocol1_8to1_7_6_10 extends AbstractProtocol<ClientboundPackets1_7_2, ClientboundPackets1_8, ServerboundPackets1_7_2, ServerboundPackets1_8> {
 
     @Inject(method = "registerPackets", at = @At("RETURN"))
-    public void addTeleportTracker(CallbackInfo ci) {
+    private void addTeleportTracker(CallbackInfo ci) {
         this.registerClientbound(ClientboundPackets1_7_2.PLAYER_POSITION, ClientboundPackets1_8.PLAYER_POSITION, new PacketHandlers() {
             @Override
             public void register() {
@@ -83,7 +83,8 @@ public class MixinProtocol1_8to1_7_6_10 extends AbstractProtocol<ClientboundPack
     }
 
     @Inject(method = "init", at = @At("RETURN"))
-    public void initPipeline(UserConnection userConnection, CallbackInfo ci) {
+    private void initPipeline(UserConnection userConnection, CallbackInfo ci) {
         userConnection.put(new TeleportTracker(userConnection));
     }
+
 }

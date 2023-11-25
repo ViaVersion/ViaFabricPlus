@@ -24,7 +24,7 @@ import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.fixes.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.screen.common.ProtocolSelectionScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -33,7 +33,7 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 
 public class ClassiCubeMFAScreen extends VFPScreen {
-    public final static ClassiCubeMFAScreen INSTANCE = new ClassiCubeMFAScreen();
+    public static final ClassiCubeMFAScreen INSTANCE = new ClassiCubeMFAScreen();
 
     public ClassiCubeMFAScreen() {
         super("ClassiCube MFA", false);

@@ -42,4 +42,5 @@ public abstract class MixinChatItemRewriter {
         }
         return Pattern.compile("$^").matcher(input);
     }
+
 }

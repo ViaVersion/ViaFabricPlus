@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ScreenHandler.class)
-public class MixinScreenHandler implements IScreenHandler {
+public abstract class MixinScreenHandler implements IScreenHandler {
 
     @Unique
     private short viaFabricPlus$lastActionId = 0;
@@ -48,4 +48,5 @@ public class MixinScreenHandler implements IScreenHandler {
     public short viaFabricPlus$getAndIncrementLastActionId() {
         return ++viaFabricPlus$lastActionId;
     }
+
 }

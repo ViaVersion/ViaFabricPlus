@@ -33,15 +33,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Screen.class)
-public class MixinScreen {
+public abstract class MixinScreen {
 
     @Shadow @Nullable protected MinecraftClient client;
 
     @Inject(method = "handleTextClick", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", shift = At.Shift.BEFORE, ordinal = 1), cancellable = true)
-    public void allowRunCommandAction(Style style, CallbackInfoReturnable<Boolean> cir) {
+    private void allowRunCommandAction(Style style, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19)) {
             this.client.player.networkHandler.sendChatMessage(SharedConstants.stripInvalidChars(style.getClickEvent().getValue()));
             cir.setReturnValue(true);
         }
     }
+
 }

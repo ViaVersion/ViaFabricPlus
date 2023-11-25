@@ -31,12 +31,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AxeItem.class)
-public class MixinAxeItem {
+public abstract class MixinAxeItem {
 
     @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
-    public void injectUseOnBlock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
+    private void alwaysPassInteraction(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(ActionResult.PASS);
         }
     }
+
 }

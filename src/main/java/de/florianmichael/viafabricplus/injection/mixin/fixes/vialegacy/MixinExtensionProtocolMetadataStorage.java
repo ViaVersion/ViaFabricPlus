@@ -33,12 +33,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.EnumMap;
 
 @Mixin(value = ExtensionProtocolMetadataStorage.class, remap = false)
-public class MixinExtensionProtocolMetadataStorage implements IExtensionProtocolMetadataStorage {
+public abstract class MixinExtensionProtocolMetadataStorage implements IExtensionProtocolMetadataStorage {
 
     @Shadow @Final private EnumMap<ClassicProtocolExtension, Integer> serverExtensions;
 
     @Inject(method = "addServerExtension", at = @At("RETURN"))
-    public void updateChatLengthDefinition(ClassicProtocolExtension extension, int version, CallbackInfo ci) {
+    private void updateChatLengthDefinition(ClassicProtocolExtension extension, int version, CallbackInfo ci) {
         LoadClassicProtocolExtensionCallback.EVENT.invoker().onLoadClassicProtocolExtension(extension);
     }
 

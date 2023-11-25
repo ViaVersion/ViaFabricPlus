@@ -29,12 +29,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemEntity.class)
-public class MixinItemEntity {
+public abstract class MixinItemEntity {
 
     @Inject(method = "applyWaterBuoyancy", at = @At("HEAD"), cancellable = true)
-    public void injectApplyWaterBuoyancy(CallbackInfo ci) {
+    private void dontApplyWaterBuoyancy(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             ci.cancel();
         }
     }
+
 }

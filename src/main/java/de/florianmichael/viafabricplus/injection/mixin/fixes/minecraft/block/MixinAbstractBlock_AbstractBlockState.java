@@ -57,7 +57,7 @@ public abstract class MixinAbstractBlock_AbstractBlockState {
     }
 
     @Inject(method = "getHardness", at = @At("RETURN"), cancellable = true)
-    public void changeHardness(BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
+    private void changeHardness(BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
         final Block block = this.getBlock();
         if (block.equals(Blocks.OBSIDIAN)) {
             if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
@@ -79,4 +79,5 @@ public abstract class MixinAbstractBlock_AbstractBlockState {
             }
         }
     }
+
 }

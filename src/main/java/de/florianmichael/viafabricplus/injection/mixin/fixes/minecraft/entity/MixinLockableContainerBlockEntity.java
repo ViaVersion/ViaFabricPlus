@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(LockableContainerBlockEntity.class)
-public class MixinLockableContainerBlockEntity {
+public abstract class MixinLockableContainerBlockEntity {
 
     /*
     Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/223
@@ -45,7 +45,7 @@ public class MixinLockableContainerBlockEntity {
      */
 
     @WrapOperation(method = "readNbt", at = @At(value = "INVOKE", target = "Lnet/minecraft/text/Text$Serializer;fromJson(Ljava/lang/String;)Lnet/minecraft/text/MutableText;"))
-    public MutableText allowInvalidJson(String json, Operation<MutableText> operation) {
+    private MutableText allowInvalidJson(String json, Operation<MutableText> operation) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             try {
                 return operation.call(json);
@@ -56,4 +56,5 @@ public class MixinLockableContainerBlockEntity {
 
         return operation.call(json);
     }
+
 }

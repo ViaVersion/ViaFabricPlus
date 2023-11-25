@@ -26,7 +26,7 @@ import com.viaversion.viaversion.protocols.protocol1_14_4to1_14_3.ClientboundPac
 import com.viaversion.viaversion.protocols.protocol1_15to1_14_4.Protocol1_15To1_14_4;
 import com.viaversion.viaversion.protocols.protocol1_15to1_14_4.metadata.MetadataRewriter1_15To1_14_4;
 import com.viaversion.viaversion.rewriter.EntityRewriter;
-import de.florianmichael.viafabricplus.definition.tracker.WolfHealthTracker;
+import de.florianmichael.viafabricplus.fixes.tracker.WolfHealthTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -43,7 +43,8 @@ public abstract class MixinMetadataRewriter1_15To1_14_4 extends EntityRewriter<C
     }
 
     @Inject(method = "handleMetadata", at = @At(value = "INVOKE", target = "Ljava/util/List;remove(Ljava/lang/Object;)Z", shift = At.Shift.BEFORE), remap = false)
-    public void trackHealth(int entityId, EntityType type, Metadata metadata, List<Metadata> metadatas, UserConnection connection, CallbackInfo ci) {
+    private void trackHealth(int entityId, EntityType type, Metadata metadata, List<Metadata> metadatas, UserConnection connection, CallbackInfo ci) {
         WolfHealthTracker.get().getHealthDataMap().put(entityId, (Float) metadata.getValue());
     }
+
 }

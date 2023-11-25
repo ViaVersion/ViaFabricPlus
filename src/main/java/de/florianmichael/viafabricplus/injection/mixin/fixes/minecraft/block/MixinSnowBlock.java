@@ -38,28 +38,30 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SnowBlock.class)
-public class MixinSnowBlock {
+public abstract class MixinSnowBlock {
 
     @Unique
-    private final static VoxelShape[] viaFabricPlus$layers_to_shape_r1_12_2 = new VoxelShape[]{
-            Block.createCuboidShape(0, -0.00001 /* 0D */, 0, 16, 0, 16),
-            Block.createCuboidShape(0, 0, 0, 16, 2, 16),
-            Block.createCuboidShape(0, 0, 0, 16, 4, 16),
-            Block.createCuboidShape(0, 0, 0, 16, 6, 16),
-            Block.createCuboidShape(0, 0, 0, 16, 8, 16),
-            Block.createCuboidShape(0, 0, 0, 16, 10, 16),
-            Block.createCuboidShape(0, 0, 0, 16, 12, 16),
-            Block.createCuboidShape(0, 0, 0, 16, 14, 16),
-            Block.createCuboidShape(0, 0, 0, 16, 16, 16)
+    private static final VoxelShape[] viaFabricPlus$layers_to_shape_r1_12_2 = new VoxelShape[]{
+            Block.createCuboidShape(0.0D, -0.00001 /* 0.0D */, 0.0D, 16.0D, 0.0D, 16.0D),
+            Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
+            Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D),
+            Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
+            Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D),
+            Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D),
+            Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D),
+            Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D),
+            Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)
     };
+
     @Shadow
     @Final
     public static IntProperty LAYERS;
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(viaFabricPlus$layers_to_shape_r1_12_2[state.get(LAYERS) - 1]);
         }
     }
+
 }

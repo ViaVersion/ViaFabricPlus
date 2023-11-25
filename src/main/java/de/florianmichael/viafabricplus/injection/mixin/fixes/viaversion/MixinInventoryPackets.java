@@ -29,8 +29,8 @@ import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.ClientboundPackets1_14;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.packets.InventoryPackets;
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
-import de.florianmichael.viafabricplus.definition.TripleChestHandler1_13_2;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
+import de.florianmichael.viafabricplus.fixes.TripleChestHandler1_13_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.Unpooled;
 import net.minecraft.SharedConstants;
@@ -45,7 +45,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 @Mixin(value = InventoryPackets.class, remap = false)
-public class MixinInventoryPackets {
+public abstract class MixinInventoryPackets {
 
     @Inject(method = "lambda$registerPackets$0", at = @At(value = "INVOKE", target = "Ljava/util/logging/Logger;warning(Ljava/lang/String;)V"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private static void supportCustomSlots(PacketWrapper wrapper, CallbackInfo ci, Short windowId, String type, JsonElement title, Short slots, int typeId) {
@@ -80,4 +80,5 @@ public class MixinInventoryPackets {
             ci.cancel();
         }
     }
+
 }

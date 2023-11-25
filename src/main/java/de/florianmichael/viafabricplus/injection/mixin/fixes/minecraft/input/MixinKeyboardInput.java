@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(KeyboardInput.class)
-public class MixinKeyboardInput extends Input {
+public abstract class MixinKeyboardInput extends Input {
 
     @ModifyVariable(method = "tick", at = @At(value = "LOAD", ordinal = 0), argsOnly = true)
     private boolean injectTick(boolean slowDown) {
@@ -41,4 +41,5 @@ public class MixinKeyboardInput extends Input {
         }
         return slowDown;
     }
+
 }

@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
@@ -34,23 +34,24 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ChatScreen.class)
-public class MixinChatScreen {
+public abstract class MixinChatScreen {
 
     @Shadow protected TextFieldWidget chatField;
 
     @Inject(method = "init", at = @At("RETURN"))
-    public void changeChatLength(CallbackInfo ci) {
+    private void changeChatLength(CallbackInfo ci) {
         if (!MinecraftClient.getInstance().isInSingleplayer()) {
             this.chatField.setMaxLength(ClientsideFixes.getCurrentChatLimit());
         }
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;getIndicatorAt(DD)Lnet/minecraft/client/gui/hud/MessageIndicator;"))
-    public MessageIndicator removeIndicator(ChatHud instance, double mouseX, double mouseY) {
+    private MessageIndicator removeIndicator(ChatHud instance, double mouseX, double mouseY) {
         if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
             return null;
         }
 
         return instance.getIndicatorAt(mouseX, mouseY);
     }
+
 }

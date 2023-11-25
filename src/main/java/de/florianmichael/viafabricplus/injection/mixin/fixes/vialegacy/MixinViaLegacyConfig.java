@@ -27,10 +27,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ViaLegacyConfig.class, remap = false)
-public class MixinViaLegacyConfig {
+public abstract class MixinViaLegacyConfig {
 
     @Inject(method = "isLegacySkinLoading", at = @At("HEAD"), cancellable = true)
     public void overwriteValue(CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(AuthenticationSettings.INSTANCE.allowViaLegacyToLoadSkinsInLegacyVersions.getValue());
     }
+
 }

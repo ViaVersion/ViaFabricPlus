@@ -62,29 +62,29 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
     protected static VoxelShape EAST_HEAD_SHAPE;
 
     @Unique
-    private static final VoxelShape _1_8_UP_ARM_SHAPE = Block.createCuboidShape(6.0, 0.0, 6.0, 10.0, 12.0, 10.0);
+    private static final VoxelShape viaFabricPlus$up_arm_shape_r1_8_x = Block.createCuboidShape(6.0, 0.0, 6.0, 10.0, 12.0, 10.0);
 
     @Unique
-    private static final VoxelShape _1_8_DOWN_ARM_SHAPE = Block.createCuboidShape(6.0, 4.0, 6.0, 10.0, 16.0, 10.0);
+    private static final VoxelShape viaFabricPlus$down_arm_shape_r1_8_x = Block.createCuboidShape(6.0, 4.0, 6.0, 10.0, 16.0, 10.0);
 
     @Unique
-    private static final VoxelShape _1_8_SOUTH_ARM_SHAPE = Block.createCuboidShape(4.0, 6.0, 0.0, 12.0, 10.0, 12.0);
+    private static final VoxelShape viaFabricPlus$south_arm_shape_r1_8_x = Block.createCuboidShape(4.0, 6.0, 0.0, 12.0, 10.0, 12.0);
 
     @Unique
-    private static final VoxelShape _1_8_NORTH_ARM_SHAPE = Block.createCuboidShape(4.0, 6.0, 4.0, 12.0, 10.0, 16.0);
+    private static final VoxelShape viaFabricPlus$north_arm_shape_r1_8_x = Block.createCuboidShape(4.0, 6.0, 4.0, 12.0, 10.0, 16.0);
 
     @Unique
-    private static final VoxelShape _1_8_EAST_ARM_SHAPE = Block.createCuboidShape(0.0, 6.0, 4.0, 12.0, 10.0, 12.0);
+    private static final VoxelShape viaFabricPlus$east_arm_shape_r1_8_x = Block.createCuboidShape(0.0, 6.0, 4.0, 12.0, 10.0, 12.0);
 
     @Unique
-    private static final VoxelShape _1_8_WEST_ARM_SHAPE = Block.createCuboidShape(6.0, 4.0, 4.0, 10.0, 12.0, 16.0);
+    private static final VoxelShape viaFabricPlus$west_arm_shape_r1_8_x = Block.createCuboidShape(6.0, 4.0, 4.0, 10.0, 12.0, 16.0);
 
     protected MixinPistonHeadBlock(Settings settings) {
         super(settings);
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(switch (state.get(PistonHeadBlock.FACING)) {
                 case DOWN -> DOWN_HEAD_SHAPE;
@@ -101,12 +101,12 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return switch (state.get(PistonHeadBlock.FACING)) {
-                case DOWN -> VoxelShapes.union(DOWN_HEAD_SHAPE, _1_8_DOWN_ARM_SHAPE);
-                case UP -> VoxelShapes.union(UP_HEAD_SHAPE, _1_8_UP_ARM_SHAPE);
-                case NORTH -> VoxelShapes.union(NORTH_HEAD_SHAPE, _1_8_NORTH_ARM_SHAPE);
-                case SOUTH -> VoxelShapes.union(SOUTH_HEAD_SHAPE, _1_8_SOUTH_ARM_SHAPE);
-                case WEST -> VoxelShapes.union(WEST_HEAD_SHAPE, _1_8_WEST_ARM_SHAPE);
-                case EAST -> VoxelShapes.union(EAST_HEAD_SHAPE, _1_8_EAST_ARM_SHAPE);
+                case DOWN -> VoxelShapes.union(DOWN_HEAD_SHAPE, viaFabricPlus$down_arm_shape_r1_8_x);
+                case UP -> VoxelShapes.union(UP_HEAD_SHAPE, viaFabricPlus$up_arm_shape_r1_8_x);
+                case NORTH -> VoxelShapes.union(NORTH_HEAD_SHAPE, viaFabricPlus$north_arm_shape_r1_8_x);
+                case SOUTH -> VoxelShapes.union(SOUTH_HEAD_SHAPE, viaFabricPlus$south_arm_shape_r1_8_x);
+                case WEST -> VoxelShapes.union(WEST_HEAD_SHAPE, viaFabricPlus$west_arm_shape_r1_8_x);
+                case EAST -> VoxelShapes.union(EAST_HEAD_SHAPE, viaFabricPlus$east_arm_shape_r1_8_x);
             };
         }
 

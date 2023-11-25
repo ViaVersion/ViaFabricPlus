@@ -30,12 +30,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SquidEntity.class)
-public class MixinSquidEntity {
+public abstract class MixinSquidEntity {
 
     @Inject(method = "canBeLeashedBy", at = @At("HEAD"), cancellable = true)
-    public void injectCanBeLeashedBy(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
+    private void injectCanBeLeashedBy(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
             cir.setReturnValue(false);
         }
     }
+
 }

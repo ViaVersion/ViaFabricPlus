@@ -35,22 +35,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LadderBlock.class)
-public class MixinLadderBlock {
+public abstract class MixinLadderBlock {
 
     @Unique
-    private final static VoxelShape viaFabricPlus$east_shape_r1_8_x = Block.createCuboidShape(0, 0, 0, 2, 16, 16);
+    private static final VoxelShape viaFabricPlus$east_shape_r1_8_x = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D);
 
     @Unique
-    private final static VoxelShape viaFabricPlus$west_shape_r1_8_x = Block.createCuboidShape(14, 0, 0, 16, 16, 16);
+    private static final VoxelShape viaFabricPlus$west_shape_r1_8_x = Block.createCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
     @Unique
-    private final static VoxelShape viaFabricPlus$south_shape_r1_8_x = Block.createCuboidShape(0, 0, 0, 16, 16, 2);
+    private static final VoxelShape viaFabricPlus$south_shape_r1_8_x = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D);
 
     @Unique
-    private final static VoxelShape viaFabricPlus$north_shape_r1_8_x = Block.createCuboidShape(0, 0, 14, 16, 16, 16);
+    private static final VoxelShape viaFabricPlus$north_shape_r1_8_x = Block.createCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D);
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             switch (state.get(LadderBlock.FACING)) {
                 case NORTH -> ci.setReturnValue(viaFabricPlus$north_shape_r1_8_x);
@@ -60,4 +60,5 @@ public class MixinLadderBlock {
             }
         }
     }
+
 }

@@ -31,16 +31,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(VexEntity.class)
-public class MixinVexEntity extends HostileEntity {
+public abstract class MixinVexEntity extends HostileEntity {
 
     public MixinVexEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
     }
 
     @Inject(method = "getUnscaledRidingOffset", at = @At("HEAD"), cancellable = true)
-    public void changeHeightOffset(CallbackInfoReturnable<Double> cir) {
+    private void changeHeightOffset(CallbackInfoReturnable<Double> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             cir.setReturnValue(0.0);
         }
     }
+
 }

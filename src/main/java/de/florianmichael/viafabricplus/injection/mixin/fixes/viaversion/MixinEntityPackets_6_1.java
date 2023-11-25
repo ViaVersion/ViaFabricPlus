@@ -40,4 +40,5 @@ public abstract class MixinEntityPackets_6_1 {
             cir.setReturnValue(0);
         }
     }
+
 }

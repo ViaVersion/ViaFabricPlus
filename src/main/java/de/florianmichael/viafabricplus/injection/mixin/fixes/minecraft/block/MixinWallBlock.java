@@ -52,22 +52,22 @@ public abstract class MixinWallBlock extends Block {
     private Map<BlockState, VoxelShape> shapeMap;
 
     @Unique
-    private VoxelShape[] collisionShapes1_12_2;
+    private final Object2IntMap<BlockState> viaFabricPlus$shape_index_cache_r1_12_2 = new Object2IntOpenHashMap<>();
 
     @Unique
-    private VoxelShape[] boundingShapes1_12_2;
+    private VoxelShape[] viaFabricPlus$collision_shape_r1_12_2;
 
     @Unique
-    private final Object2IntMap<BlockState> SHAPE_INDEX_CACHE1_12_2 = new Object2IntOpenHashMap<>();
+    private VoxelShape[] viaFabricPlus$outline_shape_r1_12_2;
 
     public MixinWallBlock(Settings settings) {
         super(settings);
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void initShapes(Settings settings, CallbackInfo ci) {
-        this.collisionShapes1_12_2 = this.createShapes1_12_2(4.0F, 3.0F, 24.0F, 0.0F, 24.0F);
-        this.boundingShapes1_12_2 = this.createShapes1_12_2(4.0F, 3.0F, 16.0F, 0.0F, 14.0F);
+    private void initShapes1_12_2(Settings settings, CallbackInfo ci) {
+        this.viaFabricPlus$collision_shape_r1_12_2 = this.createShapes1_12_2(24.0F);
+        this.viaFabricPlus$outline_shape_r1_12_2 = this.createShapes1_12_2(16.0F);
     }
 
     @Inject(method = "getPlacementState", at = @At("RETURN"), cancellable = true)
@@ -112,14 +112,14 @@ public abstract class MixinWallBlock extends Block {
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (state.get(WallBlock.UP) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            cir.setReturnValue(this.boundingShapes1_12_2[this.getShapeIndex(state)]);
+            cir.setReturnValue(this.viaFabricPlus$outline_shape_r1_12_2[this.getShapeIndex(state)]);
         }
     }
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     private void changeCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (state.get(WallBlock.UP) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            cir.setReturnValue(this.collisionShapes1_12_2[this.getShapeIndex(state)]);
+            cir.setReturnValue(this.viaFabricPlus$collision_shape_r1_12_2[this.getShapeIndex(state)]);
         }
     }
 
@@ -133,33 +133,34 @@ public abstract class MixinWallBlock extends Block {
     }
 
     @Unique
-    private VoxelShape[] createShapes1_12_2(float radius1, float radius2, float height1, float offset2, float height2) {
-        final float f = 8.0F - radius1;
-        final float g = 8.0F + radius1;
-        final float h = 8.0F - radius2;
-        final float i = 8.0F + radius2;
-        final VoxelShape baseShape = Block.createCuboidShape(f, 0.0D, f, g, height1, g);
-        final VoxelShape northShape = Block.createCuboidShape(h, offset2, 0.0D, i, height2, i);
-        final VoxelShape southShape = Block.createCuboidShape(h, offset2, h, i, height2, 16.0D);
-        final VoxelShape westShape = Block.createCuboidShape(0.0D, offset2, h, i, height2, i);
-        final VoxelShape eastShape = Block.createCuboidShape(h, offset2, h, 16.0D, height2, i);
+    private VoxelShape[] createShapes1_12_2(final float height) {
+        final float f = 4.0F;
+        final float g = 12.0F;
+        final float h = 5.0F;
+        final float i = 11.0F;
+
+        final VoxelShape baseShape = Block.createCuboidShape(f, 0.0D, f, g, height, g);
+        final VoxelShape northShape = Block.createCuboidShape(h, (float) 0.0, 0.0D, i, height, i);
+        final VoxelShape southShape = Block.createCuboidShape(h, (float) 0.0, h, i, height, 16.0D);
+        final VoxelShape westShape = Block.createCuboidShape(0.0D, (float) 0.0, h, i, height, i);
+        final VoxelShape eastShape = Block.createCuboidShape(h, (float) 0.0, h, 16.0D, height, i);
         final VoxelShape[] voxelShapes = new VoxelShape[]{
                 VoxelShapes.empty(),
-                Block.createCuboidShape(f, offset2, h, g, height1, 16.0D),
-                Block.createCuboidShape(0.0D, offset2, f, i, height1, g),
-                Block.createCuboidShape(f - 4, offset2, h - 1, g, height1, 16.0D),
-                Block.createCuboidShape(f, offset2, 0.0D, g, height1, i),
+                Block.createCuboidShape(f, (float) 0.0, h, g, height, 16.0D),
+                Block.createCuboidShape(0.0D, (float) 0.0, f, i, height, g),
+                Block.createCuboidShape(f - 4, (float) 0.0, h - 1, g, height, 16.0D),
+                Block.createCuboidShape(f, (float) 0.0, 0.0D, g, height, i),
                 VoxelShapes.union(southShape, northShape),
-                Block.createCuboidShape(f - 4, offset2, 0.0D, g, height1, i + 1),
-                Block.createCuboidShape(f - 4, offset2, h - 5, g, height1, 16.0D),
-                Block.createCuboidShape(h, offset2, f, 16.0D, height1, g),
-                Block.createCuboidShape(h - 1, offset2, f, 16.0D, height1, g + 4),
+                Block.createCuboidShape(f - 4, (float) 0.0, 0.0D, g, height, i + 1),
+                Block.createCuboidShape(f - 4, (float) 0.0, h - 5, g, height, 16.0D),
+                Block.createCuboidShape(h, (float) 0.0, f, 16.0D, height, g),
+                Block.createCuboidShape(h - 1, (float) 0.0, f, 16.0D, height, g + 4),
                 VoxelShapes.union(westShape, eastShape),
-                Block.createCuboidShape(h - 5, offset2, f, 16.0D, height1, g + 4),
-                Block.createCuboidShape(f, offset2, 0.0D, g + 4, height1, i + 1),
-                Block.createCuboidShape(f, offset2, 0.0D, g + 4, height1, i + 5),
-                Block.createCuboidShape(h - 5, offset2, f - 4, 16.0D, height1, g),
-                Block.createCuboidShape(0, offset2, 0, 16.0D, height1, 16.0D)
+                Block.createCuboidShape(h - 5, (float) 0.0, f, 16.0D, height, g + 4),
+                Block.createCuboidShape(f, (float) 0.0, 0.0D, g + 4, height, i + 1),
+                Block.createCuboidShape(f, (float) 0.0, 0.0D, g + 4, height, i + 5),
+                Block.createCuboidShape(h - 5, (float) 0.0, f - 4, 16.0D, height, g),
+                Block.createCuboidShape(0, (float) 0.0, 0, 16.0D, height, 16.0D)
         };
 
         for (int j = 0; j < 16; ++j) {
@@ -176,7 +177,7 @@ public abstract class MixinWallBlock extends Block {
 
     @Unique
     private int getShapeIndex(BlockState state) {
-        return this.SHAPE_INDEX_CACHE1_12_2.computeIntIfAbsent(state, statex -> {
+        return this.viaFabricPlus$shape_index_cache_r1_12_2.computeIntIfAbsent(state, statex -> {
             int i = 0;
             if (!WallShape.NONE.equals(statex.get(WallBlock.NORTH_SHAPE))) {
                 i |= getDirectionMask(Direction.NORTH);

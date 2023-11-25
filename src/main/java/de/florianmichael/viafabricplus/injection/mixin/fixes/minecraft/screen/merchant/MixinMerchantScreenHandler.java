@@ -29,12 +29,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MerchantScreenHandler.class)
-public class MixinMerchantScreenHandler {
+public abstract class MixinMerchantScreenHandler {
 
     @Inject(method = "switchTo", at = @At("HEAD"), cancellable = true)
-    private void injectSwitchTo(int recipeId, CallbackInfo ci) {
+    private void dontSwitchTo(int recipeId, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             ci.cancel();
         }
     }
+
 }

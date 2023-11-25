@@ -39,7 +39,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EndPortalFrameBlock.class)
-public class MixinEndPortalFrameBlock extends Block {
+public abstract class MixinEndPortalFrameBlock extends Block {
 
     @Shadow
     @Final
@@ -50,7 +50,7 @@ public class MixinEndPortalFrameBlock extends Block {
     public static BooleanProperty EYE;
 
     @Unique
-    private static final VoxelShape viaFabricPlus$eye_shape_r1_12_2 = Block.createCuboidShape(5.0, 13.0, 5.0, 11.0, 16.0, 11.0);
+    private static final VoxelShape viaFabricPlus$eye_shape_r1_12_2 = Block.createCuboidShape(5.0D, 13.0D, 5.0D, 11.0D, 16.0D, 11.0D);
 
     @Unique
     private static final VoxelShape viaFabricPlus$frame_with_eye_shape_r1_12_2 = VoxelShapes.union(FRAME_SHAPE, viaFabricPlus$eye_shape_r1_12_2);
@@ -60,7 +60,7 @@ public class MixinEndPortalFrameBlock extends Block {
     }
 
     @Inject(method = "getOutlineShape", at = @At(value = "HEAD"), cancellable = true)
-    public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(FRAME_SHAPE);
         }

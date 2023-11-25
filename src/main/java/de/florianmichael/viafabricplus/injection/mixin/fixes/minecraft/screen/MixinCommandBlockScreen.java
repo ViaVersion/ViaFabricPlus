@@ -44,7 +44,7 @@ public abstract class MixinCommandBlockScreen {
     public abstract void updateCommandBlock();
 
     @Inject(method = "init", at = @At("TAIL"))
-    private void injectInit(CallbackInfo ci) {
+    private void removeWidgets(CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeNewerFeaturesFromCommandBlockScreen.isEnabled()) {
             modeButton.visible = false;
             conditionalModeButton.visible = false;
@@ -53,4 +53,5 @@ public abstract class MixinCommandBlockScreen {
             updateCommandBlock();
         }
     }
+
 }

@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.definition.TripleChestHandler1_13_2;
+import de.florianmichael.viafabricplus.fixes.TripleChestHandler1_13_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HandledScreens.class)
-public class MixinHandledScreens {
+public abstract class MixinHandledScreens {
 
     @Inject(method = "getProvider", at = @At("HEAD"), cancellable = true)
     private static <T extends ScreenHandler> void returnFakeProvider(ScreenHandlerType<T> type, CallbackInfoReturnable<HandledScreens.@Nullable Provider> cir) {
@@ -42,4 +42,5 @@ public class MixinHandledScreens {
             cir.setReturnValue((handler, playerInventory, title) -> new GenericContainerScreen((GenericContainerScreenHandler) handler, playerInventory, title));
         }
     }
+
 }

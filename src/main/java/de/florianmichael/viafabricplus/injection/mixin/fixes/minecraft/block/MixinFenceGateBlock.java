@@ -37,16 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinFenceGateBlock extends HorizontalFacingBlock {
 
     @Unique
-    private static final VoxelShape _b1_8_1_X_AXIS_SHAPE = VoxelShapes.fullCube();
-
-    @Unique
-    private static final VoxelShape _b1_8_1_Z_AXIS_SHAPE = VoxelShapes.fullCube();
-
-    @Unique
-    private static final VoxelShape _b1_8_1_X_AXIS_COLLISION_SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 24.0D, 16.0D);
-
-    @Unique
-    private static final VoxelShape _b1_8_1_Z_AXIS_COLLISION_SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 24.0D, 16.0D);
+    private static final VoxelShape viaFabricPlus$x_and_z_axis_collision_shape_b1_8_1 = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 24.0D, 16.0D);
 
     protected MixinFenceGateBlock(Settings settings) {
         super(settings);
@@ -55,14 +46,14 @@ public abstract class MixinFenceGateBlock extends HorizontalFacingBlock {
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (!state.get(FenceGateBlock.IN_WALL) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
-            cir.setReturnValue(state.get(FACING).getAxis() == Direction.Axis.X ? _b1_8_1_X_AXIS_SHAPE : _b1_8_1_Z_AXIS_SHAPE);
+            cir.setReturnValue(VoxelShapes.fullCube());
         }
     }
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     private void changeCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (!state.get(FenceGateBlock.OPEN) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
-            cir.setReturnValue(state.get(FACING).getAxis() == Direction.Axis.X ? _b1_8_1_X_AXIS_COLLISION_SHAPE : _b1_8_1_Z_AXIS_COLLISION_SHAPE);
+            cir.setReturnValue(viaFabricPlus$x_and_z_axis_collision_shape_b1_8_1);
         }
     }
 

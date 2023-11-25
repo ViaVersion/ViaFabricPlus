@@ -30,15 +30,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Item.class)
-public class MixinItem {
+public abstract class MixinItem {
 
     @Shadow @Final private int maxDamage;
 
     @Redirect(method = { "getMaxDamage", "isDamageable", "getItemBarStep", "getItemBarColor" }, at = @At(value = "FIELD", target = "Lnet/minecraft/item/Item;maxDamage:I"))
-    public int changeCrossbowDamage(Item instance) {
+    private int changeCrossbowDamage(Item instance) {
         if (instance instanceof CrossbowItem && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
             return 326;
         }
         return maxDamage;
     }
+
 }

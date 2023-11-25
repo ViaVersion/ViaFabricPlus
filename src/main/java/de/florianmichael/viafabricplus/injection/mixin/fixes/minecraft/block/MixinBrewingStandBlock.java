@@ -36,18 +36,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BrewingStandBlock.class)
-public class MixinBrewingStandBlock {
+public abstract class MixinBrewingStandBlock {
 
     @Unique
-    private final static VoxelShape viaFabricPlus$shape_r1_12_2 = VoxelShapes.union(
-            Block.createCuboidShape(0, 0, 0, 16, 2, 16) /* Base */,
-            Block.createCuboidShape(7, 0, 7, 9, 14, 9) /* Stick */
+    private static final VoxelShape viaFabricPlus$shape_r1_12_2 = VoxelShapes.union(
+            Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D) /* Base */,
+            Block.createCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 14.0D, 9.0D) /* Stick */
     );
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(viaFabricPlus$shape_r1_12_2);
         }
     }
+
 }

@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Mixin(GameModeSelectionScreen.class)
-public class MixinGameModeSelectionScreen extends Screen {
+public abstract class MixinGameModeSelectionScreen extends Screen {
 
     @Mutable
     @Shadow @Final private static int UI_WIDTH;
@@ -48,7 +48,7 @@ public class MixinGameModeSelectionScreen extends Screen {
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void fixUIWidth(CallbackInfo ci) {
+    private void fixUIWidth(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
             final List<GameModeSelectionScreen.GameModeSelection> gameModeSelections = new ArrayList<>(Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList());
 
@@ -61,17 +61,19 @@ public class MixinGameModeSelectionScreen extends Screen {
     }
 
     @Inject(method = "init", at = @At("HEAD"))
-    public void disableInClassic(CallbackInfo ci) {
+    private void disableInClassic(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) { // survival mode was added in a1.0.15
             this.close();
         }
     }
 
     @Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;VALUES:[Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;"))
-    public GameModeSelectionScreen.GameModeSelection[] removeNewerGameModes() {
+    private GameModeSelectionScreen.GameModeSelection[] removeNewerGameModes() {
         if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
             return viaFabricPlus$unwrappedGameModes;
         }
+
         return GameModeSelectionScreen.GameModeSelection.values();
     }
+
 }

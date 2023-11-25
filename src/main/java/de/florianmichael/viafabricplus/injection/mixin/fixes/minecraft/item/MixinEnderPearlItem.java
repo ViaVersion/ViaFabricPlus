@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnderPearlItem.class)
-public class MixinEnderPearlItem {
+public abstract class MixinEnderPearlItem {
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void injectUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
@@ -42,4 +42,5 @@ public class MixinEnderPearlItem {
             ci.setReturnValue(TypedActionResult.pass(user.getStackInHand(hand)));
         }
     }
+
 }

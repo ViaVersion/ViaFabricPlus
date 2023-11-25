@@ -32,13 +32,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MiningToolItem.class)
-public class MixinMiningToolItem {
+public abstract class MixinMiningToolItem {
 
     @Inject(method = "getMiningSpeedMultiplier", at = @At("RETURN"), cancellable = true)
-    public void changeHoeEffectiveBlocks(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
+    private void changeHoeEffectiveBlocks(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
         //noinspection ConstantValue
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2) && (Object) this instanceof HoeItem) {
             cir.setReturnValue(1.0F);
         }
     }
+
 }

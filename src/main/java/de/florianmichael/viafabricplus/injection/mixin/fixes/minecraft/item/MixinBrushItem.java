@@ -29,12 +29,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BrushItem.class)
-public class MixinBrushItem {
+public abstract class MixinBrushItem {
 
     @Inject(method = "getMaxUseTime", at = @At("HEAD"), cancellable = true)
-    public void changeMaxUseTime(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+    private void changeMaxUseTime(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             cir.setReturnValue(225);
         }
     }
+
 }

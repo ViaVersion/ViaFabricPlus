@@ -28,15 +28,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(DrawContext.class)
-public class MixinDrawContext {
+public abstract class MixinDrawContext {
 
     @Redirect(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Ljava/lang/String;IIIZ)I"))
-    public int recolor(DrawContext instance, TextRenderer textRenderer, String text, int x, int y, int color, boolean shadow) {
+    private int recolor(DrawContext instance, TextRenderer textRenderer, String text, int x, int y, int color, boolean shadow) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10) && text.startsWith("-")) {
             color = -43213; // red
         }
 
         return instance.drawText(textRenderer, text, x, y, color, shadow);
     }
+
 }

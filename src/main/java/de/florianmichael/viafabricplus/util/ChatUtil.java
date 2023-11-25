@@ -24,8 +24,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class ChatUtil {
-    public final static String PREFIX = Formatting.WHITE + "[" + Formatting.GOLD + "ViaFabricPlus" + Formatting.WHITE + "]";
-    public final static Text PREFIX_TEXT = Text.literal("[").formatted(Formatting.WHITE).append(Text.literal("ViaFabricPlus").formatted(Formatting.GOLD)).append("]");
+    public static final String PREFIX = Formatting.WHITE + "[" + Formatting.GOLD + "ViaFabricPlus" + Formatting.WHITE + "]";
+    public static final Text PREFIX_TEXT = Text.literal("[").formatted(Formatting.WHITE).append(Text.literal("ViaFabricPlus").formatted(Formatting.GOLD)).append("]");
 
     public static Text prefixText(final String message) {
         return prefixText(Text.literal(message));

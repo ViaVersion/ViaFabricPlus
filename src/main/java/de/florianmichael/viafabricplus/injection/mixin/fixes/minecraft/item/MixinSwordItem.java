@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(SwordItem.class)
-public class MixinSwordItem extends ToolItem {
+public abstract class MixinSwordItem extends ToolItem {
 
     public MixinSwordItem(ToolMaterial material, Settings settings) {
         super(material, settings);
@@ -65,4 +65,5 @@ public class MixinSwordItem extends ToolItem {
         }
         return super.getMaxUseTime(stack);
     }
+
 }

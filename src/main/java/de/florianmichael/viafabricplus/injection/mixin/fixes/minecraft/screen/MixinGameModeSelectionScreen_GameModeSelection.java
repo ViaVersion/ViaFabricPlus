@@ -34,7 +34,7 @@ import java.util.Optional;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(GameModeSelectionScreen.GameModeSelection.class)
-public class MixinGameModeSelectionScreen_GameModeSelection {
+public abstract class MixinGameModeSelectionScreen_GameModeSelection {
 
     @Shadow @Final public static GameModeSelectionScreen.GameModeSelection SURVIVAL;
 
@@ -54,7 +54,7 @@ public class MixinGameModeSelectionScreen_GameModeSelection {
     }
 
     @Inject(method = "next", at = @At("HEAD"), cancellable = true)
-    public void unwrapGameModes(CallbackInfoReturnable<Optional<GameModeSelectionScreen.GameModeSelection>> cir) {
+    private void unwrapGameModes(CallbackInfoReturnable<Optional<GameModeSelectionScreen.GameModeSelection>> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
             switch ((GameModeSelectionScreen.GameModeSelection)(Object)this) {
                 case CREATIVE -> cir.setReturnValue(Optional.of(SURVIVAL));
@@ -69,4 +69,5 @@ public class MixinGameModeSelectionScreen_GameModeSelection {
             }
         }
     }
+
 }

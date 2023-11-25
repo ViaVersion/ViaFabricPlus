@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import de.florianmichael.viafabricplus.definition.EntityHeightOffsetsPre1_20_2;
+import de.florianmichael.viafabricplus.fixes.EntityHeightOffsetsPre1_20_2;
 import net.minecraft.entity.EntityDimensions;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -64,7 +64,6 @@ public abstract class MixinEntity {
     @Shadow
     public abstract void setVelocity(Vec3d velocity);
 
-
     @Shadow protected abstract Vector3f getPassengerAttachmentPos(Entity passenger, EntityDimensions dimensions, float scaleFactor);
 
     @ModifyConstant(method = "movementInputToVelocity", constant = @Constant(doubleValue = 1E-7))
@@ -76,7 +75,7 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)
-    public void replaceAffectingVelocityMagnitude(CallbackInfoReturnable<BlockPos> cir) {
+    private void replaceAffectingVelocityMagnitude(CallbackInfoReturnable<BlockPos> cir) {
         final VersionEnum target = ProtocolHack.getTargetVersion();
 
         if (target.isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
@@ -85,7 +84,7 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "getRotationVector(FF)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
-    public void revertCalculation(float pitch, float yaw, CallbackInfoReturnable<Vec3d> cir) {
+    private void revertCalculation(float pitch, float yaw, CallbackInfoReturnable<Vec3d> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(Vec3d.fromPolar(pitch, yaw));
         }
@@ -151,34 +150,35 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "getTargetingMargin", at = @At("HEAD"), cancellable = true)
-    public void expandHitBox(CallbackInfoReturnable<Float> cir) {
+    private void expandHitBox(CallbackInfoReturnable<Float> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             cir.setReturnValue(0.1F);
         }
     }
 
     @Redirect(method = {"setYaw", "setPitch"}, at = @At(value = "INVOKE", target = "Ljava/lang/Float;isFinite(F)Z"))
-    public boolean modifyIsFinite(float f) {
+    private boolean modifyIsFinite(float f) {
         return Float.isFinite(f) || ((Object) this instanceof ClientPlayerEntity && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2));
     }
 
     @ModifyConstant(method = "checkBlockCollision", constant = @Constant(doubleValue = 1.0E-7))
-    public double changeBlockCollisionConstant(double constant) {
+    private double changeBlockCollisionConstant(double constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             return 0.001;
         }
+
         return constant;
     }
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;onLanding()V"))
-    public void revertOnLanding(Entity instance) {
+    private void revertOnLanding(Entity instance) {
         if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19)) {
             instance.onLanding();
         }
     }
 
     @Inject(method = "getPosWithYOffset", at = @At("HEAD"), cancellable = true)
-    public void changeLogic(float offset, CallbackInfoReturnable<BlockPos> cir) {
+    private void changeLogic(float offset, CallbackInfoReturnable<BlockPos> cir) {
         final VersionEnum target = ProtocolHack.getTargetVersion();
         if (target.isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             int i = MathHelper.floor(this.pos.x);
@@ -198,17 +198,19 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
-    public void replaceRidingOffset(Entity vehicle, CallbackInfoReturnable<Float> cir) {
+    private void replaceRidingOffset(Entity vehicle, CallbackInfoReturnable<Float> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
             cir.setReturnValue((float) EntityHeightOffsetsPre1_20_2.getHeightOffset((Entity) (Object) this));
         }
     }
 
     @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
-    public Vector3f revertStaticRidingOffsetCalculation(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
+    private Vector3f revertStaticRidingOffsetCalculation(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
             return EntityHeightOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger);
         }
+
         return getPassengerAttachmentPos(passenger, dimensions, scaleFactor);
     }
+
 }

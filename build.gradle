@@ -10,7 +10,7 @@ base {
 }
 
 configurations {
-	jij
+	jij // jar in jar configuration
 }
 
 repositories {
@@ -42,11 +42,13 @@ loom {
 }
 
 dependencies {
-	// Minecraft/Fabric
+	// Minecraft/Fabric and mods
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	modCompileOnly "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
 	// ViaVersion Libraries
 	jij "com.viaversion:viaversion-common:${project.viaversion_version}"
@@ -75,18 +77,18 @@ dependencies {
 		exclude group: "com.google.code.gson", module: "gson"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
-	jij("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
-		exclude group: "io.netty"
-	}
 
 	// Lenni0451 Libraries
 	jij "net.lenni0451:Reflect:${project.reflect_version}"
 
 	// Misc Libraries
-	modCompileOnly "com.terraformersmc:modmenu:${project.mod_menu_version}"
-	jij(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))
+	jij("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
+		exclude group: "io.netty"
+	}
 	jij "de.florianmichael:Classic4J:${project.classic4j_version}"
+	jij(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))
 
+	// Fabric's jar in jar system doesn't support transitive dependencies, so we have to manually add them
 	afterEvaluate {
 		configurations.jij.incoming.resolutionResult.allDependencies {
 			dependencies.include(dependencies.implementation(requested.toString()))

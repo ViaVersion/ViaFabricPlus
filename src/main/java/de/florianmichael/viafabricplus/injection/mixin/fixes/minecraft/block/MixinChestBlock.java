@@ -69,7 +69,7 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_2)) {
             cir.setReturnValue(VoxelShapes.fullCube());
         }
@@ -85,8 +85,7 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
                     case NORTH -> DOUBLE_NORTH_SHAPE;
                     case SOUTH -> DOUBLE_SOUTH_SHAPE;
                     case WEST -> DOUBLE_WEST_SHAPE;
-                    case EAST -> DOUBLE_EAST_SHAPE;
-                    default -> throw new IllegalStateException("Invalid facing");
+                    default -> DOUBLE_EAST_SHAPE;
                 };
             }
         }

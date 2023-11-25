@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ItemTranslator {
-    private final static UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createFakerUserConnection(null);
+    private static final UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createFakerUserConnection(null);
 
     public static Item MC_TO_VIA_LATEST_TO_TARGET(final ItemStack stack, final VersionEnum targetVersion) {
         final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ProtocolHack.NATIVE_VERSION.getVersion(), targetVersion.getVersion());

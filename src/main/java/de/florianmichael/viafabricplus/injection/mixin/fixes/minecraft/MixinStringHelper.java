@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.StringHelper;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(StringHelper.class)
-public class MixinStringHelper {
+public abstract class MixinStringHelper {
 
     @ModifyConstant(method = "truncateChat", constant = @Constant(intValue = 256))
     private static int expandChatLength(int constant) {
@@ -37,4 +37,5 @@ public class MixinStringHelper {
 
         return ClientsideFixes.getCurrentChatLimit();
     }
+
 }

@@ -27,10 +27,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = SkullHandler.class, remap = false)
-public class MixinSkullHandler {
+public abstract class MixinSkullHandler {
 
     @Inject(method = "getLong", at = @At("HEAD"), cancellable = true)
     public void checkIfTagExists(NumberTag tag, CallbackInfoReturnable<Long> cir) {
         if (tag == null) cir.setReturnValue(0L);
     }
+
 }

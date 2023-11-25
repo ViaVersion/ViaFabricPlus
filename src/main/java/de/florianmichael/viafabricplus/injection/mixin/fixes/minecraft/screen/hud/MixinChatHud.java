@@ -29,13 +29,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ChatHud.class)
-public class MixinChatHud {
+public abstract class MixinChatHud {
 
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHudLine$Visible;indicator()Lnet/minecraft/client/gui/hud/MessageIndicator;"), require = 0)
-    public MessageIndicator removeIndicators(ChatHudLine.Visible instance, Operation<MessageIndicator> original) {
+    private MessageIndicator removeIndicators(ChatHudLine.Visible instance, Operation<MessageIndicator> original) {
         if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
             return null;
         }
+
         return original.call(instance);
     }
+
 }

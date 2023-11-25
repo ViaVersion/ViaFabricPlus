@@ -31,10 +31,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractBlock.class)
-public class MixinAbstractBlock {
+public abstract class MixinAbstractBlock {
 
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
-    public void fixLegacyMiningSpeed(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
+    private void changeMiningSpeedCalculation(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
         if (DebugSettings.INSTANCE.legacyMiningSpeeds.isEnabled()) {
             final float hardness = state.getHardness(world, pos);
             if (hardness == -1.0F) {
@@ -48,4 +48,5 @@ public class MixinAbstractBlock {
             }
         }
     }
+
 }

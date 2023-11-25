@@ -35,7 +35,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(JigsawBlockScreen.class)
-public class MixinJigsawBlockScreen extends Screen {
+public abstract class MixinJigsawBlockScreen extends Screen {
 
     @Shadow
     private TextFieldWidget nameField;
@@ -51,7 +51,7 @@ public class MixinJigsawBlockScreen extends Screen {
     }
 
     @Inject(method = "init", at = @At("RETURN"))
-    public void injectInit(CallbackInfo ci) {
+    private void injectInit(CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeNewerFeaturesFromJigsawScreen.isEnabled()) {
             nameField.active = false;
             jointRotationButton.active = false;
@@ -63,9 +63,10 @@ public class MixinJigsawBlockScreen extends Screen {
     }
 
     @Inject(method = "render", at = @At("HEAD"))
-    public void injectRender(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void injectRender(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeNewerFeaturesFromJigsawScreen.isEnabled()) {
             nameField.setText(targetField.getText());
         }
     }
+
 }

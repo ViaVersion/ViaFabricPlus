@@ -31,8 +31,8 @@ import net.minecraft.util.math.MathHelper;
  * functions and features used in all screens which are added by ViaFabricPlus
  */
 public abstract class MappedSlotEntry extends AlwaysSelectedEntryListWidget.Entry<MappedSlotEntry> {
-    protected final static int SCISSORS_OFFSET = 4;
-    public final static int SLOT_MARGIN = 3;
+    protected static final int SCISSORS_OFFSET = 4;
+    public static final int SLOT_MARGIN = 3;
 
     public abstract void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta);
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {

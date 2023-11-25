@@ -26,8 +26,8 @@ public interface IClientConnection {
 
     void viaFabricPlus$setupPreNettyDecryption();
 
-    VersionEnum viaFabricPlus$getServerVersion();
-    void viaFabricPlus$setServerVersion(final VersionEnum serverVersion);
+    VersionEnum viaFabricPlus$getTargetVersion();
+    void viaFabricPlus$setTargetVersion(final VersionEnum serverVersion);
 
     UserConnection viaFabricPlus$getUserConnection();
     void viaFabricPlus$setUserConnection(final UserConnection userConnection);

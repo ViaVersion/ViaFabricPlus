@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.screen.common;
 
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.fixes.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.BetaCraftScreen;
@@ -40,7 +40,7 @@ import net.raphimc.vialoader.util.VersionEnum;
 import java.awt.*;
 
 public class ProtocolSelectionScreen extends VFPScreen {
-    public final static ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
+    public static final ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
 
     private ButtonWidget betaCraftButton;
 

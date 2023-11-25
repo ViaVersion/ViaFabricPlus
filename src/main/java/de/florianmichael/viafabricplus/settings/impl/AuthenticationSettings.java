@@ -24,7 +24,7 @@ import de.florianmichael.viafabricplus.settings.type.BooleanSetting;
 import net.minecraft.text.Text;
 
 public class AuthenticationSettings extends SettingGroup {
-    public final static AuthenticationSettings INSTANCE = new AuthenticationSettings();
+    public static final AuthenticationSettings INSTANCE = new AuthenticationSettings();
 
     public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.betacraft"), true);
     public final BooleanSetting allowViaLegacyToCallJoinServerToVerifySession = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.verify"), true);

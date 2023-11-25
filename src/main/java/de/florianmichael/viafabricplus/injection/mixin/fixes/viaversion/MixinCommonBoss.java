@@ -25,9 +25,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = CommonBoss.class, remap = false)
-public class MixinCommonBoss {
+public abstract class MixinCommonBoss {
 
     @Redirect(method = { "<init>", "setHealth" }, at = @At(value = "INVOKE", target = "Lcom/google/common/base/Preconditions;checkArgument(ZLjava/lang/Object;)V"))
-    public void ignoreHealthCheck(boolean expression, Object errorMessage) {
+    private void ignoreHealthCheck(boolean expression, Object errorMessage) {
     }
+
 }

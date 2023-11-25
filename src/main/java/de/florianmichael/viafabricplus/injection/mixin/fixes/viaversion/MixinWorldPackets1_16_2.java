@@ -31,4 +31,5 @@ public abstract class MixinWorldPackets1_16_2 {
     private static int modifySectionCountToSupportClassicWorldHeight(int constant) {
         return 64;
     }
+
 }

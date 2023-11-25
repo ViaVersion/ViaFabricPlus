@@ -33,7 +33,7 @@ public class ViaJarReplacer {
     /**
      * The folder where the overriding jars are located
      */
-    public final static File VIA_JAR_OVERRIDING_FOLDER = new File(ViaFabricPlus.RUN_DIRECTORY, "jars");
+    public static final File VIA_JAR_OVERRIDING_FOLDER = new File(ViaFabricPlus.RUN_DIRECTORY, "jars");
 
     /**
      * Loads all overriding jars

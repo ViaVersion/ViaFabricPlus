@@ -38,7 +38,7 @@ import java.util.Map;
 public abstract class MixinCauldronBlock extends AbstractCauldronBlock {
 
     @Unique
-    private final static VoxelShape viaFabricPlus$shape_r1_12_2 = VoxelShapes.combineAndSimplify(
+    private static final VoxelShape viaFabricPlus$shape_r1_12_2 = VoxelShapes.combineAndSimplify(
             VoxelShapes.fullCube(),
             Block.createCuboidShape(2.0D, 5.0D, 2.0D, 14.0D, 16.0D, 14.0D),
             BooleanBiFunction.ONLY_FIRST
@@ -55,4 +55,5 @@ public abstract class MixinCauldronBlock extends AbstractCauldronBlock {
         }
         return super.getOutlineShape(state, world, pos, context);
     }
+
 }

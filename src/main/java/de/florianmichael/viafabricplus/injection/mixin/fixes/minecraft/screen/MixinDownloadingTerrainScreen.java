@@ -36,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(DownloadingTerrainScreen.class)
-public class MixinDownloadingTerrainScreen extends Screen {
+public abstract class MixinDownloadingTerrainScreen extends Screen {
 
     @Shadow @Final private long loadStartTime;
     @Shadow private boolean closeOnNextTick;
@@ -49,7 +49,7 @@ public class MixinDownloadingTerrainScreen extends Screen {
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    public void injectTick(CallbackInfo ci) {
+    private void injectTick(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_1)) {
             viaFabricPlus$tickCounter++;
 
@@ -76,4 +76,5 @@ public class MixinDownloadingTerrainScreen extends Screen {
             ci.cancel();
         }
     }
+
 }

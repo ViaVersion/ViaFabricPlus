@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BlockStateTranslator {
-    private final static UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createFakerUserConnection(null);
+    private static final UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createFakerUserConnection(null);
 
     public static int translateBlockState1_18(int oldId) {
         final List<ProtocolPathEntry> protocolPath = Via.getManager().getProtocolManager().getProtocolPath(ProtocolHack.NATIVE_VERSION.getVersion(), ProtocolVersion.v1_18_2.getVersion());

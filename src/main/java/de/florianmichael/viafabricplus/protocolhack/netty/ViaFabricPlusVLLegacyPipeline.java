@@ -30,9 +30,9 @@ import net.raphimc.vialoader.util.VersionEnum;
 
 public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
-    public final static String VIABEDROCK_COMPRESSION_HANDLER_NAME = "viabedrock-compression";
-    public final static String VIABEDROCK_ENCRYPTION_HANDLER_NAME = "viabedrock-encryption";
-    public final static String VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME = "viabedrock-ping-encapsulation";
+    public static final String VIABEDROCK_COMPRESSION_HANDLER_NAME = "viabedrock-compression";
+    public static final String VIABEDROCK_ENCRYPTION_HANDLER_NAME = "viabedrock-encryption";
+    public static final String VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME = "viabedrock-ping-encapsulation";
 
     public ViaFabricPlusVLLegacyPipeline(UserConnection user, VersionEnum version) {
         super(user, version);

@@ -19,26 +19,25 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
+import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
 import net.minecraft.network.encryption.PlayerPublicKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.nio.ByteBuffer;
-
 @Mixin(PlayerPublicKey.PublicKeyData.class)
-public class MixinPlayerPublicKey_PublicKeyData implements IPublicKeyData {
+public abstract class MixinPlayerPublicKey_PublicKeyData implements ILegacyKeySignatureStorage {
 
     @Unique
-    private ByteBuffer viaFabricPlus$v1_key;
+    private byte[] viaFabricPlus$legacyKeySignature;
 
     @Override
-    public ByteBuffer viaFabricPlus$getV1Key() {
-        return viaFabricPlus$v1_key;
+    public byte[] viafabricplus$getLegacyPublicKeySignature() {
+        return this.viaFabricPlus$legacyKeySignature;
     }
 
     @Override
-    public void viaFabricPlus$setV1Key(ByteBuffer byteBuffer) {
-        this.viaFabricPlus$v1_key = byteBuffer;
+    public void viafabricplus$setLegacyPublicKeySignature(byte[] signature) {
+        this.viaFabricPlus$legacyKeySignature = signature;
     }
+
 }

@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
-import de.florianmichael.viafabricplus.definition.EntityHeightOffsetsPre1_20_2;
+import de.florianmichael.viafabricplus.fixes.EntityHeightOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
@@ -135,7 +135,7 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @ModifyConstant(method = "tickMovement", constant = @Constant(doubleValue = 0.003D))
-    public double modifyVelocityZero(final double constant) {
+    private double modifyVelocityZero(final double constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 0.005D;
         }
@@ -162,7 +162,7 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D"))
-    public double fixCosTable(double a) {
+    private double fixCosTable(double a) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2)) {
             return MathHelper.cos((float) a);
         }
@@ -170,7 +170,7 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
-    public double fixLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
+    private double fixLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
         double height = instance.getFluidHeight(tagKey);
 
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
@@ -180,7 +180,7 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
-    public int shieldBlockCounter(int constant) {
+    private int shieldBlockCounter(int constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 0;
         }
@@ -188,7 +188,7 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Redirect(method = "tickCramming", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isClient()Z"))
-    public boolean revertOnlyPlayerCramming(World instance) {
+    private boolean revertOnlyPlayerCramming(World instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             return false;
         }
@@ -211,17 +211,19 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
-    public void replaceRidingOffset(Entity vehicle, CallbackInfoReturnable<Float> cir) {
+    private void replaceRidingOffset(Entity vehicle, CallbackInfoReturnable<Float> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
             cir.setReturnValue((float) EntityHeightOffsetsPre1_20_2.getHeightOffset(this));
         }
     }
 
     @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
-    public Vector3f revertStaticRidingOffsetCalculation(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
+    private Vector3f revertStaticRidingOffsetCalculation(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
             return EntityHeightOffsetsPre1_20_2.getMountedHeightOffset(instance, entity);
         }
+
         return getPassengerAttachmentPos(entity, entityDimensions, v);
     }
+
 }

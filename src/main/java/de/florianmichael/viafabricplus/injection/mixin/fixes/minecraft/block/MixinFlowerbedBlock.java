@@ -35,15 +35,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FlowerbedBlock.class)
-public class MixinFlowerbedBlock {
+public abstract class MixinFlowerbedBlock {
 
     @Unique
-    private final static VoxelShape viaFabricPlus$shape_r1_20_1 = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 3.0, 16.0);
+    private static final VoxelShape viaFabricPlus$shape_r1_20_1 = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void replaceShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
             cir.setReturnValue(viaFabricPlus$shape_r1_20_1);
         }
     }
+
 }

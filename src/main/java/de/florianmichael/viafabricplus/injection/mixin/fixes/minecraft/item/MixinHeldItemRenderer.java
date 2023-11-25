@@ -60,4 +60,5 @@ public abstract class MixinHeldItemRenderer {
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(78.05f));
         }
     }
+
 }

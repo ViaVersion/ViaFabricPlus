@@ -36,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Pseudo
 @Mixin(targets = "org.anti_ad.mc.ipnext.event.AutoRefillHandler$ItemSlotMonitor", remap = false)
-public class MixinAutoRefillHandler_ItemSlotMonitor {
+public abstract class MixinAutoRefillHandler_ItemSlotMonitor {
 
     @Shadow
     public int currentSlotId;

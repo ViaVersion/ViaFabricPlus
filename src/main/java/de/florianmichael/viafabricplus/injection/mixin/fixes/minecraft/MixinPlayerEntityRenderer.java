@@ -33,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntityRenderer.class)
-public class MixinPlayerEntityRenderer {
+public abstract class MixinPlayerEntityRenderer {
 
     @Inject(method = "getPositionOffset*", at = @At("RETURN"), cancellable = true)
     private void injectGetPositionOffset(AbstractClientPlayerEntity player, float delta, CallbackInfoReturnable<Vec3d> ci) {
@@ -49,4 +49,5 @@ public class MixinPlayerEntityRenderer {
     private boolean redirectGetPositionOffset(AbstractClientPlayerEntity player) {
         return (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_11_1to1_11_2)) && player.isInSneakingPose();
     }
+
 }

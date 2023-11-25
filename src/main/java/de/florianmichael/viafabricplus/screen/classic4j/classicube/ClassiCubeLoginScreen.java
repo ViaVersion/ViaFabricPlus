@@ -25,7 +25,7 @@ import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.viafabricplus.injection.access.ITextFieldWidget;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.fixes.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.screen.common.ProtocolSelectionScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
@@ -35,9 +35,9 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 
 public class ClassiCubeLoginScreen extends VFPScreen {
-    public final static ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
+    public static final ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
 
-    private final static String CLASSI_CUBE_URL = "https://www.classicube.net/";
+    private static final String CLASSI_CUBE_URL = "https://www.classicube.net/";
 
     public ClassiCubeLoginScreen() {
         super("ClassiCube Login", false);

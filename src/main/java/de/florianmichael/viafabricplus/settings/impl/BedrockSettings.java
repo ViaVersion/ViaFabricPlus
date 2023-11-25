@@ -23,7 +23,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.settings.SettingGroup;
 import de.florianmichael.viafabricplus.settings.type.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.type.ButtonSetting;
-import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
+import de.florianmichael.viafabricplus.fixes.account.BedrockAccountHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.NoticeScreen;
@@ -40,7 +40,7 @@ import java.net.URISyntaxException;
 import java.util.concurrent.CompletableFuture;
 
 public class BedrockSettings extends SettingGroup {
-    public final static BedrockSettings INSTANCE = new BedrockSettings();
+    public static final BedrockSettings INSTANCE = new BedrockSettings();
 
     public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, Text.translatable("bedrock.viafabricplus.authentication"), () -> CompletableFuture.runAsync(() -> {
         final var prevScreen = MinecraftClient.getInstance().currentScreen;

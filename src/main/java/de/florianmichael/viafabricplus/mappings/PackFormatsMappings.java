@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PackFormatsMappings {
-    private final static Map<Integer, GameVersion> protocolMap = new HashMap<>();
+    private static final Map<Integer, GameVersion> protocolMap = new HashMap<>();
 
     public static void load() {
         registerVersion(VersionEnum.r1_20_3, 22, "1.20.3-pre2");

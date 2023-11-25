@@ -38,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockItem.class)
-public class MixinBlockItem {
+public abstract class MixinBlockItem {
 
     @Inject(method = "canPlace", at = @At("HEAD"), cancellable = true)
     private void injectCanPlace(ItemPlacementContext context, BlockState state, CallbackInfoReturnable<Boolean> ci) {
@@ -65,4 +65,5 @@ public class MixinBlockItem {
             }
         }
     }
+
 }

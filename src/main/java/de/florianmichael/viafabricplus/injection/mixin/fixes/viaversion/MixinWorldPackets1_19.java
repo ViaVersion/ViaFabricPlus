@@ -26,14 +26,14 @@ import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPacke
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.ClientboundPackets1_19;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.Protocol1_19To1_18_2;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.packets.WorldPackets;
-import de.florianmichael.viafabricplus.definition.ClientPlayerInteractionManager1_18_2;
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
+import de.florianmichael.viafabricplus.fixes.ClientPlayerInteractionManager1_18_2;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = WorldPackets.class, remap = false)
-public class MixinWorldPackets1_19 {
+public abstract class MixinWorldPackets1_19 {
 
     @Redirect(method = "register", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/protocol1_19to1_18_2/Protocol1_19To1_18_2;cancelClientbound(Lcom/viaversion/viaversion/api/protocol/packet/ClientboundPacketType;)V"))
     private static void passAcknowledgePlayerDigging(Protocol1_19To1_18_2 instance, ClientboundPacketType clientboundPacketType) {
@@ -50,4 +50,5 @@ public class MixinWorldPackets1_19 {
             wrapper.write(Type.STRING, uuid);
         });
     }
+
 }

@@ -42,9 +42,10 @@ public abstract class MixinCowEntity extends AnimalEntity {
     }
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
-    public void injectInteractMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+    private void injectInteractMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2) && player.getAbilities().creativeMode) {
             cir.setReturnValue(super.interactMob(player, hand));
         }
     }
+
 }

@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
 
-import de.florianmichael.viafabricplus.definition.classic.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,23 +27,27 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ClassicProtocolExtension.class, remap = false)
-public class MixinClassicProtocolExtension {
+public abstract class MixinClassicProtocolExtension {
 
     @Inject(method = "supportsVersion", at = @At("HEAD"), cancellable = true)
-    public void allowExtensions_supportsVersion(int version, CallbackInfoReturnable<Boolean> cir) {
-        if (CustomClassicProtocolExtensions.INSTANCE.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this))
+    private void allowExtensions_supportsVersion(int version, CallbackInfoReturnable<Boolean> cir) {
+        if (CustomClassicProtocolExtensions.INSTANCE.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this)) {
             cir.setReturnValue(true);
+        }
     }
 
     @Inject(method = "isSupported", at = @At("HEAD"), cancellable = true)
-    public void allowExtensions_isSupported(CallbackInfoReturnable<Boolean> cir) {
-        if (CustomClassicProtocolExtensions.INSTANCE.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this))
+    private void allowExtensions_isSupported(CallbackInfoReturnable<Boolean> cir) {
+        if (CustomClassicProtocolExtensions.INSTANCE.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this)) {
             cir.setReturnValue(true);
+        }
     }
 
     @Inject(method = "getHighestSupportedVersion", at = @At("HEAD"), cancellable = true)
-    public void allowExtensions_getHighestSupportedVersion(CallbackInfoReturnable<Integer> cir) {
-        if (CustomClassicProtocolExtensions.INSTANCE.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this))
+    private void allowExtensions_getHighestSupportedVersion(CallbackInfoReturnable<Integer> cir) {
+        if (CustomClassicProtocolExtensions.INSTANCE.ALLOWED_EXTENSIONS.contains((ClassicProtocolExtension) (Object) this)) {
             cir.setReturnValue(1);
+        }
     }
+
 }

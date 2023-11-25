@@ -82,4 +82,5 @@ public abstract class MixinProtocolVersion {
 
         return ProtocolVersion.register(version, name, versionRange);
     }
+
 }

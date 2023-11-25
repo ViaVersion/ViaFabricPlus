@@ -40,4 +40,5 @@ public abstract class MixinMetadataRewriter1_9To1_8 {
             ci.cancel();
         }
     }
+
 }

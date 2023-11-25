@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(FireworkRocketItem.class)
-public class MixinFireworkRocketItem {
+public abstract class MixinFireworkRocketItem {
 
     @Redirect(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isFallFlying()Z", ordinal = 0))
     private boolean disableFireworkElytraBoost(PlayerEntity player) {
@@ -39,4 +39,5 @@ public class MixinFireworkRocketItem {
 
         return player.isFallFlying();
     }
+
 }

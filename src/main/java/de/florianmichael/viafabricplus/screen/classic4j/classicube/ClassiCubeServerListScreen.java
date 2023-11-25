@@ -23,7 +23,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
+import de.florianmichael.viafabricplus.fixes.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
@@ -47,10 +47,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassiCubeServerListScreen extends VFPScreen {
-    public final static List<CCServerInfo> SERVER_LIST = new ArrayList<>();
-    public final static ClassiCubeServerListScreen INSTANCE = new ClassiCubeServerListScreen();
+    public static final List<CCServerInfo> SERVER_LIST = new ArrayList<>();
+    public static final ClassiCubeServerListScreen INSTANCE = new ClassiCubeServerListScreen();
 
-    private final static String CLASSICUBE_SERVER_LIST_URL = "https://www.classicube.net/server/list/";
+    private static final String CLASSICUBE_SERVER_LIST_URL = "https://www.classicube.net/server/list/";
 
     public static void open(final Screen prevScreen, final LoginProcessHandler loginProcessHandler) {
         ClassiCubeHandler.requestServerList(ClassiCubeAccountHandler.INSTANCE.getAccount(), ccServerList -> {

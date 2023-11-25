@@ -40,7 +40,7 @@ public abstract class MixinItemGroups {
     @Shadow @Nullable private static ItemGroup.@Nullable DisplayContext displayContext;
 
     @Shadow
-    protected static void updateEntries(ItemGroup.DisplayContext displayContext) {
+    private static void updateEntries(ItemGroup.DisplayContext displayContext) {
     }
     @Unique
     private static VersionEnum viaFabricPlus$version;
@@ -60,4 +60,5 @@ public abstract class MixinItemGroups {
             cir.setReturnValue(true);
         }
     }
+
 }

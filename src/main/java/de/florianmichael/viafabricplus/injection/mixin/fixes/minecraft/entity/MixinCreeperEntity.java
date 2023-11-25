@@ -30,13 +30,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(CreeperEntity.class)
-public class MixinCreeperEntity {
+public abstract class MixinCreeperEntity {
 
     @Redirect(method = "interactMob", at = @At(value = "FIELD", target = "Lnet/minecraft/sound/SoundEvents;ITEM_FIRECHARGE_USE:Lnet/minecraft/sound/SoundEvent;"))
-    public SoundEvent fixSound() {
+    private SoundEvent fixSound() {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             return SoundEvents.ITEM_FLINTANDSTEEL_USE;
         }
         return SoundEvents.ITEM_FIRECHARGE_USE;
     }
+
 }

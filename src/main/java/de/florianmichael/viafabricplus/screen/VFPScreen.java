@@ -42,7 +42,7 @@ import java.awt.*;
  */
 public class VFPScreen extends Screen {
 
-    private final static String MOD_URL = "https://github.com/ViaVersion/ViaFabricPlus";
+    private static final String MOD_URL = "https://github.com/ViaVersion/ViaFabricPlus";
 
     private final boolean backButton;
     public Screen prevScreen;

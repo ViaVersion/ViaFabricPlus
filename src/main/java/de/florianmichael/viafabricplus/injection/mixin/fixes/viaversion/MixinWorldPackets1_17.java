@@ -25,7 +25,7 @@ import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;
 import com.viaversion.viaversion.protocols.protocol1_16_2to1_16_1.ClientboundPackets1_16_2;
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.Protocol1_17To1_16_4;
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.packets.WorldPackets;
-import de.florianmichael.viafabricplus.definition.classic.ClassicWorldHeightInjection;
+import de.florianmichael.viafabricplus.fixes.classic.ClassicWorldHeightInjection;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -41,4 +41,5 @@ public abstract class MixinWorldPackets1_17 {
 
         ((Protocol) instance).registerClientbound(packetType, packetHandler);
     }
+
 }

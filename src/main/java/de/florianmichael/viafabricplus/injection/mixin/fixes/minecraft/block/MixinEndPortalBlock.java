@@ -35,17 +35,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinEndPortalBlock extends BlockWithEntity {
 
     @Unique
-    private final VoxelShape viaFabricPlus$shape_r1_8_x = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 1.0, 16.0);
+    private static final VoxelShape viaFabricPlus$shape_r1_8_x = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
     @Unique
-    private final VoxelShape viaFabricPlus$shape_r1_16_5 = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
+    private static final VoxelShape viaFabricPlus$shape_r1_16_5 = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
 
     protected MixinEndPortalBlock(Settings settings) {
         super(settings);
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             cir.setReturnValue(viaFabricPlus$shape_r1_8_x);
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {

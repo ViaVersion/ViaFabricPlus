@@ -47,12 +47,12 @@ public abstract class MixinMerchantScreen extends HandledScreen<MerchantScreenHa
     }
 
     @Inject(method = "init", at = @At("HEAD"))
-    public void reset(CallbackInfo ci) {
+    private void reset(CallbackInfo ci) {
         viaFabricPlus$previousRecipeIndex = 0;
     }
 
     @Inject(method = "syncRecipeIndex", at = @At("HEAD"))
-    public void smoothOutRecipeIndex(CallbackInfo ci) {
+    private void smoothOutRecipeIndex(CallbackInfo ci) {
         if (DebugSettings.INSTANCE.smoothOutMerchantScreens.isEnabled()) {
             if (viaFabricPlus$previousRecipeIndex != selectedIndex) {
                 int direction = viaFabricPlus$previousRecipeIndex < selectedIndex ? 1 : -1;
@@ -63,4 +63,5 @@ public abstract class MixinMerchantScreen extends HandledScreen<MerchantScreenHa
             }
         }
     }
+
 }

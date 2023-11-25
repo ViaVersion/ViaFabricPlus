@@ -41,22 +41,22 @@ public abstract class MixinInGameHud {
     // Removing newer elements
 
     @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
-    public void removeExperienceBar(DrawContext context, int x, CallbackInfo ci) {
+    private void removeExperienceBar(DrawContext context, int x, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) ci.cancel();
     }
 
     @Inject(method = "renderMountJumpBar", at = @At("HEAD"), cancellable = true)
-    public void removeMountJumpBar(JumpingMount mount, DrawContext context, int x, CallbackInfo ci) {
+    private void removeMountJumpBar(JumpingMount mount, DrawContext context, int x, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) ci.cancel();
     }
 
     @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
-    public void removeMountHealth(DrawContext context, CallbackInfo ci) {
+    private void removeMountHealth(DrawContext context, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) ci.cancel();
     }
 
     @Inject(method = "getHeartCount", at = @At("HEAD"), cancellable = true)
-    public void removeHungerBar(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
+    private void removeHungerBar(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
         if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) {
             cir.setReturnValue(1);
         }
@@ -97,4 +97,5 @@ public abstract class MixinInGameHud {
         if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return scaledWidth - old - 9;
         return old;
     }
+
 }

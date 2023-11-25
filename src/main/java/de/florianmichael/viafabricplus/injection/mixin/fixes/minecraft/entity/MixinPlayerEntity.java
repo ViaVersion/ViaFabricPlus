@@ -47,10 +47,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Unique
-    private final static EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
+    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
 
     @Unique
-    private final static SoundEvent viaFabricPlus$random_hurt = SoundEvent.of(new Identifier("viafabricplus", "random.hurt"));
+    private static final SoundEvent viaFabricPlus$random_hurt = SoundEvent.of(new Identifier("viafabricplus", "random.hurt"));
 
     @Shadow
     @Final
@@ -102,7 +102,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     }
 
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
-    public void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
+    private void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
         if (VisualSettings.INSTANCE.replaceHurtSoundWithOOFSound.isEnabled()) {
             cir.setReturnValue(viaFabricPlus$random_hurt);
         }
@@ -118,7 +118,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     }
 
     @Redirect(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
-    public void dontSwingHand(PlayerEntity instance, Hand hand) {
+    private void dontSwingHand(PlayerEntity instance, Hand hand) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) return;
 
         instance.swingHand(hand);
@@ -128,12 +128,12 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     public boolean viaFabricPlus$isSprinting;
 
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setMovementSpeed(F)V"))
-    public void trackOldField(CallbackInfo ci) {
+    private void trackOldField(CallbackInfo ci) {
         viaFabricPlus$isSprinting = this.isSprinting();
     }
 
     @Redirect(method = "getOffGroundSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isSprinting()Z"))
-    public boolean useOldField(PlayerEntity instance) {
+    private boolean useOldField(PlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
             return viaFabricPlus$isSprinting;
         }
@@ -141,10 +141,11 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     }
 
     @Inject(method = "checkFallFlying", at = @At("HEAD"), cancellable = true)
-    public void makeElytraMovementServerside(CallbackInfoReturnable<Boolean> cir) {
+    private void makeElytraMovementServerside(CallbackInfoReturnable<Boolean> cir) {
         // Elytra movement was serverside in <= 1.14.4 and got moved to the client in 1.15
         if ((Object) this instanceof ClientPlayerEntity && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
             cir.setReturnValue(!this.isOnGround() && this.getVelocity().y < 0.0 && !isFallFlying());
         }
     }
+
 }

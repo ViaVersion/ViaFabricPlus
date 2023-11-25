@@ -26,7 +26,7 @@ import net.minecraft.text.Text;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class DebugSettings extends SettingGroup {
-    public final static DebugSettings INSTANCE = new DebugSettings();
+    public static final DebugSettings INSTANCE = new DebugSettings();
 
     // 1.19 -> 1.18.2
     public final ProtocolSyncBooleanSetting disableSequencing = new ProtocolSyncBooleanSetting(this, Text.translatable("debug.viafabricplus.sequence"), VersionRange.andOlder(VersionEnum.r1_18_2));

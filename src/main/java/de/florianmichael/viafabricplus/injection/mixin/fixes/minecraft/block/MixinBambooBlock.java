@@ -32,12 +32,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BambooBlock.class)
-public class MixinBambooBlock {
+public abstract class MixinBambooBlock {
 
     @Inject(method = "isShapeFullCube", at = @At("HEAD"), cancellable = true)
-    public void changeFullCube(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+    private void changeBlockBoundingBox(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17)) {
             cir.setReturnValue(true);
         }
     }
+
 }
