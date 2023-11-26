@@ -80,6 +80,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
 
     @Override
     public void close() {
+        // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
         ViaFabricPlus.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
         MainScreen.INSTANCE.open(prevScreen);
     }
@@ -87,8 +88,8 @@ public class ClassiCubeMFAScreen extends VFPScreen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
+        this.renderTitle(context);
 
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
-        this.renderSubtitle(context);
     }
 }

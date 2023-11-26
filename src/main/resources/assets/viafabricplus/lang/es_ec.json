@@ -18,7 +18,7 @@
   "base.viafabricplus.via_translates_to": "Via se traduce a: %s",
   "base.viafabricplus.server_version": "Versión del servidor: %s",
   "base.viafabricplus.auto": "Auto",
-  "base.viafabricplus.set_version_for_this_server": "Asignar la versión para este servidor",
+  "base.viafabricplus.set_version": "Asignar la versión para este servidor",
   "base.viafabricplus.vanilla_and_modded": "Vanilla y Modificado",
   "base.viafabricplus.vanilla_only": "Solo Vanilla",
   "base.viafabricplus.kick": "Echar",

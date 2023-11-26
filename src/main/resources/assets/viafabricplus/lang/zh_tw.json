@@ -18,7 +18,7 @@
   "base.viafabricplus.via_translates_to": "轉換為：%s",
   "base.viafabricplus.server_version": "伺服器版本：%s",
   "base.viafabricplus.auto": "自動",
-  "base.viafabricplus.set_version_for_this_server": "設定這個伺服器的版本",
+  "base.viafabricplus.set_version": "設定這個伺服器的版本",
   "base.viafabricplus.vanilla_and_modded": "原版和模組",
   "base.viafabricplus.vanilla_only": "僅原版",
   "base.viafabricplus.kick": "踢出",

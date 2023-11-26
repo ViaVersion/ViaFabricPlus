@@ -29,10 +29,10 @@ import net.minecraft.util.Formatting;
 
 import java.awt.*;
 
-public class ProtocolSyncBooleanSettingRenderer extends VFPListEntry {
+public class VersionedBooleanSettingRenderer extends VFPListEntry {
     private final VersionedBooleanSetting value;
 
-    public ProtocolSyncBooleanSettingRenderer(VersionedBooleanSetting value) {
+    public VersionedBooleanSettingRenderer(VersionedBooleanSetting value) {
         this.value = value;
     }
 

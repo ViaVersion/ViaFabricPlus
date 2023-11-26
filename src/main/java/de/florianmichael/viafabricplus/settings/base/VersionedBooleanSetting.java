@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.settings.base;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.screen.base.VFPListEntry;
-import de.florianmichael.viafabricplus.screen.settings.ProtocolSyncBooleanSettingRenderer;
+import de.florianmichael.viafabricplus.screen.settings.VersionedBooleanSettingRenderer;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.text.MutableText;
 import net.raphimc.vialoader.util.VersionRange;
@@ -41,7 +41,7 @@ public class VersionedBooleanSetting extends AbstractSetting<Integer> {
 
     @Override
     public VFPListEntry makeSettingRenderer() {
-        return new ProtocolSyncBooleanSettingRenderer(this);
+        return new VersionedBooleanSettingRenderer(this);
     }
 
     @Override

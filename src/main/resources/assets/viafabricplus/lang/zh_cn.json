@@ -18,7 +18,7 @@
   "base.viafabricplus.via_translates_to": "连接所用版本：%s",
   "base.viafabricplus.server_version": "服务器版本：%s",
   "base.viafabricplus.auto": "自动",
-  "base.viafabricplus.set_version_for_this_server": "更改当前服务器版本",
+  "base.viafabricplus.set_version": "更改当前服务器版本",
   "base.viafabricplus.vanilla_and_modded": "原版和模组",
   "base.viafabricplus.vanilla_only": "仅原版",
   "base.viafabricplus.kick": "踢出",

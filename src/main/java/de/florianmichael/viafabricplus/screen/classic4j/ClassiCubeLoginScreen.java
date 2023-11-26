@@ -38,17 +38,15 @@ import net.minecraft.text.Text;
 public class ClassiCubeLoginScreen extends VFPScreen {
     public static final ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
 
-    private static final String CLASSI_CUBE_URL = "https://www.classicube.net/";
-
     public ClassiCubeLoginScreen() {
-        super("ClassiCube Login", false);
+        super("ClassiCube Login", true);
     }
 
     @Override
     public void open(Screen prevScreen) {
         this.setupSubtitle(
                 Text.translatable("classicube.viafabricplus.account"),
-                ConfirmLinkScreen.opening(CLASSI_CUBE_URL, this, true)
+                ConfirmLinkScreen.opening(ClassiCubeHandler.CLASSICUBE_ROOT_URI.toString(), this, true)
         );
         super.open(prevScreen);
     }
@@ -106,14 +104,16 @@ public class ClassiCubeLoginScreen extends VFPScreen {
 
     @Override
     public void close() {
+        // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
+        ViaFabricPlus.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
         MainScreen.INSTANCE.open(prevScreen);
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
+        this.renderTitle(context);
 
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
-        this.renderSubtitle(context);
     }
 }

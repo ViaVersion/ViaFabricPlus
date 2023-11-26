@@ -1,7 +1,7 @@
 {
   "modmenu.descriptionTranslation.viafabricplus": "Fabric mod, mellyel MINDEN Minecraft szerververzióhoz (Release, Beta, Alpha, Classic, Snapshotok, Bedrock) csatlakozhatsz, életminőségi javításokkal a játékmenethez",
 
-  "base.viafabricplus.set_version_for_this_server": "Verzió beállítása erre a szerverre",
+  "base.viafabricplus.set_version": "Verzió beállítása erre a szerverre",
   "base.viafabricplus.auto": "Auto",
   "base.viafabricplus.cancel": "Mégse",
   "base.viafabricplus.cancel_and_reset": "Mégse és visszaállítás",

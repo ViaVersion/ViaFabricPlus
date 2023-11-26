@@ -53,7 +53,6 @@ import java.io.File;
  *  - Boats are probably broken. Check entity height offset fix
  *  - Check TO DO in MixinEntity
  *  - Diff ItemRegistryDiff from projects and add missing items
- *  - Fix third party implementations properly
  */
 public class ViaFabricPlus {
     private static final ViaFabricPlus instance = new ViaFabricPlus();

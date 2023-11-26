@@ -23,7 +23,7 @@ At the time of writing, VFP is the only protocol translation platform for the cl
 - Bedrock (1.20.0)
 
 # For users
-### Detailed instructions for use are available [here](.github/USAGE.md)
+### Detailed instructions for use are available [here](documentation/USAGE.md)
 ### If you encounter any issues, please report them on the [issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues) or on the ViaVersion [Discord](https://discord.gg/viaversion)
 
 ## Known incompatibilities
@@ -135,7 +135,7 @@ dependencies {
 </dependencies>
 ```
 
-### To learn more about the API and about addons, you can simply click [here](.github/DEVELOPER_API.md)
+### To learn more about the API and about addons, you can simply click [here](documentation/DEVELOPER_API.md)
 
 ## Disclaimer
 
