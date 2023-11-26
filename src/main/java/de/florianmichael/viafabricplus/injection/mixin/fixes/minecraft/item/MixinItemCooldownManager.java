@@ -32,7 +32,7 @@ public abstract class MixinItemCooldownManager {
 
     @Inject(method = "set", at = @At("HEAD"), cancellable = true)
     private void dontSetCooldown(Item item, int duration, CallbackInfo ci) {
-        if (DebugSettings.INSTANCE.removeCooldowns.isEnabled()) {
+        if (DebugSettings.global().removeCooldowns.isEnabled()) {
             ci.cancel();
         }
     }

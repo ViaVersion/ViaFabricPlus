@@ -24,7 +24,7 @@ import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
 import net.minecraft.text.Text;
 
 public class AuthenticationSettings extends SettingGroup {
-    public static final AuthenticationSettings INSTANCE = new AuthenticationSettings();
+    private static final AuthenticationSettings instance = new AuthenticationSettings();
 
     public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.use_beta_craft_authentication"), true);
     public final BooleanSetting verifySessionForOnlineModeServers = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.verify_session_for_online_mode"), true);
@@ -33,5 +33,9 @@ public class AuthenticationSettings extends SettingGroup {
 
     public AuthenticationSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.authentication"));
+    }
+
+    public static AuthenticationSettings global() {
+        return instance;
     }
 }

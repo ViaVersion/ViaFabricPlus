@@ -126,7 +126,7 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))
     private boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
-        return instance.isSecureChatEnforced() || VisualSettings.INSTANCE.disableSecureChatWarning.isEnabled();
+        return instance.isSecureChatEnforced() || VisualSettings.global().disableSecureChatWarning.isEnabled();
     }
 
     @Redirect(method = "onSynchronizeRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/SynchronizeRecipesS2CPacket;getRecipes()Ljava/util/List;"))

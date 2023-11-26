@@ -50,7 +50,7 @@ public abstract class MixinHeldItemRenderer {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             matrices.translate(-0.1F, 0.05F, 0.0F);
 
-            if (VisualSettings.INSTANCE.blockHitAnimation.isEnabled()) {
+            if (VisualSettings.global().blockHitAnimation.isEnabled()) {
                 final var arm = (hand == Hand.MAIN_HAND) ? player.getMainArm() : player.getMainArm().getOpposite();
                 applySwingOffset(matrices, arm, swingProgress);
             }

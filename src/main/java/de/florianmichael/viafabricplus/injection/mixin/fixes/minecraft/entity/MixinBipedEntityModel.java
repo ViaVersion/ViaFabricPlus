@@ -40,7 +40,7 @@ public abstract class MixinBipedEntityModel<T extends LivingEntity> {
 
 	@Inject(method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/model/ModelPart;roll:F", ordinal = 1, shift = At.Shift.AFTER))
 	private void addOldWalkAnimation(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
-		if (VisualSettings.INSTANCE.oldWalkingAnimation.isEnabled()) {
+		if (VisualSettings.global().oldWalkingAnimation.isEnabled()) {
 			this.rightArm.pitch = MathHelper.cos(f * 0.6662F + 3.1415927F) * 2.0F * g;
 			this.rightArm.roll = (MathHelper.cos(f * 0.2312F) + 1.0F) * 1.0F * g;
 

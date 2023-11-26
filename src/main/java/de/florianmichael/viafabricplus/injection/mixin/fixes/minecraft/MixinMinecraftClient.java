@@ -113,7 +113,7 @@ public abstract class MixinMinecraftClient {
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
             ordinal = 4, shift = At.Shift.BEFORE))
     private void injectTick(CallbackInfo ci) {
-        if (!DebugSettings.INSTANCE.executeInputsInSync.isEnabled()) {
+        if (!DebugSettings.global().executeInputsInSync.isEnabled()) {
             return;
         }
 
@@ -127,7 +127,7 @@ public abstract class MixinMinecraftClient {
 
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasRidingInventory()Z"))
     private void onInventoryKeyPressed(CallbackInfo ci) {
-        if (getNetworkHandler() != null && DebugSettings.INSTANCE.sendOpenInventoryPacket.isEnabled()) {
+        if (getNetworkHandler() != null && DebugSettings.global().sendOpenInventoryPacket.isEnabled()) {
             final UserConnection userConnection = ProtocolHack.getPlayNetworkUserConnection();
 
             if (userConnection != null && userConnection.getProtocolInfo().getPipeline().contains(Protocol1_12To1_11_1.class)) {

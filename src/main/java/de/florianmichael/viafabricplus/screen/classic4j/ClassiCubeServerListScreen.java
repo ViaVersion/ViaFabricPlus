@@ -139,7 +139,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
             final ServerInfo entry = new ServerInfo(classiCubeServerInfo.name(), serverAddress.getAddress(), ServerInfo.ServerType.OTHER);
             ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = classiCubeServerInfo.mpPass();
 
-            if (AuthenticationSettings.INSTANCE.automaticallySelectCPEInClassiCubeServerList.getValue()) {
+            if (AuthenticationSettings.global().automaticallySelectCPEInClassiCubeServerList.getValue()) {
                 ((IServerInfo) entry).viaFabricPlus$forceVersion(VersionEnum.c0_30cpe);
             }
 

@@ -53,7 +53,7 @@ public abstract class MixinMerchantScreen extends HandledScreen<MerchantScreenHa
 
     @Inject(method = "syncRecipeIndex", at = @At("HEAD"))
     private void smoothOutRecipeIndex(CallbackInfo ci) {
-        if (DebugSettings.INSTANCE.smoothOutMerchantScreens.isEnabled()) {
+        if (DebugSettings.global().smoothOutMerchantScreens.isEnabled()) {
             if (viaFabricPlus$previousRecipeIndex != selectedIndex) {
                 int direction = viaFabricPlus$previousRecipeIndex < selectedIndex ? 1 : -1;
                 for (int smooth = viaFabricPlus$previousRecipeIndex + direction /* don't send the page we already are on */; smooth != selectedIndex; smooth += direction) {

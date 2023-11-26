@@ -26,7 +26,7 @@ import net.minecraft.text.Text;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class DebugSettings extends SettingGroup {
-    public static final DebugSettings INSTANCE = new DebugSettings();
+    private static final DebugSettings instance = new DebugSettings();
 
     // 1.19 -> 1.18.2
     public final VersionedBooleanSetting disableSequencing = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.disable_sequencing"), VersionRange.andOlder(VersionEnum.r1_18_2));
@@ -56,4 +56,9 @@ public class DebugSettings extends SettingGroup {
     public DebugSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.debug"));
     }
+
+    public static DebugSettings global() {
+        return instance;
+    }
+
 }

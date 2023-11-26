@@ -32,7 +32,7 @@ public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
 
     @Override
     public void sendAuthRequest(UserConnection user, String serverId) throws Throwable {
-        if (!AuthenticationSettings.INSTANCE.verifySessionForOnlineModeServers.getValue()) return;
+        if (!AuthenticationSettings.global().verifySessionForOnlineModeServers.getValue()) return;
 
         try {
             final var mc = MinecraftClient.getInstance();

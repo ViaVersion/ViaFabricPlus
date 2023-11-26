@@ -35,10 +35,10 @@ public class SettingsManager {
 
         addGroup(
                 GeneralSettings.global(),
-                BedrockSettings.INSTANCE,
-                AuthenticationSettings.INSTANCE,
-                VisualSettings.INSTANCE,
-                DebugSettings.INSTANCE
+                BedrockSettings.global(),
+                AuthenticationSettings.global(),
+                VisualSettings.global(),
+                DebugSettings.global()
         );
 
         RegisterSettingsCallback.EVENT.invoker().onInitializeSettings(RegisterSettingsCallback.State.POST);

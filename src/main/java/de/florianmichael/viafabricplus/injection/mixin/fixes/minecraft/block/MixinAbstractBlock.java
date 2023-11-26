@@ -35,7 +35,7 @@ public abstract class MixinAbstractBlock {
 
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
     private void changeMiningSpeedCalculation(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-        if (DebugSettings.INSTANCE.legacyMiningSpeeds.isEnabled()) {
+        if (DebugSettings.global().legacyMiningSpeeds.isEnabled()) {
             final float hardness = state.getHardness(world, pos);
             if (hardness == -1.0F) {
                 cir.setReturnValue(0.0F);

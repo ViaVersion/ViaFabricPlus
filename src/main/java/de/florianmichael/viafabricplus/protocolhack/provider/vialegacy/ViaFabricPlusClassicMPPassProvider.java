@@ -37,7 +37,7 @@ public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
             return classiCubeMPPass;
         }
 
-        if (AuthenticationSettings.INSTANCE.useBetaCraftAuthentication.getValue()) {
+        if (AuthenticationSettings.global().useBetaCraftAuthentication.getValue()) {
             final var handshakeStorage = user.get(HandshakeStorage.class);
             if (handshakeStorage == null) {
                 return super.getMpPass(user);

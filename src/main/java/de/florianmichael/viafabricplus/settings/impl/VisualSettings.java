@@ -26,7 +26,7 @@ import net.minecraft.text.Text;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class VisualSettings extends SettingGroup {
-    public static final VisualSettings INSTANCE = new VisualSettings();
+    private static final VisualSettings instance = new VisualSettings();
 
     // 1.19.2 -> 1.19
     public final VersionedBooleanSetting disableSecureChatWarning = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.disable_secure_chat_warning"), VersionRange.andOlder(VersionEnum.r1_19));
@@ -62,4 +62,9 @@ public class VisualSettings extends SettingGroup {
     public VisualSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.visual"));
     }
+
+    public static VisualSettings global() {
+        return instance;
+    }
+
 }

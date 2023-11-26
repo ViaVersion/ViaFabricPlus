@@ -90,7 +90,7 @@ public abstract class MixinFontStorage {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             if (viaFabricPlus$isForbiddenCharacter(font, codePoint)) cir.setReturnValue(FontStorage.GlyphPair.MISSING);
 
-            if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled() && cir.getReturnValue() == FontStorage.GlyphPair.MISSING) {
+            if (VisualSettings.global().changeFontRendererBehaviour.isEnabled() && cir.getReturnValue() == FontStorage.GlyphPair.MISSING) {
                 cir.setReturnValue(new FontStorage.GlyphPair(BuiltinEmptyGlyph1_12_2.VERY_MISSING, BuiltinEmptyGlyph1_12_2.VERY_MISSING));
             }
         }
@@ -103,7 +103,7 @@ public abstract class MixinFontStorage {
         if (!viaFabricPlus$obfuscation && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             if (viaFabricPlus$isForbiddenCharacter(font, codePoint)) cir.setReturnValue(this.blankGlyphRenderer);
 
-            if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled() && cir.getReturnValue() == this.blankGlyphRenderer) {
+            if (VisualSettings.global().changeFontRendererBehaviour.isEnabled() && cir.getReturnValue() == this.blankGlyphRenderer) {
                 cir.setReturnValue(BuiltinEmptyGlyph1_12_2.VERY_MISSING.bake(this::getGlyphRenderer));
             }
         }

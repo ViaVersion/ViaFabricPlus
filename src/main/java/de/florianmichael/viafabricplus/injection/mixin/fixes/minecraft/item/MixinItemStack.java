@@ -64,7 +64,7 @@ public abstract class MixinItemStack implements IItemStack {
     @SuppressWarnings({"InvalidInjectorMethodSignature", "MixinAnnotationTarget"})
     @ModifyVariable(method = "getAttributeModifiers", ordinal = 0, at = @At(value = "STORE", ordinal = 1))
     private Multimap<EntityAttribute, EntityAttributeModifier> modifyVariableGetAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> modifiers) {
-        if (!DebugSettings.INSTANCE.replaceAttributeModifiers.isEnabled() || modifiers.isEmpty()) return modifiers;
+        if (!DebugSettings.global().replaceAttributeModifiers.isEnabled() || modifiers.isEmpty()) return modifiers;
 
         modifiers = HashMultimap.create(modifiers);
         modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);

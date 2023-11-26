@@ -40,7 +40,7 @@ import java.net.URISyntaxException;
 import java.util.concurrent.CompletableFuture;
 
 public class BedrockSettings extends SettingGroup {
-    public static final BedrockSettings INSTANCE = new BedrockSettings();
+    private static final BedrockSettings instance = new BedrockSettings();
 
     public final ButtonSetting _1 = new ButtonSetting(this, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> CompletableFuture.runAsync(this::openBedrockAccountLogin)) {
         
@@ -88,5 +88,9 @@ public class BedrockSettings extends SettingGroup {
             VFPScreen.showErrorScreen("Microsoft Bedrock Login", e, prevScreen);
         }
     }
-    
+
+    public static BedrockSettings global() {
+        return instance;
+    }
+
 }

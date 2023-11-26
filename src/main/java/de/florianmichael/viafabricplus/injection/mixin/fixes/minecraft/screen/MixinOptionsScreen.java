@@ -41,7 +41,7 @@ public abstract class MixinOptionsScreen extends Screen {
 
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/Widget;)Lnet/minecraft/client/gui/widget/Widget;", ordinal = 10, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     private void showSuperSecretSettings(CallbackInfo ci, GridWidget gridWidget, GridWidget.Adder adder) {
-        if (VisualSettings.INSTANCE.showSuperSecretSettings.isEnabled() && MinecraftClient.getInstance().player != null) {
+        if (VisualSettings.global().showSuperSecretSettings.isEnabled() && MinecraftClient.getInstance().player != null) {
             this.addDrawableChild(ButtonWidget.builder(Text.literal("Super Secret Settings..."), button -> MinecraftClient.getInstance().gameRenderer.cycleSuperSecretSetting()).dimensions(this.width / 2 + 5, this.height / 6 + 18, 150, 20).build());
         }
     }

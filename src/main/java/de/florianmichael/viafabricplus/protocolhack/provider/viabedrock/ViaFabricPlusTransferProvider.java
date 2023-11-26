@@ -39,7 +39,7 @@ public class ViaFabricPlusTransferProvider extends TransferProvider {
     public void connectToServer(UserConnection user, InetSocketAddress newAddress) {
         final var mc = MinecraftClient.getInstance();
         mc.execute(() -> {
-            if (BedrockSettings.INSTANCE.openPromptGUIToConfirmTransfer.getValue()) {
+            if (BedrockSettings.global().openPromptGUIToConfirmTransfer.getValue()) {
                 mc.setScreen(new ConfirmScreen(
                         (bl) -> {
                             if (bl)
