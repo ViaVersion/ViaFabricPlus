@@ -24,6 +24,7 @@ import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.save.SaveManager;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
+import net.fabricmc.loader.api.FabricLoader;
 import de.florianmichael.viafabricplus.util.ClassLoaderPriorityUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,7 +61,7 @@ public class ViaFabricPlus {
     private static final ViaFabricPlus instance = new ViaFabricPlus();
 
     private final Logger logger = LogManager.getLogger("ViaFabricPlus");
-    private final File directory = new File("ViaFabricPlus");
+    private final File directory = FabricLoader.getInstance().getConfigDir().resolve("viafabricplus").toFile();
 
     private SettingsManager settingsManager;
     private SaveManager saveManager;
