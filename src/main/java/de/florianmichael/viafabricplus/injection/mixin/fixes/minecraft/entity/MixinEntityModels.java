@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.google.common.collect.ImmutableMap;
-import de.florianmichael.viafabricplus.fixes.boat.BoatModel_1_8;
+import de.florianmichael.viafabricplus.fixes.boat.BoatModel1_8;
 import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModels;
@@ -33,7 +33,7 @@ public abstract class MixinEntityModels {
 
     @ModifyVariable(method = "getModels", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
     private static ImmutableMap.Builder<EntityModelLayer, TexturedModelData> addBoatModel(ImmutableMap.Builder<EntityModelLayer, TexturedModelData> builder) {
-        return builder.put(BoatModel_1_8.MODEL_LAYER, BoatModel_1_8.getTexturedModelData());
+        return builder.put(BoatModel1_8.MODEL_LAYER, BoatModel1_8.getTexturedModelData());
     }
 
 }

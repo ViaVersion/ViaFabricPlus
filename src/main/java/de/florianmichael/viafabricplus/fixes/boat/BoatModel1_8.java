@@ -26,11 +26,11 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.util.Identifier;
 
-public class BoatModel_1_8 extends CompositeEntityModel<BoatEntity> {
-    public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(new Identifier("viafabricplus", "boat_1_8"), "main");
+public class BoatModel1_8 extends CompositeEntityModel<BoatEntity> {
+    public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(new Identifier("viafabricplus", "boat1_8"), "main");
     private final ImmutableList<ModelPart> parts;
 
-    public BoatModel_1_8(ModelPart root) {
+    public BoatModel1_8(ModelPart root) {
         this.parts = ImmutableList.of(root.getChild("bottom"), root.getChild("back"), root.getChild("front"), root.getChild("right"), root.getChild("left"));
     }
 
