@@ -25,13 +25,16 @@ import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.fixes.classic.screen.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
+import net.lenni0451.reflect.stream.RStream;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
 import net.minecraft.network.PacketByteBuf;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialoader.util.VersionEnum;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -96,6 +99,12 @@ public class ClientsideFixes {
                 currentChatLength = Short.MAX_VALUE * 2;
             }
         });
+
+        // Force unload some FabricAPI mixins because FabricAPI overwrites some of the elytra code
+        final Set<String> loadedMixins = RStream.of("org.spongepowered.asm.mixin.transformer.MixinConfig").fields().by("globalMixinList").get();
+        Collections.addAll(loadedMixins, "net.fabricmc.fabric.mixin.client.entity.event.elytra.ClientPlayerEntityMixin",
+                "net.fabricmc.fabric.mixin.entity.event.elytra.LivingEntityMixin",
+                "net.fabricmc.fabric.mixin.entity.event.elytra.PlayerEntityMixin");
     }
 
     /**
