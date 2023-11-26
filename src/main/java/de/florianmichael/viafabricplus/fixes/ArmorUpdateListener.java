@@ -19,40 +19,51 @@
 
 package de.florianmichael.viafabricplus.fixes;
 
+import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.ArmorType;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.ClientboundPackets1_9;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.Protocol1_9To1_8;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 
+import java.util.UUID;
+
 public class ArmorUpdateListener {
+
+    private static final UUID ARMOR_POINTS_UUID = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
+
+    private static double oldArmor = 0;
 
     public static void init() {
         ClientTickEvents.START_WORLD_TICK.register(world -> {
             if (MinecraftClient.getInstance().player != null) {
-                try {
-                    sendArmorUpdate();
-                } catch (Throwable t) {
-                    ViaFabricPlus.global().getLogger().error("Error sending armor update", t);
+                final UserConnection userConnection = ((IClientConnection) MinecraftClient.getInstance().getNetworkHandler().getConnection()).viaFabricPlus$getUserConnection();
+                if (userConnection != null) {
+                    try {
+                        sendArmorUpdate(userConnection);
+                    } catch (Throwable t) {
+                        ViaFabricPlus.global().getLogger().error("Error sending armor update", t);
+                    }
                 }
             }
         });
     }
 
-    public static void sendArmorUpdate() throws Exception {
+    public static void sendArmorUpdate(final UserConnection userConnection) throws Exception {
         int armor = 0;
         for (final ItemStack stack : MinecraftClient.getInstance().player.getInventory().armor) {
             armor += ArmorType.findByType(Registries.ITEM.getId(stack.getItem()).toString()).getArmorPoints();
         }
-        if (armor == this.oldArmor) return;
+        if (armor == oldArmor) return;
 
-        this.oldArmor = armor;
-        final PacketWrapper properties = PacketWrapper.create(ClientboundPackets1_9.ENTITY_PROPERTIES, MinecraftClient.getInstance().getNetworkHandler().getConnection().getUserConnection());
+        oldArmor = armor;
+        final PacketWrapper properties = PacketWrapper.create(ClientboundPackets1_9.ENTITY_PROPERTIES, userConnection);
         properties.write(Type.VAR_INT, MinecraftClient.getInstance().player.getId());
         properties.write(Type.INT, 1);
         properties.write(Type.STRING, "generic.armor");
