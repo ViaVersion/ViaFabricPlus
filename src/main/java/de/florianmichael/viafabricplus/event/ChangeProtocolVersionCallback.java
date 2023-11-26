@@ -29,11 +29,11 @@ import net.raphimc.vialoader.util.VersionEnum;
  */
 public interface ChangeProtocolVersionCallback {
 
-    Event<ChangeProtocolVersionCallback> EVENT = EventFactory.createArrayBacked(ChangeProtocolVersionCallback.class, listeners -> version -> {
+    Event<ChangeProtocolVersionCallback> EVENT = EventFactory.createArrayBacked(ChangeProtocolVersionCallback.class, listeners -> (oldVersion, newVersion) -> {
         for (ChangeProtocolVersionCallback listener : listeners) {
-            listener.onChangeProtocolVersion(version);
+            listener.onChangeProtocolVersion(oldVersion, newVersion);
         }
     });
 
-    void onChangeProtocolVersion(final VersionEnum protocolVersion);
+    void onChangeProtocolVersion(final VersionEnum oldVersion, final VersionEnum newVersion);
 }

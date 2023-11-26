@@ -140,7 +140,9 @@ public class ProtocolHack {
 
         final VersionEnum oldVersion = targetVersion;
         targetVersion = newVersion;
-        if (oldVersion != newVersion) ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(targetVersion);
+        if (oldVersion != newVersion) {
+            ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(oldVersion, targetVersion);
+        }
     }
 
     /**
