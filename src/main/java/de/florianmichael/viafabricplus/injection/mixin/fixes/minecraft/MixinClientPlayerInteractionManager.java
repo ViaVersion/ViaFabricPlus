@@ -134,7 +134,7 @@ public abstract class MixinClientPlayerInteractionManager {
             try {
                 clickSlotPacket.sendToServer(Protocol1_17To1_16_4.class);
             } catch (Exception e) {
-                ViaFabricPlus.LOGGER.error("Failed to send Click Slot Packet", e);
+                ViaFabricPlus.global().getLogger().error("Failed to send Click Slot Packet", e);
             }
 
             viaFabricPlus$oldCursorStack = null;

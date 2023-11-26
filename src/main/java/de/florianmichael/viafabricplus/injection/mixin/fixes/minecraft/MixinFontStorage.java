@@ -19,8 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.fixes.model.BuiltinEmptyGlyph1_12_2;
-import de.florianmichael.viafabricplus.mappings.CharacterMappings;
+import de.florianmichael.viafabricplus.injection.reference.BuiltinEmptyGlyph1_12_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.font.*;
@@ -36,6 +35,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +61,8 @@ public abstract class MixinFontStorage {
 
     @Inject(method = "setFonts", at = @At("HEAD"))
     private void trackForbiddenCharacters(List<Font> fonts, CallbackInfo ci) {
-        viaFabricPlus$forbiddenCharacters = CharacterMappings.getForbiddenCharactersForID(this.id);
+//        viaFabricPlus$forbiddenCharacters = CharacterMappings.getForbiddenCharactersForID(this.id);
+        viaFabricPlus$forbiddenCharacters = new HashMap<>(); // TODO | Fix
     }
 
     @Unique

@@ -22,9 +22,9 @@ package de.florianmichael.viafabricplus.screen.classic4j;
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
-import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
-import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
+import de.florianmichael.viafabricplus.screen.base.VFPListEntry;
+import de.florianmichael.viafabricplus.screen.base.VFPScreen;
+import de.florianmichael.viafabricplus.screen.settings.TitleRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -58,7 +58,7 @@ public class BetaCraftScreen extends VFPScreen {
     protected void init() {
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, (textRenderer.fontHeight + 2) * 3));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("misc.viafabricplus.reset"), button -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.reset"), button -> {
             SERVER_LIST = null;
             client.setScreen(prevScreen);
         }).position(width - 98 - 5, 5).size(98, 20).build());
@@ -74,7 +74,7 @@ public class BetaCraftScreen extends VFPScreen {
         this.renderTitle(context);
     }
 
-    public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {
+    public static class SlotList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
@@ -101,7 +101,7 @@ public class BetaCraftScreen extends VFPScreen {
         }
     }
 
-    public static class ServerSlot extends MappedSlotEntry {
+    public static class ServerSlot extends VFPListEntry {
         private final BCServerInfoSpec server;
 
         public ServerSlot(BCServerInfoSpec server) {
@@ -128,7 +128,7 @@ public class BetaCraftScreen extends VFPScreen {
             context.drawCenteredTextWithShadow(textRenderer, server.name() + Formatting.DARK_GRAY + " [" + server.connectVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
             if (server.onlineMode()) {
-                context.drawTextWithShadow(textRenderer, Text.translatable("misc.viafabricplus.online").formatted(Formatting.GREEN), 1, 1, -1);
+                context.drawTextWithShadow(textRenderer, Text.translatable("base.viafabricplus.online_mode").formatted(Formatting.GREEN), 1, 1, -1);
             }
             final String playerText = server.playerCount() + "/" + server.playerLimit();
             context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 152 */ - 1, 1, -1);

@@ -19,45 +19,49 @@
 
 package de.florianmichael.viafabricplus.settings.impl;
 
-import de.florianmichael.viafabricplus.settings.SettingGroup;
-import de.florianmichael.viafabricplus.settings.type.BooleanSetting;
-import de.florianmichael.viafabricplus.settings.type.ModeSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
+import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
+import de.florianmichael.viafabricplus.settings.base.ModeSetting;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
 public class GeneralSettings extends SettingGroup {
-    public static final GeneralSettings INSTANCE = new GeneralSettings();
+    private static final GeneralSettings instance = new GeneralSettings();
 
-    public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.multiplayerscreenbutton"), 1,
-            Text.translatable("misc.viafabricplus.lt"),
-            Text.translatable("misc.viafabricplus.rt"),
-            Text.translatable("misc.viafabricplus.lb"),
-            Text.translatable("misc.viafabricplus.rb")
+    public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.multiplayer_screen_button_orientation"), 1,
+            Text.translatable("base.viafabricplus.left_top"),
+            Text.translatable("base.viafabricplus.right_top"),
+            Text.translatable("base.viafabricplus.left_bottom"),
+            Text.translatable("base.viafabricplus.right_bottom")
     );
-    public final ModeSetting addServerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general.viafabricplus.addserverscreenbutton"), 1,
-            Text.translatable("misc.viafabricplus.lt"),
-            Text.translatable("misc.viafabricplus.rt"),
-            Text.translatable("misc.viafabricplus.lb"),
-            Text.translatable("misc.viafabricplus.rb")
+    public final ModeSetting addServerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.add_server_screen_button_orientation"), 1,
+            Text.translatable("base.viafabricplus.left_top"),
+            Text.translatable("base.viafabricplus.right_top"),
+            Text.translatable("base.viafabricplus.left_bottom"),
+            Text.translatable("base.viafabricplus.right_bottom")
     );
-    public final ModeSetting removeNotAvailableItemsFromCreativeTab = new ModeSetting(this, Text.translatable("general.viafabricplus.creative"),
-            Text.translatable("misc.viafabricplus.all"),
-            Text.translatable("misc.viafabricplus.vanillaonly"),
-            Text.translatable("misc.viafabricplus.off")
+    public final ModeSetting removeNotAvailableItemsFromCreativeTab = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.filter_creative_tabs"),
+            Text.translatable("base.viafabricplus.vanilla_and_modded"),
+            Text.translatable("base.viafabricplus.vanilla_only"),
+            Text.translatable("base.viafabricplus.off")
     );
-    public final BooleanSetting showSuperSecretSettings = new BooleanSetting(this, Text.translatable("general.viafabricplus.secret"), true);
-    public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, Text.translatable("general.viafabricplus.extrainformation"), true);
-    public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, Text.translatable("general.viafabricplus.classicloading"), true);
-    public final BooleanSetting autoDetectVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.autodetect"), false);
-    public final BooleanSetting showAdvertisedServerVersion = new BooleanSetting(this, Text.translatable("general.viafabricplus.advertised"), true);
-    public final ModeSetting ignorePacketTranslationErrors = new ModeSetting(this, Text.translatable("general.viafabricplus.ignoreerrors"),
-            Text.translatable("misc.viafabricplus.kick"),
-            Text.translatable("misc.viafabricplus.cancelnotify"),
-            Text.translatable("misc.viafabricplus.cancel")
+    public final BooleanSetting saveSelectedProtocolVersion = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.save_selected_protocol_version"), true);
+    public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.extra_information_in_debug_hud"), true);
+    public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.show_classic_loading_progress"), true);
+    public final BooleanSetting autoDetectVersion = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.auto_detect_version"), false);
+    public final BooleanSetting showAdvertisedServerVersion = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.show_advertised_server_version"), true);
+    public final ModeSetting ignorePacketTranslationErrors = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.ignore_packet_translation_errors"),
+            Text.translatable("base.viafabricplus.kick"),
+            Text.translatable("base.viafabricplus.cancel_and_notify"),
+            Text.translatable("base.viafabricplus.cancel")
     );
 
     public GeneralSettings() {
-        super(Text.translatable("settings.viafabricplus.general"));
+        super(Text.translatable("setting_group_name.viafabricplus.general"));
+    }
+
+    public static GeneralSettings global() {
+        return instance;
     }
 
     public static ButtonWidget.Builder withOrientation(final ButtonWidget.Builder builder, final int orientationIndex, final int width, final int height) {

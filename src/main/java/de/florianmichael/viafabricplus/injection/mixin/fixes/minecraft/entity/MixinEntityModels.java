@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.google.common.collect.ImmutableMap;
-import de.florianmichael.viafabricplus.fixes.model.BoatModel_1_8;
+import de.florianmichael.viafabricplus.fixes.boat.BoatModel_1_8;
 import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModels;

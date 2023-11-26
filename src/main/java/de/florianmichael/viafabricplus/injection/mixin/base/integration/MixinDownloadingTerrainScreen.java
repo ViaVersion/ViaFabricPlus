@@ -42,7 +42,7 @@ public abstract class MixinDownloadingTerrainScreen extends Screen {
 
     @Inject(method = "render", at = @At("RETURN"))
     private void renderClassicProgress(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (GeneralSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) {
+        if (GeneralSettings.global().showClassicLoadingProgressInConnectScreen.getValue()) {
             // Check if ViaVersion is translating
             final UserConnection connection = ProtocolHack.getPlayNetworkUserConnection();
 

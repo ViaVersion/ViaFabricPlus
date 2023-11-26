@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
-import de.florianmichael.viafabricplus.screen.common.ProtocolSelectionScreen;
+import de.florianmichael.viafabricplus.screen.MainScreen;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
@@ -41,10 +41,10 @@ public abstract class MixinMultiplayerScreen extends Screen {
     private void addProtocolSelectionButton(CallbackInfo ci) {
         // Create the button
         var builder = ButtonWidget.builder(Text.literal("ViaFabricPlus"), button ->
-                ProtocolSelectionScreen.INSTANCE.open(this)).size(98, 20);
+                MainScreen.INSTANCE.open(this)).size(98, 20);
 
         // Set the button's position according to the configured orientation
-        builder = GeneralSettings.withOrientation(builder, GeneralSettings.INSTANCE.multiplayerScreenButtonOrientation.getIndex(), width, height);
+        builder = GeneralSettings.withOrientation(builder, GeneralSettings.global().multiplayerScreenButtonOrientation.getIndex(), width, height);
 
         // Add the button to the screen
         this.addDrawableChild(builder.build());

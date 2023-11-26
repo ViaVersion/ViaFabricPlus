@@ -20,11 +20,10 @@
 package de.florianmichael.viafabricplus.screen.settings;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
-import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.settings.AbstractSetting;
-import de.florianmichael.viafabricplus.settings.SettingGroup;
-import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
+import de.florianmichael.viafabricplus.screen.base.VFPListEntry;
+import de.florianmichael.viafabricplus.screen.base.VFPScreen;
+import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -52,12 +51,12 @@ public class SettingsScreen extends VFPScreen {
         this.renderTitle(context);
     }
 
-    public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {
+    public static class SlotList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
-            for (SettingGroup group : ViaFabricPlus.INSTANCE.getSettingsSystem().getGroups()) {
+            for (SettingGroup group : ViaFabricPlus.global().getSettingsManager().getGroups()) {
                 this.addEntry(new TitleRenderer(group.getName()));
 
                 for (AbstractSetting<?> setting : group.getSettings()) {

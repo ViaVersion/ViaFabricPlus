@@ -24,8 +24,6 @@ import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_0;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_1;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.fixes.account.BedrockAccountHandler;
-import de.florianmichael.viafabricplus.fixes.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -85,9 +83,12 @@ public abstract class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V"))
     private void spoofUserName(ClientConnection instance, Packet<?> packet) {
-        if (AuthenticationSettings.INSTANCE.spoofUserNameIfUsingClassiCube.getValue() && ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null && ClassiCubeAccountHandler.INSTANCE.getAccount() != null) {
-            instance.send(new LoginHelloC2SPacket(ClassiCubeAccountHandler.INSTANCE.getAccount().username(), MinecraftClient.getInstance().getSession().getUuidOrNull()));
-            return;
+        if (AuthenticationSettings.INSTANCE.setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null) {
+            final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+            if (account != null) {
+                instance.send(new LoginHelloC2SPacket(account.username(), MinecraftClient.getInstance().getSession().getUuidOrNull()));
+                return;
+            }
         }
 
         instance.send(packet);
@@ -104,13 +105,13 @@ public abstract class MixinConnectScreen_1 {
         final VersionEnum targetVersion = VersionEnum.fromUserConnection(userConnection);
 
         if (targetVersion == VersionEnum.bedrockLatest) {
-            var bedrockSession = BedrockAccountHandler.INSTANCE.getBedrockSession();
+            var bedrockSession = ViaFabricPlus.global().getSaveManager().getAccountsSave().getBedrockAccount();
             if (bedrockSession == null) return;
 
             try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
                 bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.refresh(httpClient, bedrockSession);
             } catch (Exception e) {
-                ViaFabricPlus.LOGGER.error("Failed to refresh Bedrock chain data. Please re-login to Bedrock!", e);
+                ViaFabricPlus.global().getLogger().error("Failed to refresh Bedrock chain data. Please re-login to Bedrock!", e);
                 return;
             }
 
@@ -138,11 +139,11 @@ public abstract class MixinConnectScreen_1 {
                     if (legacyKey != null) {
                         userConnection.put(new ChatSession1_19_0(playerUuid, profile.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey)));
                     } else {
-                        ViaFabricPlus.LOGGER.error("Failed to fetch legacy key, can't setup ChatSession");
+                        ViaFabricPlus.global().getLogger().error("Failed to fetch legacy key, can't setup ChatSession");
                     }
                 }
             } else {
-                ViaFabricPlus.LOGGER.error("Failed to fetch keyPair, can't setup ChatSession");
+                ViaFabricPlus.global().getLogger().error("Failed to fetch keyPair, can't setup ChatSession");
             }
         }
     }

@@ -39,7 +39,7 @@ public class ViaFabricPlusTransferProvider extends TransferProvider {
     public void connectToServer(UserConnection user, InetSocketAddress newAddress) {
         final var mc = MinecraftClient.getInstance();
         mc.execute(() -> {
-            if (BedrockSettings.INSTANCE.confirmServerTransferInBedrockEdition.getValue()) {
+            if (BedrockSettings.INSTANCE.openPromptGUIToConfirmTransfer.getValue()) {
                 mc.setScreen(new ConfirmScreen(
                         (bl) -> {
                             if (bl)
@@ -48,7 +48,7 @@ public class ViaFabricPlusTransferProvider extends TransferProvider {
                                 MinecraftClient.getInstance().setScreen(null);
                         },
                         Text.of("ViaFabricPlus"),
-                        Text.translatable("bedrockplay.viafabricplus.confirmtransfer", newAddress.getHostName() + ":" + newAddress.getPort())
+                        Text.translatable("bedrock.viafabricplus.confirm_transfer_server_prompt", newAddress.getHostName() + ":" + newAddress.getPort())
                 ));
             } else {
                 connect(newAddress);

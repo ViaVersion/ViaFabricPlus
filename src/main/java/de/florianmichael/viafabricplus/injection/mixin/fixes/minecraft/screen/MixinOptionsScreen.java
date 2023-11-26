@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
@@ -40,8 +40,8 @@ public abstract class MixinOptionsScreen extends Screen {
     }
 
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/Widget;)Lnet/minecraft/client/gui/widget/Widget;", ordinal = 10, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void addValuesButton(CallbackInfo ci, GridWidget gridWidget, GridWidget.Adder adder) {
-        if (GeneralSettings.INSTANCE.showSuperSecretSettings.getValue() && MinecraftClient.getInstance().player != null) {
+    private void showSuperSecretSettings(CallbackInfo ci, GridWidget gridWidget, GridWidget.Adder adder) {
+        if (VisualSettings.INSTANCE.showSuperSecretSettings.isEnabled() && MinecraftClient.getInstance().player != null) {
             this.addDrawableChild(ButtonWidget.builder(Text.literal("Super Secret Settings..."), button -> MinecraftClient.getInstance().gameRenderer.cycleSuperSecretSetting()).dimensions(this.width / 2 + 5, this.height / 6 + 18, 150, 20).build());
         }
     }

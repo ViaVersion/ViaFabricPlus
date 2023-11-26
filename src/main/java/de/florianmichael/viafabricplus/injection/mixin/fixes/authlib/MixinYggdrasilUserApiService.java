@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.authlib;
 import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
-import de.florianmichael.viafabricplus.fixes.model.KeyPairResponse1_19_0;
+import de.florianmichael.viafabricplus.injection.reference.KeyPairResponse1_19_0;
 import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

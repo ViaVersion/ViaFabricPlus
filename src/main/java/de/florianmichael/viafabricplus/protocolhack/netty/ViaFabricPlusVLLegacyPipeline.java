@@ -21,7 +21,6 @@ package de.florianmichael.viafabricplus.protocolhack.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.protocolhack.netty.viaversion.ViaFabricPlusViaDecoder;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
@@ -49,7 +48,7 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
         if (evt.getClass().getName().equals("me.steinborn.krypton.mod.shared.misc.KryptonPipelineEvent")) {
             if (evt.toString().equals("COMPRESSION_ENABLED")) {
                 super.userEventTriggered(ctx, CompressionReorderEvent.INSTANCE);
-                ViaFabricPlus.LOGGER.info("Compression has been re-ordered after \"Krypton\"");
+                ViaFabricPlus.global().getLogger().info("Compression has been re-ordered after \"Krypton\"");
                 return;
             }
         }

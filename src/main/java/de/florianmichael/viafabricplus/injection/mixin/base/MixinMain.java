@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.event.LoadCallback;
 import net.minecraft.client.main.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,7 +32,9 @@ public abstract class MixinMain {
 
     @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;initCrashReport()V"))
     private static void bootstrap(CallbackInfo ci) {
-        ViaFabricPlus.INSTANCE.bootstrap();
+        LoadCallback.EVENT.invoker().onLoad(LoadCallback.State.PRE);
+        ViaFabricPlus.global().bootstrap();
+        LoadCallback.EVENT.invoker().onLoad(LoadCallback.State.POST);
     }
 
 }

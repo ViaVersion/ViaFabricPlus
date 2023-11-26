@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.screen.common.ForceVersionScreen;
+import de.florianmichael.viafabricplus.screen.PerServerVersionScreen;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -74,16 +74,16 @@ public abstract class MixinAddServerScreen extends Screen {
         }
 
         // Create the button
-        ButtonWidget.Builder buttonBuilder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("misc.viafabricplus.addserverscreenbuttontitle") : Text.literal(forcedVersion.getName()), button -> {
+        ButtonWidget.Builder buttonBuilder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("base.viafabricplus.set_version_for_this_server") : Text.literal(forcedVersion.getName()), button -> {
             // Store current input in case the user cancels the version selection
             viaFabricPlus$nameField = serverNameField.getText();
             viaFabricPlus$addressField = addressField.getText();
 
-            client.setScreen(new ForceVersionScreen(this, version -> ((IServerInfo) server).viaFabricPlus$forceVersion(version)));
+            client.setScreen(new PerServerVersionScreen(this, version -> ((IServerInfo) server).viaFabricPlus$forceVersion(version)));
         }).size(98, 20);
 
         // Set the button's position according to the configured orientation
-        buttonBuilder = GeneralSettings.withOrientation(buttonBuilder, GeneralSettings.INSTANCE.addServerScreenButtonOrientation.getIndex(), width, height);
+        buttonBuilder = GeneralSettings.withOrientation(buttonBuilder, GeneralSettings.global().addServerScreenButtonOrientation.getIndex(), width, height);
 
         // Add the button to the screen
         this.addDrawableChild(buttonBuilder.build());

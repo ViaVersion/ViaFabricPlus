@@ -46,14 +46,14 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
 
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;setMultiplayerScreenTooltip(Ljava/util/List;)V", ordinal = 0))
     private void drawTranslatingState(MultiplayerScreen instance, List<Text> tooltip, Operation<Void> original) {
-        if (GeneralSettings.INSTANCE.showAdvertisedServerVersion.getValue()) {
+        if (GeneralSettings.global().showAdvertisedServerVersion.getValue()) {
             final IServerInfo mixinServerInfo = ((IServerInfo) server);
 
             if (mixinServerInfo.viaFabricPlus$enabled()) {
                 final var versionEnum = VersionEnum.fromProtocolId(mixinServerInfo.viaFabricPlus$translatingVersion());
 
-                tooltip.add(Text.translatable("misc.viafabricplus.translate", versionEnum != VersionEnum.UNKNOWN ? versionEnum.getName() + " (" + versionEnum.getVersion() + ")" : mixinServerInfo.viaFabricPlus$translatingVersion()));
-                tooltip.add(Text.translatable("misc.viafabricplus.serverversion", server.version.getString() + " (" + server.protocolVersion + ")"));
+                tooltip.add(Text.translatable("base.viafabricplus.via_translates_to", versionEnum != VersionEnum.UNKNOWN ? versionEnum.getName() + " (" + versionEnum.getVersion() + ")" : mixinServerInfo.viaFabricPlus$translatingVersion()));
+                tooltip.add(Text.translatable("base.viafabricplus.server_version", server.version.getString() + " (" + server.protocolVersion + ")"));
             }
         }
 

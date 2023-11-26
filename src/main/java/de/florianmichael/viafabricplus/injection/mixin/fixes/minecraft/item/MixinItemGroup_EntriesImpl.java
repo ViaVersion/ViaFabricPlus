@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
+import de.florianmichael.viafabricplus.fixes.diff.ItemRegistryDiffPre1_20_2;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
@@ -39,14 +39,16 @@ public abstract class MixinItemGroup_EntriesImpl {
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isEnabled(Lnet/minecraft/resource/featuretoggle/FeatureSet;)Z"))
     private boolean removeUnknownItems(Item instance, FeatureSet featureSet) {
-        final var index = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
+        final var index = GeneralSettings.global().removeNotAvailableItemsFromCreativeTab.getIndex();
 
         if (index == 2 || MinecraftClient.getInstance().isInSingleplayer()) return instance.isEnabled(featureSet);
         if (index == 1 && !Registries.ITEM_GROUP.getId(this.group).getNamespace().equals("minecraft")) return instance.isEnabled(featureSet);
 
-        if (ItemReleaseVersionMappings.INSTANCE.getCurrentMap().contains(instance)) {
-            return instance.isEnabled(featureSet);
-        }
+        // TODO | Fix
+
+//        if (ItemRegistryDiffPre1_20_2.INSTANCE.getCurrentMap().contains(instance)) {
+//            return instance.isEnabled(featureSet);
+//        }
         return false;
     }
 

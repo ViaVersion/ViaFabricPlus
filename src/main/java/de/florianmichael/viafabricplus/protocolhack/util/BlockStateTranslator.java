@@ -55,7 +55,7 @@ public class BlockStateTranslator {
             wrapper.read(Type.POSITION1_14);
             return wrapper.read(Type.VAR_INT);
         } catch (Exception e) {
-            ViaFabricPlus.LOGGER.error("Failed to translate block state " + oldId + " to 1.18.2", e);
+            ViaFabricPlus.global().getLogger().error("Failed to translate block state " + oldId + " to 1.18.2", e);
         }
 
         return oldId;

@@ -22,9 +22,9 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
-import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.GameVersion;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.resource.ServerResourcePackProvider;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -50,7 +50,8 @@ public abstract class MixinServerResourcePackProvider {
 
     @Redirect(method = "getDownloadHeaders", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;getGameVersion()Lnet/minecraft/GameVersion;"))
     private static GameVersion editHeaders() {
-        return PackFormatsMappings.current();
+//        return PackFormatsMappings.current();
+        return SharedConstants.getGameVersion(); // TODO | Fix
     }
 
     @Inject(method = "getDownloadHeaders", at = @At("TAIL"), cancellable = true)

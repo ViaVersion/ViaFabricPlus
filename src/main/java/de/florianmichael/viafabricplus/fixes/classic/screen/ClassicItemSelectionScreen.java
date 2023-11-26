@@ -19,8 +19,7 @@
 
 package de.florianmichael.viafabricplus.fixes.classic.screen;
 
-import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.screen.VFPScreen;
+import de.florianmichael.viafabricplus.screen.base.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,17 +33,7 @@ import java.util.List;
 @SuppressWarnings("DataFlowIssue")
 public class ClassicItemSelectionScreen extends VFPScreen {
 
-    public static ClassicItemSelectionScreen INSTANCE;
-
-    public static void create() {
-        INSTANCE = new ClassicItemSelectionScreen();
-
-        ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> {
-            if (protocolVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
-                INSTANCE.reload(protocolVersion, false);
-            }
-        });
-    }
+    public static ClassicItemSelectionScreen INSTANCE = new ClassicItemSelectionScreen();
 
     private static final int MAX_ROW_DIVIDER = 9;
     private static final int ITEM_XY_BOX_DIMENSION_CLASSIC = 25;

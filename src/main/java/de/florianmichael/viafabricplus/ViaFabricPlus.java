@@ -19,21 +19,13 @@
 
 package de.florianmichael.viafabricplus;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
-import de.florianmichael.viafabricplus.event.PreLoadCallback;
+import de.florianmichael.viafabricplus.event.LoadCallback;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
-import de.florianmichael.viafabricplus.fixes.account.BedrockAccountHandler;
-import de.florianmichael.viafabricplus.fixes.account.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
-import de.florianmichael.viafabricplus.fixes.classic.screen.ClassicItemSelectionScreen;
-import de.florianmichael.viafabricplus.mappings.CharacterMappings;
-import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
-import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.util.ViaJarReplacer;
-import de.florianmichael.viafabricplus.settings.SettingsSystem;
+import de.florianmichael.viafabricplus.util.ClassLoaderPriorityUtil;
+import de.florianmichael.viafabricplus.save.SaveManager;
+import de.florianmichael.viafabricplus.settings.SettingsManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,13 +33,9 @@ import java.io.File;
 
 /*
  * TODO | General
+ *  - Make recipe fixes dynamic instead of a data dump in java classes
  *  - Check if relevant for protocol translation: TakeItemEntityPacket isEmpty case (1.20 -> 1.20.1 change)
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
- *  - Entity hit boxes and eye heights has changed in almost all versions
- *  - Block hardness / resistance has changed in almost all versions
- *  - Item properties: maxDamage and stackCount?
- *  - Recipes for <= 1.8 are broken
- *  - Supported character fix should cover all versions
  *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
  *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
  *  - Bedrock scaffolding should be added as soon as ViaBedrock supports block placement (see https://github.com/ViaVersion/ViaFabricPlus/issues/204)
@@ -58,12 +46,9 @@ import java.io.File;
  *  - Blit-jump is not supported in <= 1.8.9 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
  *
  * TODO | Migration v3
- *  - Make recipe fixes dynamic instead of a data dump in java classes
  *  - Rename all methods
- *  - Use ViaProxy config patch for some clientside fixes options (Remove ViaFabricPlusVLViaConfig)
+ *  - Use ViaProxy config patch for some clientside fixes options (Remove ViaFabricPlusVLViaConfig and MixinViaLegacyConfig)
  *  - Re-add Debug Hud information list
- *  - Recode config save base to support singleton Jsons
- *  - Rebase fixes package / change all packages
  *  - Fix auto detect to not be a huge mess
  *  - Fix MixinAbstractDonkeyEntity
  *  - Boats are probably broken. Check entity height offset fix
@@ -71,58 +56,48 @@ import java.io.File;
  *  - Sort injection methods in fixes package by version
  *  - Add setting for revertOnlyPlayerCramming
  *  - Add setting for MixinLockableContainerBlockEntity
+ *  - Diff ItemRegistryDiff from projects and add missing items
+ *  - Fix third party implementations properly
  */
 public class ViaFabricPlus {
+    private static final ViaFabricPlus instance = new ViaFabricPlus();
 
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public static final Logger LOGGER = LogManager.getLogger("ViaFabricPlus");
-    public static final File RUN_DIRECTORY = new File("ViaFabricPlus");
+    private final Logger logger = LogManager.getLogger("ViaFabricPlus");
+    private final File directory = new File("ViaFabricPlus");
 
-    public static final ViaFabricPlus INSTANCE = new ViaFabricPlus();
+    private SettingsManager settingsManager;
+    private SaveManager saveManager;
 
-    private final SettingsSystem settingsSystem = new SettingsSystem();
-
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void bootstrap() {
-        if (!RUN_DIRECTORY.exists()) {
-            RUN_DIRECTORY.mkdir();
-        }
+        directory.mkdir();
+        ClassLoaderPriorityUtil.loadOverridingJars(directory); // Load overriding jars first so other code can access the new classes
 
-        // Load overriding jars first so other code can access the new classes
-        ViaJarReplacer.loadOverridingJars();
+        ClientsideFixes.init(); // Init clientside related fixes
+        ProtocolHack.init(directory); // Init ViaVersion protocol translator platform
 
-        // PreLoad Callback (for example to register new protocols)
-        PreLoadCallback.EVENT.invoker().onLoad();
-
-        // Classic Stuff
-        CustomClassicProtocolExtensions.create();
-
-        // Account Handler
-        ClassiCubeAccountHandler.create();
-        BedrockAccountHandler.create();
-
-        // Fixes which requires to be loaded pre
-        ClientsideFixes.init();
-        CharacterMappings.load();
-
-        // Protocol Translator
-        ProtocolHack.initCommands();
-        ProtocolHack.init();
-
-        // Stuff which requires Minecraft to be initialized
-        PostGameLoadCallback.EVENT.register(() -> {
-            // Has to be loaded before the settings system in order to catch the ChangeProtocolVersionCallback call
-            ClassicItemSelectionScreen.create();
-
-            // General settings
-            settingsSystem.init();
-
-            // Version related mappings
-            PackFormatsMappings.load();
-            ItemReleaseVersionMappings.create();
-        });
+        settingsManager = new SettingsManager();
+        saveManager = new SaveManager(settingsManager);
+        PostGameLoadCallback.EVENT.register(saveManager::init); // Has to wait for Minecraft because of the translation system usages
     }
 
-    public SettingsSystem getSettingsSystem() {
-        return settingsSystem;
+    public static ViaFabricPlus global() {
+        return instance;
+    }
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public File getDirectory() {
+        return directory;
+    }
+
+    public SettingsManager getSettingsManager() {
+        return settingsManager;
+    }
+
+    public SaveManager getSaveManager() {
+        return saveManager;
     }
 }

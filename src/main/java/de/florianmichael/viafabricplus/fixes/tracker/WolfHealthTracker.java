@@ -43,11 +43,11 @@ public class WolfHealthTracker extends StoredObject {
 
     public static WolfHealthTracker get() {
         final var connection = ProtocolHack.getPlayNetworkUserConnection();
-        WolfHealthTracker tracker = connection.get(WolfHealthTracker.class);
-
+        var tracker = connection.get(WolfHealthTracker.class);
         if (tracker == null) {
             connection.put(tracker = new WolfHealthTracker(connection));
         }
+
         return tracker;
     }
 

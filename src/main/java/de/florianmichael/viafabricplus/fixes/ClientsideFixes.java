@@ -23,7 +23,9 @@ import com.viaversion.viaversion.protocols.protocol1_9to1_8.ArmorType;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
-import de.florianmichael.viafabricplus.injection.VFPMixinPlugin;
+import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.fixes.classic.screen.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -78,6 +80,8 @@ public class ClientsideFixes {
     private static int currentChatLimit = 256;
 
     public static void init() {
+        CustomClassicProtocolExtensions.create();
+
         PostGameLoadCallback.EVENT.register(() -> {
             // Loads the armor points of all armor items in legacy versions (<= 1.8.x)
             for (Item armorItem : Arrays.asList(Items.LEATHER_HELMET, Items.LEATHER_CHESTPLATE, Items.LEATHER_BOOTS,
@@ -104,7 +108,7 @@ public class ClientsideFixes {
         });
 
         // Reloads some clientside stuff when the protocol version changes
-        ChangeProtocolVersionCallback.EVENT.register(protocolVersion -> MinecraftClient.getInstance().execute(() -> {
+        ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
             if (MinecraftClient.getInstance() == null) return;
 
             // Reloads all bounding boxes
@@ -115,22 +119,26 @@ public class ClientsideFixes {
             }
 
             // Calculates the current chat limit, since it changes depending on the protocol version
-            if (protocolVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
+            if (newVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
                 currentChatLimit = 64 - (MinecraftClient.getInstance().getSession().getUsername().length() + 2);
-            } else if (protocolVersion.equals(VersionEnum.bedrockLatest)) {
+            } else if (newVersion.equals(VersionEnum.bedrockLatest)) {
                 currentChatLimit = 512;
-            } else if (protocolVersion.isOlderThanOrEqualTo(VersionEnum.r1_9_3tor1_9_4)) {
+            } else if (newVersion.isOlderThanOrEqualTo(VersionEnum.r1_9_3tor1_9_4)) {
                 currentChatLimit = 100;
             } else {
                 currentChatLimit = 256;
             }
 
-            if (!VFPMixinPlugin.DASH_LOADER_PRESENT) {
+            if (!ViaFabricPlusMixinPlugin.DASH_LOADER_PRESENT) {
                 // Reloads all font storages to fix the font renderer
                 for (FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
                     storage.glyphRendererCache.clear();
                     storage.glyphCache.clear();
                 }
+            }
+
+            if (newVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
+                ClassicItemSelectionScreen.INSTANCE.reload(newVersion, false);
             }
         }));
 

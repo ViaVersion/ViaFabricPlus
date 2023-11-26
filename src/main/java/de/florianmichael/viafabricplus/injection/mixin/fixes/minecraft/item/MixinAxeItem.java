@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.google.common.collect.ImmutableSet;
-import de.florianmichael.viafabricplus.fixes.Material1_19_4;
+import de.florianmichael.viafabricplus.fixes.diff.Material1_19_4;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

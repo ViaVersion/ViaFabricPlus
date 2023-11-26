@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "de.florianmichael.viafabricplus.injection.mixin",
   "compatibilityLevel": "JAVA_17",
-  "plugin": "de.florianmichael.viafabricplus.injection.VFPMixinPlugin",
+  "plugin": "de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin",
   "client": [
     "base.MixinMain",
     "base.connect.MixinClientConnection",
@@ -141,7 +141,6 @@
     "fixes.vialegacy.MixinExtensionProtocolMetadataStorage",
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
     "fixes.vialegacy.MixinProtocolc0_30toc0_30cpe",
-    "fixes.vialegacy.MixinViaLegacyConfig",
     "fixes.viaversion.MixinChatItemRewriter",
     "fixes.viaversion.MixinChunkType1_8",
     "fixes.viaversion.MixinCommandBlockProvider",

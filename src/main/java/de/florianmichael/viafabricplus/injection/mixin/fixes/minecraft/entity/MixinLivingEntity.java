@@ -21,7 +21,6 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import de.florianmichael.viafabricplus.fixes.EntityHeightOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.entity.*;
@@ -144,7 +143,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
     private double redirectFluidHeight(LivingEntity instance, TagKey<Fluid> tagKey) {
-        if (ExperimentalSettings.INSTANCE.waterMovementEdgeDetection.getValue() && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2) && tagKey == FluidTags.WATER) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2) && tagKey == FluidTags.WATER) {
             if (instance.getFluidHeight(tagKey) > 0) {
                 return 1;
             }

@@ -28,15 +28,13 @@ import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.storage.InventoryTracker1_16;
 import com.viaversion.viaversion.protocols.protocol1_20_2to1_20.storage.ConfigurationState;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.event.FinishViaVersionStartupCallback;
+import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLCommandHandler;
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLInjector;
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLLoader;
 import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
-import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaVersionPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
@@ -49,9 +47,11 @@ import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBedrockPlatformImpl;
+import net.raphimc.vialoader.impl.platform.ViaVersionPlatformImpl;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
+import java.io.File;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -66,7 +66,7 @@ public class ProtocolHack {
     /**
      * This attribute stores the forced version for the current connection (if you set a specific version in the Edit Server screen)
      */
-    public static final AttributeKey<VersionEnum> SERVER_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-serverversion");
+    public static final AttributeKey<VersionEnum> TARGET_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-targetversion");
 
     /**
      * The native version of the client
@@ -89,7 +89,7 @@ public class ProtocolHack {
 
         if (serverVersion != ProtocolHack.NATIVE_VERSION) {
             channel.attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).set(connection);
-            channel.attr(ProtocolHack.SERVER_VERSION_ATTRIBUTE_KEY).set(serverVersion);
+            channel.attr(ProtocolHack.TARGET_VERSION_ATTRIBUTE_KEY).set(serverVersion);
 
             if (VersionEnum.bedrockLatest.equals(serverVersion)) {
                 channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, 11);
@@ -104,21 +104,6 @@ public class ProtocolHack {
 
             channel.pipeline().addLast(new ViaFabricPlusVLLegacyPipeline(user, serverVersion));
         }
-    }
-
-    /**
-     * Adding ViaVersion's command system into Fabric
-     */
-    public static void initCommands() {
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            final ViaFabricPlusVLCommandHandler commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
-
-            final RequiredArgumentBuilder<FabricClientCommandSource, String> executor = RequiredArgumentBuilder.
-                    <FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
-
-            dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viaversion").then(executor).executes(commandHandler::execute));
-            dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viafabricplus").then(executor).executes(commandHandler::execute));
-        });
     }
 
     /**
@@ -183,11 +168,29 @@ public class ProtocolHack {
         throw new IllegalStateException("The player is not connected to a server");
     }
 
-    /**
-     * Starts ViaVersion
-     */
-    public static void init() {
-        ViaLoader.init(new ViaFabricPlusViaVersionPlatformImpl(ViaFabricPlus.RUN_DIRECTORY), new ViaFabricPlusVLLoader(), new ViaFabricPlusVLInjector(), new ViaFabricPlusVLCommandHandler(), ViaBackwardsPlatformImpl::new, ViaFabricPlusViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new, ViaBedrockPlatformImpl::new);
-        FinishViaVersionStartupCallback.EVENT.invoker().onFinishViaVersionStartup();
+    public static void init(final File directory) {
+        // Load ViaVersion and register all platforms and their components
+        ViaLoader.init(
+                new ViaVersionPlatformImpl(directory),
+                new ViaFabricPlusVLLoader(),
+                new ViaFabricPlusVLInjector(),
+                new ViaFabricPlusVLCommandHandler(),
+                ViaBackwardsPlatformImpl::new,
+                ViaFabricPlusViaLegacyPlatformImpl::new,
+                ViaAprilFoolsPlatformImpl::new,
+                ViaBedrockPlatformImpl::new
+        );
+
+        // Register command callback for /viaversion and /viafabricplus
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+            final var commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
+            final var executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).
+                    executes(commandHandler::execute).suggests(commandHandler::suggestion);
+
+            dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viaversion").then(executor).executes(commandHandler::execute));
+            dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viafabricplus").then(executor).executes(commandHandler::execute));
+        });
+
+        PostViaVersionLoadCallback.EVENT.invoker().onPostViaVersionLoad();
     }
 }

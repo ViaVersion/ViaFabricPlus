@@ -46,7 +46,7 @@ public class ClientPlayerInteractionManager1_18_2 {
 
             ClientPlayerInteractionManager1_18_2.handleBlockBreakAck(pos, blockState, action, allGood);
         } catch (Exception e) {
-            ViaFabricPlus.LOGGER.error("Failed to read BlockBreakAck packet data", e);
+            ViaFabricPlus.global().getLogger().error("Failed to read BlockBreakAck packet data", e);
         }
     };
 
@@ -84,7 +84,7 @@ public class ClientPlayerInteractionManager1_18_2 {
         }
 
         while (UN_ACKED_ACTIONS.size() >= 50) {
-            ViaFabricPlus.LOGGER.error("Too many unacked block actions, dropping {}", UN_ACKED_ACTIONS.firstKey());
+            ViaFabricPlus.global().getLogger().error("Too many unacked block actions, dropping {}", UN_ACKED_ACTIONS.firstKey());
             UN_ACKED_ACTIONS.removeFirst();
         }
     }

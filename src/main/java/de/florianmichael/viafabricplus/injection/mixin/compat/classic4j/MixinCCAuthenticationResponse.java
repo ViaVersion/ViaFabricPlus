@@ -33,11 +33,11 @@ public abstract class MixinCCAuthenticationResponse {
     @Redirect(method = "getErrorDisplay", at = @At(value = "FIELD", target = "Lde/florianmichael/classic4j/model/classicube/CCError;description:Ljava/lang/String;"))
     private String mapTranslations(CCError instance) {
         switch (instance) {
-            case TOKEN -> Text.translatable("classicube.viafabricplus.error.token").getString();
-            case USERNAME -> Text.translatable("classicube.viafabricplus.error.username").getString();
-            case PASSWORD -> Text.translatable("classicube.viafabricplus.error.password").getString();
-            case VERIFICATION -> Text.translatable("classicube.viafabricplus.error.verification").getString();
-            case LOGIN_CODE -> Text.translatable("classicube.viafabricplus.error.logincode").getString();
+            case TOKEN -> Text.translatable("classic4j_library.viafabricplus.error.token").getString();
+            case USERNAME -> Text.translatable("classic4j_library.viafabricplus.error.username").getString();
+            case PASSWORD -> Text.translatable("classic4j_library.viafabricplus.error.password").getString();
+            case VERIFICATION -> Text.translatable("classic4j_library.viafabricplus.error.verification").getString();
+            case LOGIN_CODE -> Text.translatable("classic4j_library.viafabricplus.error.logincode").getString();
         }
 
         return instance.description;

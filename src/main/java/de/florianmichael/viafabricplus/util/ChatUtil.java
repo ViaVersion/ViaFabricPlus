@@ -20,7 +20,9 @@
 package de.florianmichael.viafabricplus.util;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 
 public class ChatUtil {
@@ -37,5 +39,9 @@ public class ChatUtil {
 
     public static void sendPrefixedMessage(final Text message) {
         MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(prefixText(message));
+    }
+
+    public static String uncoverTranslationKey(final Text text) {
+        return ((TranslatableTextContent) text.getContent()).getKey();
     }
 }

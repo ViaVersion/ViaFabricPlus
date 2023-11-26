@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import de.florianmichael.viafabricplus.fixes.RecipesPre1_12;
+import de.florianmichael.viafabricplus.fixes.diff.RecipesPre1_12;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;

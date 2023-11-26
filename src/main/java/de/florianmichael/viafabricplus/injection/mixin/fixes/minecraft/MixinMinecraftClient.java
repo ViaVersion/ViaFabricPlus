@@ -137,7 +137,7 @@ public abstract class MixinMinecraftClient {
                 try {
                     clientStatus.sendToServer(Protocol1_12To1_11_1.class);
                 } catch (Exception e) {
-                    ViaFabricPlus.LOGGER.error("Failed to send Open Inventory Packet", e);
+                    ViaFabricPlus.global().getLogger().error("Failed to send Open Inventory Packet", e);
                 }
             }
         }

@@ -77,7 +77,7 @@ public class ItemTranslator {
                 return wrapper.read(Type.ITEM1_20_2);
             }
         } catch (Exception e) {
-            ViaFabricPlus.LOGGER.error("Failed to translate item", e);
+            ViaFabricPlus.global().getLogger().error("Failed to translate item", e);
         }
         return null;
     }
@@ -107,7 +107,7 @@ public class ItemTranslator {
             final var viaItem = wrapper.read(Type.ITEM1_13_2);
             return new ItemStack(() -> Registries.ITEM.get(viaItem.identifier()), viaItem.amount());
         } catch (Exception e) {
-            ViaFabricPlus.LOGGER.error("Failed to translate item", e);
+            ViaFabricPlus.global().getLogger().error("Failed to translate item", e);
             return null;
         }
     }

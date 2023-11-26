@@ -41,7 +41,7 @@ public class TripleChestHandler1_13_2 {
         try {
             TripleChestHandler1_13_2.handleTripleChestHandler(Type.SHORT.readPrimitive(byteBuf), Type.COMPONENT.read(byteBuf), Type.SHORT.readPrimitive(byteBuf));
         } catch (Exception e) {
-            ViaFabricPlus.LOGGER.error("Failed to open custom ScreenHandler with dimension 9xN", e);
+            ViaFabricPlus.global().getLogger().error("Failed to open custom ScreenHandler with dimension 9xN", e);
         }
     };
 
