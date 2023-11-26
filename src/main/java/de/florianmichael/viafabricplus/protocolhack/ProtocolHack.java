@@ -55,6 +55,7 @@ import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -172,19 +173,7 @@ public class ProtocolHack {
         throw new IllegalStateException("The player is not connected to a server");
     }
 
-    public static void init(final File directory) {
-        // Load ViaVersion and register all platforms and their components
-        ViaLoader.init(
-                new ViaVersionPlatformImpl(directory),
-                new ViaFabricPlusVLLoader(),
-                new ViaFabricPlusVLInjector(),
-                new ViaFabricPlusVLCommandHandler(),
-                ViaBackwardsPlatformImpl::new,
-                ViaFabricPlusViaLegacyPlatformImpl::new,
-                ViaAprilFoolsPlatformImpl::new,
-                ViaBedrockPlatformImpl::new
-        );
-
+    public static CompletableFuture<Void> init(final File directory) {
         // Register command callback for /viaversion and /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             final var commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
@@ -195,6 +184,19 @@ public class ProtocolHack {
             dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viafabricplus").then(executor).executes(commandHandler::execute));
         });
 
-        PostViaVersionLoadCallback.EVENT.invoker().onPostViaVersionLoad();
+        return CompletableFuture.runAsync(() -> {
+            // Load ViaVersion and register all platforms and their components
+            ViaLoader.init(
+                    new ViaVersionPlatformImpl(directory),
+                    new ViaFabricPlusVLLoader(),
+                    new ViaFabricPlusVLInjector(),
+                    new ViaFabricPlusVLCommandHandler(),
+                    ViaBackwardsPlatformImpl::new,
+                    ViaFabricPlusViaLegacyPlatformImpl::new,
+                    ViaAprilFoolsPlatformImpl::new,
+                    ViaBedrockPlatformImpl::new
+            );
+            PostViaVersionLoadCallback.EVENT.invoker().onPostViaVersionLoad();
+        });
     }
 }

@@ -1369,5 +1369,4 @@ public class ItemRegistryDiff {
         return !ITEM_DIFF.containsKey(item) || ITEM_DIFF.get(item).contains(ProtocolHack.getTargetVersion() /*ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ITEM_DIFF.get(item)*/);
     }
 
-
 }

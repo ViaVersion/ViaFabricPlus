@@ -52,7 +52,7 @@ public class ItemTranslator {
             buf.writeShort(0); // slot
             buf.writeItemStack(stack); // item
 
-            final var wrapper = PacketWrapper.create(CREATIVE_INVENTORY_ACTION_ID, null, user);
+            final var wrapper = PacketWrapper.create(CREATIVE_INVENTORY_ACTION_ID, buf, user);
             user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, wrapper);
 
             wrapper.read(Type.SHORT); // slot

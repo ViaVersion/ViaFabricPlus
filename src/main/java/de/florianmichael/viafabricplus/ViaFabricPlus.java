@@ -30,6 +30,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.concurrent.CompletableFuture;
 
 /*
  * TODO | General
@@ -66,17 +67,22 @@ public class ViaFabricPlus {
     private SettingsManager settingsManager;
     private SaveManager saveManager;
 
+    private CompletableFuture<Void> loadingFuture;
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void bootstrap() {
         directory.mkdir();
         ClassLoaderPriorityUtil.loadOverridingJars(directory); // Load overriding jars first so other code can access the new classes
 
         ClientsideFixes.init(); // Init clientside related fixes
-        ProtocolHack.init(directory); // Init ViaVersion protocol translator platform
+        loadingFuture = ProtocolHack.init(directory); // Init ViaVersion protocol translator platform
 
         settingsManager = new SettingsManager();
         saveManager = new SaveManager(settingsManager);
-        PostGameLoadCallback.EVENT.register(saveManager::init); // Has to wait for Minecraft because of the translation system usages
+        PostGameLoadCallback.EVENT.register(() -> {
+            saveManager.init();
+            loadingFuture.join();
+        }); // Has to wait for Minecraft because of the translation system usages
     }
 
     public static ViaFabricPlus global() {
