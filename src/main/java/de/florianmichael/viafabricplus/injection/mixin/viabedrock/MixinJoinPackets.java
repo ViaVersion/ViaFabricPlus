@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.viabedrock;
+package de.florianmichael.viafabricplus.injection.mixin.viabedrock;
 
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
@@ -40,7 +40,7 @@ public abstract class MixinJoinPackets {
         return seed;
     }
 
-    @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 56))
+    @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 55))
     private static Object trackLevelId(PacketWrapper instance, Type<StringType> tType) throws Exception {
         final Object levelId = instance.read(tType);
         instance.user().get(JoinGameTracker.class).setLevelId((String) levelId);

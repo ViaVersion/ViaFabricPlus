@@ -134,8 +134,8 @@
     "fixes.minecraft.screen.screenhandler.MixinCraftingScreenHandler",
     "fixes.minecraft.screen.screenhandler.MixinPlayerScreenHandler",
     "fixes.minecraft.screen.screenhandler.MixinScreenHandler",
-    "fixes.viabedrock.MixinBedrockProtocol",
-    "fixes.viabedrock.MixinJoinPackets",
+    "viabedrock.MixinBedrockProtocol",
+    "viabedrock.MixinJoinPackets",
     "fixes.vialegacy.MixinClassicProtocolExtension",
     "fixes.vialegacy.MixinClientboundPacketsc0_30cpe",
     "fixes.vialegacy.MixinExtensionProtocolMetadataStorage",
@@ -173,6 +173,7 @@
     "fixes.minecraft.entity.MixinSkeletonHorseEntity",
     "fixes.minecraft.item.MixinArmorItem",
     "fixes.minecraft.item.MixinBowItem",
-    "fixes.minecraft.item.MixinShearsItem"
+    "fixes.minecraft.item.MixinShearsItem",
+    "viabedrock.MixinBlobCache"
   ]
 }

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.viabedrock;
+package de.florianmichael.viafabricplus.injection.mixin.viabedrock;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.fixes.tracker.JoinGameTracker;

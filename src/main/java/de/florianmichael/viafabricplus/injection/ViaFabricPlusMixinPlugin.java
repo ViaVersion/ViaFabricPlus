@@ -33,6 +33,8 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     private static final String MC_FIXES_PACKAGE = "fixes.minecraft.";
     private static final String COMPAT_PACKAGE = "compat.";
 
+    public static String VFP_VERSION;
+
     public static boolean DASH_LOADER_PRESENT;
     public static boolean ARMOR_SKIN_PRESENT;
     public static boolean IPNEXT_PRESENT;
@@ -40,6 +42,8 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         final FabricLoader loader = FabricLoader.getInstance();
+
+        VFP_VERSION = loader.getModContainer("viafabricplus").get().getMetadata().getVersion().getFriendlyString();
 
         DASH_LOADER_PRESENT = loader.isModLoaded("dashloader");
         ARMOR_SKIN_PRESENT = loader.isModLoaded("armorskin");

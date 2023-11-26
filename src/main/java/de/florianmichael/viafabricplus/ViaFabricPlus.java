@@ -48,7 +48,6 @@ import java.io.File;
  * TODO | Migration v3
  *  - Rename all methods
  *  - Use ViaProxy config patch for some clientside fixes options (Remove ViaFabricPlusVLViaConfig and MixinViaLegacyConfig)
- *  - Re-add Debug Hud information list
  *  - Fix auto detect to not be a huge mess
  *  - Fix MixinAbstractDonkeyEntity
  *  - Boats are probably broken. Check entity height offset fix
