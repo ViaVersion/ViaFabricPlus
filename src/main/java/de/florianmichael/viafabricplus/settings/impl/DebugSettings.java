@@ -19,23 +19,17 @@
 
 package de.florianmichael.viafabricplus.settings.impl;
 
-import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.base.VersionedBooleanSetting;
 import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class DebugSettings extends SettingGroup {
     private static final DebugSettings instance = new DebugSettings();
 
-    // 1.19.1/2 -> 1.19
-    public final VersionedBooleanSetting alwaysTickOnlyPlayer = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.always_tick_only_player"), VersionRange.andOlder(VersionEnum.r1_19_1tor1_19_2));
-
     // 1.19 -> 1.18.2
     public final VersionedBooleanSetting disableSequencing = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.disable_sequencing"), VersionRange.andOlder(VersionEnum.r1_18_2));
-
-    // 1.14 -> 1.13.2
-    public final VersionedBooleanSetting smoothOutMerchantScreens = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.smooth_out_merchant_screens"), VersionRange.andOlder(VersionEnum.r1_13_2));
 
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting executeInputsInSync = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.execute_inputs_in_sync"), VersionRange.andOlder(VersionEnum.r1_12_2));
@@ -49,6 +43,7 @@ public class DebugSettings extends SettingGroup {
     public final VersionedBooleanSetting removeCooldowns = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.remove_cooldowns"), VersionRange.andOlder(VersionEnum.r1_8));
     public final VersionedBooleanSetting sendIdlePacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_idle_packet"), VersionRange.of(VersionEnum.r1_4_2, VersionEnum.r1_8).add(VersionRange.andOlder(VersionEnum.r1_2_4tor1_2_5)));
     public final VersionedBooleanSetting replaceAttributeModifiers = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.replace_attribute_modifiers"), VersionRange.andOlder(VersionEnum.r1_8));
+    public final VersionedBooleanSetting preventEntityCramming = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.prevent_entity_cramming"), VersionRange.andOlder(VersionEnum.r1_8));
 
     // 1.8.x -> 1.7.6
     public final VersionedBooleanSetting replaceSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.replace_sneaking"), VersionRange.andOlder(VersionEnum.r1_7_6tor1_7_10));

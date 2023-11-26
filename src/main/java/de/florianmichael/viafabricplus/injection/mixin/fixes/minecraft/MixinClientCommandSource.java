@@ -17,24 +17,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.merchant;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.screen.MerchantScreenHandler;
+import net.minecraft.client.network.ClientCommandSource;
+import net.raphimc.vialoader.util.VersionEnum;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MerchantScreenHandler.class)
-public abstract class MixinMerchantScreenHandler {
+import java.util.Collection;
+import java.util.Set;
 
-    @Inject(method = "switchTo", at = @At("HEAD"), cancellable = true)
-    private void dontSwitchTo(int recipeId, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
-            ci.cancel();
+@Mixin(ClientCommandSource.class)
+public abstract class MixinClientCommandSource {
+
+    @Shadow
+    @Final
+    private Set<String> chatSuggestions;
+
+    @Inject(method = {"getPlayerNames", "getChatSuggestions"}, at = @At("HEAD"), cancellable = true)
+    private void returnChatSuggestions(CallbackInfoReturnable<Collection<String>> cir) {
+        if (ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
+            cir.setReturnValue(this.chatSuggestions);
         }
     }
 

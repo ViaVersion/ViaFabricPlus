@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.protocolhack.provider.vialegacy;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
-import de.florianmichael.viafabricplus.protocolhack.util.ItemTranslator;
+import de.florianmichael.viafabricplus.protocolhack.translator.ItemTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -46,7 +46,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
             final var alphaItem = trackingItems.get(i);
             if (alphaItem.isEmpty()) continue;
 
-            items[i] = ItemTranslator.MC_TO_VIA_LATEST_TO_TARGET(alphaItem, VersionEnum.b1_8tob1_8_1);
+            items[i] = ItemTranslator.mcToVia(alphaItem, VersionEnum.b1_8tob1_8_1);
         }
         return copyItems(items);
     }
@@ -81,7 +81,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
 
     @Override
     public void addToInventory(UserConnection user, Item item) {
-        getPlayer().getInventory().insertStack(ItemTranslator.VIA_TO_MC_B1_8_TO_LATEST(item));
+        getPlayer().getInventory().insertStack(ItemTranslator.viaB1_8toMc(item));
     }
 
     protected ClientPlayerEntity getPlayer() {

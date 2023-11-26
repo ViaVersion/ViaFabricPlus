@@ -25,35 +25,34 @@ import net.minecraft.client.font.RenderableGlyph;
 
 import java.util.function.Function;
 
-/**
- * Implementation of a "Very Missing" Glyph which doesn't have any rendering at all ("Missing" in <= 1.12.2)
- */
 public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
+    INSTANCE;
 
-    VERY_MISSING;
+    private static final int WIDTH = 0;
+    private static final int HEIGHT = 8;
 
     @Override
     public float getAdvance() {
-        return 1;
+        return WIDTH;
     }
 
     @Override
-    public GlyphRenderer bake(Function<RenderableGlyph, GlyphRenderer> function) {
-        return function.apply(new RenderableGlyph() {
+    public GlyphRenderer bake(Function<RenderableGlyph, GlyphRenderer> glyphRendererGetter) {
+        return glyphRendererGetter.apply(new RenderableGlyph() {
 
             @Override
             public int getWidth() {
-                return 0;
+                return WIDTH;
             }
 
             @Override
             public int getHeight() {
-                return 0;
+                return HEIGHT;
             }
 
             @Override
             public float getOversample() {
-                return 1.0f;
+                return 1F;
             }
 
             @Override
@@ -66,4 +65,5 @@ public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
             }
         });
     }
+
 }

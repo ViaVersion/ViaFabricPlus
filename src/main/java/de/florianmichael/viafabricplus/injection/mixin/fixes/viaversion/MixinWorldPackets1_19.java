@@ -21,7 +21,6 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viaversion.protocols.protocol1_14_4to1_14_3.Protocol1_14_4To1_14_3;
 import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPackets1_18;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.ClientboundPackets1_19;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.Protocol1_19To1_18_2;
@@ -38,14 +37,9 @@ public abstract class MixinWorldPackets1_19 {
     @Redirect(method = "register", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/protocol1_19to1_18_2/Protocol1_19To1_18_2;cancelClientbound(Lcom/viaversion/viaversion/api/protocol/packet/ClientboundPacketType;)V"))
     private static void passAcknowledgePlayerDigging(Protocol1_19To1_18_2 instance, ClientboundPacketType clientboundPacketType) {
         instance.registerClientbound(ClientboundPackets1_18.ACKNOWLEDGE_PLAYER_DIGGING, ClientboundPackets1_19.PLUGIN_MESSAGE, wrapper -> {
-            if (wrapper.user().getProtocolInfo().getPipeline().contains(Protocol1_14_4To1_14_3.class)) {
-                wrapper.cancel();
-                return;
-            }
-
             wrapper.resetReader();
-            final var uuid = ClientsideFixes.executeSyncTask(ClientPlayerInteractionManager1_18_2.OLD_PACKET_HANDLER);
 
+            final var uuid = ClientsideFixes.executeSyncTask(ClientPlayerInteractionManager1_18_2.OLD_PACKET_HANDLER);
             wrapper.write(Type.STRING, ClientsideFixes.PACKET_SYNC_IDENTIFIER);
             wrapper.write(Type.STRING, uuid);
         });

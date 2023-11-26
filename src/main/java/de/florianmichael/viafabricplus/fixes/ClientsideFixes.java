@@ -19,28 +19,22 @@
 
 package de.florianmichael.viafabricplus.fixes;
 
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.ArmorType;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.fixes.classic.screen.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialoader.util.VersionEnum;
-import net.raphimc.vialoader.util.VersionRange;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -55,16 +49,6 @@ public class ClientsideFixes {
     private static List<Block> RELOADABLE_BLOCKS;
 
     /**
-     * Legacy versions do not support SRV records, so we need to resolve them manually
-     */
-    public static final VersionRange LEGACY_SRV_RESOLVE = VersionRange.andOlder(VersionEnum.r1_2_4tor1_2_5).add(VersionRange.single(VersionEnum.bedrockLatest));
-
-    /**
-     * Contains the armor points of all armor items in legacy versions (<= 1.8.x)
-     */
-    private static final Map<Item, Integer> LEGACY_ARMOR_POINTS = new HashMap<>();
-
-    /**
      * Contains all tasks that are waiting for a packet to be received, this system can be used to sync ViaVersion tasks with the correct thread
      */
     private static final Map<String, Consumer<PacketByteBuf>> PENDING_EXECUTION_TASKS = new ConcurrentHashMap<>();
@@ -74,63 +58,59 @@ public class ClientsideFixes {
      */
     public static final String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 
+    private static final float DEFAULT_SOUL_SAND_VELOCITY_MULTIPLIER = Blocks.SOUL_SAND.getVelocityMultiplier();
+    private static final float _1_14_4_SOUL_SAND_VELOCITY_MULTIPLIER = 1F;
+
     /**
      * The current chat limit
      */
-    private static int currentChatLimit = 256;
+    private static int currentChatLength = 256;
 
     public static void init() {
         CustomClassicProtocolExtensions.create();
-
-        PostGameLoadCallback.EVENT.register(() -> {
-            // Loads the armor points of all armor items in legacy versions (<= 1.8.x)
-            for (Item armorItem : Arrays.asList(Items.LEATHER_HELMET, Items.LEATHER_CHESTPLATE, Items.LEATHER_BOOTS,
-                    Items.CHAINMAIL_HELMET, Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS,
-                    Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS, Items.DIAMOND_HELMET,
-                    Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS, Items.GOLDEN_HELMET,
-                    Items.GOLDEN_CHESTPLATE, Items.GOLDEN_LEGGINGS, Items.GOLDEN_BOOTS)) {
-                LEGACY_ARMOR_POINTS.put(armorItem, ArmorType.findByType(Registries.ITEM.getId(armorItem).toString()).getArmorPoints());
-            }
-
-            RELOADABLE_BLOCKS = Arrays.asList(Blocks.ANVIL, Blocks.WHITE_BED, Blocks.ORANGE_BED,
-                    Blocks.MAGENTA_BED, Blocks.LIGHT_BLUE_BED, Blocks.YELLOW_BED, Blocks.LIME_BED, Blocks.PINK_BED, Blocks.GRAY_BED,
-                    Blocks.LIGHT_GRAY_BED, Blocks.CYAN_BED, Blocks.PURPLE_BED, Blocks.BLUE_BED, Blocks.BROWN_BED, Blocks.GREEN_BED,
-                    Blocks.RED_BED, Blocks.BLACK_BED, Blocks.BREWING_STAND, Blocks.CAULDRON, Blocks.CHEST, Blocks.PITCHER_CROP,
-                    Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME, Blocks.FARMLAND, Blocks.OAK_FENCE, Blocks.HOPPER, Blocks.LADDER,
-                    Blocks.LILY_PAD, Blocks.GLASS_PANE, Blocks.WHITE_STAINED_GLASS_PANE, Blocks.ORANGE_STAINED_GLASS_PANE,
-                    Blocks.MAGENTA_STAINED_GLASS_PANE, Blocks.LIGHT_BLUE_STAINED_GLASS_PANE, Blocks.YELLOW_STAINED_GLASS_PANE,
-                    Blocks.LIME_STAINED_GLASS_PANE, Blocks.PINK_STAINED_GLASS_PANE, Blocks.GRAY_STAINED_GLASS_PANE,
-                    Blocks.LIGHT_GRAY_STAINED_GLASS_PANE, Blocks.CYAN_STAINED_GLASS_PANE, Blocks.PURPLE_STAINED_GLASS_PANE,
-                    Blocks.BLUE_STAINED_GLASS_PANE, Blocks.BROWN_STAINED_GLASS_PANE, Blocks.GREEN_STAINED_GLASS_PANE,
-                    Blocks.RED_STAINED_GLASS_PANE, Blocks.BLACK_STAINED_GLASS_PANE, Blocks.PISTON, Blocks.PISTON_HEAD,
-                    Blocks.SNOW, Blocks.COBBLESTONE_WALL, Blocks.MOSSY_COBBLESTONE_WALL
-            );
-        });
+        EntityHitboxUpdateListener.init();
+        ArmorUpdateListener.init();
 
         // Reloads some clientside stuff when the protocol version changes
         ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
-            if (MinecraftClient.getInstance() == null) return;
+            // Soul sand velocity multiplier
+            if (isNewerThan(oldVersion, newVersion, VersionEnum.r1_14_4)) {
+                Blocks.SOUL_SAND.velocityMultiplier = DEFAULT_SOUL_SAND_VELOCITY_MULTIPLIER;
+            }
+            if (isOlderThanOrEqualTo(oldVersion, newVersion, VersionEnum.r1_14_4)) {
+                Blocks.SOUL_SAND.velocityMultiplier = _1_14_4_SOUL_SAND_VELOCITY_MULTIPLIER;
+            }
 
             // Reloads all bounding boxes
-            for (Block block : RELOADABLE_BLOCKS) {
-                for (BlockState state : block.getStateManager().getStates()) {
-                    state.initShapeCache();
+            for (Block block : Registries.BLOCK) {
+                if (block instanceof AnvilBlock || block instanceof BedBlock || block instanceof BrewingStandBlock
+                        || block instanceof CarpetBlock || block instanceof CauldronBlock || block instanceof ChestBlock
+                        || block instanceof EnderChestBlock || block instanceof EndPortalBlock || block instanceof EndPortalFrameBlock
+                        || block instanceof FarmlandBlock || block instanceof FenceBlock || block instanceof FenceGateBlock
+                        || block instanceof HopperBlock || block instanceof LadderBlock || block instanceof LeavesBlock
+                        || block instanceof LilyPadBlock || block instanceof PaneBlock || block instanceof PistonBlock
+                        || block instanceof PistonHeadBlock || block instanceof SnowBlock || block instanceof WallBlock
+                        || block instanceof CropBlock || block instanceof FlowerbedBlock
+                ) {
+                    for (BlockState state : block.getStateManager().getStates()) {
+                        state.initShapeCache();
+                    }
                 }
             }
 
-            // Calculates the current chat limit, since it changes depending on the protocol version
+            // Calculates the current chat length limit
             if (newVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
-                currentChatLimit = 64 - (MinecraftClient.getInstance().getSession().getUsername().length() + 2);
+                currentChatLength = 64 - (MinecraftClient.getInstance().getSession().getUsername().length() + 2);
             } else if (newVersion.equals(VersionEnum.bedrockLatest)) {
-                currentChatLimit = 512;
+                currentChatLength = 512;
             } else if (newVersion.isOlderThanOrEqualTo(VersionEnum.r1_9_3tor1_9_4)) {
-                currentChatLimit = 100;
+                currentChatLength = 100;
             } else {
-                currentChatLimit = 256;
+                currentChatLength = 256;
             }
 
+            // Text Renderer invisible character fix
             if (!ViaFabricPlusMixinPlugin.DASH_LOADER_PRESENT) {
-                // Reloads all font storages to fix the font renderer
                 for (FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
                     storage.glyphRendererCache.clear();
                     storage.glyphCache.clear();
@@ -145,7 +125,7 @@ public class ClientsideFixes {
         // Calculates the current chat limit, since it changes depending on the protocol version
         LoadClassicProtocolExtensionCallback.EVENT.register(classicProtocolExtension -> {
             if (classicProtocolExtension == ClassicProtocolExtension.LONGER_MESSAGES) {
-                currentChatLimit = Short.MAX_VALUE * 2;
+                currentChatLength = Short.MAX_VALUE * 2;
             }
         });
     }
@@ -163,33 +143,30 @@ public class ClientsideFixes {
     }
 
     public static void handleSyncTask(final PacketByteBuf buf) {
-        buf.resetReaderIndex();
-
         final var uuid = buf.readString();
 
         if (PENDING_EXECUTION_TASKS.containsKey(uuid)) {
             MinecraftClient.getInstance().execute(() -> { // Execute the task on the main thread
-                final var task = PENDING_EXECUTION_TASKS.get(uuid);
-                PENDING_EXECUTION_TASKS.remove(uuid);
-
+                final var task = PENDING_EXECUTION_TASKS.remove(uuid);
                 task.accept(buf);
             });
         }
     }
 
-    /**
-     * Returns the armor points of an armor item in legacy versions (<= 1.8.x)
-     *
-     * @param itemStack The item stack to get the armor points from
-     * @return The armor points of the item stack
-     */
-    public static int getLegacyArmorPoints(final ItemStack itemStack) {
-        if (!LEGACY_ARMOR_POINTS.containsKey(itemStack.getItem())) return 0; // Just in case
-
-        return LEGACY_ARMOR_POINTS.get(itemStack.getItem());
+    public static int getCurrentChatLength() {
+        return currentChatLength;
     }
 
-    public static int getCurrentChatLimit() {
-        return currentChatLimit;
+    private static boolean isOlderThanOrEqualTo(final VersionEnum oldVersion, final VersionEnum newVersion, final VersionEnum toCheck) {
+        return oldVersion.isNewerThan(toCheck) && newVersion.isOlderThanOrEqualTo(toCheck);
     }
+
+    private static boolean isNewerThan(final VersionEnum oldVersion, final VersionEnum newVersion, final VersionEnum toCheck) {
+        return newVersion.isNewerThan(toCheck) && oldVersion.isOlderThanOrEqualTo(toCheck);
+    }
+
+    private static boolean didCrossBoundary(final VersionEnum oldVersion, final VersionEnum newVersion, final VersionEnum toCheck) {
+        return isNewerThan(oldVersion, newVersion, toCheck) || isOlderThanOrEqualTo(oldVersion, newVersion, toCheck);
+    }
+
 }

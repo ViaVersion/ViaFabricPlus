@@ -17,29 +17,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.fixes.TripleChestHandler1_13_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.screen.GenericContainerScreenHandler;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.client.network.Address;
+import net.minecraft.client.network.AddressResolver;
+import net.minecraft.client.network.AllowedAddressResolver;
+import net.minecraft.client.network.ServerAddress;
 import net.raphimc.vialoader.util.VersionEnum;
-import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(HandledScreens.class)
-public abstract class MixinHandledScreens {
+import java.util.Optional;
 
-    @Inject(method = "getProvider", at = @At("HEAD"), cancellable = true)
-    private static <T extends ScreenHandler> void returnFakeProvider(ScreenHandlerType<T> type, CallbackInfoReturnable<HandledScreens.@Nullable Provider> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2) && type instanceof TripleChestHandler1_13_2.TripleChestScreenHandlerType) {
-            cir.setReturnValue((handler, playerInventory, title) -> new GenericContainerScreen((GenericContainerScreenHandler) handler, playerInventory, title));
+@Mixin(AllowedAddressResolver.class)
+public abstract class MixinAllowedAddressResolver {
+
+    @Shadow
+    @Final
+    private AddressResolver addressResolver;
+
+    @Inject(method = "resolve", at = @At("HEAD"), cancellable = true)
+    private void oldResolveBehaviour(ServerAddress address, CallbackInfoReturnable<Optional<Address>> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5) || ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
+            cir.setReturnValue(this.addressResolver.resolve(address));
         }
     }
 

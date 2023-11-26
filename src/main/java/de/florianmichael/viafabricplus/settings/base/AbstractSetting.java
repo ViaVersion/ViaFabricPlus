@@ -23,7 +23,6 @@ import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.screen.base.VFPListEntry;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.TranslatableTextContent;
 
 /**
  * This class is the base for all settings. It contains the name, the default value and the current value.
@@ -35,7 +34,7 @@ public abstract class AbstractSetting<T> {
     private final MutableText name;
     private final T defaultValue;
 
-    public T value;
+    private T value;
 
     public AbstractSetting(final SettingGroup parent, final MutableText name, final T defaultValue) {
         this.name = name;

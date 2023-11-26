@@ -19,10 +19,11 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.screenhandler;
 
-import de.florianmichael.viafabricplus.fixes.diff.RecipesPre1_12;
+import de.florianmichael.viafabricplus.fixes.recipe.Recipes1_11_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.RecipeInputInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.AbstractRecipeScreenHandler;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -32,21 +33,30 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CraftingScreenHandler.class)
 public abstract class MixinCraftingScreenHandler extends AbstractRecipeScreenHandler<RecipeInputInventory> {
 
-    @Shadow @Final private RecipeInputInventory input;
+    @Shadow
+    @Final
+    private RecipeInputInventory input;
 
     public MixinCraftingScreenHandler(ScreenHandlerType<?> screenHandlerType, int i) {
         super(screenHandlerType, i);
     }
 
+    @Redirect(method = "quickMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/CraftingScreenHandler;insertItem(Lnet/minecraft/item/ItemStack;IIZ)Z", ordinal = 1))
+    private boolean noShiftClickMoveIntoCraftingTable(CraftingScreenHandler instance, ItemStack itemStack, int startIndex, int endIndex, boolean fromLast) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) return false;
+        return this.insertItem(itemStack, startIndex, endIndex, fromLast);
+    }
+
     @Inject(method = "onContentChanged", at = @At("HEAD"))
-    private void updateResultSlot(Inventory inventory, CallbackInfo ci) {
+    private void clientSideCrafting(Inventory inventory, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
-            RecipesPre1_12.setCraftingResultSlot(syncId, this, input);
+            Recipes1_11_2.setCraftingResultSlot(syncId, this, input);
         }
     }
 

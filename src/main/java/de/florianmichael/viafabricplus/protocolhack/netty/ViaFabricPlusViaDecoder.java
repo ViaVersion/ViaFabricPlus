@@ -38,17 +38,18 @@ public class ViaFabricPlusViaDecoder extends ViaDecoder {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         final var mode = GeneralSettings.global().ignorePacketTranslationErrors.getIndex();
 
-        if (mode > 0) {
-            try {
-                super.channelRead(ctx, msg);
-            } catch (Throwable t) {
+        try {
+            super.channelRead(ctx, msg);
+        } catch (Throwable t) {
+            if (mode > 0) {
                 ViaFabricPlus.global().getLogger().error("Error occurred while decoding packet in ViaDecoder", t);
                 if (mode == 1) {
                     ChatUtil.sendPrefixedMessage(Text.literal("An error occurred while decoding a packet! See more details in the logs!").formatted(Formatting.RED));
                 }
+
+                return;
             }
-            return;
+            throw t;
         }
-        super.channelRead(ctx, msg);
     }
 }

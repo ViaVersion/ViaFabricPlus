@@ -39,4 +39,5 @@ public abstract class MixinKeyPairResponse implements ILegacyKeySignatureStorage
     public void viafabricplus$setLegacyPublicKeySignature(byte[] signature) {
         this.viaFabricPlus$legacyKeySignature = signature;
     }
+
 }

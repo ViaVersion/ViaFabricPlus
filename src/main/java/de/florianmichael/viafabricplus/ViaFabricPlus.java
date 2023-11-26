@@ -20,12 +20,11 @@
 package de.florianmichael.viafabricplus;
 
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
-import de.florianmichael.viafabricplus.event.LoadCallback;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.util.ClassLoaderPriorityUtil;
 import de.florianmichael.viafabricplus.save.SaveManager;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
+import de.florianmichael.viafabricplus.util.ClassLoaderPriorityUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,7 +37,7 @@ import java.io.File;
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
  *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
  *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
- *  - Bedrock scaffolding should be added as soon as ViaBedrock supports block placement (see https://github.com/ViaVersion/ViaFabricPlus/issues/204)
+ *  - Check if MixinPlayerScreenHandler.injectTransferSlot is needed? Check git log
  *
  * TODO | Movement
  *  - X/Z Face based jump movement in <= 1.13.2 is broken (https://github.com/ViaVersion/ViaFabricPlus/issues/189)
@@ -46,13 +45,16 @@ import java.io.File;
  *  - Blit-jump is not supported in <= 1.8.9 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
  *
  * TODO | Migration v3
- *  - Rename all methods
  *  - Use ViaProxy config patch for some clientside fixes options (Remove ViaFabricPlusVLViaConfig and MixinViaLegacyConfig)
- *  - Fix auto detect to not be a huge mess
+ *  - Add setting for VFP AlphaInventoryProvider
  *  - Fix MixinAbstractDonkeyEntity
- *  - Boats are probably broken. Check entity height offset fix
  *  - Check TO DO in MixinEntity
- *  - Diff ItemRegistryDiff from projects and add missing items
+ *  - Fix MixinMultiplayerServerListWidget_ServerEntry
+ *  - Test villagers
+ *  - Test offhand
+ *  - Check if attack cooldown is there or not
+ *  - Test very large 1.8 chests
+ *  - Test block ack
  */
 public class ViaFabricPlus {
     private static final ViaFabricPlus instance = new ViaFabricPlus();

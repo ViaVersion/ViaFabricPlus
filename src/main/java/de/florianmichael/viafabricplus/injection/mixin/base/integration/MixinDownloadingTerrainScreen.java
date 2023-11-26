@@ -45,6 +45,9 @@ public abstract class MixinDownloadingTerrainScreen extends Screen {
         if (GeneralSettings.global().showClassicLoadingProgressInConnectScreen.getValue()) {
             // Check if ViaVersion is translating
             final UserConnection connection = ProtocolHack.getPlayNetworkUserConnection();
+            if (connection == null) {
+                return;
+            }
 
             // Check if the client is connecting to a classic server
             final ClassicProgressStorage classicProgressStorage = connection.get(ClassicProgressStorage.class);

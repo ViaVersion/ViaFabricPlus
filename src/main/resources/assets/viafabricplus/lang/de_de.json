@@ -8,6 +8,7 @@
   "base.viafabricplus.right_bottom": "Rechts, Unten",
   "base.viafabricplus.cancel": "Abbrechen",
   "base.viafabricplus.cancel_and_reset": "Abbrechen und zurücksetzen",
+  "base.viafabricplus.detecting_server_version": "Erkenne Server version...",
 
   "general_settings.viafabricplus.super_secret_settings": "Super Secret Settings",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "Zusätzliche Informationen im Debug-HUD anzeigen",

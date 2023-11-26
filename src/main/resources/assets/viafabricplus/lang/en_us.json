@@ -24,6 +24,7 @@
   "base.viafabricplus.kick": "Kick",
   "base.viafabricplus.cancel_and_notify": "Cancel and notify",
   "base.viafabricplus.force_version_title": "Please select the version with which the server should be pinged/connected",
+  "base.viafabricplus.detecting_server_version": "Detecting server version...",
 
   "setting_group_name.viafabricplus.authentication": "Authentication",
   "setting_group_name.viafabricplus.visual": "Visual",
@@ -56,7 +57,7 @@
   "debug_settings.viafabricplus.long_sneaking": "Long sneaking",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Legacy mining speeds",
   "debug_settings.viafabricplus.skip_containers_with_custom_display_names": "Skip containers with custom display names",
-  "debug_settings.viafabricplus.always_tick_only_player": "Always tick only player",
+  "debug_settings.viafabricplus.prevent_entity_cramming": "Prevent entity cramming",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Use BetaCraft authentication",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Verify session for online mode servers",

@@ -22,8 +22,9 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.authlib;
 import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
-import de.florianmichael.viafabricplus.injection.reference.KeyPairResponse1_19_0;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
+import de.florianmichael.viafabricplus.injection.reference.KeyPairResponse1_19_0;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,9 +37,13 @@ import java.net.URL;
 @Mixin(value = YggdrasilUserApiService.class, remap = false)
 public abstract class MixinYggdrasilUserApiService {
 
-    @Shadow @Final private MinecraftClient minecraftClient;
+    @Shadow
+    @Final
+    private MinecraftClient minecraftClient;
 
-    @Shadow @Final private URL routeKeyPair;
+    @Shadow
+    @Final
+    private URL routeKeyPair;
 
     @Inject(method = "getKeyPair", at = @At("HEAD"), cancellable = true)
     private void storeLegacyPublicKeySignature(CallbackInfoReturnable<KeyPairResponse> cir) {
@@ -58,8 +63,11 @@ public abstract class MixinYggdrasilUserApiService {
                 response.refreshedAfter()
         );
 
-        // set the legacy public key signature in the object
-        ((ILegacyKeySignatureStorage) (Object) keyPairResponse).viafabricplus$setLegacyPublicKeySignature(response.publicKeySignature().array());
+        if (response.publicKeySignature() != null && response.publicKeySignature().array().length != 0) {
+            ((ILegacyKeySignatureStorage) (Object) keyPairResponse).viafabricplus$setLegacyPublicKeySignature(response.publicKeySignature().array());
+        } else {
+            ViaFabricPlus.global().getLogger().error("Could not get legacy public key signature. 1.19.0 with secure-profiles enabled will not work!");
+        }
 
         cir.setReturnValue(keyPairResponse);
     }

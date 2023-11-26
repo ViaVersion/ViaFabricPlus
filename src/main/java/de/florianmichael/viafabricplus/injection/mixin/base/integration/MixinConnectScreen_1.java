@@ -19,30 +19,71 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
+import de.florianmichael.viafabricplus.injection.access.IServerInfo;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
+import net.lenni0451.mcping.MCPing;
+import net.minecraft.client.gui.screen.ConnectScreen;
+import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.session.Session;
+import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.VersionEnum;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.net.InetSocketAddress;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {
 
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V"))
-    private void spoofUserName(ClientConnection instance, Packet<?> packet) {
-        if (AuthenticationSettings.global().setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null) {
-            final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
-            if (account != null) {
-                instance.send(new LoginHelloC2SPacket(account.username(), MinecraftClient.getInstance().getSession().getUuidOrNull()));
-                return;
-            }
+    @Shadow
+    @Final
+    ServerInfo field_40415;
+
+    @Shadow
+    @Final
+    ConnectScreen field_2416;
+
+    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/session/Session;getUsername()Ljava/lang/String;"))
+    private String useClassiCubeUsername(Session instance) {
+        final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+        if (account != null) {
+            return account.username();
         }
 
-        instance.send(packet);
+        return instance.getUsername();
     }
+
+    @SuppressWarnings("InvalidInjectorMethodSignature")
+    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void setServerInfo(CallbackInfo ci, InetSocketAddress inetSocketAddress) {
+        final VersionEnum serverVersion = ((IServerInfo) this.field_40415).viaFabricPlus$forcedVersion();
+        if (serverVersion != null) {
+            ProtocolHack.setTargetVersion(serverVersion);
+        } else if (GeneralSettings.global().autoDetectVersion.getValue()) {
+            this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
+            MCPing
+                    .pingModern(-1)
+                    .address(inetSocketAddress.getHostString(), inetSocketAddress.getPort())
+                    .noResolve()
+                    .timeout(1000, 1000)
+                    .exceptionHandler(t -> {
+                    })
+                    .responseHandler(r -> {
+                        if (ProtocolVersion.isRegistered(r.version.protocol)) {
+                            ProtocolHack.setTargetVersion(VersionEnum.fromProtocolId(r.version.protocol));
+                        }
+                    })
+                    .getSync();
+        }
+    }
+
 }

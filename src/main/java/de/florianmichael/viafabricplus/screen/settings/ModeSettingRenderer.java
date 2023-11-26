@@ -43,7 +43,7 @@ public class ModeSettingRenderer extends VFPListEntry {
 
     @Override
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-        final int currentIndex = Arrays.stream(this.value.getOptions()).toList().indexOf(this.value.value) + 1;
+        final int currentIndex = Arrays.stream(this.value.getOptions()).toList().indexOf(this.value.getValue()) + 1;
         this.value.setValue(currentIndex > this.value.getOptions().length - 1 ? 0 : currentIndex);
     }
 

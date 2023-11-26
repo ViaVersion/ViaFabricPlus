@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.fixes;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.util.BlockStateTranslator;
+import de.florianmichael.viafabricplus.protocolhack.translator.BlockStateTranslator;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -33,62 +33,62 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.raphimc.vialoader.util.VersionEnum;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 public class ClientPlayerInteractionManager1_18_2 {
+
     public static final Consumer<PacketByteBuf> OLD_PACKET_HANDLER = data -> {
         try {
             final var pos = data.readBlockPos();
-            final var blockState = Block.STATE_IDS.get(BlockStateTranslator.translateBlockState1_18(data.readVarInt()));
+            final var blockState = BlockStateTranslator.via1_18_2toMc(data.readVarInt());
             final var action = data.readEnumConstant(PlayerActionC2SPacket.Action.class);
             final var allGood = data.readBoolean();
 
             ClientPlayerInteractionManager1_18_2.handleBlockBreakAck(pos, blockState, action, allGood);
-        } catch (Exception e) {
-            ViaFabricPlus.global().getLogger().error("Failed to read BlockBreakAck packet data", e);
+        } catch (Throwable t) {
+            throw new RuntimeException("Failed to handle BlockBreakAck packet data", t);
         }
     };
 
-    private static final Object2ObjectLinkedOpenHashMap<Pair<BlockPos, PlayerActionC2SPacket.Action>, PositionAndRotation> UN_ACKED_ACTIONS = new Object2ObjectLinkedOpenHashMap<>();
+    private static final Object2ObjectLinkedOpenHashMap<Pair<BlockPos, PlayerActionC2SPacket.Action>, PositionAndRotation> UNACKED_ACTIONS = new Object2ObjectLinkedOpenHashMap<>();
 
-    public static void trackBlockAction(final PlayerActionC2SPacket.Action action, final BlockPos blockPos) {
+    public static void trackPlayerAction(final PlayerActionC2SPacket.Action action, final BlockPos blockPos) {
         final var player = MinecraftClient.getInstance().player;
         if (player == null) return;
 
         var rotation = new Vec2f(player.getYaw(), player.getPitch());
-        if (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_16_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_1)) {
             rotation = null;
         }
-        UN_ACKED_ACTIONS.put(new Pair<>(blockPos, action), new PositionAndRotation(player.getPos().x, player.getPos().y, player.getPos().z, rotation));
+        UNACKED_ACTIONS.put(new Pair<>(blockPos, action), new PositionAndRotation(player.getPos().x, player.getPos().y, player.getPos().z, rotation));
     }
 
-    public static void handleBlockBreakAck(final BlockPos blockPos, final BlockState blockState, final PlayerActionC2SPacket.Action action, final boolean allGood) {
+    public static void handleBlockBreakAck(final BlockPos blockPos, final BlockState expectedState, final PlayerActionC2SPacket.Action action, final boolean allGood) {
         final var player = MinecraftClient.getInstance().player;
         if (player == null) return;
+        final var world = MinecraftClient.getInstance().getNetworkHandler().getWorld();
 
-        final var world = Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).getWorld();
+        final var oldPlayerState = UNACKED_ACTIONS.remove(new Pair<>(blockPos, action));
+        final var actualState = world.getBlockState(blockPos);
 
-        final var next = UN_ACKED_ACTIONS.remove(new Pair<>(blockPos, action));
-        final var blockStateFromPos = world.getBlockState(blockPos);
-
-        if ((next == null || !allGood || action != PlayerActionC2SPacket.Action.START_DESTROY_BLOCK && blockStateFromPos != blockState) && blockStateFromPos != blockState) {
-            world.setBlockState(blockPos, blockState);
-            if (next != null && world == player.getWorld() && player.collidesWithStateAtPos(blockPos, blockState)) {
-                if (next.rotation != null) {
-                    player.updatePositionAndAngles(next.x, next.y, next.z, next.rotation.x, next.rotation.y);
+        if ((oldPlayerState == null || !allGood || action != PlayerActionC2SPacket.Action.START_DESTROY_BLOCK && actualState != expectedState) && (actualState != expectedState || ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2))) {
+            world.setBlockState(blockPos, expectedState, Block.NOTIFY_ALL | Block.FORCE_STATE);
+            if (oldPlayerState != null && ((ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_1) || (world == player.getWorld() && player.collidesWithStateAtPos(blockPos, expectedState))))) {
+                if (oldPlayerState.rotation != null) {
+                    player.updatePositionAndAngles(oldPlayerState.x, oldPlayerState.y, oldPlayerState.z, oldPlayerState.rotation.x, oldPlayerState.rotation.y);
                 } else {
-                    player.updatePosition(next.x, next.y, next.z);
+                    player.updatePosition(oldPlayerState.x, oldPlayerState.y, oldPlayerState.z);
                 }
             }
         }
 
-        while (UN_ACKED_ACTIONS.size() >= 50) {
-            ViaFabricPlus.global().getLogger().error("Too many unacked block actions, dropping {}", UN_ACKED_ACTIONS.firstKey());
-            UN_ACKED_ACTIONS.removeFirst();
+        while (UNACKED_ACTIONS.size() >= 50) {
+            ViaFabricPlus.global().getLogger().warn("Too many unacked block actions, dropping {}", UNACKED_ACTIONS.firstKey());
+            UNACKED_ACTIONS.removeFirst();
         }
     }
 
     public record PositionAndRotation(double x, double y, double z, Vec2f rotation) {
     }
+
 }

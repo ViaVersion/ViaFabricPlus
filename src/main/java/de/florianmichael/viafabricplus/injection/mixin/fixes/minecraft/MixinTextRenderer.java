@@ -41,17 +41,24 @@ import java.util.List;
 @Mixin(TextRenderer.class)
 public abstract class MixinTextRenderer {
 
-    @Shadow public abstract List<OrderedText> wrapLines(StringVisitable text, int width);
+    @Shadow
+    public abstract List<OrderedText> wrapLines(StringVisitable text, int width);
 
-    @Shadow public abstract int draw(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light);
+    @Shadow
+    public abstract int draw(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light);
 
-    @Shadow public abstract String mirror(String text);
+    @Shadow
+    public abstract String mirror(String text);
 
-    @Shadow @Final public int fontHeight;
+    @Shadow
+    @Final
+    public int fontHeight;
 
-    @Shadow protected abstract int drawInternal(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light);
+    @Shadow
+    protected abstract int drawInternal(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light);
 
-    @Shadow public abstract int getWidth(OrderedText text);
+    @Shadow
+    public abstract int getWidth(OrderedText text);
 
     @Inject(method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;IIZ)I", at = @At("HEAD"), cancellable = true)
     private void allowNewLines_String(String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, boolean rightToLeft, CallbackInfoReturnable<Integer> cir) {

@@ -20,16 +20,39 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.api.minecraft.item.Item;
+import com.viaversion.viaversion.libs.opennbt.tag.builtin.ByteTag;
+import com.viaversion.viaversion.libs.opennbt.tag.builtin.CompoundTag;
 import com.viaversion.viaversion.protocols.protocol1_11to1_10.EntityIdRewriter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = EntityIdRewriter.class, remap = false)
 public abstract class MixinEntityIdRewriter {
 
-    @Redirect(method = "toClientItem(Lcom/viaversion/viaversion/api/minecraft/item/Item;Z)V", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/minecraft/item/Item;setAmount(I)V"))
-    private static void allowNegativeItems(Item instance, int i) {
+    @Inject(method = "toClientItem(Lcom/viaversion/viaversion/api/minecraft/item/Item;Z)V", at = @At("HEAD"))
+    private static void handleNegativeItemCountS2C(Item item, boolean backwards, CallbackInfo ci) {
+        if (item != null && item.amount() <= 0) {
+            CompoundTag tag = item.tag();
+            if (tag == null) {
+                tag = new CompoundTag();
+                item.setTag(tag);
+            }
+
+            tag.put("1_10_ViaFabricPlus_ItemCount", new ByteTag((byte) item.amount()));
+            item.setTag(tag);
+        }
+    }
+
+    @Inject(method = "toServerItem(Lcom/viaversion/viaversion/api/minecraft/item/Item;Z)V", at = @At("HEAD"))
+    private static void handleNegativeItemCountC2S(Item item, boolean backwards, CallbackInfo ci) {
+        if (item != null && item.tag() != null) {
+            if (item.tag().contains("1_10_ViaFabricPlus_ItemCount")) {
+                item.setAmount(item.tag().<ByteTag>remove("1_10_ViaFabricPlus_ItemCount").asByte());
+                if (item.tag().isEmpty()) item.setTag(null);
+            }
+        }
     }
 
 }

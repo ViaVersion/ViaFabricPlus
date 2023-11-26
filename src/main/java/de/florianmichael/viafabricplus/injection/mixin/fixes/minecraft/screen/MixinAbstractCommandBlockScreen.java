@@ -17,22 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
-import net.minecraft.client.network.PendingUpdateManager;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.client.gui.screen.ChatInputSuggestor;
+import net.minecraft.client.gui.screen.ingame.AbstractCommandBlockScreen;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(PendingUpdateManager.class)
-public abstract class MixinPendingUpdateManager {
+@Mixin(AbstractCommandBlockScreen.class)
+public abstract class MixinAbstractCommandBlockScreen {
 
-    @Inject(method = "incrementSequence", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/PendingUpdateManager;pendingSequence:Z", shift = At.Shift.BEFORE), cancellable = true)
-    private void injectIncrementSequence(CallbackInfoReturnable<PendingUpdateManager> cir) {
-        if (DebugSettings.global().disableSequencing.isEnabled()) {
-            cir.setReturnValue((PendingUpdateManager) (Object) this);
+    @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;refresh()V"))
+    private void cancelAutoComplete(ChatInputSuggestor instance) {
+        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_13)) {
+            instance.refresh();
         }
     }
 

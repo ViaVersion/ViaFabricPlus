@@ -37,6 +37,7 @@ public abstract class MixinCommandBlockScreen {
 
     @Shadow
     private CyclingButtonWidget<Boolean> conditionalModeButton;
+
     @Shadow
     private CyclingButtonWidget<Boolean> redstoneTriggerButton;
 

@@ -17,14 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.provider.viaversion;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.client.render.chunk.ChunkBuilder;
+import net.raphimc.vialoader.util.VersionEnum;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-public class ViaFabricPlusMovementTransmitterProvider extends MovementTransmitterProvider {
+@Mixin(ChunkBuilder.BuiltChunk.class)
+public abstract class MixinBuiltChunk {
 
-    @Override
-    public void sendPlayer(UserConnection userConnection) {
+    @Inject(method = "shouldBuild", at = @At("HEAD"), cancellable = true)
+    private void modifyRenderCondition(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            cir.setReturnValue(true);
+        }
     }
+
 }

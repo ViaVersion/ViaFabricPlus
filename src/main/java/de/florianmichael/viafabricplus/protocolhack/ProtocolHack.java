@@ -23,11 +23,13 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.ProtocolPathEntry;
+import com.viaversion.viaversion.api.protocol.ProtocolPipeline;
+import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.storage.InventoryTracker1_16;
-import com.viaversion.viaversion.protocols.protocol1_20_2to1_20.storage.ConfigurationState;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
@@ -52,6 +54,7 @@ import net.raphimc.vialoader.util.VersionEnum;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -131,29 +134,30 @@ public class ProtocolHack {
     }
 
     /**
-     * @return Creates a Fake UserConnection class with a valid protocol pipeline to emulate packets
+     * @param clientVersion The client version
+     * @param serverVersion The server version
+     * @return Creates a dummy UserConnection class with a valid protocol pipeline to emulate packets
      */
-    @Deprecated
-    public static UserConnection createFakerUserConnection() {
-        return createFakerUserConnection(getPlayNetworkUserConnection().getChannel());
-    }
+    public static UserConnection createDummyUserConnection(final VersionEnum clientVersion, final VersionEnum serverVersion) {
+        final UserConnection user = new UserConnectionImpl(null, true);
+        final ProtocolPipeline pipeline = new ProtocolPipelineImpl(user);
+        final List<ProtocolPathEntry> path = Via.getManager().getProtocolManager().getProtocolPath(clientVersion.getVersion(), serverVersion.getVersion());
+        for (ProtocolPathEntry pair : path) {
+            pipeline.add(pair.protocol());
+            pair.protocol().init(user);
+        }
 
-    /**
-     * @param channel the current channel
-     * @return Creates a Fake UserConnection class with a valid protocol pipeline to emulate packets
-     */
-    @Deprecated
-    public static UserConnection createFakerUserConnection(final Channel channel) {
-        final var fake = new UserConnectionImpl(channel, true);
-        fake.getProtocolInfo().setPipeline(new ProtocolPipelineImpl(fake));
+        final MinecraftClient mc = MinecraftClient.getInstance();
+        final ProtocolInfo info = user.getProtocolInfo();
+        info.setState(State.PLAY);
+        info.setProtocolVersion(clientVersion.getVersion());
+        info.setServerProtocolVersion(serverVersion.getVersion());
+        if (mc.player != null) {
+            info.setUsername(MinecraftClient.getInstance().player.getGameProfile().getName());
+            info.setUuid(MinecraftClient.getInstance().player.getGameProfile().getId());
+        }
 
-        fake.put(new InventoryTracker1_16());
-        fake.put(new ConfigurationState());
-
-        //noinspection DataFlowIssue
-        fake.get(ConfigurationState.class).setBridgePhase(ConfigurationState.BridgePhase.NONE);
-
-        return fake;
+        return user;
     }
 
     /**

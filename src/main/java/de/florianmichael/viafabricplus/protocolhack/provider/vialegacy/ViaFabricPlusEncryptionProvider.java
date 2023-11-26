@@ -22,16 +22,12 @@ package de.florianmichael.viafabricplus.protocolhack.provider.vialegacy;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.network.ClientConnection;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
 
 public class ViaFabricPlusEncryptionProvider extends EncryptionProvider {
 
     @Override
     public void enableDecryption(UserConnection user) {
-        final ClientConnection clientConnection = user.getChannel().attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get();
-        if (clientConnection != null) {
-            ((IClientConnection) clientConnection).viaFabricPlus$setupPreNettyDecryption();
-        }
+        ((IClientConnection) user.getChannel().attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get()).viaFabricPlus$setupPreNettyDecryption();
     }
 }

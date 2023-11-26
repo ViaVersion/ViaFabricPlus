@@ -22,10 +22,10 @@ package de.florianmichael.viafabricplus.save.impl;
 import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.save.AbstractSave;
+import de.florianmichael.viafabricplus.settings.SettingsManager;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.ButtonSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
-import de.florianmichael.viafabricplus.settings.SettingsManager;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.raphimc.vialoader.util.VersionEnum;
@@ -71,6 +71,8 @@ public class SettingsSave extends AbstractSave {
             if (protocolVersion != VersionEnum.UNKNOWN) {
                 ProtocolHack.setTargetVersion(protocolVersion);
             }
+        } else {
+            ProtocolHack.setTargetVersion(ProtocolHack.NATIVE_VERSION);
         }
     }
 }

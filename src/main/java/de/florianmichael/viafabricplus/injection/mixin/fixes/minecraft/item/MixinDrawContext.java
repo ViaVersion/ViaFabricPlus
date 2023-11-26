@@ -31,7 +31,7 @@ public abstract class MixinDrawContext {
 
     @Redirect(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getCount()I"))
     private int handleNegativeItemCount(ItemStack instance) {
-        if (((IItemStack) (Object) instance).viaFabricPlus$has1_10ProtocolHackTag()) {
+        if (((IItemStack) (Object) instance).viaFabricPlus$has1_10ViaFabricPlusTag()) {
             return ((IItemStack) (Object) instance).viaFabricPlus$get1_10Count();
         }
         return instance.getCount();

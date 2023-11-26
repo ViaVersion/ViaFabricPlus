@@ -98,12 +98,11 @@ public abstract class MixinLivingEntity extends Entity {
         return instance.isLogicalSideForUpdatingMovement();
     }
 
-    @Redirect(method = "tickCramming", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isClient()Z"))
-    private boolean revertOnlyPlayerCramming(World instance) {
-        if (DebugSettings.global().alwaysTickOnlyPlayer.isEnabled()) {
-            return false;
+    @Inject(method = "tickCramming", at = @At("HEAD"), cancellable = true)
+    private void preventEntityPush(CallbackInfo ci) {
+        if (DebugSettings.global().preventEntityCramming.isEnabled()) {
+            ci.cancel();
         }
-        return instance.isClient();
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D", remap = false))

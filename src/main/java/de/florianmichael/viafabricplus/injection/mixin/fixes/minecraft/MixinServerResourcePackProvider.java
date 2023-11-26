@@ -22,6 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
+import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.GameVersion;
 import net.minecraft.SharedConstants;
@@ -29,7 +30,6 @@ import net.minecraft.client.resource.ServerResourcePackProvider;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -44,9 +44,6 @@ import java.util.Map;
 
 @Mixin(ServerResourcePackProvider.class)
 public abstract class MixinServerResourcePackProvider {
-
-    @Unique
-    private File viaFabricPlus$trackedFile;
 
     @Redirect(method = "getDownloadHeaders", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;getGameVersion()Lnet/minecraft/GameVersion;"))
     private static GameVersion editHeaders() {
@@ -68,23 +65,16 @@ public abstract class MixinServerResourcePackProvider {
         cir.setReturnValue(modifiableMap);
     }
 
-    @Inject(method = "verifyFile", at = @At("HEAD"))
-    private void keepFile(String expectedSha1, File file, CallbackInfoReturnable<Boolean> cir) {
-        viaFabricPlus$trackedFile = file;
-    }
-
     @Redirect(method = "verifyFile", at = @At(value = "INVOKE", target = "Lcom/google/common/hash/HashCode;toString()Ljava/lang/String;", remap = false))
-    private String revertHashAlgorithm(HashCode instance) {
-        try {
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-                //noinspection deprecation
-                return Hashing.sha1().hashBytes(Files.toByteArray(viaFabricPlus$trackedFile)).toString();
-            } else if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_18tor1_18_1)) {
-                return DigestUtils.sha1Hex(new FileInputStream(viaFabricPlus$trackedFile));
-            }
-        } catch (IOException ignored) {
+    private String revertHashAlgorithm(HashCode instance, @Local File file) throws IOException {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            //noinspection deprecation
+            return Hashing.sha1().hashBytes(Files.toByteArray(file)).toString();
+        } else if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_18tor1_18_1)) {
+            return DigestUtils.sha1Hex(new FileInputStream(file));
+        } else {
+            return instance.toString();
         }
-        return instance.toString();
     }
 
     @Redirect(method = "verifyFile", at = @At(value = "INVOKE", target = "Ljava/lang/String;toLowerCase(Ljava/util/Locale;)Ljava/lang/String;"))

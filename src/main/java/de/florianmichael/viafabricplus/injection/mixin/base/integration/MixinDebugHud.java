@@ -26,21 +26,26 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.tracker.JoinGameTracker;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IBlobCache;
+import de.florianmichael.viafabricplus.injection.access.IChunkTracker;
+import de.florianmichael.viafabricplus.injection.access.IRakSessionCodec;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import de.florianmichael.viafabricplus.util.StringUtil;
-import net.lenni0451.reflect.stream.RStream;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
+import net.minecraft.util.Formatting;
 import net.raphimc.viabedrock.protocol.data.enums.bedrock.ServerMovementModes;
 import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 import net.raphimc.viabedrock.protocol.storage.BlobCache;
+import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
 import net.raphimc.viabedrock.protocol.storage.GameSessionStorage;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 import net.raphimc.vialegacy.protocols.release.protocol1_2_1_3to1_1.storage.SeedStorage;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.storage.EntityTracker;
+import org.cloudburstmc.netty.channel.raknet.RakClientChannel;
+import org.cloudburstmc.netty.handler.codec.raknet.common.RakSessionCodec;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,8 +53,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(DebugHud.class)
@@ -69,19 +72,39 @@ public abstract class MixinDebugHud {
         information.add("");
 
         // Title
-        information.add(ChatUtil.PREFIX + " " + ViaFabricPlusMixinPlugin.VFP_VERSION);
+        information.add(ChatUtil.PREFIX + Formatting.GRAY + " " + ViaFabricPlusMixinPlugin.VFP_VERSION);
 
         // common
         final ProtocolInfo info = userConnection.getProtocolInfo();
         information.add(
-                        "P: " + info.getPipeline().pipes().size() +
-                        " / C: " + ProtocolVersion.getProtocol(info.getProtocolVersion()) +
-                        " / S: " + ProtocolVersion.getProtocol(info.getServerProtocolVersion())
+                "P: " + info.getPipeline().pipes().size() +
+                        " C: " + ProtocolVersion.getProtocol(info.getProtocolVersion()) +
+                        " S: " + ProtocolVersion.getProtocol(info.getServerProtocolVersion())
         );
+
+        // r1_7_10
+        final EntityTracker entityTracker1_7_10 = userConnection.get(EntityTracker.class);
+        if (entityTracker1_7_10 != null) {
+            information.add(
+                    "1.7 Entities: " + entityTracker1_7_10.getTrackedEntities().size() +
+                            ", Virtual holograms: " + entityTracker1_7_10.getVirtualHolograms().size()
+            );
+        }
+
+        // r1_1
+        final SeedStorage seedStorage = userConnection.get(SeedStorage.class);
+        if (seedStorage != null) {
+            information.add("World Seed: " + seedStorage.seed);
+        }
+
+        // c0.30cpe
+        final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = userConnection.get(ExtensionProtocolMetadataStorage.class);
+        if (extensionProtocolMetadataStorage != null) {
+            information.add("CPE extensions: " + extensionProtocolMetadataStorage.getExtensionCount());
+        }
 
         // bedrock
         final JoinGameTracker joinGameTracker = userConnection.get(JoinGameTracker.class);
-
         if (joinGameTracker != null) {
             final int movementMode = userConnection.get(GameSessionStorage.class).getMovementMode();
             String movement = "Server with rewind";
@@ -91,7 +114,10 @@ public abstract class MixinDebugHud {
                 movement = "Server";
             }
 
-            information.add("Bedrock Level: " + joinGameTracker.getLevelId() + " / Enchantment Seed: " + joinGameTracker.getEnchantmentSeed() + " / Movement: " + movement);
+            information.add("Bedrock Level: " + joinGameTracker.getLevelId() + ", Enchantment Seed: " + joinGameTracker.getEnchantmentSeed() + ", Movement: " + movement);
+        }
+        if (joinGameTracker != null) {
+            information.add("World Seed: " + joinGameTracker.getSeed());
         }
         final BlobCache blobCache = userConnection.get(BlobCache.class);
         if (blobCache != null) {
@@ -101,32 +127,22 @@ public abstract class MixinDebugHud {
             final int blobCount = blobCacheProvider.getBlobs().size();
             final int pendingCount = ((IBlobCache) blobCache).viaFabricPlus$getPending().size();
 
-            if (totalSize != 0 || blobCount != 0 || pendingCount != 0) {
-                information.add("Blob Cache: S: " + StringUtil.formatBytes(totalSize) + " / C: " + blobCount + " / Pending: " + pendingCount);
+            information.add("Blob Cache: S: " + StringUtil.formatBytes(totalSize) + ", C: " + blobCount + ", P: " + pendingCount);
+        }
+        final ChunkTracker chunkTracker = userConnection.get(ChunkTracker.class);
+        if (chunkTracker != null) {
+            final int subChunkRequests = ((IChunkTracker) chunkTracker).viaFabricPlus$getSubChunkRequests();
+            final int pendingSubChunks = ((IChunkTracker) chunkTracker).viaFabricPlus$getPendingSubChunks();
+            final int chunks = ((IChunkTracker) chunkTracker).viaFabricPlus$getChunks();
+            cir.getReturnValue().add("Chunk Tracker: R: " + subChunkRequests + ", P: " + pendingSubChunks + ", C: " + chunks);
+        }
+        if (userConnection.getChannel() instanceof RakClientChannel rakClientChannel) {
+            final RakSessionCodec rakSessionCodec = rakClientChannel.parent().pipeline().get(RakSessionCodec.class);
+            if (rakSessionCodec != null) {
+                final int transmitQueue = ((IRakSessionCodec) rakSessionCodec).viaFabricPlus$getOutgoingPackets();
+                final int retransmitQueue = ((IRakSessionCodec) rakSessionCodec).viaFabricPlus$SentDatagrams();
+                cir.getReturnValue().add("RTT: " + Math.round(rakSessionCodec.getRTT()) + " ms, P: " + rakSessionCodec.getPing() + " ms" + ", TQ: " + transmitQueue + ", RTQ: " + retransmitQueue);
             }
-        }
-
-        // r1_7_10
-        final EntityTracker entityTracker1_7_10 = userConnection.get(EntityTracker.class);
-        if (entityTracker1_7_10 != null) {
-            information.add(
-                            "1.7 Entities: " + entityTracker1_7_10.getTrackedEntities().size() +
-                            " / Virtual holograms: " + entityTracker1_7_10.getVirtualHolograms().size()
-            );
-        }
-
-        // r1_1 and bedrock
-        final SeedStorage seedStorage = userConnection.get(SeedStorage.class);
-        if (seedStorage != null) {
-            information.add("World Seed: " + seedStorage.seed);
-        } else if (joinGameTracker != null) {
-            information.add("World Seed: " + joinGameTracker.getSeed());
-        }
-
-        // c0.30cpe
-        final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = userConnection.get(ExtensionProtocolMetadataStorage.class);
-        if (extensionProtocolMetadataStorage != null) {
-            information.add("CPE extensions: " + extensionProtocolMetadataStorage.getExtensionCount());
         }
 
         information.add("");

@@ -19,12 +19,11 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,7 +37,7 @@ public abstract class MixinStructureBlockScreen_1 extends TextFieldWidget {
     }
 
     @Inject(method = "charTyped(CI)Z", at = @At("HEAD"), cancellable = true)
-    private void onCharTyped(char chr, int keyCode, CallbackInfoReturnable<Boolean> ci) {
+    private void removeValidation(char chr, int keyCode, CallbackInfoReturnable<Boolean> ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             ci.setReturnValue(super.charTyped(chr, keyCode));
         }

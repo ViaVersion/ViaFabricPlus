@@ -19,24 +19,43 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.injection.access.IItemStack;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = PacketByteBuf.class)
 public abstract class MixinPacketByteBuf {
 
-    @Inject(method = "readText", at = @At(value = "INVOKE", target = "Lio/netty/handler/codec/DecoderException;<init>(Ljava/lang/String;)V", shift = At.Shift.BEFORE, remap = false), cancellable = true)
-    private void injectReadText(CallbackInfoReturnable<Text> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
-            cir.setReturnValue(null);
+    @Redirect(method = "readItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setNbt(Lnet/minecraft/nbt/NbtCompound;)V"))
+    private void removeViaFabricPlusTag(ItemStack instance, NbtCompound tag) {
+        if (tag != null && tag.contains("1_10_ViaFabricPlus_ItemCount", NbtElement.BYTE_TYPE) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
+            final IItemStack mixinItemStack = ((IItemStack) (Object) instance);
+            mixinItemStack.viaFabricPlus$set1_10Count(tag.getByte("1_10_ViaFabricPlus_ItemCount"));
+            tag.remove("1_10_ViaFabricPlus_ItemCount");
+            if (tag.isEmpty()) tag = null;
         }
+
+        instance.setNbt(tag);
+    }
+
+    @Redirect(method = "writeItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getNbt()Lnet/minecraft/nbt/NbtCompound;"))
+    private NbtCompound addViaFabricPlusTag(ItemStack instance) {
+        NbtCompound tag = instance.getNbt();
+
+        final IItemStack mixinItemStack = ((IItemStack) (Object) instance);
+        if (mixinItemStack.viaFabricPlus$has1_10ViaFabricPlusTag()) {
+            if (tag == null) tag = new NbtCompound();
+            tag.putByte("1_10_ViaFabricPlus_ItemCount", (byte) mixinItemStack.viaFabricPlus$get1_10Count());
+        }
+
+        return tag;
     }
 
 }

@@ -21,5 +21,8 @@ package de.florianmichael.viafabricplus.injection.access;
 
 public interface IScreenHandler {
 
-    short viaFabricPlus$getAndIncrementLastActionId();
+    short viaFabricPlus$getActionId();
+
+    short viaFabricPlus$incrementAndGetActionId();
+
 }

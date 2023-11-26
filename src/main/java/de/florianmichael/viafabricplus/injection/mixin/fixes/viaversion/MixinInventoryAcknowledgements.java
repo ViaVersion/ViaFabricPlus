@@ -33,12 +33,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinInventoryAcknowledgements {
 
     @Mutable
-    @Shadow @Final private IntList ids;
+    @Shadow
+    @Final
+    private IntList ids;
+
     @Unique
     private it.unimi.dsi.fastutil.ints.IntList viaFabricPlus$ids;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void fixJavaIssue(CallbackInfo ci) {
+    private void makeConcurrent(CallbackInfo ci) {
         this.ids = null;
         this.viaFabricPlus$ids = IntLists.synchronize(new IntArrayList());
     }

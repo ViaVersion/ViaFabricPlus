@@ -80,6 +80,9 @@ dependencies {
 
 	// Lenni0451 Libraries
 	jij "net.lenni0451:Reflect:${project.reflect_version}"
+	jij("net.lenni0451:MCPing:${project.mcping_version}") {
+		exclude group: "com.google.code.gson", module: "gson"
+	}
 
 	// Misc Libraries
 	jij("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {

@@ -25,8 +25,8 @@ import com.viaversion.viaversion.api.platform.providers.ViaProviders;
 import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.PlayerLookTargetProvider;
 import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.provider.PlayerAbilitiesProvider;
+import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.provider.AckSequenceProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
 import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusTransferProvider;
@@ -53,11 +53,11 @@ public class ViaFabricPlusVLLoader extends VLLoader {
 
         providers.use(VersionProvider.class, new ViaFabricPlusBaseVersionProvider());
 
-        providers.use(MovementTransmitterProvider.class, new ViaFabricPlusMovementTransmitterProvider());
         providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());
         providers.use(PlayerLookTargetProvider.class, new ViaFabricPlusPlayerLookTargetProvider());
         providers.use(PlayerAbilitiesProvider.class, new ViaFabricPlusPlayerAbilitiesProvider());
         providers.use(SignableCommandArgumentsProvider.class, new ViaFabricPlusCommandArgumentsProvider());
+        providers.use(AckSequenceProvider.class, new ViaFabricPlusAckSequenceProvider());
 
         providers.use(OldAuthProvider.class, new ViaFabricPlusOldAuthProvider());
         providers.use(ClassicWorldHeightProvider.class, new ViaFabricPlusClassicWorldHeightProvider());

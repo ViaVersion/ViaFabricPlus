@@ -20,22 +20,17 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(ChatMessageC2SPacket.class)
 public abstract class MixinChatMessageC2SPacket {
 
-    @ModifyArg(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/PacketByteBuf;writeString(Ljava/lang/String;I)Lnet/minecraft/network/PacketByteBuf;"))
+    @ModifyConstant(method = "write", constant = @Constant(intValue = 256))
     private int modifyChatLength(int maxLength) {
-        if (MinecraftClient.getInstance().isInSingleplayer()) {
-            return 256;
-        }
-
-        return ClientsideFixes.getCurrentChatLimit();
+        return ClientsideFixes.getCurrentChatLength();
     }
 
 }

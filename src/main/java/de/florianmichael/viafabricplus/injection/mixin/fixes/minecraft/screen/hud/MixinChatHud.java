@@ -19,25 +19,23 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.hud;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.gui.hud.ChatHud;
-import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.hud.MessageIndicator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(ChatHud.class)
 public abstract class MixinChatHud {
 
-    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHudLine$Visible;indicator()Lnet/minecraft/client/gui/hud/MessageIndicator;"), require = 0)
-    private MessageIndicator removeIndicators(ChatHudLine.Visible instance, Operation<MessageIndicator> original) {
+    @ModifyVariable(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    private MessageIndicator removeIndicator(MessageIndicator instance) {
         if (VisualSettings.global().hideSignatureIndicator.isEnabled()) {
             return null;
         }
 
-        return original.call(instance);
+        return instance;
     }
 
 }

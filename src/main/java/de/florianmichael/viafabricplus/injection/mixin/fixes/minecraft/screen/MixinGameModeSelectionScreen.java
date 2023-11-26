@@ -38,7 +38,9 @@ import java.util.List;
 public abstract class MixinGameModeSelectionScreen extends Screen {
 
     @Mutable
-    @Shadow @Final private static int UI_WIDTH;
+    @Shadow
+    @Final
+    private static int UI_WIDTH;
 
     @Unique
     private GameModeSelectionScreen.GameModeSelection[] viaFabricPlus$unwrappedGameModes;

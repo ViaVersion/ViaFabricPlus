@@ -22,48 +22,15 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 import com.viaversion.viaversion.api.type.types.misc.NamedCompoundTagType;
 import com.viaversion.viaversion.libs.opennbt.tag.limiter.TagLimiter;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = NamedCompoundTagType.class, remap = false)
 public abstract class MixinNamedCompoundTagType {
 
-    @Unique
-    private static final TagLimiter viaFabricPlus$tag_limiter = new TagLimiter() {
-        private final int maxBytes = 2097152;
-        private int bytes;
-
-        @Override
-        public void countBytes(int i) {
-            this.bytes += bytes;
-            if (this.bytes >= this.maxBytes) {
-                throw new IllegalArgumentException("NBT data larger than expected (capped at " + this.maxBytes + ")");
-            }
-        }
-
-        @Override
-        public void checkLevel(int i) {}
-
-        @Override
-        public int maxBytes() {
-            return this.maxBytes;
-        }
-
-        @Override
-        public int maxLevels() {
-            return 512; // Not used anymore
-        }
-
-        @Override
-        public int bytes() {
-            return this.bytes;
-        }
-    };
-
     @Redirect(method = "read(Lio/netty/buffer/ByteBuf;Z)Lcom/viaversion/viaversion/libs/opennbt/tag/builtin/CompoundTag;", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/libs/opennbt/tag/limiter/TagLimiter;create(II)Lcom/viaversion/viaversion/libs/opennbt/tag/limiter/TagLimiter;"))
-    private static TagLimiter replaceTagLimiter(int maxBytes, int maxLevels) {
-        return viaFabricPlus$tag_limiter;
+    private static TagLimiter removeNBTSizeLimit(int maxBytes, int maxLevels) {
+        return TagLimiter.noop();
     }
 
 }

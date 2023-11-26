@@ -28,7 +28,10 @@ import net.minecraft.entity.LivingEntity;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -39,11 +42,6 @@ public abstract class MixinInGameHud {
     private int scaledWidth;
 
     // Removing newer elements
-
-    @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
-    private void removeExperienceBar(DrawContext context, int x, CallbackInfo ci) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) ci.cancel();
-    }
 
     @Inject(method = "renderMountJumpBar", at = @At("HEAD"), cancellable = true)
     private void removeMountJumpBar(JumpingMount mount, DrawContext context, int x, CallbackInfo ci) {

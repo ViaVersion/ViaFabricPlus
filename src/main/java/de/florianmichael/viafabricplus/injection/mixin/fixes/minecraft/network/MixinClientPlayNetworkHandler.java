@@ -20,22 +20,21 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import de.florianmichael.viafabricplus.fixes.diff.RecipesPre1_12;
+import de.florianmichael.viafabricplus.fixes.recipe.RecipeInfo;
+import de.florianmichael.viafabricplus.fixes.recipe.Recipes1_11_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
-import net.minecraft.client.network.ClientConnectionState;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.network.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.packet.s2c.play.*;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.GameMode;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -49,11 +48,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-@SuppressWarnings("DataFlowIssue")
 @Mixin(ClientPlayNetworkHandler.class)
-public abstract class MixinClientPlayNetworkHandler {
+public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkHandler {
 
     @Shadow
     public abstract void onEntityStatus(EntityStatusS2CPacket packet);
@@ -66,11 +63,26 @@ public abstract class MixinClientPlayNetworkHandler {
     @Shadow
     public abstract void onSimulationDistance(SimulationDistanceS2CPacket packet);
 
-    @Shadow public abstract ClientConnection getConnection();
+    @Shadow
+    public abstract ClientConnection getConnection();
+
+    @Shadow
+    public abstract void onSynchronizeRecipes(SynchronizeRecipesS2CPacket packet);
+
+    protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
+        super(client, connection, connectionState);
+    }
 
     @WrapWithCondition(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
-    private boolean removeError(Logger instance, String s, Object o) {
+    private boolean removeChatPacketError(Logger instance, String s, Object o) {
         return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_20_2);
+    }
+
+    @Redirect(method = "handlePlayerListAction", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;onGameModeChanged(Lnet/minecraft/world/GameMode;)V"))
+    private void dontResetVelocity(ClientPlayerEntity instance, GameMode gameMode) {
+        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            instance.onGameModeChanged(gameMode);
+        }
     }
 
     @WrapWithCondition(method = "setPublicSession", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
@@ -79,8 +91,17 @@ public abstract class MixinClientPlayNetworkHandler {
     }
 
     @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
-    private boolean removeWarning(Logger instance, String s, Object o) {
+    private boolean removeUnknownPlayerListEntryWarning(Logger instance, String s, Object o) {
         return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_3);
+    }
+
+    @Redirect(method = {"onEntityPosition", "onEntity"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isLogicalSideForUpdatingMovement()Z"))
+    private boolean allowPlayerToBeMovedByEntityPackets(Entity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3) || ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
+            return instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getWorld().isClient;
+        }
+
+        return instance.isLogicalSideForUpdatingMovement();
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
@@ -90,7 +111,7 @@ public abstract class MixinClientPlayNetworkHandler {
         }
     }
 
-    @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))
+    @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z", ordinal = 1))
     private boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
         return instance.isSecureChatEnforced() || VisualSettings.global().disableSecureChatWarning.isEnabled();
     }
@@ -102,17 +123,18 @@ public abstract class MixinClientPlayNetworkHandler {
 
     @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
     private void closeDownloadingTerrain(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2) && MinecraftClient.getInstance().currentScreen instanceof DownloadingTerrainScreen) {
-            MinecraftClient.getInstance().setScreen(null);
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1) && this.client.currentScreen instanceof DownloadingTerrainScreen downloadingTerrainScreen) {
+            downloadingTerrainScreen.setReady();
         }
     }
 
+    @SuppressWarnings({"InvalidInjectorMethodSignature"})
     @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = BoatEntity.class))
-    private Class<?> dontChangePlayerYaw(Object entity, Class<?> constant) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2)) {
+    private Class<?> dontChangeYawWhenMountingBoats(Object entity, Class<?> boatClass) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
             return Integer.class;
         }
-        return constant;
+        return boatClass;
     }
 
     @Inject(method = "onChunkLoadDistance", at = @At("RETURN"))
@@ -122,29 +144,27 @@ public abstract class MixinClientPlayNetworkHandler {
         }
     }
 
-    @Redirect(method = "onSynchronizeRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/SynchronizeRecipesS2CPacket;getRecipes()Ljava/util/List;"))
-    private List<RecipeEntry<?>> rewriteRecipes(SynchronizeRecipesS2CPacket instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
-            final List<Recipe<?>> recipes = instance.getRecipes().stream().map(RecipeEntry::value).collect(Collectors.toList());
-            RecipesPre1_12.editRecipes(recipes, ProtocolHack.getTargetVersion());
-
-            final List<RecipeEntry<?>> entries = new ArrayList<>();
-            int recipeId = 0;
-            for (final Recipe<?> recipe : recipes) {
-                entries.add(new RecipeEntry<>(new Identifier(String.valueOf(recipeId++)), recipe));
-            }
-
-            return entries;
+    @Redirect(method = "onEntityPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;updateTrackedPositionAndAngles(DDDFFI)V"))
+    private void cancelSmallChanges(Entity instance, double x, double y, double z, float yaw, float pitch, int interpolationSteps) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_1) && Math.abs(instance.getX() - x) < 0.03125 && Math.abs(instance.getY() - y) < 0.015625 && Math.abs(instance.getZ() - z) < 0.03125) {
+            instance.updateTrackedPositionAndAngles(instance.getX(), instance.getY(), instance.getZ(), yaw, pitch, ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2) ? 0 : interpolationSteps);
+        } else {
+            instance.updateTrackedPositionAndAngles(x, y, z, yaw, pitch, interpolationSteps);
         }
-        return instance.getRecipes();
     }
 
-    @Inject(method = {"onGameJoin", "onPlayerRespawn"}, at = @At("TAIL"))
-    private void injectOnOnGameJoinOrRespawn(CallbackInfo ci) {
+    @Inject(method = "onGameJoin", at = @At("RETURN"))
+    private void sendAdditionalData(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            assert player != null;
-            onEntityStatus(new EntityStatusS2CPacket(player, (byte) 28));
+            this.onEntityStatus(new EntityStatusS2CPacket(this.client.player, (byte) 28)); // Op-level 4
+        }
+        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_12)) {
+            final List<RecipeEntry<?>> recipes = new ArrayList<>();
+            final List<RecipeInfo<?>> recipeInfos = Recipes1_11_2.getRecipes();
+            for (int i = 0; i < recipeInfos.size(); i++) {
+                recipes.add(recipeInfos.get(i).create(new Identifier("viafabricplus", "recipe/" + i)));
+            }
+            this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
         }
     }
 

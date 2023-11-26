@@ -19,11 +19,14 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
+import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.storage.InventoryAcknowledgements;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
+import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.fabricmc.fabric.impl.networking.payload.PacketByteBufPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.ServerPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.common.CommonPingS2CPacket;
@@ -42,14 +45,22 @@ import java.time.Duration;
 import java.util.function.BooleanSupplier;
 
 @SuppressWarnings("UnstableApiUsage")
-@Mixin(value = ClientCommonNetworkHandler.class, priority = 1 /* Has to be applied before Fabric's Networking API, so it doesn't cancel our custom-payload packets */)
+@Mixin(value = ClientCommonNetworkHandler.class, priority = 1001 /* Has to be applied before Fabric's Networking API, so it doesn't cancel our custom-payload packets */)
 public abstract class MixinClientCommonNetworkHandler {
 
-    @Shadow @Final protected MinecraftClient client;
+    @Shadow
+    @Final
+    protected MinecraftClient client;
 
-    @Shadow protected abstract void send(Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry);
+    @Shadow
+    protected abstract void send(Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry);
 
-    @Shadow public abstract void sendPacket(Packet<?> packet);
+    @Shadow
+    public abstract void sendPacket(Packet<?> packet);
+
+    @Shadow
+    @Final
+    protected ClientConnection connection;
 
     @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientCommonNetworkHandler;send(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
     private void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
@@ -63,19 +74,22 @@ public abstract class MixinClientCommonNetworkHandler {
 
     @Inject(method = "onPing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
     private void onPing(CommonPingS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_17)) {
-            return;
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
+            final InventoryAcknowledgements acks = ((IClientConnection) this.connection).viaFabricPlus$getUserConnection().get(InventoryAcknowledgements.class);
+            if (acks.removeId(packet.getParameter())) {
+                final short inventoryId = (short) ((packet.getParameter() >> 16) & 0xFF);
+
+                ScreenHandler handler = null;
+                if (inventoryId == 0) handler = client.player.playerScreenHandler;
+                else if (inventoryId == client.player.currentScreenHandler.syncId) handler = client.player.currentScreenHandler;
+
+                if (handler != null) {
+                    acks.addId(packet.getParameter());
+                } else {
+                    ci.cancel();
+                }
+            }
         }
-
-        final int inventoryId = (packet.getParameter() >> 16) & 0xFF; // Fix Via Bug from 1.16.5 (Window Confirmation -> PlayPing) Usage for MiningFast Detection
-        ScreenHandler handler = null;
-
-        if (client.player == null) return;
-
-        if (inventoryId == 0) handler = client.player.playerScreenHandler;
-        if (inventoryId == client.player.currentScreenHandler.syncId) handler = client.player.currentScreenHandler;
-
-        if (handler == null) ci.cancel();
     }
 
     @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At("HEAD"), cancellable = true)

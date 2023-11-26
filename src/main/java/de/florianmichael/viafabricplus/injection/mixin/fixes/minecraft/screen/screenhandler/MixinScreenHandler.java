@@ -21,32 +21,39 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.s
 
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.SlotActionType;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ScreenHandler.class)
 public abstract class MixinScreenHandler implements IScreenHandler {
 
-    @Unique
-    private short viaFabricPlus$lastActionId = 0;
+    @Shadow
+    private ItemStack cursorStack;
 
-    @Inject(method = "internalOnSlotClick", at = @At("HEAD"), cancellable = true)
-    private void injectInternalOnSlotClick(int slot, int clickData, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && actionType == SlotActionType.SWAP && clickData == 40) {
-            ci.cancel();
+    @Unique
+    private short viaFabricPlus$actionId = 0;
+
+    @Redirect(method = "updateSlotStacks", at = @At(value = "FIELD", target = "Lnet/minecraft/screen/ScreenHandler;cursorStack:Lnet/minecraft/item/ItemStack;"))
+    private void preventUpdate(ScreenHandler instance, ItemStack value) {
+        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_17_1)) {
+            this.cursorStack = value;
         }
     }
 
     @Override
-    public short viaFabricPlus$getAndIncrementLastActionId() {
-        return ++viaFabricPlus$lastActionId;
+    public short viaFabricPlus$getActionId() {
+        return viaFabricPlus$actionId;
+    }
+
+    @Override
+    public short viaFabricPlus$incrementAndGetActionId() {
+        return ++viaFabricPlus$actionId;
     }
 
 }

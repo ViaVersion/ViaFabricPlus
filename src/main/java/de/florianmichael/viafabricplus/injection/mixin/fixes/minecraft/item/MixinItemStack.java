@@ -105,7 +105,7 @@ public abstract class MixinItemStack implements IItemStack {
     }
 
     @Override
-    public boolean viaFabricPlus$has1_10ProtocolHackTag() {
+    public boolean viaFabricPlus$has1_10ViaFabricPlusTag() {
         return this.viaFabricPlus$has1_10ProtocolHackTag;
     }
 

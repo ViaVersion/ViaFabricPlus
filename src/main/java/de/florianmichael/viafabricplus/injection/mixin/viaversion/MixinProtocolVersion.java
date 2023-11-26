@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.viaversion;
 
+import com.google.common.collect.ImmutableSet;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.VersionRange;
 import com.viaversion.viaversion.util.Pair;
@@ -31,15 +32,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Mixin(value = ProtocolVersion.class, remap = false)
 public abstract class MixinProtocolVersion {
+
+    @Unique
+    private static Set<String> viaFabricPlus$skips;
 
     @Unique
     private static Map<String, Pair<String, VersionRange>> viaFabricPlus$remaps;
 
     @Inject(method = "<clinit>", at = @At("HEAD"))
     private static void initMaps(CallbackInfo ci) {
+        viaFabricPlus$skips = ImmutableSet.of("1.4.6/7", "1.5.1", "1.5.2", "1.6.1", "1.6.2", "1.6.3", "1.6.4");
         viaFabricPlus$remaps = new HashMap<>();
         viaFabricPlus$remaps.put("1.7-1.7.5", new Pair<>("1.7.2-1.7.5", new VersionRange("1.7", 2, 5)));
         viaFabricPlus$remaps.put("1.9.3/4", new Pair<>("1.9.3-1.9.4", null));
@@ -53,6 +59,7 @@ public abstract class MixinProtocolVersion {
 
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
     private static ProtocolVersion unregisterAndRenameVersions(int version, String name) {
+        if (viaFabricPlus$skips.contains(name)) return null;
         final Pair<String, VersionRange> remapEntry = viaFabricPlus$remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
@@ -64,6 +71,7 @@ public abstract class MixinProtocolVersion {
     @SuppressWarnings({"UnresolvedMixinReference", "MixinAnnotationTarget", "InvalidInjectorMethodSignature"}) // Optional injection
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(IILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"), require = 0)
     private static ProtocolVersion unregisterAndRenameVersions(int version, int snapshotVersion, String name) {
+        if (viaFabricPlus$skips.contains(name)) return null;
         final Pair<String, VersionRange> remapEntry = viaFabricPlus$remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
@@ -74,6 +82,7 @@ public abstract class MixinProtocolVersion {
 
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;Lcom/viaversion/viaversion/api/protocol/version/VersionRange;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
     private static ProtocolVersion unregisterAndRenameVersions(int version, String name, VersionRange versionRange) {
+        if (viaFabricPlus$skips.contains(name)) return null;
         final Pair<String, VersionRange> remapEntry = viaFabricPlus$remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();

@@ -33,7 +33,7 @@ import java.util.List;
 @SuppressWarnings("DataFlowIssue")
 public class ClassicItemSelectionScreen extends VFPScreen {
 
-    public static ClassicItemSelectionScreen INSTANCE = new ClassicItemSelectionScreen();
+    public static final ClassicItemSelectionScreen INSTANCE = new ClassicItemSelectionScreen();
 
     private static final int MAX_ROW_DIVIDER = 9;
     private static final int ITEM_XY_BOX_DIMENSION_CLASSIC = 25;
