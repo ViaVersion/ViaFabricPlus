@@ -39,7 +39,7 @@ public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
 
             mc.getSessionService().joinServer(mc.getSession().getUuidOrNull(), mc.getSession().getAccessToken(), serverId);
         } catch (Exception e) {
-            user.getChannel().attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get().disconnect(ChatUtil.prefixText(Text.translatable("authentication_settings.viafabricplus.failed_to_verify_session")));
+            user.getChannel().attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get().disconnect(ChatUtil.prefixText(Text.translatable("authentication.viafabricplus.failed_to_verify_session")));
             ViaFabricPlus.global().getLogger().error("Error occurred while calling join server to verify session", e);
         }
     }
