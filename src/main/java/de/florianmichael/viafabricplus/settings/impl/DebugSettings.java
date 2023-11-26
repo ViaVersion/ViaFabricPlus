@@ -28,6 +28,9 @@ import net.raphimc.vialoader.util.VersionRange;
 public class DebugSettings extends SettingGroup {
     private static final DebugSettings instance = new DebugSettings();
 
+    // 1.19.1/2 -> 1.19
+    public final VersionedBooleanSetting alwaysTickOnlyPlayer = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.always_tick_only_player"), VersionRange.andOlder(VersionEnum.r1_19_1tor1_19_2));
+
     // 1.19 -> 1.18.2
     public final VersionedBooleanSetting disableSequencing = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.disable_sequencing"), VersionRange.andOlder(VersionEnum.r1_18_2));
 
@@ -37,6 +40,7 @@ public class DebugSettings extends SettingGroup {
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting executeInputsInSync = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.execute_inputs_in_sync"), VersionRange.andOlder(VersionEnum.r1_12_2));
     public final VersionedBooleanSetting sneakInstant = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.sneak_instant"), VersionRange.of(VersionEnum.r1_8, VersionEnum.r1_12_2));
+    public final VersionedBooleanSetting skipContainersWithCustomDisplayNames = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.skip_containers_with_custom_display_names"), VersionRange.andOlder(VersionEnum.r1_12_2));
 
     // 1.12 -> 1.11.1-1.11.2
     public final VersionedBooleanSetting sendOpenInventoryPacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_open_inventory_packet"), VersionRange.andOlder(VersionEnum.r1_11_1to1_11_2));

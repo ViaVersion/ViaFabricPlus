@@ -44,7 +44,7 @@ public abstract class MixinItemPlacementContext extends ItemUsageContext {
     }
 
     @Inject(method = "getPlayerLookDirection", at = @At("HEAD"), cancellable = true)
-    private void get112LookDirection(CallbackInfoReturnable<Direction> cir) {
+    private void getLookDirection1_12_2(CallbackInfoReturnable<Direction> cir) {
         final ItemPlacementContext self = (ItemPlacementContext) (Object) this;
         final PlayerEntity player = self.getPlayer();
 
@@ -71,7 +71,7 @@ public abstract class MixinItemPlacementContext extends ItemUsageContext {
     }
 
     @Inject(method = "canPlace", at = @At("RETURN"), cancellable = true)
-    private void anvilOverride(CallbackInfoReturnable<Boolean> cir) {
+    private void canPlace1_12_2(CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValueZ() && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(Material1_19_4.getMaterial(this.getWorld().getBlockState(this.getBlockPos())).equals(Material1_19_4.DECORATION) && Block.getBlockFromItem(this.getStack().getItem()).equals(Blocks.ANVIL));
         }

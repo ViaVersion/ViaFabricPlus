@@ -72,6 +72,58 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         super(entityType, world);
     }
 
+    @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setMovementSpeed(F)V"))
+    private void storeSprintingState(CallbackInfo ci) {
+        viaFabricPlus$isSprinting = this.isSprinting();
+    }
+
+    @Redirect(method = "getOffGroundSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isSprinting()Z"))
+    private boolean useLastSprintingState(PlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+            return viaFabricPlus$isSprinting;
+        }
+        return instance.isSprinting();
+    }
+
+
+    @Redirect(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
+    private void dontSwingHand(PlayerEntity instance, Hand hand) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) return;
+
+        instance.swingHand(hand);
+    }
+
+    @Redirect(method = "checkFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
+    private boolean allowElytraWhenLevitating(PlayerEntity instance, StatusEffect statusEffect) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
+            return false;
+        }
+        return instance.hasStatusEffect(statusEffect);
+    }
+
+    @Inject(method = "checkFallFlying", at = @At("HEAD"), cancellable = true)
+    private void replaceFallFlyingCondition(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            if (!this.isOnGround() && this.getVelocity().y < 0D && !this.isFallFlying()) {
+                final ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
+                if (itemStack.isOf(Items.ELYTRA) && ElytraItem.isUsable(itemStack)) {
+                    cir.setReturnValue(true);
+                    return;
+                }
+            }
+            cir.setReturnValue(false);
+        }
+    }
+
+    @ModifyConstant(method = "getActiveEyeHeight", constant = @Constant(floatValue = 1.27f))
+    private float modifySneakEyeHeight(float prevEyeHeight) {
+        if (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_13_2)) {
+            return prevEyeHeight;
+        } else {
+            return 1.54f;
+        }
+    }
+
     @Inject(method = "updatePose", at = @At("HEAD"), cancellable = true)
     private void onUpdatePose(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
@@ -105,6 +157,14 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
+    @Redirect(method = "adjustMovementForSneaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getStepHeight()F"))
+    private float modifyStepHeight1_10(PlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
+            return 1.0F;
+        }
+        return instance.getStepHeight();
+    }
+
     @Inject(method = "getAttackCooldownProgress", at = @At("HEAD"), cancellable = true)
     private void removeAttackCooldown(CallbackInfoReturnable<Float> ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
@@ -119,68 +179,9 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @ModifyConstant(method = "getActiveEyeHeight", constant = @Constant(floatValue = 1.27f))
-    private float modifySneakEyeHeight(float prevEyeHeight) {
-        if (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_13_2)) {
-            return prevEyeHeight;
-        } else {
-            return 1.54f;
-        }
-    }
-
-    @Redirect(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
-    private void dontSwingHand(PlayerEntity instance, Hand hand) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) return;
-
-        instance.swingHand(hand);
-    }
-
-    @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setMovementSpeed(F)V"))
-    private void storeSprintingState(CallbackInfo ci) {
-        viaFabricPlus$isSprinting = this.isSprinting();
-    }
-
-    @Redirect(method = "getOffGroundSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isSprinting()Z"))
-    private boolean useLastSprintingState(PlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
-            return viaFabricPlus$isSprinting;
-        }
-        return instance.isSprinting();
-    }
-
-    @Redirect(method = "checkFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
-    private boolean allowElytraWhenLevitating(PlayerEntity instance, StatusEffect statusEffect) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
-            return false;
-        }
-        return instance.hasStatusEffect(statusEffect);
-    }
-
-    @Inject(method = "checkFallFlying", at = @At("HEAD"), cancellable = true)
-    private void replaceFallFlyingCondition(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-            if (!this.isOnGround() && this.getVelocity().y < 0D && !this.isFallFlying()) {
-                final ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
-                if (itemStack.isOf(Items.ELYTRA) && ElytraItem.isUsable(itemStack)) {
-                    cir.setReturnValue(true);
-                    return;
-                }
-            }
-            cir.setReturnValue(false);
-        }
-    }
-
-    @Redirect(method = "adjustMovementForSneaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getStepHeight()F"))
-    private float modifyStepHeight1_10(PlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
-            return 1.0F;
-        }
-        return instance.getStepHeight();
-    }
-
     /**
-     * @author RK_01
-     * @reason ProtocolHack block break speed changes
+     * @author Mojang, RK_01
+     * @reason Block break speed calculation changes
      */
     @Overwrite
     public float getBlockBreakingSpeed(BlockState block) {

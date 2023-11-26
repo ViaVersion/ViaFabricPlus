@@ -60,48 +60,6 @@ public abstract class MixinMinecraftClient {
 
     @Shadow @Nullable public abstract ClientPlayNetworkHandler getNetworkHandler();
 
-    @WrapWithCondition(method = "doItemUse",
-            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactItem(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;")),
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;resetEquipProgress(Lnet/minecraft/util/Hand;)V", ordinal = 0))
-    private boolean removeEquipProgressReset(HeldItemRenderer instance, Hand hand) {
-        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_8) || !(player.getStackInHand(hand).getItem() instanceof SwordItem);
-    }
-
-    @Redirect(method = "doItemUse",
-            slice = @Slice(to = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactEntity(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;")),
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;isAccepted()Z", ordinal = 0))
-    private boolean preventGenericInteract(ActionResult instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-            return false;
-        }
-
-        return instance.isAccepted();
-    }
-
-    @ModifyExpressionValue(method = "handleBlockBreaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
-    private boolean allowBlockBreakAndItemUsageAtTheSameTime(boolean original) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-            return false;
-        }
-        return original;
-    }
-
-    @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 1))
-    private int unwrapOperation(MinecraftClient instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            return 0;
-        }
-        return attackCooldown;
-    }
-
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;handleInputEvents()V", shift = At.Shift.BEFORE))
-    private void updateCooldown(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            if (this.attackCooldown > 0) {
-                --this.attackCooldown;
-            }
-        }
-    }
 
     @Unique
     private final ConcurrentLinkedDeque<Runnable> viaFabricPlus$mouseInteractions = new ConcurrentLinkedDeque<>();
@@ -141,6 +99,50 @@ public abstract class MixinMinecraftClient {
                 }
             }
         }
+    }
+
+    @WrapWithCondition(method = "doItemUse",
+            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactItem(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;")),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;resetEquipProgress(Lnet/minecraft/util/Hand;)V", ordinal = 0))
+    private boolean removeEquipProgressReset(HeldItemRenderer instance, Hand hand) {
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_8) || !(player.getStackInHand(hand).getItem() instanceof SwordItem);
+    }
+
+
+    @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 1))
+    private int dontIncrementCooldown(MinecraftClient instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            return 0;
+        }
+        return attackCooldown;
+    }
+
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;handleInputEvents()V", shift = At.Shift.BEFORE))
+    private void postIncrementCooldown(CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            if (this.attackCooldown > 0) {
+                --this.attackCooldown;
+            }
+        }
+    }
+
+    @Redirect(method = "doItemUse",
+            slice = @Slice(to = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactEntity(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;")),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;isAccepted()Z", ordinal = 0))
+    private boolean preventGenericInteract(ActionResult instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+            return false;
+        }
+
+        return instance.isAccepted();
+    }
+
+    @ModifyExpressionValue(method = "handleBlockBreaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
+    private boolean allowBlockBreakAndItemUsageAtTheSameTime(boolean original) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+            return false;
+        }
+        return original;
     }
 
 }

@@ -53,13 +53,6 @@ public abstract class MixinAxeItem extends MiningToolItem {
         super(attackDamage, attackSpeed, material, effectiveBlocks, settings);
     }
 
-    @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
-    private void disableUse(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            cir.setReturnValue(ActionResult.PASS);
-        }
-    }
-
     @Override
     public boolean isSuitableFor(BlockState state) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
@@ -67,6 +60,13 @@ public abstract class MixinAxeItem extends MiningToolItem {
         }
 
         return super.isSuitableFor(state);
+    }
+
+    @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
+    private void disableUse(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+            cir.setReturnValue(ActionResult.PASS);
+        }
     }
 
     @Override

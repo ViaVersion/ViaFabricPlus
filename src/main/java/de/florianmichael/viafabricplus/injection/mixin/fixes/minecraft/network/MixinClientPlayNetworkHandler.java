@@ -66,10 +66,22 @@ public abstract class MixinClientPlayNetworkHandler {
     @Shadow
     public abstract void onSimulationDistance(SimulationDistanceS2CPacket packet);
 
-    @Shadow
-    private ClientWorld world;
-
     @Shadow public abstract ClientConnection getConnection();
+
+    @WrapWithCondition(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
+    private boolean removeError(Logger instance, String s, Object o) {
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_20_2);
+    }
+
+    @WrapWithCondition(method = "setPublicSession", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
+    private boolean removeInvalidSignatureWarning(Logger instance, String s, Object o) {
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_4);
+    }
+
+    @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
+    private boolean removeWarning(Logger instance, String s, Object o) {
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_3);
+    }
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void fixPlayerListOrdering(MinecraftClient client, ClientConnection clientConnection, ClientConnectionState clientConnectionState, CallbackInfo ci) {
@@ -78,20 +90,9 @@ public abstract class MixinClientPlayNetworkHandler {
         }
     }
 
-    @Inject(method = "onChunkLoadDistance", at = @At("RETURN"))
-    private void emulateSimulationDistance(ChunkLoadDistanceS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
-            this.onSimulationDistance(new SimulationDistanceS2CPacket(packet.getDistance()));
-        }
-    }
-
-    @Inject(method = {"onGameJoin", "onPlayerRespawn"}, at = @At("TAIL"))
-    private void injectOnOnGameJoinOrRespawn(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            assert player != null;
-            onEntityStatus(new EntityStatusS2CPacket(player, (byte) 28));
-        }
+    @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))
+    private boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
+        return instance.isSecureChatEnforced() || VisualSettings.global().disableSecureChatWarning.isEnabled();
     }
 
     @WrapWithCondition(method = "onPlayerSpawnPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;setReady()V"))
@@ -114,19 +115,11 @@ public abstract class MixinClientPlayNetworkHandler {
         return constant;
     }
 
-    @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
-    private boolean removeWarning(Logger instance, String s, Object o) {
-        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_3);
-    }
-
-    @WrapWithCondition(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
-    private boolean removeError(Logger instance, String s, Object o) {
-        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_20_2);
-    }
-
-    @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z"))
-    private boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
-        return instance.isSecureChatEnforced() || VisualSettings.global().disableSecureChatWarning.isEnabled();
+    @Inject(method = "onChunkLoadDistance", at = @At("RETURN"))
+    private void emulateSimulationDistance(ChunkLoadDistanceS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
+            this.onSimulationDistance(new SimulationDistanceS2CPacket(packet.getDistance()));
+        }
     }
 
     @Redirect(method = "onSynchronizeRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/SynchronizeRecipesS2CPacket;getRecipes()Ljava/util/List;"))
@@ -146,9 +139,13 @@ public abstract class MixinClientPlayNetworkHandler {
         return instance.getRecipes();
     }
 
-    @WrapWithCondition(method = "setPublicSession", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
-    private boolean removeInvalidSignatureWarning(Logger instance, String s, Object o) {
-        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_4);
+    @Inject(method = {"onGameJoin", "onPlayerRespawn"}, at = @At("TAIL"))
+    private void injectOnOnGameJoinOrRespawn(CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            ClientPlayerEntity player = MinecraftClient.getInstance().player;
+            assert player != null;
+            onEntityStatus(new EntityStatusS2CPacket(player, (byte) 28));
+        }
     }
 
 }

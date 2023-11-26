@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.packet;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;

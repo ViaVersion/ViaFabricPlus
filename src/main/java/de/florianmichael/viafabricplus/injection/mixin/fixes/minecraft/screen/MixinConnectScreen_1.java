@@ -81,19 +81,6 @@ public abstract class MixinConnectScreen_1 {
         return instance.getPort();
     }
 
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V"))
-    private void spoofUserName(ClientConnection instance, Packet<?> packet) {
-        if (AuthenticationSettings.global().setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null) {
-            final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
-            if (account != null) {
-                instance.send(new LoginHelloC2SPacket(account.username(), MinecraftClient.getInstance().getSession().getUuidOrNull()));
-                return;
-            }
-        }
-
-        instance.send(packet);
-    }
-
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", shift = At.Shift.BEFORE))
     private void setupConnectionSessions(CallbackInfo ci) {
         final ClientConnection connection = field_2416.connection;

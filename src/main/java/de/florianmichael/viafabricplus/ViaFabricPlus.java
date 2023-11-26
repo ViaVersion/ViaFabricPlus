@@ -53,9 +53,6 @@ import java.io.File;
  *  - Fix MixinAbstractDonkeyEntity
  *  - Boats are probably broken. Check entity height offset fix
  *  - Check TO DO in MixinEntity
- *  - Sort injection methods in fixes package by version
- *  - Add setting for revertOnlyPlayerCramming
- *  - Add setting for MixinLockableContainerBlockEntity
  *  - Diff ItemRegistryDiff from projects and add missing items
  *  - Fix third party implementations properly
  */

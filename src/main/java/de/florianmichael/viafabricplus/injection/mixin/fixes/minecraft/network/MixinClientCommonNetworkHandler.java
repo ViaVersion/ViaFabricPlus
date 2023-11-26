@@ -51,6 +51,16 @@ public abstract class MixinClientCommonNetworkHandler {
 
     @Shadow public abstract void sendPacket(Packet<?> packet);
 
+    @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientCommonNetworkHandler;send(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
+    private void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+            sendPacket(packet);
+            return;
+        }
+
+        send(packet, sendCondition, expiry);
+    }
+
     @Inject(method = "onPing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
     private void onPing(CommonPingS2CPacket packet, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_17)) {
@@ -66,16 +76,6 @@ public abstract class MixinClientCommonNetworkHandler {
         if (inventoryId == client.player.currentScreenHandler.syncId) handler = client.player.currentScreenHandler;
 
         if (handler == null) ci.cancel();
-    }
-
-    @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientCommonNetworkHandler;send(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
-    private void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
-            sendPacket(packet);
-            return;
-        }
-
-        send(packet, sendCondition, expiry);
     }
 
     @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At("HEAD"), cancellable = true)

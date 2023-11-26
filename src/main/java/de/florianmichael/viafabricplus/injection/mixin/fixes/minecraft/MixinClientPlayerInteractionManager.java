@@ -83,10 +83,17 @@ public abstract class MixinClientPlayerInteractionManager {
     @Unique
     private List<ItemStack> viaFabricPlus$oldItems;
 
-    @Inject(method = "breakBlock", at = @At("TAIL"))
-    private void resetBlockBreaking(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_3)) {
-            this.currentBreakingPos = new BlockPos(this.currentBreakingPos.getX(), -1, this.currentBreakingPos.getZ());
+    @Inject(method = "getBlockBreakingProgress", at = @At("HEAD"), cancellable = true)
+    private void changeCalculation(CallbackInfoReturnable<Integer> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+            cir.setReturnValue((int)(this.currentBreakingProgress * 10.0F) - 1);
+        }
+    }
+
+    @Inject(method = "sendSequencedPacket", at = @At("HEAD"))
+    private void handleBlockAcknowledgements(ClientWorld world, SequencedPacketCreator packetCreator, CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_14_4, VersionEnum.r1_18_2) && packetCreator instanceof PlayerActionC2SPacket playerActionC2SPacket) {
+            ClientPlayerInteractionManager1_18_2.trackBlockAction(playerActionC2SPacket.getAction(), playerActionC2SPacket.getPos());
         }
     }
 
@@ -151,14 +158,11 @@ public abstract class MixinClientPlayerInteractionManager {
         return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_17);
     }
 
-    @Inject(method = "interactItem", at = @At("HEAD"))
-    private void trackLastUsedItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        ViaFabricPlusHandItemProvider.lastUsedItem = player.getStackInHand(hand).copy();
-    }
-
-    @Inject(method = "interactBlock", at = @At("HEAD"))
-    private void trackLastUsedBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        ViaFabricPlusHandItemProvider.lastUsedItem = player.getStackInHand(hand).copy();
+    @Inject(method = "breakBlock", at = @At("TAIL"))
+    private void resetBlockBreaking(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_3)) {
+            this.currentBreakingPos = new BlockPos(this.currentBreakingPos.getX(), -1, this.currentBreakingPos.getZ());
+        }
     }
 
     @Unique
@@ -183,18 +187,14 @@ public abstract class MixinClientPlayerInteractionManager {
         return interactBlockInternal(player, hand, hitResult);
     }
 
-    @Inject(method = "sendSequencedPacket", at = @At("HEAD"))
-    private void handleBlockAcknowledgements(ClientWorld world, SequencedPacketCreator packetCreator, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_14_4, VersionEnum.r1_18_2) && packetCreator instanceof PlayerActionC2SPacket playerActionC2SPacket) {
-            ClientPlayerInteractionManager1_18_2.trackBlockAction(playerActionC2SPacket.getAction(), playerActionC2SPacket.getPos());
-        }
+    @Inject(method = "interactItem", at = @At("HEAD"))
+    private void trackLastUsedItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        ViaFabricPlusHandItemProvider.lastUsedItem = player.getStackInHand(hand).copy();
     }
 
-    @Inject(method = "getBlockBreakingProgress", at = @At("HEAD"), cancellable = true)
-    private void changeCalculation(CallbackInfoReturnable<Integer> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
-            cir.setReturnValue((int)(this.currentBreakingProgress * 10.0F) - 1);
-        }
+    @Inject(method = "interactBlock", at = @At("HEAD"))
+    private void trackLastUsedBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
+        ViaFabricPlusHandItemProvider.lastUsedItem = player.getStackInHand(hand).copy();
     }
 
 }

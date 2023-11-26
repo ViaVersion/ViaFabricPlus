@@ -74,12 +74,50 @@ public abstract class MixinEntity implements IEntity {
     @Unique
     private boolean viaFabricPlus$isInLoadedChunkAndShouldTick;
 
-    @ModifyConstant(method = "movementInputToVelocity", constant = @Constant(doubleValue = 1E-7))
-    private static double fixVelocityEpsilon(double epsilon) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
-            return 1E-4;
+    @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
+    private void getRidingOffset1_20_1(Entity vehicle, CallbackInfoReturnable<Float> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            cir.setReturnValue((float) EntityHeightOffsetsPre1_20_2.getHeightOffset((Entity) (Object) this));
         }
-        return epsilon;
+    }
+
+    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
+    private Vector3f getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            return EntityHeightOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger);
+        }
+
+        return getPassengerAttachmentPos(passenger, dimensions, scaleFactor);
+    }
+
+    @Inject(method = "getPosWithYOffset", at = @At("HEAD"), cancellable = true)
+    private void modifyPosWithYOffset(float offset, CallbackInfoReturnable<BlockPos> cir) {
+        final VersionEnum target = ProtocolHack.getTargetVersion();
+        if (target.isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+            int i = MathHelper.floor(this.pos.x);
+            int j = MathHelper.floor(this.pos.y - (double) (target.isOlderThanOrEqualTo(VersionEnum.r1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
+            int k = MathHelper.floor(this.pos.z);
+            BlockPos blockPos = new BlockPos(i, j, k);
+            if (this.world.getBlockState(blockPos).isAir()) {
+                BlockPos downPos = blockPos.down();
+                BlockState blockState = this.world.getBlockState(downPos);
+                if (blockState.isIn(BlockTags.FENCES) || blockState.isIn(BlockTags.WALLS) || blockState.getBlock() instanceof FenceGateBlock) {
+                    cir.setReturnValue(downPos);
+                    return;
+                }
+            }
+
+            cir.setReturnValue(blockPos);
+        }
+    }
+
+    @ModifyConstant(method = "checkBlockCollision", constant = @Constant(doubleValue = 1.0E-7))
+    private double fixBlockCollisionMargin(double constant) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
+            return 1E-3;
+        }
+
+        return constant;
     }
 
     @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)
@@ -89,6 +127,19 @@ public abstract class MixinEntity implements IEntity {
         if (target.isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - (target.isOlderThanOrEqualTo(VersionEnum.r1_14_4) ? 1 : 0.5000001), pos.z));
         }
+    }
+
+    @Redirect(method = {"setYaw", "setPitch"}, at = @At(value = "INVOKE", target = "Ljava/lang/Float;isFinite(F)Z"))
+    private boolean allowInfiniteValues(float f) {
+        return Float.isFinite(f) || ((Object) this instanceof ClientPlayerEntity && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5));
+    }
+
+    @ModifyConstant(method = "movementInputToVelocity", constant = @Constant(doubleValue = 1E-7))
+    private static double fixVelocityEpsilon(double epsilon) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+            return 1E-4;
+        }
+        return epsilon;
     }
 
     @Inject(method = "getRotationVector(FF)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
@@ -162,57 +213,6 @@ public abstract class MixinEntity implements IEntity {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             cir.setReturnValue(0.1F);
         }
-    }
-
-    @Redirect(method = {"setYaw", "setPitch"}, at = @At(value = "INVOKE", target = "Ljava/lang/Float;isFinite(F)Z"))
-    private boolean allowInfiniteValues(float f) {
-        return Float.isFinite(f) || ((Object) this instanceof ClientPlayerEntity && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5));
-    }
-
-    @ModifyConstant(method = "checkBlockCollision", constant = @Constant(doubleValue = 1.0E-7))
-    private double fixBlockCollisionMargin(double constant) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
-            return 1E-3;
-        }
-
-        return constant;
-    }
-
-    @Inject(method = "getPosWithYOffset", at = @At("HEAD"), cancellable = true)
-    private void modifyPosWithYOffset(float offset, CallbackInfoReturnable<BlockPos> cir) {
-        final VersionEnum target = ProtocolHack.getTargetVersion();
-        if (target.isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
-            int i = MathHelper.floor(this.pos.x);
-            int j = MathHelper.floor(this.pos.y - (double) (target.isOlderThanOrEqualTo(VersionEnum.r1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
-            int k = MathHelper.floor(this.pos.z);
-            BlockPos blockPos = new BlockPos(i, j, k);
-            if (this.world.getBlockState(blockPos).isAir()) {
-                BlockPos downPos = blockPos.down();
-                BlockState blockState = this.world.getBlockState(downPos);
-                if (blockState.isIn(BlockTags.FENCES) || blockState.isIn(BlockTags.WALLS) || blockState.getBlock() instanceof FenceGateBlock) {
-                    cir.setReturnValue(downPos);
-                    return;
-                }
-            }
-
-            cir.setReturnValue(blockPos);
-        }
-    }
-
-    @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
-    private void getRidingOffset1_20_1(Entity vehicle, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            cir.setReturnValue((float) EntityHeightOffsetsPre1_20_2.getHeightOffset((Entity) (Object) this));
-        }
-    }
-
-    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
-    private Vector3f getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            return EntityHeightOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger);
-        }
-
-        return getPassengerAttachmentPos(passenger, dimensions, scaleFactor);
     }
 
     @Override

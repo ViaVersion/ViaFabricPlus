@@ -39,7 +39,7 @@ import java.util.Set;
 public abstract class MixinHoeItem extends MiningToolItem {
 
     @Unique
-    private static final Set<Block> viaFabricPlus$EFFECTIVE_BLOCKS_1165 = ImmutableSet.of(
+    private static final Set<Block> viaFabricPlus$effective_blocks_r1_16_5 = ImmutableSet.of(
             Blocks.NETHER_WART_BLOCK,
             Blocks.WARPED_WART_BLOCK,
             Blocks.HAY_BLOCK,
@@ -74,7 +74,7 @@ public abstract class MixinHoeItem extends MiningToolItem {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
             return 1.0F;
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
-            return viaFabricPlus$EFFECTIVE_BLOCKS_1165.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
+            return viaFabricPlus$effective_blocks_r1_16_5.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
         } else {
             return super.getMiningSpeedMultiplier(stack, state);
         }

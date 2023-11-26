@@ -45,6 +45,13 @@ public abstract class MixinPlayerScreenHandler extends AbstractRecipeScreenHandl
         super(screenHandlerType, i);
     }
 
+    @Inject(method = "onContentChanged", at = @At("HEAD"))
+    public void updateResultSlot(Inventory inventory, CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
+            RecipesPre1_12.setCraftingResultSlot(syncId, this, craftingInput);
+        }
+    }
+
     @Redirect(method = "<init>",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/screen/PlayerScreenHandler$2;<init>(Lnet/minecraft/screen/PlayerScreenHandler;Lnet/minecraft/inventory/Inventory;IIILnet/minecraft/entity/player/PlayerEntity;)V")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/PlayerScreenHandler;addSlot(Lnet/minecraft/screen/slot/Slot;)Lnet/minecraft/screen/slot/Slot;", ordinal = 0))
@@ -64,10 +71,4 @@ public abstract class MixinPlayerScreenHandler extends AbstractRecipeScreenHandl
         }
     }
 
-    @Inject(method = "onContentChanged", at = @At("HEAD"))
-    public void updateResultSlot(Inventory inventory, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
-            RecipesPre1_12.setCraftingResultSlot(syncId, this, craftingInput);
-        }
-    }
 }

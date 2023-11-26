@@ -23,6 +23,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -46,7 +47,7 @@ public abstract class MixinLockableContainerBlockEntity {
 
     @WrapOperation(method = "readNbt", at = @At(value = "INVOKE", target = "Lnet/minecraft/text/Text$Serializer;fromJson(Ljava/lang/String;)Lnet/minecraft/text/MutableText;"))
     private MutableText allowInvalidJson(String json, Operation<MutableText> operation) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        if (DebugSettings.global().skipContainersWithCustomDisplayNames.isEnabled()) {
             try {
                 return operation.call(json);
             } catch (Exception e) { // In case the json is invalid for the modern client, we just return the raw json

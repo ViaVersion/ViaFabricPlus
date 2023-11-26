@@ -73,87 +73,15 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Final
     public ClientPlayNetworkHandler networkHandler;
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;square(D)D"))
-    private double changeMagnitude(double n) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
-            n = 9.0E-4D;
-        }
-
-        return MathHelper.square(n);
-    }
-
-    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;ticksSinceLastPositionPacketSent:I", ordinal = 0))
-    private int revertLastPositionPacketSentIncrementor(ClientPlayerEntity instance) {
-        // Mixin calls the redirector and sets the original field to the return value of the redirector + 1, therefore the -1 results, so we truncate the + 1 again and the field does not change
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            return ticksSinceLastPositionPacketSent - 1;
-        }
-
-        return ticksSinceLastPositionPacketSent;
-    }
-
-    @Inject(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
-    private void incrementLastPositionPacketSentCounter(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            this.ticksSinceLastPositionPacketSent++;
-        }
-    }
-
-    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z", ordinal = 0))
-    private boolean sendIdlePacket(ClientPlayerEntity instance) {
-        if (DebugSettings.global().sendIdlePacket.isEnabled()) {
-            return !isOnGround();
-        }
-        return lastOnGround;
-    }
-
-    @Inject(method = "tickMovement()V",
-            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isCamera()Z")),
-            at = @At(value = "FIELD", target = "Lnet/minecraft/client/input/Input;sneaking:Z", ordinal = 0))
-    private void injectTickMovement(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-            if (this.input.sneaking) {
-                this.input.movementSideways = (float) ((double) this.input.movementSideways / 0.3D);
-                this.input.movementForward = (float) ((double) this.input.movementForward / 0.3D);
-            }
-        }
-    }
-
-    @Redirect(method = "tickMovement",
-            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isWalking()Z")),
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
-    private boolean redirectIsSneakingWhileSwimming(ClientPlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_1)) {
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 0))
+    private boolean removeVehicleRequirement(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
             return false;
-        } else {
-            return instance.isSwimming();
-        }
-    }
-
-    @Inject(method = "isWalking", at = @At("HEAD"), cancellable = true)
-    private void easierUnderwaterSprinting(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_1)) {
-            cir.setReturnValue(((ClientPlayerEntity) (Object) this).input.movementForward >= 0.8);
-        }
-    }
-
-    @Redirect(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z", ordinal = 0))
-    private boolean disableSprintSneak(Input input) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_1)) {
-            return input.movementForward >= 0.8F;
         }
 
-        return input.hasForwardMovement();
+        return instance.hasVehicle();
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z"))
-    private boolean redirectTickMovement(ClientPlayerEntity self) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            return false; // Disable all water related movement
-        }
-
-        return self.isTouchingWater();
-    }
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSprintingPacket()V"))
     private void removeSprintingPacket(ClientPlayerEntity instance) {
@@ -170,39 +98,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             return x * (1.5F - (0.5F * x) * x * x);
         }
         return MathHelper.inverseSqrt(x);
-    }
-
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 0))
-    private boolean removeVehicleRequirement(ClientPlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            return false;
-        }
-
-        return instance.hasVehicle();
-    }
-
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
-    private boolean allowElytraWhenClimbing(ClientPlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_1)) {
-            return false;
-        }
-        return instance.isClimbing();
-    }
-
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 3))
-    private boolean allowElytraInVehicle(ClientPlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-            return false;
-        }
-        return instance.hasVehicle();
-    }
-
-    @ModifyVariable(method = "tickMovement", at = @At(value = "LOAD", ordinal = 4), ordinal = 4)
-    private boolean removeBl8Boolean(boolean value) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-            return false;
-        }
-        return value;
     }
 
     @Redirect(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
@@ -229,6 +124,16 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return instance.hasVehicle();
     }
 
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;square(D)D"))
+    private double changeMagnitude(double n) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
+            n = 9.0E-4D;
+        }
+
+        return MathHelper.square(n);
+    }
+
     @Inject(method = "startRiding", at = @At("RETURN"))
     private void setRotationsWhenInBoat(Entity entity, boolean force, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValueZ() && entity instanceof BoatEntity && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
@@ -236,6 +141,103 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             this.setYaw(entity.getYaw());
             this.setHeadYaw(entity.getYaw());
         }
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
+    private boolean allowElytraWhenClimbing(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_1)) {
+            return false;
+        }
+        return instance.isClimbing();
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 3))
+    private boolean allowElytraInVehicle(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            return false;
+        }
+        return instance.hasVehicle();
+    }
+
+    @ModifyVariable(method = "tickMovement", at = @At(value = "LOAD", ordinal = 4), ordinal = 4)
+    private boolean removeBl8Boolean(boolean value) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            return false;
+        }
+        return value;
+    }
+
+    @Inject(method = "tickMovement()V",
+            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isCamera()Z")),
+            at = @At(value = "FIELD", target = "Lnet/minecraft/client/input/Input;sneaking:Z", ordinal = 0))
+    private void injectTickMovement(CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            if (this.input.sneaking) {
+                this.input.movementSideways = (float) ((double) this.input.movementSideways / 0.3D);
+                this.input.movementForward = (float) ((double) this.input.movementForward / 0.3D);
+            }
+        }
+    }
+
+    @Inject(method = "isWalking", at = @At("HEAD"), cancellable = true)
+    private void easierUnderwaterSprinting(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_1)) {
+            cir.setReturnValue(((ClientPlayerEntity) (Object) this).input.movementForward >= 0.8);
+        }
+    }
+
+    @Redirect(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z", ordinal = 0))
+    private boolean disableSprintSneak(Input input) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_1)) {
+            return input.movementForward >= 0.8F;
+        }
+
+        return input.hasForwardMovement();
+    }
+
+    @Redirect(method = "tickMovement",
+            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isWalking()Z")),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
+    private boolean redirectIsSneakingWhileSwimming(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_1)) {
+            return false;
+        } else {
+            return instance.isSwimming();
+        }
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z"))
+    private boolean redirectTickMovement(ClientPlayerEntity self) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+            return false; // Disable all water related movement
+        }
+
+        return self.isTouchingWater();
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;ticksSinceLastPositionPacketSent:I", ordinal = 0))
+    private int revertLastPositionPacketSentIncrementor(ClientPlayerEntity instance) {
+        // Mixin calls the redirector and sets the original field to the return value of the redirector + 1, therefore the -1 results, so we truncate the + 1 again and the field does not change
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            return ticksSinceLastPositionPacketSent - 1;
+        }
+
+        return ticksSinceLastPositionPacketSent;
+    }
+
+    @Inject(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
+    private void incrementLastPositionPacketSentCounter(CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            this.ticksSinceLastPositionPacketSent++;
+        }
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z", ordinal = 0))
+    private boolean sendIdlePacket(ClientPlayerEntity instance) {
+        if (DebugSettings.global().sendIdlePacket.isEnabled()) {
+            return !isOnGround();
+        }
+        return lastOnGround;
     }
 
     @Redirect(method = "tick", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))

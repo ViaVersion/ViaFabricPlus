@@ -17,25 +17,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.packet;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
+import net.minecraft.client.input.Input;
+import net.minecraft.client.input.KeyboardInput;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(ChatMessageC2SPacket.class)
-public abstract class MixinChatMessageC2SPacket {
+@Mixin(KeyboardInput.class)
+public abstract class MixinKeyboardInput extends Input {
 
-    @ModifyArg(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/PacketByteBuf;writeString(Ljava/lang/String;I)Lnet/minecraft/network/PacketByteBuf;"))
-    private int modifyChatLength(int maxLength) {
-        if (MinecraftClient.getInstance().isInSingleplayer()) {
-            return 256;
+    @ModifyVariable(method = "tick", at = @At(value = "LOAD", ordinal = 0), argsOnly = true)
+    private boolean changeSneakSlowdownCondition(boolean slowDown) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+            return this.sneaking;
+        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            return !MinecraftClient.getInstance().player.isSpectator() && (this.sneaking || slowDown);
         }
-
-        return ClientsideFixes.getCurrentChatLimit();
+        return slowDown;
     }
 
 }

@@ -40,19 +40,6 @@ public abstract class MixinGameModeSelectionScreen_GameModeSelection {
 
     @Shadow @Final public static GameModeSelectionScreen.GameModeSelection CREATIVE;
 
-    @Inject(method = "getCommand", at = @At("HEAD"), cancellable = true)
-    private void oldCommand(CallbackInfoReturnable<String> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_2_4tor1_2_5)) {
-            cir.setReturnValue(
-                    "gamemode " + MinecraftClient.getInstance().getSession().getUsername() + ' ' + switch (((Enum<?>)(Object)this).ordinal()) {
-                        case 0, 3 -> 1;
-                        case 1, 2 -> 0;
-                        default -> throw new AssertionError();
-                    }
-            );
-        }
-    }
-
     @Inject(method = "next", at = @At("HEAD"), cancellable = true)
     private void unwrapGameModes(CallbackInfoReturnable<Optional<GameModeSelectionScreen.GameModeSelection>> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
@@ -67,6 +54,19 @@ public abstract class MixinGameModeSelectionScreen_GameModeSelection {
                 }
                 case ADVENTURE -> cir.setReturnValue(Optional.of(CREATIVE));
             }
+        }
+    }
+
+    @Inject(method = "getCommand", at = @At("HEAD"), cancellable = true)
+    private void oldCommand(CallbackInfoReturnable<String> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_2_4tor1_2_5)) {
+            cir.setReturnValue(
+                    "gamemode " + MinecraftClient.getInstance().getSession().getUsername() + ' ' + switch (((Enum<?>)(Object)this).ordinal()) {
+                        case 0, 3 -> 1;
+                        case 1, 2 -> 0;
+                        default -> throw new AssertionError();
+                    }
+            );
         }
     }
 

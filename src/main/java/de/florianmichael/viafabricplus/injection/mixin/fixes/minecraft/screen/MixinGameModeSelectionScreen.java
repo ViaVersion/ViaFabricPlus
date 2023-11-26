@@ -60,13 +60,6 @@ public abstract class MixinGameModeSelectionScreen extends Screen {
         }
     }
 
-    @Inject(method = "init", at = @At("HEAD"))
-    private void disableInClassic(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) { // survival mode was added in a1.0.15
-            this.close();
-        }
-    }
-
     @Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;VALUES:[Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;"))
     private GameModeSelectionScreen.GameModeSelection[] removeNewerGameModes() {
         if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
@@ -74,6 +67,13 @@ public abstract class MixinGameModeSelectionScreen extends Screen {
         }
 
         return GameModeSelectionScreen.GameModeSelection.values();
+    }
+
+    @Inject(method = "init", at = @At("HEAD"))
+    private void disableInClassic(CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) { // survival mode was added in a1.0.15
+            this.close();
+        }
     }
 
 }

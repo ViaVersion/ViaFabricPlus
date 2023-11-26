@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.input;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.render.Camera;

@@ -19,7 +19,6 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import de.florianmichael.viafabricplus.fixes.diff.ItemRegistryDiffPre1_20_2;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;

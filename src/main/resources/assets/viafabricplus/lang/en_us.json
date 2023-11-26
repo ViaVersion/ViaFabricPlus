@@ -55,6 +55,8 @@
   "debug_settings.viafabricplus.replace_sneaking": "Replace sneaking",
   "debug_settings.viafabricplus.long_sneaking": "Long sneaking",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Legacy mining speeds",
+  "debug_settings.viafabricplus.skip_containers_with_custom_display_names": "Skip containers with custom display names",
+  "debug_settings.viafabricplus.always_tick_only_player": "Always tick only player",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Use BetaCraft authentication",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Verify session for online mode servers",
