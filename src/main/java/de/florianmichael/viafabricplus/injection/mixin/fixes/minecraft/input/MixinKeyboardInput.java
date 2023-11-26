@@ -19,12 +19,11 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.input;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -33,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public abstract class MixinKeyboardInput extends Input {
 
     @ModifyVariable(method = "tick", at = @At(value = "LOAD", ordinal = 0), argsOnly = true)
-    private boolean injectTick(boolean slowDown) {
+    private boolean changeSneakSlowdownCondition(boolean slowDown) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             return this.sneaking;
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {

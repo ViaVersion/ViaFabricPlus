@@ -20,25 +20,30 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.mojang.authlib.GameProfile;
-import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.type.Type;
+import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
-import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.Hand;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.GameMode;
+import net.raphimc.vialegacy.protocols.release.protocol1_6_1to1_5_2.Protocol1_6_1to1_5_2;
+import net.raphimc.vialegacy.protocols.release.protocol1_6_1to1_5_2.ServerboundPackets1_5_2;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("ConstantValue")
 @Mixin(value = ClientPlayerEntity.class, priority = 2000)
@@ -57,18 +62,20 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     private int ticksSinceLastPositionPacketSent;
 
-    @Unique
-    private boolean viaFabricPlus$areSwingCanceledThisTick = false;
-
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
     }
 
-    @Shadow protected abstract void sendSprintingPacket();
+    @Shadow
+    protected abstract void sendSprintingPacket();
+
+    @Shadow
+    @Final
+    public ClientPlayNetworkHandler networkHandler;
 
     @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;square(D)D"))
     private double changeMagnitude(double n) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
             n = 9.0E-4D;
         }
 
@@ -88,7 +95,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Inject(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
     private void incrementLastPositionPacketSentCounter(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            ++this.ticksSinceLastPositionPacketSent;
+            this.ticksSinceLastPositionPacketSent++;
         }
     }
 
@@ -98,15 +105,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             return !isOnGround();
         }
         return lastOnGround;
-    }
-
-    @Inject(method = "swingHand", at = @At("HEAD"), cancellable = true)
-    private void injectSwingHand(Hand hand, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && viaFabricPlus$areSwingCanceledThisTick) {
-            ci.cancel();
-        }
-
-        viaFabricPlus$areSwingCanceledThisTick = false;
     }
 
     @Inject(method = "tickMovement()V",
@@ -124,20 +122,19 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Redirect(method = "tickMovement",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isWalking()Z")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
-    private boolean redirectIsSneakingWhileSwimming(ClientPlayerEntity _this) {
+    private boolean redirectIsSneakingWhileSwimming(ClientPlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_1)) {
             return false;
         } else {
-            return _this.isSwimming();
+            return instance.isSwimming();
         }
     }
 
-    @Redirect(method = "isWalking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSubmergedInWater()Z"))
-    private boolean easierUnderwaterSprinting(ClientPlayerEntity instance) {
+    @Inject(method = "isWalking", at = @At("HEAD"), cancellable = true)
+    private void easierUnderwaterSprinting(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_1)) {
-            return false;
+            cir.setReturnValue(((ClientPlayerEntity) (Object) this).input.movementForward >= 0.8);
         }
-        return instance.isSubmergedInWater();
     }
 
     @Redirect(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z", ordinal = 0))
@@ -168,8 +165,8 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Redirect(method = "autoJump", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;inverseSqrt(F)F"))
     private float useFastInverse(float x) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+            // fast inverse sqrt
             x = Float.intBitsToFloat(1597463007 - (Float.floatToIntBits(x) >> 1));
-
             return x * (1.5F - (0.5F * x) * x * x);
         }
         return MathHelper.inverseSqrt(x);
@@ -185,7 +182,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
-    private boolean removeLadderCheck(ClientPlayerEntity instance) {
+    private boolean allowElytraWhenClimbing(ClientPlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_1)) {
             return false;
         }
@@ -193,7 +190,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 3))
-    private boolean removeVehicleCheck(ClientPlayerEntity instance) {
+    private boolean allowElytraInVehicle(ClientPlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
             return false;
         }
@@ -208,8 +205,16 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return value;
     }
 
+    @Redirect(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
+    private boolean removeVehicleCheck(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+            return false;
+        }
+        return instance.hasVehicle();
+    }
+
     @Redirect(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isFallFlying()Z"))
-    private boolean removeElytraMovementCheck(ClientPlayerEntity instance) {
+    private boolean removeFallFlyingCheck(ClientPlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
             return false;
         }
@@ -217,30 +222,37 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     }
 
     @Redirect(method = "canSprint", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
-    private boolean removeVehicleCondition(ClientPlayerEntity instance) {
+    private boolean dontAllowSprintingAsPassenger(ClientPlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             return false;
         }
         return instance.hasVehicle();
     }
 
-    @Override
-    public boolean isCreative() {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-            if (client.interactionManager == null) {
-                return super.isCreative(); // Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/216
-            }
-            return client.interactionManager.getCurrentGameMode() == GameMode.CREATIVE;
+    @Inject(method = "startRiding", at = @At("RETURN"))
+    private void setRotationsWhenInBoat(Entity entity, boolean force, CallbackInfoReturnable<Boolean> cir) {
+        if (cir.getReturnValueZ() && entity instanceof BoatEntity && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
+            this.prevYaw = entity.getYaw();
+            this.setYaw(entity.getYaw());
+            this.setHeadYaw(entity.getYaw());
         }
-        return super.isCreative();
     }
 
-    @Override
-    public int getArmor() {
-        if (VisualSettings.INSTANCE.emulateArmorHud.isEnabled()) {
-            return client.player.getInventory().armor.stream().mapToInt(ClientsideFixes::getLegacyArmorPoints).sum();
+    @Redirect(method = "tick", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
+    private void modifyPositionPacket(ClientPlayNetworkHandler instance, Packet<?> packet) throws Exception {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_5_2)) {
+            final PacketWrapper playerPosition = PacketWrapper.create(ServerboundPackets1_5_2.PLAYER_POSITION_AND_ROTATION, ((IClientConnection) this.networkHandler.getConnection()).viaFabricPlus$getUserConnection());
+            playerPosition.write(Type.DOUBLE, this.getVelocity().x); // x
+            playerPosition.write(Type.DOUBLE, -999.0D); // y
+            playerPosition.write(Type.DOUBLE, -999.0D); // stance
+            playerPosition.write(Type.DOUBLE, this.getVelocity().z); // z
+            playerPosition.write(Type.FLOAT, this.getYaw()); // yaw
+            playerPosition.write(Type.FLOAT, this.getPitch()); // pitch
+            playerPosition.write(Type.BOOLEAN, this.isOnGround()); // onGround
+            playerPosition.scheduleSendToServer(Protocol1_6_1to1_5_2.class);
+            return;
         }
-        return super.getArmor();
+        instance.sendPacket(packet);
     }
 
 }

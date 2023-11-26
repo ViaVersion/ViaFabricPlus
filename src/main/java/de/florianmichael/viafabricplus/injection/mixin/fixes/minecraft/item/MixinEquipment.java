@@ -20,34 +20,24 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Equipment;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.world.World;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Equipment.class)
 public interface MixinEquipment {
-
-    @Redirect(method = "equipAndSwap", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;hasBindingCurse(Lnet/minecraft/item/ItemStack;)Z"))
-    default boolean removeBindingCurseCondition(ItemStack stack) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
-            return false;
-        }
-        return EnchantmentHelper.hasBindingCurse(stack);
-    }
-
-    @Redirect(method = "equipAndSwap", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"))
-    default boolean simplifyCondition(ItemStack left, ItemStack right) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
-            return !right.isEmpty();
-        }
-
-        return ItemStack.areEqual(left, right);
-    }
 
     @Redirect(method = "equipAndSwap", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isCreative()Z"))
     default boolean removeCreativeCondition(PlayerEntity instance) {
@@ -56,4 +46,18 @@ public interface MixinEquipment {
         }
         return instance.isCreative();
     }
+
+    @Inject(method = "equipAndSwap", at = @At("HEAD"), cancellable = true)
+    private void cancelArmorSwap(Item item, World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+            final ItemStack heldItem = user.getStackInHand(hand);
+            final EquipmentSlot targetSlot = MobEntity.getPreferredEquipmentSlot(heldItem);
+            final ItemStack targetItem = user.getEquippedStack(targetSlot);
+
+            if (!targetItem.isEmpty()) {
+                cir.setReturnValue(TypedActionResult.fail(heldItem));
+            }
+        }
+    }
+
 }

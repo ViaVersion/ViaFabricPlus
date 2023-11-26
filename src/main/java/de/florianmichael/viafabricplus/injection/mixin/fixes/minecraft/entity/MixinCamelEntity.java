@@ -29,22 +29,12 @@ import net.minecraft.world.World;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(CamelEntity.class)
 public abstract class MixinCamelEntity extends AbstractHorseEntity {
 
     public MixinCamelEntity(EntityType<? extends AbstractHorseEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/CamelEntity;isBaby()Z", ordinal = 0))
-    private boolean removeBabyCondition(CamelEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
-            return false;
-        }
-        return instance.isBaby();
     }
 
     @Unique
@@ -64,7 +54,7 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
     @Override
     public void onPassengerLookAround(Entity passenger) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1) && this.getControllingPassenger() != passenger) {
-            viaFabricPlus$clamPassengerYaw(passenger);
+            this.viaFabricPlus$clamPassengerYaw(passenger);
         }
     }
 
@@ -73,7 +63,7 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
         super.updatePassengerPosition(passenger, positionUpdater);
 
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            viaFabricPlus$clamPassengerYaw(passenger);
+            this.viaFabricPlus$clamPassengerYaw(passenger);
         }
     }
 

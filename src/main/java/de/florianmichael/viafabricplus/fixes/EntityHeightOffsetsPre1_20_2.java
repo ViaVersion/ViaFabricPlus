@@ -20,7 +20,10 @@
 package de.florianmichael.viafabricplus.fixes;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.*;
@@ -141,9 +144,7 @@ public class EntityHeightOffsetsPre1_20_2 {
     }
 
     public static double getHeightOffset(final Entity entity) {
-        if (entity instanceof AllayEntity) {
-            return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4) ? 0 : 0.4;
-        } else if (entity instanceof ArmorStandEntity armorStandEntity && !armorStandEntity.isMarker()) {
+        if (entity instanceof ArmorStandEntity armorStandEntity && !armorStandEntity.isMarker()) {
             return 0.1;
         } else if (entity instanceof EndermiteEntity) {
             return 0.1;
@@ -153,7 +154,11 @@ public class EntityHeightOffsetsPre1_20_2 {
             return !(shulkerEntity.getVehicle() instanceof BoatEntity) && vehicleType != EntityType.MINECART ? 0 : 0.1875 - getMountedHeightOffset(shulkerEntity.getVehicle(), null).y;
         } else if (entity instanceof SilverfishEntity) {
             return 0.1;
-        } else if (entity instanceof VexEntity) {
+        } else if (entity instanceof AllayEntity || entity instanceof VexEntity) {
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
+                return 0D;
+            }
+
             return 0.4;
         } else if (entity instanceof ZombifiedPiglinEntity zombifiedPiglinEntity) {
             return zombifiedPiglinEntity.isBaby() ? -0.05 : -0.45;

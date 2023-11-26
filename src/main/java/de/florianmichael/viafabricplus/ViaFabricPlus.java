@@ -21,13 +21,13 @@ package de.florianmichael.viafabricplus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
+import de.florianmichael.viafabricplus.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.fixes.account.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.fixes.account.ClassiCubeAccountHandler;
 import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
 import de.florianmichael.viafabricplus.fixes.classic.screen.ClassicItemSelectionScreen;
-import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
-import de.florianmichael.viafabricplus.event.PreLoadCallback;
 import de.florianmichael.viafabricplus.mappings.CharacterMappings;
 import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
@@ -53,7 +53,6 @@ import java.io.File;
  *  - Bedrock scaffolding should be added as soon as ViaBedrock supports block placement (see https://github.com/ViaVersion/ViaFabricPlus/issues/204)
  *
  * TODO | Movement
- *  - Cobwebs in <= b1.7.3 are broken (movement has been changed)
  *  - X/Z Face based jump movement in <= 1.13.2 is broken (https://github.com/ViaVersion/ViaFabricPlus/issues/189)
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
  *  - Blit-jump is not supported in <= 1.8.9 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
@@ -66,6 +65,12 @@ import java.io.File;
  *  - Recode config save base to support singleton Jsons
  *  - Rebase fixes package / change all packages
  *  - Fix auto detect to not be a huge mess
+ *  - Fix MixinAbstractDonkeyEntity
+ *  - Boats are probably broken. Check entity height offset fix
+ *  - Check TO DO in MixinEntity
+ *  - Sort injection methods in fixes package by version
+ *  - Add setting for revertOnlyPlayerCramming
+ *  - Add setting for MixinLockableContainerBlockEntity
  */
 public class ViaFabricPlus {
 

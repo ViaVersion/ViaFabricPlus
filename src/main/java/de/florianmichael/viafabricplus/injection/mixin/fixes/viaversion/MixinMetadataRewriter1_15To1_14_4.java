@@ -34,7 +34,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@SuppressWarnings("DataFlowIssue")
 @Mixin(MetadataRewriter1_15To1_14_4.class)
 public abstract class MixinMetadataRewriter1_15To1_14_4 extends EntityRewriter<ClientboundPackets1_14_4, Protocol1_15To1_14_4> {
 
@@ -44,7 +43,7 @@ public abstract class MixinMetadataRewriter1_15To1_14_4 extends EntityRewriter<C
 
     @Inject(method = "handleMetadata", at = @At(value = "INVOKE", target = "Ljava/util/List;remove(Ljava/lang/Object;)Z", shift = At.Shift.BEFORE), remap = false)
     private void trackHealth(int entityId, EntityType type, Metadata metadata, List<Metadata> metadatas, UserConnection connection, CallbackInfo ci) {
-        WolfHealthTracker.get().getHealthDataMap().put(entityId, (Float) metadata.getValue());
+        WolfHealthTracker.get().setWolfHealth(entityId, metadata.value());
     }
 
 }

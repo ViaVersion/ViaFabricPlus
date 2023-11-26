@@ -19,28 +19,29 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import net.raphimc.vialoader.util.VersionEnum;
+import com.mojang.authlib.GameProfile;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.VexEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(VexEntity.class)
-public abstract class MixinVexEntity extends HostileEntity {
+@Mixin(AbstractClientPlayerEntity.class)
+public abstract class MixinAbstractClientPlayerEntity extends PlayerEntity {
 
-    public MixinVexEntity(EntityType<? extends HostileEntity> entityType, World world) {
-        super(entityType, world);
+    public MixinAbstractClientPlayerEntity(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
+        super(world, pos, yaw, gameProfile);
     }
 
-    @Inject(method = "getUnscaledRidingOffset", at = @At("HEAD"), cancellable = true)
-    private void changeHeightOffset(CallbackInfoReturnable<Double> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
-            cir.setReturnValue(0.0);
+    @Inject(method = "isCreative", at = @At("HEAD"), cancellable = true)
+    private void fixCreativeCheck(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            cir.setReturnValue(this.getAbilities().creativeMode);
         }
     }
 

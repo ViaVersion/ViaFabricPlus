@@ -73,11 +73,11 @@ public abstract class MixinHoeItem extends MiningToolItem {
     public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
             return 1.0F;
-        }
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
+        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
             return viaFabricPlus$EFFECTIVE_BLOCKS_1165.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
+        } else {
+            return super.getMiningSpeedMultiplier(stack, state);
         }
-        return super.getMiningSpeedMultiplier(stack, state);
     }
 
 }

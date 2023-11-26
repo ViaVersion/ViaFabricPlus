@@ -19,26 +19,87 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.fixes.tracker.WolfHealthTracker;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.Angerable;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@SuppressWarnings("DataFlowIssue")
 @Mixin(WolfEntity.class)
-public abstract class MixinWolfEntity {
+public abstract class MixinWolfEntity extends TameableEntity implements Angerable {
+
+    @Shadow
+    public abstract DyeColor getCollarColor();
+
+    @Shadow
+    public abstract void setCollarColor(DyeColor color);
+
+    protected MixinWolfEntity(EntityType<? extends TameableEntity> entityType, World world) {
+        super(entityType, world);
+    }
+
+    @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
+    private void fixWolfInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            final ItemStack itemStack = player.getStackInHand(hand);
+            final Item item = itemStack.getItem();
+            if (this.isTamed()) {
+                if (item.isFood()) {
+                    if (item.getFoodComponent().isMeat() && this.getWolfHealth() < 20.0F) {
+                        if (!player.getAbilities().creativeMode) itemStack.decrement(1);
+                        this.heal((float) item.getFoodComponent().getHunger());
+                        cir.setReturnValue(ActionResult.SUCCESS);
+                        return;
+                    }
+                } else if (item instanceof DyeItem dyeItem) {
+                    final DyeColor dyeColor = dyeItem.getColor();
+                    if (dyeColor != this.getCollarColor()) {
+                        this.setCollarColor(dyeColor);
+                        if (!player.getAbilities().creativeMode) itemStack.decrement(1);
+                        cir.setReturnValue(ActionResult.SUCCESS);
+                        return;
+                    }
+                }
+            } else if (item == Items.BONE && !this.hasAngerTime()) {
+                if (!player.getAbilities().creativeMode) itemStack.decrement(1);
+                cir.setReturnValue(ActionResult.SUCCESS);
+                return;
+            }
+
+            cir.setReturnValue(super.interactMob(player, hand));
+        }
+    }
 
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/WolfEntity;getHealth()F"))
-    private float rewriteHealth(WolfEntity instance) {
-        float health = instance.getHealth();
+    private float fixWolfHealth(WolfEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-            return WolfHealthTracker.get().getHealthDataMap().getOrDefault(instance.getId(), health);
+            return this.getWolfHealth();
         }
 
-        return health;
+        return instance.getHealth();
+    }
+
+    @Unique
+    private float getWolfHealth() {
+        return WolfHealthTracker.get().getWolfHealth(this.getId(), this.getHealth());
     }
 
 }

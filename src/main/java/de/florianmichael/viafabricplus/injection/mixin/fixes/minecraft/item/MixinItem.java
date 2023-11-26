@@ -27,19 +27,41 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Item.class)
 public abstract class MixinItem {
 
-    @Shadow @Final private int maxDamage;
+    @Shadow
+    @Final
+    private int maxDamage;
 
-    @Redirect(method = { "getMaxDamage", "isDamageable", "getItemBarStep", "getItemBarColor" }, at = @At(value = "FIELD", target = "Lnet/minecraft/item/Item;maxDamage:I"))
+    @Shadow
+    public abstract boolean isFood();
+
+    @Redirect(method = {"getMaxDamage", "isDamageable", "getItemBarStep", "getItemBarColor"}, at = @At(value = "FIELD", target = "Lnet/minecraft/item/Item;maxDamage:I"))
     private int changeCrossbowDamage(Item instance) {
         if (instance instanceof CrossbowItem && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
             return 326;
         }
         return maxDamage;
+    }
+
+    @Inject(method = "getMaxCount", at = @At("HEAD"), cancellable = true)
+    private void dontStackFood(CallbackInfoReturnable<Integer> cir) {
+        if (this.isFood() && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_7tob1_7_3)) {
+            cir.setReturnValue(1);
+        }
+    }
+
+    @Redirect(method = {"use", "finishUsing", "getUseAction", "getMaxUseTime"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isFood()Z"))
+    private boolean makeFoodInstantConsumable(Item instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_7tob1_7_3)) {
+            return false;
+        }
+        return instance.isFood();
     }
 
 }

@@ -37,11 +37,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemGroups.class)
 public abstract class MixinItemGroups {
 
-    @Shadow @Nullable private static ItemGroup.@Nullable DisplayContext displayContext;
+    @Shadow
+    @Nullable
+    private static ItemGroup.@Nullable DisplayContext displayContext;
 
     @Shadow
     private static void updateEntries(ItemGroup.DisplayContext displayContext) {
     }
+
     @Unique
     private static VersionEnum viaFabricPlus$version;
 

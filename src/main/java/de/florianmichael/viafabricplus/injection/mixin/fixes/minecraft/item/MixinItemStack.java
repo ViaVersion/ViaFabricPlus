@@ -21,18 +21,15 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import de.florianmichael.viafabricplus.injection.access.IItemStack;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.raphimc.vialoader.util.VersionEnum;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -42,39 +39,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.OptionalDouble;
 
 @Mixin(value = ItemStack.class, priority = 1)
-public abstract class MixinItemStack {
+public abstract class MixinItemStack implements IItemStack {
 
     @Shadow
     public abstract Item getItem();
 
-    @Shadow @Final public static ItemStack EMPTY;
+    @Unique
+    private boolean viaFabricPlus$has1_10ProtocolHackTag;
 
-    @Shadow private int count;
-
-    @Shadow @Final @Deprecated private @Nullable Item item;
-
-    @Inject(method = "isEmpty", at = @At("HEAD"), cancellable = true)
-    private void dontRecalculateState(CallbackInfoReturnable<Boolean> cir) {
-        if (MinecraftClient.getInstance() != null && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
-            final ItemStack self = (ItemStack) (Object) this;
-
-            cir.setReturnValue(self == EMPTY || this.item == null || this.item == Items.AIR || count == 0);
-        }
-    }
-
-    @Inject(method = "getMiningSpeedMultiplier", at = @At("RETURN"), cancellable = true)
-    private void modifyMiningSpeedMultiplier(BlockState state, CallbackInfoReturnable<Float> ci) {
-        final Item toolItem = ((ItemStack) (Object) this).getItem();
-
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2) && toolItem instanceof HoeItem) {
-            ci.setReturnValue(1F);
-        }
-    }
+    @Unique
+    private int viaFabricPlus$1_10_count;
 
     @Redirect(method = "getTooltip",
             slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/entity/attribute/EntityAttribute;", ordinal = 0)),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeBaseValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D", ordinal = 0))
-    private double redirectGetTooltip(PlayerEntity player, EntityAttribute attribute) {
+    private double fixDamageCalculation(PlayerEntity player, EntityAttribute attribute) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 0;
         } else {
@@ -91,7 +70,7 @@ public abstract class MixinItemStack {
         modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);
         OptionalDouble defaultAttackDamage = viaFabricPlus$getDefaultAttackDamage(getItem());
         if (defaultAttackDamage.isPresent()) {
-            modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Weapon Modifier", defaultAttackDamage.getAsDouble(), EntityAttributeModifier.Operation.ADDITION));
+            modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", defaultAttackDamage.getAsDouble(), EntityAttributeModifier.Operation.ADDITION));
         }
         modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_SPEED);
         modifiers.removeAll(EntityAttributes.GENERIC_ARMOR);
@@ -99,20 +78,18 @@ public abstract class MixinItemStack {
         return modifiers;
     }
 
+    @Inject(method = "copy", at = @At("RETURN"))
+    private void copyProtocolHackData(CallbackInfoReturnable<ItemStack> cir) {
+        final IItemStack mixinItemStack = (IItemStack) (Object) cir.getReturnValue();
+        if (this.viaFabricPlus$has1_10ProtocolHackTag) {
+            mixinItemStack.viaFabricPlus$set1_10Count(this.viaFabricPlus$1_10_count);
+        }
+    }
+
     @Unique
     private OptionalDouble viaFabricPlus$getDefaultAttackDamage(Item item) {
-        if (item instanceof ToolItem) {
-            ToolMaterial material = ((ToolItem) item).getMaterial();
-            int materialBonus;
-            if (material == ToolMaterials.STONE) {
-                materialBonus = 1;
-            } else if (material == ToolMaterials.IRON) {
-                materialBonus = 2;
-            } else if (material == ToolMaterials.DIAMOND) {
-                materialBonus = 3;
-            } else {
-                materialBonus = 0;
-            }
+        if (item instanceof ToolItem toolItem) {
+            final float materialBonus = toolItem.getMaterial().getAttackDamage();
             if (item instanceof SwordItem) {
                 return OptionalDouble.of(4 + materialBonus);
             } else if (item instanceof PickaxeItem) {
@@ -125,6 +102,22 @@ public abstract class MixinItemStack {
         }
 
         return OptionalDouble.empty();
+    }
+
+    @Override
+    public boolean viaFabricPlus$has1_10ProtocolHackTag() {
+        return this.viaFabricPlus$has1_10ProtocolHackTag;
+    }
+
+    @Override
+    public int viaFabricPlus$get1_10Count() {
+        return this.viaFabricPlus$1_10_count;
+    }
+
+    @Override
+    public void viaFabricPlus$set1_10Count(final int count) {
+        this.viaFabricPlus$has1_10ProtocolHackTag = true;
+        this.viaFabricPlus$1_10_count = count;
     }
 
 }

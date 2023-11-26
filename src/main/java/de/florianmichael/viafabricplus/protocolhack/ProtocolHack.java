@@ -178,7 +178,7 @@ public class ProtocolHack {
             return ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection();
         }
 
-        return null;
+        throw new IllegalStateException("The player is not connected to a server");
     }
 
     /**

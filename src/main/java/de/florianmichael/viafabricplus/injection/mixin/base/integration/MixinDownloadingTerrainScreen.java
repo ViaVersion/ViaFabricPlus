@@ -20,10 +20,11 @@
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.storage.ClassicProgressStorage;
@@ -32,11 +33,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@SuppressWarnings("DataFlowIssue")
-@Mixin(targets = { "net.minecraft.client.gui.screen.DownloadingTerrainScreen", "net.minecraft.client.gui.screen.ConnectScreen" })
-public abstract class MixinDownloadingTerrainScreenAndConnectScreen extends Screen {
+@Mixin(DownloadingTerrainScreen.class)
+public abstract class MixinDownloadingTerrainScreen extends Screen {
 
-    public MixinDownloadingTerrainScreenAndConnectScreen(Text title) {
+    public MixinDownloadingTerrainScreen(Text title) {
         super(title);
     }
 
@@ -45,9 +45,6 @@ public abstract class MixinDownloadingTerrainScreenAndConnectScreen extends Scre
         if (GeneralSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) {
             // Check if ViaVersion is translating
             final UserConnection connection = ProtocolHack.getPlayNetworkUserConnection();
-            if (connection == null) {
-                return;
-            }
 
             // Check if the client is connecting to a classic server
             final ClassicProgressStorage classicProgressStorage = connection.get(ClassicProgressStorage.class);

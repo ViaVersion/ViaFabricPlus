@@ -19,14 +19,15 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
 import de.florianmichael.viafabricplus.fixes.EntityHeightOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.entity.*;
-import net.minecraft.entity.mob.SkeletonHorseEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -42,27 +43,16 @@ import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
-@SuppressWarnings("ConstantValue")
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity {
 
     @Shadow
     protected boolean jumping;
-
-    public MixinLivingEntity(EntityType<?> type, World world) {
-        super(type, world);
-    }
-
-    @Inject(method = "getPreferredEquipmentSlot", at = @At("HEAD"), cancellable = true)
-    private static void removeShieldSlotPreference(ItemStack stack, CallbackInfoReturnable<EquipmentSlot> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_9_3tor1_9_4) && stack.isOf(Items.SHIELD)) {
-            cir.setReturnValue(EquipmentSlot.MAINHAND);
-        }
-    }
 
     @Shadow
     protected abstract float getBaseMovementSpeedMultiplier();
@@ -72,6 +62,30 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Shadow
     protected abstract boolean canEnterTrapdoor(BlockPos pos, BlockState state);
+
+    @Shadow
+    public abstract boolean hasStatusEffect(StatusEffect effect);
+
+    @Shadow
+    private int jumpingCooldown;
+
+    public MixinLivingEntity(EntityType<?> type, World world) {
+        super(type, world);
+    }
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void modify1_7StepHeight(EntityType<? extends LivingEntity> type, World world, CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+            this.setStepHeight(0.5F);
+        }
+    }
+
+    @Inject(method = "getPreferredEquipmentSlot", at = @At("HEAD"), cancellable = true)
+    private static void removeShieldSlotPreference(ItemStack stack, CallbackInfoReturnable<EquipmentSlot> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_9_3tor1_9_4) && stack.isOf(Items.SHIELD)) {
+            cir.setReturnValue(EquipmentSlot.MAINHAND);
+        }
+    }
 
     @Redirect(method = "applyMovementInput", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;jumping:Z"))
     private boolean disableJumpOnLadder(LivingEntity self) {
@@ -85,12 +99,21 @@ public abstract class MixinLivingEntity extends Entity {
     @Redirect(method = "travel",
             slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/effect/StatusEffects;DOLPHINS_GRACE:Lnet/minecraft/entity/effect/StatusEffect;")),
             at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;horizontalCollision:Z", ordinal = 0))
-    private boolean disableClimbing(LivingEntity self) {
+    private boolean disableClimbing(LivingEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             return false;
         }
 
-        return horizontalCollision;
+        return instance.horizontalCollision;
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isLogicalSideForUpdatingMovement()Z"))
+    private boolean allowPlayerToBeMovedByEntityPackets(LivingEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3) || ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
+            return instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getWorld().isClient;
+        }
+
+        return instance.isLogicalSideForUpdatingMovement();
     }
 
     @ModifyVariable(method = "applyFluidMovingSpeed", ordinal = 0, at = @At("HEAD"), argsOnly = true)
@@ -102,19 +125,21 @@ public abstract class MixinLivingEntity extends Entity {
         return movingDown;
     }
 
-    @WrapWithCondition(method = "tickMovement",
-            slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/effect/StatusEffects;LEVITATION:Lnet/minecraft/entity/effect/StatusEffect;", ordinal = 0)),
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;onLanding()V", ordinal = 0))
-    private boolean dontResetLevitationFallDistance(LivingEntity instance) {
-        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_12_2);
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;onLanding()V"))
+    private void dontResetLevitationFallDistance(LivingEntity instance) {
+        if (!this.hasStatusEffect(StatusEffects.SLOW_FALLING) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+            return;
+        }
+
+        instance.onLanding();
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSprinting()Z", ordinal = 0))
-    private boolean modifySwimSprintSpeed(LivingEntity self) {
+    private boolean modifySwimSprintSpeed(LivingEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             return false;
         }
-        return self.isSprinting();
+        return instance.isSprinting();
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
@@ -129,7 +154,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Inject(method = "applyFluidMovingSpeed", at = @At("HEAD"), cancellable = true)
     private void modifySwimSprintFallSpeed(double gravity, boolean movingDown, Vec3d velocity, CallbackInfoReturnable<Vec3d> ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2) && !hasNoGravity()) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2) && !this.hasNoGravity()) {
             ci.setReturnValue(new Vec3d(velocity.x, velocity.y - 0.02, velocity.z));
         }
     }
@@ -143,27 +168,30 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Inject(method = "canEnterTrapdoor", at = @At("HEAD"), cancellable = true)
-    private void onCanEnterTrapdoor(CallbackInfoReturnable<Boolean> ci) {
+    private void disableCrawling(CallbackInfoReturnable<Boolean> ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             ci.setReturnValue(false);
         }
     }
 
     @ModifyConstant(method = "travel", constant = @Constant(floatValue = 0.9F))
-    private float changeEntitySpeed(float constant) {
+    private float modifySwimFriction(float constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            //noinspection ConstantConditions
-            if ((Entity) this instanceof SkeletonHorseEntity) {
-                return this.getBaseMovementSpeedMultiplier(); // 0.96F
-            }
-            return 0.8F;
+            return this.getBaseMovementSpeedMultiplier();
         }
         return constant;
     }
 
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D"))
+    @Inject(method = "tickMovement", at = @At("HEAD"))
+    private void removeJumpDelay1_0(CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_0_0tor1_0_1)) {
+            this.jumpingCooldown = 0;
+        }
+    }
+
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D", remap = false))
     private double fixCosTable(double a) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
             return MathHelper.cos((float) a);
         }
         return Math.cos(a);
@@ -171,20 +199,20 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
     private double fixLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
-        double height = instance.getFluidHeight(tagKey);
-
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
-            height += getSwimHeight() + 4;
+            return Double.MAX_VALUE;
         }
-        return height;
+
+        return instance.getFluidHeight(tagKey);
     }
 
-    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
-    private int shieldBlockCounter(int constant) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            return 0;
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isChunkLoaded(Lnet/minecraft/util/math/BlockPos;)Z"))
+    private boolean modify1_13LoadedCheck(World instance, BlockPos blockPos) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+            return this.getWorld().isChunkLoaded(blockPos) && instance.getChunkManager().isChunkLoaded(blockPos.getX() >> 4, blockPos.getZ() >> 4);
+        } else {
+            return this.getWorld().isChunkLoaded(blockPos);
         }
-        return constant;
     }
 
     @Redirect(method = "tickCramming", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isClient()Z"))
@@ -211,14 +239,14 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
-    private void replaceRidingOffset(Entity vehicle, CallbackInfoReturnable<Float> cir) {
+    private void getRidingOffset1_20_1(Entity vehicle, CallbackInfoReturnable<Float> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
             cir.setReturnValue((float) EntityHeightOffsetsPre1_20_2.getHeightOffset(this));
         }
     }
 
     @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
-    private Vector3f revertStaticRidingOffsetCalculation(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
+    private Vector3f getPassengerRidingPos1_20_1(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
             return EntityHeightOffsetsPre1_20_2.getMountedHeightOffset(instance, entity);
         }

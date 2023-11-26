@@ -17,22 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
+package de.florianmichael.viafabricplus.injection.access;
 
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.world.World;
-import net.raphimc.vialoader.util.VersionEnum;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+public interface IItemStack {
 
-@Mixin(AnimalEntity.class)
-public abstract class MixinAnimalEntity {
+    boolean viaFabricPlus$has1_10ProtocolHackTag();
 
-    @Redirect(method = "interactMob", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isClient:Z"))
-    private boolean fixIsClientCheck(World instance) {
-        return instance.isClient && ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_15);
-    }
+    int viaFabricPlus$get1_10Count();
+
+    void viaFabricPlus$set1_10Count(final int count);
 
 }

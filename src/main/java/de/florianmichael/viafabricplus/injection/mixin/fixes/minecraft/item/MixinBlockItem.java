@@ -19,8 +19,6 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -32,6 +30,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -41,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinBlockItem {
 
     @Inject(method = "canPlace", at = @At("HEAD"), cancellable = true)
-    private void injectCanPlace(ItemPlacementContext context, BlockState state, CallbackInfoReturnable<Boolean> ci) {
+    private void checkChestPlacement(ItemPlacementContext context, BlockState state, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             Block block = state.getBlock();
             if (block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST) {
@@ -52,12 +51,12 @@ public abstract class MixinBlockItem {
                     BlockState otherState = world.getBlockState(pos.offset(dir));
                     if (otherState.getBlock() == block) {
                         if (foundAdjChest) {
-                            ci.setReturnValue(false);
+                            cir.setReturnValue(false);
                             return;
                         }
                         foundAdjChest = true;
                         if (otherState.get(ChestBlock.CHEST_TYPE) != ChestType.SINGLE) {
-                            ci.setReturnValue(false);
+                            cir.setReturnValue(false);
                             return;
                         }
                     }

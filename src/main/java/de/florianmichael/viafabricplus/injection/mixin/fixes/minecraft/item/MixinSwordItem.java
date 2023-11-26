@@ -19,9 +19,9 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -31,7 +31,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SwordItem.class)
 public abstract class MixinSwordItem extends ToolItem {
@@ -42,7 +46,7 @@ public abstract class MixinSwordItem extends ToolItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.b1_8tob1_8_1, VersionEnum.r1_8)) {
             ItemStack itemStack = user.getStackInHand(hand);
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
@@ -60,10 +64,17 @@ public abstract class MixinSwordItem extends ToolItem {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.b1_8tob1_8_1, VersionEnum.r1_8)) {
             return 72000;
         }
         return super.getMaxUseTime(stack);
+    }
+
+    @Inject(method = "getMiningSpeedMultiplier", at = @At("HEAD"), cancellable = true)
+    private void changeMiningSpeed(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+            cir.setReturnValue(state.isOf(Blocks.COBWEB) ? 15.0F : 1.5F);
+        }
     }
 
 }

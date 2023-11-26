@@ -22,29 +22,33 @@ package de.florianmichael.viafabricplus.fixes.tracker;
 import com.viaversion.viaversion.api.connection.StoredObject;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-
-import java.util.HashMap;
-import java.util.Map;
+import it.unimi.dsi.fastutil.ints.Int2FloatMap;
+import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 
 public class WolfHealthTracker extends StoredObject {
 
-    private final Map<Integer, Float> healthDataMap = new HashMap<>();
+    private final Int2FloatMap healthDataMap = new Int2FloatOpenHashMap();
 
     public WolfHealthTracker(UserConnection user) {
         super(user);
     }
 
-    public Map<Integer, Float> getHealthDataMap() {
-        return healthDataMap;
+    public float getWolfHealth(final int entityId, final float fallback) {
+        return this.healthDataMap.getOrDefault(entityId, fallback);
+    }
+
+    public void setWolfHealth(final int entityId, final float wolfHealth) {
+        this.healthDataMap.put(entityId, wolfHealth);
     }
 
     public static WolfHealthTracker get() {
         final var connection = ProtocolHack.getPlayNetworkUserConnection();
-        if (connection == null) return null;
+        WolfHealthTracker tracker = connection.get(WolfHealthTracker.class);
 
-        if (!connection.has(WolfHealthTracker.class)) {
-            connection.put(new WolfHealthTracker(connection));
+        if (tracker == null) {
+            connection.put(tracker = new WolfHealthTracker(connection));
         }
-        return connection.get(WolfHealthTracker.class);
+        return tracker;
     }
+
 }
