@@ -48,7 +48,7 @@ public abstract class MixinInventoryPackets {
             wrapper.write(Type.STRING, uuid);
             wrapper.write(Type.UNSIGNED_BYTE, windowId);
             wrapper.write(Type.UNSIGNED_BYTE, slots);
-            wrapper.write(Type.COMPONENT, TextComponentTranslator.via1_13_2toViaLatest(title));
+            wrapper.write(Type.COMPONENT, TextComponentTranslator.via1_14toViaLatest(title));
         }
     }
 

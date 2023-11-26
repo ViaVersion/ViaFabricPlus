@@ -45,7 +45,7 @@ import java.time.Duration;
 import java.util.function.BooleanSupplier;
 
 @SuppressWarnings("UnstableApiUsage")
-@Mixin(value = ClientCommonNetworkHandler.class, priority = 1001 /* Has to be applied before Fabric's Networking API, so it doesn't cancel our custom-payload packets */)
+@Mixin(value = ClientCommonNetworkHandler.class, priority = 1 /* Has to be applied before Fabric's Networking API, so it doesn't cancel our custom-payload packets */)
 public abstract class MixinClientCommonNetworkHandler {
 
     @Shadow

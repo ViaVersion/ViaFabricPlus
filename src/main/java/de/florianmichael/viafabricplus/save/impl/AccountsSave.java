@@ -22,8 +22,6 @@ package de.florianmichael.viafabricplus.save.impl;
 import com.google.gson.JsonObject;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.event.DisconnectCallback;
-import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.save.AbstractSave;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
@@ -37,11 +35,6 @@ public class AccountsSave extends AbstractSave {
 
     public AccountsSave() {
         super("accounts");
-
-        DisconnectCallback.EVENT.register(() -> {
-            // Reset the MP-pass when the user disconnects
-            ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = null;
-        });
     }
 
     @Override

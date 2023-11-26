@@ -39,7 +39,7 @@ public class BlockStateTranslator {
 
     public static BlockState via1_18_2toMc(final int blockStateId) {
         try {
-            var wrapper = PacketWrapper.create(ClientboundPackets1_18.EFFECT, null, DUMMY_USER_CONNECTION);
+            var wrapper = PacketWrapper.create(ClientboundPackets1_18.EFFECT, DUMMY_USER_CONNECTION);
             wrapper.write(Type.INT, 2001); // eventId
             wrapper.write(Type.POSITION1_14, new Position(0, 0, 0)); // position
             wrapper.write(Type.INT, blockStateId); // data

@@ -99,7 +99,7 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
 
     @Unique
     private float getWolfHealth() {
-        return WolfHealthTracker.get().getWolfHealth(this.getId(), this.getHealth());
+        return WolfHealthTracker.get(ProtocolHack.getPlayNetworkUserConnection()).getWolfHealth(this.getId(), this.getHealth());
     }
 
 }

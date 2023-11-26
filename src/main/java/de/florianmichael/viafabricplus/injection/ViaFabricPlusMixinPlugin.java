@@ -20,10 +20,12 @@
 package de.florianmichael.viafabricplus.injection;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.lenni0451.reflect.stream.RStream;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -48,6 +50,14 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
         DASH_LOADER_PRESENT = loader.isModLoaded("dashloader");
         ARMOR_SKIN_PRESENT = loader.isModLoaded("armorskin");
         IPNEXT_PRESENT = loader.isModLoaded("inventoryprofilesnext");
+
+        // Force unload some FabricAPI mixins because FabricAPI overwrites some of the elytra code
+        final Set<String> loadedMixins = RStream.of("org.spongepowered.asm.mixin.transformer.MixinConfig").fields().by("globalMixinList").get();
+        Collections.addAll(loadedMixins,
+                "net.fabricmc.fabric.mixin.client.entity.event.elytra.ClientPlayerEntityMixin",
+                "net.fabricmc.fabric.mixin.entity.event.elytra.LivingEntityMixin",
+                "net.fabricmc.fabric.mixin.entity.event.elytra.PlayerEntityMixin"
+        );
     }
 
     @Override
@@ -71,7 +81,8 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {}
+    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
+    }
 
     @Override
     public List<String> getMixins() {
@@ -79,8 +90,10 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {}
+    public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+    }
 
     @Override
-    public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {}
+    public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+    }
 }

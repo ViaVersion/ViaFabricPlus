@@ -25,18 +25,18 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.libs.gson.JsonElement;
-import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.ClientboundPackets1_13;
+import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.ClientboundPackets1_14;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.raphimc.vialoader.util.VersionEnum;
 
 public class TextComponentTranslator {
 
-    private static final UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, VersionEnum.r1_13_2);
+    private static final UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, VersionEnum.r1_14);
 
-    public static JsonElement via1_13_2toViaLatest(final JsonElement component) {
+    public static JsonElement via1_14toViaLatest(final JsonElement component) {
         try {
-            var wrapper = PacketWrapper.create(ClientboundPackets1_13.OPEN_WINDOW, DUMMY_USER_CONNECTION);
+            var wrapper = PacketWrapper.create(ClientboundPackets1_14.OPEN_WINDOW, DUMMY_USER_CONNECTION);
             wrapper.write(Type.VAR_INT, 1); // window id
             wrapper.write(Type.VAR_INT, 0); // type id
             wrapper.write(Type.COMPONENT, component); // title
@@ -48,7 +48,7 @@ public class TextComponentTranslator {
             wrapper.read(Type.VAR_INT); // type id
             return wrapper.read(Type.COMPONENT); // title
         } catch (Throwable t) {
-            ViaFabricPlus.global().getLogger().error("Error converting ViaVersion 1.13.2 text component to native text component", t);
+            ViaFabricPlus.global().getLogger().error("Error converting ViaVersion 1.14 text component to native text component", t);
             return null;
         }
     }

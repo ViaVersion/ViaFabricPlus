@@ -38,6 +38,7 @@ import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLInjector
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLLoader;
 import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
+import de.florianmichael.viafabricplus.util.NoPacketSendChannel;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -140,7 +141,7 @@ public class ProtocolHack {
      * @return Creates a dummy UserConnection class with a valid protocol pipeline to emulate packets
      */
     public static UserConnection createDummyUserConnection(final VersionEnum clientVersion, final VersionEnum serverVersion) {
-        final UserConnection user = new UserConnectionImpl(null, true);
+        final UserConnection user = new UserConnectionImpl(NoPacketSendChannel.INSTANCE, true);
         final ProtocolPipeline pipeline = new ProtocolPipelineImpl(user);
         final List<ProtocolPathEntry> path = Via.getManager().getProtocolManager().getProtocolPath(clientVersion.getVersion(), serverVersion.getVersion());
         for (ProtocolPathEntry pair : path) {

@@ -28,10 +28,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
 import net.raphimc.vialoader.util.VersionEnum;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.function.Consumer;
 
@@ -60,7 +62,7 @@ public class ClientPlayerInteractionManager1_18_2 {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_1)) {
             rotation = null;
         }
-        UNACKED_ACTIONS.put(new Pair<>(blockPos, action), new PositionAndRotation(player.getPos().x, player.getPos().y, player.getPos().z, rotation));
+        UNACKED_ACTIONS.put(new ImmutablePair<>(blockPos, action), new PositionAndRotation(player.getPos(), rotation));
     }
 
     public static void handleBlockBreakAck(final BlockPos blockPos, final BlockState expectedState, final PlayerActionC2SPacket.Action action, final boolean allGood) {
@@ -68,16 +70,17 @@ public class ClientPlayerInteractionManager1_18_2 {
         if (player == null) return;
         final var world = MinecraftClient.getInstance().getNetworkHandler().getWorld();
 
-        final var oldPlayerState = UNACKED_ACTIONS.remove(new Pair<>(blockPos, action));
+        final var oldPlayerState = UNACKED_ACTIONS.remove(new ImmutablePair<>(blockPos, action));
         final var actualState = world.getBlockState(blockPos);
 
         if ((oldPlayerState == null || !allGood || action != PlayerActionC2SPacket.Action.START_DESTROY_BLOCK && actualState != expectedState) && (actualState != expectedState || ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2))) {
             world.setBlockState(blockPos, expectedState, Block.NOTIFY_ALL | Block.FORCE_STATE);
             if (oldPlayerState != null && ((ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_1) || (world == player.getWorld() && player.collidesWithStateAtPos(blockPos, expectedState))))) {
+                final Vec3d oldPlayerPosition = oldPlayerState.position;
                 if (oldPlayerState.rotation != null) {
-                    player.updatePositionAndAngles(oldPlayerState.x, oldPlayerState.y, oldPlayerState.z, oldPlayerState.rotation.x, oldPlayerState.rotation.y);
+                    player.updatePositionAndAngles(oldPlayerPosition.x, oldPlayerPosition.y, oldPlayerPosition.z, oldPlayerState.rotation.x, oldPlayerState.rotation.y);
                 } else {
-                    player.updatePosition(oldPlayerState.x, oldPlayerState.y, oldPlayerState.z);
+                    player.updatePosition(oldPlayerPosition.x, oldPlayerPosition.y, oldPlayerPosition.z);
                 }
             }
         }
@@ -88,7 +91,11 @@ public class ClientPlayerInteractionManager1_18_2 {
         }
     }
 
-    public record PositionAndRotation(double x, double y, double z, Vec2f rotation) {
+    public static void clearUnackedActions() {
+        UNACKED_ACTIONS.clear();
+    }
+
+    private record PositionAndRotation(Vec3d position, Vec2f rotation) {
     }
 
 }

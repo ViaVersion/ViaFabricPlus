@@ -24,8 +24,8 @@ import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.save.SaveManager;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
-import net.fabricmc.loader.api.FabricLoader;
 import de.florianmichael.viafabricplus.util.ClassLoaderPriorityUtil;
+import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,11 +52,7 @@ import java.util.concurrent.CompletableFuture;
  *  - Fix MixinAbstractDonkeyEntity
  *  - Check TO DO in MixinEntity
  *  - Fix MixinMultiplayerServerListWidget_ServerEntry
- *  - Test villagers
- *  - Test offhand
- *  - Check if attack cooldown is there or not
- *  - Test very large 1.8 chests
- *  - Test block ack
+ *  - Fix bedrock online mode
  */
 public class ViaFabricPlus {
     private static final ViaFabricPlus instance = new ViaFabricPlus();
