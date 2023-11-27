@@ -17,25 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes;
+package de.florianmichael.viafabricplus.protocolhack.util;
 
-import net.minecraft.util.ActionResult;
+import it.unimi.dsi.fastutil.floats.FloatIntPair;
 
-public class ActionResultException extends RuntimeException {
+public class MathUtil {
 
-    private final ActionResult actionResult;
-
-    public ActionResultException(final ActionResult actionResult) {
-        this.actionResult = actionResult;
-    }
-
-    public ActionResult getActionResult() {
-        return this.actionResult;
-    }
-
-    @Override
-    public synchronized Throwable fillInStackTrace() {
-        return this;
+    public static FloatIntPair get1_13SliderValue(final float value1_14) {
+        final int oldSliderWidth = 150 - 8;
+        final int mousePos = (int) (oldSliderWidth * value1_14);
+        final float oldValue = mousePos / (float) oldSliderWidth;
+        final int oldDisplay = (int) (oldValue * 200);
+        return FloatIntPair.of(oldValue, oldDisplay);
     }
 
 }

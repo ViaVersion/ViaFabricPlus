@@ -20,8 +20,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import de.florianmichael.viafabricplus.fixes.diff.RenderableGlyphDiff;
-import de.florianmichael.viafabricplus.injection.reference.BuiltinEmptyGlyph1_12_2;
+import de.florianmichael.viafabricplus.fixes.data.RenderableGlyphDiff;
+import de.florianmichael.viafabricplus.fixes.replacement.BuiltinEmptyGlyph1_12_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;

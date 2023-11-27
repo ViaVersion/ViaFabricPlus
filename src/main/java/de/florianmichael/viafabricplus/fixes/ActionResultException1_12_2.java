@@ -17,20 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.reference;
+package de.florianmichael.viafabricplus.fixes;
 
-import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
+import net.minecraft.util.ActionResult;
 
-import java.nio.ByteBuffer;
+public class ActionResultException1_12_2 extends RuntimeException {
 
-/*
-This class is part of the AuthLib, we are overwriting this class to add a new field.
- */
+    private final ActionResult actionResult;
 
-public record KeyPairResponse1_19_0(
-        KeyPairResponse.KeyPair keyPair,
-        ByteBuffer publicKeySignatureV2,
-        ByteBuffer publicKeySignature /* removed in 1.20-rc1 */,
-        String expiresAt,
-        String refreshedAfter) {
+    public ActionResultException1_12_2(final ActionResult actionResult) {
+        this.actionResult = actionResult;
+    }
+
+    public ActionResult getActionResult() {
+        return this.actionResult;
+    }
+
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
+
 }

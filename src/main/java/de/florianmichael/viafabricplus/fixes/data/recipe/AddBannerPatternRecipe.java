@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.recipe;
+package de.florianmichael.viafabricplus.fixes.data.recipe;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.entity.BannerBlockEntity;

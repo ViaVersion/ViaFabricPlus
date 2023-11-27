@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 import de.florianmichael.viafabricplus.injection.access.IMouseKeyboard;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
-import de.florianmichael.viafabricplus.util.MouseSensitivityUtil;
+import de.florianmichael.viafabricplus.protocolhack.util.MathUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.option.SimpleOption;
@@ -59,7 +59,7 @@ public abstract class MixinMouse implements IMouseKeyboard {
     @Redirect(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/SimpleOption;getValue()Ljava/lang/Object;", ordinal = 0))
     private Object adjustMouseSensitivity1_13_2(SimpleOption<Double> instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
-            return (double) MouseSensitivityUtil.get1_13SliderValue(instance.getValue().floatValue()).keyFloat();
+            return (double) MathUtil.get1_13SliderValue(instance.getValue().floatValue()).keyFloat();
         }
 
         return instance.getValue();

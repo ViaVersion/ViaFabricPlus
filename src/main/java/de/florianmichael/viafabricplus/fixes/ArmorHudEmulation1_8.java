@@ -34,7 +34,7 @@ import net.minecraft.registry.Registries;
 
 import java.util.UUID;
 
-public class ArmorUpdateListener {
+public class ArmorHudEmulation1_8 {
 
     private static final UUID ARMOR_POINTS_UUID = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
 

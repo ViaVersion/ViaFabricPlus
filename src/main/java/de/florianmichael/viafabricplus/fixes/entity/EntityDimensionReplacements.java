@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes;
+package de.florianmichael.viafabricplus.fixes.entity;
 
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import net.minecraft.client.MinecraftClient;
@@ -28,7 +28,7 @@ import net.raphimc.vialoader.util.VersionEnum;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class EntityHitboxUpdateListener {
+public class EntityDimensionReplacements {
 
     private static final Map<EntityType<?>, Map<VersionEnum, EntityDimensions>> ENTITY_DIMENSIONS = linkedHashMap(
             EntityType.WITHER, linkedHashMap(

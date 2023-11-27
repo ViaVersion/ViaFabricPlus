@@ -17,18 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.util;
+package de.florianmichael.viafabricplus.protocolhack.util;
 
-import it.unimi.dsi.fastutil.floats.FloatIntPair;
+import io.netty.channel.local.LocalChannel;
 
-public class MouseSensitivityUtil {
+/**
+ * This class can be used when creating dummy {@link com.viaversion.viaversion.api.connection.UserConnection} instances.
+ * This class will prevent packets created by ViaVersion from being sent to the server. This is mainly used in the
+ * translator system. See {@link de.florianmichael.viafabricplus.protocolhack.translator} for more information.
+ */
+public class NoPacketSendChannel extends LocalChannel {
 
-    public static FloatIntPair get1_13SliderValue(final float value1_14) {
-        final int oldSliderWidth = 150 - 8;
-        final int mousePos = (int) (oldSliderWidth * value1_14);
-        final float oldValue = mousePos / (float) oldSliderWidth;
-        final int oldDisplay = (int) (oldValue * 200);
-        return FloatIntPair.of(oldValue, oldDisplay);
+    public static final NoPacketSendChannel INSTANCE = new NoPacketSendChannel();
+
+    private NoPacketSendChannel() {
     }
 
 }

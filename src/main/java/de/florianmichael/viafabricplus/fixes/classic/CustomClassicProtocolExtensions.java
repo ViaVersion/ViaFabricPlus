@@ -20,9 +20,7 @@
 package de.florianmichael.viafabricplus.fixes.classic;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.fixes.classic.screen.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.reflect.Enums;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.ClientboundPacketsc0_30cpe;
@@ -45,7 +43,9 @@ public class CustomClassicProtocolExtensions {
         EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
 
         LoadClassicProtocolExtensionCallback.EVENT.register(classicProtocolExtension -> {
-            if (classicProtocolExtension == ClassicProtocolExtension.CUSTOM_BLOCKS) ClassicItemSelectionScreen.INSTANCE.reload(ProtocolHack.getTargetVersion(), true);
+            if (classicProtocolExtension == ClassicProtocolExtension.CUSTOM_BLOCKS) {
+                ClassicItemSelectionScreen.INSTANCE.rebuildGridOverlay();
+            }
         });
     }
 

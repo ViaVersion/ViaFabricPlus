@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes;
+package de.florianmichael.viafabricplus.fixes.entity;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.Entity;
@@ -36,7 +36,7 @@ import net.minecraft.util.math.MathHelper;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.joml.Vector3f;
 
-public class EntityHeightOffsetsPre1_20_2 {
+public class EntityRidingOffsetsPre1_20_2 {
 
     public static Vector3f getMountedHeightOffset(final Entity entity, final Entity passenger) {
         float yOffset = entity.getHeight() * 0.75F;

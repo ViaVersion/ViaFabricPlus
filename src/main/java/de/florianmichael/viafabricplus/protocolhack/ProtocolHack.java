@@ -38,7 +38,7 @@ import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLInjector
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLLoader;
 import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
-import de.florianmichael.viafabricplus.util.NoPacketSendChannel;
+import de.florianmichael.viafabricplus.protocolhack.util.NoPacketSendChannel;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;

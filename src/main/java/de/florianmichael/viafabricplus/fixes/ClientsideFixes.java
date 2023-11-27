@@ -23,13 +23,16 @@ import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.DisconnectCallback;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
+import de.florianmichael.viafabricplus.fixes.entity.EntityDimensionReplacements;
 import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
-import de.florianmichael.viafabricplus.fixes.classic.screen.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.fixes.classic.ClassicItemSelectionScreen;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
+import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialoader.util.VersionEnum;
 
@@ -60,15 +63,19 @@ public class ClientsideFixes {
 
     public static void init() {
         CustomClassicProtocolExtensions.create();
+
         PostGameLoadCallback.EVENT.register(() -> {
-            EntityHitboxUpdateListener.init();
-            ArmorUpdateListener.init();
-            BlockFixes.init();
+            // Handles and updates entity dimension changes in <= 1.17
+            EntityDimensionReplacements.init();
+
+            // Ticks the armor hud manually in <= 1.8.x
+            ArmorHudEmulation1_8.init();
         });
 
         DisconnectCallback.EVENT.register(() -> {
             // Reset the MP-pass
             ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = null;
+
             // Remove all previous unacked player actions
             ClientPlayerInteractionManager1_18_2.clearUnackedActions();
         });
@@ -86,16 +93,34 @@ public class ClientsideFixes {
                 currentChatLength = 256;
             }
 
-            // Text Renderer invisible character fix
             if (!ViaFabricPlusMixinPlugin.DASH_LOADER_PRESENT) {
+                // Clear all font caches to enforce a reload of all fonts (this is needed because we change the font renderer behavior)
                 for (FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
                     storage.glyphRendererCache.clear();
                     storage.glyphCache.clear();
                 }
             }
 
+            // Reloads all bounding boxes of the blocks that we changed
+            for (Block block : Registries.BLOCK) {
+                if (block instanceof AnvilBlock || block instanceof BedBlock || block instanceof BrewingStandBlock
+                        || block instanceof CarpetBlock || block instanceof CauldronBlock || block instanceof ChestBlock
+                        || block instanceof EnderChestBlock || block instanceof EndPortalBlock || block instanceof EndPortalFrameBlock
+                        || block instanceof FarmlandBlock || block instanceof FenceBlock || block instanceof FenceGateBlock
+                        || block instanceof HopperBlock || block instanceof LadderBlock || block instanceof LeavesBlock
+                        || block instanceof LilyPadBlock || block instanceof PaneBlock || block instanceof PistonBlock
+                        || block instanceof PistonHeadBlock || block instanceof SnowBlock || block instanceof WallBlock
+                        || block instanceof CropBlock || block instanceof FlowerbedBlock
+                ) {
+                    for (BlockState state : block.getStateManager().getStates()) {
+                        state.initShapeCache();
+                    }
+                }
+            }
+
+            // Rebuilds the item selection screen grid
             if (newVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
-                ClassicItemSelectionScreen.INSTANCE.reload(newVersion, false);
+                ClassicItemSelectionScreen.INSTANCE.rebuildGridOverlay();
             }
         }));
 

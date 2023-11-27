@@ -17,15 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.util;
+package de.florianmichael.viafabricplus.fixes.replacement;
 
-import io.netty.channel.local.LocalChannel;
+import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
 
-public class NoPacketSendChannel extends LocalChannel {
+import java.nio.ByteBuffer;
 
-    public static final NoPacketSendChannel INSTANCE = new NoPacketSendChannel();
+/*
+This class is part of the AuthLib, we are overwriting this class to add a new field.
+ */
 
-    private NoPacketSendChannel() {
-    }
-
+public record KeyPairResponse1_19_0(
+        KeyPairResponse.KeyPair keyPair,
+        ByteBuffer publicKeySignatureV2,
+        ByteBuffer publicKeySignature /* removed in 1.20-rc1 */,
+        String expiresAt,
+        String refreshedAfter) {
 }

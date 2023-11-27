@@ -25,7 +25,7 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_16_2to1_16_1.ServerboundPackets1_16_2;
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.Protocol1_17To1_16_4;
-import de.florianmichael.viafabricplus.fixes.ActionResultException;
+import de.florianmichael.viafabricplus.fixes.ActionResultException1_12_2;
 import de.florianmichael.viafabricplus.fixes.ClientPlayerInteractionManager1_18_2;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
@@ -202,13 +202,13 @@ public abstract class MixinClientPlayerInteractionManager {
                 final ItemUsageContext itemUsageContext = new ItemUsageContext(player, hand, checkHitResult);
                 final ItemPlacementContext itemPlacementContext = new ItemPlacementContext(itemUsageContext);
                 if (!itemPlacementContext.canPlace() || ((BlockItem) itemPlacementContext.getStack().getItem()).getPlacementState(itemPlacementContext) == null) {
-                    throw new ActionResultException(ActionResult.PASS);
+                    throw new ActionResultException1_12_2(ActionResult.PASS);
                 }
             }
 
             this.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(hand, hitResult, 0));
             if (itemStack.isEmpty()) {
-                throw new ActionResultException(ActionResult.PASS);
+                throw new ActionResultException1_12_2(ActionResult.PASS);
             }
             final ItemUsageContext itemUsageContext = new ItemUsageContext(player, hand, checkHitResult);
             ActionResult actionResult;
@@ -222,7 +222,7 @@ public abstract class MixinClientPlayerInteractionManager {
             if (!actionResult.isAccepted()) {
                 actionResult = ActionResult.PASS; // In <= 1.12.2 FAIL is the same as PASS
             }
-            throw new ActionResultException(actionResult);
+            throw new ActionResultException1_12_2(actionResult);
         }
     }
 
@@ -255,7 +255,7 @@ public abstract class MixinClientPlayerInteractionManager {
         try {
             mutableObject.setValue(this.interactBlockInternal(clientPlayerEntity, hand, blockHitResult));
             return new PlayerInteractBlockC2SPacket(hand, blockHitResult, sequence);
-        } catch (ActionResultException e) {
+        } catch (ActionResultException1_12_2 e) {
             mutableObject.setValue(e.getActionResult());
             throw e;
         }
@@ -265,7 +265,7 @@ public abstract class MixinClientPlayerInteractionManager {
     private void catchPacketCancelException(ClientPlayerInteractionManager instance, ClientWorld world, SequencedPacketCreator packetCreator) {
         try {
             this.sendSequencedPacket(world, packetCreator);
-        } catch (ActionResultException ignored) {
+        } catch (ActionResultException1_12_2 ignored) {
         }
     }
 

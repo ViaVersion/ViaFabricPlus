@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.connection.UserConnectionImpl;
-import de.florianmichael.viafabricplus.util.NoPacketSendChannel;
+import de.florianmichael.viafabricplus.protocolhack.util.NoPacketSendChannel;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import org.spongepowered.asm.mixin.Final;

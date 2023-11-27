@@ -24,7 +24,7 @@ import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
-import de.florianmichael.viafabricplus.injection.reference.KeyPairResponse1_19_0;
+import de.florianmichael.viafabricplus.fixes.replacement.KeyPairResponse1_19_0;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

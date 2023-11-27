@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import de.florianmichael.viafabricplus.fixes.EntityHeightOffsetsPre1_20_2;
+import de.florianmichael.viafabricplus.fixes.entity.EntityRidingOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -301,8 +301,8 @@ public abstract class MixinBoatEntity extends Entity {
     @Inject(method = "updatePassengerPosition", at = @At(value = "HEAD"), cancellable = true)
     private void updatePassengerPosition1_8(Entity passenger, PositionUpdater positionUpdater, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            final Vec3d newPosition = new Vec3d(EntityHeightOffsetsPre1_20_2.getMountedHeightOffset(this, passenger)).add(this.getPos());
-            positionUpdater.accept(passenger, newPosition.x, newPosition.y + EntityHeightOffsetsPre1_20_2.getHeightOffset(passenger), newPosition.z);
+            final Vec3d newPosition = new Vec3d(EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(this, passenger)).add(this.getPos());
+            positionUpdater.accept(passenger, newPosition.x, newPosition.y + EntityRidingOffsetsPre1_20_2.getHeightOffset(passenger), newPosition.z);
             ci.cancel();
         }
     }

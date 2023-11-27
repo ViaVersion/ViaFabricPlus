@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.boat;
+package de.florianmichael.viafabricplus.fixes.entity;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.*;
