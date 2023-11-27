@@ -75,8 +75,7 @@ public abstract class MixinConnectScreen_1 {
         final UserConnection userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
         if (userConnection == null) return;
 
-        final VersionEnum targetVersion = VersionEnum.fromUserConnection(userConnection);
-
+        final VersionEnum targetVersion = ProtocolHack.getTargetVersion();
         if (targetVersion.isBetweenInclusive(VersionEnum.r1_19, VersionEnum.r1_19_1tor1_19_2)) {
             final var keyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
             if (keyPair != null) {
