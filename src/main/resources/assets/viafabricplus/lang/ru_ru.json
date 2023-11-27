@@ -25,6 +25,7 @@
   "base.viafabricplus.kick": "Отключаться",
   "base.viafabricplus.cancel_and_notify": "Подавлять и уведомлять",
   "base.viafabricplus.force_version_title": "Укажите версию для проверки связи с сервером и подключения к нему.",
+  "base.viafabricplus.detecting_server_version": "Проверка версии сервера...",
 
   "setting_group_name.viafabricplus.authentication": "Аутентификация",
   "setting_group_name.viafabricplus.visual": "Внешний вид",
@@ -41,6 +42,8 @@
   "general_settings.viafabricplus.auto_detect_version": "Автоматическое определение версии",
   "general_settings.viafabricplus.show_advertised_server_version": "Дополнительные сведения о версии сервера в сетевой игре",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Ошибки преобразования пакетов",
+  "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Скины и головы игроков в старых версиях",
+  "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Эмулировать действия в инвентаре в alpha-версиях",
 
   "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Экран подтверждения перехода на другой сервер",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Нажмите для настройки учётной записи Bedrock Edition",
@@ -57,7 +60,8 @@
   "debug_settings.viafabricplus.long_sneaking": "Долгое приседание",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Старая скорость добычи блоков",
   "debug_settings.viafabricplus.skip_containers_with_custom_display_names": "Пропускать ошибочные названия блоков-сущностей",
-  "debug_settings.viafabricplus.always_tick_only_player": "Always tick only player",
+  "debug_settings.viafabricplus.prevent_entity_cramming": "Обходить предел сущностей в одном блоке",
+  "debug_settings.viafabricplus.always_tick_client_player": "Всегда обрабатывать игрока в клиентском мире",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Использовать аутентификацию BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Разрешить ViaLegacy вызов joinServer() для проверки сессии",
