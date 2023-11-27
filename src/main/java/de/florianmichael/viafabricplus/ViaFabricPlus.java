@@ -36,6 +36,7 @@ import java.util.concurrent.CompletableFuture;
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
  *  - Check if relevant for protocol translation: TakeItemEntityPacket isEmpty case (1.20 -> 1.20.1 change)
+ *  - Check previous Donkey interaction fix (see git logs)
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
  *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
  *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
@@ -45,12 +46,6 @@ import java.util.concurrent.CompletableFuture;
  *  - X/Z Face based jump movement in <= 1.13.2 is broken (https://github.com/ViaVersion/ViaFabricPlus/issues/189)
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
  *  - Blit-jump is not supported in <= 1.8.9 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
- *
- * TODO | Migration v3
- *  - Use ViaProxy config patch for some clientside fixes options (Remove ViaFabricPlusVLViaConfig and MixinViaLegacyConfig)
- *  - Add setting for VFP AlphaInventoryProvider
- *  - Fix MixinAbstractDonkeyEntity
- *  - Check TO DO in MixinEntity
  */
 public class ViaFabricPlus {
     private static final ViaFabricPlus instance = new ViaFabricPlus();

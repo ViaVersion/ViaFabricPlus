@@ -22,6 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 import de.florianmichael.viafabricplus.fixes.entity.EntityRidingOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.injection.access.IEntity;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
@@ -217,7 +218,7 @@ public abstract class MixinEntity implements IEntity {
 
     @Override
     public boolean viaFabricPlus$isInLoadedChunkAndShouldTick() {
-        return this.viaFabricPlus$isInLoadedChunkAndShouldTick || !ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_9, VersionEnum.r1_16_4tor1_16_5) /* || TODO: Add setting to force this*/;
+        return this.viaFabricPlus$isInLoadedChunkAndShouldTick || DebugSettings.global().alwaysTickClientPlayer.isEnabled();
     }
 
     @Override

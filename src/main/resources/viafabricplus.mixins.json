@@ -162,7 +162,7 @@
     "fixes.minecraft.screen.screenhandler.MixinScreenHandler",
     "fixes.vialegacy.MixinClassicProtocolExtension",
     "fixes.vialegacy.MixinClientboundPacketsc0_30cpe",
-    "fixes.vialegacy.MixinExtensionProtocolMetadataStorage",
+    "vialegacy.MixinExtensionProtocolMetadataStorage",
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
     "fixes.vialegacy.MixinProtocolc0_30toc0_30cpe",
     "fixes.viaversion.MixinChatItemRewriter",
@@ -199,5 +199,9 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "vialegacy.MixinViaLegacyConfig",
+    "viaversion.MixinConfig"
+  ]
 }

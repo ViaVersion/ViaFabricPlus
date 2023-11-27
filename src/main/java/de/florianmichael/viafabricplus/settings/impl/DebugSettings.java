@@ -31,6 +31,9 @@ public class DebugSettings extends SettingGroup {
     // 1.19 -> 1.18.2
     public final VersionedBooleanSetting disableSequencing = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.disable_sequencing"), VersionRange.andOlder(VersionEnum.r1_18_2));
 
+    // 1.17 -> 1.16.5
+    public final VersionedBooleanSetting alwaysTickClientPlayer = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.always_tick_client_player"), VersionRange.of(VersionEnum.r1_9, VersionEnum.r1_16_4tor1_16_5));
+
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting executeInputsInSync = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.execute_inputs_in_sync"), VersionRange.andOlder(VersionEnum.r1_12_2));
     public final VersionedBooleanSetting sneakInstant = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.sneak_instant"), VersionRange.of(VersionEnum.r1_8, VersionEnum.r1_12_2));
@@ -49,7 +52,7 @@ public class DebugSettings extends SettingGroup {
     public final VersionedBooleanSetting replaceSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.replace_sneaking"), VersionRange.andOlder(VersionEnum.r1_7_6tor1_7_10));
     public final VersionedBooleanSetting longSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.long_sneaking"), VersionRange.andOlder(VersionEnum.r1_7_6tor1_7_10));
 
-    // r1_5tor1_5_1 -> r1_4_6tor1_4_7
+    // 1.5/1.5.1 -> 1.4.6/1.4.7
     public final VersionedBooleanSetting legacyMiningSpeeds = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.legacy_mining_speeds"), VersionRange.andOlder(VersionEnum.r1_4_6tor1_4_7));
 
     public DebugSettings() {

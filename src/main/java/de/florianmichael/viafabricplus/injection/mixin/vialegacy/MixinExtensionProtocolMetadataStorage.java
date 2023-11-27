@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
+package de.florianmichael.viafabricplus.injection.mixin.vialegacy;
 
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;

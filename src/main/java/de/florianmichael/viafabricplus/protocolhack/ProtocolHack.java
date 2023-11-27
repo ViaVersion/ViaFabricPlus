@@ -37,7 +37,9 @@ import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLComma
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLInjector;
 import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLLoader;
 import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
+import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaVersionPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
+import de.florianmichael.viafabricplus.protocolhack.util.ConfigPatcher;
 import de.florianmichael.viafabricplus.protocolhack.util.NoPacketSendChannel;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
@@ -50,12 +52,13 @@ import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBedrockPlatformImpl;
-import net.raphimc.vialoader.impl.platform.ViaVersionPlatformImpl;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -63,6 +66,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * This class represents the whole Protocol Translator, here all important variables are stored
  */
 public class ProtocolHack {
+
     /**
      * These attribute keys are used to track the main connections of Minecraft and ViaVersion, so that they can be used later during the connection to send packets.
      */
@@ -174,7 +178,38 @@ public class ProtocolHack {
         throw new IllegalStateException("The player is not connected to a server");
     }
 
+    /**
+     * Apply recommended config options to the ViaVersion config files
+     *
+     * @param directory The directory where the ViaVersion config files are located
+     */
+    public static void patchConfigs(final File directory) {
+        final File configFolder = new File(directory, "ViaLoader");
+
+        final File viaVersionConfig = new File(configFolder, "viaversion.yml");
+        final Map<String, Object> viaVersionPatches = new HashMap<>();
+        viaVersionPatches.put("fix-infested-block-breaking", false);
+        viaVersionPatches.put("shield-blocking", false);
+        viaVersionPatches.put("no-delay-shield-blocking", true);
+        viaVersionPatches.put("chunk-border-fix", true);
+        new ConfigPatcher(viaVersionConfig, viaVersionPatches);
+
+        final File viaLegacyConfig = new File(configFolder, "vialegacy.yml");
+        final Map<String, Object> viaLegacyPatches = new HashMap<>();
+        viaLegacyPatches.put("legacy-skull-loading", true);
+        viaLegacyPatches.put("legacy-skin-loading", true);
+        new ConfigPatcher(viaLegacyConfig, viaLegacyPatches);
+    }
+
+    /**
+     * This method is used to initialize the whole Protocol Translator
+     *
+     * @param directory The directory where the ViaVersion config files are located
+     * @return A CompletableFuture that will be completed when the initialization is done
+     */
     public static CompletableFuture<Void> init(final File directory) {
+        patchConfigs(directory);
+
         // Register command callback for /viaversion and /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             final var commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
@@ -188,10 +223,11 @@ public class ProtocolHack {
         return CompletableFuture.runAsync(() -> {
             // Load ViaVersion and register all platforms and their components
             ViaLoader.init(
-                    new ViaVersionPlatformImpl(directory),
+                    new ViaFabricPlusViaVersionPlatformImpl(directory),
                     new ViaFabricPlusVLLoader(),
                     new ViaFabricPlusVLInjector(),
                     new ViaFabricPlusVLCommandHandler(),
+
                     ViaBackwardsPlatformImpl::new,
                     ViaFabricPlusViaLegacyPlatformImpl::new,
                     ViaAprilFoolsPlatformImpl::new,
@@ -200,4 +236,5 @@ public class ProtocolHack {
             PostViaVersionLoadCallback.EVENT.invoker().onPostViaVersionLoad();
         });
     }
+
 }

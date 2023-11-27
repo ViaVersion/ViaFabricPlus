@@ -46,16 +46,17 @@ public class VisualSettings extends SettingGroup {
     public final VersionedBooleanSetting removeNewerFeaturesFromCommandBlockScreen = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_newer_features_from_command_block_screen"), VersionRange.andOlder(VersionEnum.r1_8));
     public final VersionedBooleanSetting showSuperSecretSettings = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.show_super_secret_settings"), VersionRange.andOlder(VersionEnum.r1_8));
 
-    // 1.8.x -> r1_7_6tor1_7_10
-    public final VersionedBooleanSetting blockHitAnimation = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_block_hit_animation"), VersionRange.andOlder(VersionEnum.r1_7_6tor1_7_10));
+    // 1.8.x -> 1.7.6 - 1.7.10
+    public final VersionedBooleanSetting enableSwordBlocking = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_sword_blocking"), VersionRange.andOlder(VersionEnum.r1_7_6tor1_7_10));
+    public final VersionedBooleanSetting enableBlockHitAnimation = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_block_hit_animation"), VersionRange.andOlder(VersionEnum.r1_7_6tor1_7_10));
 
-    // r1_0_0tor1_0_1 -> b1_8tob1_8_1
+    // 1.0.0-1.0.1 -> b1.8-b1.8.1
     public final VersionedBooleanSetting replaceHurtSoundWithOOFSound = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound"), VersionRange.andOlder(VersionEnum.b1_8tob1_8_1));
 
-    // b1_8tob1_8_1 -> b1_7tob1_7_3
+    // b1.8/b1.8.1 -> b1_7/b1.7.3
     public final VersionedBooleanSetting removeNewerHudElements = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_newer_hud_elements"), VersionRange.andOlder(VersionEnum.b1_7tob1_7_3));
 
-    // a1_0_15 -> c0_28toc0_30
+    // a1.0.15 -> c0_28/c0_30
     public final VersionedBooleanSetting replaceCreativeInventory = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory"), VersionRange.andOlder(VersionEnum.c0_28toc0_30));
     public final VersionedBooleanSetting oldWalkingAnimation = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.old_walking_animation"), VersionRange.andOlder(VersionEnum.c0_28toc0_30));
 

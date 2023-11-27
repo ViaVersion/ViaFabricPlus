@@ -47,10 +47,12 @@ public abstract class MixinHeldItemRenderer {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getUseAction()Lnet/minecraft/util/UseAction;")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 2, shift = At.Shift.AFTER))
     private void transformLegacyBlockAnimations(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        final boolean blockHitAnimation = VisualSettings.global().enableBlockHitAnimation.isEnabled();
+
+        if (VisualSettings.global().enableSwordBlocking.isEnabled() || blockHitAnimation) {
             matrices.translate(-0.1F, 0.05F, 0.0F);
 
-            if (VisualSettings.global().blockHitAnimation.isEnabled()) {
+            if (blockHitAnimation) {
                 final var arm = (hand == Hand.MAIN_HAND) ? player.getMainArm() : player.getMainArm().getOpposite();
                 applySwingOffset(matrices, arm, swingProgress);
             }

@@ -36,6 +36,7 @@ import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;
 import net.raphimc.viabedrock.protocol.providers.TransferProvider;
 import net.raphimc.vialegacy.protocols.alpha.protocolb1_0_1_1_1toa1_2_3_5_1_2_6.providers.AlphaInventoryProvider;
+import net.raphimc.vialegacy.protocols.alpha.protocolb1_0_1_1_1toa1_2_3_5_1_2_6.providers.TrackingAlphaInventoryProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
@@ -64,7 +65,8 @@ public class ViaFabricPlusVLLoader extends VLLoader {
         providers.use(EncryptionProvider.class, new ViaFabricPlusEncryptionProvider());
         providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
         providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
-        providers.use(AlphaInventoryProvider.class, new ViaFabricPlusAlphaInventoryProvider());
+
+        providers.use(AlphaInventoryProvider.class, new ViaFabricPlusAlphaInventoryProvider(providers.get(TrackingAlphaInventoryProvider.class)));
 
         providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
         providers.use(BlobCacheProvider.class, new ViaFabricPlusBlobCacheProvider());
