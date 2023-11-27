@@ -34,7 +34,7 @@ public class PackVersionDiff {
     private final static Map<VersionEnum, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     static {
-        registerVersion(VersionEnum.r1_20_3, 22, "1.20.3-pre2");
+        registerVersion(VersionEnum.r1_20_3, 22, "1.20.3-pre3");
         registerVersion(VersionEnum.r1_20_2, 18, "1.20.2");
         registerVersion(VersionEnum.r1_20tor1_20_1, 15, "1.20.1"); // 1.20 and 1.20.1 are equal
         registerVersion(VersionEnum.r1_19_4, 13, "1.19.4");
