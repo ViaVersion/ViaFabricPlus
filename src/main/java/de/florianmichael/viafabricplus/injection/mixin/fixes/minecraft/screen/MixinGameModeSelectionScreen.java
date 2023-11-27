@@ -50,8 +50,12 @@ public class MixinGameModeSelectionScreen extends Screen {
         if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
             final List<GameModeSelectionScreen.GameModeSelection> gameModeSelections = new ArrayList<>(Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList());
 
-            if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_3_1tor1_3_2)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
-            if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
+            if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_3_1tor1_3_2)) {
+                gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
+            }
+            if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
+                gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
+            }
 
             viafabricplus_unwrappedGameModes = gameModeSelections.toArray(GameModeSelectionScreen.GameModeSelection[]::new);
             UI_WIDTH = viafabricplus_unwrappedGameModes.length * 31 - 5;
