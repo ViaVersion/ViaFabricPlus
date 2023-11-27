@@ -49,7 +49,7 @@ public class DebugSettings extends SettingGroup {
     public final VersionedBooleanSetting preventEntityCramming = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.prevent_entity_cramming"), VersionRange.andOlder(VersionEnum.r1_8));
 
     // 1.8.x -> 1.7.6
-    public final VersionedBooleanSetting replaceSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.replace_sneaking"), VersionRange.andOlder(VersionEnum.r1_7_6tor1_7_10));
+    public final VersionedBooleanSetting replaceSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.replace_sneaking"), VersionRange.andOlder(VersionEnum.r1_8));
     public final VersionedBooleanSetting longSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.long_sneaking"), VersionRange.andOlder(VersionEnum.r1_7_6tor1_7_10));
 
     // 1.5/1.5.1 -> 1.4.6/1.4.7

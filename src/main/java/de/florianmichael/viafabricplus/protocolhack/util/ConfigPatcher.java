@@ -40,7 +40,7 @@ public class ConfigPatcher extends Config {
 
     @Override
     public URL getDefaultConfigURL() {
-        return ConfigPatcher.class.getClassLoader().getResource("assets/viafabricplus/viaversion-config.yml");
+        return ConfigPatcher.class.getClassLoader().getResource("assets/viafabricplus/dummy-config.yml");
     }
 
     @Override

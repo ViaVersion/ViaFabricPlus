@@ -27,8 +27,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.raphimc.vialegacy.protocols.alpha.protocolb1_0_1_1_1toa1_2_3_5_1_2_6.providers.AlphaInventoryProvider;
-import net.raphimc.vialegacy.protocols.alpha.protocolb1_0_1_1_1toa1_2_3_5_1_2_6.providers.TrackingAlphaInventoryProvider;
-import net.raphimc.vialegacy.protocols.alpha.protocolb1_0_1_1_1toa1_2_3_5_1_2_6.storage.AlphaInventoryTracker;
 import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.List;
@@ -36,15 +34,15 @@ import java.util.List;
 import static net.raphimc.vialegacy.protocols.alpha.protocolb1_0_1_1_1toa1_2_3_5_1_2_6.Protocolb1_0_1_1_1toa1_2_3_5_1_2_6.copyItems;
 
 public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider {
-    private final TrackingAlphaInventoryProvider trackingAlphaInventoryProvider;
+    private final AlphaInventoryProvider alphaInventoryProvider;
 
-    public ViaFabricPlusAlphaInventoryProvider(final TrackingAlphaInventoryProvider trackingAlphaInventoryProvider) {
-        this.trackingAlphaInventoryProvider = trackingAlphaInventoryProvider;
+    public ViaFabricPlusAlphaInventoryProvider(final AlphaInventoryProvider alphaInventoryProvider) {
+        this.alphaInventoryProvider = alphaInventoryProvider;
     }
 
     @Override
     public boolean usesInventoryTracker() {
-        return !GeneralSettings.global().emulateInventoryActionsInLegacyVersions.getValue();
+        return !GeneralSettings.global().emulateInventoryActionsInAlphaVersions.getValue();
     }
 
     protected Item[] getMinecraftContainerItems(final List<ItemStack> trackingItems) {
@@ -62,7 +60,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
     @Override
     public Item[] getMainInventoryItems(UserConnection user) {
         if (usesInventoryTracker()) {
-            return trackingAlphaInventoryProvider.getMainInventoryItems(user);
+            return alphaInventoryProvider.getMainInventoryItems(user);
         } else if (getPlayer() == null) {
             return new Item[37];
         }
@@ -73,7 +71,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
     @Override
     public Item[] getCraftingInventoryItems(UserConnection user) {
         if (usesInventoryTracker()) {
-            return trackingAlphaInventoryProvider.getCraftingInventoryItems(user);
+            return alphaInventoryProvider.getCraftingInventoryItems(user);
         } else if (getPlayer() == null) {
             return new Item[4];
         }
@@ -84,7 +82,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
     @Override
     public Item[] getArmorInventoryItems(UserConnection user) {
         if (usesInventoryTracker()) {
-            return trackingAlphaInventoryProvider.getArmorInventoryItems(user);
+            return alphaInventoryProvider.getArmorInventoryItems(user);
         } else if (getPlayer() == null) {
             return new Item[4];
         }
@@ -95,7 +93,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
     @Override
     public Item[] getContainerItems(UserConnection user) {
         if (usesInventoryTracker()) {
-            return trackingAlphaInventoryProvider.getContainerItems(user);
+            return alphaInventoryProvider.getContainerItems(user);
         } else if (getPlayer() == null) {
             return new Item[37];
         }
@@ -106,7 +104,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
     @Override
     public void addToInventory(UserConnection user, Item item) {
         if (usesInventoryTracker()) {
-            trackingAlphaInventoryProvider.addToInventory(user, item);
+            alphaInventoryProvider.addToInventory(user, item);
         } else {
             getPlayer().getInventory().insertStack(ItemTranslator.viaB1_8toMc(item));
         }

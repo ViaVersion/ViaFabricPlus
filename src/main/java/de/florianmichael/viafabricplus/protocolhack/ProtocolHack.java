@@ -48,6 +48,7 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.ClientConnection;
+import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
@@ -101,7 +102,7 @@ public class ProtocolHack {
             channel.attr(ProtocolHack.TARGET_VERSION_ATTRIBUTE_KEY).set(serverVersion);
 
             if (VersionEnum.bedrockLatest.equals(serverVersion)) {
-                channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, 11);
+                channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, ProtocolConstants.BEDROCK_RAKNET_PROTOCOL_VERSION);
                 channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, 4_000L);
                 channel.config().setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
                 channel.config().setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());

@@ -56,7 +56,7 @@ public class GeneralSettings extends SettingGroup {
             Text.translatable("base.viafabricplus.cancel")
     );
     public final BooleanSetting loadSkinsAndSkullsInLegacyVersions = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions"), true);
-    public final BooleanSetting emulateInventoryActionsInLegacyVersions = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.emulate_inventory_actions_in_legacy_versions"), true);
+    public final BooleanSetting emulateInventoryActionsInAlphaVersions = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions"), true);
 
     public GeneralSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.general"));

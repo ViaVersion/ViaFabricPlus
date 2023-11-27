@@ -66,7 +66,7 @@ public class ViaFabricPlusVLLoader extends VLLoader {
         providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
         providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
 
-        providers.use(AlphaInventoryProvider.class, new ViaFabricPlusAlphaInventoryProvider(providers.get(TrackingAlphaInventoryProvider.class)));
+        providers.use(AlphaInventoryProvider.class, new ViaFabricPlusAlphaInventoryProvider(providers.get(AlphaInventoryProvider.class)));
 
         providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
         providers.use(BlobCacheProvider.class, new ViaFabricPlusBlobCacheProvider());

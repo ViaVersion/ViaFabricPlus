@@ -42,7 +42,7 @@
   "general_settings.viafabricplus.show_advertised_server_version": "Show advertised/server version in Multiplayer",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Ignore packet translation errors",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Load skins and skulls in legacy versions",
-  "general_settings.viafabricplus.emulate_inventory_actions_in_legacy_versions": "Emulate inventory actions in legacy versions",
+  "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Emulate inventory actions in alpha versions",
 
   "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Open prompt GUI to confirm transferring to other servers",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Click to set account for Bedrock edition",
