@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
-public class ClassicItemSelectionScreen extends VFPScreen {
-    public static final ClassicItemSelectionScreen INSTANCE = new ClassicItemSelectionScreen();
+public class GridItemSelectionScreen extends VFPScreen {
+    public static final GridItemSelectionScreen INSTANCE = new GridItemSelectionScreen();
 
     private static final int MAX_ROW_DIVIDER = 9;
     private static final int ITEM_XY_BOX_DIMENSION_CLASSIC = 25;
@@ -42,13 +42,16 @@ public class ClassicItemSelectionScreen extends VFPScreen {
     public Item[][] itemGrid = null;
     public ItemStack selectedItem = null;
 
-    public ClassicItemSelectionScreen() {
+    public GridItemSelectionScreen() {
         super("Classic item selection", false);
     }
 
-    public void rebuildGridOverlay() {
+    @Override
+    protected void init() {
+        if (itemGrid != null) {
+            return;
+        }
         final List<Item> allowedItems = new ArrayList<>();
-
         // Calculate all visible items
         for (Item item : Registries.ITEM) {
             if (ItemRegistryDiff.keepItem(item)) {

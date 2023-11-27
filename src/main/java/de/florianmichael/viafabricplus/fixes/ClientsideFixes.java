@@ -23,9 +23,10 @@ import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.DisconnectCallback;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
+import de.florianmichael.viafabricplus.fixes.data.PackVersionDiff;
 import de.florianmichael.viafabricplus.fixes.entity.EntityDimensionReplacements;
-import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
-import de.florianmichael.viafabricplus.fixes.classic.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.fixes.classic.CPEAdditions;
+import de.florianmichael.viafabricplus.fixes.classic.GridItemSelectionScreen;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import net.minecraft.block.*;
@@ -62,7 +63,11 @@ public class ClientsideFixes {
     private static int currentChatLength = 256;
 
     public static void init() {
-        CustomClassicProtocolExtensions.create();
+        // Register additional CPE features
+        CPEAdditions.modifyMappings();
+
+        // Check if the pack format mappings are correct
+        PackVersionDiff.checkOutdated();
 
         PostGameLoadCallback.EVENT.register(() -> {
             // Handles and updates entity dimension changes in <= 1.17
@@ -78,6 +83,9 @@ public class ClientsideFixes {
 
             // Remove all previous unacked player actions
             ClientPlayerInteractionManager1_18_2.clearUnackedActions();
+
+            // Rebuilt the item selection screen grid next time the screen is opened
+            GridItemSelectionScreen.INSTANCE.itemGrid = null;
         });
 
         // Reloads some clientside stuff when the protocol version changes
@@ -120,7 +128,7 @@ public class ClientsideFixes {
 
             // Rebuilds the item selection screen grid
             if (newVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
-                ClassicItemSelectionScreen.INSTANCE.rebuildGridOverlay();
+                GridItemSelectionScreen.INSTANCE.itemGrid = null;
             }
         }));
 

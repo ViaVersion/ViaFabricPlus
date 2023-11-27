@@ -21,11 +21,12 @@ package de.florianmichael.viafabricplus.fixes.classic.command;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.protocolhack.command.VFPViaSubCommand;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;
 
-public class SetTimeCommand extends ClassicViaSubCommand {
+public class SetTimeCommand extends VFPViaSubCommand {
     @Override
     public String name() {
         return "settime";

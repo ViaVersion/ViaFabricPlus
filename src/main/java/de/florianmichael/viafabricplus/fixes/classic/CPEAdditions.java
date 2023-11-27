@@ -32,34 +32,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class CustomClassicProtocolExtensions {
-    public static CustomClassicProtocolExtensions INSTANCE;
+public class CPEAdditions {
+    public final static List<ClassicProtocolExtension> ALLOWED_EXTENSIONS = Arrays.asList(ClassicProtocolExtension.ENV_WEATHER_TYPE);
+    public final static Map<Integer, ClientboundPacketsc0_30cpe> CUSTOM_PACKETS = new HashMap<>();
 
     public static ClientboundPacketsc0_30cpe EXT_WEATHER_TYPE;
 
-    public static void create() {
-        CustomClassicProtocolExtensions.INSTANCE = new CustomClassicProtocolExtensions();
-
+    public static void modifyMappings() {
         EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
-
-        LoadClassicProtocolExtensionCallback.EVENT.register(classicProtocolExtension -> {
-            if (classicProtocolExtension == ClassicProtocolExtension.CUSTOM_BLOCKS) {
-                ClassicItemSelectionScreen.INSTANCE.rebuildGridOverlay();
-            }
-        });
     }
 
-    public final List<ClassicProtocolExtension> ALLOWED_EXTENSIONS = Arrays.asList(ClassicProtocolExtension.ENV_WEATHER_TYPE);
-    public final Map<Integer, ClientboundPacketsc0_30cpe> CUSTOM_PACKETS = new HashMap<>();
-
     public static void allowExtension(final ClassicProtocolExtension classicProtocolExtension) {
-        INSTANCE.ALLOWED_EXTENSIONS.add(classicProtocolExtension);
+        ALLOWED_EXTENSIONS.add(classicProtocolExtension);
     }
 
     public static ClientboundPacketsc0_30cpe createNewPacket(final ClassicProtocolExtension classicProtocolExtension, final int packetId, final BiConsumer<UserConnection, ByteBuf> packetSplitter) {
         final ClientboundPacketsc0_30cpe packet = Enums.newInstance(ClientboundPacketsc0_30cpe.class, classicProtocolExtension.getName(), ClassicProtocolExtension.values().length, new Class[] { int.class, BiConsumer.class }, new Object[] { packetId, packetSplitter });
         Enums.addEnumInstance(ClientboundPacketsc0_30cpe.class, packet);
-        INSTANCE.CUSTOM_PACKETS.put(packetId, packet);
+        CUSTOM_PACKETS.put(packetId, packet);
+
         return packet;
     }
 }

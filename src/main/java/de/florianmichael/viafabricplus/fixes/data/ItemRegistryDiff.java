@@ -1358,15 +1358,20 @@ public class ItemRegistryDiff {
     public static boolean keepItem(final Item item) {
         if (ProtocolHack.getTargetVersion().equals(c0_30cpe)) {
             final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
-            if (handler == null) return true;
+            if (handler == null) {
+                // Don't drop any items if the connection is not established yet
+                return true;
+            }
             final ExtensionProtocolMetadataStorage extensionProtocol = ((IClientConnection)handler.getConnection()).viaFabricPlus$getUserConnection().get(ExtensionProtocolMetadataStorage.class);
-            if (extensionProtocol == null) return false;
+            if (extensionProtocol == null) { // Should never happen
+                return false;
+            }
             if (extensionProtocol.hasServerExtension(ClassicProtocolExtension.CUSTOM_BLOCKS, 1) && EXTENDED_CLASSIC_ITEMS.contains(item)) {
                 return true;
             }
         }
 
-        return !ITEM_DIFF.containsKey(item) || ITEM_DIFF.get(item).contains(ProtocolHack.getTargetVersion() /*ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(ITEM_DIFF.get(item)*/);
+        return !ITEM_DIFF.containsKey(item) || ITEM_DIFF.get(item).contains(ProtocolHack.getTargetVersion());
     }
 
 }

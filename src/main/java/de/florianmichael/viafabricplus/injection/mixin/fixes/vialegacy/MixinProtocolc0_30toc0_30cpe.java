@@ -25,7 +25,7 @@ import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.ClientboundPackets1_19_4;
 import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.Protocol1_19_4To1_19_3;
-import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.fixes.classic.CPEAdditions;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.ClientboundPacketsc0_28;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.ServerboundPacketsc0_28;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.ClientboundPacketsc0_30cpe;
@@ -41,7 +41,7 @@ public abstract class MixinProtocolc0_30toc0_30cpe extends AbstractProtocol<Clie
 
     @Inject(method = "registerPackets", at = @At("RETURN"))
     private void extendPackets(CallbackInfo ci) {
-        this.registerClientbound(CustomClassicProtocolExtensions.EXT_WEATHER_TYPE, null, new PacketHandlers() {
+        this.registerClientbound(CPEAdditions.EXT_WEATHER_TYPE, null, new PacketHandlers() {
             @Override
             public void register() {
                 handler(wrapper -> {

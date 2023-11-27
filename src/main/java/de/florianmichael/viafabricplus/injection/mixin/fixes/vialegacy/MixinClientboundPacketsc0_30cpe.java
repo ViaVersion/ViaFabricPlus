@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
 
-import de.florianmichael.viafabricplus.fixes.classic.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.fixes.classic.CPEAdditions;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.ClientboundPacketsc0_30cpe;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,8 +31,8 @@ public abstract class MixinClientboundPacketsc0_30cpe {
 
     @Inject(method = "getPacket", at = @At("HEAD"), cancellable = true)
     private static void addCustomPackets(int id, CallbackInfoReturnable<ClientboundPacketsc0_30cpe> cir) {
-        if (CustomClassicProtocolExtensions.INSTANCE.CUSTOM_PACKETS.containsKey(id)) {
-            cir.setReturnValue(CustomClassicProtocolExtensions.INSTANCE.CUSTOM_PACKETS.get(id));
+        if (CPEAdditions.CUSTOM_PACKETS.containsKey(id)) {
+            cir.setReturnValue(CPEAdditions.CUSTOM_PACKETS.get(id));
         }
     }
 

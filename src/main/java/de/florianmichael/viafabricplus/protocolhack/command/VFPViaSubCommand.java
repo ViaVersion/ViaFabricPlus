@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.classic.command;
+package de.florianmichael.viafabricplus.protocolhack.command;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
@@ -25,7 +25,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 
-public abstract class ClassicViaSubCommand extends ViaSubCommand {
+public abstract class VFPViaSubCommand extends ViaSubCommand {
 
     /**
      * Automatically prefix all messages

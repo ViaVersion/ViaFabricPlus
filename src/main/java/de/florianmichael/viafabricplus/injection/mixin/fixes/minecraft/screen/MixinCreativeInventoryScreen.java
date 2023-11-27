@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.fixes.classic.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.fixes.classic.GridItemSelectionScreen;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
@@ -34,7 +34,7 @@ public abstract class MixinCreativeInventoryScreen {
     @Inject(method = "init", at = @At("RETURN"))
     private void replaceCreativeMenu(CallbackInfo ci) {
         if (VisualSettings.global().replaceCreativeInventory.isEnabled()) {
-            MinecraftClient.getInstance().setScreen(ClassicItemSelectionScreen.INSTANCE);
+            MinecraftClient.getInstance().setScreen(GridItemSelectionScreen.INSTANCE);
         }
     }
 
