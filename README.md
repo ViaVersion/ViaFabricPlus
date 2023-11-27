@@ -12,7 +12,7 @@
 </div>
 
 # Why another protocol translator?
-ViaFabricPlus is a deep integration of ViaVersion on the Fabric platform, unlike the classic Via* implementations, ViaFabricPlus implements many changes that can't be fixed on protocol level (old animations, old movement/swimming, collisions and general rendering changes).
+ViaFabricPlus is a deep integration of ViaVersion on the Fabric platform, it implements many changes that can't be fixed on protocol level (old animations, old movement/swimming, collisions and general rendering changes).
 At the time of writing, VFP is the only protocol translation platform for the client with which you can play on all Minecraft multiplayer versions with many QoL features and get the feel of the old versions.
 ### Supported Server versions
 - Release (1.0.0 - 1.20.3 snapshot)
@@ -60,17 +60,9 @@ At the time of writing, VFP is the only protocol translation platform for the cl
 </details>
 
 # For developers and translators
-Contributions in the form of pull requests are always welcome, please just stick to my code style and make sure your code is easy to update and compatible with other mods.
+### Contributions in the form of pull requests are always welcome, [here](docs/UPDATE_INSTRUCTIONS.md) are some guidelines for contributing to the project.
+#### A detailed TODO list can be found at the class header of [this](https://github.com/ViaVersion/ViaFabricPlus/blob/main/src/main/java/de/florianmichael/viafabricplus/ViaFabricPlus.java) file.
 
-### Translations
-Translations for other languages are always welcome, in **~/resources/assets/viafabricplus/lang** you can find all translations, <br>
-if you know a language well, feel free to make a PR and add translations for that language <br>
-
-### Changes to the code base
-If you want to make changes to the code base, please make sure that your changes are compatible with other mods and that they are easy to update.
-Also, please follow my code style and make sure that cursed parts of your code are documented :tm:
-
-A detailed TODO List can be found at the class header of [this](https://github.com/ViaVersion/ViaFabricPlus/blob/main/src/main/java/de/florianmichael/viafabricplus/ViaFabricPlus.java) file.
 
 ### Dependencies
 For compiling only! **You do not need to install these!**

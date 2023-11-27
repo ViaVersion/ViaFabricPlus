@@ -1,87 +1,64 @@
 # Developer API
-There is no real addon base, to create addons you can simply use the event system, which uses Fabric's Event-API.
-```java
-public class ViaFabricPlusExampleAddon implements ClientModInitializer {
+ViaFabricPlus provides various events and APIs for developers to use. This page explains how to use them.
 
-  @Override
-  public void onInitializeClient() {
-    ChangeProtocolVersionCallback.EVENT.register(versionEnum -> {
-      System.out.println("Version changed to " + versionEnum.getName());
-    });
-  }
-}
+## Events
+ViaFabricPlus events are using the [Fabric Event API](https://fabricmc.net/wiki/tutorial:events). You can register to them like this:
+```java
+ChangeProtocolVersionCallback.EVENT.register(versionEnum -> {
+    System.out.println("Version changed to " + versionEnum.getName());
+});
 ```
-#### ViaFabricPlus has 7 events at the moment:
+### ViaFabricPlus has 7 events at the moment
 | Callback class name                  | Description                                                                                                                                                                                                   |
 |--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ChangeProtocolVersionCallback        | Called when the user changes the target version in the screen, or if you connect to a server for which a specific version has been selected, you disconnect, the event for the actual version is also called. |
-| FinishMinecraftLoadCallback          | Called when Minecraft is finished with loading all its components                                                                                                                                             |
-| FinishViaVersionStartupCallback      | Called when ViaVersion is loaded and ready to use                                                                                                                                                             |
-| InitializeSettingsCallback           | Called after the default setting groups are loaded and before the setting config is loaded                                                                                                                    |
+| DisconnectCallback                   | Called when the user disconnects from a server.                                                                                                                                                               |
+| PostGameLoadCallback                 | Called when Minecraft is finished with loading all its components                                                                                                                                             |
+| PostViaVersionLoadCallback           | Called when ViaVersion is loaded and ready to use                                                                                                                                                             |
+| RegisterSettingsCallback             | Called after the default setting groups are loaded and before the setting config is loaded                                                                                                                    |
 | LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)                                                                                                                          |
-| PreLoadCallback                      | Called before everything (Pre-pre load)                                                                                                                                                                       |
-| DisconnectConnectionCallback         | Called when the user disconnects from a server.                                                                                                                                                               |
+| LoadCallback                         | Called at the earliest point ViaFabricPlus is injecting too                                                                                                                                                   |
 
-### General API
-#### Add CustomPayload channels for versions below 1.13
+## ViaVersion internals
+### Add CustomPayload channels for versions below 1.13
 In order to receive custom payloads with custom channels in versions below 1.13, you need to register them, that's what you do:
 ```java
 Protocol1_13To1_12_2.MAPPINGS.getChannelMappings().put("FML|HS", "fml:hs");
 ```
 
-#### Get the release version of a material:
+### Check if an item exists in a specific version
 ```java
-final VersionRange range = ItemReleaseVersionDefinition.INSTANCE.getItemMap().get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
+final VersionRange range = ItemRegistryDiff.ITEM_DIFF.get(Items.WRITABLE_BOOK); // If an item does not appear in the item map, it has always existed
 
 // The Range class then contains all versions in which the item occurs. 
 // https://github.com/ViaVersion/ViaLoader
+if (ItemRegistryDiff.contains(Items.STONE, VersionRange.andOlder(VersionEnum.r1_8))) {
+    // Do something
+}
 ```
 
-#### Creating own settings for the settings screen:
+### Creating own settings for the settings screen
 ```java
 public class ExampleSettingGroup extends SettingGroup {
-    public static final ExampleSettingGroup INSTANCE = new ExampleSettingGroup();
+    private static final ExampleSettingGroup instance = new ExampleSettingGroup();
     
-    public final BooleanSetting test = new BooleanSetting("Test", false);
+    public final BooleanSetting test = new BooleanSetting(this, Text.of("Test"), false);
     
     public ExampleSettingGroup() {
         super("Example");
     }
+    
+    public static ExampleSettingGroup global() {
+        return instance;
+    }
 }
 ```
-and then you register the setting group in your onLoad method:
+
+and then you register the setting group in your onLoad method
 ```java
-PreLoadCallback.EVENT.register(() -> {
-    ViaFabricPlus.INSTANCE.getSettingsSystem().addGroup(ExampleSettingGroup.INSTANCE);
+RegisterSettingsCallback.EVENT.register(state -> {
+    if (state == RegisterSettingsCallback.State.POST) {
+        ViaFabricPlus.global().getSettingsManager().addGroup(ExampleSettingGroup.INSTANCE);
+    }
 });
-```
-
-#### Implementing custom classic protocol extensions:
-```java
-public class ExampleExtensionSupport implements ClientModInitializer {
-
-  public static ClientboundPacketsc0_30cpe EXT_CLICK_DISTANCE;
-
-  @Override
-  public void onInitializeClient() {
-    PreLoadCallback.EVENT.register(() -> {
-      CustomClassicProtocolExtensions.allowExtension(ClassicProtocolExtension.CLICK_DISTANCE); // Register extension as supported
-
-      EXT_CLICK_DISTANCE = CustomClassicProtocolExtensions.createNewPacket(ClassicProtocolExtension.CLICK_DISTANCE, 0x12, (user, buf) -> buf.readShort());
-    });
-
-    FinishViaLoadingBaseStartupCallback.EVENT.register(() -> {
-      Via.getManager().getProtocolManager().getProtocol(Protocolc0_30toc0_30cpe.class).registerClientbound(EXT_CLICK_DISTANCE, null, new PacketHandlers() {
-        @Override
-        protected void register() {
-          handler(wrapper -> {
-            wrapper.cancel();
-            final short distance = wrapper.read(Type.SHORT);
-            // Do your stuff...
-          });
-        }
-      }, true);
-    });
-  }
-}
 ```

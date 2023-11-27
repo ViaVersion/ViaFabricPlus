@@ -70,39 +70,40 @@ public abstract class MixinConnectScreen_1 {
         return instance.getPort();
     }
 
-    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelFuture;syncUninterruptibly()Lio/netty/channel/ChannelFuture;", shift = At.Shift.AFTER))
+    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelFuture;syncUninterruptibly()Lio/netty/channel/ChannelFuture;", remap = false, shift = At.Shift.AFTER))
     private void setupConnectionSessions(CallbackInfo ci, @Local ClientConnection clientConnection) {
         final UserConnection userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
-        if (userConnection == null) return;
+        if (userConnection == null) {
+            return;
+        }
 
-        final VersionEnum targetVersion = ProtocolHack.getTargetVersion();
+        final var targetVersion = ProtocolHack.getTargetVersion();
         if (targetVersion.isBetweenInclusive(VersionEnum.r1_19, VersionEnum.r1_19_1tor1_19_2)) {
             final var keyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
             if (keyPair != null) {
-                final PlayerPublicKey.PublicKeyData publicKeyData = keyPair.publicKey().data();
+                final var publicKeyData = keyPair.publicKey().data();
+                final var uuid = MinecraftClient.getInstance().getSession().getUuidOrNull();
 
-                final UUID playerUuid = MinecraftClient.getInstance().getSession().getUuidOrNull();
-
-                userConnection.put(new ChatSession1_19_1(playerUuid, keyPair.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature())));
+                userConnection.put(new ChatSession1_19_1(uuid, keyPair.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature())));
                 if (targetVersion == VersionEnum.r1_19) {
                     final var legacyKey = ((ILegacyKeySignatureStorage) (Object) publicKeyData).viafabricplus$getLegacyPublicKeySignature();
                     if (legacyKey != null) {
-                        userConnection.put(new ChatSession1_19_0(playerUuid, keyPair.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey)));
-                    } else {
-                        ViaFabricPlus.global().getLogger().error("Failed to fetch legacy key, can't setup ChatSession");
+                        userConnection.put(new ChatSession1_19_0(uuid, keyPair.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey)));
                     }
                 }
             } else {
-                ViaFabricPlus.global().getLogger().error("Failed to fetch keyPair, can't setup ChatSession");
+                ViaFabricPlus.global().getLogger().error("Could not get public key signature. " + targetVersion.getName() + " with secure-profiles enabled will not work!");
             }
         } else if (targetVersion == VersionEnum.bedrockLatest) {
-            var bedrockSession = ViaFabricPlus.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
+            final var bedrockSession = ViaFabricPlus.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
             if (bedrockSession != null) {
                 final var deviceId = bedrockSession.getMcChain().getXblXsts().getInitialXblSession().getXblDeviceToken().getId();
                 final var playFabId = bedrockSession.getPlayFabToken().getPlayFabId();
                 final var mcChain = bedrockSession.getMcChain();
 
                 userConnection.put(new AuthChainData(mcChain.getMojangJwt(), mcChain.getIdentityJwt(), mcChain.getPublicKey(), mcChain.getPrivateKey(), deviceId, playFabId));
+            } else {
+                ViaFabricPlus.global().getLogger().warn("Could not get Bedrock account, joining online mode servers will not work!");
             }
         }
     }

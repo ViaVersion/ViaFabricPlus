@@ -1,7 +1,9 @@
-# Settings and GUI
-In the multiplayer screen you will find the ViaFabricPlus button in the upper left corner by default, it is the main button,
-click on it, and you will see the Protocol selection, there you can choose the Minecraft version you want to connect to, 
-in the upper left corner you can go to the Settings.
+# Usage for ViaFabricPlus
+
+## Introduction
+At the top left of the multiplayer screen is the ViaFabricPlus button, with it you can enter the main menu of the mod 
+where you can change the settings and set the protocol version, the position of the button can be changed in the
+Settings -> General -> multiplayer screen button orientation.
 
 ![](preview/multiplayer.png)
 ![](preview/protocol.png)
@@ -18,18 +20,32 @@ You can use the ViaVersion commands with **/viafabricplus** or **/viaversion**, 
 - **/viafabricplus settime <Time (Long)>** - Changes the Clientside World Time, available from: **c0.28-c0.30**
 - **/viafabricplus listextensions** - Displays all classic protocol extensions, available in: **c0.30 CPE**
 
-
-### Settings are optional settings that can turn fixes on and off, originally they were used for debugging<br>
+### Settings<br>
+For users only the settings in the **General**, **Bedrock**, **Authentication** and **Visual** tab are relevant, the other settings are only for developers, you should not change the settings in the **Debug** tab if you don't know what you are doing.
 ![](preview/settings.png)
 
-## Bedrock edition
+### Configuring the protocol translation libraries
+To change the protocol translation settings/features you can look into the ViaLoader folder. You can find 4 config files there depending on the platforms loaded:
+
+- viaversion.yml (ViaVersion)
+- viabackwards.yml (ViaBackwards)
+- vialegacy.yml (ViaLegacy)
+- viabedrock.yml (ViaBedrock)
+
+On it's first launch, ViaFabricPlus will generate the config files with proper default values. Don't touch the config files if you don't know what you are doing.
+
+## Debug HUD
+The debug HUD can be enabled in the settings, it shows some useful information about the connection and the protocol translation.
+![](preview/debug_hud.png)
+
+### Bedrock edition
 Keep in mind that the Java -> Bedrock support is still in beta phase, and therefore many things are not implemented
 yet and there is no guarantee that everything will work as it should.
 
 To log in to a Bedrock account you can press the button **"Click to set account for Bedrock edition"** in the settings,
-then you can log in via device login, the account logged in there will be stored in **~/ViaFabricPlus/bedrock.account**.
+then you can log in via device login, the account logged in there will be stored in **/minecraft./config/viafabricplus/accounts.json**.
 
-## ClassiCube and BetaCraft integration
+### ClassiCube and BetaCraft integration
 In the main GUI there is an extra button for ClassiCube and BetaCraft, both buttons send API requests to the respective platforms to get the respective server list.
 ## BetaCraft
 ![](preview/betacraft.png)
@@ -38,4 +54,5 @@ In the main GUI there is an extra button for ClassiCube and BetaCraft, both butt
 ![](preview/classicube.png)
 
 For ClassiCube you need an account, which you can make on the official website (https://www.classicube.net/), in case ClassiCube requires MultiFactor, an extra GUI will open in ViaFabricPlus.
-![](preview/classicube-login.png)
+![](preview/classicube_login.png)
+The ClassiCube account will be stored in **/minecraft./config/viafabricplus/accounts.json**.

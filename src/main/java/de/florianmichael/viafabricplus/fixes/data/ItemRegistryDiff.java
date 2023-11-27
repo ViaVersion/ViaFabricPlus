@@ -26,6 +26,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.item.Item;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
+import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
 
 import java.util.ArrayList;
@@ -39,8 +40,8 @@ import static net.raphimc.vialoader.util.VersionRange.*;
 
 public class ItemRegistryDiff {
 
-    private static final Map<Item, VersionRange> ITEM_DIFF = new HashMap<>();
-    private static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
+    public static final Map<Item, VersionRange> ITEM_DIFF = new HashMap<>();
+    public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
 
     static {
         ITEM_DIFF.put(CHERRY_LOG, andNewer(r1_20tor1_20_1));
@@ -1355,6 +1356,10 @@ public class ItemRegistryDiff {
         // https://minecraft.gamepedia.com/Java_Edition_version_history
     }
 
+    /**
+     * @param item The item to check
+     * @return true if the item exists in the current version, false otherwise, this will also check for CPE items (CustomBlocks V1 extension)
+     */
     public static boolean keepItem(final Item item) {
         if (ProtocolHack.getTargetVersion().equals(c0_30cpe)) {
             final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
@@ -1362,7 +1367,7 @@ public class ItemRegistryDiff {
                 // Don't drop any items if the connection is not established yet
                 return true;
             }
-            final ExtensionProtocolMetadataStorage extensionProtocol = ((IClientConnection)handler.getConnection()).viaFabricPlus$getUserConnection().get(ExtensionProtocolMetadataStorage.class);
+            final ExtensionProtocolMetadataStorage extensionProtocol = ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection().get(ExtensionProtocolMetadataStorage.class);
             if (extensionProtocol == null) { // Should never happen
                 return false;
             }
@@ -1371,7 +1376,16 @@ public class ItemRegistryDiff {
             }
         }
 
-        return !ITEM_DIFF.containsKey(item) || ITEM_DIFF.get(item).contains(ProtocolHack.getTargetVersion());
+        return contains(item, ProtocolHack.getTargetVersion());
+    }
+
+    /**
+     * @param item    The item to check
+     * @param version The version to check
+     * @return true if the item is present in the version, false otherwise
+     */
+    public static boolean contains(final Item item, final VersionEnum version) {
+        return !ITEM_DIFF.containsKey(item) || ITEM_DIFF.get(item).contains(version);
     }
 
 }

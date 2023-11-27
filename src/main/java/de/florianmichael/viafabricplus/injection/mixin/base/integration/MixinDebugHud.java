@@ -72,7 +72,7 @@ public abstract class MixinDebugHud {
         information.add("");
 
         // Title
-        information.add(ChatUtil.PREFIX + Formatting.GRAY + " " + ViaFabricPlusMixinPlugin.VFP_VERSION);
+        information.add(ChatUtil.PREFIX + Formatting.RESET + " " + ViaFabricPlusMixinPlugin.VFP_VERSION);
 
         // common
         final ProtocolInfo info = userConnection.getProtocolInfo();
