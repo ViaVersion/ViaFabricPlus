@@ -32,7 +32,7 @@ public class DebugSettings extends SettingGroup {
     public final VersionedBooleanSetting disableSequencing = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.disable_sequencing"), VersionRange.andOlder(VersionEnum.r1_18_2));
 
     // 1.17 -> 1.16.5
-    public final VersionedBooleanSetting alwaysTickClientPlayer = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.always_tick_client_player"), VersionRange.of(VersionEnum.r1_9, VersionEnum.r1_16_4tor1_16_5));
+    public final VersionedBooleanSetting alwaysTickClientPlayer = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.always_tick_client_player"), VersionRange.andOlder(VersionEnum.r1_8).add(VersionRange.andNewer(VersionEnum.r1_17)));
 
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting executeInputsInSync = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.execute_inputs_in_sync"), VersionRange.andOlder(VersionEnum.r1_12_2));
