@@ -23,6 +23,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
+import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.lenni0451.mcping.MCPing;
 import net.minecraft.client.gui.screen.ConnectScreen;
@@ -54,9 +56,11 @@ public abstract class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/session/Session;getUsername()Ljava/lang/String;"))
     private String useClassiCubeUsername(Session instance) {
-        final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
-        if (account != null) {
-            return account.username();
+        if (AuthenticationSettings.global().setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null) {
+            final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+            if (account != null) {
+                return account.username();
+            }
         }
 
         return instance.getUsername();
