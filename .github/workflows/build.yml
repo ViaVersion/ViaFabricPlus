@@ -15,15 +15,6 @@ jobs:
           distribution: 'temurin'
           java-version: 17
           check-latest: true
-      - name: Cache Dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
       - name: Build with Gradle
         run: ./gradlew build
       - name: Upload Artifacts

@@ -44,6 +44,12 @@ public class SaveManager {
         for (AbstractSave save : saves) {
             save.init();
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            for (AbstractSave save : saves) {
+                save.save();
+            }
+        }));
     }
 
     public void add(final AbstractSave... saves) {

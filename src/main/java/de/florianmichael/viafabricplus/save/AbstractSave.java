@@ -45,7 +45,6 @@ public abstract class AbstractSave {
     /**
      * This method should be called when the file should be initialized.
      * It will read the file and call the {@link #read(JsonObject)} method.
-     * It will also write the file when the program is closed using the {@link #write(JsonObject)}.
      */
     public void init() {
         if (file.exists()) {
@@ -59,24 +58,27 @@ public abstract class AbstractSave {
                 read(parentNode);
             }
         }
+    }
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                file.delete();
-                file.createNewFile();
-            } catch (IOException e) {
-                ViaFabricPlus.global().getLogger().error("Failed to create file: " + file.getName() + "!");
-            }
+    /**
+     * This method should be called when the file should be saved.
+     */
+    public void save() {
+        try {
+            file.delete();
+            file.createNewFile();
+        } catch (IOException e) {
+            ViaFabricPlus.global().getLogger().error("Failed to create file: " + file.getName() + "!");
+        }
 
-            try (final FileWriter fw = new FileWriter(file)) {
-                final JsonObject parentNode = new JsonObject();
-                write(parentNode);
-                fw.write(GSON.toJson(parentNode));
-                fw.flush();
-            } catch (IOException e) {
-                ViaFabricPlus.global().getLogger().error("Failed to write file: " + file.getName() + "!");
-            }
-        }));
+        try (final FileWriter fw = new FileWriter(file)) {
+            final JsonObject parentNode = new JsonObject();
+            write(parentNode);
+            fw.write(GSON.toJson(parentNode));
+            fw.flush();
+        } catch (IOException e) {
+            ViaFabricPlus.global().getLogger().error("Failed to write file: " + file.getName() + "!");
+        }
     }
 
     public abstract void write(final JsonObject object);
