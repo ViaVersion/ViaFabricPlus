@@ -21,15 +21,19 @@ package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import de.florianmichael.viafabricplus.injection.access.IServerInfo;
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(MultiplayerServerListWidget.ServerEntry.class)
@@ -41,18 +45,19 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
 
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;setMultiplayerScreenTooltip(Ljava/util/List;)V", ordinal = 0))
     private void drawTranslatingState(MultiplayerScreen instance, List<Text> tooltip, Operation<Void> original) {
-        /*if (GeneralSettings.global().showAdvertisedServerVersion.getValue()) {
+        final List<Text> tooltipCopy = new ArrayList<>(tooltip);
+        if (GeneralSettings.global().showAdvertisedServerVersion.getValue()) {
             final IServerInfo mixinServerInfo = ((IServerInfo) server);
 
             if (mixinServerInfo.viaFabricPlus$enabled()) {
                 final var versionEnum = VersionEnum.fromProtocolId(mixinServerInfo.viaFabricPlus$translatingVersion());
 
-                tooltip.add(Text.translatable("base.viafabricplus.via_translates_to", versionEnum != VersionEnum.UNKNOWN ? versionEnum.getName() + " (" + versionEnum.getVersion() + ")" : mixinServerInfo.viaFabricPlus$translatingVersion()));
-                tooltip.add(Text.translatable("base.viafabricplus.server_version", server.version.getString() + " (" + server.protocolVersion + ")"));
+                tooltipCopy.add(Text.translatable("base.viafabricplus.via_translates_to", versionEnum != VersionEnum.UNKNOWN ? versionEnum.getName() + " (" + versionEnum.getVersion() + ")" : mixinServerInfo.viaFabricPlus$translatingVersion()));
+                tooltipCopy.add(Text.translatable("base.viafabricplus.server_version", server.version.getString() + " (" + server.protocolVersion + ")"));
             }
-        }*/
+        }
 
-        original.call(instance, tooltip);
+        original.call(instance, tooltipCopy);
     }
 
 }

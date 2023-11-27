@@ -51,7 +51,6 @@ import java.util.concurrent.CompletableFuture;
  *  - Add setting for VFP AlphaInventoryProvider
  *  - Fix MixinAbstractDonkeyEntity
  *  - Check TO DO in MixinEntity
- *  - Fix MixinMultiplayerServerListWidget_ServerEntry
  *  - Fix bedrock online mode
  */
 public class ViaFabricPlus {
