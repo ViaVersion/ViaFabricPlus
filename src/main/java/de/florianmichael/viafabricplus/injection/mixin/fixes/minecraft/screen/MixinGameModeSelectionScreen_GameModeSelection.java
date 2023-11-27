@@ -53,7 +53,7 @@ public class MixinGameModeSelectionScreen_GameModeSelection {
 
     @Inject(method = "next", at = @At("HEAD"), cancellable = true)
     private void unwrapGameModes(CallbackInfoReturnable<GameModeSelectionScreen.GameModeSelection> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
             switch ((GameModeSelectionScreen.GameModeSelection) (Object) this) {
                 case CREATIVE -> cir.setReturnValue(SURVIVAL);
                 case SURVIVAL -> {
