@@ -23,7 +23,8 @@ import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.storage.Inventor
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.fabricmc.fabric.impl.networking.payload.PacketByteBufPayload;
+import net.fabricmc.fabric.impl.networking.payload.ResolvablePayload;
+import net.fabricmc.fabric.impl.networking.payload.UntypedPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.network.ClientConnection;
@@ -94,8 +95,8 @@ public abstract class MixinClientCommonNetworkHandler {
 
     @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At("HEAD"), cancellable = true)
     private void handleSyncTask(CustomPayloadS2CPacket packet, CallbackInfo ci) {
-        if (packet.payload().id().toString().equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof PacketByteBufPayload payload) {
-            ClientsideFixes.handleSyncTask(payload.data());
+        if (packet.payload().id().toString().equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof ResolvablePayload payload) {
+            ClientsideFixes.handleSyncTask(((UntypedPayload) payload.resolve(null)).buffer());
             ci.cancel(); // Cancel the packet, so it doesn't get processed by the client
         }
     }
