@@ -22,15 +22,12 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.fixes.data.RenderableGlyphDiff;
 import de.florianmichael.viafabricplus.fixes.replacement.BuiltinEmptyGlyph1_12_2;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.*;
 import net.minecraft.util.Identifier;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -57,28 +54,28 @@ public abstract class MixinFontStorage {
     private Identifier id;
 
     @Unique
-    private GlyphRenderer blankGlyphRenderer1_12_2;
+    private GlyphRenderer viaFabricPlus$blankGlyphRenderer1_12_2;
 
     @Unique
-    private Object2IntMap<Font> providedGlyphsCache;
+    private Object2IntMap<Font> viaFabricPlus$providedGlyphsCache;
 
     @Inject(method = "setFonts", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/BuiltinEmptyGlyph;bake(Ljava/util/function/Function;)Lnet/minecraft/client/font/GlyphRenderer;", ordinal = 0))
     private void bakeBlankGlyph1_12_2(List<Font> fonts, CallbackInfo ci) {
-        this.blankGlyphRenderer1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this::getGlyphRenderer);
-        this.providedGlyphsCache = new Object2IntOpenHashMap<>();
+        this.viaFabricPlus$blankGlyphRenderer1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this::getGlyphRenderer);
+        this.viaFabricPlus$providedGlyphsCache = new Object2IntOpenHashMap<>();
     }
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
     private void filterGlyphs1(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir, @Local Font font) {
-        if (this.shouldBeInvisible(cir.getReturnValue().equals(FontStorage.GlyphPair.MISSING) ? null : font, codePoint)) {
-            cir.setReturnValue(this.getBlankGlyphPair());
+        if (this.viaFabricPlus$shouldBeInvisible(cir.getReturnValue().equals(FontStorage.GlyphPair.MISSING) ? null : font, codePoint)) {
+            cir.setReturnValue(this.viaFabricPlus$getBlankGlyphPair());
         }
     }
 
     @Inject(method = "findGlyphRenderer", at = @At("RETURN"), cancellable = true)
     private void filterGlyphs2(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir, @Local Font font) {
-        if (this.shouldBeInvisible(cir.getReturnValue().equals(this.blankGlyphRenderer) ? null : font, codePoint)) {
-            cir.setReturnValue(this.getBlankGlyphRenderer());
+        if (this.viaFabricPlus$shouldBeInvisible(cir.getReturnValue().equals(this.blankGlyphRenderer) ? null : font, codePoint)) {
+            cir.setReturnValue(this.viaFabricPlus$getBlankGlyphRenderer());
         }
     }
 
@@ -94,12 +91,12 @@ public abstract class MixinFontStorage {
 
     @Redirect(method = "findGlyphRenderer", at = @At(value = "FIELD", target = "Lnet/minecraft/client/font/FontStorage;blankGlyphRenderer:Lnet/minecraft/client/font/GlyphRenderer;"))
     private GlyphRenderer fixBlankGlyphRenderer1_12_2(FontStorage instance) {
-        return this.getBlankGlyphRenderer();
+        return this.viaFabricPlus$getBlankGlyphRenderer();
     }
 
     @Unique
-    private boolean shouldBeInvisible(final Font font, final int codePoint) {
-        if (font != null && this.providedGlyphsCache.computeIfAbsent(font, f -> ((Font) f).getProvidedGlyphs().size()) == 1) {
+    private boolean viaFabricPlus$shouldBeInvisible(final Font font, final int codePoint) {
+        if (font != null && this.viaFabricPlus$providedGlyphsCache.computeIfAbsent(font, f -> ((Font) f).getProvidedGlyphs().size()) == 1) {
             return false; // Probably a custom icon character from a resource pack
         }
 
@@ -107,7 +104,7 @@ public abstract class MixinFontStorage {
     }
 
     @Unique
-    private FontStorage.GlyphPair getBlankGlyphPair() {
+    private FontStorage.GlyphPair viaFabricPlus$getBlankGlyphPair() {
         if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
             return new FontStorage.GlyphPair(BuiltinEmptyGlyph1_12_2.INSTANCE, BuiltinEmptyGlyph1_12_2.INSTANCE);
         }
@@ -115,9 +112,9 @@ public abstract class MixinFontStorage {
     }
 
     @Unique
-    private GlyphRenderer getBlankGlyphRenderer() {
+    private GlyphRenderer viaFabricPlus$getBlankGlyphRenderer() {
         if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
-            return this.blankGlyphRenderer1_12_2;
+            return this.viaFabricPlus$blankGlyphRenderer1_12_2;
         }
         return this.blankGlyphRenderer;
     }

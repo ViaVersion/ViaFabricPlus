@@ -47,7 +47,7 @@ public abstract class MixinGameRenderer {
         if (ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
             final Entity entity = this.client.getCameraEntity();
             if (hitResult.getType() != HitResult.Type.MISS) return hitResult;
-            if (!this.canReachAround(entity)) return hitResult;
+            if (!this.viaFabricPlus$canReachAround(entity)) return hitResult;
 
             final int x = MathHelper.floor(entity.getX());
             final int y = MathHelper.floor(entity.getY() - 0.2F);
@@ -61,7 +61,7 @@ public abstract class MixinGameRenderer {
     }
 
     @Unique
-    private boolean canReachAround(final Entity entity) {
+    private boolean viaFabricPlus$canReachAround(final Entity entity) {
         return entity.isOnGround() && entity.getVehicle() == null && entity.getPitch() >= 45;
     }
 

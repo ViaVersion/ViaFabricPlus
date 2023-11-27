@@ -82,7 +82,7 @@ public abstract class MixinClientWorld extends World {
             entity.tick();
             this.getProfiler().pop();
         }
-        this.checkChunk(entity);
+        this.viaFabricPlus$checkChunk(entity);
 
         if (mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
             for (Entity entity2 : entity.getPassengerList()) {
@@ -105,7 +105,7 @@ public abstract class MixinClientWorld extends World {
                     passenger.age++;
                     passenger.tickRiding();
                 }
-                this.checkChunk(passenger);
+                this.viaFabricPlus$checkChunk(passenger);
 
                 if (mixinPassenger.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
                     for (Entity entity2 : passenger.getPassengerList()) {
@@ -119,7 +119,7 @@ public abstract class MixinClientWorld extends World {
     }
 
     @Unique
-    private void checkChunk(Entity entity) {
+    private void viaFabricPlus$checkChunk(Entity entity) {
         this.getProfiler().push("chunkCheck");
         final IEntity mixinEntity = (IEntity) entity;
         final int chunkX = MathHelper.floor(entity.getX() / 16.0D);

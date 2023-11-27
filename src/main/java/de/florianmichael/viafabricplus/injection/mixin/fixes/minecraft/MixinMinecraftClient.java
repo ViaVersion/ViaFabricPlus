@@ -76,6 +76,9 @@ public abstract class MixinMinecraftClient {
         }
     }
 
+    /**
+     * Never happens in Vanilla, this is only for {@link ItemRegistryDiff} to work
+     */
     @Redirect(method = "doItemPick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;clickCreativeStack(Lnet/minecraft/item/ItemStack;I)V"))
     private void dontSendEmptyItem(ClientPlayerInteractionManager instance, ItemStack stack, int slotId) {
         if (!stack.isEmpty()) {
