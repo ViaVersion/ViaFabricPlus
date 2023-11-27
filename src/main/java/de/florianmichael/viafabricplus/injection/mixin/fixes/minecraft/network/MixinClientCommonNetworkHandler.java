@@ -19,7 +19,8 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.fabricmc.fabric.impl.networking.payload.PacketByteBufPayload;
+import net.fabricmc.fabric.impl.networking.payload.ResolvablePayload;
+import net.fabricmc.fabric.impl.networking.payload.UntypedPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.network.listener.ServerPacketListener;
@@ -43,11 +44,15 @@ import java.util.function.BooleanSupplier;
 @Mixin(value = ClientCommonNetworkHandler.class, priority = 1 /* Has to be applied before Fabric's Networking API, so it doesn't cancel our custom-payload packets */)
 public abstract class MixinClientCommonNetworkHandler {
 
-    @Shadow @Final protected MinecraftClient client;
+    @Shadow
+    @Final
+    protected MinecraftClient client;
 
-    @Shadow protected abstract void send(Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry);
+    @Shadow
+    protected abstract void send(Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry);
 
-    @Shadow public abstract void sendPacket(Packet<?> packet);
+    @Shadow
+    public abstract void sendPacket(Packet<?> packet);
 
     @Inject(method = "onPing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
     private void onPing(CommonPingS2CPacket packet, CallbackInfo ci) {
@@ -78,8 +83,8 @@ public abstract class MixinClientCommonNetworkHandler {
 
     @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At("HEAD"), cancellable = true)
     public void handleSyncTask(CustomPayloadS2CPacket packet, CallbackInfo ci) {
-        if (packet.payload().id().toString().equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof PacketByteBufPayload payload) {
-            ClientsideFixes.handleSyncTask(payload.data());
+        if (packet.payload().id().toString().equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof ResolvablePayload payload) {
+            ClientsideFixes.handleSyncTask(((UntypedPayload) payload.resolve(null)).buffer());
             ci.cancel(); // Cancel the packet, so it doesn't get processed by the client
         }
     }
