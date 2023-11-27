@@ -23,6 +23,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.fixes.data.RenderableGlyphDiff;
 import de.florianmichael.viafabricplus.fixes.replacement.BuiltinEmptyGlyph1_12_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.MinecraftClient;
@@ -82,7 +84,7 @@ public abstract class MixinFontStorage {
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
     private void fixBlankGlyph1_12_2(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
             final FontStorage.GlyphPair glyphPair = cir.getReturnValue();
             final Glyph glyph1 = glyphPair.glyph();
             final Glyph glyph2 = glyphPair.advanceValidatedGlyph();
@@ -106,7 +108,7 @@ public abstract class MixinFontStorage {
 
     @Unique
     private FontStorage.GlyphPair getBlankGlyphPair() {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
             return new FontStorage.GlyphPair(BuiltinEmptyGlyph1_12_2.INSTANCE, BuiltinEmptyGlyph1_12_2.INSTANCE);
         }
         return FontStorage.GlyphPair.MISSING;
@@ -114,7 +116,7 @@ public abstract class MixinFontStorage {
 
     @Unique
     private GlyphRenderer getBlankGlyphRenderer() {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
             return this.blankGlyphRenderer1_12_2;
         }
         return this.blankGlyphRenderer;
