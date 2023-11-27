@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PackVersionDiff {
+public class ResourcePackHeaderDiff {
     private final static Map<VersionEnum, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     static {

@@ -23,7 +23,7 @@ import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.DisconnectCallback;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
-import de.florianmichael.viafabricplus.fixes.data.PackVersionDiff;
+import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
 import de.florianmichael.viafabricplus.fixes.entity.EntityDimensionReplacements;
 import de.florianmichael.viafabricplus.fixes.classic.CPEAdditions;
 import de.florianmichael.viafabricplus.fixes.classic.GridItemSelectionScreen;
@@ -67,7 +67,7 @@ public class ClientsideFixes {
         CPEAdditions.modifyMappings();
 
         // Check if the pack format mappings are correct
-        PackVersionDiff.checkOutdated();
+        ResourcePackHeaderDiff.checkOutdated();
 
         PostGameLoadCallback.EVENT.register(() -> {
             // Handles and updates entity dimension changes in <= 1.17
