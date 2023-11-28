@@ -41,15 +41,11 @@ public abstract class MixinServerInfo implements IServerInfo {
     @Unique
     private VersionEnum viaFabricPlus$forcedVersion = null;
 
-    @Override
-    public VersionEnum viaFabricPlus$forcedVersion() {
-        return viaFabricPlus$forcedVersion;
-    }
+    @Unique
+    private boolean viaFabricPlus$passedDirectConnectScreen;
 
-    @Override
-    public void viaFabricPlus$forceVersion(VersionEnum version) {
-        viaFabricPlus$forcedVersion = version;
-    }
+    @Unique
+    private VersionEnum viaFabricPlus$translatingVersion;
 
     @Inject(method = "toNbt", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void saveForcedVersion(CallbackInfoReturnable<NbtCompound> cir, NbtCompound nbtCompound) {
@@ -77,29 +73,36 @@ public abstract class MixinServerInfo implements IServerInfo {
         viaFabricPlus$forceVersion(((IServerInfo) serverInfo).viaFabricPlus$forcedVersion());
     }
 
-    @Unique
-    private boolean viaFabricPlus$enabled;
-
     @Override
-    public boolean viaFabricPlus$enabled() {
-        return viaFabricPlus$enabled;
+    public VersionEnum viaFabricPlus$forcedVersion() {
+        return viaFabricPlus$forcedVersion;
     }
 
     @Override
-    public void viaFabricPlus$enable() {
-        viaFabricPlus$enabled = true;
+    public void viaFabricPlus$forceVersion(VersionEnum version) {
+        viaFabricPlus$forcedVersion = version;
     }
 
-    @Unique
-    private int viaFabricPlus$translatingVersion;
+    @Override
+    public boolean viaFabricPlus$passedDirectConnectScreen() {
+        final boolean previous = viaFabricPlus$passedDirectConnectScreen;
+        viaFabricPlus$passedDirectConnectScreen = false;
+
+        return previous;
+    }
 
     @Override
-    public int viaFabricPlus$translatingVersion() {
+    public void viaFabricPlus$passDirectConnectScreen() {
+        viaFabricPlus$passedDirectConnectScreen = true;
+    }
+
+    @Override
+    public VersionEnum viaFabricPlus$translatingVersion() {
         return viaFabricPlus$translatingVersion;
     }
 
     @Override
-    public void viaFabricPlus$setTranslatingVersion(int version) {
+    public void viaFabricPlus$setTranslatingVersion(VersionEnum version) {
         viaFabricPlus$translatingVersion = version;
     }
 }

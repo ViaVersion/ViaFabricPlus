@@ -69,9 +69,11 @@ public abstract class MixinConnectScreen_1 {
     @SuppressWarnings("InvalidInjectorMethodSignature")
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
     private void setServerInfo(CallbackInfo ci, InetSocketAddress inetSocketAddress) {
-        final VersionEnum serverVersion = ((IServerInfo) this.field_40415).viaFabricPlus$forcedVersion();
-        if (serverVersion != null) {
-            ProtocolHack.setTargetVersion(serverVersion);
+        final IServerInfo mixinServerInfo = (IServerInfo) this.field_40415;
+        final VersionEnum targetVersion = mixinServerInfo.viaFabricPlus$forcedVersion();
+
+        if (targetVersion != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
+            ProtocolHack.setTargetVersion(targetVersion);
         } else if (GeneralSettings.global().autoDetectVersion.getValue()) {
             this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
             MCPing

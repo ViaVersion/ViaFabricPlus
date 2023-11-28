@@ -47,12 +47,10 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
     private void drawTranslatingState(MultiplayerScreen instance, List<Text> tooltip, Operation<Void> original) {
         final List<Text> tooltipCopy = new ArrayList<>(tooltip);
         if (GeneralSettings.global().showAdvertisedServerVersion.getValue()) {
-            final IServerInfo mixinServerInfo = ((IServerInfo) server);
+            final VersionEnum versionEnum = ((IServerInfo) server).viaFabricPlus$translatingVersion();
 
-            if (mixinServerInfo.viaFabricPlus$enabled()) {
-                final var versionEnum = VersionEnum.fromProtocolId(mixinServerInfo.viaFabricPlus$translatingVersion());
-
-                tooltipCopy.add(Text.translatable("base.viafabricplus.via_translates_to", versionEnum != VersionEnum.UNKNOWN ? versionEnum.getName() + " (" + versionEnum.getVersion() + ")" : mixinServerInfo.viaFabricPlus$translatingVersion()));
+            if (versionEnum != null) {
+                tooltipCopy.add(Text.translatable("base.viafabricplus.via_translates_to", versionEnum.getName() + " (" + versionEnum.getOriginalVersion() + ")"));
                 tooltipCopy.add(Text.translatable("base.viafabricplus.server_version", server.version.getString() + " (" + server.protocolVersion + ")"));
             }
         }

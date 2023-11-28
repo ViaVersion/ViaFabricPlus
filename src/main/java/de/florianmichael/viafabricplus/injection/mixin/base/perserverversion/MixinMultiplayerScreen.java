@@ -20,28 +20,22 @@
 package de.florianmichael.viafabricplus.injection.mixin.base.perserverversion;
 
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerInfo;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
-public abstract class MixinConnectScreen_1 {
+@Mixin(MultiplayerScreen.class)
+public abstract class MixinMultiplayerScreen {
 
-    @Final
-    @Shadow
-    ServerInfo field_40415;
+    @Shadow protected abstract void connect(ServerInfo entry);
 
-    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;"))
-    private void setForcedTargetVersion(CallbackInfo ci) {
-        if (field_40415 != null) {
-            // Set the target version to the forced version when connecting to a server
-            ProtocolHack.setTargetVersion(((IServerInfo) field_40415).viaFabricPlus$forcedVersion());
-        }
+    @Redirect(method = "directConnect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;connect(Lnet/minecraft/client/network/ServerInfo;)V"))
+    private void storeDirectConnectionPhase(MultiplayerScreen instance, ServerInfo entry) {
+        ((IServerInfo) entry).viaFabricPlus$passDirectConnectScreen();
+        connect(entry);
     }
 
 }

@@ -26,10 +26,10 @@ public interface IServerInfo {
     VersionEnum viaFabricPlus$forcedVersion();
     void viaFabricPlus$forceVersion(final VersionEnum version);
 
-    boolean viaFabricPlus$enabled();
-    void viaFabricPlus$enable();
+    boolean viaFabricPlus$passedDirectConnectScreen();
+    void viaFabricPlus$passDirectConnectScreen();
 
-    int viaFabricPlus$translatingVersion();
-    void viaFabricPlus$setTranslatingVersion(final int version);
+    VersionEnum viaFabricPlus$translatingVersion();
+    void viaFabricPlus$setTranslatingVersion(final VersionEnum version);
 
 }
