@@ -41,6 +41,8 @@
   "general_settings.viafabricplus.auto_detect_version": "自動偵測版本",
   "general_settings.viafabricplus.show_advertised_server_version": "在多人遊戲介面顯示伺服器所需版本和實際版本",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "忽略封包轉換錯誤",
+  "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "在舊版中載入外觀和頭顱",
+  "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "模擬 Alpha 版本物品欄動作",
 
   "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "開啟提示視窗以確認轉換到其他伺服器",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "點擊以設定 Bedrock 版帳號",
@@ -58,6 +60,7 @@
   "debug_settings.viafabricplus.legacy_mining_speeds": "舊版挖礦速度",
   "debug_settings.viafabricplus.skip_containers_with_custom_display_names": "跳过自訂顯示名的容器",
   "debug_settings.viafabricplus.prevent_entity_cramming": "阻止實體擠壓",
+  "debug_settings.viafabricplus.always_tick_client_player": "Always tick client player",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用 BetaCraft 驗證",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "允許 ViaLegacy 調用 joinServer() 來驗證 session",
@@ -76,6 +79,7 @@
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "替換創造模式物品欄",
   "visual_settings.viafabricplus.old_walking_animation": "舊的行走動畫",
   "visual_settings.viafabricplus.change_font_renderer_behaviour": "變更字型渲染器行為",
+  "visual_settings.viafabricplus.enable_sword_blocking": "啟用劍阻擋動畫",
   "visual_settings.viafabricplus.enable_block_hit_animation": "啟用 1.7 方塊擊中動畫",
 
   "bedrock.viafabricplus.login": "你的瀏覽器應該已經開啟。\n請輸入以下代碼：%s\n關閉此畫面將取消流程！",
