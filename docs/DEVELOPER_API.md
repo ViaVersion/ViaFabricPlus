@@ -18,7 +18,7 @@ ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> {
 | PostGameLoadCallback                 | Called when Minecraft is finished with loading all its components                                                                                                                                             |
 | PostViaVersionLoadCallback           | Called when ViaVersion is loaded and ready to use                                                                                                                                                             |
 | RegisterSettingsCallback             | Called after the default setting groups are loaded and before the setting config is loaded                                                                                                                    |
-| LoadSaveFiles                        | Called before and after the save files are loaded                                                                                                                                                             |
+| LoadSaveFilesCallback                | Called before and after the save files are loaded                                                                                                                                                             |
 
 ## Get and set the current protocol version
 ```java

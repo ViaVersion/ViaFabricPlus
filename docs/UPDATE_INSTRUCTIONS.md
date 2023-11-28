@@ -57,3 +57,9 @@ Translation files are located in `src/main/resources/assets/viafabricplus/lang/`
 10. Increment the version number in `gradle.properties` by at least a minor version (e.g. 1.0.0 -> 1.1.0)
 11. Create a pull request and wait for it to be reviewed and merged.
 12. You're done, congrats!
+
+## Git branches
+- `main`: The main branch, this is where all changes are merged into
+- `backport/*`: Backport branches, these are used to backport newer ViaFabricPlus versions to older versions of the game
+- `recode/*`: Recode branches, these are used to port ViaFabricPlus to newer versions of the game or rewrite big parts of the code
+- `<version>`: Final release branches sorted by their Minecraft version (e.g. `1.8.9`, `1.16.5`, `1.17.1`, ...)

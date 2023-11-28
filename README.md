@@ -69,21 +69,22 @@ For compiling only! **You do not need to install these!**
 <details>
   <summary>Click to get a list of all dependencies</summary>
 
-| Dependency             | Download                                                   |
-|------------------------|------------------------------------------------------------|
-| Fabric API             | https://github.com/fabricMC/fabric                         |
-| Fabric Loader          | https://github.com/fabricMC/fabric-loader                  |
-| Classic4J              | https://github.com/FlorianMichael/Classic4J                |
-| ViaVersion             | https://github.com/ViaVersion/ViaVersion                   |
-| ViaBackwards           | https://github.com/ViaVersion/ViaBackwards                 |
-| ViaLoader              | https://github.com/ViaVersion/ViaLoader                    |
-| ViaLegacy              | https://github.com/ViaVersion/ViaLegacy                    |
-| ViaAprilFools          | https://github.com/ViaVersion/ViaAprilFools                |
-| ViaBedrock             | https://github.com/RaphiMC/ViaBedrock                      |
-| MinecraftAuth          | https://github.com/RaphiMC/MinecraftAuth                   |
-| Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop       |
-| Reflect                | https://github.com/Lenni0451/Reflect                       |
-| MixinExtras            | https://github.com/LlamaLad7/MixinExtras                   |
+| Dependency             | Download                                             |
+|------------------------|------------------------------------------------------|
+| Fabric API             | https://github.com/FabricMC/fabric                   |
+| Fabric Loader          | https://github.com/FabricMC/fabric-loader            |
+| Classic4J              | https://github.com/FlorianMichael/Classic4J          |
+| ViaVersion             | https://github.com/ViaVersion/ViaVersion             |
+| ViaBackwards           | https://github.com/ViaVersion/ViaBackwards           |
+| ViaLoader              | https://github.com/ViaVersion/ViaLoader              |
+| ViaLegacy              | https://github.com/ViaVersion/ViaLegacy              |
+| ViaAprilFools          | https://github.com/ViaVersion/ViaAprilFools          |
+| ViaBedrock             | https://github.com/RaphiMC/ViaBedrock                |
+| MinecraftAuth          | https://github.com/RaphiMC/MinecraftAuth             |
+| Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop |
+| Reflect                | https://github.com/Lenni0451/Reflect                 |
+| MCPing                 | https://github.com/Lenni0451/MCPing                  |
+| MixinExtras            | https://github.com/LlamaLad7/MixinExtras             |
 </details>
 
 ### Setting up a Workspace
