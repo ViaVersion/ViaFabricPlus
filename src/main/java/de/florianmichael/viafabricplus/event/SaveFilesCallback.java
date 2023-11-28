@@ -19,22 +19,22 @@
 
 package de.florianmichael.viafabricplus.event;
 
-import de.florianmichael.viafabricplus.settings.SettingsManager;
+import de.florianmichael.viafabricplus.save.SaveManager;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
 /**
- * This event is fired when ViaFabricPlus has initialized its settings, and before it starts reading the values from the settings file.
+ * This event is fired when ViaFabricPlus has loaded its save files, and before it starts reading the values from the save files.
  */
-public interface RegisterSettingsCallback {
+public interface SaveFilesCallback {
 
-    Event<RegisterSettingsCallback> EVENT = EventFactory.createArrayBacked(RegisterSettingsCallback.class, listeners -> (settingsManager, state) -> {
-        for (RegisterSettingsCallback listener : listeners) {
-            listener.onRegisterSettings(settingsManager, state);
+    Event<SaveFilesCallback> EVENT = EventFactory.createArrayBacked(SaveFilesCallback.class, listeners -> (saveManager, state) -> {
+        for (SaveFilesCallback listener : listeners) {
+            listener.onLoadSaveFiles(saveManager, state);
         }
     });
 
-    void onRegisterSettings(final SettingsManager settingsManager, final State state);
+    void onLoadSaveFiles(final SaveManager saveManager, final State state);
 
     enum State {
         PRE, POST

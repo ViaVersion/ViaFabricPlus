@@ -52,7 +52,10 @@ public class ModeSettingRenderer extends VFPListEntry {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         final var offset = textRenderer.getWidth(this.value.getValue()) + 6;
-        renderScrollableText(context, this.value.getName().formatted(Formatting.GRAY), x, y, entryWidth, entryHeight, offset);
+        renderScrollableText(this.value.getName().formatted(Formatting.GRAY), offset);
         context.drawTextWithShadow(textRenderer, this.value.getValue(), entryWidth - offset, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+
+        renderTooltip(value.getTooltip(), mouseX, mouseY);
     }
+
 }

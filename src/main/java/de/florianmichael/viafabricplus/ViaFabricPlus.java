@@ -63,15 +63,13 @@ public class ViaFabricPlus {
         directory.mkdir();
         ClassLoaderPriorityUtil.loadOverridingJars(directory); // Load overriding jars first so other code can access the new classes
 
+        settingsManager = new SettingsManager();
+        saveManager = new SaveManager(settingsManager);
+
         ClientsideFixes.init(); // Init clientside related fixes
         loadingFuture = ProtocolHack.init(directory); // Init ViaVersion protocol translator platform
 
-        settingsManager = new SettingsManager();
-        saveManager = new SaveManager(settingsManager);
-        PostGameLoadCallback.EVENT.register(() -> {
-            saveManager.init();
-            loadingFuture.join();
-        }); // Has to wait for Minecraft because of the translation system usages
+        PostGameLoadCallback.EVENT.register(() -> loadingFuture.join()); // Block game loading until ViaVersion has loaded
     }
 
     public static ViaFabricPlus global() {

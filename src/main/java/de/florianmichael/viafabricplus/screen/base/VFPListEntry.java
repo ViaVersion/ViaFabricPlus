@@ -26,6 +26,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 
+import javax.annotation.Nullable;
+
 /**
  * This class is a wrapper for the {@link net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry} class which provides some global
  * functions and features used in all screens which are added by ViaFabricPlus
@@ -34,7 +36,14 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
     protected static final int SCISSORS_OFFSET = 4;
     public static final int SLOT_MARGIN = 3;
 
+    private DrawContext context;
+    private int x;
+    private int y;
+    private int entryWidth;
+    private int entryHeight;
+
     public abstract void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta);
+
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {
     }
 
@@ -51,15 +60,10 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
     /**
      * Automatically scrolls the text if it is too long to be displayed in the slot. The text will be scrolled from right to left
      *
-     * @param context The {@link DrawContext} of the screen
-     * @param name The text which should be displayed
-     * @param x The x position of the slot
-     * @param y The y position of the slot
-     * @param entryWidth The width of the slot
-     * @param entryHeight The height of the slot
+     * @param name   The text which should be displayed
      * @param offset The offset of the text from the left side of the slot, this is used to calculate the width of the text, which should be scrolled (Scrolling is enabled when entryWidth - offset < textWidth)
      */
-    public void renderScrollableText(final DrawContext context, final Text name, final int x, final int y, final int entryWidth, final int entryHeight, final int offset) {
+    public void renderScrollableText(final Text name, final int offset) {
         final var font = MinecraftClient.getInstance().textRenderer;
 
         final var fontWidth = font.getWidth(name);
@@ -80,10 +84,30 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
     }
 
     /**
+     * Draws a tooltip if the mouse is hovering over the slot
+     *
+     * @param tooltip The tooltip which should be displayed
+     * @param mouseX  The current mouse X position
+     * @param mouseY  The current mouse Y position
+     */
+    public void renderTooltip(final @Nullable Text tooltip, final int mouseX, final int mouseY) {
+        if (tooltip != null && mouseX >= x && mouseX <= x + entryWidth && mouseY >= y && mouseY <= y + entryHeight) {
+            context.drawTooltip(MinecraftClient.getInstance().textRenderer, tooltip, mouseX - x, mouseY - y);
+        }
+    }
+
+    /**
      * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(DrawContext, int, int, int, int, int, int, int, boolean, float)} method
      */
     @Override
     public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        // Allows cross sharing of global variables between util methods
+        this.context = context;
+        this.x = x;
+        this.y = y;
+        this.entryWidth = entryWidth;
+        this.entryHeight = entryHeight;
+
         final var matrices = context.getMatrices();
 
         matrices.push();

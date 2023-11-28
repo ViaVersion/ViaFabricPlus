@@ -23,6 +23,7 @@ import com.google.gson.JsonObject;
 import de.florianmichael.viafabricplus.screen.base.VFPListEntry;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 /**
  * This class is the base for all settings. It contains the name, the default value and the current value.
@@ -35,6 +36,8 @@ public abstract class AbstractSetting<T> {
     private final T defaultValue;
 
     private T value;
+
+    private Text tooltip;
 
     public AbstractSetting(final SettingGroup parent, final MutableText name, final T defaultValue) {
         this.name = name;
@@ -85,6 +88,14 @@ public abstract class AbstractSetting<T> {
 
     public void setValue(T value) {
         this.value = value;
+    }
+
+    public Text getTooltip() {
+        return tooltip;
+    }
+
+    public void setTooltip(Text tooltip) {
+        this.tooltip = tooltip;
     }
 
 }

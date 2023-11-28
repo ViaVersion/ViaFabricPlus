@@ -55,4 +55,5 @@ public class TitleRenderer extends VFPListEntry {
 
         context.drawTextWithShadow(textRenderer, this.name.copy().formatted(Formatting.BOLD), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
     }
+
 }

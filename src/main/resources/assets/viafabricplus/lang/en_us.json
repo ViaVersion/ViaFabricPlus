@@ -25,6 +25,7 @@
   "base.viafabricplus.cancel_and_notify": "Cancel and notify",
   "base.viafabricplus.force_version_title": "Please select the version with which the server should be pinged/connected",
   "base.viafabricplus.detecting_server_version": "Detecting server version...",
+  "base.viafabricplus.this_will_require_a_restart": "This will require a restart!",
 
   "setting_group_name.viafabricplus.authentication": "Authentication",
   "setting_group_name.viafabricplus.visual": "Visual",

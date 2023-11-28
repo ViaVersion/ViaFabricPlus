@@ -34,15 +34,10 @@ import java.util.List;
 import static net.raphimc.vialegacy.protocols.alpha.protocolb1_0_1_1_1toa1_2_3_5_1_2_6.Protocolb1_0_1_1_1toa1_2_3_5_1_2_6.copyItems;
 
 public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider {
-    private final AlphaInventoryProvider alphaInventoryProvider;
-
-    public ViaFabricPlusAlphaInventoryProvider(final AlphaInventoryProvider alphaInventoryProvider) {
-        this.alphaInventoryProvider = alphaInventoryProvider;
-    }
 
     @Override
     public boolean usesInventoryTracker() {
-        return !GeneralSettings.global().emulateInventoryActionsInAlphaVersions.getValue();
+        return false;
     }
 
     protected Item[] getMinecraftContainerItems(final List<ItemStack> trackingItems) {
@@ -59,9 +54,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
 
     @Override
     public Item[] getMainInventoryItems(UserConnection user) {
-        if (usesInventoryTracker()) {
-            return alphaInventoryProvider.getMainInventoryItems(user);
-        } else if (getPlayer() == null) {
+        if (getPlayer() == null) {
             return new Item[37];
         }
 
@@ -70,9 +63,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
 
     @Override
     public Item[] getCraftingInventoryItems(UserConnection user) {
-        if (usesInventoryTracker()) {
-            return alphaInventoryProvider.getCraftingInventoryItems(user);
-        } else if (getPlayer() == null) {
+        if (getPlayer() == null) {
             return new Item[4];
         }
 
@@ -81,9 +72,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
 
     @Override
     public Item[] getArmorInventoryItems(UserConnection user) {
-        if (usesInventoryTracker()) {
-            return alphaInventoryProvider.getArmorInventoryItems(user);
-        } else if (getPlayer() == null) {
+        if (getPlayer() == null) {
             return new Item[4];
         }
 
@@ -92,9 +81,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
 
     @Override
     public Item[] getContainerItems(UserConnection user) {
-        if (usesInventoryTracker()) {
-            return alphaInventoryProvider.getContainerItems(user);
-        } else if (getPlayer() == null) {
+        if (getPlayer() == null) {
             return new Item[37];
         }
 
@@ -103,11 +90,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
 
     @Override
     public void addToInventory(UserConnection user, Item item) {
-        if (usesInventoryTracker()) {
-            alphaInventoryProvider.addToInventory(user, item);
-        } else {
-            getPlayer().getInventory().insertStack(ItemTranslator.viaB1_8toMc(item));
-        }
+        getPlayer().getInventory().insertStack(ItemTranslator.viaB1_8toMc(item));
     }
 
     protected ClientPlayerEntity getPlayer() {

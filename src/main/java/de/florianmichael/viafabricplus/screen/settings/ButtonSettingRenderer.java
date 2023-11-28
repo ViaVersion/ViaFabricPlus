@@ -48,5 +48,8 @@ public class ButtonSettingRenderer extends VFPListEntry {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         context.drawCenteredTextWithShadow(textRenderer, this.value.displayValue(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+
+        renderTooltip(value.getTooltip(), mouseX, mouseY);
     }
+
 }

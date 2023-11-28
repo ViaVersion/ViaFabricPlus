@@ -60,6 +60,7 @@ public class GeneralSettings extends SettingGroup {
 
     public GeneralSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.general"));
+        emulateInventoryActionsInAlphaVersions.setTooltip(Text.translatable("base.viafabricplus.this_will_require_a_restart"));
     }
 
     public static GeneralSettings global() {
@@ -75,4 +76,5 @@ public class GeneralSettings extends SettingGroup {
             default -> builder;
         };
     }
+
 }

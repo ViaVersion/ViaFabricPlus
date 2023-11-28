@@ -31,7 +31,7 @@ public class SettingsManager {
     private final List<SettingGroup> groups = new ArrayList<>();
 
     public SettingsManager() {
-        RegisterSettingsCallback.EVENT.invoker().onInitializeSettings(RegisterSettingsCallback.State.PRE);
+        RegisterSettingsCallback.EVENT.invoker().onRegisterSettings(this, RegisterSettingsCallback.State.PRE);
 
         addGroup(
                 GeneralSettings.global(),
@@ -41,7 +41,7 @@ public class SettingsManager {
                 DebugSettings.global()
         );
 
-        RegisterSettingsCallback.EVENT.invoker().onInitializeSettings(RegisterSettingsCallback.State.POST);
+        RegisterSettingsCallback.EVENT.invoker().onRegisterSettings(this, RegisterSettingsCallback.State.POST);
     }
 
     public void addGroup(final SettingGroup... groups) {
