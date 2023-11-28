@@ -26,10 +26,10 @@ import net.fabricmc.fabric.api.event.EventFactory;
 /**
  * This event is fired when ViaFabricPlus has loaded its save files, and before it starts reading the values from the save files.
  */
-public interface SaveFilesCallback {
+public interface LoadSaveFilesCallback {
 
-    Event<SaveFilesCallback> EVENT = EventFactory.createArrayBacked(SaveFilesCallback.class, listeners -> (saveManager, state) -> {
-        for (SaveFilesCallback listener : listeners) {
+    Event<LoadSaveFilesCallback> EVENT = EventFactory.createArrayBacked(LoadSaveFilesCallback.class, listeners -> (saveManager, state) -> {
+        for (LoadSaveFilesCallback listener : listeners) {
             listener.onLoadSaveFiles(saveManager, state);
         }
     });

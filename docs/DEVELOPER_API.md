@@ -4,20 +4,44 @@ ViaFabricPlus provides various events and APIs for developers to use. This page 
 ## Events
 ViaFabricPlus events are using the [Fabric Event API](https://fabricmc.net/wiki/tutorial:events). You can register to them like this:
 ```java
-ChangeProtocolVersionCallback.EVENT.register(versionEnum -> {
-    System.out.println("Version changed to " + versionEnum.getName());
+ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> {
+    System.out.println("Version changed to " + newVersion.getName());
 });
 ```
-### ViaFabricPlus has 7 events at the moment
+### ViaFabricPlus has 8 events at the moment
 | Callback class name                  | Description                                                                                                                                                                                                   |
 |--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ChangeProtocolVersionCallback        | Called when the user changes the target version in the screen, or if you connect to a server for which a specific version has been selected, you disconnect, the event for the actual version is also called. |
-| DisconnectCallback                   | Called when the user disconnects from a server.                                                                                                                                                               |
+| DisconnectCallback                   | Called when the user disconnects from a server                                                                                                                                                                |
+| LoadCallback                         | Called at the earliest point ViaFabricPlus is injecting too                                                                                                                                                   |
+| LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)                                                                                                                          |
 | PostGameLoadCallback                 | Called when Minecraft is finished with loading all its components                                                                                                                                             |
 | PostViaVersionLoadCallback           | Called when ViaVersion is loaded and ready to use                                                                                                                                                             |
 | RegisterSettingsCallback             | Called after the default setting groups are loaded and before the setting config is loaded                                                                                                                    |
-| LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)                                                                                                                          |
-| LoadCallback                         | Called at the earliest point ViaFabricPlus is injecting too                                                                                                                                                   |
+| LoadSaveFiles                        | Called before and after the save files are loaded                                                                                                                                                             |
+
+## Get and set the current protocol version
+```java
+final VersionEnum version = ProtocolHack.getTargetVersion();
+if (version == VersionEnum.r1_8) {
+    ProtocolHack.setTargetVersion(VersionEnum.r1_9);
+}
+```
+
+## Get a Minecraft ClientConnection by channel
+```java
+final ClientConnection connection = channel.attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get();
+```
+
+## Interact with UserConnection objects
+```java
+// If ViaVersion is translating, this field will return the user connection of the client
+final UserConnection userConnection = ProtocolHack.getPlayNetworkUserConnection();
+
+// If you need a dummy user connection for testing, you can use this method
+final UserConnection cursedDummy = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, VersionEnum.r1_18_2);
+// The cursedDummy field now contains all protocols from the native version to 1.18.2
+```
 
 ## ViaVersion internals
 ### Add CustomPayload channels for versions below 1.13

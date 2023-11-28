@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.save;
 
-import de.florianmichael.viafabricplus.event.SaveFilesCallback;
+import de.florianmichael.viafabricplus.event.LoadSaveFilesCallback;
 import de.florianmichael.viafabricplus.save.impl.AccountsSave;
 import de.florianmichael.viafabricplus.save.impl.SettingsSave;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
@@ -35,7 +35,7 @@ public class SaveManager {
     private final AccountsSave accountsSave;
 
     public SaveManager(final SettingsManager settingsManager) {
-        SaveFilesCallback.EVENT.invoker().onLoadSaveFiles(this, SaveFilesCallback.State.PRE);
+        LoadSaveFilesCallback.EVENT.invoker().onLoadSaveFiles(this, LoadSaveFilesCallback.State.PRE);
 
         // Register saves
         add(
@@ -55,7 +55,7 @@ public class SaveManager {
             }
         }));
 
-        SaveFilesCallback.EVENT.invoker().onLoadSaveFiles(this, SaveFilesCallback.State.POST);
+        LoadSaveFilesCallback.EVENT.invoker().onLoadSaveFiles(this, LoadSaveFilesCallback.State.POST);
     }
 
     public void add(final AbstractSave... saves) {
