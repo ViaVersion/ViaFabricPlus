@@ -68,7 +68,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;square(D)D"))
     public double changeMagnitude(double n) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2)) {
-            n = 9.0E-4D;
+            return 9.0E-4D;
         }
         return MathHelper.square(n);
     }
