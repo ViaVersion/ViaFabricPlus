@@ -37,7 +37,6 @@
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Orientación de los botones de la pantalla multijugador",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Orientación del boton Añadir servidor",
   "general_settings.viafabricplus.filter_creative_tabs": "eliminar items no disponibles de la pestaña del creativo",
-  "general_settings.viafabricplus.auto_detect_version": "Auto detectar versión",
   "general_settings.viafabricplus.show_advertised_server_version": "Mostrar version anunciada del servidor in multijugador",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Ignorar error de traducciones de paquete",
 

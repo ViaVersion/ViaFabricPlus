@@ -20,7 +20,6 @@
   "general_settings.viafabricplus.main": "Pää-napin suunta",
   "general_settings.viafabricplus.filter_creative_tabs": "Poista saavuttamattomat esineet Luova-välilehdestä",
   "general_settings.viafabricplus.protocolsync": "Automaattisesti vaihda asetuksia version mukaan",
-  "general_settings.viafabricplus.auto_detect_version": "Havaitse versio automaattisesti",
 
   "experimental.viafabricplus.chunkborderfix": "Korjaa chunk-rajat",
   "experimental.viafabricplus.watermovement": "Vesi-liikkeen reunan havaitseminen",

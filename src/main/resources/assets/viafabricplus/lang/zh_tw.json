@@ -38,7 +38,6 @@
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "多人遊戲畫面按鈕方向",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "新增伺服器畫面按鈕方向",
   "general_settings.viafabricplus.filter_creative_tabs": "從創造模式物品欄移除不可用的物品",
-  "general_settings.viafabricplus.auto_detect_version": "自動偵測版本",
   "general_settings.viafabricplus.show_advertised_server_version": "在多人遊戲介面顯示伺服器所需版本和實際版本",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "忽略封包轉換錯誤",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "在舊版中載入外觀和頭顱",

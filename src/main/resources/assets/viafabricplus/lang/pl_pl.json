@@ -39,7 +39,6 @@
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Lokalizacja przycisku w menu multiplayer",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Pozycja przycisku ustawiania wersji w ekranie dodawania serwera",
   "general_settings.viafabricplus.filter_creative_tabs": "Usuwaj niedostępne przedmioty z ekwipunku trybu kreatywnego",
-  "general_settings.viafabricplus.auto_detect_version": "Automatycznie wykrywaj wersję gry",
   "general_settings.viafabricplus.show_advertised_server_version": "Pokazuj informacje dotyczące tłumaczenia pakietów po najechaniu na ikonę pingu w menu multiplayer",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Sposób obsługiwania błędów tłumaczenia pakietów",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Ładuj skórki graczy w starszych wersjach gry",

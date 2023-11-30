@@ -19,7 +19,6 @@
   "general_settings.viafabricplus.main": "Orientation du bouton principal",
   "general_settings.viafabricplus.filter_creative_tabs": "Supprimer les éléments non disponibles de l'inventaire créatif",
   "general_settings.viafabricplus.protocolsync": "Modifier automatiquement les paramètres en fonction de la version utilisée",
-  "general_settings.viafabricplus.auto_detect_version": "Détecter automatiquement la version",
 
   "experimental.viafabricplus.chunkborderfix": "Réparer les bordures de Chunk",
   "experimental.viafabricplus.watermovement": "Détection des bords du mouvement de l'eau",

@@ -39,7 +39,6 @@
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Позиция кнопки в меню сетевой игры",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Позиция кнопки в меню добавления сервера",
   "general_settings.viafabricplus.filter_creative_tabs": "Убрать недоступные предметы из творческого инвентаря",
-  "general_settings.viafabricplus.auto_detect_version": "Автоматическое определение версии",
   "general_settings.viafabricplus.show_advertised_server_version": "Дополнительные сведения о версии сервера в сетевой игре",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Ошибки преобразования пакетов",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Скины и головы игроков в старых версиях",

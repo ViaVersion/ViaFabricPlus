@@ -38,7 +38,6 @@
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Орієнтація кнопки мультиплеєру",
   "general_settings.viafabricplus.filter_creative_tabs": "Видалити недоступні предмети з меню креативу",
   "general_settings.viafabricplus.protocolsync": "Автоматично змінювати налаштування для вибраної версії",
-  "general_settings.viafabricplus.auto_detect_version": "Автоматично відсліджувати версію",
   "general_settings.viafabricplus.show_advertised_server_version": "Показувати рекламовану/серверну версію в багатокористувацькій грі",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Ігнорувати помилки перекладу пакетів",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Завантажувати скіни та черепи на старих версіях",

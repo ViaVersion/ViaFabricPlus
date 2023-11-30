@@ -26,6 +26,7 @@ import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
+import de.florianmichael.viafabricplus.protocolhack.util.VersionEnumExtension;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -127,17 +128,23 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At("HEAD"))
     private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, ClientConnection connection, CallbackInfoReturnable<ChannelFuture> cir) {
-        if (((IClientConnection) connection).viaFabricPlus$getTargetVersion() == null) {
-            ((IClientConnection) connection).viaFabricPlus$setTargetVersion(ProtocolHack.getTargetVersion());
+        VersionEnum targetVersion = ((IClientConnection) connection).viaFabricPlus$getTargetVersion();
+        if (targetVersion == null) { // No server specific override
+            targetVersion = ProtocolHack.getTargetVersion();
         }
+        if (targetVersion == VersionEnumExtension.AUTO_DETECT) { // Auto-detect enabled (when pinging always use native version). Auto-detect is resolved in ConnectScreen mixin
+            targetVersion = ProtocolHack.NATIVE_VERSION;
+        }
+
+        ((IClientConnection) connection).viaFabricPlus$setTargetVersion(targetVersion);
     }
 
     @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;channel(Ljava/lang/Class;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false))
     private static AbstractBootstrap<?, ?> useRakNetChannelFactory(Bootstrap instance, Class<? extends Channel> channelTypeClass, @Local(argsOnly = true) ClientConnection clientConnection) {
         if (VersionEnum.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getTargetVersion())) {
             return instance.channelFactory(channelTypeClass == EpollSocketChannel.class ?
-                            RakChannelFactory.client(EpollDatagramChannel.class) :
-                            RakChannelFactory.client(NioDatagramChannel.class)
+                    RakChannelFactory.client(EpollDatagramChannel.class) :
+                    RakChannelFactory.client(NioDatagramChannel.class)
             );
         }
 

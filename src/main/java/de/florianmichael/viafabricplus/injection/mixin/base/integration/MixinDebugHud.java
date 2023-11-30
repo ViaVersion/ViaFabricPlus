@@ -63,10 +63,13 @@ public abstract class MixinDebugHud {
         if (!GeneralSettings.global().showExtraInformationInDebugHud.getValue()) {
             return;
         }
-        if (MinecraftClient.getInstance().isInSingleplayer() || ProtocolHack.getTargetVersion() == ProtocolHack.NATIVE_VERSION) {
+        if (MinecraftClient.getInstance().isInSingleplayer() && MinecraftClient.getInstance().player != null) {
             return;
         }
         final UserConnection userConnection = ProtocolHack.getPlayNetworkUserConnection();
+        if (userConnection == null) { // Via is not translating this session
+            return;
+        }
 
         final List<String> information = new ArrayList<>();
         information.add("");

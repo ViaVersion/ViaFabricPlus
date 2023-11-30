@@ -31,6 +31,7 @@ import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.event.DisconnectCallback;
 import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLCommandHandler;
@@ -89,6 +90,11 @@ public class ProtocolHack {
     private static VersionEnum targetVersion = NATIVE_VERSION;
 
     /**
+     * This field stores the previous selected version if {@link #setTargetVersion(VersionEnum, boolean)} is called with revertOnDisconnect set to true
+     */
+    private static VersionEnum previousVersion = null;
+
+    /**
      * Injects the ViaFabricPlus pipeline with all ViaVersion elements into a Minecraft pipeline
      *
      * @param connection the Minecraft connection
@@ -130,12 +136,25 @@ public class ProtocolHack {
      *
      * @param newVersion the target version
      */
-    public static void setTargetVersion(VersionEnum newVersion) {
+    public static void setTargetVersion(final VersionEnum newVersion) {
+        setTargetVersion(newVersion, false);
+    }
+
+    /**
+     * Sets the target version
+     *
+     * @param newVersion         the target version
+     * @param revertOnDisconnect if true, the previous version will be set when the player disconnects from the server
+     */
+    public static void setTargetVersion(final VersionEnum newVersion, final boolean revertOnDisconnect) {
         if (newVersion == null) return;
 
         final VersionEnum oldVersion = targetVersion;
         targetVersion = newVersion;
         if (oldVersion != newVersion) {
+            if (revertOnDisconnect) {
+                previousVersion = oldVersion;
+            }
             ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(oldVersion, targetVersion);
         }
     }
@@ -209,6 +228,13 @@ public class ProtocolHack {
      * @return A CompletableFuture that will be completed when the initialization is done
      */
     public static CompletableFuture<Void> init(final File directory) {
+        DisconnectCallback.EVENT.register(() -> {
+            if (previousVersion != null) { // Revert the version if the player disconnects and a previous version is set
+                setTargetVersion(previousVersion);
+                previousVersion = null;
+            }
+        });
+
         patchConfigs(directory);
 
         // Register command callback for /viaversion and /viafabricplus

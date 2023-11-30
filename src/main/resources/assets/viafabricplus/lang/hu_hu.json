@@ -29,7 +29,6 @@
   
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Elhelyezése a gombnak a Szerver felvétele képernyőn",
   "general_settings.viafabricplus.show_advertised_server_version": "Hirdetett/szerver verzió megjelenítése Többjátékos módban",
-  "general_settings.viafabricplus.auto_detect_version": "Automatikus verziófelismerés",
   "general_settings.viafabricplus.show_classic_loading_progress": "Klasszikus folyamatjelző mutatása a csatlakozási képernyőn",
   "general_settings.viafabricplus.filter_creative_tabs": "Nem elérhető tárgyak eltávolítása a kreatív felszerelésből",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "Extra információ mutatása a Debug HUD-ban",

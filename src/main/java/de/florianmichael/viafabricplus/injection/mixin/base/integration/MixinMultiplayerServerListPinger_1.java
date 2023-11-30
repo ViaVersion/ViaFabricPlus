@@ -19,10 +19,8 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;
@@ -74,7 +72,7 @@ public abstract class MixinMultiplayerServerListPinger_1 implements ClientQueryP
             // version to the client so its detection doesn't break when checking for serverVersion == clientVersion, but since
             // ViaLegacy doesn't do that, we have to do it ourselves
             isCompatible = LegacyProtocolVersion.getRealProtocolVersion(version.getVersion()) == this.field_3776.protocolVersion;
-        } else if (ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
+        } else if (version.equals(VersionEnum.bedrockLatest)) {
             // Bedrock edition doesn't have a protocol id like the Java edition, ViaBedrock also has its own protocol id offset
             // Which we need to remove to get the real protocol id
             isCompatible = version.getVersion() - BedrockProtocolVersion.PROTOCOL_ID_OVERLAP_PREVENTION_OFFSET == this.field_3776.protocolVersion;

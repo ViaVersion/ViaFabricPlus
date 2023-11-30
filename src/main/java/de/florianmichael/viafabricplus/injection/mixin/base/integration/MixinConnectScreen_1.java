@@ -19,14 +19,13 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
+import de.florianmichael.viafabricplus.protocolhack.util.ProtocolVersionDetector;
+import de.florianmichael.viafabricplus.protocolhack.util.VersionEnumExtension;
 import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
-import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
-import net.lenni0451.mcping.MCPing;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.session.Session;
@@ -70,26 +69,18 @@ public abstract class MixinConnectScreen_1 {
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
     private void setServerInfo(CallbackInfo ci, InetSocketAddress inetSocketAddress) {
         final IServerInfo mixinServerInfo = (IServerInfo) this.field_40415;
-        final VersionEnum targetVersion = mixinServerInfo.viaFabricPlus$forcedVersion();
+        VersionEnum targetVersion = ProtocolHack.getTargetVersion();
 
-        if (targetVersion != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
-            ProtocolHack.setTargetVersion(targetVersion);
-        } else if (GeneralSettings.global().autoDetectVersion.getValue()) {
-            this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
-            MCPing
-                    .pingModern(-1)
-                    .address(inetSocketAddress.getHostString(), inetSocketAddress.getPort())
-                    .noResolve()
-                    .timeout(1000, 1000)
-                    .exceptionHandler(t -> {
-                    })
-                    .responseHandler(r -> {
-                        if (ProtocolVersion.isRegistered(r.version.protocol)) {
-                            ProtocolHack.setTargetVersion(VersionEnum.fromProtocolId(r.version.protocol));
-                        }
-                    })
-                    .getSync();
+        if (mixinServerInfo.viaFabricPlus$forcedVersion() != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
+            targetVersion = mixinServerInfo.viaFabricPlus$forcedVersion();
         }
+
+        if (targetVersion == VersionEnumExtension.AUTO_DETECT) {
+            this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
+            targetVersion = ProtocolVersionDetector.get(inetSocketAddress, ProtocolHack.NATIVE_VERSION);
+        }
+
+        ProtocolHack.setTargetVersion(targetVersion, true);
     }
 
 }
