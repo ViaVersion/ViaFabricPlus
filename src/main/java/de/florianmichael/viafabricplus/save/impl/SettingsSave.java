@@ -50,7 +50,7 @@ public class SettingsSave extends AbstractSave {
             object.add(AbstractSetting.mapTranslationKey(ChatUtil.uncoverTranslationKey(group.getName())), groupObject);
         }
 
-        object.addProperty("selected-protocol-version", ProtocolHack.getTargetVersion().getVersion());
+        object.addProperty("selected-protocol-version", ProtocolHack.getTargetVersion().getOriginalVersion());
     }
 
     @Override
