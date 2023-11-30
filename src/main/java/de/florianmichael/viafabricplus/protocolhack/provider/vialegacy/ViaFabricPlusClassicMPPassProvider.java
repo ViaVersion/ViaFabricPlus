@@ -29,12 +29,15 @@ import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.provide
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.storage.HandshakeStorage;
 
 public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
-    public static String classiCubeMPPass;
+
+    public static String classicMpPassForNextJoin;
 
     @Override
     public String getMpPass(UserConnection user) {
-        if (classiCubeMPPass != null) {
-            return classiCubeMPPass;
+        if (classicMpPassForNextJoin != null) {
+            final String mpPass = classicMpPassForNextJoin;
+            classicMpPassForNextJoin = null;
+            return mpPass;
         }
 
         if (AuthenticationSettings.global().useBetaCraftAuthentication.getValue()) {
@@ -56,4 +59,5 @@ public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
             return super.getMpPass(user);
         }
     }
+
 }

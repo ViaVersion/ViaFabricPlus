@@ -31,7 +31,6 @@ import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.event.DisconnectCallback;
 import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.command.ViaFabricPlusVLCommandHandler;
@@ -160,6 +159,16 @@ public class ProtocolHack {
     }
 
     /**
+     * Resets the previous version if it is set. Calling {@link #setTargetVersion(VersionEnum, boolean)} with revertOnDisconnect set to true will set it.
+     */
+    public static void resetPreviousVersion() {
+        if (previousVersion != null) { // Revert the version if the player disconnects and a previous version is set
+            setTargetVersion(previousVersion);
+            previousVersion = null;
+        }
+    }
+
+    /**
      * @param clientVersion The client version
      * @param serverVersion The server version
      * @return Creates a dummy UserConnection class with a valid protocol pipeline to emulate packets
@@ -228,13 +237,6 @@ public class ProtocolHack {
      * @return A CompletableFuture that will be completed when the initialization is done
      */
     public static CompletableFuture<Void> init(final File directory) {
-        DisconnectCallback.EVENT.register(() -> {
-            if (previousVersion != null) { // Revert the version if the player disconnects and a previous version is set
-                setTargetVersion(previousVersion);
-                previousVersion = null;
-            }
-        });
-
         patchConfigs(directory);
 
         // Register command callback for /viaversion and /viafabricplus

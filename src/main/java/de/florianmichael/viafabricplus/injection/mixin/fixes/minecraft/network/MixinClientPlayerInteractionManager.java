@@ -28,6 +28,7 @@ import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.Protocol1_17To1_
 import de.florianmichael.viafabricplus.fixes.ActionResultException1_12_2;
 import de.florianmichael.viafabricplus.fixes.ClientPlayerInteractionManager1_18_2;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
+import de.florianmichael.viafabricplus.injection.access.IClientPlayerInteractionManager;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
@@ -72,7 +73,7 @@ import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(ClientPlayerInteractionManager.class)
-public abstract class MixinClientPlayerInteractionManager {
+public abstract class MixinClientPlayerInteractionManager implements IClientPlayerInteractionManager {
 
     @Shadow
     @Final
@@ -103,6 +104,9 @@ public abstract class MixinClientPlayerInteractionManager {
     @Unique
     private List<ItemStack> viaFabricPlus$oldItems;
 
+    @Unique
+    private final ClientPlayerInteractionManager1_18_2 viaFabricPlus$1_18_2InteractionManager = new ClientPlayerInteractionManager1_18_2();
+
     @Inject(method = "getBlockBreakingProgress", at = @At("HEAD"), cancellable = true)
     private void changeCalculation(CallbackInfoReturnable<Integer> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
@@ -113,14 +117,14 @@ public abstract class MixinClientPlayerInteractionManager {
     @Inject(method = "sendSequencedPacket", at = @At("HEAD"))
     private void trackPlayerAction(ClientWorld world, SequencedPacketCreator packetCreator, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_14_4, VersionEnum.r1_18_2) && packetCreator instanceof PlayerActionC2SPacket playerActionC2SPacket) {
-            ClientPlayerInteractionManager1_18_2.trackPlayerAction(playerActionC2SPacket.getAction(), playerActionC2SPacket.getPos());
+            this.viaFabricPlus$1_18_2InteractionManager.trackPlayerAction(playerActionC2SPacket.getAction(), playerActionC2SPacket.getPos());
         }
     }
 
     @Redirect(method = {"attackBlock", "cancelBlockBreaking"}, at = @At(value = "NEW", target = "(Lnet/minecraft/network/packet/c2s/play/PlayerActionC2SPacket$Action;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;)Lnet/minecraft/network/packet/c2s/play/PlayerActionC2SPacket;"))
     private PlayerActionC2SPacket trackPlayerAction(PlayerActionC2SPacket.Action action, BlockPos pos, Direction direction) {
         if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_14_4, VersionEnum.r1_18_2)) {
-            ClientPlayerInteractionManager1_18_2.trackPlayerAction(action, pos);
+            this.viaFabricPlus$1_18_2InteractionManager.trackPlayerAction(action, pos);
         }
         return new PlayerActionC2SPacket(action, pos, direction);
     }
@@ -319,6 +323,11 @@ public abstract class MixinClientPlayerInteractionManager {
 
         // pickup with slot -999 (outside window) to throw items always uses empty stack for verification
         return type == SlotActionType.PICKUP && slot == -999;
+    }
+
+    @Override
+    public ClientPlayerInteractionManager1_18_2 viaFabricPlus$get1_18_2InteractionManager() {
+        return this.viaFabricPlus$1_18_2InteractionManager;
     }
 
 }

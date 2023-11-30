@@ -17,21 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.event;
+package de.florianmichael.viafabricplus.injection.access;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
+import de.florianmichael.viafabricplus.fixes.ClientPlayerInteractionManager1_18_2;
 
-/**
- * This event is fired when the user disconnects from a server.
- */
-public interface DisconnectCallback {
+public interface IClientPlayerInteractionManager {
 
-    Event<DisconnectCallback> EVENT = EventFactory.createArrayBacked(DisconnectCallback.class, listeners -> () -> {
-        for (DisconnectCallback listener : listeners) {
-            listener.onDisconnect();
-        }
-    });
+    ClientPlayerInteractionManager1_18_2 viaFabricPlus$get1_18_2InteractionManager();
 
-    void onDisconnect();
 }

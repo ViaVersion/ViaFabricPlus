@@ -25,9 +25,10 @@ import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPacke
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.ClientboundPackets1_19;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.Protocol1_19To1_18_2;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.packets.WorldPackets;
-import de.florianmichael.viafabricplus.fixes.ClientPlayerInteractionManager1_18_2;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
+import de.florianmichael.viafabricplus.injection.access.IClientPlayerInteractionManager;
 import de.florianmichael.viafabricplus.protocolhack.translator.BlockStateTranslator;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -48,7 +49,8 @@ public abstract class MixinWorldPackets1_19 {
                     final var action = data.readEnumConstant(PlayerActionC2SPacket.Action.class);
                     final var allGood = data.readBoolean();
 
-                    ClientPlayerInteractionManager1_18_2.handleBlockBreakAck(pos, blockState, action, allGood);
+                    final IClientPlayerInteractionManager interactionManager = (IClientPlayerInteractionManager) MinecraftClient.getInstance().interactionManager;
+                    interactionManager.viaFabricPlus$get1_18_2InteractionManager().handleBlockBreakAck(pos, blockState, action, allGood);
                 } catch (Throwable t) {
                     throw new RuntimeException("Failed to handle BlockBreakAck packet data", t);
                 }

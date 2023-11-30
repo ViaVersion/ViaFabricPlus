@@ -20,15 +20,13 @@
 package de.florianmichael.viafabricplus.fixes;
 
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.event.DisconnectCallback;
 import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
-import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
-import de.florianmichael.viafabricplus.fixes.entity.EntityDimensionReplacements;
 import de.florianmichael.viafabricplus.fixes.classic.CPEAdditions;
 import de.florianmichael.viafabricplus.fixes.classic.GridItemSelectionScreen;
+import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
+import de.florianmichael.viafabricplus.fixes.entity.EntityDimensionReplacements;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
-import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
@@ -75,17 +73,6 @@ public class ClientsideFixes {
 
             // Ticks the armor hud manually in <= 1.8.x
             ArmorHudEmulation1_8.init();
-        });
-
-        DisconnectCallback.EVENT.register(() -> {
-            // Reset the MP-pass
-            ViaFabricPlusClassicMPPassProvider.classiCubeMPPass = null;
-
-            // Remove all previous unacked player actions
-            ClientPlayerInteractionManager1_18_2.clearUnackedActions();
-
-            // Rebuilt the item selection screen grid next time the screen is opened
-            GridItemSelectionScreen.INSTANCE.itemGrid = null;
         });
 
         // Reloads some clientside stuff when the protocol version changes

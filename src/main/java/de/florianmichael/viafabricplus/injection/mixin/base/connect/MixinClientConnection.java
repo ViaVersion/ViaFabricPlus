@@ -21,7 +21,6 @@ package de.florianmichael.viafabricplus.injection.mixin.base.connect;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.event.DisconnectCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -37,7 +36,6 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PacketDecryptor;
 import net.minecraft.network.encryption.PacketEncryptor;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.text.Text;
 import net.minecraft.util.profiler.PerformanceLog;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
@@ -169,11 +167,6 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         }
 
         return instance.connect(inetHost, inetPort);
-    }
-
-    @Inject(method = "disconnect", at = @At("RETURN"))
-    private void callDisconnectCallback(Text disconnectReason, CallbackInfo ci) {
-        DisconnectCallback.EVENT.invoker().onDisconnect();
     }
 
     @Unique

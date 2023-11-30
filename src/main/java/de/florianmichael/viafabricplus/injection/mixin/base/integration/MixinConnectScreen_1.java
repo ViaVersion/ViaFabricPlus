@@ -19,6 +19,8 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -26,19 +28,19 @@ import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabric
 import de.florianmichael.viafabricplus.protocolhack.util.ProtocolVersionDetector;
 import de.florianmichael.viafabricplus.protocolhack.util.VersionEnumExtension;
 import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
+import io.netty.channel.ChannelFuture;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.session.Session;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.text.Text;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.net.InetSocketAddress;
 
@@ -53,9 +55,34 @@ public abstract class MixinConnectScreen_1 {
     @Final
     ConnectScreen field_2416;
 
+    @Unique
+    private boolean viaFabricPlus$useClassiCubeAccount;
+
+    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;"))
+    private ChannelFuture setServerInfoAndHandleDisconnect(InetSocketAddress address, boolean useEpoll, ClientConnection connection, Operation<ChannelFuture> original) {
+        final IServerInfo mixinServerInfo = (IServerInfo) this.field_40415;
+
+        VersionEnum targetVersion = ProtocolHack.getTargetVersion();
+        if (mixinServerInfo.viaFabricPlus$forcedVersion() != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
+            targetVersion = mixinServerInfo.viaFabricPlus$forcedVersion();
+        }
+        if (targetVersion == VersionEnumExtension.AUTO_DETECT) {
+            this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
+            targetVersion = ProtocolVersionDetector.get(address, ProtocolHack.NATIVE_VERSION);
+        }
+        ProtocolHack.setTargetVersion(targetVersion, true);
+
+        this.viaFabricPlus$useClassiCubeAccount = AuthenticationSettings.global().setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classicMpPassForNextJoin != null;
+
+        final ChannelFuture future = original.call(address, useEpoll, connection);
+        future.channel().closeFuture().addListener(channel -> ProtocolHack.resetPreviousVersion());
+
+        return future;
+    }
+
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/session/Session;getUsername()Ljava/lang/String;"))
     private String useClassiCubeUsername(Session instance) {
-        if (AuthenticationSettings.global().setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null) {
+        if (this.viaFabricPlus$useClassiCubeAccount) {
             final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
             if (account != null) {
                 return account.username();
@@ -63,24 +90,6 @@ public abstract class MixinConnectScreen_1 {
         }
 
         return instance.getUsername();
-    }
-
-    @SuppressWarnings("InvalidInjectorMethodSignature")
-    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void setServerInfo(CallbackInfo ci, InetSocketAddress inetSocketAddress) {
-        final IServerInfo mixinServerInfo = (IServerInfo) this.field_40415;
-        VersionEnum targetVersion = ProtocolHack.getTargetVersion();
-
-        if (mixinServerInfo.viaFabricPlus$forcedVersion() != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
-            targetVersion = mixinServerInfo.viaFabricPlus$forcedVersion();
-        }
-
-        if (targetVersion == VersionEnumExtension.AUTO_DETECT) {
-            this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
-            targetVersion = ProtocolVersionDetector.get(inetSocketAddress, ProtocolHack.NATIVE_VERSION);
-        }
-
-        ProtocolHack.setTargetVersion(targetVersion, true);
     }
 
 }

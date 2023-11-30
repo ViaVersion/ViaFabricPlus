@@ -193,15 +193,13 @@
     "viabedrock.MixinBlobCache",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
+    "vialegacy.MixinViaLegacyConfig",
     "viaversion.MixinAbstractFenceConnectionHandler",
+    "viaversion.MixinConfig",
     "viaversion.MixinGlassConnectionHandler",
     "viaversion.MixinProtocolVersion"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "vialegacy.MixinViaLegacyConfig",
-    "viaversion.MixinConfig"
-  ]
+  }
 }
