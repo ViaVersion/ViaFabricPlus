@@ -34,6 +34,12 @@ public class TextComponentTranslator {
 
     private static final UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, VersionEnum.r1_14);
 
+    /**
+     * Converts a ViaVersion 1.14 text component to a native text component, both in JSON format
+     *
+     * @param component The ViaVersion 1.14 text component
+     * @return The native text component
+     */
     public static JsonElement via1_14toViaLatest(final JsonElement component) {
         try {
             var wrapper = PacketWrapper.create(ClientboundPackets1_14.OPEN_WINDOW, DUMMY_USER_CONNECTION);

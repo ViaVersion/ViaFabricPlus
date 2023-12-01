@@ -22,8 +22,8 @@ package de.florianmichael.viafabricplus.screen.classic4j;
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
-import de.florianmichael.viafabricplus.screen.base.VFPListEntry;
-import de.florianmichael.viafabricplus.screen.base.VFPScreen;
+import de.florianmichael.viafabricplus.screen.VFPListEntry;
+import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.settings.TitleRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -134,4 +134,5 @@ public class BetaCraftScreen extends VFPScreen {
             context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 152 */ - 1, 1, -1);
         }
     }
+
 }

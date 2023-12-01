@@ -25,10 +25,20 @@ import net.raphimc.vialoader.util.VersionEnum;
 
 import java.net.InetSocketAddress;
 
+/**
+ * This class can be used to detect the protocol version of a server without connecting to it.
+ */
 public class ProtocolVersionDetector {
 
     private static final int TIMEOUT = 3000;
 
+    /**
+     * Detects the protocol version of a server
+     *
+     * @param serverAddress The address of the server
+     * @param clientVersion The version of the client
+     * @return The protocol version of the server
+     */
     public static VersionEnum get(final InetSocketAddress serverAddress, final VersionEnum clientVersion) {
         MCPingResponse response = MCPing
                 .pingModern(clientVersion.getOriginalVersion())

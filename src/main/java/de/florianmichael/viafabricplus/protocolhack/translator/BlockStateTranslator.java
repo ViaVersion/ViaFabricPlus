@@ -37,9 +37,15 @@ public class BlockStateTranslator {
 
     private static final UserConnection DUMMY_USER_CONNECTION = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, VersionEnum.r1_18_2);
 
+    /**
+     * Converts a 1.18.2 block state to a native block state (the current version)
+     *
+     * @param blockStateId The block state id
+     * @return The native block state
+     */
     public static BlockState via1_18_2toMc(final int blockStateId) {
         try {
-            var wrapper = PacketWrapper.create(ClientboundPackets1_18.EFFECT, DUMMY_USER_CONNECTION);
+            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_18.EFFECT, DUMMY_USER_CONNECTION);
             wrapper.write(Type.INT, 2001); // eventId
             wrapper.write(Type.POSITION1_14, new Position(0, 0, 0)); // position
             wrapper.write(Type.INT, blockStateId); // data

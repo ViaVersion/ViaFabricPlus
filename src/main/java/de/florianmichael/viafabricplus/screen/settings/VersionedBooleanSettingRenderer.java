@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.screen.settings;
 
-import de.florianmichael.viafabricplus.screen.base.VFPListEntry;
+import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.settings.base.VersionedBooleanSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

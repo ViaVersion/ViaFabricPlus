@@ -25,8 +25,9 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.raphimc.vialoader.util.VersionEnum;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static de.florianmichael.viafabricplus.util.MapUtil.linkedHashMap;
 
 public class EntityDimensionReplacements {
 
@@ -149,14 +150,6 @@ public class EntityDimensionReplacements {
                 }
             }
         })));
-    }
-
-    private static <K, V> Map<K, V> linkedHashMap(final Object... objects) {
-        if (objects.length % 2 != 0) throw new IllegalArgumentException("Uneven object count");
-
-        final Map<K, V> map = new LinkedHashMap<>();
-        for (int i = 0; i < objects.length; i += 2) map.put((K) objects[i], (V) objects[i + 1]);
-        return map;
     }
 
 }

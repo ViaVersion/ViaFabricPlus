@@ -17,12 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.screen;
+package de.florianmichael.viafabricplus.screen.base;
 
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.screen.base.VFPScreen;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.BetaCraftScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.ClassiCubeLoginScreen;
@@ -39,12 +39,12 @@ import net.raphimc.vialoader.util.VersionEnum;
 
 import java.awt.*;
 
-public class MainScreen extends VFPScreen {
-    public static final MainScreen INSTANCE = new MainScreen();
+public class ProtocolSelectionScreen extends VFPScreen {
+    public static final ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
 
     private ButtonWidget betaCraftButton;
 
-    protected MainScreen() {
+    protected ProtocolSelectionScreen() {
         super("ViaFabricPlus", true);
         this.setupDefaultSubtitle();
     }

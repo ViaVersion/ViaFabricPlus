@@ -44,6 +44,13 @@ public class ItemTranslator {
     private static final UserConnection VIA_B1_8_TO_MC_USER_CONNECTION = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, VersionEnum.b1_8tob1_8_1);
     private static final int CREATIVE_INVENTORY_ACTION_ID = NetworkState.PLAY.getHandler(NetworkSide.SERVERBOUND).getId(new CreativeInventoryActionC2SPacket(0, ItemStack.EMPTY));
 
+    /**
+     * Converts a Minecraft item stack to a ViaVersion item stack
+     *
+     * @param stack         The Minecraft item stack
+     * @param targetVersion The target version to convert to (e.g. r1.13)
+     * @return The ViaVersion item stack for the target version
+     */
     public static Item mcToVia(final ItemStack stack, final VersionEnum targetVersion) {
         final UserConnection user = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, targetVersion);
 
@@ -52,7 +59,7 @@ public class ItemTranslator {
             buf.writeShort(0); // slot
             buf.writeItemStack(stack); // item
 
-            final var wrapper = PacketWrapper.create(CREATIVE_INVENTORY_ACTION_ID, buf, user);
+            final PacketWrapper wrapper = PacketWrapper.create(CREATIVE_INVENTORY_ACTION_ID, buf, user);
             user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, wrapper);
 
             wrapper.read(Type.SHORT); // slot
@@ -73,9 +80,15 @@ public class ItemTranslator {
         }
     }
 
+    /**
+     * Converts a ViaVersion b1.8 item to a Minecraft item stack
+     *
+     * @param item The ViaVersion b1.8 item
+     * @return The Minecraft item stack
+     */
     public static ItemStack viaB1_8toMc(final Item item) {
         try {
-            final var wrapper = PacketWrapper.create(ClientboundPacketsb1_8.SET_SLOT, VIA_B1_8_TO_MC_USER_CONNECTION);
+            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPacketsb1_8.SET_SLOT, VIA_B1_8_TO_MC_USER_CONNECTION);
             wrapper.write(Type.BYTE, (byte) 0); // window id
             wrapper.write(Type.SHORT, (short) 0); // slot
             wrapper.write(Types1_4_2.NBTLESS_ITEM, item); // item

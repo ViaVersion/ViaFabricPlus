@@ -24,8 +24,8 @@ import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.screen.base.VFPScreen;
-import de.florianmichael.viafabricplus.screen.MainScreen;
+import de.florianmichael.viafabricplus.screen.VFPScreen;
+import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -82,7 +82,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
     public void close() {
         // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
         ViaFabricPlus.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
-        MainScreen.INSTANCE.open(prevScreen);
+        ProtocolSelectionScreen.INSTANCE.open(prevScreen);
     }
 
     @Override
@@ -92,4 +92,5 @@ public class ClassiCubeMFAScreen extends VFPScreen {
 
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
     }
+
 }

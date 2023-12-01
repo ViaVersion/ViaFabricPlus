@@ -61,4 +61,5 @@ public class ClassLoaderPriorityUtil {
             ViaFabricPlus.global().getLogger().error("Failed to load overriding jars", e);
         }
     }
+
 }

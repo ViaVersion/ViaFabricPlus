@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.screen.PerServerVersionScreen;
+import de.florianmichael.viafabricplus.screen.base.PerServerVersionScreen;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;

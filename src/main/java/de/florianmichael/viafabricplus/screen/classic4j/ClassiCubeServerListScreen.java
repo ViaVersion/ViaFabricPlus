@@ -26,9 +26,9 @@ import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import de.florianmichael.viafabricplus.screen.MainScreen;
-import de.florianmichael.viafabricplus.screen.base.VFPListEntry;
-import de.florianmichael.viafabricplus.screen.base.VFPScreen;
+import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
+import de.florianmichael.viafabricplus.screen.VFPListEntry;
+import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -85,7 +85,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
     @Override
     public void close() {
-        MainScreen.INSTANCE.open(prevScreen);
+        ProtocolSelectionScreen.INSTANCE.open(prevScreen);
     }
 
     @Override
@@ -157,4 +157,5 @@ public class ClassiCubeServerListScreen extends VFPScreen {
             context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 132 */ - 1, 1, -1);
         }
     }
+
 }

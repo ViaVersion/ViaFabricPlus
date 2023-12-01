@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.screen;
+package de.florianmichael.viafabricplus.screen.base;
 
-import de.florianmichael.viafabricplus.screen.base.VFPScreen;
+import de.florianmichael.viafabricplus.screen.VFPScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

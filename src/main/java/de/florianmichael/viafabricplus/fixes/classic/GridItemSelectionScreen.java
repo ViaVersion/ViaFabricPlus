@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.fixes.classic;
 
 import de.florianmichael.viafabricplus.fixes.data.ItemRegistryDiff;
-import de.florianmichael.viafabricplus.screen.base.VFPScreen;
+import de.florianmichael.viafabricplus.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

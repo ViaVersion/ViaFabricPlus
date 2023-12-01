@@ -51,4 +51,5 @@ public class SettingsManager {
     public List<SettingGroup> getGroups() {
         return groups;
     }
+
 }

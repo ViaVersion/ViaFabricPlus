@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.settings.impl;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.screen.base.VFPScreen;
+import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.base.ButtonSetting;

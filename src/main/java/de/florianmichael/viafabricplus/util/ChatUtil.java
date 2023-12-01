@@ -44,4 +44,5 @@ public class ChatUtil {
     public static String uncoverTranslationKey(final Text text) {
         return ((TranslatableTextContent) text.getContent()).getKey();
     }
+
 }

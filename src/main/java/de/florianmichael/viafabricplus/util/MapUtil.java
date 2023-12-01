@@ -19,18 +19,21 @@
 
 package de.florianmichael.viafabricplus.util;
 
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
-import com.terraformersmc.modmenu.api.ModMenuApi;
-import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class ModMenuScreenFactory implements ModMenuApi {
+public class MapUtil {
 
-    @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return parent -> {
-            SettingsScreen.INSTANCE.prevScreen = parent;
-            return SettingsScreen.INSTANCE;
-        };
+    public static <K, V> Map<K, V> linkedHashMap(final Object... objects) {
+        if (objects.length % 2 != 0) {
+            throw new IllegalArgumentException("Uneven object count");
+        }
+
+        final Map<K, V> map = new LinkedHashMap<>();
+        for (int i = 0; i < objects.length; i += 2) {
+            map.put((K) objects[i], (V) objects[i + 1]);
+        }
+        return map;
     }
 
 }

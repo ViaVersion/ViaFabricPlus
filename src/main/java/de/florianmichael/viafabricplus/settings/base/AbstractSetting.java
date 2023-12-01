@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.settings.base;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.screen.base.VFPListEntry;
+import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;

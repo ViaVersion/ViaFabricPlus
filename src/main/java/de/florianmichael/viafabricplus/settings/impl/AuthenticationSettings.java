@@ -38,4 +38,5 @@ public class AuthenticationSettings extends SettingGroup {
     public static AuthenticationSettings global() {
         return instance;
     }
+
 }
