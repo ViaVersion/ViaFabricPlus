@@ -89,7 +89,6 @@ dependencies {
 		exclude group: "io.netty"
 	}
 	jij "de.florianmichael:Classic4J:${project.classic4j_version}"
-	jij(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))
 
 	// Fabric's jar in jar system doesn't support transitive dependencies, so we have to manually add them
 	afterEvaluate {
