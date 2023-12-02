@@ -37,8 +37,24 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
         super(entityType, world);
     }
 
+    @Override
+    public void onPassengerLookAround(Entity passenger) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1) && this.getControllingPassenger() != passenger) {
+            this.viaFabricPlus$clampPassengerYaw1_20_1(passenger);
+        }
+    }
+
+    @Override
+    protected void updatePassengerPosition(Entity passenger, PositionUpdater positionUpdater) {
+        super.updatePassengerPosition(passenger, positionUpdater);
+
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            this.viaFabricPlus$clampPassengerYaw1_20_1(passenger);
+        }
+    }
+
     @Unique
-    private void viaFabricPlus$clamPassengerYaw(final Entity passenger) {
+    private void viaFabricPlus$clampPassengerYaw1_20_1(final Entity passenger) {
         passenger.setBodyYaw(this.getYaw());
         final float passengerYaw = passenger.getYaw();
 
@@ -49,22 +65,6 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
         final float newYaw = passengerYaw + clampedDelta - deltaDegrees;
         passenger.setYaw(newYaw);
         passenger.setHeadYaw(newYaw);
-    }
-
-    @Override
-    public void onPassengerLookAround(Entity passenger) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1) && this.getControllingPassenger() != passenger) {
-            this.viaFabricPlus$clamPassengerYaw(passenger);
-        }
-    }
-
-    @Override
-    protected void updatePassengerPosition(Entity passenger, PositionUpdater positionUpdater) {
-        super.updatePassengerPosition(passenger, positionUpdater);
-
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            this.viaFabricPlus$clamPassengerYaw(passenger);
-        }
     }
 
 }

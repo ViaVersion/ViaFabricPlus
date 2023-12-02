@@ -79,19 +79,19 @@ public abstract class MixinChatScreen {
 
     @Redirect(method = "onChatFieldUpdate", at = @At(value = "INVOKE", target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"))
     private boolean fixCommandKey(String instance, Object other) {
-        if (!this.cancelTabComplete()) return instance.equals(other);
+        if (!this.viaFabricPlus$cancelTabComplete()) return instance.equals(other);
         return instance.isEmpty();
     }
 
     @Redirect(method = "onChatFieldUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;refresh()V"))
     private void disableAutoTabComplete(ChatInputSuggestor instance) {
-        if (this.cancelTabComplete()) return;
+        if (this.viaFabricPlus$cancelTabComplete()) return;
 
         instance.refresh();
     }
 
     @Unique
-    private boolean cancelTabComplete() {
+    private boolean viaFabricPlus$cancelTabComplete() {
         return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2) && this.chatField.getText().startsWith("/");
     }
 

@@ -25,7 +25,6 @@ import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -53,11 +52,9 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
 
         // Force unload some FabricAPI mixins because FabricAPI overwrites some of the elytra code
         final Set<String> loadedMixins = RStream.of("org.spongepowered.asm.mixin.transformer.MixinConfig").fields().by("globalMixinList").get();
-        Collections.addAll(loadedMixins,
-                "net.fabricmc.fabric.mixin.client.entity.event.elytra.ClientPlayerEntityMixin",
-                "net.fabricmc.fabric.mixin.entity.event.elytra.LivingEntityMixin",
-                "net.fabricmc.fabric.mixin.entity.event.elytra.PlayerEntityMixin"
-        );
+        loadedMixins.add("net.fabricmc.fabric.mixin.client.entity.event.elytra.ClientPlayerEntityMixin");
+        loadedMixins.add("net.fabricmc.fabric.mixin.entity.event.elytra.LivingEntityMixin");
+        loadedMixins.add("net.fabricmc.fabric.mixin.entity.event.elytra.PlayerEntityMixin");
     }
 
     @Override

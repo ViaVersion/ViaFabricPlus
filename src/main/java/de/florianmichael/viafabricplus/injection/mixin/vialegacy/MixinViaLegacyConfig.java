@@ -27,10 +27,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ViaLegacyConfig.class, remap = false)
-public class MixinViaLegacyConfig {
+public abstract class MixinViaLegacyConfig {
 
-    @Inject(method = { "isLegacySkullLoading", "isLegacySkinLoading" }, at = @At("HEAD"), cancellable = true)
-    public void replaceWithVFPSetting(CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = {"isLegacySkullLoading", "isLegacySkinLoading"}, at = @At("HEAD"), cancellable = true)
+    private void replaceWithVFPSetting(CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(GeneralSettings.global().loadSkinsAndSkullsInLegacyVersions.getValue());
     }
 

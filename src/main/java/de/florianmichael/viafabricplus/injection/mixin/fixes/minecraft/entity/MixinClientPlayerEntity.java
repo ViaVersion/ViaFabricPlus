@@ -82,7 +82,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return instance.hasVehicle();
     }
 
-
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSprintingPacket()V"))
     private void removeSprintingPacket(ClientPlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_3)) {

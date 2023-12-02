@@ -53,10 +53,10 @@ public abstract class MixinServerResourcePackProvider {
     @Inject(method = "getDownloadHeaders", at = @At("TAIL"), cancellable = true)
     private static void removeHeaders(CallbackInfoReturnable<Map<String, String>> cir) {
         final LinkedHashMap<String, String> modifiableMap = new LinkedHashMap<>(cir.getReturnValue());
-        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_14)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_3)) {
             modifiableMap.remove("X-Minecraft-Version-ID");
         }
-        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_13)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             modifiableMap.remove("X-Minecraft-Pack-Format");
             modifiableMap.remove("User-Agent");
         }

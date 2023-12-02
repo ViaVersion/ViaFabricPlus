@@ -117,11 +117,10 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @ModifyConstant(method = "getActiveEyeHeight", constant = @Constant(floatValue = 1.27f))
     private float modifySneakEyeHeight(float prevEyeHeight) {
-        if (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_13_2)) {
-            return prevEyeHeight;
-        } else {
-            return 1.54f;
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+            return 1.54F;
         }
+        return prevEyeHeight;
     }
 
     @Inject(method = "updatePose", at = @At("HEAD"), cancellable = true)

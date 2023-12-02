@@ -82,8 +82,8 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
 
             // refill the slots
             if (this.merchantInventory.getStack(0).isEmpty() && this.merchantInventory.getStack(1).isEmpty()) {
-                this.autofill(interactionManager, player, 0, this.getRecipes().get(recipeId).getAdjustedFirstBuyItem());
-                this.autofill(interactionManager, player, 1, this.getRecipes().get(recipeId).getSecondBuyItem());
+                this.viaFabricPlus$autofill(interactionManager, player, 0, this.getRecipes().get(recipeId).getAdjustedFirstBuyItem());
+                this.viaFabricPlus$autofill(interactionManager, player, 1, this.getRecipes().get(recipeId).getSecondBuyItem());
             }
         }
     }
@@ -96,7 +96,7 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
     }
 
     @Unique
-    private void autofill(ClientPlayerInteractionManager interactionManager, ClientPlayerEntity player, int inputSlot, ItemStack stackNeeded) {
+    private void viaFabricPlus$autofill(ClientPlayerInteractionManager interactionManager, ClientPlayerEntity player, int inputSlot, ItemStack stackNeeded) {
         if (stackNeeded.isEmpty()) return;
 
         int slot;

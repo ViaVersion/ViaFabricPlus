@@ -20,7 +20,6 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_0;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_1;
@@ -31,7 +30,6 @@ import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.network.encryption.PlayerPublicKey;
 import net.raphimc.viabedrock.protocol.storage.AuthChainData;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
@@ -43,7 +41,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.net.InetSocketAddress;
-import java.util.UUID;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {
@@ -51,6 +48,10 @@ public abstract class MixinConnectScreen_1 {
     @Final
     @Shadow
     ServerAddress field_33737;
+
+    @Shadow
+    @Final
+    MinecraftClient field_33738;
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", remap = false))
     private String getRealAddress(InetSocketAddress instance) {
@@ -72,38 +73,38 @@ public abstract class MixinConnectScreen_1 {
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelFuture;syncUninterruptibly()Lio/netty/channel/ChannelFuture;", remap = false, shift = At.Shift.AFTER))
     private void setupConnectionSessions(CallbackInfo ci, @Local ClientConnection clientConnection) {
-        final UserConnection userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
-        if (userConnection == null) {
-            return;
-        }
-
+        final var userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
         final var targetVersion = ProtocolHack.getTargetVersion();
+
         if (targetVersion.isBetweenInclusive(VersionEnum.r1_19, VersionEnum.r1_19_1tor1_19_2)) {
             final var keyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
             if (keyPair != null) {
                 final var publicKeyData = keyPair.publicKey().data();
-                final var uuid = MinecraftClient.getInstance().getSession().getUuidOrNull();
+                final var privateKey = keyPair.privateKey();
+                final var expiresAt = publicKeyData.expiresAt().toEpochMilli();
+                final var publicKey = publicKeyData.key().getEncoded();
+                final var uuid = this.field_33738.getSession().getUuidOrNull();
 
-                userConnection.put(new ChatSession1_19_1(uuid, keyPair.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature())));
+                userConnection.put(new ChatSession1_19_1(uuid, privateKey, new ProfileKey(expiresAt, publicKey, publicKeyData.keySignature())));
                 if (targetVersion == VersionEnum.r1_19) {
-                    final var legacyKey = ((ILegacyKeySignatureStorage) (Object) publicKeyData).viafabricplus$getLegacyPublicKeySignature();
-                    if (legacyKey != null) {
-                        userConnection.put(new ChatSession1_19_0(uuid, keyPair.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey)));
+                    final var legacyKeySignature = ((ILegacyKeySignatureStorage) (Object) publicKeyData).viafabricplus$getLegacyPublicKeySignature();
+                    if (legacyKeySignature != null) {
+                        userConnection.put(new ChatSession1_19_0(uuid, privateKey, new ProfileKey(expiresAt, publicKey, legacyKeySignature)));
                     }
                 }
             } else {
-                ViaFabricPlus.global().getLogger().error("Could not get public key signature. " + targetVersion.getName() + " with secure-profiles enabled will not work!");
+                ViaFabricPlus.global().getLogger().error("Could not get public key signature. Joining servers with enforce-secure-profiles enabled will not work!");
             }
         } else if (targetVersion == VersionEnum.bedrockLatest) {
             final var bedrockSession = ViaFabricPlus.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
             if (bedrockSession != null) {
-                final var deviceId = bedrockSession.getMcChain().getXblXsts().getInitialXblSession().getXblDeviceToken().getId();
-                final var playFabId = bedrockSession.getPlayFabToken().getPlayFabId();
                 final var mcChain = bedrockSession.getMcChain();
+                final var deviceId = mcChain.getXblXsts().getInitialXblSession().getXblDeviceToken().getId();
+                final var playFabId = bedrockSession.getPlayFabToken().getPlayFabId();
 
                 userConnection.put(new AuthChainData(mcChain.getMojangJwt(), mcChain.getIdentityJwt(), mcChain.getPublicKey(), mcChain.getPrivateKey(), deviceId, playFabId));
             } else {
-                ViaFabricPlus.global().getLogger().warn("Could not get Bedrock account, joining online mode servers will not work!");
+                ViaFabricPlus.global().getLogger().warn("Could not get Bedrock account. Joining online mode servers will not work!");
             }
         }
     }

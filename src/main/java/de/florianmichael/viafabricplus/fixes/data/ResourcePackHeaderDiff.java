@@ -37,16 +37,16 @@ public class ResourcePackHeaderDiff {
     static {
         registerVersion(VersionEnum.r1_20_3, 22, "1.20.3-rc1");
         registerVersion(VersionEnum.r1_20_2, 18, "1.20.2");
-        registerVersion(VersionEnum.r1_20tor1_20_1, 15, "1.20.1"); // 1.20 and 1.20.1 are equal
+        registerVersion(VersionEnum.r1_20tor1_20_1, 15, "1.20.1");
         registerVersion(VersionEnum.r1_19_4, 13, "1.19.4");
         registerVersion(VersionEnum.r1_19_3, 12, "1.19.3");
         registerVersion(VersionEnum.r1_19_1tor1_19_2, 9, "1.19.2");
         registerVersion(VersionEnum.r1_19, 9, "1.19");
         registerVersion(VersionEnum.r1_18_2, 8, "1.18.2");
-        registerVersion(VersionEnum.r1_18tor1_18_1, 8, "1.18");
+        registerVersion(VersionEnum.r1_18tor1_18_1, 8, "1.18.1");
         registerVersion(VersionEnum.r1_17_1, 7, "1.17.1");
         registerVersion(VersionEnum.r1_17, 7, "1.17");
-        registerVersion(VersionEnum.r1_16_4tor1_16_5, 6, "1.16.5"); // 1.16.4 and 1.16.5 are equal
+        registerVersion(VersionEnum.r1_16_4tor1_16_5, 6, "1.16.5");
         registerVersion(VersionEnum.r1_16_3, 6, "1.16.3");
         registerVersion(VersionEnum.r1_16_2, 6, "1.16.2");
         registerVersion(VersionEnum.r1_16_1, 5, "1.16.1");
@@ -56,10 +56,10 @@ public class ResourcePackHeaderDiff {
         registerVersion(VersionEnum.r1_15, 5, "1.15");
         registerVersion(VersionEnum.r1_14_4, 4, "1.14.4");
         registerVersion(VersionEnum.r1_14_3, 4, "1.14.3");
-        registerVersion(VersionEnum.r1_14_2, 4, "1.14.2", "1.14.2 / f647ba8dc371474797bee24b2b312ff4");
-        registerVersion(VersionEnum.r1_14_1, 4, "1.14.1", "1.14.1 / a8f78b0d43c74598a199d6d80cda413f");
-        registerVersion(VersionEnum.r1_14, 4, "1.14", "1.14 / 5dac5567e13e46bdb0c1d90aa8d8b3f7");
-        registerVersion(VersionEnum.r1_13_2, 4, "1.13.2"); // ids weren't sent over the http headers back then
+        registerVersion(VersionEnum.r1_14_2, 4, "1.14.2");
+        registerVersion(VersionEnum.r1_14_1, 4, "1.14.1");
+        registerVersion(VersionEnum.r1_14, 4, "1.14");
+        registerVersion(VersionEnum.r1_13_2, 4, "1.13.2"); // pack format ids weren't sent over the http headers back then
         registerVersion(VersionEnum.r1_13_1, 4, "1.13.1");
         registerVersion(VersionEnum.r1_13, 4, "1.13");
         registerVersion(VersionEnum.r1_12_2, 3, "1.12.2");
