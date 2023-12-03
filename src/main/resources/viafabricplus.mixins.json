@@ -9,6 +9,7 @@
     "base.connect.MixinClientConnection",
     "base.connect.MixinClientConnection_1",
     "base.connect.MixinClientLoginNetworkHandler",
+    "base.connect.MixinConnectScreen_1",
     "base.integration.MixinAddServerScreen",
     "base.integration.MixinChunkTracker",
     "base.integration.MixinConnectScreen_1",

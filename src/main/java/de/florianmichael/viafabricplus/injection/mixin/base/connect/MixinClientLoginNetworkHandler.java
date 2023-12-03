@@ -44,6 +44,9 @@ public abstract class MixinClientLoginNetworkHandler {
     public void onlyVerifySessionInOnlineMode(String serverId, CallbackInfoReturnable<Text> cir) {
         final IClientConnection mixinClientConnection = (IClientConnection) connection;
         if (mixinClientConnection.viaFabricPlus$getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
+            // We are in the 1.7 -> 1.6 protocol, so we need to skip the joinServer call
+            // if the server is in offline mode, due the packet changes <-> networking changes
+            // Minecraft's networking code is bad for us.
             if (!mixinClientConnection.viaFabricPlus$getUserConnection().get(ProtocolMetadataStorage.class).authenticate) {
                 cir.setReturnValue(null);
             }

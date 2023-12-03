@@ -17,21 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.vialegacy;
+package de.florianmichael.viafabricplus.injection.mixin.base.connect;
 
-import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
-import net.raphimc.vialegacy.ViaLegacyConfig;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = ViaLegacyConfig.class, remap = false)
-public abstract class MixinViaLegacyConfig {
+@Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
+public abstract class MixinConnectScreen_1 {
 
-    @Inject(method = { "isLegacySkullLoading", "isLegacySkinLoading" }, at = @At("HEAD"), cancellable = true)
-    private void replaceWithVFPSetting(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(GeneralSettings.global().loadSkinsAndSkullsInLegacyVersions.getValue());
+    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Ljava/lang/Exception;getMessage()Ljava/lang/String;", remap = false))
+    private String handleNullExceptionMessage(Exception instance, Operation<String> original) {
+        // Vanilla doesn't have these cases, but we do because of RakNet and other modifications to the Netty pipeline
+        return instance.getMessage() == null ? "" : original.call(instance);
     }
 
 }

@@ -87,9 +87,21 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
     private void storeDecryptionCipher(Cipher decryptionCipher, Cipher encryptionCipher, CallbackInfo ci) {
         if (this.viaFabricPlus$serverVersion.isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
+            // Minecraft's encryption code is bad for us, we need to reorder the pipeline
             ci.cancel();
+
+            // Minecraft 1.6.4 supports tile encryption which means the server can only disable one side of the encryption
+            // So we only enable the encryption side and later enable the decryption side if the 1.7 -> 1.6 protocol
+            // tells us to do, therefore we need to store the cipher instance.
             this.viaFabricPlus$decryptionCipher = decryptionCipher;
-            this.viaFabricPlus$setupPreNettyEncryption(encryptionCipher);
+
+            // Enabling the encryption side
+            if (encryptionCipher == null) {
+                throw new IllegalStateException("Encryption cipher is null");
+            }
+
+            this.encrypted = true;
+            this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "encrypt", new PacketEncryptor(encryptionCipher));
         }
     }
 
@@ -97,19 +109,21 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         super.channelRegistered(ctx);
         if (VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion)) {
+            // Call channelActive manually when the channel is registered
             this.channelActive(ctx);
         }
     }
 
     @Redirect(method = "channelActive", at = @At(value = "INVOKE", target = "Lio/netty/channel/SimpleChannelInboundHandler;channelActive(Lio/netty/channel/ChannelHandlerContext;)V"), remap = false)
     private void dontCallChannelActive(SimpleChannelInboundHandler<Packet<?>> instance, ChannelHandlerContext ctx) throws Exception {
-        if (!VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion)) {
+        if (!VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion)) { // Don't call channelActive twice
             super.channelActive(ctx);
         }
     }
 
     @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE))
     private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, PerformanceLog packetSizeLog, CallbackInfoReturnable<ClientConnection> cir, @Local ClientConnection clientConnection) {
+        // Set the target version stored in the PerformanceLog field to the ClientConnection instance
         if (packetSizeLog instanceof IPerformanceLog mixinPerformanceLog && mixinPerformanceLog.viaFabricPlus$getForcedVersion() != null) {
             ((IClientConnection) clientConnection).viaFabricPlus$setTargetVersion(mixinPerformanceLog.viaFabricPlus$getForcedVersion());
         }
@@ -117,6 +131,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;resetPacketSizeLog(Lnet/minecraft/util/profiler/PerformanceLog;)V"))
     private static void dontSetPerformanceLog(ClientConnection instance, PerformanceLog performanceLog) {
+        // Since the PerformanceLog is never null due to our changes, we need to restore vanilla behavior
         if (performanceLog instanceof IPerformanceLog mixinPerformanceLog && mixinPerformanceLog.viaFabricPlus$getForcedVersion() != null) {
             return;
         }
@@ -152,6 +167,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;connect(Ljava/net/InetAddress;I)Lio/netty/channel/ChannelFuture;", remap = false))
     private static ChannelFuture useRakNetPingHandlers(Bootstrap instance, InetAddress inetHost, int inetPort, @Local(argsOnly = true) ClientConnection clientConnection, @Local(argsOnly = true) boolean isConnecting) {
         if (VersionEnum.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getTargetVersion()) && !isConnecting) {
+            // Bedrock edition / RakNet has different handlers for pinging a server
             return instance.register().syncUninterruptibly().channel().bind(new InetSocketAddress(0)).
                     addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE, (ChannelFutureListener) f -> {
                         if (f.isSuccess()) {
@@ -169,16 +185,6 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         return instance.connect(inetHost, inetPort);
     }
 
-    @Unique
-    public void viaFabricPlus$setupPreNettyEncryption(final Cipher encryptionCipher) {
-        if (encryptionCipher == null) {
-            throw new IllegalStateException("Encryption cipher is null");
-        }
-
-        this.encrypted = true;
-        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "encrypt", new PacketEncryptor(encryptionCipher));
-    }
-
     @Override
     public void viaFabricPlus$setupPreNettyDecryption() {
         if (this.viaFabricPlus$decryptionCipher == null) {
@@ -186,6 +192,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         }
 
         this.encrypted = true;
+        // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
         this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_PREPENDER_NAME, "decrypt", new PacketDecryptor(this.viaFabricPlus$decryptionCipher));
     }
 

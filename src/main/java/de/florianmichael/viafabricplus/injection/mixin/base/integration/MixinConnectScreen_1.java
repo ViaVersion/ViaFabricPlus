@@ -80,11 +80,6 @@ public abstract class MixinConnectScreen_1 {
         return future;
     }
 
-    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Ljava/lang/Exception;getMessage()Ljava/lang/String;", remap = false))
-    private String handleNullExceptionMessage(Exception instance, Operation<String> original) {
-        return instance.getMessage() == null ? "" : original.call(instance);
-    }
-
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/session/Session;getUsername()Ljava/lang/String;"))
     private String useClassiCubeUsername(Session instance) {
         if (this.viaFabricPlus$useClassiCubeAccount) {
