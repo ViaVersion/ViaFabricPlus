@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IItemStack;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.item.ItemStack;
@@ -35,10 +36,10 @@ public abstract class MixinPacketByteBuf {
 
     @Redirect(method = "readItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setNbt(Lnet/minecraft/nbt/NbtCompound;)V"))
     private void removeViaFabricPlusTag(ItemStack instance, NbtCompound tag) {
-        if (tag != null && tag.contains("1_10_ViaFabricPlus_ItemCount", NbtElement.BYTE_TYPE) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
+        if (tag != null && tag.contains(ClientsideFixes.ITEM_COUNT_NBT_TAG, NbtElement.BYTE_TYPE) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
             final IItemStack mixinItemStack = ((IItemStack) (Object) instance);
-            mixinItemStack.viaFabricPlus$set1_10Count(tag.getByte("1_10_ViaFabricPlus_ItemCount"));
-            tag.remove("1_10_ViaFabricPlus_ItemCount");
+            mixinItemStack.viaFabricPlus$set1_10Count(tag.getByte(ClientsideFixes.ITEM_COUNT_NBT_TAG));
+            tag.remove(ClientsideFixes.ITEM_COUNT_NBT_TAG);
             if (tag.isEmpty()) tag = null;
         }
 
@@ -52,7 +53,7 @@ public abstract class MixinPacketByteBuf {
         final IItemStack mixinItemStack = ((IItemStack) (Object) instance);
         if (mixinItemStack.viaFabricPlus$has1_10ViaFabricPlusTag()) {
             if (tag == null) tag = new NbtCompound();
-            tag.putByte("1_10_ViaFabricPlus_ItemCount", (byte) mixinItemStack.viaFabricPlus$get1_10Count());
+            tag.putByte(ClientsideFixes.ITEM_COUNT_NBT_TAG, (byte) mixinItemStack.viaFabricPlus$get1_10Count());
         }
 
         return tag;

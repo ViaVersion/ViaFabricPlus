@@ -56,6 +56,11 @@ public class ClientsideFixes {
     public static final String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 
     /**
+     * This identifier is an internal identifier used to store the item count in <= 1.10 to implement negative item counts
+     */
+    public static final String ITEM_COUNT_NBT_TAG = "VFP_1_10_ItemCount_" + System.currentTimeMillis();
+
+    /**
      * The current chat limit
      */
     private static int currentChatLength = 256;
