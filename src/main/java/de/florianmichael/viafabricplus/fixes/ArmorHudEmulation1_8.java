@@ -39,7 +39,7 @@ public class ArmorHudEmulation1_8 {
 
     private static final UUID ARMOR_POINTS_UUID = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
 
-    private static double oldArmor = 0;
+    private static double previousArmorPoints = 0;
 
     public static void init() {
         ClientTickEvents.START_CLIENT_TICK.register(world -> {
@@ -57,29 +57,34 @@ public class ArmorHudEmulation1_8 {
                     }
                 }
             } else {
-                oldArmor = 0;
+                previousArmorPoints = 0;
             }
         });
     }
 
-    public static void sendArmorUpdate(final UserConnection userConnection) throws Exception {
+    private static void sendArmorUpdate(final UserConnection userConnection) throws Exception {
+        // Calculate the armor points.
         int armor = 0;
         for (final ItemStack stack : MinecraftClient.getInstance().player.getInventory().armor) {
             armor += ArmorType.findByType(Registries.ITEM.getId(stack.getItem()).toString()).getArmorPoints();
         }
-        if (armor == oldArmor) return;
 
-        oldArmor = armor;
-        final PacketWrapper properties = PacketWrapper.create(ClientboundPackets1_9.ENTITY_PROPERTIES, userConnection);
-        properties.write(Type.VAR_INT, MinecraftClient.getInstance().player.getId());
-        properties.write(Type.INT, 1);
-        properties.write(Type.STRING, "generic.armor");
-        properties.write(Type.DOUBLE, 0D);
-        properties.write(Type.VAR_INT, 1);
-        properties.write(Type.UUID, ARMOR_POINTS_UUID);
-        properties.write(Type.DOUBLE, (double) armor);
-        properties.write(Type.BYTE, (byte) 0);
-        properties.scheduleSend(Protocol1_9To1_8.class);
+        // We only want to update the armor points if they actually changed.
+        if (armor == previousArmorPoints) {
+            return;
+        }
+        previousArmorPoints = armor;
+
+        final PacketWrapper entityProperties = PacketWrapper.create(ClientboundPackets1_9.ENTITY_PROPERTIES, userConnection);
+        entityProperties.write(Type.VAR_INT, MinecraftClient.getInstance().player.getId());
+        entityProperties.write(Type.INT, 1);
+        entityProperties.write(Type.STRING, "generic.armor");
+        entityProperties.write(Type.DOUBLE, 0.0D);
+        entityProperties.write(Type.VAR_INT, 1);
+        entityProperties.write(Type.UUID, ARMOR_POINTS_UUID);
+        entityProperties.write(Type.DOUBLE, (double) armor);
+        entityProperties.write(Type.BYTE, (byte) 0);
+        entityProperties.scheduleSend(Protocol1_9To1_8.class);
     }
 
 }
