@@ -90,7 +90,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
             // Minecraft's encryption code is bad for us, we need to reorder the pipeline
             ci.cancel();
 
-            // Minecraft 1.6.4 supports tile encryption which means the server can only disable one side of the encryption
+            // Minecraft 1.6.4 supports split encryption/decryption which means the server can only enable one side of the encryption
             // So we only enable the encryption side and later enable the decryption side if the 1.7 -> 1.6 protocol
             // tells us to do, therefore we need to store the cipher instance.
             this.viaFabricPlus$decryptionCipher = decryptionCipher;
