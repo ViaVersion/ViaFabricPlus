@@ -82,7 +82,7 @@
   "visual_settings.viafabricplus.enable_sword_blocking": "Enable sword animation",
   "visual_settings.viafabricplus.enable_block_hit_animation": "Enable block hit animation",
 
-  "bedrock.viafabricplus.login": "Your browser should have opened.\nPlease enter the following Code: %s\nClosing this screen will cancel the process!",
+  "bedrock.viafabricplus.login": "Your browser should have opened.\nClosing this screen will cancel the process!",
   "bedrock.viafabricplus.confirm_transfer_server_prompt": "Do you want to transfer to the following server?\n%s\n\nThis will disconnect the current server and connect to the new one.",
   "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus failed to verify your session! Please log in into an Account or disable the BetaCraft authentication in the ViaFabricPlus Settings",
 
