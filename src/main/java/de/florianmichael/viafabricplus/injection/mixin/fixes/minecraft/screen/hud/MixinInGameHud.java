@@ -43,14 +43,11 @@ public abstract class MixinInGameHud {
 
     // Removing newer elements
 
-    @Inject(method = "renderMountJumpBar", at = @At("HEAD"), cancellable = true)
-    private void removeMountJumpBar(JumpingMount mount, DrawContext context, int x, CallbackInfo ci) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) ci.cancel();
-    }
-
-    @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
-    private void removeMountHealth(DrawContext context, CallbackInfo ci) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) ci.cancel();
+    @Inject(method = {"renderMountJumpBar", "renderMountHealth"}, at = @At("HEAD"), cancellable = true)
+    private void removeMountJumpBar(CallbackInfo ci) {
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            ci.cancel();
+        }
     }
 
     @Inject(method = "getHeartCount", at = @At("HEAD"), cancellable = true)
@@ -63,9 +60,11 @@ public abstract class MixinInGameHud {
     // Moving down all remaining elements
 
     @ModifyExpressionValue(method = "renderStatusBars", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/InGameHud;scaledHeight:I", opcode = Opcodes.GETFIELD),
-    require = 0)
+            require = 0)
     private int moveHealthDown(int originalValue) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) return originalValue + 6;
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            return originalValue + 6;
+        }
         return originalValue;
     }
 
@@ -73,27 +72,33 @@ public abstract class MixinInGameHud {
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"),
             to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 1,
             require = 0)
-    private int moveArmor(int old) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) return scaledWidth - old - 9;
-        return old;
+    private int moveArmorNextToHealth(int oldX) {
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            return scaledWidth - oldX - 9;
+        }
+        return oldX;
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"),
-            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 2,
+            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 1)), index = 2,
             require = 0)
-    private int moveArmorDown(int old) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) return scaledWidth - 39 + 6;
-        return old;
+    private int moveArmorDown(int oldY) {
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            return oldY + 9;
+        }
+        return oldY;
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 2),
             to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V")), index = 1,
             require = 0)
-    private int moveAir(int old) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) return scaledWidth - old - 9;
-        return old;
+    private int moveAir(int oldY) {
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            return scaledWidth - oldY - 9;
+        }
+        return oldY;
     }
 
 }
