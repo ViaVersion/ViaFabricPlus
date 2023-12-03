@@ -40,6 +40,7 @@ import net.raphimc.vialoader.util.VersionEnum;
 import java.awt.*;
 
 public class ProtocolSelectionScreen extends VFPScreen {
+
     public static final ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
 
     private ButtonWidget betaCraftButton;
@@ -148,4 +149,5 @@ public class ProtocolSelectionScreen extends VFPScreen {
             matrices.pop();
         }
     }
+
 }

@@ -42,4 +42,5 @@ public class ViaFabricPlusCommandArgumentsProvider extends SignableCommandArgume
         }
         return Collections.emptyList();
     }
+
 }

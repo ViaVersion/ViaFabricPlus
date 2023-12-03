@@ -33,6 +33,7 @@ import net.raphimc.vialoader.util.VersionEnum;
 import java.util.function.Consumer;
 
 public class PerServerVersionScreen extends VFPScreen {
+
     private final Consumer<VersionEnum> selectionConsumer;
 
     public PerServerVersionScreen(final Screen prevScreen, final Consumer<VersionEnum> selectionConsumer) {
@@ -124,4 +125,5 @@ public class PerServerVersionScreen extends VFPScreen {
             context.drawCenteredTextWithShadow(textRenderer, this.versionEnum.getName(), x + entryWidth / 2, y - 1 + entryHeight / 2 - textRenderer.fontHeight / 2, -1);
         }
     }
+
 }

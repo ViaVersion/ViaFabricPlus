@@ -152,4 +152,5 @@ public abstract class MixinDebugHud {
 
         cir.getReturnValue().addAll(information);
     }
+
 }

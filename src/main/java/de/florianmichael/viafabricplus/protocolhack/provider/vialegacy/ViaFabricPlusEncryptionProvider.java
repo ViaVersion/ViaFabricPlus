@@ -30,4 +30,5 @@ public class ViaFabricPlusEncryptionProvider extends EncryptionProvider {
     public void enableDecryption(UserConnection user) {
         ((IClientConnection) user.getChannel().attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get()).viaFabricPlus$setupPreNettyDecryption();
     }
+
 }

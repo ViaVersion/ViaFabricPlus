@@ -27,4 +27,5 @@ public class ViaFabricPlusViaLegacyPlatformImpl extends ViaLegacyPlatformImpl {
     public String getCpeAppName() {
         return "ViaFabricPlus";
     }
+
 }

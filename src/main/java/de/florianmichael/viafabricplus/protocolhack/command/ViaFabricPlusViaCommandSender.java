@@ -27,6 +27,7 @@ import com.viaversion.viaversion.api.command.ViaCommandSender;
 import java.util.UUID;
 
 public class ViaFabricPlusViaCommandSender implements ViaCommandSender {
+
     private final CommandSource source;
 
     public ViaFabricPlusViaCommandSender(final CommandSource source) {
@@ -52,4 +53,5 @@ public class ViaFabricPlusViaCommandSender implements ViaCommandSender {
     public String getName() {
         return ((FabricClientCommandSource) source).getPlayer().getEntityName();
     }
+
 }

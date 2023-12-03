@@ -31,6 +31,7 @@ import java.io.*;
  */
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public abstract class AbstractSave {
+
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private final File file;
@@ -87,4 +88,5 @@ public abstract class AbstractSave {
     public File getFile() {
         return file;
     }
+
 }

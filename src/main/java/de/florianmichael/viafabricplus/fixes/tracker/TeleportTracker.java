@@ -37,4 +37,5 @@ public class TeleportTracker extends StoredObject {
     public void setPending(Boolean onGround) {
         this.onGround = onGround;
     }
+
 }

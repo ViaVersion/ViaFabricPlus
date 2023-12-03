@@ -31,6 +31,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 
 public class BoatRenderer1_8 extends EntityRenderer<BoatEntity> {
+
     private static final Identifier TEXTURE = new Identifier("viafabricplus", "textures/boat1_8.png");
     private final BoatModel1_8 model;
 
@@ -69,4 +70,5 @@ public class BoatRenderer1_8 extends EntityRenderer<BoatEntity> {
         matrices.pop();
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
     }
+
 }

@@ -34,6 +34,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class ViaFabricPlusGameProfileFetcher extends GameProfileFetcher {
+
     public static final HttpAuthenticationService AUTHENTICATION_SERVICE = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
     public static final MinecraftSessionService SESSION_SERVICE = AUTHENTICATION_SERVICE.createMinecraftSessionService();
     public static final GameProfileRepository GAME_PROFILE_REPOSITORY = AUTHENTICATION_SERVICE.createProfileRepository();
@@ -72,4 +73,5 @@ public class ViaFabricPlusGameProfileFetcher extends GameProfileFetcher {
         }
         return gameProfile;
     }
+
 }

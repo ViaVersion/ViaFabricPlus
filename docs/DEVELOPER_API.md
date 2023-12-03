@@ -64,6 +64,7 @@ if (ItemRegistryDiff.contains(Items.STONE, VersionRange.andOlder(VersionEnum.r1_
 ### Creating own settings for the settings screen
 ```java
 public class ExampleSettingGroup extends SettingGroup {
+    
     private static final ExampleSettingGroup instance = new ExampleSettingGroup();
     
     public final BooleanSetting test = new BooleanSetting(this, Text.of("Test"), false);
@@ -75,6 +76,7 @@ public class ExampleSettingGroup extends SettingGroup {
     public static ExampleSettingGroup global() {
         return instance;
     }
+    
 }
 ```
 

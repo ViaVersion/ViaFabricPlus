@@ -72,4 +72,5 @@ public class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
                 .forEach(builder::add);
         return builder.buildFuture();
     }
+
 }

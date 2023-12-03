@@ -92,4 +92,5 @@ public class AccountsSave extends AbstractSave {
     public void setClassicubeAccount(CCAccount classicubeAccount) {
         this.classicubeAccount = classicubeAccount;
     }
+
 }

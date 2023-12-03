@@ -31,6 +31,7 @@ import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.raphimc.vialoader.util.VersionEnum;
 
 public class SettingsSave extends AbstractSave {
+
     private final SettingsManager settingsManager;
 
     public SettingsSave(final SettingsManager settingsManager) {
@@ -75,4 +76,5 @@ public class SettingsSave extends AbstractSave {
             ProtocolHack.setTargetVersion(ProtocolHack.NATIVE_VERSION);
         }
     }
+
 }

@@ -173,4 +173,5 @@ public class WorldHeightSupport {
     private static void changeDimensionTagHeight(final UserConnection user, final CompoundTag tag) {
         tag.put("height", new IntTag(Via.getManager().getProviders().get(ClassicWorldHeightProvider.class).getMaxChunkSectionCount(user) << 4));
     }
+
 }

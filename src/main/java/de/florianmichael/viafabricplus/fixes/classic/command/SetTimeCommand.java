@@ -27,6 +27,7 @@ import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;
 
 public class SetTimeCommand extends VFPViaSubCommand {
+
     @Override
     public String name() {
         return "settime";
@@ -62,4 +63,5 @@ public class SetTimeCommand extends VFPViaSubCommand {
         }
         return true;
     }
+
 }

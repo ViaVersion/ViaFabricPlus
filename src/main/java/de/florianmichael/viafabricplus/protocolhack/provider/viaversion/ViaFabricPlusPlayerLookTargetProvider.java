@@ -37,4 +37,5 @@ public class ViaFabricPlusPlayerLookTargetProvider extends PlayerLookTargetProvi
 
         return null;
     }
+
 }

@@ -32,6 +32,7 @@ import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
 public class GridItemSelectionScreen extends VFPScreen {
+
     public static final GridItemSelectionScreen INSTANCE = new GridItemSelectionScreen();
 
     private static final int MAX_ROW_DIVIDER = 9;
@@ -118,4 +119,5 @@ public class GridItemSelectionScreen extends VFPScreen {
             y += ITEM_XY_BOX_DIMENSION_CLASSIC;
         }
     }
+
 }

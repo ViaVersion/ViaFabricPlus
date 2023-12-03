@@ -37,4 +37,5 @@ public abstract class VFPViaSubCommand extends ViaSubCommand {
     public UserConnection getUser() {
         return ProtocolHack.getPlayNetworkUserConnection();
     }
+
 }

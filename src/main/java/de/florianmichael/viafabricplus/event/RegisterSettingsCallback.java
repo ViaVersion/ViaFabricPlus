@@ -39,4 +39,5 @@ public interface RegisterSettingsCallback {
     enum State {
         PRE, POST
     }
+
 }

@@ -54,4 +54,5 @@ public abstract class MixinAutoRefillHandler_ItemSlotMonitor {
             if (currentSlotId == 45) ci.cancel();
         }
     }
+
 }

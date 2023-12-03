@@ -52,4 +52,5 @@ public abstract class MixinEndPortalBlock extends BlockWithEntity {
             cir.setReturnValue(viaFabricPlus$shape_r1_16_5);
         }
     }
+
 }

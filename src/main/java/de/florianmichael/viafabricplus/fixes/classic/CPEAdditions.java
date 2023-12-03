@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class CPEAdditions {
+
     public final static List<ClassicProtocolExtension> ALLOWED_EXTENSIONS = Arrays.asList(ClassicProtocolExtension.ENV_WEATHER_TYPE);
     public final static Map<Integer, ClientboundPacketsc0_30cpe> CUSTOM_PACKETS = new HashMap<>();
 
@@ -53,4 +54,5 @@ public class CPEAdditions {
 
         return packet;
     }
+
 }

@@ -62,4 +62,5 @@ public abstract class MixinFarmlandBlock extends Block {
 
         return super.getCullingShape(state, view, pos);
     }
+
 }

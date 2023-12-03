@@ -36,4 +36,5 @@ public abstract class MixinDefaultJwtParserBuilder {
     public Object removeServicesSupport(Class<Object> result) {
         return new GsonDeserializer<>();
     }
+
 }

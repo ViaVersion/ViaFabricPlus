@@ -64,4 +64,5 @@ public abstract class MixinSoulSandBlock extends Block {
 
         return super.getVelocityMultiplier();
     }
+
 }

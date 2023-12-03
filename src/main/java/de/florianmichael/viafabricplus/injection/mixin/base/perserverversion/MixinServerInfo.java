@@ -105,4 +105,5 @@ public abstract class MixinServerInfo implements IServerInfo {
     public void viaFabricPlus$setTranslatingVersion(VersionEnum version) {
         viaFabricPlus$translatingVersion = version;
     }
+
 }

@@ -28,6 +28,7 @@ import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.sto
 import net.raphimc.vialoader.util.VersionEnum;
 
 public class ListExtensionsCommand extends VFPViaSubCommand {
+
     @Override
     public String name() {
         return "listextensions";
@@ -50,4 +51,5 @@ public class ListExtensionsCommand extends VFPViaSubCommand {
         });
         return true;
     }
+
 }

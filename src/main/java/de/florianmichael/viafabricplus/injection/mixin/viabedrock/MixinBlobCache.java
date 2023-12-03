@@ -39,4 +39,5 @@ public class MixinBlobCache implements IBlobCache {
     public Map<Long, CompletableFuture<byte[]>> viaFabricPlus$getPending() {
         return pending;
     }
+
 }

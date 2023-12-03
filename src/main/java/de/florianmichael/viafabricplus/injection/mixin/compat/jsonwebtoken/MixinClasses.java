@@ -36,4 +36,5 @@ public abstract class MixinClasses {
     private static void removeServicesSupport(String fqcn, CallbackInfoReturnable<Class<Object>> cir) throws ClassNotFoundException {
         cir.setReturnValue((Class<Object>) Class.forName(fqcn));
     }
+
 }

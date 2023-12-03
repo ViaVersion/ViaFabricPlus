@@ -27,6 +27,7 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.util.Identifier;
 
 public class BoatModel1_8 extends CompositeEntityModel<BoatEntity> {
+
     public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(new Identifier("viafabricplus", "boat1_8"), "main");
     private final ImmutableList<ModelPart> parts;
 
@@ -57,4 +58,5 @@ public class BoatModel1_8 extends CompositeEntityModel<BoatEntity> {
     @Override
     public void setAngles(BoatEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
     }
+
 }

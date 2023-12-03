@@ -29,6 +29,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 
 public class SettingsScreen extends VFPScreen {
+
     public static final SettingsScreen INSTANCE = new SettingsScreen();
 
     public SettingsScreen() {
@@ -75,4 +76,5 @@ public class SettingsScreen extends VFPScreen {
             return this.width - 5;
         }
     }
+
 }

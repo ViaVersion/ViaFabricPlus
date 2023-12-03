@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
  * functions and features used in all screens which are added by ViaFabricPlus
  */
 public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<VFPListEntry> {
+
     protected static final int SCISSORS_OFFSET = 4;
     public static final int SLOT_MARGIN = 3;
 
@@ -116,4 +117,5 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
         mappedRender(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
         matrices.pop();
     }
+
 }

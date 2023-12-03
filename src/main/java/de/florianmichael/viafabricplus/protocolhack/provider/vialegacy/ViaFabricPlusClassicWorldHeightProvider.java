@@ -28,4 +28,5 @@ public class ViaFabricPlusClassicWorldHeightProvider extends ClassicWorldHeightP
     public short getMaxChunkSectionCount(UserConnection user) {
         return 64;
     }
+
 }

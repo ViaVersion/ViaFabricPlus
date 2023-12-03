@@ -34,4 +34,5 @@ public class ViaFabricPlusPlayerAbilitiesProvider extends PlayerAbilitiesProvide
     public float getWalkingSpeed(UserConnection connection) {
         return MinecraftClient.getInstance().player.getAbilities().getWalkSpeed();
     }
+
 }

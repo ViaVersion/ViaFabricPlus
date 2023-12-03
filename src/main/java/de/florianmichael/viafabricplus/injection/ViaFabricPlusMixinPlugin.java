@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
+
     public static final String INJECTOR_PACKAGE = "de.florianmichael.viafabricplus.injection.mixin.";
 
     private static final String MC_FIXES_PACKAGE = "fixes.minecraft.";
@@ -93,4 +94,5 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
     }
+
 }

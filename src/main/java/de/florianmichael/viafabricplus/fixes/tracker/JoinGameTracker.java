@@ -55,4 +55,5 @@ public class JoinGameTracker extends StoredObject {
     public void setEnchantmentSeed(long enchantmentSeed) {
         this.enchantmentSeed = enchantmentSeed;
     }
+
 }

@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SaveManager {
+
     private final List<AbstractSave> saves = new ArrayList<>();
 
     private final SettingsSave settingsSave;
@@ -69,4 +70,5 @@ public class SaveManager {
     public AccountsSave getAccountsSave() {
         return accountsSave;
     }
+
 }

@@ -190,4 +190,5 @@ public class VFPScreen extends Screen {
 
         ViaFabricPlus.global().getLogger().error("Something went wrong!", throwable);
     }
+
 }

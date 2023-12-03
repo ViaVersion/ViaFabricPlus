@@ -43,4 +43,5 @@ public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
             ViaFabricPlus.global().getLogger().error("Error occurred while calling join server to verify session", e);
         }
     }
+
 }
