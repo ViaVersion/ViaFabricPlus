@@ -42,7 +42,7 @@ public class ArmorHudEmulation1_8 {
     private static double oldArmor = 0;
 
     public static void init() {
-        ClientTickEvents.START_WORLD_TICK.register(world -> {
+        ClientTickEvents.START_CLIENT_TICK.register(world -> {
             if (!VisualSettings.global().emulateArmorHud.isEnabled()) {
                 return;
             }
@@ -56,6 +56,8 @@ public class ArmorHudEmulation1_8 {
                         ViaFabricPlus.global().getLogger().error("Error sending armor update", t);
                     }
                 }
+            } else {
+                oldArmor = 0;
             }
         });
     }
