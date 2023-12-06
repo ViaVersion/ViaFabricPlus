@@ -54,7 +54,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	// ViaVersion Libraries
-	jis "com.viaversion:viaversion:${project.viaversion_version}"
+	jis "com.viaversion:viaversion-common:${project.viaversion_version}"
 	jis ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
 		exclude group: "com.viaversion", module: "viaversion"
 		exclude group: "io.netty", module: "netty-all"
@@ -65,12 +65,13 @@ dependencies {
 	}
 	jis "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
 	jis ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
+		exclude group: "io.netty"
+		exclude group: "io.jsonwebtoken"
 		exclude group: "net.lenni0451.mcstructs", module: "text"
-		exclude group: "io.jsonwebtoken", module: "jjwt-impl"
-		exclude group: "io.jsonwebtoken", module: "jjwt-gson"
 		exclude group: "com.mojang", module: "brigadier"
 	}
 	jis ("net.raphimc:ViaLoader:${project.vialoader_version}") {
+		exclude group: "com.google.guava", module: "guava"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
 
@@ -80,10 +81,7 @@ dependencies {
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
 	jis("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
-		exclude group: "io.netty", module: "netty-common"
-		exclude group: "io.netty", module: "netty-buffer"
-		exclude group: "io.netty", module: "netty-codec"
-		exclude group: "io.netty", module: "netty-transport"
+		exclude group: "io.netty"
 	}
 
 	// Lenni0451 Libraries

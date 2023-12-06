@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta;
 
-import de.florianmichael.viafabricplus.base.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

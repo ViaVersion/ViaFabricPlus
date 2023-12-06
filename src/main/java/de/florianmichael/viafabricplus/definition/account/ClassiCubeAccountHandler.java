@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.definition.account;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import de.florianmichael.viafabricplus.base.event.DisconnectConnectionCallback;
+import de.florianmichael.viafabricplus.event.DisconnectConnectionCallback;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.util.FileSaver;
 

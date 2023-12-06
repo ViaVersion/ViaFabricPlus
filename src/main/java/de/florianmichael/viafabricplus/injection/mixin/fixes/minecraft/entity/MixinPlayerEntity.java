@@ -17,10 +17,11 @@
  */
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.*;
 import net.minecraft.util.Hand;
 import net.raphimc.vialoader.util.VersionEnum;
-import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerAbilities;
@@ -132,5 +133,13 @@ public abstract class MixinPlayerEntity extends LivingEntity {
             return viafabricplus_isSprinting;
         }
         return instance.isSprinting();
+    }
+
+    @Inject(method = "checkFallFlying", at = @At("HEAD"), cancellable = true)
+    public void makeElytraMovementServerside(CallbackInfoReturnable<Boolean> cir) {
+        // Elytra movement was serverside in <= 1.14.4 and got moved to the client in 1.15
+        if ((Object) this instanceof ClientPlayerEntity && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            cir.setReturnValue(!this.isOnGround() && this.getVelocity().y < 0.0 && !isFallFlying());
+        }
     }
 }

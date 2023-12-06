@@ -12,16 +12,15 @@
 </div>
 
 # Why another protocol translator?
-ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomputer/multiconnect), and it also promises more compactness and stability. ViaFabricPlus can do everything multiconnect could do, but supports more Minecraft versions (listed below) and has more protocol changes implemented.
+ViaFabricPlus is a deep integration of ViaVersion on the Fabric platform, unlike the classic Via* implementations, ViaFabricPlus implements many changes that can't be fixed on protocol level (old animations, old movement/swimming, collisions and general rendering changes).
+At the time of writing, VFP is the only protocol translation platform for the client with which you can play on all Minecraft multiplayer versions with many QoL features and get the feel of the old versions.
 ### Supported Server versions
-- Release (1.0.0 - 1.20.3 snapshot)
+- Release (1.0.0 - 1.20.3)
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - Snapshots (3D Shareware, 20w14infinite, Combat Test 8C)
 - Bedrock (1.20.0)
-
-### If you want to talk with me, feel free to join my [Discord](https://discord.gg/BwWhCHUKDf)
 
 # For users
 ### Detailed instructions for use are available [here](.github/USAGE.md)
@@ -37,7 +36,7 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - ***[DashLoader (*)](https://github.com/alphaqu/DashLoader/tree/fabric-1.20)*** - Font rendering related fixes aren't working
 - ***[Armor Skin (*)](https://github.com/IzzyDotExe/ArmorSkin)*** - Beta HUD changes aren't working
 
-## List of all clientside related fixes and TODO
+## Feature list
 <details>
   <summary>Click to open</summary>
 
@@ -60,14 +59,18 @@ ViaFabricPlus is intended to replace [multiconnect](https://github.com/Earthcomp
 - [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
 </details>
 
-A detailed TODO List can be found at the class header of [this](https://github.com/ViaVersion/ViaFabricPlus/blob/main/src/main/java/de/florianmichael/viafabricplus/ViaFabricPlus.java) file
-
 # For developers and translators
 Contributions in the form of pull requests are always welcome, please just stick to my code style and make sure your code is easy to update and compatible with other mods.
 
 ### Translations
 Translations for other languages are always welcome, in **~/resources/assets/viafabricplus/lang** you can find all translations, <br>
 if you know a language well, feel free to make a PR and add translations for that language <br>
+
+### Changes to the code base
+If you want to make changes to the code base, please make sure that your changes are compatible with other mods and that they are easy to update.
+Also, please follow my code style and make sure that cursed parts of your code are documented :tm:
+
+A detailed TODO List can be found at the class header of [this](https://github.com/ViaVersion/ViaFabricPlus/blob/main/src/main/java/de/florianmichael/viafabricplus/ViaFabricPlus.java) file.
 
 ### Dependencies
 For compiling only! **You do not need to install these!**
@@ -138,3 +141,5 @@ dependencies {
 
 It cannot be guaranteed that this mod is allowed on specific servers as it can possibly cause problems with anti-cheat plugins.\
 ***(USE ONLY WITH CAUTION!)***
+
+### If you want to talk with me, feel free to join my [Discord](https://discord.gg/BwWhCHUKDf)

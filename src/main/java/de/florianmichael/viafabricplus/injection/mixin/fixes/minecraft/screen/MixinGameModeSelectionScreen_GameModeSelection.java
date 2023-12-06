@@ -52,18 +52,18 @@ public class MixinGameModeSelectionScreen_GameModeSelection {
     }
 
     @Inject(method = "next", at = @At("HEAD"), cancellable = true)
-    public void unwrapGameModes(CallbackInfoReturnable<Optional<GameModeSelectionScreen.GameModeSelection>> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_8)) {
-            switch ((GameModeSelectionScreen.GameModeSelection)(Object)this) {
-                case CREATIVE -> cir.setReturnValue(Optional.of(SURVIVAL));
+    private void unwrapGameModes(CallbackInfoReturnable<GameModeSelectionScreen.GameModeSelection> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+            switch ((GameModeSelectionScreen.GameModeSelection) (Object) this) {
+                case CREATIVE -> cir.setReturnValue(SURVIVAL);
                 case SURVIVAL -> {
-                    if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_2_4tor1_2_5)) {
-                        cir.setReturnValue(Optional.of(CREATIVE));
+                    if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_2_4tor1_2_5)) {
+                        cir.setReturnValue(CREATIVE);
                     } else {
-                        cir.setReturnValue(Optional.of(GameModeSelectionScreen.GameModeSelection.ADVENTURE));
+                        cir.setReturnValue(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
                     }
                 }
-                case ADVENTURE -> cir.setReturnValue(Optional.of(CREATIVE));
+                case ADVENTURE -> cir.setReturnValue(CREATIVE);
             }
         }
     }

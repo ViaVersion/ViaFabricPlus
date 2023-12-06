@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.protocolhack.provider.viabedrock;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.base.settings.groups.BedrockSettings;
+import de.florianmichael.viafabricplus.settings.impl.BedrockSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.ConnectScreen;

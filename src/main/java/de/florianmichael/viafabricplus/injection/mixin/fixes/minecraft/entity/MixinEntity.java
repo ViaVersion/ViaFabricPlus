@@ -74,17 +74,16 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)
-    public void injectGetVelocityAffectingPos(CallbackInfoReturnable<BlockPos> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
-            cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - 0.5000001, pos.z));
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-                cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - 1, pos.z));
-            }
+    public void replaceAffectingVelocityMagnitude(CallbackInfoReturnable<BlockPos> cir) {
+        final VersionEnum target = ProtocolHack.getTargetVersion();
+
+        if (target.isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+            cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - (target.isOlderThanOrEqualTo(VersionEnum.r1_14_4) ? 1 : 0.5000001), pos.z));
         }
     }
 
     @Inject(method = "getRotationVector(FF)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
-    public void onGetRotationVector(float pitch, float yaw, CallbackInfoReturnable<Vec3d> cir) {
+    public void revertCalculation(float pitch, float yaw, CallbackInfoReturnable<Vec3d> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(Vec3d.fromPolar(pitch, yaw));
         }
@@ -112,8 +111,9 @@ public abstract class MixinEntity {
         int minZ = MathHelper.floor(box.minZ);
         int maxZ = MathHelper.ceil(box.maxZ);
 
-        if (!world.isRegionLoaded(minX, minY, minZ, maxX, maxY, maxZ))
+        if (!world.isRegionLoaded(minX, minY, minZ, maxX, maxY, maxZ)) {
             ci.setReturnValue(false);
+        }
 
         double waterHeight = 0;
         boolean foundFluid = false;
@@ -168,7 +168,6 @@ public abstract class MixinEntity {
         return constant;
     }
 
-    // Not relevant for GamePlay
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;onLanding()V"))
     public void revertOnLanding(Entity instance) {
         if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19)) {
@@ -178,9 +177,10 @@ public abstract class MixinEntity {
 
     @Inject(method = "getPosWithYOffset", at = @At("HEAD"), cancellable = true)
     public void changeLogic(float offset, CallbackInfoReturnable<BlockPos> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+        final VersionEnum target = ProtocolHack.getTargetVersion();
+        if (target.isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             int i = MathHelper.floor(this.pos.x);
-            int j = MathHelper.floor(this.pos.y - (double)offset);
+            int j = MathHelper.floor(this.pos.y - (double) (target.isOlderThanOrEqualTo(VersionEnum.r1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
             int k = MathHelper.floor(this.pos.z);
             BlockPos blockPos = new BlockPos(i, j, k);
             if (this.world.getBlockState(blockPos).isAir()) {

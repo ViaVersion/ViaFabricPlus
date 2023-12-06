@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viafabricplus.protocolhack.impl;
 
-import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
+import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
 import net.raphimc.vialoader.impl.viaversion.VLViaConfig;
 
 import java.io.File;
@@ -46,5 +46,10 @@ public class ViaFabricPlusVLViaConfig extends VLViaConfig {
     @Override
     public int get1_13TabCompleteDelay() {
         return 5;
+    }
+
+    @Override
+    public boolean isSimulatePlayerTick() {
+        return false;
     }
 }

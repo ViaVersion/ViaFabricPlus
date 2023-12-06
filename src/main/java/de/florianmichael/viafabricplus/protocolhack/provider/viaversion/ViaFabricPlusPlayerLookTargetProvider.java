@@ -22,14 +22,12 @@ import com.viaversion.viaversion.api.minecraft.Position;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.PlayerLookTargetProvider;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class ViaFabricPlusPlayerLookTargetProvider extends PlayerLookTargetProvider {
 
     @Override
-    public @Nullable Position getPlayerLookTarget(UserConnection info) {
+    public Position getPlayerLookTarget(UserConnection info) {
         if (MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult blockHitResult) {
             final BlockPos pos = blockHitResult.getBlockPos();
             return new Position(pos.getX(), pos.getY(), pos.getZ());

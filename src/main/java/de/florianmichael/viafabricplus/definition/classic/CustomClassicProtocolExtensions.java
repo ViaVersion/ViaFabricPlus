@@ -18,8 +18,8 @@
 package de.florianmichael.viafabricplus.definition.classic;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.screen.ClassicItemSelectionScreen;
-import de.florianmichael.viafabricplus.base.event.LoadClassicProtocolExtensionCallback;
+import de.florianmichael.viafabricplus.definition.classic.screen.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.reflect.Enums;

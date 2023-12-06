@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.mappings;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.raphimc.vialoader.util.VersionEnum;
-import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;

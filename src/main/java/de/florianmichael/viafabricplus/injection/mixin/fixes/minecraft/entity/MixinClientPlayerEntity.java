@@ -21,9 +21,9 @@ import com.mojang.authlib.GameProfile;
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import net.minecraft.world.GameMode;
 import net.raphimc.vialoader.util.VersionEnum;
-import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerEntity;
-import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
@@ -36,10 +36,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings("ConstantValue")
@@ -71,7 +68,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;square(D)D"))
     public double changeMagnitude(double n) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2)) {
-            n = 9.0E-4D;
+            return 9.0E-4D;
         }
         return MathHelper.square(n);
     }
@@ -167,14 +164,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         }
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
-    public boolean alwaysSendPacket(ClientPlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_1)) {
-            return false;
-        }
-        return isClimbing();
-    }
-
     @Redirect(method = "autoJump", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;inverseSqrt(F)F"))
     public float useFastInverse(float x) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
@@ -194,10 +183,52 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return instance.hasVehicle();
     }
 
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
+    public boolean removeLadderCheck(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_1)) {
+            return false;
+        }
+        return instance.isClimbing();
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 3))
+    public boolean removeVehicleCheck(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            return false;
+        }
+        return instance.hasVehicle();
+    }
+
+    @ModifyVariable(method = "tickMovement", at = @At(value = "LOAD", ordinal = 4), ordinal = 4)
+    public boolean removeBl8Boolean(boolean value) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            return false;
+        }
+        return value;
+    }
+
+    @Redirect(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isFallFlying()Z"))
+    public boolean removeElytraMovementCheck(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+            return false;
+        }
+        return instance.isFallFlying();
+    }
+
+    @Redirect(method = "canSprint", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
+    public boolean removeVehicleCondition(ClientPlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
+            return false;
+        }
+        return instance.hasVehicle();
+    }
+
     @Override
     public boolean isCreative() {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-            if (client.interactionManager == null) return super.isCreative(); // Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/216
+            if (client.interactionManager == null) {
+                return super.isCreative(); // Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/216
+            }
             return client.interactionManager.getCurrentGameMode() == GameMode.CREATIVE;
         }
         return super.isCreative();

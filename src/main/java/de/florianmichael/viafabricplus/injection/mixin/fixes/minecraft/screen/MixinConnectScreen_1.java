@@ -21,7 +21,8 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_0;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_1;
-import net.raphimc.mcauth.util.MicrosoftConstants;
+import net.raphimc.minecraftauth.MinecraftAuth;
+import net.raphimc.minecraftauth.util.MicrosoftConstants;
 import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
@@ -29,7 +30,7 @@ import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandl
 import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import de.florianmichael.viafabricplus.base.settings.groups.AuthenticationSettings;
+import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
@@ -37,7 +38,6 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
-import net.raphimc.mcauth.step.bedrock.StepMCChain;
 import net.raphimc.viabedrock.protocol.storage.AuthChainData;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.spongepowered.asm.mixin.Final;
@@ -98,20 +98,21 @@ public class MixinConnectScreen_1 {
         final VersionEnum targetVersion = ProtocolHack.getTargetVersion(connection.channel);
 
         if (targetVersion == VersionEnum.bedrockLatest) {
-            StepMCChain.MCChain account = BedrockAccountHandler.INSTANCE.getMcChain();
-            if (account == null) return;
-            final UUID deviceId = account.prevResult().initialXblSession().prevResult2().id();
-            final String playFabId = BedrockAccountHandler.INSTANCE.getPlayFabToken().playFabId();
+            var bedrockSession = BedrockAccountHandler.INSTANCE.getBedrockSession();
+            if (bedrockSession == null) return;
 
             try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
-                account = new StepMCChain(null).applyStep(httpClient, account.prevResult());
+                bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.refresh(httpClient, bedrockSession);
             } catch (Exception e) {
                 ViaFabricPlus.LOGGER.error("Failed to refresh Bedrock chain data. Please re-login to Bedrock!", e);
                 return;
             }
 
-            userConnection.put(new AuthChainData(account.mojangJwt(), account.identityJwt(), account.publicKey(), account.privateKey(), deviceId, playFabId));
-            ViaFabricPlus.LOGGER.info("Created AuthChainData for Bedrock authentication!");
+            final var deviceId = bedrockSession.getMcChain().getXblXsts().getInitialXblSession().getXblDeviceToken().getId();
+            final var playFabId = bedrockSession.getPlayFabToken().getPlayFabId();
+            final var mcChain = bedrockSession.getMcChain();
+
+            userConnection.put(new AuthChainData(mcChain.getMojangJwt(), mcChain.getIdentityJwt(), mcChain.getPublicKey(), mcChain.getPrivateKey(), deviceId, playFabId));
             return;
         }
 

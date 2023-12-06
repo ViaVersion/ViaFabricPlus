@@ -18,8 +18,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.base;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.base.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import org.spongepowered.asm.mixin.Mixin;

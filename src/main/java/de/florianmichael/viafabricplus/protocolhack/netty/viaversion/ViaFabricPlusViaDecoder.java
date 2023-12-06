@@ -19,7 +19,7 @@ package de.florianmichael.viafabricplus.protocolhack.netty.viaversion;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.base.settings.groups.GeneralSettings;
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.text.Text;

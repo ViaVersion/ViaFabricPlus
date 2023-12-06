@@ -19,10 +19,10 @@ package de.florianmichael.viafabricplus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.florianmichael.viafabricplus.base.ViaJarReplacer;
-import de.florianmichael.viafabricplus.base.event.FinishMinecraftLoadCallback;
-import de.florianmichael.viafabricplus.base.event.PreLoadCallback;
-import de.florianmichael.viafabricplus.base.settings.SettingsSystem;
+import de.florianmichael.viafabricplus.protocolhack.util.ViaJarReplacer;
+import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
+import de.florianmichael.viafabricplus.event.PreLoadCallback;
+import de.florianmichael.viafabricplus.settings.SettingsSystem;
 import de.florianmichael.viafabricplus.definition.ClientsideFixes;
 import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
 import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
@@ -32,7 +32,7 @@ import de.florianmichael.viafabricplus.mappings.CharacterMappings;
 import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
 import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.screen.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.definition.classic.screen.ClassicItemSelectionScreen;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +44,10 @@ import java.io.File;
  *  - Check if relevant for protocol translation: TakeItemEntityPacket isEmpty case (1.20 -> 1.20.1 change)
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
  *  - Entity hit boxes and eye heights has changed in almost all versions
- *  - Crafting Recipes are missing in ViaVersion (see https://github.com/ViaVersion/ViaFabricPlus/issues/60)
+ *  - Block hardness / resistance has changed in almost all versions
+ *  - Item properties: maxDamage and stackCount?
+ *  - Recipes for <= 1.8 are broken
+ *  - Supported character fix should cover all versions
  *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
  *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
  *  - Bedrock scaffolding should be added as soon as ViaBedrock supports block placement (see https://github.com/ViaVersion/ViaFabricPlus/issues/204)
@@ -68,7 +71,9 @@ public class ViaFabricPlus {
     private final InformationSystem informationSystem = new InformationSystem();
 
     public void init() {
-        if (!RUN_DIRECTORY.exists()) RUN_DIRECTORY.mkdir();
+        if (!RUN_DIRECTORY.exists()) {
+            RUN_DIRECTORY.mkdir();
+        }
 
         // Load overriding jars first so other code can access the new classes
         ViaJarReplacer.loadOverridingJars();

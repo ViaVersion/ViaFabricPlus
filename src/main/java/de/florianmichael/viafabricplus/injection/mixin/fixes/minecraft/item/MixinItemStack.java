@@ -20,8 +20,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.raphimc.vialoader.util.VersionEnum;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.base.settings.groups.DebugSettings;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -33,7 +32,6 @@ import net.minecraft.item.*;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.OptionalDouble;

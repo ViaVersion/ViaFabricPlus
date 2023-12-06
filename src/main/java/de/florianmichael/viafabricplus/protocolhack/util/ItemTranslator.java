@@ -62,10 +62,17 @@ public class ItemTranslator {
             wrapper.apply(Direction.SERVERBOUND, State.PLAY, 0, protocolPath.stream().map(ProtocolPathEntry::protocol).collect(Collectors.toList()));
 
             wrapper.read(Type.SHORT);
+
             if (targetVersion.isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
                 return wrapper.read(Typesb1_8_0_1.CREATIVE_ITEM);
-            } else {
+            } else if (targetVersion.isOlderThan(VersionEnum.r1_13)) {
                 return wrapper.read(Type.ITEM1_8);
+            } else if (targetVersion.isOlderThan(VersionEnum.r1_13_2)) {
+                return wrapper.read(Type.ITEM1_13);
+            } else if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
+                return wrapper.read(Type.ITEM1_13_2);
+            } else {
+                return wrapper.read(Type.ITEM1_20_2);
             }
         } catch (Exception e) {
             ViaFabricPlus.LOGGER.error("Failed to translate item", e);

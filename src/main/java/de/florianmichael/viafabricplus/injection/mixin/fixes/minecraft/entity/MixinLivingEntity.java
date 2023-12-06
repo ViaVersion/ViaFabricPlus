@@ -18,7 +18,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import de.florianmichael.viafabricplus.base.settings.groups.ExperimentalSettings;
+import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
 import de.florianmichael.viafabricplus.definition.EntityHeightOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.BlockState;
@@ -45,7 +45,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Optional;
 
 @SuppressWarnings("ConstantValue")
-@Mixin(LivingEntity.class)
+@Mixin(value = LivingEntity.class, priority = 999 /* Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/306 */)
 public abstract class MixinLivingEntity extends Entity {
 
     @Shadow
@@ -177,7 +177,7 @@ public abstract class MixinLivingEntity extends Entity {
         return height;
     }
 
-    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
+    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5), require = 0 /* Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/306 */)
     public int shieldBlockCounter(int constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 0;
@@ -211,7 +211,7 @@ public abstract class MixinLivingEntity extends Entity {
     @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
     public void replaceRidingOffset(Entity vehicle, CallbackInfoReturnable<Float> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            cir.setReturnValue((float) EntityHeightOffsetsPre1_20_2.getHeightOffset((Entity) (Object) this));
+            cir.setReturnValue((float) EntityHeightOffsetsPre1_20_2.getHeightOffset(this));
         }
     }
 

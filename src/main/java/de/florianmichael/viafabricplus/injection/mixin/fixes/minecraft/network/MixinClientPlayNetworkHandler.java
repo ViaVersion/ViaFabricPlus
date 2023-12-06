@@ -19,20 +19,20 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.base.settings.groups.VisualSettings;
+import de.florianmichael.viafabricplus.definition.RecipesPre1_12;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import de.florianmichael.viafabricplus.injection.access.IBoatEntity;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.network.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.network.packet.BrandCustomPayload;
-import net.minecraft.network.packet.c2s.common.ClientOptionsC2SPacket;
-import net.minecraft.network.packet.c2s.common.CustomPayloadC2SPacket;
 import net.minecraft.network.packet.s2c.play.*;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.util.Identifier;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -42,8 +42,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(ClientPlayNetworkHandler.class)
@@ -133,11 +136,25 @@ public abstract class MixinClientPlayNetworkHandler {
         return instance.isSecureChatEnforced() || VisualSettings.INSTANCE.disableSecureChatWarning.isEnabled();
     }
 
-    @Inject(method = "onSetTradeOffers", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
-    public void checkLoginPacket(SetTradeOffersS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion(getConnection().channel).isOlderThanOrEqualTo(VersionEnum.r1_13_2) && MinecraftClient.getInstance().player == null) {
-            ViaFabricPlus.LOGGER.error("Server tried to send Play packet in Login process, dropping \"SetTradeOffers\"");
-            ci.cancel();
+    @Redirect(method = "onSynchronizeRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/SynchronizeRecipesS2CPacket;getRecipes()Ljava/util/List;"))
+    public List<RecipeEntry<?>> rewriteRecipes(SynchronizeRecipesS2CPacket instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
+            final List<Recipe<?>> recipes = instance.getRecipes().stream().map(RecipeEntry::value).collect(Collectors.toList());
+            RecipesPre1_12.editRecipes(recipes, ProtocolHack.getTargetVersion());
+
+            final List<RecipeEntry<?>> entries = new ArrayList<>();
+            int recipeId = 0;
+            for (final Recipe<?> recipe : recipes) {
+                entries.add(new RecipeEntry<>(new Identifier(String.valueOf(recipeId++)), recipe));
+            }
+
+            return entries;
         }
+        return instance.getRecipes();
+    }
+
+    @WrapWithCondition(method = "setPublicSession", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
+    public boolean removeInvalidSignatureWarning(Logger instance, String s, Object o) {
+        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_4);
     }
 }
