@@ -45,7 +45,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Optional;
 
 @SuppressWarnings("ConstantValue")
-@Mixin(LivingEntity.class)
+@Mixin(value = LivingEntity.class, priority = 999 /* Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/306 */)
 public abstract class MixinLivingEntity extends Entity {
 
     @Shadow
@@ -177,7 +177,7 @@ public abstract class MixinLivingEntity extends Entity {
         return height;
     }
 
-    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
+    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5), require = 0 /* Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/306 */)
     public int shieldBlockCounter(int constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 0;
