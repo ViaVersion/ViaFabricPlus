@@ -29,6 +29,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +47,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BoatEntity.class)
-public abstract class MixinBoatEntity extends Entity {
+public abstract class MixinBoatEntity extends VehicleEntity {
 
     @Shadow
     private double x;
@@ -62,18 +63,6 @@ public abstract class MixinBoatEntity extends Entity {
 
     @Shadow
     private double boatPitch;
-
-    @Shadow
-    public abstract int getDamageWobbleTicks();
-
-    @Shadow
-    public abstract void setDamageWobbleTicks(int wobbleTicks);
-
-    @Shadow
-    public abstract float getDamageWobbleStrength();
-
-    @Shadow
-    public abstract void setDamageWobbleStrength(float wobbleStrength);
 
     @Shadow
     private BoatEntity.Location location;

@@ -1114,7 +1114,7 @@ public class ItemRegistryDiff {
         ITEM_DIFF.put(SHEARS, andNewer(b1_7tob1_7_3));
 
         ITEM_DIFF.put(DEAD_BUSH, andNewer(b1_6tob1_6_6));
-        ITEM_DIFF.put(GRASS, andNewer(b1_6tob1_6_6));
+        ITEM_DIFF.put(SHORT_GRASS, andNewer(b1_6tob1_6_6));
         ITEM_DIFF.put(FERN, andNewer(b1_6tob1_6_6));
         ITEM_DIFF.put(OAK_TRAPDOOR, andNewer(b1_6tob1_6_6));
         ITEM_DIFF.put(MAP, andNewer(b1_6tob1_6_6));

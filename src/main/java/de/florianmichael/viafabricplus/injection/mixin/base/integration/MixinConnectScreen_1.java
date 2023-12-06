@@ -29,7 +29,7 @@ import de.florianmichael.viafabricplus.protocolhack.util.ProtocolVersionDetector
 import de.florianmichael.viafabricplus.protocolhack.util.VersionEnumExtension;
 import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import io.netty.channel.ChannelFuture;
-import net.minecraft.client.gui.screen.ConnectScreen;
+import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.session.Session;
 import net.minecraft.network.ClientConnection;
@@ -44,7 +44,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.net.InetSocketAddress;
 
-@Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
+@Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {
 
     @Shadow

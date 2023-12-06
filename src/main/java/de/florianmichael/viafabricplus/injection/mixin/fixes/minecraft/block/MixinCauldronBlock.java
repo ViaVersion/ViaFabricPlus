@@ -44,7 +44,7 @@ public abstract class MixinCauldronBlock extends AbstractCauldronBlock {
             BooleanBiFunction.ONLY_FIRST
     );
 
-    public MixinCauldronBlock(Settings settings, Map<Item, CauldronBehavior> behaviorMap) {
+    public MixinCauldronBlock(Settings settings, CauldronBehavior.CauldronBehaviorMap behaviorMap) {
         super(settings, behaviorMap);
     }
 

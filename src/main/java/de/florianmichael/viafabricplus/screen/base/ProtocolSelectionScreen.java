@@ -53,7 +53,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
     @Override
     protected void init() {
         // List and Settings
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height - 30, textRenderer.fontHeight + 4));
+        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, 30, textRenderer.fontHeight + 4));
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.settings"), button -> SettingsScreen.INSTANCE.open(this)).position(width - 98 - 5, 5).size(98, 20).build());
 
         // ClassiCube
@@ -110,7 +110,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
     public static class SlotList extends AlwaysSelectedEntryListWidget<ProtocolSlot> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height, top, bottom, entryHeight);
+            super(minecraftClient, width, height - top - bottom, top, entryHeight);
 
             VersionEnum.SORTED_VERSIONS.stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }

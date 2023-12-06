@@ -45,7 +45,7 @@ public abstract class MixinLockableContainerBlockEntity {
     this fix, so that you can at least see / join the world.
      */
 
-    @WrapOperation(method = "readNbt", at = @At(value = "INVOKE", target = "Lnet/minecraft/text/Text$Serializer;fromJson(Ljava/lang/String;)Lnet/minecraft/text/MutableText;"))
+    @WrapOperation(method = "readNbt", at = @At(value = "INVOKE", target = "Lnet/minecraft/text/Text$Serialization;fromJson(Ljava/lang/String;)Lnet/minecraft/text/MutableText;"))
     private MutableText allowInvalidJson(String json, Operation<MutableText> operation) {
         if (DebugSettings.global().skipContainersWithCustomDisplayNames.isEnabled()) {
             try {

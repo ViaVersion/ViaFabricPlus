@@ -23,8 +23,8 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.settings.impl.BedrockSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
-import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
@@ -42,10 +42,11 @@ public class ViaFabricPlusTransferProvider extends TransferProvider {
             if (BedrockSettings.global().openPromptGUIToConfirmTransfer.getValue()) {
                 mc.setScreen(new ConfirmScreen(
                         (bl) -> {
-                            if (bl)
+                            if (bl) {
                                 connect(newAddress);
-                            else
+                            } else {
                                 MinecraftClient.getInstance().setScreen(null);
+                            }
                         },
                         Text.of("ViaFabricPlus"),
                         Text.translatable("bedrock.viafabricplus.confirm_transfer_server_prompt", newAddress.getHostName() + ":" + newAddress.getPort())

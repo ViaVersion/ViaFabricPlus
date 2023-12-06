@@ -30,6 +30,7 @@ import net.minecraft.util.collection.DefaultedList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public final class RecipeInfo<T extends Recipe<?>> {
@@ -109,7 +110,7 @@ public final class RecipeInfo<T extends Recipe<?>> {
         }
 
         final int width_f = width;
-        return new RecipeInfo<>(() -> new ShapedRecipe(group, CraftingRecipeCategory.MISC, width_f, height, ingredients, output), RecipeSerializer.SHAPED, output);
+        return new RecipeInfo<>(() -> new ShapedRecipe(group, CraftingRecipeCategory.MISC, new RawShapedRecipe(width_f, height, ingredients, Optional.empty()), output, false), RecipeSerializer.SHAPED, output);
     }
 
     public static RecipeInfo<ShapedRecipe> shaped(String group, ItemConvertible output, Object... args) {

@@ -51,7 +51,7 @@ public class ViaFabricPlusViaCommandSender implements ViaCommandSender {
 
     @Override
     public String getName() {
-        return ((FabricClientCommandSource) source).getPlayer().getEntityName();
+        return ((FabricClientCommandSource) source).getPlayer().getName().getString();
     }
 
 }

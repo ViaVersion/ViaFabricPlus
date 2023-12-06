@@ -207,7 +207,7 @@ public record Material1_19_4(boolean blocksMovement, boolean burnable, boolean l
         MATERIALS.put(Blocks.DETECTOR_RAIL, DECORATION);
         MATERIALS.put(Blocks.STICKY_PISTON, PISTON);
         MATERIALS.put(Blocks.COBWEB, COBWEB);
-        MATERIALS.put(Blocks.GRASS, REPLACEABLE_PLANT);
+        MATERIALS.put(Blocks.SHORT_GRASS, REPLACEABLE_PLANT);
         MATERIALS.put(Blocks.FERN, REPLACEABLE_PLANT);
         MATERIALS.put(Blocks.DEAD_BUSH, REPLACEABLE_PLANT);
         MATERIALS.put(Blocks.SEAGRASS, REPLACEABLE_UNDERWATER_PLANT);

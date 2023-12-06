@@ -19,12 +19,14 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import de.florianmichael.viafabricplus.injection.access.IDownloadingTerrainScreen;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.packet.c2s.common.KeepAliveC2SPacket;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,21 +34,23 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(DownloadingTerrainScreen.class)
-public abstract class MixinDownloadingTerrainScreen extends Screen {
+public abstract class MixinDownloadingTerrainScreen extends Screen implements IDownloadingTerrainScreen {
 
     @Shadow
     @Final
     private long loadStartTime;
 
-    @Shadow
-    private boolean ready;
-
     @Unique
     private int viaFabricPlus$tickCounter;
+
+    @Unique
+    private boolean viaFabricPlus$isReady;
+
+    @Unique
+    private boolean viaFabricPlus$closeOnNextTick = false;
 
     public MixinDownloadingTerrainScreen(Text title) {
         super(title);
@@ -54,29 +58,51 @@ public abstract class MixinDownloadingTerrainScreen extends Screen {
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void modifyCloseCondition(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
             ci.cancel();
-            if (this.ready) {
+            if (System.currentTimeMillis() > this.loadStartTime + 30000L) {
                 this.close();
+            } else {
+                if (this.viaFabricPlus$closeOnNextTick) {
+                    if (this.client.player == null) return;
+
+                    BlockPos blockPos = this.client.player.getBlockPos();
+                    boolean bl = this.client.world != null && this.client.world.isOutOfHeightLimit(blockPos.getY());
+                    if (bl || this.client.worldRenderer.isRenderingReady(blockPos) || this.client.player.isSpectator() || !this.client.player.isAlive()) {
+                        this.close();
+                    }
+                } else {
+                    if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
+                        this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$isReady || System.currentTimeMillis() > this.loadStartTime + 2000;
+                    } else {
+                        this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$isReady;
+                    }
+                }
+
             }
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
+                if (this.viaFabricPlus$isReady) {
+                    this.close();
+                }
 
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_1)) {
-                this.viaFabricPlus$tickCounter++;
-
-                if (this.viaFabricPlus$tickCounter % 20 == 0) {
-                    MinecraftClient.getInstance().getNetworkHandler().sendPacket(new KeepAliveC2SPacket(0));
+                if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_1)) {
+                    this.viaFabricPlus$tickCounter++;
+                    if (this.viaFabricPlus$tickCounter % 20 == 0) {
+                        MinecraftClient.getInstance().getNetworkHandler().sendPacket(new KeepAliveC2SPacket(0));
+                    }
                 }
             }
         }
     }
 
-    @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;ready:Z"))
-    private boolean modifyCloseBehaviour(DownloadingTerrainScreen instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
-            return this.ready/*TODO: Not in 1.19.2, but make the screen close faster*/ || System.currentTimeMillis() > this.loadStartTime + 2000;
-        }
+    @Override
+    public boolean viaFabricPlus$isReady() {
+        return viaFabricPlus$isReady;
+    }
 
-        return this.ready;
+    @Override
+    public void viaFabricPlus$setReady() {
+        viaFabricPlus$isReady = true;
     }
 
 }

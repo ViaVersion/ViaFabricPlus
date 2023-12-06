@@ -44,10 +44,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
 
     @Override
     public void open(Screen prevScreen) {
-        this.setupSubtitle(
-                Text.translatable("classicube.viafabricplus.account"),
-                ConfirmLinkScreen.opening(ClassiCubeHandler.CLASSICUBE_ROOT_URI.toString(), this, true)
-        );
+        this.setupSubtitle(Text.translatable("classicube.viafabricplus.account"), ConfirmLinkScreen.opening(this, ClassiCubeHandler.CLASSICUBE_ROOT_URI.toString()));
         super.open(prevScreen);
     }
 

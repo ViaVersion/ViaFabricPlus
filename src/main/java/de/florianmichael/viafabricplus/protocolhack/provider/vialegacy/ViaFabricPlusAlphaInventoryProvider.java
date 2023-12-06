@@ -67,7 +67,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
             return new Item[4];
         }
 
-        return getMinecraftContainerItems(getPlayer().playerScreenHandler.getCraftingInput().getInputStacks());
+        return getMinecraftContainerItems(getPlayer().playerScreenHandler.getCraftingInput().getHeldStacks());
     }
 
     @Override

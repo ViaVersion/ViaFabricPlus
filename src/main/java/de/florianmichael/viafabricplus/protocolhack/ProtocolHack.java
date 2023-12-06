@@ -81,7 +81,7 @@ public class ProtocolHack {
     /**
      * The native version of the client
      */
-    public static final VersionEnum NATIVE_VERSION = VersionEnum.r1_20_2;
+    public static final VersionEnum NATIVE_VERSION = VersionEnum.r1_20_3;
 
     /**
      * This field stores the target version that you set in the GUI

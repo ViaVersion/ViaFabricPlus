@@ -22,6 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import de.florianmichael.viafabricplus.fixes.data.recipe.RecipeInfo;
 import de.florianmichael.viafabricplus.fixes.data.recipe.Recipes1_11_2;
+import de.florianmichael.viafabricplus.injection.access.IDownloadingTerrainScreen;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
@@ -69,6 +70,8 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Shadow
     public abstract void onSynchronizeRecipes(SynchronizeRecipesS2CPacket packet);
 
+    @Shadow protected abstract boolean isSecureChatEnforced();
+
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
     }
@@ -90,8 +93,8 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_4);
     }
 
-    @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
-    private boolean removeUnknownPlayerListEntryWarning(Logger instance, String s, Object o) {
+    @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false))
+    private boolean removeUnknownPlayerListEntryWarning(Logger instance, String s, Object object1, Object object2) {
         return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19_3);
     }
 
@@ -111,20 +114,24 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         }
     }
 
-    @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/ServerMetadataS2CPacket;isSecureChatEnforced()Z", ordinal = 1))
-    private boolean removeSecureChatWarning(ServerMetadataS2CPacket instance) {
-        return instance.isSecureChatEnforced() || VisualSettings.global().disableSecureChatWarning.isEnabled();
+    @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;isSecureChatEnforced()Z"))
+    private boolean removeSecureChatWarning(ClientPlayNetworkHandler instance) {
+        return isSecureChatEnforced() || VisualSettings.global().disableSecureChatWarning.isEnabled();
     }
 
-    @WrapWithCondition(method = "onPlayerSpawnPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;setReady()V"))
-    private boolean moveDownloadingTerrainClosing(DownloadingTerrainScreen instance) {
-        return ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_19);
+    @Inject(method = "onPlayerSpawnPosition", at = @At("RETURN"))
+    public void moveDownloadingTerrainClosing(PlayerSpawnPositionS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_19, VersionEnum.r1_20_2)) {
+            if (this.client.currentScreen instanceof DownloadingTerrainScreen downloadingTerrainScreen) {
+                ((IDownloadingTerrainScreen) downloadingTerrainScreen).viaFabricPlus$setReady();
+            }
+        }
     }
 
     @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
     private void closeDownloadingTerrain(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1) && this.client.currentScreen instanceof DownloadingTerrainScreen downloadingTerrainScreen) {
-            downloadingTerrainScreen.setReady();
+            ((IDownloadingTerrainScreen) downloadingTerrainScreen).viaFabricPlus$setReady();
         }
     }
 

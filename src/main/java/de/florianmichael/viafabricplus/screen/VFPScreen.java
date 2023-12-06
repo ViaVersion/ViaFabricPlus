@@ -73,7 +73,7 @@ public class VFPScreen extends Screen {
      * @param subtitle The subtitle which should be rendered
      */
     public void setupUrlSubtitle(final String subtitle) {
-        this.setupSubtitle(Text.of(subtitle), ConfirmLinkScreen.opening(subtitle, this, true));
+        this.setupSubtitle(Text.of(subtitle), ConfirmLinkScreen.opening(this, subtitle));
     }
 
 
@@ -121,15 +121,7 @@ public class VFPScreen extends Screen {
 
         if (this.subtitle != null && this.subtitlePressAction != null) {
             final int subtitleWidth = textRenderer.getWidth(subtitle);
-            this.addDrawableChild(subtitleWidget = new PressableTextWidget(
-                    width / 2 - (subtitleWidth / 2),
-                    (textRenderer.fontHeight + 2) * 2 + 3,
-                    subtitleWidth,
-                    textRenderer.fontHeight + 2,
-                    subtitle,
-                    subtitlePressAction,
-                    textRenderer
-            ));
+            this.addDrawableChild(subtitleWidget = new PressableTextWidget(width / 2 - (subtitleWidth / 2), (textRenderer.fontHeight + 2) * 2 + 3, subtitleWidth, textRenderer.fontHeight + 2, subtitle, subtitlePressAction, textRenderer));
         }
     }
 

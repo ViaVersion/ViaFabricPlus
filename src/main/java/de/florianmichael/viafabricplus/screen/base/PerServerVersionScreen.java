@@ -49,7 +49,7 @@ public class PerServerVersionScreen extends VFPScreen {
     protected void init() {
         super.init();
 
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, textRenderer.fontHeight + 4));
+        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, textRenderer.fontHeight + 4));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class PerServerVersionScreen extends VFPScreen {
     public class SlotList extends AlwaysSelectedEntryListWidget<DummyProtocolSlot> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height, top, bottom, entryHeight);
+            super(minecraftClient, width, height - top - bottom, top, entryHeight);
 
             this.addEntry(new ResetProtocolSlot());
             VersionEnum.SORTED_VERSIONS.stream().map(ViaProtocolSlot::new).forEach(this::addEntry);

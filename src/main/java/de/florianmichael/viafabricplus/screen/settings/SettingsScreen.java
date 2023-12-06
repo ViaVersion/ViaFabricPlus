@@ -39,7 +39,7 @@ public class SettingsScreen extends VFPScreen {
 
     @Override
     protected void init() {
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, (textRenderer.fontHeight + 2) * 2));
+        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 2) * 2));
 
         super.init();
     }
@@ -55,7 +55,7 @@ public class SettingsScreen extends VFPScreen {
     public static class SlotList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height, top, bottom, entryHeight);
+            super(minecraftClient, width, height - top - bottom, top, entryHeight);
 
             for (SettingGroup group : ViaFabricPlus.global().getSettingsManager().getGroups()) {
                 this.addEntry(new TitleRenderer(group.getName()));

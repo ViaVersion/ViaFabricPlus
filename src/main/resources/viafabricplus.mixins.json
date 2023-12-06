@@ -52,7 +52,7 @@
     "fixes.minecraft.MixinProfileKeysImpl",
     "fixes.minecraft.MixinRedirectResolver",
     "fixes.minecraft.MixinServerAddress",
-    "fixes.minecraft.MixinServerResourcePackProvider",
+    "fixes.minecraft.MixinServerResourcePackLoader_4",
     "fixes.minecraft.MixinStringHelper",
     "fixes.minecraft.MixinTextRenderer",
     "fixes.minecraft.block.MixinAbstractBlock",

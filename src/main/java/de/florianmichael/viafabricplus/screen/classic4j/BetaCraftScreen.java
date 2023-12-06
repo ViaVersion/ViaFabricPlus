@@ -29,7 +29,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
-import net.minecraft.client.gui.screen.ConnectScreen;
+import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ServerAddress;
@@ -47,16 +47,12 @@ public class BetaCraftScreen extends VFPScreen {
 
     protected BetaCraftScreen() {
         super("BetaCraft", true);
-        this.setupSubtitle(Text.of(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.opening(
-                BETA_CRAFT_SERVER_LIST_URL,
-                this,
-                true
-        ));
+        this.setupSubtitle(Text.of(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.opening(this, BETA_CRAFT_SERVER_LIST_URL));
     }
 
     @Override
     protected void init() {
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, (textRenderer.fontHeight + 2) * 3));
+        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 2) * 3));
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.reset"), button -> {
             SERVER_LIST = null;
@@ -77,7 +73,7 @@ public class BetaCraftScreen extends VFPScreen {
     public static class SlotList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height, top, bottom, entryHeight);
+            super(minecraftClient, width, height - top - bottom, top, entryHeight);
             if (SERVER_LIST == null) return;
 
             for (BCVersionCategory value : BCVersionCategory.values()) {
