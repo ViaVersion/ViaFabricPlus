@@ -25,6 +25,7 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.libs.gson.JsonElement;
+import com.viaversion.viaversion.libs.opennbt.tag.builtin.Tag;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.ClientboundPackets1_14;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -40,7 +41,7 @@ public class TextComponentTranslator {
      * @param component The ViaVersion 1.14 text component
      * @return The native text component
      */
-    public static JsonElement via1_14toViaLatest(final JsonElement component) {
+    public static Tag via1_14toViaLatest(final JsonElement component) {
         try {
             var wrapper = PacketWrapper.create(ClientboundPackets1_14.OPEN_WINDOW, DUMMY_USER_CONNECTION);
             wrapper.write(Type.VAR_INT, 1); // window id
@@ -52,7 +53,7 @@ public class TextComponentTranslator {
 
             wrapper.read(Type.VAR_INT); // window id
             wrapper.read(Type.VAR_INT); // type id
-            return wrapper.read(Type.COMPONENT); // title
+            return wrapper.read(Type.TAG); // title
         } catch (Throwable t) {
             ViaFabricPlus.global().getLogger().error("Error converting ViaVersion 1.14 text component to native text component", t);
             return null;

@@ -68,7 +68,7 @@ public abstract class MixinInventoryPackets {
             wrapper.write(Type.STRING, uuid); // sync task id
             wrapper.write(Type.UNSIGNED_BYTE, windowId);
             wrapper.write(Type.UNSIGNED_BYTE, slots);
-            wrapper.write(Type.COMPONENT, TextComponentTranslator.via1_14toViaLatest(title));
+            wrapper.write(Type.TAG, TextComponentTranslator.via1_14toViaLatest(title));
         }
     }
 
