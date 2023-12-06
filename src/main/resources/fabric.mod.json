@@ -49,8 +49,8 @@
   "accessWidener": "viafabricplus.accesswidener",
   "depends": {
     "fabricloader": ">=0.15.0",
-    "fabric-api": ">=0.91.1+1.20.2",
-    "minecraft": "~1.20.2",
+    "fabric-api": ">=0.91.1+1.20.3",
+    "minecraft": "~1.20.3",
     "java": ">=17"
   },
   "breaks": {
