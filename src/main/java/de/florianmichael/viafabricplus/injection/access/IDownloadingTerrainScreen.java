@@ -23,6 +23,4 @@ public interface IDownloadingTerrainScreen {
 
     void viaFabricPlus$setReady();
 
-    boolean viaFabricPlus$isReady();
-
 }

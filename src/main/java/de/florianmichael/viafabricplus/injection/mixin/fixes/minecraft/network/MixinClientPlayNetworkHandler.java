@@ -121,17 +121,15 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Inject(method = "onPlayerSpawnPosition", at = @At("RETURN"))
     public void moveDownloadingTerrainClosing(PlayerSpawnPositionS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_19, VersionEnum.r1_20_2)) {
-            if (this.client.currentScreen instanceof DownloadingTerrainScreen downloadingTerrainScreen) {
-                ((IDownloadingTerrainScreen) downloadingTerrainScreen).viaFabricPlus$setReady();
-            }
+        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_19, VersionEnum.r1_20_2) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
+            mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
         }
     }
 
     @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
     private void closeDownloadingTerrain(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1) && this.client.currentScreen instanceof DownloadingTerrainScreen downloadingTerrainScreen) {
-            ((IDownloadingTerrainScreen) downloadingTerrainScreen).viaFabricPlus$setReady();
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
+            mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
         }
     }
 

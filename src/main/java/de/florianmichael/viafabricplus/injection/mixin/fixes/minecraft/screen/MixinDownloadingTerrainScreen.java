@@ -47,7 +47,7 @@ public abstract class MixinDownloadingTerrainScreen extends Screen implements ID
     private int viaFabricPlus$tickCounter;
 
     @Unique
-    private boolean viaFabricPlus$isReady;
+    private boolean viaFabricPlus$ready;
 
     @Unique
     private boolean viaFabricPlus$closeOnNextTick = false;
@@ -73,15 +73,15 @@ public abstract class MixinDownloadingTerrainScreen extends Screen implements ID
                     }
                 } else {
                     if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
-                        this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$isReady || System.currentTimeMillis() > this.loadStartTime + 2000;
+                        this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready || System.currentTimeMillis() > this.loadStartTime + 2000;
                     } else {
-                        this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$isReady;
+                        this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready;
                     }
                 }
 
             }
             if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
-                if (this.viaFabricPlus$isReady) {
+                if (this.viaFabricPlus$ready) {
                     this.close();
                 }
 
@@ -96,13 +96,8 @@ public abstract class MixinDownloadingTerrainScreen extends Screen implements ID
     }
 
     @Override
-    public boolean viaFabricPlus$isReady() {
-        return viaFabricPlus$isReady;
-    }
-
-    @Override
     public void viaFabricPlus$setReady() {
-        viaFabricPlus$isReady = true;
+        viaFabricPlus$ready = true;
     }
 
 }
