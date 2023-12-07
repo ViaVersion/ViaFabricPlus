@@ -195,7 +195,9 @@
     "viaversion.MixinAbstractFenceConnectionHandler",
     "viaversion.MixinConfig",
     "viaversion.MixinGlassConnectionHandler",
-    "viaversion.MixinProtocolVersion"
+    "viaversion.MixinProtocolVersion",
+    "fixes.minecraft.block.MixinDecoratedPotBlock",
+    "fixes.minecraft.entity.MixinAbstractHorseEntity"
   ],
   "injectors": {
     "defaultRequire": 1

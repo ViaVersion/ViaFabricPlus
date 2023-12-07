@@ -46,7 +46,6 @@ public class ViaFabricPlusViaDecoder extends ViaDecoder {
                 if (mode == 1) {
                     ChatUtil.sendPrefixedMessage(Text.literal("An error occurred while translating a packet! See more details in the logs!").formatted(Formatting.RED));
                 }
-
                 return;
             }
             throw t;

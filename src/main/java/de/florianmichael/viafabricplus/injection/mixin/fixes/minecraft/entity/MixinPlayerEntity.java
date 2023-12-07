@@ -72,6 +72,14 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         super(entityType, world);
     }
 
+    @Redirect(method = "getMaxRelativeHeadRotation", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isBlocking()Z"))
+    public boolean dontModifyHeadRotationWhenBlocking(PlayerEntity instance) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
+            return false;
+        }
+        return instance.isBlocking();
+    }
+
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setMovementSpeed(F)V"))
     private void storeSprintingState(CallbackInfo ci) {
         viaFabricPlus$isSprinting = this.isSprinting();
