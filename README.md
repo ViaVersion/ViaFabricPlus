@@ -15,7 +15,7 @@
 ViaFabricPlus is a deep integration of ViaVersion on the Fabric platform, unlike the classic Via* implementations, ViaFabricPlus implements many changes that can't be fixed on protocol level (old animations, old movement/swimming, collisions and general rendering changes).
 At the time of writing, VFP is the only protocol translation platform for the client with which you can play on all Minecraft multiplayer versions with many QoL features and get the feel of the old versions.
 ### Supported Server versions
-- Release (1.0.0 - 1.20.3)
+- Release (1.0.0 - 1.20.4)
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
