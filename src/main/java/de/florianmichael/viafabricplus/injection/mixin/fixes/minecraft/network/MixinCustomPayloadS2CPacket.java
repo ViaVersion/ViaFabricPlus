@@ -40,7 +40,7 @@ import java.util.Map;
 public abstract class MixinCustomPayloadS2CPacket {
 
     @Unique
-    private static final Map<Identifier, VersionEnum> PAYLOAD_DIFF = ImmutableMap.<Identifier, VersionEnum>builder()
+    private static final Map<Identifier, VersionEnum> viaFabricPlus$PAYLOAD_DIFF = ImmutableMap.<Identifier, VersionEnum>builder()
             .put(BrandCustomPayload.ID, VersionEnum.c0_0_15a_1)
             .put(DebugGameTestAddMarkerCustomPayload.ID, VersionEnum.r1_14)
             .put(DebugGameTestClearCustomPayload.ID, VersionEnum.r1_14)
@@ -49,7 +49,7 @@ public abstract class MixinCustomPayloadS2CPacket {
     @Redirect(method = "readPayload", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
     private static Object filterAllowedCustomPayloads(Map<?, ?> instance, Object identifier) {
         if (instance.containsKey(identifier)) {
-            if (!PAYLOAD_DIFF.containsKey(identifier) || ProtocolHack.getTargetVersion().isOlderThan(PAYLOAD_DIFF.get(identifier))) {
+            if (!viaFabricPlus$PAYLOAD_DIFF.containsKey(identifier) || ProtocolHack.getTargetVersion().isOlderThan(viaFabricPlus$PAYLOAD_DIFF.get(identifier))) {
                 return null;
             }
 
