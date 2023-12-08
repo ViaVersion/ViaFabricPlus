@@ -39,14 +39,13 @@ public abstract class MixinProtocolVersion {
     @Inject(method = "<clinit>", at = @At("HEAD"))
     private static void initMaps(CallbackInfo ci) {
         viafabricplus_remaps = new HashMap<>();
-        viafabricplus_remaps.put("1.7-1.7.5", new Pair<>("1.7.2-1.7.5", new VersionRange("1.7", 2, 5)));
         viafabricplus_remaps.put("1.9.3/4", new Pair<>("1.9.3-1.9.4", null));
         viafabricplus_remaps.put("1.11.1/2", new Pair<>("1.11.1-1.11.2", null));
         viafabricplus_remaps.put("1.16.4/5", new Pair<>("1.16.4-1.16.5", null));
         viafabricplus_remaps.put("1.18/1.18.1", new Pair<>("1.18-1.18.1", null));
         viafabricplus_remaps.put("1.19.1/2", new Pair<>("1.19.1-1.19.2", null));
         viafabricplus_remaps.put("1.20/1.20.1", new Pair<>("1.20-1.20.1", null));
-        viafabricplus_remaps.put("1.20.3", new Pair<>("1.20.3-1.20.4", null));
+        viafabricplus_remaps.put("1.20.3", new Pair<>("1.20.3-1.20.4", new VersionRange("1.20", 3, 4)));
     }
 
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
@@ -54,6 +53,9 @@ public abstract class MixinProtocolVersion {
         final Pair<String, VersionRange> remapEntry = viafabricplus_remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
+            if (remapEntry.value() != null) {
+                return ProtocolVersion.register(version, name, remapEntry.value());
+            }
         }
 
         return ProtocolVersion.register(version, name);
@@ -65,6 +67,9 @@ public abstract class MixinProtocolVersion {
         final Pair<String, VersionRange> remapEntry = viafabricplus_remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
+            if (remapEntry.value() != null) {
+                return ProtocolVersion.register(version, snapshotVersion, name, remapEntry.value());
+            }
         }
 
         return ProtocolVersion.register(version, snapshotVersion, name);
