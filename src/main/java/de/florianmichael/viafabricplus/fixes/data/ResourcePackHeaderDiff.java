@@ -81,12 +81,6 @@ public class ResourcePackHeaderDiff {
         if (!GAME_VERSION_DIFF.containsKey(ProtocolHack.NATIVE_VERSION)) {
             throw new RuntimeException("The current version has no pack format registered");
         }
-
-        final GameVersion gameVersion = GAME_VERSION_DIFF.get(ProtocolHack.NATIVE_VERSION);
-        if (!gameVersion.getName().equals(SharedConstants.getGameVersion().getName()) || !gameVersion.getId().equals(SharedConstants.getGameVersion().getId()) ||
-                gameVersion.getResourceVersion(ResourceType.CLIENT_RESOURCES) != SharedConstants.getGameVersion().getResourceVersion(ResourceType.CLIENT_RESOURCES)) {
-            throw new RuntimeException("The current version is outdated, please update to " + gameVersion.getName() + " (" + gameVersion.getId() + ")");
-        }
     }
 
     public static GameVersion get(final VersionEnum version) {
