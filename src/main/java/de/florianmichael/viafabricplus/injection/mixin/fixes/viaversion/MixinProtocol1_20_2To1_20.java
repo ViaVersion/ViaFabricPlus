@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.ServerboundPackets1_19_4;
 import com.viaversion.viaversion.protocols.protocol1_20_2to1_20.Protocol1_20_2To1_20;
 import com.viaversion.viaversion.protocols.protocol1_20_2to1_20.packet.ServerboundPackets1_20_2;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
@@ -31,10 +32,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = Protocol1_20_2To1_20.class, remap = false)
 public abstract class MixinProtocol1_20_2To1_20 {
 
-    @Inject(method = "lambda$queueServerboundPacket$11", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;setPacketType(Lcom/viaversion/viaversion/api/protocol/packet/PacketType;)V", shift = At.Shift.AFTER), cancellable = true)
+    @Inject(method = "lambda$queueServerboundPacket$11", at = @At("HEAD"), cancellable = true)
     private static void dontQueueConfigPackets(ServerboundPackets1_20_2 packetType, PacketWrapper wrapper, CallbackInfo ci) {
         if (!DebugSettings.global().queueConfigPackets.getValue()) {
             ci.cancel();
+            switch (packetType) {
+                case PLUGIN_MESSAGE -> wrapper.setPacketType(ServerboundPackets1_19_4.PLUGIN_MESSAGE);
+                case KEEP_ALIVE -> wrapper.setPacketType(ServerboundPackets1_19_4.KEEP_ALIVE);
+                case PONG -> wrapper.setPacketType(ServerboundPackets1_19_4.PONG);
+                default -> throw new IllegalStateException("Unexpected packet type: " + packetType);
+            }
         }
     }
 
