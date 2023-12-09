@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.settings.impl;
 
+import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.base.VersionedBooleanSetting;
 import net.minecraft.text.Text;
@@ -27,6 +28,8 @@ import net.raphimc.vialoader.util.VersionRange;
 
 public class DebugSettings extends SettingGroup {
     private static final DebugSettings instance = new DebugSettings();
+
+    public final BooleanSetting queueConfigPackets = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.queue_config_packets"), true);
 
     // 1.19 -> 1.18.2
     public final VersionedBooleanSetting disableSequencing = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.disable_sequencing"), VersionRange.andOlder(VersionEnum.r1_18_2));
