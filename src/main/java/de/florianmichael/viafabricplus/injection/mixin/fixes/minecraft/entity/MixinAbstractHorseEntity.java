@@ -32,14 +32,15 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(AbstractHorseEntity.class)
 public abstract class MixinAbstractHorseEntity {
 
-    @Shadow protected abstract boolean receiveFood(PlayerEntity player, ItemStack item);
+    @Shadow
+    protected abstract boolean receiveFood(PlayerEntity player, ItemStack item);
 
     @Redirect(method = "interactHorse", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AbstractHorseEntity;receiveFood(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;)Z"))
-    public boolean dontRemoveItemOnClientside(AbstractHorseEntity instance, PlayerEntity player, ItemStack item) {
+    private boolean decrementFoodItemClientside(AbstractHorseEntity instance, PlayerEntity player, ItemStack item) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
-            return false;
+            return true;
         }
-        return receiveFood(player, item);
+        return this.receiveFood(player, item);
     }
 
 }

@@ -73,7 +73,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     }
 
     @Redirect(method = "getMaxRelativeHeadRotation", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isBlocking()Z"))
-    public boolean dontModifyHeadRotationWhenBlocking(PlayerEntity instance) {
+    private boolean dontModifyHeadRotationWhenBlocking(PlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
             return false;
         }

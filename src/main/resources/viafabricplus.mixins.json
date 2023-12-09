@@ -66,6 +66,7 @@
     "fixes.minecraft.block.MixinCauldronBlock",
     "fixes.minecraft.block.MixinChestBlock",
     "fixes.minecraft.block.MixinCropBlock",
+    "fixes.minecraft.block.MixinDecoratedPotBlock",
     "fixes.minecraft.block.MixinEnderChestBlock",
     "fixes.minecraft.block.MixinEndPortalBlock",
     "fixes.minecraft.block.MixinEndPortalFrameBlock",
@@ -87,6 +88,7 @@
     "fixes.minecraft.block.MixinSoulSandBlock",
     "fixes.minecraft.block.MixinWallBlock",
     "fixes.minecraft.entity.MixinAbstractClientPlayerEntity",
+    "fixes.minecraft.entity.MixinAbstractHorseEntity",
     "fixes.minecraft.entity.MixinAnimalEntity",
     "fixes.minecraft.entity.MixinBipedEntityModel",
     "fixes.minecraft.entity.MixinBoatEntity",
@@ -195,9 +197,7 @@
     "viaversion.MixinAbstractFenceConnectionHandler",
     "viaversion.MixinConfig",
     "viaversion.MixinGlassConnectionHandler",
-    "viaversion.MixinProtocolVersion",
-    "fixes.minecraft.block.MixinDecoratedPotBlock",
-    "fixes.minecraft.entity.MixinAbstractHorseEntity"
+    "viaversion.MixinProtocolVersion"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -26,7 +26,6 @@ import de.florianmichael.viafabricplus.injection.access.IDownloadingTerrainScree
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.network.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -70,7 +69,8 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Shadow
     public abstract void onSynchronizeRecipes(SynchronizeRecipesS2CPacket packet);
 
-    @Shadow protected abstract boolean isSecureChatEnforced();
+    @Shadow
+    protected abstract boolean isSecureChatEnforced();
 
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
@@ -120,8 +120,8 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     }
 
     @Inject(method = "onPlayerSpawnPosition", at = @At("RETURN"))
-    public void moveDownloadingTerrainClosing(PlayerSpawnPositionS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_19, VersionEnum.r1_20_2) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
+    private void moveDownloadingTerrainClosing(PlayerSpawnPositionS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_18_2, VersionEnum.r1_20_2) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
             mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
         }
     }

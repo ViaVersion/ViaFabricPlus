@@ -39,7 +39,7 @@ public class TextComponentTranslator {
      * Converts a ViaVersion 1.14 text component to a native text component, both in JSON format
      *
      * @param component The ViaVersion 1.14 text component
-     * @return The native text component
+     * @return The ViaVersion text component for the native version
      */
     public static Tag via1_14toViaLatest(final JsonElement component) {
         try {
