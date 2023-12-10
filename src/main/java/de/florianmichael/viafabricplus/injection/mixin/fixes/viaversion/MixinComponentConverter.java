@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonNull;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.Tag;
-import com.viaversion.viaversion.protocols.protocol1_20_3to1_20_2.Protocol1_20_3To1_20_2;
+import com.viaversion.viaversion.protocols.protocol1_20_3to1_20_2.util.ComponentConverter;
 import net.lenni0451.mcstructs.text.ATextComponent;
 import net.lenni0451.mcstructs.text.serializer.TextComponentCodec;
 import net.lenni0451.mcstructs.text.serializer.TextComponentSerializer;
@@ -30,8 +30,8 @@ import net.raphimc.vialegacy.api.util.converter.NbtConverter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-@Mixin(value = Protocol1_20_3To1_20_2.class, remap = false)
-public abstract class MixinProtocol1_20_3To1_20_2 {
+@Mixin(value = ComponentConverter.class, remap = false)
+public abstract class MixinComponentConverter {
 
     /**
      * @author RK_01
