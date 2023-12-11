@@ -118,7 +118,6 @@ public abstract class MixinLivingEntity extends Entity {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
             return Double.MAX_VALUE;
         }
-
         return instance.getFluidHeight(tagKey);
     }
 
@@ -136,7 +135,6 @@ public abstract class MixinLivingEntity extends Entity {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             return false;
         }
-
         return jumping;
     }
 
@@ -147,7 +145,6 @@ public abstract class MixinLivingEntity extends Entity {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             return false;
         }
-
         return instance.horizontalCollision;
     }
 
@@ -156,7 +153,6 @@ public abstract class MixinLivingEntity extends Entity {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             return true;
         }
-
         return movingDown;
     }
 
@@ -165,7 +161,6 @@ public abstract class MixinLivingEntity extends Entity {
         if (!this.hasStatusEffect(StatusEffects.SLOW_FALLING) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             return;
         }
-
         instance.onLanding();
     }
 

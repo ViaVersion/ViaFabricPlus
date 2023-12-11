@@ -63,7 +63,7 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
             final Item item = itemStack.getItem();
             if (this.isTamed()) {
                 if (item.isFood()) {
-                    if (item.getFoodComponent().isMeat() && this.getWolfHealth() < 20.0F) {
+                    if (item.getFoodComponent().isMeat() && this.viaFabricPlus$getWolfHealth() < 20.0F) {
                         if (!player.getAbilities().creativeMode) itemStack.decrement(1);
                         this.heal((float) item.getFoodComponent().getHunger());
                         cir.setReturnValue(ActionResult.SUCCESS);
@@ -91,14 +91,13 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/WolfEntity;getHealth()F"))
     private float fixWolfHealth(WolfEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-            return this.getWolfHealth();
+            return this.viaFabricPlus$getWolfHealth();
         }
-
         return instance.getHealth();
     }
 
     @Unique
-    private float getWolfHealth() {
+    private float viaFabricPlus$getWolfHealth() {
         return WolfHealthTracker.get(ProtocolHack.getPlayNetworkUserConnection()).getWolfHealth(this.getId(), this.getHealth());
     }
 

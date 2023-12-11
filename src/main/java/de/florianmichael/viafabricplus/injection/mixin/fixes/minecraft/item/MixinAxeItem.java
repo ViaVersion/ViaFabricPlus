@@ -58,7 +58,6 @@ public abstract class MixinAxeItem extends MiningToolItem {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
             return false;
         }
-
         return super.isSuitableFor(state);
     }
 
@@ -76,7 +75,6 @@ public abstract class MixinAxeItem extends MiningToolItem {
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
             return viaFabricPlus$effective_materials_r1_16_5.contains(Material1_19_4.getMaterial(state)) ? this.miningSpeed : viaFabricPlus$effective_blocks_r1_16_5.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
         }
-
         return super.getMiningSpeedMultiplier(stack, state);
     }
 

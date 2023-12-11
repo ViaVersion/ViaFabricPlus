@@ -129,7 +129,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
             return 9.0E-4D;
         }
-
         return MathHelper.square(n);
     }
 
@@ -190,7 +189,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_1)) {
             return input.movementForward >= 0.8F;
         }
-
         return input.hasForwardMovement();
     }
 
@@ -210,7 +208,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             return false; // Disable all water related movement
         }
-
         return self.isTouchingWater();
     }
 
@@ -220,7 +217,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return ticksSinceLastPositionPacketSent - 1;
         }
-
         return ticksSinceLastPositionPacketSent;
     }
 

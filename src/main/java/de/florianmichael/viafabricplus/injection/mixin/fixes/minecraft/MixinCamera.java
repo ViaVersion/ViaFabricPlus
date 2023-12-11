@@ -64,7 +64,7 @@ public abstract class MixinCamera {
                     cameraY = 1.62F;
                 } else if (cameraY < 1.62F) {
                     float delta = 1.62F - cameraY;
-                    delta *= 0.4;
+                    delta *= 0.4F;
                     cameraY = 1.62F - delta;
                 }
             } else {

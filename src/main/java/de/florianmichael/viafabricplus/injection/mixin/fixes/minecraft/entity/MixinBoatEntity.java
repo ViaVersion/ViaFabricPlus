@@ -71,13 +71,13 @@ public abstract class MixinBoatEntity extends VehicleEntity {
     public abstract LivingEntity getControllingPassenger();
 
     @Unique
-    private double speedMultiplier = 0.07D;
+    private double viaFabricPlus$speedMultiplier = 0.07D;
 
     @Unique
-    private int boatInterpolationSteps;
+    private int viaFabricPlus$boatInterpolationSteps;
 
     @Unique
-    private Vec3d boatVelocity = Vec3d.ZERO;
+    private Vec3d viaFabricPlus$boatVelocity = Vec3d.ZERO;
 
     public MixinBoatEntity(EntityType<?> type, World world) {
         super(type, world);
@@ -99,19 +99,19 @@ public abstract class MixinBoatEntity extends VehicleEntity {
                 this.prevX = x;
                 this.prevY = y;
                 this.prevZ = z;
-                this.boatInterpolationSteps = 0;
+                this.viaFabricPlus$boatInterpolationSteps = 0;
                 this.setPosition(x, y, z);
                 this.setRotation(yaw, pitch);
                 this.setVelocity(Vec3d.ZERO);
-                this.boatVelocity = Vec3d.ZERO;
+                this.viaFabricPlus$boatVelocity = Vec3d.ZERO;
             } else {
                 if (!this.hasPassengers()) {
-                    this.boatInterpolationSteps = interpolationSteps + 5;
+                    this.viaFabricPlus$boatInterpolationSteps = interpolationSteps + 5;
                 } else {
                     if (this.squaredDistanceTo(x, y, z) <= 1) {
                         return;
                     }
-                    this.boatInterpolationSteps = 3;
+                    this.viaFabricPlus$boatInterpolationSteps = 3;
                 }
 
                 this.x = x;
@@ -119,7 +119,7 @@ public abstract class MixinBoatEntity extends VehicleEntity {
                 this.z = z;
                 this.boatYaw = yaw;
                 this.boatPitch = pitch;
-                this.setVelocity(this.boatVelocity);
+                this.setVelocity(this.viaFabricPlus$boatVelocity);
             }
         }
     }
@@ -129,7 +129,7 @@ public abstract class MixinBoatEntity extends VehicleEntity {
         super.setVelocityClient(x, y, z);
 
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            this.boatVelocity = new Vec3d(x, y, z);
+            this.viaFabricPlus$boatVelocity = new Vec3d(x, y, z);
         }
     }
 
@@ -180,13 +180,13 @@ public abstract class MixinBoatEntity extends VehicleEntity {
             }
 
             if (this.getWorld().isClient && !this.hasPassengers()) {
-                if (this.boatInterpolationSteps > 0) {
-                    final double newX = this.getX() + (this.x - this.getX()) / this.boatInterpolationSteps;
-                    final double newY = this.getY() + (this.y - this.getY()) / this.boatInterpolationSteps;
-                    final double newZ = this.getZ() + (this.z - this.getZ()) / this.boatInterpolationSteps;
-                    final double newYaw = this.getYaw() + MathHelper.wrapDegrees(this.boatYaw - this.getYaw()) / this.boatInterpolationSteps;
-                    final double newPitch = this.getPitch() + (this.boatPitch - this.getPitch()) / this.boatInterpolationSteps;
-                    this.boatInterpolationSteps--;
+                if (this.viaFabricPlus$boatInterpolationSteps > 0) {
+                    final double newX = this.getX() + (this.x - this.getX()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newY = this.getY() + (this.y - this.getY()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newZ = this.getZ() + (this.z - this.getZ()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newYaw = this.getYaw() + MathHelper.wrapDegrees(this.boatYaw - this.getYaw()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newPitch = this.getPitch() + (this.boatPitch - this.getPitch()) / this.viaFabricPlus$boatInterpolationSteps;
+                    this.viaFabricPlus$boatInterpolationSteps--;
                     this.setPosition(newX, newY, newZ);
                     this.setRotation((float) newYaw, (float) newPitch);
                 } else {
@@ -210,19 +210,19 @@ public abstract class MixinBoatEntity extends VehicleEntity {
                 if (this.getControllingPassenger() != null) {
                     final LivingEntity passenger = this.getControllingPassenger();
                     if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_5_2)) {
-                        final double xAcceleration = passenger.getVelocity().x * this.speedMultiplier;
-                        final double zAcceleration = passenger.getVelocity().z * this.speedMultiplier;
+                        final double xAcceleration = passenger.getVelocity().x * this.viaFabricPlus$speedMultiplier;
+                        final double zAcceleration = passenger.getVelocity().z * this.viaFabricPlus$speedMultiplier;
                         this.setVelocity(this.getVelocity().add(xAcceleration, 0, zAcceleration));
                     } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
                         if (passenger.forwardSpeed > 0) {
-                            final double xAcceleration = -Math.sin(passenger.getYaw() * Math.PI / 180) * this.speedMultiplier * 0.05D;
-                            final double zAcceleration = Math.cos(passenger.getYaw() * Math.PI / 180) * this.speedMultiplier * 0.05D;
+                            final double xAcceleration = -Math.sin(passenger.getYaw() * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * 0.05D;
+                            final double zAcceleration = Math.cos(passenger.getYaw() * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * 0.05D;
                             this.setVelocity(this.getVelocity().add(xAcceleration, 0, zAcceleration));
                         }
                     } else {
                         final float boatAngle = passenger.getYaw() - passenger.sidewaysSpeed * 90F;
-                        final double xAcceleration = -Math.sin(boatAngle * Math.PI / 180) * this.speedMultiplier * passenger.forwardSpeed * 0.05D;
-                        final double zAcceleration = Math.cos(boatAngle * Math.PI / 180) * this.speedMultiplier * passenger.forwardSpeed * 0.05D;
+                        final double xAcceleration = -Math.sin(boatAngle * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * passenger.forwardSpeed * 0.05D;
+                        final double zAcceleration = Math.cos(boatAngle * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * passenger.forwardSpeed * 0.05D;
                         this.setVelocity(this.getVelocity().add(xAcceleration, 0, zAcceleration));
                     }
                 }
@@ -234,15 +234,15 @@ public abstract class MixinBoatEntity extends VehicleEntity {
                     newHorizontalSpeed = 0.35D;
                 }
 
-                if (newHorizontalSpeed > oldHorizontalSpeed && this.speedMultiplier < 0.35D) {
-                    this.speedMultiplier += (0.35D - this.speedMultiplier) / 35;
-                    if (this.speedMultiplier > 0.35D) {
-                        this.speedMultiplier = 0.35D;
+                if (newHorizontalSpeed > oldHorizontalSpeed && this.viaFabricPlus$speedMultiplier < 0.35D) {
+                    this.viaFabricPlus$speedMultiplier += (0.35D - this.viaFabricPlus$speedMultiplier) / 35;
+                    if (this.viaFabricPlus$speedMultiplier > 0.35D) {
+                        this.viaFabricPlus$speedMultiplier = 0.35D;
                     }
                 } else {
-                    this.speedMultiplier -= (this.speedMultiplier - 0.07D) / 35;
-                    if (this.speedMultiplier < 0.07D) {
-                        this.speedMultiplier = 0.07D;
+                    this.viaFabricPlus$speedMultiplier -= (this.viaFabricPlus$speedMultiplier - 0.07D) / 35;
+                    if (this.viaFabricPlus$speedMultiplier < 0.07D) {
+                        this.viaFabricPlus$speedMultiplier = 0.07D;
                     }
                 }
 
