@@ -63,20 +63,30 @@ public class ItemTranslator {
             user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, wrapper);
 
             wrapper.read(Type.SHORT); // slot
-            if (targetVersion.isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
-                return wrapper.read(Typesb1_8_0_1.CREATIVE_ITEM);
-            } else if (targetVersion.isOlderThan(VersionEnum.r1_13)) {
-                return wrapper.read(Type.ITEM1_8);
-            } else if (targetVersion.isOlderThan(VersionEnum.r1_13_2)) {
-                return wrapper.read(Type.ITEM1_13);
-            } else if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
-                return wrapper.read(Type.ITEM1_13_2);
-            } else {
-                return wrapper.read(Type.ITEM1_20_2);
-            }
+            return wrapper.read(getItemType(targetVersion)); // item
         } catch (Throwable t) {
             ViaFabricPlus.global().getLogger().error("Error converting native item stack to ViaVersion " + targetVersion + " item stack", t);
             return null;
+        }
+    }
+
+    /**
+     * Gets the ViaVersion item type for the target version
+     *
+     * @param targetVersion The target version
+     * @return The ViaVersion item type
+     */
+    public static Type<Item> getItemType(final VersionEnum targetVersion) {
+        if (targetVersion.isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+            return Typesb1_8_0_1.CREATIVE_ITEM;
+        } else if (targetVersion.isOlderThan(VersionEnum.r1_13)) {
+            return Type.ITEM1_8;
+        } else if (targetVersion.isOlderThan(VersionEnum.r1_13_2)) {
+            return Type.ITEM1_13;
+        } else if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
+            return Type.ITEM1_13_2;
+        } else {
+            return Type.ITEM1_20_2;
         }
     }
 
