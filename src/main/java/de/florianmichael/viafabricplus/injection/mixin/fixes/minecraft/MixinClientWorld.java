@@ -70,7 +70,7 @@ public abstract class MixinClientWorld extends World {
 
     /**
      * @author RK_01
-     * @reason ProtocolHack
+     * @reason Versions <= 1.8.x and >= 1.17 always tick entities, even if they are not in a loaded chunk.
      */
     @Overwrite
     public void tickEntity(Entity entity) {
@@ -93,7 +93,7 @@ public abstract class MixinClientWorld extends World {
 
     /**
      * @author RK_01
-     * @reason ProtocolHack
+     * @reason Versions <= 1.8.x and >= 1.17 always tick entities, even if they are not in a loaded chunk.
      */
     @Overwrite
     private void tickPassenger(Entity entity, Entity passenger) {
