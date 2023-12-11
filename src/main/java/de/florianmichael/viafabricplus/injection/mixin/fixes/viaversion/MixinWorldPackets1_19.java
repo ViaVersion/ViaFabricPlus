@@ -49,8 +49,8 @@ public abstract class MixinWorldPackets1_19 {
                     final var action = data.readEnumConstant(PlayerActionC2SPacket.Action.class);
                     final var allGood = data.readBoolean();
 
-                    final IClientPlayerInteractionManager interactionManager = (IClientPlayerInteractionManager) MinecraftClient.getInstance().interactionManager;
-                    interactionManager.viaFabricPlus$get1_18_2InteractionManager().handleBlockBreakAck(pos, blockState, action, allGood);
+                    final var mixinInteractionManager = (IClientPlayerInteractionManager) MinecraftClient.getInstance().interactionManager;
+                    mixinInteractionManager.viaFabricPlus$get1_18_2InteractionManager().handleBlockBreakAck(pos, blockState, action, allGood);
                 } catch (Throwable t) {
                     throw new RuntimeException("Failed to handle BlockBreakAck packet data", t);
                 }
