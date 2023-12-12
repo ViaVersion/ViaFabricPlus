@@ -49,14 +49,10 @@ public abstract class AbstractSave {
      */
     public void init() {
         if (file.exists()) {
-            JsonObject parentNode = null;
             try (final FileReader fr = new FileReader(file)) {
-                parentNode = GSON.fromJson(fr, JsonObject.class);
+                read(GSON.fromJson(fr, JsonObject.class));
             } catch (Exception e) {
                 ViaFabricPlus.global().getLogger().error("Failed to read file: " + file.getName() + "!");
-            }
-            if (parentNode != null) {
-                read(parentNode);
             }
         }
     }
