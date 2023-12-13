@@ -19,23 +19,23 @@
 
 package de.florianmichael.viafabricplus.settings.impl;
 
-import net.raphimc.vialoader.util.VersionEnum;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.base.VersionedBooleanSetting;
 import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class VisualSettings extends SettingGroup {
     private static final VisualSettings instance = new VisualSettings();
+
+    // 1.20.3 -> 1.20.2 and 1.16 -> 1.15.2
+    public final VersionedBooleanSetting removeNewerFeaturesFromJigsawScreen = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen"), VersionRange.andOlder(VersionEnum.r1_20_2));
 
     // 1.19.2 -> 1.19
     public final VersionedBooleanSetting disableSecureChatWarning = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.disable_secure_chat_warning"), VersionRange.andOlder(VersionEnum.r1_19));
 
     // 1.19 -> 1.18.2
     public final VersionedBooleanSetting hideSignatureIndicator = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_signature_indicator"), VersionRange.andOlder(VersionEnum.r1_18_2));
-
-    // 1.16 -> 1.15.2
-    public final VersionedBooleanSetting removeNewerFeaturesFromJigsawScreen = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen"), VersionRange.andOlder(VersionEnum.r1_15_2));
 
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting replacePetrifiedOakSlab = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.replace_petrified_oak_slab"), VersionRange.of(VersionEnum.r1_3_1tor1_3_2, VersionEnum.r1_12_2));
