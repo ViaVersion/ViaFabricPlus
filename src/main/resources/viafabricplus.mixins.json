@@ -113,6 +113,7 @@
     "fixes.minecraft.item.MixinAxeItem",
     "fixes.minecraft.item.MixinBlockItem",
     "fixes.minecraft.item.MixinBowItem",
+    "fixes.minecraft.item.MixinBrushItem",
     "fixes.minecraft.item.MixinDrawContext",
     "fixes.minecraft.item.MixinEnderPearlItem",
     "fixes.minecraft.item.MixinEquipment",
