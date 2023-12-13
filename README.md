@@ -105,9 +105,7 @@ repositories {
 }
 
 dependencies {
-    implementation ("de.florianmichael:viafabricplus:2.9.5") { // Get the latest version from releases
-        transitive = false
-    }
+    modImplementation("de.florianmichael:viafabricplus:3.0.2") // Get the latest version from releases
 }
 ```
 
@@ -123,7 +121,7 @@ dependencies {
     <dependency>
         <groupId>de.florianmichael</groupId>
         <artifactId>viafabricplus</artifactId>
-        <version>2.9.5</version> <!-- Get the latest version from releases -->
+        <version>3.0.2</version> <!-- Get the latest version from releases -->
     </dependency>
 </dependencies>
 ```
