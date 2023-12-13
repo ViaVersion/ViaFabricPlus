@@ -239,4 +239,11 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         return f;
     }
 
+    @Inject(method = "getReachDistance", at = @At("RETURN"), cancellable = true)
+    private static void modifyReachDistance(boolean creative, CallbackInfoReturnable<Float> cir) {
+        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_0_0tor1_0_1) && !creative) {
+            cir.setReturnValue(4F);
+        }
+    }
+
 }

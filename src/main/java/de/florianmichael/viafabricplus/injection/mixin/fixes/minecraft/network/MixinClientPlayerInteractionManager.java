@@ -292,13 +292,6 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
         }
     }
 
-    @Inject(method = "getReachDistance", at = @At("RETURN"), cancellable = true)
-    private void modifyReachDistance(CallbackInfoReturnable<Float> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_0_0tor1_0_1) && !this.gameMode.isCreative()) {
-            cir.setReturnValue(4F);
-        }
-    }
-
     @Unique
     private boolean extinguishFire(BlockPos blockPos, final Direction direction) {
         blockPos = blockPos.offset(direction);
