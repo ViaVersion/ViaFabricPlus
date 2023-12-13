@@ -50,6 +50,7 @@ import java.util.concurrent.CompletableFuture;
  *  - Older versions don't clamp positions when teleporting (Is this important?)
  */
 public class ViaFabricPlus {
+
     private static final ViaFabricPlus instance = new ViaFabricPlus();
 
     private final Logger logger = LogManager.getLogger("ViaFabricPlus");
