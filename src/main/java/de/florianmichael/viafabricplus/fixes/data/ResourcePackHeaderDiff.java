@@ -35,6 +35,7 @@ public class ResourcePackHeaderDiff {
     private final static Map<VersionEnum, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     static {
+        registerVersion(VersionEnum.r1_20_5, 22, "23w51b");
         registerVersion(VersionEnum.r1_20_3tor1_20_4, 22, "1.20.4");
         registerVersion(VersionEnum.r1_20_2, 18, "1.20.2");
         registerVersion(VersionEnum.r1_20tor1_20_1, 15, "1.20.1");
