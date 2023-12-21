@@ -60,7 +60,7 @@ public class ResourcePackHeaderDiff {
         registerVersion(VersionEnum.r1_14_2, 4, "1.14.2");
         registerVersion(VersionEnum.r1_14_1, 4, "1.14.1");
         registerVersion(VersionEnum.r1_14, 4, "1.14");
-        registerVersion(VersionEnum.r1_13_2, 4, "1.13.2"); // pack format ids weren't sent over the http headers back then
+        registerVersion(VersionEnum.r1_13_2, 4, "1.13.2");
         registerVersion(VersionEnum.r1_13_1, 4, "1.13.1");
         registerVersion(VersionEnum.r1_13, 4, "1.13");
         registerVersion(VersionEnum.r1_12_2, 3, "1.12.2");
