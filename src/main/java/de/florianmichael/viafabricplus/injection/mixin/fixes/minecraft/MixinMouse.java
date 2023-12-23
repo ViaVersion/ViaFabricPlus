@@ -19,6 +19,8 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import de.florianmichael.viafabricplus.injection.access.IMouseKeyboard;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
@@ -56,13 +58,15 @@ public abstract class MixinMouse implements IMouseKeyboard {
         }
     }
 
-    @Redirect(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/SimpleOption;getValue()Ljava/lang/Object;", ordinal = 0))
-    private Object adjustMouseSensitivity1_13_2(SimpleOption<Double> instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
-            return (double) MathUtil.get1_13SliderValue(instance.getValue().floatValue()).keyFloat();
-        }
+    @WrapOperation(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/SimpleOption;getValue()Ljava/lang/Object;", ordinal = 0))
+    private Object adjustMouseSensitivity1_13_2(SimpleOption<Double> instance, Operation<Double> original) {
+        final Double value = original.call(instance);
 
-        return instance.getValue();
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+            return (double) MathUtil.get1_13SliderValue(value.floatValue()).keyFloat();
+        } else {
+            return value;
+        }
     }
 
     @Override
