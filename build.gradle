@@ -1,6 +1,7 @@
 plugins {
 	id "fabric-loom" version "1.4-SNAPSHOT"
 	id "maven-publish"
+	id "idea"
 }
 
 base {
@@ -152,6 +153,15 @@ publishing {
 			version = project.mod_version
 
 			from components.java
+		}
+	}
+}
+
+
+idea {
+	module {
+		["run"].each {
+			excludeDirs << file("$it")
 		}
 	}
 }
