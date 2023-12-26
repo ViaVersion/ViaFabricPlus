@@ -155,3 +155,11 @@ publishing {
 		}
 	}
 }
+
+idea {
+	module {
+		["run"].each {
+			excludeDirs << file("$it")
+		}
+	}
+}
