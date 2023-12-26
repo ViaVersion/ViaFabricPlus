@@ -17,25 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.provider.viaversion;
+package de.florianmichael.viafabricplus.protocolhack.impl.provider.viaversion;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.minecraft.item.Item;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
-import de.florianmichael.viafabricplus.protocolhack.translator.ItemTranslator;
-import net.minecraft.item.ItemStack;
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.minecraft.Position;
+import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.PlayerLookTargetProvider;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
 
-public class ViaFabricPlusHandItemProvider extends HandItemProvider {
-    public static ItemStack lastUsedItem = null;
+public class ViaFabricPlusPlayerLookTargetProvider extends PlayerLookTargetProvider {
 
     @Override
-    public Item getHandItem(UserConnection info) {
-        if (lastUsedItem == null || lastUsedItem.isEmpty()) {
-            return null;
+    public Position getPlayerLookTarget(UserConnection info) {
+        if (MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult blockHitResult) {
+            final BlockPos pos = blockHitResult.getBlockPos();
+            return new Position(pos.getX(), pos.getY(), pos.getZ());
         }
 
-        return ItemTranslator.mcToVia(lastUsedItem, VersionEnum.r1_8);
+        return null;
     }
 
 }

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.provider.viabedrock;
+package de.florianmichael.viafabricplus.protocolhack.impl.provider.viabedrock;
 
 import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 

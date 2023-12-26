@@ -24,7 +24,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
+import de.florianmichael.viafabricplus.protocolhack.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.protocolhack.util.ProtocolVersionDetector;
 import de.florianmichael.viafabricplus.protocolhack.util.VersionEnumExtension;
 import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;

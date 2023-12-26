@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.fixes.classic.command;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;
-import de.florianmichael.viafabricplus.protocolhack.command.VFPViaSubCommand;
+import de.florianmichael.viafabricplus.protocolhack.impl.command.VFPViaSubCommand;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 import net.raphimc.vialoader.util.VersionEnum;

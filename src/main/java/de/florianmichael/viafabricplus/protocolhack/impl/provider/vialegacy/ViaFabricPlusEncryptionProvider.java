@@ -17,21 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.provider.viaversion;
+package de.florianmichael.viafabricplus.protocolhack.impl.provider.vialegacy;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
+import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
 
-public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
+public class ViaFabricPlusEncryptionProvider extends EncryptionProvider {
 
     @Override
-    public int getClosestServerProtocol(UserConnection connection) throws Exception {
-        if (connection.isClientSide()) {
-            return connection.getChannel().attr(ProtocolHack.TARGET_VERSION_ATTRIBUTE_KEY).get().getVersion();
-        }
-
-        return super.getClosestServerProtocol(connection);
+    public void enableDecryption(UserConnection user) {
+        ((IClientConnection) user.getChannel().attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get()).viaFabricPlus$setupPreNettyDecryption();
     }
 
 }

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.impl;
+package de.florianmichael.viafabricplus.protocolhack.impl.viaversion;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.minecraft.signature.SignableCommandArgumentsProvider;
@@ -27,11 +27,11 @@ import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.Player
 import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.provider.PlayerAbilitiesProvider;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.provider.AckSequenceProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusTransferProvider;
-import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.*;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.*;
+import de.florianmichael.viafabricplus.protocolhack.impl.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
+import de.florianmichael.viafabricplus.protocolhack.impl.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
+import de.florianmichael.viafabricplus.protocolhack.impl.provider.viabedrock.ViaFabricPlusTransferProvider;
+import de.florianmichael.viafabricplus.protocolhack.impl.provider.vialegacy.*;
+import de.florianmichael.viafabricplus.protocolhack.impl.provider.viaversion.*;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
 import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;

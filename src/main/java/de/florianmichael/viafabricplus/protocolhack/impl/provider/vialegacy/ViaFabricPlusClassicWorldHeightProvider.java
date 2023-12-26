@@ -17,15 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.provider.viaversion;
+package de.florianmichael.viafabricplus.protocolhack.impl.provider.vialegacy;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.provider.AckSequenceProvider;
+import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
 
-public class ViaFabricPlusAckSequenceProvider extends AckSequenceProvider {
+public class ViaFabricPlusClassicWorldHeightProvider extends ClassicWorldHeightProvider {
 
     @Override
-    public void handleSequence(UserConnection connection, int sequence) {
+    public short getMaxChunkSectionCount(UserConnection user) {
+        return 64;
     }
 
 }

@@ -17,25 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.provider.viaversion;
+package de.florianmichael.viafabricplus.protocolhack.impl.viaversion;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.minecraft.Position;
-import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.PlayerLookTargetProvider;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
+import net.raphimc.vialoader.impl.viaversion.VLViaConfig;
 
-public class ViaFabricPlusPlayerLookTargetProvider extends PlayerLookTargetProvider {
+import java.io.File;
+
+public class ViaFabricPlusVLViaConfig extends VLViaConfig {
+
+    public ViaFabricPlusVLViaConfig(File configFile) {
+        super(configFile);
+
+        UNSUPPORTED.add("simulate-pt");
+    }
 
     @Override
-    public Position getPlayerLookTarget(UserConnection info) {
-        if (MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult blockHitResult) {
-            final BlockPos pos = blockHitResult.getBlockPos();
-            return new Position(pos.getX(), pos.getY(), pos.getZ());
-        }
-
-        return null;
+    public boolean isSimulatePlayerTick() {
+        return false;
     }
 
 }

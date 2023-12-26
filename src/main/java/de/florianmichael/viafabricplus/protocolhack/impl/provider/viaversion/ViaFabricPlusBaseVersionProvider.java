@@ -17,23 +17,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.impl;
+package de.florianmichael.viafabricplus.protocolhack.impl.provider.viaversion;
 
-import net.raphimc.vialoader.impl.viaversion.VLViaConfig;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 
-import java.io.File;
-
-public class ViaFabricPlusVLViaConfig extends VLViaConfig {
-
-    public ViaFabricPlusVLViaConfig(File configFile) {
-        super(configFile);
-
-        UNSUPPORTED.add("simulate-pt");
-    }
+public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
 
     @Override
-    public boolean isSimulatePlayerTick() {
-        return false;
+    public int getClosestServerProtocol(UserConnection connection) throws Exception {
+        if (connection.isClientSide()) {
+            return connection.getChannel().attr(ProtocolHack.TARGET_VERSION_ATTRIBUTE_KEY).get().getVersion();
+        }
+
+        return super.getClosestServerProtocol(connection);
     }
 
 }

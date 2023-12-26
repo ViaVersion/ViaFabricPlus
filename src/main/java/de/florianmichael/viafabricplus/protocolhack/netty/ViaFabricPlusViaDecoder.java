@@ -44,9 +44,10 @@ public class ViaFabricPlusViaDecoder extends ViaDecoder {
             try {
                 super.channelRead(ctx, msg);
             } catch (Throwable t) {
-                ViaFabricPlus.global().getLogger().error("Error occurred while decoding packet in ViaDecoder", t); // Mode 2: Just log the error
+                // Mode 2: Just log the error
+                ViaFabricPlus.global().getLogger().error("Error occurred while decoding packet in ViaDecoder", t);
                 if (mode == 1) {
-                    // Mode 1: Send a message to the player that an error occurred and the previous mode
+                    // Mode 1: Send a message to the player that an error occurred and log the error
                     ChatUtil.sendPrefixedMessage(Text.literal("An error occurred while translating a packet! See more details in the logs!").formatted(Formatting.RED));
                 }
             }

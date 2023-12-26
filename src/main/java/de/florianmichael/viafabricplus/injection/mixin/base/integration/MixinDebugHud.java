@@ -29,7 +29,7 @@ import de.florianmichael.viafabricplus.injection.access.IBlobCache;
 import de.florianmichael.viafabricplus.injection.access.IChunkTracker;
 import de.florianmichael.viafabricplus.injection.access.IRakSessionCodec;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
+import de.florianmichael.viafabricplus.protocolhack.impl.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import de.florianmichael.viafabricplus.util.StringUtil;

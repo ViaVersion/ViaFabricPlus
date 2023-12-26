@@ -31,7 +31,7 @@ import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerInteractionManager;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.provider.viaversion.ViaFabricPlusHandItemProvider;
+import de.florianmichael.viafabricplus.protocolhack.impl.provider.viaversion.ViaFabricPlusHandItemProvider;
 import de.florianmichael.viafabricplus.protocolhack.translator.ItemTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;

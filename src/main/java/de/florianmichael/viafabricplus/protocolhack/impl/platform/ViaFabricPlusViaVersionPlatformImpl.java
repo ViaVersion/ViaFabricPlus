@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.protocolhack.impl.platform;
 
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
-import de.florianmichael.viafabricplus.protocolhack.impl.ViaFabricPlusVLViaConfig;
+import de.florianmichael.viafabricplus.protocolhack.impl.viaversion.ViaFabricPlusVLViaConfig;
 import net.raphimc.vialoader.impl.platform.ViaVersionPlatformImpl;
 
 import java.io.File;

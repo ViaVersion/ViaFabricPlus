@@ -17,22 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.provider.viaversion;
+package de.florianmichael.viafabricplus.protocolhack.impl.provider.viaversion;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.provider.PlayerAbilitiesProvider;
-import net.minecraft.client.MinecraftClient;
+import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.provider.AckSequenceProvider;
 
-public class ViaFabricPlusPlayerAbilitiesProvider extends PlayerAbilitiesProvider {
-
-    @Override
-    public float getFlyingSpeed(UserConnection connection) {
-        return MinecraftClient.getInstance().player.getAbilities().getFlySpeed();
-    }
+public class ViaFabricPlusAckSequenceProvider extends AckSequenceProvider {
 
     @Override
-    public float getWalkingSpeed(UserConnection connection) {
-        return MinecraftClient.getInstance().player.getAbilities().getWalkSpeed();
+    public void handleSequence(UserConnection connection, int sequence) {
     }
 
 }

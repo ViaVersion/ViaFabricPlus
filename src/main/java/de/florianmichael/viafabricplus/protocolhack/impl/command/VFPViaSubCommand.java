@@ -17,41 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.command;
+package de.florianmichael.viafabricplus.protocolhack.impl.command;
 
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.command.CommandSource;
-import net.minecraft.text.Text;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
+import com.viaversion.viaversion.api.command.ViaSubCommand;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.util.ChatUtil;
 
-import java.util.UUID;
+public abstract class VFPViaSubCommand extends ViaSubCommand {
 
-public class ViaFabricPlusViaCommandSender implements ViaCommandSender {
-
-    private final CommandSource source;
-
-    public ViaFabricPlusViaCommandSender(final CommandSource source) {
-        this.source = source;
+    /**
+     * Automatically prefix all messages
+     */
+    public void sendMessage(final ViaCommandSender sender, final String message) {
+        ViaSubCommand.sendMessage(sender, ChatUtil.PREFIX + " " + message);
     }
 
-    @Override
-    public boolean hasPermission(String s) {
-        return true;
-    }
-
-    @Override
-    public void sendMessage(String s) {
-        ((FabricClientCommandSource) source).sendFeedback(Text.of(s));
-    }
-
-    @Override
-    public UUID getUUID() {
-        return ((FabricClientCommandSource) source).getPlayer().getUuid();
-    }
-
-    @Override
-    public String getName() {
-        return ((FabricClientCommandSource) source).getPlayer().getName().getString();
+    public UserConnection getUser() {
+        return ProtocolHack.getPlayNetworkUserConnection();
     }
 
 }

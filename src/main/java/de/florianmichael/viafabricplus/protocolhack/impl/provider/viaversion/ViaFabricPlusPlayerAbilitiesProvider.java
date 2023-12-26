@@ -17,16 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.provider.vialegacy;
+package de.florianmichael.viafabricplus.protocolhack.impl.provider.viaversion;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
+import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.provider.PlayerAbilitiesProvider;
+import net.minecraft.client.MinecraftClient;
 
-public class ViaFabricPlusClassicWorldHeightProvider extends ClassicWorldHeightProvider {
+public class ViaFabricPlusPlayerAbilitiesProvider extends PlayerAbilitiesProvider {
 
     @Override
-    public short getMaxChunkSectionCount(UserConnection user) {
-        return 64;
+    public float getFlyingSpeed(UserConnection connection) {
+        return MinecraftClient.getInstance().player.getAbilities().getFlySpeed();
+    }
+
+    @Override
+    public float getWalkingSpeed(UserConnection connection) {
+        return MinecraftClient.getInstance().player.getAbilities().getWalkSpeed();
     }
 
 }

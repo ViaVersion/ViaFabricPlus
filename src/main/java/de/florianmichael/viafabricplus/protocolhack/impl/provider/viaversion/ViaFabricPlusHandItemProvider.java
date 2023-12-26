@@ -17,18 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.protocolhack.provider.vialegacy;
+package de.florianmichael.viafabricplus.protocolhack.impl.provider.viaversion;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.injection.access.IClientConnection;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
+import com.viaversion.viaversion.api.minecraft.item.Item;
+import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
+import de.florianmichael.viafabricplus.protocolhack.translator.ItemTranslator;
+import net.minecraft.item.ItemStack;
+import net.raphimc.vialoader.util.VersionEnum;
 
-public class ViaFabricPlusEncryptionProvider extends EncryptionProvider {
+public class ViaFabricPlusHandItemProvider extends HandItemProvider {
+    public static ItemStack lastUsedItem = null;
 
     @Override
-    public void enableDecryption(UserConnection user) {
-        ((IClientConnection) user.getChannel().attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get()).viaFabricPlus$setupPreNettyDecryption();
+    public Item getHandItem(UserConnection info) {
+        if (lastUsedItem == null || lastUsedItem.isEmpty()) {
+            return null;
+        }
+
+        return ItemTranslator.mcToVia(lastUsedItem, VersionEnum.r1_8);
     }
 
 }
