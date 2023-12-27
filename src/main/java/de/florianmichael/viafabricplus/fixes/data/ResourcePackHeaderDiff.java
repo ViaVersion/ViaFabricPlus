@@ -81,12 +81,9 @@ public class ResourcePackHeaderDiff {
     }
 
     /**
-     * Checks if {@link ProtocolHack#NATIVE_VERSION} is outdated and throws an exception if it is.
+     * Checks if the registry is outdated.
      */
     public static void checkOutdated() {
-        if (!GAME_VERSION_DIFF.containsKey(ProtocolHack.NATIVE_VERSION)) {
-            throw new RuntimeException("The current version has no pack format registered");
-        }
         for (VersionEnum version : VersionEnum.OFFICIAL_SUPPORTED_PROTOCOLS) {
             if (version.getProtocol().isSnapshot()) continue;
             if (!GAME_VERSION_DIFF.containsKey(version)) {
