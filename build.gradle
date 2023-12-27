@@ -63,19 +63,12 @@ dependencies {
 
 	// ViaVersion Libraries
 	jij "com.viaversion:viaversion-common:${project.viaversion_version}"
-	jij ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
-		exclude group: "com.viaversion", module: "viaversion"
-		exclude group: "io.netty", module: "netty-all"
-		exclude group: "com.google.guava", module: "guava"
-	}
-	jij ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
-		exclude group: "com.google.code.gson", module: "gson"
-	}
+	jij "com.viaversion:viabackwards-common:${project.viabackwards_version}"
+	jij "net.raphimc:ViaLegacy:${project.vialegacy_version}"
 	jij "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
 	jij ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
 		exclude group: "io.netty"
 		exclude group: "io.jsonwebtoken"
-		exclude group: "net.lenni0451.mcstructs", module: "text"
 		exclude group: "com.mojang", module: "brigadier"
 	}
 	jij ("net.raphimc:ViaLoader:${project.vialoader_version}") {
