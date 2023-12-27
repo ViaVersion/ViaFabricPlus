@@ -59,7 +59,6 @@
   "debug_settings.viafabricplus.replace_sneaking": "Replace sneaking",
   "debug_settings.viafabricplus.long_sneaking": "Long sneaking",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Legacy mining speeds",
-  "debug_settings.viafabricplus.skip_containers_with_custom_display_names": "Skip containers with custom display names",
   "debug_settings.viafabricplus.prevent_entity_cramming": "Prevent entity cramming",
   "debug_settings.viafabricplus.always_tick_client_player": "Always tick client player",
 

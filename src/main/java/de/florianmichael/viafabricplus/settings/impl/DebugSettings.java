@@ -40,7 +40,6 @@ public class DebugSettings extends SettingGroup {
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting executeInputsInSync = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.execute_inputs_in_sync"), VersionRange.andOlder(VersionEnum.r1_12_2));
     public final VersionedBooleanSetting sneakInstant = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.sneak_instant"), VersionRange.of(VersionEnum.r1_8, VersionEnum.r1_12_2));
-    public final VersionedBooleanSetting skipContainersWithCustomDisplayNames = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.skip_containers_with_custom_display_names"), VersionRange.andOlder(VersionEnum.r1_12_2));
 
     // 1.12 -> 1.11.1-1.11.2
     public final VersionedBooleanSetting sendOpenInventoryPacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_open_inventory_packet"), VersionRange.andOlder(VersionEnum.r1_11_1to1_11_2));

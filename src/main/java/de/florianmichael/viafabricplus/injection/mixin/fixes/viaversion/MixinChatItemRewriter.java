@@ -20,8 +20,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.libs.mcstructs.snbt.SNbtSerializer;
 import com.viaversion.viaversion.protocols.protocol1_12to1_11_1.ChatItemRewriter;
-import net.lenni0451.mcstructs.snbt.SNbtSerializer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
