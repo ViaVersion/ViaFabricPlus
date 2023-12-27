@@ -37,7 +37,7 @@ public class EntityDimensionReplacements {
     /**
      * A map of entity types to a map of versions to dimensions.
      */
-    public static final Map<EntityType<?>, Map<VersionEnum, EntityDimensions>> ENTITY_DIMENSIONS = linkedHashMap(
+    private static final Map<EntityType<?>, Map<VersionEnum, EntityDimensions>> entityDimensions = linkedHashMap(
             EntityType.WITHER, linkedHashMap(
                     VersionEnum.r1_7_6tor1_7_10, EntityDimensions.changing(0.9F, 4.0F),
                     VersionEnum.r1_8, EntityType.WITHER.getDimensions()
@@ -143,7 +143,7 @@ public class EntityDimensionReplacements {
     );
 
     static {
-        ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
+        ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> entityDimensions.forEach((entityType, dimensionMap) -> {
             for (Map.Entry<VersionEnum, EntityDimensions> entry : dimensionMap.entrySet()) {
                 final VersionEnum version = entry.getKey();
                 final EntityDimensions dimensions = entry.getValue();
@@ -162,4 +162,7 @@ public class EntityDimensionReplacements {
         // Loads the class and triggers the static initializer.
     }
 
+    public static Map<EntityType<?>, Map<VersionEnum, EntityDimensions>> getEntityDimensions() {
+        return entityDimensions;
+    }
 }
