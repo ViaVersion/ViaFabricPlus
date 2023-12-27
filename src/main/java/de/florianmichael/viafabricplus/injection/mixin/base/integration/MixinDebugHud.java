@@ -23,7 +23,7 @@ import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.fixes.tracker.JoinGameTracker;
+import de.florianmichael.viafabricplus.fixes.tracker.JoinGameDataTracker;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IBlobCache;
 import de.florianmichael.viafabricplus.injection.access.IChunkTracker;
@@ -107,8 +107,8 @@ public abstract class MixinDebugHud {
         }
 
         // bedrock
-        final JoinGameTracker joinGameTracker = userConnection.get(JoinGameTracker.class);
-        if (joinGameTracker != null) {
+        final JoinGameDataTracker joinGameDataTracker = userConnection.get(JoinGameDataTracker.class);
+        if (joinGameDataTracker != null) {
             final int movementMode = userConnection.get(GameSessionStorage.class).getMovementMode();
             String movement = "Server with rewind";
             if (movementMode == ServerMovementModes.CLIENT) {
@@ -117,10 +117,10 @@ public abstract class MixinDebugHud {
                 movement = "Server";
             }
 
-            information.add("Bedrock Level: " + joinGameTracker.getLevelId() + ", Enchantment Seed: " + joinGameTracker.getEnchantmentSeed() + ", Movement: " + movement);
+            information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed() + ", Movement: " + movement);
         }
-        if (joinGameTracker != null) {
-            information.add("World Seed: " + joinGameTracker.getSeed());
+        if (joinGameDataTracker != null) {
+            information.add("World Seed: " + joinGameDataTracker.getSeed());
         }
         final BlobCache blobCache = userConnection.get(BlobCache.class);
         if (blobCache != null) {

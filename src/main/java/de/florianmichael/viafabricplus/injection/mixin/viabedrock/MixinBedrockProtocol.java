@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.viabedrock;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.fixes.tracker.JoinGameTracker;
+import de.florianmichael.viafabricplus.fixes.tracker.JoinGameDataTracker;
 import net.raphimc.viabedrock.protocol.BedrockProtocol;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +32,7 @@ public abstract class MixinBedrockProtocol {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void hookStorages(UserConnection user, CallbackInfo ci) {
-        user.put(new JoinGameTracker(user));
+        user.put(new JoinGameDataTracker(user));
     }
 
 }

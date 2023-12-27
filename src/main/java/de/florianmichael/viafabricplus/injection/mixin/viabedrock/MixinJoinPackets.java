@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.viabedrock;
 
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
-import de.florianmichael.viafabricplus.fixes.tracker.JoinGameTracker;
+import de.florianmichael.viafabricplus.fixes.tracker.JoinGameDataTracker;
 import net.raphimc.viabedrock.protocol.packets.JoinPackets;
 import net.raphimc.viabedrock.protocol.types.primitive.LongLEType;
 import net.raphimc.viabedrock.protocol.types.primitive.StringType;
@@ -36,21 +36,21 @@ public abstract class MixinJoinPackets {
     @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 5))
     private static Object trackWorldSeed(PacketWrapper instance, Type<LongLEType> tType) throws Exception {
         final Object seed = instance.read(tType);
-        instance.user().get(JoinGameTracker.class).setSeed((long) seed);
+        instance.user().get(JoinGameDataTracker.class).setSeed((long) seed);
         return seed;
     }
 
     @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 55))
     private static Object trackLevelId(PacketWrapper instance, Type<StringType> tType) throws Exception {
         final Object levelId = instance.read(tType);
-        instance.user().get(JoinGameTracker.class).setLevelId((String) levelId);
+        instance.user().get(JoinGameDataTracker.class).setLevelId((String) levelId);
         return levelId;
     }
 
     @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 63))
     private static Object trackEnchantmentSeed(PacketWrapper instance, Type<VarIntType> tType) throws Exception {
         final Object enchantmentSeed = instance.read(tType);
-        instance.user().get(JoinGameTracker.class).setEnchantmentSeed((Integer) enchantmentSeed);
+        instance.user().get(JoinGameDataTracker.class).setEnchantmentSeed((Integer) enchantmentSeed);
         return enchantmentSeed;
     }
 

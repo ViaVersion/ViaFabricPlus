@@ -22,13 +22,13 @@ package de.florianmichael.viafabricplus.fixes.tracker;
 import com.viaversion.viaversion.api.connection.StoredObject;
 import com.viaversion.viaversion.api.connection.UserConnection;
 
-public class JoinGameTracker extends StoredObject {
+public class JoinGameDataTracker extends StoredObject {
 
     private long seed;
     private String levelId;
     private long enchantmentSeed;
 
-    public JoinGameTracker(UserConnection user) {
+    public JoinGameDataTracker(UserConnection user) {
         super(user);
     }
 
