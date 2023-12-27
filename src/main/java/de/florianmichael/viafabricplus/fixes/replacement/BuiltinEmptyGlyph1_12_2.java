@@ -25,6 +25,10 @@ import net.minecraft.client.font.RenderableGlyph;
 
 import java.util.function.Function;
 
+/**
+ * Implementation of a blank glyph for 1.12.2 and lower since those versions don't draw a white rectangle for empty
+ * glyphs but instead just skip them. See {@link de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.MixinFontStorage} for more information.
+ */
 public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
     INSTANCE;
 

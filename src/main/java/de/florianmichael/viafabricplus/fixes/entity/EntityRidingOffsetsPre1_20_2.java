@@ -36,8 +36,19 @@ import net.minecraft.util.math.MathHelper;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.joml.Vector3f;
 
+/**
+ * Minecraft 1.20.2 changed the calculation of the mounted height offset for all entities, this class contains the old
+ * values for all entities. This class is used for 1.20.1 and lower.
+ */
 public class EntityRidingOffsetsPre1_20_2 {
 
+    /**
+     * Returns the mounted height offset for the given entity and passenger. This method is used for 1.20.1 and lower.
+     *
+     * @param entity    The entity to get the mounted height offset for.
+     * @param passenger The passenger of the entity.
+     * @return The mounted height offset.
+     */
     public static Vector3f getMountedHeightOffset(final Entity entity, final Entity passenger) {
         float yOffset = entity.getHeight() * 0.75F;
 
@@ -141,13 +152,19 @@ public class EntityRidingOffsetsPre1_20_2 {
         return new Vector3f(0, yOffset, 0);
     }
 
+    /**
+     * Returns the height offset for the given entity. This method is used for 1.20.1 and lower.
+     *
+     * @param entity The entity to get the height offset for.
+     * @return The height offset.
+     */
     public static double getHeightOffset(final Entity entity) {
         if (entity instanceof AllayEntity || entity instanceof VexEntity) {
             if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
                 return 0D;
+            } else {
+                return 0.4D;
             }
-
-            return 0.4D;
         } else if (entity instanceof ArmorStandEntity armorStandEntity) {
             return armorStandEntity.isMarker() ? 0D : 0.1D;
         } else if (entity instanceof EndermiteEntity) {

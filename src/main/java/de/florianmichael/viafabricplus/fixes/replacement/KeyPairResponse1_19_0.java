@@ -23,8 +23,8 @@ import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
 
 import java.nio.ByteBuffer;
 
-/*
-This class is part of the AuthLib, we are overwriting this class to add a new field.
+/**
+ * This class is part of the AuthLib, we are overwriting this class to add the {@link #publicKeySignature} field.
  */
 
 public record KeyPairResponse1_19_0(
