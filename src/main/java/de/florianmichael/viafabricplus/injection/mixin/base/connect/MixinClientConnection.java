@@ -86,7 +86,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
     private void storeDecryptionCipher(Cipher decryptionCipher, Cipher encryptionCipher, CallbackInfo ci) {
-        if (this.viaFabricPlus$serverVersion.isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
+        if (this.viaFabricPlus$serverVersion != null /* This happens when opening a lan server and people are joining */ && this.viaFabricPlus$serverVersion.isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
             // Minecraft's encryption code is bad for us, we need to reorder the pipeline
             ci.cancel();
 
