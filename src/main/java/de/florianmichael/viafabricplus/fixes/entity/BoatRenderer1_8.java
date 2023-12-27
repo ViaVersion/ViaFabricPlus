@@ -30,6 +30,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 
+/**
+ * Renderer for boats in 1.8 and lower.
+ */
 public class BoatRenderer1_8 extends EntityRenderer<BoatEntity> {
 
     private static final Identifier TEXTURE = new Identifier("viafabricplus", "textures/boat1_8.png");

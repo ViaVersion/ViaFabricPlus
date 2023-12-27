@@ -38,6 +38,9 @@ import static net.minecraft.item.Items.*;
 import static net.raphimc.vialoader.util.VersionEnum.*;
 import static net.raphimc.vialoader.util.VersionRange.*;
 
+/**
+ * Class file which contains the {@link VersionRange} for every item added in the game.
+ */
 public class ItemRegistryDiff {
 
     public static final Map<Item, VersionRange> ITEM_DIFF = new HashMap<>();

@@ -160,15 +160,17 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Inject(method = "onGameJoin", at = @At("RETURN"))
     private void sendAdditionalData(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
+        final VersionEnum targetVersion = ProtocolHack.getTargetVersion();
+
+        if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
             final List<RecipeEntry<?>> recipes = new ArrayList<>();
-            final List<RecipeInfo<?>> recipeInfos = Recipes1_11_2.getRecipes();
+            final List<RecipeInfo<?>> recipeInfos = Recipes1_11_2.getRecipes(targetVersion);
             for (int i = 0; i < recipeInfos.size(); i++) {
                 recipes.add(recipeInfos.get(i).create(new Identifier("viafabricplus", "recipe/" + i)));
             }
             this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
         }
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             this.onEntityStatus(new EntityStatusS2CPacket(this.client.player, (byte) 28)); // Op-level 4
         }
     }

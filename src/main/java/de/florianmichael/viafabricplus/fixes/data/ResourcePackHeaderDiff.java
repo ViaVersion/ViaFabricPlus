@@ -30,6 +30,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class file contains the {@link GameVersion} for each protocol version.
+ */
 public class ResourcePackHeaderDiff {
 
     private final static Map<VersionEnum, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
@@ -77,12 +80,19 @@ public class ResourcePackHeaderDiff {
         registerVersion(VersionEnum.r1_7_2tor1_7_5, 1, "1.7.5");
     }
 
+    /**
+     * Checks if {@link ProtocolHack#NATIVE_VERSION} is outdated and throws an exception if it is.
+     */
     public static void checkOutdated() {
         if (!GAME_VERSION_DIFF.containsKey(ProtocolHack.NATIVE_VERSION)) {
             throw new RuntimeException("The current version has no pack format registered");
         }
     }
 
+    /**
+     * @param version The {@link VersionEnum} to get the {@link GameVersion} for.
+     * @return The {@link GameVersion} for the given {@link VersionEnum}.
+     */
     public static GameVersion get(final VersionEnum version) {
         if (!GAME_VERSION_DIFF.containsKey(version)) {
             return SharedConstants.getGameVersion();

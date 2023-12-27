@@ -29,6 +29,9 @@ import net.raphimc.vialoader.util.VersionEnum;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Data dump of Minecraft's material registry in version 1.19.4. This is used for some internal clientside fixes.
+ */
 public enum Material1_19_4 {
 
     AIR(false, false, false, false, true, false),
@@ -1101,14 +1104,22 @@ public enum Material1_19_4 {
         MATERIALS.put(Blocks.DECORATED_POT, DECORATED_POT);
     }
 
+    /**
+     * @param block The block to get the material of
+     * @return The material of the block for game version 1.19.4
+     */
     public static Material1_19_4 getMaterial(final Block block) {
         if (block instanceof ShulkerBoxBlock && ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_14)) {
             return STONE;
+        } else {
+            return MATERIALS.get(block);
         }
-
-        return MATERIALS.get(block);
     }
 
+    /**
+     * @param blockState The block state to get the material of
+     * @return The material of the block state for game version 1.19.4
+     */
     public static Material1_19_4 getMaterial(final BlockState blockState) {
         return getMaterial(blockState.getBlock());
     }

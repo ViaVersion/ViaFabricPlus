@@ -26,6 +26,9 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.util.Identifier;
 
+/**
+ * Model for boats in 1.8 and lower.
+ */
 public class BoatModel1_8 extends CompositeEntityModel<BoatEntity> {
 
     public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(new Identifier("viafabricplus", "boat1_8"), "main");

@@ -28,6 +28,12 @@ import net.raphimc.vialoader.util.VersionEnum;
 import static java.util.stream.IntStream.rangeClosed;
 import static net.raphimc.vialoader.util.VersionEnum.*;
 
+/**
+ * Data dump which contains the {@link VersionEnum} for each renderable glyph. This is used to hide characters
+ * which are not supported by the current protocol version. This is because some servers in older versions are using
+ * characters which the client doesn't know about and therefore can't render as placeholder for e.g. scoreboards, we have
+ * to hide them because our client would render them as a different character.
+ */
 public class RenderableGlyphDiff {
 
     private static final Int2ObjectMap<VersionEnum> RENDERABLE_GLYPH_DIFF_LEGACY = new Int2ObjectOpenHashMap<>();
@@ -963,12 +969,18 @@ public class RenderableGlyphDiff {
         rangeClosed(1048574, 1048575).forEach(put(r1_20tor1_20_1));
     }
 
+    /**
+     * @param codePoint the code point to check
+     * @return true if the given code point is renderable in the current version of the game
+     */
     public static boolean isGlyphRenderable(final int codePoint) {
-        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(r1_20tor1_20_1)) {
-            return RENDERABLE_GLYPH_DIFF.containsKey(codePoint) && ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(RENDERABLE_GLYPH_DIFF.get(codePoint));
-        }
+        final VersionEnum targetVersion = ProtocolHack.getTargetVersion();
 
-        return RENDERABLE_GLYPH_DIFF_LEGACY.containsKey(codePoint) && ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(RENDERABLE_GLYPH_DIFF_LEGACY.get(codePoint));
+        if (targetVersion.isNewerThanOrEqualTo(r1_20tor1_20_1)) { // 1.20 switch to using Unihex as a main font
+            return RENDERABLE_GLYPH_DIFF.containsKey(codePoint) && targetVersion.isNewerThanOrEqualTo(RENDERABLE_GLYPH_DIFF.get(codePoint));
+        } else {
+            return RENDERABLE_GLYPH_DIFF_LEGACY.containsKey(codePoint) && targetVersion.isNewerThanOrEqualTo(RENDERABLE_GLYPH_DIFF_LEGACY.get(codePoint));
+        }
     }
 
     private static IntConsumer putLegacy(final VersionEnum version) {
