@@ -457,7 +457,7 @@ public class RenderableGlyphDiff {
         RENDERABLE_GLYPH_DIFF_LEGACY.put(128276, r1_17_1);
         RENDERABLE_GLYPH_DIFF_LEGACY.put(129699, r1_17_1);
 
-        // 1.20 switch to using Unihex as a main font
+        // 1.20 switched to using Unihex as a main font
 
         rangeClosed(0, 2559).forEach(put(r1_20tor1_20_1));
         rangeClosed(2561, 55295).forEach(put(r1_20tor1_20_1));
@@ -976,8 +976,8 @@ public class RenderableGlyphDiff {
     public static boolean isGlyphRenderable(final int codePoint) {
         final VersionEnum targetVersion = ProtocolHack.getTargetVersion();
 
-        if (targetVersion.isNewerThanOrEqualTo(r1_20tor1_20_1)) { // 1.20 switch to using Unihex as a main font
-            return RENDERABLE_GLYPH_DIFF.containsKey(codePoint) && targetVersion.isNewerThanOrEqualTo(RENDERABLE_GLYPH_DIFF.get(codePoint));
+        if (targetVersion.isNewerThanOrEqualTo(r1_20tor1_20_1)) { // 1.20 switched to using Unihex as a main font
+            return !RENDERABLE_GLYPH_DIFF.containsKey(codePoint) || targetVersion.isNewerThanOrEqualTo(RENDERABLE_GLYPH_DIFF.get(codePoint));
         } else {
             return RENDERABLE_GLYPH_DIFF_LEGACY.containsKey(codePoint) && targetVersion.isNewerThanOrEqualTo(RENDERABLE_GLYPH_DIFF_LEGACY.get(codePoint));
         }

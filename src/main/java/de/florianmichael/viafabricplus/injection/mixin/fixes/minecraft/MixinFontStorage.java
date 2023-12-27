@@ -23,8 +23,6 @@ import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.fixes.data.RenderableGlyphDiff;
 import de.florianmichael.viafabricplus.fixes.replacement.BuiltinEmptyGlyph1_12_2;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.*;
 import net.minecraft.util.Identifier;
@@ -56,25 +54,21 @@ public abstract class MixinFontStorage {
     @Unique
     private GlyphRenderer viaFabricPlus$blankGlyphRenderer1_12_2;
 
-    @Unique
-    private Object2IntMap<Font> viaFabricPlus$providedGlyphsCache;
-
     @Inject(method = "setFonts", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/BuiltinEmptyGlyph;bake(Ljava/util/function/Function;)Lnet/minecraft/client/font/GlyphRenderer;", ordinal = 0))
     private void bakeBlankGlyph1_12_2(List<Font> fonts, CallbackInfo ci) {
         this.viaFabricPlus$blankGlyphRenderer1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this::getGlyphRenderer);
-        this.viaFabricPlus$providedGlyphsCache = new Object2IntOpenHashMap<>();
     }
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
     private void filterGlyphs1(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir, @Local Font font) {
-        if (this.viaFabricPlus$shouldBeInvisible(cir.getReturnValue().equals(FontStorage.GlyphPair.MISSING) ? null : font, codePoint)) {
+        if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlus$getBlankGlyphPair());
         }
     }
 
     @Inject(method = "findGlyphRenderer", at = @At("RETURN"), cancellable = true)
     private void filterGlyphs2(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir, @Local Font font) {
-        if (this.viaFabricPlus$shouldBeInvisible(cir.getReturnValue().equals(this.blankGlyphRenderer) ? null : font, codePoint)) {
+        if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlus$getBlankGlyphRenderer());
         }
     }
@@ -95,11 +89,7 @@ public abstract class MixinFontStorage {
     }
 
     @Unique
-    private boolean viaFabricPlus$shouldBeInvisible(final Font font, final int codePoint) {
-        if (font != null && this.viaFabricPlus$providedGlyphsCache.computeIfAbsent(font, f -> ((Font) f).getProvidedGlyphs().size()) == 1) {
-            return false; // Probably a custom icon character from a resource pack
-        }
-
+    private boolean viaFabricPlus$shouldBeInvisible(final int codePoint) {
         return (this.id.equals(MinecraftClient.DEFAULT_FONT_ID) || this.id.equals(MinecraftClient.UNICODE_FONT_ID)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
     }
 
