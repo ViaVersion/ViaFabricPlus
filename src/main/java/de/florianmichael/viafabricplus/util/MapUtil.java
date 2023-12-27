@@ -22,8 +22,19 @@ package de.florianmichael.viafabricplus.util;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Utility class for maps.
+ */
 public class MapUtil {
 
+    /**
+     * Creates a new linked hash map with the given objects as key-value pairs.
+     *
+     * @param objects The objects to put into the map. Must be a multiple of 2.
+     * @param <K>     The key type.
+     * @param <V>     The value type.
+     * @return The created map.
+     */
     public static <K, V> Map<K, V> linkedHashMap(final Object... objects) {
         if (objects.length % 2 != 0) {
             throw new IllegalArgumentException("Uneven object count");

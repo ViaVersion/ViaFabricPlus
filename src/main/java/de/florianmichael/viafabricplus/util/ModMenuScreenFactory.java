@@ -23,11 +23,15 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 
+/**
+ * Implementation of the ModMenu integration allowing users to open the settings screen from the mod menu.
+ */
 public class ModMenuScreenFactory implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> {
+            // Sadly, we can't use the open() function here because mod menu needs the screen to be returned
             SettingsScreen.INSTANCE.prevScreen = parent;
             return SettingsScreen.INSTANCE;
         };
