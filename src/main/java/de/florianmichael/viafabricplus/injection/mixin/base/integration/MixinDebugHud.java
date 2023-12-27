@@ -19,26 +19,20 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
-import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.tracker.JoinGameTracker;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
-import de.florianmichael.viafabricplus.injection.access.IBlobCache;
 import de.florianmichael.viafabricplus.injection.access.IChunkTracker;
 import de.florianmichael.viafabricplus.injection.access.IRakSessionCodec;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.impl.provider.viabedrock.ViaFabricPlusBlobCacheProvider;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
-import de.florianmichael.viafabricplus.util.StringUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
 import net.minecraft.util.Formatting;
 import net.raphimc.viabedrock.protocol.data.enums.bedrock.ServerMovementModes;
-import net.raphimc.viabedrock.protocol.providers.BlobCacheProvider;
-import net.raphimc.viabedrock.protocol.storage.BlobCache;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
 import net.raphimc.viabedrock.protocol.storage.GameSessionStorage;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
@@ -121,16 +115,6 @@ public abstract class MixinDebugHud {
         }
         if (joinGameTracker != null) {
             information.add("World Seed: " + joinGameTracker.getSeed());
-        }
-        final BlobCache blobCache = userConnection.get(BlobCache.class);
-        if (blobCache != null) {
-            final var blobCacheProvider = (ViaFabricPlusBlobCacheProvider) Via.getManager().getProviders().get(BlobCacheProvider.class);
-
-            final long totalSize = blobCacheProvider.getSize();
-            final int blobCount = blobCacheProvider.getBlobs().size();
-            final int pendingCount = ((IBlobCache) blobCache).viaFabricPlus$getPending().size();
-
-            information.add("Blob Cache: S: " + StringUtil.formatBytes(totalSize) + ", C: " + blobCount + ", P: " + pendingCount);
         }
         final ChunkTracker chunkTracker = userConnection.get(ChunkTracker.class);
         if (chunkTracker != null) {

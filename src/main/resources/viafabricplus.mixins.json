@@ -191,7 +191,6 @@
     "fixes.viaversion.MixinWorldPackets1_17",
     "fixes.viaversion.MixinWorldPackets1_19",
     "viabedrock.MixinBedrockProtocol",
-    "viabedrock.MixinBlobCache",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
