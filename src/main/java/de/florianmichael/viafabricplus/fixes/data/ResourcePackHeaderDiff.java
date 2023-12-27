@@ -87,6 +87,12 @@ public class ResourcePackHeaderDiff {
         if (!GAME_VERSION_DIFF.containsKey(ProtocolHack.NATIVE_VERSION)) {
             throw new RuntimeException("The current version has no pack format registered");
         }
+        for (VersionEnum version : VersionEnum.OFFICIAL_SUPPORTED_PROTOCOLS) {
+            if (version.getProtocol().isSnapshot()) continue;
+            if (!GAME_VERSION_DIFF.containsKey(version)) {
+                throw new RuntimeException("The version " + version + " has no pack format registered");
+            }
+        }
     }
 
     /**
