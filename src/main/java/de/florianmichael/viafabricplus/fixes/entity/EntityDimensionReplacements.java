@@ -25,6 +25,7 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.raphimc.vialoader.util.VersionEnum;
 
+import java.util.Collections;
 import java.util.Map;
 
 import static de.florianmichael.viafabricplus.util.MapUtil.linkedHashMap;
@@ -37,7 +38,7 @@ public class EntityDimensionReplacements {
     /**
      * A map of entity types to a map of versions to dimensions.
      */
-    private static final Map<EntityType<?>, Map<VersionEnum, EntityDimensions>> entityDimensions = linkedHashMap(
+    private static final Map<EntityType<?>, Map<VersionEnum, EntityDimensions>> ENTITY_DIMENSIONS = linkedHashMap(
             EntityType.WITHER, linkedHashMap(
                     VersionEnum.r1_7_6tor1_7_10, EntityDimensions.changing(0.9F, 4.0F),
                     VersionEnum.r1_8, EntityType.WITHER.getDimensions()
@@ -143,7 +144,7 @@ public class EntityDimensionReplacements {
     );
 
     static {
-        ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> entityDimensions.forEach((entityType, dimensionMap) -> {
+        ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
             for (Map.Entry<VersionEnum, EntityDimensions> entry : dimensionMap.entrySet()) {
                 final VersionEnum version = entry.getKey();
                 final EntityDimensions dimensions = entry.getValue();
@@ -162,7 +163,47 @@ public class EntityDimensionReplacements {
         // Loads the class and triggers the static initializer.
     }
 
-    public static Map<EntityType<?>, Map<VersionEnum, EntityDimensions>> getEntityDimensions() {
-        return entityDimensions;
+    /**
+     * @param entityType The {@link EntityType} to get the dimensions for.
+     * @return The dimensions for the given {@link EntityType} or null if there are none. The map is unmodifiable.
+     */
+    public static Map<VersionEnum, EntityDimensions> getEntityDimensions(final EntityType<?> entityType) {
+        if (!ENTITY_DIMENSIONS.containsKey(entityType)) {
+            return null;
+        }
+        return Collections.unmodifiableMap(ENTITY_DIMENSIONS.get(entityType));
     }
+
+    /**
+     * @param entityType The {@link EntityType} to get the dimensions for.
+     * @param version    The {@link VersionEnum} to get the dimensions for.
+     * @return The closest dimensions for the given {@link EntityType} and {@link VersionEnum} or null if there are none.
+     */
+    public static EntityDimensions getEntityDimensions(final EntityType<?> entityType, final VersionEnum version) {
+        final Map<VersionEnum, EntityDimensions> dimensionMap = getEntityDimensions(entityType);
+        if (dimensionMap == null) {
+            return null;
+        }
+
+        EntityDimensions closestDimensions = null;
+        VersionEnum closestVersion = null;
+
+        for (Map.Entry<VersionEnum, EntityDimensions> entry : dimensionMap.entrySet()) {
+            VersionEnum currentVersion = entry.getKey();
+            EntityDimensions currentDimensions = entry.getValue();
+
+            if (currentVersion == version) { // If the version is exactly the same, return the dimensions
+                return currentDimensions;
+            }
+
+            // If the current version is closer to the version you are looking for
+            if (closestVersion == null || Math.abs(version.ordinal() - currentVersion.ordinal()) < Math.abs(version.ordinal() - closestVersion.ordinal())) {
+                closestVersion = currentVersion;
+                closestDimensions = currentDimensions;
+            }
+        }
+
+        return closestDimensions;
+    }
+
 }
