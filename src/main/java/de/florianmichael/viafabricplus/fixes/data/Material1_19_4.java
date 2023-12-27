@@ -29,58 +29,74 @@ import net.raphimc.vialoader.util.VersionEnum;
 import java.util.HashMap;
 import java.util.Map;
 
-public record Material1_19_4(boolean blocksMovement, boolean burnable, boolean liquid, boolean blocksLight, boolean replaceable, boolean solid) {
+public enum Material1_19_4 {
 
-    public static final Material1_19_4 AIR = new Material1_19_4(false, false, false, false, true, false);
-    public static final Material1_19_4 STRUCTURE_VOID = new Material1_19_4(false, false, false, false, true, false);
-    public static final Material1_19_4 PORTAL = new Material1_19_4(false, false, false, false, false, false);
-    public static final Material1_19_4 CARPET = new Material1_19_4(false, true, false, false, false, false);
-    public static final Material1_19_4 PLANT = new Material1_19_4(false, false, false, false, false, false);
-    public static final Material1_19_4 UNDERWATER_PLANT = new Material1_19_4(false, false, false, false, false, false);
-    public static final Material1_19_4 REPLACEABLE_PLANT = new Material1_19_4(false, true, false, false, true, false);
-    public static final Material1_19_4 NETHER_SHOOTS = new Material1_19_4(false, false, false, false, true, false);
-    public static final Material1_19_4 REPLACEABLE_UNDERWATER_PLANT = new Material1_19_4(false, false, false, false, true, false);
-    public static final Material1_19_4 WATER = new Material1_19_4(false, false, true, false, true, false);
-    public static final Material1_19_4 BUBBLE_COLUMN = new Material1_19_4(false, false, true, false, true, false);
-    public static final Material1_19_4 LAVA = new Material1_19_4(false, false, true, false, true, false);
-    public static final Material1_19_4 SNOW_LAYER = new Material1_19_4(false, false, false, false, true, false);
-    public static final Material1_19_4 FIRE = new Material1_19_4(false, false, false, false, true, false);
-    public static final Material1_19_4 DECORATION = new Material1_19_4(false, false, false, false, false, false);
-    public static final Material1_19_4 COBWEB = new Material1_19_4(false, false, false, false, false, true);
-    public static final Material1_19_4 SCULK = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 REDSTONE_LAMP = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 ORGANIC_PRODUCT = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 SOIL = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 SOLID_ORGANIC = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 DENSE_ICE = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 AGGREGATE = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 SPONGE = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 SHULKER_BOX = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 WOOD = new Material1_19_4(true, true, false, true, false, true);
-    public static final Material1_19_4 NETHER_WOOD = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 BAMBOO_SAPLING = new Material1_19_4(false, true, false, true, false, true);
-    public static final Material1_19_4 BAMBOO = new Material1_19_4(true, true, false, true, false, true);
-    public static final Material1_19_4 WOOL = new Material1_19_4(true, true, false, true, false, true);
-    public static final Material1_19_4 TNT = new Material1_19_4(true, true, false, false, false, true);
-    public static final Material1_19_4 LEAVES = new Material1_19_4(true, true, false, false, false, true);
-    public static final Material1_19_4 GLASS = new Material1_19_4(true, false, false, false, false, true);
-    public static final Material1_19_4 ICE = new Material1_19_4(true, false, false, false, false, true);
-    public static final Material1_19_4 CACTUS = new Material1_19_4(true, false, false, false, false, true);
-    public static final Material1_19_4 STONE = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 METAL = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 SNOW_BLOCK = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 REPAIR_STATION = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 BARRIER = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 PISTON = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 MOSS_BLOCK = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 GOURD = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 EGG = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 CAKE = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 AMETHYST = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 POWDER_SNOW = new Material1_19_4(false, false, false, true, false, false);
-    public static final Material1_19_4 FROGSPAWN = new Material1_19_4(false, false, false, false, false, false);
-    public static final Material1_19_4 FROGLIGHT = new Material1_19_4(true, false, false, true, false, true);
-    public static final Material1_19_4 DECORATED_POT = new Material1_19_4(true, false, false, true, false, true);
+    AIR(false, false, false, false, true, false),
+    STRUCTURE_VOID(false, false, false, false, true, false),
+    PORTAL(false, false, false, false, false, false),
+    CARPET(false, true, false, false, false, false),
+    PLANT(false, false, false, false, false, false),
+    UNDERWATER_PLANT(false, false, false, false, false, false),
+    REPLACEABLE_PLANT(false, true, false, false, true, false),
+    NETHER_SHOOTS(false, false, false, false, true, false),
+    REPLACEABLE_UNDERWATER_PLANT(false, false, false, false, true, false),
+    WATER(false, false, true, false, true, false),
+    BUBBLE_COLUMN(false, false, true, false, true, false),
+    LAVA(false, false, true, false, true, false),
+    SNOW_LAYER(false, false, false, false, true, false),
+    FIRE(false, false, false, false, true, false),
+    DECORATION(false, false, false, false, false, false),
+    COBWEB(false, false, false, false, false, true),
+    SCULK(true, false, false, true, false, true),
+    REDSTONE_LAMP(true, false, false, true, false, true),
+    ORGANIC_PRODUCT(true, false, false, true, false, true),
+    SOIL(true, false, false, true, false, true),
+    SOLID_ORGANIC(true, false, false, true, false, true),
+    DENSE_ICE(true, false, false, true, false, true),
+    AGGREGATE(true, false, false, true, false, true),
+    SPONGE(true, false, false, true, false, true),
+    SHULKER_BOX(true, false, false, true, false, true),
+    WOOD(true, true, false, true, false, true),
+    NETHER_WOOD(true, false, false, true, false, true),
+    BAMBOO_SAPLING(false, true, false, true, false, true),
+    BAMBOO(true, true, false, true, false, true),
+    WOOL(true, true, false, true, false, true),
+    TNT(true, true, false, false, false, true),
+    LEAVES(true, true, false, false, false, true),
+    GLASS(true, false, false, false, false, true),
+    ICE(true, false, false, false, false, true),
+    CACTUS(true, false, false, false, false, true),
+    STONE(true, false, false, true, false, true),
+    METAL(true, false, false, true, false, true),
+    SNOW_BLOCK(true, false, false, true, false, true),
+    REPAIR_STATION(true, false, false, true, false, true),
+    BARRIER(true, false, false, true, false, true),
+    PISTON(true, false, false, true, false, true),
+    MOSS_BLOCK(true, false, false, true, false, true),
+    GOURD(true, false, false, true, false, true),
+    EGG(true, false, false, true, false, true),
+    CAKE(true, false, false, true, false, true),
+    AMETHYST(true, false, false, true, false, true),
+    POWDER_SNOW(false, false, false, true, false, false),
+    FROGSPAWN(false, false, false, false, false, false),
+    FROGLIGHT(true, false, false, true, false, true),
+    DECORATED_POT(true, false, false, true, false, true);
+
+    private final boolean blocksMovement;
+    private final boolean burnable;
+    private final boolean liquid;
+    private final boolean blocksLight;
+    private final boolean replaceable;
+    private final boolean solid;
+
+    Material1_19_4(final boolean blocksMovement, final boolean burnable, final boolean liquid, final boolean blocksLight, final boolean replaceable, final boolean solid) {
+        this.blocksMovement = blocksMovement;
+        this.burnable = burnable;
+        this.liquid = liquid;
+        this.blocksLight = blocksLight;
+        this.replaceable = replaceable;
+        this.solid = solid;
+    }
 
     private static final Map<Block, Material1_19_4> MATERIALS = new HashMap<>();
 
@@ -1095,6 +1111,30 @@ public record Material1_19_4(boolean blocksMovement, boolean burnable, boolean l
 
     public static Material1_19_4 getMaterial(final BlockState blockState) {
         return getMaterial(blockState.getBlock());
+    }
+
+    public boolean blocksMovement() {
+        return this.blocksMovement;
+    }
+
+    public boolean burnable() {
+        return this.burnable;
+    }
+
+    public boolean liquid() {
+        return this.liquid;
+    }
+
+    public boolean blocksLight() {
+        return this.blocksLight;
+    }
+
+    public boolean replaceable() {
+        return this.replaceable;
+    }
+
+    public boolean solid() {
+        return this.solid;
     }
 
 }
