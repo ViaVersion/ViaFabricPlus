@@ -189,8 +189,8 @@ public class EntityDimensionReplacements {
         VersionEnum closestVersion = null;
 
         for (Map.Entry<VersionEnum, EntityDimensions> entry : dimensionMap.entrySet()) {
-            VersionEnum currentVersion = entry.getKey();
-            EntityDimensions currentDimensions = entry.getValue();
+            final var currentVersion = entry.getKey();
+            final var currentDimensions = entry.getValue();
 
             if (currentVersion == version) { // If the version is exactly the same, return the dimensions
                 return currentDimensions;

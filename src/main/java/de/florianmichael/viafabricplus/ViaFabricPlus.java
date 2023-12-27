@@ -51,7 +51,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class ViaFabricPlus {
 
-    private static final ViaFabricPlus instance = new ViaFabricPlus();
+    private static final ViaFabricPlus INSTANCE = new ViaFabricPlus();
 
     private final Logger logger = LogManager.getLogger("ViaFabricPlus");
     private final File directory = FabricLoader.getInstance().getConfigDir().resolve("viafabricplus").toFile();
@@ -77,7 +77,7 @@ public class ViaFabricPlus {
     }
 
     public static ViaFabricPlus global() {
-        return instance;
+        return INSTANCE;
     }
 
     public Logger getLogger() {

@@ -97,16 +97,18 @@ public abstract class MixinFontStorage {
     private FontStorage.GlyphPair viaFabricPlus$getBlankGlyphPair() {
         if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
             return new FontStorage.GlyphPair(BuiltinEmptyGlyph1_12_2.INSTANCE, BuiltinEmptyGlyph1_12_2.INSTANCE);
+        } else {
+            return FontStorage.GlyphPair.MISSING;
         }
-        return FontStorage.GlyphPair.MISSING;
     }
 
     @Unique
     private GlyphRenderer viaFabricPlus$getBlankGlyphRenderer() {
         if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
             return this.viaFabricPlus$blankGlyphRenderer1_12_2;
+        } else {
+            return this.blankGlyphRenderer;
         }
-        return this.blankGlyphRenderer;
     }
 
 }
