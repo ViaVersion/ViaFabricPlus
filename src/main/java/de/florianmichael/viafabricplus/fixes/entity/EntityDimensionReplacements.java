@@ -29,9 +29,15 @@ import java.util.Map;
 
 import static de.florianmichael.viafabricplus.util.MapUtil.linkedHashMap;
 
+/**
+ * Data dump for entity dimension changes between versions.
+ */
 public class EntityDimensionReplacements {
 
-    private static final Map<EntityType<?>, Map<VersionEnum, EntityDimensions>> ENTITY_DIMENSIONS = linkedHashMap(
+    /**
+     * A map of entity types to a map of versions to dimensions.
+     */
+    public static final Map<EntityType<?>, Map<VersionEnum, EntityDimensions>> ENTITY_DIMENSIONS = linkedHashMap(
             EntityType.WITHER, linkedHashMap(
                     VersionEnum.r1_7_6tor1_7_10, EntityDimensions.changing(0.9F, 4.0F),
                     VersionEnum.r1_8, EntityType.WITHER.getDimensions()
@@ -136,7 +142,7 @@ public class EntityDimensionReplacements {
             )
     );
 
-    public static void init() {
+    static {
         ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
             for (Map.Entry<VersionEnum, EntityDimensions> entry : dimensionMap.entrySet()) {
                 final VersionEnum version = entry.getKey();
@@ -150,6 +156,10 @@ public class EntityDimensionReplacements {
                 }
             }
         })));
+    }
+
+    public static void init() {
+        // Loads the class and triggers the static initializer.
     }
 
 }
