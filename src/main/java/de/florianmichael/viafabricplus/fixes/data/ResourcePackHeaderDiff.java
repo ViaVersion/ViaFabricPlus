@@ -35,7 +35,6 @@ public class ResourcePackHeaderDiff {
     private final static Map<VersionEnum, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     static {
-        registerVersion(VersionEnum.r1_20_5, 22, "23w51b");
         registerVersion(VersionEnum.r1_20_3tor1_20_4, 22, "1.20.4");
         registerVersion(VersionEnum.r1_20_2, 18, "1.20.2");
         registerVersion(VersionEnum.r1_20tor1_20_1, 15, "1.20.1");
@@ -81,11 +80,6 @@ public class ResourcePackHeaderDiff {
     public static void checkOutdated() {
         if (!GAME_VERSION_DIFF.containsKey(ProtocolHack.NATIVE_VERSION)) {
             throw new RuntimeException("The current version has no pack format registered");
-        }
-        for (VersionEnum version : VersionEnum.OFFICIAL_SUPPORTED_PROTOCOLS) {
-            if (!GAME_VERSION_DIFF.containsKey(version)) {
-                throw new RuntimeException("The version " + version + " has no pack format registered");
-            }
         }
     }
 
