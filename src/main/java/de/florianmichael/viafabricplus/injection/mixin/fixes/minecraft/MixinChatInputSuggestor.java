@@ -59,14 +59,18 @@ public abstract class MixinChatInputSuggestor {
 
     @Inject(method = "provideRenderText", at = @At(value = "HEAD"), cancellable = true)
     private void disableTextFieldColors(String original, int firstCharacterIndex, CallbackInfoReturnable<OrderedText> cir) {
-        if (!this.viaFabricPlus$cancelTabComplete()) return;
+        if (!this.viaFabricPlus$cancelTabComplete()) {
+            return;
+        }
 
         cir.setReturnValue(OrderedText.styledForwardsVisitedString(original, Style.EMPTY));
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     private void handle1_12_2KeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
-        if (!this.viaFabricPlus$cancelTabComplete()) return;
+        if (!this.viaFabricPlus$cancelTabComplete()) {
+            return;
+        }
 
         if (keyCode == GLFW.GLFW_KEY_TAB && this.window == null) {
             this.refresh();
@@ -82,7 +86,9 @@ public abstract class MixinChatInputSuggestor {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void clearMessages(DrawContext drawContext, int mouseX, int mouseY, CallbackInfo ci) {
-        if (!this.viaFabricPlus$cancelTabComplete()) return;
+        if (!this.viaFabricPlus$cancelTabComplete()) {
+            return;
+        }
 
         this.messages.clear();
     }

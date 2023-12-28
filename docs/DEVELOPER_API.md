@@ -65,7 +65,7 @@ if (ItemRegistryDiff.contains(Items.STONE, VersionRange.andOlder(VersionEnum.r1_
 ```java
 public class ExampleSettingGroup extends SettingGroup {
     
-    private static final ExampleSettingGroup instance = new ExampleSettingGroup();
+    private static final ExampleSettingGroup INSTANCE = new ExampleSettingGroup();
     
     public final BooleanSetting test = new BooleanSetting(this, Text.of("Test"), false);
     
@@ -74,7 +74,7 @@ public class ExampleSettingGroup extends SettingGroup {
     }
     
     public static ExampleSettingGroup global() {
-        return instance;
+        return INSTANCE;
     }
     
 }
