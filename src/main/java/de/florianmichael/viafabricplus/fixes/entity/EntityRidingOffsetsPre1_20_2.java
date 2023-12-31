@@ -101,20 +101,13 @@ public class EntityRidingOffsetsPre1_20_2 {
 
             return new Vector3f(0, yOffset, zOffset);
         } else if (entity instanceof ChickenEntity chickenEntity) {
-            final float xOffset = MathHelper.sin(chickenEntity.bodyYaw * MathHelper.PI / 180F);
-            final float zOffset = MathHelper.cos(chickenEntity.bodyYaw * MathHelper.PI / 180F);
-
-            return new Vector3f(0.1F * xOffset, (float) (chickenEntity.getBodyY(0.5D) - chickenEntity.getY()), -0.1F * zOffset);
+            return new Vector3f(0, (float) (chickenEntity.getBodyY(0.5D) - chickenEntity.getY()), -0.1F);
         } else if (entity instanceof EnderDragonEntity enderDragonEntity) {
             yOffset = enderDragonEntity.body.getHeight();
         } else if (entity instanceof HoglinEntity hoglinEntity) {
             yOffset = hoglinEntity.getHeight() - (hoglinEntity.isBaby() ? 0.2F : 0.15F);
-        } else if (entity instanceof LlamaEntity llamaEntity) {
-            yOffset = entity.getHeight() * 0.6F;
-            final float xOffset = MathHelper.sin(llamaEntity.bodyYaw * MathHelper.PI / 180F);
-            final float zOffset = MathHelper.cos(llamaEntity.bodyYaw * MathHelper.PI / 180F);
-
-            return new Vector3f(0.3F * xOffset, yOffset, 0.3F * zOffset);
+        } else if (entity instanceof LlamaEntity) {
+            return new Vector3f(0, entity.getHeight() * 0.6F, -0.3F);
         } else if (entity instanceof PhantomEntity) {
             yOffset = entity.getStandingEyeHeight();
         } else if (entity instanceof PiglinEntity) {
@@ -141,11 +134,7 @@ public class EntityRidingOffsetsPre1_20_2 {
 
         if (entity instanceof AbstractHorseEntity abstractHorseEntity) {
             if (abstractHorseEntity.lastAngryAnimationProgress > 0.0f) {
-                final float xOffset = MathHelper.sin(abstractHorseEntity.bodyYaw * MathHelper.PI / 180F);
-                final float zOffset = MathHelper.cos(abstractHorseEntity.bodyYaw * MathHelper.PI / 180F);
-                final float xzFactor = 0.7F * abstractHorseEntity.lastAngryAnimationProgress;
-
-                return new Vector3f(xzFactor * xOffset, yOffset + 0.15F * abstractHorseEntity.lastAngryAnimationProgress, xzFactor * zOffset);
+                return new Vector3f(0, yOffset + 0.15F * abstractHorseEntity.lastAngryAnimationProgress, -0.7F * abstractHorseEntity.lastAngryAnimationProgress);
             }
         }
 
