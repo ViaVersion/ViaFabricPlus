@@ -242,10 +242,8 @@ public class ProtocolHack {
         // Register command callback for /viaversion and /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             final var commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
-            final var executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).
-                    executes(commandHandler::execute).suggests(commandHandler::suggestion);
+            final var executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
 
-            dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viaversion").then(executor).executes(commandHandler::execute));
             dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viafabricplus").then(executor).executes(commandHandler::execute));
         });
 
