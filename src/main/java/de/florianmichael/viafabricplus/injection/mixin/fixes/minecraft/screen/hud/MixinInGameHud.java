@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
  * Copyright (C) 2021-2024 FlorianMichael/EnZaXD
- * Copyright (C) 2024      RK_01/RaphiMC and contributors
+ * Copyright (C) 2021-2024 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.h
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.entity.JumpingMount;
 import net.minecraft.entity.LivingEntity;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;

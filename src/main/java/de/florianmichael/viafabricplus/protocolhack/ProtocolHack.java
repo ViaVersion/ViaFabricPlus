@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
  * Copyright (C) 2021-2024 FlorianMichael/EnZaXD
- * Copyright (C) 2024      RK_01/RaphiMC and contributors
+ * Copyright (C) 2021-2024 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,10 +34,10 @@ import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.impl.command.ViaFabricPlusVLCommandHandler;
-import de.florianmichael.viafabricplus.protocolhack.impl.viaversion.ViaFabricPlusVLInjector;
-import de.florianmichael.viafabricplus.protocolhack.impl.viaversion.ViaFabricPlusVLLoader;
 import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
 import de.florianmichael.viafabricplus.protocolhack.impl.platform.ViaFabricPlusViaVersionPlatformImpl;
+import de.florianmichael.viafabricplus.protocolhack.impl.viaversion.ViaFabricPlusVLInjector;
+import de.florianmichael.viafabricplus.protocolhack.impl.viaversion.ViaFabricPlusVLLoader;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
 import de.florianmichael.viafabricplus.protocolhack.util.ConfigPatcher;
 import de.florianmichael.viafabricplus.protocolhack.util.NoPacketSendChannel;

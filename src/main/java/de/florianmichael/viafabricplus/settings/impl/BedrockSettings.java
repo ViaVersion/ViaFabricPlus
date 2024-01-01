@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
  * Copyright (C) 2021-2024 FlorianMichael/EnZaXD
- * Copyright (C) 2024      RK_01/RaphiMC and contributors
+ * Copyright (C) 2021-2024 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,9 @@ package de.florianmichael.viafabricplus.settings.impl;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.base.ButtonSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.text.MutableText;

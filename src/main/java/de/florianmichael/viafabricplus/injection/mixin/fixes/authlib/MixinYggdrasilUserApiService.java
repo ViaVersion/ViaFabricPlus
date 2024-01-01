@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
  * Copyright (C) 2021-2024 FlorianMichael/EnZaXD
- * Copyright (C) 2024      RK_01/RaphiMC and contributors
+ * Copyright (C) 2021-2024 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,8 @@ import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
 import de.florianmichael.viafabricplus.fixes.replacement.KeyPairResponse1_19_0;
+import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

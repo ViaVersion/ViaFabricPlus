@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
  * Copyright (C) 2021-2024 FlorianMichael/EnZaXD
- * Copyright (C) 2024      RK_01/RaphiMC and contributors
+ * Copyright (C) 2021-2024 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.entity.EntityPose;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;

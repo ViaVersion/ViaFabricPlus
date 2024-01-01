@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
  * Copyright (C) 2021-2024 FlorianMichael/EnZaXD
- * Copyright (C) 2024      RK_01/RaphiMC and contributors
+ * Copyright (C) 2021-2024 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
 
 package de.florianmichael.viafabricplus.settings.impl;
 
-import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.text.Text;
 
 public class AuthenticationSettings extends SettingGroup {

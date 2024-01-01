@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
  * Copyright (C) 2021-2024 FlorianMichael/EnZaXD
- * Copyright (C) 2024      RK_01/RaphiMC and contributors
+ * Copyright (C) 2021-2024 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 package de.florianmichael.viafabricplus.fixes.classic;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.reflect.Enums;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.ClientboundPacketsc0_30cpe;

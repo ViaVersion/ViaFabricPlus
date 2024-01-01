@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
  * Copyright (C) 2021-2024 FlorianMichael/EnZaXD
- * Copyright (C) 2024      RK_01/RaphiMC and contributors
+ * Copyright (C) 2021-2024 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,8 @@ import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.impl.command.VFPViaSubCommand;
 import net.minecraft.util.Formatting;
-import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;
+import net.raphimc.vialoader.util.VersionEnum;
 
 public class SetTimeCommand extends VFPViaSubCommand {
 

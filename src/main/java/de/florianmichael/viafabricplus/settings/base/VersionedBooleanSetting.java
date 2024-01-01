@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
  * Copyright (C) 2021-2024 FlorianMichael/EnZaXD
- * Copyright (C) 2024      RK_01/RaphiMC and contributors
+ * Copyright (C) 2021-2024 RK_01/RaphiMC and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@
 package de.florianmichael.viafabricplus.settings.base;
 
 import com.google.gson.JsonObject;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.settings.VersionedBooleanSettingRenderer;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.text.MutableText;
 import net.raphimc.vialoader.util.VersionRange;
 
