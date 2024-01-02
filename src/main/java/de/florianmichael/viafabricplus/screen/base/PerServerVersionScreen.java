@@ -60,33 +60,37 @@ public class PerServerVersionScreen extends VFPScreen {
         this.renderTitle(context);
     }
 
-    public class SlotList extends AlwaysSelectedEntryListWidget<DummyProtocolSlot> {
+    public class SlotList extends AlwaysSelectedEntryListWidget<SharedSlot> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height - top - bottom, top, entryHeight);
 
-            this.addEntry(new ResetProtocolSlot());
-            VersionEnum.SORTED_VERSIONS.stream().map(ViaProtocolSlot::new).forEach(this::addEntry);
+            this.addEntry(new ResetSlot());
+            VersionEnum.SORTED_VERSIONS.stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }
     }
 
+    // Dummy class files used to have a shared superclass for ResetSlot and ProtocolSlot
+    public abstract class SharedSlot extends AlwaysSelectedEntryListWidget.Entry<SharedSlot> {
 
-    public abstract static class DummyProtocolSlot extends AlwaysSelectedEntryListWidget.Entry<DummyProtocolSlot> {
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            playClickSound();
+            close();
+            return super.mouseClicked(mouseX, mouseY, button);
+        }
     }
 
-    public class ResetProtocolSlot extends DummyProtocolSlot {
+    public class ResetSlot extends SharedSlot {
 
         @Override
         public Text getNarration() {
             return Text.translatable("base.viafabricplus.cancel_and_reset");
         }
 
-
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
             selectionConsumer.accept(null);
-            playClickSound();
-            close();
 
             return super.mouseClicked(mouseX, mouseY, button);
         }
@@ -98,10 +102,11 @@ public class PerServerVersionScreen extends VFPScreen {
         }
     }
 
-    public class ViaProtocolSlot extends DummyProtocolSlot {
+    public class ProtocolSlot extends SharedSlot {
+
         private final VersionEnum versionEnum;
 
-        public ViaProtocolSlot(final VersionEnum versionEnum) {
+        public ProtocolSlot(final VersionEnum versionEnum) {
             this.versionEnum = versionEnum;
         }
 
@@ -113,8 +118,6 @@ public class PerServerVersionScreen extends VFPScreen {
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
             selectionConsumer.accept(versionEnum);
-            playClickSound();
-            close();
 
             return super.mouseClicked(mouseX, mouseY, button);
         }

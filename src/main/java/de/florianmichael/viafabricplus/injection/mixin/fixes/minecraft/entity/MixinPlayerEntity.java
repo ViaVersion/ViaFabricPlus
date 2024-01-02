@@ -60,8 +60,9 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Shadow
     @Final
     private PlayerInventory inventory;
+
     @Unique
-    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
+    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F);
 
     @Unique
     private static final SoundEvent viaFabricPlus$oof_hurt = SoundEvent.of(new Identifier("viafabricplus", "oof.hurt"));

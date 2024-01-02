@@ -117,6 +117,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
     }
 
     public static class ProtocolSlot extends AlwaysSelectedEntryListWidget.Entry<ProtocolSlot> {
+
         private final VersionEnum versionEnum;
 
         public ProtocolSlot(final VersionEnum versionEnum) {
