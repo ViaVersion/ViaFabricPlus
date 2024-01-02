@@ -34,16 +34,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.raphimc.vialoader.util.VersionEnum;
 
-public class FootStepParticle extends AbstractSlowingParticle {
+public class FootStepParticle extends SpriteBillboardParticle {
 
     public static int ID;
 
-    protected FootStepParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-        super(clientWorld, d, e, f, g, h, i);
+    protected FootStepParticle(ClientWorld clientWorld, double x, double y, double z) {
+        super(clientWorld, x, y, z);
 
         this.scale = 0.125F;
         this.setMaxAge(200);
-        this.setVelocity(0, 0, 0);
     }
 
     @Override
@@ -101,7 +100,7 @@ public class FootStepParticle extends AbstractSlowingParticle {
                 throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
             }
 
-            final FootStepParticle particle = new FootStepParticle(world, x, y, z, velocityX, velocityY, velocityZ);
+            final FootStepParticle particle = new FootStepParticle(world, x, y, z);
             particle.setSprite(this.spriteProvider);
             return particle;
         }
