@@ -182,6 +182,7 @@
     "fixes.viaversion.MixinMetadataRewriter1_15To1_14_4",
     "fixes.viaversion.MixinMetadataRewriter1_9To1_8",
     "fixes.viaversion.MixinNamedCompoundTagType",
+    "fixes.viaversion.MixinParticleRewriter",
     "fixes.viaversion.MixinProtocol1_11To1_10",
     "fixes.viaversion.MixinProtocol1_12To1_11_1",
     "fixes.viaversion.MixinProtocol1_20_2To1_20",
@@ -204,5 +205,8 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "mixins": [
+    "fixes.viaversion.MixinMappingDataBase"
+  ]
 }
