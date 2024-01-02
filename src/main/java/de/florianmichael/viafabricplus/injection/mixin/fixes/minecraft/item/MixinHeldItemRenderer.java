@@ -48,16 +48,15 @@ public abstract class MixinHeldItemRenderer {
         final boolean blockHitAnimation = VisualSettings.global().enableBlockHitAnimation.isEnabled();
 
         if (VisualSettings.global().enableSwordBlocking.isEnabled() || blockHitAnimation) {
-            matrices.translate(-0.1F, 0.05F, 0.0F);
+            final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
+            matrices.translate(arm == Arm.RIGHT ? -0.1F : 0.1F, 0.05F, 0.0F);
 
             if (blockHitAnimation) {
-                final var arm = (hand == Hand.MAIN_HAND) ? player.getMainArm() : player.getMainArm().getOpposite();
                 applySwingOffset(matrices, arm, swingProgress);
             }
-
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25f));
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(13.365f));
-            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(78.05f));
+            matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Y : RotationAxis.NEGATIVE_Y).rotationDegrees(13.365f));
+            matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Z : RotationAxis.NEGATIVE_Z).rotationDegrees(78.05f));
         }
     }
 
