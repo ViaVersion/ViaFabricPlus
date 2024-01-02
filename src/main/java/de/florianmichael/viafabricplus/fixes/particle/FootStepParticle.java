@@ -81,7 +81,7 @@ public class FootStepParticle extends SpriteBillboardParticle {
         final DefaultParticleType footStepType = FabricParticleTypes.simple(true);
 
         Registry.register(Registries.PARTICLE_TYPE, new Identifier("viafabricplus", "footstep"), footStepType);
-        ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle.Factory::new); // Add some dummy factory
+        ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle.Factory::new);
 
         ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
     }
