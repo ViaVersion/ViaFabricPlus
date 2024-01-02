@@ -23,7 +23,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
-// safe from vanilla modification + removal of recipes
 public enum BannerPattern_1_13_2 {
 
     BASE("b"),

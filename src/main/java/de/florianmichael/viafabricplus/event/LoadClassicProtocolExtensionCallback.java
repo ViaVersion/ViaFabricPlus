@@ -35,4 +35,5 @@ public interface LoadClassicProtocolExtensionCallback {
     });
 
     void onLoadClassicProtocolExtension(final ClassicProtocolExtension classicProtocolExtension);
+
 }

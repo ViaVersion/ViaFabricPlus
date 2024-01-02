@@ -130,7 +130,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
                             }
                             foundDye = true;
                         } else {
-                            if (foundBaseItem || !(!stack.isEmpty() && ItemStack.areItemsEqual(stack, pattern.getBaseStack()))) {
+                            if (foundBaseItem || !ItemStack.areItemsEqual(stack, pattern.getBaseStack())) {
                                 matches = false;
                                 break;
                             }
