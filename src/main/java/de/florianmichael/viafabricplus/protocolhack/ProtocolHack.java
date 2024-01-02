@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.protocolhack;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -177,19 +178,22 @@ public class ProtocolHack {
         final UserConnection user = new UserConnectionImpl(NoPacketSendChannel.INSTANCE, true);
         final ProtocolPipeline pipeline = new ProtocolPipelineImpl(user);
         final List<ProtocolPathEntry> path = Via.getManager().getProtocolManager().getProtocolPath(clientVersion.getVersion(), serverVersion.getVersion());
-        for (ProtocolPathEntry pair : path) {
-            pipeline.add(pair.protocol());
-            pair.protocol().init(user);
+        if (path != null) {
+            for (ProtocolPathEntry pair : path) {
+                pipeline.add(pair.protocol());
+                pair.protocol().init(user);
+            }
         }
 
-        final MinecraftClient mc = MinecraftClient.getInstance();
         final ProtocolInfo info = user.getProtocolInfo();
         info.setState(State.PLAY);
         info.setProtocolVersion(clientVersion.getVersion());
         info.setServerProtocolVersion(serverVersion.getVersion());
+        final MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.player != null) {
-            info.setUsername(MinecraftClient.getInstance().player.getGameProfile().getName());
-            info.setUuid(MinecraftClient.getInstance().player.getGameProfile().getId());
+            final GameProfile profile = mc.player.getGameProfile();
+            info.setUsername(profile.getName());
+            info.setUuid(profile.getId());
         }
 
         return user;
@@ -197,6 +201,7 @@ public class ProtocolHack {
 
     /**
      * @return Returns the current UserConnection of the connection to the server, if the player isn't connected to a server it will return null
+     * @throws IllegalStateException If the player is not connected to a server
      */
     public static UserConnection getPlayNetworkUserConnection() {
         final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
