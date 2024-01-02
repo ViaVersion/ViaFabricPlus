@@ -64,7 +64,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6f, 1.65f);
 
     @Unique
-    private static final SoundEvent viaFabricPlus$random_hurt = SoundEvent.of(new Identifier("viafabricplus", "random.hurt"));
+    private static final SoundEvent viaFabricPlus$oof_hurt = SoundEvent.of(new Identifier("viafabricplus", "oof.hurt"));
 
     @Unique
     public boolean viaFabricPlus$isSprinting;
@@ -180,7 +180,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
     private void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
         if (VisualSettings.global().replaceHurtSoundWithOOFSound.isEnabled()) {
-            cir.setReturnValue(viaFabricPlus$random_hurt);
+            cir.setReturnValue(viaFabricPlus$oof_hurt);
         }
     }
 
