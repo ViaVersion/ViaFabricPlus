@@ -121,9 +121,9 @@ public class EntityRidingOffsetsPre1_20_2 {
         } else if (entity instanceof SpiderEntity) {
             yOffset = entity.getHeight() * 0.5F;
         } else if (entity instanceof StriderEntity striderEntity) {
-            final float f = Math.min(0.25F, striderEntity.limbAnimator.getSpeed());
-            final float g = striderEntity.limbAnimator.getPos();
-            yOffset = striderEntity.getHeight() - 0.19F + (0.12F * MathHelper.cos(g * 1.5F) * 2F * f);
+            final float speed = Math.min(0.25F, striderEntity.limbAnimator.getSpeed());
+            final float pos = striderEntity.limbAnimator.getPos();
+            yOffset = striderEntity.getHeight() - 0.19F + (0.12F * MathHelper.cos(pos * 1.5F) * 2F * speed);
         } else if (entity instanceof ZoglinEntity zoglinEntity) {
             yOffset = zoglinEntity.getHeight() - (zoglinEntity.isBaby() ? 0.2F : 0.15F);
         } else if (entity instanceof AbstractDonkeyEntity) {
