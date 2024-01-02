@@ -19,42 +19,40 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.api.minecraft.Particle;
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.data.ParticleRewriter;
 import de.florianmichael.viafabricplus.fixes.particle.FootStepParticle;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 @Mixin(value = ParticleRewriter.class, remap = false)
 public abstract class MixinParticleRewriter {
 
-    @Unique
-    private static int viaFabricPlus$particleIndex = 0;
+    @Shadow
+    @Final
+    private static List<?> particles;
 
-    @ModifyArg(method = "add(I)V", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/protocol1_13to1_12_2/data/ParticleRewriter$NewParticle;<init>(ILcom/viaversion/viaversion/protocols/protocol1_13to1_12_2/data/ParticleRewriter$ParticleDataHandler;)V"))
-    private static int replaceIds(int id) {
-        viaFabricPlus$particleIndex++;
-        final int oldId = viaFabricPlus$particleIndex - 1;
-
-        if (oldId == 8) { // minecraft:depthsuspend -> minecraft:mycelium
-            return 32;
-        } else if (oldId == 28) { // minecraft:footstep -> viafabricplus:footstep
-            return FootStepParticle.ID;
-        } else {
-            return id;
+    @Inject(method = "<clinit>", at = @At("RETURN"))
+    private static void checkFootStepIdOverlap(CallbackInfo ci) {
+        if (FootStepParticle.ID < particles.size()) {
+            throw new IllegalStateException("ViaFabricPlus FootStepParticle ID overlaps with a vanilla 1.12.2 particle ID");
         }
     }
 
-    @Inject(method = "rewriteParticle", at = @At("HEAD"), cancellable = true)
-    private static void updateFootStepId(int particleId, Integer[] data, CallbackInfoReturnable<Particle> cir) {
-        // Don't allow the server to send footstep particles directly as this would allow the server
-        // to crash ViaFabricPlus clients without annoying vanilla clients
-        if (particleId == FootStepParticle.ID) {
-            cir.setReturnValue(null);
+    @ModifyArg(method = "add(I)V", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/protocol1_13to1_12_2/data/ParticleRewriter$NewParticle;<init>(ILcom/viaversion/viaversion/protocols/protocol1_13to1_12_2/data/ParticleRewriter$ParticleDataHandler;)V"))
+    private static int replaceIds(int id) {
+        if (particles.size() == 8) { // minecraft:depthsuspend -> minecraft:mycelium
+            return 32;
+        } else if (particles.size() == 28) { // minecraft:footstep -> viafabricplus:footstep
+            return FootStepParticle.ID;
+        } else {
+            return id;
         }
     }
 

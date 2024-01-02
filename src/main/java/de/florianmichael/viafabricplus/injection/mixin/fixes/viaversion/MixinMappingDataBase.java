@@ -22,21 +22,17 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 import com.viaversion.viaversion.api.data.MappingDataBase;
 import de.florianmichael.viafabricplus.fixes.particle.FootStepParticle;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = MappingDataBase.class, remap = false)
 public abstract class MixinMappingDataBase {
 
-    @Shadow protected abstract int checkValidity(int id, int mappedId, String type);
-
-    @Redirect(method = "getNewParticleId", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/data/MappingDataBase;checkValidity(IILjava/lang/String;)I"))
-    private int passFoodStepParticle(MappingDataBase instance, int id, int mappedId, String type) {
+    @Inject(method = "getNewParticleId", at = @At("HEAD"), cancellable = true)
+    private void passthroughFootStepParticle(int id, CallbackInfoReturnable<Integer> cir) {
         if (id == FootStepParticle.ID) {
-            return id;
-        } else {
-            return checkValidity(id, mappedId, type);
+            cir.setReturnValue(id);
         }
     }
 

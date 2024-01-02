@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.fixes.particle;
 
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.client.particle.*;
@@ -31,6 +32,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.raphimc.vialoader.util.VersionEnum;
 
 public class FootStepParticle extends AbstractSlowingParticle {
 
@@ -79,7 +81,7 @@ public class FootStepParticle extends AbstractSlowingParticle {
     public static void init() {
         final DefaultParticleType footStepType = FabricParticleTypes.simple(true);
 
-        Registry.register(Registries.PARTICLE_TYPE, new Identifier("viafabricplus", "footprint"), footStepType);
+        Registry.register(Registries.PARTICLE_TYPE, new Identifier("viafabricplus", "footstep"), footStepType);
         ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle.Factory::new); // Add some dummy factory
 
         ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
@@ -95,7 +97,11 @@ public class FootStepParticle extends AbstractSlowingParticle {
 
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            FootStepParticle particle = new FootStepParticle(world, x, y, z, velocityX, velocityY, velocityZ);
+            if (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_12_2)) {
+                throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
+            }
+
+            final FootStepParticle particle = new FootStepParticle(world, x, y, z, velocityX, velocityY, velocityZ);
             particle.setSprite(this.spriteProvider);
             return particle;
         }

@@ -179,6 +179,7 @@
     "fixes.viaversion.MixinInventoryPackets1_13",
     "fixes.viaversion.MixinInventoryPackets1_17",
     "fixes.viaversion.MixinInventoryTracker1_16",
+    "fixes.viaversion.MixinMappingDataBase",
     "fixes.viaversion.MixinMetadataRewriter1_15To1_14_4",
     "fixes.viaversion.MixinMetadataRewriter1_9To1_8",
     "fixes.viaversion.MixinNamedCompoundTagType",
@@ -205,8 +206,5 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  },
-  "mixins": [
-    "fixes.viaversion.MixinMappingDataBase"
-  ]
+  }
 }
