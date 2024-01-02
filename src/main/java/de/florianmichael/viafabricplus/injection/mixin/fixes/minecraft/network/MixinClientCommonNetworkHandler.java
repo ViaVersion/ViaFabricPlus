@@ -19,8 +19,6 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.storage.InventoryAcknowledgements;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
@@ -42,7 +40,6 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -75,9 +72,6 @@ public abstract class MixinClientCommonNetworkHandler {
     private static URL getParsedResourcePackUrl(String url) {
         return null;
     }
-
-    @Unique
-    private URL viaFabricPlus$lastValidatedUrl;
 
     @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientCommonNetworkHandler;send(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
     private void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
@@ -120,20 +114,10 @@ public abstract class MixinClientCommonNetworkHandler {
     @Inject(method = "onResourcePackSend", at = @At("HEAD"), cancellable = true)
     private void validateUrlInNetworkThread(ResourcePackSendS2CPacket packet, CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
-            viaFabricPlus$lastValidatedUrl = getParsedResourcePackUrl(packet.url());
-            if (viaFabricPlus$lastValidatedUrl == null) {
+            if (getParsedResourcePackUrl(packet.url()) == null) {
                 this.connection.send(new ResourcePackStatusC2SPacket(packet.id(), ResourcePackStatusC2SPacket.Status.INVALID_URL));
                 ci.cancel();
             }
-        }
-    }
-
-    @WrapOperation(method = "onResourcePackSend", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientCommonNetworkHandler;getParsedResourcePackUrl(Ljava/lang/String;)Ljava/net/URL;"))
-    private URL useLastValidatedUrl(String url, Operation<URL> original) {
-        if (viaFabricPlus$lastValidatedUrl != null) {
-            return viaFabricPlus$lastValidatedUrl;
-        } else {
-            return original.call(url);
         }
     }
 
