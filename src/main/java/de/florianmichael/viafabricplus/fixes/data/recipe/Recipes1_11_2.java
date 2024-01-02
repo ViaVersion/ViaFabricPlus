@@ -47,27 +47,27 @@ public class Recipes1_11_2 {
         final List<RecipeInfo<?>> recipes = new ArrayList<>();
 
         if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_4_2)) {
-            recipes.add(RecipeInfo.of(() -> new ArmorDyeRecipe(CraftingRecipeCategory.MISC), RecipeSerializer.ARMOR_DYE, Items.LEATHER_HELMET));
-            recipes.add(RecipeInfo.of(() -> new MapCloningRecipe(CraftingRecipeCategory.MISC), RecipeSerializer.MAP_CLONING, Items.FILLED_MAP, 2));
-            recipes.add(RecipeInfo.of(() -> new MapExtendingRecipe(CraftingRecipeCategory.MISC), RecipeSerializer.MAP_EXTENDING, Items.FILLED_MAP));
+            recipes.add(RecipeInfo.of(() -> new ArmorDyeRecipe(CraftingRecipeCategory.MISC)));
+            recipes.add(RecipeInfo.of(() -> new MapCloningRecipe(CraftingRecipeCategory.MISC)));
+            recipes.add(RecipeInfo.of(() -> new MapExtendingRecipe(CraftingRecipeCategory.MISC)));
         }
         if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
-            recipes.add(RecipeInfo.of(() -> new FireworkRocketRecipe(CraftingRecipeCategory.MISC), RecipeSerializer.FIREWORK_ROCKET, Items.FIREWORK_ROCKET));
+            recipes.add(RecipeInfo.of(() -> new FireworkRocketRecipe(CraftingRecipeCategory.MISC)));
         }
         if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_11)) {
-            recipes.add(RecipeInfo.of(() -> new ShulkerBoxColoringRecipe(CraftingRecipeCategory.MISC), RecipeSerializer.SHULKER_BOX, Items.WHITE_SHULKER_BOX));
+            recipes.add(RecipeInfo.of(() -> new ShulkerBoxColoringRecipe(CraftingRecipeCategory.MISC)));
         }
         if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_9)) {
-            recipes.add(RecipeInfo.of(() -> new TippedArrowRecipe(CraftingRecipeCategory.MISC), RecipeSerializer.TIPPED_ARROW, Items.TIPPED_ARROW));
-            recipes.add(RecipeInfo.of(() -> new ShieldDecorationRecipe(CraftingRecipeCategory.MISC), RecipeSerializer.SHIELD_DECORATION, Items.SHIELD));
+            recipes.add(RecipeInfo.of(() -> new TippedArrowRecipe(CraftingRecipeCategory.MISC)));
+            recipes.add(RecipeInfo.of(() -> new ShieldDecorationRecipe(CraftingRecipeCategory.MISC)));
         }
         if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_8)) {
-            recipes.add(RecipeInfo.of(() -> new RepairItemRecipe(CraftingRecipeCategory.MISC), RecipeSerializer.REPAIR_ITEM, Items.WOODEN_SWORD));
-            recipes.add(RecipeInfo.of(() -> new BannerDuplicateRecipe(CraftingRecipeCategory.MISC), RecipeSerializer.BANNER_DUPLICATE, Items.WHITE_BANNER, 2));
-            recipes.add(RecipeInfo.of(() -> new AddBannerPatternRecipe(CraftingRecipeCategory.MISC), AddBannerPatternRecipe.SERIALIZER, Items.WHITE_BANNER));
+            recipes.add(RecipeInfo.of(() -> new RepairItemRecipe(CraftingRecipeCategory.MISC)));
+            recipes.add(RecipeInfo.of(() -> new BannerDuplicateRecipe(CraftingRecipeCategory.MISC)));
+            recipes.add(RecipeInfo.of(() -> new AddBannerPatternRecipe(CraftingRecipeCategory.MISC)));
         }
         if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_7_2tor1_7_5)) {
-            recipes.add(RecipeInfo.of(() -> new BookCloningRecipe(CraftingRecipeCategory.MISC), RecipeSerializer.BOOK_CLONING, Items.WRITABLE_BOOK, 2));
+            recipes.add(RecipeInfo.of(() -> new BookCloningRecipe(CraftingRecipeCategory.MISC)));
         }
 
         recipes.add(RecipeInfo.shaped(Items.WOODEN_SWORD, "X", "X", "#", '#', Items.STICK, 'X', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS));
@@ -200,7 +200,7 @@ public class Recipes1_11_2 {
         }
         if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
             recipes.add(RecipeInfo.shaped(9, Items.IRON_NUGGET, "#", '#', Items.IRON_INGOT));
-            recipes.add(RecipeInfo.shaped("iron_ingot", Items.IRON_INGOT, "###", "###", "###", '#', Items.IRON_NUGGET).distinguisher("iron_nugget_to_ingot"));
+            recipes.add(RecipeInfo.shaped("iron_ingot", Items.IRON_INGOT, "###", "###", "###", '#', Items.IRON_NUGGET));
         }
         if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_11)) {
             recipes.add(RecipeInfo.shaped(Blocks.OBSERVER, "###", "RRQ", "###", 'Q', Items.QUARTZ, 'R', Blocks.REDSTONE_WIRE, '#', Blocks.COBBLESTONE));

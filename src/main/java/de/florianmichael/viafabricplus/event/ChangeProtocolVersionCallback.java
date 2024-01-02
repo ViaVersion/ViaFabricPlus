@@ -36,4 +36,5 @@ public interface ChangeProtocolVersionCallback {
     });
 
     void onChangeProtocolVersion(final VersionEnum oldVersion, final VersionEnum newVersion);
+
 }

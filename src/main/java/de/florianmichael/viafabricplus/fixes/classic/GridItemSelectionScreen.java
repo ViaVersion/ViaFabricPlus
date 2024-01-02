@@ -82,7 +82,6 @@ public class GridItemSelectionScreen extends VFPScreen {
             this.client.player.playerScreenHandler.sendContentUpdates();
 
             playClickSound();
-
             this.close();
         }
         return super.mouseClicked(mouseX, mouseY, button);

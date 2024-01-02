@@ -36,30 +36,13 @@ import java.util.function.Supplier;
 public final class RecipeInfo<T extends Recipe<?>> {
 
     private final Supplier<Recipe<?>> creator;
-    private final RecipeSerializer<T> recipeType;
-    private final ItemStack output;
-    private String distinguisher = "";
 
-    private RecipeInfo(Supplier<Recipe<?>> creator, RecipeSerializer<T> recipeType, ItemStack output) {
+    private RecipeInfo(Supplier<Recipe<?>> creator) {
         this.creator = creator;
-        this.recipeType = recipeType;
-        this.output = output;
     }
 
-    public static <T extends Recipe<?>> RecipeInfo<T> of(Supplier<Recipe<?>> creator, RecipeSerializer<T> recipeType, ItemStack output) {
-        return new RecipeInfo<>(creator, recipeType, output);
-    }
-
-    public static <T extends Recipe<?>> RecipeInfo<T> of(Supplier<Recipe<?>> creator, RecipeSerializer<T> recipeType, ItemConvertible output) {
-        return of(creator, recipeType, new ItemStack(output));
-    }
-
-    public static <T extends Recipe<?>> RecipeInfo<T> of(Supplier<Recipe<?>> creator, RecipeSerializer<T> recipeType, ItemConvertible output, int count) {
-        return of(creator, recipeType, new ItemStack(output, count));
-    }
-
-    public static RecipeInfo<ShapedRecipe> shaped(ItemStack output, Object... args) {
-        return shaped("", output, args);
+    public static <T extends Recipe<?>> RecipeInfo<T> of(Supplier<Recipe<?>> creator) {
+        return new RecipeInfo<>(creator);
     }
 
     public static RecipeInfo<ShapedRecipe> shaped(ItemConvertible output, Object... args) {
@@ -110,7 +93,7 @@ public final class RecipeInfo<T extends Recipe<?>> {
         }
 
         final int width_f = width;
-        return new RecipeInfo<>(() -> new ShapedRecipe(group, CraftingRecipeCategory.MISC, new RawShapedRecipe(width_f, height, ingredients, Optional.empty()), output, false), RecipeSerializer.SHAPED, output);
+        return new RecipeInfo<>(() -> new ShapedRecipe(group, CraftingRecipeCategory.MISC, new RawShapedRecipe(width_f, height, ingredients, Optional.empty()), output, false));
     }
 
     public static RecipeInfo<ShapedRecipe> shaped(String group, ItemConvertible output, Object... args) {
@@ -123,8 +106,9 @@ public final class RecipeInfo<T extends Recipe<?>> {
 
     public static RecipeInfo<ShapelessRecipe> shapeless(String group, ItemStack output, ItemConvertible... inputs) {
         ItemConvertible[][] newInputs = new ItemConvertible[inputs.length][1];
-        for (int i = 0; i < inputs.length; i++)
+        for (int i = 0; i < inputs.length; i++) {
             newInputs[i] = new ItemConvertible[]{inputs[i]};
+        }
         return shapeless(group, output, newInputs);
     }
 
@@ -141,19 +125,11 @@ public final class RecipeInfo<T extends Recipe<?>> {
         for (ItemConvertible[] input : inputs) {
             ingredients.add(Ingredient.ofItems(input));
         }
-        return new RecipeInfo<>(() -> new ShapelessRecipe(group, CraftingRecipeCategory.MISC, output, ingredients), RecipeSerializer.SHAPELESS, output);
-    }
-
-    public static RecipeInfo<ShapelessRecipe> shapeless(String group, ItemConvertible output, ItemConvertible[]... inputs) {
-        return shapeless(group, new ItemStack(output), inputs);
+        return new RecipeInfo<>(() -> new ShapelessRecipe(group, CraftingRecipeCategory.MISC, output, ingredients));
     }
 
     public static RecipeInfo<ShapelessRecipe> shapeless(String group, int count, ItemConvertible output, ItemConvertible[]... inputs) {
         return shapeless(group, new ItemStack(output, count), inputs);
-    }
-
-    public static RecipeInfo<ShapelessRecipe> shapeless(ItemStack output, ItemConvertible... inputs) {
-        return shapeless("", output, inputs);
     }
 
     public static RecipeInfo<ShapelessRecipe> shapeless(ItemConvertible output, ItemConvertible... inputs) {
@@ -162,14 +138,6 @@ public final class RecipeInfo<T extends Recipe<?>> {
 
     public static RecipeInfo<ShapelessRecipe> shapeless(int count, ItemConvertible output, ItemConvertible... inputs) {
         return shapeless("", count, output, inputs);
-    }
-
-    public static RecipeInfo<ShapelessRecipe> shapeless(ItemStack output, ItemConvertible[]... inputs) {
-        return shapeless("", output, inputs);
-    }
-
-    public static RecipeInfo<ShapelessRecipe> shapeless(ItemConvertible output, ItemConvertible[]... inputs) {
-        return shapeless("", output, inputs);
     }
 
     public static RecipeInfo<ShapelessRecipe> shapeless(int count, ItemConvertible output, ItemConvertible[]... inputs) {
@@ -189,30 +157,11 @@ public final class RecipeInfo<T extends Recipe<?>> {
     }
 
     public static RecipeInfo<SmeltingRecipe> smelting(ItemConvertible output, Ingredient input, float experience, int cookTime) {
-        ItemStack outputStack = new ItemStack(output);
-        return new RecipeInfo<>(() -> new SmeltingRecipe("", CookingRecipeCategory.MISC, input, outputStack, experience, cookTime), RecipeSerializer.SMELTING, outputStack);
+        return new RecipeInfo<>(() -> new SmeltingRecipe("", CookingRecipeCategory.MISC, input, new ItemStack(output), experience, cookTime));
     }
-
-    public RecipeInfo<T> distinguisher(String distinguisher) {
-        this.distinguisher = distinguisher;
-        return this;
-    }
-
 
     public RecipeEntry<?> create(Identifier id) {
         return new RecipeEntry<Recipe<?>>(id, this.creator.get());
-    }
-
-    public RecipeSerializer<T> getRecipeType() {
-        return this.recipeType;
-    }
-
-    public ItemStack getOutput() {
-        return this.output;
-    }
-
-    public String getDistinguisher() {
-        return this.distinguisher;
     }
 
 }
