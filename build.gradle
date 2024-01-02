@@ -60,6 +60,8 @@ dependencies {
 	modJij(fabricApi.module("fabric-networking-api-v1", project.fabric_api_version))
 	modJij(fabricApi.module("fabric-command-api-v2", project.fabric_api_version))
 	modJij(fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version))
+	modJij(fabricApi.module("fabric-particles-v1", project.fabric_api_version))
+	modJij(fabricApi.module("fabric-registry-sync-v0", project.fabric_api_version))
 
 	// ViaVersion Libraries
 	jij "com.viaversion:viaversion-common:${project.viaversion_version}"

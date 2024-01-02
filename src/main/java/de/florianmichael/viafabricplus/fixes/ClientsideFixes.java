@@ -26,6 +26,7 @@ import de.florianmichael.viafabricplus.fixes.classic.CPEAdditions;
 import de.florianmichael.viafabricplus.fixes.classic.GridItemSelectionScreen;
 import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
 import de.florianmichael.viafabricplus.fixes.entity.EntityDimensionReplacements;
+import de.florianmichael.viafabricplus.fixes.particle.FootStepParticle;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
@@ -130,6 +131,9 @@ public class ClientsideFixes {
                 currentChatLength = Short.MAX_VALUE * 2;
             }
         });
+
+        // Register the footstep particle
+        FootStepParticle.init();
     }
 
     /**
