@@ -215,11 +215,9 @@ public class ProtocolHack {
     /**
      * Apply recommended config options to the ViaVersion config files
      *
-     * @param directory The directory where the ViaVersion config files are located
+     * @param configFolder The directory where the ViaVersion config files are located
      */
-    public static void patchConfigs(final File directory) {
-        final File configFolder = new File(directory, "ViaLoader");
-
+    public static void patchConfigs(final File configFolder) {
         final File viaVersionConfig = new File(configFolder, "viaversion.yml");
         final Map<String, Object> viaVersionPatches = new HashMap<>();
         viaVersionPatches.put("fix-infested-block-breaking", false);
@@ -242,7 +240,7 @@ public class ProtocolHack {
      * @return A CompletableFuture that will be completed when the initialization is done
      */
     public static CompletableFuture<Void> init(final File directory) {
-        patchConfigs(directory);
+        patchConfigs(new File(directory, "ViaLoader"));
 
         // Register command callback for /viaversion and /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
