@@ -43,8 +43,8 @@ public class Recipes1_11_2 {
     /**
      * @return A list of all recipes for the given version.
      */
-    public static List<RecipeInfo<?>> getRecipes(final VersionEnum targetVersion) {
-        final List<RecipeInfo<?>> recipes = new ArrayList<>();
+    public static List<RecipeInfo> getRecipes(final VersionEnum targetVersion) {
+        final List<RecipeInfo> recipes = new ArrayList<>();
 
         if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_4_2)) {
             recipes.add(RecipeInfo.of(() -> new ArmorDyeRecipe(CraftingRecipeCategory.MISC)));

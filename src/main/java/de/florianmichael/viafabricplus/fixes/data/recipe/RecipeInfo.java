@@ -27,13 +27,13 @@ import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
-public final class RecipeInfo<T extends Recipe<?>> {
+/**
+ * A helper class for creating recipes.
+ */
+public final class RecipeInfo {
 
     private final Supplier<Recipe<?>> creator;
 
@@ -41,30 +41,61 @@ public final class RecipeInfo<T extends Recipe<?>> {
         this.creator = creator;
     }
 
-    public static <T extends Recipe<?>> RecipeInfo<T> of(Supplier<Recipe<?>> creator) {
-        return new RecipeInfo<>(creator);
+    /**
+     * Creates a new recipe info with the given creator.
+     *
+     * @param creator The creator
+     * @return The recipe info
+     */
+    public static RecipeInfo of(Supplier<Recipe<?>> creator) {
+        return new RecipeInfo(creator);
     }
 
-    public static RecipeInfo<ShapedRecipe> shaped(ItemConvertible output, Object... args) {
+    /**
+     * Creates a new shaped recipe info with the given creator.
+     *
+     * @param output The output
+     * @param args   The arguments
+     * @return The recipe info containing a shaped recipe
+     */
+    public static RecipeInfo shaped(ItemConvertible output, Object... args) {
         return shaped("", output, args);
     }
 
-    public static RecipeInfo<ShapedRecipe> shaped(int count, ItemConvertible output, Object... args) {
+    /**
+     * Creates a new shaped recipe info with the given creator.
+     *
+     * @param count  The count
+     * @param output The output
+     * @param args   The arguments
+     * @return The recipe info containing a shaped recipe
+     */
+    public static RecipeInfo shaped(int count, ItemConvertible output, Object... args) {
         return shaped("", count, output, args);
     }
 
-    public static RecipeInfo<ShapedRecipe> shaped(String group, ItemStack output, Object... args) {
+    /**
+     * Creates a new shaped recipe info with the given creator.
+     *
+     * @param group  The group
+     * @param output The output
+     * @param args   The arguments
+     * @return The recipe info containing a shaped recipe
+     */
+    public static RecipeInfo shaped(String group, ItemStack output, Object... args) {
+        final List<String> shape = new ArrayList<>();
+
         int i;
         int width = 0;
-        List<String> shape = new ArrayList<>();
         for (i = 0; i < args.length && args[i] instanceof String str; i++) {
-            if (i == 0)
+            if (i == 0) {
                 width = str.length();
-            else if (str.length() != width)
+            } else if (str.length() != width) {
                 throw new IllegalArgumentException("Rows do not have consistent width");
+            }
             shape.add(str);
         }
-        var legend = new HashMap<Character, Ingredient>();
+        Map<Character, Ingredient> legend = new HashMap<>();
         while (i < args.length && args[i] instanceof Character key) {
             i++;
             List<ItemConvertible> items = new ArrayList<>();
@@ -73,93 +104,217 @@ public final class RecipeInfo<T extends Recipe<?>> {
             }
             legend.put(key, Ingredient.ofItems(items.toArray(new ItemConvertible[0])));
         }
-        if (i != args.length)
+        if (i != args.length) {
             throw new IllegalArgumentException("Unexpected argument at index " + i + ": " + args[i]);
+        }
 
-        int height = shape.size();
-        DefaultedList<Ingredient> ingredients = DefaultedList.of();
+        final int height = shape.size();
+        final DefaultedList<Ingredient> ingredients = DefaultedList.of();
         for (String row : shape) {
             for (int x = 0; x < width; x++) {
-                char key = row.charAt(x);
+                final char key = row.charAt(x);
                 Ingredient ingredient = legend.get(key);
                 if (ingredient == null) {
-                    if (key == ' ')
+                    if (key == ' ') {
                         ingredient = Ingredient.EMPTY;
-                    else
+                    } else {
                         throw new IllegalArgumentException("Unknown character in shape: " + key);
+                    }
                 }
                 ingredients.add(ingredient);
             }
         }
 
         final int width_f = width;
-        return new RecipeInfo<>(() -> new ShapedRecipe(group, CraftingRecipeCategory.MISC, new RawShapedRecipe(width_f, height, ingredients, Optional.empty()), output, false));
+        return new RecipeInfo(() -> new ShapedRecipe(group, CraftingRecipeCategory.MISC, new RawShapedRecipe(width_f, height, ingredients, Optional.empty()), output, false));
     }
 
-    public static RecipeInfo<ShapedRecipe> shaped(String group, ItemConvertible output, Object... args) {
+    /**
+     * Creates a new shaped recipe info with the given creator.
+     *
+     * @param group  The group
+     * @param output The output
+     * @param args   The arguments
+     * @return The recipe info containing a shaped recipe
+     */
+    public static RecipeInfo shaped(String group, ItemConvertible output, Object... args) {
         return shaped(group, new ItemStack(output), args);
     }
 
-    public static RecipeInfo<ShapedRecipe> shaped(String group, int count, ItemConvertible output, Object... args) {
+    /**
+     * Creates a new shaped recipe info with the given creator.
+     *
+     * @param group  The group
+     * @param count  The count
+     * @param output The output
+     * @param args   The arguments
+     * @return The recipe info containing a shaped recipe
+     */
+    public static RecipeInfo shaped(String group, int count, ItemConvertible output, Object... args) {
         return shaped(group, new ItemStack(output, count), args);
     }
 
-    public static RecipeInfo<ShapelessRecipe> shapeless(String group, ItemStack output, ItemConvertible... inputs) {
-        ItemConvertible[][] newInputs = new ItemConvertible[inputs.length][1];
+    /**
+     * Creates a new shapeless recipe info with the given creator.
+     *
+     * @param group  The group
+     * @param output The output
+     * @param inputs The inputs
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo shapeless(String group, ItemStack output, ItemConvertible... inputs) {
+        final ItemConvertible[][] newInputs = new ItemConvertible[inputs.length][1];
         for (int i = 0; i < inputs.length; i++) {
             newInputs[i] = new ItemConvertible[]{inputs[i]};
         }
         return shapeless(group, output, newInputs);
     }
 
-    public static RecipeInfo<ShapelessRecipe> shapeless(String group, ItemConvertible output, ItemConvertible... inputs) {
+    /**
+     * Creates a new shapeless recipe info with the given creator.
+     *
+     * @param group  The group
+     * @param output The output
+     * @param inputs The inputs
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo shapeless(String group, ItemConvertible output, ItemConvertible... inputs) {
         return shapeless(group, new ItemStack(output), inputs);
     }
 
-    public static RecipeInfo<ShapelessRecipe> shapeless(String group, int count, ItemConvertible output, ItemConvertible... inputs) {
+    /**
+     * Creates a new shapeless recipe info with the given creator.
+     *
+     * @param group  The group
+     * @param count  The count
+     * @param output The output
+     * @param inputs The inputs
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo shapeless(String group, int count, ItemConvertible output, ItemConvertible... inputs) {
         return shapeless(group, new ItemStack(output, count), inputs);
     }
 
-    public static RecipeInfo<ShapelessRecipe> shapeless(String group, ItemStack output, ItemConvertible[]... inputs) {
-        DefaultedList<Ingredient> ingredients = DefaultedList.of();
+    /**
+     * Creates a new shapeless recipe info with the given creator.
+     *
+     * @param group  The group
+     * @param output The output
+     * @param inputs The inputs
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo shapeless(String group, ItemStack output, ItemConvertible[]... inputs) {
+        final DefaultedList<Ingredient> ingredients = DefaultedList.of();
         for (ItemConvertible[] input : inputs) {
             ingredients.add(Ingredient.ofItems(input));
         }
-        return new RecipeInfo<>(() -> new ShapelessRecipe(group, CraftingRecipeCategory.MISC, output, ingredients));
+        return new RecipeInfo(() -> new ShapelessRecipe(group, CraftingRecipeCategory.MISC, output, ingredients));
     }
 
-    public static RecipeInfo<ShapelessRecipe> shapeless(String group, int count, ItemConvertible output, ItemConvertible[]... inputs) {
+    /**
+     * Creates a new shapeless recipe info with the given creator.
+     *
+     * @param group  The group
+     * @param count  The count
+     * @param output The output
+     * @param inputs The inputs
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo shapeless(String group, int count, ItemConvertible output, ItemConvertible[]... inputs) {
         return shapeless(group, new ItemStack(output, count), inputs);
     }
 
-    public static RecipeInfo<ShapelessRecipe> shapeless(ItemConvertible output, ItemConvertible... inputs) {
+    /**
+     * Creates a new shapeless recipe info with the given creator.
+     *
+     * @param output The output
+     * @param inputs The inputs
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo shapeless(ItemConvertible output, ItemConvertible... inputs) {
         return shapeless("", output, inputs);
     }
 
-    public static RecipeInfo<ShapelessRecipe> shapeless(int count, ItemConvertible output, ItemConvertible... inputs) {
+    /**
+     * Creates a new shapeless recipe info with the given creator.
+     *
+     * @param count  The count
+     * @param output The output
+     * @param inputs The inputs
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo shapeless(int count, ItemConvertible output, ItemConvertible... inputs) {
         return shapeless("", count, output, inputs);
     }
 
-    public static RecipeInfo<ShapelessRecipe> shapeless(int count, ItemConvertible output, ItemConvertible[]... inputs) {
+    /**
+     * Creates a new shapeless recipe info with the given creator.
+     *
+     * @param count  The count
+     * @param output The output
+     * @param inputs The inputs
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo shapeless(int count, ItemConvertible output, ItemConvertible[]... inputs) {
         return shapeless("", count, output, inputs);
     }
 
-    public static RecipeInfo<SmeltingRecipe> smelting(ItemConvertible output, ItemConvertible input, float experience) {
+    /**
+     * Creates a new smelting recipe info with the given creator.
+     *
+     * @param output     The output
+     * @param input      The input
+     * @param experience The experience
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo smelting(ItemConvertible output, ItemConvertible input, float experience) {
         return smelting(output, input, experience, 200);
     }
 
-    public static RecipeInfo<SmeltingRecipe> smelting(ItemConvertible output, Ingredient input, float experience) {
+    /**
+     * Creates a new smelting recipe info with the given creator.
+     *
+     * @param output     The output
+     * @param input      The input
+     * @param experience The experience
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo smelting(ItemConvertible output, Ingredient input, float experience) {
         return smelting(output, input, experience, 200);
     }
 
-    public static RecipeInfo<SmeltingRecipe> smelting(ItemConvertible output, ItemConvertible input, float experience, int cookTime) {
+    /**
+     * Creates a new smelting recipe info with the given creator.
+     *
+     * @param output     The output
+     * @param input      The input
+     * @param experience The experience
+     * @param cookTime   The cook time
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo smelting(ItemConvertible output, ItemConvertible input, float experience, int cookTime) {
         return smelting(output, Ingredient.ofItems(input), experience, cookTime);
     }
 
-    public static RecipeInfo<SmeltingRecipe> smelting(ItemConvertible output, Ingredient input, float experience, int cookTime) {
-        return new RecipeInfo<>(() -> new SmeltingRecipe("", CookingRecipeCategory.MISC, input, new ItemStack(output), experience, cookTime));
+    /**
+     * Creates a new smelting recipe info with the given creator.
+     *
+     * @param output     The output
+     * @param input      The input
+     * @param experience The experience
+     * @param cookTime   The cook time
+     * @return The recipe info containing a shapeless recipe
+     */
+    public static RecipeInfo smelting(ItemConvertible output, Ingredient input, float experience, int cookTime) {
+        return new RecipeInfo(() -> new SmeltingRecipe("", CookingRecipeCategory.MISC, input, new ItemStack(output), experience, cookTime));
     }
 
+    /**
+     * Creates a new recipe info with the given creator.
+     *
+     * @param id The id
+     * @return The recipe info
+     */
     public RecipeEntry<?> create(Identifier id) {
         return new RecipeEntry<Recipe<?>>(id, this.creator.get());
     }
