@@ -242,7 +242,7 @@ public class ProtocolHack {
     public static CompletableFuture<Void> init(final File directory) {
         patchConfigs(new File(directory, "ViaLoader"));
 
-        // Register command callback for /viaversion and /viafabricplus
+        // Register command callback for /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             final var commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
             final var executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
