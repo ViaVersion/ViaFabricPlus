@@ -30,7 +30,7 @@ public abstract class MixinStringHelper {
 
     @ModifyConstant(method = "truncateChat", constant = @Constant(intValue = 256))
     private static int modifyMaxChatLength(int constant) {
-        return ClientsideFixes.getCurrentChatLength();
+        return ClientsideFixes.getChatLength();
     }
 
 }

@@ -30,7 +30,7 @@ public abstract class MixinChatMessageC2SPacket {
 
     @ModifyConstant(method = "write", constant = @Constant(intValue = 256))
     private int modifyChatLength(int maxLength) {
-        return ClientsideFixes.getCurrentChatLength();
+        return ClientsideFixes.getChatLength();
     }
 
 }

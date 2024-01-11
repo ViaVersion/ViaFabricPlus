@@ -20,7 +20,6 @@
 package de.florianmichael.viafabricplus.fixes;
 
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.event.LoadClassicProtocolExtensionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.fixes.classic.CPEAdditions;
 import de.florianmichael.viafabricplus.fixes.classic.GridItemSelectionScreen;
@@ -28,12 +27,16 @@ import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
 import de.florianmichael.viafabricplus.fixes.entity.EntityDimensionReplacements;
 import de.florianmichael.viafabricplus.fixes.particle.FootStepParticle;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
+import de.florianmichael.viafabricplus.injection.access.IClientConnection;
+import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
+import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.Map;
@@ -61,11 +64,6 @@ public class ClientsideFixes {
      */
     public static final String ITEM_COUNT_NBT_TAG = "VFP_1_10_ItemCount_" + System.currentTimeMillis();
 
-    /**
-     * The current chat limit
-     */
-    private static int currentChatLength = 256;
-
     public static void init() {
         // Register additional CPE features
         CPEAdditions.modifyMappings();
@@ -83,17 +81,6 @@ public class ClientsideFixes {
 
         // Reloads some clientside stuff when the protocol version changes
         ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
-            // Calculates the current chat length limit
-            if (newVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
-                currentChatLength = 64 - (MinecraftClient.getInstance().getSession().getUsername().length() + 2);
-            } else if (newVersion.equals(VersionEnum.bedrockLatest)) {
-                currentChatLength = 512;
-            } else if (newVersion.isOlderThanOrEqualTo(VersionEnum.r1_9_3tor1_9_4)) {
-                currentChatLength = 100;
-            } else {
-                currentChatLength = 256;
-            }
-
             if (!ViaFabricPlusMixinPlugin.DASH_LOADER_PRESENT) {
                 // Clear all font caches to enforce a reload of all fonts (this is needed because we change the font renderer behavior)
                 for (FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
@@ -125,15 +112,32 @@ public class ClientsideFixes {
             }
         }));
 
-        // Calculates the current chat limit, since it changes depending on the protocol version
-        LoadClassicProtocolExtensionCallback.EVENT.register(classicProtocolExtension -> {
-            if (classicProtocolExtension == ClassicProtocolExtension.LONGER_MESSAGES) {
-                currentChatLength = Short.MAX_VALUE * 2;
-            }
-        });
-
         // Register the footstep particle
         FootStepParticle.init();
+    }
+
+    /**
+     * Calculates the maximum chat length for the selected protocol version in {@link ProtocolHack#getTargetVersion()}
+     *
+     * @return The maximum chat length
+     */
+    public static int getChatLength() {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
+            final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
+            final ExtensionProtocolMetadataStorage extensionProtocol = ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection().get(ExtensionProtocolMetadataStorage.class);
+
+            if (extensionProtocol != null && extensionProtocol.hasServerExtension(ClassicProtocolExtension.LONGER_MESSAGES)) {
+                return Short.MAX_VALUE * 2;
+            } else {
+                return 64 - (MinecraftClient.getInstance().getSession().getUsername().length() + 2);
+            }
+        } else if (ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
+            return 512;
+        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_9_3tor1_9_4)) {
+            return 100;
+        } else {
+            return 256;
+        }
     }
 
     /**
@@ -157,10 +161,6 @@ public class ClientsideFixes {
                 task.accept(buf);
             });
         }
-    }
-
-    public static int getCurrentChatLength() {
-        return currentChatLength;
     }
 
 }
