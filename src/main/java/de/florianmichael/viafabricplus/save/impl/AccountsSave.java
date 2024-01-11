@@ -53,14 +53,14 @@ public class AccountsSave extends AbstractSave {
             try {
                 bedrockAccount = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.fromJson(object.get("bedrock").getAsJsonObject());
             } catch (Exception e) {
-                ViaFabricPlus.global().getLogger().error("Failed to read bedrock account!");
+                ViaFabricPlus.global().getLogger().error("Failed to read bedrock account!", e);
             }
         }
         if (object.has("classicube")) {
             try {
                 classicubeAccount = CCAccount.fromJson(object.get("classicube").getAsJsonObject());
             } catch (Exception e) {
-                ViaFabricPlus.global().getLogger().error("Failed to read classicube account!");
+                ViaFabricPlus.global().getLogger().error("Failed to read classicube account!", e);
             }
         }
     }
