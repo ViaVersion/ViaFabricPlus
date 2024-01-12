@@ -46,10 +46,8 @@ public abstract class MixinParticleRewriter {
     }
 
     @ModifyArg(method = "add(I)V", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/protocol1_13to1_12_2/data/ParticleRewriter$NewParticle;<init>(ILcom/viaversion/viaversion/protocols/protocol1_13to1_12_2/data/ParticleRewriter$ParticleDataHandler;)V"))
-    private static int replaceIds(int id) {
-        if (particles.size() == 8) { // minecraft:depthsuspend -> minecraft:mycelium
-            return 32;
-        } else if (particles.size() == 28) { // minecraft:footstep -> viafabricplus:footstep
+    private static int replaceFootStepId(int id) {
+        if (particles.size() == 28) { // minecraft:footstep -> viafabricplus:footstep
             return FootStepParticle1_12_2.ID;
         } else {
             return id;
