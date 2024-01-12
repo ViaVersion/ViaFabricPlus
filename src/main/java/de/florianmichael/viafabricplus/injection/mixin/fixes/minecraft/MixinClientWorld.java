@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.fixes.replacement.PendingUpdateManager1_18_2;
+import de.florianmichael.viafabricplus.fixes.versioned.PendingUpdateManager1_18_2;
 import de.florianmichael.viafabricplus.injection.access.IEntity;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.network.ClientPlayNetworkHandler;

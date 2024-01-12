@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.access;
 
-import de.florianmichael.viafabricplus.fixes.ClientPlayerInteractionManager1_18_2;
+import de.florianmichael.viafabricplus.fixes.versioned.ClientPlayerInteractionManager1_18_2;
 
 public interface IClientPlayerInteractionManager {
 

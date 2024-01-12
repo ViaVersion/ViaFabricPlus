@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.fixes.data.RenderableGlyphDiff;
-import de.florianmichael.viafabricplus.fixes.replacement.BuiltinEmptyGlyph1_12_2;
+import de.florianmichael.viafabricplus.fixes.versioned.visual.BuiltinEmptyGlyph1_12_2;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.*;

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.classic;
+package de.florianmichael.viafabricplus.fixes.versioned.classic;
 
 import de.florianmichael.viafabricplus.fixes.data.ItemRegistryDiff;
 import de.florianmichael.viafabricplus.screen.VFPScreen;

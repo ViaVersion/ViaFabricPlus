@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.data.ParticleRewriter;
-import de.florianmichael.viafabricplus.fixes.particle.FootStepParticle;
+import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,7 +40,7 @@ public abstract class MixinParticleRewriter {
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void checkFootStepIdOverlap(CallbackInfo ci) {
-        if (FootStepParticle.ID < particles.size()) {
+        if (FootStepParticle1_12_2.ID < particles.size()) {
             throw new IllegalStateException("ViaFabricPlus FootStepParticle ID overlaps with a vanilla 1.12.2 particle ID");
         }
     }
@@ -50,7 +50,7 @@ public abstract class MixinParticleRewriter {
         if (particles.size() == 8) { // minecraft:depthsuspend -> minecraft:mycelium
             return 32;
         } else if (particles.size() == 28) { // minecraft:footstep -> viafabricplus:footstep
-            return FootStepParticle.ID;
+            return FootStepParticle1_12_2.ID;
         } else {
             return id;
         }

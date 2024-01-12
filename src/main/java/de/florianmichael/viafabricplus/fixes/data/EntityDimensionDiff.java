@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.entity;
+package de.florianmichael.viafabricplus.fixes.data;
 
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import net.minecraft.client.MinecraftClient;
@@ -33,7 +33,7 @@ import static de.florianmichael.viafabricplus.util.MapUtil.linkedHashMap;
 /**
  * Data dump for entity dimension changes between versions.
  */
-public class EntityDimensionReplacements {
+public class EntityDimensionDiff {
 
     /**
      * A map of entity types to a map of versions to dimensions.

@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
 
-import de.florianmichael.viafabricplus.fixes.classic.CPEAdditions;
+import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.ClientboundPacketsc0_30cpe;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

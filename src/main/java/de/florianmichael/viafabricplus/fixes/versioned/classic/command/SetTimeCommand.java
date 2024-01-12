@@ -17,38 +17,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.classic.command;
+package de.florianmichael.viafabricplus.fixes.versioned.classic.command;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;
 import de.florianmichael.viafabricplus.protocolhack.impl.command.VFPViaSubCommand;
 import net.minecraft.util.Formatting;
-import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
+import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;
 import net.raphimc.vialoader.util.VersionEnum;
 
-public class ListExtensionsCommand extends VFPViaSubCommand {
+public class SetTimeCommand extends VFPViaSubCommand {
 
     @Override
     public String name() {
-        return "listextensions";
+        return "settime";
     }
 
     @Override
     public String description() {
-        return "Shows all classic extensions (only for " + VersionEnum.c0_30cpe.getName() + ")";
+        return "Changes the time (Only for <= " + VersionEnum.a1_0_16toa1_0_16_2.getName() + ")";
+    }
+
+    @Override
+    public String usage() {
+        return name() + " " + "<Time (Long)>";
     }
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
         final UserConnection connection = getUser();
-        if (!connection.has(ExtensionProtocolMetadataStorage.class)) {
-            sendMessage(sender, Formatting.RED + "Only for " + VersionEnum.c0_30cpe.getName());
+        if (!connection.has(TimeLockStorage.class)) {
+            sendMessage(sender, Formatting.RED + "Only for <= " + VersionEnum.a1_0_16toa1_0_16_2.getName());
             return true;
         }
-        ((IExtensionProtocolMetadataStorage) connection.get(ExtensionProtocolMetadataStorage.class)).viaFabricPlus$getServerExtensions().forEach((extension, version) -> {
-            sendMessage(sender, Formatting.GREEN + extension.getName() + Formatting.GOLD + " v" + version);
-        });
+        try {
+            if (args.length == 1) {
+                final long time = Long.parseLong(args[0]) % 24_000L;
+                connection.get(TimeLockStorage.class).setTime(time);
+                sendMessage(sender, Formatting.GREEN + "Time has been set to " + Formatting.GOLD + time);
+            } else {
+                return false;
+            }
+        } catch (Throwable ignored) {
+            return false;
+        }
         return true;
     }
 

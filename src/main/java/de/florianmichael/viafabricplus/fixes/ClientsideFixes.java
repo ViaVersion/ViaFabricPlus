@@ -21,11 +21,12 @@ package de.florianmichael.viafabricplus.fixes;
 
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
-import de.florianmichael.viafabricplus.fixes.classic.CPEAdditions;
-import de.florianmichael.viafabricplus.fixes.classic.GridItemSelectionScreen;
+import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
+import de.florianmichael.viafabricplus.fixes.versioned.classic.GridItemSelectionScreen;
 import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
-import de.florianmichael.viafabricplus.fixes.entity.EntityDimensionReplacements;
-import de.florianmichael.viafabricplus.fixes.particle.FootStepParticle;
+import de.florianmichael.viafabricplus.fixes.data.EntityDimensionDiff;
+import de.florianmichael.viafabricplus.fixes.versioned.visual.ArmorHudEmulation1_8;
+import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -73,7 +74,7 @@ public class ClientsideFixes {
 
         PostGameLoadCallback.EVENT.register(() -> {
             // Handles and updates entity dimension changes in <= 1.17
-            EntityDimensionReplacements.init();
+            EntityDimensionDiff.init();
 
             // Ticks the armor hud manually in <= 1.8.x
             ArmorHudEmulation1_8.init();
@@ -113,7 +114,7 @@ public class ClientsideFixes {
         }));
 
         // Register the footstep particle
-        FootStepParticle.init();
+        FootStepParticle1_12_2.init();
     }
 
     /**

@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.api.data.MappingDataBase;
-import de.florianmichael.viafabricplus.fixes.particle.FootStepParticle;
+import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,7 +31,7 @@ public abstract class MixinMappingDataBase {
 
     @Inject(method = "getNewParticleId", at = @At("HEAD"), cancellable = true)
     private void passthroughFootStepParticle(int id, CallbackInfoReturnable<Integer> cir) {
-        if (id == FootStepParticle.ID) {
+        if (id == FootStepParticle1_12_2.ID) {
             cir.setReturnValue(id);
         }
     }

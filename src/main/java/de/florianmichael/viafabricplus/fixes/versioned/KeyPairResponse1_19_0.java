@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.replacement;
+package de.florianmichael.viafabricplus.fixes.versioned;
 
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
 

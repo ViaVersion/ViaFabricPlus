@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.particle;
+package de.florianmichael.viafabricplus.fixes.versioned.visual;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
@@ -34,11 +34,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.raphimc.vialoader.util.VersionEnum;
 
-public class FootStepParticle extends SpriteBillboardParticle {
+public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
 
     public static int ID;
 
-    protected FootStepParticle(ClientWorld clientWorld, double x, double y, double z) {
+    protected FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z) {
         super(clientWorld, x, y, z);
 
         this.scale = 0.125F;
@@ -81,7 +81,7 @@ public class FootStepParticle extends SpriteBillboardParticle {
         final DefaultParticleType footStepType = FabricParticleTypes.simple(true);
 
         Registry.register(Registries.PARTICLE_TYPE, new Identifier("viafabricplus", "footstep"), footStepType);
-        ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
 
         ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
     }
@@ -100,7 +100,7 @@ public class FootStepParticle extends SpriteBillboardParticle {
                 throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
             }
 
-            final FootStepParticle particle = new FootStepParticle(world, x, y, z);
+            final FootStepParticle1_12_2 particle = new FootStepParticle1_12_2(world, x, y, z);
             particle.setSprite(this.spriteProvider);
             return particle;
         }
