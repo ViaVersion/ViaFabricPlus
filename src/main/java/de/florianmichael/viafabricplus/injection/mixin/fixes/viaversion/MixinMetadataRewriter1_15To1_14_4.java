@@ -19,31 +19,29 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.minecraft.entities.EntityType;
-import com.viaversion.viaversion.api.minecraft.metadata.Metadata;
 import com.viaversion.viaversion.protocols.protocol1_14_4to1_14_3.ClientboundPackets1_14_4;
 import com.viaversion.viaversion.protocols.protocol1_15to1_14_4.Protocol1_15To1_14_4;
 import com.viaversion.viaversion.protocols.protocol1_15to1_14_4.metadata.MetadataRewriter1_15To1_14_4;
 import com.viaversion.viaversion.rewriter.EntityRewriter;
+import com.viaversion.viaversion.rewriter.meta.MetaFilter;
 import de.florianmichael.viafabricplus.fixes.tracker.WolfHealthTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.List;
-
-@Mixin(MetadataRewriter1_15To1_14_4.class)
+@Mixin(value = MetadataRewriter1_15To1_14_4.class, remap = false)
 public abstract class MixinMetadataRewriter1_15To1_14_4 extends EntityRewriter<ClientboundPackets1_14_4, Protocol1_15To1_14_4> {
 
     public MixinMetadataRewriter1_15To1_14_4(Protocol1_15To1_14_4 protocol) {
         super(protocol);
     }
 
-    @Inject(method = "handleMetadata", at = @At(value = "INVOKE", target = "Ljava/util/List;remove(Ljava/lang/Object;)Z", shift = At.Shift.BEFORE), remap = false)
-    private void trackHealth(int entityId, EntityType type, Metadata metadata, List<Metadata> metadatas, UserConnection connection, CallbackInfo ci) {
-        WolfHealthTracker.get(connection).setWolfHealth(entityId, metadata.value());
+    @Redirect(method = "registerRewrites", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/rewriter/meta/MetaFilter$Builder;removeIndex(I)V"))
+    private void trackHealth(MetaFilter.Builder instance, int index) {
+        instance.index(18).handler((event, meta) -> {
+            WolfHealthTracker.get(event.user()).setWolfHealth(event.entityId(), meta.value());
+            event.cancel();
+        });
     }
 
 }

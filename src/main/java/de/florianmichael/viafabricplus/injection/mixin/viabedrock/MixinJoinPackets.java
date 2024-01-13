@@ -33,21 +33,21 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = JoinPackets.class, remap = false)
 public abstract class MixinJoinPackets {
 
-    @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 5))
+    @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 5))
     private static Object trackWorldSeed(PacketWrapper instance, Type<LongLEType> tType) throws Exception {
         final Object seed = instance.read(tType);
         instance.user().get(JoinGameDataTracker.class).setSeed((long) seed);
         return seed;
     }
 
-    @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 55))
+    @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 55))
     private static Object trackLevelId(PacketWrapper instance, Type<StringType> tType) throws Exception {
         final Object levelId = instance.read(tType);
         instance.user().get(JoinGameDataTracker.class).setLevelId((String) levelId);
         return levelId;
     }
 
-    @Redirect(method = "lambda$register$2", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 63))
+    @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 63))
     private static Object trackEnchantmentSeed(PacketWrapper instance, Type<VarIntType> tType) throws Exception {
         final Object enchantmentSeed = instance.read(tType);
         instance.user().get(JoinGameDataTracker.class).setEnchantmentSeed((Integer) enchantmentSeed);
