@@ -38,9 +38,14 @@ public abstract class MixinMetadataRewriter1_15To1_14_4 extends EntityRewriter<C
 
     @Redirect(method = "registerRewrites", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/rewriter/meta/MetaFilter$Builder;removeIndex(I)V"))
     private void trackHealth(MetaFilter.Builder instance, int index) {
-        instance.index(18).handler((event, meta) -> {
-            WolfHealthTracker.get(event.user()).setWolfHealth(event.entityId(), meta.value());
-            event.cancel();
+        instance.handler((event, meta) -> { // Basically removeIndex, but we need to track the actual health value
+            final int metaIndex = event.index();
+            if (metaIndex == index) {
+                WolfHealthTracker.get(event.user()).setWolfHealth(event.entityId(), meta.value());
+                event.cancel();
+            } else if (metaIndex > index) {
+                event.setIndex(metaIndex - 1);
+            }
         });
     }
 
