@@ -41,7 +41,7 @@ public class ViaFabricPlusViaCommandSender implements ViaCommandSender {
 
     @Override
     public void sendMessage(String s) {
-        ((FabricClientCommandSource) source).sendFeedback(Text.of(s));
+        ((FabricClientCommandSource) source).sendFeedback(Text.of(s.replace("/viaversion", "/viafabricplus"))); // ViaVersion doesn't support changing the root command name, so we have to do it ourselves
     }
 
     @Override
