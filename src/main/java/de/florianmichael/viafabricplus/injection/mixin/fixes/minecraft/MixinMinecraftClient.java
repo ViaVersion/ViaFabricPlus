@@ -60,7 +60,7 @@ public abstract class MixinMinecraftClient {
     public ClientPlayerEntity player;
 
     @Shadow
-    public int attackCooldown;
+    protected int attackCooldown;
 
     @Shadow
     @Final

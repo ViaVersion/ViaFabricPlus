@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
@@ -56,12 +57,12 @@ public abstract class MixinItem {
         }
     }
 
-    @Redirect(method = {"use", "finishUsing", "getUseAction", "getMaxUseTime"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isFood()Z"))
-    private boolean makeFoodInstantConsumable(Item instance) {
+    @ModifyExpressionValue(method = {"use", "finishUsing", "getUseAction", "getMaxUseTime"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isFood()Z"))
+    private boolean makeFoodInstantConsumable(boolean original) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_7tob1_7_3)) {
             return false;
         }
-        return instance.isFood();
+        return original;
     }
 
 }
