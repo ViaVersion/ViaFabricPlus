@@ -1,5 +1,5 @@
 {
-  "modmenu.descriptionTranslation.viafabricplus": "可連線到所有 Minecraft 伺服器版本（正式版、Beta 版、Alpha 版、Classic 版、快照版、Bedrock 版）的 Fabric 模組，同時提供多項遊戲體驗改善。",
+  "modmenu.descriptionTranslation.viafabricplus": "可連線到所有版本 Minecraft 的伺服器（正式版、Beta 版、Alpha 版、Classic 版、快照版、Bedrock 版）的 Fabric 模組，同時提供多項遊戲體驗改善。",
 
   "base.viafabricplus.settings": "設定",
   "base.viafabricplus.on": "開啟",
@@ -13,7 +13,7 @@
   "base.viafabricplus.logout": "登出",
   "base.viafabricplus.online_mode": "線上模式",
   "base.viafabricplus.reset": "重設",
-  "base.viafabricplus.copy_code": "複製程式碼",
+  "base.viafabricplus.copy_code": "複製代碼",
   "base.viafabricplus.something_went_wrong": "發生錯誤！請稍後再試",
   "base.viafabricplus.via_translates_to": "轉換為：%s",
   "base.viafabricplus.server_version": "伺服器版本：%s",
@@ -24,7 +24,8 @@
   "base.viafabricplus.kick": "踢出",
   "base.viafabricplus.cancel_and_notify": "取消並通知",
   "base.viafabricplus.force_version_title": "請選擇用於 Ping／連線伺服器的版本",
-  "base.viafabricplus.detecting_server_version": "正在探測伺服器版本...",
+  "base.viafabricplus.detecting_server_version": "正在偵測伺服器版本...",
+  "base.viafabricplus.this_will_require_a_restart": "這將需要重新啟動！",
 
   "setting_group_name.viafabricplus.authentication": "驗證",
   "setting_group_name.viafabricplus.visual": "視覺",
@@ -32,7 +33,7 @@
   "setting_group_name.viafabricplus.general": "一般",
   "setting_group_name.viafabricplus.bedrock": "Bedrock 版",
 
-  "general_settings.viafabricplus.save_selected_protocol_version": "存儲选中的版本",
+  "general_settings.viafabricplus.save_selected_protocol_version": "儲存選擇的版本",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "在除錯畫面中顯示更多資訊",
   "general_settings.viafabricplus.show_classic_loading_progress": "在連線畫面時顯示舊版進度",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "多人遊戲畫面按鈕方向",
@@ -46,6 +47,7 @@
   "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "開啟提示視窗以確認轉換到其他伺服器",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "點擊以設定 Bedrock 版帳號",
 
+  "debug_settings.viafabricplus.queue_config_packets": "佇列設定封包",
   "debug_settings.viafabricplus.disable_sequencing": "停用排序",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "平滑商人畫面",
   "debug_settings.viafabricplus.execute_inputs_in_sync": "同步執行輸入",
@@ -57,7 +59,6 @@
   "debug_settings.viafabricplus.replace_sneaking": "替換潛行",
   "debug_settings.viafabricplus.long_sneaking": "長時間潛行",
   "debug_settings.viafabricplus.legacy_mining_speeds": "舊版挖礦速度",
-  "debug_settings.viafabricplus.skip_containers_with_custom_display_names": "跳过自訂顯示名的容器",
   "debug_settings.viafabricplus.prevent_entity_cramming": "阻止實體擠壓",
   "debug_settings.viafabricplus.always_tick_client_player": "Always tick client player",
 
