@@ -25,8 +25,6 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.save.AbstractSave;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
-import net.raphimc.minecraftauth.util.MicrosoftConstants;
-import org.apache.http.impl.client.CloseableHttpClient;
 
 public class AccountsSave extends AbstractSave {
 
@@ -68,8 +66,8 @@ public class AccountsSave extends AbstractSave {
     public StepFullBedrockSession.FullBedrockSession refreshAndGetBedrockAccount() {
         if (bedrockAccount == null) return null;
 
-        try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
-            bedrockAccount = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.refresh(httpClient, bedrockAccount);
+        try {
+            bedrockAccount = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.refresh(MinecraftAuth.createHttpClient(), bedrockAccount);
         } catch (Throwable t) {
             throw new RuntimeException("Failed to refresh Bedrock chain data. Please re-login to Bedrock!", t);
         }

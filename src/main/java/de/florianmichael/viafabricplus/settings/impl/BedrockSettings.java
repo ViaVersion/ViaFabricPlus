@@ -32,8 +32,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
-import net.raphimc.minecraftauth.util.MicrosoftConstants;
-import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -64,21 +62,19 @@ public class BedrockSettings extends SettingGroup {
     private void openBedrockAccountLogin() {
         final var prevScreen = MinecraftClient.getInstance().currentScreen;
         try {
-            try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
-                final var bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
-                    MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> {
-                        MinecraftClient.getInstance().setScreen(prevScreen);
-                        Thread.currentThread().interrupt();
-                    }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrock.viafabricplus.login"), Text.translatable("base.viafabricplus.cancel"), true)));
-                    try {
-                        Util.getOperatingSystem().open(new URI(msaDeviceCode.getDirectVerificationUri()));
-                    } catch (URISyntaxException e) {
-                        Thread.currentThread().interrupt();
-                        VFPScreen.showErrorScreen("Microsoft Bedrock Login", e, prevScreen);
-                    }
-                }));
-                ViaFabricPlus.global().getSaveManager().getAccountsSave().setBedrockAccount(bedrockSession);
-            }
+            ViaFabricPlus.global().getSaveManager().getAccountsSave().setBedrockAccount(MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(MinecraftAuth.createHttpClient(), new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
+                MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> {
+                    MinecraftClient.getInstance().setScreen(prevScreen);
+                    Thread.currentThread().interrupt();
+                }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrock.viafabricplus.login"), Text.translatable("base.viafabricplus.cancel"), true)));
+                try {
+                    Util.getOperatingSystem().open(new URI(msaDeviceCode.getDirectVerificationUri()));
+                } catch (URISyntaxException e) {
+                    Thread.currentThread().interrupt();
+                    VFPScreen.showErrorScreen("Microsoft Bedrock Login", e, prevScreen);
+                }
+            })));
+
             RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(prevScreen));
         } catch (Throwable e) {
             Thread.currentThread().interrupt();
