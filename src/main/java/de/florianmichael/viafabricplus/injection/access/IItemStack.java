@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.access;
 
 public interface IItemStack {
 
-    boolean viaFabricPlus$has1_10ViaFabricPlusTag();
+    boolean viaFabricPlus$has1_10Tag();
 
     int viaFabricPlus$get1_10Count();
 

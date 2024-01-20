@@ -51,7 +51,7 @@ public abstract class MixinPacketByteBuf {
         NbtCompound tag = instance.getNbt();
 
         final IItemStack mixinItemStack = ((IItemStack) (Object) instance);
-        if (mixinItemStack.viaFabricPlus$has1_10ViaFabricPlusTag()) {
+        if (mixinItemStack.viaFabricPlus$has1_10Tag()) {
             if (tag == null) tag = new NbtCompound();
             tag.putByte(ClientsideFixes.ITEM_COUNT_NBT_TAG, (byte) mixinItemStack.viaFabricPlus$get1_10Count());
         }

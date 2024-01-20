@@ -45,10 +45,10 @@ public abstract class MixinItemStack implements IItemStack {
     public abstract Item getItem();
 
     @Unique
-    private boolean viaFabricPlus$has1_10ProtocolHackTag;
+    private boolean viaFabricPlus$has1_10Tag;
 
     @Unique
-    private int viaFabricPlus$1_10_count;
+    private int viaFabricPlus$1_10Count;
 
     @Redirect(method = "getTooltip",
             slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/entity/attribute/EntityAttribute;", ordinal = 0)),
@@ -64,7 +64,9 @@ public abstract class MixinItemStack implements IItemStack {
     @SuppressWarnings({"InvalidInjectorMethodSignature", "MixinAnnotationTarget"})
     @ModifyVariable(method = "getAttributeModifiers", ordinal = 0, at = @At(value = "STORE", ordinal = 1))
     private Multimap<EntityAttribute, EntityAttributeModifier> modifyVariableGetAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> modifiers) {
-        if (!DebugSettings.global().replaceAttributeModifiers.isEnabled() || modifiers.isEmpty()) return modifiers;
+        if (!DebugSettings.global().replaceAttributeModifiers.isEnabled() || modifiers.isEmpty()) {
+            return modifiers;
+        }
 
         modifiers = HashMultimap.create(modifiers);
         modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);
@@ -79,10 +81,10 @@ public abstract class MixinItemStack implements IItemStack {
     }
 
     @Inject(method = "copy", at = @At("RETURN"))
-    private void copyProtocolHackData(CallbackInfoReturnable<ItemStack> cir) {
+    private void copyViaFabricPlusData(CallbackInfoReturnable<ItemStack> cir) {
         final IItemStack mixinItemStack = (IItemStack) (Object) cir.getReturnValue();
-        if (this.viaFabricPlus$has1_10ProtocolHackTag) {
-            mixinItemStack.viaFabricPlus$set1_10Count(this.viaFabricPlus$1_10_count);
+        if (this.viaFabricPlus$has1_10Tag) {
+            mixinItemStack.viaFabricPlus$set1_10Count(this.viaFabricPlus$1_10Count);
         }
     }
 
@@ -105,19 +107,19 @@ public abstract class MixinItemStack implements IItemStack {
     }
 
     @Override
-    public boolean viaFabricPlus$has1_10ViaFabricPlusTag() {
-        return this.viaFabricPlus$has1_10ProtocolHackTag;
+    public boolean viaFabricPlus$has1_10Tag() {
+        return this.viaFabricPlus$has1_10Tag;
     }
 
     @Override
     public int viaFabricPlus$get1_10Count() {
-        return this.viaFabricPlus$1_10_count;
+        return this.viaFabricPlus$1_10Count;
     }
 
     @Override
     public void viaFabricPlus$set1_10Count(final int count) {
-        this.viaFabricPlus$has1_10ProtocolHackTag = true;
-        this.viaFabricPlus$1_10_count = count;
+        this.viaFabricPlus$has1_10Tag = true;
+        this.viaFabricPlus$1_10Count = count;
     }
 
 }
