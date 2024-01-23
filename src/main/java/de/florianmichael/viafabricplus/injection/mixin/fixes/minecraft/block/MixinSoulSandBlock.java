@@ -58,11 +58,7 @@ public abstract class MixinSoulSandBlock extends Block {
 
     @Override
     public float getVelocityMultiplier() {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
-            return 1F;
-        }
-
-        return super.getVelocityMultiplier();
+        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4) ? 1F : super.getVelocityMultiplier();
     }
 
 }

@@ -32,11 +32,7 @@ public abstract class MixinConfig {
 
     @Redirect(method = "loadConfig(Ljava/io/File;Ljava/net/URL;)Ljava/util/Map;", at = @At(value = "INVOKE", target = "Ljava/util/Map;containsKey(Ljava/lang/Object;)Z"))
     private boolean allowConfigPatching(final Map<String, Object> map, final Object key) {
-        if (((Object) this) instanceof ConfigPatcher) {
-            return true;
-        }
-
-        return map.containsKey(key);
+        return ((Object) this) instanceof ConfigPatcher || map.containsKey(key);
     }
 
 }

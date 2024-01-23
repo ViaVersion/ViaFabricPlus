@@ -84,11 +84,8 @@ public abstract class MixinConnectScreen_1 {
     private String useClassiCubeUsername(Session instance) {
         if (this.viaFabricPlus$useClassiCubeAccount) {
             final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
-            if (account != null) {
-                return account.username();
-            }
+            if (account != null) return account.username();
         }
-
         return instance.getUsername();
     }
 

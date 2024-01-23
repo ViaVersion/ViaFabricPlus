@@ -41,7 +41,7 @@ public abstract class MixinItemGroup_EntriesImpl {
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isEnabled(Lnet/minecraft/resource/featuretoggle/FeatureSet;)Z"))
     private boolean removeUnknownItems(Item instance, FeatureSet featureSet) {
-        final var index = GeneralSettings.global().removeNotAvailableItemsFromCreativeTab.getIndex();
+        final int index = GeneralSettings.global().removeNotAvailableItemsFromCreativeTab.getIndex();
 
         if (index == 2 || MinecraftClient.getInstance().isInSingleplayer()) return instance.isEnabled(featureSet);
         if (index == 1 && !Registries.ITEM_GROUP.getId(this.group).getNamespace().equals("minecraft")) return instance.isEnabled(featureSet);

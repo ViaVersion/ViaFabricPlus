@@ -102,9 +102,9 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     private boolean allowPlayerToBeMovedByEntityPackets(Entity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3) || ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
             return instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getWorld().isClient;
+        } else {
+            return instance.isLogicalSideForUpdatingMovement();
         }
-
-        return instance.isLogicalSideForUpdatingMovement();
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
@@ -137,9 +137,10 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = BoatEntity.class))
     private Class<?> dontChangeYawWhenMountingBoats(Object entity, Class<?> boatClass) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
-            return Integer.class;
+            return Integer.class; // Dummy class file to false the instanceof check
+        } else {
+            return boatClass;
         }
-        return boatClass;
     }
 
     @Inject(method = "onChunkLoadDistance", at = @At("RETURN"))
@@ -160,18 +161,17 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Inject(method = "onGameJoin", at = @At("RETURN"))
     private void sendAdditionalData(CallbackInfo ci) {
-        final VersionEnum targetVersion = ProtocolHack.getTargetVersion();
-
-        if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
             final List<RecipeEntry<?>> recipes = new ArrayList<>();
-            final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(targetVersion);
+            final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolHack.getTargetVersion());
             for (int i = 0; i < recipeInfos.size(); i++) {
                 recipes.add(recipeInfos.get(i).create(new Identifier("viafabricplus", "recipe/" + i)));
             }
             this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
-        }
-        if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            this.onEntityStatus(new EntityStatusS2CPacket(this.client.player, (byte) 28)); // Op-level 4
+
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+                this.onEntityStatus(new EntityStatusS2CPacket(this.client.player, (byte) 28)); // Op-level 4
+            }
         }
     }
 

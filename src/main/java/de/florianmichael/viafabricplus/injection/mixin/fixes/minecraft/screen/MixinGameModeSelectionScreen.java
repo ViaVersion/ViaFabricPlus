@@ -52,7 +52,7 @@ public abstract class MixinGameModeSelectionScreen extends Screen {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void fixUIWidth(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-            final List<GameModeSelectionScreen.GameModeSelection> gameModeSelections = new ArrayList<>(Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList());
+            final var gameModeSelections = new ArrayList<>(Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList());
 
             gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
             if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_2_4tor1_2_5)) {
@@ -68,9 +68,9 @@ public abstract class MixinGameModeSelectionScreen extends Screen {
     private GameModeSelectionScreen.GameModeSelection[] removeNewerGameModes() {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
             return viaFabricPlus$unwrappedGameModes;
+        } else {
+            return GameModeSelectionScreen.GameModeSelection.values();
         }
-
-        return GameModeSelectionScreen.GameModeSelection.values();
     }
 
     @Inject(method = "init", at = @At("HEAD"))

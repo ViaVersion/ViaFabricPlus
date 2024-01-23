@@ -43,9 +43,9 @@ public abstract class MixinEntityTracker1_9 {
     private Object remapNaNToZero(Metadata instance) {
         if (instance.getValue() instanceof Float && ((Float) instance.getValue()).isNaN()) {
             return 0F;
+        } else {
+            return instance.getValue();
         }
-
-        return instance.getValue();
     }
 
 }

@@ -50,24 +50,27 @@ public abstract class MixinSwordItem extends ToolItem {
             ItemStack itemStack = user.getStackInHand(hand);
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
+        } else {
+            return super.use(world, user, hand);
         }
-        return super.use(world, user, hand);
     }
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
         if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.b1_8tob1_8_1, VersionEnum.r1_8)) {
             return UseAction.BLOCK;
+        } else {
+            return super.getUseAction(stack);
         }
-        return super.getUseAction(stack);
     }
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
         if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.b1_8tob1_8_1, VersionEnum.r1_8)) {
             return 72000;
+        } else {
+            return super.getMaxUseTime(stack);
         }
-        return super.getMaxUseTime(stack);
     }
 
     @Inject(method = "getMiningSpeedMultiplier", at = @At("HEAD"), cancellable = true)

@@ -86,17 +86,16 @@ public abstract class MixinEntity implements IEntity {
     private Vector3f getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
             return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger);
+        } else {
+            return getPassengerAttachmentPos(passenger, dimensions, scaleFactor);
         }
-
-        return getPassengerAttachmentPos(passenger, dimensions, scaleFactor);
     }
 
     @Inject(method = "getPosWithYOffset", at = @At("HEAD"), cancellable = true)
     private void modifyPosWithYOffset(float offset, CallbackInfoReturnable<BlockPos> cir) {
-        final VersionEnum target = ProtocolHack.getTargetVersion();
-        if (target.isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             int i = MathHelper.floor(this.pos.x);
-            int j = MathHelper.floor(this.pos.y - (double) (target.isOlderThanOrEqualTo(VersionEnum.r1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
+            int j = MathHelper.floor(this.pos.y - (double) (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
             int k = MathHelper.floor(this.pos.z);
             BlockPos blockPos = new BlockPos(i, j, k);
             if (this.world.getBlockState(blockPos).isAir()) {
@@ -116,9 +115,9 @@ public abstract class MixinEntity implements IEntity {
     private double fixBlockCollisionMargin(double constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             return 1E-3;
+        } else {
+            return constant;
         }
-
-        return constant;
     }
 
     @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)

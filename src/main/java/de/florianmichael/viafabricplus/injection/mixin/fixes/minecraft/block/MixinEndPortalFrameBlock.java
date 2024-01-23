@@ -70,9 +70,9 @@ public abstract class MixinEndPortalFrameBlock extends Block {
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             return state.get(EYE) ? viaFabricPlus$frame_with_eye_shape_r1_12_2 : FRAME_SHAPE;
+        } else {
+            return super.getCollisionShape(state, world, pos, context);
         }
-
-        return super.getCollisionShape(state, world, pos, context);
     }
 
 }

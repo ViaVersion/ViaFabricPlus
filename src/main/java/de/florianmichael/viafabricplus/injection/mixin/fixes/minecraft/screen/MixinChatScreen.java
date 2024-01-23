@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
@@ -57,42 +58,41 @@ public abstract class MixinChatScreen {
     private MessageIndicator removeIndicator(ChatHud instance, double mouseX, double mouseY) {
         if (VisualSettings.global().hideSignatureIndicator.isEnabled()) {
             return null;
+        } else {
+            return instance.getIndicatorAt(mouseX, mouseY);
         }
-
-        return instance.getIndicatorAt(mouseX, mouseY);
     }
 
-    @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;setText(Ljava/lang/String;)V"))
-    private void moveSetTextDown(TextFieldWidget instance, String text) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) return;
-
-        instance.setText(text);
+    @WrapWithCondition(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;setText(Ljava/lang/String;)V"))
+    public boolean moveSetTextDown(TextFieldWidget instance, String text) {
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_12_2);
     }
 
     @Inject(method = "init", at = @At("RETURN"))
     private void moveSetTextDown(CallbackInfo ci) {
-        if (!ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) return;
-
-        this.chatField.setText(this.originalChatText);
-        this.chatInputSuggestor.refresh();
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+            this.chatField.setText(this.originalChatText);
+            this.chatInputSuggestor.refresh();
+        }
     }
 
     @Redirect(method = "onChatFieldUpdate", at = @At(value = "INVOKE", target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"))
     private boolean fixCommandKey(String instance, Object other) {
-        if (!this.viaFabricPlus$cancelTabComplete()) return instance.equals(other);
-        return instance.isEmpty();
+        if (this.viaFabricPlus$keepTabComplete()) {
+            return instance.equals(other);
+        } else {
+            return instance.isEmpty();
+        }
     }
 
-    @Redirect(method = "onChatFieldUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;refresh()V"))
-    private void disableAutoTabComplete(ChatInputSuggestor instance) {
-        if (this.viaFabricPlus$cancelTabComplete()) return;
-
-        instance.refresh();
+    @WrapWithCondition(method = "onChatFieldUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;refresh()V"))
+    private boolean disableAutoTabComplete(ChatInputSuggestor instance) {
+        return this.viaFabricPlus$keepTabComplete();
     }
 
     @Unique
-    private boolean viaFabricPlus$cancelTabComplete() {
-        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2) && this.chatField.getText().startsWith("/");
+    private boolean viaFabricPlus$keepTabComplete() {
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_12_2) || !this.chatField.getText().startsWith("/");
     }
 
 }

@@ -59,10 +59,7 @@ public abstract class MixinAnvilBlock extends FallingBlock {
     public void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (viaFabricPlus$requireOriginalShape) {
             viaFabricPlus$requireOriginalShape = false;
-            return;
-        }
-
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(state.get(FACING).getAxis() == Direction.Axis.X ? viaFabricPlus$x_axis_shape_r1_12_2 : viaFabricPlus$z_axis_shape_r1_12_2);
         }
     }

@@ -62,11 +62,7 @@ public abstract class MixinHoeItem extends MiningToolItem {
 
     @Override
     public boolean isSuitableFor(BlockState state) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
-            return false;
-        }
-
-        return super.isSuitableFor(state);
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_16_4tor1_16_5) && super.isSuitableFor(state);
     }
 
     @Override

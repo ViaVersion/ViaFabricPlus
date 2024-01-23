@@ -39,20 +39,16 @@ public abstract class MixinTextFieldWidget implements ITextFieldWidget {
 
     @Redirect(method = "charTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;isValidChar(C)Z"))
     private boolean allowForbiddenCharacters(char c) {
-        if (this.viaFabricPlus$forbiddenCharactersUnlocked) {
-            return true;
-        }
-
-        return SharedConstants.isValidChar(c);
+        return this.viaFabricPlus$forbiddenCharactersUnlocked || SharedConstants.isValidChar(c);
     }
 
     @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;stripInvalidChars(Ljava/lang/String;)Ljava/lang/String;"))
     private String allowForbiddenCharacters(String string) {
         if (this.viaFabricPlus$forbiddenCharactersUnlocked) {
             return string;
+        } else {
+            return SharedConstants.stripInvalidChars(string);
         }
-
-        return SharedConstants.stripInvalidChars(string);
     }
 
     @Override

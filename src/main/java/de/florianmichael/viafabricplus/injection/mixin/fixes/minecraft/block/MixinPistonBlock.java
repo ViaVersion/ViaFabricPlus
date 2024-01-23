@@ -89,9 +89,9 @@ public abstract class MixinPistonBlock extends FacingBlock {
             } else {
                 return VoxelShapes.fullCube();
             }
+        } else {
+            return super.getCullingShape(state, world, pos);
         }
-
-        return super.getCullingShape(state, world, pos);
     }
 
 }

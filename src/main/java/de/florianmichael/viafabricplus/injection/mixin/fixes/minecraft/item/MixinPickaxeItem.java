@@ -69,9 +69,9 @@ public abstract class MixinPickaxeItem extends MiningToolItem {
             } else {
                 return viaFabricPlus$effective_materials_r1_16_5.contains(Material1_19_4.getMaterial(state)) || state.isOf(Blocks.NETHER_GOLD_ORE);
             }
+        } else {
+            return super.isSuitableFor(state);
         }
-
-        return super.isSuitableFor(state);
     }
 
     @Override

@@ -108,9 +108,9 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
                 case WEST -> VoxelShapes.union(WEST_HEAD_SHAPE, viaFabricPlus$west_arm_shape_r1_8_x);
                 case EAST -> VoxelShapes.union(EAST_HEAD_SHAPE, viaFabricPlus$east_arm_shape_r1_8_x);
             };
+        } else {
+            return super.getCollisionShape(state, world, pos, context);
         }
-
-        return super.getCollisionShape(state, world, pos, context);
     }
 
 }

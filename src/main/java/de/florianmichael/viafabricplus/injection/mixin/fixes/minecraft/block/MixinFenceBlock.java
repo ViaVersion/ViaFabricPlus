@@ -59,8 +59,8 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void init1_4_7Shapes(Settings settings, CallbackInfo ci) {
-        this.viaFabricPlus$collision_shape_r1_4_7 = this.createShapes1_4_7(24.0F);
-        this.viaFabricPlus$outline_shape_r1_4_7 = this.createShapes1_4_7(16.0F);
+        this.viaFabricPlus$collision_shape_r1_4_7 = this.viaFabricPlus$createShapes1_4_7(24.0F);
+        this.viaFabricPlus$outline_shape_r1_4_7 = this.viaFabricPlus$createShapes1_4_7(16.0F);
     }
 
     @Override
@@ -69,9 +69,9 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
             return VoxelShapes.fullCube();
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
             return this.viaFabricPlus$outline_shape_r1_4_7[this.getShapeIndex(state)];
+        } else {
+            return super.getOutlineShape(state, world, pos, context);
         }
-
-        return super.getOutlineShape(state, world, pos, context);
     }
 
     @Override
@@ -80,13 +80,13 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
             return viaFabricPlus$shape_b1_8_1;
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
             return this.viaFabricPlus$collision_shape_r1_4_7[this.getShapeIndex(state)];
+        } else {
+            return super.getCollisionShape(state, world, pos, context);
         }
-
-        return super.getCollisionShape(state, world, pos, context);
     }
 
     @Unique
-    private VoxelShape[] createShapes1_4_7(final float height) {
+    private VoxelShape[] viaFabricPlus$createShapes1_4_7(final float height) {
         final float f = 6.0F;
         final float g = 10.0F;
         final float h = 6.0F;

@@ -46,8 +46,9 @@ public abstract class MixinItem {
     private int changeCrossbowDamage(Item instance) {
         if (instance instanceof CrossbowItem && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
             return 326;
+        } else {
+            return maxDamage;
         }
-        return maxDamage;
     }
 
     @Inject(method = "getMaxCount", at = @At("HEAD"), cancellable = true)
@@ -61,8 +62,9 @@ public abstract class MixinItem {
     private boolean makeFoodInstantConsumable(boolean original) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_7tob1_7_3)) {
             return false;
+        } else {
+            return original;
         }
-        return original;
     }
 
 }

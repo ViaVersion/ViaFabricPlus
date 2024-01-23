@@ -41,10 +41,7 @@ public interface MixinEquipment {
 
     @Redirect(method = "equipAndSwap", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isCreative()Z"))
     default boolean removeCreativeCondition(PlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
-            return false;
-        }
-        return instance.isCreative();
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_20tor1_20_1) && instance.isCreative();
     }
 
     @Inject(method = "equipAndSwap", at = @At("HEAD"), cancellable = true)

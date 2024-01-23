@@ -54,9 +54,9 @@ public abstract class MixinPlayerInventory {
                 }
             }, def) {
             };
+        } else {
+            return DefaultedList.ofSize(size, def);
         }
-
-        return DefaultedList.ofSize(size, def);
     }
 
 }

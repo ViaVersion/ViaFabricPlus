@@ -76,10 +76,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Redirect(method = "getMaxRelativeHeadRotation", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isBlocking()Z"))
     private boolean dontModifyHeadRotationWhenBlocking(PlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
-            return false;
-        }
-        return instance.isBlocking();
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_20_2) && instance.isBlocking();
     }
 
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setMovementSpeed(F)V"))
@@ -91,8 +88,9 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private boolean useLastSprintingState(PlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
             return viaFabricPlus$isSprinting;
+        } else {
+            return instance.isSprinting();
         }
-        return instance.isSprinting();
     }
 
     @WrapWithCondition(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
@@ -102,10 +100,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Redirect(method = "checkFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
     private boolean allowElytraWhenLevitating(PlayerEntity instance, StatusEffect statusEffect) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
-            return false;
-        }
-        return instance.hasStatusEffect(statusEffect);
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_15_2) && instance.hasStatusEffect(statusEffect);
     }
 
     @Inject(method = "checkFallFlying", at = @At("HEAD"), cancellable = true)
@@ -126,8 +121,9 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private float modifySneakEyeHeight(float prevEyeHeight) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             return 1.54F;
+        } else {
+            return prevEyeHeight;
         }
-        return prevEyeHeight;
     }
 
     @Inject(method = "updatePose", at = @At("HEAD"), cancellable = true)
@@ -167,14 +163,15 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private float modifyStepHeight1_10(PlayerEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
             return 1.0F;
+        } else {
+            return instance.getStepHeight();
         }
-        return instance.getStepHeight();
     }
 
     @Inject(method = "getAttackCooldownProgress", at = @At("HEAD"), cancellable = true)
     private void removeAttackCooldown(CallbackInfoReturnable<Float> ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            ci.setReturnValue(1f);
+            ci.setReturnValue(1F);
         }
     }
 

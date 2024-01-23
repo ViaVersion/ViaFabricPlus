@@ -97,10 +97,9 @@ public abstract class MixinMinecraftClient {
         return instance.shouldSwingHand() && ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_15);
     }
 
-    @Redirect(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
-    private void disableSwing(ClientPlayerEntity instance, Hand hand) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) return;
-        instance.swingHand(hand);
+    @WrapWithCondition(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
+    private boolean disableSwing(ClientPlayerEntity instance, Hand hand) {
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_14_4);
     }
 
     @Inject(method = "tick",
@@ -142,15 +141,16 @@ public abstract class MixinMinecraftClient {
     }
 
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 1))
-    private int dontIncrementCooldown(MinecraftClient instance) {
+    private int moveCooldownIncrement(MinecraftClient instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 0;
+        } else {
+            return attackCooldown;
         }
-        return attackCooldown;
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;handleInputEvents()V", shift = At.Shift.BEFORE))
-    private void postIncrementCooldown(CallbackInfo ci) {
+    private void moveCooldownIncrement(CallbackInfo ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             if (this.attackCooldown > 0) {
                 --this.attackCooldown;
@@ -160,10 +160,7 @@ public abstract class MixinMinecraftClient {
 
     @ModifyExpressionValue(method = "handleBlockBreaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
     private boolean allowBlockBreakAndItemUsageAtTheSameTime(boolean original) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-            return false;
-        }
-        return original;
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_7_6tor1_7_10) && original;
     }
 
 }

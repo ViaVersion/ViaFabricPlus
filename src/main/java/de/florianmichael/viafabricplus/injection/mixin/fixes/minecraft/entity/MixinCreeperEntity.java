@@ -35,8 +35,9 @@ public abstract class MixinCreeperEntity {
     private SoundEvent changeSound() {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
             return SoundEvents.ITEM_FLINTANDSTEEL_USE;
+        } else {
+            return SoundEvents.ITEM_FIRECHARGE_USE;
         }
-        return SoundEvents.ITEM_FIRECHARGE_USE;
     }
 
 }

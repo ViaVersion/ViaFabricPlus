@@ -84,18 +84,18 @@ public abstract class MixinLivingEntity extends Entity {
     private Vector3f getPassengerRidingPos1_20_1(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
             return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, entity);
+        } else {
+            return getPassengerAttachmentPos(entity, entityDimensions, v);
         }
-
-        return getPassengerAttachmentPos(entity, entityDimensions, v);
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isLogicalSideForUpdatingMovement()Z"))
     private boolean allowPlayerToBeMovedByEntityPackets(LivingEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3) || ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
             return instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getWorld().isClient;
+        } else {
+            return instance.isLogicalSideForUpdatingMovement();
         }
-
-        return instance.isLogicalSideForUpdatingMovement();
     }
 
     @Inject(method = "tickCramming", at = @At("HEAD"), cancellable = true)
@@ -109,16 +109,18 @@ public abstract class MixinLivingEntity extends Entity {
     private double fixCosTable(double a) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_18tor1_18_1)) {
             return MathHelper.cos((float) a);
+        } else {
+            return Math.cos(a);
         }
-        return Math.cos(a);
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
-    private double fixLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
+    private double dontApplyLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
             return Double.MAX_VALUE;
+        } else {
+            return instance.getFluidHeight(tagKey);
         }
-        return instance.getFluidHeight(tagKey);
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isChunkLoaded(Lnet/minecraft/util/math/BlockPos;)Z"))
@@ -132,52 +134,37 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "applyMovementInput", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;jumping:Z"))
     private boolean disableJumpOnLadder(LivingEntity self) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
-            return false;
-        }
-        return jumping;
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_13_2) && jumping;
     }
 
     @Redirect(method = "travel",
             slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/effect/StatusEffects;DOLPHINS_GRACE:Lnet/minecraft/entity/effect/StatusEffect;")),
             at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;horizontalCollision:Z", ordinal = 0))
     private boolean disableClimbing(LivingEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
-            return false;
-        }
-        return instance.horizontalCollision;
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_13_2) && instance.horizontalCollision;
     }
 
     @ModifyVariable(method = "applyFluidMovingSpeed", ordinal = 0, at = @At("HEAD"), argsOnly = true)
     private boolean modifyMovingDown(boolean movingDown) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
-            return true;
-        }
-        return movingDown;
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_13_2) && movingDown;
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;onLanding()V"))
     private void dontResetLevitationFallDistance(LivingEntity instance) {
-        if (!this.hasStatusEffect(StatusEffects.SLOW_FALLING) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            return;
+        if (this.hasStatusEffect(StatusEffects.SLOW_FALLING) || ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_12_2)) {
+            instance.onLanding();
         }
-        instance.onLanding();
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSprinting()Z", ordinal = 0))
     private boolean modifySwimSprintSpeed(LivingEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            return false;
-        }
-        return instance.isSprinting();
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_12_2) && instance.isSprinting();
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
     private double redirectFluidHeight(LivingEntity instance, TagKey<Fluid> tagKey) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2) && tagKey == FluidTags.WATER) {
-            if (instance.getFluidHeight(tagKey) > 0) {
-                return 1;
-            }
+            if (instance.getFluidHeight(tagKey) > 0) return 1;
         }
         return instance.getFluidHeight(tagKey);
     }
@@ -193,8 +180,9 @@ public abstract class MixinLivingEntity extends Entity {
     private float modifySwimFriction(float constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             return this.getBaseMovementSpeedMultiplier();
+        } else {
+            return constant;
         }
-        return constant;
     }
 
     @Inject(method = "getPreferredEquipmentSlot", at = @At("HEAD"), cancellable = true)
@@ -208,8 +196,9 @@ public abstract class MixinLivingEntity extends Entity {
     private double modifyVelocityZero(final double constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             return 0.005D;
+        } else {
+            return constant;
         }
-        return constant;
     }
 
     @Inject(method = "canEnterTrapdoor", at = @At("HEAD"), cancellable = true)

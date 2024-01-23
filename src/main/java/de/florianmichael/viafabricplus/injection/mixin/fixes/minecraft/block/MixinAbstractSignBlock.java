@@ -49,12 +49,10 @@ public abstract class MixinAbstractSignBlock {
 
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
             // <= 1.14.4 doesn't have any sign interactions.
-
             cir.setReturnValue(ActionResult.SUCCESS);
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
             // Removes the isWaxed() condition and reverts the interaction changes from 1.19.4 -> 1.20 when signs
             // got a front and back side.
-
             final ItemStack itemStack = player.getStackInHand(hand);
             final Item item = itemStack.getItem();
             final boolean isSuccess = (item instanceof DyeItem || itemStack.isOf(Items.GLOW_INK_SAC) || itemStack.isOf(Items.INK_SAC)) && player.canModifyBlocks();

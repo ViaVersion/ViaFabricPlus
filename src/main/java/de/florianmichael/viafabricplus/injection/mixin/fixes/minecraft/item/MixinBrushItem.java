@@ -34,8 +34,9 @@ public abstract class MixinBrushItem {
     private float modifyReachDistance(boolean creative) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
             return 5F;
+        } else {
+            return PlayerEntity.getReachDistance(creative);
         }
-        return PlayerEntity.getReachDistance(creative);
     }
 
 }

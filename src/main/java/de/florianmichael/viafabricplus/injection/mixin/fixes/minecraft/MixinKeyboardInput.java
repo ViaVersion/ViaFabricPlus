@@ -37,8 +37,9 @@ public abstract class MixinKeyboardInput extends Input {
             return this.sneaking;
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
             return !MinecraftClient.getInstance().player.isSpectator() && (this.sneaking || slowDown);
+        } else {
+            return slowDown;
         }
-        return slowDown;
     }
 
 }

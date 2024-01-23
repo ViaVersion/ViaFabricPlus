@@ -19,23 +19,24 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.perserverversion;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerInfo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(MultiplayerScreen.class)
 public abstract class MixinMultiplayerScreen {
 
     @Shadow protected abstract void connect(ServerInfo entry);
 
-    @Redirect(method = "directConnect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;connect(Lnet/minecraft/client/network/ServerInfo;)V"))
-    private void storeDirectConnectionPhase(MultiplayerScreen instance, ServerInfo entry) {
+    @WrapOperation(method = "directConnect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;connect(Lnet/minecraft/client/network/ServerInfo;)V"))
+    private void storeDirectConnectionPhase(MultiplayerScreen instance, ServerInfo entry, Operation<Void> original) {
         ((IServerInfo) entry).viaFabricPlus$passDirectConnectScreen();
-        connect(entry);
+        original.call(instance, entry);
     }
 
 }

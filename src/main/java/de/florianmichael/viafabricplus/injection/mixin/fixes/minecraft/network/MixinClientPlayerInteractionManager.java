@@ -154,7 +154,7 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
             else
                 slotItemBeforeModification = viaFabricPlus$oldItems.get(clickSlot.getSlot());
 
-            final var clickWindowPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, ((IClientConnection) networkHandler.getConnection()).viaFabricPlus$getUserConnection());
+            final PacketWrapper clickWindowPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, ((IClientConnection) networkHandler.getConnection()).viaFabricPlus$getUserConnection());
             clickWindowPacket.write(Type.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
             clickWindowPacket.write(Type.SHORT, (short) clickSlot.getSlot());
             clickWindowPacket.write(Type.BYTE, (byte) clickSlot.getButton());
@@ -174,14 +174,10 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
     @Redirect(method = {"method_41936", "method_41935"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;breakBlock(Lnet/minecraft/util/math/BlockPos;)Z"))
     private boolean checkFireBlock(ClientPlayerInteractionManager instance, BlockPos pos, @Local Direction direction) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
-            if (!this.extinguishFire(pos, direction)) {
-                return instance.breakBlock(pos);
-            } else {
-                return false;
-            }
+            return !this.viaFabricPlus$extinguishFire(pos, direction) && instance.breakBlock(pos);
+        } else {
+            return instance.breakBlock(pos);
         }
-
-        return instance.breakBlock(pos);
     }
 
     @Inject(method = "breakBlock", at = @At("TAIL"))
@@ -239,12 +235,16 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
 
     @Inject(method = "interactItem", at = @At("HEAD"), cancellable = true)
     private void cancelOffHandItemInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && !Hand.MAIN_HAND.equals(hand)) cir.setReturnValue(ActionResult.PASS);
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && !Hand.MAIN_HAND.equals(hand)) {
+            cir.setReturnValue(ActionResult.PASS);
+        }
     }
 
     @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
     private void cancelOffHandBlockPlace(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && !Hand.MAIN_HAND.equals(hand)) cir.setReturnValue(ActionResult.PASS);
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && !Hand.MAIN_HAND.equals(hand)) {
+            cir.setReturnValue(ActionResult.PASS);
+        }
     }
 
     /**
@@ -293,7 +293,7 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
     }
 
     @Unique
-    private boolean extinguishFire(BlockPos blockPos, final Direction direction) {
+    private boolean viaFabricPlus$extinguishFire(BlockPos blockPos, final Direction direction) {
         blockPos = blockPos.offset(direction);
         if (this.client.world.getBlockState(blockPos).getBlock() == Blocks.FIRE) {
             this.client.world.syncWorldEvent(this.client.player, 1009, blockPos, 0);

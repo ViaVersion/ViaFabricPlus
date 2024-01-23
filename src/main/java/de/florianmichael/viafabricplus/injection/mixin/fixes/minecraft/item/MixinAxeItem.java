@@ -57,8 +57,9 @@ public abstract class MixinAxeItem extends MiningToolItem {
     public boolean isSuitableFor(BlockState state) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
             return false;
+        } else {
+            return super.isSuitableFor(state);
         }
-        return super.isSuitableFor(state);
     }
 
     @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
@@ -74,8 +75,9 @@ public abstract class MixinAxeItem extends MiningToolItem {
             return viaFabricPlus$effective_blocks_b1_8_1.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
             return viaFabricPlus$effective_materials_r1_16_5.contains(Material1_19_4.getMaterial(state)) ? this.miningSpeed : viaFabricPlus$effective_blocks_r1_16_5.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
+        } else {
+            return super.getMiningSpeedMultiplier(stack, state);
         }
-        return super.getMiningSpeedMultiplier(stack, state);
     }
 
 }

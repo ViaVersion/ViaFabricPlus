@@ -92,8 +92,9 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
     private float fixWolfHealth(WolfEntity instance) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
             return this.viaFabricPlus$getWolfHealth();
+        } else {
+            return instance.getHealth();
         }
-        return instance.getHealth();
     }
 
     @Unique

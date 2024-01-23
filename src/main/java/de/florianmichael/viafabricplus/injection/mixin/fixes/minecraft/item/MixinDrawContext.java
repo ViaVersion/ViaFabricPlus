@@ -34,16 +34,18 @@ public abstract class MixinDrawContext {
     private int handleNegativeItemCount(ItemStack instance) {
         if (((IItemStack) (Object) instance).viaFabricPlus$has1_10Tag()) {
             return ((IItemStack) (Object) instance).viaFabricPlus$get1_10Count();
+        } else {
+            return instance.getCount();
         }
-        return instance.getCount();
     }
 
     @Redirect(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))
     private String makeTextRed(int count) {
         if (count <= 0) {
             return Formatting.RED.toString() + count;
+        } else {
+            return String.valueOf(count);
         }
-        return String.valueOf(count);
     }
 
 }

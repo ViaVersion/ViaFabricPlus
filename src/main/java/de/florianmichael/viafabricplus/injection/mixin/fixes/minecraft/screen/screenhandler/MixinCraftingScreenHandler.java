@@ -49,8 +49,7 @@ public abstract class MixinCraftingScreenHandler extends AbstractRecipeScreenHan
 
     @Redirect(method = "quickMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/CraftingScreenHandler;insertItem(Lnet/minecraft/item/ItemStack;IIZ)Z", ordinal = 1))
     private boolean noShiftClickMoveIntoCraftingTable(CraftingScreenHandler instance, ItemStack itemStack, int startIndex, int endIndex, boolean fromLast) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) return false;
-        return this.insertItem(itemStack, startIndex, endIndex, fromLast);
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_14_4) && this.insertItem(itemStack, startIndex, endIndex, fromLast);
     }
 
     @Inject(method = "onContentChanged", at = @At("HEAD"))

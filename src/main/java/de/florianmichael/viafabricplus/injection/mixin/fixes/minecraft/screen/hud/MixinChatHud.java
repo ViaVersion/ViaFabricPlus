@@ -31,11 +31,7 @@ public abstract class MixinChatHud {
 
     @ModifyVariable(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private MessageIndicator removeIndicator(MessageIndicator instance) {
-        if (VisualSettings.global().hideSignatureIndicator.isEnabled()) {
-            return null;
-        }
-
-        return instance;
+        return VisualSettings.global().hideSignatureIndicator.isEnabled() ? null : instance;
     }
 
 }

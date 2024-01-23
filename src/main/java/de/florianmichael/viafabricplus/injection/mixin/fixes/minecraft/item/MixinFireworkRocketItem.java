@@ -32,11 +32,7 @@ public abstract class MixinFireworkRocketItem {
 
     @Redirect(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isFallFlying()Z", ordinal = 0))
     private boolean disableFireworkElytraBoost(PlayerEntity player) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11)) {
-            return false;
-        }
-
-        return player.isFallFlying();
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_11) && player.isFallFlying();
     }
 
 }

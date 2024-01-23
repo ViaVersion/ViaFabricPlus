@@ -49,11 +49,9 @@ public abstract class MixinServerInfo implements IServerInfo {
 
     @Inject(method = "toNbt", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void saveForcedVersion(CallbackInfoReturnable<NbtCompound> cir, NbtCompound nbtCompound) {
-        if (viaFabricPlus$forcedVersion == null) {
-            return;
+        if (viaFabricPlus$forcedVersion != null) {
+            nbtCompound.putInt("viafabricplus_forcedversion", viaFabricPlus$forcedVersion.getOriginalVersion());
         }
-
-        nbtCompound.putInt("viafabricplus_forcedversion", viaFabricPlus$forcedVersion.getOriginalVersion());
     }
 
     @Inject(method = "fromNbt", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)

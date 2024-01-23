@@ -59,38 +59,32 @@ public abstract class MixinChatInputSuggestor {
 
     @Inject(method = "provideRenderText", at = @At(value = "HEAD"), cancellable = true)
     private void disableTextFieldColors(String original, int firstCharacterIndex, CallbackInfoReturnable<OrderedText> cir) {
-        if (!this.viaFabricPlus$cancelTabComplete()) {
-            return;
+        if (this.viaFabricPlus$cancelTabComplete()) {
+            cir.setReturnValue(OrderedText.styledForwardsVisitedString(original, Style.EMPTY));
         }
-
-        cir.setReturnValue(OrderedText.styledForwardsVisitedString(original, Style.EMPTY));
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     private void handle1_12_2KeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
-        if (!this.viaFabricPlus$cancelTabComplete()) {
-            return;
-        }
-
-        if (keyCode == GLFW.GLFW_KEY_TAB && this.window == null) {
-            this.refresh();
-        } else if (this.window != null) {
-            if (this.window.keyPressed(keyCode, scanCode, modifiers)) {
-                cir.setReturnValue(true);
-                return;
+        if (this.viaFabricPlus$cancelTabComplete()) {
+            if (keyCode == GLFW.GLFW_KEY_TAB && this.window == null) {
+                this.refresh();
+            } else if (this.window != null) {
+                if (this.window.keyPressed(keyCode, scanCode, modifiers)) {
+                    cir.setReturnValue(true);
+                    return;
+                }
+                this.textField.setSuggestion(null);
+                this.window = null;
             }
-            this.textField.setSuggestion(null);
-            this.window = null;
         }
     }
 
     @Inject(method = "render", at = @At("HEAD"))
     private void clearMessages(DrawContext drawContext, int mouseX, int mouseY, CallbackInfo ci) {
-        if (!this.viaFabricPlus$cancelTabComplete()) {
-            return;
+        if (this.viaFabricPlus$cancelTabComplete()) {
+            this.messages.clear();
         }
-
-        this.messages.clear();
     }
 
     @Unique

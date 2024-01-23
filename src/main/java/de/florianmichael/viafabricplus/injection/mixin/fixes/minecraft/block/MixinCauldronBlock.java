@@ -49,8 +49,9 @@ public abstract class MixinCauldronBlock extends AbstractCauldronBlock {
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             return viaFabricPlus$shape_r1_12_2;
+        } else {
+            return super.getOutlineShape(state, world, pos, context);
         }
-        return super.getOutlineShape(state, world, pos, context);
     }
 
 }

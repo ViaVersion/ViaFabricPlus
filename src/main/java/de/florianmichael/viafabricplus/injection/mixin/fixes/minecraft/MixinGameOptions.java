@@ -37,8 +37,11 @@ public abstract class MixinGameOptions {
 
     @ModifyVariable(method = "setServerViewDistance", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private int changeServerViewDistance(int viewDistance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) return 0;
-        return viewDistance;
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
+            return 0;
+        } else {
+            return viewDistance;
+        }
     }
 
     /**
@@ -50,7 +53,6 @@ public abstract class MixinGameOptions {
         if (!this.useNativeTransport) {
             ViaFabricPlus.global().getLogger().error("Native transport is disabled, but enabling it anyway since we use it as an indicator if the client wants to ping a server or connect to a server.");
         }
-
         return true;
     }
 

@@ -62,8 +62,9 @@ public abstract class MixinInGameHud {
     private int moveHealthDown(int originalValue) {
         if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
             return originalValue + 6;
+        } else {
+            return originalValue;
         }
-        return originalValue;
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
@@ -73,8 +74,9 @@ public abstract class MixinInGameHud {
     private int moveArmorNextToHealth(int oldX) {
         if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
             return scaledWidth - oldX - 9;
+        } else {
+            return oldX;
         }
-        return oldX;
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
@@ -84,8 +86,9 @@ public abstract class MixinInGameHud {
     private int moveArmorDown(int oldY) {
         if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
             return oldY + 9;
+        } else {
+            return oldY;
         }
-        return oldY;
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
@@ -95,8 +98,9 @@ public abstract class MixinInGameHud {
     private int moveAir(int oldY) {
         if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
             return scaledWidth - oldY - 9;
+        } else {
+            return oldY;
         }
-        return oldY;
     }
 
 }

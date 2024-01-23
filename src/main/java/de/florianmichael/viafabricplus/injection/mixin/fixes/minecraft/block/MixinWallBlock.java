@@ -66,8 +66,8 @@ public abstract class MixinWallBlock extends Block {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void initShapes1_12_2(Settings settings, CallbackInfo ci) {
-        this.viaFabricPlus$collision_shape_r1_12_2 = this.createShapes1_12_2(24.0F, 24.0F);
-        this.viaFabricPlus$outline_shape_r1_12_2 = this.createShapes1_12_2(16.0F, 14.0F);
+        this.viaFabricPlus$collision_shape_r1_12_2 = this.viaFabricPlus$createShapes1_12_2(24.0F, 24.0F);
+        this.viaFabricPlus$outline_shape_r1_12_2 = this.viaFabricPlus$createShapes1_12_2(16.0F, 14.0F);
     }
 
     @Inject(method = "getPlacementState", at = @At("RETURN"), cancellable = true)
@@ -102,13 +102,13 @@ public abstract class MixinWallBlock extends Block {
     public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
         if (state.get(WallBlock.UP) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             return this.shapeMap.get(state);
+        } else {
+            return super.getCullingShape(state, world, pos);
         }
-
-        return super.getCullingShape(state, world, pos);
     }
 
     @Unique
-    private VoxelShape[] createShapes1_12_2(final float height1, final float height2) {
+    private VoxelShape[] viaFabricPlus$createShapes1_12_2(final float height1, final float height2) {
         final float f = 4.0F;
         final float g = 12.0F;
         final float h = 5.0F;

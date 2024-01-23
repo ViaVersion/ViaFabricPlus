@@ -48,35 +48,33 @@ public abstract class MixinAbstractBlock_AbstractBlockState {
      */
     @Overwrite
     public boolean isToolRequired() {
-        final Block block = this.getBlock();
-        if (block instanceof ShulkerBoxBlock && ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_14)) {
+        if (this.getBlock() instanceof ShulkerBoxBlock && ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_14)) {
             return true;
+        } else {
+            return this.toolRequired;
         }
-
-        return this.toolRequired;
     }
 
     @Inject(method = "getHardness", at = @At("RETURN"), cancellable = true)
     private void changeHardness(BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-        final var targetVersion = ProtocolHack.getTargetVersion();
-        final var block = this.getBlock();
+        final Block block = this.getBlock();
 
         if (block.equals(Blocks.END_STONE_BRICKS) || block.equals(Blocks.END_STONE_BRICK_SLAB) || block.equals(Blocks.END_STONE_BRICK_STAIRS) || block.equals(Blocks.END_STONE_BRICK_WALL)) {
-            if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
                 cir.setReturnValue(0.8F);
             }
         } else if (block.equals(Blocks.PISTON) || block.equals(Blocks.STICKY_PISTON) || block.equals(Blocks.PISTON_HEAD)) {
-            if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
                 cir.setReturnValue(0.5F);
             }
         } else if (block instanceof InfestedBlock) {
-            if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
                 cir.setReturnValue(0.75F);
-            } else if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
+            } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
                 cir.setReturnValue(0F);
             }
         } else if (block.equals(Blocks.OBSIDIAN)) {
-            if (targetVersion.isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
                 cir.setReturnValue(10.0F);
             }
         }

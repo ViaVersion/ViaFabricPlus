@@ -53,14 +53,18 @@ public abstract class MixinShovelItem extends MiningToolItem {
     public boolean isSuitableFor(BlockState state) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
             return state.isOf(Blocks.SNOW) || state.isOf(Blocks.SNOW_BLOCK);
+        } else {
+            return super.isSuitableFor(state);
         }
-        return super.isSuitableFor(state);
     }
 
     @Redirect(method = "useOnBlock", slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/item/ShovelItem;PATH_STATES:Ljava/util/Map;")), at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0, remap = false))
     private Object disablePathAction(Map<Object, Object> instance, Object grassBlock) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) return null;
-        return instance.get(grassBlock);
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            return null;
+        } else {
+            return instance.get(grassBlock);
+        }
     }
 
     @Override

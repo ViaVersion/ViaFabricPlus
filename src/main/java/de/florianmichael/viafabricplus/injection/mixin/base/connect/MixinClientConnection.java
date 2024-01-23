@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.connect;
 
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
@@ -108,17 +109,14 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         super.channelRegistered(ctx);
-        if (VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion)) {
-            // Call channelActive manually when the channel is registered
+        if (VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion)) { // Call channelActive manually when the channel is registered
             this.channelActive(ctx);
         }
     }
 
-    @Redirect(method = "channelActive", at = @At(value = "INVOKE", target = "Lio/netty/channel/SimpleChannelInboundHandler;channelActive(Lio/netty/channel/ChannelHandlerContext;)V"), remap = false)
-    private void dontCallChannelActive(SimpleChannelInboundHandler<Packet<?>> instance, ChannelHandlerContext ctx) throws Exception {
-        if (!VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion)) { // Don't call channelActive twice
-            super.channelActive(ctx);
-        }
+    @WrapWithCondition(method = "channelActive", at = @At(value = "INVOKE", target = "Lio/netty/channel/SimpleChannelInboundHandler;channelActive(Lio/netty/channel/ChannelHandlerContext;)V", remap = false))
+    private boolean dontCallChannelActiveTwice(SimpleChannelInboundHandler<Packet<?>> instance, ChannelHandlerContext channelHandlerContext) {
+        return !VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion);
     }
 
     @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE))
@@ -129,14 +127,10 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         }
     }
 
-    @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;resetPacketSizeLog(Lnet/minecraft/util/profiler/PerformanceLog;)V"))
-    private static void dontSetPerformanceLog(ClientConnection instance, PerformanceLog performanceLog) {
-        // Since the PerformanceLog is never null due to our changes, we need to restore vanilla behavior
-        if (performanceLog instanceof IPerformanceLog mixinPerformanceLog && mixinPerformanceLog.viaFabricPlus$getForcedVersion() != null) {
-            return;
-        }
-
-        instance.resetPacketSizeLog(performanceLog);
+    @WrapWithCondition(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;resetPacketSizeLog(Lnet/minecraft/util/profiler/PerformanceLog;)V"))
+    private static boolean dontSetPerformanceLog(ClientConnection instance, PerformanceLog log) {
+        // We need to restore vanilla behaviour since we use the PerformanceLog as a way to store the target version
+        return !(log instanceof IPerformanceLog mixinPerformanceLog) || mixinPerformanceLog.viaFabricPlus$getForcedVersion() == null;
     }
 
     @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At("HEAD"))
@@ -155,34 +149,30 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;channel(Ljava/lang/Class;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false))
     private static AbstractBootstrap<?, ?> useRakNetChannelFactory(Bootstrap instance, Class<? extends Channel> channelTypeClass, @Local(argsOnly = true) ClientConnection clientConnection) {
         if (VersionEnum.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getTargetVersion())) {
-            return instance.channelFactory(channelTypeClass == EpollSocketChannel.class ?
-                    RakChannelFactory.client(EpollDatagramChannel.class) :
-                    RakChannelFactory.client(NioDatagramChannel.class)
-            );
+            return instance.channelFactory(channelTypeClass == EpollSocketChannel.class ? RakChannelFactory.client(EpollDatagramChannel.class) : RakChannelFactory.client(NioDatagramChannel.class));
+        } else {
+            return instance.channel(channelTypeClass);
         }
-
-        return instance.channel(channelTypeClass);
     }
 
     @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;connect(Ljava/net/InetAddress;I)Lio/netty/channel/ChannelFuture;", remap = false))
     private static ChannelFuture useRakNetPingHandlers(Bootstrap instance, InetAddress inetHost, int inetPort, @Local(argsOnly = true) ClientConnection clientConnection, @Local(argsOnly = true) boolean isConnecting) {
         if (VersionEnum.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getTargetVersion()) && !isConnecting) {
             // Bedrock edition / RakNet has different handlers for pinging a server
-            return instance.register().syncUninterruptibly().channel().bind(new InetSocketAddress(0)).
-                    addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE, (ChannelFutureListener) f -> {
-                        if (f.isSuccess()) {
-                            f.channel().pipeline().replace(
-                                    VLPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME,
-                                    ViaFabricPlusVLLegacyPipeline.VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME,
-                                    new PingEncapsulationCodec(new InetSocketAddress(inetHost, inetPort))
-                            );
-                            f.channel().pipeline().remove(VLPipeline.VIABEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);
-                            f.channel().pipeline().remove("splitter");
-                        }
-                    });
+            return instance.register().syncUninterruptibly().channel().bind(new InetSocketAddress(0)).addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE, (ChannelFutureListener) f -> {
+                if (f.isSuccess()) {
+                    f.channel().pipeline().replace(
+                            VLPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME,
+                            ViaFabricPlusVLLegacyPipeline.VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME,
+                            new PingEncapsulationCodec(new InetSocketAddress(inetHost, inetPort))
+                    );
+                    f.channel().pipeline().remove(VLPipeline.VIABEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);
+                    f.channel().pipeline().remove("splitter");
+                }
+            });
+        } else {
+            return instance.connect(inetHost, inetPort);
         }
-
-        return instance.connect(inetHost, inetPort);
     }
 
     @Override

@@ -88,9 +88,9 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
                     default -> DOUBLE_EAST_SHAPE;
                 };
             }
+        } else {
+            return super.getCullingShape(state, view, pos);
         }
-
-        return super.getCullingShape(state, view, pos);
     }
 
 }
