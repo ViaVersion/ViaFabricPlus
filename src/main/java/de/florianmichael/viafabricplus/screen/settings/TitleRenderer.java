@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class TitleRenderer extends VFPListEntry {
+
     private final Text name;
 
     public TitleRenderer(Text name) {

@@ -32,6 +32,7 @@ import net.minecraft.text.Text;
  * @param <T> The type of the setting.
  */
 public abstract class AbstractSetting<T> {
+
     private final MutableText name;
     private final T defaultValue;
 

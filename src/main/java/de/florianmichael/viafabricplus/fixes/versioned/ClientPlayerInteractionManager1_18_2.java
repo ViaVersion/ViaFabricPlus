@@ -25,6 +25,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
@@ -37,7 +38,7 @@ public class ClientPlayerInteractionManager1_18_2 {
     private final Object2ObjectLinkedOpenHashMap<Pair<BlockPos, PlayerActionC2SPacket.Action>, Pair<Vec3d, Vec2f>> unAckedActions = new Object2ObjectLinkedOpenHashMap<>();
 
     public void trackPlayerAction(final PlayerActionC2SPacket.Action action, final BlockPos blockPos) {
-        final var player = MinecraftClient.getInstance().player;
+        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         final Vec2f rotation;
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_1)) {
@@ -51,6 +52,7 @@ public class ClientPlayerInteractionManager1_18_2 {
     public void handleBlockBreakAck(final BlockPos blockPos, final BlockState expectedState, final PlayerActionC2SPacket.Action action, final boolean allGood) {
         final var player = MinecraftClient.getInstance().player;
         if (player == null) return;
+
         final var world = MinecraftClient.getInstance().getNetworkHandler().getWorld();
 
         final var oldPlayerState = unAckedActions.remove(Pair.of(blockPos, action));

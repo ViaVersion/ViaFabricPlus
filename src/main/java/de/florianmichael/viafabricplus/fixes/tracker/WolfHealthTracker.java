@@ -45,7 +45,6 @@ public class WolfHealthTracker extends StoredObject {
         if (tracker == null) {
             userConnection.put(tracker = new WolfHealthTracker(userConnection));
         }
-
         return tracker;
     }
 

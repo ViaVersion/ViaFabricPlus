@@ -22,6 +22,7 @@ package de.florianmichael.viafabricplus.protocolhack.impl.provider.viaversion;
 import com.viaversion.viaversion.api.minecraft.signature.SignableCommandArgumentsProvider;
 import com.viaversion.viaversion.util.Pair;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.command.argument.SignedArgumentList;
 
 import java.util.Collections;
@@ -31,16 +32,17 @@ public class ViaFabricPlusCommandArgumentsProvider extends SignableCommandArgume
 
     @Override
     public List<Pair<String, String>> getSignableArguments(String command) {
-        final var network = MinecraftClient.getInstance().getNetworkHandler();
+        final ClientPlayNetworkHandler network = MinecraftClient.getInstance().getNetworkHandler();
+
         if (network != null) {
             return SignedArgumentList.of(
                     network.getCommandDispatcher().parse(command, network.getCommandSource())).
                     arguments().stream().
                     map(function -> new Pair<>(function.getNodeName(), function.value())).
                     toList();
-
+        } else {
+            return Collections.emptyList();
         }
-        return Collections.emptyList();
     }
 
 }

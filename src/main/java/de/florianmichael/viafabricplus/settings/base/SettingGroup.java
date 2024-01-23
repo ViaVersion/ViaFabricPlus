@@ -29,6 +29,7 @@ import java.util.List;
  * @see AbstractSetting
  */
 public class SettingGroup {
+
     private final List<AbstractSetting<?>> settings = new ArrayList<>();
     private final Text name;
 

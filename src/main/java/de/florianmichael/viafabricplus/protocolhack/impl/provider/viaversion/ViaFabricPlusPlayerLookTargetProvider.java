@@ -33,9 +33,9 @@ public class ViaFabricPlusPlayerLookTargetProvider extends PlayerLookTargetProvi
         if (MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult blockHitResult) {
             final BlockPos pos = blockHitResult.getBlockPos();
             return new Position(pos.getX(), pos.getY(), pos.getZ());
+        } else {
+            return null;
         }
-
-        return null;
     }
 
 }

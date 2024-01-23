@@ -40,10 +40,10 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
     }
 
     protected Item[] getMinecraftContainerItems(final List<ItemStack> trackingItems) {
-        final var items = new Item[trackingItems.size()];
+        final Item[] items = new Item[trackingItems.size()];
 
         for (int i = 0; i < items.length; i++) {
-            final var alphaItem = trackingItems.get(i);
+            final ItemStack alphaItem = trackingItems.get(i);
             if (alphaItem.isEmpty()) continue;
 
             items[i] = ItemTranslator.mcToVia(alphaItem, VersionEnum.b1_8tob1_8_1);
@@ -55,36 +55,36 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
     public Item[] getMainInventoryItems(UserConnection user) {
         if (getPlayer() == null) {
             return new Item[37];
+        } else {
+            return getMinecraftContainerItems(getPlayer().getInventory().main);
         }
-
-        return getMinecraftContainerItems(getPlayer().getInventory().main);
     }
 
     @Override
     public Item[] getCraftingInventoryItems(UserConnection user) {
         if (getPlayer() == null) {
             return new Item[4];
+        } else {
+            return getMinecraftContainerItems(getPlayer().playerScreenHandler.getCraftingInput().getHeldStacks());
         }
-
-        return getMinecraftContainerItems(getPlayer().playerScreenHandler.getCraftingInput().getHeldStacks());
     }
 
     @Override
     public Item[] getArmorInventoryItems(UserConnection user) {
         if (getPlayer() == null) {
             return new Item[4];
+        } else {
+            return getMinecraftContainerItems(getPlayer().getInventory().armor);
         }
-
-        return getMinecraftContainerItems(getPlayer().getInventory().armor);
     }
 
     @Override
     public Item[] getContainerItems(UserConnection user) {
         if (getPlayer() == null) {
             return new Item[37];
+        } else {
+            return getMinecraftContainerItems(getPlayer().currentScreenHandler.getStacks());
         }
-
-        return getMinecraftContainerItems(getPlayer().currentScreenHandler.getStacks());
     }
 
     @Override

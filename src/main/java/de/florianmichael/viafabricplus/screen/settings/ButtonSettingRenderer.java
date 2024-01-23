@@ -27,6 +27,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 
 public class ButtonSettingRenderer extends VFPListEntry {
+
     private final ButtonSetting value;
 
     public ButtonSettingRenderer(ButtonSetting value) {

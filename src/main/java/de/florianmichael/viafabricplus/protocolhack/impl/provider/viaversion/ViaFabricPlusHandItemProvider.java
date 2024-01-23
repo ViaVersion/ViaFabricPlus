@@ -27,15 +27,16 @@ import net.minecraft.item.ItemStack;
 import net.raphimc.vialoader.util.VersionEnum;
 
 public class ViaFabricPlusHandItemProvider extends HandItemProvider {
+
     public static ItemStack lastUsedItem = null;
 
     @Override
     public Item getHandItem(UserConnection info) {
-        if (lastUsedItem == null || lastUsedItem.isEmpty()) {
+        if (lastUsedItem != null && !lastUsedItem.isEmpty()) {
+            return ItemTranslator.mcToVia(lastUsedItem, VersionEnum.r1_8);
+        } else {
             return null;
         }
-
-        return ItemTranslator.mcToVia(lastUsedItem, VersionEnum.r1_8);
     }
 
 }

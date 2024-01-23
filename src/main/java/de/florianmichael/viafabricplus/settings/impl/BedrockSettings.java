@@ -45,12 +45,10 @@ public class BedrockSettings extends SettingGroup {
         
         @Override
         public MutableText displayValue() {
-            final var bedrockSession = ViaFabricPlus.global().getSaveManager().getAccountsSave().getBedrockAccount();
-            if (bedrockSession == null) {
-                return super.displayValue();
-            }
+            final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getBedrockAccount();
+            if (account == null) return super.displayValue();
 
-            return Text.literal("Bedrock account: " + bedrockSession.getMcChain().getDisplayName());
+            return Text.literal("Bedrock account: " + account.getMcChain().getDisplayName());
         }
     };
     public final BooleanSetting openPromptGUIToConfirmTransfer = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.confirm_transfer_server_prompt"), true);

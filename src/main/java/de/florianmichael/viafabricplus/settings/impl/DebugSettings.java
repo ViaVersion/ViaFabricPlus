@@ -27,6 +27,7 @@ import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class DebugSettings extends SettingGroup {
+
     private static final DebugSettings instance = new DebugSettings();
 
     public final BooleanSetting queueConfigPackets = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.queue_config_packets"), true);

@@ -47,9 +47,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassiCubeServerListScreen extends VFPScreen {
-    public static final List<CCServerInfo> SERVER_LIST = new ArrayList<>();
+
     public static final ClassiCubeServerListScreen INSTANCE = new ClassiCubeServerListScreen();
 
+    public static final List<CCServerInfo> SERVER_LIST = new ArrayList<>();
     private static final String CLASSICUBE_SERVER_LIST_URL = "https://www.classicube.net/server/list/";
 
     public static void open(final Screen prevScreen, final LoginProcessHandler loginProcessHandler) {

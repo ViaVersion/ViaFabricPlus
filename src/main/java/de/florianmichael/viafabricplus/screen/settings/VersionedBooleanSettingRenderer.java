@@ -54,7 +54,7 @@ public class VersionedBooleanSettingRenderer extends VFPListEntry {
         final Text text = Text.translatable("base.viafabricplus." + (this.value.isAuto() ? "auto" : this.value.isEnabled() ? "on" : "off"));
         Color color = this.value.isAuto() ? Color.ORANGE : this.value.isEnabled() ? Color.GREEN : Color.RED;
 
-        final var offset = textRenderer.getWidth(text) + 6;
+        final int offset = textRenderer.getWidth(text) + 6;
         renderScrollableText(Text.of(Formatting.GRAY + this.value.getName().getString() + " " + Formatting.RESET + this.value.getProtocolRange().toString()), offset);
         context.drawTextWithShadow(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
 

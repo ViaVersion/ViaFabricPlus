@@ -43,7 +43,7 @@ public class TextComponentTranslator {
      */
     public static Tag via1_14toViaLatest(final JsonElement component) {
         try {
-            var wrapper = PacketWrapper.create(ClientboundPackets1_14.OPEN_WINDOW, DUMMY_USER_CONNECTION);
+            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_14.OPEN_WINDOW, DUMMY_USER_CONNECTION);
             wrapper.write(Type.VAR_INT, 1); // window id
             wrapper.write(Type.VAR_INT, 0); // type id
             wrapper.write(Type.COMPONENT, component); // title

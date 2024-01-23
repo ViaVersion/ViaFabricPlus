@@ -31,6 +31,9 @@ import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.encryption.PlayerKeyPair;
+import net.minecraft.network.encryption.PlayerPublicKey;
+import net.raphimc.minecraftauth.step.bedrock.StepMCChain;
 import net.raphimc.viabedrock.protocol.storage.AuthChainData;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
@@ -42,6 +45,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.net.InetSocketAddress;
+import java.security.PrivateKey;
+import java.util.UUID;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {
@@ -77,13 +82,13 @@ public abstract class MixinConnectScreen_1 {
         final UserConnection userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
         if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_19, VersionEnum.r1_19_1tor1_19_2)) {
-            final var keyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
+            final PlayerKeyPair keyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
             if (keyPair != null) {
-                final var publicKeyData = keyPair.publicKey().data();
-                final var privateKey = keyPair.privateKey();
-                final var expiresAt = publicKeyData.expiresAt().toEpochMilli();
-                final var publicKey = publicKeyData.key().getEncoded();
-                final var uuid = this.field_33738.getSession().getUuidOrNull();
+                final PlayerPublicKey.PublicKeyData publicKeyData = keyPair.publicKey().data();
+                final PrivateKey privateKey = keyPair.privateKey();
+                final long expiresAt = publicKeyData.expiresAt().toEpochMilli();
+                final byte[] publicKey = publicKeyData.key().getEncoded();
+                final UUID uuid = this.field_33738.getSession().getUuidOrNull();
 
                 userConnection.put(new ChatSession1_19_1(uuid, privateKey, new ProfileKey(expiresAt, publicKey, publicKeyData.keySignature())));
                 if (ProtocolHack.getTargetVersion() == VersionEnum.r1_19) {
@@ -98,9 +103,9 @@ public abstract class MixinConnectScreen_1 {
         } else if (ProtocolHack.getTargetVersion() == VersionEnum.bedrockLatest) {
             final var bedrockSession = ViaFabricPlus.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
             if (bedrockSession != null) {
-                final var mcChain = bedrockSession.getMcChain();
-                final var deviceId = mcChain.getXblXsts().getInitialXblSession().getXblDeviceToken().getId();
-                final var playFabId = bedrockSession.getPlayFabToken().getPlayFabId();
+                final StepMCChain.MCChain mcChain = bedrockSession.getMcChain();
+                final UUID deviceId = mcChain.getXblXsts().getInitialXblSession().getXblDeviceToken().getId();
+                final String playFabId = bedrockSession.getPlayFabToken().getPlayFabId();
 
                 userConnection.put(new AuthChainData(mcChain.getMojangJwt(), mcChain.getIdentityJwt(), mcChain.getPublicKey(), mcChain.getPrivateKey(), deviceId, playFabId));
             } else {

@@ -27,6 +27,7 @@ import net.minecraft.text.MutableText;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class VersionedBooleanSetting extends AbstractSetting<Integer> {
+
     private static final int AUTO_INDEX = 2;
     private static final int DISABLED_INDEX = 1;
     private static final int ENABLED_INDEX = 0;

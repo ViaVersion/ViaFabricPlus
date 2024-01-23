@@ -22,6 +22,7 @@ package de.florianmichael.viafabricplus.screen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
@@ -67,14 +68,14 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
     public void renderScrollableText(final Text name, final int offset) {
         final var font = MinecraftClient.getInstance().textRenderer;
 
-        final var fontWidth = font.getWidth(name);
-        final var textY = entryHeight / 2 - font.fontHeight / 2;
+        final int fontWidth = font.getWidth(name);
+        final int textY = entryHeight / 2 - font.fontHeight / 2;
 
         if (fontWidth > (entryWidth - offset)) {
-            final var time = (double) Util.getMeasuringTimeMs() / 1000.0;
-            final var interpolateEnd = fontWidth - (entryWidth - offset - (SCISSORS_OFFSET + SLOT_MARGIN));
+            final double time = (double) Util.getMeasuringTimeMs() / 1000.0;
+            final double interpolateEnd = fontWidth - (entryWidth - offset - (SCISSORS_OFFSET + SLOT_MARGIN));
 
-            final var interpolatedValue = Math.sin((Math.PI / 2) * Math.cos(Math.PI * 2 * time / Math.max((double) interpolateEnd * 0.5, 3.0))) / 2.0 + 0.5;
+            final double interpolatedValue = Math.sin((Math.PI / 2) * Math.cos(Math.PI * 2 * time / Math.max(interpolateEnd * 0.5, 3.0))) / 2.0 + 0.5;
 
             context.enableScissor(x, y, x + entryWidth - offset - SCISSORS_OFFSET, y + entryHeight);
             context.drawTextWithShadow(font, name, SLOT_MARGIN - (int) MathHelper.lerp(interpolatedValue, 0.0, interpolateEnd), textY, -1);
@@ -109,7 +110,7 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
         this.entryWidth = entryWidth;
         this.entryHeight = entryHeight;
 
-        final var matrices = context.getMatrices();
+        final MatrixStack matrices = context.getMatrices();
 
         matrices.push();
         matrices.translate(x, y, 0);

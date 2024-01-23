@@ -41,10 +41,8 @@ public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
         }
 
         if (AuthenticationSettings.global().useBetaCraftAuthentication.getValue()) {
-            final var handshakeStorage = user.get(HandshakeStorage.class);
-            if (handshakeStorage == null) {
-                return super.getMpPass(user);
-            }
+            final HandshakeStorage handshakeStorage = user.get(HandshakeStorage.class);
+            if (handshakeStorage == null) return super.getMpPass(user);
 
             return BetaCraftHandler.requestMPPass(user.getProtocolInfo().getUsername(), handshakeStorage.getHostname(), handshakeStorage.getPort(), serverId -> {
                 try {

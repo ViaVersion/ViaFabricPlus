@@ -24,6 +24,7 @@ import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.text.Text;
 
 public class AuthenticationSettings extends SettingGroup {
+
     private static final AuthenticationSettings instance = new AuthenticationSettings();
 
     public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.use_beta_craft_authentication"), true);

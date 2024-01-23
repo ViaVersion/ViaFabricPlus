@@ -28,6 +28,7 @@ import net.minecraft.text.MutableText;
 import java.util.Arrays;
 
 public class ModeSetting extends AbstractSetting<MutableText> {
+
     private final MutableText[] options;
 
     public ModeSetting(SettingGroup parent, MutableText name, MutableText... options) {

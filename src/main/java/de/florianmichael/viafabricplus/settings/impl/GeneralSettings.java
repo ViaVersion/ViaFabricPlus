@@ -26,6 +26,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
 public class GeneralSettings extends SettingGroup {
+
     private static final GeneralSettings instance = new GeneralSettings();
 
     public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.multiplayer_screen_button_orientation"), 1,

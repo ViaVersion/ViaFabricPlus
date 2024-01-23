@@ -40,9 +40,10 @@ import net.minecraft.util.Formatting;
 import java.util.List;
 
 public class BetaCraftScreen extends VFPScreen {
-    public static BCServerList SERVER_LIST;
+
     public static final BetaCraftScreen INSTANCE = new BetaCraftScreen();
 
+    public static BCServerList SERVER_LIST;
     private static final String BETA_CRAFT_SERVER_LIST_URL = "https://betacraft.uk/serverlist/";
 
     protected BetaCraftScreen() {

@@ -41,12 +41,11 @@ public class ListExtensionsCommand extends VFPViaSubCommand {
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
-        final UserConnection connection = getUser();
-        if (!connection.has(ExtensionProtocolMetadataStorage.class)) {
+        if (!getUser().has(ExtensionProtocolMetadataStorage.class)) {
             sendMessage(sender, Formatting.RED + "Only for " + VersionEnum.c0_30cpe.getName());
             return true;
         }
-        ((IExtensionProtocolMetadataStorage) connection.get(ExtensionProtocolMetadataStorage.class)).viaFabricPlus$getServerExtensions().forEach((extension, version) -> {
+        ((IExtensionProtocolMetadataStorage) getUser().get(ExtensionProtocolMetadataStorage.class)).viaFabricPlus$getServerExtensions().forEach((extension, version) -> {
             sendMessage(sender, Formatting.GREEN + extension.getName() + Formatting.GOLD + " v" + version);
         });
         return true;

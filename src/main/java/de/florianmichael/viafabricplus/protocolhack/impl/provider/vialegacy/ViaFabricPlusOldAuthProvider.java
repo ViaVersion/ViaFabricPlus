@@ -31,12 +31,11 @@ import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.provider
 public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
 
     @Override
-    public void sendAuthRequest(UserConnection user, String serverId) throws Throwable {
+    public void sendAuthRequest(UserConnection user, String serverId) {
         if (!AuthenticationSettings.global().verifySessionForOnlineModeServers.getValue()) return;
 
         try {
             final var mc = MinecraftClient.getInstance();
-
             mc.getSessionService().joinServer(mc.getSession().getUuidOrNull(), mc.getSession().getAccessToken(), serverId);
         } catch (Exception e) {
             user.getChannel().attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get().disconnect(ChatUtil.prefixText(Text.translatable("authentication.viafabricplus.failed_to_verify_session")));

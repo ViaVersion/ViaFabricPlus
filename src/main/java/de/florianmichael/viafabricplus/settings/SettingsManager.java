@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SettingsManager {
+
     private final List<SettingGroup> groups = new ArrayList<>();
 
     public SettingsManager() {

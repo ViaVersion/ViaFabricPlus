@@ -26,6 +26,7 @@ import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
 
 public class VisualSettings extends SettingGroup {
+
     private static final VisualSettings instance = new VisualSettings();
 
     // 1.20.3 -> 1.20.2 and 1.16 -> 1.15.2

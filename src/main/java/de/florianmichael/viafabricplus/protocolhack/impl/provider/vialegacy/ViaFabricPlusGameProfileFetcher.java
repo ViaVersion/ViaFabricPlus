@@ -25,6 +25,7 @@ import com.mojang.authlib.ProfileLookupCallback;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.ProfileNotFoundException;
+import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.model.GameProfile;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
@@ -35,9 +36,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class ViaFabricPlusGameProfileFetcher extends GameProfileFetcher {
 
-    public static final HttpAuthenticationService AUTHENTICATION_SERVICE = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
-    public static final MinecraftSessionService SESSION_SERVICE = AUTHENTICATION_SERVICE.createMinecraftSessionService();
-    public static final GameProfileRepository GAME_PROFILE_REPOSITORY = AUTHENTICATION_SERVICE.createProfileRepository();
+    private static final HttpAuthenticationService AUTHENTICATION_SERVICE = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
+    private static final MinecraftSessionService SESSION_SERVICE = AUTHENTICATION_SERVICE.createMinecraftSessionService();
+    private static final GameProfileRepository GAME_PROFILE_REPOSITORY = AUTHENTICATION_SERVICE.createProfileRepository();
 
     @Override
     public UUID loadMojangUUID(String playerName) throws Exception {
@@ -61,17 +62,16 @@ public class ViaFabricPlusGameProfileFetcher extends GameProfileFetcher {
 
     @Override
     public GameProfile loadGameProfile(UUID uuid) {
-        final var result = SESSION_SERVICE.fetchProfile(uuid, true);
+        final ProfileResult result = SESSION_SERVICE.fetchProfile(uuid, true);
         if (result == null) throw new ProfileNotFoundException();
 
-        final var profile = result.profile();
-        final var gameProfile = new GameProfile(profile.getName(), profile.getId());
+        final var authLibProfile = result.profile();
+        final var mcProfile = new GameProfile(authLibProfile.getName(), authLibProfile.getId());
 
-        for (final var entry : profile.getProperties().entries()) {
-            final Property prop = entry.getValue();
-            gameProfile.addProperty(new GameProfile.Property(prop.name(), prop.value(), prop.signature()));
+        for (final var entry : authLibProfile.getProperties().entries()) {
+            mcProfile.addProperty(new GameProfile.Property(entry.getValue().name(), entry.getValue().value(), entry.getValue().signature()));
         }
-        return gameProfile;
+        return mcProfile;
     }
 
 }

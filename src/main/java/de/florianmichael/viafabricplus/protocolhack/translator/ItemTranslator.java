@@ -109,11 +109,11 @@ public class ItemTranslator {
             wrapper.read(Type.UNSIGNED_BYTE); // sync id
             wrapper.read(Type.VAR_INT); // revision
             wrapper.read(Type.SHORT); // slot
-            final var viaItem = wrapper.read(Type.ITEM1_13_2); // item
-            final ItemStack stack = new ItemStack(Registries.ITEM.get(viaItem.identifier()));
-            stack.setCount(viaItem.amount());
-            stack.setDamage(viaItem.data());
-            return stack;
+            final Item viaItem = wrapper.read(Type.ITEM1_13_2); // item
+            final ItemStack mcItem = new ItemStack(Registries.ITEM.get(viaItem.identifier()));
+            mcItem.setCount(viaItem.amount());
+            mcItem.setDamage(viaItem.data());
+            return mcItem;
         } catch (Throwable t) {
             ViaFabricPlus.global().getLogger().error("Error converting ViaVersion b1.8 item to native item stack", t);
             return ItemStack.EMPTY;

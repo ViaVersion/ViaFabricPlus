@@ -40,12 +40,11 @@ public class ViaFabricPlusTransferProvider extends TransferProvider {
         final var mc = MinecraftClient.getInstance();
         mc.execute(() -> {
             if (BedrockSettings.global().openPromptGUIToConfirmTransfer.getValue()) {
-                mc.setScreen(new ConfirmScreen(
-                        (bl) -> {
+                mc.setScreen(new ConfirmScreen((bl) -> {
                             if (bl) {
                                 connect(newAddress);
                             } else {
-                                MinecraftClient.getInstance().setScreen(null);
+                                mc.setScreen(null);
                             }
                         },
                         Text.of("ViaFabricPlus"),

@@ -148,13 +148,13 @@ public class ClientsideFixes {
      * @return The uuid of the task
      */
     public static String executeSyncTask(final Consumer<PacketByteBuf> task) {
-        final var uuid = UUID.randomUUID().toString();
+        final String uuid = UUID.randomUUID().toString();
         PENDING_EXECUTION_TASKS.put(uuid, task);
         return uuid;
     }
 
     public static void handleSyncTask(final PacketByteBuf buf) {
-        final var uuid = buf.readString();
+        final String uuid = buf.readString();
 
         if (PENDING_EXECUTION_TASKS.containsKey(uuid)) {
             MinecraftClient.getInstance().execute(() -> { // Execute the task on the main thread

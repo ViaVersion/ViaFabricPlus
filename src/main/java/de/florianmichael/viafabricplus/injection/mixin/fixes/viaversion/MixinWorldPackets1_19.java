@@ -28,8 +28,10 @@ import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.packets.WorldPac
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerInteractionManager;
 import de.florianmichael.viafabricplus.protocolhack.translator.BlockStateTranslator;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
+import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -42,12 +44,12 @@ public abstract class MixinWorldPackets1_19 {
         instance.registerClientbound(ClientboundPackets1_18.ACKNOWLEDGE_PLAYER_DIGGING, ClientboundPackets1_19.PLUGIN_MESSAGE, wrapper -> {
             wrapper.resetReader();
 
-            final var uuid = ClientsideFixes.executeSyncTask(data -> {
+            final String uuid = ClientsideFixes.executeSyncTask(data -> {
                 try {
-                    final var pos = data.readBlockPos();
-                    final var blockState = BlockStateTranslator.via1_18_2toMc(data.readVarInt());
-                    final var action = data.readEnumConstant(PlayerActionC2SPacket.Action.class);
-                    final var allGood = data.readBoolean();
+                    final BlockPos pos = data.readBlockPos();
+                    final BlockState blockState = BlockStateTranslator.via1_18_2toMc(data.readVarInt());
+                    final PlayerActionC2SPacket.Action action = data.readEnumConstant(PlayerActionC2SPacket.Action.class);
+                    final boolean allGood = data.readBoolean();
 
                     final var mixinInteractionManager = (IClientPlayerInteractionManager) MinecraftClient.getInstance().interactionManager;
                     mixinInteractionManager.viaFabricPlus$get1_18_2InteractionManager().handleBlockBreakAck(pos, blockState, action, allGood);
