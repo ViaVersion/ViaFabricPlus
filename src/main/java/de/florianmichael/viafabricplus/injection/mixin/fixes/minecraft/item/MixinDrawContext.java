@@ -22,6 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 import de.florianmichael.viafabricplus.injection.access.IItemStack;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -40,7 +41,7 @@ public abstract class MixinDrawContext {
     @Redirect(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))
     private String makeTextRed(int count) {
         if (count <= 0) {
-            return "§c" + count;
+            return Formatting.RED.toString() + count;
         }
         return String.valueOf(count);
     }
