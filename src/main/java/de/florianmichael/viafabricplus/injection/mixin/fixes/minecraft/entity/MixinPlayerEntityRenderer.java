@@ -56,7 +56,7 @@ public abstract class MixinPlayerEntityRenderer {
     @Redirect(method = "getPositionOffset(Lnet/minecraft/client/network/AbstractClientPlayerEntity;F)Lnet/minecraft/util/math/Vec3d;",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isInSneakingPose()Z"))
     private boolean disableSneakPositionOffset(AbstractClientPlayerEntity player) {
-        return (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_11_1to1_11_2)) && player.isInSneakingPose();
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_11_1to1_11_2) && player.isInSneakingPose();
     }
 
 }

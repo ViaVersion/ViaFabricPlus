@@ -102,7 +102,6 @@ public abstract class MixinItemStack implements IItemStack {
                 return OptionalDouble.of(3 + materialBonus);
             }
         }
-
         return OptionalDouble.empty();
     }
 

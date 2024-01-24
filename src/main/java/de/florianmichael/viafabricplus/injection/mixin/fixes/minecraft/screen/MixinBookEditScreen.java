@@ -30,20 +30,20 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 public abstract class MixinBookEditScreen {
 
     @ModifyConstant(method = "method_27596", constant = @Constant(intValue = 1024))
-    private int modifyPageLength(int oldVal) {
+    private int modifyPageLength(int constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             return 256;
         } else {
-            return oldVal;
+            return constant;
         }
     }
 
     @ModifyConstant(method = "appendNewPage", constant = @Constant(intValue = 100))
-    private int modifyPageCount(int oldVal) {
+    private int modifyPageCount(int constant) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             return 50;
         } else {
-            return oldVal;
+            return constant;
         }
     }
 

@@ -170,7 +170,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Redirect(method = "tickMovement",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isWalking()Z")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
-    private boolean redirectIsSneakingWhileSwimming(ClientPlayerEntity instance) {
+    private boolean dontAllowSneakingWhileSwimming(ClientPlayerEntity instance) {
         return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_14_1) && instance.isSwimming();
     }
 

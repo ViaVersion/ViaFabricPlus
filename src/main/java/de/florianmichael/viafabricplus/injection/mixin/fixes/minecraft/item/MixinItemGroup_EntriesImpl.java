@@ -19,6 +19,8 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import de.florianmichael.viafabricplus.fixes.data.ItemRegistryDiff;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
@@ -26,6 +28,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.featuretoggle.FeatureSet;
+import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,17 +42,18 @@ public abstract class MixinItemGroup_EntriesImpl {
     @Final
     private ItemGroup group;
 
-    @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isEnabled(Lnet/minecraft/resource/featuretoggle/FeatureSet;)Z"))
-    private boolean removeUnknownItems(Item instance, FeatureSet featureSet) {
+    @WrapOperation(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isEnabled(Lnet/minecraft/resource/featuretoggle/FeatureSet;)Z"))
+    private boolean removeUnknownItems(Item instance, FeatureSet featureSet, Operation<Boolean> original) {
+        final boolean originalValue = original.call(instance, featureSet);
         final int index = GeneralSettings.global().removeNotAvailableItemsFromCreativeTab.getIndex();
 
-        if (index == 2 || MinecraftClient.getInstance().isInSingleplayer()) return instance.isEnabled(featureSet);
-        if (index == 1 && !Registries.ITEM_GROUP.getId(this.group).getNamespace().equals("minecraft")) return instance.isEnabled(featureSet);
-
-        if (ItemRegistryDiff.keepItem(instance)) {
-            return instance.isEnabled(featureSet);
+        if (index == 2 /* Off */ || MinecraftClient.getInstance().isInSingleplayer()) {
+            return originalValue;
+        } else if (index == 1 /* Vanilla only */ && !Registries.ITEM_GROUP.getId(this.group).getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
+            return originalValue;
+        } else {
+            return ItemRegistryDiff.keepItem(instance) && originalValue;
         }
-        return false;
     }
 
 }

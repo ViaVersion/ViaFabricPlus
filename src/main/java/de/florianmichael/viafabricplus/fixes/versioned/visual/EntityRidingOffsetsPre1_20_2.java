@@ -133,7 +133,7 @@ public class EntityRidingOffsetsPre1_20_2 {
         }
 
         if (entity instanceof AbstractHorseEntity abstractHorseEntity) {
-            if (abstractHorseEntity.lastAngryAnimationProgress > 0.0f) {
+            if (abstractHorseEntity.lastAngryAnimationProgress > 0.0F) {
                 return new Vector3f(0, yOffset + 0.15F * abstractHorseEntity.lastAngryAnimationProgress, -0.7F * abstractHorseEntity.lastAngryAnimationProgress);
             }
         }

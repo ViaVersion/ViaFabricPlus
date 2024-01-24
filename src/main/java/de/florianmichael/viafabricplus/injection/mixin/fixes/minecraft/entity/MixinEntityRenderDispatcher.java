@@ -42,17 +42,17 @@ public abstract class MixinEntityRenderDispatcher {
     @Unique
     private BoatRenderer1_8 viaFabricPlus$boatRenderer;
 
+    @Inject(method = "reload", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void createBoatRenderer1_8(ResourceManager manager, CallbackInfo ci, EntityRendererFactory.Context context) {
+        viaFabricPlus$boatRenderer = new BoatRenderer1_8(context);
+    }
+
     @SuppressWarnings("unchecked")
     @Inject(method = "getRenderer", at = @At("HEAD"), cancellable = true)
-    private <T extends Entity> void onGetRenderer(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> ci) {
+    private <T extends Entity> void useBoatRenderer1_8(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> ci) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && entity instanceof BoatEntity) {
             ci.setReturnValue((EntityRenderer<? super T>) viaFabricPlus$boatRenderer);
         }
-    }
-
-    @Inject(method = "reload", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void onReload(ResourceManager manager, CallbackInfo ci, EntityRendererFactory.Context context) {
-        viaFabricPlus$boatRenderer = new BoatRenderer1_8(context);
     }
 
 }

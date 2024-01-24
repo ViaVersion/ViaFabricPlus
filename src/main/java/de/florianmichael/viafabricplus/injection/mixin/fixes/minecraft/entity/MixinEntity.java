@@ -138,8 +138,9 @@ public abstract class MixinEntity implements IEntity {
     private static double fixVelocityEpsilon(double epsilon) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             return 1E-4;
+        } else {
+            return epsilon;
         }
-        return epsilon;
     }
 
     @Inject(method = "getRotationVector(FF)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)

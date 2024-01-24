@@ -60,7 +60,7 @@ public abstract class MixinEndPortalFrameBlock extends Block {
     }
 
     @Inject(method = "getOutlineShape", at = @At(value = "HEAD"), cancellable = true)
-    private void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(FRAME_SHAPE);
         }

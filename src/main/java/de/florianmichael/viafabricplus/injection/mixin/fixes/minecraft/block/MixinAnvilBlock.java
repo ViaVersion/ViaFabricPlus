@@ -56,7 +56,7 @@ public abstract class MixinAnvilBlock extends FallingBlock {
     private boolean viaFabricPlus$requireOriginalShape;
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (viaFabricPlus$requireOriginalShape) {
             viaFabricPlus$requireOriginalShape = false;
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {

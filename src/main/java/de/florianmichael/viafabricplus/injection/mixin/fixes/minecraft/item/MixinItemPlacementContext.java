@@ -44,7 +44,7 @@ public abstract class MixinItemPlacementContext extends ItemUsageContext {
     }
 
     @Inject(method = "getPlayerLookDirection", at = @At("HEAD"), cancellable = true)
-    private void getLookDirection1_12_2(CallbackInfoReturnable<Direction> cir) {
+    private void getPlayerLookDirection1_12_2(CallbackInfoReturnable<Direction> cir) {
         final ItemPlacementContext self = (ItemPlacementContext) (Object) this;
         final PlayerEntity player = self.getPlayer();
 

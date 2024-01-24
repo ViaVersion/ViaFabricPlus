@@ -48,7 +48,6 @@ public abstract class MixinFlowableFluid {
                 return false;
             }
         }
-
         return instance.isSideSolidFullSquare(blockView, blockPos, direction);
     }
 

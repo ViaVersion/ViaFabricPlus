@@ -146,13 +146,13 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
     private boolean handleWindowClick1_16_5(ClientPlayNetworkHandler instance, Packet<?> packet) throws Exception {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5) && packet instanceof ClickSlotC2SPacket clickSlot) {
             ItemStack slotItemBeforeModification;
-
-            if (this.viaFabricPlus$shouldBeEmpty(clickSlot.getActionType(), clickSlot.getSlot()))
+            if (this.viaFabricPlus$shouldBeEmpty(clickSlot.getActionType(), clickSlot.getSlot())) {
                 slotItemBeforeModification = ItemStack.EMPTY;
-            else if (clickSlot.getSlot() < 0 || clickSlot.getSlot() >= viaFabricPlus$oldItems.size())
+            } else if (clickSlot.getSlot() < 0 || clickSlot.getSlot() >= viaFabricPlus$oldItems.size()) {
                 slotItemBeforeModification = viaFabricPlus$oldCursorStack;
-            else
+            } else {
                 slotItemBeforeModification = viaFabricPlus$oldItems.get(clickSlot.getSlot());
+            }
 
             final PacketWrapper clickWindowPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, ((IClientConnection) networkHandler.getConnection()).viaFabricPlus$getUserConnection());
             clickWindowPacket.write(Type.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
