@@ -30,7 +30,7 @@ import java.util.Map;
 @Mixin(value = Config.class, remap = false)
 public abstract class MixinConfig {
 
-    @Redirect(method = "loadConfig(Ljava/io/File;Ljava/net/URL;)Ljava/util/Map;", at = @At(value = "INVOKE", target = "Ljava/util/Map;containsKey(Ljava/lang/Object;)Z"))
+    @Redirect(method = "loadConfig(Ljava/io/File;Lcom/viaversion/viaversion/util/InputStreamSupplier;)Ljava/util/Map;", at = @At(value = "INVOKE", target = "Ljava/util/Map;containsKey(Ljava/lang/Object;)Z"))
     private boolean allowConfigPatching(final Map<String, Object> map, final Object key) {
         return ((Object) this) instanceof ConfigPatcher || map.containsKey(key);
     }
