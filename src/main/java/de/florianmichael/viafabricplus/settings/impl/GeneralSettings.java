@@ -27,7 +27,7 @@ import net.minecraft.text.Text;
 
 public class GeneralSettings extends SettingGroup {
 
-    private static final GeneralSettings instance = new GeneralSettings();
+    private static final GeneralSettings INSTANCE = new GeneralSettings();
 
     public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.multiplayer_screen_button_orientation"), 1,
             Text.translatable("base.viafabricplus.left_top"),
@@ -63,10 +63,6 @@ public class GeneralSettings extends SettingGroup {
         emulateInventoryActionsInAlphaVersions.setTooltip(Text.translatable("base.viafabricplus.this_will_require_a_restart"));
     }
 
-    public static GeneralSettings global() {
-        return instance;
-    }
-
     public static ButtonWidget.Builder withOrientation(final ButtonWidget.Builder builder, final int orientationIndex, final int width, final int height) {
         return switch (orientationIndex) {
             case 0 -> builder.position(5, 5);
@@ -75,6 +71,10 @@ public class GeneralSettings extends SettingGroup {
             case 3 -> builder.position(width - 98 - 5, height - 20 - 5);
             default -> builder;
         };
+    }
+
+    public static GeneralSettings global() {
+        return INSTANCE;
     }
 
 }

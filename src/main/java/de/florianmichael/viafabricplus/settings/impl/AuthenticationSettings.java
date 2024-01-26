@@ -25,7 +25,7 @@ import net.minecraft.text.Text;
 
 public class AuthenticationSettings extends SettingGroup {
 
-    private static final AuthenticationSettings instance = new AuthenticationSettings();
+    private static final AuthenticationSettings INSTANCE = new AuthenticationSettings();
 
     public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.use_beta_craft_authentication"), true);
     public final BooleanSetting verifySessionForOnlineModeServers = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.verify_session_for_online_mode"), true);
@@ -37,7 +37,7 @@ public class AuthenticationSettings extends SettingGroup {
     }
 
     public static AuthenticationSettings global() {
-        return instance;
+        return INSTANCE;
     }
 
 }

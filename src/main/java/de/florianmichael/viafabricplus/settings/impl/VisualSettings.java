@@ -27,7 +27,7 @@ import net.raphimc.vialoader.util.VersionRange;
 
 public class VisualSettings extends SettingGroup {
 
-    private static final VisualSettings instance = new VisualSettings();
+    private static final VisualSettings INSTANCE = new VisualSettings();
 
     // 1.20.3 -> 1.20.2 and 1.16 -> 1.15.2
     public final VersionedBooleanSetting removeNewerFeaturesFromJigsawScreen = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen"), VersionRange.andOlder(VersionEnum.r1_20_2));
@@ -66,7 +66,7 @@ public class VisualSettings extends SettingGroup {
     }
 
     public static VisualSettings global() {
-        return instance;
+        return INSTANCE;
     }
 
 }

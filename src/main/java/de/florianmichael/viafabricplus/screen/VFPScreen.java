@@ -169,18 +169,13 @@ public class VFPScreen extends Screen {
      *
      * @param title     The title of the error screen
      * @param throwable The throwable which should be thrown
+     * @param next      The screen which should be opened after the error screen is closed
      */
-    public static void showErrorScreen(final String title, final Throwable throwable, final Screen parent) {
-        final MinecraftClient client = MinecraftClient.getInstance();
-
-        client.execute(() -> client.setScreen(new NoticeScreen(
-                () -> client.setScreen(parent),
-                Text.of(title),
-                Text.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Text.translatable("base.viafabricplus.cancel"),
-                false)
-        ));
-
+    public static void showErrorScreen(final String title, final Throwable throwable, final Screen next) {
         ViaFabricPlus.global().getLogger().error("Something went wrong!", throwable);
+
+        final MinecraftClient client = MinecraftClient.getInstance();
+        client.execute(() -> client.setScreen(new NoticeScreen(() -> client.setScreen(next), Text.of(title), Text.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Text.translatable("base.viafabricplus.cancel"), false)));
     }
 
 }
