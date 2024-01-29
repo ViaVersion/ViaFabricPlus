@@ -29,10 +29,7 @@ import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.sto
 import net.raphimc.vialoader.util.VersionEnum;
 import net.raphimc.vialoader.util.VersionRange;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static net.minecraft.item.Items.*;
 import static net.raphimc.vialoader.util.VersionEnum.*;
@@ -47,6 +44,63 @@ public class ItemRegistryDiff {
     public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
 
     static {
+        ITEM_DIFF.put(TUFF_STAIRS, andNewer(r1_20_5));
+        ITEM_DIFF.put(TUFF_WALL, andNewer(r1_20_5));
+        ITEM_DIFF.put(CHISELED_TUFF, andNewer(r1_20_5));
+        ITEM_DIFF.put(POLISHED_TUFF, andNewer(r1_20_5));
+        ITEM_DIFF.put(POLISHED_TUFF_SLAB, andNewer(r1_20_5));
+        ITEM_DIFF.put(POLISHED_TUFF_STAIRS, andNewer(r1_20_5));
+        ITEM_DIFF.put(POLISHED_TUFF_WALL, andNewer(r1_20_5));
+        ITEM_DIFF.put(TUFF_BRICKS, andNewer(r1_20_5));
+        ITEM_DIFF.put(TUFF_BRICK_SLAB, andNewer(r1_20_5));
+        ITEM_DIFF.put(TUFF_BRICK_STAIRS, andNewer(r1_20_5));
+        ITEM_DIFF.put(TUFF_BRICK_WALL, andNewer(r1_20_5));
+        ITEM_DIFF.put(CHISELED_TUFF_BRICKS, andNewer(r1_20_5));
+        ITEM_DIFF.put(CHISELED_COPPER, andNewer(r1_20_5));
+        ITEM_DIFF.put(EXPOSED_CHISELED_COPPER, andNewer(r1_20_5));
+        ITEM_DIFF.put(WEATHERED_CHISELED_COPPER, andNewer(r1_20_5));
+        ITEM_DIFF.put(OXIDIZED_CHISELED_COPPER, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_CHISELED_COPPER, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_EXPOSED_CHISELED_COPPER, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_WEATHERED_CHISELED_COPPER, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_OXIDIZED_CHISELED_COPPER, andNewer(r1_20_5));
+        ITEM_DIFF.put(COPPER_DOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(EXPOSED_COPPER_DOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(WEATHERED_COPPER_DOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(OXIDIZED_COPPER_DOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_COPPER_DOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_EXPOSED_COPPER_DOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_WEATHERED_COPPER_DOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_OXIDIZED_COPPER_DOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(COPPER_TRAPDOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(EXPOSED_COPPER_TRAPDOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(WEATHERED_COPPER_TRAPDOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(OXIDIZED_COPPER_TRAPDOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_COPPER_TRAPDOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_EXPOSED_COPPER_TRAPDOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_WEATHERED_COPPER_TRAPDOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_OXIDIZED_COPPER_TRAPDOOR, andNewer(r1_20_5));
+        ITEM_DIFF.put(CRAFTER, andNewer(r1_20_5));
+        ITEM_DIFF.put(BREEZE_SPAWN_EGG, andNewer(r1_20_5));
+        ITEM_DIFF.put(COPPER_GRATE, andNewer(r1_20_5));
+        ITEM_DIFF.put(EXPOSED_COPPER_GRATE, andNewer(r1_20_5));
+        ITEM_DIFF.put(WEATHERED_COPPER_GRATE, andNewer(r1_20_5));
+        ITEM_DIFF.put(OXIDIZED_COPPER_GRATE, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_COPPER_GRATE, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_EXPOSED_COPPER_GRATE, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_WEATHERED_COPPER_GRATE, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_OXIDIZED_COPPER_GRATE, andNewer(r1_20_5));
+        ITEM_DIFF.put(COPPER_BULB, andNewer(r1_20_5));
+        ITEM_DIFF.put(EXPOSED_COPPER_BULB, andNewer(r1_20_5));
+        ITEM_DIFF.put(WEATHERED_COPPER_BULB, andNewer(r1_20_5));
+        ITEM_DIFF.put(OXIDIZED_COPPER_BULB, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_COPPER_BULB, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_EXPOSED_COPPER_BULB, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_WEATHERED_COPPER_BULB, andNewer(r1_20_5));
+        ITEM_DIFF.put(WAXED_OXIDIZED_COPPER_BULB, andNewer(r1_20_5));
+        ITEM_DIFF.put(TRIAL_SPAWNER, andNewer(r1_20_5));
+        ITEM_DIFF.put(TRIAL_KEY, andNewer(r1_20_5));
+
         ITEM_DIFF.put(CHERRY_LOG, andNewer(r1_20tor1_20_1));
         ITEM_DIFF.put(CHERRY_WOOD, andNewer(r1_20tor1_20_1));
         ITEM_DIFF.put(STRIPPED_CHERRY_LOG, andNewer(r1_20tor1_20_1));
