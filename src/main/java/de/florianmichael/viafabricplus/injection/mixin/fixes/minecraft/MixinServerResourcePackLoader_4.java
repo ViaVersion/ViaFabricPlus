@@ -45,12 +45,11 @@ public abstract class MixinServerResourcePackLoader_4 {
         final LinkedHashMap<String, String> modifiableMap = new LinkedHashMap<>(cir.getReturnValue());
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_3)) {
             modifiableMap.remove("X-Minecraft-Version-ID");
+            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+                modifiableMap.remove("X-Minecraft-Pack-Format");
+                modifiableMap.remove("User-Agent");
+            }
         }
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            modifiableMap.remove("X-Minecraft-Pack-Format");
-            modifiableMap.remove("User-Agent");
-        }
-
         cir.setReturnValue(modifiableMap);
     }
 

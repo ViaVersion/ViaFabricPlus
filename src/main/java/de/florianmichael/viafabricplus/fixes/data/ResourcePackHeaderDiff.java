@@ -98,8 +98,9 @@ public class ResourcePackHeaderDiff {
     public static GameVersion get(final VersionEnum version) {
         if (!GAME_VERSION_DIFF.containsKey(version)) {
             return SharedConstants.getGameVersion();
+        } else {
+            return GAME_VERSION_DIFF.get(version);
         }
-        return GAME_VERSION_DIFF.get(version);
     }
 
     private static void registerVersion(final VersionEnum version, final int packFormat, final String name) {

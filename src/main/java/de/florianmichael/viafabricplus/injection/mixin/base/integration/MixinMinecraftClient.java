@@ -19,10 +19,15 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.resource.ResourcePackManager;
+import net.minecraft.server.SaveLoader;
+import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -36,11 +41,10 @@ public abstract class MixinMinecraftClient {
         PostGameLoadCallback.EVENT.invoker().postGameLoad();
     }
 
-    @Inject(method = "startIntegratedServer", at = @At("HEAD"))
-    private void disableProtocolHack(CallbackInfo ci) {
-        // Set the target version to the native version when starting a singleplayer world
-        // This will automatically reload all the mappings and reset the target version to the forced version
-        ProtocolHack.setTargetVersion(ProtocolHack.NATIVE_VERSION);
+    @Inject(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/lang/String;ILnet/minecraft/network/listener/ClientLoginPacketListener;)V", shift = At.Shift.BEFORE))
+    private void disableProtocolHack(LevelStorage.Session session, ResourcePackManager dataPackManager, SaveLoader saveLoader, boolean newWorld, CallbackInfo ci, @Local ClientConnection clientConnection) {
+        ProtocolHack.setTargetVersion(ProtocolHack.NATIVE_VERSION, true);
+        clientConnection.channel.closeFuture().addListener(channel -> ProtocolHack.resetPreviousVersion());
     }
 
 }
