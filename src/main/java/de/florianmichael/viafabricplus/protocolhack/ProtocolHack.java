@@ -162,11 +162,13 @@ public class ProtocolHack {
     /**
      * Resets the previous version if it is set. Calling {@link #setTargetVersion(VersionEnum, boolean)} with revertOnDisconnect set to true will set it.
      */
-    public static void resetPreviousVersion() {
-        if (previousVersion != null) { // Revert the version if the player disconnects and a previous version is set
+    public static void injectPreviousVersionReset(final Channel channel) {
+        if (previousVersion == null) return;
+
+        channel.closeFuture().addListener(future -> {
             setTargetVersion(previousVersion);
             previousVersion = null;
-        }
+        });
     }
 
     /**
@@ -205,11 +207,11 @@ public class ProtocolHack {
      */
     public static UserConnection getPlayNetworkUserConnection() {
         final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
-        if (handler != null) {
-            return ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection();
+        if (handler == null) {
+            throw new IllegalStateException("The player is not connected to a server");
         }
 
-        throw new IllegalStateException("The player is not connected to a server");
+        return ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection();
     }
 
     /**

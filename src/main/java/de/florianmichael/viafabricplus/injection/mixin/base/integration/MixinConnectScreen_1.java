@@ -75,7 +75,7 @@ public abstract class MixinConnectScreen_1 {
         this.viaFabricPlus$useClassiCubeAccount = AuthenticationSettings.global().setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classicMpPassForNextJoin != null;
 
         final ChannelFuture future = original.call(address, useEpoll, connection);
-        future.channel().closeFuture().addListener(channel -> ProtocolHack.resetPreviousVersion());
+        ProtocolHack.injectPreviousVersionReset(future.channel());
 
         return future;
     }
