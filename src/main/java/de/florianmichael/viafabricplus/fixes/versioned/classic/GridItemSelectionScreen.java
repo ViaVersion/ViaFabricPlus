@@ -57,7 +57,7 @@ public class GridItemSelectionScreen extends VFPScreen {
         final List<Item> allowedItems = new ArrayList<>();
         // Calculate all visible items
         for (Item item : Registries.ITEM) {
-            if (item == Items.AIR || item.getRequiredFeatures().contains(FeatureFlags.UPDATE_1_21)) continue;
+            if (item == Items.AIR || !item.getRequiredFeatures().contains(FeatureFlags.VANILLA)) continue;
             if (ItemRegistryDiff.keepItem(item)) {
                 allowedItems.add(item);
             }
