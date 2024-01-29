@@ -24,7 +24,9 @@ import de.florianmichael.viafabricplus.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
@@ -55,6 +57,7 @@ public class GridItemSelectionScreen extends VFPScreen {
         final List<Item> allowedItems = new ArrayList<>();
         // Calculate all visible items
         for (Item item : Registries.ITEM) {
+            if (item == Items.AIR || item.getRequiredFeatures().contains(FeatureFlags.UPDATE_1_21)) continue;
             if (ItemRegistryDiff.keepItem(item)) {
                 allowedItems.add(item);
             }
