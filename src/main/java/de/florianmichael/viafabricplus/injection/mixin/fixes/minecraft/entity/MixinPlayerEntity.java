@@ -20,6 +20,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
@@ -27,7 +29,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,7 +36,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -182,59 +182,36 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    /**
-     * @author Mojang, RK_01
-     * @reason Block break speed calculation changes
-     */
-    @Overwrite
-    public float getBlockBreakingSpeed(BlockState block) {
-        float f = this.inventory.getBlockBreakingSpeed(block);
-        final ItemStack itemStack = this.getMainHandStack();
+    @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
+    private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
+        final int efficiency = EnchantmentHelper.getEfficiency(this);
+        if (efficiency <= 0) return;
+
+        float fValue = this.inventory.getBlockBreakingSpeed(block);
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_4tor1_4_5)) {
-            int i = EnchantmentHelper.getEfficiency(this);
-            if (i > 0 && this.canHarvest(block)) f += (float) (i * i + 1);
-        } else {
-            if (f > 1F || ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
-                int i = EnchantmentHelper.getEfficiency(this);
-                if (i > 0 && !itemStack.isEmpty()) {
-                    final float f1 = (i * i + 1);
-                    if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-                        if (f <= 1.0 && !this.canHarvest(block)) f += f1 * 0.08F;
-                        else f += f1;
-                    } else {
-                        f += f1;
+            if (this.canHarvest(block)) {
+                f.set(fValue + fValue * (float) (efficiency * efficiency + 1));
+            }
+        } else if (fValue > 1F || ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
+            if (!this.getMainHandStack().isEmpty()) {
+                if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+                    if (fValue <= 1.0 && !this.canHarvest(block)) {
+                        f.set(fValue + (efficiency * efficiency + 1) * 0.08F);
                     }
                 }
             }
         }
+    }
 
-        if (StatusEffectUtil.hasHaste(this)) {
-            f *= 1.0F + (float) (StatusEffectUtil.getHasteAmplifier(this) + 1) * 0.2F;
+    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
+    private boolean changeSpeedCalculation(PlayerEntity instance, StatusEffect statusEffect, @Local LocalFloatRef f) {
+        final boolean hasMiningFatigue = instance.hasStatusEffect(statusEffect);
+        if (hasMiningFatigue && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+            f.set(f.get() * (1.0F - (float) (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier() + 1) * 0.2F));
+            if (f.get() < 0) f.set(0);
+            return false; // disable original code
         }
-
-        if (this.hasStatusEffect(StatusEffects.MINING_FATIGUE)) {
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-                f *= 1.0F - (float) (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier() + 1) * 0.2F;
-                if (f < 0) f = 0;
-            } else {
-                f *= switch (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier()) {
-                    case 0 -> 0.3F;
-                    case 1 -> 0.09F;
-                    case 2 -> 0.0027F;
-                    default -> 8.1E-4F;
-                };
-            }
-        }
-
-        if (this.isSubmergedIn(FluidTags.WATER) && !EnchantmentHelper.hasAquaAffinity(this)) {
-            f /= 5.0F;
-        }
-
-        if (!this.isOnGround()) {
-            f /= 5F;
-        }
-
-        return f;
+        return hasMiningFatigue;
     }
 
     @Inject(method = "getReachDistance", at = @At("RETURN"), cancellable = true)
