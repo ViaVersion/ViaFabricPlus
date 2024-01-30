@@ -41,7 +41,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.raphimc.vialoader.util.VersionEnum;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -187,16 +190,16 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         final int efficiency = EnchantmentHelper.getEfficiency(this);
         if (efficiency <= 0) return;
 
-        float fValue = this.inventory.getBlockBreakingSpeed(block);
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_4tor1_4_5)) {
-            if (this.canHarvest(block)) {
-                f.set(fValue + fValue * (float) (efficiency * efficiency + 1));
-            }
+        final float fValue = this.inventory.getBlockBreakingSpeed(block);
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_4tor1_4_5) && this.canHarvest(block)) {
+            f.set(fValue + (efficiency * efficiency + 1));
         } else if (fValue > 1F || ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
             if (!this.getMainHandStack().isEmpty()) {
                 if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
                     if (fValue <= 1.0 && !this.canHarvest(block)) {
                         f.set(fValue + (efficiency * efficiency + 1) * 0.08F);
+                    } else {
+                        f.set(fValue + (efficiency * efficiency + 1));
                     }
                 }
             }
@@ -207,7 +210,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private boolean changeSpeedCalculation(PlayerEntity instance, StatusEffect statusEffect, @Local LocalFloatRef f) {
         final boolean hasMiningFatigue = instance.hasStatusEffect(statusEffect);
         if (hasMiningFatigue && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-            f.set(f.get() * (1.0F - (float) (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier() + 1) * 0.2F));
+            f.set(f.get() * (1.0F - (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier() + 1) * 0.2F));
             if (f.get() < 0) f.set(0);
             return false; // disable original code
         }
