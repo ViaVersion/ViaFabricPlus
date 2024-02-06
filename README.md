@@ -21,7 +21,7 @@ At the time of writing, VFP is the only protocol translation platform for the cl
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - Snapshots (3D Shareware, 20w14infinite, Combat Test 8C)
-- Bedrock (1.20.0)
+- Bedrock Edition 1.20.50 (Experimental)
 
 ## Known incompatibilities
 - ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)*** - Both mods are doing the same thing and conflict
@@ -36,9 +36,9 @@ At the time of writing, VFP is the only protocol translation platform for the cl
 - Guidelines for contributions can be found [here](docs/UPDATE_INSTRUCTIONS.md)
 - The current TODO list can be found [here](https://github.com/ViaVersion/ViaFabricPlus/blob/main/src/main/java/de/florianmichael/viafabricplus/ViaFabricPlus.java)
 
-## For other modders
+## Miscellaneous
 - API and integration examples can be found [here](docs/DEVELOPER_API.md)
-
+- An overview of the different Via* projects can be found [here](https://github.com/ViaVersion)
 #### If you just want to talk or need help with ViaFabricPlus feel free to join my [Discord](https://discord.gg/BwWhCHUKDf).
 
 ## Disclaimer
