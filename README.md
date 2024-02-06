@@ -14,7 +14,8 @@
 # Why another protocol translator?
 ViaFabricPlus is a deep integration of ViaVersion on the Fabric platform, it implements many changes that can't be fixed on protocol level (old animations, old movement/swimming, collisions and general rendering changes).
 At the time of writing, VFP is the only protocol translation platform for the client with which you can play on all Minecraft multiplayer versions with many QoL features and get the feel of the old versions.
-### Supported Server versions
+
+## Supported Server versions
 - Release (1.0.0 - 1.20.5)
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
@@ -22,115 +23,24 @@ At the time of writing, VFP is the only protocol translation platform for the cl
 - Snapshots (3D Shareware, 20w14infinite, Combat Test 8C)
 - Bedrock (1.20.0)
 
-# For users
-### Detailed instructions for use are available [here](docs/USAGE.md)
-### If you encounter any issues, please report them on the [issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues) or on the ViaVersion [Discord](https://discord.gg/viaversion)
-
 ## Known incompatibilities
-### Breaks
-- ***[ViaFabric (*)](https://github.com/ViaVersion/ViaFabric)***
-- ***[krypton (<= 0.2.2)](https://github.com/astei/krypton)***
-- ***[MemoryLeakFix (<= 1.1.0)](https://github.com/fxmorin/MemoryLeakFix)***
+- ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)*** - Both mods are doing the same thing and conflict
+- ***[DashLoader](https://github.com/alphaqu/DashLoader/tree/fabric-1.20)*** - Font rendering related fixes aren't working
+- ***[Armor Skin](https://github.com/IzzyDotExe/ArmorSkin)*** - Beta HUD changes aren't working
 
-### Conflicts
-- ***[DashLoader (*)](https://github.com/alphaqu/DashLoader/tree/fabric-1.20)*** - Font rendering related fixes aren't working
-- ***[Armor Skin (*)](https://github.com/IzzyDotExe/ArmorSkin)*** - Beta HUD changes aren't working
+## For players
+- Tutorial for installing and using the mod can be found [here](docs/USAGE.md)
+- If you encounter any issues, please report them on the [issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues) or on the ViaVersion [Discord](https://discord.gg/viaversion)
 
-## Feature list
-<details>
-  <summary>Click to open</summary>
+## For contributors/volunteers
+- Guidelines for contributions can be found [here](docs/UPDATE_INSTRUCTIONS.md)
+- The current TODO list can be found [here](https://github.com/ViaVersion/ViaFabricPlus/blob/main/src/main/java/de/florianmichael/viafabricplus/ViaFabricPlus.java)
 
-- [x] Bounding boxes for all versions
-- [x] Entity interaction and movement related packet fixes
-- [x] Sync and async mouse/keyboard handling in <= 1.12.2
-- [x] Mining speeds and item attributes
-- [x] Filter item creative tabs for only available items
-- [x] Combat system in <= 1.8
-- [x] Tons of modifications to ViaVersion, ViaAprilFools, ViaLegacy and ViaBedrock to make it more legit (Metadata fixes, broken packets, edge-cases)
-- [x] Visual and screen related changes (newer Command Block features, GameMode selection, ...)
-- [x] Chat signatures (secure login) for all versions (1.19.0, 1.19.1, 1.19.2)
-- [x] Address parsing for all Minecraft versions
-- [x] PackFormats and HTTP Header for all resource pack versions
-- [x] Raytrace related fixes in <= 1.8
-- [x] Implementing HUD changes for <= b1.7.3
-- [x] Chat lengths of all versions
-- [x] Implementing non-sequenced block placement in <= 1.18.2
-- [x] Animation related fixes (1.7 Sneaking, c0.30 walking animation, ...)
-- [x] Fixed clientside packet handling (1.16.5 transactions, 1.19.0 tablist, ...)
-</details>
+## For other modders
+- API and integration examples can be found [here](docs/DEVELOPER_API.md)
 
-# For developers and translators
-### Contributions in the form of pull requests are always welcome, [here](docs/UPDATE_INSTRUCTIONS.md) are some guidelines for contributing to the project.
-#### A detailed TODO list can be found at the class header of [this](https://github.com/ViaVersion/ViaFabricPlus/blob/main/src/main/java/de/florianmichael/viafabricplus/ViaFabricPlus.java) file.
-
-
-### Dependencies
-For compiling only! **You do not need to install these!**
-<details>
-  <summary>Click to get a list of all dependencies</summary>
-
-| Dependency             | Download                                             |
-|------------------------|------------------------------------------------------|
-| Fabric API             | https://github.com/FabricMC/fabric                   |
-| Fabric Loader          | https://github.com/FabricMC/fabric-loader            |
-| Classic4J              | https://github.com/FlorianMichael/Classic4J          |
-| ViaVersion             | https://github.com/ViaVersion/ViaVersion             |
-| ViaBackwards           | https://github.com/ViaVersion/ViaBackwards           |
-| ViaLoader              | https://github.com/ViaVersion/ViaLoader              |
-| ViaLegacy              | https://github.com/ViaVersion/ViaLegacy              |
-| ViaAprilFools          | https://github.com/ViaVersion/ViaAprilFools          |
-| ViaBedrock             | https://github.com/RaphiMC/ViaBedrock                |
-| MinecraftAuth          | https://github.com/RaphiMC/MinecraftAuth             |
-| Netty-transport-RakNet | https://github.com/CloudburstMC/Network/tree/develop |
-| Reflect                | https://github.com/Lenni0451/Reflect                 |
-| MCPing                 | https://github.com/Lenni0451/MCPing                  |
-| MixinExtras            | https://github.com/LlamaLad7/MixinExtras             |
-</details>
-
-### Setting up a Workspace
-ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
-1. Clone the repository using `git clone https://github.com/ViaVersion/ViaFabricPlus`.
-2. CD into the local repository.
-3. Run `./gradlew genSources`.
-4. Open the folder as a Gradle project in your preferred IDE.
-5. Run the mod.
-
-### Include via Gradle/Maven
-```groovy
-repositories {
-    maven { 
-        name = "ViaVersion"
-        url = "https://repo.viaversion.com"
-    }
-}
-
-dependencies {
-    modImplementation("de.florianmichael:viafabricplus:3.0.2") // Get the latest version from releases
-}
-```
-
-```xml
-<repositories>
-    <repository>
-        <id>viaversion</id>
-        <url>https://repo.viaversion.com</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>de.florianmichael</groupId>
-        <artifactId>viafabricplus</artifactId>
-        <version>3.0.2</version> <!-- Get the latest version from releases -->
-    </dependency>
-</dependencies>
-```
-
-### To learn more about the API and about addons, you can simply click [here](docs/DEVELOPER_API.md)
+#### If you just want to talk or need help with ViaFabricPlus feel free to join my [Discord](https://discord.gg/BwWhCHUKDf).
 
 ## Disclaimer
-
 It cannot be guaranteed that this mod is allowed on specific servers as it can possibly cause problems with anti-cheat plugins.\
 ***(USE ONLY WITH CAUTION!)***
-
-### If you want to talk with me, feel free to join my [Discord](https://discord.gg/BwWhCHUKDf)

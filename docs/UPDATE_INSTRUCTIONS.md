@@ -21,6 +21,14 @@ Translation files are located in `src/main/resources/assets/viafabricplus/lang/`
 7. Create a pull request and wait for it to be reviewed and merged.
 8. You're done, congrats!
 
+## Setting up a Workspace
+ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
+1. Clone the repository using `git clone https://github.com/ViaVersion/ViaFabricPlus`.
+2. CD into the local repository.
+3. Run `./gradlew genSources`.
+4. Open the folder as a Gradle project in your preferred IDE.
+5. Run the mod.
+
 ## Update to a new Minecraft version
 1. Update all upstream versions in `gradle.properties`. The main versions you need to update are:
     - `minecraft_version`

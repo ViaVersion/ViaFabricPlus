@@ -1,6 +1,37 @@
 # Developer API
 ViaFabricPlus provides various events and APIs for developers to use. This page explains how to use them.
 
+## Include via Gradle/Maven
+```groovy
+repositories {
+    maven { 
+        name = "ViaVersion"
+        url = "https://repo.viaversion.com"
+    }
+}
+
+dependencies {
+    modImplementation("de.florianmichael:viafabricplus:x.x.x") // Get the latest version from releases
+}
+```
+
+```xml
+<repositories>
+    <repository>
+        <id>viaversion</id>
+        <url>https://repo.viaversion.com</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>de.florianmichael</groupId>
+        <artifactId>viafabricplus</artifactId>
+        <version>x.x.x</version> <!-- Get the latest version from releases -->
+    </dependency>
+</dependencies>
+```
+
 ## Events
 ViaFabricPlus events are using the [Fabric Event API](https://fabricmc.net/wiki/tutorial:events). You can register to them like this:
 ```java
@@ -59,32 +90,4 @@ final VersionRange range = ItemRegistryDiff.ITEM_DIFF.get(Items.WRITABLE_BOOK); 
 if (ItemRegistryDiff.contains(Items.STONE, VersionRange.andOlder(VersionEnum.r1_8))) {
     // Do something
 }
-```
-
-### Creating own settings for the settings screen
-```java
-public class ExampleSettingGroup extends SettingGroup {
-    
-    private static final ExampleSettingGroup INSTANCE = new ExampleSettingGroup();
-    
-    public final BooleanSetting test = new BooleanSetting(this, Text.of("Test"), false);
-    
-    public ExampleSettingGroup() {
-        super("Example");
-    }
-    
-    public static ExampleSettingGroup global() {
-        return INSTANCE;
-    }
-    
-}
-```
-
-and then you register the setting group in your onLoad method
-```java
-RegisterSettingsCallback.EVENT.register(state -> {
-    if (state == RegisterSettingsCallback.State.POST) {
-        ViaFabricPlus.global().getSettingsManager().addGroup(ExampleSettingGroup.INSTANCE);
-    }
-});
 ```
