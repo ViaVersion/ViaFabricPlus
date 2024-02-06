@@ -57,9 +57,7 @@
     "java": ">=17"
   },
   "breaks": {
-    "viafabric": "*",
-    "memoryleakfix": "<=1.1.0",
-    "krypton": "<=0.2.2"
+    "viafabric": "*"
   },
   "conflicts": {
     "dashloader": "*",
