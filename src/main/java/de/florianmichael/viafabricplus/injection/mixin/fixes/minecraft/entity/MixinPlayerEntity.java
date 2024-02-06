@@ -190,16 +190,17 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         final int efficiency = EnchantmentHelper.getEfficiency(this);
         if (efficiency <= 0) return;
 
-        final float fValue = this.inventory.getBlockBreakingSpeed(block);
+        final float speed = this.inventory.getBlockBreakingSpeed(block);
+        final int effLevel = efficiency * efficiency + 1;
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_4tor1_4_5) && this.canHarvest(block)) {
-            f.set(fValue + (efficiency * efficiency + 1));
-        } else if (fValue > 1F || ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
+            f.set(speed + effLevel);
+        } else if (speed > 1F || ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
             if (!this.getMainHandStack().isEmpty()) {
                 if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
-                    if (fValue <= 1.0 && !this.canHarvest(block)) {
-                        f.set(fValue + (efficiency * efficiency + 1) * 0.08F);
+                    if (speed <= 1.0 && !this.canHarvest(block)) {
+                        f.set(speed + effLevel * 0.08F);
                     } else {
-                        f.set(fValue + (efficiency * efficiency + 1));
+                        f.set(speed + effLevel);
                     }
                 }
             }
