@@ -129,11 +129,9 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
         return new PlayerActionC2SPacket(action, pos, direction);
     }
 
-    @Redirect(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
-    private void redirectPlayerPosPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
-        if (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_16_4tor1_16_5)) {
-            instance.sendPacket(packet);
-        }
+    @WrapWithCondition(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
+    private boolean redirectPlayerPosPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
+        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_16_4tor1_16_5);
     }
 
     @ModifyVariable(method = "clickSlot", at = @At(value = "STORE"), ordinal = 0)
