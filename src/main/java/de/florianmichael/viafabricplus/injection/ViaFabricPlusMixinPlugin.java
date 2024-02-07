@@ -40,6 +40,7 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     public static boolean DASH_LOADER_PRESENT;
     public static boolean ARMOR_SKIN_PRESENT;
     public static boolean IPNEXT_PRESENT;
+    public static boolean MORE_CULLING_PRESENT;
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -50,6 +51,7 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
         DASH_LOADER_PRESENT = loader.isModLoaded("dashloader");
         ARMOR_SKIN_PRESENT = loader.isModLoaded("armorskin");
         IPNEXT_PRESENT = loader.isModLoaded("inventoryprofilesnext");
+        MORE_CULLING_PRESENT = loader.isModLoaded("moreculling");
 
         // Force unload some FabricAPI mixins because FabricAPI overwrites some of the elytra code
         final Set<String> loadedMixins = RStream.of("org.spongepowered.asm.mixin.transformer.MixinConfig").fields().by("globalMixinList").get();
@@ -74,7 +76,6 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
         if (mixinClassName.equals(INJECTOR_PACKAGE + COMPAT_PACKAGE + "ipnext.MixinAutoRefillHandler_ItemSlotMonitor")) {
             return IPNEXT_PRESENT;
         }
-
         return true;
     }
 

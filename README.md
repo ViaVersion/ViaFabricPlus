@@ -26,7 +26,7 @@ At the time of writing, VFP is the only protocol translation platform for the cl
 ## Known incompatibilities
 - ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)*** - Both mods are doing the same thing and conflict
 - ***[DashLoader](https://github.com/alphaqu/DashLoader/tree/fabric-1.20)*** - Font rendering related fixes aren't working
-- ***[Armor Skin](https://github.com/IzzyDotExe/ArmorSkin)*** - Beta HUD changes aren't working
+- ***[ArmorSkin](https://github.com/IzzyDotExe/ArmorSkin)*** - Beta HUD changes aren't working
 
 ## For players
 - Tutorial for installing and using the mod can be found [here](docs/USAGE.md)

@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.*;
 import net.minecraft.block.cauldron.CauldronBehavior;
@@ -45,13 +46,25 @@ public abstract class MixinCauldronBlock extends AbstractCauldronBlock {
         super(settings, behaviorMap);
     }
 
+    @Unique
+    private boolean viaFabricPlus$requireOriginalShape;
+
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        if (ViaFabricPlusMixinPlugin.MORE_CULLING_PRESENT && viaFabricPlus$requireOriginalShape) {
+            viaFabricPlus$requireOriginalShape = false;
+        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             return viaFabricPlus$shape_r1_12_2;
-        } else {
-            return super.getOutlineShape(state, world, pos, context);
         }
+        return super.getOutlineShape(state, world, pos, context);
+    }
+
+    @Override
+    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+        // Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/246
+        // MoreCulling is caching the culling shape and doesn't reload it, so we have to force vanilla's shape here.
+        viaFabricPlus$requireOriginalShape = true;
+        return super.getCullingShape(state, world, pos);
     }
 
 }

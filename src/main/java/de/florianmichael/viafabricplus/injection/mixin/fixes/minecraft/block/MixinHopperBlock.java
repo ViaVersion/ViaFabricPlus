@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.*;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -51,7 +52,7 @@ public abstract class MixinHopperBlock extends BlockWithEntity {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (viaFabricPlus$requireOriginalShape) {
+        if (ViaFabricPlusMixinPlugin.MORE_CULLING_PRESENT && viaFabricPlus$requireOriginalShape) {
             viaFabricPlus$requireOriginalShape = false;
         } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
             cir.setReturnValue(viaFabricPlus$hopper_shape_r1_12_2);

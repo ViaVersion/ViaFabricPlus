@@ -19,11 +19,9 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.block.BedBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -37,14 +35,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BedBlock.class)
-public abstract class MixinBedBlock {
+public abstract class MixinBedBlock extends HorizontalFacingBlock {
 
     @Unique
     private static final VoxelShape viaFabricPlus$shape_r1_13_2 = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
 
+    protected MixinBedBlock(Settings settings) {
+        super(settings);
+    }
+
+    @Unique
+    private boolean viaFabricPlus$requireOriginalShape;
+
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+        if (ViaFabricPlusMixinPlugin.MORE_CULLING_PRESENT && viaFabricPlus$requireOriginalShape) {
+            viaFabricPlus$requireOriginalShape = false;
+        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
             cir.setReturnValue(viaFabricPlus$shape_r1_13_2);
         }
     }
@@ -54,6 +61,14 @@ public abstract class MixinBedBlock {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
             ci.cancel();
         }
+    }
+
+    @Override
+    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+        // Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/246
+        // MoreCulling is caching the culling shape and doesn't reload it, so we have to force vanilla's shape here.
+        viaFabricPlus$requireOriginalShape = true;
+        return super.getCullingShape(state, world, pos);
     }
 
 }
