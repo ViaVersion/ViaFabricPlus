@@ -22,9 +22,9 @@ package de.florianmichael.viafabricplus.protocolhack.impl.provider.viabedrock;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
 import io.netty.channel.Channel;
-import net.raphimc.viabedrock.netty.AesEncryption;
-import net.raphimc.viabedrock.netty.SnappyCompression;
-import net.raphimc.viabedrock.netty.ZLibCompression;
+import net.raphimc.viabedrock.api.io.compression.ProtocolCompression;
+import net.raphimc.viabedrock.netty.AesEncryptionCodec;
+import net.raphimc.viabedrock.netty.CompressionCodec;
 import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;
 import net.raphimc.vialoader.netty.VLPipeline;
 
@@ -33,18 +33,14 @@ import javax.crypto.SecretKey;
 public class ViaFabricPlusNettyPipelineProvider extends NettyPipelineProvider {
 
     @Override
-    public void enableCompression(UserConnection user, int threshold, int algorithm) {
+    public void enableCompression(UserConnection user, ProtocolCompression protocolCompression) {
         final Channel channel = user.getChannel();
 
         if (channel.pipeline().names().contains(ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME)) {
             throw new IllegalStateException("Compression already enabled");
         }
 
-        switch (algorithm) {
-            case 0 -> channel.pipeline().addBefore("splitter", ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME, new ZLibCompression());
-            case 1 -> channel.pipeline().addBefore("splitter", ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME, new SnappyCompression());
-            default -> throw new IllegalStateException("Invalid compression algorithm: " + algorithm);
-        }
+        channel.pipeline().addBefore("splitter", ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME, new CompressionCodec(protocolCompression));
     }
 
     @Override
@@ -56,7 +52,7 @@ public class ViaFabricPlusNettyPipelineProvider extends NettyPipelineProvider {
         }
 
         try {
-            channel.pipeline().addAfter(VLPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, ViaFabricPlusVLLegacyPipeline.VIABEDROCK_ENCRYPTION_HANDLER_NAME, new AesEncryption(key));
+            channel.pipeline().addAfter(VLPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME, ViaFabricPlusVLLegacyPipeline.VIABEDROCK_ENCRYPTION_HANDLER_NAME, new AesEncryptionCodec(key));
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
