@@ -19,7 +19,6 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.EntityRidingOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.injection.access.IEntity;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -47,8 +46,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.List;
 
 @SuppressWarnings("ConstantValue")
 @Mixin(Entity.class)
@@ -146,6 +143,15 @@ public abstract class MixinEntity implements IEntity {
         }
     }
 
+    @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0))
+    private static double alwaysSortYXZ(double a) {
+        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+            return Double.MAX_VALUE;
+        } else {
+            return Math.abs(a);
+        }
+    }
+
     @Inject(method = "getRotationVector(FF)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
     private void revertCalculation(float pitch, float yaw, CallbackInfoReturnable<Vec3d> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
@@ -216,15 +222,6 @@ public abstract class MixinEntity implements IEntity {
     private void expandHitBox(CallbackInfoReturnable<Float> cir) {
         if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
             cir.setReturnValue(0.1F);
-        }
-    }
-
-    @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0))
-    private static double alwaysSortYXZ(double a, @Local(argsOnly = true) Vec3d movement) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
-            return Double.MAX_VALUE;
-        } else {
-            return Math.abs(a);
         }
     }
 
