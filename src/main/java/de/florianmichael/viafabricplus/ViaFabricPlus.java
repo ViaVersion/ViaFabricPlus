@@ -44,9 +44,8 @@ import java.util.concurrent.CompletableFuture;
  *  - Check if MixinPlayerScreenHandler.injectTransferSlot is needed? Check git log
  *
  * TODO | Movement
- *  - X/Z Face based jump movement in <= 1.13.2 is broken (https://github.com/ViaVersion/ViaFabricPlus/issues/189)
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
- *  - Blip-jumping is not supported in <= 1.8.9 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
+ *  - Blip-jumping is not supported in <= 1.13.2 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
  *  - Older versions don't clamp positions when teleporting (Is this important?)
  */
 public class ViaFabricPlus {
