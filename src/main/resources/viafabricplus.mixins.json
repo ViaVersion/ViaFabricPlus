@@ -199,7 +199,8 @@
     "viaversion.MixinAbstractFenceConnectionHandler",
     "viaversion.MixinConfig",
     "viaversion.MixinGlassConnectionHandler",
-    "viaversion.MixinProtocolVersion"
+    "viaversion.MixinProtocolVersion",
+    "compat.lithium.MixinEntity"
   ],
   "injectors": {
     "defaultRequire": 1
