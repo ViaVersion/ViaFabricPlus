@@ -78,9 +78,6 @@ public abstract class MixinProtocolVersion {
         final Pair<String, VersionRange> remapEntry = viaFabricPlus$remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
-            if (remapEntry.value() != null) {
-                return ProtocolVersion.register(version, snapshotVersion, name, remapEntry.value());
-            }
         }
 
         return ProtocolVersion.register(version, snapshotVersion, name);
