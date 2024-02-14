@@ -31,7 +31,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = Entity.class, priority = 1001 /* Lithium has to be applied first */)
 public abstract class MixinEntity {
 
-    @Redirect(method = "lithiumCollideMultiAxisMovement", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0))
+    @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
+    @Redirect(method = "lithiumCollideMultiAxisMovement", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0), remap = false)
     private static double alwaysSortYXZ(double a) {
         if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return Double.MAX_VALUE;

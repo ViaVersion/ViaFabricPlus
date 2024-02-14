@@ -57,31 +57,11 @@ public abstract class MixinMultiplayerServerListPinger_1 implements ClientQueryP
     }
 
     @Inject(method = "onResponse", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", shift = At.Shift.AFTER))
-    private void setProtocolVersion(CallbackInfo ci) {
+    private void fixVersionComparison(CallbackInfo ci) {
         final ProtocolVersion version = ((IClientConnection) this.field_3774).viaFabricPlus$getTargetVersion();
 
-        // ViaVersion is not translating the current connection, so we don't need to do anything
-        if (version == null) {
-            return;
-        }
-
-        final boolean isCompatible;
-        if (version.olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
-            // Because of ViaVersion not supporting legacy minecraft versions where protocol ids are overlapping, ViaLegacy
-            // has its own protocol id offset, where realVersion = -(ViaLegacyVersion >> 2). Normally ViaVersion sends the client
-            // version to the client so its detection doesn't break when checking for serverVersion == clientVersion, but since
-            // ViaLegacy doesn't do that, we have to do it ourselves
-            isCompatible = LegacyProtocolVersion.getRealProtocolVersion(version.getVersion()) == this.field_3776.protocolVersion;
-        } else if (version.equals(BedrockProtocolVersion.bedrockLatest)) {
-            // Bedrock edition doesn't have a protocol id like the Java edition, ViaBedrock also has its own protocol id offset
-            // Which we need to remove to get the real protocol id
-            isCompatible = version.getVersion() - BedrockProtocolVersion.PROTOCOL_ID_OVERLAP_PREVENTION_OFFSET == this.field_3776.protocolVersion;
-        } else {
-            return;
-        }
-
         // If the server is compatible with the client, we set the protocol version to the client version
-        if (isCompatible) {
+        if (version != null && version.getVersion() == this.field_3776.protocolVersion) {
             this.field_3776.protocolVersion = SharedConstants.getProtocolVersion();
         }
     }
