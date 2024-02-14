@@ -19,7 +19,6 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.viaversion;
 
-import com.google.common.collect.ImmutableSet;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.SubVersionRange;
 import com.viaversion.viaversion.util.Pair;
@@ -32,26 +31,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @Mixin(value = ProtocolVersion.class, remap = false)
 public abstract class MixinProtocolVersion {
-
-    @Unique
-    private static Set<String> viaFabricPlus$skips;
 
     @Unique
     private static Map<String, Pair<String, SubVersionRange>> viaFabricPlus$remaps;
 
     @Inject(method = "<clinit>", at = @At("HEAD"))
     private static void initMaps(CallbackInfo ci) {
-        viaFabricPlus$skips = ImmutableSet.of("1.4.6/7", "1.5.1", "1.5.2", "1.6.1", "1.6.2", "1.6.3", "1.6.4");
         viaFabricPlus$remaps = new HashMap<>();
-        viaFabricPlus$remaps.put("1.9.3/4", new Pair<>("1.9.3-1.9.4", null));
-        viaFabricPlus$remaps.put("1.11.1/2", new Pair<>("1.11.1-1.11.2", null));
-        viaFabricPlus$remaps.put("1.16.4/5", new Pair<>("1.16.4-1.16.5", null));
+        viaFabricPlus$remaps.put("1.9.3/1.9.4", new Pair<>("1.9.3-1.9.4", null));
+        viaFabricPlus$remaps.put("1.11.1/1.11.2", new Pair<>("1.11.1-1.11.2", null));
+        viaFabricPlus$remaps.put("1.16.4/1.16.5", new Pair<>("1.16.4-1.16.5", null));
         viaFabricPlus$remaps.put("1.18/1.18.1", new Pair<>("1.18-1.18.1", null));
-        viaFabricPlus$remaps.put("1.19.1/2", new Pair<>("1.19.1-1.19.2", null));
+        viaFabricPlus$remaps.put("1.19.1/1.19.2", new Pair<>("1.19.1-1.19.2", null));
         viaFabricPlus$remaps.put("1.20/1.20.1", new Pair<>("1.20-1.20.1", null));
         viaFabricPlus$remaps.put("1.20.3/1.20.4", new Pair<>("1.20.3-1.20.4", null));
         viaFabricPlus$remaps.put("1.20.5", new Pair<>("24w07a", null));
@@ -59,7 +53,6 @@ public abstract class MixinProtocolVersion {
 
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
     private static ProtocolVersion unregisterAndRenameVersions(int version, String name) {
-        if (viaFabricPlus$skips.contains(name)) return null;
         final Pair<String, SubVersionRange> remapEntry = viaFabricPlus$remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
@@ -74,7 +67,6 @@ public abstract class MixinProtocolVersion {
     @SuppressWarnings({"UnresolvedMixinReference", "MixinAnnotationTarget", "InvalidInjectorMethodSignature"}) // Optional injection
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(IILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"), require = 0)
     private static ProtocolVersion unregisterAndRenameVersions(int version, int snapshotVersion, String name) {
-        if (viaFabricPlus$skips.contains(name)) return null;
         final Pair<String, SubVersionRange> remapEntry = viaFabricPlus$remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
@@ -85,7 +77,6 @@ public abstract class MixinProtocolVersion {
 
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;Lcom/viaversion/viaversion/api/protocol/version/SubVersionRange;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
     private static ProtocolVersion unregisterAndRenameVersions(int version, String name, SubVersionRange versionRange) {
-        if (viaFabricPlus$skips.contains(name)) return null;
         final Pair<String, SubVersionRange> remapEntry = viaFabricPlus$remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
