@@ -23,8 +23,8 @@ import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import net.minecraft.client.network.ClientLoginNetworkHandler;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.text.Text;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.storage.ProtocolMetadataStorage;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -43,7 +43,7 @@ public abstract class MixinClientLoginNetworkHandler {
     @Inject(method = "joinServerSession", at = @At("HEAD"), cancellable = true)
     public void onlyVerifySessionInOnlineMode(String serverId, CallbackInfoReturnable<Text> cir) {
         final IClientConnection mixinClientConnection = (IClientConnection) connection;
-        if (mixinClientConnection.viaFabricPlus$getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
+        if (mixinClientConnection.viaFabricPlus$getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.r1_6_4)) {
             // We are in the 1.7 -> 1.6 protocol, so we need to skip the joinServer call
             // if the server is in offline mode, due the packet changes <-> networking changes
             // Minecraft's networking code is bad for us.

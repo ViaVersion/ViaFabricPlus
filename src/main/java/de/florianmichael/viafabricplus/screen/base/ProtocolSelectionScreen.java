@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.screen.base;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -35,7 +36,6 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.raphimc.vialoader.util.VersionEnum;
 
 import java.awt.*;
 
@@ -112,33 +112,33 @@ public class ProtocolSelectionScreen extends VFPScreen {
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height - top - bottom, top, entryHeight);
 
-            VersionEnum.SORTED_VERSIONS.stream().map(ProtocolSlot::new).forEach(this::addEntry);
+            ProtocolVersion.getProtocols().stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }
     }
 
     public static class ProtocolSlot extends AlwaysSelectedEntryListWidget.Entry<ProtocolSlot> {
 
-        private final VersionEnum versionEnum;
+        private final ProtocolVersion protocolVersion;
 
-        public ProtocolSlot(final VersionEnum versionEnum) {
-            this.versionEnum = versionEnum;
+        public ProtocolSlot(final ProtocolVersion protocolVersion) {
+            this.protocolVersion = protocolVersion;
         }
 
         @Override
         public Text getNarration() {
-            return Text.literal(this.versionEnum.getName());
+            return Text.literal(this.protocolVersion.getName());
         }
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            ProtocolHack.setTargetVersion(this.versionEnum);
+            ProtocolHack.setTargetVersion(this.protocolVersion);
             playClickSound();
             return super.mouseClicked(mouseX, mouseY, button);
         }
 
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            final boolean isSelected = ProtocolHack.getTargetVersion().getVersion() == versionEnum.getVersion();
+            final boolean isSelected = ProtocolHack.getTargetVersion().getVersion() == protocolVersion.getVersion();
 
             final MatrixStack matrices = context.getMatrices();
 
@@ -146,7 +146,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
             matrices.translate(x, y - 1, 0);
 
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, this.versionEnum.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
+            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
             matrices.pop();
         }
     }

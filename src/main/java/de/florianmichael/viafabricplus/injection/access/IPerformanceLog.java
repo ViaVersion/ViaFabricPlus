@@ -19,11 +19,11 @@
 
 package de.florianmichael.viafabricplus.injection.access;
 
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
 public interface IPerformanceLog {
 
-    VersionEnum viaFabricPlus$getForcedVersion();
-    void viaFabricPlus$setForcedVersion(final VersionEnum version);
+    ProtocolVersion viaFabricPlus$getForcedVersion();
+    void viaFabricPlus$setForcedVersion(final ProtocolVersion version);
 
 }

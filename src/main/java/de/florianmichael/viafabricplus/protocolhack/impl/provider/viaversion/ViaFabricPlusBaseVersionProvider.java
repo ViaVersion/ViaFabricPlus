@@ -20,15 +20,16 @@
 package de.florianmichael.viafabricplus.protocolhack.impl.provider.viaversion;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 
 public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
 
     @Override
-    public int getClosestServerProtocol(UserConnection connection) throws Exception {
+    public ProtocolVersion getClosestServerProtocol(UserConnection connection) throws Exception {
         if (connection.isClientSide()) {
-            return connection.getChannel().attr(ProtocolHack.TARGET_VERSION_ATTRIBUTE_KEY).get().getVersion();
+            return connection.getChannel().attr(ProtocolHack.TARGET_VERSION_ATTRIBUTE_KEY).get();
         } else {
             return super.getClosestServerProtocol(connection);
         }

@@ -29,6 +29,8 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.ProtocolPathEntry;
 import com.viaversion.viaversion.api.protocol.ProtocolPipeline;
 import com.viaversion.viaversion.api.protocol.packet.State;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.protocol.version.VersionType;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
@@ -49,12 +51,12 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.ClientConnection;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBedrockPlatformImpl;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
 import java.io.File;
@@ -77,22 +79,27 @@ public class ProtocolHack {
     /**
      * This attribute stores the forced version for the current connection (if you set a specific version in the Edit Server screen)
      */
-    public static final AttributeKey<VersionEnum> TARGET_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-targetversion");
+    public static final AttributeKey<ProtocolVersion> TARGET_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-targetversion");
 
     /**
      * The native version of the client
      */
-    public static final VersionEnum NATIVE_VERSION = VersionEnum.r1_20_3tor1_20_4;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_20_3;
+
+    /**
+     * Protocol version that is used to enable protocol auto-detect
+     */
+    public static final ProtocolVersion AUTO_DETECT_PROTOCOL = new ProtocolVersion(VersionType.SPECIAL, -2, -1, "Auto Detect (1.7+ servers)", null);
 
     /**
      * This field stores the target version that you set in the GUI
      */
-    private static VersionEnum targetVersion = NATIVE_VERSION;
+    private static ProtocolVersion targetVersion = NATIVE_VERSION;
 
     /**
-     * This field stores the previous selected version if {@link #setTargetVersion(VersionEnum, boolean)} is called with revertOnDisconnect set to true
+     * This field stores the previous selected version if {@link #setTargetVersion(ProtocolVersion, boolean)} is called with revertOnDisconnect set to true
      */
-    private static VersionEnum previousVersion = null;
+    private static ProtocolVersion previousVersion = null;
 
     /**
      * Injects the ViaFabricPlus pipeline with all ViaVersion elements into a Minecraft pipeline
@@ -101,13 +108,13 @@ public class ProtocolHack {
      */
     public static void injectViaPipeline(final ClientConnection connection, final Channel channel) {
         final IClientConnection mixinClientConnection = (IClientConnection) connection;
-        final VersionEnum serverVersion = mixinClientConnection.viaFabricPlus$getTargetVersion();
+        final ProtocolVersion serverVersion = mixinClientConnection.viaFabricPlus$getTargetVersion();
 
         if (serverVersion != ProtocolHack.NATIVE_VERSION) {
             channel.attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).set(connection);
             channel.attr(ProtocolHack.TARGET_VERSION_ATTRIBUTE_KEY).set(serverVersion);
 
-            if (VersionEnum.bedrockLatest.equals(serverVersion)) {
+            if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
                 channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, ProtocolConstants.BEDROCK_RAKNET_PROTOCOL_VERSION);
                 channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, 4_000L);
                 channel.config().setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
@@ -127,7 +134,7 @@ public class ProtocolHack {
      *
      * @return the target version
      */
-    public static VersionEnum getTargetVersion() {
+    public static ProtocolVersion getTargetVersion() {
         return targetVersion;
     }
 
@@ -136,7 +143,7 @@ public class ProtocolHack {
      *
      * @param newVersion the target version
      */
-    public static void setTargetVersion(final VersionEnum newVersion) {
+    public static void setTargetVersion(final ProtocolVersion newVersion) {
         setTargetVersion(newVersion, false);
     }
 
@@ -146,10 +153,10 @@ public class ProtocolHack {
      * @param newVersion         the target version
      * @param revertOnDisconnect if true, the previous version will be set when the player disconnects from the server
      */
-    public static void setTargetVersion(final VersionEnum newVersion, final boolean revertOnDisconnect) {
+    public static void setTargetVersion(final ProtocolVersion newVersion, final boolean revertOnDisconnect) {
         if (newVersion == null) return;
 
-        final VersionEnum oldVersion = targetVersion;
+        final ProtocolVersion oldVersion = targetVersion;
         targetVersion = newVersion;
         if (oldVersion != newVersion) {
             if (revertOnDisconnect) {
@@ -160,7 +167,7 @@ public class ProtocolHack {
     }
 
     /**
-     * Resets the previous version if it is set. Calling {@link #setTargetVersion(VersionEnum, boolean)} with revertOnDisconnect set to true will set it.
+     * Resets the previous version if it is set. Calling {@link #setTargetVersion(ProtocolVersion, boolean)} with revertOnDisconnect set to true will set it.
      */
     public static void injectPreviousVersionReset(final Channel channel) {
         if (previousVersion == null) return;
@@ -176,10 +183,10 @@ public class ProtocolHack {
      * @param serverVersion The server version
      * @return Creates a dummy UserConnection class with a valid protocol pipeline to emulate packets
      */
-    public static UserConnection createDummyUserConnection(final VersionEnum clientVersion, final VersionEnum serverVersion) {
+    public static UserConnection createDummyUserConnection(final ProtocolVersion clientVersion, final ProtocolVersion serverVersion) {
         final UserConnection user = new UserConnectionImpl(NoPacketSendChannel.INSTANCE, true);
         final ProtocolPipeline pipeline = new ProtocolPipelineImpl(user);
-        final List<ProtocolPathEntry> path = Via.getManager().getProtocolManager().getProtocolPath(clientVersion.getVersion(), serverVersion.getVersion());
+        final List<ProtocolPathEntry> path = Via.getManager().getProtocolManager().getProtocolPath(clientVersion, serverVersion);
         if (path != null) {
             for (ProtocolPathEntry pair : path) {
                 pipeline.add(pair.protocol());
@@ -189,8 +196,8 @@ public class ProtocolHack {
 
         final ProtocolInfo info = user.getProtocolInfo();
         info.setState(State.PLAY);
-        info.setProtocolVersion(clientVersion.getVersion());
-        info.setServerProtocolVersion(serverVersion.getVersion());
+        info.setProtocolVersion(clientVersion);
+        info.setServerProtocolVersion(serverVersion);
         final MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.player != null) {
             final GameProfile profile = mc.player.getGameProfile();
@@ -265,6 +272,7 @@ public class ProtocolHack {
                     ViaAprilFoolsPlatformImpl::new,
                     ViaBedrockPlatformImpl::new
             );
+            ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
             PostViaVersionLoadCallback.EVENT.invoker().onPostViaVersionLoad();
         });
     }

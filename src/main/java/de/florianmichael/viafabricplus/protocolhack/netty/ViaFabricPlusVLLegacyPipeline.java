@@ -20,12 +20,12 @@
 package de.florianmichael.viafabricplus.protocolhack.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
-import net.raphimc.vialoader.util.VersionEnum;
 
 public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
@@ -33,7 +33,7 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
     public static final String VIABEDROCK_ENCRYPTION_HANDLER_NAME = "viabedrock-encryption";
     public static final String VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME = "viabedrock-ping-encapsulation";
 
-    public ViaFabricPlusVLLegacyPipeline(UserConnection user, VersionEnum version) {
+    public ViaFabricPlusVLLegacyPipeline(UserConnection user, ProtocolVersion version) {
         super(user, version);
     }
 

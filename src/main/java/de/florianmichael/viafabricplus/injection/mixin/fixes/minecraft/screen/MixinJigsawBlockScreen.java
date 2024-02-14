@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.entity.JigsawBlockEntity;
@@ -29,7 +30,6 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -61,7 +61,7 @@ public abstract class MixinJigsawBlockScreen extends Screen {
     @Inject(method = "init", at = @At("RETURN"))
     private void disableWidgets(CallbackInfo ci) {
         if (VisualSettings.global().removeNewerFeaturesFromJigsawScreen.isEnabled()) {
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_15_2)) {
                 nameField.active = false;
                 jointRotationButton.active = false;
                 int index = children().indexOf(jointRotationButton);
@@ -77,7 +77,7 @@ public abstract class MixinJigsawBlockScreen extends Screen {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void copyText(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (VisualSettings.global().removeNewerFeaturesFromJigsawScreen.isEnabled() && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
+        if (VisualSettings.global().removeNewerFeaturesFromJigsawScreen.isEnabled() && ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_15_2)) {
             nameField.setText(targetField.getText());
         }
     }

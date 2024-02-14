@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.fixes.versioned.visual;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
@@ -33,7 +34,6 @@ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.entity.vehicle.ChestBoatEntity;
 import net.minecraft.util.math.MathHelper;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.joml.Vector3f;
 
 /**
@@ -55,7 +55,7 @@ public class EntityRidingOffsetsPre1_20_2 {
         if (entity instanceof BoatEntity boatEntity) {
             if (!boatEntity.hasPassenger(passenger)) return new Vector3f();
 
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
                 yOffset = -0.3F;
                 final float xOffset = MathHelper.cos(boatEntity.getYaw() * MathHelper.PI / 180F);
                 final float zOffset = MathHelper.sin(boatEntity.getYaw() * MathHelper.PI / 180F);
@@ -149,7 +149,7 @@ public class EntityRidingOffsetsPre1_20_2 {
      */
     public static double getHeightOffset(final Entity entity) {
         if (entity instanceof AllayEntity || entity instanceof VexEntity) {
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_19_1)) {
                 return 0D;
             } else {
                 return 0.4D;

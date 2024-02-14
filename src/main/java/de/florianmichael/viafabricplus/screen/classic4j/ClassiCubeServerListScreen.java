@@ -41,7 +41,7 @@ import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,7 +141,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
             ViaFabricPlusClassicMPPassProvider.classicMpPassForNextJoin = classiCubeServerInfo.mpPass();
 
             if (AuthenticationSettings.global().automaticallySelectCPEInClassiCubeServerList.getValue()) {
-                ((IServerInfo) entry).viaFabricPlus$forceVersion(VersionEnum.c0_30cpe);
+                ((IServerInfo) entry).viaFabricPlus$forceVersion(LegacyProtocolVersion.c0_30cpe);
             }
 
             ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false);

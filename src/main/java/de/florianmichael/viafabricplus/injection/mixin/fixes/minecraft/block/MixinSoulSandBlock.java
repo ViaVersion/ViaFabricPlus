@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -29,7 +30,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -44,21 +44,21 @@ public abstract class MixinSoulSandBlock extends Block {
 
     @Inject(method = "getSidesShape", at = @At("HEAD"), cancellable = true)
     private void changeSidesShape(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().isBetweenInclusive(VersionEnum.r1_13, VersionEnum.r1_15_2)) {
+        if (ProtocolHack.getTargetVersion().betweenInclusive(ProtocolVersion.v1_13, ProtocolVersion.v1_15_2)) {
             cir.setReturnValue(VoxelShapes.empty());
         }
     }
 
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_14_4)) {
             entity.setVelocity(entity.getVelocity().multiply(0.4D, 1, 0.4D));
         }
     }
 
     @Override
     public float getVelocityMultiplier() {
-        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4) ? 1F : super.getVelocityMultiplier();
+        return ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_14_4) ? 1F : super.getVelocityMultiplier();
     }
 
 }

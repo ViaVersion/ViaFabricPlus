@@ -19,11 +19,11 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.UpdatePlayerAbilitiesC2SPacket;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -44,7 +44,7 @@ public abstract class MixinUpdatePlayerAbilitiesC2SPacket {
 
     @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/PacketByteBuf;writeByte(I)Lnet/minecraft/network/PacketByteBuf;"))
     private PacketByteBuf implementFlags(PacketByteBuf instance, int value) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_15_2)) {
             if (viaFabricPlus$abilities.invulnerable) value |= 1;
             if (viaFabricPlus$abilities.allowFlying) value |= 4;
             if (viaFabricPlus$abilities.creativeMode) value |= 8;

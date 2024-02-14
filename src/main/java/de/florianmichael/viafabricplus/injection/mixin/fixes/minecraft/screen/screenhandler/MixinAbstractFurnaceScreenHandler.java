@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.s
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.AbstractFurnaceScreenHandler;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,12 +39,12 @@ public abstract class MixinAbstractFurnaceScreenHandler {
 
     @Redirect(method = "quickMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/AbstractFurnaceScreenHandler;isSmeltable(Lnet/minecraft/item/ItemStack;)Z"))
     private boolean disableShiftClickSmeltingSlot(AbstractFurnaceScreenHandler instance, ItemStack itemStack) {
-        return this.isSmeltable(itemStack) && ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_2_1tor1_2_3);
+        return this.isSmeltable(itemStack) && ProtocolHack.getTargetVersion().newerThan(LegacyProtocolVersion.r1_2_1tor1_2_3);
     }
 
     @Redirect(method = "quickMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/AbstractFurnaceScreenHandler;isFuel(Lnet/minecraft/item/ItemStack;)Z"))
     private boolean disableShiftClickFuelSlot(AbstractFurnaceScreenHandler instance, ItemStack itemStack) {
-        return this.isFuel(itemStack) && ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_2_1tor1_2_3);
+        return this.isFuel(itemStack) && ProtocolHack.getTargetVersion().newerThan(LegacyProtocolVersion.r1_2_1tor1_2_3);
     }
 
 }

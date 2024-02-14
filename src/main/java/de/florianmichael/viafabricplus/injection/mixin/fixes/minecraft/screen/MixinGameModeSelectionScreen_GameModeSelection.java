@@ -19,10 +19,11 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.GameModeSelectionScreen;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,11 +45,11 @@ public abstract class MixinGameModeSelectionScreen_GameModeSelection {
 
     @Inject(method = "next", at = @At("HEAD"), cancellable = true)
     private void unwrapGameModes(CallbackInfoReturnable<GameModeSelectionScreen.GameModeSelection> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_7_6)) {
             switch ((GameModeSelectionScreen.GameModeSelection) (Object) this) {
                 case CREATIVE -> cir.setReturnValue(SURVIVAL);
                 case SURVIVAL -> {
-                    if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_2_4tor1_2_5)) {
+                    if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
                         cir.setReturnValue(CREATIVE);
                     } else {
                         cir.setReturnValue(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
@@ -61,7 +62,7 @@ public abstract class MixinGameModeSelectionScreen_GameModeSelection {
 
     @Inject(method = "getCommand", at = @At("HEAD"), cancellable = true)
     private void oldCommand(CallbackInfoReturnable<String> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_2_4tor1_2_5)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
             cir.setReturnValue(
                     "gamemode " + MinecraftClient.getInstance().getSession().getUsername() + ' ' + switch (((Enum<?>) (Object) this).ordinal()) {
                         case 0, 3 -> 1;

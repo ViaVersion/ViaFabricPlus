@@ -19,9 +19,9 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.render.chunk.ChunkBuilder;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,7 +32,7 @@ public abstract class MixinBuiltChunk {
 
     @Inject(method = "shouldBuild", at = @At("HEAD"), cancellable = true)
     private void modifyRenderCondition(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
             cir.setReturnValue(true);
         }
     }

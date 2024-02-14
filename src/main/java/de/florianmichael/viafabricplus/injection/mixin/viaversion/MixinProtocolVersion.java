@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.viaversion;
 
 import com.google.common.collect.ImmutableSet;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.protocol.version.VersionRange;
+import com.viaversion.viaversion.api.protocol.version.SubVersionRange;
 import com.viaversion.viaversion.util.Pair;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -41,7 +41,7 @@ public abstract class MixinProtocolVersion {
     private static Set<String> viaFabricPlus$skips;
 
     @Unique
-    private static Map<String, Pair<String, VersionRange>> viaFabricPlus$remaps;
+    private static Map<String, Pair<String, SubVersionRange>> viaFabricPlus$remaps;
 
     @Inject(method = "<clinit>", at = @At("HEAD"))
     private static void initMaps(CallbackInfo ci) {
@@ -54,13 +54,13 @@ public abstract class MixinProtocolVersion {
         viaFabricPlus$remaps.put("1.19.1/2", new Pair<>("1.19.1-1.19.2", null));
         viaFabricPlus$remaps.put("1.20/1.20.1", new Pair<>("1.20-1.20.1", null));
         viaFabricPlus$remaps.put("1.20.3/1.20.4", new Pair<>("1.20.3-1.20.4", null));
-        viaFabricPlus$remaps.put("1.20.5", new Pair<>("24w06a", null));
+        viaFabricPlus$remaps.put("1.20.5", new Pair<>("24w07a", null));
     }
 
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
     private static ProtocolVersion unregisterAndRenameVersions(int version, String name) {
         if (viaFabricPlus$skips.contains(name)) return null;
-        final Pair<String, VersionRange> remapEntry = viaFabricPlus$remaps.get(name);
+        final Pair<String, SubVersionRange> remapEntry = viaFabricPlus$remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
             if (remapEntry.value() != null) {
@@ -75,7 +75,7 @@ public abstract class MixinProtocolVersion {
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(IILjava/lang/String;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"), require = 0)
     private static ProtocolVersion unregisterAndRenameVersions(int version, int snapshotVersion, String name) {
         if (viaFabricPlus$skips.contains(name)) return null;
-        final Pair<String, VersionRange> remapEntry = viaFabricPlus$remaps.get(name);
+        final Pair<String, SubVersionRange> remapEntry = viaFabricPlus$remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
         }
@@ -83,10 +83,10 @@ public abstract class MixinProtocolVersion {
         return ProtocolVersion.register(version, snapshotVersion, name);
     }
 
-    @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;Lcom/viaversion/viaversion/api/protocol/version/VersionRange;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
-    private static ProtocolVersion unregisterAndRenameVersions(int version, String name, VersionRange versionRange) {
+    @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;register(ILjava/lang/String;Lcom/viaversion/viaversion/api/protocol/version/SubVersionRange;)Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
+    private static ProtocolVersion unregisterAndRenameVersions(int version, String name, SubVersionRange versionRange) {
         if (viaFabricPlus$skips.contains(name)) return null;
-        final Pair<String, VersionRange> remapEntry = viaFabricPlus$remaps.get(name);
+        final Pair<String, SubVersionRange> remapEntry = viaFabricPlus$remaps.get(name);
         if (remapEntry != null) {
             if (remapEntry.key() != null) name = remapEntry.key();
             if (remapEntry.value() != null) versionRange = remapEntry.value();

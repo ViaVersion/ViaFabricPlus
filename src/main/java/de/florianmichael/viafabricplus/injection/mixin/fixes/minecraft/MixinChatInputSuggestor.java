@@ -19,13 +19,13 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Final;
@@ -89,7 +89,7 @@ public abstract class MixinChatInputSuggestor {
 
     @Unique
     private boolean viaFabricPlus$cancelTabComplete() {
-        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2) && this.textField.getText().startsWith("/");
+        return ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2) && this.textField.getText().startsWith("/");
     }
 
 }

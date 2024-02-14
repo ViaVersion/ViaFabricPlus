@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.Material1_19_4;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
@@ -30,7 +31,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,9 +48,9 @@ public abstract class MixinItemPlacementContext extends ItemUsageContext {
         final ItemPlacementContext self = (ItemPlacementContext) (Object) this;
         final PlayerEntity player = self.getPlayer();
 
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
             final BlockPos placementPos = self.getBlockPos();
-            final double blockPosCenterFactor = ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_10) ? 0.5 : 0;
+            final double blockPosCenterFactor = ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
 
             if (Math.abs(player.getX() - (placementPos.getX() + blockPosCenterFactor)) < 2 && Math.abs(player.getZ() - (placementPos.getZ() + blockPosCenterFactor)) < 2) {
                 final double eyeY = player.getY() + player.getEyeHeight(player.getPose());
@@ -72,7 +72,7 @@ public abstract class MixinItemPlacementContext extends ItemUsageContext {
 
     @Inject(method = "canPlace", at = @At("RETURN"), cancellable = true)
     private void canPlace1_12_2(CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValueZ() && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        if (!cir.getReturnValueZ() && ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(Material1_19_4.getMaterial(this.getWorld().getBlockState(this.getBlockPos())).equals(Material1_19_4.DECORATION) && Block.getBlockFromItem(this.getStack().getItem()).equals(Blocks.ANVIL));
         }
     }

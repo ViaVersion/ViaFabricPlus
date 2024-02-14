@@ -19,11 +19,12 @@
 
 package de.florianmichael.viafabricplus.fixes.data;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.protocol.version.VersionType;
 import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.resource.ResourceType;
-import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -34,57 +35,58 @@ import java.util.Map;
  */
 public class ResourcePackHeaderDiff {
 
-    private final static Map<VersionEnum, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
+    private final static Map<ProtocolVersion, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     static {
-        registerVersion(VersionEnum.r1_20_3tor1_20_4, 22, "1.20.4");
-        registerVersion(VersionEnum.r1_20_2, 18, "1.20.2");
-        registerVersion(VersionEnum.r1_20tor1_20_1, 15, "1.20.1");
-        registerVersion(VersionEnum.r1_19_4, 13, "1.19.4");
-        registerVersion(VersionEnum.r1_19_3, 12, "1.19.3");
-        registerVersion(VersionEnum.r1_19_1tor1_19_2, 9, "1.19.2");
-        registerVersion(VersionEnum.r1_19, 9, "1.19");
-        registerVersion(VersionEnum.r1_18_2, 8, "1.18.2");
-        registerVersion(VersionEnum.r1_18tor1_18_1, 8, "1.18.1");
-        registerVersion(VersionEnum.r1_17_1, 7, "1.17.1");
-        registerVersion(VersionEnum.r1_17, 7, "1.17");
-        registerVersion(VersionEnum.r1_16_4tor1_16_5, 6, "1.16.5");
-        registerVersion(VersionEnum.r1_16_3, 6, "1.16.3");
-        registerVersion(VersionEnum.r1_16_2, 6, "1.16.2");
-        registerVersion(VersionEnum.r1_16_1, 5, "1.16.1");
-        registerVersion(VersionEnum.r1_16, 5, "1.16");
-        registerVersion(VersionEnum.r1_15_2, 5, "1.15.2");
-        registerVersion(VersionEnum.r1_15_1, 5, "1.15.1");
-        registerVersion(VersionEnum.r1_15, 5, "1.15");
-        registerVersion(VersionEnum.r1_14_4, 4, "1.14.4");
-        registerVersion(VersionEnum.r1_14_3, 4, "1.14.3");
-        registerVersion(VersionEnum.r1_14_2, 4, "1.14.2");
-        registerVersion(VersionEnum.r1_14_1, 4, "1.14.1");
-        registerVersion(VersionEnum.r1_14, 4, "1.14");
-        registerVersion(VersionEnum.r1_13_2, 4, "1.13.2");
-        registerVersion(VersionEnum.r1_13_1, 4, "1.13.1");
-        registerVersion(VersionEnum.r1_13, 4, "1.13");
-        registerVersion(VersionEnum.r1_12_2, 3, "1.12.2");
-        registerVersion(VersionEnum.r1_12_1, 3, "1.12.1");
-        registerVersion(VersionEnum.r1_12, 3, "1.12");
-        registerVersion(VersionEnum.r1_11_1to1_11_2, 3, "1.11.2");
-        registerVersion(VersionEnum.r1_11, 3, "1.11");
-        registerVersion(VersionEnum.r1_10, 2, "1.10.2");
-        registerVersion(VersionEnum.r1_9_3tor1_9_4, 2, "1.9.4");
-        registerVersion(VersionEnum.r1_9_2, 2, "1.9.2");
-        registerVersion(VersionEnum.r1_9_1, 2, "1.9.1");
-        registerVersion(VersionEnum.r1_9, 2, "1.9");
-        registerVersion(VersionEnum.r1_8, 1, "1.8.9");
-        registerVersion(VersionEnum.r1_7_6tor1_7_10, 1, "1.7.10");
-        registerVersion(VersionEnum.r1_7_2tor1_7_5, 1, "1.7.5");
+        registerVersion(ProtocolVersion.v1_20_3, 22, "1.20.4");
+        registerVersion(ProtocolVersion.v1_20_2, 18, "1.20.2");
+        registerVersion(ProtocolVersion.v1_20, 15, "1.20.1");
+        registerVersion(ProtocolVersion.v1_19_4, 13, "1.19.4");
+        registerVersion(ProtocolVersion.v1_19_3, 12, "1.19.3");
+        registerVersion(ProtocolVersion.v1_19_1, 9, "1.19.2");
+        registerVersion(ProtocolVersion.v1_19, 9, "1.19");
+        registerVersion(ProtocolVersion.v1_18_2, 8, "1.18.2");
+        registerVersion(ProtocolVersion.v1_18, 8, "1.18.1");
+        registerVersion(ProtocolVersion.v1_17_1, 7, "1.17.1");
+        registerVersion(ProtocolVersion.v1_17, 7, "1.17");
+        registerVersion(ProtocolVersion.v1_16_4, 6, "1.16.5");
+        registerVersion(ProtocolVersion.v1_16_3, 6, "1.16.3");
+        registerVersion(ProtocolVersion.v1_16_2, 6, "1.16.2");
+        registerVersion(ProtocolVersion.v1_16_1, 5, "1.16.1");
+        registerVersion(ProtocolVersion.v1_16, 5, "1.16");
+        registerVersion(ProtocolVersion.v1_15_2, 5, "1.15.2");
+        registerVersion(ProtocolVersion.v1_15_1, 5, "1.15.1");
+        registerVersion(ProtocolVersion.v1_15, 5, "1.15");
+        registerVersion(ProtocolVersion.v1_14_4, 4, "1.14.4");
+        registerVersion(ProtocolVersion.v1_14_3, 4, "1.14.3");
+        registerVersion(ProtocolVersion.v1_14_2, 4, "1.14.2");
+        registerVersion(ProtocolVersion.v1_14_1, 4, "1.14.1");
+        registerVersion(ProtocolVersion.v1_14, 4, "1.14");
+        registerVersion(ProtocolVersion.v1_13_2, 4, "1.13.2");
+        registerVersion(ProtocolVersion.v1_13_1, 4, "1.13.1");
+        registerVersion(ProtocolVersion.v1_13, 4, "1.13");
+        registerVersion(ProtocolVersion.v1_12_2, 3, "1.12.2");
+        registerVersion(ProtocolVersion.v1_12_1, 3, "1.12.1");
+        registerVersion(ProtocolVersion.v1_12, 3, "1.12");
+        registerVersion(ProtocolVersion.v1_11_1, 3, "1.11.2");
+        registerVersion(ProtocolVersion.v1_11, 3, "1.11");
+        registerVersion(ProtocolVersion.v1_10, 2, "1.10.2");
+        registerVersion(ProtocolVersion.v1_9_3, 2, "1.9.4");
+        registerVersion(ProtocolVersion.v1_9_2, 2, "1.9.2");
+        registerVersion(ProtocolVersion.v1_9_1, 2, "1.9.1");
+        registerVersion(ProtocolVersion.v1_9, 2, "1.9");
+        registerVersion(ProtocolVersion.v1_8, 1, "1.8.9");
+        registerVersion(ProtocolVersion.v1_7_6, 1, "1.7.10");
+        registerVersion(ProtocolVersion.v1_7_1, 1, "1.7.5");
     }
 
     /**
      * Checks if the registry is outdated.
      */
     public static void checkOutdated() {
-        for (VersionEnum version : VersionEnum.OFFICIAL_SUPPORTED_PROTOCOLS) {
-            if (version.getProtocol().isSnapshot()) continue;
+        for (ProtocolVersion version : ProtocolVersion.getProtocols()) {
+            if (version.isSnapshot()) continue;
+            if (version.getVersionType() != VersionType.RELEASE) continue;
             if (!GAME_VERSION_DIFF.containsKey(version)) {
                 throw new RuntimeException("The version " + version + " has no pack format registered");
             }
@@ -92,10 +94,10 @@ public class ResourcePackHeaderDiff {
     }
 
     /**
-     * @param version The {@link VersionEnum} to get the {@link GameVersion} for.
-     * @return The {@link GameVersion} for the given {@link VersionEnum}.
+     * @param version The {@link ProtocolVersion} to get the {@link GameVersion} for.
+     * @return The {@link GameVersion} for the given {@link ProtocolVersion}.
      */
-    public static GameVersion get(final VersionEnum version) {
+    public static GameVersion get(final ProtocolVersion version) {
         if (!GAME_VERSION_DIFF.containsKey(version)) {
             return SharedConstants.getGameVersion();
         } else {
@@ -103,11 +105,11 @@ public class ResourcePackHeaderDiff {
         }
     }
 
-    private static void registerVersion(final VersionEnum version, final int packFormat, final String name) {
+    private static void registerVersion(final ProtocolVersion version, final int packFormat, final String name) {
         registerVersion(version, packFormat, name, name);
     }
 
-    private static void registerVersion(final VersionEnum version, final int packFormat, final String name, final String id) {
+    private static void registerVersion(final ProtocolVersion version, final int packFormat, final String name, final String id) {
         GAME_VERSION_DIFF.put(version, new GameVersion() {
 
             @Override
@@ -127,7 +129,7 @@ public class ResourcePackHeaderDiff {
 
             @Override
             public int getProtocolVersion() {
-                return version.getProtocol().getOriginalVersion();
+                return version.getOriginalVersion();
             }
 
             @Override

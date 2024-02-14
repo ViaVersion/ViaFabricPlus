@@ -21,13 +21,13 @@ package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -47,10 +47,10 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
     private void drawTranslatingState(MultiplayerScreen instance, List<Text> tooltip, Operation<Void> original) {
         final List<Text> tooltipCopy = new ArrayList<>(tooltip);
         if (GeneralSettings.global().showAdvertisedServerVersion.getValue()) {
-            final VersionEnum versionEnum = ((IServerInfo) server).viaFabricPlus$translatingVersion();
+            final ProtocolVersion version = ((IServerInfo) server).viaFabricPlus$translatingVersion();
 
-            if (versionEnum != null) {
-                tooltipCopy.add(Text.translatable("base.viafabricplus.via_translates_to", versionEnum.getName() + " (" + versionEnum.getOriginalVersion() + ")"));
+            if (version != null) {
+                tooltipCopy.add(Text.translatable("base.viafabricplus.via_translates_to", version.getName() + " (" + version.getOriginalVersion() + ")"));
                 tooltipCopy.add(Text.translatable("base.viafabricplus.server_version", server.version.getString() + " (" + server.protocolVersion + ")"));
             }
         }

@@ -20,11 +20,10 @@
 package de.florianmichael.viafabricplus.fixes.versioned.classic.command;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
-import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocolhack.impl.command.VFPViaSubCommand;
 import net.minecraft.util.Formatting;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;
-import net.raphimc.vialoader.util.VersionEnum;
 
 public class SetTimeCommand extends VFPViaSubCommand {
 
@@ -35,7 +34,7 @@ public class SetTimeCommand extends VFPViaSubCommand {
 
     @Override
     public String description() {
-        return "Changes the time (Only for <= " + VersionEnum.a1_0_16toa1_0_16_2.getName() + ")";
+        return "Changes the time (Only for <= " + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName() + ")";
     }
 
     @Override
@@ -46,7 +45,7 @@ public class SetTimeCommand extends VFPViaSubCommand {
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
         if (!getUser().has(TimeLockStorage.class)) {
-            sendMessage(sender, Formatting.RED + "Only for <= " + VersionEnum.a1_0_16toa1_0_16_2.getName());
+            sendMessage(sender, Formatting.RED + "Only for <= " + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName());
             return true;
         }
         try {

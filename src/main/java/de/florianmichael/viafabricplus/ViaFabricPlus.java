@@ -22,7 +22,6 @@ package de.florianmichael.viafabricplus;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.util.VersionEnumExtension;
 import de.florianmichael.viafabricplus.save.SaveManager;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
 import de.florianmichael.viafabricplus.util.ClassLoaderPriorityUtil;
@@ -64,7 +63,6 @@ public class ViaFabricPlus {
     public void bootstrap() {
         directory.mkdir();
         ClassLoaderPriorityUtil.loadOverridingJars(directory); // Load overriding jars first so other code can access the new classes
-        VersionEnumExtension.init(); // Register extra VersionEnum values
 
         settingsManager = new SettingsManager();
         saveManager = new SaveManager(settingsManager);

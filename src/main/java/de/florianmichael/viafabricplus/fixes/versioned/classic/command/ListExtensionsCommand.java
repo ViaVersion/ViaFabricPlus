@@ -20,12 +20,11 @@
 package de.florianmichael.viafabricplus.fixes.versioned.classic.command;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
-import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;
 import de.florianmichael.viafabricplus.protocolhack.impl.command.VFPViaSubCommand;
 import net.minecraft.util.Formatting;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
-import net.raphimc.vialoader.util.VersionEnum;
 
 public class ListExtensionsCommand extends VFPViaSubCommand {
 
@@ -36,13 +35,13 @@ public class ListExtensionsCommand extends VFPViaSubCommand {
 
     @Override
     public String description() {
-        return "Shows all classic extensions (only for " + VersionEnum.c0_30cpe.getName() + ")";
+        return "Shows all classic extensions (only for " + LegacyProtocolVersion.c0_30cpe.getName() + ")";
     }
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
         if (!getUser().has(ExtensionProtocolMetadataStorage.class)) {
-            sendMessage(sender, Formatting.RED + "Only for " + VersionEnum.c0_30cpe.getName());
+            sendMessage(sender, Formatting.RED + "Only for " + LegacyProtocolVersion.c0_30cpe.getName());
             return true;
         }
         ((IExtensionProtocolMetadataStorage) getUser().get(ExtensionProtocolMetadataStorage.class)).viaFabricPlus$getServerExtensions().forEach((extension, version) -> {

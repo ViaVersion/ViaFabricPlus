@@ -20,10 +20,11 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,7 +45,7 @@ public abstract class MixinItem {
 
     @Redirect(method = {"getMaxDamage", "isDamageable", "getItemBarStep", "getItemBarColor"}, at = @At(value = "FIELD", target = "Lnet/minecraft/item/Item;maxDamage:I"))
     private int changeCrossbowDamage(Item instance) {
-        if (instance instanceof CrossbowItem && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_17_1)) {
+        if (instance instanceof CrossbowItem && ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_17_1)) {
             return 326;
         } else {
             return maxDamage;
@@ -53,14 +54,14 @@ public abstract class MixinItem {
 
     @Inject(method = "getMaxCount", at = @At("HEAD"), cancellable = true)
     private void dontStackFood(CallbackInfoReturnable<Integer> cir) {
-        if (this.isFood() && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_7tob1_7_3)) {
+        if (this.isFood() && ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_7tob1_7_3)) {
             cir.setReturnValue(1);
         }
     }
 
     @ModifyExpressionValue(method = {"use", "finishUsing", "getUseAction", "getMaxUseTime"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isFood()Z"))
     private boolean makeFoodInstantConsumable(boolean original) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_7tob1_7_3)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_7tob1_7_3)) {
             return false;
         } else {
             return original;

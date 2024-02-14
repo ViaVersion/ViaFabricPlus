@@ -21,10 +21,10 @@ package de.florianmichael.viafabricplus.protocolhack.impl.provider.viaversion;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
 import de.florianmichael.viafabricplus.protocolhack.translator.ItemTranslator;
 import net.minecraft.item.ItemStack;
-import net.raphimc.vialoader.util.VersionEnum;
 
 public class ViaFabricPlusHandItemProvider extends HandItemProvider {
 
@@ -33,7 +33,7 @@ public class ViaFabricPlusHandItemProvider extends HandItemProvider {
     @Override
     public Item getHandItem(UserConnection info) {
         if (lastUsedItem != null && !lastUsedItem.isEmpty()) {
-            return ItemTranslator.mcToVia(lastUsedItem, VersionEnum.r1_8);
+            return ItemTranslator.mcToVia(lastUsedItem, ProtocolVersion.v1_8);
         } else {
             return null;
         }

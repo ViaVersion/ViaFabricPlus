@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.storage.InventoryAcknowledgements;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
@@ -35,7 +36,6 @@ import net.minecraft.network.packet.s2c.common.CommonPingS2CPacket;
 import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
 import net.minecraft.network.packet.s2c.common.ResourcePackSendS2CPacket;
 import net.minecraft.screen.ScreenHandler;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -75,7 +75,7 @@ public abstract class MixinClientCommonNetworkHandler {
 
     @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientCommonNetworkHandler;send(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
     private void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_19_3)) {
             sendPacket(packet);
         } else {
             send(packet, sendCondition, expiry);
@@ -84,7 +84,7 @@ public abstract class MixinClientCommonNetworkHandler {
 
     @Inject(method = "onPing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
     private void onPing(CommonPingS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4)) {
             final InventoryAcknowledgements acks = ((IClientConnection) this.connection).viaFabricPlus$getUserConnection().get(InventoryAcknowledgements.class);
             if (acks.removeId(packet.getParameter())) {
                 final short inventoryId = (short) ((packet.getParameter() >> 16) & 0xFF);
@@ -112,7 +112,7 @@ public abstract class MixinClientCommonNetworkHandler {
 
     @Inject(method = "onResourcePackSend", at = @At("HEAD"), cancellable = true)
     private void validateUrlInNetworkThread(ResourcePackSendS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_20_2)) {
             if (getParsedResourcePackUrl(packet.url()) == null) {
                 this.connection.send(new ResourcePackStatusC2SPacket(packet.id(), ResourcePackStatusC2SPacket.Status.INVALID_URL));
                 ci.cancel();

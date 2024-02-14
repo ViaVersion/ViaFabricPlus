@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.BlockState;
@@ -32,7 +33,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -47,10 +47,10 @@ public abstract class MixinAbstractSignBlock {
             return;
         }
 
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_14_4)) {
             // <= 1.14.4 doesn't have any sign interactions.
             cir.setReturnValue(ActionResult.SUCCESS);
-        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_4)) {
+        } else if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_19_4)) {
             // Removes the isWaxed() condition and reverts the interaction changes from 1.19.4 -> 1.20 when signs
             // got a front and back side.
             final ItemStack itemStack = player.getStackInHand(hand);

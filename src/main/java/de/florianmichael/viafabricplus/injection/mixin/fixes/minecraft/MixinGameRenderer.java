@@ -28,7 +28,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,7 +44,7 @@ public abstract class MixinGameRenderer {
 
     @ModifyExpressionValue(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"))
     private HitResult bedrockReachAroundRaycast(HitResult hitResult) {
-        if (ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
+        if (ProtocolHack.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             final Entity entity = this.client.getCameraEntity();
             if (hitResult.getType() != HitResult.Type.MISS) return hitResult;
             if (!this.viaFabricPlus$canReachAround(entity)) return hitResult;

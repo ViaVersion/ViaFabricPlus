@@ -25,7 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -44,14 +44,14 @@ public abstract class MixinFenceGateBlock extends HorizontalFacingBlock {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (!state.get(FenceGateBlock.IN_WALL) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+        if (!state.get(FenceGateBlock.IN_WALL) && ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_8tob1_8_1)) {
             cir.setReturnValue(VoxelShapes.fullCube());
         }
     }
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     private void changeCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (!state.get(FenceGateBlock.OPEN) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+        if (!state.get(FenceGateBlock.OPEN) && ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_8tob1_8_1)) {
             cir.setReturnValue(viaFabricPlus$x_and_z_axis_collision_shape_b1_8_1);
         }
     }

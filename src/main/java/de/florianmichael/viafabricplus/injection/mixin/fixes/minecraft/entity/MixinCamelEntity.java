@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -26,7 +27,6 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.CamelEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -39,7 +39,7 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
 
     @Override
     public void onPassengerLookAround(Entity passenger) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1) && this.getControllingPassenger() != passenger) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_20) && this.getControllingPassenger() != passenger) {
             this.viaFabricPlus$clampPassengerYaw1_20_1(passenger);
         }
     }
@@ -48,7 +48,7 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
     protected void updatePassengerPosition(Entity passenger, PositionUpdater positionUpdater) {
         super.updatePassengerPosition(passenger, positionUpdater);
 
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_20)) {
             this.viaFabricPlus$clampPassengerYaw1_20_1(passenger);
         }
     }

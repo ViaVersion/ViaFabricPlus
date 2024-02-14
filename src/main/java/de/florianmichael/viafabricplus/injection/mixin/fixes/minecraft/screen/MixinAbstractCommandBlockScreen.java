@@ -19,10 +19,10 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.ingame.AbstractCommandBlockScreen;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -32,7 +32,7 @@ public abstract class MixinAbstractCommandBlockScreen {
 
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;refresh()V"))
     private void cancelAutoComplete(ChatInputSuggestor instance) {
-        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_13)) {
+        if (ProtocolHack.getTargetVersion().newerThanOrEquals(ProtocolVersion.v1_13)) {
             instance.refresh();
         }
     }

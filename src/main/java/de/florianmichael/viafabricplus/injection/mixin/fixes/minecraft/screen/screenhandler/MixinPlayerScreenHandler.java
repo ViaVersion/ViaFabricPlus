@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.screenhandler;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.recipe.Recipes1_11_2;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.inventory.CraftingInventory;
@@ -28,7 +29,6 @@ import net.minecraft.screen.AbstractRecipeScreenHandler;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,7 +51,7 @@ public abstract class MixinPlayerScreenHandler extends AbstractRecipeScreenHandl
 
     @Inject(method = "onContentChanged", at = @At("HEAD"))
     private void clientSideCrafting(Inventory inventory, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_11_1)) {
             Recipes1_11_2.setCraftingResultSlot(syncId, this, craftingInput);
         }
     }
@@ -60,7 +60,7 @@ public abstract class MixinPlayerScreenHandler extends AbstractRecipeScreenHandl
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/screen/PlayerScreenHandler$2;<init>(Lnet/minecraft/screen/PlayerScreenHandler;Lnet/minecraft/inventory/Inventory;IIILnet/minecraft/entity/player/PlayerEntity;)V")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/PlayerScreenHandler;addSlot(Lnet/minecraft/screen/slot/Slot;)Lnet/minecraft/screen/slot/Slot;", ordinal = 0))
     private Slot removeOffhandSlot(PlayerScreenHandler screenHandler, Slot slot) {
-        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) ? null : addSlot(slot);
+        return ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8) ? null : addSlot(slot);
     }
 
 }

@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.*;
 import net.minecraft.util.ActionResult;
@@ -26,7 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,7 +53,7 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     private void alwaysSuccess(CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_10)) {
             cir.setReturnValue(ActionResult.SUCCESS);
         }
     }
@@ -65,9 +66,9 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return VoxelShapes.fullCube();
-        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
+        } else if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             return this.viaFabricPlus$outline_shape_r1_4_7[this.getShapeIndex(state)];
         } else {
             return super.getOutlineShape(state, world, pos, context);
@@ -76,9 +77,9 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return viaFabricPlus$shape_b1_8_1;
-        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
+        } else if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             return this.viaFabricPlus$collision_shape_r1_4_7[this.getShapeIndex(state)];
         } else {
             return super.getCollisionShape(state, world, pos, context);

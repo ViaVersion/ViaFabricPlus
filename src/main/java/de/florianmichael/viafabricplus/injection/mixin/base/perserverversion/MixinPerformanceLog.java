@@ -19,9 +19,9 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.perserverversion;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
 import net.minecraft.util.profiler.PerformanceLog;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -29,15 +29,15 @@ import org.spongepowered.asm.mixin.Unique;
 public abstract class MixinPerformanceLog implements IPerformanceLog {
 
     @Unique
-    private VersionEnum viaFabricPlus$forcedVersion;
+    private ProtocolVersion viaFabricPlus$forcedVersion;
 
     @Override
-    public VersionEnum viaFabricPlus$getForcedVersion() {
+    public ProtocolVersion viaFabricPlus$getForcedVersion() {
         return this.viaFabricPlus$forcedVersion;
     }
 
     @Override
-    public void viaFabricPlus$setForcedVersion(VersionEnum version) {
+    public void viaFabricPlus$setForcedVersion(ProtocolVersion version) {
         this.viaFabricPlus$forcedVersion = version;
     }
 

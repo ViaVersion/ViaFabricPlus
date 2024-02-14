@@ -19,12 +19,12 @@
 
 package de.florianmichael.viafabricplus.fixes.data;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShulkerBoxBlock;
-import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -1109,7 +1109,7 @@ public enum Material1_19_4 {
      * @return The material of the block for game version 1.19.4
      */
     public static Material1_19_4 getMaterial(final Block block) {
-        if (block instanceof ShulkerBoxBlock && ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_14)) {
+        if (block instanceof ShulkerBoxBlock && ProtocolHack.getTargetVersion().olderThan(ProtocolVersion.v1_14)) {
             return STONE;
         } else {
             return MATERIALS.get(block);

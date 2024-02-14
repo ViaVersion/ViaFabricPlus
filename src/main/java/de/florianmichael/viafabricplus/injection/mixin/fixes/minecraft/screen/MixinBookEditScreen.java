@@ -19,9 +19,9 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.gui.screen.ingame.BookEditScreen;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
@@ -31,7 +31,7 @@ public abstract class MixinBookEditScreen {
 
     @ModifyConstant(method = "method_27596", constant = @Constant(intValue = 1024))
     private int modifyPageLength(int constant) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_13_2)) {
             return 256;
         } else {
             return constant;
@@ -40,7 +40,7 @@ public abstract class MixinBookEditScreen {
 
     @ModifyConstant(method = "appendNewPage", constant = @Constant(intValue = 100))
     private int modifyPageCount(int constant) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_13_2)) {
             return 50;
         } else {
             return constant;

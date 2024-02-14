@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.client.network.ClientConfigurationNetworkHandler;
@@ -26,7 +27,6 @@ import net.minecraft.network.packet.s2c.config.FeaturesS2CPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -37,7 +37,7 @@ public abstract class MixinClientConfigurationNetworkHandler {
 
     @Inject(method = "onFeatures", at = @At(value = "HEAD"))
     private void notifyAboutFeatures(FeaturesS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_20tor1_20_1) && packet.features().contains(new Identifier("update_1_20"))) {
+        if (ProtocolHack.getTargetVersion().olderThan(ProtocolVersion.v1_20) && packet.features().contains(new Identifier("update_1_20"))) {
             ChatUtil.sendPrefixedMessage(Text.literal("This server has the update_1_20 features enabled. This is not fully supported and may cause issues.").formatted(Formatting.RED));
         }
     }

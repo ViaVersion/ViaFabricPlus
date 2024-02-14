@@ -19,9 +19,9 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.compat.lithium;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.Entity;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -33,7 +33,7 @@ public abstract class MixinEntity {
 
     @Redirect(method = "lithiumCollideMultiAxisMovement", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0))
     private static double alwaysSortYXZ(double a) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_13_2)) {
             return Double.MAX_VALUE;
         } else {
             return Math.abs(a);

@@ -19,10 +19,10 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.perserverversion;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.nbt.NbtCompound;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -39,13 +39,13 @@ public abstract class MixinServerInfo implements IServerInfo {
     public String name;
 
     @Unique
-    private VersionEnum viaFabricPlus$forcedVersion = null;
+    private ProtocolVersion viaFabricPlus$forcedVersion = null;
 
     @Unique
     private boolean viaFabricPlus$passedDirectConnectScreen;
 
     @Unique
-    private VersionEnum viaFabricPlus$translatingVersion;
+    private ProtocolVersion viaFabricPlus$translatingVersion;
 
     @Inject(method = "toNbt", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void saveForcedVersion(CallbackInfoReturnable<NbtCompound> cir, NbtCompound nbtCompound) {
@@ -57,8 +57,8 @@ public abstract class MixinServerInfo implements IServerInfo {
     @Inject(method = "fromNbt", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void loadForcedVersion(NbtCompound root, CallbackInfoReturnable<ServerInfo> cir, ServerInfo serverInfo) {
         if (root.contains("viafabricplus_forcedversion")) {
-            final VersionEnum version = VersionEnum.fromProtocolId(root.getInt("viafabricplus_forcedversion"));
-            if (VersionEnum.UNKNOWN.equals(version)) {
+            final ProtocolVersion version = ProtocolVersion.getProtocol(root.getInt("viafabricplus_forcedversion"));
+            if (!version.isKnown()) {
                 ((IServerInfo) serverInfo).viaFabricPlus$forceVersion(null);
             } else {
                 ((IServerInfo) serverInfo).viaFabricPlus$forceVersion(version);
@@ -72,12 +72,12 @@ public abstract class MixinServerInfo implements IServerInfo {
     }
 
     @Override
-    public VersionEnum viaFabricPlus$forcedVersion() {
+    public ProtocolVersion viaFabricPlus$forcedVersion() {
         return viaFabricPlus$forcedVersion;
     }
 
     @Override
-    public void viaFabricPlus$forceVersion(VersionEnum version) {
+    public void viaFabricPlus$forceVersion(ProtocolVersion version) {
         viaFabricPlus$forcedVersion = version;
     }
 
@@ -95,12 +95,12 @@ public abstract class MixinServerInfo implements IServerInfo {
     }
 
     @Override
-    public VersionEnum viaFabricPlus$translatingVersion() {
+    public ProtocolVersion viaFabricPlus$translatingVersion() {
         return viaFabricPlus$translatingVersion;
     }
 
     @Override
-    public void viaFabricPlus$setTranslatingVersion(VersionEnum version) {
+    public void viaFabricPlus$setTranslatingVersion(ProtocolVersion version) {
         viaFabricPlus$translatingVersion = version;
     }
 

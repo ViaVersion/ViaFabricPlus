@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.google.common.collect.ImmutableSet;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.Material1_19_4;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.block.Block;
@@ -28,7 +29,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.*;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.ActionResult;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -55,7 +56,7 @@ public abstract class MixinAxeItem extends MiningToolItem {
 
     @Override
     public boolean isSuitableFor(BlockState state) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4)) {
             return false;
         } else {
             return super.isSuitableFor(state);
@@ -64,16 +65,16 @@ public abstract class MixinAxeItem extends MiningToolItem {
 
     @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
     private void disableUse(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(ActionResult.PASS);
         }
     }
 
     @Override
     public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return viaFabricPlus$effective_blocks_b1_8_1.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
-        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
+        } else if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4)) {
             return viaFabricPlus$effective_materials_r1_16_5.contains(Material1_19_4.getMaterial(state)) ? this.miningSpeed : viaFabricPlus$effective_blocks_r1_16_5.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
         } else {
             return super.getMiningSpeedMultiplier(stack, state);

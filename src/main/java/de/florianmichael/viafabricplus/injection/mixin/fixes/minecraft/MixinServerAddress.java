@@ -19,10 +19,10 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.network.AllowedAddressResolver;
 import net.minecraft.client.network.ServerAddress;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,7 +39,7 @@ public abstract class MixinServerAddress {
 
     @Inject(method = "parse", at = @At("RETURN"), cancellable = true)
     private static void resolveSrv(String address, CallbackInfoReturnable<ServerAddress> cir) {
-        if (!cir.getReturnValue().equals(INVALID) && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_4tor1_16_5)) {
+        if (!cir.getReturnValue().equals(INVALID) && ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(AllowedAddressResolver.DEFAULT.redirectResolver.lookupRedirect(cir.getReturnValue()).orElse(cir.getReturnValue()));
         }
     }

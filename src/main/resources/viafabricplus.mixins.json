@@ -29,6 +29,7 @@
     "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "compat.jsonwebtoken.MixinClasses",
     "compat.jsonwebtoken.MixinDefaultJwtParserBuilder",
+    "compat.lithium.MixinEntity",
     "fixes.authlib.MixinKeyPairResponse",
     "fixes.authlib.MixinYggdrasilUserApiService",
     "fixes.minecraft.MixinAllowedAddressResolver",
@@ -196,11 +197,8 @@
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
-    "viaversion.MixinAbstractFenceConnectionHandler",
     "viaversion.MixinConfig",
-    "viaversion.MixinGlassConnectionHandler",
-    "viaversion.MixinProtocolVersion",
-    "compat.lithium.MixinEntity"
+    "viaversion.MixinProtocolVersion"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.MobEntity;
@@ -29,7 +30,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -41,12 +41,12 @@ public interface MixinEquipment {
 
     @Redirect(method = "equipAndSwap", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isCreative()Z"))
     default boolean removeCreativeCondition(PlayerEntity instance) {
-        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_20tor1_20_1) && instance.isCreative();
+        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_20) && instance.isCreative();
     }
 
     @Inject(method = "equipAndSwap", at = @At("HEAD"), cancellable = true)
     private void cancelArmorSwap(Item item, World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_19_3)) {
             final ItemStack heldItem = user.getStackInHand(hand);
             final EquipmentSlot targetSlot = MobEntity.getPreferredEquipmentSlot(heldItem);
             final ItemStack targetItem = user.getEquippedStack(targetSlot);
