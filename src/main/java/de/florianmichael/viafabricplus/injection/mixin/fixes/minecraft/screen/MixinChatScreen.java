@@ -70,7 +70,7 @@ public abstract class MixinChatScreen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void moveSetTextDown(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             this.chatField.setText(this.originalChatText);
             this.chatInputSuggestor.refresh();
         }

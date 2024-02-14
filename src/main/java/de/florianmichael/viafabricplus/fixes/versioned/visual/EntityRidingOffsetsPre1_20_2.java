@@ -55,7 +55,7 @@ public class EntityRidingOffsetsPre1_20_2 {
         if (entity instanceof BoatEntity boatEntity) {
             if (!boatEntity.hasPassenger(passenger)) return new Vector3f();
 
-            if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 yOffset = -0.3F;
                 final float xOffset = MathHelper.cos(boatEntity.getYaw() * MathHelper.PI / 180F);
                 final float zOffset = MathHelper.sin(boatEntity.getYaw() * MathHelper.PI / 180F);
@@ -149,7 +149,7 @@ public class EntityRidingOffsetsPre1_20_2 {
      */
     public static double getHeightOffset(final Entity entity) {
         if (entity instanceof AllayEntity || entity instanceof VexEntity) {
-            if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_19_1)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
                 return 0D;
             } else {
                 return 0.4D;

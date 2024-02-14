@@ -54,7 +54,7 @@ public abstract class MixinCraftingScreenHandler extends AbstractRecipeScreenHan
 
     @Inject(method = "onContentChanged", at = @At("HEAD"))
     private void clientSideCrafting(Inventory inventory, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_11_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             Recipes1_11_2.setCraftingResultSlot(syncId, this, input);
         }
     }

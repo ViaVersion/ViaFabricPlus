@@ -69,14 +69,14 @@ public abstract class MixinPistonBlock extends FacingBlock {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.r1_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_1)) {
             cir.setReturnValue(VoxelShapes.fullCube());
         }
     }
 
     @Override
     public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.r1_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_1)) {
             if (state.get(PistonBlock.EXTENDED)) {
                 return switch (state.get(FACING)) {
                     case DOWN -> EXTENDED_DOWN_SHAPE;

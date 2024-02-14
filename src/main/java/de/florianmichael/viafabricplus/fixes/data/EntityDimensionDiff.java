@@ -149,11 +149,11 @@ public class EntityDimensionDiff {
             for (Map.Entry<ProtocolVersion, EntityDimensions> entry : dimensionMap.entrySet()) {
                 final ProtocolVersion version = entry.getKey();
                 final EntityDimensions dimensions = entry.getValue();
-                if (oldVersion.newerThan(version) && newVersion.olderThanOrEquals(version)) {
+                if (oldVersion.newerThan(version) && newVersion.olderThanOrEqualTo(version)) {
                     entityType.dimensions = dimensions;
                     break;
                 }
-                if (newVersion.newerThanOrEquals(version) && oldVersion.olderThanOrEquals(version)) {
+                if (newVersion.newerThanOrEqualTo(version) && oldVersion.olderThanOrEqualTo(version)) {
                     entityType.dimensions = dimensions;
                 }
             }

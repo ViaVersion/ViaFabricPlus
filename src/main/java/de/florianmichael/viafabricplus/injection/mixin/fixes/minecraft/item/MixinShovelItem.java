@@ -52,7 +52,7 @@ public abstract class MixinShovelItem extends MiningToolItem {
 
     @Override
     public boolean isSuitableFor(BlockState state) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             return state.isOf(Blocks.SNOW) || state.isOf(Blocks.SNOW_BLOCK);
         } else {
             return super.isSuitableFor(state);
@@ -61,7 +61,7 @@ public abstract class MixinShovelItem extends MiningToolItem {
 
     @Redirect(method = "useOnBlock", slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/item/ShovelItem;PATH_STATES:Ljava/util/Map;")), at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0, remap = false))
     private Object disablePathAction(Map<Object, Object> instance, Object grassBlock) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return null;
         } else {
             return instance.get(grassBlock);
@@ -70,9 +70,9 @@ public abstract class MixinShovelItem extends MiningToolItem {
 
     @Override
     public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return viaFabricPlus$effective_blocks_b1_8_1.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
-        } else if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4)) {
+        } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             return viaFabricPlus$effective_blocks_r1_16_5.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
         }
 

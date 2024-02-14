@@ -58,7 +58,7 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     private void fixWolfInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_14_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             final ItemStack itemStack = player.getStackInHand(hand);
             final Item item = itemStack.getItem();
             if (this.isTamed()) {
@@ -90,7 +90,7 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
 
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/WolfEntity;getHealth()F"))
     private float fixWolfHealth(WolfEntity instance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_14_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return this.viaFabricPlus$getWolfHealth();
         } else {
             return instance.getHealth();

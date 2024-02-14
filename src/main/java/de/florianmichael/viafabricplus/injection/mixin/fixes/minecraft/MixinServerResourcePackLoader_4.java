@@ -43,9 +43,9 @@ public abstract class MixinServerResourcePackLoader_4 {
     @Inject(method = "getHeaders", at = @At("TAIL"), cancellable = true)
     private void removeHeaders(CallbackInfoReturnable<Map<String, String>> cir) {
         final LinkedHashMap<String, String> modifiableMap = new LinkedHashMap<>(cir.getReturnValue());
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_14_3)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
             modifiableMap.remove("X-Minecraft-Version-ID");
-            if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
                 modifiableMap.remove("X-Minecraft-Pack-Format");
                 modifiableMap.remove("User-Agent");
             }

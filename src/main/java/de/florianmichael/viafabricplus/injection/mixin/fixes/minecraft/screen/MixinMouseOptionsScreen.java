@@ -47,7 +47,7 @@ public abstract class MixinMouseOptionsScreen extends GameOptionsScreen {
 
     @Inject(method = "render", at = @At("RETURN"))
     private void render1_13SliderValue(DrawContext drawContext, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_13_2) && this.buttonList.getWidgetFor(this.gameOptions.getMouseSensitivity()).isHovered()) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2) && this.buttonList.getWidgetFor(this.gameOptions.getMouseSensitivity()).isHovered()) {
             drawContext.drawTooltip(textRenderer, Text.of("<=1.13.2 Sensitivity: " + MathUtil.get1_13SliderValue(this.gameOptions.getMouseSensitivity().getValue().floatValue()).valueInt() + "%"), mouseX, mouseY);
         }
     }

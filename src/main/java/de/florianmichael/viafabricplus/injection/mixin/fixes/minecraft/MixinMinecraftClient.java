@@ -89,12 +89,12 @@ public abstract class MixinMinecraftClient {
 
     @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;shouldSwingHand()Z", ordinal = 0))
     private boolean disableSwing(ActionResult instance) {
-        return instance.shouldSwingHand() && ProtocolHack.getTargetVersion().newerThanOrEquals(ProtocolVersion.v1_15);
+        return instance.shouldSwingHand() && ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
     @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;shouldSwingHand()Z", ordinal = 2))
     private boolean disableSwing2(ActionResult instance) {
-        return instance.shouldSwingHand() && ProtocolHack.getTargetVersion().newerThanOrEquals(ProtocolVersion.v1_15);
+        return instance.shouldSwingHand() && ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
     @WrapWithCondition(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
@@ -130,7 +130,7 @@ public abstract class MixinMinecraftClient {
 
     @Inject(method = "doAttack", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;crosshairTarget:Lnet/minecraft/util/hit/HitResult;", shift = At.Shift.BEFORE, ordinal = 0))
     private void fixSwingPacketOrder(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             this.player.swingHand(Hand.MAIN_HAND);
         }
     }
@@ -142,7 +142,7 @@ public abstract class MixinMinecraftClient {
 
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 1))
     private int moveCooldownIncrement(MinecraftClient instance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 0;
         } else {
             return attackCooldown;
@@ -151,7 +151,7 @@ public abstract class MixinMinecraftClient {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;handleInputEvents()V", shift = At.Shift.BEFORE))
     private void moveCooldownIncrement(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             if (this.attackCooldown > 0) {
                 --this.attackCooldown;
             }

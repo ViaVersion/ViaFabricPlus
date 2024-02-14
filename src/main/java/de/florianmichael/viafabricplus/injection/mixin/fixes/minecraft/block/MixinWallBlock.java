@@ -72,35 +72,35 @@ public abstract class MixinWallBlock extends Block {
 
     @Inject(method = "getPlacementState", at = @At("RETURN"), cancellable = true)
     private void modifyPlacementState(CallbackInfoReturnable<BlockState> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_15_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             cir.setReturnValue(viaFabricPlus$oldWallPlacementLogic(cir.getReturnValue()));
         }
     }
 
     @Inject(method = "getStateForNeighborUpdate", at = @At("RETURN"), cancellable = true)
     private void modifyBlockState(CallbackInfoReturnable<BlockState> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_15_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             cir.setReturnValue(viaFabricPlus$oldWallPlacementLogic(cir.getReturnValue()));
         }
     }
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     private void changeCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (state.get(WallBlock.UP) && ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (state.get(WallBlock.UP) && ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(this.viaFabricPlus$collision_shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)]);
         }
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (state.get(WallBlock.UP) && ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (state.get(WallBlock.UP) && ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(this.viaFabricPlus$outline_shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)]);
         }
     }
 
     @Override
     public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
-        if (state.get(WallBlock.UP) && ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (state.get(WallBlock.UP) && ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return this.shapeMap.get(state);
         } else {
             return super.getCullingShape(state, world, pos);

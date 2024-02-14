@@ -39,7 +39,7 @@ public abstract class MixinServerAddress {
 
     @Inject(method = "parse", at = @At("RETURN"), cancellable = true)
     private static void resolveSrv(String address, CallbackInfoReturnable<ServerAddress> cir) {
-        if (!cir.getReturnValue().equals(INVALID) && ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4)) {
+        if (!cir.getReturnValue().equals(INVALID) && ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(AllowedAddressResolver.DEFAULT.redirectResolver.lookupRedirect(cir.getReturnValue()).orElse(cir.getReturnValue()));
         }
     }

@@ -37,7 +37,7 @@ public abstract class MixinAbstractHorseEntity {
 
     @Redirect(method = "interactHorse", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AbstractHorseEntity;receiveFood(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;)Z"))
     private boolean decrementFoodItemClientside(AbstractHorseEntity instance, PlayerEntity player, ItemStack item) {
-        return ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_20_2) || this.receiveFood(player, item);
+        return ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2) || this.receiveFood(player, item);
     }
 
 }

@@ -31,7 +31,7 @@ public abstract class MixinEnchantmentHelper {
 
     @ModifyConstant(method = "getLevelFromNbt", constant = @Constant(intValue = 0))
     private static int usePossibleMinLevel(int constant) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_14_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return Short.MIN_VALUE;
         } else {
             return constant;
@@ -40,7 +40,7 @@ public abstract class MixinEnchantmentHelper {
 
     @ModifyConstant(method = "getLevelFromNbt", constant = @Constant(intValue = 255))
     private static int usePossibleMaxLevel(int constant) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_14_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return Short.MAX_VALUE;
         } else {
             return constant;

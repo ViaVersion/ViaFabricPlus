@@ -48,7 +48,7 @@ public abstract class MixinItemPlacementContext extends ItemUsageContext {
         final ItemPlacementContext self = (ItemPlacementContext) (Object) this;
         final PlayerEntity player = self.getPlayer();
 
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             final BlockPos placementPos = self.getBlockPos();
             final double blockPosCenterFactor = ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
 
@@ -72,7 +72,7 @@ public abstract class MixinItemPlacementContext extends ItemUsageContext {
 
     @Inject(method = "canPlace", at = @At("RETURN"), cancellable = true)
     private void canPlace1_12_2(CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValueZ() && ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (!cir.getReturnValueZ() && ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(Material1_19_4.getMaterial(this.getWorld().getBlockState(this.getBlockPos())).equals(Material1_19_4.DECORATION) && Block.getBlockFromItem(this.getStack().getItem()).equals(Blocks.ANVIL));
         }
     }

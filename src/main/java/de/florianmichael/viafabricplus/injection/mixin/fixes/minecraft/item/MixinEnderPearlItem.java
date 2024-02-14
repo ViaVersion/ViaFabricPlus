@@ -37,7 +37,7 @@ public abstract class MixinEnderPearlItem {
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void removeCreativeModeEnderPearl(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8) && user.getAbilities().creativeMode) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && user.getAbilities().creativeMode) {
             ci.setReturnValue(TypedActionResult.pass(user.getStackInHand(hand)));
         }
     }

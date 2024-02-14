@@ -32,7 +32,7 @@ public abstract class MixinAnimalEntity {
 
     @Redirect(method = "interactMob", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isClient:Z"))
     private boolean fixIsClientCheck(World instance) {
-        return instance.isClient && ProtocolHack.getTargetVersion().newerThanOrEquals(ProtocolVersion.v1_15);
+        return instance.isClient && ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
 }

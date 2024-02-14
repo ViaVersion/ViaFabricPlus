@@ -36,7 +36,7 @@ public abstract class MixinPacketByteBuf {
 
     @Redirect(method = "readItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setNbt(Lnet/minecraft/nbt/NbtCompound;)V"))
     private void removeViaFabricPlusTag(ItemStack instance, NbtCompound tag) {
-        if (tag != null && tag.contains(ClientsideFixes.ITEM_COUNT_NBT_TAG, NbtElement.BYTE_TYPE) && ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_10)) {
+        if (tag != null && tag.contains(ClientsideFixes.ITEM_COUNT_NBT_TAG, NbtElement.BYTE_TYPE) && ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
             final IItemStack mixinItemStack = ((IItemStack) (Object) instance);
             mixinItemStack.viaFabricPlus$set1_10Count(tag.getByte(ClientsideFixes.ITEM_COUNT_NBT_TAG));
             tag.remove(ClientsideFixes.ITEM_COUNT_NBT_TAG);

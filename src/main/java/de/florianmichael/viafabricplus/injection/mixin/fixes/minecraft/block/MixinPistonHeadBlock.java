@@ -85,7 +85,7 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(switch (state.get(PistonHeadBlock.FACING)) {
                 case DOWN -> DOWN_HEAD_SHAPE;
                 case UP -> UP_HEAD_SHAPE;
@@ -99,7 +99,7 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return switch (state.get(PistonHeadBlock.FACING)) {
                 case DOWN -> VoxelShapes.union(DOWN_HEAD_SHAPE, viaFabricPlus$down_arm_shape_r1_8_x);
                 case UP -> VoxelShapes.union(UP_HEAD_SHAPE, viaFabricPlus$up_arm_shape_r1_8_x);

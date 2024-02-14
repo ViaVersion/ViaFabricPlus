@@ -57,15 +57,15 @@ public abstract class MixinDownloadingTerrainScreen extends Screen implements ID
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void modifyCloseCondition(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_20_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             ci.cancel();
 
-            if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_18)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
                 if (this.viaFabricPlus$ready) {
                     this.close();
                 }
 
-                if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_1)) {
+                if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
                     this.viaFabricPlus$tickCounter++;
                     if (this.viaFabricPlus$tickCounter % 20 == 0) {
                         this.client.getNetworkHandler().sendPacket(new KeepAliveC2SPacket(0));
@@ -84,7 +84,7 @@ public abstract class MixinDownloadingTerrainScreen extends Screen implements ID
                             this.close();
                         }
                     } else {
-                        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_19_1)) {
+                        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
                             this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready || System.currentTimeMillis() > this.loadStartTime + 2000;
                         } else {
                             this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready;

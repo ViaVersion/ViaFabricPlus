@@ -32,7 +32,7 @@ public abstract class MixinBrushItem {
 
     @Redirect(method = "getHitResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getReachDistance(Z)F"))
     private float modifyReachDistance(boolean creative) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_20_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             return 5F;
         } else {
             return PlayerEntity.getReachDistance(creative);

@@ -41,10 +41,10 @@ public abstract class MixinPlayerEntityRenderer {
         if (player.getPose() == EntityPose.SLEEPING) {
             final Direction sleepingDir = player.getSleepingDirection();
             if (sleepingDir != null) {
-                if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_13_2)) {
+                if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
                     cir.setReturnValue(cir.getReturnValue().subtract(sleepingDir.getOffsetX() * 0.4, 0, sleepingDir.getOffsetZ() * 0.4));
                 }
-                if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_5tob1_5_2)) {
+                if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2)) {
                     cir.setReturnValue(cir.getReturnValue().subtract(sleepingDir.getOffsetX() * 0.1, 0, sleepingDir.getOffsetZ() * 0.1));
                 }
                 if (ProtocolHack.getTargetVersion().betweenInclusive(LegacyProtocolVersion.b1_6tob1_6_6, ProtocolVersion.v1_7_6)) {

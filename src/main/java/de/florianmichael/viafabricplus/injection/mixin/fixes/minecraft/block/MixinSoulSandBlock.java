@@ -51,14 +51,14 @@ public abstract class MixinSoulSandBlock extends Block {
 
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_14_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             entity.setVelocity(entity.getVelocity().multiply(0.4D, 1, 0.4D));
         }
     }
 
     @Override
     public float getVelocityMultiplier() {
-        return ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_14_4) ? 1F : super.getVelocityMultiplier();
+        return ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1F : super.getVelocityMultiplier();
     }
 
 }

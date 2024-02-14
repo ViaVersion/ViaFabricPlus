@@ -50,7 +50,7 @@ public abstract class MixinEntityRenderDispatcher {
     @SuppressWarnings("unchecked")
     @Inject(method = "getRenderer", at = @At("HEAD"), cancellable = true)
     private <T extends Entity> void useBoatRenderer1_8(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8) && entity instanceof BoatEntity) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && entity instanceof BoatEntity) {
             ci.setReturnValue((EntityRenderer<? super T>) viaFabricPlus$boatRenderer);
         }
     }

@@ -46,7 +46,7 @@ public interface MixinEquipment {
 
     @Inject(method = "equipAndSwap", at = @At("HEAD"), cancellable = true)
     private void cancelArmorSwap(Item item, World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_19_3)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             final ItemStack heldItem = user.getStackInHand(hand);
             final EquipmentSlot targetSlot = MobEntity.getPreferredEquipmentSlot(heldItem);
             final ItemStack targetItem = user.getEquippedStack(targetSlot);

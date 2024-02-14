@@ -42,7 +42,7 @@ public abstract class MixinShearsItem extends Item {
 
     @Inject(method = "getMiningSpeedMultiplier", at = @At("HEAD"), cancellable = true)
     private void changeMiningSpeed(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             if (!state.isOf(Blocks.COBWEB) && !state.isIn(BlockTags.LEAVES)) {
                 cir.setReturnValue(state.isIn(BlockTags.WOOL) ? 5.0F : super.getMiningSpeedMultiplier(stack, state));
             } else {
@@ -53,7 +53,7 @@ public abstract class MixinShearsItem extends Item {
 
     @Inject(method = "isSuitableFor", at = @At("HEAD"), cancellable = true)
     private void changeEffectiveBlocks(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             cir.setReturnValue(state.isOf(Blocks.COBWEB));
         }
     }

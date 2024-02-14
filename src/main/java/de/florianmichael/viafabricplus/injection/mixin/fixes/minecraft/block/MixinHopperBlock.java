@@ -54,14 +54,14 @@ public abstract class MixinHopperBlock extends BlockWithEntity {
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaFabricPlusMixinPlugin.MORE_CULLING_PRESENT && viaFabricPlus$requireOriginalShape) {
             viaFabricPlus$requireOriginalShape = false;
-        } else if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(viaFabricPlus$hopper_shape_r1_12_2);
         }
     }
 
     @Inject(method = "getRaycastShape", at = @At("HEAD"), cancellable = true)
     private void changeRaycastShape(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(viaFabricPlus$inside_shape_r1_12_2);
         }
     }

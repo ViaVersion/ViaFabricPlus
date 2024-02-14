@@ -76,7 +76,7 @@ public abstract class MixinSwordItem extends ToolItem {
 
     @Inject(method = "getMiningSpeedMultiplier", at = @At("HEAD"), cancellable = true)
     private void changeMiningSpeed(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             cir.setReturnValue(state.isOf(Blocks.COBWEB) ? 15.0F : 1.5F);
         }
     }

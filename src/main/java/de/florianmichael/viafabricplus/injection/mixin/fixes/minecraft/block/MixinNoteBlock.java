@@ -33,7 +33,7 @@ public abstract class MixinNoteBlock {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     private void cancelMobHeadUsage(CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_19_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue(ActionResult.SUCCESS);
         }
     }

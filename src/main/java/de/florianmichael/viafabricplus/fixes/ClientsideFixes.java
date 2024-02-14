@@ -110,7 +110,7 @@ public class ClientsideFixes {
             }
 
             // Rebuilds the item selection screen grid
-            if (newVersion.olderThanOrEquals(LegacyProtocolVersion.c0_28toc0_30)) {
+            if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 GridItemSelectionScreen.INSTANCE.itemGrid = null;
             }
         }));
@@ -125,7 +125,7 @@ public class ClientsideFixes {
      * @return The maximum chat length
      */
     public static int getChatLength() {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.c0_28toc0_30)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
             final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
             final ExtensionProtocolMetadataStorage extensionProtocol = ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection().get(ExtensionProtocolMetadataStorage.class);
 
@@ -136,7 +136,7 @@ public class ClientsideFixes {
             }
         } else if (ProtocolHack.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return 512;
-        } else if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_9_3)) {
+        } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
             return 100;
         } else {
             return 256;

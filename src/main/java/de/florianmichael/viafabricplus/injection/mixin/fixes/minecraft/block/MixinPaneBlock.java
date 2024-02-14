@@ -85,7 +85,7 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return this.viaFabricPlus$shape_r1_8[this.getShapeIndex(state)];
         } else {
             return super.getOutlineShape(state, world, pos, context);
@@ -94,7 +94,7 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock {
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return this.viaFabricPlus$shape_r1_8[this.getShapeIndex(state)];
         } else {
             return super.getCollisionShape(state, world, pos, context);

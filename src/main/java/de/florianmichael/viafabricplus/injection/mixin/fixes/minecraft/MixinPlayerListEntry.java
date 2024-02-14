@@ -39,7 +39,7 @@ public abstract class MixinPlayerListEntry {
 
     @Redirect(method = "texturesSupplier", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/PlayerSkinProvider;fetchSkinTextures(Lcom/mojang/authlib/GameProfile;)Ljava/util/concurrent/CompletableFuture;"))
     private static CompletableFuture<SkinTextures> fetchGameProfileProperties(PlayerSkinProvider instance, GameProfile profile) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_20) && !profile.getProperties().containsKey("textures")) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && !profile.getProperties().containsKey("textures")) {
             return CompletableFuture.supplyAsync(() -> {
                 final ProfileResult profileResult = MinecraftClient.getInstance().getSessionService().fetchProfile(profile.getId(), true);
                 return profileResult == null ? profile : profileResult.profile();

@@ -32,7 +32,7 @@ public abstract class MixinClientLoginNetworkHandler {
 
     @Redirect(method = "onCompression", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;setCompressionThreshold(IZ)V"))
     private void pre1_17_1CompressionBehaviour(ClientConnection instance, int compressionThreshold, boolean rejectsBadPackets) {
-        instance.setCompressionThreshold(compressionThreshold, ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_17));
+        instance.setCompressionThreshold(compressionThreshold, ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17));
     }
 
 }

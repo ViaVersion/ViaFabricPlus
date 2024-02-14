@@ -37,7 +37,7 @@ public abstract class MixinGameOptions {
 
     @ModifyVariable(method = "setServerViewDistance", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private int changeServerViewDistance(int viewDistance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_17_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             return 0;
         } else {
             return viewDistance;

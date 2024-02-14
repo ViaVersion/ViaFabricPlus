@@ -44,7 +44,7 @@ public abstract class MixinUpdatePlayerAbilitiesC2SPacket {
 
     @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/PacketByteBuf;writeByte(I)Lnet/minecraft/network/PacketByteBuf;"))
     private PacketByteBuf implementFlags(PacketByteBuf instance, int value) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_15_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             if (viaFabricPlus$abilities.invulnerable) value |= 1;
             if (viaFabricPlus$abilities.allowFlying) value |= 4;
             if (viaFabricPlus$abilities.creativeMode) value |= 8;

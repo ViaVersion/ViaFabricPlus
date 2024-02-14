@@ -35,7 +35,7 @@ public abstract class MixinBambooBlock {
 
     @Inject(method = "isShapeFullCube", at = @At("HEAD"), cancellable = true)
     private void changeBlockBoundingBox(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_17)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
             cir.setReturnValue(true);
         }
     }

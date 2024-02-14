@@ -89,7 +89,7 @@ public abstract class MixinChatInputSuggestor {
 
     @Unique
     private boolean viaFabricPlus$cancelTabComplete() {
-        return ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2) && this.textField.getText().startsWith("/");
+        return ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && this.textField.getText().startsWith("/");
     }
 
 }

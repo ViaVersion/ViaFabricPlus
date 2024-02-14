@@ -43,7 +43,7 @@ public abstract class MixinCarpetBlock extends Block {
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_7_6)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             return viaFabricPlus$shape_r1_7_10;
         } else {
             return super.getCollisionShape(state, world, pos, context);

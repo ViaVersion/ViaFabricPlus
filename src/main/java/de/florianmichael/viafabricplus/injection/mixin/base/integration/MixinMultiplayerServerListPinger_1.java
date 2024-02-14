@@ -66,7 +66,7 @@ public abstract class MixinMultiplayerServerListPinger_1 implements ClientQueryP
         }
 
         final boolean isCompatible;
-        if (version.olderThanOrEquals(LegacyProtocolVersion.r1_6_4)) {
+        if (version.olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             // Because of ViaVersion not supporting legacy minecraft versions where protocol ids are overlapping, ViaLegacy
             // has its own protocol id offset, where realVersion = -(ViaLegacyVersion >> 2). Normally ViaVersion sends the client
             // version to the client so its detection doesn't break when checking for serverVersion == clientVersion, but since

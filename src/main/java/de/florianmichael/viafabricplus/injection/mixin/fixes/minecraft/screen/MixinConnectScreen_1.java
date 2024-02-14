@@ -62,7 +62,7 @@ public abstract class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", remap = false))
     private String getRealAddress(InetSocketAddress instance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_17)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
             return field_33737.getAddress();
         } else {
             return instance.getHostName();
@@ -71,7 +71,7 @@ public abstract class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getPort()I", remap = false))
     private int getRealPort(InetSocketAddress instance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_17)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
             return field_33737.getPort();
         } else {
             return instance.getPort();

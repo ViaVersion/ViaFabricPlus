@@ -42,7 +42,7 @@ public abstract class MixinCowEntity extends AnimalEntity {
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     private void disableMilkingInCreative(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_15_2) && player.getAbilities().creativeMode) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && player.getAbilities().creativeMode) {
             cir.setReturnValue(super.interactMob(player, hand));
         }
     }

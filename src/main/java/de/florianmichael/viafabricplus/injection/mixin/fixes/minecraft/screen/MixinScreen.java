@@ -41,7 +41,7 @@ public abstract class MixinScreen {
 
     @Inject(method = "handleTextClick", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", shift = At.Shift.BEFORE, ordinal = 1, remap = false), cancellable = true)
     private void allowRunCommandAction(Style style, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_19)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
             this.client.player.networkHandler.sendChatMessage(SharedConstants.stripInvalidChars(style.getClickEvent().getValue()));
             cir.setReturnValue(true);
         }

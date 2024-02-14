@@ -33,7 +33,7 @@ public abstract class MixinSquidEntity {
 
     @Inject(method = "canBeLeashedBy", at = @At("HEAD"), cancellable = true)
     private void cancelLeashing(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(false);
         }
     }

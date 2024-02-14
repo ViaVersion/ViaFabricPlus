@@ -41,7 +41,7 @@ public class ClientPlayerInteractionManager1_18_2 {
         final ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         final Vec2f rotation;
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1)) {
             rotation = null;
         } else {
             rotation = new Vec2f(player.getYaw(), player.getPitch());
@@ -58,9 +58,9 @@ public class ClientPlayerInteractionManager1_18_2 {
         final var oldPlayerState = unAckedActions.remove(Pair.of(blockPos, action));
         final var actualState = world.getBlockState(blockPos);
 
-        if ((oldPlayerState == null || !allGood || action != PlayerActionC2SPacket.Action.START_DESTROY_BLOCK && actualState != expectedState) && (actualState != expectedState || ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_15_2))) {
+        if ((oldPlayerState == null || !allGood || action != PlayerActionC2SPacket.Action.START_DESTROY_BLOCK && actualState != expectedState) && (actualState != expectedState || ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2))) {
             world.setBlockState(blockPos, expectedState, Block.NOTIFY_ALL | Block.FORCE_STATE);
-            if (oldPlayerState != null && (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_1) || (world == player.getWorld() && player.collidesWithStateAtPos(blockPos, expectedState)))) {
+            if (oldPlayerState != null && (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) || (world == player.getWorld() && player.collidesWithStateAtPos(blockPos, expectedState)))) {
                 final Vec3d oldPlayerPosition = oldPlayerState.getKey();
                 if (oldPlayerState.getValue() != null) {
                     player.updatePositionAndAngles(oldPlayerPosition.x, oldPlayerPosition.y, oldPlayerPosition.z, oldPlayerState.getValue().x, oldPlayerState.getValue().y);

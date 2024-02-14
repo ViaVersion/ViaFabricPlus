@@ -40,7 +40,7 @@ public abstract class MixinAbstractClientPlayerEntity extends PlayerEntity {
 
     @Inject(method = "isCreative", at = @At("HEAD"), cancellable = true)
     private void fixCreativeCheck(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(this.getAbilities().creativeMode);
         }
     }

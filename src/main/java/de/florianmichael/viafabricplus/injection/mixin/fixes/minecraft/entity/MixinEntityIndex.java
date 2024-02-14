@@ -49,7 +49,7 @@ public abstract class MixinEntityIndex<T extends EntityLike> {
 
     @Inject(method = "size", at = @At("HEAD"), cancellable = true)
     private void returnRealSize(CallbackInfoReturnable<Integer> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(this.idToEntity.size());
         }
     }

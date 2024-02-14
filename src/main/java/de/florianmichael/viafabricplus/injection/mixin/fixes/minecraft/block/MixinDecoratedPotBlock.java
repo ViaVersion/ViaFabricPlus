@@ -39,7 +39,7 @@ public abstract class MixinDecoratedPotBlock {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     private void alwaysPass(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_20_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             cir.setReturnValue(ActionResult.PASS);
         }
     }

@@ -35,7 +35,7 @@ public abstract class MixinPlayerInventory {
 
     @Redirect(method = "<init>", slice = @Slice(from = @At(value = "CONSTANT", args = "intValue=1")), at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/DefaultedList;ofSize(ILjava/lang/Object;)Lnet/minecraft/util/collection/DefaultedList;", ordinal = 0))
     private <T> DefaultedList<T> redirectOffhandInventory(int size, T def) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             //noinspection MixinInnerClass
             return new DefaultedList<>(new AbstractList<T>() {
                 @Override

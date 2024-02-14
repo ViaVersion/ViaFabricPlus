@@ -51,7 +51,7 @@ public abstract class MixinPlayerScreenHandler extends AbstractRecipeScreenHandl
 
     @Inject(method = "onContentChanged", at = @At("HEAD"))
     private void clientSideCrafting(Inventory inventory, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_11_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             Recipes1_11_2.setCraftingResultSlot(syncId, this, craftingInput);
         }
     }
@@ -60,7 +60,7 @@ public abstract class MixinPlayerScreenHandler extends AbstractRecipeScreenHandl
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/screen/PlayerScreenHandler$2;<init>(Lnet/minecraft/screen/PlayerScreenHandler;Lnet/minecraft/inventory/Inventory;IIILnet/minecraft/entity/player/PlayerEntity;)V")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/PlayerScreenHandler;addSlot(Lnet/minecraft/screen/slot/Slot;)Lnet/minecraft/screen/slot/Slot;", ordinal = 0))
     private Slot removeOffhandSlot(PlayerScreenHandler screenHandler, Slot slot) {
-        return ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8) ? null : addSlot(slot);
+        return ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) ? null : addSlot(slot);
     }
 
 }

@@ -41,7 +41,7 @@ public abstract class MixinBlockItem {
 
     @Inject(method = "canPlace", at = @At("HEAD"), cancellable = true)
     private void checkChestPlacement(ItemPlacementContext context, BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             Block block = state.getBlock();
             if (block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST) {
                 World world = context.getWorld();

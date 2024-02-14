@@ -51,11 +51,11 @@ public abstract class MixinGameModeSelectionScreen extends Screen {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void fixUIWidth(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_7_6)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             final var gameModeSelections = new ArrayList<>(Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList());
 
             gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
-            if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
                 gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
             }
 
@@ -66,7 +66,7 @@ public abstract class MixinGameModeSelectionScreen extends Screen {
 
     @Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;VALUES:[Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;"))
     private GameModeSelectionScreen.GameModeSelection[] removeNewerGameModes() {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_7_6)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             return viaFabricPlus$unwrappedGameModes;
         } else {
             return GameModeSelectionScreen.GameModeSelection.values();
@@ -75,7 +75,7 @@ public abstract class MixinGameModeSelectionScreen extends Screen {
 
     @Inject(method = "init", at = @At("HEAD"))
     private void disableInClassic(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.c0_28toc0_30)) { // survival mode was added in a1.0.15
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) { // survival mode was added in a1.0.15
             this.close();
         }
     }

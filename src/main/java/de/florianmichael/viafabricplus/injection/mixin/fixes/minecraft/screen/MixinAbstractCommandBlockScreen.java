@@ -32,7 +32,7 @@ public abstract class MixinAbstractCommandBlockScreen {
 
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;refresh()V"))
     private void cancelAutoComplete(ChatInputSuggestor instance) {
-        if (ProtocolHack.getTargetVersion().newerThanOrEquals(ProtocolVersion.v1_13)) {
+        if (ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_13)) {
             instance.refresh();
         }
     }

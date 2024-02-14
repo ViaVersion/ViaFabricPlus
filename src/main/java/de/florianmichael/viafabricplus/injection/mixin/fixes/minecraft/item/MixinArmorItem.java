@@ -38,7 +38,7 @@ public abstract class MixinArmorItem {
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void disableRightClick(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             cir.setReturnValue(new TypedActionResult<>(ActionResult.FAIL, user.getStackInHand(hand)));
         }
     }

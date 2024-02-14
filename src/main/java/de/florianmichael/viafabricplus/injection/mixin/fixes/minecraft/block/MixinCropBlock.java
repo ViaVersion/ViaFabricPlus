@@ -38,7 +38,7 @@ public abstract class MixinCropBlock {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(viaFabricPlus$shape_r1_8_x);
         }
     }

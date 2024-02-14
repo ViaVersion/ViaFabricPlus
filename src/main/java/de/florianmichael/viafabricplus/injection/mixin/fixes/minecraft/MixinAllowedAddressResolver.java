@@ -44,7 +44,7 @@ public abstract class MixinAllowedAddressResolver {
 
     @Inject(method = "resolve", at = @At("HEAD"), cancellable = true)
     private void oldResolveBehaviour(ServerAddress address, CallbackInfoReturnable<Optional<Address>> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_16_4) || ProtocolHack.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4) || ProtocolHack.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             cir.setReturnValue(this.addressResolver.resolve(address));
         }
     }

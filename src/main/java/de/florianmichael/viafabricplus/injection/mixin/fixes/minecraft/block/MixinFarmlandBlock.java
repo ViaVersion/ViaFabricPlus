@@ -49,14 +49,14 @@ public abstract class MixinFarmlandBlock extends Block {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_9_3)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
             cir.setReturnValue(VoxelShapes.fullCube());
         }
     }
 
     @Override
     public VoxelShape getCullingShape(BlockState state, BlockView view, BlockPos pos) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_9_3)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
             return SHAPE;
         } else {
             return super.getCullingShape(state, view, pos);

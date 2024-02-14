@@ -32,7 +32,7 @@ public abstract class MixinBuiltChunk {
 
     @Inject(method = "shouldBuild", at = @At("HEAD"), cancellable = true)
     private void modifyRenderCondition(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(true);
         }
     }

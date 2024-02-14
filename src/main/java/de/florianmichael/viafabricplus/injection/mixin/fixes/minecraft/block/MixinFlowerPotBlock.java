@@ -41,7 +41,7 @@ public abstract class MixinFlowerPotBlock {
 
     @Inject(method = "onUse", at = @At(value = "FIELD", target = "Lnet/minecraft/block/FlowerPotBlock;content:Lnet/minecraft/block/Block;", ordinal = 0), cancellable = true)
     private void alwaysConsume(CallbackInfoReturnable<ActionResult> ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_10) && content != Blocks.AIR) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10) && content != Blocks.AIR) {
             ci.setReturnValue(ActionResult.CONSUME);
         }
     }

@@ -41,7 +41,7 @@ public abstract class MixinScreenHandler implements IScreenHandler {
 
     @Redirect(method = "updateSlotStacks", at = @At(value = "FIELD", target = "Lnet/minecraft/screen/ScreenHandler;cursorStack:Lnet/minecraft/item/ItemStack;"))
     private void preventUpdate(ScreenHandler instance, ItemStack value) {
-        if (ProtocolHack.getTargetVersion().newerThanOrEquals(ProtocolVersion.v1_17_1)) {
+        if (ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             this.cursorStack = value;
         }
     }

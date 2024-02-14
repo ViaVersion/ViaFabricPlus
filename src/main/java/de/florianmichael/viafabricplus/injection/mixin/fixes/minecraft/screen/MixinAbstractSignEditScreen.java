@@ -39,7 +39,7 @@ public abstract class MixinAbstractSignEditScreen {
 
     @Inject(method = "canEdit", at = @At("HEAD"), cancellable = true)
     private void dontCloseTooFarAwaySigns(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_19_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue(this.blockEntity.getType().supports(this.blockEntity.getCachedState()));
         }
     }

@@ -59,7 +59,7 @@ public abstract class MixinSnowBlock {
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     private void changeCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(viaFabricPlus$layers_to_shape_r1_12_2[state.get(LAYERS) - 1]);
         }
     }

@@ -55,7 +55,7 @@ public abstract class MixinCustomPayloadS2CPacket {
             }
 
             final PacketByteBuf.PacketReader<? extends CustomPayload> reader = (PacketByteBuf.PacketReader<? extends CustomPayload>) instance.get(identifier);
-            if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_20)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
                 return (PacketByteBuf.PacketReader<? extends CustomPayload>) packetByteBuf -> {
                     final CustomPayload result = reader.apply(packetByteBuf);
                     packetByteBuf.skipBytes(packetByteBuf.readableBytes());

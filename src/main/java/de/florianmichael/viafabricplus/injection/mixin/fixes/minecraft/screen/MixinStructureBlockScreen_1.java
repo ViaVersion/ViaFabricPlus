@@ -38,7 +38,7 @@ public abstract class MixinStructureBlockScreen_1 extends TextFieldWidget {
 
     @Inject(method = "charTyped(CI)Z", at = @At("HEAD"), cancellable = true)
     private void removeValidation(char chr, int keyCode, CallbackInfoReturnable<Boolean> ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             ci.setReturnValue(super.charTyped(chr, keyCode));
         }
     }

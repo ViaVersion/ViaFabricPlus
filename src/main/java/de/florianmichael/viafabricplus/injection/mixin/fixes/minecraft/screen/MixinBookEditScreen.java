@@ -31,7 +31,7 @@ public abstract class MixinBookEditScreen {
 
     @ModifyConstant(method = "method_27596", constant = @Constant(intValue = 1024))
     private int modifyPageLength(int constant) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_13_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return 256;
         } else {
             return constant;
@@ -40,7 +40,7 @@ public abstract class MixinBookEditScreen {
 
     @ModifyConstant(method = "appendNewPage", constant = @Constant(intValue = 100))
     private int modifyPageCount(int constant) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_13_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return 50;
         } else {
             return constant;

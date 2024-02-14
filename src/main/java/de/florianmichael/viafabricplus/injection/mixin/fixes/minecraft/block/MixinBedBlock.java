@@ -51,14 +51,14 @@ public abstract class MixinBedBlock extends HorizontalFacingBlock {
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaFabricPlusMixinPlugin.MORE_CULLING_PRESENT && viaFabricPlus$requireOriginalShape) {
             viaFabricPlus$requireOriginalShape = false;
-        } else if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_13_2)) {
+        } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             cir.setReturnValue(viaFabricPlus$shape_r1_13_2);
         }
     }
 
     @Inject(method = "bounceEntity", at = @At("HEAD"), cancellable = true)
     private void cancelEntityBounce(Entity entity, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_11_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             ci.cancel();
         }
     }

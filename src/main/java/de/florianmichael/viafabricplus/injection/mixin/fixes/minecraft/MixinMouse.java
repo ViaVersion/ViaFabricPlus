@@ -62,7 +62,7 @@ public abstract class MixinMouse implements IMouseKeyboard {
     private Object adjustMouseSensitivity1_13_2(SimpleOption<Double> instance, Operation<Double> original) {
         final Double value = original.call(instance);
 
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_13_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return (double) MathUtil.get1_13SliderValue(value.floatValue()).keyFloat();
         } else {
             return value;

@@ -32,7 +32,7 @@ public abstract class MixinItemEntity {
 
     @Inject(method = "applyWaterBuoyancy", at = @At("HEAD"), cancellable = true)
     private void dontApplyWaterBuoyancy(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEquals(ProtocolVersion.v1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             ci.cancel();
         }
     }

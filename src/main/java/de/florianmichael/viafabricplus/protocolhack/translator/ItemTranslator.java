@@ -78,13 +78,13 @@ public class ItemTranslator {
      * @return The ViaVersion item type
      */
     public static Type<Item> getItemType(final ProtocolVersion targetVersion) {
-        if (targetVersion.olderThanOrEquals(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return Typesb1_8_0_1.CREATIVE_ITEM;
         } else if (targetVersion.olderThan(ProtocolVersion.v1_13)) {
             return Type.ITEM1_8;
         } else if (targetVersion.olderThan(ProtocolVersion.v1_13_2)) {
             return Type.ITEM1_13;
-        } else if (targetVersion.olderThanOrEquals(ProtocolVersion.v1_20_2)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             return Type.ITEM1_13_2;
         } else {
             return Type.ITEM1_20_2;
