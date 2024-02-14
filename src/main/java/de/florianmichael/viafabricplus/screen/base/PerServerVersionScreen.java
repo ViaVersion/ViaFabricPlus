@@ -29,6 +29,7 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.raphimc.vialoader.util.ProtocolVersionList;
 
 import java.util.function.Consumer;
 
@@ -66,7 +67,7 @@ public class PerServerVersionScreen extends VFPScreen {
             super(minecraftClient, width, height - top - bottom, top, entryHeight);
 
             this.addEntry(new ResetSlot());
-            ProtocolVersion.getProtocols().stream().map(ProtocolSlot::new).forEach(this::addEntry);
+            ProtocolVersionList.getProtocolsNewToOld().stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }
     }
 

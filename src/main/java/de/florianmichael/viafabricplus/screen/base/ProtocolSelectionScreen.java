@@ -36,6 +36,7 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.raphimc.vialoader.util.ProtocolVersionList;
 
 import java.awt.*;
 
@@ -112,7 +113,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height - top - bottom, top, entryHeight);
 
-            ProtocolVersion.getProtocols().stream().map(ProtocolSlot::new).forEach(this::addEntry);
+            ProtocolVersionList.getProtocolsNewToOld().stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }
     }
 
