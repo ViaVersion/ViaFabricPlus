@@ -77,7 +77,7 @@ public class ResourcePackHeaderDiff {
         registerVersion(ProtocolVersion.v1_9, 2, "1.9");
         registerVersion(ProtocolVersion.v1_8, 1, "1.8.9");
         registerVersion(ProtocolVersion.v1_7_6, 1, "1.7.10");
-        registerVersion(ProtocolVersion.v1_7_1, 1, "1.7.5");
+        registerVersion(ProtocolVersion.v1_7_2, 1, "1.7.5");
     }
 
     /**

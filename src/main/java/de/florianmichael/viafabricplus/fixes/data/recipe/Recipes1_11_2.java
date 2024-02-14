@@ -67,7 +67,7 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.of(() -> new BannerDuplicateRecipe(CraftingRecipeCategory.MISC)));
             recipes.add(RecipeInfo.of(() -> new AddBannerPatternRecipe(CraftingRecipeCategory.MISC)));
         }
-        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_7_1)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_7_2)) {
             recipes.add(RecipeInfo.of(() -> new BookCloningRecipe(CraftingRecipeCategory.MISC)));
         }
 
@@ -312,7 +312,7 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(Blocks.IRON_DOOR, "##", "##", "##", '#', Items.IRON_INGOT));
             recipes.add(RecipeInfo.shaped("wooden_door", Blocks.OAK_DOOR, "##", "##", "##", '#', Blocks.OAK_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.BIRCH_PLANKS, Blocks.ACACIA_PLANKS));
         }
-        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_7_1)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_7_2)) {
             recipes.add(RecipeInfo.shaped("stained_glass", 8, Blocks.YELLOW_STAINED_GLASS, "###", "#X#", "###", '#', Blocks.GLASS, 'X', Items.YELLOW_DYE));
             recipes.add(RecipeInfo.shaped("stained_glass", 8, Blocks.WHITE_STAINED_GLASS, "###", "#X#", "###", '#', Blocks.GLASS, 'X', Items.BONE_MEAL));
             recipes.add(RecipeInfo.shaped("stained_glass", 8, Blocks.RED_STAINED_GLASS, "###", "#X#", "###", '#', Blocks.GLASS, 'X', Items.RED_DYE));
@@ -654,7 +654,7 @@ public class Recipes1_11_2 {
         if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_9)) {
             recipes.add(RecipeInfo.smelting(Items.POPPED_CHORUS_FRUIT, Items.CHORUS_FRUIT, 0.1F));
         }
-        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_7_1)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_7_2)) {
             recipes.add(RecipeInfo.smelting(Items.COOKED_RABBIT, Items.RABBIT, 0.35F));
             recipes.add(RecipeInfo.smelting(Items.COOKED_MUTTON, Items.MUTTON, 0.35F));
             recipes.add(RecipeInfo.smelting(Items.CRACKED_STONE_BRICKS, Items.STONE_BRICKS, 0.1F));
