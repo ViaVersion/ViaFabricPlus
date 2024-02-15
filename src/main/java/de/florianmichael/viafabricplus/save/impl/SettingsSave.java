@@ -51,7 +51,7 @@ public class SettingsSave extends AbstractSave {
             object.add(AbstractSetting.mapTranslationKey(ChatUtil.uncoverTranslationKey(group.getName())), groupObject);
         }
 
-        object.addProperty("selected-protocol-version", ProtocolHack.getTargetVersion().getOriginalVersion());
+        object.addProperty("selected-protocol-version", ProtocolHack.getTargetVersion().getName());
     }
 
     @Override
@@ -67,9 +67,8 @@ public class SettingsSave extends AbstractSave {
         }
 
         if (GeneralSettings.global().saveSelectedProtocolVersion.getValue() && object.has("selected-protocol-version")) {
-            final ProtocolVersion protocolVersion = ProtocolVersion.getProtocol(object.get("selected-protocol-version").getAsInt());
-
-            if (protocolVersion.isKnown()) {
+            final ProtocolVersion protocolVersion = ProtocolVersion.getClosest(object.get("selected-protocol-version").getAsString());
+            if (protocolVersion != null) {
                 ProtocolHack.setTargetVersion(protocolVersion);
             }
         } else {
