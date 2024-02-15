@@ -53,9 +53,9 @@ ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> {
 
 ## Get and set the current protocol version
 ```java
-final VersionEnum version = ProtocolHack.getTargetVersion();
-if (version == VersionEnum.r1_8) {
-    ProtocolHack.setTargetVersion(VersionEnum.r1_9);
+final ProtocolVersion version = ProtocolHack.getTargetVersion();
+if (version == ProtocolVersion.v1_8) {
+    ProtocolHack.setTargetVersion(ProtocolVersion.v1_9);
 }
 ```
 
@@ -70,7 +70,7 @@ final ClientConnection connection = channel.attr(ProtocolHack.CLIENT_CONNECTION_
 final UserConnection userConnection = ProtocolHack.getPlayNetworkUserConnection();
 
 // If you need a dummy user connection for testing, you can use this method
-final UserConnection cursedDummy = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, VersionEnum.r1_18_2);
+final UserConnection cursedDummy = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, ProtocolVersion.v1_18_2);
 // The cursedDummy field now contains all protocols from the native version to 1.18.2
 ```
 
@@ -87,7 +87,7 @@ final VersionRange range = ItemRegistryDiff.ITEM_DIFF.get(Items.WRITABLE_BOOK); 
 
 // The Range class then contains all versions in which the item occurs. 
 // https://github.com/ViaVersion/ViaLoader
-if (ItemRegistryDiff.contains(Items.STONE, VersionRange.andOlder(VersionEnum.r1_8))) {
+if (ItemRegistryDiff.contains(Items.STONE, VersionRange.andOlder(ProtocolVersion.v1_8))) {
     // Do something
 }
 ```
