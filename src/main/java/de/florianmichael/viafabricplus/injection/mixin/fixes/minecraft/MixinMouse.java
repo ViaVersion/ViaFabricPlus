@@ -23,8 +23,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IMouseKeyboard;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.util.MathUtil;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.protocoltranslator.util.MathUtil;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
@@ -62,7 +62,7 @@ public abstract class MixinMouse implements IMouseKeyboard {
     private Object adjustMouseSensitivity1_13_2(SimpleOption<Double> instance, Operation<Double> original) {
         final Double value = original.call(instance);
 
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return (double) MathUtil.get1_13SliderValue(value.floatValue()).keyFloat();
         } else {
             return value;

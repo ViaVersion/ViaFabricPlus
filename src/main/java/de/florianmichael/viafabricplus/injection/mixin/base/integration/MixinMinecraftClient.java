@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.network.ClientConnection;
@@ -43,8 +43,8 @@ public abstract class MixinMinecraftClient {
 
     @Inject(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/lang/String;ILnet/minecraft/network/listener/ClientLoginPacketListener;)V", shift = At.Shift.BEFORE))
     private void disableProtocolHack(LevelStorage.Session session, ResourcePackManager dataPackManager, SaveLoader saveLoader, boolean newWorld, CallbackInfo ci, @Local ClientConnection clientConnection) {
-        ProtocolHack.setTargetVersion(ProtocolHack.NATIVE_VERSION, true);
-        ProtocolHack.injectPreviousVersionReset(clientConnection.channel);
+        ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION, true);
+        ProtocolTranslator.injectPreviousVersionReset(clientConnection.channel);
     }
 
 }

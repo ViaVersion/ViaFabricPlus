@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.BoatRenderer1_8;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -50,7 +50,7 @@ public abstract class MixinEntityRenderDispatcher {
     @SuppressWarnings("unchecked")
     @Inject(method = "getRenderer", at = @At("HEAD"), cancellable = true)
     private <T extends Entity> void useBoatRenderer1_8(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && entity instanceof BoatEntity) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && entity instanceof BoatEntity) {
             ci.setReturnValue((EntityRenderer<? super T>) viaFabricPlus$boatRenderer);
         }
     }

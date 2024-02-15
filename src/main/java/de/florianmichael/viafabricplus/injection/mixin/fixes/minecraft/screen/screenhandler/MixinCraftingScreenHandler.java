@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.s
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.recipe.Recipes1_11_2;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
@@ -49,12 +49,12 @@ public abstract class MixinCraftingScreenHandler extends AbstractRecipeScreenHan
 
     @Redirect(method = "quickMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/CraftingScreenHandler;insertItem(Lnet/minecraft/item/ItemStack;IIZ)Z", ordinal = 1))
     private boolean noShiftClickMoveIntoCraftingTable(CraftingScreenHandler instance, ItemStack itemStack, int startIndex, int endIndex, boolean fromLast) {
-        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && this.insertItem(itemStack, startIndex, endIndex, fromLast);
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && this.insertItem(itemStack, startIndex, endIndex, fromLast);
     }
 
     @Inject(method = "onContentChanged", at = @At("HEAD"))
     private void clientSideCrafting(Inventory inventory, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             Recipes1_11_2.setCraftingResultSlot(syncId, this, input);
         }
     }

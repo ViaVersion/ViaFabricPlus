@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.GameModeSelectionScreen;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -45,11 +45,11 @@ public abstract class MixinGameModeSelectionScreen_GameModeSelection {
 
     @Inject(method = "next", at = @At("HEAD"), cancellable = true)
     private void unwrapGameModes(CallbackInfoReturnable<GameModeSelectionScreen.GameModeSelection> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             switch ((GameModeSelectionScreen.GameModeSelection) (Object) this) {
                 case CREATIVE -> cir.setReturnValue(SURVIVAL);
                 case SURVIVAL -> {
-                    if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
+                    if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
                         cir.setReturnValue(CREATIVE);
                     } else {
                         cir.setReturnValue(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
@@ -62,7 +62,7 @@ public abstract class MixinGameModeSelectionScreen_GameModeSelection {
 
     @Inject(method = "getCommand", at = @At("HEAD"), cancellable = true)
     private void oldCommand(CallbackInfoReturnable<String> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
             cir.setReturnValue(
                     "gamemode " + MinecraftClient.getInstance().getSession().getUsername() + ' ' + switch (((Enum<?>) (Object) this).ordinal()) {
                         case 0, 3 -> 1;

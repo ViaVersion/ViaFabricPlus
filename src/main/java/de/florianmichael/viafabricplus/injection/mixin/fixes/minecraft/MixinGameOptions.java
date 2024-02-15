@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.option.GameOptions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -37,7 +37,7 @@ public abstract class MixinGameOptions {
 
     @ModifyVariable(method = "setServerViewDistance", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private int changeServerViewDistance(int viewDistance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             return 0;
         } else {
             return viewDistance;

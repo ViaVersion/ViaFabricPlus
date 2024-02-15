@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.fixes.versioned.classic.command;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
-import de.florianmichael.viafabricplus.protocolhack.impl.command.VFPViaSubCommand;
+import de.florianmichael.viafabricplus.protocoltranslator.impl.command.VFPViaSubCommand;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;

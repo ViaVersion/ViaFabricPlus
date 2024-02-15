@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.GameVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,15 +37,15 @@ public abstract class MixinServerResourcePackLoader_4 {
 
     @Redirect(method = "getHeaders", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;getGameVersion()Lnet/minecraft/GameVersion;"))
     private GameVersion editHeaders() {
-        return ResourcePackHeaderDiff.get(ProtocolHack.getTargetVersion());
+        return ResourcePackHeaderDiff.get(ProtocolTranslator.getTargetVersion());
     }
 
     @Inject(method = "getHeaders", at = @At("TAIL"), cancellable = true)
     private void removeHeaders(CallbackInfoReturnable<Map<String, String>> cir) {
         final LinkedHashMap<String, String> modifiableMap = new LinkedHashMap<>(cir.getReturnValue());
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
             modifiableMap.remove("X-Minecraft-Version-ID");
-            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
                 modifiableMap.remove("X-Minecraft-Pack-Format");
                 modifiableMap.remove("User-Agent");
             }

@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.EntityIndex;
 import net.minecraft.world.entity.EntityLike;
@@ -44,12 +44,12 @@ public abstract class MixinEntityIndex<T extends EntityLike> {
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Ljava/util/Map;containsKey(Ljava/lang/Object;)Z", remap = false))
     private boolean allowDuplicateUuid(Map<UUID, T> instance, Object o) {
-        return instance.containsKey(o) && ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_16_4);
+        return instance.containsKey(o) && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_16_4);
     }
 
     @Inject(method = "size", at = @At("HEAD"), cancellable = true)
     private void returnRealSize(CallbackInfoReturnable<Integer> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(this.idToEntity.size());
         }
     }

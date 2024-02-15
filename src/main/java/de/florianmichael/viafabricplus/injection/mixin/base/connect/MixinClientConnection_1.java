@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.connect;
 
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import io.netty.channel.Channel;
 import net.minecraft.network.ClientConnection;
 import org.spongepowered.asm.mixin.Final;
@@ -38,7 +38,7 @@ public abstract class MixinClientConnection_1 {
 
     @Inject(method = "initChannel", at = @At("RETURN"))
     private void injectViaIntoPipeline(Channel channel, CallbackInfo ci) {
-        ProtocolHack.injectViaPipeline(this.field_11663, channel);
+        ProtocolTranslator.injectViaPipeline(this.field_11663, channel);
     }
 
 }

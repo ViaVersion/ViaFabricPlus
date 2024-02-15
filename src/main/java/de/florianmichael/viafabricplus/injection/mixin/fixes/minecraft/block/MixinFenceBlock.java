@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.*;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
@@ -53,7 +53,7 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     private void alwaysSuccess(CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
             cir.setReturnValue(ActionResult.SUCCESS);
         }
     }
@@ -66,9 +66,9 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return VoxelShapes.fullCube();
-        } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             return this.viaFabricPlus$outline_shape_r1_4_7[this.getShapeIndex(state)];
         } else {
             return super.getOutlineShape(state, world, pos, context);
@@ -77,9 +77,9 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return viaFabricPlus$shape_b1_8_1;
-        } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             return this.viaFabricPlus$collision_shape_r1_4_7[this.getShapeIndex(state)];
         } else {
             return super.getCollisionShape(state, world, pos, context);

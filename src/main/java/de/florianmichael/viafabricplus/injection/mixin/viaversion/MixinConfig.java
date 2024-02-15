@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.viaversion;
 
 import com.viaversion.viaversion.util.Config;
-import de.florianmichael.viafabricplus.protocolhack.util.ConfigPatcher;
+import de.florianmichael.viafabricplus.protocoltranslator.util.ConfigPatcher;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

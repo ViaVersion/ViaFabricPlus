@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.screenhandler;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -58,7 +58,7 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
 
     @Inject(method = "switchTo", at = @At("HEAD"), cancellable = true)
     private void onSwitchTo(int recipeId, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             ci.cancel();
 
             if (recipeId >= this.getRecipes().size()) return;
@@ -90,7 +90,7 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
 
     @Inject(method = "canInsertIntoSlot", at = @At("HEAD"), cancellable = true)
     private void modifyCanInsertIntoSlot(ItemStack stack, Slot slot, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             cir.setReturnValue(true);
         }
     }

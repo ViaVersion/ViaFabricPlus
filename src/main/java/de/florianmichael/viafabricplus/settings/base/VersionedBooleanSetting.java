@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.settings.base;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.settings.VersionedBooleanSettingRenderer;
 import net.minecraft.text.MutableText;
@@ -63,7 +63,7 @@ public class VersionedBooleanSetting extends AbstractSetting<Integer> {
 
     public boolean isEnabled() {
         if (isAuto()) {
-            return protocolRange.contains(ProtocolHack.getTargetVersion());
+            return protocolRange.contains(ProtocolTranslator.getTargetVersion());
         }
 
         return getValue() == ENABLED_INDEX;

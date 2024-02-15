@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.google.common.collect.ImmutableSet;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -62,14 +62,14 @@ public abstract class MixinHoeItem extends MiningToolItem {
 
     @Override
     public boolean isSuitableFor(BlockState state) {
-        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_16_4) && super.isSuitableFor(state);
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_16_4) && super.isSuitableFor(state);
     }
 
     @Override
     public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return 1.0F;
-        } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             return viaFabricPlus$effective_blocks_r1_16_5.contains(state.getBlock()) ? this.miningSpeed : 1.0F;
         } else {
             return super.getMiningSpeedMultiplier(stack, state);

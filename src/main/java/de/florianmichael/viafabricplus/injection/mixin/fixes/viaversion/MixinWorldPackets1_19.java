@@ -27,7 +27,7 @@ import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.Protocol1_19To1_
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.packets.WorldPackets;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerInteractionManager;
-import de.florianmichael.viafabricplus.protocolhack.translator.BlockStateTranslator;
+import de.florianmichael.viafabricplus.protocoltranslator.translator.BlockStateTranslator;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;

@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.save.impl;
 
 import com.google.gson.JsonObject;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.save.AbstractSave;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
@@ -51,7 +51,7 @@ public class SettingsSave extends AbstractSave {
             object.add(AbstractSetting.mapTranslationKey(ChatUtil.uncoverTranslationKey(group.getName())), groupObject);
         }
 
-        object.addProperty("selected-protocol-version", ProtocolHack.getTargetVersion().getName());
+        object.addProperty("selected-protocol-version", ProtocolTranslator.getTargetVersion().getName());
     }
 
     @Override
@@ -69,10 +69,10 @@ public class SettingsSave extends AbstractSave {
         if (GeneralSettings.global().saveSelectedProtocolVersion.getValue() && object.has("selected-protocol-version")) {
             final ProtocolVersion protocolVersion = ProtocolVersion.getClosest(object.get("selected-protocol-version").getAsString());
             if (protocolVersion != null) {
-                ProtocolHack.setTargetVersion(protocolVersion);
+                ProtocolTranslator.setTargetVersion(protocolVersion);
             }
         } else {
-            ProtocolHack.setTargetVersion(ProtocolHack.NATIVE_VERSION);
+            ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION);
         }
     }
 

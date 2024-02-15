@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import com.google.common.collect.ImmutableMap;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.BrandCustomPayload;
 import net.minecraft.network.packet.CustomPayload;
@@ -50,12 +50,12 @@ public abstract class MixinCustomPayloadS2CPacket {
     @Redirect(method = "readPayload", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
     private static Object filterAllowedCustomPayloads(Map<?, ?> instance, Object identifier) {
         if (instance.containsKey(identifier)) {
-            if (!viaFabricPlus$PAYLOAD_DIFF.containsKey(identifier) || ProtocolHack.getTargetVersion().olderThan(viaFabricPlus$PAYLOAD_DIFF.get(identifier))) {
+            if (!viaFabricPlus$PAYLOAD_DIFF.containsKey(identifier) || ProtocolTranslator.getTargetVersion().olderThan(viaFabricPlus$PAYLOAD_DIFF.get(identifier))) {
                 return null;
             }
 
             final PacketByteBuf.PacketReader<? extends CustomPayload> reader = (PacketByteBuf.PacketReader<? extends CustomPayload>) instance.get(identifier);
-            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
                 return (PacketByteBuf.PacketReader<? extends CustomPayload>) packetByteBuf -> {
                     final CustomPayload result = reader.apply(packetByteBuf);
                     packetByteBuf.skipBytes(packetByteBuf.readableBytes());

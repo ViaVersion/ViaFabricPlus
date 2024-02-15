@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
@@ -38,7 +38,7 @@ public abstract class MixinStructureBlockScreen_1 extends TextFieldWidget {
 
     @Inject(method = "charTyped(CI)Z", at = @At("HEAD"), cancellable = true)
     private void removeValidation(char chr, int keyCode, CallbackInfoReturnable<Boolean> ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             ci.setReturnValue(super.charTyped(chr, keyCode));
         }
     }

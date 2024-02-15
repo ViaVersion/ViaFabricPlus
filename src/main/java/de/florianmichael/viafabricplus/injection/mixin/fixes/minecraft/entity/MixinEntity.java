@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.EntityRidingOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.injection.access.IEntity;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.block.BlockState;
@@ -77,14 +77,14 @@ public abstract class MixinEntity implements IEntity {
 
     @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
     private void getRidingOffset1_20_1(Entity vehicle, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
             cir.setReturnValue((float) EntityRidingOffsetsPre1_20_2.getHeightOffset((Entity) (Object) this));
         }
     }
 
     @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
     private Vector3f getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
             return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger);
         } else {
             return getPassengerAttachmentPos(passenger, dimensions, scaleFactor);
@@ -93,9 +93,9 @@ public abstract class MixinEntity implements IEntity {
 
     @Inject(method = "getPosWithYOffset", at = @At("HEAD"), cancellable = true)
     private void modifyPosWithYOffset(float offset, CallbackInfoReturnable<BlockPos> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             int i = MathHelper.floor(this.pos.x);
-            int j = MathHelper.floor(this.pos.y - (double) (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
+            int j = MathHelper.floor(this.pos.y - (double) (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
             int k = MathHelper.floor(this.pos.z);
             BlockPos blockPos = new BlockPos(i, j, k);
             if (this.world.getBlockState(blockPos).isAir()) {
@@ -113,7 +113,7 @@ public abstract class MixinEntity implements IEntity {
 
     @ModifyConstant(method = "checkBlockCollision", constant = @Constant(doubleValue = 1.0E-7))
     private double fixBlockCollisionMargin(double constant) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             return 1E-3;
         } else {
             return constant;
@@ -122,7 +122,7 @@ public abstract class MixinEntity implements IEntity {
 
     @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)
     private void modifyVelocityAffectingPos(CallbackInfoReturnable<BlockPos> cir) {
-        final ProtocolVersion target = ProtocolHack.getTargetVersion();
+        final ProtocolVersion target = ProtocolTranslator.getTargetVersion();
 
         if (target.olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - (target.olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1 : 0.5000001), pos.z));
@@ -131,12 +131,12 @@ public abstract class MixinEntity implements IEntity {
 
     @Redirect(method = {"setYaw", "setPitch"}, at = @At(value = "INVOKE", target = "Ljava/lang/Float;isFinite(F)Z"))
     private boolean allowInfiniteValues(float f) {
-        return Float.isFinite(f) || ((Object) this instanceof ClientPlayerEntity && ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4));
+        return Float.isFinite(f) || ((Object) this instanceof ClientPlayerEntity && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4));
     }
 
     @ModifyConstant(method = "movementInputToVelocity", constant = @Constant(doubleValue = 1E-7))
     private static double fixVelocityEpsilon(double epsilon) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return 1E-4;
         } else {
             return epsilon;
@@ -145,7 +145,7 @@ public abstract class MixinEntity implements IEntity {
 
     @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0))
     private static double alwaysSortYXZ(double a) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return Double.MAX_VALUE;
         } else {
             return Math.abs(a);
@@ -154,21 +154,21 @@ public abstract class MixinEntity implements IEntity {
 
     @Inject(method = "getRotationVector(FF)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
     private void revertCalculation(float pitch, float yaw, CallbackInfoReturnable<Vec3d> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(Vec3d.fromPolar(pitch, yaw));
         }
     }
 
     @Inject(method = "setSwimming", at = @At("HEAD"), cancellable = true)
     private void cancelSwimming(boolean swimming, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && swimming) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && swimming) {
             ci.cancel();
         }
     }
 
     @Inject(method = "updateMovementInFluid", at = @At("HEAD"), cancellable = true)
     private void modifyFluidMovementBoundingBox(TagKey<Fluid> fluidTag, double d, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
+        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
             return;
         }
 
@@ -220,7 +220,7 @@ public abstract class MixinEntity implements IEntity {
 
     @Inject(method = "getTargetingMargin", at = @At("HEAD"), cancellable = true)
     private void expandHitBox(CallbackInfoReturnable<Float> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(0.1F);
         }
     }

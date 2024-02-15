@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.EntityRidingOffsetsPre1_20_2;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -86,7 +86,7 @@ public abstract class MixinBoatEntity extends VehicleEntity {
 
     @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
     private void pushAwayFrom1_8(Entity entity, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
             super.pushAwayFrom(entity);
         }
@@ -94,9 +94,9 @@ public abstract class MixinBoatEntity extends VehicleEntity {
 
     @Inject(method = "updateTrackedPositionAndAngles", at = @At("HEAD"), cancellable = true)
     private void updateTrackedPositionAndAngles1_8(double x, double y, double z, float yaw, float pitch, int interpolationSteps, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
-            if (/*interpolate &&*/ this.hasPassengers() && ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_7_6)) {
+            if (/*interpolate &&*/ this.hasPassengers() && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6)) {
                 this.prevX = x;
                 this.prevY = y;
                 this.prevZ = z;
@@ -129,14 +129,14 @@ public abstract class MixinBoatEntity extends VehicleEntity {
     public void setVelocityClient(double x, double y, double z) {
         super.setVelocityClient(x, y, z);
 
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             this.viaFabricPlus$boatVelocity = new Vec3d(x, y, z);
         }
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick1_8(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
             super.tick();
 
@@ -162,7 +162,7 @@ public abstract class MixinBoatEntity extends VehicleEntity {
             }
 
             final double oldHorizontalSpeed = this.getVelocity().horizontalLength();
-            if (oldHorizontalSpeed > (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) ? 0.2625D : 0.2975D)) {
+            if (oldHorizontalSpeed > (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) ? 0.2625D : 0.2975D)) {
                 final double rx = Math.cos(this.getYaw() * Math.PI / 180);
                 final double rz = Math.sin(this.getYaw() * Math.PI / 180);
                 for (int i = 0; i < 1 + oldHorizontalSpeed * 60; i++) {
@@ -210,11 +210,11 @@ public abstract class MixinBoatEntity extends VehicleEntity {
 
                 if (this.getControllingPassenger() != null) {
                     final LivingEntity passenger = this.getControllingPassenger();
-                    if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
+                    if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
                         final double xAcceleration = passenger.getVelocity().x * this.viaFabricPlus$speedMultiplier;
                         final double zAcceleration = passenger.getVelocity().z * this.viaFabricPlus$speedMultiplier;
                         this.setVelocity(this.getVelocity().add(xAcceleration, 0, zAcceleration));
-                    } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+                    } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
                         if (passenger.forwardSpeed > 0) {
                             final double xAcceleration = -Math.sin(passenger.getYaw() * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * 0.05D;
                             final double zAcceleration = Math.cos(passenger.getYaw() * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * 0.05D;
@@ -247,7 +247,7 @@ public abstract class MixinBoatEntity extends VehicleEntity {
                     }
                 }
 
-                if (ProtocolHack.getTargetVersion().newerThan(LegacyProtocolVersion.r1_6_4)) {
+                if (ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_6_4)) {
                     for (int i = 0; i < 4; i++) {
                         final int dx = MathHelper.floor(this.getX() + ((i % 2) - 0.5D) * 0.8D);
                         //noinspection IntegerDivisionInFloatingPointContext
@@ -290,7 +290,7 @@ public abstract class MixinBoatEntity extends VehicleEntity {
 
     @Inject(method = "updatePassengerPosition", at = @At(value = "HEAD"), cancellable = true)
     private void updatePassengerPosition1_8(Entity passenger, PositionUpdater positionUpdater, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             final Vec3d newPosition = new Vec3d(EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(this, passenger)).add(this.getPos());
             positionUpdater.accept(passenger, newPosition.x, newPosition.y + EntityRidingOffsetsPre1_20_2.getHeightOffset(passenger), newPosition.z);
             ci.cancel();
@@ -299,7 +299,7 @@ public abstract class MixinBoatEntity extends VehicleEntity {
 
     @Inject(method = "onPassengerLookAround", at = @At("HEAD"), cancellable = true)
     private void onPassengerLookAround1_8(Entity passenger, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
             super.onPassengerLookAround(passenger);
         }
@@ -307,17 +307,17 @@ public abstract class MixinBoatEntity extends VehicleEntity {
 
     @Inject(method = "fall", at = @At("HEAD"), cancellable = true)
     private void fall1_8(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             ci.cancel();
             super.fall(heightDifference, onGround, state, landedPosition);
-        } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             this.location = BoatEntity.Location.ON_LAND;
         }
     }
 
     @Inject(method = "canAddPassenger", at = @At("HEAD"), cancellable = true)
     private void canAddPassenger1_8(Entity passenger, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(super.canAddPassenger(passenger));
         }
     }

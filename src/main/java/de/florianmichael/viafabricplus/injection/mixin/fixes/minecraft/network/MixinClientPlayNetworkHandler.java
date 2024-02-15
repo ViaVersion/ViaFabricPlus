@@ -24,7 +24,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.recipe.RecipeInfo;
 import de.florianmichael.viafabricplus.fixes.data.recipe.Recipes1_11_2;
 import de.florianmichael.viafabricplus.injection.access.IDownloadingTerrainScreen;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.*;
@@ -79,29 +79,29 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @WrapWithCondition(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
     private boolean removeChatPacketError(Logger instance, String s, Object o) {
-        return ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_2);
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_2);
     }
 
     @Redirect(method = "handlePlayerListAction", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;onGameModeChanged(Lnet/minecraft/world/GameMode;)V"))
     private void dontResetVelocity(ClientPlayerEntity instance, GameMode gameMode) {
-        if (ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20)) {
+        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20)) {
             instance.onGameModeChanged(gameMode);
         }
     }
 
     @WrapWithCondition(method = "setPublicSession", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
     private boolean removeInvalidSignatureWarning(Logger instance, String s, Object o) {
-        return ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_4);
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_4);
     }
 
     @WrapWithCondition(method = "onPlayerList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false))
     private boolean removeUnknownPlayerListEntryWarning(Logger instance, String s, Object object1, Object object2) {
-        return ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_3);
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_3);
     }
 
     @Redirect(method = {"onEntityPosition", "onEntity"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isLogicalSideForUpdatingMovement()Z"))
     private boolean allowPlayerToBeMovedByEntityPackets(Entity instance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3) || ProtocolHack.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getWorld().isClient;
         } else {
             return instance.isLogicalSideForUpdatingMovement();
@@ -110,7 +110,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void fixPlayerListOrdering(MinecraftClient client, ClientConnection clientConnection, ClientConnectionState clientConnectionState, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             this.listedPlayerListEntries = new LinkedHashSet<>();
         }
     }
@@ -122,14 +122,14 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Inject(method = "onPlayerSpawnPosition", at = @At("RETURN"))
     private void moveDownloadingTerrainClosing(PlayerSpawnPositionS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().betweenInclusive(ProtocolVersion.v1_18_2, ProtocolVersion.v1_20_2) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_18_2, ProtocolVersion.v1_20_2) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
             mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
         }
     }
 
     @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
     private void closeDownloadingTerrain(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
             mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
         }
     }
@@ -137,7 +137,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @SuppressWarnings({"InvalidInjectorMethodSignature"})
     @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = BoatEntity.class))
     private Class<?> dontChangeYawWhenMountingBoats(Object entity, Class<?> boatClass) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
             return Integer.class; // Dummy class file to false the instanceof check
         } else {
             return boatClass;
@@ -146,15 +146,15 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Inject(method = "onChunkLoadDistance", at = @At("RETURN"))
     private void emulateSimulationDistance(ChunkLoadDistanceS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             this.onSimulationDistance(new SimulationDistanceS2CPacket(packet.getDistance()));
         }
     }
 
     @Redirect(method = "onEntityPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;updateTrackedPositionAndAngles(DDDFFI)V"))
     private void cancelSmallChanges(Entity instance, double x, double y, double z, float yaw, float pitch, int interpolationSteps) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) && Math.abs(instance.getX() - x) < 0.03125 && Math.abs(instance.getY() - y) < 0.015625 && Math.abs(instance.getZ() - z) < 0.03125) {
-            instance.updateTrackedPositionAndAngles(instance.getX(), instance.getY(), instance.getZ(), yaw, pitch, ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) ? 0 : interpolationSteps);
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) && Math.abs(instance.getX() - x) < 0.03125 && Math.abs(instance.getY() - y) < 0.015625 && Math.abs(instance.getZ() - z) < 0.03125) {
+            instance.updateTrackedPositionAndAngles(instance.getX(), instance.getY(), instance.getZ(), yaw, pitch, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) ? 0 : interpolationSteps);
         } else {
             instance.updateTrackedPositionAndAngles(x, y, z, yaw, pitch, interpolationSteps);
         }
@@ -162,15 +162,15 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Inject(method = "onGameJoin", at = @At("RETURN"))
     private void sendAdditionalData(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             final List<RecipeEntry<?>> recipes = new ArrayList<>();
-            final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolHack.getTargetVersion());
+            final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolTranslator.getTargetVersion());
             for (int i = 0; i < recipeInfos.size(); i++) {
                 recipes.add(recipeInfos.get(i).create(new Identifier("viafabricplus", "recipe/" + i)));
             }
             this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
 
-            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 this.onEntityStatus(new EntityStatusS2CPacket(this.client.player, (byte) 28)); // Op-level 4
             }
         }

@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.screen.base;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.BetaCraftScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.ClassiCubeLoginScreen;
@@ -132,14 +132,14 @@ public class ProtocolSelectionScreen extends VFPScreen {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            ProtocolHack.setTargetVersion(this.protocolVersion);
+            ProtocolTranslator.setTargetVersion(this.protocolVersion);
             playClickSound();
             return super.mouseClicked(mouseX, mouseY, button);
         }
 
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            final boolean isSelected = ProtocolHack.getTargetVersion().getVersion() == protocolVersion.getVersion();
+            final boolean isSelected = ProtocolTranslator.getTargetVersion().getVersion() == protocolVersion.getVersion();
 
             final MatrixStack matrices = context.getMatrices();
 

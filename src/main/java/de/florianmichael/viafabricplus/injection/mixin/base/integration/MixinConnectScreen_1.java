@@ -24,9 +24,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import de.florianmichael.viafabricplus.protocolhack.util.ProtocolVersionDetector;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
+import de.florianmichael.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
 import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import io.netty.channel.ChannelFuture;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
@@ -61,20 +61,20 @@ public abstract class MixinConnectScreen_1 {
     private ChannelFuture setServerInfoAndHandleDisconnect(InetSocketAddress address, boolean useEpoll, ClientConnection connection, Operation<ChannelFuture> original) {
         final IServerInfo mixinServerInfo = (IServerInfo) this.field_40415;
 
-        ProtocolVersion targetVersion = ProtocolHack.getTargetVersion();
+        ProtocolVersion targetVersion = ProtocolTranslator.getTargetVersion();
         if (mixinServerInfo.viaFabricPlus$forcedVersion() != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
             targetVersion = mixinServerInfo.viaFabricPlus$forcedVersion();
         }
-        if (targetVersion == ProtocolHack.AUTO_DETECT_PROTOCOL) {
+        if (targetVersion == ProtocolTranslator.AUTO_DETECT_PROTOCOL) {
             this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
-            targetVersion = ProtocolVersionDetector.get(address, ProtocolHack.NATIVE_VERSION);
+            targetVersion = ProtocolVersionDetector.get(address, ProtocolTranslator.NATIVE_VERSION);
         }
-        ProtocolHack.setTargetVersion(targetVersion, true);
+        ProtocolTranslator.setTargetVersion(targetVersion, true);
 
         this.viaFabricPlus$useClassiCubeAccount = AuthenticationSettings.global().setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classicMpPassForNextJoin != null;
 
         final ChannelFuture future = original.call(address, useEpoll, connection);
-        ProtocolHack.injectPreviousVersionReset(future.channel());
+        ProtocolTranslator.injectPreviousVersionReset(future.channel());
 
         return future;
     }

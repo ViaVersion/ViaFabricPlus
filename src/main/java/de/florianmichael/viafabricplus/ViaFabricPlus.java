@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus;
 
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.save.SaveManager;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
 import de.florianmichael.viafabricplus.util.ClassLoaderPriorityUtil;
@@ -68,7 +68,7 @@ public class ViaFabricPlus {
         saveManager = new SaveManager(settingsManager);
 
         ClientsideFixes.init(); // Init clientside related fixes
-        loadingFuture = ProtocolHack.init(directory); // Init ViaVersion protocol translator platform
+        loadingFuture = ProtocolTranslator.init(directory); // Init ViaVersion protocol translator platform
 
         PostGameLoadCallback.EVENT.register(() -> loadingFuture.join()); // Block game loading until ViaVersion has loaded
     }

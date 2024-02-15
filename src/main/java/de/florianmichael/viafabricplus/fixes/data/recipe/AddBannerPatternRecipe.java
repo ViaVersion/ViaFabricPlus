@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.fixes.data.recipe;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.entity.BannerBlockEntity;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.BannerItem;
@@ -76,7 +76,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
 
         BannerPattern_1_13_2 pattern = getBannerPattern(inv);
         if (pattern != null) {
-            DyeColor color = ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ? DyeColor.BLACK : DyeColor.WHITE;
+            DyeColor color = ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ? DyeColor.BLACK : DyeColor.WHITE;
             for (int i = 0; i < inv.size(); i++) {
                 Item item = inv.getStack(i).getItem();
                 if (item instanceof DyeItem dyeItem) {
@@ -138,7 +138,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
                         }
                     }
                 }
-                if (!foundBaseItem || (!foundDye && ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_10))) matches = false;
+                if (!foundBaseItem || (!foundDye && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_10))) matches = false;
             } else if (inv.size() == pattern.getRecipePattern().length * pattern.getRecipePattern()[0].length()) {
                 DyeColor patternColor = null;
                 for (int i = 0; i < inv.size(); i++) {

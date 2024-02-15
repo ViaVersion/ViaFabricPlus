@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnderPearlItem;
 import net.minecraft.item.ItemStack;
@@ -37,7 +37,7 @@ public abstract class MixinEnderPearlItem {
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void removeCreativeModeEnderPearl(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && user.getAbilities().creativeMode) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && user.getAbilities().creativeMode) {
             ci.setReturnValue(TypedActionResult.pass(user.getStackInHand(hand)));
         }
     }

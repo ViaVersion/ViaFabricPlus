@@ -25,7 +25,7 @@ import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.ClientboundPackets1_14;
 import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.packets.InventoryPackets;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
-import de.florianmichael.viafabricplus.protocolhack.translator.TextComponentTranslator;
+import de.florianmichael.viafabricplus.protocoltranslator.translator.TextComponentTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.inventory.SimpleInventory;

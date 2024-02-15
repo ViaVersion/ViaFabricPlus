@@ -30,7 +30,7 @@ import de.florianmichael.viafabricplus.fixes.versioned.visual.ArmorHudEmulation1
 import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
@@ -120,12 +120,12 @@ public class ClientsideFixes {
     }
 
     /**
-     * Calculates the maximum chat length for the selected protocol version in {@link ProtocolHack#getTargetVersion()}
+     * Calculates the maximum chat length for the selected protocol version in {@link ProtocolTranslator#getTargetVersion()}
      *
      * @return The maximum chat length
      */
     public static int getChatLength() {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
             final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
             final ExtensionProtocolMetadataStorage extensionProtocol = ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection().get(ExtensionProtocolMetadataStorage.class);
 
@@ -134,9 +134,9 @@ public class ClientsideFixes {
             } else {
                 return 64 - (MinecraftClient.getInstance().getSession().getUsername().length() + 2);
             }
-        } else if (ProtocolHack.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return 512;
-        } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
             return 100;
         } else {
             return 256;

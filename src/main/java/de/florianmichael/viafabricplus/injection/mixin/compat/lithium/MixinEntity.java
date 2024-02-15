@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.compat.lithium;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,7 +34,7 @@ public abstract class MixinEntity {
     @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
     @Redirect(method = "lithiumCollideMultiAxisMovement", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0), remap = false)
     private static double alwaysSortYXZ(double a) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return Double.MAX_VALUE;
         } else {
             return Math.abs(a);

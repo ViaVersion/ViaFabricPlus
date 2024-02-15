@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.s
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,7 +41,7 @@ public abstract class MixinScreenHandler implements IScreenHandler {
 
     @Redirect(method = "updateSlotStacks", at = @At(value = "FIELD", target = "Lnet/minecraft/screen/ScreenHandler;cursorStack:Lnet/minecraft/item/ItemStack;"))
     private void preventUpdate(ScreenHandler instance, ItemStack value) {
-        if (ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             this.cursorStack = value;
         }
     }

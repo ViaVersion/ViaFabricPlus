@@ -28,7 +28,7 @@ import com.viaversion.viaversion.protocols.protocol1_12to1_11_1.Protocol1_12To1_
 import com.viaversion.viaversion.protocols.protocol1_9_3to1_9_1_2.ServerboundPackets1_9_3;
 import de.florianmichael.viafabricplus.fixes.data.ItemRegistryDiff;
 import de.florianmichael.viafabricplus.injection.access.IMouseKeyboard;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
@@ -89,17 +89,17 @@ public abstract class MixinMinecraftClient {
 
     @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;shouldSwingHand()Z", ordinal = 0))
     private boolean disableSwing(ActionResult instance) {
-        return instance.shouldSwingHand() && ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
+        return instance.shouldSwingHand() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
     @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;shouldSwingHand()Z", ordinal = 2))
     private boolean disableSwing2(ActionResult instance) {
-        return instance.shouldSwingHand() && ProtocolHack.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
+        return instance.shouldSwingHand() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
     @WrapWithCondition(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
     private boolean disableSwing(ClientPlayerEntity instance, Hand hand) {
-        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_14_4);
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4);
     }
 
     @Inject(method = "tick",
@@ -122,7 +122,7 @@ public abstract class MixinMinecraftClient {
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/TutorialManager;onInventoryOpened()V", shift = At.Shift.AFTER))
     private void sendOpenInventoryPacket(CallbackInfo ci) throws Exception {
         if (DebugSettings.global().sendOpenInventoryPacket.isEnabled()) {
-            final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, ProtocolHack.getPlayNetworkUserConnection());
+            final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, ProtocolTranslator.getPlayNetworkUserConnection());
             clientStatus.write(Type.VAR_INT, 2); // Open Inventory Achievement
             clientStatus.scheduleSendToServer(Protocol1_12To1_11_1.class);
         }
@@ -130,19 +130,19 @@ public abstract class MixinMinecraftClient {
 
     @Inject(method = "doAttack", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;crosshairTarget:Lnet/minecraft/util/hit/HitResult;", shift = At.Shift.BEFORE, ordinal = 0))
     private void fixSwingPacketOrder(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             this.player.swingHand(Hand.MAIN_HAND);
         }
     }
 
     @WrapWithCondition(method = "doAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
     private boolean fixSwingPacketOrder(ClientPlayerEntity instance, Hand hand) {
-        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_8);
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
     }
 
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 1))
     private int moveCooldownIncrement(MinecraftClient instance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 0;
         } else {
             return attackCooldown;
@@ -151,7 +151,7 @@ public abstract class MixinMinecraftClient {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;handleInputEvents()V", shift = At.Shift.BEFORE))
     private void moveCooldownIncrement(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             if (this.attackCooldown > 0) {
                 --this.attackCooldown;
             }
@@ -160,7 +160,7 @@ public abstract class MixinMinecraftClient {
 
     @ModifyExpressionValue(method = "handleBlockBreaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
     private boolean allowBlockBreakAndItemUsageAtTheSameTime(boolean original) {
-        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
     }
 
 }

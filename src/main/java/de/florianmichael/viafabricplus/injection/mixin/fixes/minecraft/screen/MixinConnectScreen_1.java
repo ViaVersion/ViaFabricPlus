@@ -28,7 +28,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.network.ClientConnection;
@@ -62,7 +62,7 @@ public abstract class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", remap = false))
     private String getRealAddress(InetSocketAddress instance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
             return field_33737.getAddress();
         } else {
             return instance.getHostName();
@@ -71,7 +71,7 @@ public abstract class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getPort()I", remap = false))
     private int getRealPort(InetSocketAddress instance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
             return field_33737.getPort();
         } else {
             return instance.getPort();
@@ -82,7 +82,7 @@ public abstract class MixinConnectScreen_1 {
     private void setupConnectionSessions(CallbackInfo ci, @Local ClientConnection clientConnection) {
         final UserConnection userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
-        if (ProtocolHack.getTargetVersion().betweenInclusive(ProtocolVersion.v1_19, ProtocolVersion.v1_19_1)) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_19, ProtocolVersion.v1_19_1)) {
             final PlayerKeyPair keyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
             if (keyPair != null) {
                 final PlayerPublicKey.PublicKeyData publicKeyData = keyPair.publicKey().data();
@@ -92,7 +92,7 @@ public abstract class MixinConnectScreen_1 {
                 final UUID uuid = this.field_33738.getSession().getUuidOrNull();
 
                 userConnection.put(new ChatSession1_19_1(uuid, privateKey, new ProfileKey(expiresAt, publicKey, publicKeyData.keySignature())));
-                if (ProtocolHack.getTargetVersion() == ProtocolVersion.v1_19) {
+                if (ProtocolTranslator.getTargetVersion() == ProtocolVersion.v1_19) {
                     final var legacyKeySignature = ((ILegacyKeySignatureStorage) (Object) publicKeyData).viafabricplus$getLegacyPublicKeySignature();
                     if (legacyKeySignature != null) {
                         userConnection.put(new ChatSession1_19_0(uuid, privateKey, new ProfileKey(expiresAt, publicKey, legacyKeySignature)));
@@ -101,7 +101,7 @@ public abstract class MixinConnectScreen_1 {
             } else {
                 ViaFabricPlus.global().getLogger().error("Could not get public key signature. Joining servers with enforce-secure-profiles enabled will not work!");
             }
-        } else if (ProtocolHack.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
+        } else if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
             final var bedrockSession = ViaFabricPlus.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
             if (bedrockSession != null) {
                 final StepMCChain.MCChain mcChain = bedrockSession.getMcChain();

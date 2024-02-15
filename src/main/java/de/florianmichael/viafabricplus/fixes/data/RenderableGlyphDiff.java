@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.fixes.data;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntConsumer;
@@ -975,7 +975,7 @@ public class RenderableGlyphDiff {
      * @return true if the given code point is renderable in the current version of the game
      */
     public static boolean isGlyphRenderable(final int codePoint) {
-        final ProtocolVersion targetVersion = ProtocolHack.getTargetVersion();
+        final ProtocolVersion targetVersion = ProtocolTranslator.getTargetVersion();
 
         if (targetVersion.newerThanOrEqualTo(v1_20)) { // 1.20 switched to using Unihex as a main font
             return !RENDERABLE_GLYPH_DIFF.containsKey(codePoint) || targetVersion.newerThanOrEqualTo(RENDERABLE_GLYPH_DIFF.get(codePoint));

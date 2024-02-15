@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,12 +41,12 @@ public interface MixinEquipment {
 
     @Redirect(method = "equipAndSwap", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isCreative()Z"))
     default boolean removeCreativeCondition(PlayerEntity instance) {
-        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_20) && instance.isCreative();
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20) && instance.isCreative();
     }
 
     @Inject(method = "equipAndSwap", at = @At("HEAD"), cancellable = true)
     private void cancelArmorSwap(Item item, World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             final ItemStack heldItem = user.getStackInHand(hand);
             final EquipmentSlot targetSlot = MobEntity.getPreferredEquipmentSlot(heldItem);
             final ItemStack targetItem = user.getEquippedStack(targetSlot);

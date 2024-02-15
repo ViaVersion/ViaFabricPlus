@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.passive.AbstractHorseEntity;
@@ -39,7 +39,7 @@ public abstract class MixinSkeletonHorseEntity extends AbstractHorseEntity {
 
     @Inject(method = "getBaseMovementSpeedMultiplier", at = @At("HEAD"), cancellable = true)
     private void modifyBaseMovementSpeedMultiplier(CallbackInfoReturnable<Float> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(super.getBaseMovementSpeedMultiplier());
         }
     }

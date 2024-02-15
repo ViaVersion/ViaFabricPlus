@@ -26,7 +26,7 @@ import de.florianmichael.viafabricplus.fixes.tracker.JoinGameDataTracker;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IChunkTracker;
 import de.florianmichael.viafabricplus.injection.access.IRakSessionCodec;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
@@ -60,7 +60,7 @@ public abstract class MixinDebugHud {
         if (MinecraftClient.getInstance().isInSingleplayer() && MinecraftClient.getInstance().player != null) {
             return;
         }
-        final UserConnection userConnection = ProtocolHack.getPlayNetworkUserConnection();
+        final UserConnection userConnection = ProtocolTranslator.getPlayNetworkUserConnection();
         if (userConnection == null) { // Via is not translating this session
             return;
         }

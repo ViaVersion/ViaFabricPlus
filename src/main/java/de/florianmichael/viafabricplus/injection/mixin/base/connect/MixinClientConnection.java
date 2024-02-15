@@ -25,8 +25,8 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.protocoltranslator.netty.ViaFabricPlusVLLegacyPipeline;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -138,10 +138,10 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, ClientConnection connection, CallbackInfoReturnable<ChannelFuture> cir) {
         ProtocolVersion targetVersion = ((IClientConnection) connection).viaFabricPlus$getTargetVersion();
         if (targetVersion == null) { // No server specific override
-            targetVersion = ProtocolHack.getTargetVersion();
+            targetVersion = ProtocolTranslator.getTargetVersion();
         }
-        if (targetVersion == ProtocolHack.AUTO_DETECT_PROTOCOL) { // Auto-detect enabled (when pinging always use native version). Auto-detect is resolved in ConnectScreen mixin
-            targetVersion = ProtocolHack.NATIVE_VERSION;
+        if (targetVersion == ProtocolTranslator.AUTO_DETECT_PROTOCOL) { // Auto-detect enabled (when pinging always use native version). Auto-detect is resolved in ConnectScreen mixin
+            targetVersion = ProtocolTranslator.NATIVE_VERSION;
         }
 
         ((IClientConnection) connection).viaFabricPlus$setTargetVersion(targetVersion);

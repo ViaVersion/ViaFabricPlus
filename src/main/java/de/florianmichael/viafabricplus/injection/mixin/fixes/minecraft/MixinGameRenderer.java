@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.Entity;
@@ -44,7 +44,7 @@ public abstract class MixinGameRenderer {
 
     @ModifyExpressionValue(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"))
     private HitResult bedrockReachAroundRaycast(HitResult hitResult) {
-        if (ProtocolHack.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             final Entity entity = this.client.getCameraEntity();
             if (hitResult.getType() != HitResult.Type.MISS) return hitResult;
             if (!this.viaFabricPlus$canReachAround(entity)) return hitResult;

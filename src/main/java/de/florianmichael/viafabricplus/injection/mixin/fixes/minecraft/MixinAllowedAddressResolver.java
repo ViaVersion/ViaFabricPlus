@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.network.Address;
 import net.minecraft.client.network.AddressResolver;
 import net.minecraft.client.network.AllowedAddressResolver;
@@ -44,7 +44,7 @@ public abstract class MixinAllowedAddressResolver {
 
     @Inject(method = "resolve", at = @At("HEAD"), cancellable = true)
     private void oldResolveBehaviour(ServerAddress address, CallbackInfoReturnable<Optional<Address>> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4) || ProtocolHack.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             cir.setReturnValue(this.addressResolver.resolve(address));
         }
     }

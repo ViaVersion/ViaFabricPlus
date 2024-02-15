@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
@@ -65,12 +65,12 @@ public abstract class MixinChatScreen {
 
     @WrapWithCondition(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;setText(Ljava/lang/String;)V"))
     public boolean moveSetTextDown(TextFieldWidget instance, String text) {
-        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_12_2);
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2);
     }
 
     @Inject(method = "init", at = @At("RETURN"))
     private void moveSetTextDown(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             this.chatField.setText(this.originalChatText);
             this.chatInputSuggestor.refresh();
         }
@@ -92,7 +92,7 @@ public abstract class MixinChatScreen {
 
     @Unique
     private boolean viaFabricPlus$keepTabComplete() {
-        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) || !this.chatField.getText().startsWith("/");
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) || !this.chatField.getText().startsWith("/");
     }
 
 }

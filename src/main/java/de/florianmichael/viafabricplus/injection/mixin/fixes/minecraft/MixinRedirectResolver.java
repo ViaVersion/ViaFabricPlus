@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.network.RedirectResolver;
 import net.minecraft.client.network.ServerAddress;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -36,7 +36,7 @@ public interface MixinRedirectResolver {
 
     @Inject(method = "method_36911", at = @At("HEAD"), cancellable = true)
     private static void disableSrvForPre1_3(DirContext context, ServerAddress address, CallbackInfoReturnable<Optional<ServerAddress>> cir) {
-        if (ProtocolHack.getTargetVersion().olderThan(LegacyProtocolVersion.r1_3_1tor1_3_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_3_1tor1_3_2)) {
             cir.setReturnValue(Optional.empty());
         }
     }

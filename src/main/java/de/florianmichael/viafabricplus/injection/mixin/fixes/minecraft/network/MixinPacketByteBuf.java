@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IItemStack;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -36,7 +36,7 @@ public abstract class MixinPacketByteBuf {
 
     @Redirect(method = "readItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setNbt(Lnet/minecraft/nbt/NbtCompound;)V"))
     private void removeViaFabricPlusTag(ItemStack instance, NbtCompound tag) {
-        if (tag != null && tag.contains(ClientsideFixes.ITEM_COUNT_NBT_TAG, NbtElement.BYTE_TYPE) && ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
+        if (tag != null && tag.contains(ClientsideFixes.ITEM_COUNT_NBT_TAG, NbtElement.BYTE_TYPE) && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
             final IItemStack mixinItemStack = ((IItemStack) (Object) instance);
             mixinItemStack.viaFabricPlus$set1_10Count(tag.getByte(ClientsideFixes.ITEM_COUNT_NBT_TAG));
             tag.remove(ClientsideFixes.ITEM_COUNT_NBT_TAG);

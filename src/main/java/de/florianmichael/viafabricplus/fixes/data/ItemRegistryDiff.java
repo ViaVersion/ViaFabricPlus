@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.fixes.data;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.item.Item;
@@ -1365,7 +1365,7 @@ public class ItemRegistryDiff {
      * @return true if the item exists in the current version, false otherwise, this will also check for CPE items (CustomBlocks V1 extension)
      */
     public static boolean keepItem(final Item item) {
-        if (ProtocolHack.getTargetVersion().equals(c0_30cpe)) {
+        if (ProtocolTranslator.getTargetVersion().equals(c0_30cpe)) {
             final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
             if (handler == null) {
                 // Don't drop any items if the connection is not established yet
@@ -1380,7 +1380,7 @@ public class ItemRegistryDiff {
             }
         }
 
-        return contains(item, ProtocolHack.getTargetVersion());
+        return contains(item, ProtocolTranslator.getTargetVersion());
     }
 
     /**

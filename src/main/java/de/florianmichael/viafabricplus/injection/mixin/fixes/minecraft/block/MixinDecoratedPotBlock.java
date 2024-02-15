@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DecoratedPotBlock;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,7 +39,7 @@ public abstract class MixinDecoratedPotBlock {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     private void alwaysPass(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             cir.setReturnValue(ActionResult.PASS);
         }
     }

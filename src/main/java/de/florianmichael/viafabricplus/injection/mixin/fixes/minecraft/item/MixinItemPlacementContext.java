@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.Material1_19_4;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,9 +48,9 @@ public abstract class MixinItemPlacementContext extends ItemUsageContext {
         final ItemPlacementContext self = (ItemPlacementContext) (Object) this;
         final PlayerEntity player = self.getPlayer();
 
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             final BlockPos placementPos = self.getBlockPos();
-            final double blockPosCenterFactor = ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
+            final double blockPosCenterFactor = ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
 
             if (Math.abs(player.getX() - (placementPos.getX() + blockPosCenterFactor)) < 2 && Math.abs(player.getZ() - (placementPos.getZ() + blockPosCenterFactor)) < 2) {
                 final double eyeY = player.getY() + player.getEyeHeight(player.getPose());
@@ -72,7 +72,7 @@ public abstract class MixinItemPlacementContext extends ItemUsageContext {
 
     @Inject(method = "canPlace", at = @At("RETURN"), cancellable = true)
     private void canPlace1_12_2(CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValueZ() && ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (!cir.getReturnValueZ() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(Material1_19_4.getMaterial(this.getWorld().getBlockState(this.getBlockPos())).equals(Material1_19_4.DECORATION) && Block.getBlockFromItem(this.getStack().getItem()).equals(Blocks.ANVIL));
         }
     }

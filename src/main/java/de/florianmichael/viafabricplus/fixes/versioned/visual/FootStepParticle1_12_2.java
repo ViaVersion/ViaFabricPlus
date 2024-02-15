@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.fixes.versioned.visual;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.client.particle.*;
@@ -96,7 +96,7 @@ public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
 
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            if (ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
+            if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
                 throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
             }
 

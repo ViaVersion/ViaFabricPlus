@@ -26,7 +26,7 @@ import com.viaversion.viaversion.protocols.protocol1_9to1_8.ArmorType;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.ClientboundPackets1_9;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.Protocol1_9To1_8;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
@@ -48,7 +48,7 @@ public class ArmorHudEmulation1_8 {
             }
 
             if (MinecraftClient.getInstance().player != null) {
-                final UserConnection userConnection = ProtocolHack.getPlayNetworkUserConnection();
+                final UserConnection userConnection = ProtocolTranslator.getPlayNetworkUserConnection();
                 if (userConnection != null) {
                     try {
                         sendArmorUpdate(userConnection);

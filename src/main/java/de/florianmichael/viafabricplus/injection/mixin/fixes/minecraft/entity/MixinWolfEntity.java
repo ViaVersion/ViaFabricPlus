@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.tracker.WolfHealthTracker;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.passive.TameableEntity;
@@ -58,7 +58,7 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     private void fixWolfInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             final ItemStack itemStack = player.getStackInHand(hand);
             final Item item = itemStack.getItem();
             if (this.isTamed()) {
@@ -90,7 +90,7 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
 
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/WolfEntity;getHealth()F"))
     private float fixWolfHealth(WolfEntity instance) {
-        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return this.viaFabricPlus$getWolfHealth();
         } else {
             return instance.getHealth();
@@ -99,7 +99,7 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
 
     @Unique
     private float viaFabricPlus$getWolfHealth() {
-        return WolfHealthTracker.get(ProtocolHack.getPlayNetworkUserConnection()).getWolfHealth(this.getId(), this.getHealth());
+        return WolfHealthTracker.get(ProtocolTranslator.getPlayNetworkUserConnection()).getWolfHealth(this.getId(), this.getHealth());
     }
 
 }
