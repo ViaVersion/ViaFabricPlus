@@ -19,17 +19,17 @@
 
 package de.florianmichael.viafabricplus.injection.access;
 
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
 public interface IServerInfo {
 
-    VersionEnum viaFabricPlus$forcedVersion();
-    void viaFabricPlus$forceVersion(final VersionEnum version);
+    ProtocolVersion viaFabricPlus$forcedVersion();
+    void viaFabricPlus$forceVersion(final ProtocolVersion version);
 
     boolean viaFabricPlus$passedDirectConnectScreen();
     void viaFabricPlus$passDirectConnectScreen();
 
-    VersionEnum viaFabricPlus$translatingVersion();
-    void viaFabricPlus$setTranslatingVersion(final VersionEnum version);
+    ProtocolVersion viaFabricPlus$translatingVersion();
+    void viaFabricPlus$setTranslatingVersion(final ProtocolVersion version);
 
 }

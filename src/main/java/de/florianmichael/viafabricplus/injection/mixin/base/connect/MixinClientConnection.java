@@ -22,11 +22,11 @@ package de.florianmichael.viafabricplus.injection.mixin.base.connect;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.protocolhack.netty.ViaFabricPlusVLLegacyPipeline;
-import de.florianmichael.viafabricplus.protocolhack.util.VersionEnumExtension;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -38,11 +38,12 @@ import net.minecraft.network.encryption.PacketDecryptor;
 import net.minecraft.network.encryption.PacketEncryptor;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.profiler.PerformanceLog;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
 import net.raphimc.vialoader.netty.VLPipeline;
 import net.raphimc.vialoader.netty.viabedrock.PingEncapsulationCodec;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.cloudburstmc.netty.channel.raknet.RakChannelFactory;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -74,7 +75,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     private UserConnection viaFabricPlus$userConnection;
 
     @Unique
-    private VersionEnum viaFabricPlus$serverVersion;
+    private ProtocolVersion viaFabricPlus$serverVersion;
 
     @Unique
     private Cipher viaFabricPlus$decryptionCipher;
@@ -87,7 +88,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
     private void storeDecryptionCipher(Cipher decryptionCipher, Cipher encryptionCipher, CallbackInfo ci) {
-        if (this.viaFabricPlus$serverVersion != null /* This happens when opening a lan server and people are joining */ && this.viaFabricPlus$serverVersion.isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
+        if (this.viaFabricPlus$serverVersion != null /* This happens when opening a lan server and people are joining */ && this.viaFabricPlus$serverVersion.olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             // Minecraft's encryption code is bad for us, we need to reorder the pipeline
             ci.cancel();
 
@@ -109,14 +110,14 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         super.channelRegistered(ctx);
-        if (VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion)) { // Call channelActive manually when the channel is registered
+        if (BedrockProtocolVersion.bedrockLatest.equals(this.viaFabricPlus$serverVersion)) { // Call channelActive manually when the channel is registered
             this.channelActive(ctx);
         }
     }
 
     @WrapWithCondition(method = "channelActive", at = @At(value = "INVOKE", target = "Lio/netty/channel/SimpleChannelInboundHandler;channelActive(Lio/netty/channel/ChannelHandlerContext;)V", remap = false))
     private boolean dontCallChannelActiveTwice(SimpleChannelInboundHandler<Packet<?>> instance, ChannelHandlerContext channelHandlerContext) {
-        return !VersionEnum.bedrockLatest.equals(this.viaFabricPlus$serverVersion);
+        return !BedrockProtocolVersion.bedrockLatest.equals(this.viaFabricPlus$serverVersion);
     }
 
     @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE))
@@ -135,11 +136,11 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At("HEAD"))
     private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, ClientConnection connection, CallbackInfoReturnable<ChannelFuture> cir) {
-        VersionEnum targetVersion = ((IClientConnection) connection).viaFabricPlus$getTargetVersion();
+        ProtocolVersion targetVersion = ((IClientConnection) connection).viaFabricPlus$getTargetVersion();
         if (targetVersion == null) { // No server specific override
             targetVersion = ProtocolHack.getTargetVersion();
         }
-        if (targetVersion == VersionEnumExtension.AUTO_DETECT) { // Auto-detect enabled (when pinging always use native version). Auto-detect is resolved in ConnectScreen mixin
+        if (targetVersion == ProtocolHack.AUTO_DETECT_PROTOCOL) { // Auto-detect enabled (when pinging always use native version). Auto-detect is resolved in ConnectScreen mixin
             targetVersion = ProtocolHack.NATIVE_VERSION;
         }
 
@@ -148,7 +149,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;channel(Ljava/lang/Class;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false))
     private static AbstractBootstrap<?, ?> useRakNetChannelFactory(Bootstrap instance, Class<? extends Channel> channelTypeClass, @Local(argsOnly = true) ClientConnection clientConnection) {
-        if (VersionEnum.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getTargetVersion())) {
+        if (BedrockProtocolVersion.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getTargetVersion())) {
             return instance.channelFactory(channelTypeClass == EpollSocketChannel.class ? RakChannelFactory.client(EpollDatagramChannel.class) : RakChannelFactory.client(NioDatagramChannel.class));
         } else {
             return instance.channel(channelTypeClass);
@@ -157,7 +158,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;connect(Ljava/net/InetAddress;I)Lio/netty/channel/ChannelFuture;", remap = false))
     private static ChannelFuture useRakNetPingHandlers(Bootstrap instance, InetAddress inetHost, int inetPort, @Local(argsOnly = true) ClientConnection clientConnection, @Local(argsOnly = true) boolean isConnecting) {
-        if (VersionEnum.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getTargetVersion()) && !isConnecting) {
+        if (BedrockProtocolVersion.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getTargetVersion()) && !isConnecting) {
             // Bedrock edition / RakNet has different handlers for pinging a server
             return instance.register().syncUninterruptibly().channel().bind(new InetSocketAddress(0)).addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE, (ChannelFutureListener) f -> {
                 if (f.isSuccess()) {
@@ -197,12 +198,12 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     }
 
     @Override
-    public VersionEnum viaFabricPlus$getTargetVersion() {
+    public ProtocolVersion viaFabricPlus$getTargetVersion() {
         return this.viaFabricPlus$serverVersion;
     }
 
     @Override
-    public void viaFabricPlus$setTargetVersion(final VersionEnum serverVersion) {
+    public void viaFabricPlus$setTargetVersion(final ProtocolVersion serverVersion) {
         this.viaFabricPlus$serverVersion = serverVersion;
     }
 

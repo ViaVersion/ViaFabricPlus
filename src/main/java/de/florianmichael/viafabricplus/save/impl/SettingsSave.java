@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.save.impl;
 
 import com.google.gson.JsonObject;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.save.AbstractSave;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
@@ -28,7 +29,6 @@ import de.florianmichael.viafabricplus.settings.base.ButtonSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
-import net.raphimc.vialoader.util.VersionEnum;
 
 public class SettingsSave extends AbstractSave {
 
@@ -51,7 +51,7 @@ public class SettingsSave extends AbstractSave {
             object.add(AbstractSetting.mapTranslationKey(ChatUtil.uncoverTranslationKey(group.getName())), groupObject);
         }
 
-        object.addProperty("selected-protocol-version", ProtocolHack.getTargetVersion().getOriginalVersion());
+        object.addProperty("selected-protocol-version", ProtocolHack.getTargetVersion().getName());
     }
 
     @Override
@@ -67,9 +67,8 @@ public class SettingsSave extends AbstractSave {
         }
 
         if (GeneralSettings.global().saveSelectedProtocolVersion.getValue() && object.has("selected-protocol-version")) {
-            final VersionEnum protocolVersion = VersionEnum.fromProtocolId(object.get("selected-protocol-version").getAsInt());
-
-            if (protocolVersion != VersionEnum.UNKNOWN) {
+            final ProtocolVersion protocolVersion = ProtocolVersion.getClosest(object.get("selected-protocol-version").getAsString());
+            if (protocolVersion != null) {
                 ProtocolHack.setTargetVersion(protocolVersion);
             }
         } else {

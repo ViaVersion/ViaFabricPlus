@@ -25,8 +25,8 @@ import de.florianmichael.viafabricplus.protocolhack.translator.ItemTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.alpha.protocolb1_0_1_1_1toa1_2_3_5_1_2_6.providers.AlphaInventoryProvider;
-import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
             final ItemStack alphaItem = trackingItems.get(i);
             if (alphaItem.isEmpty()) continue;
 
-            items[i] = ItemTranslator.mcToVia(alphaItem, VersionEnum.b1_8tob1_8_1);
+            items[i] = ItemTranslator.mcToVia(alphaItem, LegacyProtocolVersion.b1_8tob1_8_1);
         }
         return copyItems(items);
     }

@@ -19,10 +19,10 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.GameVersion;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -43,9 +43,9 @@ public abstract class MixinServerResourcePackLoader_4 {
     @Inject(method = "getHeaders", at = @At("TAIL"), cancellable = true)
     private void removeHeaders(CallbackInfoReturnable<Map<String, String>> cir) {
         final LinkedHashMap<String, String> modifiableMap = new LinkedHashMap<>(cir.getReturnValue());
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_3)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
             modifiableMap.remove("X-Minecraft-Version-ID");
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
                 modifiableMap.remove("X-Minecraft-Pack-Format");
                 modifiableMap.remove("User-Agent");
             }

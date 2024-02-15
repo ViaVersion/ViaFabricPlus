@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import net.minecraft.SharedConstants;
@@ -28,7 +29,6 @@ import net.minecraft.network.listener.ClientQueryPacketListener;
 import net.minecraft.network.packet.s2c.query.QueryResponseS2CPacket;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -57,31 +57,11 @@ public abstract class MixinMultiplayerServerListPinger_1 implements ClientQueryP
     }
 
     @Inject(method = "onResponse", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", shift = At.Shift.AFTER))
-    private void setProtocolVersion(CallbackInfo ci) {
-        final VersionEnum version = ((IClientConnection) this.field_3774).viaFabricPlus$getTargetVersion();
-
-        // ViaVersion is not translating the current connection, so we don't need to do anything
-        if (version == null) {
-            return;
-        }
-
-        final boolean isCompatible;
-        if (version.isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
-            // Because of ViaVersion not supporting legacy minecraft versions where protocol ids are overlapping, ViaLegacy
-            // has its own protocol id offset, where realVersion = -(ViaLegacyVersion >> 2). Normally ViaVersion sends the client
-            // version to the client so its detection doesn't break when checking for serverVersion == clientVersion, but since
-            // ViaLegacy doesn't do that, we have to do it ourselves
-            isCompatible = LegacyProtocolVersion.getRealProtocolVersion(version.getVersion()) == this.field_3776.protocolVersion;
-        } else if (version.equals(VersionEnum.bedrockLatest)) {
-            // Bedrock edition doesn't have a protocol id like the Java edition, ViaBedrock also has its own protocol id offset
-            // Which we need to remove to get the real protocol id
-            isCompatible = version.getVersion() - BedrockProtocolVersion.PROTOCOL_ID_OVERLAP_PREVENTION_OFFSET == this.field_3776.protocolVersion;
-        } else {
-            return;
-        }
+    private void fixVersionComparison(CallbackInfo ci) {
+        final ProtocolVersion version = ((IClientConnection) this.field_3774).viaFabricPlus$getTargetVersion();
 
         // If the server is compatible with the client, we set the protocol version to the client version
-        if (isCompatible) {
+        if (version != null && version.getVersion() == this.field_3776.protocolVersion) {
             this.field_3776.protocolVersion = SharedConstants.getProtocolVersion();
         }
     }

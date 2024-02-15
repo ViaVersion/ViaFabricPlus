@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import com.google.common.collect.ImmutableMap;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.BrandCustomPayload;
@@ -28,7 +29,7 @@ import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
 import net.minecraft.network.packet.s2c.custom.DebugGameTestAddMarkerCustomPayload;
 import net.minecraft.network.packet.s2c.custom.DebugGameTestClearCustomPayload;
 import net.minecraft.util.Identifier;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,21 +41,21 @@ import java.util.Map;
 public abstract class MixinCustomPayloadS2CPacket {
 
     @Unique
-    private static final Map<Identifier, VersionEnum> viaFabricPlus$PAYLOAD_DIFF = ImmutableMap.<Identifier, VersionEnum>builder()
-            .put(BrandCustomPayload.ID, VersionEnum.c0_0_15a_1)
-            .put(DebugGameTestAddMarkerCustomPayload.ID, VersionEnum.r1_14)
-            .put(DebugGameTestClearCustomPayload.ID, VersionEnum.r1_14)
+    private static final Map<Identifier, ProtocolVersion> viaFabricPlus$PAYLOAD_DIFF = ImmutableMap.<Identifier, ProtocolVersion>builder()
+            .put(BrandCustomPayload.ID, LegacyProtocolVersion.c0_0_15a_1)
+            .put(DebugGameTestAddMarkerCustomPayload.ID, ProtocolVersion.v1_14)
+            .put(DebugGameTestClearCustomPayload.ID, ProtocolVersion.v1_14)
             .build();
 
     @Redirect(method = "readPayload", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
     private static Object filterAllowedCustomPayloads(Map<?, ?> instance, Object identifier) {
         if (instance.containsKey(identifier)) {
-            if (!viaFabricPlus$PAYLOAD_DIFF.containsKey(identifier) || ProtocolHack.getTargetVersion().isOlderThan(viaFabricPlus$PAYLOAD_DIFF.get(identifier))) {
+            if (!viaFabricPlus$PAYLOAD_DIFF.containsKey(identifier) || ProtocolHack.getTargetVersion().olderThan(viaFabricPlus$PAYLOAD_DIFF.get(identifier))) {
                 return null;
             }
 
             final PacketByteBuf.PacketReader<? extends CustomPayload> reader = (PacketByteBuf.PacketReader<? extends CustomPayload>) instance.get(identifier);
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20tor1_20_1)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
                 return (PacketByteBuf.PacketReader<? extends CustomPayload>) packetByteBuf -> {
                     final CustomPayload result = reader.apply(packetByteBuf);
                     packetByteBuf.skipBytes(packetByteBuf.readableBytes());

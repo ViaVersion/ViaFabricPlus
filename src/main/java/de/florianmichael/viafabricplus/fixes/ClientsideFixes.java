@@ -19,12 +19,13 @@
 
 package de.florianmichael.viafabricplus.fixes;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
+import de.florianmichael.viafabricplus.fixes.data.EntityDimensionDiff;
+import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.GridItemSelectionScreen;
-import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
-import de.florianmichael.viafabricplus.fixes.data.EntityDimensionDiff;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.ArmorHudEmulation1_8;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
@@ -36,9 +37,10 @@ import net.minecraft.client.font.FontStorage;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
-import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.Map;
 import java.util.UUID;
@@ -108,7 +110,7 @@ public class ClientsideFixes {
             }
 
             // Rebuilds the item selection screen grid
-            if (newVersion.isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
+            if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 GridItemSelectionScreen.INSTANCE.itemGrid = null;
             }
         }));
@@ -123,7 +125,7 @@ public class ClientsideFixes {
      * @return The maximum chat length
      */
     public static int getChatLength() {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
             final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
             final ExtensionProtocolMetadataStorage extensionProtocol = ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection().get(ExtensionProtocolMetadataStorage.class);
 
@@ -132,9 +134,9 @@ public class ClientsideFixes {
             } else {
                 return 64 - (MinecraftClient.getInstance().getSession().getUsername().length() + 2);
             }
-        } else if (ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
+        } else if (ProtocolHack.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return 512;
-        } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_9_3tor1_9_4)) {
+        } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
             return 100;
         } else {
             return 256;

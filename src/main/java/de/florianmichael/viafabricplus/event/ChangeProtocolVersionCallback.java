@@ -19,9 +19,9 @@
 
 package de.florianmichael.viafabricplus.event;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.raphimc.vialoader.util.VersionEnum;
 
 /**
  * This event is fired when the user changes the target version in the screen, or if the user joins a server with a different version.
@@ -35,6 +35,6 @@ public interface ChangeProtocolVersionCallback {
         }
     });
 
-    void onChangeProtocolVersion(final VersionEnum oldVersion, final VersionEnum newVersion);
+    void onChangeProtocolVersion(final ProtocolVersion oldVersion, final ProtocolVersion newVersion);
 
 }

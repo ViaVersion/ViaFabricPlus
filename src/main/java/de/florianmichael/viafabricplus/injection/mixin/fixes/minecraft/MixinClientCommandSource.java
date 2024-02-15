@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.network.ClientCommandSource;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -41,7 +41,7 @@ public abstract class MixinClientCommandSource {
 
     @Inject(method = {"getPlayerNames", "getChatSuggestions"}, at = @At("HEAD"), cancellable = true)
     private void returnChatSuggestions(CallbackInfoReturnable<Collection<String>> cir) {
-        if (ProtocolHack.getTargetVersion().equals(VersionEnum.bedrockLatest)) {
+        if (ProtocolHack.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             cir.setReturnValue(this.chatSuggestions);
         }
     }

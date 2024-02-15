@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.fixes.data.recipe;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.inventory.RecipeInputInventory;
@@ -30,7 +31,7 @@ import net.minecraft.recipe.*;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.ScreenHandler;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,30 +44,30 @@ public class Recipes1_11_2 {
     /**
      * @return A list of all recipes for the given version.
      */
-    public static List<RecipeInfo> getRecipes(final VersionEnum targetVersion) {
+    public static List<RecipeInfo> getRecipes(final ProtocolVersion targetVersion) {
         final List<RecipeInfo> recipes = new ArrayList<>();
 
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_4_2)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             recipes.add(RecipeInfo.of(() -> new ArmorDyeRecipe(CraftingRecipeCategory.MISC)));
             recipes.add(RecipeInfo.of(() -> new MapCloningRecipe(CraftingRecipeCategory.MISC)));
             recipes.add(RecipeInfo.of(() -> new MapExtendingRecipe(CraftingRecipeCategory.MISC)));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             recipes.add(RecipeInfo.of(() -> new FireworkRocketRecipe(CraftingRecipeCategory.MISC)));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_11)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_11)) {
             recipes.add(RecipeInfo.of(() -> new ShulkerBoxColoringRecipe(CraftingRecipeCategory.MISC)));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_9)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_9)) {
             recipes.add(RecipeInfo.of(() -> new TippedArrowRecipe(CraftingRecipeCategory.MISC)));
             recipes.add(RecipeInfo.of(() -> new ShieldDecorationRecipe(CraftingRecipeCategory.MISC)));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_8)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_8)) {
             recipes.add(RecipeInfo.of(() -> new RepairItemRecipe(CraftingRecipeCategory.MISC)));
             recipes.add(RecipeInfo.of(() -> new BannerDuplicateRecipe(CraftingRecipeCategory.MISC)));
             recipes.add(RecipeInfo.of(() -> new AddBannerPatternRecipe(CraftingRecipeCategory.MISC)));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_7_2tor1_7_5)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_7_2)) {
             recipes.add(RecipeInfo.of(() -> new BookCloningRecipe(CraftingRecipeCategory.MISC)));
         }
 
@@ -144,7 +145,7 @@ public class Recipes1_11_2 {
         recipes.add(RecipeInfo.shaped(Blocks.BOOKSHELF, "###", "XXX", "###", '#', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS, 'X', Items.BOOK));
         recipes.add(RecipeInfo.shaped(4, Items.ARROW, "X", "#", "Y", '#', Items.STICK, 'X', Items.FLINT, 'Y', Items.FEATHER));
 
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_12)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_12)) {
             recipes.add(RecipeInfo.shapeless("concrete_powder", 8, Blocks.YELLOW_CONCRETE_POWDER, Items.YELLOW_DYE, Blocks.SAND, Blocks.SAND, Blocks.SAND, Blocks.SAND, Blocks.GRAVEL, Blocks.GRAVEL, Blocks.GRAVEL, Blocks.GRAVEL));
             recipes.add(RecipeInfo.shapeless("concrete_powder", 8, Blocks.WHITE_CONCRETE_POWDER, Items.BONE_MEAL, Blocks.SAND, Blocks.SAND, Blocks.SAND, Blocks.SAND, Blocks.GRAVEL, Blocks.GRAVEL, Blocks.GRAVEL, Blocks.GRAVEL));
             recipes.add(RecipeInfo.shapeless("concrete_powder", 8, Blocks.RED_CONCRETE_POWDER, Items.RED_DYE, Blocks.SAND, Blocks.SAND, Blocks.SAND, Blocks.SAND, Blocks.GRAVEL, Blocks.GRAVEL, Blocks.GRAVEL, Blocks.GRAVEL));
@@ -194,26 +195,26 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped("bed", Blocks.BLACK_BED, "###", "XXX", '#', Blocks.BLACK_WOOL, 'X', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS));
         } else {
             recipes.add(RecipeInfo.shapeless(Blocks.WHITE_WOOL, Blocks.WHITE_WOOL, Items.BONE_MEAL));
-            if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_3tob1_3_1)) {
+            if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_3tob1_3_1)) {
                 recipes.add(RecipeInfo.shaped("bed", Blocks.RED_BED, "###", "XXX", '#', Blocks.YELLOW_WOOL, Blocks.BLACK_WOOL, Blocks.BLUE_WOOL, Blocks.BROWN_WOOL, Blocks.CYAN_WOOL, Blocks.GRAY_WOOL, Blocks.GREEN_WOOL, Blocks.LIGHT_BLUE_WOOL, Blocks.LIGHT_GRAY_WOOL, Blocks.WHITE_WOOL, Blocks.RED_WOOL, Blocks.PURPLE_WOOL, Blocks.PINK_WOOL, Blocks.ORANGE_WOOL, Blocks.LIME_WOOL, Blocks.MAGENTA_WOOL, 'X', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS));
             }
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             recipes.add(RecipeInfo.shaped(9, Items.IRON_NUGGET, "#", '#', Items.IRON_INGOT));
             recipes.add(RecipeInfo.shaped("iron_ingot", Items.IRON_INGOT, "###", "###", "###", '#', Items.IRON_NUGGET));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_11)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_11)) {
             recipes.add(RecipeInfo.shaped(Blocks.OBSERVER, "###", "RRQ", "###", 'Q', Items.QUARTZ, 'R', Blocks.REDSTONE_WIRE, '#', Blocks.COBBLESTONE));
             recipes.add(RecipeInfo.shaped(Blocks.PURPLE_SHULKER_BOX, "-", "#", "-", '#', Blocks.CHEST, '-', Items.SHULKER_SHELL));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_10)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_10)) {
             recipes.add(RecipeInfo.shapeless("bonemeal", 9, Items.BONE_MEAL, Blocks.BONE_BLOCK));
             recipes.add(RecipeInfo.shaped(Blocks.BONE_BLOCK, "XXX", "XXX", "XXX", 'X', Items.BONE_MEAL));
             recipes.add(RecipeInfo.shaped(Blocks.MAGMA_BLOCK, "##", "##", '#', Items.MAGMA_CREAM));
             recipes.add(RecipeInfo.shaped(Blocks.NETHER_WART_BLOCK, "###", "###", "###", '#', Blocks.NETHER_WART));
             recipes.add(RecipeInfo.shaped(Blocks.RED_NETHER_BRICKS, "NW", "WN", 'W', Blocks.NETHER_WART, 'N', Items.NETHER_BRICK));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_9)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_9)) {
             recipes.add(RecipeInfo.shapeless(Blocks.TRAPPED_CHEST, Blocks.CHEST, Blocks.TRIPWIRE_HOOK));
             recipes.add(RecipeInfo.shaped(Items.SHIELD, "WoW", "WWW", " W ", 'W', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS, 'o', Items.IRON_INGOT));
             recipes.add(RecipeInfo.shaped(4, Blocks.PURPUR_BLOCK, "FF", "FF", 'F', Items.POPPED_CHORUS_FRUIT));
@@ -233,15 +234,15 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shapeless("red_dye", Items.RED_DYE, Items.BEETROOT));
             recipes.add(RecipeInfo.shaped(Items.BEETROOT_SOUP, "OOO", "OOO", " B ", 'B', Items.BOWL, 'O', Items.BEETROOT));
         } else {
-            if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_5tor1_5_1)) {
+            if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_5tor1_5_1)) {
                 recipes.add(RecipeInfo.shaped(Blocks.TRAPPED_CHEST, "#-", '#', Blocks.CHEST, '-', Blocks.TRIPWIRE_HOOK));
             }
-            if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_3_1tor1_3_2)) {
+            if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2)) {
                 recipes.add(RecipeInfo.shaped(Items.ENCHANTED_GOLDEN_APPLE, "###", "#X#", "###", '#', Items.GOLD_BLOCK, 'X', Items.APPLE));
             }
             recipes.add(RecipeInfo.shaped("boat", Items.OAK_BOAT, "# #", "###", '#', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.BIRCH_PLANKS, Blocks.ACACIA_PLANKS));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_8)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_8)) {
             recipes.add(RecipeInfo.shapeless(Blocks.MOSSY_COBBLESTONE, Blocks.COBBLESTONE, Blocks.VINE));
             recipes.add(RecipeInfo.shapeless(Blocks.MOSSY_STONE_BRICKS, Blocks.STONE_BRICKS, Blocks.VINE));
             recipes.add(RecipeInfo.shaped(Blocks.CHISELED_STONE_BRICKS, "#", "#", '#', Blocks.STONE_BRICK_SLAB));
@@ -305,13 +306,13 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(4, Blocks.POLISHED_ANDESITE, "SS", "SS", 'S', Blocks.ANDESITE));
         } else {
             recipes.add(RecipeInfo.shaped("wooden_fence", 2, Blocks.OAK_FENCE, "###", "###", '#', Items.STICK));
-            if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+            if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
                 recipes.add(RecipeInfo.shaped("wooden_fence_gate", Blocks.OAK_FENCE_GATE, "#W#", "#W#", '#', Items.STICK, 'W', Blocks.OAK_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.BIRCH_PLANKS, Blocks.ACACIA_PLANKS));
             }
             recipes.add(RecipeInfo.shaped(Blocks.IRON_DOOR, "##", "##", "##", '#', Items.IRON_INGOT));
             recipes.add(RecipeInfo.shaped("wooden_door", Blocks.OAK_DOOR, "##", "##", "##", '#', Blocks.OAK_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.BIRCH_PLANKS, Blocks.ACACIA_PLANKS));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_7_2tor1_7_5)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_7_2)) {
             recipes.add(RecipeInfo.shaped("stained_glass", 8, Blocks.YELLOW_STAINED_GLASS, "###", "#X#", "###", '#', Blocks.GLASS, 'X', Items.YELLOW_DYE));
             recipes.add(RecipeInfo.shaped("stained_glass", 8, Blocks.WHITE_STAINED_GLASS, "###", "#X#", "###", '#', Blocks.GLASS, 'X', Items.BONE_MEAL));
             recipes.add(RecipeInfo.shaped("stained_glass", 8, Blocks.RED_STAINED_GLASS, "###", "#X#", "###", '#', Blocks.GLASS, 'X', Items.RED_DYE));
@@ -368,7 +369,7 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(Items.FLINT_AND_STEEL, "A ", " B", 'A', Items.IRON_INGOT, 'B', Items.FLINT));
             recipes.add(RecipeInfo.shaped(Blocks.TNT, "X#X", "#X#", "X#X", '#', Blocks.SAND, 'X', Items.GUNPOWDER));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_6_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_6_1)) {
             recipes.add(RecipeInfo.shaped(Items.GOLDEN_APPLE, "###", "#X#", "###", '#', Items.GOLD_INGOT, 'X', Items.APPLE));
             recipes.add(RecipeInfo.shaped(Items.GLISTERING_MELON_SLICE, "###", "#X#", "###", '#', Items.GOLD_NUGGET, 'X', Items.MELON_SLICE));
             recipes.add(RecipeInfo.shaped("carpet", 3, Blocks.YELLOW_CARPET, "##", '#', Blocks.YELLOW_WOOL));
@@ -410,11 +411,11 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(9, Items.COAL, "#", '#', Blocks.COAL_BLOCK));
         } else {
             recipes.add(RecipeInfo.shaped(Items.GOLDEN_APPLE, "###", "#X#", "###", '#', Items.GOLD_NUGGET, 'X', Items.APPLE));
-            if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_0_0tor1_0_1)) {
+            if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_0_0tor1_0_1)) {
                 recipes.add(RecipeInfo.shapeless(Items.GLISTERING_MELON_SLICE, Items.GOLD_NUGGET, Items.MELON_SLICE));
             }
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_5tor1_5_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_5tor1_5_1)) {
             recipes.add(RecipeInfo.shaped(6, Blocks.SNOW, "###", '#', Blocks.SNOW_BLOCK));
             recipes.add(RecipeInfo.shaped(Blocks.QUARTZ_BLOCK, "##", "##", '#', Items.QUARTZ));
             recipes.add(RecipeInfo.shaped(2, Blocks.QUARTZ_PILLAR, "#", "#", '#', Blocks.QUARTZ_BLOCK));
@@ -434,10 +435,10 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(Blocks.REDSTONE_BLOCK, "###", "###", "###", '#', Blocks.REDSTONE_WIRE));
             recipes.add(RecipeInfo.shaped(9, Blocks.REDSTONE_WIRE, "#", '#', Blocks.REDSTONE_BLOCK));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             recipes.add(RecipeInfo.shaped(6, Blocks.NETHER_BRICK_SLAB, "###", '#', Blocks.NETHER_BRICKS));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_4_2)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             recipes.add(RecipeInfo.shaped(6, Blocks.COBBLESTONE_WALL, "###", "###", '#', Blocks.COBBLESTONE));
             recipes.add(RecipeInfo.shaped(6, Blocks.MOSSY_COBBLESTONE_WALL, "###", "###", '#', Blocks.MOSSY_COBBLESTONE));
             recipes.add(RecipeInfo.shaped(Blocks.FLOWER_POT, "# #", " # ", '#', Items.BRICK));
@@ -449,7 +450,7 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(Blocks.BEACON, "GGG", "GSG", "OOO", 'S', Items.NETHER_STAR, 'G', Blocks.GLASS, 'O', Blocks.OBSIDIAN));
             recipes.add(RecipeInfo.shapeless(Items.PUMPKIN_PIE, Blocks.CARVED_PUMPKIN, Items.SUGAR, Items.EGG));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_3_1tor1_3_2)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2)) {
             recipes.add(RecipeInfo.shapeless(Items.WRITABLE_BOOK, Items.BOOK, Items.INK_SAC, Items.FEATHER));
             recipes.add(RecipeInfo.shapeless(Items.BOOK, Items.PAPER, Items.PAPER, Items.PAPER, Items.LEATHER));
             recipes.add(RecipeInfo.shaped(3, Blocks.OAK_SIGN, "###", "###", " X ", '#', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS, 'X', Items.STICK));
@@ -466,17 +467,17 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(Blocks.EMERALD_BLOCK, "###", "###", "###", '#', Items.EMERALD));
             recipes.add(RecipeInfo.shaped(9, Items.EMERALD, "#", '#', Blocks.EMERALD_BLOCK));
         } else {
-            if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_2_1tor1_2_3)) {
+            if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_2_1tor1_2_3)) {
                 recipes.add(RecipeInfo.shaped("wooden_slab", 6, Blocks.OAK_SLAB, "###", '#', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS));
             } else {
-                if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_3tob1_3_1)) {
+                if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_3tob1_3_1)) {
                     recipes.add(RecipeInfo.shaped("wooden_slab", 3, Blocks.OAK_SLAB, "###", '#', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS));
                 }
             }
             recipes.add(RecipeInfo.shaped(Items.BOOK, "#", "#", "#", '#', Items.PAPER));
             recipes.add(RecipeInfo.shaped(Blocks.OAK_SIGN, "###", "###", " X ", '#', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS, 'X', Items.STICK));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_2_4tor1_2_5)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
             recipes.add(RecipeInfo.shaped("planks", 4, Blocks.BIRCH_PLANKS, "#", '#', Blocks.BIRCH_LOG));
             recipes.add(RecipeInfo.shaped("planks", 4, Blocks.SPRUCE_PLANKS, "#", '#', Blocks.SPRUCE_LOG));
             recipes.add(RecipeInfo.shaped("planks", 4, Blocks.JUNGLE_PLANKS, "#", '#', Blocks.JUNGLE_LOG));
@@ -485,7 +486,7 @@ public class Recipes1_11_2 {
         } else {
             recipes.add(RecipeInfo.shaped("planks", 4, Blocks.OAK_PLANKS, "#", '#', Blocks.BIRCH_LOG, Blocks.SPRUCE_LOG, Blocks.JUNGLE_LOG));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_2_1tor1_2_3)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_2_1tor1_2_3)) {
             recipes.add(RecipeInfo.shaped(3, Blocks.LADDER, "# #", "###", "# #", '#', Items.STICK));
             recipes.add(RecipeInfo.shaped(6, Blocks.SMOOTH_STONE_SLAB, "###", '#', Blocks.STONE));
             recipes.add(RecipeInfo.shaped(6, Blocks.SANDSTONE_SLAB, "###", '#', Blocks.SANDSTONE, Blocks.CHISELED_SANDSTONE, Blocks.CUT_SANDSTONE));
@@ -495,22 +496,22 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(Blocks.REDSTONE_LAMP, " R ", "RGR", " R ", 'R', Blocks.REDSTONE_WIRE, 'G', Blocks.GLOWSTONE));
             recipes.add(RecipeInfo.shapeless(3, Items.FIRE_CHARGE, new ItemConvertible[]{Items.GUNPOWDER}, new ItemConvertible[]{Items.BLAZE_POWDER}, new ItemConvertible[]{Items.COAL, Items.CHARCOAL}));
         } else {
-            if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_5tob1_5_2)) {
+            if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2)) {
                 recipes.add(RecipeInfo.shaped(2, Blocks.LADDER, "# #", "###", "# #", '#', Items.STICK));
             } else {
                 recipes.add(RecipeInfo.shaped(1, Blocks.LADDER, "# #", "###", "# #", '#', Items.STICK));
             }
             recipes.add(RecipeInfo.shaped(3, Blocks.SMOOTH_STONE_SLAB, "###", '#', Blocks.STONE));
-            if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_3tob1_3_1)) {
+            if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_3tob1_3_1)) {
                 recipes.add(RecipeInfo.shaped(3, Blocks.SANDSTONE_SLAB, "###", '#', Blocks.SANDSTONE, Blocks.CHISELED_SANDSTONE, Blocks.CUT_SANDSTONE));
                 recipes.add(RecipeInfo.shaped(3, Blocks.COBBLESTONE_SLAB, "###", '#', Blocks.COBBLESTONE));
             }
-            if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+            if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
                 recipes.add(RecipeInfo.shaped(3, Blocks.BRICK_SLAB, "###", '#', Blocks.BRICKS));
                 recipes.add(RecipeInfo.shaped(3, Blocks.STONE_BRICK_SLAB, "###", '#', Blocks.STONE_BRICKS, Blocks.MOSSY_STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS, Blocks.CHISELED_STONE_BRICKS));
             }
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_0_0tor1_0_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_0_0tor1_0_1)) {
             recipes.add(RecipeInfo.shapeless(Items.MUSHROOM_STEW, Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Items.BOWL));
             recipes.add(RecipeInfo.shaped(4, Blocks.NETHER_BRICK_STAIRS, "#  ", "## ", "###", '#', Blocks.NETHER_BRICKS));
             recipes.add(RecipeInfo.shaped(6, Blocks.NETHER_BRICK_FENCE, "###", "###", '#', Blocks.NETHER_BRICKS));
@@ -529,7 +530,7 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(Items.MUSHROOM_STEW, "Y", "X", "#", 'X', Blocks.BROWN_MUSHROOM, 'Y', Blocks.RED_MUSHROOM, '#', Items.BOWL));
             recipes.add(RecipeInfo.shaped(Items.MUSHROOM_STEW, "Y", "X", "#", 'X', Blocks.RED_MUSHROOM, 'Y', Blocks.BROWN_MUSHROOM, '#', Items.BOWL));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             recipes.add(RecipeInfo.shaped(4, Blocks.BRICK_STAIRS, "#  ", "## ", "###", '#', Blocks.BRICKS));
             recipes.add(RecipeInfo.shaped(4, Blocks.STONE_BRICK_STAIRS, "#  ", "## ", "###", '#', Blocks.STONE_BRICKS, Blocks.MOSSY_STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS, Blocks.CHISELED_STONE_BRICKS));
             recipes.add(RecipeInfo.shaped(4, Blocks.STONE_BRICKS, "##", "##", '#', Blocks.STONE));
@@ -538,30 +539,30 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(Blocks.MELON, "MMM", "MMM", "MMM", 'M', Items.MELON_SLICE));
             recipes.add(RecipeInfo.shaped(Blocks.MELON_STEM, "M", 'M', Items.MELON_SLICE));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_7tob1_7_3)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             recipes.add(RecipeInfo.shaped(Blocks.STICKY_PISTON, "S", "P", 'P', Blocks.PISTON, 'S', Items.SLIME_BALL));
             recipes.add(RecipeInfo.shaped(Blocks.PISTON, "TTT", "#X#", "#R#", 'R', Blocks.REDSTONE_WIRE, '#', Blocks.COBBLESTONE, 'T', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS, 'X', Items.IRON_INGOT));
             recipes.add(RecipeInfo.shaped(Items.SHEARS, " #", "# ", '#', Items.IRON_INGOT));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_6tob1_6_6)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_6tob1_6_6)) {
             recipes.add(RecipeInfo.shaped(Blocks.GLOWSTONE, "##", "##", '#', Items.GLOWSTONE_DUST));
             recipes.add(RecipeInfo.shaped(Blocks.WHITE_WOOL, "##", "##", '#', Blocks.TRIPWIRE));
             recipes.add(RecipeInfo.shaped(2, Blocks.OAK_TRAPDOOR, "###", "###", '#', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS));
             recipes.add(RecipeInfo.shaped(Items.MAP, "###", "#X#", "###", '#', Items.PAPER, 'X', Items.COMPASS));
         } else {
-            if (targetVersion.isNewerThanOrEqualTo(VersionEnum.a1_2_0toa1_2_1_1)) {
+            if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
                 recipes.add(RecipeInfo.shaped(Blocks.GLOWSTONE, "###", "###", "###", '#', Items.GLOWSTONE_DUST));
             }
             recipes.add(RecipeInfo.shaped(Blocks.WHITE_WOOL, "###", "###", "###", '#', Blocks.TRIPWIRE));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_5tob1_5_2)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2)) {
             recipes.add(RecipeInfo.shaped(6, Blocks.DETECTOR_RAIL, "X X", "X#X", "XRX", 'R', Blocks.REDSTONE_WIRE, '#', Blocks.STONE_PRESSURE_PLATE, 'X', Items.IRON_INGOT));
             recipes.add(RecipeInfo.shaped(6, Blocks.POWERED_RAIL, "X X", "X#X", "XRX", 'R', Blocks.REDSTONE_WIRE, '#', Items.STICK, 'X', Items.GOLD_INGOT));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_4tob1_4_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1)) {
             recipes.add(RecipeInfo.shaped(8, Items.COOKIE, "#X#", '#', Items.WHEAT, 'X', Blocks.COCOA));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_3tob1_3_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_3tob1_3_1)) {
             recipes.add(RecipeInfo.shaped(Blocks.REPEATER, "#X#", "III", '#', Blocks.REDSTONE_TORCH, 'X', Blocks.REDSTONE_WIRE, 'I', Blocks.STONE));
             recipes.add(RecipeInfo.shaped(Blocks.OAK_PRESSURE_PLATE, "##", '#', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS));
             recipes.add(RecipeInfo.shaped(Blocks.STONE_PRESSURE_PLATE, "##", '#', Blocks.STONE));
@@ -569,7 +570,7 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.shaped(Blocks.OAK_PRESSURE_PLATE, "###", '#', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS));
             recipes.add(RecipeInfo.shaped(Blocks.STONE_PRESSURE_PLATE, "###", '#', Blocks.STONE));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_2_0tob1_2_2)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_2_0tob1_2_2)) {
             recipes.add(RecipeInfo.shaped(Blocks.NOTE_BLOCK, "###", "#X#", "###", '#', Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS, 'X', Blocks.REDSTONE_WIRE));
             recipes.add(RecipeInfo.shaped(Blocks.CAKE, "AAA", "BEB", "CCC", 'A', Items.MILK_BUCKET, 'B', Items.SUGAR, 'C', Items.WHEAT, 'E', Items.EGG));
             recipes.add(RecipeInfo.shaped(Items.SUGAR, "#", '#', Blocks.SUGAR_CANE));
@@ -611,11 +612,11 @@ public class Recipes1_11_2 {
         } else {
             recipes.add(RecipeInfo.shaped(4, Blocks.TORCH, "X", "#", '#', Items.STICK, 'X', Items.COAL));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.a1_2_0toa1_2_1_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
             recipes.add(RecipeInfo.shaped(Blocks.JACK_O_LANTERN, "A", "B", 'A', Blocks.CARVED_PUMPKIN, 'B', Blocks.TORCH));
             recipes.add(RecipeInfo.shaped(Items.CLOCK, " # ", "#X#", " # ", '#', Items.GOLD_INGOT, 'X', Blocks.REDSTONE_WIRE));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.a1_1_0toa1_1_2_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.a1_1_0toa1_1_2_1)) {
             recipes.add(RecipeInfo.shaped(Items.FISHING_ROD, "  #", " #X", "# X", '#', Items.STICK, 'X', Blocks.TRIPWIRE));
             recipes.add(RecipeInfo.shaped(Items.COMPASS, " # ", "#X#", " # ", '#', Items.IRON_INGOT, 'X', Blocks.REDSTONE_WIRE));
         }
@@ -628,7 +629,7 @@ public class Recipes1_11_2 {
         recipes.add(RecipeInfo.smelting(Items.STONE, Items.COBBLESTONE, 0.1F));
         recipes.add(RecipeInfo.smelting(Items.BRICK, Items.CLAY_BALL, 0.3F));
 
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_12)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_12)) {
             recipes.add(RecipeInfo.smelting(Items.WHITE_GLAZED_TERRACOTTA, Items.WHITE_TERRACOTTA, 0.1F));
             recipes.add(RecipeInfo.smelting(Items.ORANGE_GLAZED_TERRACOTTA, Items.ORANGE_TERRACOTTA, 0.1F));
             recipes.add(RecipeInfo.smelting(Items.MAGENTA_GLAZED_TERRACOTTA, Items.MAGENTA_TERRACOTTA, 0.1F));
@@ -646,47 +647,47 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.smelting(Items.RED_GLAZED_TERRACOTTA, Items.RED_TERRACOTTA, 0.1F));
             recipes.add(RecipeInfo.smelting(Items.BLACK_GLAZED_TERRACOTTA, Items.BLACK_TERRACOTTA, 0.1F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_11_1to1_11_2)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             recipes.add(RecipeInfo.smelting(Items.IRON_NUGGET, Ingredient.ofItems(Items.CHAINMAIL_HELMET, Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS, Items.IRON_PICKAXE, Items.IRON_SHOVEL, Items.IRON_AXE, Items.IRON_HOE, Items.IRON_SWORD, Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS, Items.IRON_HORSE_ARMOR), 0.1F));
             recipes.add(RecipeInfo.smelting(Items.GOLD_NUGGET, Ingredient.ofItems(Items.GOLDEN_PICKAXE, Items.GOLDEN_SHOVEL, Items.GOLDEN_AXE, Items.GOLDEN_HOE, Items.GOLDEN_SWORD, Items.GOLDEN_HELMET, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_LEGGINGS, Items.GOLDEN_BOOTS, Items.GOLDEN_HORSE_ARMOR), 0.1F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_9)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_9)) {
             recipes.add(RecipeInfo.smelting(Items.POPPED_CHORUS_FRUIT, Items.CHORUS_FRUIT, 0.1F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_7_2tor1_7_5)) {
+        if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_7_2)) {
             recipes.add(RecipeInfo.smelting(Items.COOKED_RABBIT, Items.RABBIT, 0.35F));
             recipes.add(RecipeInfo.smelting(Items.COOKED_MUTTON, Items.MUTTON, 0.35F));
             recipes.add(RecipeInfo.smelting(Items.CRACKED_STONE_BRICKS, Items.STONE_BRICKS, 0.1F));
             recipes.add(RecipeInfo.smelting(Items.SPONGE, Items.WET_SPONGE, 0.15F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_6_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_6_1)) {
             recipes.add(RecipeInfo.smelting(Items.TERRACOTTA, Items.CLAY, 0.35F));
             recipes.add(RecipeInfo.smelting(Items.COOKED_SALMON, Items.SALMON, 0.35F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_5tor1_5_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_5tor1_5_1)) {
             recipes.add(RecipeInfo.smelting(Items.NETHER_BRICK, Items.NETHERRACK, 0.1F));
             recipes.add(RecipeInfo.smelting(Items.QUARTZ, Items.NETHER_QUARTZ_ORE, 0.2F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_4_2)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             recipes.add(RecipeInfo.smelting(Items.BAKED_POTATO, Items.POTATO, 0.35F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_3_1tor1_3_2)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2)) {
             recipes.add(RecipeInfo.smelting(Items.EMERALD, Items.EMERALD_ORE, 1.0F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.r1_0_0tor1_0_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.r1_0_0tor1_0_1)) {
             recipes.add(RecipeInfo.smelting(Items.COAL, Items.COAL_ORE, 0.1F));
             recipes.add(RecipeInfo.smelting(Items.REDSTONE, Items.REDSTONE_ORE, 0.7F));
             recipes.add(RecipeInfo.smelting(Items.LAPIS_LAZULI, Items.LAPIS_ORE, 0.2F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             recipes.add(RecipeInfo.smelting(Items.COOKED_CHICKEN, Items.CHICKEN, 0.35F));
             recipes.add(RecipeInfo.smelting(Items.COOKED_BEEF, Items.BEEF, 0.35F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.b1_2_0tob1_2_2)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_2_0tob1_2_2)) {
             recipes.add(RecipeInfo.smelting(Items.CHARCOAL, Ingredient.fromTag(ItemTags.LOGS), 0.15F));
             recipes.add(RecipeInfo.smelting(Items.GREEN_DYE, Items.CACTUS, 0.2F));
         }
-        if (targetVersion.isNewerThanOrEqualTo(VersionEnum.a1_2_0toa1_2_1_1)) {
+        if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
             recipes.add(RecipeInfo.smelting(Items.COOKED_COD, Items.COD, 0.35F));
         }
 

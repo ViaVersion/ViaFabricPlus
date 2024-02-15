@@ -31,10 +31,10 @@ import com.viaversion.viaversion.libs.opennbt.tag.builtin.CompoundTag;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.IntTag;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.ListTag;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.Tag;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.model.ClassicLevel;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.storage.ClassicLevelStorage;
-import net.raphimc.vialoader.util.VersionEnum;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -47,7 +47,7 @@ public class WorldHeightSupport {
             parentHandler.handle(wrapper);
             if (wrapper.isCancelled()) return;
 
-            if (VersionEnum.fromUserConnection(wrapper.user()).isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
+            if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 for (Tag dimension : wrapper.get(Type.NAMED_COMPOUND_TAG, 0).<CompoundTag>get("minecraft:dimension_type").<ListTag>get("value")) {
                     changeDimensionTagHeight(wrapper.user(), ((CompoundTag) dimension).get("element"));
                 }
@@ -61,7 +61,7 @@ public class WorldHeightSupport {
             parentHandler.handle(wrapper);
             if (wrapper.isCancelled()) return;
 
-            if (VersionEnum.fromUserConnection(wrapper.user()).isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
+            if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NAMED_COMPOUND_TAG, 0));
             }
         };
@@ -72,7 +72,7 @@ public class WorldHeightSupport {
             parentHandler.handle(wrapper);
             if (wrapper.isCancelled()) return;
 
-            if (VersionEnum.fromUserConnection(wrapper.user()).isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
+            if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 wrapper.resetReader();
                 final Chunk chunk = wrapper.read(new ChunkType1_17(16));
                 wrapper.write(new ChunkType1_17(chunk.getSections().length), chunk);
@@ -162,7 +162,7 @@ public class WorldHeightSupport {
         };
 
         return wrapper -> {
-            if (VersionEnum.fromUserConnection(wrapper.user()).isOlderThanOrEqualTo(VersionEnum.c0_28toc0_30)) {
+            if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 classicLightHandler.handle(wrapper);
             } else {
                 parentHandler.handle(wrapper);

@@ -19,9 +19,9 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
@@ -31,7 +31,7 @@ public abstract class MixinEnchantmentHelper {
 
     @ModifyConstant(method = "getLevelFromNbt", constant = @Constant(intValue = 0))
     private static int usePossibleMinLevel(int constant) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return Short.MIN_VALUE;
         } else {
             return constant;
@@ -40,7 +40,7 @@ public abstract class MixinEnchantmentHelper {
 
     @ModifyConstant(method = "getLevelFromNbt", constant = @Constant(intValue = 255))
     private static int usePossibleMaxLevel(int constant) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return Short.MAX_VALUE;
         } else {
             return constant;

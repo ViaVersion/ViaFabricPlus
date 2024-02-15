@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
@@ -28,7 +29,6 @@ import net.minecraft.client.gui.hud.MessageIndicator;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -65,12 +65,12 @@ public abstract class MixinChatScreen {
 
     @WrapWithCondition(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;setText(Ljava/lang/String;)V"))
     public boolean moveSetTextDown(TextFieldWidget instance, String text) {
-        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_12_2);
+        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_12_2);
     }
 
     @Inject(method = "init", at = @At("RETURN"))
     private void moveSetTextDown(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             this.chatField.setText(this.originalChatText);
             this.chatInputSuggestor.refresh();
         }
@@ -92,7 +92,7 @@ public abstract class MixinChatScreen {
 
     @Unique
     private boolean viaFabricPlus$keepTabComplete() {
-        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_12_2) || !this.chatField.getText().startsWith("/");
+        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) || !this.chatField.getText().startsWith("/");
     }
 
 }

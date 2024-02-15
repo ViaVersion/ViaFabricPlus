@@ -27,7 +27,7 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -62,7 +62,7 @@ public abstract class MixinTextRenderer {
 
     @Inject(method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;IIZ)I", at = @At("HEAD"), cancellable = true)
     private void allowNewLines_String(String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, boolean rightToLeft, CallbackInfoReturnable<Integer> cir) {
-        if (ProtocolHack.getTargetVersion() == VersionEnum.bedrockLatest) {
+        if (ProtocolHack.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
             final List<OrderedText> lines = wrapLines(StringVisitable.plain(rightToLeft ? this.mirror(text) : text), Integer.MAX_VALUE);
             if (lines.size() > 1) {
                 int offsetX = 0;
@@ -76,7 +76,7 @@ public abstract class MixinTextRenderer {
 
     @Inject(method = "draw(Lnet/minecraft/text/Text;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I", at = @At("HEAD"), cancellable = true)
     private void allowNewLines_Text(Text text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, CallbackInfoReturnable<Integer> cir) {
-        if (ProtocolHack.getTargetVersion() == VersionEnum.bedrockLatest) {
+        if (ProtocolHack.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
             final List<OrderedText> lines = wrapLines(text, Integer.MAX_VALUE);
             if (lines.size() > 1) {
                 int offsetX = 0;
@@ -90,7 +90,7 @@ public abstract class MixinTextRenderer {
 
     @Inject(method = "getWidth(Lnet/minecraft/text/StringVisitable;)I", at = @At("HEAD"), cancellable = true)
     private void allowNewLines_getWidth(StringVisitable text, CallbackInfoReturnable<Integer> cir) {
-        if (MinecraftClient.getInstance().world != null && ProtocolHack.getTargetVersion() == VersionEnum.bedrockLatest) {
+        if (MinecraftClient.getInstance().world != null && ProtocolHack.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
             int i = 0;
             for (OrderedText wrapLine : this.wrapLines(text, Integer.MAX_VALUE)) {
                 if (getWidth(wrapLine) >= i) i = getWidth(wrapLine);

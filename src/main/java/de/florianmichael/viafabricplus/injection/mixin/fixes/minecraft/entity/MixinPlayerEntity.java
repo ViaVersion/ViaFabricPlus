@@ -22,6 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
@@ -40,7 +41,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import net.raphimc.vialoader.util.VersionEnum;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -79,7 +80,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Redirect(method = "getMaxRelativeHeadRotation", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isBlocking()Z"))
     private boolean dontModifyHeadRotationWhenBlocking(PlayerEntity instance) {
-        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_20_2) && instance.isBlocking();
+        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_20_2) && instance.isBlocking();
     }
 
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setMovementSpeed(F)V"))
@@ -89,7 +90,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Redirect(method = "getOffGroundSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isSprinting()Z"))
     private boolean useLastSprintingState(PlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             return viaFabricPlus$isSprinting;
         } else {
             return instance.isSprinting();
@@ -98,17 +99,17 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @WrapWithCondition(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
     private boolean dontSwingHand(PlayerEntity instance, Hand hand) {
-        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_15_2);
+        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_15_2);
     }
 
     @Redirect(method = "checkFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
     private boolean allowElytraWhenLevitating(PlayerEntity instance, StatusEffect statusEffect) {
-        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_15_2) && instance.hasStatusEffect(statusEffect);
+        return ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_15_2) && instance.hasStatusEffect(statusEffect);
     }
 
     @Inject(method = "checkFallFlying", at = @At("HEAD"), cancellable = true)
     private void replaceFallFlyingCondition(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_14_4)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             if (!this.isOnGround() && this.getVelocity().y < 0D && !this.isFallFlying()) {
                 final ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
                 if (itemStack.isOf(Items.ELYTRA) && ElytraItem.isUsable(itemStack)) {
@@ -122,7 +123,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @ModifyConstant(method = "getActiveEyeHeight", constant = @Constant(floatValue = 1.27f))
     private float modifySneakEyeHeight(float prevEyeHeight) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return 1.54F;
         } else {
             return prevEyeHeight;
@@ -131,7 +132,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Inject(method = "updatePose", at = @At("HEAD"), cancellable = true)
     private void onUpdatePose(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             final EntityPose pose;
             if (this.isFallFlying()) {
                 pose = EntityPose.FALL_FLYING;
@@ -154,9 +155,9 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
     private void modifyDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
         if (pose == EntityPose.CROUCHING) {
-            if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+            if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 cir.setReturnValue(PlayerEntity.STANDING_DIMENSIONS);
-            } else if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+            } else if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
                 cir.setReturnValue(viaFabricPlus$sneaking_dimensions_v1_13_2);
             }
         }
@@ -164,7 +165,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Redirect(method = "adjustMovementForSneaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getStepHeight()F"))
     private float modifyStepHeight1_10(PlayerEntity instance) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
             return 1.0F;
         } else {
             return instance.getStepHeight();
@@ -173,7 +174,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Inject(method = "getAttackCooldownProgress", at = @At("HEAD"), cancellable = true)
     private void removeAttackCooldown(CallbackInfoReturnable<Float> ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.setReturnValue(1F);
         }
     }
@@ -192,11 +193,11 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
         final float speed = this.inventory.getBlockBreakingSpeed(block);
         final int effLevel = efficiency * efficiency + 1;
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_4tor1_4_5) && this.canHarvest(block)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_4tor1_4_5) && this.canHarvest(block)) {
             f.set(speed + effLevel);
-        } else if (speed > 1F || ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_4_6tor1_4_7)) {
+        } else if (speed > 1F || ProtocolHack.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             if (!this.getMainHandStack().isEmpty()) {
-                if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+                if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
                     if (speed <= 1.0 && !this.canHarvest(block)) {
                         f.set(speed + effLevel * 0.08F);
                     } else {
@@ -210,7 +211,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
     private boolean changeSpeedCalculation(PlayerEntity instance, StatusEffect statusEffect, @Local LocalFloatRef f) {
         final boolean hasMiningFatigue = instance.hasStatusEffect(statusEffect);
-        if (hasMiningFatigue && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_7_6tor1_7_10)) {
+        if (hasMiningFatigue && ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             f.set(f.get() * (1.0F - (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier() + 1) * 0.2F));
             if (f.get() < 0) f.set(0);
             return false; // disable original code
@@ -220,7 +221,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Inject(method = "getReachDistance", at = @At("RETURN"), cancellable = true)
     private static void modifyReachDistance(boolean creative, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThan(VersionEnum.r1_0_0tor1_0_1) && !creative) {
+        if (ProtocolHack.getTargetVersion().olderThan(LegacyProtocolVersion.r1_0_0tor1_0_1) && !creative) {
             cir.setReturnValue(4F);
         }
     }

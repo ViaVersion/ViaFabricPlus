@@ -20,14 +20,14 @@
 package de.florianmichael.viafabricplus.injection.access;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
 public interface IClientConnection {
 
     void viaFabricPlus$setupPreNettyDecryption();
 
-    VersionEnum viaFabricPlus$getTargetVersion();
-    void viaFabricPlus$setTargetVersion(final VersionEnum serverVersion);
+    ProtocolVersion viaFabricPlus$getTargetVersion();
+    void viaFabricPlus$setTargetVersion(final ProtocolVersion serverVersion);
 
     UserConnection viaFabricPlus$getUserConnection();
     void viaFabricPlus$setUserConnection(final UserConnection userConnection);

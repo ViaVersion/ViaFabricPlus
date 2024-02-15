@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -27,9 +28,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(targets = "com.viaversion.viaversion.protocols.protocol1_12to1_11_1.Protocol1_12To1_11_1$3", remap = false)
 public abstract class MixinProtocol1_12To1_11_1 {
 
-    @Redirect(method = "lambda$register$1", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/connection/ProtocolInfo;getProtocolVersion()I"))
-    private static int dontClearRecipes(ProtocolInfo instance) {
-        return -1;
+    @Redirect(method = "lambda$register$1", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/connection/ProtocolInfo;protocolVersion()Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;"))
+    private static ProtocolVersion dontClearRecipes(ProtocolInfo instance) {
+        return ProtocolVersion.unknown;
     }
 
 }

@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.screen.base.PerServerVersionScreen;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
@@ -28,7 +29,6 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -62,7 +62,7 @@ public abstract class MixinAddServerScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void addVersionSetterButton(CallbackInfo ci) {
-        final VersionEnum forcedVersion = ((IServerInfo) server).viaFabricPlus$forcedVersion();
+        final ProtocolVersion forcedVersion = ((IServerInfo) server).viaFabricPlus$forcedVersion();
 
         // Restore input if the user cancels the version selection screen (or if the user is editing an existing server)
         if (viaFabricPlus$nameField != null && viaFabricPlus$addressField != null) {

@@ -20,13 +20,13 @@
 package de.florianmichael.viafabricplus.injection.mixin.base.perserverversion;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.util.profiler.PerformanceLog;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -38,7 +38,7 @@ public abstract class MixinMultiplayerServerListPinger {
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;"))
     private ClientConnection setForcedVersion(InetSocketAddress address, boolean useEpoll, PerformanceLog packetSizeLog, @Local ServerInfo serverInfo) {
-        final VersionEnum forcedVersion = ((IServerInfo) serverInfo).viaFabricPlus$forcedVersion();
+        final ProtocolVersion forcedVersion = ((IServerInfo) serverInfo).viaFabricPlus$forcedVersion();
 
         if (forcedVersion != null && !((IServerInfo) serverInfo).viaFabricPlus$passedDirectConnectScreen()) {
             // We use the PerformanceLog field to store the forced version since it's always null when pinging a server

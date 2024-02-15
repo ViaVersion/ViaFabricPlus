@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.fixes.versioned.visual;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
@@ -32,7 +33,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.raphimc.vialoader.util.VersionEnum;
 
 public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
 
@@ -96,7 +96,7 @@ public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
 
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            if (ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_12_2)) {
+            if (ProtocolHack.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
                 throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
             }
 

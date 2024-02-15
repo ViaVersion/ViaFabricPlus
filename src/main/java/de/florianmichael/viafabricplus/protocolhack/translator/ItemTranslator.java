@@ -24,6 +24,7 @@ import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
@@ -34,14 +35,14 @@ import net.minecraft.network.NetworkState;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.registry.Registries;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.beta.protocol1_0_0_1tob1_8_0_1.ClientboundPacketsb1_8;
 import net.raphimc.vialegacy.protocols.beta.protocol1_0_0_1tob1_8_0_1.types.Typesb1_8_0_1;
 import net.raphimc.vialegacy.protocols.release.protocol1_4_4_5to1_4_2.types.Types1_4_2;
-import net.raphimc.vialoader.util.VersionEnum;
 
 public class ItemTranslator {
 
-    private static final UserConnection VIA_B1_8_TO_MC_USER_CONNECTION = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, VersionEnum.b1_8tob1_8_1);
+    private static final UserConnection VIA_B1_8_TO_MC_USER_CONNECTION = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, LegacyProtocolVersion.b1_8tob1_8_1);
     private static final int CREATIVE_INVENTORY_ACTION_ID = NetworkState.PLAY.getHandler(NetworkSide.SERVERBOUND).getId(new CreativeInventoryActionC2SPacket(0, ItemStack.EMPTY));
 
     /**
@@ -51,7 +52,7 @@ public class ItemTranslator {
      * @param targetVersion The target version to convert to (e.g. r1.13)
      * @return The ViaVersion item stack for the target version
      */
-    public static Item mcToVia(final ItemStack stack, final VersionEnum targetVersion) {
+    public static Item mcToVia(final ItemStack stack, final ProtocolVersion targetVersion) {
         final UserConnection user = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, targetVersion);
 
         try {
@@ -76,14 +77,14 @@ public class ItemTranslator {
      * @param targetVersion The target version
      * @return The ViaVersion item type
      */
-    public static Type<Item> getItemType(final VersionEnum targetVersion) {
-        if (targetVersion.isOlderThanOrEqualTo(VersionEnum.b1_8tob1_8_1)) {
+    public static Type<Item> getItemType(final ProtocolVersion targetVersion) {
+        if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return Typesb1_8_0_1.CREATIVE_ITEM;
-        } else if (targetVersion.isOlderThan(VersionEnum.r1_13)) {
+        } else if (targetVersion.olderThan(ProtocolVersion.v1_13)) {
             return Type.ITEM1_8;
-        } else if (targetVersion.isOlderThan(VersionEnum.r1_13_2)) {
+        } else if (targetVersion.olderThan(ProtocolVersion.v1_13_2)) {
             return Type.ITEM1_13;
-        } else if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_20_2)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             return Type.ITEM1_13_2;
         } else {
             return Type.ITEM1_20_2;

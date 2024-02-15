@@ -19,11 +19,11 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,7 +37,7 @@ public abstract class MixinAbstractHorseEntity {
 
     @Redirect(method = "interactHorse", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AbstractHorseEntity;receiveFood(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;)Z"))
     private boolean decrementFoodItemClientside(AbstractHorseEntity instance, PlayerEntity player, ItemStack item) {
-        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_20_2) || this.receiveFood(player, item);
+        return ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2) || this.receiveFood(player, item);
     }
 
 }

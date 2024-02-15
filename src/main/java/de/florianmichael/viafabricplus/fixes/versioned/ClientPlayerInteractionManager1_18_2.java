@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.fixes.versioned;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
@@ -30,7 +31,6 @@ import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class ClientPlayerInteractionManager1_18_2 {
@@ -41,7 +41,7 @@ public class ClientPlayerInteractionManager1_18_2 {
         final ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         final Vec2f rotation;
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_1)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1)) {
             rotation = null;
         } else {
             rotation = new Vec2f(player.getYaw(), player.getPitch());
@@ -58,9 +58,9 @@ public class ClientPlayerInteractionManager1_18_2 {
         final var oldPlayerState = unAckedActions.remove(Pair.of(blockPos, action));
         final var actualState = world.getBlockState(blockPos);
 
-        if ((oldPlayerState == null || !allGood || action != PlayerActionC2SPacket.Action.START_DESTROY_BLOCK && actualState != expectedState) && (actualState != expectedState || ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2))) {
+        if ((oldPlayerState == null || !allGood || action != PlayerActionC2SPacket.Action.START_DESTROY_BLOCK && actualState != expectedState) && (actualState != expectedState || ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2))) {
             world.setBlockState(blockPos, expectedState, Block.NOTIFY_ALL | Block.FORCE_STATE);
-            if (oldPlayerState != null && (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_16_1) || (world == player.getWorld() && player.collidesWithStateAtPos(blockPos, expectedState)))) {
+            if (oldPlayerState != null && (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) || (world == player.getWorld() && player.collidesWithStateAtPos(blockPos, expectedState)))) {
                 final Vec3d oldPlayerPosition = oldPlayerState.getKey();
                 if (oldPlayerState.getValue() != null) {
                     player.updatePositionAndAngles(oldPlayerPosition.x, oldPlayerPosition.y, oldPlayerPosition.z, oldPlayerState.getValue().x, oldPlayerState.getValue().y);

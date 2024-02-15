@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.screenhandler;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -31,7 +32,6 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.village.MerchantInventory;
 import net.minecraft.village.TradeOfferList;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -58,7 +58,7 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
 
     @Inject(method = "switchTo", at = @At("HEAD"), cancellable = true)
     private void onSwitchTo(int recipeId, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             ci.cancel();
 
             if (recipeId >= this.getRecipes().size()) return;
@@ -90,7 +90,7 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
 
     @Inject(method = "canInsertIntoSlot", at = @At("HEAD"), cancellable = true)
     private void modifyCanInsertIntoSlot(ItemStack stack, Slot slot, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_13_2)) {
+        if (ProtocolHack.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             cir.setReturnValue(true);
         }
     }
