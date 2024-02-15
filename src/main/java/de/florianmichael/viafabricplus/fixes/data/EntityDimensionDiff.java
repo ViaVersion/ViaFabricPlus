@@ -21,6 +21,7 @@ package de.florianmichael.viafabricplus.fixes.data;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -198,11 +199,10 @@ public class EntityDimensionDiff {
             }
 
             // If the current version is closer to the version you are looking for
-            // TODO: Fix
-            /*if (closestVersion == null || Math.abs(version.ordinal() - currentVersion.ordinal()) < Math.abs(version.ordinal() - closestVersion.ordinal())) {
+            if (closestVersion == null || ProtocolTranslator.isCloserTo(version, currentVersion, closestVersion)) {
                 closestVersion = currentVersion;
                 closestDimensions = currentDimensions;
-            }*/
+            }
         }
 
         return closestDimensions;
