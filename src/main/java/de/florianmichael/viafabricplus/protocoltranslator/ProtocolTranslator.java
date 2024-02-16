@@ -95,9 +95,9 @@ public class ProtocolTranslator {
         protected Comparator<ProtocolVersion> customComparator() {
             return (o1, o2) -> {
                 if (o1 == AUTO_DETECT_PROTOCOL) {
-                    return -1;
-                } else if (o2 == AUTO_DETECT_PROTOCOL) {
                     return 1;
+                } else if (o2 == AUTO_DETECT_PROTOCOL) {
+                    return -1;
                 } else {
                     return 0;
                 }
