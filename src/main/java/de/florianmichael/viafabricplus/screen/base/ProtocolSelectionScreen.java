@@ -139,7 +139,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
 
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            final boolean isSelected = ProtocolTranslator.getTargetVersion().getVersion() == protocolVersion.getVersion();
+            final boolean isSelected = ProtocolTranslator.getTargetVersion().equals(protocolVersion);
 
             final MatrixStack matrices = context.getMatrices();
 
