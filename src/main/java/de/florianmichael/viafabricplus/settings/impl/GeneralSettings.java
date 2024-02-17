@@ -31,7 +31,7 @@ public class GeneralSettings extends SettingGroup {
     private static final GeneralSettings INSTANCE = new GeneralSettings();
 
     private final MutableText[] ORIENTATION_OPTIONS = new MutableText[] {
-            Text.translatable("base.viafabricplus.off"),
+            Text.translatable("base.viafabricplus.none"),
             Text.translatable("base.viafabricplus.left_top"),
             Text.translatable("base.viafabricplus.right_top"),
             Text.translatable("base.viafabricplus.left_bottom"),
