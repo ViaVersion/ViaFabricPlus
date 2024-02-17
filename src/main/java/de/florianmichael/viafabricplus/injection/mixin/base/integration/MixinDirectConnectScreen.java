@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.gui.screen.multiplayer.DirectConnectScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,16 +30,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(MultiplayerScreen.class)
-public abstract class MixinMultiplayerScreen extends Screen {
+@Mixin(DirectConnectScreen.class)
+public abstract class MixinDirectConnectScreen extends Screen {
 
-    public MixinMultiplayerScreen(Text title) {
+    public MixinDirectConnectScreen(Text title) {
         super(title);
     }
 
     @Inject(method = "init", at = @At("RETURN"))
     private void addProtocolSelectionButton(CallbackInfo ci) {
-        final int buttonPosition = GeneralSettings.global().multiplayerScreenButtonOrientation.getIndex();
+        final int buttonPosition = GeneralSettings.global().directConnectScreenButtonOrientation.getIndex();
         if (buttonPosition == 0) { // Off
             return;
         }

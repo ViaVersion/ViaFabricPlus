@@ -62,6 +62,11 @@ public abstract class MixinAddServerScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void addVersionSetterButton(CallbackInfo ci) {
+        final int buttonPosition = GeneralSettings.global().addServerScreenButtonOrientation.getIndex();
+        if (buttonPosition == 0) { // Off
+            return;
+        }
+
         final ProtocolVersion forcedVersion = ((IServerInfo) server).viaFabricPlus$forcedVersion();
 
         // Restore input if the user cancels the version selection screen (or if the user is editing an existing server)
@@ -83,7 +88,7 @@ public abstract class MixinAddServerScreen extends Screen {
         }).size(98, 20);
 
         // Set the button's position according to the configured orientation
-        buttonBuilder = GeneralSettings.withOrientation(buttonBuilder, GeneralSettings.global().addServerScreenButtonOrientation.getIndex(), width, height);
+        buttonBuilder = GeneralSettings.withOrientation(buttonBuilder, buttonPosition, width, height);
 
         // Add the button to the screen
         this.addDrawableChild(buttonBuilder.build());

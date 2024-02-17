@@ -14,6 +14,7 @@
     "base.integration.MixinChunkTracker",
     "base.integration.MixinConnectScreen_1",
     "base.integration.MixinDebugHud",
+    "base.integration.MixinDirectConnectScreen",
     "base.integration.MixinDownloadingTerrainScreen",
     "base.integration.MixinMinecraftClient",
     "base.integration.MixinMultiplayerScreen",

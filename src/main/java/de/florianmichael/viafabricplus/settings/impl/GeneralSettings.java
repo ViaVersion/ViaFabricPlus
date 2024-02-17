@@ -23,24 +23,24 @@ import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.base.ModeSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 public class GeneralSettings extends SettingGroup {
 
     private static final GeneralSettings INSTANCE = new GeneralSettings();
 
-    public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.multiplayer_screen_button_orientation"), 1,
+    private final MutableText[] ORIENTATION_OPTIONS = new MutableText[] {
+            Text.translatable("base.viafabricplus.off"),
             Text.translatable("base.viafabricplus.left_top"),
             Text.translatable("base.viafabricplus.right_top"),
             Text.translatable("base.viafabricplus.left_bottom"),
             Text.translatable("base.viafabricplus.right_bottom")
-    );
-    public final ModeSetting addServerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.add_server_screen_button_orientation"), 1,
-            Text.translatable("base.viafabricplus.left_top"),
-            Text.translatable("base.viafabricplus.right_top"),
-            Text.translatable("base.viafabricplus.left_bottom"),
-            Text.translatable("base.viafabricplus.right_bottom")
-    );
+    };
+
+    public final ModeSetting multiplayerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.multiplayer_screen_button_orientation"), 2, ORIENTATION_OPTIONS);
+    public final ModeSetting addServerScreenButtonOrientation = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.add_server_screen_button_orientation"), 2, ORIENTATION_OPTIONS);
+    public final ModeSetting directConnectScreenButtonOrientation = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.direct_connect_screen_button_orientation"), 2, ORIENTATION_OPTIONS);
     public final ModeSetting removeNotAvailableItemsFromCreativeTab = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.filter_creative_tabs"),
             Text.translatable("base.viafabricplus.vanilla_and_modded"),
             Text.translatable("base.viafabricplus.vanilla_only"),
@@ -65,10 +65,10 @@ public class GeneralSettings extends SettingGroup {
 
     public static ButtonWidget.Builder withOrientation(final ButtonWidget.Builder builder, final int orientationIndex, final int width, final int height) {
         return switch (orientationIndex) {
-            case 0 -> builder.position(5, 5);
-            case 1 -> builder.position(width - 98 - 5, 5);
-            case 2 -> builder.position(5, height - 20 - 5);
-            case 3 -> builder.position(width - 98 - 5, height - 20 - 5);
+            case 1 -> builder.position(5, 5);
+            case 2 -> builder.position(width - 98 - 5, 5);
+            case 3 -> builder.position(5, height - 20 - 5);
+            case 4 -> builder.position(width - 98 - 5, height - 20 - 5);
             default -> builder;
         };
     }

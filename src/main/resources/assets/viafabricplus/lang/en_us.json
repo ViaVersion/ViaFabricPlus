@@ -38,6 +38,7 @@
   "general_settings.viafabricplus.show_classic_loading_progress": "Show classic loading progress in connect screen",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Multiplayer screen button orientation",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Add server screen button orientation",
+  "general_settings.viafabricplus.direct_connect_screen_button_orientation": "Direct connect screen button orientation",
   "general_settings.viafabricplus.filter_creative_tabs": "Remove not available items from creative tab",
   "general_settings.viafabricplus.show_advertised_server_version": "Show advertised/server version in Multiplayer",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Ignore packet translation errors",
