@@ -64,9 +64,9 @@ public class VersionedBooleanSetting extends AbstractSetting<Integer> {
     public boolean isEnabled() {
         if (isAuto()) {
             return protocolRange.contains(ProtocolTranslator.getTargetVersion());
+        } else {
+            return getValue() == ENABLED_INDEX;
         }
-
-        return getValue() == ENABLED_INDEX;
     }
 
     public VersionRange getProtocolRange() {

@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
@@ -125,9 +126,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         }
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
-    private boolean allowElytraWhenClimbing(ClientPlayerEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_1) && instance.isClimbing();
+    @ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
+    private boolean allowElytraWhenClimbing(boolean original) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_1) && original;
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 3))

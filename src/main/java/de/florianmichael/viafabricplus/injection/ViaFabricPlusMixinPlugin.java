@@ -69,19 +69,13 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.equals(INJECTOR_PACKAGE + MC_FIXES_PACKAGE + "MixinFontStorage")) {
-            return !DASH_LOADER_PRESENT;
-        }
-        if (mixinClassName.equals(INJECTOR_PACKAGE + MC_FIXES_PACKAGE + "MixinInGameHud")) {
-            return !ARMOR_SKIN_PRESENT;
-        }
-        if (mixinClassName.equals(INJECTOR_PACKAGE + COMPAT_PACKAGE + "ipnext.MixinAutoRefillHandler_ItemSlotMonitor")) {
-            return IPNEXT_PRESENT;
-        }
-        if (mixinClassName.equals(INJECTOR_PACKAGE + COMPAT_PACKAGE + "lithium.MixinEntity")) {
-            return LITHIUM_PRESENT;
-        }
-        return true;
+        return switch (mixinClassName) {
+            case INJECTOR_PACKAGE + MC_FIXES_PACKAGE + "MixinFontStorage" -> !DASH_LOADER_PRESENT;
+            case INJECTOR_PACKAGE + MC_FIXES_PACKAGE + "MixinInGameHud" -> !ARMOR_SKIN_PRESENT;
+            case INJECTOR_PACKAGE + COMPAT_PACKAGE + "ipnext.MixinAutoRefillHandler_ItemSlotMonitor" -> IPNEXT_PRESENT;
+            case INJECTOR_PACKAGE + COMPAT_PACKAGE + "lithium.MixinEntity" -> LITHIUM_PRESENT;
+            default -> true;
+        };
     }
 
     @Override
