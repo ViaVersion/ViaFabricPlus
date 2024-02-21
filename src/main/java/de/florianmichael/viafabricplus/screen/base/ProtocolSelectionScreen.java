@@ -20,18 +20,12 @@
 package de.florianmichael.viafabricplus.screen.base;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.classic4j.BetaCraftHandler;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.classic4j.BetaCraftScreen;
-import de.florianmichael.viafabricplus.screen.classic4j.ClassiCubeLoginScreen;
-import de.florianmichael.viafabricplus.screen.classic4j.ClassiCubeServerListScreen;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
@@ -44,60 +38,23 @@ public class ProtocolSelectionScreen extends VFPScreen {
 
     public static final ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
 
-    private ButtonWidget betaCraftButton;
-
     protected ProtocolSelectionScreen() {
         super("ViaFabricPlus", true);
-        this.setupDefaultSubtitle();
     }
 
     @Override
     protected void init() {
         // List and Settings
+        this.setupDefaultSubtitle();
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, 30, textRenderer.fontHeight + 4));
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.settings"), button -> SettingsScreen.INSTANCE.open(this)).position(width - 98 - 5, 5).size(98, 20).build());
 
-        // ClassiCube
-        final boolean loggedIn = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount() != null;
-
-        ButtonWidget.Builder classiCubeBuilder = ButtonWidget.builder(Text.literal("ClassiCube"), button -> {
-            if (!loggedIn) {
-                ClassiCubeLoginScreen.INSTANCE.open(prevScreen);
-                return;
-            }
-            ClassiCubeServerListScreen.INSTANCE.open(prevScreen);
-        }).position(width - 98 - 5, height - 25).size(98, 20);
-        if (!loggedIn) {
-            classiCubeBuilder = classiCubeBuilder.tooltip(Tooltip.of(Text.translatable("classicube.viafabricplus.warning")));
-        }
-        this.addDrawableChild(classiCubeBuilder.build());
-
-        // BetaCraft
-        ButtonWidget.Builder betaCraftBuilder = ButtonWidget.builder(Text.literal("BetaCraft"), button -> {
-            if (BetaCraftScreen.SERVER_LIST == null) {
-                betaCraftButton = button;
-
-                BetaCraftHandler.requestV1ServerList(serverList -> {
-                    BetaCraftScreen.SERVER_LIST = serverList;
-
-                    BetaCraftScreen.INSTANCE.open(this);
-                }, throwable -> showErrorScreen("BetaCraft", throwable, this));
-
-            } else {
-                BetaCraftScreen.INSTANCE.open(this);
-            }
-        }).position(5, height - 25).size(98, 20);
-        if (BetaCraftScreen.SERVER_LIST == null) {
-            betaCraftBuilder = betaCraftBuilder.tooltip(Tooltip.of(Text.translatable("betacraft.viafabricplus.warning")));
-        }
-        this.addDrawableChild(betaCraftBuilder.build());
+        this.addDrawableChild(ButtonWidget.builder(ServerListScreen.INSTANCE.getTitle(), button -> ServerListScreen.INSTANCE.open(this))
+                .position(5, height - 25).size(98, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("report.viafabricplus.button"), button -> ReportIssuesScreen.INSTANCE.open(this))
+                .position(width - 98 - 5, height - 25).size(98, 20).build());
 
         super.init();
-    }
-
-    @Override
-    public void tick() {
-        if (betaCraftButton != null) betaCraftButton.setMessage(Text.of("Loading..."));
     }
 
     @Override
