@@ -279,7 +279,7 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !actionType.equals(SlotActionType.PICKUP) && !actionType.equals(SlotActionType.QUICK_MOVE) && !actionType.equals(SlotActionType.SWAP) && !actionType.equals(SlotActionType.CLONE)) {
             ci.cancel();
         }
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && actionType == SlotActionType.SWAP && button == 40) { // Pressing 'F' in inventory
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && actionType == SlotActionType.SWAP && button == 40) { // Pressing 'F' in inventory
             ci.cancel();
         }
     }
