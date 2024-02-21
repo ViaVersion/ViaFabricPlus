@@ -49,6 +49,10 @@ public class ReportIssuesScreen extends VFPScreen {
                 Util.getOperatingSystem().open(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml"));
                 this.setupSubtitle(Text.of("Opened GitHub issue page!"));
             });
+            actions.put("report.viafabricplus.feature_request", () -> {
+                Util.getOperatingSystem().open(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml"));
+                this.setupSubtitle(Text.of("Opened GitHub issue page!"));
+            });
             actions.put("report.viafabricplus.create_via_dump", () -> DumpUtil.postDump(client.getSession().getUuidOrNull()).whenComplete((s, throwable) -> {
                 if (throwable != null) {
                     this.setupSubtitle(Text.of("Failed to create a dump! See logs for more information."));

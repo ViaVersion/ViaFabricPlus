@@ -90,6 +90,7 @@
 
   "report.viafabricplus.button": "Report issues",
   "report.viafabricplus.bug_report": "Report a bug on GitHub",
+  "report.viafabricplus.feature_request": "Request a feature on GitHub",
   "report.viafabricplus.create_via_dump": "Create a ViaVersion dump",
   "report.viafabricplus.open_logs": "Open the logs folder",
 
