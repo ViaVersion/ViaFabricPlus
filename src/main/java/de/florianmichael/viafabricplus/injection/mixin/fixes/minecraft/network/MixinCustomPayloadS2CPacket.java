@@ -48,14 +48,26 @@ public abstract class MixinCustomPayloadS2CPacket {
             .build();
 
     @Redirect(method = "readPayload", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
-    private static Object filterAllowedCustomPayloads(Map<?, ?> instance, Object identifier) {
+    private static Object filterAllowedCustomPayloads(Map<Identifier, PacketByteBuf.PacketReader<? extends CustomPayload>> instance, Object object) {
+        final Identifier identifier = (Identifier) object;
         if (instance.containsKey(identifier)) {
+            final PacketByteBuf.PacketReader<? extends CustomPayload> reader = instance.get(identifier);
+
+            // Mods might add custom payloads that we don't want to filter, so we check for the namespace.
+            // Mods should NEVER use the default namespace of the game, not only to not break this code,
+            // but also to not break other mods and the game itself.
+            if (!identifier.getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
+                return reader;
+            }
+
+            // Technically it's wrong to just drop all payloads, but ViaVersion doesn't translate them and the server can't detect if
+            // we handled the payload or not, so dropping them is easier than adding a bunch of useless translations for payloads
+            // which doesn't do anything on the client anyway.
             if (!viaFabricPlus$PAYLOAD_DIFF.containsKey(identifier) || ProtocolTranslator.getTargetVersion().olderThan(viaFabricPlus$PAYLOAD_DIFF.get(identifier))) {
                 return null;
             }
-
-            final PacketByteBuf.PacketReader<? extends CustomPayload> reader = (PacketByteBuf.PacketReader<? extends CustomPayload>) instance.get(identifier);
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
+                // Skip remaining bytes after reading the payload
                 return (PacketByteBuf.PacketReader<? extends CustomPayload>) packetByteBuf -> {
                     final CustomPayload result = reader.apply(packetByteBuf);
                     packetByteBuf.skipBytes(packetByteBuf.readableBytes());
@@ -64,9 +76,9 @@ public abstract class MixinCustomPayloadS2CPacket {
             } else {
                 return reader;
             }
+        } else {
+            return null;
         }
-
-        return null;
     }
 
 }
