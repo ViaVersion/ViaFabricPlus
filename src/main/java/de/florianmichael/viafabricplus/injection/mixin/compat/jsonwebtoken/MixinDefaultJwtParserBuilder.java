@@ -32,8 +32,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = DefaultJwtParserBuilder.class, remap = false)
 public abstract class MixinDefaultJwtParserBuilder {
 
-    @Redirect(method = "build()Lio/jsonwebtoken/JwtParser;", at = @At(value = "INVOKE", target = "Lio/jsonwebtoken/impl/lang/Services;loadFirst(Ljava/lang/Class;)Ljava/lang/Object;"))
-    public Object removeServicesSupport(Class<Object> result) {
+    @Redirect(method = "build()Lio/jsonwebtoken/JwtParser;", at = @At(value = "INVOKE", target = "Lio/jsonwebtoken/impl/lang/Services;get(Ljava/lang/Class;)Ljava/lang/Object;"))
+    public Object removeServicesSupport(Class<?> spi) {
         return new GsonDeserializer<>();
     }
 
