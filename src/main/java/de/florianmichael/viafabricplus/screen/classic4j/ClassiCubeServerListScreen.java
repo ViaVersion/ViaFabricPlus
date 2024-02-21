@@ -63,7 +63,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
     }
 
     public ClassiCubeServerListScreen() {
-        super("ClassiCube ServerList", true);
+        super("ClassiCube", true);
 
         final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
         if (account != null) {
@@ -82,11 +82,6 @@ public class ClassiCubeServerListScreen extends VFPScreen {
         }).position(width - 98 - 5, 5).size(98, 20).build());
 
         super.init();
-    }
-
-    @Override
-    public void close() {
-        ProtocolSelectionScreen.INSTANCE.open(prevScreen);
     }
 
     @Override

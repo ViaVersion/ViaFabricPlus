@@ -27,7 +27,6 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.ITextFieldWidget;
 import de.florianmichael.viafabricplus.save.impl.AccountsSave;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -104,7 +103,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
     public void close() {
         // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
         ViaFabricPlus.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
-        ProtocolSelectionScreen.INSTANCE.open(prevScreen);
+        super.close();
     }
 
     @Override

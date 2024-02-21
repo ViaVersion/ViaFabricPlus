@@ -127,7 +127,11 @@ public class VFPScreen extends Screen {
 
     @Override
     public void close() {
-        MinecraftClient.getInstance().setScreen(prevScreen);
+        if (prevScreen instanceof VFPScreen vfpScreen) {
+            vfpScreen.open(vfpScreen.prevScreen); // Support recursive opening
+        } else {
+            MinecraftClient.getInstance().setScreen(prevScreen);
+        }
     }
 
     /**
