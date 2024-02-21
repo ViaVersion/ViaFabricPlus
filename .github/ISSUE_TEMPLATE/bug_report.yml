@@ -13,9 +13,10 @@ body:
     attributes:
       label: General Information
       description: |
-        Please provide a list of all installed mods
+        Please provide a list of all installed mods, if you experience a crash, please provide the crash report.
       placeholder: |
         Example: "ViaFabricPlus, Fabric-API, Quilted-Fabric-API, ModMenu"
+        Crash log: <link to crash log, you can use https://mclo.gs/ or any other service>
     validations:
       required: true
 
