@@ -42,18 +42,13 @@ public class ClassiCubeLoginScreen extends VFPScreen {
         super("ClassiCube Login", true);
     }
 
-    @Override
-    public void open(Screen prevScreen) {
-        this.setupSubtitle(Text.translatable("classicube.viafabricplus.account"), ConfirmLinkScreen.opening(this, ClassiCubeHandler.CLASSICUBE_ROOT_URI.toString()));
-        super.open(prevScreen);
-    }
-
     private TextFieldWidget nameField;
     private TextFieldWidget passwordField;
 
     @Override
     protected void init() {
         super.init();
+        this.setupSubtitle(Text.translatable("classicube.viafabricplus.account"), ConfirmLinkScreen.opening(this, ClassiCubeHandler.CLASSICUBE_ROOT_URI.toString()));
 
         this.addDrawableChild(nameField = new TextFieldWidget(textRenderer, width / 2 - 150, 70 + 10, 300, 20, Text.empty()));
         this.addDrawableChild(passwordField = new TextFieldWidget(textRenderer, width / 2 - 150, nameField.getY() + 20 + 5, 300, 20, Text.empty()));

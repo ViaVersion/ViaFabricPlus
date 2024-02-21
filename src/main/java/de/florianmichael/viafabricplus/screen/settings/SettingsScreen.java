@@ -34,11 +34,11 @@ public class SettingsScreen extends VFPScreen {
 
     public SettingsScreen() {
         super("Setting", true);
-        this.setupDefaultSubtitle();
     }
 
     @Override
     protected void init() {
+        this.setupDefaultSubtitle();
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 2) * 2));
 
         super.init();

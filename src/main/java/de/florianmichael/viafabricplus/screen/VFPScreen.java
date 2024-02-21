@@ -57,11 +57,10 @@ public class VFPScreen extends Screen {
         this.backButton = backButton;
     }
 
-    /***
+    /**
      * Sets the subtitle and the subtitle press action to the default values
      * The default value of the subtitle is the url to the GitHub repository of VFP
      * The default value of the subtitle press action is to open the url in a confirmation screen
-     *
      */
     public void setupDefaultSubtitle() {
         this.setupUrlSubtitle(MOD_URL);
@@ -77,7 +76,7 @@ public class VFPScreen extends Screen {
     }
 
 
-    /***
+    /**
      * Sets the subtitle and the subtitle press action
      *
      * @param subtitle The subtitle which should be rendered
@@ -86,7 +85,7 @@ public class VFPScreen extends Screen {
         this.setupSubtitle(subtitle, null);
     }
 
-    /***
+    /**
      * Sets the subtitle and the subtitle press action
      *
      * @param subtitle The subtitle which should be rendered
@@ -96,9 +95,13 @@ public class VFPScreen extends Screen {
         this.subtitle = subtitle;
         this.subtitlePressAction = subtitlePressAction;
 
-        if (subtitleWidget != null && subtitlePressAction == null) { // Allows to remove the subtitle when calling this method twice.
+        if (subtitleWidget != null) { // Allows to remove the subtitle when calling this method twice.
             remove(subtitleWidget);
             subtitleWidget = null;
+        }
+        if (subtitlePressAction != null) {
+            final int subtitleWidth = textRenderer.getWidth(subtitle);
+            this.addDrawableChild(subtitleWidget = new PressableTextWidget(width / 2 - (subtitleWidth / 2), (textRenderer.fontHeight + 2) * 2 + 3, subtitleWidth, textRenderer.fontHeight + 2, subtitle, subtitlePressAction, textRenderer));
         }
     }
 
@@ -117,11 +120,6 @@ public class VFPScreen extends Screen {
     protected void init() {
         if (backButton) {
             this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
-        }
-
-        if (this.subtitle != null && this.subtitlePressAction != null) {
-            final int subtitleWidth = textRenderer.getWidth(subtitle);
-            this.addDrawableChild(subtitleWidget = new PressableTextWidget(width / 2 - (subtitleWidth / 2), (textRenderer.fontHeight + 2) * 2 + 3, subtitleWidth, textRenderer.fontHeight + 2, subtitle, subtitlePressAction, textRenderer));
         }
     }
 

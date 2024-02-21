@@ -64,15 +64,15 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
     public ClassiCubeServerListScreen() {
         super("ClassiCube", true);
-
-        final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
-        if (account != null) {
-            this.setupUrlSubtitle(CLASSICUBE_SERVER_LIST_URL);
-        }
     }
 
     @Override
     protected void init() {
+        final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+        if (account != null) {
+            this.setupUrlSubtitle(CLASSICUBE_SERVER_LIST_URL);
+        }
+
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 4) * 3));
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.logout"), button -> {
