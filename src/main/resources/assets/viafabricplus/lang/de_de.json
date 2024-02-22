@@ -72,10 +72,10 @@
   "visual_settings.viafabricplus.show_super_secret_settings": "Super Secret Settings anzeigen",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Sichere-Chat warnung deaktivieren",
   "visual_settings.viafabricplus.hide_signature_indicator": "Signatur-Indikatoren verstecken",
-  "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "Neuere Features vom Jigsawblock entfernen",
+  "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "Neuere Funktionen vom Jigsawblock entfernen",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "Petrifizierte Eichenholzstufe mit unbekannter Textur ersetzen",
   "visual_settings.viafabricplus.emulate_armor_hud": "Rüstungs-HUD emulieren",
-  "visual_settings.viafabricplus.remove_newer_features_from_command_block_screen": "Neuere Features von Commandblöcken entfernen",
+  "visual_settings.viafabricplus.remove_newer_features_from_command_block_screen": "Neuere Funktionen von Commandblöcken entfernen",
   "visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound": "Schadensgeräusch mit OOF Geräusch ersetzen",
   "visual_settings.viafabricplus.remove_newer_hud_elements": "Neuere HUD-Elemente entfernen",
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "Kreativ-Inventar ersetzen",
@@ -90,7 +90,7 @@
 
   "report.viafabricplus.button": "Probleme melden",
   "report.viafabricplus.bug_report": "Melde einen Fehler auf GitHub",
-  "report.viafabricplus.feature_request": "Neues feature auf GitHub vorschlagen",
+  "report.viafabricplus.feature_request": "Neue Funktion auf GitHub vorschlagen",
   "report.viafabricplus.create_via_dump": "Erstelle einen ViaVersion Dump",
   "report.viafabricplus.open_logs": "Log-Ordner öffnen",
 
