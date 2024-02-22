@@ -110,7 +110,7 @@ public class ItemTranslator {
             wrapper.read(Type.UNSIGNED_BYTE); // sync id
             wrapper.read(Type.VAR_INT); // revision
             wrapper.read(Type.SHORT); // slot
-            final Item viaItem = wrapper.read(Type.ITEM1_13_2); // item
+            final Item viaItem = wrapper.read(getItemType(ProtocolTranslator.NATIVE_VERSION)); // item
             final ItemStack mcItem = new ItemStack(Registries.ITEM.get(viaItem.identifier()));
             mcItem.setCount(viaItem.amount());
             mcItem.setDamage(viaItem.data());
