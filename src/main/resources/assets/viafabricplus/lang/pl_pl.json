@@ -26,6 +26,7 @@
   "base.viafabricplus.force_version_title": "Wybierz wersję, z którą chcesz łączyć się do serwera",
   "base.viafabricplus.detecting_server_version": "Wykrywanie wersji serwera...",
   "base.viafabricplus.this_will_require_a_restart": "To będzie wymagało restartu!",
+  "base.viafabricplus.none": "Nic",
 
   "setting_group_name.viafabricplus.authentication": "Uwierzytelnianie",
   "setting_group_name.viafabricplus.visual": "Wizualne",
@@ -36,10 +37,11 @@
   "general_settings.viafabricplus.save_selected_protocol_version": "Zapisz wybraną wersję protokołu",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "Pokazuj dodatkowe informacje w interfejsie debugowania",
   "general_settings.viafabricplus.show_classic_loading_progress": "Pokazuj klasyczny pasek ładowania w ekranie łączenia",
-  "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Lokalizacja przycisku w menu multiplayer",
+  "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Pozycja przycisku w menu trybu wieloosobowego",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Pozycja przycisku ustawiania wersji w ekranie dodawania serwera",
+  "general_settings.viafabricplus.direct_connect_screen_button_orientation": "Pozycja przycisku ustawiania wersji w ekranie łączenia od razu",
   "general_settings.viafabricplus.filter_creative_tabs": "Usuwaj niedostępne przedmioty z ekwipunku trybu kreatywnego",
-  "general_settings.viafabricplus.show_advertised_server_version": "Pokazuj informacje dotyczące tłumaczenia pakietów po najechaniu na ikonę pingu w menu multiplayer",
+  "general_settings.viafabricplus.show_advertised_server_version": "Pokazuj informacje dotyczące tłumaczenia pakietów po najechaniu na ikonę pingu w menu trybu wieloosobowego",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Sposób obsługiwania błędów tłumaczenia pakietów",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Ładuj skórki graczy w starszych wersjach gry",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Emuluj akcje ekwipunku w wersjach alpha",
@@ -47,6 +49,7 @@
   "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Pytaj, żeby potwierdzić przełączanie do innych serwerów",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Naciśnij, aby ustawić konto dla minecraft bedrock edition",
 
+  "debug_settings.viafabricplus.queue_config_packets": "Ustawiaj pakiety konfiguracji w kolejce",
   "debug_settings.viafabricplus.disable_sequencing": "Wyłącz sekwencjonowanie",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Wygładź ekrany kupców",
   "debug_settings.viafabricplus.execute_inputs_in_sync": "Wykonuj dane wejściowe w synchronizacji",
@@ -58,9 +61,8 @@
   "debug_settings.viafabricplus.replace_sneaking": "Zamień kucanie",
   "debug_settings.viafabricplus.long_sneaking": "Długie kucanie",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Stare prędkości kopania",
-  "debug_settings.viafabricplus.skip_containers_with_custom_display_names": "Ignoruj niestandardowe nazwy skrzyń",
   "debug_settings.viafabricplus.prevent_entity_cramming": "Zapobiegaj entity cramming",
-  "debug_settings.viafabricplus.always_tick_client_player": "Zawsze tickuj gracza klienta",
+  "debug_settings.viafabricplus.always_tick_client_player": "Zawsze tickuj gracza po stronie klienta",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Korzystaj z uwierzytelniania BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Weryfikuj sesję dla serwerów w trybie online",
@@ -80,20 +82,26 @@
   "visual_settings.viafabricplus.old_walking_animation": "Stara animacja chodzenia",
   "visual_settings.viafabricplus.change_font_renderer_behaviour": "Zmień sposób renderowania czcionek",
   "visual_settings.viafabricplus.enable_sword_blocking": "Włącz blokowanie mieczem",
-  "visual_settings.viafabricplus.enable_block_hit_animation": "Włącz animację uderzania bloków 1.7",
+  "visual_settings.viafabricplus.enable_block_hit_animation": "Włącz animację niszczenia bloków 1.7",
 
   "bedrock.viafabricplus.login": "Powinna ci się otworzyć przeglądarka.\nNa otworzonej stronie wpisz ten kod: %s\nZamkanięcie tego ekranu będzie anulowało proces!",
-  "bedrock.viafabricplus.confirm_transfer_server_prompt": "Czy chcesz przełączyć się na następujący serwer?\n%s\n\nRozłączy cię to z obecnym serwerem i połączy do nowego.",
-  "authentication.viafabricplus.failed_to_verify_session": "Nie udało się zweryfikować twojej sesji! Zaloguj się na jakieś konto albo wyłącz autentykację BetaCraft w ustawieniach.",
+  "bedrock.viafabricplus.confirm_transfer_server_prompt": "Czy chcesz się przełączyć na następujący serwer?\n%s\n\nRozłączy cię to z obecnym serwerem i połączy do nowego.",
+  "authentication.viafabricplus.failed_to_verify_session": "Nie udało się zweryfikować twojej sesji! Zaloguj się na jakieś konto albo wyłącz uwierzytelnianie BetaCraft w ustawieniach.",
+
+  "report.viafabricplus.button": "Zgłoś problem",
+  "report.viafabricplus.bug_report": "Zgłoś błąd",
+  "report.viafabricplus.feature_request": "Zaproponuj nową funkcję",
+  "report.viafabricplus.create_via_dump": "Utwórz dump ViaVersion",
+  "report.viafabricplus.open_logs": "Otwórz folder z logami",
 
   "classicube.viafabricplus.account": "Możesz utworzyć swoje konto tutaj: https://www.classicube.net",
   "classicube.viafabricplus.loading": "Ładowanie informacji profilu i listy serwerów...",
   "classicube.viafabricplus.warning": "Ta funkcja będzie wysyłała zapytania api do ClassiCube api.",
-  "betacraft.viafabricplus.warning": "Naciśnięcie tego przycisku wyśle zapytanie api do tego adresu: https://betacraft.uk/serverlist",
+  "betacraft.viafabricplus.warning": "Naciśnięcie tego przycisku wyśle zapytanie api pod ten adres: https://betacraft.uk/serverlist",
 
   "classic4j_library.viafabricplus.error.token": "Niepoprawny token. Czy jesteś pewnien, że twoja wersja ViaFabricPlus nie jest przestarzała? Spróbuj zaktualizować tą modyfikację.",
   "classic4j_library.viafabricplus.error.username": "Niepoprawna nazwa użytkownika.",
   "classic4j_library.viafabricplus.error.password": "Niepoprawne hasło.",
-  "classic4j_library.viafabricplus.error.verification": "Użytkownik nie zweryfikował jeszcze swojego adresu e-mail.",
+  "classic4j_library.viafabricplus.error.verification": "Niezweryfikowany adres e-mail.",
   "classic4j_library.viafabricplus.error.logincode": "Wymagane jest uwierzytelnianie wieloskładnikowe. Sprawdź swój e-mail."
 }
