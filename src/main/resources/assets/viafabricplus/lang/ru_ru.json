@@ -26,6 +26,8 @@
   "base.viafabricplus.cancel_and_notify": "Подавлять и уведомлять",
   "base.viafabricplus.force_version_title": "Укажите версию для проверки связи с сервером и подключения к нему.",
   "base.viafabricplus.detecting_server_version": "Проверка версии сервера...",
+  "base.viafabricplus.this_will_require_a_restart": "Для применения необходим перезапуск.",
+  "base.viafabricplus.none": "Выкл",
 
   "setting_group_name.viafabricplus.authentication": "Аутентификация",
   "setting_group_name.viafabricplus.visual": "Внешний вид",
@@ -36,8 +38,9 @@
   "general_settings.viafabricplus.save_selected_protocol_version": "Сохранять выбранную версию протокола",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "Дополнительная информация на экране отладки",
   "general_settings.viafabricplus.show_classic_loading_progress": "Экран загрузки Classic при подключении",
-  "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Позиция кнопки в меню сетевой игры",
-  "general_settings.viafabricplus.add_server_screen_button_orientation": "Позиция кнопки в меню добавления сервера",
+  "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Кнопка в меню сетевой игры",
+  "general_settings.viafabricplus.add_server_screen_button_orientation": "Кнопка в меню добавления сервера",
+  "general_settings.viafabricplus.direct_connect_screen_button_orientation": "Кнопка в меню прямого подключения",
   "general_settings.viafabricplus.filter_creative_tabs": "Убрать недоступные предметы из творческого инвентаря",
   "general_settings.viafabricplus.show_advertised_server_version": "Дополнительные сведения о версии сервера в сетевой игре",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Ошибки преобразования пакетов",
@@ -47,6 +50,7 @@
   "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Экран подтверждения перехода на другой сервер",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Нажмите для настройки учётной записи Bedrock Edition",
 
+  "debug_settings.viafabricplus.queue_config_packets": "Очередь пакетов этапа настройки",
   "debug_settings.viafabricplus.disable_sequencing": "Отключить последовательность",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Ускорить интерфейс старых жителей",
   "debug_settings.viafabricplus.execute_inputs_in_sync": "Синхронизировать ввод",
@@ -58,7 +62,6 @@
   "debug_settings.viafabricplus.replace_sneaking": "Заменять приседание",
   "debug_settings.viafabricplus.long_sneaking": "Долгое приседание",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Старая скорость добычи блоков",
-  "debug_settings.viafabricplus.skip_containers_with_custom_display_names": "Пропускать ошибочные названия блоков-сущностей",
   "debug_settings.viafabricplus.prevent_entity_cramming": "Обходить предел сущностей в одном блоке",
   "debug_settings.viafabricplus.always_tick_client_player": "Всегда обрабатывать игрока в клиентском мире",
 
@@ -79,11 +82,18 @@
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "Старый творческий инвентарь",
   "visual_settings.viafabricplus.old_walking_animation": "Старая анимация ходьбы",
   "visual_settings.viafabricplus.change_font_renderer_behaviour": "Старый шрифт",
+  "visual_settings.viafabricplus.enable_sword_blocking": "Анимация меча",
   "visual_settings.viafabricplus.enable_block_hit_animation": "Парирование атак из версии 1.7",
 
   "bedrock.viafabricplus.login": "Сейчас должен открыться браузер.\nВведите следующий код: %s\nЗакрытие этого экрана приведёт к отмене процесса!",
   "bedrock.viafabricplus.confirm_transfer_server_prompt": "Вы действительно хотите перейти на следующий сервер?\n%s\n\nЭто приведёт к отключению от текущего сервера с последующим подключением к новому.",
   "authentication.viafabricplus.failed_to_verify_session": "Не удалось проверить вашу сессию. Войдите в свою учётную запись или отключите аутентификацию BetaCraft в настройках ViaFabricPlus.",
+
+  "report.viafabricplus.button": "Нашли ошибку?",
+  "report.viafabricplus.bug_report": "Сообщить об ошибке на GitHub",
+  "report.viafabricplus.feature_request": "Предложить функцию на GitHub",
+  "report.viafabricplus.create_via_dump": "Создать дамп ViaVersion",
+  "report.viafabricplus.open_logs": "Открыть папку с журналом",
 
   "classicube.viafabricplus.account": "Создать учётную запись можно здесь: https://www.classicube.net",
   "classicube.viafabricplus.loading": "Загрузка профиля и списка серверов...",
