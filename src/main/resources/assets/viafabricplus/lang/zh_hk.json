@@ -1,5 +1,5 @@
 {
-  "modmenu.descriptionTranslation.viafabricplus": "Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay",
+  "modmenu.descriptionTranslation.viafabricplus": "可連線到所有版本 Minecraft 的伺服器（正式版、Beta 版、Alpha 版、Classic 版、快照版、Bedrock 版）的 Fabric 模組，同時提供多項遊戲體驗改善。",
 
   "base.viafabricplus.settings": "設定",
   "base.viafabricplus.on": "開啟",
@@ -26,6 +26,7 @@
   "base.viafabricplus.force_version_title": "請選擇連接這個伺服器要使用嘅版本",
   "base.viafabricplus.detecting_server_version": "探測服務器版本中...",
   "base.viafabricplus.this_will_require_a_restart": "此功能需重啓游戲！",
+  "base.viafabricplus.none": "無",
 
   "setting_group_name.viafabricplus.authentication": "驗證",
   "setting_group_name.viafabricplus.visual": "視覺",
@@ -43,6 +44,7 @@
   "general_settings.viafabricplus.ignore_packet_translation_errors": "忽略數據包錯誤",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "載入舊版本嘅外觀和頭顱",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "模擬Alpha版本嘅物品欄動作",
+  "general_settings.viafabricplus.direct_connect_screen_button_orientation": "直接連缐 熒幕嘅按鈕方位",
 
   "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "打開GUI以確認切換到其它伺服器",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "點擊以設定基岩版帳戶",
@@ -95,5 +97,11 @@
   "classic4j_library.viafabricplus.error.username": "無效嘅用戶名",
   "classic4j_library.viafabricplus.error.password": "無效嘅密碼",
   "classic4j_library.viafabricplus.error.verification": "用戶尚未驗證電子郵箱位址",
-  "classic4j_library.viafabricplus.error.logincode": "已請求身份驗證。請查看你嘅電郵！"
+  "classic4j_library.viafabricplus.error.logincode": "已請求身份驗證。請查看你嘅電郵！",
+
+  "report.viafabricplus.button": "報告問題",
+  "report.viafabricplus.bug_report": "在 GitHub 上報告 Bug",
+  "report.viafabricplus.feature_request": "在 Github 上請求新功能",
+  "report.viafabricplus.create_via_dump": "創建一個 ViaVersion Dump，用於報告問題時收集訊息",
+  "report.viafabricplus.open_logs": "打開游戲日志目錄"
 }

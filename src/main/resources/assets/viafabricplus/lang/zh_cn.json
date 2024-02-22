@@ -26,6 +26,7 @@
   "base.viafabricplus.force_version_title": "请选择连接这个服务器要使用的版本",
   "base.viafabricplus.detecting_server_version": "检测服务器版本中…",
   "base.viafabricplus.this_will_require_a_restart": "这将需要重新启动！",
+  "base.viafabricplus.none": "无",
 
   "setting_group_name.viafabricplus.authentication": "身份与认证",
   "setting_group_name.viafabricplus.visual": "特性模拟",
@@ -43,6 +44,7 @@
   "general_settings.viafabricplus.ignore_packet_translation_errors": "忽略数据包转换错误",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "加载旧版本皮肤和头颅",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "模拟Alpha版本的物品栏动作",
+  "general_settings.viafabricplus.direct_connect_screen_button_orientation": "直接连接 界面的按钮位置",
 
   "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "显示“确认转移到其他服务器”提示",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "点此连接到基岩版账户",
@@ -95,5 +97,11 @@
   "classic4j_library.viafabricplus.error.username": "无效用户名",
   "classic4j_library.viafabricplus.error.password": "无效密码",
   "classic4j_library.viafabricplus.error.verification": "用户尚未验证电子邮箱地址！",
-  "classic4j_library.viafabricplus.error.logincode": "已请求身份验证。请查看你的电子邮箱！"
+  "classic4j_library.viafabricplus.error.logincode": "已请求身份验证。请查看你的电子邮箱！",
+
+  "report.viafabricplus.button": "反馈问题",
+  "report.viafabricplus.bug_report": "在 GitHub 上反馈 Bug",
+  "report.viafabricplus.feature_request": "在 Github 上请求新的功能",
+  "report.viafabricplus.create_via_dump": "创建一个 ViaVersion Dump，用于反馈问题时收集信息",
+  "report.viafabricplus.open_logs": "打开游戏日志文件夹"
 }
