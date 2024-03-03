@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,24 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.settings.impl;
 
-import de.florianmichael.viafabricplus.settings.SettingGroup;
-import de.florianmichael.viafabricplus.settings.type.BooleanSetting;
+import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.text.Text;
 
 public class AuthenticationSettings extends SettingGroup {
-    public final static AuthenticationSettings INSTANCE = new AuthenticationSettings();
 
-    public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.betacraft"), true);
-    public final BooleanSetting allowViaLegacyToCallJoinServerToVerifySession = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.verify"), true);
-    public final BooleanSetting disconnectIfJoinServerCallFails = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.fail"), true);
-    public final BooleanSetting forceCPEIfUsingClassiCube = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.classicube"), true);
-    public final BooleanSetting spoofUserNameIfUsingClassiCube = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.spoof"), true);
-    public final BooleanSetting allowViaLegacyToLoadSkinsInLegacyVersions = new BooleanSetting(this, Text.translatable("authentication.viafabricplus.skin"), true);
+    private static final AuthenticationSettings INSTANCE = new AuthenticationSettings();
 
+    public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.use_beta_craft_authentication"), true);
+    public final BooleanSetting verifySessionForOnlineModeServers = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.verify_session_for_online_mode"), true);
+    public final BooleanSetting automaticallySelectCPEInClassiCubeServerList = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube"), true);
+    public final BooleanSetting setSessionNameToClassiCubeNameInServerList = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.set_session_name_to_classicube_name"), true);
 
     public AuthenticationSettings() {
-        super(Text.translatable("settings.viafabricplus.authentication"));
+        super(Text.translatable("setting_group_name.viafabricplus.authentication"));
     }
+
+    public static AuthenticationSettings global() {
+        return INSTANCE;
+    }
+
 }

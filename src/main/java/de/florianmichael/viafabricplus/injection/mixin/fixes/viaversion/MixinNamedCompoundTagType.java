@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,52 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.api.type.types.misc.NamedCompoundTagType;
 import com.viaversion.viaversion.libs.opennbt.tag.limiter.TagLimiter;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = NamedCompoundTagType.class, remap = false)
-public class MixinNamedCompoundTagType {
-
-    @Unique
-    private final static TagLimiter viafabricplus_tag_limiter = new TagLimiter() {
-        private final int maxBytes = 2097152;
-        private int bytes;
-
-        @Override
-        public void countBytes(int i) {
-            this.bytes += bytes;
-            if (this.bytes >= this.maxBytes) {
-                throw new IllegalArgumentException("NBT data larger than expected (capped at " + this.maxBytes + ")");
-            }
-        }
-
-        @Override
-        public void checkLevel(int i) {}
-
-        @Override
-        public int maxBytes() {
-            return this.maxBytes;
-        }
-
-        @Override
-        public int maxLevels() {
-            return 512; // Not used anymore
-        }
-
-        @Override
-        public int bytes() {
-            return this.bytes;
-        }
-    };
+public abstract class MixinNamedCompoundTagType {
 
     @Redirect(method = "read(Lio/netty/buffer/ByteBuf;Z)Lcom/viaversion/viaversion/libs/opennbt/tag/builtin/CompoundTag;", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/libs/opennbt/tag/limiter/TagLimiter;create(II)Lcom/viaversion/viaversion/libs/opennbt/tag/limiter/TagLimiter;"))
-    private static TagLimiter replaceTagLimiter(int maxBytes, int maxLevels) {
-        return viafabricplus_tag_limiter;
+    private static TagLimiter removeNBTSizeLimit(int maxBytes, int maxLevels) {
+        return TagLimiter.noop();
     }
+
 }

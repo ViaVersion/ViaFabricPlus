@@ -1,33 +1,34 @@
 /*
- * MIT License
+ * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
- * Copyright (c) 2019 Joseph Burton (Earthcomputer)
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.fixes.data.Material1_19_4;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemUsageContext;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,32 +37,44 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemPlacementContext.class)
-public class MixinItemPlacementContext {
+public abstract class MixinItemPlacementContext extends ItemUsageContext {
+
+    public MixinItemPlacementContext(PlayerEntity player, Hand hand, BlockHitResult hit) {
+        super(player, hand, hit);
+    }
 
     @Inject(method = "getPlayerLookDirection", at = @At("HEAD"), cancellable = true)
-    private void injectGetPlayerLookDirection(CallbackInfoReturnable<Direction> ci) {
+    private void getPlayerLookDirection1_12_2(CallbackInfoReturnable<Direction> cir) {
         final ItemPlacementContext self = (ItemPlacementContext) (Object) this;
         final PlayerEntity player = self.getPlayer();
 
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2) && player != null) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             final BlockPos placementPos = self.getBlockPos();
-            final double blockPosCenterFactor = ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_10) ? 0.5 : 0;
+            final double blockPosCenterFactor = ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
 
             if (Math.abs(player.getX() - (placementPos.getX() + blockPosCenterFactor)) < 2 && Math.abs(player.getZ() - (placementPos.getZ() + blockPosCenterFactor)) < 2) {
                 final double eyeY = player.getY() + player.getEyeHeight(player.getPose());
 
                 if (eyeY - placementPos.getY() > 2) {
-                    ci.setReturnValue(Direction.DOWN);
+                    cir.setReturnValue(Direction.DOWN);
                     return;
                 }
 
                 if (placementPos.getY() - eyeY > 0) {
-                    ci.setReturnValue(Direction.UP);
+                    cir.setReturnValue(Direction.UP);
                     return;
                 }
             }
 
-            ci.setReturnValue(player.getHorizontalFacing());
+            cir.setReturnValue(player.getHorizontalFacing());
         }
     }
+
+    @Inject(method = "canPlace", at = @At("RETURN"), cancellable = true)
+    private void canPlace1_12_2(CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValueZ() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            cir.setReturnValue(Material1_19_4.getMaterial(this.getWorld().getBlockState(this.getBlockPos())).equals(Material1_19_4.DECORATION) && Block.getBlockFromItem(this.getStack().getItem()).equals(Blocks.ANVIL));
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,18 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.access;
 
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
 public interface IServerInfo {
 
-    VersionEnum viafabricplus_forcedVersion();
-    void viafabricplus_forceVersion(VersionEnum version);
+    ProtocolVersion viaFabricPlus$forcedVersion();
+    void viaFabricPlus$forceVersion(final ProtocolVersion version);
 
-    boolean viafabricplus_enabled();
-    void viafabricplus_enable();
+    boolean viaFabricPlus$passedDirectConnectScreen();
+    void viaFabricPlus$passDirectConnectScreen();
 
-    int viafabricplus_translatingVersion();
-    void viafabricplus_setTranslatingVersion(final int version);
+    ProtocolVersion viaFabricPlus$translatingVersion();
+    void viaFabricPlus$setTranslatingVersion(final ProtocolVersion version);
+
 }

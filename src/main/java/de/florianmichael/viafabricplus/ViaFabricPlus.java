@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,106 +16,81 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import de.florianmichael.viafabricplus.protocolhack.util.ViaJarReplacer;
-import de.florianmichael.viafabricplus.event.FinishMinecraftLoadCallback;
-import de.florianmichael.viafabricplus.event.PreLoadCallback;
-import de.florianmichael.viafabricplus.settings.SettingsSystem;
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
-import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.definition.classic.CustomClassicProtocolExtensions;
-import de.florianmichael.viafabricplus.information.InformationSystem;
-import de.florianmichael.viafabricplus.mappings.CharacterMappings;
-import de.florianmichael.viafabricplus.mappings.ItemReleaseVersionMappings;
-import de.florianmichael.viafabricplus.mappings.PackFormatsMappings;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.definition.classic.screen.ClassicItemSelectionScreen;
-import net.raphimc.vialoader.util.VersionEnum;
+import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.save.SaveManager;
+import de.florianmichael.viafabricplus.settings.SettingsManager;
+import de.florianmichael.viafabricplus.util.ClassLoaderPriorityUtil;
+import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.concurrent.CompletableFuture;
 
 /*
  * TODO | General
+ *  - Make recipe fixes dynamic instead of a data dump in java classes
  *  - Check if relevant for protocol translation: TakeItemEntityPacket isEmpty case (1.20 -> 1.20.1 change)
+ *  - Check previous Donkey interaction fix (see git logs)
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
- *  - Entity hit boxes and eye heights has changed in almost all versions
- *  - Block hardness / resistance has changed in almost all versions
- *  - Item properties: maxDamage and stackCount?
- *  - Recipes for <= 1.8 are broken
- *  - Supported character fix should cover all versions
  *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
  *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
- *  - Bedrock scaffolding should be added as soon as ViaBedrock supports block placement (see https://github.com/ViaVersion/ViaFabricPlus/issues/204)
+ *  - Check if MixinPlayerScreenHandler.injectTransferSlot is needed? Check git log
  *
  * TODO | Movement
- *  - Cobwebs in <= b1.7.3 are broken (movement has been changed)
- *  - X/Z Face based jump movement in <= 1.13.2 is broken (https://github.com/ViaVersion/ViaFabricPlus/issues/189)
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
- *  - Blit-jump is not supported in <= 1.8.9 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
+ *  - Blip-jumping is not supported in <= 1.13.2 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
+ *  - Older versions don't clamp positions when teleporting (Is this important?)
  */
 public class ViaFabricPlus {
-    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_20_2;
 
-    public final static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public final static Logger LOGGER = LogManager.getLogger("ViaFabricPlus");
-    public final static File RUN_DIRECTORY = new File("ViaFabricPlus");
+    private static final ViaFabricPlus INSTANCE = new ViaFabricPlus();
 
-    public final static ViaFabricPlus INSTANCE = new ViaFabricPlus();
+    private final Logger logger = LogManager.getLogger("ViaFabricPlus");
+    private final File directory = FabricLoader.getInstance().getConfigDir().resolve("viafabricplus").toFile();
 
-    private final SettingsSystem settingsSystem = new SettingsSystem();
-    private final InformationSystem informationSystem = new InformationSystem();
+    private SettingsManager settingsManager;
+    private SaveManager saveManager;
 
-    public void init() {
-        if (!RUN_DIRECTORY.exists()) {
-            RUN_DIRECTORY.mkdir();
-        }
+    private CompletableFuture<Void> loadingFuture;
 
-        // Load overriding jars first so other code can access the new classes
-        ViaJarReplacer.loadOverridingJars();
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void bootstrap() {
+        directory.mkdir();
+        ClassLoaderPriorityUtil.loadOverridingJars(directory); // Load overriding jars first so other code can access the new classes
 
-        // PreLoad Callback (for example to register new protocols)
-        PreLoadCallback.EVENT.invoker().onLoad();
+        settingsManager = new SettingsManager();
+        saveManager = new SaveManager(settingsManager);
 
-        // Classic Stuff
-        CustomClassicProtocolExtensions.create();
+        ClientsideFixes.init(); // Init clientside related fixes
+        loadingFuture = ProtocolTranslator.init(directory); // Init ViaVersion protocol translator platform
 
-        // Account Handler
-        ClassiCubeAccountHandler.create();
-        BedrockAccountHandler.create();
-
-        // Fixes which requires to be loaded pre
-        ClientsideFixes.init();
-        CharacterMappings.load();
-
-        // Protocol Translator
-        ProtocolHack.init();
-
-        // Stuff which requires Minecraft to be initialized
-        FinishMinecraftLoadCallback.EVENT.register(() -> {
-            // Has to be loaded before the settings system in order to catch the ChangeProtocolVersionCallback call
-            ClassicItemSelectionScreen.create();
-
-            // General settings
-            settingsSystem.init();
-            informationSystem.init();
-
-            // Version related mappings
-            PackFormatsMappings.load();
-            ItemReleaseVersionMappings.create();
-        });
+        PostGameLoadCallback.EVENT.register(() -> loadingFuture.join()); // Block game loading until ViaVersion has loaded
     }
 
-    public SettingsSystem getSettingsSystem() {
-        return settingsSystem;
+    public static ViaFabricPlus global() {
+        return INSTANCE;
     }
 
-    public InformationSystem getInformationSystem() {
-        return informationSystem;
+    public Logger getLogger() {
+        return logger;
     }
+
+    public File getDirectory() {
+        return directory;
+    }
+
+    public SettingsManager getSettingsManager() {
+        return settingsManager;
+    }
+
+    public SaveManager getSaveManager() {
+        return saveManager;
+    }
+
 }

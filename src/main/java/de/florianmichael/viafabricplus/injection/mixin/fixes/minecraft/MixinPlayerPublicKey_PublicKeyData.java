@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,28 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
+import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
 import net.minecraft.network.encryption.PlayerPublicKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.nio.ByteBuffer;
-
 @Mixin(PlayerPublicKey.PublicKeyData.class)
-public class MixinPlayerPublicKey_PublicKeyData implements IPublicKeyData {
+public abstract class MixinPlayerPublicKey_PublicKeyData implements ILegacyKeySignatureStorage {
 
     @Unique
-    private ByteBuffer viafabricplus_v1_key;
+    private byte[] viaFabricPlus$legacyKeySignature;
 
     @Override
-    public ByteBuffer viafabricplus_getV1Key() {
-        return viafabricplus_v1_key;
+    public byte[] viafabricplus$getLegacyPublicKeySignature() {
+        return this.viaFabricPlus$legacyKeySignature;
     }
 
     @Override
-    public void viafabricplus_setV1Key(ByteBuffer byteBuffer) {
-        this.viafabricplus_v1_key = byteBuffer;
+    public void viafabricplus$setLegacyPublicKeySignature(byte[] signature) {
+        this.viaFabricPlus$legacyKeySignature = signature;
     }
+
 }

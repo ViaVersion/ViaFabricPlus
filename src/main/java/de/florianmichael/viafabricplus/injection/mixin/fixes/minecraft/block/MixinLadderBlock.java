@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LadderBlock;
@@ -34,29 +35,30 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LadderBlock.class)
-public class MixinLadderBlock {
+public abstract class MixinLadderBlock {
 
     @Unique
-    private final static VoxelShape viafabricplus_east_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 2, 16, 16);
+    private static final VoxelShape viaFabricPlus$east_shape_r1_8_x = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D);
 
     @Unique
-    private final static VoxelShape viafabricplus_west_shape_v1_8_x = Block.createCuboidShape(14, 0, 0, 16, 16, 16);
+    private static final VoxelShape viaFabricPlus$west_shape_r1_8_x = Block.createCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
     @Unique
-    private final static VoxelShape viafabricplus_south_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 16, 16, 2);
+    private static final VoxelShape viaFabricPlus$south_shape_r1_8_x = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D);
 
     @Unique
-    private final static VoxelShape viafabricplus_north_shape_v1_8_x = Block.createCuboidShape(0, 0, 14, 16, 16, 16);
+    private static final VoxelShape viaFabricPlus$north_shape_r1_8_x = Block.createCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D);
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             switch (state.get(LadderBlock.FACING)) {
-                case NORTH -> ci.setReturnValue(viafabricplus_north_shape_v1_8_x);
-                case SOUTH -> ci.setReturnValue(viafabricplus_south_shape_v1_8_x);
-                case WEST -> ci.setReturnValue(viafabricplus_west_shape_v1_8_x);
-                default -> ci.setReturnValue(viafabricplus_east_shape_v1_8_x);
+                case NORTH -> ci.setReturnValue(viaFabricPlus$north_shape_r1_8_x);
+                case SOUTH -> ci.setReturnValue(viaFabricPlus$south_shape_r1_8_x);
+                case WEST -> ci.setReturnValue(viaFabricPlus$west_shape_r1_8_x);
+                default -> ci.setReturnValue(viaFabricPlus$east_shape_r1_8_x);
             }
         }
     }
+
 }

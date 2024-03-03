@@ -1,6 +1,7 @@
 /*
- * This file is part of ViaProxy - https://github.com/RaphiMC/ViaProxy
- * Copyright (C) 2023 RK_01/RaphiMC and contributors
+ * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.libs.mcstructs.snbt.SNbtSerializer;
 import com.viaversion.viaversion.protocols.protocol1_12to1_11_1.ChatItemRewriter;
-import net.lenni0451.mcstructs.snbt.SNbtSerializer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -40,4 +42,5 @@ public abstract class MixinChatItemRewriter {
         }
         return Pattern.compile("$^").matcher(input);
     }
+
 }

@@ -1,6 +1,7 @@
-# Deploys the latest stable JDK available and sets it to default without having to manually specify it here,
+# Deploys the latest stable JDK 17 available and sets it to default without having to manually specify it here,
 # Which includes using temurin as the distribution.
 before_install:
-   - curl -s "https://get.sdkman.io" | bash
-   - source ~/.sdkman/bin/sdkman-init.sh
-   - sdk install java
+  - curl -s "https://get.sdkman.io" | bash
+  - source ~/.sdkman/bin/sdkman-init.sh
+  - sdk install java 17.0.10-tem
+  - sdk use java 17.0.10-tem

@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
 
-import de.florianmichael.viafabricplus.definition.classic.CustomClassicProtocolExtensions;
+import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.ClientboundPacketsc0_30cpe;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,12 +27,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ClientboundPacketsc0_30cpe.class, remap = false)
-public class MixinClientboundPacketsc0_30cpe {
+public abstract class MixinClientboundPacketsc0_30cpe {
 
     @Inject(method = "getPacket", at = @At("HEAD"), cancellable = true)
     private static void addCustomPackets(int id, CallbackInfoReturnable<ClientboundPacketsc0_30cpe> cir) {
-        if (CustomClassicProtocolExtensions.INSTANCE.CUSTOM_PACKETS.containsKey(id)) {
-            cir.setReturnValue(CustomClassicProtocolExtensions.INSTANCE.CUSTOM_PACKETS.get(id));
+        if (CPEAdditions.CUSTOM_PACKETS.containsKey(id)) {
+            cir.setReturnValue(CPEAdditions.CUSTOM_PACKETS.get(id));
         }
     }
+
 }

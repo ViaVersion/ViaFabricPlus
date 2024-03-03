@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "viafabricplus",
   "version": "${version}",
-
   "name": "ViaFabricPlus",
   "description": "Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay",
   "authors": [
@@ -12,20 +11,34 @@
         "email": "florian.michael07@gmail.com",
         "homepage": "https://github.com/FlorianMichael"
       }
+    },
+    {
+      "name": "RK_01",
+      "contact": {
+        "homepage": "https://github.com/RaphiMC"
+      }
+    }
+  ],
+  "contributors": [
+    "allinkdev",
+    {
+      "name": "GitHub contributors",
+      "contact": {
+        "homepage": "https://github.com/ViaVersion/ViaFabricPlus/graphs/contributors"
+      }
     }
   ],
   "contact": {
-    "homepage": "https://github.com/ViaVersion/",
+    "homepage": "https://github.com/FlorianMichael/",
     "sources": "https://github.com/ViaVersion/ViaFabricPlus",
     "issues": "https://github.com/ViaVersion/ViaFabricPlus/issues"
   },
-
   "license": "GPL-v3",
   "icon": "assets/viafabricplus/icon.png",
   "environment": "client",
   "entrypoints": {
     "modmenu": [
-      "de.florianmichael.viafabricplus.screen.settings.ModMenuImpl"
+      "de.florianmichael.viafabricplus.util.ModMenuScreenFactory"
     ]
   },
   "mixins": [
@@ -33,15 +46,18 @@
   ],
   "accessWidener": "viafabricplus.accesswidener",
   "depends": {
-    "fabricloader": ">=0.14.22",
-    "fabric-api": ">=0.91.1+1.20.2",
-    "minecraft": "~1.20.2",
+    "fabricloader": ">=0.15.0",
+    "fabric-resource-loader-v0": ">=0.11.14",
+    "fabric-networking-api-v1": ">=3.1.1",
+    "fabric-command-api-v2": ">=2.2.18",
+    "fabric-lifecycle-events-v1": ">=2.2.28",
+    "fabric-particles-v1": ">=1.1.6",
+    "fabric-registry-sync-v0": ">=4.0.13",
+    "minecraft": ">=1.20.3",
     "java": ">=17"
   },
   "breaks": {
-    "viafabric": "*",
-    "memoryleakfix": "<=1.1.0",
-    "krypton": "<=0.2.2"
+    "viafabric": "*"
   },
   "conflicts": {
     "dashloader": "*",

@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,29 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.screen.settings;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.settings.AbstractSetting;
-import de.florianmichael.viafabricplus.settings.SettingGroup;
-import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
+import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 
 public class SettingsScreen extends VFPScreen {
-    public final static SettingsScreen INSTANCE = new SettingsScreen();
+
+    public static final SettingsScreen INSTANCE = new SettingsScreen();
 
     public SettingsScreen() {
         super("Setting", true);
-        this.setupDefaultSubtitle();
     }
 
     @Override
     protected void init() {
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, (textRenderer.fontHeight + 2) * 2));
+        this.setupDefaultSubtitle();
+        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 2) * 2));
 
         super.init();
     }
@@ -50,12 +52,12 @@ public class SettingsScreen extends VFPScreen {
         this.renderTitle(context);
     }
 
-    public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {
+    public static class SlotList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height, top, bottom, entryHeight);
+            super(minecraftClient, width, height - top - bottom, top, entryHeight);
 
-            for (SettingGroup group : ViaFabricPlus.INSTANCE.getSettingsSystem().getGroups()) {
+            for (SettingGroup group : ViaFabricPlus.global().getSettingsManager().getGroups()) {
                 this.addEntry(new TitleRenderer(group.getName()));
 
                 for (AbstractSetting<?> setting : group.getSettings()) {
@@ -74,4 +76,5 @@ public class SettingsScreen extends VFPScreen {
             return this.width - 5;
         }
     }
+
 }

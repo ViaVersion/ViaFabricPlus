@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,36 +16,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.screenhandler;
 
-import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IScreenHandler;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.entity.player.PlayerEntity;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.SlotActionType;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ScreenHandler.class)
-public class MixinScreenHandler implements IScreenHandler {
+public abstract class MixinScreenHandler implements IScreenHandler {
+
+    @Shadow
+    private ItemStack cursorStack;
 
     @Unique
-    private short viafabricplus_lastActionId = 0;
+    private short viaFabricPlus$actionId = 0;
 
-    @Inject(method = "internalOnSlotClick", at = @At("HEAD"), cancellable = true)
-    private void injectInternalOnSlotClick(int slot, int clickData, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && actionType == SlotActionType.SWAP && clickData == 40) {
-            ci.cancel();
+    @Redirect(method = "updateSlotStacks", at = @At(value = "FIELD", target = "Lnet/minecraft/screen/ScreenHandler;cursorStack:Lnet/minecraft/item/ItemStack;"))
+    private void preventUpdate(ScreenHandler instance, ItemStack value) {
+        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+            this.cursorStack = value;
         }
     }
 
     @Override
-    public short viafabricplus_getAndIncrementLastActionId() {
-        return ++viafabricplus_lastActionId;
+    public short viaFabricPlus$getActionId() {
+        return viaFabricPlus$actionId;
     }
+
+    @Override
+    public short viaFabricPlus$incrementAndGetActionId() {
+        return ++viaFabricPlus$actionId;
+    }
+
 }

@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,31 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_0;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_1;
-import net.raphimc.minecraftauth.MinecraftAuth;
-import net.raphimc.minecraftauth.util.MicrosoftConstants;
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
-import de.florianmichael.viafabricplus.definition.account.ClassiCubeAccountHandler;
-import de.florianmichael.viafabricplus.injection.access.IPublicKeyData;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import de.florianmichael.viafabricplus.protocolhack.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
+import de.florianmichael.viafabricplus.injection.access.IClientConnection;
+import de.florianmichael.viafabricplus.injection.access.ILegacyKeySignatureStorage;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.encryption.PlayerKeyPair;
 import net.minecraft.network.encryption.PlayerPublicKey;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
+import net.raphimc.minecraftauth.step.bedrock.StepMCChain;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.storage.AuthChainData;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -49,95 +46,73 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.net.InetSocketAddress;
+import java.security.PrivateKey;
 import java.util.UUID;
 
-@Mixin(targets = "net.minecraft.client.gui.screen.ConnectScreen$1")
-public class MixinConnectScreen_1 {
+@Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
+public abstract class MixinConnectScreen_1 {
 
     @Final
     @Shadow
     ServerAddress field_33737;
 
-    @Final
     @Shadow
-    ConnectScreen field_2416;
+    @Final
+    MinecraftClient field_33738;
 
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", ordinal = 0))
-    public String replaceAddress(InetSocketAddress instance) {
-        if (ProtocolHack.getTargetVersion(instance).isOlderThanOrEqualTo(VersionEnum.r1_17) || ProtocolHack.getTargetVersion(instance) == VersionEnum.bedrockLatest) {
+    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", remap = false))
+    private String getRealAddress(InetSocketAddress instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
             return field_33737.getAddress();
+        } else {
+            return instance.getHostName();
         }
-        return instance.getHostName();
     }
 
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getPort()I"))
-    public int replacePort(InetSocketAddress instance) {
-        if (ProtocolHack.getTargetVersion(instance).isOlderThanOrEqualTo(VersionEnum.r1_17) || ProtocolHack.getTargetVersion(instance) == VersionEnum.bedrockLatest) {
+    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getPort()I", remap = false))
+    private int getRealPort(InetSocketAddress instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
             return field_33737.getPort();
+        } else {
+            return instance.getPort();
         }
-        return instance.getPort();
     }
 
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V"))
-    public void spoofUserName(ClientConnection instance, Packet<?> packet) {
-        if (AuthenticationSettings.INSTANCE.spoofUserNameIfUsingClassiCube.getValue() && ViaFabricPlusClassicMPPassProvider.classiCubeMPPass != null && ClassiCubeAccountHandler.INSTANCE.getAccount() != null) {
-            instance.send(new LoginHelloC2SPacket(ClassiCubeAccountHandler.INSTANCE.getAccount().username(), MinecraftClient.getInstance().getSession().getUuidOrNull()));
-            return;
-        }
-        instance.send(packet);
-    }
+    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelFuture;syncUninterruptibly()Lio/netty/channel/ChannelFuture;", remap = false, shift = At.Shift.AFTER))
+    private void setupConnectionSessions(CallbackInfo ci, @Local ClientConnection clientConnection) {
+        final UserConnection userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
-    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", shift = At.Shift.BEFORE))
-    public void setupConnectionSessions(CallbackInfo ci) {
-        final ClientConnection connection = field_2416.connection;
-        if (connection == null || connection.channel == null) return;
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_19, ProtocolVersion.v1_19_1)) {
+            final PlayerKeyPair keyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
+            if (keyPair != null) {
+                final PlayerPublicKey.PublicKeyData publicKeyData = keyPair.publicKey().data();
+                final PrivateKey privateKey = keyPair.privateKey();
+                final long expiresAt = publicKeyData.expiresAt().toEpochMilli();
+                final byte[] publicKey = publicKeyData.key().getEncoded();
+                final UUID uuid = this.field_33738.getSession().getUuidOrNull();
 
-        final UserConnection userConnection = connection.channel.attr(ProtocolHack.LOCAL_VIA_CONNECTION).get();
-        if (userConnection == null) return;
-
-        final VersionEnum targetVersion = ProtocolHack.getTargetVersion(connection.channel);
-
-        if (targetVersion == VersionEnum.bedrockLatest) {
-            var bedrockSession = BedrockAccountHandler.INSTANCE.getBedrockSession();
-            if (bedrockSession == null) return;
-
-            try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
-                bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.refresh(httpClient, bedrockSession);
-            } catch (Exception e) {
-                ViaFabricPlus.LOGGER.error("Failed to refresh Bedrock chain data. Please re-login to Bedrock!", e);
-                return;
-            }
-
-            final var deviceId = bedrockSession.getMcChain().getXblXsts().getInitialXblSession().getXblDeviceToken().getId();
-            final var playFabId = bedrockSession.getPlayFabToken().getPlayFabId();
-            final var mcChain = bedrockSession.getMcChain();
-
-            userConnection.put(new AuthChainData(mcChain.getMojangJwt(), mcChain.getIdentityJwt(), mcChain.getPublicKey(), mcChain.getPrivateKey(), deviceId, playFabId));
-            return;
-        }
-
-        if (targetVersion.isOlderThan(VersionEnum.r1_19)) {
-            return; // This disables the chat session emulation for all versions <= 1.18.2
-        }
-        if (targetVersion.isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
-            final var profile = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
-            if (profile != null) {
-                final PlayerPublicKey.PublicKeyData publicKeyData = profile.publicKey().data();
-
-                final UUID playerUuid = MinecraftClient.getInstance().getSession().getUuidOrNull();
-
-                userConnection.put(new ChatSession1_19_1(playerUuid, profile.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), publicKeyData.keySignature())));
-                if (targetVersion == VersionEnum.r1_19) {
-                    final var legacyKey = ((IPublicKeyData) (Object) publicKeyData).viafabricplus_getV1Key();
-                    if (legacyKey != null) {
-                        userConnection.put(new ChatSession1_19_0(playerUuid, profile.privateKey(), new ProfileKey(publicKeyData.expiresAt().toEpochMilli(), publicKeyData.key().getEncoded(), legacyKey.array())));
-                    } else {
-                        ViaFabricPlus.LOGGER.error("Failed to fetch legacy key, can't setup ChatSession");
+                userConnection.put(new ChatSession1_19_1(uuid, privateKey, new ProfileKey(expiresAt, publicKey, publicKeyData.keySignature())));
+                if (ProtocolTranslator.getTargetVersion() == ProtocolVersion.v1_19) {
+                    final var legacyKeySignature = ((ILegacyKeySignatureStorage) (Object) publicKeyData).viafabricplus$getLegacyPublicKeySignature();
+                    if (legacyKeySignature != null) {
+                        userConnection.put(new ChatSession1_19_0(uuid, privateKey, new ProfileKey(expiresAt, publicKey, legacyKeySignature)));
                     }
                 }
             } else {
-                ViaFabricPlus.LOGGER.error("Failed to fetch keyPair, can't setup ChatSession");
+                ViaFabricPlus.global().getLogger().error("Could not get public key signature. Joining servers with enforce-secure-profiles enabled will not work!");
+            }
+        } else if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
+            final var bedrockSession = ViaFabricPlus.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
+            if (bedrockSession != null) {
+                final StepMCChain.MCChain mcChain = bedrockSession.getMcChain();
+                final UUID deviceId = mcChain.getXblXsts().getInitialXblSession().getXblDeviceToken().getId();
+                final String playFabId = bedrockSession.getPlayFabToken().getPlayFabId();
+
+                userConnection.put(new AuthChainData(mcChain.getMojangJwt(), mcChain.getIdentityJwt(), mcChain.getPublicKey(), mcChain.getPrivateKey(), deviceId, playFabId));
+            } else {
+                ViaFabricPlus.global().getLogger().warn("Could not get Bedrock account. Joining online mode servers will not work!");
             }
         }
     }
+
 }

@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,15 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import net.minecraft.state.property.BooleanProperty;
-import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -36,101 +35,82 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PistonHeadBlock.class)
-public class MixinPistonHeadBlock extends FacingBlock {
+public abstract class MixinPistonHeadBlock extends FacingBlock {
 
-    @Shadow @Final public static BooleanProperty SHORT;
+    @Shadow
+    @Final
+    protected static VoxelShape DOWN_HEAD_SHAPE;
 
-    @Shadow @Final private static VoxelShape[] SHORT_HEAD_SHAPES;
+    @Shadow
+    @Final
+    protected static VoxelShape UP_HEAD_SHAPE;
 
-    @Shadow @Final private static VoxelShape[] HEAD_SHAPES;
+    @Shadow
+    @Final
+    protected static VoxelShape NORTH_HEAD_SHAPE;
 
-    public MixinPistonHeadBlock(Settings settings) {
+    @Shadow
+    @Final
+    protected static VoxelShape SOUTH_HEAD_SHAPE;
+
+    @Shadow
+    @Final
+    protected static VoxelShape WEST_HEAD_SHAPE;
+
+    @Shadow
+    @Final
+    protected static VoxelShape EAST_HEAD_SHAPE;
+
+    @Unique
+    private static final VoxelShape viaFabricPlus$up_arm_shape_r1_8_x = Block.createCuboidShape(6.0, 0.0, 6.0, 10.0, 12.0, 10.0);
+
+    @Unique
+    private static final VoxelShape viaFabricPlus$down_arm_shape_r1_8_x = Block.createCuboidShape(6.0, 4.0, 6.0, 10.0, 16.0, 10.0);
+
+    @Unique
+    private static final VoxelShape viaFabricPlus$south_arm_shape_r1_8_x = Block.createCuboidShape(4.0, 6.0, 0.0, 12.0, 10.0, 12.0);
+
+    @Unique
+    private static final VoxelShape viaFabricPlus$north_arm_shape_r1_8_x = Block.createCuboidShape(4.0, 6.0, 4.0, 12.0, 10.0, 16.0);
+
+    @Unique
+    private static final VoxelShape viaFabricPlus$east_arm_shape_r1_8_x = Block.createCuboidShape(0.0, 6.0, 4.0, 12.0, 10.0, 12.0);
+
+    @Unique
+    private static final VoxelShape viaFabricPlus$west_arm_shape_r1_8_x = Block.createCuboidShape(6.0, 4.0, 4.0, 10.0, 12.0, 16.0);
+
+    protected MixinPistonHeadBlock(Settings settings) {
         super(settings);
     }
 
-    @Unique
-    private boolean viafabricplus_skipOutlineChange;
-
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (viafabricplus_skipOutlineChange) {
-            viafabricplus_skipOutlineChange = false;
-            return;
-        }
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_11)) {
-            cir.setReturnValue(viafabricplus_getHeadShape_v1_8_x(state));
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            cir.setReturnValue(switch (state.get(PistonHeadBlock.FACING)) {
+                case DOWN -> DOWN_HEAD_SHAPE;
+                case UP -> UP_HEAD_SHAPE;
+                case NORTH -> NORTH_HEAD_SHAPE;
+                case SOUTH -> SOUTH_HEAD_SHAPE;
+                case WEST -> WEST_HEAD_SHAPE;
+                case EAST -> EAST_HEAD_SHAPE;
+            });
         }
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
-            return VoxelShapes.union(viafabricplus_getHeadShape_v1_8_x(state), viafabricplus_getCoreShape_v1_8_x(state));
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            return switch (state.get(PistonHeadBlock.FACING)) {
+                case DOWN -> VoxelShapes.union(DOWN_HEAD_SHAPE, viaFabricPlus$down_arm_shape_r1_8_x);
+                case UP -> VoxelShapes.union(UP_HEAD_SHAPE, viaFabricPlus$up_arm_shape_r1_8_x);
+                case NORTH -> VoxelShapes.union(NORTH_HEAD_SHAPE, viaFabricPlus$north_arm_shape_r1_8_x);
+                case SOUTH -> VoxelShapes.union(SOUTH_HEAD_SHAPE, viaFabricPlus$south_arm_shape_r1_8_x);
+                case WEST -> VoxelShapes.union(WEST_HEAD_SHAPE, viaFabricPlus$west_arm_shape_r1_8_x);
+                case EAST -> VoxelShapes.union(EAST_HEAD_SHAPE, viaFabricPlus$east_arm_shape_r1_8_x);
+            };
+        } else {
+            return super.getCollisionShape(state, world, pos, context);
         }
-
-        viafabricplus_skipOutlineChange = true;
-        return super.getCollisionShape(state, world, pos, context);
     }
 
-    @Unique
-    private final VoxelShape viafabricplus_core_down_shape_v1_8_x = Block.createCuboidShape(6, 4, 6, 10, 16, 10);
-
-    @Unique
-    private final VoxelShape viafabricplus_core_up_shape_v1_8_x = Block.createCuboidShape(6, 0, 6, 10, 12, 10);
-
-    @Unique
-    private final VoxelShape viafabricplus_core_north_shape_v1_8_x = Block.createCuboidShape(4, 6, 4, 12, 10, 16);
-
-    @Unique
-    private final VoxelShape viafabricplus_core_south_shape_v1_8_x = Block.createCuboidShape(4, 6, 0, 12, 10, 12);
-
-    @Unique
-    private final VoxelShape viafabricplus_core_west_shape_v1_8_x = Block.createCuboidShape(6, 4, 4, 10, 12, 16);
-
-    @Unique
-    private final VoxelShape viafabricplus_core_east_shape_v1_8_x = Block.createCuboidShape(0, 6, 4, 12, 10, 12);
-
-    @Unique
-    private VoxelShape viafabricplus_getCoreShape_v1_8_x(BlockState state) {
-        final Direction direction = state.get(FACING);
-
-        return switch (direction) {
-            case DOWN -> viafabricplus_core_down_shape_v1_8_x;
-            case UP -> viafabricplus_core_up_shape_v1_8_x;
-            case NORTH -> viafabricplus_core_north_shape_v1_8_x;
-            case SOUTH -> viafabricplus_core_south_shape_v1_8_x;
-            case WEST -> viafabricplus_core_west_shape_v1_8_x;
-            case EAST -> viafabricplus_core_east_shape_v1_8_x;
-        };
-    }
-
-    @Unique
-    private final VoxelShape viafabricplus_head_down_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 16, 4, 16);
-
-    @Unique
-    private final VoxelShape viafabricplus_head_up_shape_v1_8_x = Block.createCuboidShape(0, 12, 0, 16, 16, 16);
-
-    @Unique
-    private final VoxelShape viafabricplus_head_north_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 16, 16, 4);
-
-    @Unique
-    private final VoxelShape viafabricplus_head_south_shape_v1_8_x = Block.createCuboidShape(0, 0, 12, 16, 16, 16);
-
-    @Unique
-    private final VoxelShape viafabricplus_head_west_shape_v1_8_x = Block.createCuboidShape(0, 0, 0, 4, 16, 16);
-
-    @Unique
-    private final VoxelShape viafabricplus_head_east_shape_v1_8_x = Block.createCuboidShape(12, 0, 0, 16, 16, 16);
-
-    @Unique
-    private VoxelShape viafabricplus_getHeadShape_v1_8_x(BlockState state) {
-        return switch (state.get(FACING)) {
-            case DOWN -> viafabricplus_head_down_shape_v1_8_x;
-            case UP -> viafabricplus_head_up_shape_v1_8_x;
-            case NORTH -> viafabricplus_head_north_shape_v1_8_x;
-            case SOUTH -> viafabricplus_head_south_shape_v1_8_x;
-            case WEST -> viafabricplus_head_west_shape_v1_8_x;
-            case EAST -> viafabricplus_head_east_shape_v1_8_x;
-        };
-    }
 }

@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import de.florianmichael.viafabricplus.definition.classic.screen.ClassicItemSelectionScreen;
+import de.florianmichael.viafabricplus.fixes.versioned.classic.GridItemSelectionScreen;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
@@ -27,14 +29,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CreativeInventoryScreen.class)
-public class MixinCreativeInventoryScreen {
+public abstract class MixinCreativeInventoryScreen {
 
     @Inject(method = "init", at = @At("RETURN"))
-    public void replaceCreativeMenu(CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.replaceCreativeInventory.isEnabled()) {
-            if (ClassicItemSelectionScreen.INSTANCE == null) return;
-
-            MinecraftClient.getInstance().setScreen(ClassicItemSelectionScreen.INSTANCE);
+    private void replaceCreativeMenu(CallbackInfo ci) {
+        if (VisualSettings.global().replaceCreativeInventory.isEnabled()) {
+            MinecraftClient.getInstance().setScreen(GridItemSelectionScreen.INSTANCE);
         }
     }
+
 }

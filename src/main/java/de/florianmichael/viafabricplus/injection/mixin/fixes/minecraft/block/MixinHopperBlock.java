@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,12 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import net.minecraft.block.*;
-import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.block.*;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -36,39 +38,39 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinHopperBlock extends BlockWithEntity {
 
     @Unique
-    private final static VoxelShape viafabricplus_inside_shape_v1_12_2 = Block.createCuboidShape(2, 10, 2, 14, 16, 14);
+    private static final VoxelShape viaFabricPlus$inside_shape_r1_12_2 = Block.createCuboidShape(2.0D, 10.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
     @Unique
-    private final static VoxelShape viafabricplus_hopper_shape_v1_12_2 = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), viafabricplus_inside_shape_v1_12_2, BooleanBiFunction.ONLY_FIRST);
+    private static final VoxelShape viaFabricPlus$hopper_shape_r1_12_2 = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), viaFabricPlus$inside_shape_r1_12_2, BooleanBiFunction.ONLY_FIRST);
 
     @Unique
-    private boolean viafabricplus_requireOriginalShape;
+    private boolean viaFabricPlus$requireOriginalShape;
 
     public MixinHopperBlock(Settings settings) {
         super(settings);
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (viafabricplus_requireOriginalShape) {
-            viafabricplus_requireOriginalShape = false;
-            return;
-        }
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            cir.setReturnValue(viafabricplus_hopper_shape_v1_12_2);
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+        if (ViaFabricPlusMixinPlugin.MORE_CULLING_PRESENT && viaFabricPlus$requireOriginalShape) {
+            viaFabricPlus$requireOriginalShape = false;
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            cir.setReturnValue(viaFabricPlus$hopper_shape_r1_12_2);
         }
     }
 
     @Inject(method = "getRaycastShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetRaycastShape(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            cir.setReturnValue(viafabricplus_inside_shape_v1_12_2);
+    private void changeRaycastShape(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<VoxelShape> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            cir.setReturnValue(viaFabricPlus$inside_shape_r1_12_2);
         }
     }
 
     @Override
     public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
-        viafabricplus_requireOriginalShape = true;
+        // Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/45
+        viaFabricPlus$requireOriginalShape = true;
         return super.getCullingShape(state, world, pos);
     }
+
 }

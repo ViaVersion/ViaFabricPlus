@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.event;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.raphimc.vialoader.util.VersionEnum;
 
 /**
  * This event is fired when the user changes the target version in the screen, or if the user joins a server with a different version.
@@ -27,11 +29,12 @@ import net.raphimc.vialoader.util.VersionEnum;
  */
 public interface ChangeProtocolVersionCallback {
 
-    Event<ChangeProtocolVersionCallback> EVENT = EventFactory.createArrayBacked(ChangeProtocolVersionCallback.class, listeners -> version -> {
+    Event<ChangeProtocolVersionCallback> EVENT = EventFactory.createArrayBacked(ChangeProtocolVersionCallback.class, listeners -> (oldVersion, newVersion) -> {
         for (ChangeProtocolVersionCallback listener : listeners) {
-            listener.onChangeProtocolVersion(version);
+            listener.onChangeProtocolVersion(oldVersion, newVersion);
         }
     });
 
-    void onChangeProtocolVersion(final VersionEnum protocolVersion);
+    void onChangeProtocolVersion(final ProtocolVersion oldVersion, final ProtocolVersion newVersion);
+
 }

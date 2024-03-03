@@ -1,7 +1,7 @@
 {
-  "random.hurt": {
+  "oof.hurt": {
     "sounds": [
-      "viafabricplus:random/hurt"
+      "viafabricplus:oof_hurt"
     ]
   }
 }

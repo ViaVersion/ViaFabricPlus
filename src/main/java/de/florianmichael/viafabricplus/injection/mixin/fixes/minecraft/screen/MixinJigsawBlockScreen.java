@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,8 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.entity.JigsawBlockEntity;
 import net.minecraft.client.gui.DrawContext;
@@ -33,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(JigsawBlockScreen.class)
-public class MixinJigsawBlockScreen extends Screen {
+public abstract class MixinJigsawBlockScreen extends Screen {
 
     @Shadow
     private TextFieldWidget nameField;
@@ -44,26 +48,38 @@ public class MixinJigsawBlockScreen extends Screen {
     @Shadow
     private TextFieldWidget targetField;
 
+    @Shadow
+    private TextFieldWidget selectionPriorityField;
+
+    @Shadow
+    private TextFieldWidget placementPriorityField;
+
     public MixinJigsawBlockScreen(Text title) {
         super(title);
     }
 
     @Inject(method = "init", at = @At("RETURN"))
-    public void injectInit(CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerFeaturesFromJigsawScreen.isEnabled()) {
-            nameField.active = false;
-            jointRotationButton.active = false;
-            int index = children().indexOf(jointRotationButton);
-            ((ClickableWidget) children().get(index + 1)).active = false; // levels slider
-            ((ClickableWidget) children().get(index + 2)).active = false; // keep jigsaws toggle
-            ((ClickableWidget) children().get(index + 3)).active = false; // generate button
+    private void disableWidgets(CallbackInfo ci) {
+        if (VisualSettings.global().removeNewerFeaturesFromJigsawScreen.isEnabled()) {
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+                nameField.active = false;
+                jointRotationButton.active = false;
+                int index = children().indexOf(jointRotationButton);
+                ((ClickableWidget) children().get(index + 1)).active = false; // levels slider
+                ((ClickableWidget) children().get(index + 2)).active = false; // keep jigsaws toggle
+                ((ClickableWidget) children().get(index + 3)).active = false; // generate button
+            }
+
+            selectionPriorityField.active = false;
+            placementPriorityField.active = false;
         }
     }
 
     @Inject(method = "render", at = @At("HEAD"))
-    public void injectRender(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerFeaturesFromJigsawScreen.isEnabled()) {
+    private void copyText(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (VisualSettings.global().removeNewerFeaturesFromJigsawScreen.isEnabled() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             nameField.setText(targetField.getText());
         }
     }
+
 }

@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,24 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
-import net.minecraft.client.MinecraftClient;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import net.minecraft.util.StringHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(StringHelper.class)
-public class MixinStringHelper {
+public abstract class MixinStringHelper {
 
     @ModifyConstant(method = "truncateChat", constant = @Constant(intValue = 256))
-    private static int expandChatLength(int constant) {
-        if (MinecraftClient.getInstance().isInSingleplayer()) {
-            return 256;
-        }
-
-        return ClientsideFixes.getCurrentChatLimit();
+    private static int modifyMaxChatLength(int constant) {
+        return ClientsideFixes.getChatLength();
     }
+
 }

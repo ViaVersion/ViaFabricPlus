@@ -1,13 +1,36 @@
+/*
+ * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import de.florianmichael.viafabricplus.settings.impl.ExperimentalSettings;
-import de.florianmichael.viafabricplus.definition.EntityHeightOffsetsPre1_20_2;
-import de.florianmichael.viafabricplus.injection.access.IBoatEntity;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.fixes.versioned.visual.EntityRidingOffsetsPre1_20_2;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
@@ -15,17 +38,17 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.raphimc.vialoader.util.VersionEnum;
-import org.jetbrains.annotations.Nullable;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BoatEntity.class)
-public abstract class MixinBoatEntity extends Entity implements IBoatEntity {
+public abstract class MixinBoatEntity extends VehicleEntity {
 
     @Shadow
     private double x;
@@ -43,73 +66,53 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity {
     private double boatPitch;
 
     @Shadow
-    public abstract int getDamageWobbleTicks();
-
-    @Shadow
-    public abstract void setDamageWobbleTicks(int wobbleTicks);
-
-    @Shadow
-    public abstract float getDamageWobbleStrength();
-
-    @Shadow
-    public abstract void setDamageWobbleStrength(float wobbleStrength);
-
-    @Shadow
-    public abstract @Nullable LivingEntity getControllingPassenger();
-
-    @Shadow
     private BoatEntity.Location location;
+
+    @Shadow
+    public abstract LivingEntity getControllingPassenger();
+
+    @Unique
+    private double viaFabricPlus$speedMultiplier = 0.07D;
+
+    @Unique
+    private int viaFabricPlus$boatInterpolationSteps;
+
+    @Unique
+    private Vec3d viaFabricPlus$boatVelocity = Vec3d.ZERO;
 
     public MixinBoatEntity(EntityType<?> type, World world) {
         super(type, world);
     }
 
-    @Unique
-    private boolean viafabricplus_boatEmpty = true;
-
-    @Unique
-    private double viafabricplus_speedMultiplier = 0.07;
-
-    @Unique
-    private int viafabricplus_boatPosRotationIncrements;
-
-    @Unique
-    private double viafabricplus_velocityX;
-
-    @Unique
-    private double viafabricplus_velocityY;
-
-    @Unique
-    private double viafabricplus_velocityZ;
-
     @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
-    private void onPushAwayFrom(Entity entity, CallbackInfo ci) {
-        if (this.viafabricplus_boatMovementEmulation()) {
-            super.pushAwayFrom(entity);
+    private void pushAwayFrom1_8(Entity entity, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
+            super.pushAwayFrom(entity);
         }
     }
 
     @Inject(method = "updateTrackedPositionAndAngles", at = @At("HEAD"), cancellable = true)
-    private void onUpdateTrackedPositionAndAngles(double x, double y, double z, float yaw, float pitch, int interpolationSteps, CallbackInfo ci) {
-        if (this.viafabricplus_boatMovementEmulation()) {
-            if (hasPassengers()) {
+    private void updateTrackedPositionAndAngles1_8(double x, double y, double z, float yaw, float pitch, int interpolationSteps, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            ci.cancel();
+            if (/*interpolate &&*/ this.hasPassengers() && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6)) {
                 this.prevX = x;
                 this.prevY = y;
                 this.prevZ = z;
-                this.viafabricplus_boatPosRotationIncrements = 0;
-                setPosition(x, y, z);
-                setRotation(yaw, pitch);
-                setVelocity(Vec3d.ZERO);
-                viafabricplus_velocityX = viafabricplus_velocityY = viafabricplus_velocityZ = 0;
+                this.viaFabricPlus$boatInterpolationSteps = 0;
+                this.setPosition(x, y, z);
+                this.setRotation(yaw, pitch);
+                this.setVelocity(Vec3d.ZERO);
+                this.viaFabricPlus$boatVelocity = Vec3d.ZERO;
             } else {
-                if (viafabricplus_boatEmpty) {
-                    viafabricplus_boatPosRotationIncrements = interpolationSteps + 5;
+                if (!this.hasPassengers()) {
+                    this.viaFabricPlus$boatInterpolationSteps = interpolationSteps + 5;
                 } else {
-                    if (squaredDistanceTo(x, y, z) <= 1) {
+                    if (this.squaredDistanceTo(x, y, z) <= 1) {
                         return;
                     }
-                    viafabricplus_boatPosRotationIncrements = 3;
+                    this.viaFabricPlus$boatInterpolationSteps = 3;
                 }
 
                 this.x = x;
@@ -117,211 +120,206 @@ public abstract class MixinBoatEntity extends Entity implements IBoatEntity {
                 this.z = z;
                 this.boatYaw = yaw;
                 this.boatPitch = pitch;
-                setVelocity(viafabricplus_velocityX, viafabricplus_velocityY, viafabricplus_velocityZ);
+                this.setVelocity(this.viaFabricPlus$boatVelocity);
             }
-            ci.cancel();
         }
     }
 
     @Override
     public void setVelocityClient(double x, double y, double z) {
         super.setVelocityClient(x, y, z);
-        viafabricplus_velocityX = x;
-        viafabricplus_velocityY = y;
-        viafabricplus_velocityZ = z;
+
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            this.viaFabricPlus$boatVelocity = new Vec3d(x, y, z);
+        }
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    private void onTick(CallbackInfo ci) {
-        if (this.viafabricplus_boatMovementEmulation()) {
+    private void tick1_8(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            ci.cancel();
             super.tick();
 
-            if (getDamageWobbleTicks() > 0) {
-                setDamageWobbleTicks(getDamageWobbleTicks() - 1);
+            if (this.getDamageWobbleTicks() > 0) {
+                this.setDamageWobbleTicks(this.getDamageWobbleTicks() - 1);
             }
-            if (getDamageWobbleStrength() > 0) {
-                setDamageWobbleStrength(getDamageWobbleStrength() - 1);
+            if (this.getDamageWobbleStrength() > 0) {
+                this.setDamageWobbleStrength(this.getDamageWobbleStrength() - 1);
             }
-            prevX = getX();
-            prevY = getY();
-            prevZ = getZ();
+            this.prevX = this.getX();
+            this.prevY = this.getY();
+            this.prevZ = this.getZ();
 
-            // calculate how submerged in water the boat is
             final int yPartitions = 5;
             double percentSubmerged = 0;
             for (int partitionIndex = 0; partitionIndex < yPartitions; partitionIndex++) {
-                double minY = getBoundingBox().minY + getBoundingBox().getLengthY() * partitionIndex / yPartitions - 0.125;
-                double maxY = getBoundingBox().minY + getBoundingBox().getLengthY() * (partitionIndex + 1) / yPartitions - 0.125;
-                Box box = new Box(getBoundingBox().minX, minY, getBoundingBox().minZ, getBoundingBox().maxX, maxY, getBoundingBox().maxZ);
-                if (BlockPos.stream(box).anyMatch(pos -> getWorld().getFluidState(pos).isIn(FluidTags.WATER))) {
+                final double minY = this.getBoundingBox().minY + this.getBoundingBox().getLengthY() * partitionIndex / yPartitions - 0.125;
+                final double maxY = this.getBoundingBox().minY + this.getBoundingBox().getLengthY() * (partitionIndex + 1) / yPartitions - 0.125;
+                final Box box = new Box(this.getBoundingBox().minX, minY, this.getBoundingBox().minZ, this.getBoundingBox().maxX, maxY, this.getBoundingBox().maxZ);
+                if (BlockPos.stream(box).anyMatch(pos -> this.getWorld().getFluidState(pos).isIn(FluidTags.WATER))) {
                     percentSubmerged += 1.0 / yPartitions;
                 }
             }
 
-            // spawn boat movement splash particles
-            double oldHorizontalSpeed = Math.sqrt(getVelocity().x * getVelocity().x + getVelocity().z * getVelocity().z);
-            if (oldHorizontalSpeed > 0.2975) {
-                double rx = Math.cos(getYaw() * Math.PI / 180);
-                double rz = Math.sin(getYaw() * Math.PI / 180);
+            final double oldHorizontalSpeed = this.getVelocity().horizontalLength();
+            if (oldHorizontalSpeed > (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) ? 0.2625D : 0.2975D)) {
+                final double rx = Math.cos(this.getYaw() * Math.PI / 180);
+                final double rz = Math.sin(this.getYaw() * Math.PI / 180);
                 for (int i = 0; i < 1 + oldHorizontalSpeed * 60; i++) {
-                    double dForward = random.nextFloat() * 2 - 1;
-                    double dSideways = (random.nextInt(2) * 2 - 1) * 0.7;
-                    if (random.nextBoolean()) {
-                        // particles on the side of the boat
-                        double x = getX() - rx * dForward * 0.8 + rz * dSideways;
-                        double z = getZ() - rz * dForward * 0.8 - rx * dSideways;
-                        getWorld().addParticle(ParticleTypes.SPLASH, x, getY() - 0.125, z, getVelocity().x, getVelocity().y, getVelocity().z);
+                    final double dForward = this.random.nextFloat() * 2 - 1;
+                    final double dSideways = (this.random.nextInt(2) * 2 - 1) * 0.7D;
+                    if (this.random.nextBoolean()) {
+                        final double x = this.getX() - rx * dForward * 0.8 + rz * dSideways;
+                        final double z = this.getZ() - rz * dForward * 0.8 - rx * dSideways;
+                        this.getWorld().addParticle(ParticleTypes.SPLASH, x, this.getY() - 0.125D, z, this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
                     } else {
-                        // particles trailing behind the boat
-                        double x = getX() + rx + rz * dForward * 0.7;
-                        double z = getZ() + rz - rx * dForward * 0.7;
-                        getWorld().addParticle(ParticleTypes.SPLASH, x, getY() - 0.125, z, getVelocity().x, getVelocity().y, getVelocity().z);
+                        final double x = this.getX() + rx + rz * dForward * 0.7;
+                        final double z = this.getZ() + rz - rx * dForward * 0.7;
+                        this.getWorld().addParticle(ParticleTypes.SPLASH, x, this.getY() - 0.125D, z, this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
                     }
                 }
             }
 
-            if (viafabricplus_boatEmpty) {
-                if (viafabricplus_boatPosRotationIncrements > 0) {
-                    double newX = getX() + (this.x - getX()) / viafabricplus_boatPosRotationIncrements;
-                    double newY = getY() + (this.y - getY()) / viafabricplus_boatPosRotationIncrements;
-                    double newZ = getZ() + (this.z - getZ()) / viafabricplus_boatPosRotationIncrements;
-                    double newYaw = this.getYaw() + (this.boatYaw - this.getYaw()) / viafabricplus_boatPosRotationIncrements;
-                    double newPitch = this.getPitch() + (this.boatPitch - this.getPitch()) / viafabricplus_boatPosRotationIncrements;
-                    viafabricplus_boatPosRotationIncrements--;
-                    setPosition(newX, newY, newZ);
-                    setRotation((float) newYaw, (float) newPitch);
+            if (this.getWorld().isClient && !this.hasPassengers()) {
+                if (this.viaFabricPlus$boatInterpolationSteps > 0) {
+                    final double newX = this.getX() + (this.x - this.getX()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newY = this.getY() + (this.y - this.getY()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newZ = this.getZ() + (this.z - this.getZ()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newYaw = this.getYaw() + MathHelper.wrapDegrees(this.boatYaw - this.getYaw()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newPitch = this.getPitch() + (this.boatPitch - this.getPitch()) / this.viaFabricPlus$boatInterpolationSteps;
+                    this.viaFabricPlus$boatInterpolationSteps--;
+                    this.setPosition(newX, newY, newZ);
+                    this.setRotation((float) newYaw, (float) newPitch);
                 } else {
-                    setPosition(getX() + getVelocity().x, getY() + getVelocity().y, getZ() + getVelocity().z);
-                    if (isOnGround()) {
-                        setVelocity(getVelocity().multiply(0.5));
+                    this.setPosition(this.getX() + this.getVelocity().x, this.getY() + this.getVelocity().y, this.getZ() + this.getVelocity().z);
+                    if (this.isOnGround()) {
+                        this.setVelocity(this.getVelocity().multiply(0.5D));
                     }
-                    setVelocity(getVelocity().multiply(0.99, 0.95, 0.99));
+                    this.setVelocity(this.getVelocity().multiply(0.99D, 0.95D, 0.99D));
                 }
             } else {
                 if (percentSubmerged < 1) {
-                    double normalizedDistanceFromMiddle = percentSubmerged * 2 - 1;
-                    setVelocity(getVelocity().add(0, 0.04 * normalizedDistanceFromMiddle, 0));
+                    final double normalizedDistanceFromMiddle = percentSubmerged * 2 - 1;
+                    this.setVelocity(this.getVelocity().add(0, 0.04D * normalizedDistanceFromMiddle, 0));
                 } else {
-                    if (getVelocity().y < 0) {
-                        setVelocity(getVelocity().multiply(1, 0.5, 1));
+                    if (this.getVelocity().y < 0) {
+                        this.setVelocity(this.getVelocity().multiply(1, 0.5D, 1));
                     }
-                    setVelocity(getVelocity().add(0, 0.007, 0));
+                    this.setVelocity(this.getVelocity().add(0, 0.007D, 0));
                 }
 
-                if (getControllingPassenger() != null) {
-                    final LivingEntity passenger = getControllingPassenger();
-
-                    float boatAngle = passenger.getYaw() - passenger.sidewaysSpeed * 90;
-                    double xAcceleration = -Math.sin(boatAngle * Math.PI / 180) * viafabricplus_speedMultiplier * passenger.forwardSpeed * 0.05;
-                    double zAcceleration = Math.cos(boatAngle * Math.PI / 180) * viafabricplus_speedMultiplier * passenger.forwardSpeed * 0.05;
-                    setVelocity(getVelocity().add(xAcceleration, 0, zAcceleration));
+                if (this.getControllingPassenger() != null) {
+                    final LivingEntity passenger = this.getControllingPassenger();
+                    if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
+                        final double xAcceleration = passenger.getVelocity().x * this.viaFabricPlus$speedMultiplier;
+                        final double zAcceleration = passenger.getVelocity().z * this.viaFabricPlus$speedMultiplier;
+                        this.setVelocity(this.getVelocity().add(xAcceleration, 0, zAcceleration));
+                    } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+                        if (passenger.forwardSpeed > 0) {
+                            final double xAcceleration = -Math.sin(passenger.getYaw() * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * 0.05D;
+                            final double zAcceleration = Math.cos(passenger.getYaw() * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * 0.05D;
+                            this.setVelocity(this.getVelocity().add(xAcceleration, 0, zAcceleration));
+                        }
+                    } else {
+                        final float boatAngle = passenger.getYaw() - passenger.sidewaysSpeed * 90F;
+                        final double xAcceleration = -Math.sin(boatAngle * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * passenger.forwardSpeed * 0.05D;
+                        final double zAcceleration = Math.cos(boatAngle * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * passenger.forwardSpeed * 0.05D;
+                        this.setVelocity(this.getVelocity().add(xAcceleration, 0, zAcceleration));
+                    }
                 }
 
-                double newHorizontalSpeed = Math.sqrt(getVelocity().x * getVelocity().x + getVelocity().z * getVelocity().z);
-                // cap horizontal speed at 0.35
-                if (newHorizontalSpeed > 0.35) {
-                    double multiplier = 0.35 / newHorizontalSpeed;
-                    setVelocity(getVelocity().multiply(multiplier, 1, multiplier));
-                    newHorizontalSpeed = 0.35;
+                double newHorizontalSpeed = this.getVelocity().horizontalLength();
+                if (newHorizontalSpeed > 0.35D) {
+                    final double multiplier = 0.35D / newHorizontalSpeed;
+                    this.setVelocity(this.getVelocity().multiply(multiplier, 1, multiplier));
+                    newHorizontalSpeed = 0.35D;
                 }
 
-                if (newHorizontalSpeed > oldHorizontalSpeed && viafabricplus_speedMultiplier < 0.35) {
-                    viafabricplus_speedMultiplier += (0.35 - viafabricplus_speedMultiplier) / 35;
-                    if (viafabricplus_speedMultiplier > 0.35) {
-                        viafabricplus_speedMultiplier = 0.35;
+                if (newHorizontalSpeed > oldHorizontalSpeed && this.viaFabricPlus$speedMultiplier < 0.35D) {
+                    this.viaFabricPlus$speedMultiplier += (0.35D - this.viaFabricPlus$speedMultiplier) / 35;
+                    if (this.viaFabricPlus$speedMultiplier > 0.35D) {
+                        this.viaFabricPlus$speedMultiplier = 0.35D;
                     }
                 } else {
-                    viafabricplus_speedMultiplier -= (viafabricplus_speedMultiplier - 0.07) / 35;
-                    if (viafabricplus_speedMultiplier < 0.07) {
-                        viafabricplus_speedMultiplier = 0.07;
+                    this.viaFabricPlus$speedMultiplier -= (this.viaFabricPlus$speedMultiplier - 0.07D) / 35;
+                    if (this.viaFabricPlus$speedMultiplier < 0.07D) {
+                        this.viaFabricPlus$speedMultiplier = 0.07D;
                     }
                 }
 
-                for (int i = 0; i < 4; i++) {
-                    int dx = MathHelper.floor(getX() + ((i % 2) - 0.5) * 0.8);
-                    //noinspection IntegerDivisionInFloatingPointContext
-                    int dz = MathHelper.floor(getZ() + ((i / 2) - 0.5) * 0.8);
-                    for (int ddy = 0; ddy < 2; ddy++) {
-                        int dy = MathHelper.floor(getY()) + ddy;
-                        BlockPos pos = new BlockPos(dx, dy, dz);
-                        Block block = getWorld().getBlockState(pos).getBlock();
-                        if (block == Blocks.SNOW) {
-                            getWorld().setBlockState(pos, Blocks.AIR.getDefaultState());
-                            horizontalCollision = false;
-                        } else if (block == Blocks.LILY_PAD) {
-                            getWorld().breakBlock(pos, true);
-                            horizontalCollision = false;
+                if (ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_6_4)) {
+                    for (int i = 0; i < 4; i++) {
+                        final int dx = MathHelper.floor(this.getX() + ((i % 2) - 0.5D) * 0.8D);
+                        //noinspection IntegerDivisionInFloatingPointContext
+                        final int dz = MathHelper.floor(this.getZ() + ((i / 2) - 0.5D) * 0.8D);
+                        for (int ddy = 0; ddy < 2; ddy++) {
+                            final int dy = MathHelper.floor(this.getY()) + ddy;
+                            final BlockPos pos = new BlockPos(dx, dy, dz);
+                            final Block block = this.getWorld().getBlockState(pos).getBlock();
+                            if (block == Blocks.SNOW) {
+                                this.getWorld().setBlockState(pos, Blocks.AIR.getDefaultState());
+                                this.horizontalCollision = false;
+                            } else if (block == Blocks.LILY_PAD) {
+                                this.getWorld().breakBlock(pos, true);
+                                this.horizontalCollision = false;
+                            }
                         }
                     }
                 }
 
-                if (isOnGround()) {
-                    setVelocity(getVelocity().multiply(0.5));
+                if (this.isOnGround()) {
+                    this.setVelocity(this.getVelocity().multiply(0.5D));
                 }
 
-                move(MovementType.SELF, getVelocity());
+                this.move(MovementType.SELF, this.getVelocity());
 
-                if (!horizontalCollision || oldHorizontalSpeed <= 0.2975) {
-                    setVelocity(getVelocity().multiply(0.99, 0.95, 0.99));
+                if (!this.horizontalCollision || oldHorizontalSpeed <= 0.2975D) {
+                    this.setVelocity(this.getVelocity().multiply(0.99D, 0.95D, 0.99D));
                 }
 
-                setPitch(0);
-                double deltaX = prevX - getX();
-                double deltaZ = prevZ - getZ();
-                if (deltaX * deltaX + deltaZ * deltaZ > 0.001) {
-                    setYaw(MathHelper.clampAngle(getYaw(), (float) (MathHelper.atan2(deltaZ, deltaX) * 180 / Math.PI), 20));
+                this.setPitch(0);
+                final double deltaX = this.prevX - this.getX();
+                final double deltaZ = this.prevZ - this.getZ();
+                if (deltaX * deltaX + deltaZ * deltaZ > 0.001D) {
+                    final double yawDelta = MathHelper.clamp(MathHelper.wrapDegrees((MathHelper.atan2(deltaZ, deltaX) * 180 / Math.PI) - this.getYaw()), -20, 20);
+                    this.setYaw((float) (this.getYaw() + yawDelta));
                 }
-
             }
-
-            ci.cancel();
         }
     }
 
-    @Inject(method = "updatePassengerPosition", at = @At("HEAD"), cancellable = true)
-    private void emulatePassengerOffset1_8(Entity passenger, PositionUpdater positionUpdater, CallbackInfo ci) {
-        if (this.viafabricplus_boatMovementEmulation()) {
-            if (hasPassenger(passenger)) {
-                double dx = Math.cos(this.getYaw() * Math.PI / 180) * 0.4;
-                double dz = Math.sin(this.getYaw() * Math.PI / 180) * 0.4;
-                passenger.setPosition(getX() + dx, getY() + EntityHeightOffsetsPre1_20_2.getMountedHeightOffset(this, passenger).y, getZ() + dz);
-            }
+    @Inject(method = "updatePassengerPosition", at = @At(value = "HEAD"), cancellable = true)
+    private void updatePassengerPosition1_8(Entity passenger, PositionUpdater positionUpdater, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            final Vec3d newPosition = new Vec3d(EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(this, passenger)).add(this.getPos());
+            positionUpdater.accept(passenger, newPosition.x, newPosition.y + EntityRidingOffsetsPre1_20_2.getHeightOffset(passenger), newPosition.z);
             ci.cancel();
         }
     }
 
     @Inject(method = "onPassengerLookAround", at = @At("HEAD"), cancellable = true)
-    private void onOnPassengerLookAround(Entity passenger, CallbackInfo ci) {
-        if (this.viafabricplus_boatMovementEmulation()) {
-            // don't prevent entities looking around in the boat
-            super.onPassengerLookAround(passenger);
+    private void onPassengerLookAround1_8(Entity passenger, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
+            super.onPassengerLookAround(passenger);
         }
     }
 
-    @Inject(method = "fall", at = @At("HEAD"))
-    private void onFall(CallbackInfo ci) {
-        if (this.viafabricplus_boatMovementEmulation()) {
-            // prevent falling from being negated
-            location = BoatEntity.Location.ON_LAND;
+    @Inject(method = "fall", at = @At("HEAD"), cancellable = true)
+    private void fall1_8(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+            ci.cancel();
+            super.fall(heightDifference, onGround, state, landedPosition);
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            this.location = BoatEntity.Location.ON_LAND;
         }
     }
 
     @Inject(method = "canAddPassenger", at = @At("HEAD"), cancellable = true)
-    private void onCanAddPassenger(Entity passenger, CallbackInfoReturnable<Boolean> ci) {
-        if (this.viafabricplus_boatMovementEmulation()) {
-            // only one entity can ride a boat at a time
-            ci.setReturnValue(super.canAddPassenger(passenger));
+    private void canAddPassenger1_8(Entity passenger, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            cir.setReturnValue(super.canAddPassenger(passenger));
         }
     }
 
-    @Unique
-    private boolean viafabricplus_boatMovementEmulation() {
-        return ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8) && ExperimentalSettings.INSTANCE.emulateBoatMovement.getValue();
-    }
-
-    @Override
-    public void viafabricplus_setBoatEmpty(boolean boatEmpty) {
-        viafabricplus_boatEmpty = boatEmpty;
-    }
 }

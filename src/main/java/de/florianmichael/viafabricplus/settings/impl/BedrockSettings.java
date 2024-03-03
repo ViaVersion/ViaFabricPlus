@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,70 +16,76 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.settings.impl;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import de.florianmichael.viafabricplus.settings.SettingGroup;
-import de.florianmichael.viafabricplus.settings.type.BooleanSetting;
-import de.florianmichael.viafabricplus.settings.type.ButtonSetting;
-import de.florianmichael.viafabricplus.definition.account.BedrockAccountHandler;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.screen.VFPScreen;
+import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
+import de.florianmichael.viafabricplus.settings.base.ButtonSetting;
+import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.NoticeScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
-import net.raphimc.minecraftauth.util.MicrosoftConstants;
-import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.CompletableFuture;
 
 public class BedrockSettings extends SettingGroup {
-    public final static BedrockSettings INSTANCE = new BedrockSettings();
 
-    public final ButtonSetting BEDROCK_ACCOUNT = new ButtonSetting(this, Text.translatable("bedrock.viafabricplus.authentication"), () -> CompletableFuture.runAsync(() -> {
-        final var prevScreen = MinecraftClient.getInstance().currentScreen;
-        try {
-            try (final CloseableHttpClient httpClient = MicrosoftConstants.createHttpClient()) {
-                final var bedrockSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
-                    MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new ConfirmScreen(consumer -> {
-                        if (consumer) {
-                            MinecraftClient.getInstance().keyboard.setClipboard(msaDeviceCode.getUserCode());
-                        } else {
-                            MinecraftClient.getInstance().setScreen(prevScreen);
-                            Thread.currentThread().interrupt();
-                        }
-                    }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.text", msaDeviceCode.getUserCode()), Text.translatable("misc.viafabricplus.copy"), Text.translatable("misc.viafabricplus.cancel"))));
-                    try {
-                        Util.getOperatingSystem().open(new URI(msaDeviceCode.getVerificationUri()));
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                        MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("misc.viafabricplus.cancel"), false)));
-                    }
-                }));
-                BedrockAccountHandler.INSTANCE.setBedrockSession(bedrockSession);
-            }
-            RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(prevScreen));
-        } catch (Throwable e) {
-            e.printStackTrace();
-            MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() -> Thread.currentThread().interrupt(), Text.literal("Microsoft Bedrock login"), Text.translatable("bedrocklogin.viafabricplus.error"), Text.translatable("misc.viafabricplus.cancel"), false)));
-        }
-    })) {
+    private static final BedrockSettings INSTANCE = new BedrockSettings();
+
+    private final ButtonSetting ignored = new ButtonSetting(this, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> CompletableFuture.runAsync(this::openBedrockAccountLogin)) {
+        
         @Override
         public MutableText displayValue() {
-            if (BedrockAccountHandler.INSTANCE.getBedrockSession() != null) {
-                return Text.literal("Bedrock account: " + BedrockAccountHandler.INSTANCE.getBedrockSession().getMcChain().getDisplayName());
+            final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getBedrockAccount();
+            if (account != null) {
+                return Text.literal("Bedrock account: " + account.getMcChain().getDisplayName());
+            } else {
+                return super.displayValue();
             }
-            return super.displayValue();
         }
     };
-    public final BooleanSetting confirmServerTransferInBedrockEdition = new BooleanSetting(this, Text.translatable("bedrock.viafabricplus.confirmtransfer"), true);
+    public final BooleanSetting openPromptGUIToConfirmTransfer = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.confirm_transfer_server_prompt"), true);
 
     public BedrockSettings() {
-        super(Text.translatable("settings.viafabricplus.bedrock"));
+        super(Text.translatable("setting_group_name.viafabricplus.bedrock"));
     }
+    
+    private void openBedrockAccountLogin() {
+        final MinecraftClient client = MinecraftClient.getInstance();
+        final Screen prevScreen = client.currentScreen;
+        try {
+            ViaFabricPlus.global().getSaveManager().getAccountsSave().setBedrockAccount(MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(MinecraftAuth.createHttpClient(), new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
+                client.execute(() -> client.setScreen(new NoticeScreen(() -> {
+                    client.setScreen(prevScreen);
+                    Thread.currentThread().interrupt();
+                }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrock.viafabricplus.login"), Text.translatable("base.viafabricplus.cancel"), true)));
+                try {
+                    Util.getOperatingSystem().open(new URI(msaDeviceCode.getDirectVerificationUri()));
+                } catch (URISyntaxException e) {
+                    Thread.currentThread().interrupt();
+                    VFPScreen.showErrorScreen("Microsoft Bedrock Login", e, prevScreen);
+                }
+            })));
+
+            RenderSystem.recordRenderCall(() -> client.setScreen(prevScreen));
+        } catch (Throwable e) {
+            Thread.currentThread().interrupt();
+            VFPScreen.showErrorScreen("Microsoft Bedrock Login", e, prevScreen);
+        }
+    }
+
+    public static BedrockSettings global() {
+        return INSTANCE;
+    }
+
 }

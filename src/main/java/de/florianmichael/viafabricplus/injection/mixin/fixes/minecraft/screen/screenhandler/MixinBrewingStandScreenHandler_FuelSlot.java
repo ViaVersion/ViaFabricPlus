@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.screenhandler;
 
-import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.slot.Slot;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,20 +29,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(targets = "net.minecraft.screen.BrewingStandScreenHandler$FuelSlot")
-public class MixinBrewingStandScreenHandler_FuelSlot extends Slot {
+public abstract class MixinBrewingStandScreenHandler_FuelSlot extends Slot {
 
     public MixinBrewingStandScreenHandler_FuelSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
     }
 
     @Inject(method = "matches(Lnet/minecraft/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
-    private static void removeFuelSlot(CallbackInfoReturnable<Boolean> ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8))
-            ci.setReturnValue(false);
+    private static void removeFuelSlot(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            cir.setReturnValue(false);
+        }
     }
 
     @Override
     public boolean isEnabled() {
-        return ProtocolHack.getTargetVersion().isNewerThan(VersionEnum.r1_8);
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
     }
+
 }

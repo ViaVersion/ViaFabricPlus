@@ -1,5 +1,5 @@
 plugins {
-	id "fabric-loom" version "1.4-SNAPSHOT"
+	id "fabric-loom" version "1.5-SNAPSHOT"
 	id "maven-publish"
 }
 
@@ -10,12 +10,12 @@ base {
 }
 
 configurations {
-	// Jar in sources
-	api.extendsFrom jis
+	jij // jar in jar configuration
+	modJij // jar in jar configuration for mods
 
-	// Jar in jar
-	include.extendsFrom jij
-	implementation.extendsFrom jij
+	include.extendsFrom modJij
+	modImplementation.extendsFrom modJij
+	modCompileOnlyApi.extendsFrom modJij
 }
 
 repositories {
@@ -47,50 +47,61 @@ loom {
 }
 
 dependencies {
-	// Minecraft/Fabric
+	// Minecraft/Fabric and mods
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	modCompileOnly "com.terraformersmc:modmenu:${project.mod_menu_version}"
+
+	// Fabric API
+	modJij(fabricApi.module("fabric-api-base", project.fabric_api_version))
+	modJij(fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version))
+	modJij(fabricApi.module("fabric-networking-api-v1", project.fabric_api_version))
+	modJij(fabricApi.module("fabric-command-api-v2", project.fabric_api_version))
+	modJij(fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version))
+	modJij(fabricApi.module("fabric-particles-v1", project.fabric_api_version))
+	modJij(fabricApi.module("fabric-registry-sync-v0", project.fabric_api_version))
 
 	// ViaVersion Libraries
-	jis "com.viaversion:viaversion-common:${project.viaversion_version}"
-	jis ("com.viaversion:viabackwards-common:${project.viabackwards_version}") {
-		exclude group: "com.viaversion", module: "viaversion"
-		exclude group: "io.netty", module: "netty-all"
-		exclude group: "com.google.guava", module: "guava"
-	}
-	jis ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
-		exclude group: "com.google.code.gson", module: "gson"
-	}
-	jis "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
-	jis ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
+	jij "com.viaversion:viaversion-common:${project.viaversion_version}"
+	jij "com.viaversion:viabackwards-common:${project.viabackwards_version}"
+	jij "net.raphimc:ViaLegacy:${project.vialegacy_version}"
+	jij "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
+	jij ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
 		exclude group: "io.netty"
 		exclude group: "io.jsonwebtoken"
-		exclude group: "net.lenni0451.mcstructs", module: "text"
 		exclude group: "com.mojang", module: "brigadier"
 	}
-	jis ("net.raphimc:ViaLoader:${project.vialoader_version}") {
+	jij ("net.raphimc:ViaLoader:${project.vialoader_version}") {
 		exclude group: "com.google.guava", module: "guava"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
 
 	// RaphiMC Libraries
-	jis ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
+	jij ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
 		exclude group: "com.google.code.gson", module: "gson"
 		exclude group: "org.slf4j", module: "slf4j-api"
-	}
-	jis("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
-		exclude group: "io.netty"
 	}
 
 	// Lenni0451 Libraries
 	jij "net.lenni0451:Reflect:${project.reflect_version}"
+	jij("net.lenni0451:MCPing:${project.mcping_version}") {
+		exclude group: "com.google.code.gson", module: "gson"
+	}
 
 	// Misc Libraries
-	modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
-	include implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))
-	jis "de.florianmichael:Classic4J:${project.classic4j_version}"
+	jij("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
+		exclude group: "io.netty"
+	}
+	jij "de.florianmichael:Classic4J:${project.classic4j_version}"
+
+	// Fabric's jar in jar system doesn't support transitive dependencies, so we have to manually add them
+	afterEvaluate {
+		configurations.jij.incoming.resolutionResult.allDependencies {
+			dependencies.include(dependencies.implementation(dependencies.compileOnlyApi(requested.toString())))
+		}
+	}
 }
 
 processResources {
@@ -109,17 +120,6 @@ java {
 }
 
 jar {
-	// Add all dependencies which are included using "jis" to the jar file and exclude the META-INF folder
-	dependsOn configurations.jis
-	from {
-		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-		configurations.jis.collect {
-			zipTree(it)
-		}
-	} {
-		exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA"
-	}
-
 	// Rename the project's license file to LICENSE_<project_name> to avoid conflicts
 	from("LICENSE") {
 		rename {
@@ -146,6 +146,14 @@ publishing {
 			version = project.mod_version
 
 			from components.java
+		}
+	}
+}
+
+idea {
+	module {
+		["run"].each {
+			excludeDirs << file("$it")
 		}
 	}
 }

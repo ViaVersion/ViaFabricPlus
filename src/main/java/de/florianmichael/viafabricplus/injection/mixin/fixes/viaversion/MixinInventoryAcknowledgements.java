@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.libs.fastutil.ints.IntList;
@@ -28,27 +30,31 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = InventoryAcknowledgements.class, remap = false)
-public class MixinInventoryAcknowledgements {
+public abstract class MixinInventoryAcknowledgements {
 
     @Mutable
-    @Shadow @Final private IntList ids;
+    @Shadow
+    @Final
+    private IntList ids;
+
     @Unique
-    private it.unimi.dsi.fastutil.ints.IntList viafabricplus_ids;
+    private it.unimi.dsi.fastutil.ints.IntList viaFabricPlus$ids;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void fixJavaIssue(CallbackInfo ci) {
+    private void makeConcurrent(CallbackInfo ci) {
         this.ids = null;
-        this.viafabricplus_ids = IntLists.synchronize(new IntArrayList());
+        this.viaFabricPlus$ids = IntLists.synchronize(new IntArrayList());
     }
 
     @Inject(method = "addId", at = @At("HEAD"), cancellable = true)
-    public void forwardAdd(int id, CallbackInfo ci) {
-        viafabricplus_ids.add(id);
+    private void forwardAdd(int id, CallbackInfo ci) {
+        viaFabricPlus$ids.add(id);
         ci.cancel();
     }
 
     @Inject(method = "removeId", at = @At("HEAD"), cancellable = true)
-    public void forwardRemove(int id, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(viafabricplus_ids.rem(id));
+    private void forwardRemove(int id, CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(viaFabricPlus$ids.rem(id));
     }
+
 }

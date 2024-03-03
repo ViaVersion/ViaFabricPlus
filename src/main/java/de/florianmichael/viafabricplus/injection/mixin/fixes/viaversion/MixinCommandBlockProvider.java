@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.CommandBlockProvider;
@@ -22,11 +24,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(CommandBlockProvider.class)
-public class MixinCommandBlockProvider {
+@Mixin(value = CommandBlockProvider.class, remap = false)
+public abstract class MixinCommandBlockProvider {
 
-    @ModifyConstant(method = "sendPermission", constant = @Constant(intValue = 26), remap = false)
-    public int modifyPermissionLevel(int constant) {
-        return 28;
+    @ModifyConstant(method = "sendPermission", constant = @Constant(intValue = 26))
+    private int modifyPermissionLevel(int constant) {
+        return 28; // OP level 4
     }
+
 }

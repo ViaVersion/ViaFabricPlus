@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,14 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import net.minecraft.network.packet.c2s.common.KeepAliveC2SPacket;
-import net.raphimc.vialoader.util.VersionEnum;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.client.MinecraftClient;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.injection.access.IDownloadingTerrainScreen;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.network.packet.c2s.common.KeepAliveC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Final;
@@ -34,44 +36,68 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(DownloadingTerrainScreen.class)
-public class MixinDownloadingTerrainScreen extends Screen {
+public abstract class MixinDownloadingTerrainScreen extends Screen implements IDownloadingTerrainScreen {
 
-    @Shadow @Final private long loadStartTime;
-    @Shadow private boolean closeOnNextTick;
-    @Shadow private boolean ready;
+    @Shadow
+    @Final
+    private long loadStartTime;
+
     @Unique
-    private int viafabricplus_tickCounter;
+    private int viaFabricPlus$tickCounter;
+
+    @Unique
+    private boolean viaFabricPlus$ready;
+
+    @Unique
+    private boolean viaFabricPlus$closeOnNextTick = false;
 
     public MixinDownloadingTerrainScreen(Text title) {
         super(title);
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    public void injectTick(CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_1)) {
-            viafabricplus_tickCounter++;
+    private void modifyCloseCondition(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
+            ci.cancel();
 
-            if (viafabricplus_tickCounter % 20 == 0) {
-                MinecraftClient.getInstance().getNetworkHandler().sendPacket(new KeepAliveC2SPacket(0));
-            }
-        }
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_1tor1_19_2)) {
-            final boolean isTimeOver = this.closeOnNextTick || System.currentTimeMillis() > this.loadStartTime + 2000L;
-
-            if (isTimeOver && this.client != null && this.client.player != null) {
-                final BlockPos blockPos = this.client.player.getBlockPos();
-                final boolean isWorldLoaded = this.client.world != null && this.client.world.isOutOfHeightLimit(blockPos.getY());
-
-                if (isWorldLoaded || this.client.worldRenderer.isRenderingReady(blockPos)) {
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
+                if (this.viaFabricPlus$ready) {
                     this.close();
                 }
 
-                if (this.ready) {
-                    this.closeOnNextTick = true;
+                if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+                    this.viaFabricPlus$tickCounter++;
+                    if (this.viaFabricPlus$tickCounter % 20 == 0) {
+                        this.client.getNetworkHandler().sendPacket(new KeepAliveC2SPacket(0));
+                    }
                 }
+            } else {
+                if (System.currentTimeMillis() > this.loadStartTime + 30000L) {
+                    this.close();
+                } else {
+                    if (this.viaFabricPlus$closeOnNextTick) {
+                        if (this.client.player == null) return;
 
+                        final BlockPos blockPos = this.client.player.getBlockPos();
+                        final boolean isOutOfHeightLimit = this.client.world != null && this.client.world.isOutOfHeightLimit(blockPos.getY());
+                        if (isOutOfHeightLimit || this.client.worldRenderer.isRenderingReady(blockPos) || this.client.player.isSpectator() || !this.client.player.isAlive()) {
+                            this.close();
+                        }
+                    } else {
+                        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+                            this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready || System.currentTimeMillis() > this.loadStartTime + 2000;
+                        } else {
+                            this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready;
+                        }
+                    }
+                }
             }
-            ci.cancel();
         }
     }
+
+    @Override
+    public void viaFabricPlus$setReady() {
+        this.viaFabricPlus$ready = true;
+    }
+
 }

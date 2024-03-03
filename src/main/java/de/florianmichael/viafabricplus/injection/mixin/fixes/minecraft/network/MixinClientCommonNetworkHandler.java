@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,20 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
-import de.florianmichael.viafabricplus.definition.ClientsideFixes;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.storage.InventoryAcknowledgements;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
+import de.florianmichael.viafabricplus.injection.access.IClientConnection;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.fabricmc.fabric.impl.networking.payload.ResolvablePayload;
 import net.fabricmc.fabric.impl.networking.payload.UntypedPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.ServerPacketListener;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.common.ResourcePackStatusC2SPacket;
 import net.minecraft.network.packet.s2c.common.CommonPingS2CPacket;
 import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
+import net.minecraft.network.packet.s2c.common.ResourcePackSendS2CPacket;
 import net.minecraft.screen.ScreenHandler;
-import net.raphimc.vialoader.util.VersionEnum;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,6 +45,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.net.URL;
 import java.time.Duration;
 import java.util.function.BooleanSupplier;
 
@@ -54,38 +63,61 @@ public abstract class MixinClientCommonNetworkHandler {
     @Shadow
     public abstract void sendPacket(Packet<?> packet);
 
-    @Inject(method = "onPing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
-    private void onPing(CommonPingS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolHack.getTargetVersion().isNewerThanOrEqualTo(VersionEnum.r1_17)) {
-            return;
-        }
+    @Shadow
+    @Final
+    protected ClientConnection connection;
 
-        final int inventoryId = (packet.getParameter() >> 16) & 0xFF; // Fix Via Bug from 1.16.5 (Window Confirmation -> PlayPing) Usage for MiningFast Detection
-        ScreenHandler handler = null;
-
-        if (client.player == null) return;
-
-        if (inventoryId == 0) handler = client.player.playerScreenHandler;
-        if (inventoryId == client.player.currentScreenHandler.syncId) handler = client.player.currentScreenHandler;
-
-        if (handler == null) ci.cancel();
+    @Shadow
+    @Nullable
+    private static URL getParsedResourcePackUrl(String url) {
+        return null;
     }
 
     @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientCommonNetworkHandler;send(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
-    public void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_19_3)) {
+    private void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             sendPacket(packet);
-            return;
+        } else {
+            send(packet, sendCondition, expiry);
         }
+    }
 
-        send(packet, sendCondition, expiry);
+    @Inject(method = "onPing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
+    private void onPing(CommonPingS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+            final InventoryAcknowledgements acks = ((IClientConnection) this.connection).viaFabricPlus$getUserConnection().get(InventoryAcknowledgements.class);
+            if (acks.removeId(packet.getParameter())) {
+                final short inventoryId = (short) ((packet.getParameter() >> 16) & 0xFF);
+
+                ScreenHandler handler = null;
+                if (inventoryId == 0) handler = client.player.playerScreenHandler;
+                else if (inventoryId == client.player.currentScreenHandler.syncId) handler = client.player.currentScreenHandler;
+
+                if (handler != null) {
+                    acks.addId(packet.getParameter());
+                } else {
+                    ci.cancel();
+                }
+            }
+        }
     }
 
     @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At("HEAD"), cancellable = true)
-    public void handleSyncTask(CustomPayloadS2CPacket packet, CallbackInfo ci) {
+    private void handleSyncTask(CustomPayloadS2CPacket packet, CallbackInfo ci) {
         if (packet.payload().id().toString().equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof ResolvablePayload payload) {
             ClientsideFixes.handleSyncTask(((UntypedPayload) payload.resolve(null)).buffer());
             ci.cancel(); // Cancel the packet, so it doesn't get processed by the client
         }
     }
+
+    @Inject(method = "onResourcePackSend", at = @At("HEAD"), cancellable = true)
+    private void validateUrlInNetworkThread(ResourcePackSendS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
+            if (getParsedResourcePackUrl(packet.url()) == null) {
+                this.connection.send(new ResourcePackStatusC2SPacket(packet.id(), ResourcePackStatusC2SPacket.Status.INVALID_URL));
+                ci.cancel();
+            }
+        }
+    }
+
 }

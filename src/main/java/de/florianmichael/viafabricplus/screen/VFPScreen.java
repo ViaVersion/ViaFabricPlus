@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -40,7 +42,7 @@ import java.awt.*;
  */
 public class VFPScreen extends Screen {
 
-    private final static String MOD_URL = "https://github.com/ViaVersion/ViaFabricPlus";
+    private static final String MOD_URL = "https://github.com/ViaVersion/ViaFabricPlus";
 
     private final boolean backButton;
     public Screen prevScreen;
@@ -55,11 +57,10 @@ public class VFPScreen extends Screen {
         this.backButton = backButton;
     }
 
-    /***
+    /**
      * Sets the subtitle and the subtitle press action to the default values
      * The default value of the subtitle is the url to the GitHub repository of VFP
      * The default value of the subtitle press action is to open the url in a confirmation screen
-     *
      */
     public void setupDefaultSubtitle() {
         this.setupUrlSubtitle(MOD_URL);
@@ -71,11 +72,11 @@ public class VFPScreen extends Screen {
      * @param subtitle The subtitle which should be rendered
      */
     public void setupUrlSubtitle(final String subtitle) {
-        this.setupSubtitle(Text.of(subtitle), ConfirmLinkScreen.opening(subtitle, this, true));
+        this.setupSubtitle(Text.of(subtitle), ConfirmLinkScreen.opening(this, subtitle));
     }
 
 
-    /***
+    /**
      * Sets the subtitle and the subtitle press action
      *
      * @param subtitle The subtitle which should be rendered
@@ -84,7 +85,7 @@ public class VFPScreen extends Screen {
         this.setupSubtitle(subtitle, null);
     }
 
-    /***
+    /**
      * Sets the subtitle and the subtitle press action
      *
      * @param subtitle The subtitle which should be rendered
@@ -94,9 +95,13 @@ public class VFPScreen extends Screen {
         this.subtitle = subtitle;
         this.subtitlePressAction = subtitlePressAction;
 
-        if (subtitleWidget != null && subtitlePressAction == null) { // Allows to remove the subtitle when calling this method twice.
+        if (subtitleWidget != null) { // Allows to remove the subtitle when calling this method twice.
             remove(subtitleWidget);
             subtitleWidget = null;
+        }
+        if (subtitlePressAction != null) {
+            final int subtitleWidth = textRenderer.getWidth(subtitle);
+            this.addDrawableChild(subtitleWidget = new PressableTextWidget(width / 2 - (subtitleWidth / 2), (textRenderer.fontHeight + 2) * 2 + 3, subtitleWidth, textRenderer.fontHeight + 2, subtitle, subtitlePressAction, textRenderer));
         }
     }
 
@@ -116,24 +121,15 @@ public class VFPScreen extends Screen {
         if (backButton) {
             this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
         }
-
-        if (this.subtitle != null && this.subtitlePressAction != null) {
-            final int subtitleWidth = textRenderer.getWidth(subtitle);
-            this.addDrawableChild(subtitleWidget = new PressableTextWidget(
-                    width / 2 - (subtitleWidth / 2),
-                    (textRenderer.fontHeight + 2) * 2 + 3,
-                    subtitleWidth,
-                    textRenderer.fontHeight + 2,
-                    subtitle,
-                    subtitlePressAction,
-                    textRenderer
-            ));
-        }
     }
 
     @Override
     public void close() {
-        MinecraftClient.getInstance().setScreen(prevScreen);
+        if (prevScreen instanceof VFPScreen vfpScreen) {
+            vfpScreen.open(vfpScreen.prevScreen); // Support recursive opening
+        } else {
+            MinecraftClient.getInstance().setScreen(prevScreen);
+        }
     }
 
     /**
@@ -175,13 +171,13 @@ public class VFPScreen extends Screen {
      *
      * @param title     The title of the error screen
      * @param throwable The throwable which should be thrown
+     * @param next      The screen which should be opened after the error screen is closed
      */
-    public void showErrorScreen(final String title, final Throwable throwable) {
-        MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().setScreen(new NoticeScreen(() ->
-                RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(this)), Text.of(title),
-                Text.translatable("misc.viafabricplus.error").append("\n" + throwable.getMessage()),
-                Text.translatable("misc.viafabricplus.cancel"), false)));
+    public static void showErrorScreen(final String title, final Throwable throwable, final Screen next) {
+        ViaFabricPlus.global().getLogger().error("Something went wrong!", throwable);
 
-        ViaFabricPlus.LOGGER.error(throwable);
+        final MinecraftClient client = MinecraftClient.getInstance();
+        client.execute(() -> client.setScreen(new NoticeScreen(() -> client.setScreen(next), Text.of(title), Text.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Text.translatable("base.viafabricplus.cancel"), false)));
     }
+
 }

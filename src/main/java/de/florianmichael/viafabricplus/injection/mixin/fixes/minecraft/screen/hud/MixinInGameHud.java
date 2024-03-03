@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,18 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.hud;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.entity.JumpingMount;
 import net.minecraft.entity.LivingEntity;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -38,24 +41,16 @@ public abstract class MixinInGameHud {
 
     // Removing newer elements
 
-    @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
-    public void removeExperienceBar(DrawContext context, int x, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) ci.cancel();
-    }
-
-    @Inject(method = "renderMountJumpBar", at = @At("HEAD"), cancellable = true)
-    public void removeMountJumpBar(JumpingMount mount, DrawContext context, int x, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) ci.cancel();
-    }
-
-    @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
-    public void removeMountHealth(DrawContext context, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) ci.cancel();
+    @Inject(method = {"renderMountJumpBar", "renderMountHealth"}, at = @At("HEAD"), cancellable = true)
+    private void removeMountJumpBar(CallbackInfo ci) {
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            ci.cancel();
+        }
     }
 
     @Inject(method = "getHeartCount", at = @At("HEAD"), cancellable = true)
-    public void removeHungerBar(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) {
+    private void removeHungerBar(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
             cir.setReturnValue(1);
         }
     }
@@ -63,36 +58,49 @@ public abstract class MixinInGameHud {
     // Moving down all remaining elements
 
     @ModifyExpressionValue(method = "renderStatusBars", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/InGameHud;scaledHeight:I", opcode = Opcodes.GETFIELD),
-    require = 0)
+            require = 0)
     private int moveHealthDown(int originalValue) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return originalValue + 6;
-        return originalValue;
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            return originalValue + 6;
+        } else {
+            return originalValue;
+        }
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"),
             to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 1,
             require = 0)
-    private int moveArmor(int old) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return scaledWidth - old - 9;
-        return old;
+    private int moveArmorNextToHealth(int oldX) {
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            return scaledWidth - oldX - 9;
+        } else {
+            return oldX;
+        }
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"),
-            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0)), index = 2,
+            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 1)), index = 2,
             require = 0)
-    private int moveArmorDown(int old) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return scaledWidth - 39 + 6;
-        return old;
+    private int moveArmorDown(int oldY) {
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            return oldY + 9;
+        } else {
+            return oldY;
+        }
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 2),
             to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V")), index = 1,
             require = 0)
-    private int moveAir(int old) {
-        if (VisualSettings.INSTANCE.removeNewerHudElements.isEnabled()) return scaledWidth - old - 9;
-        return old;
+    private int moveAir(int oldY) {
+        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            return scaledWidth - oldY - 9;
+        } else {
+            return oldY;
+        }
     }
+
 }

@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
@@ -35,6 +37,7 @@ public abstract class MixinCommandBlockScreen {
 
     @Shadow
     private CyclingButtonWidget<Boolean> conditionalModeButton;
+
     @Shadow
     private CyclingButtonWidget<Boolean> redstoneTriggerButton;
 
@@ -42,8 +45,8 @@ public abstract class MixinCommandBlockScreen {
     public abstract void updateCommandBlock();
 
     @Inject(method = "init", at = @At("TAIL"))
-    private void injectInit(CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeNewerFeaturesFromCommandBlockScreen.isEnabled()) {
+    private void removeWidgets(CallbackInfo ci) {
+        if (VisualSettings.global().removeNewerFeaturesFromCommandBlockScreen.isEnabled()) {
             modeButton.visible = false;
             conditionalModeButton.visible = false;
             redstoneTriggerButton.visible = false;
@@ -51,4 +54,5 @@ public abstract class MixinCommandBlockScreen {
             updateCommandBlock();
         }
     }
+
 }

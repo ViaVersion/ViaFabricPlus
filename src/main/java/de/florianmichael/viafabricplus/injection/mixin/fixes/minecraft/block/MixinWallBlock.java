@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,105 +16,137 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import net.raphimc.vialoader.util.VersionEnum;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.WallBlock;
 import net.minecraft.block.enums.WallShape;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
 @Mixin(WallBlock.class)
-public class MixinWallBlock extends Block {
+public abstract class MixinWallBlock extends Block {
 
-    @Unique
-    private final static VoxelShape[] viafabricplus_shape_by_index_v1_12_2 = new VoxelShape[]{
-            Block.createCuboidShape(4, 0, 4, 12, 16, 12),
-            Block.createCuboidShape(4, 0, 4, 12, 16, 16),
-            Block.createCuboidShape(0, 0, 4, 12, 16, 12),
-            Block.createCuboidShape(0, 0, 4, 12, 16, 16),
-            Block.createCuboidShape(4, 0, 0, 12, 16, 12),
-
-            Block.createCuboidShape(5, 0, 0, 11, 14, 16),
-
-            Block.createCuboidShape(0, 0, 0, 12, 16, 12),
-            Block.createCuboidShape(0, 0, 0, 12, 16, 16),
-            Block.createCuboidShape(4, 0, 4, 16, 16, 12),
-            Block.createCuboidShape(4, 0, 4, 16, 16, 16),
-
-            Block.createCuboidShape(0, 0, 5, 16, 14, 11),
-
-            Block.createCuboidShape(0, 0, 4, 16, 16, 16),
-            Block.createCuboidShape(4, 0, 0, 16, 16, 12),
-            Block.createCuboidShape(4, 0, 0, 16, 16, 16),
-            Block.createCuboidShape(0, 0, 0, 16, 16, 12),
-            Block.createCuboidShape(0, 0, 0, 16, 16, 16)
-    };
-
-    @Unique
-    private final static VoxelShape[] viafabricplus_cip_shape_by_index_v1_12_2 = new VoxelShape[]{
-            Block.createCuboidShape(4, 0, 4, 12, 24, 12),
-            Block.createCuboidShape(4, 0, 4, 12, 24, 16),
-            Block.createCuboidShape(0, 0, 4, 12, 24, 12),
-            Block.createCuboidShape(0, 0, 4, 12, 24, 16),
-            Block.createCuboidShape(4, 0, 0, 12, 24, 12),
-
-            Block.createCuboidShape(5, 0, 0, 11, 24, 16),
-
-            Block.createCuboidShape(0, 0, 0, 12, 24, 12),
-            Block.createCuboidShape(0, 0, 0, 12, 24, 16),
-            Block.createCuboidShape(4, 0, 4, 16, 24, 12),
-            Block.createCuboidShape(4, 0, 4, 16, 24, 16),
-
-            Block.createCuboidShape(0, 0, 5, 16, 24, 11),
-
-            Block.createCuboidShape(0, 0, 4, 16, 24, 16),
-            Block.createCuboidShape(4, 0, 0, 16, 24, 12),
-            Block.createCuboidShape(4, 0, 0, 16, 24, 16),
-            Block.createCuboidShape(0, 0, 0, 16, 24, 12),
-            Block.createCuboidShape(0, 0, 0, 16, 24, 16)
-    };
-    @Shadow
-    @Final
-    public static EnumProperty<WallShape> EAST_SHAPE;
-    @Shadow
-    @Final
-    public static EnumProperty<WallShape> NORTH_SHAPE;
-    @Shadow
-    @Final
-    public static EnumProperty<WallShape> WEST_SHAPE;
-    @Shadow
-    @Final
-    public static EnumProperty<WallShape> SOUTH_SHAPE;
     @Shadow
     @Final
     private Map<BlockState, VoxelShape> shapeMap;
+
+    @Unique
+    private final Object2IntMap<BlockState> viaFabricPlus$shapeIndexCache_r1_12_2 = new Object2IntOpenHashMap<>();
+
+    @Unique
+    private VoxelShape[] viaFabricPlus$collision_shape_r1_12_2;
+
+    @Unique
+    private VoxelShape[] viaFabricPlus$outline_shape_r1_12_2;
 
     public MixinWallBlock(Settings settings) {
         super(settings);
     }
 
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void initShapes1_12_2(Settings settings, CallbackInfo ci) {
+        this.viaFabricPlus$collision_shape_r1_12_2 = this.viaFabricPlus$createShapes1_12_2(24.0F, 24.0F);
+        this.viaFabricPlus$outline_shape_r1_12_2 = this.viaFabricPlus$createShapes1_12_2(16.0F, 14.0F);
+    }
+
+    @Inject(method = "getPlacementState", at = @At("RETURN"), cancellable = true)
+    private void modifyPlacementState(CallbackInfoReturnable<BlockState> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+            cir.setReturnValue(viaFabricPlus$oldWallPlacementLogic(cir.getReturnValue()));
+        }
+    }
+
+    @Inject(method = "getStateForNeighborUpdate", at = @At("RETURN"), cancellable = true)
+    private void modifyBlockState(CallbackInfoReturnable<BlockState> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+            cir.setReturnValue(viaFabricPlus$oldWallPlacementLogic(cir.getReturnValue()));
+        }
+    }
+
+    @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
+    private void changeCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+        if (state.get(WallBlock.UP) && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            cir.setReturnValue(this.viaFabricPlus$collision_shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)]);
+        }
+    }
+
+    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
+    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+        if (state.get(WallBlock.UP) && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            cir.setReturnValue(this.viaFabricPlus$outline_shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)]);
+        }
+    }
+
+    @Override
+    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+        if (state.get(WallBlock.UP) && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return this.shapeMap.get(state);
+        } else {
+            return super.getCullingShape(state, world, pos);
+        }
+    }
+
     @Unique
-    private static BlockState viafabricplus_oldWallPlacementLogic(BlockState state) {
+    private VoxelShape[] viaFabricPlus$createShapes1_12_2(final float height1, final float height2) {
+        final float f = 4.0F;
+        final float g = 12.0F;
+        final float h = 5.0F;
+        final float i = 11.0F;
+
+        final VoxelShape baseShape = Block.createCuboidShape(f, 0.0D, f, g, height1, g);
+        final VoxelShape northShape = Block.createCuboidShape(h, 0.0, 0.0D, i, height2, i);
+        final VoxelShape southShape = Block.createCuboidShape(h, 0.0, h, i, height2, 16.0D);
+        final VoxelShape westShape = Block.createCuboidShape(0.0D, 0.0, h, i, height2, i);
+        final VoxelShape eastShape = Block.createCuboidShape(h, 0.0, h, 16.0D, height2, i);
+        final VoxelShape[] voxelShapes = new VoxelShape[]{
+                VoxelShapes.empty(),
+                Block.createCuboidShape(f, 0.0, h, g, height1, 16.0D),
+                Block.createCuboidShape(0.0D, 0.0, f, i, height1, g),
+                Block.createCuboidShape(f - 4, 0.0, h - 1, g, height1, 16.0D),
+                Block.createCuboidShape(f, 0.0, 0.0D, g, height1, i),
+                VoxelShapes.union(southShape, northShape),
+                Block.createCuboidShape(f - 4, 0.0, 0.0D, g, height1, i + 1),
+                Block.createCuboidShape(f - 4, 0.0, h - 5, g, height1, 16.0D),
+                Block.createCuboidShape(h, 0.0, f, 16.0D, height1, g),
+                Block.createCuboidShape(h - 1, 0.0, f, 16.0D, height1, g + 4),
+                VoxelShapes.union(westShape, eastShape),
+                Block.createCuboidShape(h - 5, 0.0, f, 16.0D, height1, g + 4),
+                Block.createCuboidShape(f, 0.0, 0.0D, g + 4, height1, i + 1),
+                Block.createCuboidShape(f, 0.0, 0.0D, g + 4, height1, i + 5),
+                Block.createCuboidShape(h - 5, 0.0, f - 4, 16.0D, height1, g),
+                Block.createCuboidShape(0, 0.0, 0, 16.0D, height1, 16.0D)
+        };
+
+        for (int j = 0; j < 16; ++j) {
+            voxelShapes[j] = VoxelShapes.union(baseShape, voxelShapes[j]);
+        }
+
+        return voxelShapes;
+    }
+
+    @Unique
+    private static BlockState viaFabricPlus$oldWallPlacementLogic(BlockState state) {
         boolean addUp = false;
         if (state.get(WallBlock.NORTH_SHAPE) == WallShape.TALL) {
             state = state.with(WallBlock.NORTH_SHAPE, WallShape.LOW);
@@ -138,47 +171,32 @@ public class MixinWallBlock extends Block {
     }
 
     @Unique
-    private static int viafabricplus_getShapeIndex_v1_12_2(BlockState state) {
-        int i = 0;
-
-        if (state.get(NORTH_SHAPE) != WallShape.NONE) i |= 1 << Direction.NORTH.getHorizontal();
-        if (state.get(EAST_SHAPE) != WallShape.NONE) i |= 1 << Direction.EAST.getHorizontal();
-        if (state.get(SOUTH_SHAPE) != WallShape.NONE) i |= 1 << Direction.SOUTH.getHorizontal();
-        if (state.get(WEST_SHAPE) != WallShape.NONE) i |= 1 << Direction.WEST.getHorizontal();
-
-        return i;
+    private static int viaFabricPlus$getDirectionMask(Direction dir) {
+        return 1 << dir.getHorizontal();
     }
 
-    @Inject(method = "getPlacementState", at = @At("RETURN"), cancellable = true)
-    public void injectGetPlacementState(ItemPlacementContext ctx, CallbackInfoReturnable<BlockState> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
-            cir.setReturnValue(viafabricplus_oldWallPlacementLogic(cir.getReturnValue()));
-        }
+    @Unique
+    private int viaFabricPlus$getShapeIndex(BlockState state) {
+        return this.viaFabricPlus$shapeIndexCache_r1_12_2.computeIntIfAbsent(state, statex -> {
+            int i = 0;
+            if (!WallShape.NONE.equals(statex.get(WallBlock.NORTH_SHAPE))) {
+                i |= viaFabricPlus$getDirectionMask(Direction.NORTH);
+            }
+
+            if (!WallShape.NONE.equals(statex.get(WallBlock.EAST_SHAPE))) {
+                i |= viaFabricPlus$getDirectionMask(Direction.EAST);
+            }
+
+            if (!WallShape.NONE.equals(statex.get(WallBlock.SOUTH_SHAPE))) {
+                i |= viaFabricPlus$getDirectionMask(Direction.SOUTH);
+            }
+
+            if (!WallShape.NONE.equals(statex.get(WallBlock.WEST_SHAPE))) {
+                i |= viaFabricPlus$getDirectionMask(Direction.WEST);
+            }
+
+            return i;
+        });
     }
 
-    @Inject(method = "getStateForNeighborUpdate", at = @At("RETURN"), cancellable = true)
-    public void injectGetStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos, CallbackInfoReturnable<BlockState> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2)) {
-            cir.setReturnValue(viafabricplus_oldWallPlacementLogic(cir.getReturnValue()));
-        }
-    }
-
-    @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            cir.setReturnValue(viafabricplus_cip_shape_by_index_v1_12_2[viafabricplus_getShapeIndex_v1_12_2(state)]);
-        }
-    }
-
-    @Override
-    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
-        return this.shapeMap.get(state); // Always use the real outline shape for culling
-    }
-
-    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void injectGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_12_2)) {
-            cir.setReturnValue(viafabricplus_shape_by_index_v1_12_2[viafabricplus_getShapeIndex_v1_12_2(state)]);
-        }
-    }
 }

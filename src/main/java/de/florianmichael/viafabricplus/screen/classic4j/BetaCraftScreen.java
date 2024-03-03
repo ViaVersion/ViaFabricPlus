@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,19 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.screen.classic4j;
 
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
-import de.florianmichael.viafabricplus.screen.MappedSlotEntry;
+import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.settings.settingrenderer.meta.TitleRenderer;
+import de.florianmichael.viafabricplus.screen.settings.TitleRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
-import net.minecraft.client.gui.screen.ConnectScreen;
+import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ServerAddress;
@@ -38,25 +40,22 @@ import net.minecraft.util.Formatting;
 import java.util.List;
 
 public class BetaCraftScreen extends VFPScreen {
-    public static BCServerList SERVER_LIST;
-    public final static BetaCraftScreen INSTANCE = new BetaCraftScreen();
 
-    private final static String BETA_CRAFT_SERVER_LIST_URL = "https://betacraft.uk/serverlist/";
+    public static final BetaCraftScreen INSTANCE = new BetaCraftScreen();
+
+    public static BCServerList SERVER_LIST;
+    private static final String BETA_CRAFT_SERVER_LIST_URL = "https://betacraft.uk/serverlist/";
 
     protected BetaCraftScreen() {
         super("BetaCraft", true);
-        this.setupSubtitle(Text.of(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.opening(
-                BETA_CRAFT_SERVER_LIST_URL,
-                this,
-                true
-        ));
     }
 
     @Override
     protected void init() {
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, height + 5, (textRenderer.fontHeight + 2) * 3));
+        this.setupSubtitle(Text.of(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.opening(this, BETA_CRAFT_SERVER_LIST_URL));
+        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 2) * 3));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("misc.viafabricplus.reset"), button -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.reset"), button -> {
             SERVER_LIST = null;
             client.setScreen(prevScreen);
         }).position(width - 98 - 5, 5).size(98, 20).build());
@@ -72,10 +71,10 @@ public class BetaCraftScreen extends VFPScreen {
         this.renderTitle(context);
     }
 
-    public static class SlotList extends AlwaysSelectedEntryListWidget<MappedSlotEntry> {
+    public static class SlotList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height, top, bottom, entryHeight);
+            super(minecraftClient, width, height - top - bottom, top, entryHeight);
             if (SERVER_LIST == null) return;
 
             for (BCVersionCategory value : BCVersionCategory.values()) {
@@ -99,7 +98,7 @@ public class BetaCraftScreen extends VFPScreen {
         }
     }
 
-    public static class ServerSlot extends MappedSlotEntry {
+    public static class ServerSlot extends VFPListEntry {
         private final BCServerInfoSpec server;
 
         public ServerSlot(BCServerInfoSpec server) {
@@ -126,10 +125,11 @@ public class BetaCraftScreen extends VFPScreen {
             context.drawCenteredTextWithShadow(textRenderer, server.name() + Formatting.DARK_GRAY + " [" + server.connectVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
             if (server.onlineMode()) {
-                context.drawTextWithShadow(textRenderer, Text.translatable("misc.viafabricplus.online").formatted(Formatting.GREEN), 1, 1, -1);
+                context.drawTextWithShadow(textRenderer, Text.translatable("base.viafabricplus.online_mode").formatted(Formatting.GREEN), 1, 1, -1);
             }
             final String playerText = server.playerCount() + "/" + server.playerLimit();
             context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 152 */ - 1, 1, -1);
         }
     }
+
 }

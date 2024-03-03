@@ -13,9 +13,11 @@ body:
     attributes:
       label: General Information
       description: |
-        Please provide a list of all installed mods
+        Please provide a ViaVersion dump, if you experience a crash, also the crash report (latest.log file). You can get both by
+        going to `ViaFabricPlus -> Report issues` and using the buttons there.
       placeholder: |
-        Example: "ViaFabricPlus, Fabric-API, Quilted-Fabric-API, ModMenu"
+        ViaVersion dump url: **paste here**
+        Crash report url: **upload to mclo.gs and paste here**
     validations:
       required: true
 

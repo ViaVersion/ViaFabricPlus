@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,62 +16,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.injection.access.IItemStack;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
-import de.florianmichael.viafabricplus.protocolhack.ProtocolHack;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.OptionalDouble;
 
 @Mixin(value = ItemStack.class, priority = 1)
-public abstract class MixinItemStack {
+public abstract class MixinItemStack implements IItemStack {
 
     @Shadow
     public abstract Item getItem();
 
-    @Shadow @Final public static ItemStack EMPTY;
+    @Unique
+    private boolean viaFabricPlus$has1_10Tag;
 
-    @Shadow private int count;
-
-    @Shadow @Final @Deprecated private @Nullable Item item;
-
-    @Inject(method = "isEmpty", at = @At("HEAD"), cancellable = true)
-    public void dontRecalculateState(CallbackInfoReturnable<Boolean> cir) {
-        if (MinecraftClient.getInstance() != null && ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_10)) {
-            final ItemStack self = (ItemStack) (Object) this;
-
-            cir.setReturnValue(self == EMPTY || this.item == null || this.item == Items.AIR || count == 0);
-        }
-    }
-
-    @Inject(method = "getMiningSpeedMultiplier", at = @At("RETURN"), cancellable = true)
-    private void modifyMiningSpeedMultiplier(BlockState state, CallbackInfoReturnable<Float> ci) {
-        final Item toolItem = ((ItemStack) (Object) this).getItem();
-
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_15_2) && toolItem instanceof HoeItem) {
-            ci.setReturnValue(1F);
-        }
-    }
+    @Unique
+    private int viaFabricPlus$1_10Count;
 
     @Redirect(method = "getTooltip",
             slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/entity/attribute/EntityAttribute;", ordinal = 0)),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeBaseValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D", ordinal = 0))
-    private double redirectGetTooltip(PlayerEntity player, EntityAttribute attribute) {
-        if (ProtocolHack.getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+    private double fixDamageCalculation(PlayerEntity player, EntityAttribute attribute) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 0;
         } else {
             return player.getAttributeBaseValue(attribute);
@@ -80,13 +64,15 @@ public abstract class MixinItemStack {
     @SuppressWarnings({"InvalidInjectorMethodSignature", "MixinAnnotationTarget"})
     @ModifyVariable(method = "getAttributeModifiers", ordinal = 0, at = @At(value = "STORE", ordinal = 1))
     private Multimap<EntityAttribute, EntityAttributeModifier> modifyVariableGetAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> modifiers) {
-        if (!DebugSettings.INSTANCE.replaceAttributeModifiers.isEnabled() || modifiers.isEmpty()) return modifiers;
+        if (!DebugSettings.global().replaceAttributeModifiers.isEnabled() || modifiers.isEmpty()) {
+            return modifiers;
+        }
 
         modifiers = HashMultimap.create(modifiers);
         modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-        OptionalDouble defaultAttackDamage = viafabricplus_getDefaultAttackDamage(getItem());
+        OptionalDouble defaultAttackDamage = viaFabricPlus$getDefaultAttackDamage(getItem());
         if (defaultAttackDamage.isPresent()) {
-            modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Weapon Modifier", defaultAttackDamage.getAsDouble(), EntityAttributeModifier.Operation.ADDITION));
+            modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", defaultAttackDamage.getAsDouble(), EntityAttributeModifier.Operation.ADDITION));
         }
         modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_SPEED);
         modifiers.removeAll(EntityAttributes.GENERIC_ARMOR);
@@ -94,20 +80,18 @@ public abstract class MixinItemStack {
         return modifiers;
     }
 
+    @Inject(method = "copy", at = @At("RETURN"))
+    private void copyViaFabricPlusData(CallbackInfoReturnable<ItemStack> cir) {
+        final IItemStack mixinItemStack = (IItemStack) (Object) cir.getReturnValue();
+        if (this.viaFabricPlus$has1_10Tag) {
+            mixinItemStack.viaFabricPlus$set1_10Count(this.viaFabricPlus$1_10Count);
+        }
+    }
+
     @Unique
-    private OptionalDouble viafabricplus_getDefaultAttackDamage(Item item) {
-        if (item instanceof ToolItem) {
-            ToolMaterial material = ((ToolItem) item).getMaterial();
-            int materialBonus;
-            if (material == ToolMaterials.STONE) {
-                materialBonus = 1;
-            } else if (material == ToolMaterials.IRON) {
-                materialBonus = 2;
-            } else if (material == ToolMaterials.DIAMOND) {
-                materialBonus = 3;
-            } else {
-                materialBonus = 0;
-            }
+    private OptionalDouble viaFabricPlus$getDefaultAttackDamage(Item item) {
+        if (item instanceof ToolItem toolItem) {
+            final float materialBonus = toolItem.getMaterial().getAttackDamage();
             if (item instanceof SwordItem) {
                 return OptionalDouble.of(4 + materialBonus);
             } else if (item instanceof PickaxeItem) {
@@ -118,7 +102,23 @@ public abstract class MixinItemStack {
                 return OptionalDouble.of(3 + materialBonus);
             }
         }
-
         return OptionalDouble.empty();
     }
+
+    @Override
+    public boolean viaFabricPlus$has1_10Tag() {
+        return this.viaFabricPlus$has1_10Tag;
+    }
+
+    @Override
+    public int viaFabricPlus$get1_10Count() {
+        return this.viaFabricPlus$1_10Count;
+    }
+
+    @Override
+    public void viaFabricPlus$set1_10Count(final int count) {
+        this.viaFabricPlus$has1_10Tag = true;
+        this.viaFabricPlus$1_10Count = count;
+    }
+
 }

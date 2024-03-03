@@ -1,10 +1,8 @@
 <component name="CopyrightManager">
-<settings>
-<module2copyright>
-<element module="Project Files" copyright="GPL-3.0" />
-</module2copyright>
-<LanguageOptions name="__TEMPLATE__">
-<option name="addBlankAfter" value="false" />
-</LanguageOptions>
-</settings>
+  <settings default="GPL_3_0">
+    <module2copyright>
+      <element module="Project Files" copyright="GPL-3.0" />
+    </module2copyright>
+    <LanguageOptions name="__TEMPLATE__" />
+  </settings>
 </component>

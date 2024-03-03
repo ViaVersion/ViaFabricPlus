@@ -1,0 +1,44 @@
+name: Feature Request
+description: Suggest a feature to be added in ViaFabricPlus
+labels: [ enhancement ]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Before requesting a new feature, please see if using latest build from https://github.com/ViaVersion/ViaFabricPlus/actions already includes a solution.**
+        Whenever you see fit, you can upload images or videos to any of the text fields.
+
+  - type: textarea
+    attributes:
+      label: Problem Description
+      description: |
+        Describe the issue you are facing or why you need the feature to be added.
+      placeholder: |
+        I am always frustrated with...
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Solution Description
+      description: |
+        Describe the solution you would like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Alternatives
+      description: |
+        Describe alternatives you have considered.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Additional Info
+      description: |
+        Does the feature apply to any specific version or environment?
+    validations:
+      required: false

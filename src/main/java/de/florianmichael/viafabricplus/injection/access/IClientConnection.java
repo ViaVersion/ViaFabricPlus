@@ -1,6 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/FlorianMichael/ViaFabricPlus
- * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and RK_01/RaphiMC
+ * Copyright (C) 2023-2024 contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,23 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viafabricplus.injection.access;
 
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import java.net.InetSocketAddress;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
 public interface IClientConnection {
 
-    void viafabricplus_setupPreNettyDecryption();
+    void viaFabricPlus$setupPreNettyDecryption();
 
-    InetSocketAddress viafabricplus_capturedAddress();
-    void viafabricplus_captureAddress(final InetSocketAddress socketAddress);
+    ProtocolVersion viaFabricPlus$getTargetVersion();
+    void viaFabricPlus$setTargetVersion(final ProtocolVersion serverVersion);
 
-    void viafabricplus_enableZLibCompression();
-    void viafabricplus_enableSnappyCompression();
-    void viafabricplus_enableAesGcmEncryption(final SecretKey secretKey) throws InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException;
+    UserConnection viaFabricPlus$getUserConnection();
+    void viaFabricPlus$setUserConnection(final UserConnection userConnection);
+
 }
