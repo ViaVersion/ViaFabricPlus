@@ -89,7 +89,7 @@ public abstract class MixinMiningToolItem extends ToolItem {
 
     @Redirect(method = "getAttributeModifiers", at = @At(value = "FIELD", target = "Lnet/minecraft/item/MiningToolItem;attributeModifiers:Lcom/google/common/collect/Multimap;"))
     private Multimap<EntityAttribute, EntityAttributeModifier> changeAttributeModifiers(MiningToolItem instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && DebugSettings.global().replaceAttributeModifiers.isEnabled()) {
+        if (DebugSettings.global().replaceAttributeModifiers.isEnabled()) {
             return this.viaFabricPlus$AttributeModifiers_r1_8;
         } else {
             return this.attributeModifiers;
