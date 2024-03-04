@@ -65,9 +65,9 @@ public abstract class MixinItemStack implements IItemStack {
     @ModifyVariable(method = "getAttributeModifiers", ordinal = 0, at = @At(value = "STORE", ordinal = 1))
     private Multimap<EntityAttribute, EntityAttributeModifier> modifyVariableGetAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> modifiers) {
         if (DebugSettings.global().replaceAttributeModifiers.isEnabled() && !modifiers.isEmpty()) {
-            modifiers = HashMultimap.create(modifiers); // We need to edit the modifiers
+            modifiers = HashMultimap.create(modifiers);
             modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-            if (getItem() instanceof MiningToolItem tool && !(tool instanceof HoeItem) /* Hope items didn't use the tool abstraction back then */) {
+            if (getItem() instanceof MiningToolItem tool && !(tool instanceof HoeItem) /* Hoe items didn't use the tool abstraction */) {
                 modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", tool.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
             } else if (getItem() instanceof SwordItem sword) {
                 modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", sword.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
