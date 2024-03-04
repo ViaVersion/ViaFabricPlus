@@ -50,18 +50,18 @@ public abstract class MixinItem {
     private int changeCrossbowDamage(Item instance) {
         if (instance instanceof ArmorItem armor && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             final int baseMultiplier = ((IArmorMaterials) armor.getMaterial()).viaFabricPlus$getBaseMultiplier(armor.getType());
-            if (armor.getMaterial() == ArmorMaterials.LEATHER)
+            if (armor.getMaterial() == ArmorMaterials.LEATHER) {
                 return baseMultiplier * 3;
-            else if (armor.getMaterial() == ArmorMaterials.CHAIN || armor.getMaterial() == ArmorMaterials.GOLD)
+            } else if (armor.getMaterial() == ArmorMaterials.CHAIN || armor.getMaterial() == ArmorMaterials.GOLD) {
                 return baseMultiplier * 6;
-            else if (armor.getMaterial() == ArmorMaterials.IRON)
+            } else if (armor.getMaterial() == ArmorMaterials.IRON) {
                 return baseMultiplier * 12;
-            else if (armor.getMaterial() == ArmorMaterials.DIAMOND)
+            } else if (armor.getMaterial() == ArmorMaterials.DIAMOND) {
                 return baseMultiplier * 24;
-            else
+            } else {
                 return maxDamage;
-        } else
-            if (instance instanceof CrossbowItem && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+            }
+        } else if (instance instanceof CrossbowItem && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             return 326;
         } else {
             return maxDamage;
