@@ -21,7 +21,10 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.injection.access.IArmorMaterials;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ArmorMaterials;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -45,7 +48,20 @@ public abstract class MixinItem {
 
     @Redirect(method = {"getMaxDamage", "isDamageable", "getItemBarStep", "getItemBarColor"}, at = @At(value = "FIELD", target = "Lnet/minecraft/item/Item;maxDamage:I"))
     private int changeCrossbowDamage(Item instance) {
-        if (instance instanceof CrossbowItem && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+        if (instance instanceof ArmorItem armor && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+            final int baseMultiplier = ((IArmorMaterials) armor.getMaterial()).viaFabricPlus$getBaseMultiplier(armor.getType());
+            if (armor.getMaterial() == ArmorMaterials.LEATHER)
+                return baseMultiplier * 3;
+            else if (armor.getMaterial() == ArmorMaterials.CHAIN || armor.getMaterial() == ArmorMaterials.GOLD)
+                return baseMultiplier * 6;
+            else if (armor.getMaterial() == ArmorMaterials.IRON)
+                return baseMultiplier * 12;
+            else if (armor.getMaterial() == ArmorMaterials.DIAMOND)
+                return baseMultiplier * 24;
+            else
+                return maxDamage;
+        } else
+            if (instance instanceof CrossbowItem && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             return 326;
         } else {
             return maxDamage;

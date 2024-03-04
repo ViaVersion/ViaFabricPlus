@@ -199,7 +199,8 @@
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
     "viaversion.MixinConfig",
-    "viaversion.MixinProtocolVersion"
+    "viaversion.MixinProtocolVersion",
+    "fixes.minecraft.item.MixinArmorMaterials"
   ],
   "injectors": {
     "defaultRequire": 1
