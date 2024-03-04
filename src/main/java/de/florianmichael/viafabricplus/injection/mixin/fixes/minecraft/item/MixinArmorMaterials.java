@@ -19,25 +19,37 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import de.florianmichael.viafabricplus.injection.access.IArmorMaterials;
-import net.minecraft.item.ArmorItem;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.item.ArmorMaterials;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-
-import java.util.EnumMap;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ArmorMaterials.class)
-public abstract class MixinArmorMaterials implements IArmorMaterials {
+public abstract class MixinArmorMaterials {
 
     @Shadow
     @Final
-    private static EnumMap<ArmorItem.Type, Integer> BASE_DURABILITY;
+    private int durabilityMultiplier;
 
-    @Override
-    public int viaFabricPlus$getBaseMultiplier(ArmorItem.Type type) {
-        return BASE_DURABILITY.get(type);
+    @Redirect(method = "getDurability", at = @At(value = "FIELD", target = "Lnet/minecraft/item/ArmorMaterials;durabilityMultiplier:I"))
+    private int changeDurabilityMultiplier(ArmorMaterials instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+            if (instance == ArmorMaterials.LEATHER) {
+                return 3;
+            } else if (instance == ArmorMaterials.CHAIN || instance == ArmorMaterials.GOLD) {
+                return 6;
+            } else if (instance == ArmorMaterials.IRON) {
+                return 12;
+            } else if (instance == ArmorMaterials.DIAMOND) {
+                return 24;
+            }
+        }
+
+        return this.durabilityMultiplier;
     }
 
 }
