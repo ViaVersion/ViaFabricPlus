@@ -37,18 +37,19 @@ public abstract class MixinMiningToolItem extends ToolItem {
     }
 
     /**
-     * @author Mojang, FlorianMichael/EnZaXD
+     * @author FlorianMichael/EnZaXD
      * @reason Change attack damage calculation
      */
     @Overwrite
     public float getAttackDamage() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            final float materialDamage = getMaterial().getAttackDamage();
             if ((Item) this instanceof PickaxeItem) {
-                return 2 + getMaterial().getAttackDamage();
+                return 2 + materialDamage;
             } else if ((Item) this instanceof ShovelItem) {
-                return 1 + getMaterial().getAttackDamage();
+                return 1 + materialDamage;
             } else if ((Item) this instanceof AxeItem) {
-                return 3 + getMaterial().getAttackDamage();
+                return 3 + materialDamage;
             }
         }
         return this.attackDamage;

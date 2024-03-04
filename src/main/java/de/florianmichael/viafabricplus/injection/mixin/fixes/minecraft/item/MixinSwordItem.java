@@ -77,7 +77,7 @@ public abstract class MixinSwordItem extends ToolItem {
     }
 
     /**
-     * @author Mojang, FlorianMichael/EnZaXD
+     * @author FlorianMichael/EnZaXD
      * @reason Change attack damage calculation
      */
     @Overwrite

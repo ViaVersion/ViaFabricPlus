@@ -67,7 +67,7 @@ public abstract class MixinItemStack implements IItemStack {
         if (DebugSettings.global().replaceAttributeModifiers.isEnabled() && !modifiers.isEmpty()) {
             modifiers = HashMultimap.create(modifiers);
             modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-            if (getItem() instanceof MiningToolItem tool && !(tool instanceof HoeItem) /* Hoe items didn't use the tool abstraction */) {
+            if (getItem() instanceof MiningToolItem tool && !(tool instanceof HoeItem) /* hoe doesn't use the tool abstraction in 1.8 */) {
                 modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", tool.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
             } else if (getItem() instanceof SwordItem sword) {
                 modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", sword.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));

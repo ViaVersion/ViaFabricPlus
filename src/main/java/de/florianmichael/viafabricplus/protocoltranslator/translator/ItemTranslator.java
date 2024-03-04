@@ -49,7 +49,7 @@ public class ItemTranslator {
      * Converts a Minecraft item stack to a ViaVersion item stack
      *
      * @param stack         The Minecraft item stack
-     * @param targetVersion The target version to convert to (e.g. r1.13)
+     * @param targetVersion The target version to convert to (e.g. v1.13)
      * @return The ViaVersion item stack for the target version
      */
     public static Item mcToVia(final ItemStack stack, final ProtocolVersion targetVersion) {
