@@ -19,36 +19,39 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.item.ArmorMaterials;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.minecraft.item.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ArmorMaterials.class)
-public abstract class MixinArmorMaterials {
+@Mixin(MiningToolItem.class)
+public abstract class MixinMiningToolItem extends ToolItem {
 
-    @Shadow
-    @Final
-    private int durabilityMultiplier;
+    @Shadow @Final private float attackDamage;
 
-    @Redirect(method = "getDurability", at = @At(value = "FIELD", target = "Lnet/minecraft/item/ArmorMaterials;durabilityMultiplier:I"))
-    private int changeDurabilityMultiplier(ArmorMaterials instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
-            if (instance == ArmorMaterials.LEATHER) {
-                return 3;
-            } else if (instance == ArmorMaterials.CHAIN || instance == ArmorMaterials.GOLD) {
-                return 6;
-            } else if (instance == ArmorMaterials.IRON) {
-                return 12;
-            } else if (instance == ArmorMaterials.DIAMOND) {
-                return 24;
+    public MixinMiningToolItem(ToolMaterial material, Settings settings) {
+        super(material, settings);
+    }
+
+    /**
+     * @author Mojang, FlorianMichael/EnZaXD
+     * @reason Change attack damage calculation
+     */
+    @Overwrite
+    public float getAttackDamage() {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            if ((Item) this instanceof PickaxeItem) {
+                return 2 + getMaterial().getAttackDamage();
+            } else if ((Item) this instanceof ShovelItem) {
+                return 1 + getMaterial().getAttackDamage();
+            } else if ((Item) this instanceof AxeItem) {
+                return 3 + getMaterial().getAttackDamage();
             }
         }
-        return this.durabilityMultiplier;
+        return this.attackDamage;
     }
 
 }

@@ -64,19 +64,18 @@ public abstract class MixinItemStack implements IItemStack {
     @SuppressWarnings({"InvalidInjectorMethodSignature", "MixinAnnotationTarget"})
     @ModifyVariable(method = "getAttributeModifiers", ordinal = 0, at = @At(value = "STORE", ordinal = 1))
     private Multimap<EntityAttribute, EntityAttributeModifier> modifyVariableGetAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> modifiers) {
-        if (!DebugSettings.global().replaceAttributeModifiers.isEnabled() || modifiers.isEmpty()) {
-            return modifiers;
+        if (DebugSettings.global().replaceAttributeModifiers.isEnabled() && !modifiers.isEmpty()) {
+            modifiers = HashMultimap.create(modifiers); // We need to edit the modifiers
+            modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+            if (getItem() instanceof MiningToolItem tool && !(tool instanceof HoeItem) /* Hope items didn't use the tool abstraction back then */) {
+                modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", tool.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
+            } else if (getItem() instanceof SwordItem sword) {
+                modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", sword.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
+            }
+            modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_SPEED);
+            modifiers.removeAll(EntityAttributes.GENERIC_ARMOR);
+            modifiers.removeAll(EntityAttributes.GENERIC_ARMOR_TOUGHNESS);
         }
-
-        modifiers = HashMultimap.create(modifiers);
-        modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-        OptionalDouble defaultAttackDamage = viaFabricPlus$getDefaultAttackDamage(getItem());
-        if (defaultAttackDamage.isPresent()) {
-            modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", defaultAttackDamage.getAsDouble(), EntityAttributeModifier.Operation.ADDITION));
-        }
-        modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_SPEED);
-        modifiers.removeAll(EntityAttributes.GENERIC_ARMOR);
-        modifiers.removeAll(EntityAttributes.GENERIC_ARMOR_TOUGHNESS);
         return modifiers;
     }
 
@@ -86,23 +85,6 @@ public abstract class MixinItemStack implements IItemStack {
         if (this.viaFabricPlus$has1_10Tag) {
             mixinItemStack.viaFabricPlus$set1_10Count(this.viaFabricPlus$1_10Count);
         }
-    }
-
-    @Unique
-    private OptionalDouble viaFabricPlus$getDefaultAttackDamage(Item item) {
-        if (item instanceof ToolItem toolItem) {
-            final float materialBonus = toolItem.getMaterial().getAttackDamage();
-            if (item instanceof SwordItem) {
-                return OptionalDouble.of(4 + materialBonus);
-            } else if (item instanceof PickaxeItem) {
-                return OptionalDouble.of(2 + materialBonus);
-            } else if (item instanceof ShovelItem) {
-                return OptionalDouble.of(1 + materialBonus);
-            } else if (item instanceof AxeItem) {
-                return OptionalDouble.of(3 + materialBonus);
-            }
-        }
-        return OptionalDouble.empty();
     }
 
     @Override

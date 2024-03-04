@@ -47,7 +47,8 @@ public abstract class MixinItem {
     @Redirect(method = {"getMaxDamage", "isDamageable", "getItemBarStep", "getItemBarColor"}, at = @At(value = "FIELD", target = "Lnet/minecraft/item/Item;maxDamage:I"))
     private int changeCrossbowDamage(Item instance) {
         if (instance instanceof ArmorItem armor && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
-            return armor.getMaterial().getDurability(armor.getType()); // Other part of fix in MixinArmorMaterials
+            // Counterpart in MixinArmorMaterials
+            return armor.getMaterial().getDurability(armor.getType());
         } else if (instance instanceof CrossbowItem && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             return 326;
         } else {

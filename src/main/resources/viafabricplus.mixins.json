@@ -111,6 +111,7 @@
     "fixes.minecraft.entity.MixinSquidEntity",
     "fixes.minecraft.entity.MixinWolfEntity",
     "fixes.minecraft.item.MixinArmorItem",
+    "fixes.minecraft.item.MixinArmorMaterials",
     "fixes.minecraft.item.MixinAxeItem",
     "fixes.minecraft.item.MixinBlockItem",
     "fixes.minecraft.item.MixinBowItem",
@@ -200,7 +201,7 @@
     "vialegacy.MixinViaLegacyConfig",
     "viaversion.MixinConfig",
     "viaversion.MixinProtocolVersion",
-    "fixes.minecraft.item.MixinArmorMaterials"
+    "fixes.minecraft.item.MixinMiningToolItem"
   ],
   "injectors": {
     "defaultRequire": 1
