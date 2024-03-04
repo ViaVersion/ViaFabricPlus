@@ -19,24 +19,21 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IItemStack;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.OptionalDouble;
 
 @Mixin(value = ItemStack.class, priority = 1)
 public abstract class MixinItemStack implements IItemStack {
@@ -59,24 +56,6 @@ public abstract class MixinItemStack implements IItemStack {
         } else {
             return player.getAttributeBaseValue(attribute);
         }
-    }
-
-    @SuppressWarnings({"InvalidInjectorMethodSignature", "MixinAnnotationTarget"})
-    @ModifyVariable(method = "getAttributeModifiers", ordinal = 0, at = @At(value = "STORE", ordinal = 1))
-    private Multimap<EntityAttribute, EntityAttributeModifier> modifyVariableGetAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> modifiers) {
-        if (DebugSettings.global().replaceAttributeModifiers.isEnabled() && !modifiers.isEmpty()) {
-            modifiers = HashMultimap.create(modifiers);
-            modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-            if (getItem() instanceof MiningToolItem tool && !(tool instanceof HoeItem) /* hoe doesn't use the tool abstraction in 1.8 */) {
-                modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", tool.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
-            } else if (getItem() instanceof SwordItem sword) {
-                modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(Item.ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", sword.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
-            }
-            modifiers.removeAll(EntityAttributes.GENERIC_ATTACK_SPEED);
-            modifiers.removeAll(EntityAttributes.GENERIC_ARMOR);
-            modifiers.removeAll(EntityAttributes.GENERIC_ARMOR_TOUGHNESS);
-        }
-        return modifiers;
     }
 
     @Inject(method = "copy", at = @At("RETURN"))
