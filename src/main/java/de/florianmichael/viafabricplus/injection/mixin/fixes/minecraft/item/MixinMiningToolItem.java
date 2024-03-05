@@ -24,6 +24,7 @@ import com.google.common.collect.Multimap;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
+import net.minecraft.block.Block;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -60,7 +61,7 @@ public abstract class MixinMiningToolItem extends ToolItem {
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void init1_8Fields(float attackDamage, float attackSpeed, ToolMaterial material, TagKey effectiveBlocks, Settings settings, CallbackInfo ci) {
+    private void init1_8Fields(float attackDamage, float attackSpeed, ToolMaterial material, TagKey<Block> effectiveBlocks, Settings settings, CallbackInfo ci) {
         final float materialAttackDamage = material.getAttackDamage();
         if ((Item) this instanceof PickaxeItem) {
             this.viaFabricPlus$attackDamage_r1_8 = 2 + materialAttackDamage;
