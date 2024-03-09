@@ -48,7 +48,7 @@ public class WorldHeightSupport {
             if (wrapper.isCancelled()) return;
 
             if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                for (Tag dimension : wrapper.get(Type.NAMED_COMPOUND_TAG, 0).<CompoundTag>get("minecraft:dimension_type").<ListTag>get("value")) {
+                for (Tag dimension : wrapper.get(Type.NAMED_COMPOUND_TAG, 0).<CompoundTag>get("minecraft:dimension_type").<ListTag<?>>get("value")) {
                     changeDimensionTagHeight(wrapper.user(), ((CompoundTag) dimension).get("element"));
                 }
                 changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NAMED_COMPOUND_TAG, 1));
