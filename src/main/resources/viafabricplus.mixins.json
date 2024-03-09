@@ -170,7 +170,6 @@
     "fixes.vialegacy.MixinClientboundPacketsc0_30cpe",
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
     "fixes.vialegacy.MixinProtocolc0_30toc0_30cpe",
-    "fixes.viaversion.MixinChatItemRewriter",
     "fixes.viaversion.MixinCommandBlockProvider",
     "fixes.viaversion.MixinCommonBoss",
     "fixes.viaversion.MixinEntityIdRewriter",
