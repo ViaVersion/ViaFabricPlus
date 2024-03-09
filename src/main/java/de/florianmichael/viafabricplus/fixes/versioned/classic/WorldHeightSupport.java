@@ -28,9 +28,6 @@ import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.types.chunk.ChunkType1_17;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.CompoundTag;
-import com.viaversion.viaversion.libs.opennbt.tag.builtin.IntTag;
-import com.viaversion.viaversion.libs.opennbt.tag.builtin.ListTag;
-import com.viaversion.viaversion.libs.opennbt.tag.builtin.Tag;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.model.ClassicLevel;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
@@ -48,8 +45,8 @@ public class WorldHeightSupport {
             if (wrapper.isCancelled()) return;
 
             if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                for (Tag dimension : wrapper.get(Type.NAMED_COMPOUND_TAG, 0).<CompoundTag>get("minecraft:dimension_type").<ListTag<?>>get("value")) {
-                    changeDimensionTagHeight(wrapper.user(), ((CompoundTag) dimension).get("element"));
+                for (CompoundTag dimension : wrapper.get(Type.NAMED_COMPOUND_TAG, 0).getCompoundTag("minecraft:dimension_type").getListTag("value", CompoundTag.class)) {
+                    changeDimensionTagHeight(wrapper.user(), dimension.getCompoundTag("element"));
                 }
                 changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NAMED_COMPOUND_TAG, 1));
             }
@@ -171,7 +168,7 @@ public class WorldHeightSupport {
     }
 
     private static void changeDimensionTagHeight(final UserConnection user, final CompoundTag tag) {
-        tag.put("height", new IntTag(Via.getManager().getProviders().get(ClassicWorldHeightProvider.class).getMaxChunkSectionCount(user) << 4));
+        tag.putInt("height", Via.getManager().getProviders().get(ClassicWorldHeightProvider.class).getMaxChunkSectionCount(user) << 4);
     }
 
 }

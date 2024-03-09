@@ -41,7 +41,7 @@ public abstract class MixinEntityIdRewriter {
                 item.setTag(tag);
             }
 
-            tag.put(ClientsideFixes.ITEM_COUNT_NBT_TAG, new ByteTag((byte) item.amount()));
+            tag.putByte(ClientsideFixes.ITEM_COUNT_NBT_TAG, (byte) item.amount());
             item.setTag(tag);
         }
     }
