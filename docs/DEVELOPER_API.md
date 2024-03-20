@@ -53,24 +53,24 @@ ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> {
 
 ## Get and set the current protocol version
 ```java
-final ProtocolVersion version = ProtocolHack.getTargetVersion();
+final ProtocolVersion version = ProtocolTranslator.getTargetVersion();
 if (version == ProtocolVersion.v1_8) {
-    ProtocolHack.setTargetVersion(ProtocolVersion.v1_9);
+    ProtocolTranslator.setTargetVersion(ProtocolVersion.v1_9);
 }
 ```
 
 ## Get a Minecraft ClientConnection by channel
 ```java
-final ClientConnection connection = channel.attr(ProtocolHack.CLIENT_CONNECTION_ATTRIBUTE_KEY).get();
+final ClientConnection connection = channel.attr(ProtocolTranslator.CLIENT_CONNECTION_ATTRIBUTE_KEY).get();
 ```
 
 ## Interact with UserConnection objects
 ```java
 // If ViaVersion is translating, this field will return the user connection of the client
-final UserConnection userConnection = ProtocolHack.getPlayNetworkUserConnection();
+final UserConnection userConnection = ProtocolTranslator.getPlayNetworkUserConnection();
 
 // If you need a dummy user connection for testing, you can use this method
-final UserConnection cursedDummy = ProtocolHack.createDummyUserConnection(ProtocolHack.NATIVE_VERSION, ProtocolVersion.v1_18_2);
+final UserConnection cursedDummy = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, ProtocolVersion.v1_18_2);
 // The cursedDummy field now contains all protocols from the native version to 1.18.2
 ```
 

@@ -42,7 +42,7 @@ public abstract class MixinMinecraftClient {
     }
 
     @Inject(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/lang/String;ILnet/minecraft/network/listener/ClientLoginPacketListener;)V", shift = At.Shift.BEFORE))
-    private void disableProtocolHack(LevelStorage.Session session, ResourcePackManager dataPackManager, SaveLoader saveLoader, boolean newWorld, CallbackInfo ci, @Local ClientConnection clientConnection) {
+    private void disableProtocolTranslator(LevelStorage.Session session, ResourcePackManager dataPackManager, SaveLoader saveLoader, boolean newWorld, CallbackInfo ci, @Local ClientConnection clientConnection) {
         ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION, true);
         ProtocolTranslator.injectPreviousVersionReset(clientConnection.channel);
     }

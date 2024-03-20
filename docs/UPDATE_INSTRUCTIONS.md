@@ -38,7 +38,7 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
     - `viaversion_version`
     - `viabackwards_version`
     - `mod_menu_version`
-2. Update the `NATIVE_VERSION` field in the ProtocolHack class to the new version
+2. Update the `NATIVE_VERSION` field in the ProtocolTranslator class to the new version
 3. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
     - `MixinClientPlayerEntity#removeBl8Boolean`
     - `MixinClientWorld#tickEntity` and `MixinClientWorld#tickPassenger`
