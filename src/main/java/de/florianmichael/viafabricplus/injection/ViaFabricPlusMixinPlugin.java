@@ -32,13 +32,10 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
 
     public static final String INJECTOR_PACKAGE = "de.florianmichael.viafabricplus.injection.mixin.";
 
-    private static final String MC_FIXES_PACKAGE = "fixes.minecraft.";
     private static final String COMPAT_PACKAGE = "compat.";
 
     public static String VFP_VERSION;
 
-    public static boolean DASH_LOADER_PRESENT;
-    public static boolean ARMOR_SKIN_PRESENT;
     public static boolean IPNEXT_PRESENT;
     public static boolean MORE_CULLING_PRESENT;
     public static boolean LITHIUM_PRESENT;
@@ -49,8 +46,6 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
 
         VFP_VERSION = loader.getModContainer("viafabricplus").get().getMetadata().getVersion().getFriendlyString();
 
-        DASH_LOADER_PRESENT = loader.isModLoaded("dashloader");
-        ARMOR_SKIN_PRESENT = loader.isModLoaded("armorskin");
         IPNEXT_PRESENT = loader.isModLoaded("inventoryprofilesnext");
         MORE_CULLING_PRESENT = loader.isModLoaded("moreculling");
         LITHIUM_PRESENT = loader.isModLoaded("lithium");
@@ -70,8 +65,6 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         return switch (mixinClassName) {
-            case INJECTOR_PACKAGE + MC_FIXES_PACKAGE + "MixinFontStorage" -> !DASH_LOADER_PRESENT;
-            case INJECTOR_PACKAGE + MC_FIXES_PACKAGE + "MixinInGameHud" -> !ARMOR_SKIN_PRESENT;
             case INJECTOR_PACKAGE + COMPAT_PACKAGE + "ipnext.MixinAutoRefillHandler_ItemSlotMonitor" -> IPNEXT_PRESENT;
             case INJECTOR_PACKAGE + COMPAT_PACKAGE + "lithium.MixinEntity" -> LITHIUM_PRESENT;
             default -> true;

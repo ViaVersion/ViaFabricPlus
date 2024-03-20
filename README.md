@@ -23,11 +23,6 @@ At the time of writing, VFP is the only protocol translation platform for the cl
 - Snapshots (3D Shareware, 20w14infinite, Combat Test 8C)
 - Bedrock Edition 1.20.50 (Experimental)
 
-## Known incompatibilities
-- ***[ViaFabric](https://github.com/ViaVersion/ViaFabric)*** - Both mods are doing the same thing and conflict
-- ***[DashLoader](https://github.com/alphaqu/DashLoader/tree/fabric-1.20)*** - Font rendering related fixes aren't working
-- ***[ArmorSkin](https://github.com/IzzyDotExe/ArmorSkin)*** - Beta HUD changes aren't working
-
 ## For players
 - Tutorial for installing and using the mod can be found [here](docs/USAGE.md)
 - If you encounter any issues, please report them on the [issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues) or on the ViaVersion [Discord](https://discord.gg/viaversion)

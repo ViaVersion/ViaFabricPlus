@@ -84,12 +84,10 @@ public class ClientsideFixes {
 
         // Reloads some clientside stuff when the protocol version changes
         ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
-            if (!ViaFabricPlusMixinPlugin.DASH_LOADER_PRESENT) {
-                // Clear all font caches to enforce a reload of all fonts (this is needed because we change the font renderer behavior)
-                for (FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
-                    storage.glyphRendererCache.clear();
-                    storage.glyphCache.clear();
-                }
+            // Clear all font caches to enforce a reload of all fonts (this is needed because we change the font renderer behavior)
+            for (FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
+                storage.glyphRendererCache.clear();
+                storage.glyphCache.clear();
             }
 
             // Reloads all bounding boxes of the blocks that we changed
