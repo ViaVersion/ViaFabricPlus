@@ -28,13 +28,16 @@ import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.GridItemSelectionScreen;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.ArmorHudEmulation1_8;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
-import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
+import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.settings.impl.BedrockSettings;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.ServerAddress;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
@@ -43,6 +46,7 @@ import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.dat
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -138,6 +142,28 @@ public class ClientsideFixes {
             return 100;
         } else {
             return 256;
+        }
+    }
+
+    /**
+     * Replaces the default port when parsing a server address if the default port should be replaced
+     *
+     * @param info The server info
+     * @return The server address with the replaced default port
+     */
+    public static ServerAddress replaceDefaultPort(final ServerInfo info) {
+        ProtocolVersion targetVersion = ((IServerInfo) info).viaFabricPlus$forcedVersion();
+        if (targetVersion == null) {
+            targetVersion = ProtocolTranslator.getTargetVersion();
+        }
+        final boolean isBedrock = Objects.equals(targetVersion, BedrockProtocolVersion.bedrockLatest);
+
+        // If the default port for this entry should be replaced, check if the address already contains a port
+        // We can't just replace vanilla's default port because a bedrock server might be running on the same port
+        if (BedrockSettings.global().replaceDefaultPort.getValue() && isBedrock && !info.address.contains(":")) {
+            return ServerAddress.parse(info.address + ":" + 19132);
+        } else {
+            return ServerAddress.parse(info.address);
         }
     }
 
