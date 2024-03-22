@@ -156,11 +156,9 @@ public class ClientsideFixes {
         if (targetVersion == null) {
             targetVersion = ProtocolTranslator.getTargetVersion();
         }
-        final boolean isBedrock = Objects.equals(targetVersion, BedrockProtocolVersion.bedrockLatest);
-
         // If the default port for this entry should be replaced, check if the address already contains a port
         // We can't just replace vanilla's default port because a bedrock server might be running on the same port
-        if (BedrockSettings.global().replaceDefaultPort.getValue() && isBedrock && !info.address.contains(":")) {
+        if (BedrockSettings.global().replaceDefaultPort.getValue() && targetVersion.equals(BedrockProtocolVersion.bedrockLatest) && !info.address.contains(":")) {
             return ServerAddress.parse(info.address + ":" + 19132);
         } else {
             return ServerAddress.parse(info.address);
