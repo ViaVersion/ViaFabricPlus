@@ -60,10 +60,10 @@ public abstract class MixinMultiplayerScreen extends Screen {
     private ServerAddress replaceDefaultPort(String address, @Local(argsOnly = true) ServerInfo entry) {
         if (((IServerInfo) entry).viaFabricPlus$passedDirectConnectScreen()) {
             // If the user has already passed the direct connect screen, we use the target version
-            return ClientsideFixes.replaceDefaultPort(entry, ProtocolTranslator.getTargetVersion());
+            return ClientsideFixes.replaceDefaultPort(address, ProtocolTranslator.getTargetVersion());
         } else {
             // Otherwise the forced version is used
-            return ClientsideFixes.replaceDefaultPort(entry, ((IServerInfo) entry).viaFabricPlus$forcedVersion());
+            return ClientsideFixes.replaceDefaultPort(address, ((IServerInfo) entry).viaFabricPlus$forcedVersion());
         }
     }
 
