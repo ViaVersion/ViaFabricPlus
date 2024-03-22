@@ -40,7 +40,8 @@ public abstract class MixinMultiplayerServerListPinger {
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
     private ServerAddress replaceDefaultPort(String address, @Local(argsOnly = true) ServerInfo entry) {
-        return ClientsideFixes.replaceDefaultPort(entry);
+        // Replace port when pinging the server and the forced version is set
+        return ClientsideFixes.replaceDefaultPort(entry, ((IServerInfo) entry).viaFabricPlus$forcedVersion());
     }
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;"))

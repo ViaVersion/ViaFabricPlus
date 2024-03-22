@@ -21,6 +21,8 @@ package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
+import de.florianmichael.viafabricplus.injection.access.IServerInfo;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
@@ -56,7 +58,13 @@ public abstract class MixinMultiplayerScreen extends Screen {
 
     @Redirect(method = "connect(Lnet/minecraft/client/network/ServerInfo;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
     private ServerAddress replaceDefaultPort(String address, @Local(argsOnly = true) ServerInfo entry) {
-        return ClientsideFixes.replaceDefaultPort(entry);
+        if (((IServerInfo) entry).viaFabricPlus$passedDirectConnectScreen()) {
+            // If the user has already passed the direct connect screen, we use the target version
+            return ClientsideFixes.replaceDefaultPort(entry, ProtocolTranslator.getTargetVersion());
+        } else {
+            // Otherwise the forced version is used
+            return ClientsideFixes.replaceDefaultPort(entry, ((IServerInfo) entry).viaFabricPlus$forcedVersion());
+        }
     }
 
 }

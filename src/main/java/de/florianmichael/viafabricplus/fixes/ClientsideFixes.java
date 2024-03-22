@@ -148,15 +148,14 @@ public class ClientsideFixes {
     /**
      * Replaces the default port when parsing a server address if the default port should be replaced
      *
-     * @param info The server info
+     * @param info    The server info
+     * @param version The protocol version
      * @return The server address with the replaced default port
      */
-    public static ServerAddress replaceDefaultPort(final ServerInfo info) {
-        final boolean isBedrock = Objects.equals(((IServerInfo) info).viaFabricPlus$forcedVersion(), BedrockProtocolVersion.bedrockLatest);
-
+    public static ServerAddress replaceDefaultPort(final ServerInfo info, final ProtocolVersion version) {
         // If the default port for this entry should be replaced, check if the address already contains a port
         // We can't just replace vanilla's default port because a bedrock server might be running on the same port
-        if (BedrockSettings.global().replaceDefaultPort.getValue() && isBedrock && !info.address.contains(":")) {
+        if (BedrockSettings.global().replaceDefaultPort.getValue() && Objects.equals(version, BedrockProtocolVersion.bedrockLatest) && !info.address.contains(":")) {
             return ServerAddress.parse(info.address + ":" + 19132);
         } else {
             return ServerAddress.parse(info.address);
