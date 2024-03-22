@@ -32,7 +32,7 @@ import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
 import net.minecraft.util.Formatting;
-import net.raphimc.viabedrock.protocol.data.enums.bedrock.ServerMovementModes;
+import net.raphimc.viabedrock.protocol.data.enums.bedrock.ServerAuthMovementMode;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
 import net.raphimc.viabedrock.protocol.storage.GameSessionStorage;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
@@ -103,15 +103,8 @@ public abstract class MixinDebugHud {
         // bedrock
         final JoinGameDataTracker joinGameDataTracker = userConnection.get(JoinGameDataTracker.class);
         if (joinGameDataTracker != null) {
-            final int movementMode = userConnection.get(GameSessionStorage.class).getMovementMode();
-            String movement = "Server with rewind";
-            if (movementMode == ServerMovementModes.CLIENT) {
-                movement = "Client";
-            } else if (movementMode == ServerMovementModes.SERVER) {
-                movement = "Server";
-            }
-
-            information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed() + ", Movement: " + movement);
+            final ServerAuthMovementMode movementMode = userConnection.get(GameSessionStorage.class).getMovementMode();
+            information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed() + ", Movement: " + movementMode.name());
         }
         if (joinGameDataTracker != null) {
             information.add("World Seed: " + joinGameDataTracker.getSeed());
