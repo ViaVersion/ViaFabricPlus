@@ -129,6 +129,7 @@
     "fixes.minecraft.item.MixinItemPlacementContext",
     "fixes.minecraft.item.MixinItemRenderer",
     "fixes.minecraft.item.MixinItemStack",
+    "fixes.minecraft.item.MixinMiningToolItem",
     "fixes.minecraft.item.MixinPickaxeItem",
     "fixes.minecraft.item.MixinShearsItem",
     "fixes.minecraft.item.MixinShovelItem",
@@ -199,8 +200,7 @@
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
     "viaversion.MixinConfig",
-    "viaversion.MixinProtocolVersion",
-    "fixes.minecraft.item.MixinMiningToolItem"
+    "viaversion.MixinProtocolVersion"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -21,9 +21,11 @@ package de.florianmichael.viafabricplus.injection.mixin.base.perserverversion;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import net.minecraft.client.network.MultiplayerServerListPinger;
+import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.util.profiler.PerformanceLog;
@@ -36,8 +38,14 @@ import java.net.InetSocketAddress;
 @Mixin(MultiplayerServerListPinger.class)
 public abstract class MixinMultiplayerServerListPinger {
 
+    @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
+    private ServerAddress replaceDefaultPort(String address, @Local(argsOnly = true) ServerInfo entry) {
+        // Replace port when pinging the server and the forced version is set
+        return ClientsideFixes.replaceDefaultPort(address, ((IServerInfo) entry).viaFabricPlus$forcedVersion());
+    }
+
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;"))
-    private ClientConnection setForcedVersion(InetSocketAddress address, boolean useEpoll, PerformanceLog packetSizeLog, @Local ServerInfo serverInfo) {
+    private ClientConnection setForcedVersion(InetSocketAddress address, boolean useEpoll, PerformanceLog packetSizeLog, @Local(argsOnly = true) ServerInfo serverInfo) {
         final ProtocolVersion forcedVersion = ((IServerInfo) serverInfo).viaFabricPlus$forcedVersion();
 
         if (forcedVersion != null && !((IServerInfo) serverInfo).viaFabricPlus$passedDirectConnectScreen()) {

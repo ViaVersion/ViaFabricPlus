@@ -48,6 +48,7 @@
 
   "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Open prompt GUI to confirm transferring to other servers",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Click to set account for Bedrock edition",
+  "bedrock_settings.viafabricplus.replace_default_port": "Replace default port in server list",
 
   "debug_settings.viafabricplus.queue_config_packets": "Queue config packets",
   "debug_settings.viafabricplus.disable_sequencing": "Disable sequencing",
