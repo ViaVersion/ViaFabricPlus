@@ -81,15 +81,12 @@ public abstract class MixinServerInfo implements IServerInfo {
 
     @Override
     public boolean viaFabricPlus$passedDirectConnectScreen() {
-        final boolean previous = viaFabricPlus$passedDirectConnectScreen;
-        viaFabricPlus$passedDirectConnectScreen = false;
-
-        return previous;
+        return viaFabricPlus$passedDirectConnectScreen;
     }
 
     @Override
-    public void viaFabricPlus$passDirectConnectScreen() {
-        viaFabricPlus$passedDirectConnectScreen = true;
+    public void viaFabricPlus$passDirectConnectScreen(boolean state) {
+        viaFabricPlus$passedDirectConnectScreen = state;
     }
 
     @Override

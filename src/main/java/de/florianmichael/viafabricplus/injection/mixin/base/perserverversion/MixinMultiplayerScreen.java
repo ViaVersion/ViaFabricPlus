@@ -35,7 +35,7 @@ public abstract class MixinMultiplayerScreen {
 
     @WrapOperation(method = "directConnect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;connect(Lnet/minecraft/client/network/ServerInfo;)V"))
     private void storeDirectConnectionPhase(MultiplayerScreen instance, ServerInfo entry, Operation<Void> original) {
-        ((IServerInfo) entry).viaFabricPlus$passDirectConnectScreen();
+        ((IServerInfo) entry).viaFabricPlus$passDirectConnectScreen(true);
         original.call(instance, entry);
     }
 
