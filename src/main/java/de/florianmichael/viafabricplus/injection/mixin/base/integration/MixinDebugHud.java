@@ -21,7 +21,6 @@ package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.tracker.JoinGameDataTracker;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IChunkTracker;
@@ -54,14 +53,14 @@ public abstract class MixinDebugHud {
 
     @Inject(method = "getLeftText", at = @At("RETURN"))
     public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
-        if (!GeneralSettings.global().showExtraInformationInDebugHud.getValue()) {
+        if (!GeneralSettings.global().showExtraInformationInDebugHud.getValue()) { // Only show if enabled
             return;
         }
-        if (MinecraftClient.getInstance().isInSingleplayer() && MinecraftClient.getInstance().player != null) {
+        if (MinecraftClient.getInstance().isInSingleplayer() && MinecraftClient.getInstance().player != null) { // Don't show in singleplayer
             return;
         }
         final UserConnection userConnection = ProtocolTranslator.getPlayNetworkUserConnection();
-        if (userConnection == null) { // Via is not translating this session
+        if (userConnection == null) { // Only show if ViaVersion is active
             return;
         }
 
@@ -71,36 +70,29 @@ public abstract class MixinDebugHud {
         // Title
         information.add(ChatUtil.PREFIX + Formatting.RESET + " " + ViaFabricPlusMixinPlugin.VFP_VERSION);
 
-        // common
+        // Connection
         final ProtocolInfo info = userConnection.getProtocolInfo();
-        information.add(
-                "P: " + info.getPipeline().pipes().size() +
-                        " C: " + ProtocolVersion.getProtocol(info.getProtocolVersion()) +
-                        " S: " + ProtocolVersion.getProtocol(info.getServerProtocolVersion())
-        );
+        information.add("P: " + info.getPipeline().pipes().size() + " C: " + info.protocolVersion() + " S: " + info.serverProtocolVersion());
 
-        // r1_7_10
+        // 1.7.10
         final EntityTracker entityTracker1_7_10 = userConnection.get(EntityTracker.class);
         if (entityTracker1_7_10 != null) {
-            information.add(
-                    "1.7 Entities: " + entityTracker1_7_10.getTrackedEntities().size() +
-                            ", Virtual holograms: " + entityTracker1_7_10.getVirtualHolograms().size()
-            );
+            information.add("1.7 Entities: " + entityTracker1_7_10.getTrackedEntities().size() + ", Virtual holograms: " + entityTracker1_7_10.getVirtualHolograms().size());
         }
 
-        // r1_1
+        // 1.1
         final SeedStorage seedStorage = userConnection.get(SeedStorage.class);
         if (seedStorage != null) {
             information.add("World Seed: " + seedStorage.seed);
         }
 
-        // c0.30cpe
+        // c0.30 cpe
         final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = userConnection.get(ExtensionProtocolMetadataStorage.class);
         if (extensionProtocolMetadataStorage != null) {
             information.add("CPE extensions: " + extensionProtocolMetadataStorage.getExtensionCount());
         }
 
-        // bedrock
+        // Bedrock
         final JoinGameDataTracker joinGameDataTracker = userConnection.get(JoinGameDataTracker.class);
         if (joinGameDataTracker != null) {
             final ServerAuthMovementMode movementMode = userConnection.get(GameSessionStorage.class).getMovementMode();
