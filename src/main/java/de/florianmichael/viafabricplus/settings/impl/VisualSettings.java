@@ -57,6 +57,7 @@ public class VisualSettings extends SettingGroup {
 
     // b1.8/b1.8.1 -> b1_7/b1.7.3
     public final VersionedBooleanSetting removeNewerHudElements = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_newer_hud_elements"), VersionRange.andOlder(LegacyProtocolVersion.b1_7tob1_7_3));
+    public final VersionedBooleanSetting disableServerPinging = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.disable_server_pinging"), VersionRange.andOlder(LegacyProtocolVersion.b1_7tob1_7_3));
 
     // a1.0.15 -> c0_28/c0_30
     public final VersionedBooleanSetting replaceCreativeInventory = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory"), VersionRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));

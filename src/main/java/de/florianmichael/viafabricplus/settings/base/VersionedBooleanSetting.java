@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.settings.base;
 
 import com.google.gson.JsonObject;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.settings.VersionedBooleanSettingRenderer;
@@ -62,8 +63,12 @@ public class VersionedBooleanSetting extends AbstractSetting<Integer> {
     }
 
     public boolean isEnabled() {
+        return isEnabled(ProtocolTranslator.getTargetVersion());
+    }
+
+    public boolean isEnabled(final ProtocolVersion version) {
         if (isAuto()) {
-            return protocolRange.contains(ProtocolTranslator.getTargetVersion());
+            return protocolRange.contains(version);
         } else {
             return getValue() == ENABLED_INDEX;
         }

@@ -15,6 +15,7 @@ accessible field net/minecraft/client/font/FontStorage glyphRendererCache Lnet/m
 accessible field net/minecraft/client/font/FontStorage glyphCache Lnet/minecraft/client/font/GlyphContainer;
 accessible field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 accessible field net/minecraft/block/AbstractBlock velocityMultiplier F
+accessible field net/minecraft/client/gui/screen/world/WorldIcon UNKNOWN_SERVER_ID Lnet/minecraft/util/Identifier;
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
