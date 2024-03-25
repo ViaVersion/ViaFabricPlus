@@ -87,7 +87,7 @@
   "visual_settings.viafabricplus.disable_server_pinging": "Disable server pinging",
 
   "bedrock.viafabricplus.login": "Your browser should have opened.\nClosing this screen will cancel the process!",
-  "bedrock.viafabricplus.confirm_transfer_server_prompt": "Do you want to transfer to the following server?\n%s\n\nThis will disconnect you from the current server and connect you to the new server.",
+  "bedrock.viafabricplus.confirm_transfer_server_prompt": "Do you want to transfer to the following server?\n%s\n\nThis will disconnect from the current server and connect to the new server.",
   "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus couldn't verify your session! Please log in to an Account or disable the BetaCraft authentication in the ViaFabricPlus Settings",
 
   "report.viafabricplus.button": "Report issues",
