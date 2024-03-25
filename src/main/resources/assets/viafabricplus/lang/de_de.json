@@ -42,7 +42,7 @@
   "general_settings.viafabricplus.direct_connect_screen_button_orientation": "Position des Buttons im Direkt-Verbinden Fenster",
   "general_settings.viafabricplus.filter_creative_tabs": "Nicht verfügbare Items aus dem Kreativ-Inventar entfernen",
   "general_settings.viafabricplus.show_advertised_server_version": "Vom Server angekündigte Version im Multiplayer anzeigen",
-  "general_settings.viafabricplus.ignore_packet_translation_errors": "Fehler beim umwandeln von Datenpacketen ignorieren",
+  "general_settings.viafabricplus.ignore_packet_translation_errors": "Fehler beim umwandeln von Packeten ignorieren",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Skins und Köpfe in alten Versionen laden",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Inventar-Aktionen in Alpha Versionen emulieren",
 
@@ -55,7 +55,7 @@
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Das Villager-Trading-Fenster glätten",
   "debug_settings.viafabricplus.execute_inputs_in_sync": "Eingangssignale synchronisiert ausführen",
   "debug_settings.viafabricplus.sneak_instant": "Ohne Verzögerung schleichen",
-  "debug_settings.viafabricplus.send_open_inventory_packet": "Datenpacket senden, wenn das Inventar geöffnet ist",
+  "debug_settings.viafabricplus.send_open_inventory_packet": "Packet senden, wenn das Inventar geöffnet ist",
   "debug_settings.viafabricplus.remove_cooldowns": "Cooldowns entfernen",
   "debug_settings.viafabricplus.send_idle_packet": "Idle-Packet senden",
   "debug_settings.viafabricplus.replace_attribute_modifiers": "Attribut-Modifikatoren ersetzen",
