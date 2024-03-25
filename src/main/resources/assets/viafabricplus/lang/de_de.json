@@ -57,7 +57,7 @@
   "debug_settings.viafabricplus.sneak_instant": "Ohne Verzögerung schleichen",
   "debug_settings.viafabricplus.send_open_inventory_packet": "Datenpacket senden, wenn das Inventar geöffnet ist",
   "debug_settings.viafabricplus.remove_cooldowns": "Cooldowns entfernen",
-  "debug_settings.viafabricplus.send_idle_packet": "Sende Idle Packet",
+  "debug_settings.viafabricplus.send_idle_packet": "Idle-Datenpacket senden",
   "debug_settings.viafabricplus.replace_attribute_modifiers": "Attribut-Modifikatoren ersetzen",
   "debug_settings.viafabricplus.replace_sneaking": "Schleichen ersetzen",
   "debug_settings.viafabricplus.long_sneaking": "Langes schleichen",
