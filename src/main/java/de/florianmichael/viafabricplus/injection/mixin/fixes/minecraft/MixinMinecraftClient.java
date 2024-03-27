@@ -110,7 +110,7 @@ public abstract class MixinMinecraftClient {
             )
     )
     private void processInputQueues(CallbackInfo ci) {
-        if (DebugSettings.global().executeInputsInSync.isEnabled()) {
+        if (DebugSettings.global().executeInputsSynchronously.isEnabled()) {
             Queue<Runnable> inputEvents = ((IMouseKeyboard) this.mouse).viaFabricPlus$getPendingScreenEvents();
             while (!inputEvents.isEmpty()) inputEvents.poll().run();
 

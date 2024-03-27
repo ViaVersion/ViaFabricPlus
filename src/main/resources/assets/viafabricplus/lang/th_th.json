@@ -18,8 +18,8 @@
 
   "debug_settings.viafabricplus.disable_sequencing": "ปิดใช้งานการจัดลำดับ",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "ปรับหน้าจอร้านค้าให้เรียบ",
-  "debug_settings.viafabricplus.execute_inputs_in_sync": "ดำเนินการอินพุตในการซิงค์",
-  "debug_settings.viafabricplus.sneak_instant": "ย่องทันที",
+  "debug_settings.viafabricplus.execute_inputs_synchronously": "ดำเนินการอินพุตในการซิงค์",
+  "debug_settings.viafabricplus.sneak_instantly": "ย่องทันที",
   "debug_settings.viafabricplus.send_open_inventory_packet": "ส่งแพคเกจเปิดช่องเก็บของ",
   "debug_settings.viafabricplus.remove_cooldowns": "ลบคูลดาวน์",
   "debug_settings.viafabricplus.send_idle_packet": "ส่งแพคเกจ idle",

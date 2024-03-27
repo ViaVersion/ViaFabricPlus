@@ -40,7 +40,7 @@
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Multiplayer screen button orientation",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Add server screen button orientation",
   "general_settings.viafabricplus.direct_connect_screen_button_orientation": "Direct connect screen button orientation",
-  "general_settings.viafabricplus.filter_creative_tabs": "Remove not available items from creative tab",
+  "general_settings.viafabricplus.filter_creative_tabs": "Remove unavailable items from creative tab",
   "general_settings.viafabricplus.show_advertised_server_version": "Show advertised/server version in Multiplayer",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Ignore packet translation errors",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Load skins and skulls in legacy versions",
@@ -53,8 +53,8 @@
   "debug_settings.viafabricplus.queue_config_packets": "Queue config packets",
   "debug_settings.viafabricplus.disable_sequencing": "Disable sequencing",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Smooth out merchant screens",
-  "debug_settings.viafabricplus.execute_inputs_in_sync": "Execute inputs in sync",
-  "debug_settings.viafabricplus.sneak_instant": "Sneak instant",
+  "debug_settings.viafabricplus.execute_inputs_synchronously": "Execute inputs synchronously",
+  "debug_settings.viafabricplus.sneak_instantly": "Sneak instantly",
   "debug_settings.viafabricplus.send_open_inventory_packet": "Send open inventory packet",
   "debug_settings.viafabricplus.remove_cooldowns": "Remove cooldowns",
   "debug_settings.viafabricplus.send_idle_packet": "Send idle packet",
@@ -67,8 +67,8 @@
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Use BetaCraft authentication",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Verify session for online mode servers",
-  "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Automatically select CPE when using the ClassiCube server list.",
-  "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Set session name to ClassiCube name when using the ClassiCube server list.",
+  "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Automatically select CPE when using the ClassiCube server list",
+  "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Set session name to ClassiCube name when using the ClassiCube server list",
 
   "visual_settings.viafabricplus.show_super_secret_settings": "Show Super Secret Settings",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Disable Secure Chat warning",
@@ -81,14 +81,14 @@
   "visual_settings.viafabricplus.remove_newer_hud_elements": "Remove newer HUD elements",
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "Replace creative inventory",
   "visual_settings.viafabricplus.old_walking_animation": "Old walking animation",
-  "visual_settings.viafabricplus.change_font_renderer_behaviour": "Change Font renderer behaviour",
+  "visual_settings.viafabricplus.change_font_renderer_behaviour": "Change Font Renderer behavior",
   "visual_settings.viafabricplus.enable_sword_blocking": "Enable sword animation",
   "visual_settings.viafabricplus.enable_block_hit_animation": "Enable block hit animation",
   "visual_settings.viafabricplus.disable_server_pinging": "Disable server pinging",
 
   "bedrock.viafabricplus.login": "Your browser should have opened.\nClosing this screen will cancel the process!",
   "bedrock.viafabricplus.confirm_transfer_server_prompt": "Do you want to transfer to the following server?\n%s\n\nThis will disconnect from the current server and connect to the new server.",
-  "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus couldn't verify your session! Please log in to an Account or disable the BetaCraft authentication in the ViaFabricPlus Settings",
+  "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus couldn't verify your session! Please log in to an account or disable the BetaCraft authentication in the ViaFabricPlus Settings",
 
   "report.viafabricplus.button": "Report issues",
   "report.viafabricplus.bug_report": "Report a bug on GitHub",
@@ -104,6 +104,6 @@
   "classic4j_library.viafabricplus.error.token": "Incorrect token. Is your ViaFabricPlus out of date?",
   "classic4j_library.viafabricplus.error.username": "Invalid username.",
   "classic4j_library.viafabricplus.error.password": "Invalid password.",
-  "classic4j_library.viafabricplus.error.verification": "User hasn't verified their E-mail address yet.",
-  "classic4j_library.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your E-mail."
+  "classic4j_library.viafabricplus.error.verification": "User hasn't verified their email address yet.",
+  "classic4j_library.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your email."
 }

@@ -45,7 +45,7 @@ public abstract class MixinKeyboard implements IMouseKeyboard {
 
     @Redirect(method = {"method_22676", "method_22675"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;execute(Ljava/lang/Runnable;)V"))
     private void storeEvent(MinecraftClient instance, Runnable runnable) {
-        if (this.client.getNetworkHandler() != null && this.client.currentScreen != null && DebugSettings.global().executeInputsInSync.isEnabled()) {
+        if (this.client.getNetworkHandler() != null && this.client.currentScreen != null && DebugSettings.global().executeInputsSynchronously.isEnabled()) {
             this.viaFabricPlus$pendingScreenEvents.offer(runnable);
         } else {
             instance.execute(runnable);

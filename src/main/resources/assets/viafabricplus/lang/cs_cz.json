@@ -24,8 +24,8 @@
 
   "debug_settings.viafabricplus.disable_sequencing": "Vypnout sekvencování",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Smooth out merchant screens",
-  "debug_settings.viafabricplus.execute_inputs_in_sync": "Spustit vstupy v synchronizaci",
-  "debug_settings.viafabricplus.sneak_instant": "Instantní plížení",
+  "debug_settings.viafabricplus.execute_inputs_synchronously": "Spustit vstupy v synchronizaci",
+  "debug_settings.viafabricplus.sneak_instantly": "Instantní plížení",
   "debug_settings.viafabricplus.send_open_inventory_packet": "Odesílat packet otevření inventáře",
   "debug_settings.viafabricplus.remove_cooldowns": "Odstranit cooldowny",
   "debug_settings.viafabricplus.send_idle_packet": "Odesílat idle packet",

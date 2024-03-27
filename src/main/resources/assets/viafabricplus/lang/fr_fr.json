@@ -25,8 +25,8 @@
 
   "debug_settings.viafabricplus.disable_sequencing": "Désactiver le séquençage",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Lisser les écrans des marchands",
-  "debug_settings.viafabricplus.execute_inputs_in_sync": "Exécuter les entrées de manière synchronisée",
-  "debug_settings.viafabricplus.sneak_instant": "Sneak instantané",
+  "debug_settings.viafabricplus.execute_inputs_synchronously": "Exécuter les entrées de manière synchronisée",
+  "debug_settings.viafabricplus.sneak_instantly": "Sneak instantané",
   "debug_settings.viafabricplus.send_open_inventory_packet": "Envoyer le paquet d'inventaire ouvert",
   "debug_settings.viafabricplus.remove_cooldowns": "Supprimer les temps de recharge",
   "debug_settings.viafabricplus.send_idle_packet": "Envoyer le paquet d'inactivité",

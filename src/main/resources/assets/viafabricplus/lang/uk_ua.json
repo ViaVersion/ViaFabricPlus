@@ -48,8 +48,8 @@
 
   "debug_settings.viafabricplus.disable_sequencing": "Вимкнути послідовності",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Згладити екрани крамарів",
-  "debug_settings.viafabricplus.execute_inputs_in_sync": "Виконувати введення синхронно",
-  "debug_settings.viafabricplus.sneak_instant": "Миттєво крастися",
+  "debug_settings.viafabricplus.execute_inputs_synchronously": "Виконувати введення синхронно",
+  "debug_settings.viafabricplus.sneak_instantly": "Миттєво крастися",
   "debug_settings.viafabricplus.send_open_inventory_packet": "Відправляти пакет відкривання інвентарю",
   "debug_settings.viafabricplus.remove_cooldowns": "Прибрати кулдауни",
   "debug_settings.viafabricplus.send_idle_packet": "Надіслави пакет неактивності",
