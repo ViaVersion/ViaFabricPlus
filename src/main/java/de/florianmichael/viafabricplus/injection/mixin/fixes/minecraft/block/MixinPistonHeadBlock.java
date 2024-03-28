@@ -61,8 +61,6 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
     @Final
     protected static VoxelShape EAST_HEAD_SHAPE;
 
-    @Shadow public abstract VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context);
-
     @Unique
     private static final VoxelShape viaFabricPlus$up_arm_shape_r1_8_x = Block.createCuboidShape(6.0, 0.0, 6.0, 10.0, 12.0, 10.0);
 
