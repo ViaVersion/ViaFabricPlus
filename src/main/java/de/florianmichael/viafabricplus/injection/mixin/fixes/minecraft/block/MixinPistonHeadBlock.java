@@ -61,6 +61,8 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
     @Final
     protected static VoxelShape EAST_HEAD_SHAPE;
 
+    @Shadow public abstract VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context);
+
     @Unique
     private static final VoxelShape viaFabricPlus$up_arm_shape_r1_8_x = Block.createCuboidShape(6.0, 0.0, 6.0, 10.0, 12.0, 10.0);
 
@@ -79,12 +81,20 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
     @Unique
     private static final VoxelShape viaFabricPlus$west_arm_shape_r1_8_x = Block.createCuboidShape(6.0, 4.0, 4.0, 10.0, 12.0, 16.0);
 
+    @Unique
+    private boolean viaFabricPlus$selfInflicted = false;
+
     protected MixinPistonHeadBlock(Settings settings) {
         super(settings);
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+        if (viaFabricPlus$selfInflicted) {
+            viaFabricPlus$selfInflicted = false;
+            return;
+        }
+        // Outline shape for piston head doesn't exist in <= 1.12.2
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(switch (state.get(PistonHeadBlock.FACING)) {
                 case DOWN -> DOWN_HEAD_SHAPE;
@@ -108,6 +118,10 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
                 case WEST -> VoxelShapes.union(WEST_HEAD_SHAPE, viaFabricPlus$west_arm_shape_r1_8_x);
                 case EAST -> VoxelShapes.union(EAST_HEAD_SHAPE, viaFabricPlus$east_arm_shape_r1_8_x);
             };
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            // Collision shape for piston head in <= 1.12.2 needs to be the 1.13+ outline shape
+            viaFabricPlus$selfInflicted = true;
+            return getOutlineShape(state, world, pos, context);
         } else {
             return super.getCollisionShape(state, world, pos, context);
         }
