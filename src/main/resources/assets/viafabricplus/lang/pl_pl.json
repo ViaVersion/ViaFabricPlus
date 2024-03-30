@@ -48,6 +48,7 @@
 
   "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Pytaj, żeby potwierdzić przełączanie do innych serwerów",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Naciśnij, aby ustawić konto dla minecraft bedrock edition",
+  "bedrock_settings.viafabricplus.replace_default_port": "Zamień domyślny port w liście serwerów",
 
   "debug_settings.viafabricplus.queue_config_packets": "Ustawiaj pakiety konfiguracji w kolejce",
   "debug_settings.viafabricplus.disable_sequencing": "Wyłącz sekwencjonowanie",
@@ -83,6 +84,7 @@
   "visual_settings.viafabricplus.change_font_renderer_behaviour": "Zmień sposób renderowania czcionek",
   "visual_settings.viafabricplus.enable_sword_blocking": "Włącz blokowanie mieczem",
   "visual_settings.viafabricplus.enable_block_hit_animation": "Włącz animację niszczenia bloków 1.7",
+  "visual_settings.viafabricplus.disable_server_pinging": "Wyłącz pingowanie serwerów",
 
   "bedrock.viafabricplus.login": "Powinna ci się otworzyć przeglądarka.\nNa otworzonej stronie wpisz ten kod: %s\nZamkanięcie tego ekranu będzie anulowało proces!",
   "bedrock.viafabricplus.confirm_transfer_server_prompt": "Czy chcesz się przełączyć na następujący serwer?\n%s\n\nRozłączy cię to z obecnym serwerem i połączy do nowego.",
