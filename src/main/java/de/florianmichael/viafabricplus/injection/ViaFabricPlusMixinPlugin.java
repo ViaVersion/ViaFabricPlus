@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.injection;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.lenni0451.reflect.stream.RStream;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -35,6 +36,7 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     private static final String COMPAT_PACKAGE = "compat.";
 
     public static String VFP_VERSION;
+    public static String VFP_IMPL_VERSION;
 
     public static boolean IPNEXT_PRESENT;
     public static boolean MORE_CULLING_PRESENT;
@@ -44,7 +46,9 @@ public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     public void onLoad(String mixinPackage) {
         final FabricLoader loader = FabricLoader.getInstance();
 
-        VFP_VERSION = loader.getModContainer("viafabricplus").get().getMetadata().getVersion().getFriendlyString();
+        final ModMetadata metadata = loader.getModContainer("viafabricplus").get().getMetadata();
+        VFP_VERSION = metadata.getVersion().getFriendlyString();
+        VFP_IMPL_VERSION = metadata.getCustomValue("vfp:implVersion").getAsString();
 
         IPNEXT_PRESENT = loader.isModLoaded("inventoryprofilesnext");
         MORE_CULLING_PRESENT = loader.isModLoaded("moreculling");

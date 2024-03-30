@@ -105,11 +105,21 @@ dependencies {
 }
 
 processResources {
-	inputs.property "version", project.version
-
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand(
+				"version": project.version,
+				"implVersion": "git-${project.name}-${project.version}:${project.latestCommitHash()}",
+		)
 	}
+}
+
+String latestCommitHash() {
+	def stdout = new ByteArrayOutputStream()
+	exec {
+		commandLine "git", "rev-parse", "--short", "HEAD"
+		standardOutput = stdout
+	}
+	return stdout.toString().trim()
 }
 
 java {

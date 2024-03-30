@@ -29,9 +29,10 @@
     }
   ],
   "contact": {
-    "homepage": "https://github.com/FlorianMichael/",
+    "homepage": "https://florianmichael.de/",
     "sources": "https://github.com/ViaVersion/ViaFabricPlus",
-    "issues": "https://github.com/ViaVersion/ViaFabricPlus/issues"
+    "issues": "https://github.com/ViaVersion/ViaFabricPlus/issues",
+    "email": "florian.michael07@gmail.com"
   },
   "license": "GPL-v3",
   "icon": "assets/viafabricplus/icon.png",
@@ -58,5 +59,8 @@
   },
   "breaks": {
     "viafabric": "*"
+  },
+  "custom": {
+    "vfp:implVersion": "${implVersion}"
   }
 }

@@ -19,10 +19,6 @@
 
 package de.florianmichael.viafabricplus.protocoltranslator.impl.viaversion;
 
-import com.viaversion.viaversion.libs.gson.JsonArray;
-import com.viaversion.viaversion.libs.gson.JsonObject;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.SharedConstants;
 import net.raphimc.vialoader.impl.viaversion.VLInjector;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
 
@@ -36,37 +32,6 @@ public class ViaFabricPlusVLInjector extends VLInjector {
     @Override
     public String getDecoderName() {
         return VLLegacyPipeline.VIA_DECODER_NAME;
-    }
-
-    @Override
-    public JsonObject getDump() {
-        JsonObject platformSpecific = new JsonObject();
-        JsonArray mods = new JsonArray();
-        FabricLoader.getInstance().getAllMods().stream().map((mod) -> {
-            JsonObject jsonMod = new JsonObject();
-            jsonMod.addProperty("id", mod.getMetadata().getId());
-            jsonMod.addProperty("name", mod.getMetadata().getName());
-            jsonMod.addProperty("version", mod.getMetadata().getVersion().getFriendlyString());
-            JsonArray authors = new JsonArray();
-            mod.getMetadata().getAuthors().stream().map(it -> {
-                JsonObject info = new JsonObject();
-                JsonObject contact = new JsonObject();
-                it.getContact().asMap().forEach(contact::addProperty);
-
-                if (contact.size() != 0) info.add("contact", contact);
-                info.addProperty("name", it.getName());
-
-                return info;
-            }).forEach(authors::add);
-            jsonMod.add("authors", authors);
-
-            return jsonMod;
-        }).forEach(mods::add);
-
-        platformSpecific.add("mods", mods);
-        platformSpecific.addProperty("native version", SharedConstants.getProtocolVersion());
-
-        return platformSpecific;
     }
 
 }
