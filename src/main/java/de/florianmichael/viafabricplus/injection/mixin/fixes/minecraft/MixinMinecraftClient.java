@@ -99,7 +99,7 @@ public abstract class MixinMinecraftClient {
 
     @WrapWithCondition(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
     private boolean disableSwing(ClientPlayerEntity instance, Hand hand) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4);
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
     @Inject(method = "tick",

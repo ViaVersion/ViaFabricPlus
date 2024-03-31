@@ -33,6 +33,7 @@
     "compat.lithium.MixinEntity",
     "fixes.authlib.MixinKeyPairResponse",
     "fixes.authlib.MixinYggdrasilUserApiService",
+    "fixes.minecraft.MixinActionResult",
     "fixes.minecraft.MixinAllowedAddressResolver",
     "fixes.minecraft.MixinBuiltChunk",
     "fixes.minecraft.MixinCamera",
