@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.ByteTag;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.CompoundTag;
-import com.viaversion.viaversion.protocols.protocol1_11to1_10.EntityIdRewriter;
+import com.viaversion.viaversion.protocols.protocol1_11to1_10.rewriter.EntityIdRewriter;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
