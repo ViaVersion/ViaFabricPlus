@@ -67,11 +67,15 @@ public abstract class MixinCustomPayloadS2CPacket {
                 return null;
             }
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-                // Skip remaining bytes after reading the payload
+                // Skip remaining bytes after reading the payload and return null if the payload fails to read
                 return (PacketByteBuf.PacketReader<? extends CustomPayload>) packetByteBuf -> {
-                    final CustomPayload result = reader.apply(packetByteBuf);
-                    packetByteBuf.skipBytes(packetByteBuf.readableBytes());
-                    return result;
+                    try {
+                        final CustomPayload result = reader.apply(packetByteBuf);
+                        packetByteBuf.skipBytes(packetByteBuf.readableBytes());
+                        return result;
+                    } catch (Exception e) {
+                        return null;
+                    }
                 };
             } else {
                 return reader;
