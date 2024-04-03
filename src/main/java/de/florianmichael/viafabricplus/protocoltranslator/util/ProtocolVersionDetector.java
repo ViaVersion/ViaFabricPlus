@@ -21,6 +21,8 @@ package de.florianmichael.viafabricplus.protocoltranslator.util;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.lenni0451.mcping.MCPing;
 import net.lenni0451.mcping.responses.MCPingResponse;
+import net.minecraft.util.Formatting;
+import net.raphimc.vialoader.util.ProtocolVersionList;
 
 import java.net.InetSocketAddress;
 
@@ -59,7 +61,15 @@ public class ProtocolVersionDetector {
             if (ProtocolVersion.isRegistered(response.version.protocol)) { // If the protocol is registered, we can use it
                 return ProtocolVersion.getProtocol(response.version.protocol);
             } else {
-                throw new RuntimeException("Unsupported protocol version: " + response.version.protocol);
+                for (ProtocolVersion protocol : ProtocolVersionList.getProtocolsNewToOld()) {
+                    for (String version : protocol.getIncludedVersions()) {
+                        if (response.version.name.contains(version)) {
+                            return protocol;
+                        }
+                    }
+                 }
+                throw new RuntimeException("Unable to detect the server version\nServer sent an invalid protocol id: "
+                        + response.version.protocol + " (" + response.version.name + Formatting.RESET + ")");
             }
         }
     }
