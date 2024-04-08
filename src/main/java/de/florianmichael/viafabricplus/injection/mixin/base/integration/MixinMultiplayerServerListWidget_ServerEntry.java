@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
