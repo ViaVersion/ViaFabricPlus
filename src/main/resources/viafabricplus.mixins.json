@@ -201,7 +201,8 @@
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
     "viaversion.MixinConfig",
-    "viaversion.MixinProtocolVersion"
+    "viaversion.MixinProtocolVersion",
+    "fixes.viaversion.MixinEntityPacketRewriter1_20_3"
   ],
   "injectors": {
     "defaultRequire": 1
