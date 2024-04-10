@@ -42,7 +42,6 @@ import de.florianmichael.viafabricplus.protocoltranslator.impl.platform.ViaFabri
 import de.florianmichael.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusVLInjector;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusVLLoader;
 import de.florianmichael.viafabricplus.protocoltranslator.netty.ViaFabricPlusVLLegacyPipeline;
-import de.florianmichael.viafabricplus.protocoltranslator.util.ConfigPatcher;
 import de.florianmichael.viafabricplus.protocoltranslator.util.NoPacketSendChannel;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
@@ -60,10 +59,11 @@ import net.raphimc.vialoader.impl.platform.ViaBedrockPlatformImpl;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
 import java.io.File;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -246,19 +246,31 @@ public class ProtocolTranslator {
      * @param configFolder The directory where the ViaVersion config files are located
      */
     public static void patchConfigs(final File configFolder) {
-        final File viaVersionConfig = new File(configFolder, "viaversion.yml");
-        final Map<String, Object> viaVersionPatches = new HashMap<>();
-        viaVersionPatches.put("fix-infested-block-breaking", false);
-        viaVersionPatches.put("shield-blocking", false);
-        viaVersionPatches.put("no-delay-shield-blocking", true);
-        viaVersionPatches.put("chunk-border-fix", true);
-        new ConfigPatcher(viaVersionConfig, viaVersionPatches);
+        configFolder.mkdirs();
 
-        final File viaLegacyConfig = new File(configFolder, "vialegacy.yml");
-        final Map<String, Object> viaLegacyPatches = new HashMap<>();
-        viaLegacyPatches.put("legacy-skull-loading", true);
-        viaLegacyPatches.put("legacy-skin-loading", true);
-        new ConfigPatcher(viaLegacyConfig, viaLegacyPatches);
+        try {
+            final File viaVersionConfig = new File(configFolder, "viaversion.yml");
+            Files.writeString(viaVersionConfig.toPath(), """
+                    fix-infested-block-breaking: false
+                    shield-blocking: false
+                    no-delay-shield-blocking: true
+                    chunk-border-fix: true
+                    """, StandardOpenOption.CREATE_NEW);
+        } catch (FileAlreadyExistsException ignored) {
+        } catch (Throwable e) {
+            throw new RuntimeException("Failed to patch ViaVersion config", e);
+        }
+
+        try {
+            final File viaLegacyConfig = new File(configFolder, "vialegacy.yml");
+            Files.writeString(viaLegacyConfig.toPath(), """
+                    legacy-skull-loading: true
+                    legacy-skin-loading: true
+                    """, StandardOpenOption.CREATE_NEW);
+        } catch (FileAlreadyExistsException ignored) {
+        } catch (Throwable e) {
+            throw new RuntimeException("Failed to patch ViaLegacy config", e);
+        }
     }
 
     /**
