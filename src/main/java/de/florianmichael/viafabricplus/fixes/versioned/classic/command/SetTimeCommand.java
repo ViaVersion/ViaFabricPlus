@@ -44,7 +44,7 @@ public class SetTimeCommand extends VFPViaSubCommand {
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
-        if (!getUser().has(TimeLockStorage.class)) {
+        if (getUser() == null || !getUser().has(TimeLockStorage.class)) {
             sendMessage(sender, Formatting.RED + "Only for <= " + LegacyProtocolVersion.a1_0_16toa1_0_16_2.getName());
             return true;
         }

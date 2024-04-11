@@ -40,7 +40,7 @@ public class ListExtensionsCommand extends VFPViaSubCommand {
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
-        if (!getUser().has(ExtensionProtocolMetadataStorage.class)) {
+        if (getUser() == null || !getUser().has(ExtensionProtocolMetadataStorage.class)) {
             sendMessage(sender, Formatting.RED + "Only for " + LegacyProtocolVersion.c0_30cpe.getName());
             return true;
         }
