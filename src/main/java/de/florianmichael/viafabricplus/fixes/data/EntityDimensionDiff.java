@@ -55,7 +55,7 @@ public class EntityDimensionDiff {
             ),
             EntityType.ZOMBIE, linkedHashMap(
                     ProtocolVersion.v1_7_6, EntityDimensions.changing(0.6F, 1.8F),
-                    ProtocolVersion.v1_8, EntityDimensions.fixed(EntityType.ZOMBIE.getDimensions().width, EntityType.ZOMBIE.getDimensions().height),
+                    ProtocolVersion.v1_8, EntityDimensions.fixed(EntityType.ZOMBIE.getDimensions().width(), EntityType.ZOMBIE.getDimensions().height()),
                     ProtocolVersion.v1_9, EntityType.ZOMBIE.getDimensions()
             ),
             EntityType.CHICKEN, linkedHashMap(

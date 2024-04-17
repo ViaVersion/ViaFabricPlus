@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.*;
-import net.minecraft.util.ActionResult;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -51,10 +51,10 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
         super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
     }
 
-    @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-    private void alwaysSuccess(CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(method = "onUseWithItem", at = @At("HEAD"), cancellable = true)
+    private void alwaysSuccess(CallbackInfoReturnable<ItemActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
-            cir.setReturnValue(ActionResult.SUCCESS);
+            cir.setReturnValue(ItemActionResult.SUCCESS);
         }
     }
 
@@ -97,7 +97,7 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
         final VoxelShape southShape = Block.createCuboidShape(h, (float) 0.0, h, i, height, 16.0);
         final VoxelShape westShape = Block.createCuboidShape(0.0, (float) 0.0, h, i, height, i);
         final VoxelShape eastShape = Block.createCuboidShape(h, (float) 0.0, h, 16.0, height, i);
-        final VoxelShape[] voxelShapes = new VoxelShape[] {
+        final VoxelShape[] voxelShapes = new VoxelShape[]{
                 VoxelShapes.empty(),
                 Block.createCuboidShape(f, (float) 0.0, h, g, height, 16.0D),
                 Block.createCuboidShape(0.0D, (float) 0.0, f, i, height, g),

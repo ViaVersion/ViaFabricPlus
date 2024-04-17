@@ -46,7 +46,6 @@
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "模擬Alpha版本嘅物品欄動作",
   "general_settings.viafabricplus.direct_connect_screen_button_orientation": "直接連缐 熒幕嘅按鈕方位",
 
-  "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "打開GUI以確認切換到其它伺服器",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "點擊以設定基岩版帳戶",
 
   "debug_settings.viafabricplus.queue_config_packets": "排列配置數據包",
@@ -69,7 +68,6 @@
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "如果使用 ClassicCube MP Pass，則強制 CPE 版本",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "如果使用 ClassiCube ，則顯示為 ClassiCube 名稱",
 
-  "visual_settings.viafabricplus.show_super_secret_settings": "顯示 “Super Secret Settings”（超級秘密設定）",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "禁用安全聊天警告",
   "visual_settings.viafabricplus.hide_signature_indicator": "隱藏聊天簽名提示",
   "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "從\u00a7o拼圖方塊\u00a7r介面中移除新版本特性",

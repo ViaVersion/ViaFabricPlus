@@ -604,7 +604,7 @@ public class ItemRegistryDiff {
         ITEM_DIFF.put(BLUE_ICE, andNewer(v1_13));
         ITEM_DIFF.put(CONDUIT, andNewer(v1_13));
         ITEM_DIFF.put(TURTLE_HELMET, andNewer(v1_13));
-        ITEM_DIFF.put(SCUTE, andNewer(v1_13));
+        ITEM_DIFF.put(TURTLE_SCUTE, andNewer(v1_13));
         ITEM_DIFF.put(PUFFERFISH_BUCKET, andNewer(v1_13));
         ITEM_DIFF.put(SALMON_BUCKET, andNewer(v1_13));
         ITEM_DIFF.put(COD_BUCKET, andNewer(v1_13));

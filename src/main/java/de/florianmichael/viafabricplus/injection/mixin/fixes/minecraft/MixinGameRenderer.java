@@ -42,7 +42,7 @@ public abstract class MixinGameRenderer {
     @Final
     MinecraftClient client;
 
-    @ModifyExpressionValue(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"))
+    @ModifyExpressionValue(method = "findCrosshairTarget", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"))
     private HitResult bedrockReachAroundRaycast(HitResult hitResult) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             final Entity entity = this.client.getCameraEntity();

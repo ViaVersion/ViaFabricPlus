@@ -20,8 +20,8 @@
 package de.florianmichael.viafabricplus.injection.mixin.compat.classic4j;
 
 import de.florianmichael.viafabricplus.injection.access.ITextFieldWidget;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.util.StringHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,17 +37,17 @@ public abstract class MixinTextFieldWidget implements ITextFieldWidget {
     @Unique
     private boolean viaFabricPlus$forbiddenCharactersUnlocked = false;
 
-    @Redirect(method = "charTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;isValidChar(C)Z"))
+    @Redirect(method = "charTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/StringHelper;isValidChar(C)Z"))
     private boolean allowForbiddenCharacters(char c) {
-        return this.viaFabricPlus$forbiddenCharactersUnlocked || SharedConstants.isValidChar(c);
+        return this.viaFabricPlus$forbiddenCharactersUnlocked || StringHelper.isValidChar(c);
     }
 
-    @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;stripInvalidChars(Ljava/lang/String;)Ljava/lang/String;"))
+    @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/StringHelper;stripInvalidChars(Ljava/lang/String;)Ljava/lang/String;"))
     private String allowForbiddenCharacters(String string) {
         if (this.viaFabricPlus$forbiddenCharactersUnlocked) {
             return string;
         } else {
-            return SharedConstants.stripInvalidChars(string);
+            return StringHelper.stripInvalidChars(string);
         }
     }
 

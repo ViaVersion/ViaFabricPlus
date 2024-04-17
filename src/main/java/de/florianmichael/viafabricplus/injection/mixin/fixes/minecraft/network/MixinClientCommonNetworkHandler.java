@@ -21,11 +21,8 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.storage.InventoryAcknowledgements;
-import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.fabricmc.fabric.impl.networking.payload.ResolvablePayload;
-import net.fabricmc.fabric.impl.networking.payload.UntypedPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.network.ClientConnection;
@@ -49,7 +46,6 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.function.BooleanSupplier;
 
-@SuppressWarnings("UnstableApiUsage")
 @Mixin(value = ClientCommonNetworkHandler.class, priority = 1 /* Has to be applied before Fabric's Networking API, so it doesn't cancel our custom-payload packets */)
 public abstract class MixinClientCommonNetworkHandler {
 
@@ -104,10 +100,11 @@ public abstract class MixinClientCommonNetworkHandler {
 
     @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At("HEAD"), cancellable = true)
     private void handleSyncTask(CustomPayloadS2CPacket packet, CallbackInfo ci) {
-        if (packet.payload().id().toString().equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof ResolvablePayload payload) {
+        // TODO: Update: Fix
+        /*if (packet.payload().id().toString().equals(ClientsideFixes.PACKET_SYNC_IDENTIFIER) && packet.payload() instanceof ResolvablePayload payload) {
             ClientsideFixes.handleSyncTask(((UntypedPayload) payload.resolve(null)).buffer());
             ci.cancel(); // Cancel the packet, so it doesn't get processed by the client
-        }
+        }*/
     }
 
     @Inject(method = "onResourcePackSend", at = @At("HEAD"), cancellable = true)

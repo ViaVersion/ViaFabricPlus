@@ -34,6 +34,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  *
  * Fixes https://github.com/ViaVersion/ViaFabricPlus/issues/209
  */
+@SuppressWarnings("UnresolvedMixinReference")
 @Pseudo
 @Mixin(targets = "org.anti_ad.mc.ipnext.event.AutoRefillHandler$ItemSlotMonitor", remap = false)
 public abstract class MixinAutoRefillHandler_ItemSlotMonitor {

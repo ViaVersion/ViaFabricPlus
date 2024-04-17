@@ -85,7 +85,7 @@ public class ProtocolTranslator {
     /**
      * The native version of the client
      */
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_20_3;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_20_5;
 
     /**
      * Protocol version that is used to enable protocol auto-detect
@@ -234,7 +234,7 @@ public class ProtocolTranslator {
     public static UserConnection getPlayNetworkUserConnection() {
         final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
         if (handler == null) {
-            throw new IllegalStateException("The player is not connected to a server");
+            return null;
         }
 
         return ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection();

@@ -47,7 +47,6 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Скины и головы игроков в старых версиях",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Эмулировать действия в инвентаре в alpha-версиях",
 
-  "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Экран подтверждения перехода на другой сервер",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Нажмите для настройки учётной записи Bedrock Edition",
 
   "debug_settings.viafabricplus.queue_config_packets": "Очередь пакетов этапа настройки",
@@ -70,7 +69,6 @@
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Устанавливать версию CPE при использовании ClassiCube",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Имя пользователя ClassiCube при его использовании",
 
-  "visual_settings.viafabricplus.show_super_secret_settings": "Вернуть Super Secret Settings",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Удалять уведомления о безопасности чата",
   "visual_settings.viafabricplus.hide_signature_indicator": "Скрывать индикатор цифровой подписи в чате",
   "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "Старый блок головоломки",

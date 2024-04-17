@@ -46,6 +46,21 @@ import java.util.concurrent.CompletableFuture;
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
  *  - Blip-jumping is not supported in <= 1.13.2 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
  *  - Older versions don't clamp positions when teleporting (Is this important?)
+ *
+ * TODO | Port
+ *  - Readd MixinCustomPayloadS2CPacket, MixinInGameHud
+ *  - All Update todos
+ *  - Test 1.11.2 banner recipe
+ *  - Test 1.20.1 riding offsets
+ *  - Fix on protocol level: modify1_7StepHeight, modifyReachDistance
+ *  - EntityDimensionDiff: Add eye height and attachment point
+ *  - Test bedrock transfer
+ *  - Readd item fixes on protocol level: MixinAxeItem, MixinHoeItem, MixinPickaxeItem, MixinShearsItem, MixinShovelItem, MixinSwordItem, MixinMiningToolItem, MixinItem
+ *  - Readd item fixes: ArmorMaterials, MixinItemStack, MixinDrawContext, MixinPacketByteBuf
+ *  - Test villager trading in 1.8/1.12.2
+ *  - Test 1.8 triple chest
+ *  - Figure out how to fix 32k enchantments with codecs (MixinEnchantmentHelper)
+ *  - Test sign interactions
  */
 public class ViaFabricPlus {
 

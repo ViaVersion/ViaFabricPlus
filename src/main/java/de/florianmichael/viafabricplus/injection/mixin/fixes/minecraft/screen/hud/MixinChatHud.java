@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(ChatHud.class)
 public abstract class MixinChatHud {
 
-    @ModifyVariable(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    @ModifyVariable(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private MessageIndicator removeIndicator(MessageIndicator instance) {
         return VisualSettings.global().hideSignatureIndicator.isEnabled() ? null : instance;
     }

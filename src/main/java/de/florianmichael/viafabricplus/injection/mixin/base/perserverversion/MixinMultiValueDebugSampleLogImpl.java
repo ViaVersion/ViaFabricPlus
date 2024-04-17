@@ -20,13 +20,13 @@
 package de.florianmichael.viafabricplus.injection.mixin.base.perserverversion;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
-import net.minecraft.util.profiler.PerformanceLog;
+import de.florianmichael.viafabricplus.injection.access.IMultiValueDebugSampleLogImpl;
+import net.minecraft.util.profiler.MultiValueDebugSampleLogImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(PerformanceLog.class)
-public abstract class MixinPerformanceLog implements IPerformanceLog {
+@Mixin(MultiValueDebugSampleLogImpl.class)
+public abstract class MixinMultiValueDebugSampleLogImpl implements IMultiValueDebugSampleLogImpl {
 
     @Unique
     private ProtocolVersion viaFabricPlus$forcedVersion;

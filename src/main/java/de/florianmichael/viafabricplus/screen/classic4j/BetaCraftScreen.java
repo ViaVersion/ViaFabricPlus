@@ -93,7 +93,7 @@ public class BetaCraftScreen extends VFPScreen {
         }
 
         @Override
-        protected int getScrollbarPositionX() {
+        protected int getScrollbarX() {
             return this.width - 5;
         }
     }
@@ -115,7 +115,7 @@ public class BetaCraftScreen extends VFPScreen {
             final ServerAddress serverAddress = ServerAddress.parse(server.socketAddress());
             final ServerInfo entry = new ServerInfo(server.name(), serverAddress.getAddress(), ServerInfo.ServerType.OTHER);
 
-            ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false);
+            ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false, null);
             super.mappedMouseClicked(mouseX, mouseY, button);
         }
 

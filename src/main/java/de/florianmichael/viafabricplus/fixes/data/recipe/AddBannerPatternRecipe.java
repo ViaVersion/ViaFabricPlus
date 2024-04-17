@@ -21,19 +21,19 @@ package de.florianmichael.viafabricplus.fixes.data.recipe;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.entity.BannerBlockEntity;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BannerPatternsComponent;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.BannerItem;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
 
@@ -53,7 +53,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
             if (stack.getItem() instanceof BannerItem) {
                 if (foundBanner)
                     return false;
-                if (BannerBlockEntity.getPatternCount(stack) >= 6)
+                if (stack.getOrDefault(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT).layers().size() >= 6)
                     return false;
                 foundBanner = true;
             }
@@ -62,7 +62,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager registryManager) {
+    public ItemStack craft(RecipeInputInventory inv, RegistryWrapper.WrapperLookup lookup) {
         ItemStack result = ItemStack.EMPTY;
 
         for (int i = 0; i < inv.size(); i++) {
@@ -74,8 +74,9 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
             }
         }
 
-        BannerPattern_1_13_2 pattern = getBannerPattern(inv);
+        final BannerPattern_1_13_2 pattern = getBannerPattern(inv);
         if (pattern != null) {
+            final var patternKey = lookup.getWrapperOrThrow(RegistryKeys.BANNER_PATTERN).getOrThrow(pattern.getKey());
             DyeColor color = ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ? DyeColor.BLACK : DyeColor.WHITE;
             for (int i = 0; i < inv.size(); i++) {
                 Item item = inv.getStack(i).getItem();
@@ -84,18 +85,12 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
                 }
             }
 
-            NbtCompound tileEntityNbt = result.getOrCreateSubNbt("BlockEntityTag");
-            NbtList patterns;
-            if (tileEntityNbt.contains("Patterns", 9)) {
-                patterns = tileEntityNbt.getList("Patterns", 10);
-            } else {
-                patterns = new NbtList();
-                tileEntityNbt.put("Patterns", patterns);
+            final BannerPatternsComponent.Builder patternsBuilder = new BannerPatternsComponent.Builder();
+            if (result.contains(DataComponentTypes.BANNER_PATTERNS)) {
+                patternsBuilder.addAll(result.get(DataComponentTypes.BANNER_PATTERNS));
             }
-            NbtCompound patternNbt = new NbtCompound();
-            patternNbt.putString("Pattern", pattern.getId());
-            patternNbt.putInt("Color", color.getId());
-            patterns.add(patternNbt);
+            patternsBuilder.add(new BannerPatternsComponent.Layer(patternKey, color));
+            result.set(DataComponentTypes.BANNER_PATTERNS, patternsBuilder.build());
         }
 
         return result;

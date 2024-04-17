@@ -46,7 +46,6 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "cargar skins y cabezas en versiones legacy",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "emular acciones de inventario en versiones alpha",
 
-  "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Abrir UI de pregunta para confirmar la transferencia a otros servidores",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Click para asignar cuenta de Bedrock",
 
   "debug_settings.viafabricplus.queue_config_packets": "cola de configuración de paquetes",
@@ -69,7 +68,6 @@
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Forzar version CPE si se usa la lista de servidores de ClassiCube.",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Asignar nombre de sesión a ClassiCube cuando se usa ClassiCube la lista de ClassiCube.",
 
-  "visual_settings.viafabricplus.show_super_secret_settings": "Mostrar los ajustes super secretos",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Desactivar la advertencia de chat seguro",
   "visual_settings.viafabricplus.hide_signature_indicator": "Ocultar el indicador de firmas",
   "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "Eliminar características nuevas de la pantalla de Jigsaw",

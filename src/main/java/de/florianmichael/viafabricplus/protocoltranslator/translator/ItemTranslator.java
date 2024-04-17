@@ -26,14 +26,14 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
+import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
+import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.packet.ServerboundPackets1_20_5;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import io.netty.buffer.Unpooled;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.NetworkSide;
-import net.minecraft.network.NetworkState;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.Registries;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.beta.protocol1_0_0_1tob1_8_0_1.ClientboundPacketsb1_8;
@@ -43,7 +43,6 @@ import net.raphimc.vialegacy.protocols.release.protocol1_4_4_5to1_4_2.types.Type
 public class ItemTranslator {
 
     private static final UserConnection VIA_B1_8_TO_MC_USER_CONNECTION = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, LegacyProtocolVersion.b1_8tob1_8_1);
-    private static final int CREATIVE_INVENTORY_ACTION_ID = NetworkState.PLAY.getHandler(NetworkSide.SERVERBOUND).getId(new CreativeInventoryActionC2SPacket(0, ItemStack.EMPTY));
 
     /**
      * Converts a Minecraft item stack to a ViaVersion item stack
@@ -56,11 +55,11 @@ public class ItemTranslator {
         final UserConnection user = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, targetVersion);
 
         try {
-            final PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+            final RegistryByteBuf buf = new RegistryByteBuf(Unpooled.buffer(), MinecraftClient.getInstance().getNetworkHandler().getRegistryManager());
             buf.writeShort(0); // slot
-            buf.writeItemStack(stack); // item
+            ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
 
-            final PacketWrapper wrapper = PacketWrapper.create(CREATIVE_INVENTORY_ACTION_ID, buf, user);
+            final PacketWrapper wrapper = PacketWrapper.create(ServerboundPackets1_20_5.CREATIVE_INVENTORY_ACTION.getId(), buf, user);
             user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, wrapper);
 
             wrapper.read(Type.SHORT); // slot
@@ -86,8 +85,10 @@ public class ItemTranslator {
             return Type.ITEM1_13;
         } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             return Type.ITEM1_13_2;
-        } else {
+        }  else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             return Type.ITEM1_20_2;
+        } else {
+            return Types1_20_5.ITEM;
         }
     }
 

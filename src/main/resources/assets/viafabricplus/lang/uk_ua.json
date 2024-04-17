@@ -43,7 +43,6 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Завантажувати скіни та черепи на старих версіях",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Симулювати дії інветаря на альфа версіях",
   
-  "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Відкрити GUI підказку для підтвердження переміщення до іншого серверу",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Нажміть, щоб встановити аккаунт для Bedrock",
 
   "debug_settings.viafabricplus.disable_sequencing": "Вимкнути послідовності",

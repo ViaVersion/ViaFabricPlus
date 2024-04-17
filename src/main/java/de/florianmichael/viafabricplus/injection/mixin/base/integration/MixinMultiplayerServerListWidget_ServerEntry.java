@@ -19,9 +19,8 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
+import com.google.common.collect.Lists;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -53,9 +52,6 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
     @Final
     private ServerInfo server;
 
-    @Shadow
-    protected abstract boolean protocolVersionMatches();
-
     @Mutable
     @Shadow
     @Final
@@ -76,12 +72,12 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
         return !viaFabricPlus$disableServerPinging;
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerServerListWidget$ServerEntry;protocolVersionMatches()Z"))
-    private boolean disableServerPinging(MultiplayerServerListWidget.ServerEntry instance) {
+    @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ServerInfo$Status;INCOMPATIBLE:Lnet/minecraft/client/network/ServerInfo$Status;"))
+    private ServerInfo.Status disableServerPinging() {
         if (viaFabricPlus$disableServerPinging) {
-            return false; // server version will always been shown (as we don't have a player count anyway)
+            return this.server.getStatus(); // server version will always be shown (as we don't have a player count anyway)
         } else {
-            return protocolVersionMatches();
+            return ServerInfo.Status.INCOMPATIBLE;
         }
     }
 
@@ -107,9 +103,9 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
         return !viaFabricPlus$disableServerPinging; // Remove ping bar
     }
 
-    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;setMultiplayerScreenTooltip(Ljava/util/List;)V", ordinal = 1))
+    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;setTooltip(Ljava/util/List;)V"))
     private boolean disableServerPinging(MultiplayerScreen instance, List<Text> tooltip) {
-        return !viaFabricPlus$disableServerPinging; // Remove ping bar tooltip
+        return !viaFabricPlus$disableServerPinging; // Remove player list tooltip
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/WorldIcon;getTextureId()Lnet/minecraft/util/Identifier;"))
@@ -121,20 +117,21 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
         }
     }
 
-    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;setMultiplayerScreenTooltip(Ljava/util/List;)V", ordinal = 0))
-    private void drawTranslatingState(MultiplayerScreen instance, List<Text> tooltip, Operation<Void> original) {
-        if (viaFabricPlus$disableServerPinging) { // Remove player list tooltip
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;setTooltip(Lnet/minecraft/text/Text;)V"))
+    private void drawTranslatingState(MultiplayerScreen instance, Text text) {
+        if (viaFabricPlus$disableServerPinging) { // Remove ping bar tooltip
             return;
         }
-        final List<Text> tooltipCopy = new ArrayList<>(tooltip);
+        final List<Text> tooltips = new ArrayList<>();
+        tooltips.add(text);
         if (GeneralSettings.global().showAdvertisedServerVersion.getValue()) {
             final ProtocolVersion version = ((IServerInfo) server).viaFabricPlus$translatingVersion();
             if (version != null) {
-                tooltipCopy.add(Text.translatable("base.viafabricplus.via_translates_to", version.getName() + " (" + version.getOriginalVersion() + ")"));
-                tooltipCopy.add(Text.translatable("base.viafabricplus.server_version", server.version.getString() + " (" + server.protocolVersion + ")"));
+                tooltips.add(Text.translatable("base.viafabricplus.via_translates_to", version.getName() + " (" + version.getOriginalVersion() + ")"));
+                tooltips.add(Text.translatable("base.viafabricplus.server_version", server.version.getString() + " (" + server.protocolVersion + ")"));
             }
         }
-        original.call(instance, tooltipCopy);
+        instance.setTooltip(Lists.transform(tooltips, Text::asOrderedText));
     }
 
 }

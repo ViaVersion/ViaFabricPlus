@@ -57,14 +57,15 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
    
     => If you are unsure if a change is relevant, ask in the ViaVersion discord, in general you should only implement changes
        which could be detected by a server side anti cheat.
-7. Check the ViaVersion/upstream protocol implementation for issues and report them if necessary or if these issues can't be fixed,
+7. Update protocol constants in the `ItemTranslator` class
+8. Check the ViaVersion/upstream protocol implementation for issues and report them if necessary or if these issues can't be fixed,
    without tons of work, implement a workaround in ViaFabricPlus.
-8. Run the game and check all GUIs and other visuals for issues.
-9. Clean your code and make sure it is readable and understandable, clientside fixes are sorted by their protocol versions, having
+9. Run the game and check all GUIs and other visuals for issues.
+10. Clean your code and make sure it is readable and understandable, clientside fixes are sorted by their protocol versions, having
    newer fixes at the top of the file.
-10. Increment the version number in `gradle.properties` by at least a minor version (e.g. 1.0.0 -> 1.1.0)
-11. Create a pull request and wait for it to be reviewed and merged.
-12. You're done, congrats!
+11. Increment the version number in `gradle.properties` by at least a minor version (e.g. 1.0.0 -> 1.1.0)
+12. Create a pull request and wait for it to be reviewed and merged.
+13. You're done, congrats!
 
 ## Git branches
 - `main`: The main branch, this is where all changes are merged into

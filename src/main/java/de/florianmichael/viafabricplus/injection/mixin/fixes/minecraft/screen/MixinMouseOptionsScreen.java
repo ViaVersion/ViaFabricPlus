@@ -31,9 +31,6 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MouseOptionsScreen.class)
 public abstract class MixinMouseOptionsScreen extends GameOptionsScreen {
@@ -45,10 +42,11 @@ public abstract class MixinMouseOptionsScreen extends GameOptionsScreen {
         super(parent, gameOptions, title);
     }
 
-    @Inject(method = "render", at = @At("RETURN"))
-    private void render1_13SliderValue(DrawContext drawContext, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2) && this.buttonList.getWidgetFor(this.gameOptions.getMouseSensitivity()).isHovered()) {
-            drawContext.drawTooltip(textRenderer, Text.of("<=1.13.2 Sensitivity: " + MathUtil.get1_13SliderValue(this.gameOptions.getMouseSensitivity().getValue().floatValue()).valueInt() + "%"), mouseX, mouseY);
+            context.drawTooltip(textRenderer, Text.of("<=1.13.2 Sensitivity: " + MathUtil.get1_13SliderValue(this.gameOptions.getMouseSensitivity().getValue().floatValue()).valueInt() + "%"), mouseX, mouseY);
         }
     }
 

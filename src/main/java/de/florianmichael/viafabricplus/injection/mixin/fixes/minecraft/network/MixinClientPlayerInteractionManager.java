@@ -171,7 +171,7 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
     }
 
     @Redirect(method = {"method_41936", "method_41935"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;breakBlock(Lnet/minecraft/util/math/BlockPos;)Z"))
-    private boolean checkFireBlock(ClientPlayerInteractionManager instance, BlockPos pos, @Local Direction direction) {
+    private boolean checkFireBlock(ClientPlayerInteractionManager instance, BlockPos pos, @Local(argsOnly = true) Direction direction) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return !this.viaFabricPlus$extinguishFire(pos, direction) && instance.breakBlock(pos);
         } else {

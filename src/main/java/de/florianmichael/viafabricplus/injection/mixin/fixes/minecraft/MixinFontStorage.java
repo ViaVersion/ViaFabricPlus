@@ -19,7 +19,6 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.fixes.data.RenderableGlyphDiff;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.BuiltinEmptyGlyph1_12_2;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
@@ -35,8 +34,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.List;
 
 @Mixin(FontStorage.class)
 public abstract class MixinFontStorage {
@@ -54,20 +51,20 @@ public abstract class MixinFontStorage {
     @Unique
     private GlyphRenderer viaFabricPlus$blankGlyphRenderer1_12_2;
 
-    @Inject(method = "setFonts", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/BuiltinEmptyGlyph;bake(Ljava/util/function/Function;)Lnet/minecraft/client/font/GlyphRenderer;", ordinal = 0))
-    private void bakeBlankGlyph1_12_2(List<Font> fonts, CallbackInfo ci) {
+    @Inject(method = "clear", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/BuiltinEmptyGlyph;bake(Ljava/util/function/Function;)Lnet/minecraft/client/font/GlyphRenderer;", ordinal = 0))
+    private void bakeBlankGlyph1_12_2(CallbackInfo ci) {
         this.viaFabricPlus$blankGlyphRenderer1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this::getGlyphRenderer);
     }
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
-    private void filterGlyphs1(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir, @Local Font font) {
+    private void filterGlyphs1(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlus$getBlankGlyphPair());
         }
     }
 
     @Inject(method = "findGlyphRenderer", at = @At("RETURN"), cancellable = true)
-    private void filterGlyphs2(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir, @Local Font font) {
+    private void filterGlyphs2(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlus$getBlankGlyphRenderer());
         }

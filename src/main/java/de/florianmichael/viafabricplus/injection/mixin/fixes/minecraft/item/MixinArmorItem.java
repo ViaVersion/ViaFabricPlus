@@ -19,13 +19,10 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.google.common.base.Suppliers;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
@@ -43,15 +40,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.function.Supplier;
+
 @Mixin(ArmorItem.class)
 public abstract class MixinArmorItem {
 
     @Shadow
     @Final
-    private Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
+    private Supplier<AttributeModifiersComponent> attributeModifiers;
 
     @Unique
-    private final Multimap<EntityAttribute, EntityAttributeModifier> viaFabricPlus$AttributeModifiers_r1_8 = ImmutableMultimap.of();
+    private final Supplier<AttributeModifiersComponent> viaFabricPlus$AttributeModifiers_r1_8 = Suppliers.memoize(() -> AttributeModifiersComponent.DEFAULT);
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void disableRightClick(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
@@ -60,8 +59,8 @@ public abstract class MixinArmorItem {
         }
     }
 
-    @Redirect(method = "getAttributeModifiers", at = @At(value = "FIELD", target = "Lnet/minecraft/item/ArmorItem;attributeModifiers:Lcom/google/common/collect/Multimap;"))
-    private Multimap<EntityAttribute, EntityAttributeModifier> changeAttributeModifiers(ArmorItem instance) {
+    @Redirect(method = "getAttributeModifiers", at = @At(value = "FIELD", target = "Lnet/minecraft/item/ArmorItem;attributeModifiers:Ljava/util/function/Supplier;"))
+    private Supplier<AttributeModifiersComponent> changeAttributeModifiers(ArmorItem instance) {
         if (DebugSettings.global().replaceAttributeModifiers.isEnabled()) {
             return this.viaFabricPlus$AttributeModifiers_r1_8;
         } else {

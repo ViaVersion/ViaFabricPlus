@@ -28,6 +28,7 @@ import de.florianmichael.viafabricplus.injection.access.IDownloadingTerrainScree
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.network.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -81,8 +82,8 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         super(client, connection, connectionState);
     }
 
-    @WrapWithCondition(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;startWorldLoading(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;)V"))
-    private boolean checkDimensionChange(ClientPlayNetworkHandler instance, ClientPlayerEntity player, ClientWorld world, @Local RegistryKey<World> registryKey) {
+    @WrapWithCondition(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;startWorldLoading(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen$WorldEntryReason;)V"))
+    private boolean checkDimensionChange(ClientPlayNetworkHandler instance, ClientPlayerEntity player, ClientWorld world, DownloadingTerrainScreen.WorldEntryReason worldEntryReason, @Local(ordinal = 0) RegistryKey<World> registryKey) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_3) || registryKey != this.client.player.getWorld().getRegistryKey();
     }
 
@@ -124,7 +125,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         }
     }
 
-    @Redirect(method = "onServerMetadata", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;isSecureChatEnforced()Z"))
+    @Redirect(method = "onGameJoin", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;isSecureChatEnforced()Z"))
     private boolean removeSecureChatWarning(ClientPlayNetworkHandler instance) {
         return isSecureChatEnforced() || VisualSettings.global().disableSecureChatWarning.isEnabled();
     }

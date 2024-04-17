@@ -27,7 +27,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -78,7 +78,7 @@ public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
     }
 
     public static void init() {
-        final DefaultParticleType footStepType = FabricParticleTypes.simple(true);
+        final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
 
         Registry.register(Registries.PARTICLE_TYPE, new Identifier("viafabricplus", "footstep"), footStepType);
         ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
@@ -86,7 +86,7 @@ public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
     }
 
-    public static class Factory implements ParticleFactory<DefaultParticleType> {
+    public static class Factory implements ParticleFactory<SimpleParticleType> {
 
         private final SpriteProvider spriteProvider;
 
@@ -95,7 +95,7 @@ public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         }
 
         @Override
-        public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
                 throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
             }

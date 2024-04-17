@@ -37,6 +37,7 @@ import net.minecraft.client.font.FontStorage;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.Registries;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
@@ -58,7 +59,7 @@ public class ClientsideFixes {
     /**
      * Contains all tasks that are waiting for a packet to be received, this system can be used to sync ViaVersion tasks with the correct thread
      */
-    private static final Map<String, Consumer<PacketByteBuf>> PENDING_EXECUTION_TASKS = new ConcurrentHashMap<>();
+    private static final Map<String, Consumer<RegistryByteBuf>> PENDING_EXECUTION_TASKS = new ConcurrentHashMap<>();
 
     /**
      * This identifier is an internal identifier that is used to identify packets that are sent by ViaFabricPlus
@@ -167,7 +168,7 @@ public class ClientsideFixes {
      * @param task The task to execute
      * @return The uuid of the task
      */
-    public static String executeSyncTask(final Consumer<PacketByteBuf> task) {
+    public static String executeSyncTask(final Consumer<RegistryByteBuf> task) {
         final String uuid = UUID.randomUUID().toString();
         PENDING_EXECUTION_TASKS.put(uuid, task);
         return uuid;
@@ -179,7 +180,7 @@ public class ClientsideFixes {
         if (PENDING_EXECUTION_TASKS.containsKey(uuid)) {
             MinecraftClient.getInstance().execute(() -> { // Execute the task on the main thread
                 final var task = PENDING_EXECUTION_TASKS.remove(uuid);
-                task.accept(buf);
+                task.accept(new RegistryByteBuf(buf, MinecraftClient.getInstance().getNetworkHandler().getRegistryManager()));
             });
         }
     }

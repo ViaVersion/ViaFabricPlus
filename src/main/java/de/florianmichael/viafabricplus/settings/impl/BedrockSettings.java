@@ -54,7 +54,6 @@ public class BedrockSettings extends SettingGroup {
             }
         }
     };
-    public final BooleanSetting openPromptGUIToConfirmTransfer = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.confirm_transfer_server_prompt"), true);
     public final BooleanSetting replaceDefaultPort = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.replace_default_port"), true);
 
     public BedrockSettings() {

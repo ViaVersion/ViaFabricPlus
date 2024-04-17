@@ -22,6 +22,8 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.tracker.WolfHealthTracker;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.passive.TameableEntity;
@@ -50,7 +52,7 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
     public abstract DyeColor getCollarColor();
 
     @Shadow
-    public abstract void setCollarColor(DyeColor color);
+    protected abstract void setCollarColor(DyeColor color);
 
     protected MixinWolfEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
@@ -62,10 +64,11 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
             final ItemStack itemStack = player.getStackInHand(hand);
             final Item item = itemStack.getItem();
             if (this.isTamed()) {
-                if (item.isFood()) {
-                    if (item.getFoodComponent().isMeat() && this.viaFabricPlus$getWolfHealth() < 20.0F) {
+                final FoodComponent foodComponent = itemStack.get(DataComponentTypes.FOOD);
+                if (foodComponent != null) {
+                    if (this.isBreedingItem(itemStack) && this.viaFabricPlus$getWolfHealth() < 20.0F) {
                         if (!player.getAbilities().creativeMode) itemStack.decrement(1);
-                        this.heal((float) item.getFoodComponent().getHunger());
+                        this.heal(foodComponent.nutrition());
                         cir.setReturnValue(ActionResult.SUCCESS);
                         return;
                     }

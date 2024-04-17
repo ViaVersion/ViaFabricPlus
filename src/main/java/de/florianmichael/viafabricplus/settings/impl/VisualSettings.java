@@ -46,7 +46,6 @@ public class VisualSettings extends SettingGroup {
     // 1.9 -> 1.8.x
     public final VersionedBooleanSetting emulateArmorHud = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.emulate_armor_hud"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting removeNewerFeaturesFromCommandBlockScreen = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_newer_features_from_command_block_screen"), VersionRange.andOlder(ProtocolVersion.v1_8));
-    public final VersionedBooleanSetting showSuperSecretSettings = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.show_super_secret_settings"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting enableSwordBlocking = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_sword_blocking"), VersionRange.andOlder(ProtocolVersion.v1_8));
 
     // 1.8.x -> 1.7.6 - 1.7.10

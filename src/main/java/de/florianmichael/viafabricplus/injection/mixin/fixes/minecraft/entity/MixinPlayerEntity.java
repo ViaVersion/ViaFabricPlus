@@ -37,6 +37,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -46,11 +47,12 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@SuppressWarnings("ConstantValue")
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends LivingEntity {
 
@@ -63,10 +65,10 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Shadow
     @Final
-    private PlayerInventory inventory;
+    PlayerInventory inventory;
 
     @Unique
-    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F);
+    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F).withEyeHeight(1.54F);
 
     @Unique
     private static final SoundEvent viaFabricPlus$oof_hurt = SoundEvent.of(new Identifier("viafabricplus", "oof.hurt"));
@@ -102,9 +104,9 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2);
     }
 
-    @Redirect(method = "checkFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
-    private boolean allowElytraWhenLevitating(PlayerEntity instance, StatusEffect statusEffect) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2) && instance.hasStatusEffect(statusEffect);
+    @Redirect(method = "checkFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
+    private boolean allowElytraWhenLevitating(PlayerEntity instance, RegistryEntry<StatusEffect> registryEntry) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2) && instance.hasStatusEffect(registryEntry);
     }
 
     @Inject(method = "checkFallFlying", at = @At("HEAD"), cancellable = true)
@@ -118,15 +120,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
                 }
             }
             cir.setReturnValue(false);
-        }
-    }
-
-    @ModifyConstant(method = "getActiveEyeHeight", constant = @Constant(floatValue = 1.27f))
-    private float modifySneakEyeHeight(float prevEyeHeight) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return 1.54F;
-        } else {
-            return prevEyeHeight;
         }
     }
 
@@ -152,7 +145,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getBaseDimensions", at = @At("HEAD"), cancellable = true)
     private void modifyDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
         if (pose == EntityPose.CROUCHING) {
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
@@ -208,8 +201,8 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
-    private boolean changeSpeedCalculation(PlayerEntity instance, StatusEffect statusEffect, @Local LocalFloatRef f) {
+    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
+    private boolean changeSpeedCalculation(PlayerEntity instance, RegistryEntry<StatusEffect> statusEffect, @Local LocalFloatRef f) {
         final boolean hasMiningFatigue = instance.hasStatusEffect(statusEffect);
         if (hasMiningFatigue && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             f.set(f.get() * (1.0F - (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier() + 1) * 0.2F));
@@ -217,13 +210,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
             return false; // disable original code
         }
         return hasMiningFatigue;
-    }
-
-    @Inject(method = "getReachDistance", at = @At("RETURN"), cancellable = true)
-    private static void modifyReachDistance(boolean creative, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_0_0tor1_0_1) && !creative) {
-            cir.setReturnValue(4F);
-        }
     }
 
 }

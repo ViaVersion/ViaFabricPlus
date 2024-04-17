@@ -39,7 +39,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -70,22 +69,27 @@ public abstract class MixinEntity implements IEntity {
     public abstract void setVelocity(Vec3d velocity);
 
     @Shadow
-    protected abstract Vector3f getPassengerAttachmentPos(Entity passenger, EntityDimensions dimensions, float scaleFactor);
+    protected abstract Vec3d getPassengerAttachmentPos(Entity passenger, EntityDimensions dimensions, float scaleFactor);
+
+    @Shadow
+    public abstract float getYaw();
 
     @Unique
     private boolean viaFabricPlus$isInLoadedChunkAndShouldTick;
 
-    @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
-    private void getRidingOffset1_20_1(Entity vehicle, CallbackInfoReturnable<Float> cir) {
+    @Redirect(method = "updatePassengerPosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity$PositionUpdater;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getVehicleAttachmentPos(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/math/Vec3d;"))
+    private Vec3d use1_20_1RidingOffset(Entity instance, Entity vehicle) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-            cir.setReturnValue((float) EntityRidingOffsetsPre1_20_2.getHeightOffset((Entity) (Object) this));
+            return new Vec3d(0, -EntityRidingOffsetsPre1_20_2.getHeightOffset((Entity) (Object) this), 0);
+        } else {
+            return instance.getVehicleAttachmentPos(vehicle);
         }
     }
 
-    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
-    private Vector3f getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
+    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lnet/minecraft/util/math/Vec3d;"))
+    private Vec3d getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-            return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger);
+            return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger).rotateY(-this.getYaw() * (float) (Math.PI / 180));
         } else {
             return getPassengerAttachmentPos(passenger, dimensions, scaleFactor);
         }

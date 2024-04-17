@@ -31,7 +31,9 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.village.MerchantInventory;
+import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
+import net.minecraft.village.TradedItem;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -82,8 +84,9 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
 
             // refill the slots
             if (this.merchantInventory.getStack(0).isEmpty() && this.merchantInventory.getStack(1).isEmpty()) {
-                this.viaFabricPlus$autofill(interactionManager, player, 0, this.getRecipes().get(recipeId).getAdjustedFirstBuyItem());
-                this.viaFabricPlus$autofill(interactionManager, player, 1, this.getRecipes().get(recipeId).getSecondBuyItem());
+                final TradeOffer tradeOffer = this.getRecipes().get(recipeId);
+                this.viaFabricPlus$autofill(interactionManager, player, 0, tradeOffer.getFirstBuyItem());
+                tradeOffer.getSecondBuyItem().ifPresent(item -> this.viaFabricPlus$autofill(interactionManager, player, 1, item));
             }
         }
     }
@@ -96,14 +99,15 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
     }
 
     @Unique
-    private void viaFabricPlus$autofill(ClientPlayerInteractionManager interactionManager, ClientPlayerEntity player, int inputSlot, ItemStack stackNeeded) {
-        if (stackNeeded.isEmpty()) return;
-
+    private void viaFabricPlus$autofill(ClientPlayerInteractionManager interactionManager, ClientPlayerEntity player, int inputSlot, TradedItem stackNeeded) {
         int slot;
         for (slot = 3; slot < 39; slot++) {
-            final ItemStack stack = slots.get(slot).getStack();
-            if (ItemStack.canCombine(stack, stackNeeded)) {
-                break;
+            final ItemStack itemStack = this.slots.get(slot).getStack();
+            if (!itemStack.isEmpty() && stackNeeded.matches(itemStack)) {
+                final ItemStack itemStack2 = this.merchantInventory.getStack(slot);
+                if (ItemStack.areItemsAndComponentsEqual(itemStack, itemStack2)) {
+                    break;
+                }
             }
         }
         if (slot == 39) return;

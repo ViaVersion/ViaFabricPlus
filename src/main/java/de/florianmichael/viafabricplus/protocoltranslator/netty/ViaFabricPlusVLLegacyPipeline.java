@@ -67,7 +67,7 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
     @Override
     protected String packetDecoderName() {
-        return "decoder";
+        return "inbound_config";
     }
 
     @Override

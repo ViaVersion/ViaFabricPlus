@@ -291,7 +291,7 @@ public abstract class MixinBoatEntity extends VehicleEntity {
     @Inject(method = "updatePassengerPosition", at = @At(value = "HEAD"), cancellable = true)
     private void updatePassengerPosition1_8(Entity passenger, PositionUpdater positionUpdater, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            final Vec3d newPosition = new Vec3d(EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(this, passenger)).add(this.getPos());
+            final Vec3d newPosition = EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(this, passenger).add(this.getPos());
             positionUpdater.accept(passenger, newPosition.x, newPosition.y + EntityRidingOffsetsPre1_20_2.getHeightOffset(passenger), newPosition.z);
             ci.cancel();
         }

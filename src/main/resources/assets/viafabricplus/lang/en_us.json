@@ -46,7 +46,6 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Load skins and skulls in legacy versions",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Emulate inventory actions in alpha versions",
 
-  "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Open prompt GUI to confirm transferring to other servers",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Click to set account for Bedrock Edition",
   "bedrock_settings.viafabricplus.replace_default_port": "Replace default port in server list",
 
@@ -70,7 +69,6 @@
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Automatically select CPE when using the ClassiCube server list",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Set session name to ClassiCube name when using the ClassiCube server list",
 
-  "visual_settings.viafabricplus.show_super_secret_settings": "Show Super Secret Settings",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Disable Secure Chat warning",
   "visual_settings.viafabricplus.hide_signature_indicator": "Hide signature indicator",
   "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "Remove newer features from the Jigsaw screen",

@@ -20,76 +20,79 @@
 package de.florianmichael.viafabricplus.fixes.data.recipe;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BannerPattern;
+import net.minecraft.block.entity.BannerPatterns;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryKey;
 
 public enum BannerPattern_1_13_2 {
 
-    BASE("b"),
-    SQUARE_BOTTOM_LEFT("bl", "   ", "   ", "#  "),
-    SQUARE_BOTTOM_RIGHT("br", "   ", "   ", "  #"),
-    SQUARE_TOP_LEFT("tl", "#  ", "   ", "   "),
-    SQUARE_TOP_RIGHT("tr", "  #", "   ", "   "),
-    STRIPE_BOTTOM("bs", "   ", "   ", "###"),
-    STRIPE_TOP("ts", "###", "   ", "   "),
-    STRIPE_LEFT("ls", "#  ", "#  ", "#  "),
-    STRIPE_RIGHT("rs", "  #", "  #", "  #"),
-    STRIPE_CENTER("cs", " # ", " # ", " # "),
-    STRIPE_MIDDLE("ms", "   ", "###", "   "),
-    STRIPE_DOWNRIGHT("drs", "#  ", " # ", "  #"),
-    STRIPE_DOWNLEFT("dls", "  #", " # ", "#  "),
-    STRIPE_SMALL("ss", "# #", "# #", "   "),
-    CROSS("cr", "# #", " # ", "# #"),
-    STRAIGHT_CROSS("sc", " # ", "###", " # "),
-    TRIANGLE_BOTTOM("bt", "   ", " # ", "# #"),
-    TRIANGLE_TOP("tt", "# #", " # ", "   "),
-    TRIANGLES_BOTTOM("bts", "   ", "# #", " # "),
-    TRIANGLES_TOP("tts", " # ", "# #", "   "),
-    DIAGONAL_LEFT("ld", "## ", "#  ", "   "),
-    DIAGONAL_RIGHT("rd", "   ", "  #", " ##"),
-    DIAGONAL_LEFT_MIRROR("lud", "   ", "#  ", "## "),
-    DIAGONAL_RIGHT_MIRROR("rud", " ##", "  #", "   "),
-    CIRCLE_MIDDLE("mc", "   ", " # ", "   "),
-    RHOMBUS_MIDDLE("mr", " # ", "# #", " # "),
-    HALF_VERTICAL("vh", "## ", "## ", "## "),
-    HALF_HORIZONTAL("hh", "###", "###", "   "),
-    HALF_VERTICAL_MIRROR("vhr", " ##", " ##", " ##"),
-    HALF_HORIZONTAL_MIRROR("hhb", "   ", "###", "###"),
-    BORDER("bo", "###", "# #", "###"),
-    CURLY_BORDER("cbo", new ItemStack(Blocks.VINE)),
-    GRADIENT("gra", "# #", " # ", " # "),
-    GRADIENT_UP("gru", " # ", " # ", "# #"),
-    BRICKS("bri", new ItemStack(Blocks.BRICKS)),
-    GLOBE("glb"),
-    CREEPER("cre", new ItemStack(Items.CREEPER_HEAD)),
-    SKULL("sku", new ItemStack(Items.WITHER_SKELETON_SKULL)),
-    FLOWER("flo", new ItemStack(Blocks.OXEYE_DAISY)),
-    MOJANG("moj", new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));
+    BASE(BannerPatterns.BASE),
+    SQUARE_BOTTOM_LEFT(BannerPatterns.SQUARE_BOTTOM_LEFT, "   ", "   ", "#  "),
+    SQUARE_BOTTOM_RIGHT(BannerPatterns.SQUARE_BOTTOM_RIGHT, "   ", "   ", "  #"),
+    SQUARE_TOP_LEFT(BannerPatterns.SQUARE_TOP_LEFT, "#  ", "   ", "   "),
+    SQUARE_TOP_RIGHT(BannerPatterns.SQUARE_TOP_RIGHT, "  #", "   ", "   "),
+    STRIPE_BOTTOM(BannerPatterns.STRIPE_BOTTOM, "   ", "   ", "###"),
+    STRIPE_TOP(BannerPatterns.STRIPE_TOP, "###", "   ", "   "),
+    STRIPE_LEFT(BannerPatterns.STRIPE_LEFT, "#  ", "#  ", "#  "),
+    STRIPE_RIGHT(BannerPatterns.STRIPE_RIGHT, "  #", "  #", "  #"),
+    STRIPE_CENTER(BannerPatterns.STRIPE_CENTER, " # ", " # ", " # "),
+    STRIPE_MIDDLE(BannerPatterns.STRIPE_MIDDLE, "   ", "###", "   "),
+    STRIPE_DOWNRIGHT(BannerPatterns.STRIPE_DOWNRIGHT, "#  ", " # ", "  #"),
+    STRIPE_DOWNLEFT(BannerPatterns.STRIPE_DOWNLEFT, "  #", " # ", "#  "),
+    STRIPE_SMALL(BannerPatterns.SMALL_STRIPES, "# #", "# #", "   "),
+    CROSS(BannerPatterns.CROSS, "# #", " # ", "# #"),
+    STRAIGHT_CROSS(BannerPatterns.STRAIGHT_CROSS, " # ", "###", " # "),
+    TRIANGLE_BOTTOM(BannerPatterns.TRIANGLE_BOTTOM, "   ", " # ", "# #"),
+    TRIANGLE_TOP(BannerPatterns.TRIANGLE_TOP, "# #", " # ", "   "),
+    TRIANGLES_BOTTOM(BannerPatterns.TRIANGLES_BOTTOM, "   ", "# #", " # "),
+    TRIANGLES_TOP(BannerPatterns.TRIANGLES_TOP, " # ", "# #", "   "),
+    DIAGONAL_LEFT(BannerPatterns.DIAGONAL_LEFT, "## ", "#  ", "   "),
+    DIAGONAL_RIGHT(BannerPatterns.DIAGONAL_RIGHT, "   ", "  #", " ##"),
+    DIAGONAL_LEFT_MIRROR(BannerPatterns.DIAGONAL_UP_LEFT, "   ", "#  ", "## "),
+    DIAGONAL_RIGHT_MIRROR(BannerPatterns.DIAGONAL_UP_RIGHT, " ##", "  #", "   "),
+    CIRCLE_MIDDLE(BannerPatterns.CIRCLE, "   ", " # ", "   "),
+    RHOMBUS_MIDDLE(BannerPatterns.RHOMBUS, " # ", "# #", " # "),
+    HALF_VERTICAL(BannerPatterns.HALF_VERTICAL, "## ", "## ", "## "),
+    HALF_HORIZONTAL(BannerPatterns.HALF_HORIZONTAL, "###", "###", "   "),
+    HALF_VERTICAL_MIRROR(BannerPatterns.HALF_VERTICAL_RIGHT, " ##", " ##", " ##"),
+    HALF_HORIZONTAL_MIRROR(BannerPatterns.HALF_HORIZONTAL_BOTTOM, "   ", "###", "###"),
+    BORDER(BannerPatterns.BORDER, "###", "# #", "###"),
+    CURLY_BORDER(BannerPatterns.CURLY_BORDER, new ItemStack(Blocks.VINE)),
+    GRADIENT(BannerPatterns.GRADIENT, "# #", " # ", " # "),
+    GRADIENT_UP(BannerPatterns.GRADIENT_UP, " # ", " # ", "# #"),
+    BRICKS(BannerPatterns.BRICKS, new ItemStack(Blocks.BRICKS)),
+    GLOBE(BannerPatterns.GLOBE),
+    CREEPER(BannerPatterns.CREEPER, new ItemStack(Items.CREEPER_HEAD)),
+    SKULL(BannerPatterns.SKULL, new ItemStack(Items.WITHER_SKELETON_SKULL)),
+    FLOWER(BannerPatterns.FLOWER, new ItemStack(Blocks.OXEYE_DAISY)),
+    MOJANG(BannerPatterns.MOJANG, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));
 
-    private final String id;
+    private final RegistryKey<BannerPattern> pattern;
     private final String[] recipePattern;
     private ItemStack baseStack;
 
-    BannerPattern_1_13_2(String id) {
+    BannerPattern_1_13_2(final RegistryKey<BannerPattern> pattern) {
         this.recipePattern = new String[3];
         this.baseStack = ItemStack.EMPTY;
-        this.id = id;
+        this.pattern = pattern;
     }
 
-    BannerPattern_1_13_2(String id, ItemStack baseStack) {
-        this(id);
+    BannerPattern_1_13_2(final RegistryKey<BannerPattern> pattern, final ItemStack baseStack) {
+        this(pattern);
         this.baseStack = baseStack;
     }
 
-    BannerPattern_1_13_2(String id, String recipe1, String recipe2, String recipe3) {
-        this(id);
+    BannerPattern_1_13_2(final RegistryKey<BannerPattern> pattern, final String recipe1, final String recipe2, final String recipe3) {
+        this(pattern);
         this.recipePattern[0] = recipe1;
         this.recipePattern[1] = recipe2;
         this.recipePattern[2] = recipe3;
     }
 
-    public String getId() {
-        return this.id;
+    public RegistryKey<BannerPattern> getKey() {
+        return this.pattern;
     }
 
     public boolean isCraftable() {

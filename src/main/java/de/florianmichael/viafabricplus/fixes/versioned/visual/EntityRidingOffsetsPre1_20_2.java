@@ -34,7 +34,7 @@ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.entity.vehicle.ChestBoatEntity;
 import net.minecraft.util.math.MathHelper;
-import org.joml.Vector3f;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * Minecraft 1.20.2 changed the calculation of the mounted height offset for all entities, this class contains the old
@@ -49,18 +49,18 @@ public class EntityRidingOffsetsPre1_20_2 {
      * @param passenger The passenger of the entity.
      * @return The mounted height offset.
      */
-    public static Vector3f getMountedHeightOffset(final Entity entity, final Entity passenger) {
-        float yOffset = entity.getHeight() * 0.75F;
+    public static Vec3d getMountedHeightOffset(final Entity entity, final Entity passenger) {
+        double yOffset = entity.getHeight() * 0.75F;
 
         if (entity instanceof BoatEntity boatEntity) {
-            if (!boatEntity.hasPassenger(passenger)) return new Vector3f();
+            if (!boatEntity.hasPassenger(passenger)) return Vec3d.ZERO;
 
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 yOffset = -0.3F;
-                final float xOffset = MathHelper.cos(boatEntity.getYaw() * MathHelper.PI / 180F);
-                final float zOffset = MathHelper.sin(boatEntity.getYaw() * MathHelper.PI / 180F);
+                final double xOffset = MathHelper.cos(boatEntity.getYaw() * MathHelper.PI / 180F);
+                final double zOffset = MathHelper.sin(boatEntity.getYaw() * MathHelper.PI / 180F);
 
-                return new Vector3f(0.4F * xOffset, yOffset, 0.4F * zOffset);
+                return new Vec3d(0.4F * xOffset, yOffset, 0.4F * zOffset);
             } else {
                 if (boatEntity.isRemoved()) {
                     yOffset = 0.01F;
@@ -68,7 +68,7 @@ public class EntityRidingOffsetsPre1_20_2 {
                     yOffset = boatEntity.getVariant() == BoatEntity.Type.BAMBOO ? 0.25F : -0.1F;
                 }
 
-                float xOffset = boatEntity instanceof ChestBoatEntity ? 0.15F : 0F;
+                double xOffset = boatEntity instanceof ChestBoatEntity ? 0.15F : 0F;
                 if (boatEntity.getPassengerList().size() > 1) {
                     final int idx = boatEntity.getPassengerList().indexOf(passenger);
                     if (idx == 0) {
@@ -80,34 +80,34 @@ public class EntityRidingOffsetsPre1_20_2 {
                     if (passenger instanceof AnimalEntity) xOffset += 0.2F;
                 }
 
-                return new Vector3f(xOffset, yOffset, 0F);
+                return new Vec3d(xOffset, yOffset, 0F);
             }
         } else if (entity instanceof CamelEntity camelEntity) {
-            if (!camelEntity.hasPassenger(passenger)) return new Vector3f();
+            if (!camelEntity.hasPassenger(passenger)) return Vec3d.ZERO;
 
             final boolean firstPassenger = camelEntity.getPassengerList().indexOf(passenger) == 0;
-            yOffset = camelEntity.getDimensions(camelEntity.isSitting() ? EntityPose.SITTING : EntityPose.STANDING).height - (camelEntity.isBaby() ? 0.35F : 0.6F);
+            yOffset = camelEntity.getDimensions(camelEntity.isSitting() ? EntityPose.SITTING : EntityPose.STANDING).height() - (camelEntity.isBaby() ? 0.35F : 0.6F);
             if (camelEntity.isRemoved()) {
                 yOffset = 0.01F;
             } else {
-                yOffset = (float) camelEntity.getPassengerAttachmentY(firstPassenger, 0F, EntityDimensions.fixed(0F, (0.375F * camelEntity.getScaleFactor()) + yOffset), camelEntity.getScaleFactor());
+                yOffset = camelEntity.getPassengerAttachmentY(firstPassenger, 0F, EntityDimensions.fixed(0F, (float) ((0.375F * camelEntity.getScaleFactor()) + yOffset)), camelEntity.getScaleFactor());
             }
 
-            float zOffset = 0.5F;
+            double zOffset = 0.5F;
             if (camelEntity.getPassengerList().size() > 1) {
                 if (!firstPassenger) zOffset = -0.7F;
                 if (passenger instanceof AnimalEntity) zOffset += 0.2F;
             }
 
-            return new Vector3f(0, yOffset, zOffset);
+            return new Vec3d(0, yOffset, zOffset);
         } else if (entity instanceof ChickenEntity chickenEntity) {
-            return new Vector3f(0, (float) (chickenEntity.getBodyY(0.5D) - chickenEntity.getY()), -0.1F);
+            return new Vec3d(0, chickenEntity.getBodyY(0.5D) - chickenEntity.getY(), -0.1F);
         } else if (entity instanceof EnderDragonEntity enderDragonEntity) {
             yOffset = enderDragonEntity.body.getHeight();
         } else if (entity instanceof HoglinEntity hoglinEntity) {
             yOffset = hoglinEntity.getHeight() - (hoglinEntity.isBaby() ? 0.2F : 0.15F);
         } else if (entity instanceof LlamaEntity) {
-            return new Vector3f(0, entity.getHeight() * 0.6F, -0.3F);
+            return new Vec3d(0, entity.getHeight() * 0.6F, -0.3F);
         } else if (entity instanceof PhantomEntity) {
             yOffset = entity.getStandingEyeHeight();
         } else if (entity instanceof PiglinEntity) {
@@ -134,11 +134,11 @@ public class EntityRidingOffsetsPre1_20_2 {
 
         if (entity instanceof AbstractHorseEntity abstractHorseEntity) {
             if (abstractHorseEntity.lastAngryAnimationProgress > 0.0F) {
-                return new Vector3f(0, yOffset + 0.15F * abstractHorseEntity.lastAngryAnimationProgress, -0.7F * abstractHorseEntity.lastAngryAnimationProgress);
+                return new Vec3d(0, yOffset + 0.15F * abstractHorseEntity.lastAngryAnimationProgress, -0.7F * abstractHorseEntity.lastAngryAnimationProgress);
             }
         }
 
-        return new Vector3f(0, yOffset, 0);
+        return new Vec3d(0, yOffset, 0);
     }
 
     /**

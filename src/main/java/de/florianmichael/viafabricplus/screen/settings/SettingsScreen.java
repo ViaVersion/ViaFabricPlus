@@ -72,7 +72,7 @@ public class SettingsScreen extends VFPScreen {
         }
 
         @Override
-        protected int getScrollbarPositionX() {
+        protected int getScrollbarX() {
             return this.width - 5;
         }
     }

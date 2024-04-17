@@ -46,7 +46,6 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Ładuj skórki graczy w starszych wersjach gry",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Emuluj akcje ekwipunku w wersjach alpha",
 
-  "bedrock_settings.viafabricplus.confirm_transfer_server_prompt": "Pytaj, żeby potwierdzić przełączanie do innych serwerów",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Naciśnij, aby ustawić konto dla minecraft bedrock edition",
   "bedrock_settings.viafabricplus.replace_default_port": "Zamień domyślny port w liście serwerów",
 
@@ -70,7 +69,6 @@
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Automatycznie wybieraj wersję CPE podczas korzystania z listy serwerów ClassiCube",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Ustaw nazwę sesji na nazwę ClassiCube podczas korzystania z listy serwerów ClassiCube",
 
-  "visual_settings.viafabricplus.show_super_secret_settings": "Pokazuj super secret settings",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Wyłącz ostrzeżenie dotyczące bezpiecznego czatu",
   "visual_settings.viafabricplus.hide_signature_indicator": "Ukrywaj wskaźnik podpisywania wiadomości na czacie",
   "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "Usuń nowsze funkcje z ekranu bloku konstrukcyjnego",

@@ -20,15 +20,8 @@
 package de.florianmichael.viafabricplus.protocoltranslator.impl.provider.viabedrock;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.settings.impl.BedrockSettings;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ConfirmScreen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.text.Text;
+import net.minecraft.network.packet.s2c.common.ServerTransferS2CPacket;
 import net.raphimc.viabedrock.protocol.providers.TransferProvider;
 
 import java.net.InetSocketAddress;
@@ -37,31 +30,7 @@ public class ViaFabricPlusTransferProvider extends TransferProvider {
 
     @Override
     public void connectToServer(UserConnection user, InetSocketAddress newAddress) {
-        final var mc = MinecraftClient.getInstance();
-        mc.execute(() -> {
-            if (BedrockSettings.global().openPromptGUIToConfirmTransfer.getValue()) {
-                mc.setScreen(new ConfirmScreen((bl) -> {
-                            if (bl) {
-                                connect(newAddress);
-                            } else {
-                                mc.setScreen(null);
-                            }
-                        },
-                        Text.of("ViaFabricPlus"),
-                        Text.translatable("bedrock.viafabricplus.confirm_transfer_server_prompt", newAddress.getHostName() + ":" + newAddress.getPort())
-                ));
-            } else {
-                connect(newAddress);
-            }
-        });
-    }
-
-    private void connect(final InetSocketAddress newAddress) {
-        final var mc = MinecraftClient.getInstance();
-        mc.world.disconnect();
-
-        final var serverInfo = new ServerInfo(newAddress.getHostName(), newAddress.getHostName() + ":" + newAddress.getPort(), ServerInfo.ServerType.OTHER);
-        ConnectScreen.connect(new MultiplayerScreen(new TitleScreen()), mc, ServerAddress.parse(serverInfo.address), serverInfo, false);
+        MinecraftClient.getInstance().getNetworkHandler().onServerTransfer(new ServerTransferS2CPacket(newAddress.getHostString(), newAddress.getPort()));
     }
 
 }

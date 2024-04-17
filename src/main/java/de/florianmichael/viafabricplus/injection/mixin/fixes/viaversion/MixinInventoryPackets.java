@@ -31,6 +31,7 @@ import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextCodecs;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,11 +53,11 @@ public abstract class MixinInventoryPackets {
                 try {
                     final int syncId = data.readUnsignedByte();
                     final int size = data.readUnsignedByte();
-                    final Text title1_20 = data.readText();
+                    final Text mcTitle = TextCodecs.UNLIMITED_REGISTRY_PACKET_CODEC.decode(data);
 
                     final GenericContainerScreenHandler screenHandler = new GenericContainerScreenHandler(null, syncId, mc.player.getInventory(), new SimpleInventory(size), MathHelper.ceil(size / 9F));
                     mc.player.currentScreenHandler = screenHandler;
-                    mc.setScreen(new GenericContainerScreen(screenHandler, mc.player.getInventory(), title1_20));
+                    mc.setScreen(new GenericContainerScreen(screenHandler, mc.player.getInventory(), mcTitle));
                 } catch (Throwable t) {
                     throw new RuntimeException("Failed to handle OpenWindow packet data", t);
                 }

@@ -32,6 +32,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.registry.tag.TagKey;
@@ -41,7 +42,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
@@ -66,26 +66,19 @@ public abstract class MixinLivingEntity extends Entity {
     protected abstract boolean canEnterTrapdoor(BlockPos pos, BlockState state);
 
     @Shadow
-    public abstract boolean hasStatusEffect(StatusEffect effect);
+    private int jumpingCooldown;
 
     @Shadow
-    private int jumpingCooldown;
+    public abstract boolean hasStatusEffect(RegistryEntry<StatusEffect> effect);
 
     public MixinLivingEntity(EntityType<?> type, World world) {
         super(type, world);
     }
 
-    @Inject(method = "getRidingOffset", at = @At("HEAD"), cancellable = true)
-    private void getRidingOffset1_20_1(Entity vehicle, CallbackInfoReturnable<Float> cir) {
+    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lnet/minecraft/util/math/Vec3d;"))
+    private Vec3d getPassengerRidingPos1_20_1(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-            cir.setReturnValue((float) EntityRidingOffsetsPre1_20_2.getHeightOffset(this));
-        }
-    }
-
-    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lorg/joml/Vector3f;"))
-    private Vector3f getPassengerRidingPos1_20_1(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-            return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, entity);
+            return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, entity).rotateY(-this.getYaw() * (float) (Math.PI / 180));
         } else {
             return getPassengerAttachmentPos(entity, entityDimensions, v);
         }
@@ -140,7 +133,7 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Redirect(method = "travel",
-            slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/effect/StatusEffects;DOLPHINS_GRACE:Lnet/minecraft/entity/effect/StatusEffect;")),
+            slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/effect/StatusEffects;DOLPHINS_GRACE:Lnet/minecraft/registry/entry/RegistryEntry;")),
             at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;horizontalCollision:Z", ordinal = 0))
     private boolean disableClimbing(LivingEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && instance.horizontalCollision;
@@ -207,13 +200,6 @@ public abstract class MixinLivingEntity extends Entity {
     private void disableCrawling(CallbackInfoReturnable<Boolean> ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.setReturnValue(false);
-        }
-    }
-
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void modify1_7StepHeight(EntityType<? extends LivingEntity> type, World world, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-            this.setStepHeight(0.5F);
         }
     }
 

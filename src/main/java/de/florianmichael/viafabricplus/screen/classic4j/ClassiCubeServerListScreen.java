@@ -28,7 +28,6 @@ import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -111,7 +110,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
         }
 
         @Override
-        protected int getScrollbarPositionX() {
+        protected int getScrollbarX() {
             return this.width - 5;
         }
     }
@@ -139,7 +138,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
                 ((IServerInfo) entry).viaFabricPlus$forceVersion(LegacyProtocolVersion.c0_30cpe);
             }
 
-            ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false);
+            ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false, null);
             super.mappedMouseClicked(mouseX, mouseY, button);
         }
 

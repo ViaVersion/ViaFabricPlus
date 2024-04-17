@@ -26,7 +26,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
-import de.florianmichael.viafabricplus.injection.access.IPerformanceLog;
+import de.florianmichael.viafabricplus.injection.access.IMultiValueDebugSampleLogImpl;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.protocoltranslator.netty.ViaFabricPlusVLLegacyPipeline;
 import io.netty.bootstrap.AbstractBootstrap;
@@ -39,7 +39,7 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PacketDecryptor;
 import net.minecraft.network.encryption.PacketEncryptor;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.util.profiler.PerformanceLog;
+import net.minecraft.util.profiler.MultiValueDebugSampleLogImpl;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
@@ -122,18 +122,18 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         return !BedrockProtocolVersion.bedrockLatest.equals(this.viaFabricPlus$serverVersion);
     }
 
-    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE))
-    private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, PerformanceLog packetSizeLog, CallbackInfoReturnable<ClientConnection> cir, @Local ClientConnection clientConnection) {
+    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE))
+    private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, MultiValueDebugSampleLogImpl packetSizeLog, CallbackInfoReturnable<ClientConnection> cir, @Local ClientConnection clientConnection) {
         // Set the target version stored in the PerformanceLog field to the ClientConnection instance
-        if (packetSizeLog instanceof IPerformanceLog mixinPerformanceLog && mixinPerformanceLog.viaFabricPlus$getForcedVersion() != null) {
-            ((IClientConnection) clientConnection).viaFabricPlus$setTargetVersion(mixinPerformanceLog.viaFabricPlus$getForcedVersion());
+        if (packetSizeLog instanceof IMultiValueDebugSampleLogImpl mixinMultiValueDebugSampleLogImpl && mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion() != null) {
+            ((IClientConnection) clientConnection).viaFabricPlus$setTargetVersion(mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion());
         }
     }
 
-    @WrapWithCondition(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/PerformanceLog;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;resetPacketSizeLog(Lnet/minecraft/util/profiler/PerformanceLog;)V"))
-    private static boolean dontSetPerformanceLog(ClientConnection instance, PerformanceLog log) {
+    @WrapWithCondition(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;resetPacketSizeLog(Lnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)V"))
+    private static boolean dontSetPerformanceLog(ClientConnection instance, MultiValueDebugSampleLogImpl packetSizeLog) {
         // We need to restore vanilla behaviour since we use the PerformanceLog as a way to store the target version
-        return !(log instanceof IPerformanceLog mixinPerformanceLog) || mixinPerformanceLog.viaFabricPlus$getForcedVersion() == null;
+        return !(packetSizeLog instanceof IMultiValueDebugSampleLogImpl mixinMultiValueDebugSampleLogImpl) || mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion() == null;
     }
 
     @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At("HEAD"))
