@@ -50,12 +50,12 @@ import java.util.concurrent.CompletableFuture;
  * TODO | Port
  *  - Readd MixinCustomPayloadS2CPacket, MixinInGameHud
  *  - Test 1.20.1 riding offsets
- *  - Fix on protocol level: modify1_7StepHeight, modifyReachDistance
  *  - EntityDimensionDiff: Add eye height and attachment point
  *  - Test bedrock transfer
  *  - Readd item fixes on protocol level: MixinAxeItem, MixinHoeItem, MixinPickaxeItem, MixinShearsItem, MixinShovelItem, MixinSwordItem, MixinMiningToolItem, MixinItem
  *  - Readd item fixes: ArmorMaterials, MixinItemStack, MixinDrawContext, MixinPacketByteBuf
  *  - Figure out how to fix 32k enchantments with codecs (MixinEnchantmentHelper)
+ *  - Add range fixes in VV (Range attributes have to be updated)
  */
 public class ViaFabricPlus {
 

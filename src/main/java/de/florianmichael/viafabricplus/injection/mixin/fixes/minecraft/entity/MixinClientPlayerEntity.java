@@ -35,6 +35,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.math.MathHelper;
@@ -72,6 +73,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     @Final
     public ClientPlayNetworkHandler networkHandler;
+
+    @Shadow
+    public abstract void setClientPermissionLevel(int clientPermissionLevel);
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 0))
     private boolean removeVehicleRequirement(ClientPlayerEntity instance) {
@@ -181,12 +185,19 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && self.isTouchingWater();
     }
 
+    @Inject(method = "init", at = @At("RETURN"))
+    private void setOpLevel4(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            this.setClientPermissionLevel(4);
+        }
+    }
+
     @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;ticksSinceLastPositionPacketSent:I", ordinal = 0))
     private int moveLastPosPacketIncrement(ClientPlayerEntity instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return ticksSinceLastPositionPacketSent - 1; // Reverting original operation
+            return this.ticksSinceLastPositionPacketSent - 1; // Reverting original operation
         } else {
-            return ticksSinceLastPositionPacketSent;
+            return this.ticksSinceLastPositionPacketSent;
         }
     }
 
@@ -202,7 +213,14 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         if (DebugSettings.global().sendIdlePacket.isEnabled()) {
             return !isOnGround();
         } else {
-            return lastOnGround;
+            return this.lastOnGround;
+        }
+    }
+
+    @Inject(method = "init", at = @At("RETURN"))
+    private void set1_7StepHeight(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
+            this.client.player.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT).setBaseValue(0.5D);
         }
     }
 

@@ -58,9 +58,6 @@ import java.util.Set;
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkHandler {
 
-    @Shadow
-    public abstract void onEntityStatus(EntityStatusS2CPacket packet);
-
     @Mutable
     @Shadow
     @Final
@@ -171,7 +168,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     }
 
     @Inject(method = "onGameJoin", at = @At("RETURN"))
-    private void sendAdditionalData(CallbackInfo ci) {
+    private void sendRecipes(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             final List<RecipeEntry<?>> recipes = new ArrayList<>();
             final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolTranslator.getTargetVersion());
@@ -179,10 +176,6 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
                 recipes.add(recipeInfos.get(i).create(new Identifier("viafabricplus", "recipe/" + i)));
             }
             this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
-
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-                this.onEntityStatus(new EntityStatusS2CPacket(this.client.player, (byte) 28)); // Op-level 4
-            }
         }
     }
 
