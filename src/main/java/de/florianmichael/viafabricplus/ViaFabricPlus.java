@@ -49,7 +49,6 @@ import java.util.concurrent.CompletableFuture;
  *
  * TODO | Port
  *  - Readd MixinCustomPayloadS2CPacket, MixinInGameHud
- *  - All Update todos
  *  - Test 1.11.2 banner recipe
  *  - Test 1.20.1 riding offsets
  *  - Fix on protocol level: modify1_7StepHeight, modifyReachDistance
@@ -58,9 +57,7 @@ import java.util.concurrent.CompletableFuture;
  *  - Readd item fixes on protocol level: MixinAxeItem, MixinHoeItem, MixinPickaxeItem, MixinShearsItem, MixinShovelItem, MixinSwordItem, MixinMiningToolItem, MixinItem
  *  - Readd item fixes: ArmorMaterials, MixinItemStack, MixinDrawContext, MixinPacketByteBuf
  *  - Test villager trading in 1.8/1.12.2
- *  - Test 1.8 triple chest
  *  - Figure out how to fix 32k enchantments with codecs (MixinEnchantmentHelper)
- *  - Test sign interactions
  */
 public class ViaFabricPlus {
 

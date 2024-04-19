@@ -31,6 +31,7 @@ import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.BedrockSettings;
+import de.florianmichael.viafabricplus.util.DataCustomPayload;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
@@ -119,6 +120,9 @@ public class ClientsideFixes {
 
         // Register the footstep particle
         FootStepParticle1_12_2.init();
+
+        // Register the custom payload packet for sync tasks
+        DataCustomPayload.init();
     }
 
     /**
