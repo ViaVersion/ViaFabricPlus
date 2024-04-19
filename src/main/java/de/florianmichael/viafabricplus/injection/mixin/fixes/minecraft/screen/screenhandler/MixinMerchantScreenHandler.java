@@ -104,8 +104,8 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
         for (slot = 3; slot < 39; slot++) {
             final ItemStack itemStack = this.slots.get(slot).getStack();
             if (!itemStack.isEmpty() && stackNeeded.matches(itemStack)) {
-                final ItemStack itemStack2 = this.merchantInventory.getStack(slot);
-                if (ItemStack.areItemsAndComponentsEqual(itemStack, itemStack2)) {
+                final ItemStack itemStack2 = this.merchantInventory.getStack(inputSlot);
+                if (itemStack2.isEmpty() || ItemStack.areItemsAndComponentsEqual(itemStack, itemStack2)) {
                     break;
                 }
             }
