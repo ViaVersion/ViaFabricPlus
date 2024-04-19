@@ -189,7 +189,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;abs(F)F"))
     private float alwaysRotateWhenWalkingBackwards(float value) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             return 0F;
         } else {
             return MathHelper.abs(value);
