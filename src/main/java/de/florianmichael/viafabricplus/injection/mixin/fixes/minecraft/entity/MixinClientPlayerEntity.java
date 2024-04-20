@@ -35,7 +35,6 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.math.MathHelper;
@@ -214,13 +213,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             return !isOnGround();
         } else {
             return this.lastOnGround;
-        }
-    }
-
-    @Inject(method = "init", at = @At("RETURN"))
-    private void set1_7StepHeight(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-            this.client.player.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT).setBaseValue(0.5D);
         }
     }
 

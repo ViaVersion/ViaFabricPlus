@@ -160,6 +160,7 @@
     "fixes.viaversion.MixinCommonBoss",
     "fixes.viaversion.MixinEntityIdRewriter",
     "fixes.viaversion.MixinEntityPacketRewriter1_20_3",
+    "fixes.viaversion.MixinEntityPacketRewriter1_20_5",
     "fixes.viaversion.MixinEntityPackets1_17",
     "fixes.viaversion.MixinEntityPackets1_19_4",
     "fixes.viaversion.MixinEntityTracker1_9",

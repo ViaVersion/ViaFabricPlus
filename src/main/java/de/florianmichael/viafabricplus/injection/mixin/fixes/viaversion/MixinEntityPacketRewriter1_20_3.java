@@ -27,10 +27,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = EntityPacketRewriter1_20_3.class, remap = false)
-public class MixinEntityPacketRewriter1_20_3 {
+public abstract class MixinEntityPacketRewriter1_20_3 {
 
     @Inject(method = "sendChunksSentGameEvent", at = @At("HEAD"), cancellable = true)
-    public void cancelGameStatePacket(PacketWrapper wrapper, CallbackInfo ci) {
+    private void cancelGameStatePacket(PacketWrapper wrapper, CallbackInfo ci) {
         ci.cancel(); // Handled in MixinClientPlayNetworkHandler
     }
 

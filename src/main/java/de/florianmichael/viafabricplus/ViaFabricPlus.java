@@ -55,7 +55,6 @@ import java.util.concurrent.CompletableFuture;
  *  - Readd item fixes on protocol level: MixinAxeItem, MixinHoeItem, MixinPickaxeItem, MixinShearsItem, MixinShovelItem, MixinSwordItem, MixinMiningToolItem, MixinItem
  *  - Readd item fixes: ArmorMaterials, MixinItemStack, MixinDrawContext, MixinPacketByteBuf
  *  - Figure out how to fix 32k enchantments with codecs (MixinEnchantmentHelper)
- *  - Add range fixes in VV (Range attributes have to be updated)
  */
 public class ViaFabricPlus {
 
