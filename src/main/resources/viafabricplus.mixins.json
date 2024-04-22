@@ -156,6 +156,7 @@
     "fixes.vialegacy.MixinClientboundPacketsc0_30cpe",
     "fixes.vialegacy.MixinProtocol1_8to1_7_6_10",
     "fixes.vialegacy.MixinProtocolc0_30toc0_30cpe",
+    "fixes.viaversion.MixinBlockItemPacketRewriter1_20_5",
     "fixes.viaversion.MixinCommandBlockProvider",
     "fixes.viaversion.MixinCommonBoss",
     "fixes.viaversion.MixinEntityIdRewriter",
@@ -177,6 +178,7 @@
     "fixes.viaversion.MixinProtocol1_11To1_10",
     "fixes.viaversion.MixinProtocol1_12To1_11_1",
     "fixes.viaversion.MixinProtocol1_20_2To1_20",
+    "fixes.viaversion.MixinProtocol1_20_5To1_20_3",
     "fixes.viaversion.MixinTagType",
     "fixes.viaversion.MixinUserConnectionImpl",
     "fixes.viaversion.MixinWorldPackets1_16_2",
@@ -193,5 +195,10 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "mixins": [
+    "fixes.minecraft.item.MixinAxeItem",
+    "fixes.minecraft.item.MixinShovelItem",
+    "fixes.minecraft.item.MixinSwordItem"
+  ]
 }

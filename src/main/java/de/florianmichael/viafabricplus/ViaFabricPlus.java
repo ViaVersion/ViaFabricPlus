@@ -52,8 +52,8 @@ import java.util.concurrent.CompletableFuture;
  *  - Test 1.20.1 riding offsets
  *  - EntityDimensionDiff: Add eye height and attachment point
  *  - Test bedrock transfer
- *  - Readd item fixes on protocol level: MixinAxeItem, MixinHoeItem, MixinPickaxeItem, MixinShearsItem, MixinShovelItem, MixinSwordItem, MixinMiningToolItem, MixinItem
- *  - Readd item fixes: ArmorMaterials, MixinItemStack, MixinDrawContext, MixinPacketByteBuf
+ *  - Readd item fixes on protocol level: MixinSwordItem, MixinMiningToolItem
+ *  - Readd item fixes: MixinItemStack, MixinDrawContext, MixinPacketByteBuf
  *  - Figure out how to fix 32k enchantments with codecs (MixinEnchantmentHelper)
  */
 public class ViaFabricPlus {
