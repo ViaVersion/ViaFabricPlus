@@ -20,13 +20,69 @@
 package de.florianmichael.viafabricplus.protocoltranslator.impl;
 
 import com.viaversion.viaversion.api.data.MappingDataLoader;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.libs.gson.JsonElement;
+import com.viaversion.viaversion.libs.gson.JsonObject;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.block.Block;
+import net.minecraft.registry.Registries;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
 
-    public static final ViaFabricPlusMappingDataLoader INSTANCE = new ViaFabricPlusMappingDataLoader(ViaFabricPlusMappingDataLoader.class, "assets/viafabricplus/data/");
+    public static final Map<String, Material> MATERIALS = new HashMap<>();
+    public static final Map<String, Map<ProtocolVersion, String>> BLOCK_MATERIALS = new HashMap<>();
 
-    public ViaFabricPlusMappingDataLoader(final Class<?> dataLoaderClass, final String dataPath) {
-        super(dataLoaderClass, dataPath);
+    public static final ViaFabricPlusMappingDataLoader INSTANCE = new ViaFabricPlusMappingDataLoader();
+
+    private ViaFabricPlusMappingDataLoader() {
+        super(ViaFabricPlusMappingDataLoader.class, "assets/viafabricplus/data/");
+
+        final JsonObject materialsData = this.loadData("materials-1.19.4.json");
+        for (Map.Entry<String, JsonElement> entry : materialsData.getAsJsonObject("materials").entrySet()) {
+            final JsonObject materialData = entry.getValue().getAsJsonObject();
+            MATERIALS.put(entry.getKey(), new Material(
+                    materialData.get("blocksMovement").getAsBoolean(),
+                    materialData.get("burnable").getAsBoolean(),
+                    materialData.get("liquid").getAsBoolean(),
+                    materialData.get("blocksLight").getAsBoolean(),
+                    materialData.get("replaceable").getAsBoolean(),
+                    materialData.get("solid").getAsBoolean()
+            ));
+        }
+        for (Map.Entry<String, JsonElement> blockEntry : materialsData.getAsJsonObject("blocks").entrySet()) {
+            final Map<ProtocolVersion, String> blockMaterials = new HashMap<>();
+            for (Map.Entry<String, JsonElement> entry : blockEntry.getValue().getAsJsonObject().entrySet()) {
+                blockMaterials.put(ProtocolVersion.getClosest(entry.getKey()), entry.getValue().getAsString());
+            }
+            BLOCK_MATERIALS.put(blockEntry.getKey(), blockMaterials);
+        }
+    }
+
+    public static String getBlockMaterial(final Block block) {
+        return getBlockMaterial(block, ProtocolTranslator.getTargetVersion());
+    }
+
+    public static String getBlockMaterial(final Block block, ProtocolVersion version) {
+        if (version.newerThan(ProtocolVersion.v1_19_4)) {
+            version = ProtocolVersion.v1_19_4;
+        }
+
+        final Map<ProtocolVersion, String> materials = BLOCK_MATERIALS.get(Registries.BLOCK.getId(block).toString());
+        if (materials == null) {
+            return null;
+        }
+        for (Map.Entry<ProtocolVersion, String> materialEntry : materials.entrySet()) {
+            if (version.olderThanOrEqualTo(materialEntry.getKey())) {
+                return materialEntry.getValue();
+            }
+        }
+        return null;
+    }
+
+    public record Material(boolean blocksMovement, boolean burnable, boolean liquid, boolean blocksLight, boolean replaceable, boolean solid) {
     }
 
 }

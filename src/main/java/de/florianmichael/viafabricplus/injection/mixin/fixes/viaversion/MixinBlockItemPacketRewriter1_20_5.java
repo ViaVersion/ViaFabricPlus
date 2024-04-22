@@ -30,6 +30,8 @@ import com.viaversion.viaversion.api.minecraft.item.data.ToolProperties;
 import com.viaversion.viaversion.api.minecraft.item.data.ToolRule;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
+import com.viaversion.viaversion.libs.fastutil.ints.IntOpenHashSet;
+import com.viaversion.viaversion.libs.fastutil.ints.IntSet;
 import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
@@ -118,12 +120,12 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
                 final String item = toolComponentObject.get("item").getAsString();
                 final float defaultMiningSpeed = toolComponentObject.get("default_mining_speed").getAsFloat();
                 final int damagePerBlock = toolComponentObject.get("damage_per_block").getAsInt();
-                final int[] suitableFor = this.blockJsonArrayToIds(toolComponentObject.getAsJsonArray("suitable_for"));
+                final int[] suitableFor = this.blockJsonArrayToIds(version, toolComponentObject.getAsJsonArray("suitable_for"));
                 final List<ToolRule> toolRules = new ArrayList<>();
                 final JsonArray miningSpeeds = toolComponentObject.getAsJsonArray("mining_speeds");
                 for (JsonElement miningSpeed : miningSpeeds) {
                     final JsonObject miningSpeedObject = miningSpeed.getAsJsonObject();
-                    final int[] blocks = this.blockJsonArrayToIds(miningSpeedObject.getAsJsonArray("blocks"));
+                    final int[] blocks = this.blockJsonArrayToIds(version, miningSpeedObject.getAsJsonArray("blocks"));
                     final float speed = miningSpeedObject.get("speed").getAsFloat();
                     toolRules.add(new ToolRule(HolderSet.of(blocks), speed, null));
                 }
@@ -174,13 +176,25 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
     }
 
     @Unique
-    private int[] blockJsonArrayToIds(final JsonArray jsonArray) {
-        final int[] ids = new int[jsonArray.size()];
-        int i = 0;
+    private int[] blockJsonArrayToIds(final ProtocolVersion protocolVersion, final JsonArray jsonArray) {
+        final IntSet ids = new IntOpenHashSet();
         for (final JsonElement element : jsonArray) {
-            ids[i++] = this.protocol.getMappingData().blockId(element.getAsString());
+            final String name = element.getAsString();
+            if (name.startsWith("#")) { // Material name
+                final String material = name.substring(1);
+                for (Map.Entry<String, Map<ProtocolVersion, String>> entry : ViaFabricPlusMappingDataLoader.BLOCK_MATERIALS.entrySet()) {
+                    for (Map.Entry<ProtocolVersion, String> materialEntry : entry.getValue().entrySet()) {
+                        if (protocolVersion.olderThanOrEqualTo(materialEntry.getKey()) && materialEntry.getValue().equals(material)) {
+                            ids.add(this.protocol.getMappingData().blockId(entry.getKey()));
+                            break;
+                        }
+                    }
+                }
+            } else { // Block name
+                ids.add(this.protocol.getMappingData().blockId(element.getAsString()));
+            }
         }
-        return ids;
+        return ids.toIntArray();
     }
 
     // TODO: Remove again
