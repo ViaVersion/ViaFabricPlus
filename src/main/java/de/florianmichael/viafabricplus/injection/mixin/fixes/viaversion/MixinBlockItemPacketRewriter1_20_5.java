@@ -110,7 +110,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
         this.swordItems1_8.add("minecraft:golden_sword");
         this.swordItems1_8.add("minecraft:diamond_sword");
 
-        final JsonObject itemToolComponents = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("item_tool_components.json");
+        final JsonObject itemToolComponents = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("item-tool-components.json");
         for (Map.Entry<String, JsonElement> entry : itemToolComponents.entrySet()) {
             final ProtocolVersion version = ProtocolVersion.getClosest(entry.getKey());
             final Map<String, ToolProperties> toolProperties = new HashMap<>();
