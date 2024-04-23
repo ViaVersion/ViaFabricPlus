@@ -57,7 +57,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "Отправлять пакет открытия инвентаря",
   "debug_settings.viafabricplus.remove_cooldowns": "Убрать задержку атаки",
   "debug_settings.viafabricplus.send_idle_packet": "Отправлять пакет бездействия",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "Заменять модификаторы атрибутов",
   "debug_settings.viafabricplus.replace_sneaking": "Заменять приседание",
   "debug_settings.viafabricplus.long_sneaking": "Долгое приседание",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Старая скорость добычи блоков",

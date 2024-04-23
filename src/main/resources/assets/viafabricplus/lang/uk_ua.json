@@ -52,7 +52,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "Відправляти пакет відкривання інвентарю",
   "debug_settings.viafabricplus.remove_cooldowns": "Прибрати кулдауни",
   "debug_settings.viafabricplus.send_idle_packet": "Надіслави пакет неактивності",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "Замінити атрибути модифікаторів",
   "debug_settings.viafabricplus.replace_sneaking": "Замінювати підкрадання",
   "debug_settings.viafabricplus.long_sneaking": "Довге підкрадання",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Стара швидкість копання",

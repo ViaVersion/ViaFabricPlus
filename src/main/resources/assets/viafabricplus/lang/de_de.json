@@ -57,7 +57,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "Öffnen des Inventars senden",
   "debug_settings.viafabricplus.remove_cooldowns": "Abklingzeiten entfernen",
   "debug_settings.viafabricplus.send_idle_packet": "Leerlauf-Paket senden",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "Attributmodifikatoren ersetzen",
   "debug_settings.viafabricplus.replace_sneaking": "Schleichen ersetzen",
   "debug_settings.viafabricplus.long_sneaking": "Langes Schleichen",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Veraltete Abbaugeschwindigkeiten",

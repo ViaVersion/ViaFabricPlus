@@ -57,7 +57,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "Send open inventory packet",
   "debug_settings.viafabricplus.remove_cooldowns": "Remove cooldowns",
   "debug_settings.viafabricplus.send_idle_packet": "Send idle packet",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "Replace attribute modifiers",
   "debug_settings.viafabricplus.replace_sneaking": "Replace sneaking",
   "debug_settings.viafabricplus.long_sneaking": "Long sneaking",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Legacy mining speeds",

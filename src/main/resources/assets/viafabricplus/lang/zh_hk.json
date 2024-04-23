@@ -56,7 +56,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "發送 “打開物品欄” 數據包",
   "debug_settings.viafabricplus.remove_cooldowns": "移除攻擊冷卻",
   "debug_settings.viafabricplus.send_idle_packet": "發送 “空閒” 數據包",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "替換屬性修飾符為舊版本樣式",
   "debug_settings.viafabricplus.replace_sneaking": "替換潛行樣式",
   "debug_settings.viafabricplus.long_sneaking": "長時潛行",
   "debug_settings.viafabricplus.legacy_mining_speeds": "舊版本挖掘速度",

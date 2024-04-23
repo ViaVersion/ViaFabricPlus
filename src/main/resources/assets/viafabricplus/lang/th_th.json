@@ -23,7 +23,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "ส่งแพคเกจเปิดช่องเก็บของ",
   "debug_settings.viafabricplus.remove_cooldowns": "ลบคูลดาวน์",
   "debug_settings.viafabricplus.send_idle_packet": "ส่งแพคเกจ idle",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "แทนที่ตัวดัดแปลงแอตทริบิวต์",
   "debug_settings.viafabricplus.replace_sneaking": "แทนที่การย่อง",
   "debug_settings.viafabricplus.long_sneaking": "ย่องยาว",
   "debug_settings.viafabricplus.legacy_mining_speeds": "ความเร็วการขุดแบบดั้งเดิม",

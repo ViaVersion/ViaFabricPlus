@@ -26,7 +26,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "インベントリが開いたことをパケット送信",
   "debug_settings.viafabricplus.remove_cooldowns": "クールダウンを削除",
   "debug_settings.viafabricplus.send_idle_packet": "無操作パケットを送信",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "属性修飾子を置換",
   "debug_settings.viafabricplus.replace_sneaking": "スニークの置換",
   "debug_settings.viafabricplus.long_sneaking": "長いスニーク",
   "debug_settings.viafabricplus.legacy_mining_speeds": "従来の採掘速度",

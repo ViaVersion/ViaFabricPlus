@@ -31,7 +31,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "Lähetä avoin-tavaraluettelo -paketti",
   "debug_settings.viafabricplus.remove_cooldowns": "Poista jäähyt",
   "debug_settings.viafabricplus.send_idle_packet": "Lähetä idle -paketti",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "Vaihda attribuutin muuttujat",
   "debug_settings.viafabricplus.replace_sneaking": "Vaihda kyykky",
   "debug_settings.viafabricplus.long_sneaking": "Pitkä kyykky",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Perinteiset louhintanopeudet",

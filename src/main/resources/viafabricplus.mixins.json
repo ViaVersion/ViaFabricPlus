@@ -111,6 +111,7 @@
     "fixes.minecraft.entity.MixinSquidEntity",
     "fixes.minecraft.entity.MixinWolfEntity",
     "fixes.minecraft.item.MixinArmorItem",
+    "fixes.minecraft.item.MixinAxeItem",
     "fixes.minecraft.item.MixinBlockItem",
     "fixes.minecraft.item.MixinBowItem",
     "fixes.minecraft.item.MixinBrushItem",
@@ -123,6 +124,8 @@
     "fixes.minecraft.item.MixinItemGroups",
     "fixes.minecraft.item.MixinItemPlacementContext",
     "fixes.minecraft.item.MixinItemRenderer",
+    "fixes.minecraft.item.MixinShovelItem",
+    "fixes.minecraft.item.MixinSwordItem",
     "fixes.minecraft.network.MixinChatMessageC2SPacket",
     "fixes.minecraft.network.MixinClientCommonNetworkHandler",
     "fixes.minecraft.network.MixinClientConfigurationNetworkHandler",
@@ -170,6 +173,7 @@
     "fixes.viaversion.MixinInventoryPackets1_13",
     "fixes.viaversion.MixinInventoryPackets1_17",
     "fixes.viaversion.MixinInventoryTracker1_16",
+    "fixes.viaversion.MixinItemRewriter",
     "fixes.viaversion.MixinMappingDataBase",
     "fixes.viaversion.MixinMetadataRewriter1_15To1_14_4",
     "fixes.viaversion.MixinMetadataRewriter1_9To1_8",
@@ -195,10 +199,5 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  },
-  "mixins": [
-    "fixes.minecraft.item.MixinAxeItem",
-    "fixes.minecraft.item.MixinShovelItem",
-    "fixes.minecraft.item.MixinSwordItem"
-  ]
+  }
 }

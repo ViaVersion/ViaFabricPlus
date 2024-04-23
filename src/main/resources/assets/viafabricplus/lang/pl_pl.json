@@ -57,7 +57,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "Wysyłaj pakiety otwierania ekwipunku",
   "debug_settings.viafabricplus.remove_cooldowns": "Usuń odstępy pomiędzy uderzeniami",
   "debug_settings.viafabricplus.send_idle_packet": "Wysyłaj pakiety bezczynności",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "Zamień modyfikatory atrybutów",
   "debug_settings.viafabricplus.replace_sneaking": "Zamień kucanie",
   "debug_settings.viafabricplus.long_sneaking": "Długie kucanie",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Stare prędkości kopania",

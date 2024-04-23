@@ -54,7 +54,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "Felszerelést kinyitó adatcsomagok küldése",
   "debug_settings.viafabricplus.remove_cooldowns": "Lehűlések eltávolítása",
   "debug_settings.viafabricplus.send_idle_packet": "Tétlen adatcsomagok küldése",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "Attribútum kicserélése",
   "debug_settings.viafabricplus.replace_sneaking": "Lopakodás kicserélése",
   "debug_settings.viafabricplus.long_sneaking": "Hosszú lopakodás",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Régi bányászati sebességek",

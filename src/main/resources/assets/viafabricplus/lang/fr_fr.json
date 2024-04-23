@@ -30,7 +30,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "Envoyer le paquet d'inventaire ouvert",
   "debug_settings.viafabricplus.remove_cooldowns": "Supprimer les temps de recharge",
   "debug_settings.viafabricplus.send_idle_packet": "Envoyer le paquet d'inactivité",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "Remplacer les modificateurs d'attribut",
   "debug_settings.viafabricplus.replace_sneaking": "Remplacer le sneaking",
   "debug_settings.viafabricplus.long_sneaking": "Sneaking prolongé",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Vitesses d'exploitation minière héritées",

@@ -49,7 +49,6 @@ public class DebugSettings extends SettingGroup {
     // 1.9 -> 1.8.x
     public final VersionedBooleanSetting removeCooldowns = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.remove_cooldowns"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting sendIdlePacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_idle_packet"), VersionRange.andOlder(LegacyProtocolVersion.r1_2_4tor1_2_5).add(VersionRange.of(LegacyProtocolVersion.r1_4_2, ProtocolVersion.v1_8)));
-    public final VersionedBooleanSetting replaceAttributeModifiers = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.replace_attribute_modifiers"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting preventEntityCramming = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.prevent_entity_cramming"), VersionRange.andOlder(ProtocolVersion.v1_8));
 
     // 1.8.x -> 1.7.6

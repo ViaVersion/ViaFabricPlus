@@ -56,7 +56,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "发送“打开物品栏”数据包",
   "debug_settings.viafabricplus.remove_cooldowns": "移除攻击冷却",
   "debug_settings.viafabricplus.send_idle_packet": "发送“空闲”数据包",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "替换属性修饰符样式",
   "debug_settings.viafabricplus.replace_sneaking": "替换潜行样式",
   "debug_settings.viafabricplus.long_sneaking": "长时间潜行",
   "debug_settings.viafabricplus.legacy_mining_speeds": "远古版本挖掘速度",

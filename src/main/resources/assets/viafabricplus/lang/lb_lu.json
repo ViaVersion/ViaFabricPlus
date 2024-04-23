@@ -23,7 +23,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "Inventory-Open Paket schecken",
   "debug_settings.viafabricplus.remove_cooldowns": "Cooldowns entfernen",
   "debug_settings.viafabricplus.send_idle_packet": "IDLE-Paket schecken",
-  "debug_settings.viafabricplus.replace_attribute_modifiers": "Attribute-Modifier entfernen",
   "debug_settings.viafabricplus.replace_sneaking": "Sneaken Unpassen",
   "debug_settings.viafabricplus.long_sneaking": "LUnges Sneaken",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Legacy Abbaugeschwindigkeiten",

@@ -1,0 +1,232 @@
+{
+  "minecraft:wooden_axe": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 3.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:stone_axe": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 4.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:iron_axe": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 5.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:golden_axe": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 3.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:diamond_axe": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 6.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:wooden_pickaxe": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 2.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:stone_pickaxe": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 3.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:iron_pickaxe": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 4.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:golden_pickaxe": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 2.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:diamond_pickaxe": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 5.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:wooden_shovel": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 1.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:stone_shovel": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 2.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:iron_shovel": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 3.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:golden_shovel": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 1.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:diamond_shovel": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Tool modifier",
+      "amount": 4.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:wooden_sword": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Weapon modifier",
+      "amount": 4.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:stone_sword": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Weapon modifier",
+      "amount": 5.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:iron_sword": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Weapon modifier",
+      "amount": 6.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:golden_sword": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Weapon modifier",
+      "amount": 4.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:diamond_sword": {
+    "generic.attackDamage": {
+      "id": "CB3F55D3-645C-4F38-A497-9C13A33DB5CF",
+      "name": "Weapon modifier",
+      "amount": 7.0,
+      "operation": 0,
+      "slot": "mainhand"
+    }
+  },
+  "minecraft:wooden_hoe": {
+  },
+  "minecraft:stone_hoe": {
+  },
+  "minecraft:iron_hoe": {
+  },
+  "minecraft:golden_hoe": {
+  },
+  "minecraft:diamond_hoe": {
+  },
+  "minecraft:leather_boots": {
+  },
+  "minecraft:leather_leggings": {
+  },
+  "minecraft:leather_chestplate": {
+  },
+  "minecraft:leather_helmet": {
+  },
+  "minecraft:chainmail_boots": {
+  },
+  "minecraft:chainmail_leggings": {
+  },
+  "minecraft:chainmail_chestplate": {
+  },
+  "minecraft:chainmail_helmet": {
+  },
+  "minecraft:iron_boots": {
+  },
+  "minecraft:iron_leggings": {
+  },
+  "minecraft:iron_chestplate": {
+  },
+  "minecraft:iron_helmet": {
+  },
+  "minecraft:golden_boots": {
+  },
+  "minecraft:golden_leggings": {
+  },
+  "minecraft:golden_chestplate": {
+  },
+  "minecraft:golden_helmet": {
+  },
+  "minecraft:diamond_boots": {
+  },
+  "minecraft:diamond_leggings": {
+  },
+  "minecraft:diamond_chestplate": {
+  },
+  "minecraft:diamond_helmet": {
+  }
+}
