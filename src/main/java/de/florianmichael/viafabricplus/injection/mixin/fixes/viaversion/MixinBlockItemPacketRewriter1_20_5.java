@@ -197,6 +197,4 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
         return ids.toIntArray();
     }
 
-    // TODO: Remove again
-
 }
