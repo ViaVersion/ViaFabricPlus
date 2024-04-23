@@ -60,7 +60,7 @@ public class ViaFabricPlus {
     private CompletableFuture<Void> loadingFuture;
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void bootstrap() {
+    public void init() {
         directory.mkdir();
         ClassLoaderPriorityUtil.loadOverridingJars(directory); // Load overriding jars first so other code can access the new classes
 
@@ -70,10 +70,11 @@ public class ViaFabricPlus {
         settingsManager = new SettingsManager();
         saveManager = new SaveManager(settingsManager);
 
+        // Block game loading until ViaVersion has loaded
         PostGameLoadCallback.EVENT.register(() -> {
             loadingFuture.join();
             saveManager.init();
-        }); // Block game loading until ViaVersion has loaded
+        });
     }
 
     public static ViaFabricPlus global() {
