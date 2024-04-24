@@ -49,7 +49,6 @@ import java.util.concurrent.CompletableFuture;
  *
  * TODO | Port
  *  - Readd MixinCustomPayloadS2CPacket, MixinInGameHud
- *  - Test 1.20.1 riding offsets
  *  - EntityDimensionDiff: Add eye height and attachment point
  *  - Test bedrock transfer
  *  - Readd item fixes: MixinItemStack, MixinDrawContext, MixinPacketByteBuf
