@@ -49,7 +49,6 @@ import java.util.concurrent.CompletableFuture;
  *
  * TODO | Port
  *  - Readd MixinCustomPayloadS2CPacket, MixinInGameHud
- *  - EntityDimensionDiff: Add eye height and attachment point
  *  - Test bedrock transfer
  *  - Readd item fixes: MixinItemStack, MixinDrawContext, MixinPacketByteBuf
  *  - Figure out how to fix 32k enchantments with codecs (MixinEnchantmentHelper)
