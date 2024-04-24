@@ -40,6 +40,7 @@ import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.Protocol1_20_5
 import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.packet.ServerboundPacket1_20_5;
 import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.rewriter.BlockItemPacketRewriter1_20_5;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IBlockItemPacketRewriter1_20_5;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -111,7 +112,22 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
 
         final JsonObject itemToolComponents = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("item-tool-components.json");
         for (Map.Entry<String, JsonElement> entry : itemToolComponents.entrySet()) {
+            int attempts = 0;
+            while (ProtocolVersion.getClosest(entry.getKey()) == null) {
+                try {
+                    Thread.sleep(100);
+                    if (attempts++ > 100) { // 10 seconds
+                        ViaFabricPlus.global().getLogger().warn("Failed to load item-tool-components.json after 10 seconds. Skipping entry.");
+                        break;
+                    }
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
             final ProtocolVersion version = ProtocolVersion.getClosest(entry.getKey());
+            if (version == null) { // Only happens if the timeout above is reached or the thread is interrupted
+                continue;
+            }
             final Map<String, ToolProperties> toolProperties = new HashMap<>();
             final JsonArray toolComponents = entry.getValue().getAsJsonArray();
             for (JsonElement toolComponent : toolComponents) {
