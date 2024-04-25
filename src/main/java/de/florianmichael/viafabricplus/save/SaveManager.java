@@ -43,7 +43,9 @@ public class SaveManager {
                 settingsSave = new SettingsSave(settingsManager),
                 accountsSave = new AccountsSave()
         );
+    }
 
+    public void init() {
         // Load save files
         for (AbstractSave save : saves) {
             save.init();
