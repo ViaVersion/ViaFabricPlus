@@ -42,7 +42,10 @@ public class VisualSettings extends SettingGroup {
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting replacePetrifiedOakSlab = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.replace_petrified_oak_slab"), VersionRange.of(LegacyProtocolVersion.r1_3_1tor1_3_2, ProtocolVersion.v1_12_2));
     public final VersionedBooleanSetting changeFontRendererBehaviour = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.change_font_renderer_behaviour"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
-    
+
+    // 1.12 -> 1.11.1
+    public final VersionedBooleanSetting sidewaysBackwardsRunning = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.sideways_backwards_walking"), VersionRange.andOlder(ProtocolVersion.v1_11_1));
+
     // 1.9 -> 1.8.x
     public final VersionedBooleanSetting emulateArmorHud = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.emulate_armor_hud"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting removeNewerFeaturesFromCommandBlockScreen = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_newer_features_from_command_block_screen"), VersionRange.andOlder(ProtocolVersion.v1_8));

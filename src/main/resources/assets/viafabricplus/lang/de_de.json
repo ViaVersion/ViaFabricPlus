@@ -82,6 +82,7 @@
   "visual_settings.viafabricplus.enable_sword_blocking": "Schwertblockierung aktivieren",
   "visual_settings.viafabricplus.enable_block_hit_animation": "Block-Trefferanimation aktivieren",
   "visual_settings.viafabricplus.disable_server_pinging": "Server-Ping deaktivieren",
+  "visual_settings.viafabricplus.sideways_backwards_walking": "Seitliches rückwärts laufen",
 
   "bedrock.viafabricplus.login": "Dein Browser sollte sich geöffnet haben.\nDas Schließen dieses Bildschirms unterbricht den Vorgang!",
   "bedrock.viafabricplus.confirm_transfer_server_prompt": "Möchtest du zu folgendem Server wechseln?\n%s\n\nDadurch wird deine Verbindung zum aktuellen Server getrennt und mit dem neuen Server verbunden.",

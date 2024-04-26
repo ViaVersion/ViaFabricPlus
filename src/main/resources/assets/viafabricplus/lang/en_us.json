@@ -82,6 +82,7 @@
   "visual_settings.viafabricplus.enable_sword_blocking": "Enable sword animation",
   "visual_settings.viafabricplus.enable_block_hit_animation": "Enable block hit animation",
   "visual_settings.viafabricplus.disable_server_pinging": "Disable server pinging",
+  "visual_settings.viafabricplus.sideways_backwards_walking": "Sideways backwards walking",
 
   "bedrock.viafabricplus.login": "Your browser should have opened.\nClosing this screen will cancel the process!",
   "bedrock.viafabricplus.confirm_transfer_server_prompt": "Do you want to transfer to the following server?\n%s\n\nThis will disconnect from the current server and connect to the new server.",
