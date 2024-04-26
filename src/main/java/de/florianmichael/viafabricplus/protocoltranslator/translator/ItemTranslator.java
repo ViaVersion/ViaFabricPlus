@@ -59,13 +59,13 @@ public class ItemTranslator {
             buf.writeShort(0); // slot
             ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
 
-            final PacketWrapper wrapper = PacketWrapper.create(ServerboundPackets1_20_5.CREATIVE_INVENTORY_ACTION.getId(), buf, user);
+            final PacketWrapper wrapper = PacketWrapper.create(ServerboundPackets1_20_5.CREATIVE_INVENTORY_ACTION, buf, user);
             user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, wrapper);
 
             wrapper.read(Type.SHORT); // slot
             return wrapper.read(getItemType(targetVersion)); // item
         } catch (Throwable t) {
-            ViaFabricPlus.global().getLogger().error("Error converting native item stack to ViaVersion " + targetVersion + " item stack", t);
+            ViaFabricPlus.global().getLogger().error("Error converting native item stack to ViaVersion {} item stack", targetVersion, t);
             return null;
         }
     }
