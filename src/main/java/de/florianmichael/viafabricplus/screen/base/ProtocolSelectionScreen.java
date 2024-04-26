@@ -22,12 +22,12 @@ package de.florianmichael.viafabricplus.screen.base;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.screen.VFPList;
+import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -66,7 +66,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
         this.renderTitle(context);
     }
 
-    public static class SlotList extends VFPList<ProtocolSlot> {
+    public static class SlotList extends VFPList<VFPListEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
@@ -75,7 +75,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
         }
     }
 
-    public static class ProtocolSlot extends AlwaysSelectedEntryListWidget.Entry<ProtocolSlot> {
+    public static class ProtocolSlot extends VFPListEntry {
 
         private final ProtocolVersion protocolVersion;
 
@@ -89,10 +89,8 @@ public class ProtocolSelectionScreen extends VFPScreen {
         }
 
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        public void mappedMouseClicked(double mouseX, double mouseY, int button) {
             ProtocolTranslator.setTargetVersion(this.protocolVersion);
-            playClickSound();
-            return super.mouseClicked(mouseX, mouseY, button);
         }
 
         @Override

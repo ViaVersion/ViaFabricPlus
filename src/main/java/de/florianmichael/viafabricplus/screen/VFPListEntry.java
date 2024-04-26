@@ -44,7 +44,8 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
     private int entryWidth;
     private int entryHeight;
 
-    public abstract void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta);
+    public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    }
 
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {
     }

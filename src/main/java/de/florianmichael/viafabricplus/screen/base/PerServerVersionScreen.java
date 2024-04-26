@@ -21,12 +21,12 @@ package de.florianmichael.viafabricplus.screen.base;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.screen.VFPList;
+import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -62,7 +62,7 @@ public class PerServerVersionScreen extends VFPScreen {
         this.renderTitle(context);
     }
 
-    public class SlotList extends VFPList<SharedSlot> {
+    public class SlotList extends VFPList<VFPListEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
@@ -72,14 +72,11 @@ public class PerServerVersionScreen extends VFPScreen {
         }
     }
 
-    // Dummy class files used to have a shared superclass for ResetSlot and ProtocolSlot
-    public abstract class SharedSlot extends AlwaysSelectedEntryListWidget.Entry<SharedSlot> {
+    public abstract class SharedSlot extends VFPListEntry {
 
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            playClickSound();
+        public void mappedMouseClicked(double mouseX, double mouseY, int button) {
             close();
-            return super.mouseClicked(mouseX, mouseY, button);
         }
     }
 
