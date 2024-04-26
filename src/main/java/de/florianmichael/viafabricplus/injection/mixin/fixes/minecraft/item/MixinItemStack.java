@@ -60,7 +60,10 @@ public abstract class MixinItemStack {
         if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4)) {
             return;
         }
-        // Via 1.20.5->.3 will always put the original item data into CUSTOM_DATA, so we can assume its present.
+        // Item has no nbt and can't have enchantments.
+        if (!this.getComponents().contains(DataComponentTypes.CUSTOM_DATA)) return;
+
+        // Via 1.20.5->.3 will always put the original item data into CUSTOM_DATA if it's not empty.
         final NbtCompound customData = this.getComponents().get(DataComponentTypes.CUSTOM_DATA).getNbt();
 
         if (componentType == DataComponentTypes.ENCHANTMENTS) {
