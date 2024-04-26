@@ -124,6 +124,7 @@
     "fixes.minecraft.item.MixinItemGroups",
     "fixes.minecraft.item.MixinItemPlacementContext",
     "fixes.minecraft.item.MixinItemRenderer",
+    "fixes.minecraft.item.MixinItemStack",
     "fixes.minecraft.item.MixinShovelItem",
     "fixes.minecraft.item.MixinSwordItem",
     "fixes.minecraft.network.MixinChatMessageC2SPacket",
@@ -149,6 +150,7 @@
     "fixes.minecraft.screen.MixinScreen",
     "fixes.minecraft.screen.MixinStructureBlockScreen_1",
     "fixes.minecraft.screen.hud.MixinChatHud",
+    "fixes.minecraft.screen.hud.MixinInGameHud",
     "fixes.minecraft.screen.screenhandler.MixinAbstractFurnaceScreenHandler",
     "fixes.minecraft.screen.screenhandler.MixinBrewingStandScreenHandler_FuelSlot",
     "fixes.minecraft.screen.screenhandler.MixinCraftingScreenHandler",
@@ -191,8 +193,7 @@
     "viabedrock.MixinBedrockProtocol",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.item.MixinItemStack"
+    "vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -48,8 +48,7 @@ import java.util.concurrent.CompletableFuture;
  *  - Older versions don't clamp positions when teleporting (Is this important?)
  *
  * TODO | Port
- *  - Readd MixinCustomPayloadS2CPacket, MixinInGameHud
- *  - Test bedrock transfer
+ *  - Readd MixinCustomPayloadS2CPacket
  *  - Readd item fixes: MixinItemStack, MixinDrawContext, MixinPacketByteBuf
  */
 public class ViaFabricPlus {
