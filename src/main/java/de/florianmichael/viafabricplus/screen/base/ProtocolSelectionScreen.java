@@ -21,6 +21,7 @@ package de.florianmichael.viafabricplus.screen.base;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.screen.VFPList;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.settings.SettingsScreen;
 import net.minecraft.client.MinecraftClient;
@@ -65,10 +66,10 @@ public class ProtocolSelectionScreen extends VFPScreen {
         this.renderTitle(context);
     }
 
-    public static class SlotList extends AlwaysSelectedEntryListWidget<ProtocolSlot> {
+    public static class SlotList extends VFPList<ProtocolSlot> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height - top - bottom, top, entryHeight);
+            super(minecraftClient, width, height, top, bottom, entryHeight);
 
             ProtocolVersionList.getProtocolsNewToOld().stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }

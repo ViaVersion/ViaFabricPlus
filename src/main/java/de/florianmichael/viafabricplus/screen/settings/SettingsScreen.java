@@ -20,13 +20,13 @@
 package de.florianmichael.viafabricplus.screen.settings;
 
 import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.screen.VFPList;
 import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 
 public class SettingsScreen extends VFPScreen {
 
@@ -52,10 +52,10 @@ public class SettingsScreen extends VFPScreen {
         this.renderTitle(context);
     }
 
-    public static class SlotList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
+    public static class SlotList extends VFPList<VFPListEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height - top - bottom, top, entryHeight);
+            super(minecraftClient, width, height, top, bottom, entryHeight);
 
             for (SettingGroup group : ViaFabricPlus.global().getSettingsManager().getGroups()) {
                 this.addEntry(new TitleRenderer(group.getName()));

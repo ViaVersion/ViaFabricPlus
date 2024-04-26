@@ -26,6 +26,7 @@ import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
+import de.florianmichael.viafabricplus.screen.VFPList;
 import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
@@ -34,7 +35,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
@@ -96,10 +96,10 @@ public class ClassiCubeServerListScreen extends VFPScreen {
         }
     }
 
-    public static class SlotList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
+    public static class SlotList extends VFPList<VFPListEntry> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height - top - bottom, top, entryHeight);
+            super(minecraftClient, width, height, top, bottom, entryHeight);
 
             SERVER_LIST.forEach(serverInfo -> this.addEntry(new ServerSlot(serverInfo)));
         }

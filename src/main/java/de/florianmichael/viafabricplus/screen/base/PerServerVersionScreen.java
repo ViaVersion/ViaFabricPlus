@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.screen.base;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.screen.VFPList;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -61,10 +62,10 @@ public class PerServerVersionScreen extends VFPScreen {
         this.renderTitle(context);
     }
 
-    public class SlotList extends AlwaysSelectedEntryListWidget<SharedSlot> {
+    public class SlotList extends VFPList<SharedSlot> {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height - top - bottom, top, entryHeight);
+            super(minecraftClient, width, height, top, bottom, entryHeight);
 
             this.addEntry(new ResetSlot());
             ProtocolVersionList.getProtocolsNewToOld().stream().map(ProtocolSlot::new).forEach(this::addEntry);
