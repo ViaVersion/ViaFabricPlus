@@ -82,7 +82,6 @@
   "visual_settings.viafabricplus.enable_block_hit_animation": "启用1.7的格挡攻击动画",
 
   "bedrock.viafabricplus.login": "你的浏览器现在应该打开了。\n请输入这个代码：%s\n关闭这个屏幕等于取消操作！",
-  "bedrock.viafabricplus.confirm_transfer_server_prompt": "你想要转移到以下服务器吗？\n%s\n\n这将断开与当前服务器的连接并连接到新的服务器。",
   "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus验证你的会话失败！请登录一个账户或在设置中关闭“使用BetaCraft进行身份验证”",
 
   "classicube.viafabricplus.account": "你可以这里创建一个账户：https://www.classicube.net",

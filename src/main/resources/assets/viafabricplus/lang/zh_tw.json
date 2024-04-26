@@ -84,7 +84,6 @@
   "visual_settings.viafabricplus.disable_server_pinging": "禁用伺服器 pinging",
 
   "bedrock.viafabricplus.login": "你的瀏覽器應該已經開啟。\n請輸入以下代碼：%s\n關閉此畫面將取消流程！",
-  "bedrock.viafabricplus.confirm_transfer_server_prompt": "你確定要轉移到以下伺服器？\n%s\n\n這將中斷目前伺服器的連線並連線到新的伺服器。",
   "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus session 驗證失敗！請登入帳號或在 ViaFabricPlus 設定中停用 BetaCraft 認證",
 
   "classicube.viafabricplus.account": "你可以在這裡建立帳號：https://www.classicube.net/",

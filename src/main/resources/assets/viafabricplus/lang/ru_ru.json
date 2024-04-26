@@ -83,7 +83,6 @@
   "visual_settings.viafabricplus.enable_block_hit_animation": "Парирование атак из версии 1.7",
 
   "bedrock.viafabricplus.login": "Сейчас должен открыться браузер.\nВведите следующий код: %s\nЗакрытие этого экрана приведёт к отмене процесса!",
-  "bedrock.viafabricplus.confirm_transfer_server_prompt": "Вы действительно хотите перейти на следующий сервер?\n%s\n\nЭто приведёт к отключению от текущего сервера с последующим подключением к новому.",
   "authentication.viafabricplus.failed_to_verify_session": "Не удалось проверить вашу сессию. Войдите в свою учётную запись или отключите аутентификацию BetaCraft в настройках ViaFabricPlus.",
 
   "report.viafabricplus.button": "Нашли ошибку?",

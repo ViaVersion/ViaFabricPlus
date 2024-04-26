@@ -82,7 +82,6 @@
   "visual_settings.viafabricplus.enable_block_hit_animation": "Habilitar animación de golpe de bloque",
 
   "bedrock.viafabricplus.login": "Tu navegador debería haberse abierto.\nCerrar esta pantalla cancelará el proceso!",
-  "bedrock.viafabricplus.confirm_transfer_server_prompt": "Quieres transferirse al siguiente servidor?\n%s\n\nEsto te desconectará del servidor actual y te conectará al nuevo.",
   "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus falló al verificar tu sesión! Por favor inicia sesión en una cuenta o desactiva la autenticación de BetaCraft en la configuración de ViaFabricPlus",
 
   "report.viafabricplus.button": "Reportar problemas",

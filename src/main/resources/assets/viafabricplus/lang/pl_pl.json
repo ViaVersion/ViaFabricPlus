@@ -84,7 +84,6 @@
   "visual_settings.viafabricplus.disable_server_pinging": "Wyłącz pingowanie serwerów",
 
   "bedrock.viafabricplus.login": "Powinna ci się otworzyć przeglądarka.\nNa otworzonej stronie wpisz ten kod: %s\nZamkanięcie tego ekranu będzie anulowało proces!",
-  "bedrock.viafabricplus.confirm_transfer_server_prompt": "Czy chcesz się przełączyć na następujący serwer?\n%s\n\nRozłączy cię to z obecnym serwerem i połączy do nowego.",
   "authentication.viafabricplus.failed_to_verify_session": "Nie udało się zweryfikować twojej sesji! Zaloguj się na jakieś konto albo wyłącz uwierzytelnianie BetaCraft w ustawieniach.",
 
   "report.viafabricplus.button": "Zgłoś problem",

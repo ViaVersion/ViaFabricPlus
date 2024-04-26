@@ -80,7 +80,6 @@
   "visual_settings.viafabricplus.enable_block_hit_animation": "Blokkolás-ütés animáció bekapcsolása",
 
   "bedrock.viafabricplus.login": "A böngésződnek meg kellett volna nyílnia.\nKérlek írd be a következő kódot: %s\nEzen képernyő bezárása megszakítja a folyamatot!",
-  "bedrock.viafabricplus.confirm_transfer_server_prompt": "Szeretnél átmenni a következő szerverre?\n%s\n\nEz megszakítja a jelenlegi szerver kapcsolatát, és csatlakozik az új szerverre.",
   "authentication.viafabricplus.failed_to_verify_session": "A ViaFabricPlus nem tudta ellenőrizni a munkamenetet! Kérlek jelentkezz be egy Fiókba, vagy kapcsold ki a BetaCraft hitelesítést a ViaFabricPlus Beállításaiban",
 
   "classicube.viafabricplus.account": "Fiókot itt lehet létrehozni: https://www.classicube.net/",

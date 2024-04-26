@@ -80,7 +80,6 @@
   "visual_settings.viafabricplus.enable_block_hit_animation": "Ввімкнути анімацію удару блоку 1.7",
 
   "bedrock.viafabricplus.login": "Ваш браузер мав відкритися.\nБудь ласка, введіть наступний код: %s\nЯкщо закрити цей екран, процес буде скасовано!",
-  "bedrock.viafabricplus.confirm_transfer_server_prompt": "Чи ви хочете перейти до цього серверу?\n%s\n\nЦя дія відключить вас від поточного сервера і перенесе на інший.",
   "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus не зміг підтвредити вашу сессію! Будь ласка увійдіть у Ваш аккаунт чи вимкніть аутентифікацію BetaCraft в налаштуваннях ViaFabricPlus",
 
   "classicube.viafabricplus.account": "Ви можете створити аккаунт тут: https://www.classicube.net/",
