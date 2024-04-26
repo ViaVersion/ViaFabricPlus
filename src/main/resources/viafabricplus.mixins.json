@@ -191,7 +191,8 @@
     "viabedrock.MixinBedrockProtocol",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig"
+    "vialegacy.MixinViaLegacyConfig",
+    "fixes.minecraft.item.MixinItemStack"
   ],
   "injectors": {
     "defaultRequire": 1

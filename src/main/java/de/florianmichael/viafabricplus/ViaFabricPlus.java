@@ -51,7 +51,6 @@ import java.util.concurrent.CompletableFuture;
  *  - Readd MixinCustomPayloadS2CPacket, MixinInGameHud
  *  - Test bedrock transfer
  *  - Readd item fixes: MixinItemStack, MixinDrawContext, MixinPacketByteBuf
- *  - Figure out how to fix 32k enchantments with codecs (MixinEnchantmentHelper)
  */
 public class ViaFabricPlus {
 
