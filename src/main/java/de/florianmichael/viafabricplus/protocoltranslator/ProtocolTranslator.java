@@ -55,6 +55,7 @@ import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
+import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBedrockPlatformImpl;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
@@ -315,13 +316,13 @@ public class ProtocolTranslator {
                     new ViaFabricPlusVLInjector(),
                     new ViaFabricPlusVLCommandHandler(),
 
+                    ViaBackwardsPlatformImpl::new,
                     ViaFabricPlusViaLegacyPlatformImpl::new,
                     ViaAprilFoolsPlatformImpl::new,
                     ViaBedrockPlatformImpl::new
             );
             Protocol1_20_5To1_20_3.strictErrorHandling = false;
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
-            PostViaVersionLoadCallback.EVENT.invoker().onPostViaVersionLoad();
         });
     }
 

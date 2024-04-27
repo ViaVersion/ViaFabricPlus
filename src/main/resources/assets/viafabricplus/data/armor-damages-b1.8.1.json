@@ -1,0 +1,22 @@
+{
+  "minecraft:leather_helmet": 33,
+  "minecraft:leather_chestplate": 48,
+  "minecraft:leather_leggings": 45,
+  "minecraft:leather_boots": 39,
+  "minecraft:chainmail_helmet": 66,
+  "minecraft:chainmail_chestplate": 96,
+  "minecraft:chainmail_leggings": 90,
+  "minecraft:chainmail_boots": 78,
+  "minecraft:iron_helmet": 132,
+  "minecraft:iron_chestplate": 192,
+  "minecraft:iron_leggings": 180,
+  "minecraft:iron_boots": 156,
+  "minecraft:diamond_helmet": 264,
+  "minecraft:diamond_chestplate": 384,
+  "minecraft:diamond_leggings": 360,
+  "minecraft:diamond_boots": 312,
+  "minecraft:golden_helmet": 66,
+  "minecraft:golden_chestplate": 96,
+  "minecraft:golden_leggings": 90,
+  "minecraft:golden_boots": 78
+}

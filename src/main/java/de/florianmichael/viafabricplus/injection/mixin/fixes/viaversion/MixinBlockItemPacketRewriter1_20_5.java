@@ -40,20 +40,20 @@ import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.Protocol1_20_5
 import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.packet.ServerboundPacket1_20_5;
 import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.rewriter.BlockItemPacketRewriter1_20_5;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.injection.access.IBlockItemPacketRewriter1_20_5;
+import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.*;
 
 @Mixin(value = BlockItemPacketRewriter1_20_5.class, remap = false)
-public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<ClientboundPacket1_20_3, ServerboundPacket1_20_5, Protocol1_20_5To1_20_3> implements IBlockItemPacketRewriter1_20_5 {
+public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<ClientboundPacket1_20_3, ServerboundPacket1_20_5, Protocol1_20_5To1_20_3> {
 
     @Unique
     private final Set<String> foodItems_b1_7_3 = new HashSet<>();
@@ -71,107 +71,95 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
         super(protocol, itemType, itemArrayType, mappedItemType, mappedItemArrayType);
     }
 
-    @Override
-    public void onMappingDataLoaded() {
-        this.foodItems_b1_7_3.add("minecraft:apple");
-        this.foodItems_b1_7_3.add("minecraft:mushroom_stew");
-        this.foodItems_b1_7_3.add("minecraft:bread");
-        this.foodItems_b1_7_3.add("minecraft:porkchop");
-        this.foodItems_b1_7_3.add("minecraft:cooked_porkchop");
-        this.foodItems_b1_7_3.add("minecraft:golden_apple");
-        this.foodItems_b1_7_3.add("minecraft:cod");
-        this.foodItems_b1_7_3.add("minecraft:cooked_cod");
-        this.foodItems_b1_7_3.add("minecraft:cookie");
+    @Inject(method = "<init>", at = @At("RETURN"))
+    public void loadItemMappings(Protocol1_20_5To1_20_3 protocol, CallbackInfo ci) {
+        // Technically it would be cleaner to split mapping loading into there respective protocols, but that will be impossible
+        // in a clean way, so let's just wait for Via* to load all protocols and then load everything in here.
+        PostViaVersionLoadCallback.EVENT.register(() -> {
+            this.foodItems_b1_7_3.add("minecraft:apple");
+            this.foodItems_b1_7_3.add("minecraft:mushroom_stew");
+            this.foodItems_b1_7_3.add("minecraft:bread");
+            this.foodItems_b1_7_3.add("minecraft:porkchop");
+            this.foodItems_b1_7_3.add("minecraft:cooked_porkchop");
+            this.foodItems_b1_7_3.add("minecraft:golden_apple");
+            this.foodItems_b1_7_3.add("minecraft:cod");
+            this.foodItems_b1_7_3.add("minecraft:cooked_cod");
+            this.foodItems_b1_7_3.add("minecraft:cookie");
 
-        this.armorMaxDamage_b1_8_1.put("minecraft:leather_helmet", 33);
-        this.armorMaxDamage_b1_8_1.put("minecraft:leather_chestplate", 48);
-        this.armorMaxDamage_b1_8_1.put("minecraft:leather_leggings", 45);
-        this.armorMaxDamage_b1_8_1.put("minecraft:leather_boots", 39);
-        this.armorMaxDamage_b1_8_1.put("minecraft:chainmail_helmet", 66);
-        this.armorMaxDamage_b1_8_1.put("minecraft:chainmail_chestplate", 96);
-        this.armorMaxDamage_b1_8_1.put("minecraft:chainmail_leggings", 90);
-        this.armorMaxDamage_b1_8_1.put("minecraft:chainmail_boots", 78);
-        this.armorMaxDamage_b1_8_1.put("minecraft:iron_helmet", 132);
-        this.armorMaxDamage_b1_8_1.put("minecraft:iron_chestplate", 192);
-        this.armorMaxDamage_b1_8_1.put("minecraft:iron_leggings", 180);
-        this.armorMaxDamage_b1_8_1.put("minecraft:iron_boots", 156);
-        this.armorMaxDamage_b1_8_1.put("minecraft:diamond_helmet", 264);
-        this.armorMaxDamage_b1_8_1.put("minecraft:diamond_chestplate", 384);
-        this.armorMaxDamage_b1_8_1.put("minecraft:diamond_leggings", 360);
-        this.armorMaxDamage_b1_8_1.put("minecraft:diamond_boots", 312);
-        this.armorMaxDamage_b1_8_1.put("minecraft:golden_helmet", 66);
-        this.armorMaxDamage_b1_8_1.put("minecraft:golden_chestplate", 96);
-        this.armorMaxDamage_b1_8_1.put("minecraft:golden_leggings", 90);
-        this.armorMaxDamage_b1_8_1.put("minecraft:golden_boots", 78);
+            final JsonObject armorMaxDamages = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("armor-damages-b1.8.1.json");
+            for (Map.Entry<String, JsonElement> entry : armorMaxDamages.entrySet()) {
+                final String item = entry.getKey();
+                final int maxDamage = entry.getValue().getAsInt();
+                this.armorMaxDamage_b1_8_1.put(item, maxDamage);
+            }
 
-        this.swordItems1_8.add("minecraft:wooden_sword");
-        this.swordItems1_8.add("minecraft:stone_sword");
-        this.swordItems1_8.add("minecraft:iron_sword");
-        this.swordItems1_8.add("minecraft:golden_sword");
-        this.swordItems1_8.add("minecraft:diamond_sword");
+            this.swordItems1_8.add("minecraft:wooden_sword");
+            this.swordItems1_8.add("minecraft:stone_sword");
+            this.swordItems1_8.add("minecraft:iron_sword");
+            this.swordItems1_8.add("minecraft:golden_sword");
+            this.swordItems1_8.add("minecraft:diamond_sword");
 
-        final JsonObject itemToolComponents = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("item-tool-components.json");
-        for (Map.Entry<String, JsonElement> entry : itemToolComponents.entrySet()) {
-            int attempts = 0;
-            while (ProtocolVersion.getClosest(entry.getKey()) == null) {
-                try {
-                    Thread.sleep(100);
-                    if (attempts++ > 100) { // 10 seconds
-                        ViaFabricPlus.global().getLogger().warn("Failed to load item-tool-components.json after 10 seconds. Skipping entry.");
-                        break;
+            final JsonObject itemToolComponents = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("item-tool-components.json");
+            for (Map.Entry<String, JsonElement> entry : itemToolComponents.entrySet()) {
+                final ProtocolVersion version = ProtocolVersion.getClosest(entry.getKey());
+                if (version == null) {
+                    throw new IllegalStateException("Unknown protocol version: " + entry.getKey());
+                }
+                final Map<String, ToolProperties> toolProperties = new HashMap<>();
+                final JsonArray toolComponents = entry.getValue().getAsJsonArray();
+                for (JsonElement toolComponent : toolComponents) {
+                    final JsonObject toolComponentObject = toolComponent.getAsJsonObject();
+                    final String item = toolComponentObject.get("item").getAsString();
+                    final float defaultMiningSpeed = toolComponentObject.get("default_mining_speed").getAsFloat();
+                    final int damagePerBlock = toolComponentObject.get("damage_per_block").getAsInt();
+                    final int[] suitableFor = this.viaFabricPlus$blockJsonArrayToIds(version, toolComponentObject.getAsJsonArray("suitable_for"));
+                    final List<ToolRule> toolRules = new ArrayList<>();
+                    final JsonArray miningSpeeds = toolComponentObject.getAsJsonArray("mining_speeds");
+                    for (JsonElement miningSpeed : miningSpeeds) {
+                        final JsonObject miningSpeedObject = miningSpeed.getAsJsonObject();
+                        final int[] blocks = this.viaFabricPlus$blockJsonArrayToIds(version, miningSpeedObject.getAsJsonArray("blocks"));
+                        final float speed = miningSpeedObject.get("speed").getAsFloat();
+                        toolRules.add(new ToolRule(HolderSet.of(blocks), speed, null));
                     }
-                } catch (InterruptedException e) {
-                    break;
+                    if (suitableFor.length > 0) {
+                        toolRules.add(new ToolRule(HolderSet.of(suitableFor), null, true));
+                    }
+                    toolProperties.put(item, new ToolProperties(toolRules.toArray(new ToolRule[0]), defaultMiningSpeed, damagePerBlock));
                 }
+                this.toolDataChanges.put(version, toolProperties);
             }
-            final ProtocolVersion version = ProtocolVersion.getClosest(entry.getKey());
-            if (version == null) { // Only happens if the timeout above is reached or the thread is interrupted
-                continue;
-            }
-            final Map<String, ToolProperties> toolProperties = new HashMap<>();
-            final JsonArray toolComponents = entry.getValue().getAsJsonArray();
-            for (JsonElement toolComponent : toolComponents) {
-                final JsonObject toolComponentObject = toolComponent.getAsJsonObject();
-                final String item = toolComponentObject.get("item").getAsString();
-                final float defaultMiningSpeed = toolComponentObject.get("default_mining_speed").getAsFloat();
-                final int damagePerBlock = toolComponentObject.get("damage_per_block").getAsInt();
-                final int[] suitableFor = this.blockJsonArrayToIds(version, toolComponentObject.getAsJsonArray("suitable_for"));
-                final List<ToolRule> toolRules = new ArrayList<>();
-                final JsonArray miningSpeeds = toolComponentObject.getAsJsonArray("mining_speeds");
-                for (JsonElement miningSpeed : miningSpeeds) {
-                    final JsonObject miningSpeedObject = miningSpeed.getAsJsonObject();
-                    final int[] blocks = this.blockJsonArrayToIds(version, miningSpeedObject.getAsJsonArray("blocks"));
-                    final float speed = miningSpeedObject.get("speed").getAsFloat();
-                    toolRules.add(new ToolRule(HolderSet.of(blocks), speed, null));
-                }
-                if (suitableFor.length > 0) {
-                    toolRules.add(new ToolRule(HolderSet.of(suitableFor), null, true));
-                }
-                toolProperties.put(item, new ToolProperties(toolRules.toArray(new ToolRule[0]), defaultMiningSpeed, damagePerBlock));
-            }
-            this.toolDataChanges.put(version, toolProperties);
-        }
+        });
     }
 
+    // Older servers don't have these components, so we can use them to emulate old item behaviour without the need
+    // of modifying tons of code in the game.
     @Inject(method = "toStructuredItem", at = @At("RETURN"))
     private void appendItemDataFixComponents(UserConnection connection, Item old, CallbackInfoReturnable<Item> cir) {
         final StructuredDataContainer data = cir.getReturnValue().structuredData();
         final String identifier = this.protocol.getMappingData().getFullItemMappings().identifier(cir.getReturnValue().identifier());
+
+        // Fix damage bar being displayed wrong
         if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             if (identifier.equals("minecraft:crossbow")) {
                 data.set(StructuredDataKey.MAX_DAMAGE, 326);
             }
         }
+
+        // Add item blocking by make the sword eatable, counterpart in MixinSwordItem
         if (connection.getProtocolInfo().serverProtocolVersion().betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8)) {
             if (this.swordItems1_8.contains(identifier)) {
                 data.set(StructuredDataKey.FOOD, new FoodProperties(0, 0F, true, 3600, new FoodEffect[0]));
             }
         }
+
+        // Fix durability tooltip displaying wrong
         if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             if (this.armorMaxDamage_b1_8_1.containsKey(identifier)) {
                 data.set(StructuredDataKey.MAX_DAMAGE, this.armorMaxDamage_b1_8_1.get(identifier));
             }
         }
+
+        // Fix item desyncs
         if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             if (this.foodItems_b1_7_3.contains(identifier)) {
                 data.set(StructuredDataKey.MAX_STACK_SIZE, 1);
@@ -179,6 +167,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
             }
         }
 
+        // Tool data changes include mining speeds as well as suitable blocks and damage values
         for (Map.Entry<ProtocolVersion, Map<String, ToolProperties>> entry : this.toolDataChanges.entrySet()) {
             if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(entry.getKey())) {
                 final ToolProperties toolProperties = entry.getValue().get(identifier);
@@ -191,7 +180,8 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
     }
 
     @Unique
-    private int[] blockJsonArrayToIds(final ProtocolVersion protocolVersion, final JsonArray jsonArray) {
+    // Converts block identifiers as well as materials (prefixed with #) to block ids
+    private int[] viaFabricPlus$blockJsonArrayToIds(final ProtocolVersion protocolVersion, final JsonArray jsonArray) {
         final IntSet ids = new IntOpenHashSet();
         for (final JsonElement element : jsonArray) {
             final String name = element.getAsString();

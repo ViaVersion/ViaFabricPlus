@@ -184,7 +184,6 @@
     "fixes.viaversion.MixinProtocol1_11To1_10",
     "fixes.viaversion.MixinProtocol1_12To1_11_1",
     "fixes.viaversion.MixinProtocol1_20_2To1_20",
-    "fixes.viaversion.MixinProtocol1_20_5To1_20_3",
     "fixes.viaversion.MixinTagType",
     "fixes.viaversion.MixinUserConnectionImpl",
     "fixes.viaversion.MixinWorldPackets1_16_2",

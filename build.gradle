@@ -65,6 +65,7 @@ dependencies {
 
 	// ViaVersion Libraries
 	jij "com.viaversion:viaversion-common:${project.viaversion_version}"
+	jij "com.viaversion:viabackwards-common:${project.viabackwards_version}"
 	jij "net.raphimc:ViaLegacy:${project.vialegacy_version}"
 	jij "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
 	jij ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
