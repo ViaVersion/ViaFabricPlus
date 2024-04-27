@@ -27,8 +27,8 @@ import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
-import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.packet.ServerboundPackets1_20_5;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.fixes.VFPProtocol;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.MinecraftClient;
@@ -59,7 +59,7 @@ public class ItemTranslator {
             buf.writeShort(0); // slot
             ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
 
-            final PacketWrapper wrapper = PacketWrapper.create(ServerboundPackets1_20_5.CREATIVE_INVENTORY_ACTION, buf, user);
+            final PacketWrapper wrapper = PacketWrapper.create(VFPProtocol.getCreativeInventoryActionPacket(), buf, user);
             user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, wrapper);
 
             wrapper.read(Type.SHORT); // slot

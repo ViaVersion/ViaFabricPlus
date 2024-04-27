@@ -22,6 +22,7 @@ package de.florianmichael.viafabricplus.protocoltranslator.netty;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.fixes.VFPProtocol;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
@@ -35,6 +36,13 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
     public ViaFabricPlusVLLegacyPipeline(UserConnection user, ProtocolVersion version) {
         super(user, version);
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) {
+        super.handlerAdded(ctx);
+
+        this.user.getProtocolInfo().getPipeline().add(VFPProtocol.INSTANCE);
     }
 
     @Override

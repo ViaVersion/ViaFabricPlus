@@ -35,7 +35,7 @@ import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.Protocol1_20_5To1_20_3;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
+import de.florianmichael.viafabricplus.fixes.VFPProtocol;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.command.ViaFabricPlusVLCommandHandler;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
@@ -323,6 +323,7 @@ public class ProtocolTranslator {
             );
             Protocol1_20_5To1_20_3.strictErrorHandling = false;
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
+            VFPProtocol.INSTANCE.initialize();
         });
     }
 
