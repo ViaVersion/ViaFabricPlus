@@ -47,9 +47,6 @@ import java.util.concurrent.CompletableFuture;
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
  *  - Blip-jumping is not supported in <= 1.13.2 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
  *  - Older versions don't clamp positions when teleporting (Is this important?)
- *
- * TODO | Port
- *  - Readd item fixes: MixinItemStack, MixinDrawContext, MixinPacketByteBuf
  */
 public class ViaFabricPlus {
 
