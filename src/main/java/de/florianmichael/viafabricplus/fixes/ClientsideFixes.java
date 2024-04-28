@@ -70,7 +70,12 @@ public class ClientsideFixes {
     /**
      * This identifier is an internal identifier used to store the item count in <= 1.10 to implement negative item counts
      */
-    public static final String ITEM_COUNT_NBT_TAG = "VFP_1_10_ItemCount_" + System.currentTimeMillis();
+    public static final String ITEM_COUNT_FIX_KEY = "VFP|ItemCountFix";
+
+    /**
+     * This identifier is used to store attributes in legacy versions were we replace them using data components
+     */
+    public static final String ATTRIBUTE_FIX_KEY = "VFP|AttributeFix";
 
     public static void init() {
         // Register additional CPE features

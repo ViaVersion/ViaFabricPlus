@@ -29,6 +29,7 @@ import com.viaversion.viaversion.libs.opennbt.tag.builtin.CompoundTag;
 import com.viaversion.viaversion.libs.opennbt.tag.builtin.ListTag;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.ItemRewriter;
 import com.viaversion.viaversion.util.Pair;
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -48,9 +49,6 @@ public abstract class MixinItemRewriter {
 
     @Unique
     private static final Map<String, Map<String, Pair<String, ModifierData>>> ITEM_ATTRIBUTES = new HashMap<>();
-
-    @Unique
-    private static final String TAG_NAME = "VV|AttributeFix";
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void loadAdditionalData(CallbackInfo ci) {
@@ -88,7 +86,7 @@ public abstract class MixinItemRewriter {
                 item.setTag(tag);
                 attributeFixTag.putBoolean("RemoveTag", true);
             }
-            tag.put(TAG_NAME, attributeFixTag);
+            tag.put(ClientsideFixes.ATTRIBUTE_FIX_KEY, attributeFixTag);
 
             ListTag<CompoundTag> attributeModifiers = tag.getListTag("AttributeModifiers", CompoundTag.class);
             if (attributeModifiers == null) {
@@ -115,7 +113,7 @@ public abstract class MixinItemRewriter {
         if (item == null) return;
         final CompoundTag tag = item.tag();
         if (tag == null) return;
-        final CompoundTag attributeFixTag = tag.removeUnchecked(TAG_NAME);
+        final CompoundTag attributeFixTag = tag.removeUnchecked(ClientsideFixes.ATTRIBUTE_FIX_KEY);
         if (attributeFixTag == null) return;
 
         if (attributeFixTag.contains("RemoveAttributeModifiers")) {
