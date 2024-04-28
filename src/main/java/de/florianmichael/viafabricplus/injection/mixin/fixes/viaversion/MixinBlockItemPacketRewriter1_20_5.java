@@ -56,16 +56,16 @@ import java.util.*;
 public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<ClientboundPacket1_20_3, ServerboundPacket1_20_5, Protocol1_20_5To1_20_3> {
 
     @Unique
-    private final Set<String> foodItems_b1_7_3 = new HashSet<>();
+    private final Set<String> viaFabricPlus$foodItems_b1_7_3 = new HashSet<>();
 
     @Unique
-    private final Map<String, Integer> armorMaxDamage_b1_8_1 = new HashMap<>();
+    private final Map<String, Integer> viaFabricPlus$armorMaxDamage_b1_8_1 = new HashMap<>();
 
     @Unique
-    private final Set<String> swordItems1_8 = new HashSet<>();
+    private final Set<String> viaFabricPlus$swordItems1_8 = new HashSet<>();
 
     @Unique
-    private final Map<ProtocolVersion, Map<String, ToolProperties>> toolDataChanges = new LinkedHashMap<>();
+    private final Map<ProtocolVersion, Map<String, ToolProperties>> viaFabricPlus$toolDataChanges = new LinkedHashMap<>();
 
     public MixinBlockItemPacketRewriter1_20_5(Protocol1_20_5To1_20_3 protocol, Type<Item> itemType, Type<Item[]> itemArrayType, Type<Item> mappedItemType, Type<Item[]> mappedItemArrayType) {
         super(protocol, itemType, itemArrayType, mappedItemType, mappedItemArrayType);
@@ -75,30 +75,30 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
     public void loadItemMappings(Protocol1_20_5To1_20_3 protocol, CallbackInfo ci) {
         // Technically it would be cleaner to split mapping loading into there respective protocols, but that will be impossible
         // in a clean way, so let's just wait for Via* to load all protocols and then load everything in here.
+        this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:apple");
+        this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:mushroom_stew");
+        this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:bread");
+        this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:porkchop");
+        this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:cooked_porkchop");
+        this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:golden_apple");
+        this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:cod");
+        this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:cooked_cod");
+        this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:cookie");
+
+        final JsonObject armorMaxDamages = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("armor-damages-b1.8.1.json");
+        for (Map.Entry<String, JsonElement> entry : armorMaxDamages.entrySet()) {
+            final String item = entry.getKey();
+            final int maxDamage = entry.getValue().getAsInt();
+            this.viaFabricPlus$armorMaxDamage_b1_8_1.put(item, maxDamage);
+        }
+
+        this.viaFabricPlus$swordItems1_8.add("minecraft:wooden_sword");
+        this.viaFabricPlus$swordItems1_8.add("minecraft:stone_sword");
+        this.viaFabricPlus$swordItems1_8.add("minecraft:iron_sword");
+        this.viaFabricPlus$swordItems1_8.add("minecraft:golden_sword");
+        this.viaFabricPlus$swordItems1_8.add("minecraft:diamond_sword");
+
         PostViaVersionLoadCallback.EVENT.register(() -> {
-            this.foodItems_b1_7_3.add("minecraft:apple");
-            this.foodItems_b1_7_3.add("minecraft:mushroom_stew");
-            this.foodItems_b1_7_3.add("minecraft:bread");
-            this.foodItems_b1_7_3.add("minecraft:porkchop");
-            this.foodItems_b1_7_3.add("minecraft:cooked_porkchop");
-            this.foodItems_b1_7_3.add("minecraft:golden_apple");
-            this.foodItems_b1_7_3.add("minecraft:cod");
-            this.foodItems_b1_7_3.add("minecraft:cooked_cod");
-            this.foodItems_b1_7_3.add("minecraft:cookie");
-
-            final JsonObject armorMaxDamages = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("armor-damages-b1.8.1.json");
-            for (Map.Entry<String, JsonElement> entry : armorMaxDamages.entrySet()) {
-                final String item = entry.getKey();
-                final int maxDamage = entry.getValue().getAsInt();
-                this.armorMaxDamage_b1_8_1.put(item, maxDamage);
-            }
-
-            this.swordItems1_8.add("minecraft:wooden_sword");
-            this.swordItems1_8.add("minecraft:stone_sword");
-            this.swordItems1_8.add("minecraft:iron_sword");
-            this.swordItems1_8.add("minecraft:golden_sword");
-            this.swordItems1_8.add("minecraft:diamond_sword");
-
             final JsonObject itemToolComponents = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("item-tool-components.json");
             for (Map.Entry<String, JsonElement> entry : itemToolComponents.entrySet()) {
                 final ProtocolVersion version = ProtocolVersion.getClosest(entry.getKey());
@@ -126,7 +126,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
                     }
                     toolProperties.put(item, new ToolProperties(toolRules.toArray(new ToolRule[0]), defaultMiningSpeed, damagePerBlock));
                 }
-                this.toolDataChanges.put(version, toolProperties);
+                this.viaFabricPlus$toolDataChanges.put(version, toolProperties);
             }
         });
     }
@@ -147,28 +147,28 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
 
         // Add item blocking by make the sword eatable, counterpart in MixinSwordItem
         if (connection.getProtocolInfo().serverProtocolVersion().betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8)) {
-            if (this.swordItems1_8.contains(identifier)) {
+            if (this.viaFabricPlus$swordItems1_8.contains(identifier)) {
                 data.set(StructuredDataKey.FOOD, new FoodProperties(0, 0F, true, 3600, new FoodEffect[0]));
             }
         }
 
         // Fix durability tooltip displaying wrong
         if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
-            if (this.armorMaxDamage_b1_8_1.containsKey(identifier)) {
-                data.set(StructuredDataKey.MAX_DAMAGE, this.armorMaxDamage_b1_8_1.get(identifier));
+            if (this.viaFabricPlus$armorMaxDamage_b1_8_1.containsKey(identifier)) {
+                data.set(StructuredDataKey.MAX_DAMAGE, this.viaFabricPlus$armorMaxDamage_b1_8_1.get(identifier));
             }
         }
 
         // Fix item desyncs
         if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
-            if (this.foodItems_b1_7_3.contains(identifier)) {
+            if (this.viaFabricPlus$foodItems_b1_7_3.contains(identifier)) {
                 data.set(StructuredDataKey.MAX_STACK_SIZE, 1);
                 data.addEmpty(StructuredDataKey.FOOD);
             }
         }
 
         // Tool data changes include mining speeds as well as suitable blocks and damage values
-        for (Map.Entry<ProtocolVersion, Map<String, ToolProperties>> entry : this.toolDataChanges.entrySet()) {
+        for (Map.Entry<ProtocolVersion, Map<String, ToolProperties>> entry : this.viaFabricPlus$toolDataChanges.entrySet()) {
             if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(entry.getKey())) {
                 final ToolProperties toolProperties = entry.getValue().get(identifier);
                 if (toolProperties != null) {
