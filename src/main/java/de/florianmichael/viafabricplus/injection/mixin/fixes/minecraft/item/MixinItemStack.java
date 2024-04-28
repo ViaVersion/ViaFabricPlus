@@ -21,8 +21,8 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.util.ItemUtil;
 import net.minecraft.client.item.TooltipType;
-import net.minecraft.component.ComponentMap;
 import net.minecraft.component.DataComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.Enchantment;
@@ -45,7 +45,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
@@ -57,25 +56,21 @@ public abstract class MixinItemStack {
     @Shadow
     public abstract Item getItem();
 
-    @Shadow
-    public abstract ComponentMap getComponents();
-
     @Inject(method = "appendTooltip", at = @At("HEAD"), cancellable = true)
     private <T extends TooltipAppender> void replaceEnchantmentTooltip(DataComponentType<T> componentType, Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4)) {
             return;
         }
-        // Item has no nbt and can't have enchantments.
-        if (!this.getComponents().contains(DataComponentTypes.CUSTOM_DATA)) return;
 
-        // Via 1.20.5->.3 will always put the original item data into CUSTOM_DATA if it's not empty.
-        final NbtCompound customData = this.getComponents().get(DataComponentTypes.CUSTOM_DATA).getNbt();
-
+        final NbtCompound tag = ItemUtil.getOrNull((ItemStack) (Object) this);
+        if (tag == null) {
+            return;
+        }
         if (componentType == DataComponentTypes.ENCHANTMENTS) {
-            this.viaFabricPlus$appendEnchantments1_14_4("Enchantments", customData, textConsumer);
+            this.viaFabricPlus$appendEnchantments1_14_4("Enchantments", tag, textConsumer);
             ci.cancel();
         } else if (componentType == DataComponentTypes.STORED_ENCHANTMENTS) {
-            this.viaFabricPlus$appendEnchantments1_14_4("StoredEnchantments", customData, textConsumer);
+            this.viaFabricPlus$appendEnchantments1_14_4("StoredEnchantments", tag, textConsumer);
             ci.cancel();
         }
     }
