@@ -26,7 +26,7 @@ import net.minecraft.nbt.NbtCompound;
 public class ItemUtil {
 
     // Via 1.20.5->.3 will always put the original item data into CUSTOM_DATA if it's not empty.
-    public static NbtCompound getOrNull(final ItemStack stack) {
+    public static NbtCompound getTagOrNull(final ItemStack stack) {
         if (!stack.contains(DataComponentTypes.CUSTOM_DATA)) {
             return null;
         }

@@ -62,7 +62,7 @@ public abstract class MixinItemStack {
             return;
         }
 
-        final NbtCompound tag = ItemUtil.getOrNull((ItemStack) (Object) this);
+        final NbtCompound tag = ItemUtil.getTagOrNull((ItemStack) (Object) this);
         if (tag == null) {
             return;
         }

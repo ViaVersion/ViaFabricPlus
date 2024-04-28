@@ -20,7 +20,10 @@
 package de.florianmichael.viafabricplus.fixes;
 
 import com.viaversion.viaversion.api.protocol.AbstractSimpleProtocol;
-import com.viaversion.viaversion.api.protocol.packet.*;
+import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
+import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.packet.ClientboundPackets1_20_5;
@@ -104,5 +107,6 @@ public class VFPProtocol extends AbstractSimpleProtocol {
     interface PacketReader {
 
         void read(PacketWrapper wrapper) throws Exception;
+
     }
 }

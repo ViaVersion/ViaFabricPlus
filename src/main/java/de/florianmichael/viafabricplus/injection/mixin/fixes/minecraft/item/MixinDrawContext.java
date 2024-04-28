@@ -34,7 +34,7 @@ public abstract class MixinDrawContext {
 
     @Redirect(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getCount()I"))
     private int handleNegativeItemCount(ItemStack instance) {
-        final NbtCompound tag = ItemUtil.getOrNull(instance);
+        final NbtCompound tag = ItemUtil.getTagOrNull(instance);
         if (tag != null && tag.contains(ClientsideFixes.ITEM_COUNT_FIX_KEY)) {
             return tag.getInt(ClientsideFixes.ITEM_COUNT_FIX_KEY);
         } else {
