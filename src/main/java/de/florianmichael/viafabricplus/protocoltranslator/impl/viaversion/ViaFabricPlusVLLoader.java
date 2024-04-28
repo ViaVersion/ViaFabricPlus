@@ -27,6 +27,7 @@ import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.providers.Player
 import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.provider.PlayerAbilitiesProvider;
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.provider.AckSequenceProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
+import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.viabedrock.ViaFabricPlusTransferProvider;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.vialegacy.*;
@@ -69,6 +70,8 @@ public class ViaFabricPlusVLLoader extends VLLoader {
 
         providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
         providers.use(TransferProvider.class, new ViaFabricPlusTransferProvider());
+
+        PostViaVersionLoadCallback.EVENT.invoker().onPostViaVersionLoad();
     }
 
 }

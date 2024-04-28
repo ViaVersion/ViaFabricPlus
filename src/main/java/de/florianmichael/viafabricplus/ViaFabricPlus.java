@@ -20,7 +20,6 @@
 package de.florianmichael.viafabricplus;
 
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
-import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.save.SaveManager;
@@ -75,7 +74,6 @@ public class ViaFabricPlus {
         PostGameLoadCallback.EVENT.register(() -> {
             loadingFuture.join();
             saveManager.init();
-            PostViaVersionLoadCallback.EVENT.invoker().onPostViaVersionLoad();
         });
     }
 
