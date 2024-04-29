@@ -82,6 +82,7 @@
   "visual_settings.viafabricplus.enable_sword_blocking": "Włącz blokowanie mieczem",
   "visual_settings.viafabricplus.enable_block_hit_animation": "Włącz animację niszczenia bloków 1.7",
   "visual_settings.viafabricplus.disable_server_pinging": "Wyłącz pingowanie serwerów",
+  "visual_settings.viafabricplus.sideways_backwards_walking": "Chodzenie do tyłu na boki",
 
   "bedrock.viafabricplus.login": "Powinna ci się otworzyć przeglądarka.\nNa otworzonej stronie wpisz ten kod: %s\nZamkanięcie tego ekranu będzie anulowało proces!",
   "authentication.viafabricplus.failed_to_verify_session": "Nie udało się zweryfikować twojej sesji! Zaloguj się na jakieś konto albo wyłącz uwierzytelnianie BetaCraft w ustawieniach.",
