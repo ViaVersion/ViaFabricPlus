@@ -25,6 +25,7 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.fixes.VFPProtocol;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import net.minecraft.network.handler.HandlerNames;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
 
@@ -65,32 +66,32 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
     @Override
     protected String decompressName() {
-        return "decompress";
+        return HandlerNames.DECOMPRESS;
     }
 
     @Override
     protected String compressName() {
-        return "compress";
+        return HandlerNames.COMPRESS;
     }
 
     @Override
     protected String packetDecoderName() {
-        return "inbound_config";
+        return HandlerNames.INBOUND_CONFIG;
     }
 
     @Override
     protected String packetEncoderName() {
-        return "encoder";
+        return HandlerNames.ENCODER;
     }
 
     @Override
     protected String lengthSplitterName() {
-        return "splitter";
+        return HandlerNames.SPLITTER;
     }
 
     @Override
     protected String lengthPrependerName() {
-        return "prepender";
+        return HandlerNames.PREPENDER;
     }
 
 }

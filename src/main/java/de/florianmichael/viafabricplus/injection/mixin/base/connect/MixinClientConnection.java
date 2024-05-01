@@ -38,6 +38,7 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PacketDecryptor;
 import net.minecraft.network.encryption.PacketEncryptor;
+import net.minecraft.network.handler.HandlerNames;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.profiler.MultiValueDebugSampleLogImpl;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
@@ -105,7 +106,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
             }
 
             this.encrypted = true;
-            this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "encrypt", new PacketEncryptor(encryptionCipher));
+            this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, HandlerNames.ENCRYPT, new PacketEncryptor(encryptionCipher));
         }
     }
 
@@ -170,7 +171,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
                             new PingEncapsulationCodec(new InetSocketAddress(inetHost, inetPort))
                     );
                     f.channel().pipeline().remove(VLPipeline.VIABEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);
-                    f.channel().pipeline().remove("splitter");
+                    f.channel().pipeline().remove(HandlerNames.SPLITTER);
                 }
             });
         } else {
@@ -186,7 +187,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
         this.encrypted = true;
         // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
-        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_PREPENDER_NAME, "decrypt", new PacketDecryptor(this.viaFabricPlus$decryptionCipher));
+        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_PREPENDER_NAME, HandlerNames.DECRYPT, new PacketDecryptor(this.viaFabricPlus$decryptionCipher));
     }
 
     @Override
