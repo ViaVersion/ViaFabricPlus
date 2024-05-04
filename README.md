@@ -22,7 +22,7 @@ At the time of writing, VFP is the only protocol translation platform for the cl
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - April Fools (3D Shareware, 20w14infinite)
 - Combat Snapshots (Combat Test 8c)
-- Bedrock Edition 1.20.70 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
+- Bedrock Edition 1.20.80 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
 
 ## For players
 - Tutorial for installing and using the mod can be found [here](docs/USAGE.md)
