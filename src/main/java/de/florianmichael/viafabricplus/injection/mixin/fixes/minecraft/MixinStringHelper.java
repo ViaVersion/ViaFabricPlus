@@ -19,16 +19,16 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import net.minecraft.util.StringHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(StringHelper.class)
 public abstract class MixinStringHelper {
 
-    @ModifyConstant(method = "truncateChat", constant = @Constant(intValue = 256))
+    @ModifyExpressionValue(method = "truncateChat", at = @At(value = "CONSTANT", args = "intValue=256"))
     private static int modifyMaxChatLength(int constant) {
         return ClientsideFixes.getChatLength();
     }
