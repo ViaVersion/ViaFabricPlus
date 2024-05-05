@@ -28,12 +28,10 @@ import com.viaversion.viaversion.protocols.protocol1_16to1_15_2.provider.PlayerA
 import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.provider.AckSequenceProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.HandItemProvider;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
-import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.viabedrock.ViaFabricPlusTransferProvider;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.vialegacy.*;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.viaversion.*;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;
-import net.raphimc.viabedrock.protocol.providers.TransferProvider;
 import net.raphimc.vialegacy.protocols.alpha.protocolb1_0_1_1_1toa1_2_3_5_1_2_6.providers.AlphaInventoryProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
@@ -68,7 +66,6 @@ public class ViaFabricPlusVLLoader extends VLLoader {
         }
 
         providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
-        providers.use(TransferProvider.class, new ViaFabricPlusTransferProvider());
     }
 
 }
