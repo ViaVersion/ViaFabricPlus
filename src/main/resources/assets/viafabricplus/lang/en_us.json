@@ -81,9 +81,9 @@
   "visual_settings.viafabricplus.change_font_renderer_behaviour": "Change Font Renderer behavior",
   "visual_settings.viafabricplus.enable_sword_blocking": "Enable sword animation",
   "visual_settings.viafabricplus.enable_block_hit_animation": "Enable block hit animation",
-  "visual_settings.viafabricplus.enable_legacy_tablist": "Enable legacy tablist behavior",
   "visual_settings.viafabricplus.disable_server_pinging": "Disable server pinging",
   "visual_settings.viafabricplus.sideways_backwards_walking": "Sideways backwards walking",
+  "visual_settings.viafabricplus.enable_legacy_tablist": "Enable legacy tablist",
 
   "bedrock.viafabricplus.login": "Your browser should have opened.\nClosing this screen will cancel the process!",
   "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus couldn't verify your session! Please log in to an account or disable the BetaCraft authentication in the ViaFabricPlus Settings",

@@ -17,25 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
+package de.florianmichael.viafabricplus.injection.access;
 
-import de.florianmichael.viafabricplus.injection.access.IPlayerListEntry;
-import net.minecraft.client.network.PlayerListEntry;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
+public interface IPlayerListEntry {
 
-@Mixin(PlayerListEntry.class)
-public abstract class MixinPlayerListEntry implements IPlayerListEntry {
+    int viaFabricPlus$getIndex();
 
-    @Unique
-    private static int viaFabricPlus$GLOBAL_INDEX = 0;
-
-    // A global creation order index, used to implement FIFO sorting in legacy tab list
-    @Unique
-    private final int viaFabricPlus$index = viaFabricPlus$GLOBAL_INDEX++;
-
-    @Override
-    public int viaFabricPlus$getIndex() {
-        return viaFabricPlus$index;
-    }
 }
