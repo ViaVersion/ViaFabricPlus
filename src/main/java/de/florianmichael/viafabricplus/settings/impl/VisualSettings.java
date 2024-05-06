@@ -53,6 +53,7 @@ public class VisualSettings extends SettingGroup {
 
     // 1.8.x -> 1.7.6 - 1.7.10
     public final VersionedBooleanSetting enableBlockHitAnimation = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_block_hit_animation"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
+    public final VersionedBooleanSetting enableLegacyTablist = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_legacy_tablist"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
 
     // 1.0.0-1.0.1 -> b1.8-b1.8.1
     public final VersionedBooleanSetting replaceHurtSoundWithOOFSound = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound"), VersionRange.andOlder(LegacyProtocolVersion.b1_8tob1_8_1));

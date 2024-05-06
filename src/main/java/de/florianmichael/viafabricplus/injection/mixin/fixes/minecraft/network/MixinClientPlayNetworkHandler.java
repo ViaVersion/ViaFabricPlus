@@ -25,6 +25,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.recipe.RecipeInfo;
 import de.florianmichael.viafabricplus.fixes.data.recipe.Recipes1_11_2;
 import de.florianmichael.viafabricplus.injection.access.IDownloadingTerrainScreen;
+import de.florianmichael.viafabricplus.injection.access.IPlayerListHud;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
@@ -168,7 +169,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     }
 
     @Inject(method = "onGameJoin", at = @At("RETURN"))
-    private void sendRecipes(CallbackInfo ci) {
+    private void sendRecipes(GameJoinS2CPacket packet, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             final List<RecipeEntry<?>> recipes = new ArrayList<>();
             final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolTranslator.getTargetVersion());
@@ -177,6 +178,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
             }
             this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
         }
+        ((IPlayerListHud) MinecraftClient.getInstance().inGameHud.getPlayerListHud()).viaFabricPlus$setMaxPlayers(packet.maxPlayers());
     }
 
 }
