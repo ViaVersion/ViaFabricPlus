@@ -52,7 +52,7 @@ public abstract class MixinPlayerListHud implements IPlayerListHud {
     private MinecraftClient client;
 
     @Unique
-    private int viaFabricPlus$maxSlots = 60;
+    private int viaFabricPlus$maxSlots;
     @Unique
     private boolean viaFabricPlus$hideSkins = true;
 

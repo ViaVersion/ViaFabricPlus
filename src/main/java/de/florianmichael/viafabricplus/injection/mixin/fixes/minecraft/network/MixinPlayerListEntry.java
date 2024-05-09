@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
+import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IPlayerListEntry;
 import net.minecraft.client.network.PlayerListEntry;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,11 +29,7 @@ import org.spongepowered.asm.mixin.Unique;
 public abstract class MixinPlayerListEntry implements IPlayerListEntry {
 
     @Unique
-    private static int viaFabricPlus$GLOBAL_INDEX = 0;
-
-    // A global creation order index, used to implement FIFO sorting in legacy tab list
-    @Unique
-    private final int viaFabricPlus$index = viaFabricPlus$GLOBAL_INDEX++;
+    private final int viaFabricPlus$index = ClientsideFixes.GLOBAL_TABLIST_INDEX++;
 
     @Override
     public int viaFabricPlus$getIndex() {
