@@ -77,6 +77,11 @@ public class ClientsideFixes {
      */
     public static final String ATTRIBUTE_FIX_KEY = "VFP|AttributeFix";
 
+    /**
+     * This is an incremental index used for tablist entries to implement FIFO behavior <= 1.7
+     */
+    public static int GLOBAL_TABLIST_INDEX = 0;
+
     public static void init() {
         // Register additional CPE features
         CPEAdditions.modifyMappings();
