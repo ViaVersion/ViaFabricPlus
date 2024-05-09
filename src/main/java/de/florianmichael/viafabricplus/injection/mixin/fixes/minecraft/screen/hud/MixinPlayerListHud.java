@@ -43,16 +43,16 @@ import java.util.stream.Collectors;
 @Mixin(PlayerListHud.class)
 public abstract class MixinPlayerListHud implements IPlayerListHud {
 
-    @Unique
-    private static final Comparator<PlayerListEntry> viaFabricPlus$FIFO_COMPARATOR
-            = Comparator.comparingInt(ple -> ((IPlayerListEntry) ple).viaFabricPlus$getIndex());
-
     @Shadow
     @Final
     private MinecraftClient client;
 
     @Unique
+    private static final Comparator<PlayerListEntry> viaFabricPlus$FIFO_COMPARATOR = Comparator.comparingInt(e -> ((IPlayerListEntry) e).viaFabricPlus$getIndex());
+
+    @Unique
     private int viaFabricPlus$maxSlots;
+
     @Unique
     private boolean viaFabricPlus$hideSkins = true;
 
@@ -97,8 +97,8 @@ public abstract class MixinPlayerListHud implements IPlayerListHud {
     }
 
     @Override
-    public void viaFabricPlus$setMaxPlayers(final int maxPlayers) {
-        this.viaFabricPlus$maxSlots = Math.min(200, Math.max(20,
-                ((maxPlayers + PlayerListHud.MAX_ROWS - 1) / PlayerListHud.MAX_ROWS) * PlayerListHud.MAX_ROWS));
+    public void viaFabricPlus$setMaxPlayers(int maxPlayers) {
+        this.viaFabricPlus$maxSlots = Math.min(200, Math.max(20, ((maxPlayers + PlayerListHud.MAX_ROWS - 1) / PlayerListHud.MAX_ROWS) * PlayerListHud.MAX_ROWS));
     }
+
 }

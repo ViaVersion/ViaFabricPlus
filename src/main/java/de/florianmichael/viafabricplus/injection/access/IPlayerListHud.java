@@ -21,6 +21,6 @@ package de.florianmichael.viafabricplus.injection.access;
 
 public interface IPlayerListHud {
 
-    void viaFabricPlus$setMaxPlayers(int maxPlayers);
+    void viaFabricPlus$setMaxPlayers(final int maxPlayers);
 
 }
