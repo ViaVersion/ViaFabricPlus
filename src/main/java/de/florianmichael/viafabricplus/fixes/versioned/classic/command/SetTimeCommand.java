@@ -23,7 +23,7 @@ import com.viaversion.viaversion.api.command.ViaCommandSender;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.command.VFPViaSubCommand;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialegacy.protocols.alpha.protocola1_0_17_1_0_17_4toa1_0_16_2.storage.TimeLockStorage;
+import net.raphimc.vialegacy.protocol.alpha.a1_0_16_2toa1_0_17_1_0_17_4.storage.TimeLockStorage;
 
 public class SetTimeCommand implements VFPViaSubCommand {
 

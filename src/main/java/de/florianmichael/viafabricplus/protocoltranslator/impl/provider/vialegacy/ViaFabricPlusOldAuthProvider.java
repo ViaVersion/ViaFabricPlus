@@ -26,7 +26,7 @@ import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
+import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.provider.OldAuthProvider;
 
 public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
 

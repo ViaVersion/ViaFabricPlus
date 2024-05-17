@@ -39,8 +39,8 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.math.MathHelper;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialegacy.protocols.release.protocol1_6_1to1_5_2.Protocol1_6_1to1_5_2;
-import net.raphimc.vialegacy.protocols.release.protocol1_6_1to1_5_2.ServerboundPackets1_5_2;
+import net.raphimc.vialegacy.protocol.release.r1_5_2tor1_6_1.Protocolr1_5_2Tor1_6_1;
+import net.raphimc.vialegacy.protocol.release.r1_5_2tor1_6_1.packet.ServerboundPackets1_5_2;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -227,7 +227,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             playerPosition.write(Types.FLOAT, this.getYaw()); // yaw
             playerPosition.write(Types.FLOAT, this.getPitch()); // pitch
             playerPosition.write(Types.BOOLEAN, this.isOnGround()); // onGround
-            playerPosition.scheduleSendToServer(Protocol1_6_1to1_5_2.class);
+            playerPosition.scheduleSendToServer(Protocolr1_5_2Tor1_6_1.class);
             return;
         }
         instance.sendPacket(packet);

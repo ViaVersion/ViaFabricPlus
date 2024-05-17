@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.protocoltranslator.impl.provider.vialega
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
+import net.raphimc.vialegacy.protocol.release.r1_6_4tor1_7_2_5.provider.EncryptionProvider;
 
 public class ViaFabricPlusEncryptionProvider extends EncryptionProvider {
 

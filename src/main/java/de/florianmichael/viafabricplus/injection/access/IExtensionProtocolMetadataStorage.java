@@ -19,11 +19,12 @@
 
 package de.florianmichael.viafabricplus.injection.access;
 
-import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.data.ClassicProtocolExtension;
+import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 
 import java.util.EnumMap;
 
 public interface IExtensionProtocolMetadataStorage {
 
     EnumMap<ClassicProtocolExtension, Integer> viaFabricPlus$getServerExtensions();
+
 }

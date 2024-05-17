@@ -24,7 +24,7 @@ import de.florianmichael.viafabricplus.injection.access.IExtensionProtocolMetada
 import de.florianmichael.viafabricplus.protocoltranslator.impl.command.VFPViaSubCommand;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
+import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 
 public class ListExtensionsCommand implements VFPViaSubCommand {
 
