@@ -31,6 +31,8 @@ import net.raphimc.vialoader.netty.VLLegacyPipeline;
 
 public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
+    public static final String VIA_FLOW_CONTROL = "via-flow-control";
+
     public static final String VIABEDROCK_COMPRESSION_HANDLER_NAME = "viabedrock-compression";
     public static final String VIABEDROCK_ENCRYPTION_HANDLER_NAME = "viabedrock-encryption";
     public static final String VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME = "viabedrock-ping-encapsulation";
@@ -42,6 +44,8 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         super.handlerAdded(ctx);
+
+        ctx.pipeline().addAfter(VIA_DECODER_NAME, VIA_FLOW_CONTROL, new NoReadFlowControlHandler());
 
         this.user.getProtocolInfo().getPipeline().add(VFPProtocol.INSTANCE);
     }
