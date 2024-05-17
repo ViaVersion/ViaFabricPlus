@@ -168,19 +168,19 @@
     "fixes.viaversion.MixinCommandBlockProvider",
     "fixes.viaversion.MixinCommonBoss",
     "fixes.viaversion.MixinEntityMappings1_11",
-    "fixes.viaversion.MixinEntityPacketRewriter1_20_3",
-    "fixes.viaversion.MixinEntityPacketRewriter1_20_5",
+    "fixes.viaversion.MixinEntityPacketRewriter1_15",
     "fixes.viaversion.MixinEntityPacketRewriter1_17",
     "fixes.viaversion.MixinEntityPacketRewriter1_19_4",
+    "fixes.viaversion.MixinEntityPacketRewriter1_20_3",
+    "fixes.viaversion.MixinEntityPacketRewriter1_20_5",
+    "fixes.viaversion.MixinEntityPacketRewriter1_9",
     "fixes.viaversion.MixinEntityTracker1_9",
     "fixes.viaversion.MixinInventoryAcknowledgements",
+    "fixes.viaversion.MixinInventoryTracker1_16",
     "fixes.viaversion.MixinItemPacketRewriter1_14",
     "fixes.viaversion.MixinItemPacketRewriter1_17",
-    "fixes.viaversion.MixinInventoryTracker1_16",
     "fixes.viaversion.MixinItemPacketRewriter1_9",
     "fixes.viaversion.MixinMappingDataBase",
-    "fixes.viaversion.MixinEntityPacketRewriter1_15",
-    "fixes.viaversion.MixinEntityPacketRewriter1_9",
     "fixes.viaversion.MixinNamedCompoundTagType",
     "fixes.viaversion.MixinParticleIdMappings1_13",
     "fixes.viaversion.MixinProtocol1_10To1_11",
@@ -195,7 +195,7 @@
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
-    "fixes.viaversion.MixinItemPacketRewriter1_9"
+    "base.integration.MixinClientConnection"
   ],
   "injectors": {
     "defaultRequire": 1

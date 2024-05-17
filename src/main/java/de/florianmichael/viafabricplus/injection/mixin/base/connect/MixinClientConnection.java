@@ -25,12 +25,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.injection.access.IMultiValueDebugSampleLogImpl;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.protocoltranslator.netty.ViaFabricPlusVLLegacyPipeline;
-import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -89,13 +87,6 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
     private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
         channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
-    }
-
-    @Inject(method = "exceptionCaught", at = @At("HEAD"))
-    private void printNetworkingErrors(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {
-        if (DebugSettings.global().printNetworkingErrorsToLogs.getValue()) {
-            ViaFabricPlus.global().getLogger().error("An exception occurred while handling a packet", ex);
-        }
     }
 
     @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
