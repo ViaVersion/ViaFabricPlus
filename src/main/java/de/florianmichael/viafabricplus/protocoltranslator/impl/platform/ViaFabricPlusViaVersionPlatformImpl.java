@@ -38,7 +38,7 @@ public class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatformImpl 
 
     @Override
     protected AbstractViaConfig createConfig() {
-        return new ViaFabricPlusVLViaConfig(new File(this.getDataFolder(), "viaversion.yml"));
+        return new ViaFabricPlusVLViaConfig(new File(this.getDataFolder(), "viaversion.yml"), this.getLogger());
     }
 
     @Override

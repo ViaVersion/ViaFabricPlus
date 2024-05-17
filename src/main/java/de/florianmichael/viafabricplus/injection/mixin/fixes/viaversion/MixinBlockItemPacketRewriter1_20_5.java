@@ -35,10 +35,10 @@ import com.viaversion.viaversion.libs.fastutil.ints.IntSet;
 import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
-import com.viaversion.viaversion.protocols.protocol1_20_3to1_20_2.packet.ClientboundPacket1_20_3;
-import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.Protocol1_20_5To1_20_3;
-import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.packet.ServerboundPacket1_20_5;
-import com.viaversion.viaversion.protocols.protocol1_20_5to1_20_3.rewriter.BlockItemPacketRewriter1_20_5;
+import com.viaversion.viaversion.protocols.v1_20_2to1_20_3.packet.ClientboundPacket1_20_3;
+import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.Protocol1_20_3To1_20_5;
+import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ServerboundPacket1_20_5;
+import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.rewriter.BlockItemPacketRewriter1_20_5;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
 import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
@@ -53,7 +53,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.*;
 
 @Mixin(value = BlockItemPacketRewriter1_20_5.class, remap = false)
-public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<ClientboundPacket1_20_3, ServerboundPacket1_20_5, Protocol1_20_5To1_20_3> {
+public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<ClientboundPacket1_20_3, ServerboundPacket1_20_5, Protocol1_20_3To1_20_5> {
 
     @Unique
     private final Set<String> viaFabricPlus$foodItems_b1_7_3 = new HashSet<>();
@@ -67,12 +67,12 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
     @Unique
     private final Map<ProtocolVersion, Map<String, ToolProperties>> viaFabricPlus$toolDataChanges = new LinkedHashMap<>();
 
-    public MixinBlockItemPacketRewriter1_20_5(Protocol1_20_5To1_20_3 protocol, Type<Item> itemType, Type<Item[]> itemArrayType, Type<Item> mappedItemType, Type<Item[]> mappedItemArrayType) {
+    public MixinBlockItemPacketRewriter1_20_5(Protocol1_20_3To1_20_5 protocol, Type<Item> itemType, Type<Item[]> itemArrayType, Type<Item> mappedItemType, Type<Item[]> mappedItemArrayType) {
         super(protocol, itemType, itemArrayType, mappedItemType, mappedItemArrayType);
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void loadItemMappings(Protocol1_20_5To1_20_3 protocol, CallbackInfo ci) {
+    public void loadItemMappings(Protocol1_20_3To1_20_5 protocol, CallbackInfo ci) {
         // Technically it would be cleaner to split mapping loading into there respective protocols, but that will be impossible
         // in a clean way, so let's just wait for Via* to load all protocols and then load everything in here.
         this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:apple");
@@ -134,33 +134,33 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
     // Older servers don't have these components, so we can use them to emulate old item behaviour without the need
     // of modifying tons of code in the game.
     @Inject(method = "toStructuredItem", at = @At("RETURN"))
-    private void appendItemDataFixComponents(UserConnection connection, Item old, CallbackInfoReturnable<Item> cir) {
+    private void appendItemDataFixComponents(UserConnection user, Item old, CallbackInfoReturnable<Item> cir) {
         final StructuredDataContainer data = cir.getReturnValue().structuredData();
         final String identifier = this.protocol.getMappingData().getFullItemMappings().identifier(cir.getReturnValue().identifier());
 
         // Fix damage bar being displayed wrong
-        if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+        if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             if (identifier.equals("minecraft:crossbow")) {
                 data.set(StructuredDataKey.MAX_DAMAGE, 326);
             }
         }
 
         // Add item blocking by make the sword eatable, counterpart in MixinSwordItem
-        if (connection.getProtocolInfo().serverProtocolVersion().betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8)) {
+        if (user.getProtocolInfo().serverProtocolVersion().betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8)) {
             if (this.viaFabricPlus$swordItems1_8.contains(identifier)) {
                 data.set(StructuredDataKey.FOOD, new FoodProperties(0, 0F, true, 3600, new FoodEffect[0]));
             }
         }
 
         // Fix durability tooltip displaying wrong
-        if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             if (this.viaFabricPlus$armorMaxDamage_b1_8_1.containsKey(identifier)) {
                 data.set(StructuredDataKey.MAX_DAMAGE, this.viaFabricPlus$armorMaxDamage_b1_8_1.get(identifier));
             }
         }
 
         // Fix item desyncs
-        if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
+        if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             if (this.viaFabricPlus$foodItems_b1_7_3.contains(identifier)) {
                 data.set(StructuredDataKey.MAX_STACK_SIZE, 1);
                 data.addEmpty(StructuredDataKey.FOOD);
@@ -169,7 +169,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
 
         // Tool data changes include mining speeds as well as suitable blocks and damage values
         for (Map.Entry<ProtocolVersion, Map<String, ToolProperties>> entry : this.viaFabricPlus$toolDataChanges.entrySet()) {
-            if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(entry.getKey())) {
+            if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(entry.getKey())) {
                 final ToolProperties toolProperties = entry.getValue().get(identifier);
                 if (toolProperties != null) {
                     data.set(StructuredDataKey.TOOL, toolProperties);

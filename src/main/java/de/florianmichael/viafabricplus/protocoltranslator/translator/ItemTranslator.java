@@ -26,6 +26,7 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
+import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.fixes.VFPProtocol;
@@ -62,7 +63,7 @@ public class ItemTranslator {
             final PacketWrapper wrapper = PacketWrapper.create(VFPProtocol.getCreativeInventoryActionPacket(), buf, user);
             user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, wrapper);
 
-            wrapper.read(Type.SHORT); // slot
+            wrapper.read(Types.SHORT); // slot
             return wrapper.read(getItemType(targetVersion)); // item
         } catch (Throwable t) {
             ViaFabricPlus.global().getLogger().error("Error converting native item stack to ViaVersion {} item stack", targetVersion, t);
@@ -80,13 +81,13 @@ public class ItemTranslator {
         if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return Typesb1_8_0_1.CREATIVE_ITEM;
         } else if (targetVersion.olderThan(ProtocolVersion.v1_13)) {
-            return Type.ITEM1_8;
+            return Types.ITEM1_8;
         } else if (targetVersion.olderThan(ProtocolVersion.v1_13_2)) {
-            return Type.ITEM1_13;
+            return Types.ITEM1_13;
         } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
-            return Type.ITEM1_13_2;
+            return Types.ITEM1_13_2;
         }  else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            return Type.ITEM1_20_2;
+            return Types.ITEM1_20_2;
         } else {
             return Types1_20_5.ITEM;
         }
@@ -100,17 +101,17 @@ public class ItemTranslator {
      */
     public static ItemStack viaB1_8toMc(final Item item) {
         try {
-            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPacketsb1_8.SET_SLOT, VIA_B1_8_TO_MC_USER_CONNECTION);
-            wrapper.write(Type.BYTE, (byte) 0); // window id
-            wrapper.write(Type.SHORT, (short) 0); // slot
+            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPacketsb1_8.CONTAINER_SET_SLOT, VIA_B1_8_TO_MC_USER_CONNECTION);
+            wrapper.write(Types.BYTE, (byte) 0); // window id
+            wrapper.write(Types.SHORT, (short) 0); // slot
             wrapper.write(Types1_4_2.NBTLESS_ITEM, item); // item
 
             wrapper.resetReader();
             wrapper.user().getProtocolInfo().getPipeline().transform(Direction.CLIENTBOUND, State.PLAY, wrapper);
 
-            wrapper.read(Type.UNSIGNED_BYTE); // sync id
-            wrapper.read(Type.VAR_INT); // revision
-            wrapper.read(Type.SHORT); // slot
+            wrapper.read(Types.UNSIGNED_BYTE); // sync id
+            wrapper.read(Types.VAR_INT); // revision
+            wrapper.read(Types.SHORT); // slot
             final Item viaItem = wrapper.read(getItemType(ProtocolTranslator.NATIVE_VERSION)); // item
             final ItemStack mcItem = new ItemStack(Registries.ITEM.get(viaItem.identifier()));
             mcItem.setCount(viaItem.amount());

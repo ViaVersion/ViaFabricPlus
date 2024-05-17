@@ -24,7 +24,7 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.type.Type;
+import com.viaversion.viaversion.api.type.Types;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
@@ -217,16 +217,16 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     }
 
     @Redirect(method = "tick", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
-    private void modifyPositionPacket(ClientPlayNetworkHandler instance, Packet<?> packet) throws Exception {
+    private void modifyPositionPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
-            final PacketWrapper playerPosition = PacketWrapper.create(ServerboundPackets1_5_2.PLAYER_POSITION_AND_ROTATION, ((IClientConnection) this.networkHandler.getConnection()).viaFabricPlus$getUserConnection());
-            playerPosition.write(Type.DOUBLE, this.getVelocity().x); // x
-            playerPosition.write(Type.DOUBLE, -999.0D); // y
-            playerPosition.write(Type.DOUBLE, -999.0D); // stance
-            playerPosition.write(Type.DOUBLE, this.getVelocity().z); // z
-            playerPosition.write(Type.FLOAT, this.getYaw()); // yaw
-            playerPosition.write(Type.FLOAT, this.getPitch()); // pitch
-            playerPosition.write(Type.BOOLEAN, this.isOnGround()); // onGround
+            final PacketWrapper playerPosition = PacketWrapper.create(ServerboundPackets1_5_2.MOVE_PLAYER_POS_ROT, ((IClientConnection) this.networkHandler.getConnection()).viaFabricPlus$getUserConnection());
+            playerPosition.write(Types.DOUBLE, this.getVelocity().x); // x
+            playerPosition.write(Types.DOUBLE, -999.0D); // y
+            playerPosition.write(Types.DOUBLE, -999.0D); // stance
+            playerPosition.write(Types.DOUBLE, this.getVelocity().z); // z
+            playerPosition.write(Types.FLOAT, this.getYaw()); // yaw
+            playerPosition.write(Types.FLOAT, this.getPitch()); // pitch
+            playerPosition.write(Types.BOOLEAN, this.isOnGround()); // onGround
             playerPosition.scheduleSendToServer(Protocol1_6_1to1_5_2.class);
             return;
         }

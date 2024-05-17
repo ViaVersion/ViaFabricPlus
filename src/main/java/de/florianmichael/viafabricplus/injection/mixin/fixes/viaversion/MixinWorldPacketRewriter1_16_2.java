@@ -19,17 +19,17 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.rewriter.WorldPacketRewriter1_16_2;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(targets = "com.viaversion.viaversion.protocols.protocol1_12to1_11_1.Protocol1_12To1_11_1$3", remap = false)
-public abstract class MixinProtocol1_12To1_11_1 {
+@Mixin(value = WorldPacketRewriter1_16_2.class, remap = false)
+public abstract class MixinWorldPacketRewriter1_16_2 {
 
-    @Redirect(method = "lambda$register$1", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;newerThanOrEqualTo(Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;)Z"))
-    private static boolean dontClearRecipes(ProtocolVersion instance, ProtocolVersion other) {
-        return false;
+    @ModifyConstant(method = "lambda$register$0", constant = @Constant(intValue = 16))
+    private static int modifySectionCountToSupportClassicWorldHeight(int constant) {
+        return 64;
     }
 
 }

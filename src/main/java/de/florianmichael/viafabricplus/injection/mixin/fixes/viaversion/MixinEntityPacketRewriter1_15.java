@@ -19,25 +19,25 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.protocols.protocol1_14_4to1_14_3.ClientboundPackets1_14_4;
-import com.viaversion.viaversion.protocols.protocol1_15to1_14_4.Protocol1_15To1_14_4;
-import com.viaversion.viaversion.protocols.protocol1_15to1_14_4.metadata.MetadataRewriter1_15To1_14_4;
+import com.viaversion.viaversion.protocols.v1_14_3to1_14_4.packet.ClientboundPackets1_14_4;
+import com.viaversion.viaversion.protocols.v1_14_4to1_15.Protocol1_14_4To1_15;
+import com.viaversion.viaversion.protocols.v1_14_4to1_15.rewriter.EntityPacketRewriter1_15;
 import com.viaversion.viaversion.rewriter.EntityRewriter;
-import com.viaversion.viaversion.rewriter.meta.MetaFilter;
+import com.viaversion.viaversion.rewriter.entitydata.EntityDataFilter;
 import de.florianmichael.viafabricplus.fixes.tracker.WolfHealthTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = MetadataRewriter1_15To1_14_4.class, remap = false)
-public abstract class MixinMetadataRewriter1_15To1_14_4 extends EntityRewriter<ClientboundPackets1_14_4, Protocol1_15To1_14_4> {
+@Mixin(value = EntityPacketRewriter1_15.class, remap = false)
+public abstract class MixinEntityPacketRewriter1_15 extends EntityRewriter<ClientboundPackets1_14_4, Protocol1_14_4To1_15> {
 
-    public MixinMetadataRewriter1_15To1_14_4(Protocol1_15To1_14_4 protocol) {
+    public MixinEntityPacketRewriter1_15(Protocol1_14_4To1_15 protocol) {
         super(protocol);
     }
 
-    @Redirect(method = "registerRewrites", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/rewriter/meta/MetaFilter$Builder;removeIndex(I)V"))
-    private void trackHealth(MetaFilter.Builder instance, int index) {
+    @Redirect(method = "registerRewrites", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/rewriter/entitydata/EntityDataFilter$Builder;removeIndex(I)V"))
+    private void trackHealth(EntityDataFilter.Builder instance, int index) {
         instance.handler((event, meta) -> { // Basically removeIndex, but we need to track the actual health value
             final int metaIndex = event.index();
             if (metaIndex == index) {

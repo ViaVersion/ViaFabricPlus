@@ -19,21 +19,21 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.api.minecraft.metadata.Metadata;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.Protocol1_9To1_8;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.metadata.MetadataRewriter1_9To1_8;
-import com.viaversion.viaversion.rewriter.meta.MetaHandlerEvent;
+import com.viaversion.viaversion.api.minecraft.entitydata.EntityData;
+import com.viaversion.viaversion.protocols.v1_8to1_9.Protocol1_8To1_9;
+import com.viaversion.viaversion.protocols.v1_8to1_9.rewriter.EntityPacketRewriter1_9;
+import com.viaversion.viaversion.rewriter.entitydata.EntityDataHandlerEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = MetadataRewriter1_9To1_8.class, remap = false)
-public abstract class MixinMetadataRewriter1_9To1_8 {
+@Mixin(value = EntityPacketRewriter1_9.class, remap = false)
+public abstract class MixinEntityPacketRewriter1_9 {
 
-    @Inject(method = "handleMetadata", at = @At(value = "FIELD", target = "Lcom/viaversion/viaversion/protocols/protocol1_9to1_8/metadata/MetaIndex;PLAYER_HAND:Lcom/viaversion/viaversion/protocols/protocol1_9to1_8/metadata/MetaIndex;", ordinal = 0, shift = At.Shift.BEFORE), cancellable = true)
-    private void preventMetadataForClientPlayer(MetaHandlerEvent event, Metadata metadata, CallbackInfo ci) {
-        if (event.user().getEntityTracker(Protocol1_9To1_8.class).clientEntityId() == event.entityId()) {
+    @Inject(method = "handleMetadata", at = @At(value = "FIELD", target = "Lcom/viaversion/viaversion/api/minecraft/entities/EntityTypes1_9$EntityType;PLAYER:Lcom/viaversion/viaversion/api/minecraft/entities/EntityTypes1_9$EntityType;", ordinal = 0, shift = At.Shift.BEFORE), cancellable = true)
+    private void preventMetadataForClientPlayer(EntityDataHandlerEvent event, EntityData metadata, CallbackInfo ci) {
+        if (event.user().getEntityTracker(Protocol1_8To1_9.class).clientEntityId() == event.entityId()) {
             ci.cancel();
         }
     }

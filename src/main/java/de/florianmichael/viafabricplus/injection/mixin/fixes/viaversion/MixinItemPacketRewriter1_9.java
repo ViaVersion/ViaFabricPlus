@@ -25,9 +25,9 @@ import com.viaversion.viaversion.libs.fastutil.ints.Int2ObjectMap;
 import com.viaversion.viaversion.libs.fastutil.ints.Int2ObjectOpenHashMap;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
-import com.viaversion.viaversion.libs.opennbt.tag.builtin.CompoundTag;
-import com.viaversion.viaversion.libs.opennbt.tag.builtin.ListTag;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.ItemRewriter;
+import com.viaversion.nbt.tag.CompoundTag;
+import com.viaversion.nbt.tag.ListTag;
+import com.viaversion.viaversion.protocols.v1_8to1_9.rewriter.ItemPacketRewriter1_9;
 import com.viaversion.viaversion.util.Pair;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
@@ -36,25 +36,26 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Mixin(value = ItemRewriter.class, remap = false)
-public abstract class MixinItemRewriter {
+@Mixin(value = ItemPacketRewriter1_9.class, remap = false)
+public abstract class MixinItemPacketRewriter1_9 {
 
     @Unique
-    private static final Int2ObjectMap<String> ITEM_IDENTIFIERS = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectMap<String> viaFabricPlus$itemIdentifiers = new Int2ObjectOpenHashMap<>();
 
     @Unique
-    private static final Map<String, Map<String, Pair<String, ModifierData>>> ITEM_ATTRIBUTES = new HashMap<>();
+    private final Map<String, Map<String, Pair<String, ModifierData>>> viaFabricPlus$itemAttributes = new HashMap<>();
 
-    @Inject(method = "<clinit>", at = @At("RETURN"))
-    private static void loadAdditionalData(CallbackInfo ci) {
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void loadAdditionalData(CallbackInfo ci) {
         final JsonObject itemIdentifiers = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("item-identifiers-1.8.json");
         for (Map.Entry<String, JsonElement> entry : itemIdentifiers.entrySet()) {
-            ITEM_IDENTIFIERS.put(entry.getValue().getAsInt(), entry.getKey());
+            viaFabricPlus$itemIdentifiers.put(entry.getValue().getAsInt(), entry.getKey());
         }
 
         final JsonObject itemAttributes = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("item-attributes-1.8.json");
@@ -68,17 +69,18 @@ public abstract class MixinItemRewriter {
                 final String slot = attributeData.get("slot").getAsString();
                 attributes.put(attribute, new Pair<>(slot, modifierData));
             }
-            ITEM_ATTRIBUTES.put(itemIdentifier, attributes);
+            viaFabricPlus$itemAttributes.put(itemIdentifier, attributes);
         }
     }
 
-    @Inject(method = "toClient", at = @At("RETURN"))
-    private static void addAttributeFixData(Item item, CallbackInfo ci) {
+    @Inject(method = "handleItemToClient", at = @At("RETURN"))
+    private void addAttributeFixData(CallbackInfoReturnable<Item> cir) {
+        final Item item = cir.getReturnValue();
         if (item == null) return;
 
-        final String identifier = ITEM_IDENTIFIERS.get(item.identifier());
-        if (identifier != null && ITEM_ATTRIBUTES.containsKey(identifier)) {
-            final Map<String, Pair<String, ModifierData>> attributes = ITEM_ATTRIBUTES.get(identifier);
+        final String identifier = viaFabricPlus$itemIdentifiers.get(item.identifier());
+        if (identifier != null && viaFabricPlus$itemAttributes.containsKey(identifier)) {
+            final Map<String, Pair<String, ModifierData>> attributes = viaFabricPlus$itemAttributes.get(identifier);
             final CompoundTag attributeFixTag = new CompoundTag();
             CompoundTag tag = item.tag();
             if (tag == null) {
@@ -108,8 +110,9 @@ public abstract class MixinItemRewriter {
         }
     }
 
-    @Inject(method = "toServer", at = @At("RETURN"))
-    private static void removeAttributeFixData(Item item, CallbackInfo ci) {
+    @Inject(method = "handleItemToServer", at = @At("RETURN"))
+    private void removeAttributeFixData(CallbackInfoReturnable<Item> cir) {
+        final Item item = cir.getReturnValue();
         if (item == null) return;
         final CompoundTag tag = item.tag();
         if (tag == null) return;

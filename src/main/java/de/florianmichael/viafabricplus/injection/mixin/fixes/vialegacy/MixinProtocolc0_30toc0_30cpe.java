@@ -22,9 +22,9 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
-import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.ClientboundPackets1_19_4;
-import com.viaversion.viaversion.protocols.protocol1_19_4to1_19_3.Protocol1_19_4To1_19_3;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.Protocol1_19_3To1_19_4;
+import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.packet.ClientboundPackets1_19_4;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.ClientboundPacketsc0_28;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.ServerboundPacketsc0_28;
@@ -46,18 +46,18 @@ public abstract class MixinProtocolc0_30toc0_30cpe extends AbstractProtocol<Clie
             public void register() {
                 handler(wrapper -> {
                     wrapper.cancel();
-                    final byte weatherType = wrapper.read(Type.BYTE);
+                    final byte weatherType = wrapper.read(Types.BYTE);
 
                     final PacketWrapper changeRainState = PacketWrapper.create(ClientboundPackets1_19_4.GAME_EVENT, wrapper.user());
-                    changeRainState.write(Type.BYTE, weatherType == 0 /* sunny */ ? (byte) 2 : (byte) 1); // start raining
-                    changeRainState.write(Type.FLOAT, 0F); // unused
-                    changeRainState.send(Protocol1_19_4To1_19_3.class);
+                    changeRainState.write(Types.UNSIGNED_BYTE, weatherType == 0 /* sunny */ ? (short) 2 : (short) 1); // start raining
+                    changeRainState.write(Types.FLOAT, 0F); // unused
+                    changeRainState.send(Protocol1_19_3To1_19_4.class);
 
                     if (weatherType == 1 /* raining */ || weatherType == 2 /* snowing */) {
                         final PacketWrapper changeRainType = PacketWrapper.create(ClientboundPackets1_19_4.GAME_EVENT, wrapper.user());
-                        changeRainType.write(Type.BYTE, (byte) 7);
-                        changeRainType.write(Type.FLOAT, weatherType == 1 /* raining */ ? 0F : 1F);
-                        changeRainType.send(Protocol1_19_4To1_19_3.class);
+                        changeRainType.write(Types.UNSIGNED_BYTE, (short) 7);
+                        changeRainType.write(Types.FLOAT, weatherType == 1 /* raining */ ? 0F : 1F);
+                        changeRainType.send(Protocol1_19_3To1_19_4.class);
                     }
                 });
             }

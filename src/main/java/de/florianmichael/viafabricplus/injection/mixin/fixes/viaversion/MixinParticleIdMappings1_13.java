@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.protocols.protocol1_13to1_12_2.data.ParticleRewriter;
+import com.viaversion.viaversion.protocols.v1_12_2to1_13.data.ParticleIdMappings1_13;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,8 +31,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(value = ParticleRewriter.class, remap = false)
-public abstract class MixinParticleRewriter {
+@Mixin(value = ParticleIdMappings1_13.class, remap = false)
+public abstract class MixinParticleIdMappings1_13 {
 
     @Shadow
     @Final
@@ -45,7 +45,7 @@ public abstract class MixinParticleRewriter {
         }
     }
 
-    @ModifyArg(method = "add(I)V", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/protocol1_13to1_12_2/data/ParticleRewriter$NewParticle;<init>(ILcom/viaversion/viaversion/protocols/protocol1_13to1_12_2/data/ParticleRewriter$ParticleDataHandler;)V"))
+    @ModifyArg(method = "add(I)V", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/v1_12_2to1_13/data/ParticleIdMappings1_13$NewParticle;<init>(ILcom/viaversion/viaversion/protocols/v1_12_2to1_13/data/ParticleIdMappings1_13$ParticleDataHandler;)V"))
     private static int replaceFootStepId(int id) {
         if (particles.size() == 28) { // minecraft:footstep -> viafabricplus:footstep
             return FootStepParticle1_12_2.ID;

@@ -25,16 +25,16 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.util.ChatUtil;
 
-public abstract class VFPViaSubCommand extends ViaSubCommand {
+public interface VFPViaSubCommand extends ViaSubCommand {
 
     /**
      * Automatically prefix all messages
      */
-    public void sendMessage(final ViaCommandSender sender, final String message) {
-        ViaSubCommand.sendMessage(sender, ChatUtil.PREFIX + " " + message);
+    default void sendMessage(final ViaCommandSender sender, final String message) {
+        ViaSubCommand.super.sendMessage(sender, ChatUtil.PREFIX + " " + message);
     }
 
-    public UserConnection getUser() {
+    default UserConnection getUser() {
         return ProtocolTranslator.getPlayNetworkUserConnection();
     }
 

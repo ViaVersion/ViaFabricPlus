@@ -23,9 +23,9 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viaversion.protocols.protocol1_16_2to1_16_1.ServerboundPackets1_16_2;
-import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.Protocol1_17To1_16_4;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.packet.ServerboundPackets1_16_2;
+import com.viaversion.viaversion.protocols.v1_16_4to1_17.Protocol1_16_4To1_17;
 import de.florianmichael.viafabricplus.fixes.versioned.ActionResultException1_12_2;
 import de.florianmichael.viafabricplus.fixes.versioned.ClientPlayerInteractionManager1_18_2;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
@@ -142,7 +142,7 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
     }
 
     @WrapWithCondition(method = "clickSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
-    private boolean handleWindowClick1_16_5(ClientPlayNetworkHandler instance, Packet<?> packet) throws Exception {
+    private boolean handleWindowClick1_16_5(ClientPlayNetworkHandler instance, Packet<?> packet) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
             ItemStack slotItemBeforeModification;
             if (this.viaFabricPlus$shouldBeEmpty(clickSlot.getActionType(), clickSlot.getSlot())) {
@@ -153,14 +153,14 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
                 slotItemBeforeModification = viaFabricPlus$oldItems.get(clickSlot.getSlot());
             }
 
-            final PacketWrapper clickWindowPacket = PacketWrapper.create(ServerboundPackets1_16_2.CLICK_WINDOW, ((IClientConnection) networkHandler.getConnection()).viaFabricPlus$getUserConnection());
-            clickWindowPacket.write(Type.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
-            clickWindowPacket.write(Type.SHORT, (short) clickSlot.getSlot());
-            clickWindowPacket.write(Type.BYTE, (byte) clickSlot.getButton());
-            clickWindowPacket.write(Type.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viaFabricPlus$incrementAndGetActionId());
-            clickWindowPacket.write(Type.VAR_INT, clickSlot.getActionType().ordinal());
-            clickWindowPacket.write(Type.ITEM1_13_2, ItemTranslator.mcToVia(slotItemBeforeModification, ProtocolVersion.v1_16_4));
-            clickWindowPacket.scheduleSendToServer(Protocol1_17To1_16_4.class);
+            final PacketWrapper clickWindowPacket = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ((IClientConnection) networkHandler.getConnection()).viaFabricPlus$getUserConnection());
+            clickWindowPacket.write(Types.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
+            clickWindowPacket.write(Types.SHORT, (short) clickSlot.getSlot());
+            clickWindowPacket.write(Types.BYTE, (byte) clickSlot.getButton());
+            clickWindowPacket.write(Types.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viaFabricPlus$incrementAndGetActionId());
+            clickWindowPacket.write(Types.VAR_INT, clickSlot.getActionType().ordinal());
+            clickWindowPacket.write(Types.ITEM1_13_2, ItemTranslator.mcToVia(slotItemBeforeModification, ProtocolVersion.v1_16_4));
+            clickWindowPacket.scheduleSendToServer(Protocol1_16_4To1_17.class);
 
             viaFabricPlus$oldCursorStack = null;
             viaFabricPlus$oldItems = null;

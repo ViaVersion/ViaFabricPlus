@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.storage.InventoryAcknowledgements;
+import com.viaversion.viaversion.protocols.v1_16_4to1_17.storage.InventoryAcknowledgements;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;

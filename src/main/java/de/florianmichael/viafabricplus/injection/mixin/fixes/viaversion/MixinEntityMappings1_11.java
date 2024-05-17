@@ -20,17 +20,17 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.api.minecraft.item.Item;
-import com.viaversion.viaversion.libs.opennbt.tag.builtin.ByteTag;
-import com.viaversion.viaversion.libs.opennbt.tag.builtin.CompoundTag;
-import com.viaversion.viaversion.protocols.protocol1_11to1_10.rewriter.EntityIdRewriter;
+import com.viaversion.nbt.tag.ByteTag;
+import com.viaversion.nbt.tag.CompoundTag;
+import com.viaversion.viaversion.protocols.v1_10to1_11.data.EntityMappings1_11;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = EntityIdRewriter.class, remap = false)
-public abstract class MixinEntityIdRewriter {
+@Mixin(value = EntityMappings1_11.class, remap = false)
+public abstract class MixinEntityMappings1_11 {
 
     @Inject(method = "toClientItem(Lcom/viaversion/viaversion/api/minecraft/item/Item;Z)V", at = @At("HEAD"))
     private static void handleNegativeItemCountS2C(Item item, boolean backwards, CallbackInfo ci) {
@@ -50,7 +50,7 @@ public abstract class MixinEntityIdRewriter {
     private static void handleNegativeItemCountC2S(Item item, boolean backwards, CallbackInfo ci) {
         if (item != null && item.tag() != null) {
             if (item.tag().contains(ClientsideFixes.ITEM_COUNT_FIX_KEY)) {
-                item.setAmount(item.tag().<ByteTag>remove(ClientsideFixes.ITEM_COUNT_FIX_KEY).asByte());
+                item.setAmount(item.tag().<ByteTag>removeUnchecked(ClientsideFixes.ITEM_COUNT_FIX_KEY).asByte());
                 if (item.tag().isEmpty()) item.setTag(null);
             }
         }

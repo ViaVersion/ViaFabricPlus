@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.libs.fastutil.ints.IntList;
-import com.viaversion.viaversion.protocols.protocol1_17to1_16_4.storage.InventoryAcknowledgements;
+import com.viaversion.viaversion.protocols.v1_16_4to1_17.storage.InventoryAcknowledgements;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntLists;
 import org.spongepowered.asm.mixin.*;

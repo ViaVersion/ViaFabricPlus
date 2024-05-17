@@ -20,11 +20,11 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
-import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPackets1_18;
-import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.ClientboundPackets1_19;
-import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.Protocol1_19To1_18_2;
-import com.viaversion.viaversion.protocols.protocol1_19to1_18_2.packets.WorldPackets;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_17_1to1_18.packet.ClientboundPackets1_18;
+import com.viaversion.viaversion.protocols.v1_18_2to1_19.Protocol1_18_2To1_19;
+import com.viaversion.viaversion.protocols.v1_18_2to1_19.packet.ClientboundPackets1_19;
+import com.viaversion.viaversion.protocols.v1_18_2to1_19.rewriter.WorldPacketRewriter1_19;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IClientPlayerInteractionManager;
 import de.florianmichael.viafabricplus.protocoltranslator.translator.BlockStateTranslator;
@@ -36,12 +36,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = WorldPackets.class, remap = false)
-public abstract class MixinWorldPackets1_19 {
+@Mixin(value = WorldPacketRewriter1_19.class, remap = false)
+public abstract class MixinWorldPacketRewriter1_19 {
 
-    @Redirect(method = "register", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/protocol1_19to1_18_2/Protocol1_19To1_18_2;cancelClientbound(Lcom/viaversion/viaversion/api/protocol/packet/ClientboundPacketType;)V"))
-    private static void handleLegacyAcknowledgePlayerDigging(Protocol1_19To1_18_2 instance, ClientboundPacketType clientboundPacketType) {
-        instance.registerClientbound(ClientboundPackets1_18.ACKNOWLEDGE_PLAYER_DIGGING, ClientboundPackets1_19.PLUGIN_MESSAGE, wrapper -> {
+    @Redirect(method = "register", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/v1_18_2to1_19/Protocol1_18_2To1_19;cancelClientbound(Lcom/viaversion/viaversion/api/protocol/packet/ClientboundPacketType;)V"))
+    private static void handleLegacyAcknowledgePlayerDigging(Protocol1_18_2To1_19 instance, ClientboundPacketType clientboundPacketType) {
+        instance.registerClientbound(ClientboundPackets1_18.BLOCK_BREAK_ACK, ClientboundPackets1_19.CUSTOM_PAYLOAD, wrapper -> {
             wrapper.resetReader();
 
             final String uuid = ClientsideFixes.executeSyncTask(data -> {
@@ -57,8 +57,8 @@ public abstract class MixinWorldPackets1_19 {
                     throw new RuntimeException("Failed to handle BlockBreakAck packet data", t);
                 }
             });
-            wrapper.write(Type.STRING, ClientsideFixes.PACKET_SYNC_IDENTIFIER);
-            wrapper.write(Type.STRING, uuid);
+            wrapper.write(Types.STRING, ClientsideFixes.PACKET_SYNC_IDENTIFIER);
+            wrapper.write(Types.STRING, uuid);
         });
     }
 

@@ -25,9 +25,10 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
+import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.libs.gson.JsonElement;
-import com.viaversion.viaversion.libs.opennbt.tag.builtin.Tag;
-import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.ClientboundPackets1_14;
+import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ClientboundPackets1_14;
+import com.viaversion.nbt.tag.Tag;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 
@@ -43,17 +44,17 @@ public class TextComponentTranslator {
      */
     public static Tag via1_14toViaLatest(final JsonElement component) {
         try {
-            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_14.OPEN_WINDOW, DUMMY_USER_CONNECTION);
-            wrapper.write(Type.VAR_INT, 1); // window id
-            wrapper.write(Type.VAR_INT, 0); // type id
-            wrapper.write(Type.COMPONENT, component); // title
+            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_14.OPEN_SCREEN, DUMMY_USER_CONNECTION);
+            wrapper.write(Types.VAR_INT, 1); // window id
+            wrapper.write(Types.VAR_INT, 0); // type id
+            wrapper.write(Types.COMPONENT, component); // title
 
             wrapper.resetReader();
             wrapper.user().getProtocolInfo().getPipeline().transform(Direction.CLIENTBOUND, State.PLAY, wrapper);
 
-            wrapper.read(Type.VAR_INT); // window id
-            wrapper.read(Type.VAR_INT); // type id
-            return wrapper.read(Type.TAG); // title
+            wrapper.read(Types.VAR_INT); // window id
+            wrapper.read(Types.VAR_INT); // type id
+            return wrapper.read(Types.TAG); // title
         } catch (Throwable t) {
             ViaFabricPlus.global().getLogger().error("Error converting ViaVersion 1.14 text component to native text component", t);
             return null;

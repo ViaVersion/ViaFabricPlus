@@ -23,9 +23,9 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viaversion.protocols.protocol1_12to1_11_1.Protocol1_12To1_11_1;
-import com.viaversion.viaversion.protocols.protocol1_9_3to1_9_1_2.ServerboundPackets1_9_3;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_11_1to1_12.Protocol1_11_1To1_12;
+import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ServerboundPackets1_9_3;
 import de.florianmichael.viafabricplus.fixes.data.ItemRegistryDiff;
 import de.florianmichael.viafabricplus.injection.access.IMouseKeyboard;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -122,9 +122,9 @@ public abstract class MixinMinecraftClient {
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/TutorialManager;onInventoryOpened()V", shift = At.Shift.AFTER))
     private void sendOpenInventoryPacket(CallbackInfo ci) throws Exception {
         if (DebugSettings.global().sendOpenInventoryPacket.isEnabled()) {
-            final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_STATUS, ProtocolTranslator.getPlayNetworkUserConnection());
-            clientStatus.write(Type.VAR_INT, 2); // Open Inventory Achievement
-            clientStatus.scheduleSendToServer(Protocol1_12To1_11_1.class);
+            final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_COMMAND, ProtocolTranslator.getPlayNetworkUserConnection());
+            clientStatus.write(Types.VAR_INT, 2); // Open Inventory Achievement
+            clientStatus.scheduleSendToServer(Protocol1_11_1To1_12.class);
         }
     }
 

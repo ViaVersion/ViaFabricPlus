@@ -25,8 +25,8 @@ import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viaversion.protocols.protocol1_18to1_17_1.ClientboundPackets1_18;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_17_1to1_18.packet.ClientboundPackets1_18;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.Block;
@@ -45,18 +45,18 @@ public class BlockStateTranslator {
      */
     public static BlockState via1_18_2toMc(final int blockStateId) {
         try {
-            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_18.EFFECT, DUMMY_USER_CONNECTION);
-            wrapper.write(Type.INT, 2001); // eventId
-            wrapper.write(Type.POSITION1_14, new Position(0, 0, 0)); // position
-            wrapper.write(Type.INT, blockStateId); // data
-            wrapper.write(Type.BOOLEAN, false); // global
+            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_18.LEVEL_EVENT, DUMMY_USER_CONNECTION);
+            wrapper.write(Types.INT, 2001); // eventId
+            wrapper.write(Types.BLOCK_POSITION1_14, new Position(0, 0, 0)); // position
+            wrapper.write(Types.INT, blockStateId); // data
+            wrapper.write(Types.BOOLEAN, false); // global
 
             wrapper.resetReader();
             wrapper.user().getProtocolInfo().getPipeline().transform(Direction.CLIENTBOUND, State.PLAY, wrapper);
 
-            wrapper.read(Type.INT); // eventId
-            wrapper.read(Type.POSITION1_14); // position
-            return Block.getStateFromRawId(wrapper.read(Type.INT)); // data
+            wrapper.read(Types.INT); // eventId
+            wrapper.read(Types.BLOCK_POSITION1_14); // position
+            return Block.getStateFromRawId(wrapper.read(Types.INT)); // data
         } catch (Throwable t) {
             ViaFabricPlus.global().getLogger().error("Error converting ViaVersion 1.18.2 block state to native block state", t);
             return Blocks.AIR.getDefaultState();

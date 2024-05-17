@@ -26,8 +26,9 @@ import com.viaversion.viaversion.api.minecraft.chunks.ChunkSection;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Type;
+import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.chunk.ChunkType1_17;
-import com.viaversion.viaversion.libs.opennbt.tag.builtin.CompoundTag;
+import com.viaversion.nbt.tag.CompoundTag;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.model.ClassicLevel;
 import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicWorldHeightProvider;
@@ -45,10 +46,10 @@ public class WorldHeightSupport {
             if (wrapper.isCancelled()) return;
 
             if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                for (CompoundTag dimension : wrapper.get(Type.NAMED_COMPOUND_TAG, 0).getCompoundTag("minecraft:dimension_type").getListTag("value", CompoundTag.class)) {
+                for (CompoundTag dimension : wrapper.get(Types.NAMED_COMPOUND_TAG, 0).getCompoundTag("minecraft:dimension_type").getListTag("value", CompoundTag.class)) {
                     changeDimensionTagHeight(wrapper.user(), dimension.getCompoundTag("element"));
                 }
-                changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NAMED_COMPOUND_TAG, 1));
+                changeDimensionTagHeight(wrapper.user(), wrapper.get(Types.NAMED_COMPOUND_TAG, 1));
             }
         };
     }
@@ -59,7 +60,7 @@ public class WorldHeightSupport {
             if (wrapper.isCancelled()) return;
 
             if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                changeDimensionTagHeight(wrapper.user(), wrapper.get(Type.NAMED_COMPOUND_TAG, 0));
+                changeDimensionTagHeight(wrapper.user(), wrapper.get(Types.NAMED_COMPOUND_TAG, 0));
             }
         };
     }
@@ -103,14 +104,14 @@ public class WorldHeightSupport {
         final PacketHandler classicLightHandler = new PacketHandlers() {
             @Override
             public void register() {
-                map(Type.VAR_INT); // x
-                map(Type.VAR_INT); // y
-                map(Type.BOOLEAN); // trust edges
+                map(Types.VAR_INT); // x
+                map(Types.VAR_INT); // y
+                map(Types.BOOLEAN); // trust edges
                 handler(wrapper -> {
-                    wrapper.read(Type.VAR_INT); // sky light mask
-                    wrapper.read(Type.VAR_INT); // block light mask
-                    final int emptySkyLightMask = wrapper.read(Type.VAR_INT); // empty sky light mask
-                    final int emptyBlockLightMask = wrapper.read(Type.VAR_INT); // empty block light mask
+                    wrapper.read(Types.VAR_INT); // sky light mask
+                    wrapper.read(Types.VAR_INT); // block light mask
+                    final int emptySkyLightMask = wrapper.read(Types.VAR_INT); // empty sky light mask
+                    final int emptyBlockLightMask = wrapper.read(Types.VAR_INT); // empty block light mask
 
                     final ClassicLevel level = wrapper.user().get(ClassicLevelStorage.class).getClassicLevel();
                     final ClassicWorldHeightProvider heightProvider = Via.getManager().getProviders().get(ClassicWorldHeightProvider.class);
@@ -122,8 +123,8 @@ public class WorldHeightSupport {
                     }
 
                     final List<byte[]> lightArrays = new ArrayList<>();
-                    while (wrapper.isReadable(Type.BYTE_ARRAY_PRIMITIVE, 0)) {
-                        lightArrays.add(wrapper.read(Type.BYTE_ARRAY_PRIMITIVE));
+                    while (wrapper.isReadable(Types.BYTE_ARRAY_PRIMITIVE, 0)) {
+                        lightArrays.add(wrapper.read(Types.BYTE_ARRAY_PRIMITIVE));
                     }
 
                     int skyLightCount = 16;
@@ -141,18 +142,18 @@ public class WorldHeightSupport {
                     skyLightMask.set(0, skyLightCount);
                     blockLightMask.set(0, blockLightCount);
 
-                    wrapper.write(Type.LONG_ARRAY_PRIMITIVE, skyLightMask.toLongArray());
-                    wrapper.write(Type.LONG_ARRAY_PRIMITIVE, blockLightMask.toLongArray());
-                    wrapper.write(Type.LONG_ARRAY_PRIMITIVE, new long[emptySkyLightMask]);
-                    wrapper.write(Type.LONG_ARRAY_PRIMITIVE, new long[emptyBlockLightMask]);
+                    wrapper.write(Types.LONG_ARRAY_PRIMITIVE, skyLightMask.toLongArray());
+                    wrapper.write(Types.LONG_ARRAY_PRIMITIVE, blockLightMask.toLongArray());
+                    wrapper.write(Types.LONG_ARRAY_PRIMITIVE, new long[emptySkyLightMask]);
+                    wrapper.write(Types.LONG_ARRAY_PRIMITIVE, new long[emptyBlockLightMask]);
 
-                    wrapper.write(Type.VAR_INT, skyLightCount);
+                    wrapper.write(Types.VAR_INT, skyLightCount);
                     for (int i = 0; i < skyLightCount; i++) {
-                        wrapper.write(Type.BYTE_ARRAY_PRIMITIVE, lightArrays.remove(0));
+                        wrapper.write(Types.BYTE_ARRAY_PRIMITIVE, lightArrays.remove(0));
                     }
-                    wrapper.write(Type.VAR_INT, blockLightCount);
+                    wrapper.write(Types.VAR_INT, blockLightCount);
                     for (int i = 0; i < blockLightCount; i++) {
-                        wrapper.write(Type.BYTE_ARRAY_PRIMITIVE, lightArrays.remove(0));
+                        wrapper.write(Types.BYTE_ARRAY_PRIMITIVE, lightArrays.remove(0));
                     }
                 });
             }

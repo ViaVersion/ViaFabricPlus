@@ -19,11 +19,19 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
+import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;
 import com.viaversion.viaversion.api.type.Type;
+import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.libs.gson.JsonElement;
-import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.ClientboundPackets1_14;
-import com.viaversion.viaversion.protocols.protocol1_14to1_13_2.packets.InventoryPackets;
+import com.viaversion.viaversion.protocols.v1_12_2to1_13.packet.ClientboundPackets1_13;
+import com.viaversion.viaversion.protocols.v1_12_2to1_13.packet.ServerboundPackets1_13;
+import com.viaversion.viaversion.protocols.v1_13_2to1_14.Protocol1_13_2To1_14;
+import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ClientboundPackets1_14;
+import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ServerboundPackets1_14;
+import com.viaversion.viaversion.protocols.v1_13_2to1_14.rewriter.ItemPacketRewriter1_14;
+import com.viaversion.viaversion.rewriter.ItemRewriter;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.protocoltranslator.translator.TextComponentTranslator;
 import net.minecraft.client.MinecraftClient;
@@ -39,11 +47,20 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@Mixin(value = InventoryPackets.class, remap = false)
-public abstract class MixinInventoryPackets {
+@Mixin(value = ItemPacketRewriter1_14.class, remap = false)
+public abstract class MixinItemPacketRewriter1_14 extends ItemRewriter<ClientboundPackets1_13, ServerboundPackets1_14, Protocol1_13_2To1_14> {
 
-    @Inject(method = "lambda$registerPackets$0", at = @At(value = "INVOKE", target = "Ljava/util/logging/Logger;warning(Ljava/lang/String;)V", remap = false), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private static void supportLargeContainers(PacketWrapper wrapper, CallbackInfo ci, Short windowId, String type, JsonElement title, Short slots) {
+    public MixinItemPacketRewriter1_14(Protocol1_13_2To1_14 protocol, Type<Item> itemType, Type<Item[]> itemArrayType) {
+        super(protocol, itemType, itemArrayType);
+    }
+
+    @Inject(method = "registerPackets", at = @At("RETURN"))
+    private void dontResyncInventory(CallbackInfo ci) {
+        this.protocol.registerServerbound(ServerboundPackets1_14.SELECT_TRADE, ServerboundPackets1_13.SELECT_TRADE, null, true);
+    }
+
+    @Inject(method = "lambda$registerPackets$0", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/util/ProtocolLogger;warning(Ljava/lang/String;)V", remap = false), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    private void supportLargeContainers(PacketWrapper wrapper, CallbackInfo ci, Short windowId, String type, JsonElement title, Short slots) {
         if ((type.equals("minecraft:container") || type.equals("minecraft:chest")) && (slots > 54 || slots <= 0)) {
             ci.cancel();
 
@@ -64,12 +81,12 @@ public abstract class MixinInventoryPackets {
             });
 
             wrapper.clearPacket();
-            wrapper.setPacketType(ClientboundPackets1_14.PLUGIN_MESSAGE);
-            wrapper.write(Type.STRING, ClientsideFixes.PACKET_SYNC_IDENTIFIER); // sync task header
-            wrapper.write(Type.STRING, uuid); // sync task id
-            wrapper.write(Type.UNSIGNED_BYTE, windowId);
-            wrapper.write(Type.UNSIGNED_BYTE, slots);
-            wrapper.write(Type.TAG, TextComponentTranslator.via1_14toViaLatest(title));
+            wrapper.setPacketType(ClientboundPackets1_14.CUSTOM_PAYLOAD);
+            wrapper.write(Types.STRING, ClientsideFixes.PACKET_SYNC_IDENTIFIER); // sync task header
+            wrapper.write(Types.STRING, uuid); // sync task id
+            wrapper.write(Types.UNSIGNED_BYTE, windowId);
+            wrapper.write(Types.UNSIGNED_BYTE, slots);
+            wrapper.write(Types.TAG, TextComponentTranslator.via1_14toViaLatest(title));
         }
     }
 

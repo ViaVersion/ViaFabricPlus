@@ -21,10 +21,10 @@ package de.florianmichael.viafabricplus.fixes.versioned.visual;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.ArmorType;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.ClientboundPackets1_9;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.Protocol1_9To1_8;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_8to1_9.Protocol1_8To1_9;
+import com.viaversion.viaversion.protocols.v1_8to1_9.data.ArmorTypes1_8;
+import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ClientboundPackets1_9;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
@@ -62,11 +62,11 @@ public class ArmorHudEmulation1_8 {
         });
     }
 
-    private static void sendArmorUpdate(final UserConnection userConnection) throws Exception {
+    private static void sendArmorUpdate(final UserConnection userConnection) {
         // Calculate the armor points.
         int armor = 0;
         for (final ItemStack stack : MinecraftClient.getInstance().player.getInventory().armor) {
-            armor += ArmorType.findByType(Registries.ITEM.getId(stack.getItem()).toString()).getArmorPoints();
+            armor += ArmorTypes1_8.findByType(Registries.ITEM.getId(stack.getItem()).toString()).getArmorPoints();
         }
 
         // We only want to update the armor points if they actually changed.
@@ -75,16 +75,16 @@ public class ArmorHudEmulation1_8 {
         }
         previousArmorPoints = armor;
 
-        final PacketWrapper entityProperties = PacketWrapper.create(ClientboundPackets1_9.ENTITY_PROPERTIES, userConnection);
-        entityProperties.write(Type.VAR_INT, MinecraftClient.getInstance().player.getId());
-        entityProperties.write(Type.INT, 1);
-        entityProperties.write(Type.STRING, "generic.armor");
-        entityProperties.write(Type.DOUBLE, 0.0D);
-        entityProperties.write(Type.VAR_INT, 1);
-        entityProperties.write(Type.UUID, ARMOR_POINTS_UUID);
-        entityProperties.write(Type.DOUBLE, (double) armor);
-        entityProperties.write(Type.BYTE, (byte) 0);
-        entityProperties.scheduleSend(Protocol1_9To1_8.class);
+        final PacketWrapper entityProperties = PacketWrapper.create(ClientboundPackets1_9.UPDATE_ATTRIBUTES, userConnection);
+        entityProperties.write(Types.VAR_INT, MinecraftClient.getInstance().player.getId());
+        entityProperties.write(Types.INT, 1);
+        entityProperties.write(Types.STRING, "generic.armor");
+        entityProperties.write(Types.DOUBLE, 0.0D);
+        entityProperties.write(Types.VAR_INT, 1);
+        entityProperties.write(Types.UUID, ARMOR_POINTS_UUID);
+        entityProperties.write(Types.DOUBLE, (double) armor);
+        entityProperties.write(Types.BYTE, (byte) 0);
+        entityProperties.scheduleSend(Protocol1_8To1_9.class);
     }
 
 }
