@@ -34,6 +34,7 @@ import net.minecraft.util.Formatting;
 import net.raphimc.viabedrock.protocol.data.enums.bedrock.ServerAuthMovementMode;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
 import net.raphimc.viabedrock.protocol.storage.GameSessionStorage;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocols.classic.protocolc0_28_30toc0_28_30cpe.storage.ExtensionProtocolMetadataStorage;
 import net.raphimc.vialegacy.protocols.release.protocol1_2_1_3to1_1.storage.SeedStorage;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.storage.EntityTracker;
@@ -82,7 +83,7 @@ public abstract class MixinDebugHud {
 
         // 1.1
         final SeedStorage seedStorage = userConnection.get(SeedStorage.class);
-        if (seedStorage != null) {
+        if (seedStorage != null && userConnection.getProtocolInfo().serverProtocolVersion().newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
             information.add("World Seed: " + seedStorage.seed);
         }
 
