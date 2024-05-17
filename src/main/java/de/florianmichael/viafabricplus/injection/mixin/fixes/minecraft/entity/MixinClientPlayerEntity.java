@@ -219,15 +219,15 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Redirect(method = "tick", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
     private void modifyPositionPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
-            final PacketWrapper playerPosition = PacketWrapper.create(ServerboundPackets1_5_2.MOVE_PLAYER_POS_ROT, ((IClientConnection) this.networkHandler.getConnection()).viaFabricPlus$getUserConnection());
-            playerPosition.write(Types.DOUBLE, this.getVelocity().x); // x
-            playerPosition.write(Types.DOUBLE, -999.0D); // y
-            playerPosition.write(Types.DOUBLE, -999.0D); // stance
-            playerPosition.write(Types.DOUBLE, this.getVelocity().z); // z
-            playerPosition.write(Types.FLOAT, this.getYaw()); // yaw
-            playerPosition.write(Types.FLOAT, this.getPitch()); // pitch
-            playerPosition.write(Types.BOOLEAN, this.isOnGround()); // onGround
-            playerPosition.scheduleSendToServer(Protocolr1_5_2Tor1_6_1.class);
+            final PacketWrapper movePlayerPosRot = PacketWrapper.create(ServerboundPackets1_5_2.MOVE_PLAYER_POS_ROT, ((IClientConnection) this.networkHandler.getConnection()).viaFabricPlus$getUserConnection());
+            movePlayerPosRot.write(Types.DOUBLE, this.getVelocity().x); // x
+            movePlayerPosRot.write(Types.DOUBLE, -999.0D); // y
+            movePlayerPosRot.write(Types.DOUBLE, -999.0D); // stance
+            movePlayerPosRot.write(Types.DOUBLE, this.getVelocity().z); // z
+            movePlayerPosRot.write(Types.FLOAT, this.getYaw()); // yaw
+            movePlayerPosRot.write(Types.FLOAT, this.getPitch()); // pitch
+            movePlayerPosRot.write(Types.BOOLEAN, this.isOnGround()); // onGround
+            movePlayerPosRot.scheduleSendToServer(Protocolr1_5_2Tor1_6_1.class);
             return;
         }
         instance.sendPacket(packet);

@@ -153,14 +153,14 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
                 slotItemBeforeModification = viaFabricPlus$oldItems.get(clickSlot.getSlot());
             }
 
-            final PacketWrapper clickWindowPacket = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ((IClientConnection) networkHandler.getConnection()).viaFabricPlus$getUserConnection());
-            clickWindowPacket.write(Types.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
-            clickWindowPacket.write(Types.SHORT, (short) clickSlot.getSlot());
-            clickWindowPacket.write(Types.BYTE, (byte) clickSlot.getButton());
-            clickWindowPacket.write(Types.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viaFabricPlus$incrementAndGetActionId());
-            clickWindowPacket.write(Types.VAR_INT, clickSlot.getActionType().ordinal());
-            clickWindowPacket.write(Types.ITEM1_13_2, ItemTranslator.mcToVia(slotItemBeforeModification, ProtocolVersion.v1_16_4));
-            clickWindowPacket.scheduleSendToServer(Protocol1_16_4To1_17.class);
+            final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ((IClientConnection) networkHandler.getConnection()).viaFabricPlus$getUserConnection());
+            containerClick.write(Types.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
+            containerClick.write(Types.SHORT, (short) clickSlot.getSlot());
+            containerClick.write(Types.BYTE, (byte) clickSlot.getButton());
+            containerClick.write(Types.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viaFabricPlus$incrementAndGetActionId());
+            containerClick.write(Types.VAR_INT, clickSlot.getActionType().ordinal());
+            containerClick.write(Types.ITEM1_13_2, ItemTranslator.mcToVia(slotItemBeforeModification, ProtocolVersion.v1_16_4));
+            containerClick.scheduleSendToServer(Protocol1_16_4To1_17.class);
 
             viaFabricPlus$oldCursorStack = null;
             viaFabricPlus$oldItems = null;

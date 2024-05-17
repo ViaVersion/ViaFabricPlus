@@ -120,11 +120,11 @@ public abstract class MixinMinecraftClient {
     }
 
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/TutorialManager;onInventoryOpened()V", shift = At.Shift.AFTER))
-    private void sendOpenInventoryPacket(CallbackInfo ci) throws Exception {
+    private void sendOpenInventoryPacket(CallbackInfo ci) {
         if (DebugSettings.global().sendOpenInventoryPacket.isEnabled()) {
-            final PacketWrapper clientStatus = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_COMMAND, ProtocolTranslator.getPlayNetworkUserConnection());
-            clientStatus.write(Types.VAR_INT, 2); // Open Inventory Achievement
-            clientStatus.scheduleSendToServer(Protocol1_11_1To1_12.class);
+            final PacketWrapper clientCommand = PacketWrapper.create(ServerboundPackets1_9_3.CLIENT_COMMAND, ProtocolTranslator.getPlayNetworkUserConnection());
+            clientCommand.write(Types.VAR_INT, 2); // Open Inventory Achievement
+            clientCommand.scheduleSendToServer(Protocol1_11_1To1_12.class);
         }
     }
 

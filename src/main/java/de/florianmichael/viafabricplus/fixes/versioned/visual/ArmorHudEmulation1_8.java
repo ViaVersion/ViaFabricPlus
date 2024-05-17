@@ -75,16 +75,16 @@ public class ArmorHudEmulation1_8 {
         }
         previousArmorPoints = armor;
 
-        final PacketWrapper entityProperties = PacketWrapper.create(ClientboundPackets1_9.UPDATE_ATTRIBUTES, userConnection);
-        entityProperties.write(Types.VAR_INT, MinecraftClient.getInstance().player.getId());
-        entityProperties.write(Types.INT, 1);
-        entityProperties.write(Types.STRING, "generic.armor");
-        entityProperties.write(Types.DOUBLE, 0.0D);
-        entityProperties.write(Types.VAR_INT, 1);
-        entityProperties.write(Types.UUID, ARMOR_POINTS_UUID);
-        entityProperties.write(Types.DOUBLE, (double) armor);
-        entityProperties.write(Types.BYTE, (byte) 0);
-        entityProperties.scheduleSend(Protocol1_8To1_9.class);
+        final PacketWrapper updateAttributes = PacketWrapper.create(ClientboundPackets1_9.UPDATE_ATTRIBUTES, userConnection);
+        updateAttributes.write(Types.VAR_INT, MinecraftClient.getInstance().player.getId());
+        updateAttributes.write(Types.INT, 1);
+        updateAttributes.write(Types.STRING, "generic.armor");
+        updateAttributes.write(Types.DOUBLE, 0.0D);
+        updateAttributes.write(Types.VAR_INT, 1);
+        updateAttributes.write(Types.UUID, ARMOR_POINTS_UUID);
+        updateAttributes.write(Types.DOUBLE, (double) armor);
+        updateAttributes.write(Types.BYTE, (byte) 0);
+        updateAttributes.scheduleSend(Protocol1_8To1_9.class);
     }
 
 }

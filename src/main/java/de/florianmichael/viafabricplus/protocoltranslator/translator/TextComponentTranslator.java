@@ -19,16 +19,15 @@
 
 package de.florianmichael.viafabricplus.protocoltranslator.translator;
 
+import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ClientboundPackets1_14;
-import com.viaversion.nbt.tag.Tag;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 
@@ -44,17 +43,17 @@ public class TextComponentTranslator {
      */
     public static Tag via1_14toViaLatest(final JsonElement component) {
         try {
-            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_14.OPEN_SCREEN, DUMMY_USER_CONNECTION);
-            wrapper.write(Types.VAR_INT, 1); // window id
-            wrapper.write(Types.VAR_INT, 0); // type id
-            wrapper.write(Types.COMPONENT, component); // title
+            final PacketWrapper openScreen = PacketWrapper.create(ClientboundPackets1_14.OPEN_SCREEN, DUMMY_USER_CONNECTION);
+            openScreen.write(Types.VAR_INT, 1); // window id
+            openScreen.write(Types.VAR_INT, 0); // type id
+            openScreen.write(Types.COMPONENT, component); // title
 
-            wrapper.resetReader();
-            wrapper.user().getProtocolInfo().getPipeline().transform(Direction.CLIENTBOUND, State.PLAY, wrapper);
+            openScreen.resetReader();
+            openScreen.user().getProtocolInfo().getPipeline().transform(Direction.CLIENTBOUND, State.PLAY, openScreen);
 
-            wrapper.read(Types.VAR_INT); // window id
-            wrapper.read(Types.VAR_INT); // type id
-            return wrapper.read(Types.TAG); // title
+            openScreen.read(Types.VAR_INT); // window id
+            openScreen.read(Types.VAR_INT); // type id
+            return openScreen.read(Types.TAG); // title
         } catch (Throwable t) {
             ViaFabricPlus.global().getLogger().error("Error converting ViaVersion 1.14 text component to native text component", t);
             return null;

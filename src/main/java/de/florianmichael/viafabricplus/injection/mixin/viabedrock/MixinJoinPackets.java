@@ -34,21 +34,21 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinJoinPackets {
 
     @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 5))
-    private static Object trackWorldSeed(PacketWrapper instance, Type<LongLEType> tType) throws Exception {
+    private static Object trackWorldSeed(PacketWrapper instance, Type<LongLEType> tType) {
         final Object seed = instance.read(tType);
         instance.user().get(JoinGameDataTracker.class).setSeed((long) seed);
         return seed;
     }
 
     @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 56))
-    private static Object trackLevelId(PacketWrapper instance, Type<StringType> tType) throws Exception {
+    private static Object trackLevelId(PacketWrapper instance, Type<StringType> tType) {
         final Object levelId = instance.read(tType);
         instance.user().get(JoinGameDataTracker.class).setLevelId((String) levelId);
         return levelId;
     }
 
     @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 64))
-    private static Object trackEnchantmentSeed(PacketWrapper instance, Type<VarIntType> tType) throws Exception {
+    private static Object trackEnchantmentSeed(PacketWrapper instance, Type<VarIntType> tType) {
         final Object enchantmentSeed = instance.read(tType);
         instance.user().get(JoinGameDataTracker.class).setEnchantmentSeed((Integer) enchantmentSeed);
         return enchantmentSeed;

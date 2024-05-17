@@ -60,11 +60,11 @@ public class ItemTranslator {
             buf.writeShort(0); // slot
             ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
 
-            final PacketWrapper wrapper = PacketWrapper.create(VFPProtocol.getCreativeInventoryActionPacket(), buf, user);
-            user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, wrapper);
+            final PacketWrapper setCreativeModeSlot = PacketWrapper.create(VFPProtocol.getSetCreativeModeSlot(), buf, user);
+            user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, setCreativeModeSlot);
 
-            wrapper.read(Types.SHORT); // slot
-            return wrapper.read(getItemType(targetVersion)); // item
+            setCreativeModeSlot.read(Types.SHORT); // slot
+            return setCreativeModeSlot.read(getItemType(targetVersion)); // item
         } catch (Throwable t) {
             ViaFabricPlus.global().getLogger().error("Error converting native item stack to ViaVersion {} item stack", targetVersion, t);
             return null;
@@ -101,18 +101,18 @@ public class ItemTranslator {
      */
     public static ItemStack viaB1_8toMc(final Item item) {
         try {
-            final PacketWrapper wrapper = PacketWrapper.create(ClientboundPacketsb1_8.CONTAINER_SET_SLOT, VIA_B1_8_TO_MC_USER_CONNECTION);
-            wrapper.write(Types.BYTE, (byte) 0); // window id
-            wrapper.write(Types.SHORT, (short) 0); // slot
-            wrapper.write(Types1_4_2.NBTLESS_ITEM, item); // item
+            final PacketWrapper containerSetSlot = PacketWrapper.create(ClientboundPacketsb1_8.CONTAINER_SET_SLOT, VIA_B1_8_TO_MC_USER_CONNECTION);
+            containerSetSlot.write(Types.BYTE, (byte) 0); // window id
+            containerSetSlot.write(Types.SHORT, (short) 0); // slot
+            containerSetSlot.write(Types1_4_2.NBTLESS_ITEM, item); // item
 
-            wrapper.resetReader();
-            wrapper.user().getProtocolInfo().getPipeline().transform(Direction.CLIENTBOUND, State.PLAY, wrapper);
+            containerSetSlot.resetReader();
+            containerSetSlot.user().getProtocolInfo().getPipeline().transform(Direction.CLIENTBOUND, State.PLAY, containerSetSlot);
 
-            wrapper.read(Types.UNSIGNED_BYTE); // sync id
-            wrapper.read(Types.VAR_INT); // revision
-            wrapper.read(Types.SHORT); // slot
-            final Item viaItem = wrapper.read(getItemType(ProtocolTranslator.NATIVE_VERSION)); // item
+            containerSetSlot.read(Types.UNSIGNED_BYTE); // sync id
+            containerSetSlot.read(Types.VAR_INT); // revision
+            containerSetSlot.read(Types.SHORT); // slot
+            final Item viaItem = containerSetSlot.read(getItemType(ProtocolTranslator.NATIVE_VERSION)); // item
             final ItemStack mcItem = new ItemStack(Registries.ITEM.get(viaItem.identifier()));
             mcItem.setCount(viaItem.amount());
             mcItem.setDamage(viaItem.data());

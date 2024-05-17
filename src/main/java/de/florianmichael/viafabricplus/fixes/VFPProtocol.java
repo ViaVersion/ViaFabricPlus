@@ -25,7 +25,6 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ClientboundPackets1_20_5;
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ServerboundPackets1_20_5;
@@ -61,7 +60,7 @@ public class VFPProtocol extends AbstractSimpleProtocol {
 
     @Override
     protected void registerPackets() {
-        registerClientbound(State.PLAY, getPluginMessagePacket().getId(), getPluginMessagePacket().getId(), wrapper -> {
+        registerClientbound(State.PLAY, getCustomPayload().getId(), getCustomPayload().getId(), wrapper -> {
             final String channel = Key.namespaced(wrapper.passthrough(Types.STRING));
             if (!channel.startsWith(Identifier.DEFAULT_NAMESPACE)) {
                 // Mods might add custom payloads that we don't want to filter, so we check for the namespace.
@@ -96,18 +95,18 @@ public class VFPProtocol extends AbstractSimpleProtocol {
         payloadDiff.put(id.id().toString(), new Pair<>(version, reader));
     }
 
-    public static ServerboundPacketType getCreativeInventoryActionPacket() {
+    public static ServerboundPacketType getSetCreativeModeSlot() {
         return ServerboundPackets1_20_5.SET_CREATIVE_MODE_SLOT;
     }
 
-    public static ClientboundPacketType getPluginMessagePacket() {
+    public static ClientboundPacketType getCustomPayload() {
         return ClientboundPackets1_20_5.CUSTOM_PAYLOAD;
     }
 
     @FunctionalInterface
     interface PacketReader {
 
-        void read(PacketWrapper wrapper) throws Exception;
+        void read(PacketWrapper wrapper);
 
     }
 }
