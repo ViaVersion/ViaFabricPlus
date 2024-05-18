@@ -78,7 +78,8 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Shadow
     protected abstract boolean isSecureChatEnforced();
 
-    @Shadow public abstract void sendChatCommand(String command);
+    @Shadow
+    public abstract void sendChatCommand(String command);
 
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
@@ -94,7 +95,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     }
 
     @Inject(method = "sendCommand", at = @At("HEAD"), cancellable = true)
-    public void alwaysSendSignedCommand(String command, CallbackInfoReturnable<Boolean> cir) {
+    private void alwaysSendSignedCommand(String command, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             sendChatCommand(command);
             cir.setReturnValue(true);

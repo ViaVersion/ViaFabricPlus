@@ -186,6 +186,7 @@
     "fixes.viaversion.MixinParticleIdMappings1_13",
     "fixes.viaversion.MixinProtocol1_10To1_11",
     "fixes.viaversion.MixinProtocol1_11_1To1_12",
+    "fixes.viaversion.MixinProtocol1_20_3To1_20_5",
     "fixes.viaversion.MixinProtocol1_20To1_20_2",
     "fixes.viaversion.MixinTagType",
     "fixes.viaversion.MixinUserConnectionImpl",
@@ -195,8 +196,7 @@
     "viabedrock.MixinBedrockProtocol",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig",
-    "fixes.viaversion.MixinProtocol1_20_3To1_20_5"
+    "vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1

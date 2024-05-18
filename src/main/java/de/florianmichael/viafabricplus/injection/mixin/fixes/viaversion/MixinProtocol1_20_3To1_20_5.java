@@ -40,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinProtocol1_20_3To1_20_5 extends AbstractProtocol<ClientboundPacket1_20_3, ClientboundPacket1_20_5, ServerboundPacket1_20_3, ServerboundPacket1_20_5> {
 
     @Inject(method = "registerPackets", at = @At("RETURN"))
-    public void removeCommandHandlers(CallbackInfo ci) {
+    private void removeCommandHandlers(CallbackInfo ci) {
         // Don't fake acknowledgements for chat messages.
         registerClientbound(ClientboundPackets1_20_3.PLAYER_CHAT, ClientboundPackets1_20_5.PLAYER_CHAT, wrapper -> {}, true);
         registerServerbound(ServerboundPackets1_20_5.CHAT, ServerboundPackets1_20_3.CHAT, wrapper -> {}, true);
