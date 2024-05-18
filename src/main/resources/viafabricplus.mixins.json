@@ -12,6 +12,7 @@
     "base.connect.MixinConnectScreen_1",
     "base.integration.MixinAddServerScreen",
     "base.integration.MixinChunkTracker",
+    "base.integration.MixinClientConnection",
     "base.integration.MixinConnectScreen_1",
     "base.integration.MixinDebugHud",
     "base.integration.MixinDirectConnectScreen",
@@ -162,8 +163,8 @@
     "fixes.minecraft.screen.screenhandler.MixinScreenHandler",
     "fixes.vialegacy.MixinClassicProtocolExtension",
     "fixes.vialegacy.MixinClientboundPacketsc0_30cpe",
-    "fixes.vialegacy.MixinProtocolr1_7_6_10Tor1_8",
     "fixes.vialegacy.MixinProtocolc0_30cpeToc0_28_30",
+    "fixes.vialegacy.MixinProtocolr1_7_6_10Tor1_8",
     "fixes.viaversion.MixinBlockItemPacketRewriter1_20_5",
     "fixes.viaversion.MixinCommandBlockProvider",
     "fixes.viaversion.MixinCommonBoss",
@@ -195,7 +196,7 @@
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
-    "base.integration.MixinClientConnection"
+    "fixes.viaversion.MixinProtocol1_20_3To1_20_5"
   ],
   "injectors": {
     "defaultRequire": 1
