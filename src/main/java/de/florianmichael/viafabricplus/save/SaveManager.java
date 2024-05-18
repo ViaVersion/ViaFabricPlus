@@ -43,9 +43,7 @@ public class SaveManager {
                 settingsSave = new SettingsSave(settingsManager),
                 accountsSave = new AccountsSave()
         );
-    }
 
-    public void init() {
         // Load save files
         for (AbstractSave save : saves) {
             save.init();
@@ -59,6 +57,12 @@ public class SaveManager {
         }));
 
         LoadSaveFilesCallback.EVENT.invoker().onLoadSaveFiles(this, LoadSaveFilesCallback.State.POST);
+    }
+
+    public void postInit() {
+        for (AbstractSave save : saves) {
+            save.postInit();
+        }
     }
 
     public void add(final AbstractSave... saves) {

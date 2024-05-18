@@ -33,6 +33,7 @@ import de.florianmichael.viafabricplus.util.ChatUtil;
 public class SettingsSave extends AbstractSave {
 
     private final SettingsManager settingsManager;
+    private String selectedProtocolVersion;
 
     public SettingsSave(final SettingsManager settingsManager) {
         super("settings");
@@ -66,8 +67,16 @@ public class SettingsSave extends AbstractSave {
             }
         }
 
-        if (GeneralSettings.global().saveSelectedProtocolVersion.getValue() && object.has("selected-protocol-version")) {
-            final ProtocolVersion protocolVersion = ProtocolVersion.getClosest(object.get("selected-protocol-version").getAsString());
+        if (object.has("selected-protocol-version")) {
+            selectedProtocolVersion = object.get("selected-protocol-version").getAsString();
+        }
+    }
+
+    @Override
+    public void postInit() {
+        // Set target version AFTER protocol loading, so we can reach all versions
+        if (GeneralSettings.global().saveSelectedProtocolVersion.getValue()) {
+            final ProtocolVersion protocolVersion = ProtocolVersion.getClosest(selectedProtocolVersion);
             if (protocolVersion != null) {
                 ProtocolTranslator.setTargetVersion(protocolVersion);
             }

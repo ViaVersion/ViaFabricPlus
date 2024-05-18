@@ -59,21 +59,20 @@ public class ViaFabricPlus {
 
     private CompletableFuture<Void> loadingFuture;
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void init() {
         directory.mkdir();
         ClassLoaderPriorityUtil.loadOverridingJars(directory); // Load overriding jars first so other code can access the new classes
 
-        ClientsideFixes.init(); // Init clientside related fixes
-        loadingFuture = ProtocolTranslator.init(directory); // Init ViaVersion protocol translator platform
-
         settingsManager = new SettingsManager();
         saveManager = new SaveManager(settingsManager);
+
+        ClientsideFixes.init(); // Init clientside related fixes
+        loadingFuture = ProtocolTranslator.init(directory); // Init ViaVersion protocol translator platform
 
         // Block game loading until ViaVersion has loaded
         PostGameLoadCallback.EVENT.register(() -> {
             loadingFuture.join();
-            saveManager.init();
+            saveManager.postInit();
         });
     }
 
