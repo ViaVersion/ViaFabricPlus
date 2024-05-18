@@ -35,17 +35,13 @@ import java.util.concurrent.CompletableFuture;
 /*
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
- *  - Check if relevant for protocol translation: TakeItemEntityPacket isEmpty case (1.20 -> 1.20.1 change)
- *  - Check previous Donkey interaction fix (see git logs)
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
  *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
  *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
- *  - Check if MixinPlayerScreenHandler.injectTransferSlot is needed? Check git log
  *
  * TODO | Movement
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
  *  - Blip-jumping is not supported in <= 1.13.2 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
- *  - Older versions don't clamp positions when teleporting (Is this important?)
  */
 public class ViaFabricPlus {
 
