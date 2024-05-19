@@ -32,7 +32,7 @@ import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.viabedro
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.vialegacy.*;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.viaversion.*;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
-import net.raphimc.viabedrock.protocol.providers.NettyPipelineProvider;
+import net.raphimc.viabedrock.protocol.provider.NettyPipelineProvider;
 import net.raphimc.vialegacy.protocol.alpha.a1_2_3_5_1_2_6tob1_0_1_1_1.provider.AlphaInventoryProvider;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.ClassicWorldHeightProvider;
