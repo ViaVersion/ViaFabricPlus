@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.fixes.versioned.Enchantments1_14_4;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.util.ItemUtil;
 import net.minecraft.client.item.TooltipType;
@@ -34,7 +35,6 @@ import net.minecraft.item.TooltipAppender;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -91,7 +91,7 @@ public abstract class MixinItemStack {
             final NbtCompound enchantment = (NbtCompound) element;
             final String id = enchantment.getString("id");
 
-            final Optional<Enchantment> value = Registries.ENCHANTMENT.getOrEmpty(Identifier.tryParse(id));
+            final Optional<Enchantment> value = Enchantments1_14_4.getOrEmpty(Identifier.tryParse(id));
             value.ifPresent(e -> {
                 final int lvl = enchantment.getInt("lvl");
                 tooltip.accept(e.getName(MathHelper.clamp(lvl, Short.MIN_VALUE, Short.MAX_VALUE)));
