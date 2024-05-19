@@ -29,7 +29,7 @@ import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.fixes.VFPProtocol;
+import de.florianmichael.viafabricplus.fixes.viaversion.ViaFabricPlusProtocol;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.MinecraftClient;
@@ -60,7 +60,7 @@ public class ItemTranslator {
             buf.writeShort(0); // slot
             ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
 
-            final PacketWrapper setCreativeModeSlot = PacketWrapper.create(VFPProtocol.getSetCreativeModeSlot(), buf, user);
+            final PacketWrapper setCreativeModeSlot = PacketWrapper.create(ViaFabricPlusProtocol.getSetCreativeModeSlot(), buf, user);
             user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, setCreativeModeSlot);
 
             setCreativeModeSlot.read(Types.SHORT); // slot

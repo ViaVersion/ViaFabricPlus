@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.fixes.tracker.JoinGameDataTracker;
+import de.florianmichael.viafabricplus.fixes.viaversion.JoinGameDataTracker;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IChunkTracker;
 import de.florianmichael.viafabricplus.injection.access.IRakSessionCodec;

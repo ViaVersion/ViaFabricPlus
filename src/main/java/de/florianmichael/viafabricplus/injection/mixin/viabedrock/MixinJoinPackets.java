@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.viabedrock;
 
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
-import de.florianmichael.viafabricplus.fixes.tracker.JoinGameDataTracker;
+import de.florianmichael.viafabricplus.fixes.viaversion.JoinGameDataTracker;
 import net.raphimc.viabedrock.protocol.packets.JoinPackets;
 import net.raphimc.viabedrock.protocol.types.primitive.LongLEType;
 import net.raphimc.viabedrock.protocol.types.primitive.StringType;

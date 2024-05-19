@@ -51,7 +51,6 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -78,9 +77,6 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Shadow
     protected abstract boolean isSecureChatEnforced();
 
-    @Shadow
-    public abstract void sendChatCommand(String command);
-
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
     }
@@ -91,14 +87,6 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
             return false;
         } else {
             return instance.isEmpty();
-        }
-    }
-
-    @Inject(method = "sendCommand", at = @At("HEAD"), cancellable = true)
-    private void alwaysSendSignedCommand(String command, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            sendChatCommand(command);
-            cir.setReturnValue(true);
         }
     }
 

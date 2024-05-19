@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.protocoltranslator.netty;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
-import de.florianmichael.viafabricplus.fixes.VFPProtocol;
+import de.florianmichael.viafabricplus.fixes.viaversion.ViaFabricPlusProtocol;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.handler.HandlerNames;
@@ -47,7 +47,7 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
         ctx.pipeline().addAfter(VIA_DECODER_NAME, VIA_FLOW_CONTROL, new NoReadFlowControlHandler());
 
-        this.user.getProtocolInfo().getPipeline().add(VFPProtocol.INSTANCE);
+        this.user.getProtocolInfo().getPipeline().add(ViaFabricPlusProtocol.INSTANCE);
     }
 
     @Override

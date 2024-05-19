@@ -17,43 +17,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.tracker;
+package de.florianmichael.viafabricplus.fixes.viaversion;
 
 import com.viaversion.viaversion.api.connection.StoredObject;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import it.unimi.dsi.fastutil.ints.Int2FloatMap;
+import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 
-public class JoinGameDataTracker extends StoredObject {
+public class WolfHealthTracker extends StoredObject {
 
-    private long seed;
-    private String levelId;
-    private long enchantmentSeed;
+    private final Int2FloatMap healthDataMap = new Int2FloatOpenHashMap();
 
-    public JoinGameDataTracker(UserConnection user) {
+    public WolfHealthTracker(UserConnection user) {
         super(user);
     }
 
-    public long getSeed() {
-        return seed;
+    public float getWolfHealth(final int entityId, final float fallback) {
+        return this.healthDataMap.getOrDefault(entityId, fallback);
     }
 
-    public void setSeed(long seed) {
-        this.seed = seed;
+    public void setWolfHealth(final int entityId, final float wolfHealth) {
+        this.healthDataMap.put(entityId, wolfHealth);
     }
 
-    public String getLevelId() {
-        return levelId;
-    }
-
-    public void setLevelId(String levelId) {
-        this.levelId = levelId;
-    }
-
-    public long getEnchantmentSeed() {
-        return enchantmentSeed;
-    }
-
-    public void setEnchantmentSeed(long enchantmentSeed) {
-        this.enchantmentSeed = enchantmentSeed;
+    public static WolfHealthTracker get(final UserConnection userConnection) {
+        var tracker = userConnection.get(WolfHealthTracker.class);
+        if (tracker == null) {
+            userConnection.put(tracker = new WolfHealthTracker(userConnection));
+        }
+        return tracker;
     }
 
 }

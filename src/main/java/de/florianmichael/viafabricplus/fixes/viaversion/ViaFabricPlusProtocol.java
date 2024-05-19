@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes;
+package de.florianmichael.viafabricplus.fixes.viaversion;
 
 import com.viaversion.viaversion.api.protocol.AbstractSimpleProtocol;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
@@ -41,13 +41,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Protocol to handle error handling changes in older protocols, always last element of the pipeline
-public class VFPProtocol extends AbstractSimpleProtocol {
+public class ViaFabricPlusProtocol extends AbstractSimpleProtocol {
 
-    public static final VFPProtocol INSTANCE = new VFPProtocol();
+    public static final ViaFabricPlusProtocol INSTANCE = new ViaFabricPlusProtocol();
 
     private final Map<String, Pair<ProtocolVersion, PacketReader>> payloadDiff = new HashMap<>();
 
-    public VFPProtocol() {
+    public ViaFabricPlusProtocol() {
         registerMapping(BrandCustomPayload.ID, LegacyProtocolVersion.c0_0_15a_1, wrapper -> wrapper.passthrough(Types.STRING));
         registerMapping(DebugGameTestAddMarkerCustomPayload.ID, ProtocolVersion.v1_14, wrapper -> {
             wrapper.passthrough(Types.BLOCK_POSITION1_14);

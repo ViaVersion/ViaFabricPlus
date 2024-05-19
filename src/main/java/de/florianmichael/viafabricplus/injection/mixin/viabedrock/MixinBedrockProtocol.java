@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.viabedrock;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.fixes.tracker.JoinGameDataTracker;
+import de.florianmichael.viafabricplus.fixes.viaversion.JoinGameDataTracker;
 import net.raphimc.viabedrock.protocol.BedrockProtocol;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
