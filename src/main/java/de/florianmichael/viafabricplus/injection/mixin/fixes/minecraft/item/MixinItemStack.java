@@ -89,9 +89,9 @@ public abstract class MixinItemStack {
         final NbtList enchantments = nbt.getList(name, NbtElement.COMPOUND_TYPE);
         for (NbtElement element : enchantments) {
             final NbtCompound enchantment = (NbtCompound) element;
-            final String id = enchantment.getString("id");
 
-            final Optional<Enchantment> value = Enchantments1_14_4.getOrEmpty(Identifier.tryParse(id));
+            final String id = enchantment.getString("id");
+            final Optional<Enchantment> value = Enchantments1_14_4.getOrEmpty(id);
             value.ifPresent(e -> {
                 final int lvl = enchantment.getInt("lvl");
                 tooltip.accept(e.getName(MathHelper.clamp(lvl, Short.MIN_VALUE, Short.MAX_VALUE)));
