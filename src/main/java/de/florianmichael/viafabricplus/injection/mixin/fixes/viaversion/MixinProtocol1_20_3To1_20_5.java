@@ -48,11 +48,11 @@ public abstract class MixinProtocol1_20_3To1_20_5 extends AbstractProtocol<Clien
         // Directly map types, no changes are needed.
         registerServerbound(ServerboundPackets1_20_5.CHAT_COMMAND_SIGNED, ServerboundPackets1_20_3.CHAT_COMMAND, wrapper -> {}, true);
         // If the client for whatever reason sends an unsigned command, map to signed by calling game code:
-        registerServerbound(ServerboundPackets1_20_5.CHAT_COMMAND, wrapper -> {
+        registerServerbound(ServerboundPackets1_20_5.CHAT_COMMAND, ServerboundPackets1_20_3.CHAT_COMMAND, wrapper -> {
             final String command = wrapper.read(Types.STRING);
             wrapper.cancel();
             MinecraftClient.getInstance().getNetworkHandler().sendChatCommand(command); // TODO sync to correct thread?
-        });
+        }, true);
 
         // Don't cancel any packets we receive.
         registerServerbound(ServerboundPackets1_20_5.CHAT_ACK, ServerboundPackets1_20_3.CHAT_ACK, wrapper -> {}, true);
