@@ -190,8 +190,9 @@ public class ProtocolTranslator {
      * Resets the previous version if it is set. Calling {@link #setTargetVersion(ProtocolVersion, boolean)} with revertOnDisconnect set to true will set it.
      */
     public static void injectPreviousVersionReset(final Channel channel) {
-        if (previousVersion == null) return;
-
+        if (previousVersion == null) {
+            return;
+        }
         channel.closeFuture().addListener(future -> {
             setTargetVersion(previousVersion);
             previousVersion = null;
@@ -229,8 +230,7 @@ public class ProtocolTranslator {
     }
 
     /**
-     * @return Returns the current UserConnection of the connection to the server, if the player isn't connected to a server it will return null
-     * @throws IllegalStateException If the player is not connected to a server
+     * @return the current UserConnection of the connection to the server, if the player isn't connected to a server it will return null
      */
     public static UserConnection getPlayNetworkUserConnection() {
         final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
