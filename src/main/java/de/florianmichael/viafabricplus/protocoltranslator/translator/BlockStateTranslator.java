@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.protocoltranslator.translator;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.minecraft.Position;
+import com.viaversion.viaversion.api.minecraft.BlockPosition;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
@@ -47,7 +47,7 @@ public class BlockStateTranslator {
         try {
             final PacketWrapper levelEvent = PacketWrapper.create(ClientboundPackets1_18.LEVEL_EVENT, DUMMY_USER_CONNECTION);
             levelEvent.write(Types.INT, 2001); // eventId
-            levelEvent.write(Types.BLOCK_POSITION1_14, new Position(0, 0, 0)); // position
+            levelEvent.write(Types.BLOCK_POSITION1_14, new BlockPosition(0, 0, 0)); // position
             levelEvent.write(Types.INT, blockStateId); // data
             levelEvent.write(Types.BOOLEAN, false); // global
 
