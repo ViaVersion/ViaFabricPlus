@@ -19,13 +19,12 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.vialegacy;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ClientboundPackets1_8;
 import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ServerboundPackets1_8;
-import de.florianmichael.viafabricplus.fixes.viaversion.TeleportTracker;
+import de.florianmichael.viafabricplus.fixes.viaversion.TeleportTracker1_7_6_10;
 import net.raphimc.vialegacy.protocol.release.r1_7_2_5tor1_7_6_10.packet.ClientboundPackets1_7_2;
 import net.raphimc.vialegacy.protocol.release.r1_7_2_5tor1_7_6_10.packet.ServerboundPackets1_7_2;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.Protocolr1_7_6_10Tor1_8;
@@ -49,7 +48,7 @@ public abstract class MixinProtocolr1_7_6_10Tor1_8 extends AbstractProtocol<Clie
                 map(Types.FLOAT); // pitch
                 handler(wrapper -> {
                     final boolean onGround = wrapper.read(Types.BOOLEAN); // On Ground
-                    final TeleportTracker teleportTracker = wrapper.user().get(TeleportTracker.class);
+                    final TeleportTracker1_7_6_10 teleportTracker = wrapper.user().get(TeleportTracker1_7_6_10.class);
                     if (teleportTracker != null) {
                         teleportTracker.setPending(onGround);
                     }
@@ -69,7 +68,7 @@ public abstract class MixinProtocolr1_7_6_10Tor1_8 extends AbstractProtocol<Clie
                 map(Types.FLOAT); // pitch
                 map(Types.BOOLEAN); // onGround
                 handler(wrapper -> {
-                    final TeleportTracker teleportTracker = wrapper.user().get(TeleportTracker.class);
+                    final TeleportTracker1_7_6_10 teleportTracker = wrapper.user().get(TeleportTracker1_7_6_10.class);
                     if (teleportTracker != null) {
                         Boolean pendingTeleport = teleportTracker.getPending();
                         if (pendingTeleport != null) {
@@ -80,11 +79,6 @@ public abstract class MixinProtocolr1_7_6_10Tor1_8 extends AbstractProtocol<Clie
                 });
             }
         }, true);
-    }
-
-    @Inject(method = "init", at = @At("RETURN"))
-    private void initPipeline(UserConnection userConnection, CallbackInfo ci) {
-        userConnection.put(new TeleportTracker(userConnection));
     }
 
 }

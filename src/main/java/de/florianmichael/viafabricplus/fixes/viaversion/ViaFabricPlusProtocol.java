@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.fixes.viaversion;
 
+import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.AbstractSimpleProtocol;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
@@ -29,12 +30,14 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ClientboundPackets1_20_5;
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ServerboundPackets1_20_5;
 import com.viaversion.viaversion.util.Key;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.network.packet.BrandCustomPayload;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.network.packet.s2c.custom.DebugGameTestAddMarkerCustomPayload;
 import net.minecraft.network.packet.s2c.custom.DebugGameTestClearCustomPayload;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 import java.util.HashMap;
@@ -71,15 +74,18 @@ public class ViaFabricPlusProtocol extends AbstractSimpleProtocol {
 
             final ProtocolVersion version = wrapper.user().getProtocolInfo().serverProtocolVersion();
             if (!payloadDiff.containsKey(channel) || version.olderThan(payloadDiff.get(channel).getLeft())) {
-                // Technically it's wrong to just drop all payloads, but ViaVersion doesn't translate them and the server can't detect if
-                // we handled the payload or not, so dropping them is easier than adding a bunch of useless translations for payloads
-                // which doesn't do anything on the client anyway.
+                // Technically, it's wrong to just drop all payloads.
+                // However, ViaVersion doesn't translate them and the server can't detect if
+                // we handled the payload or not,
+                // so dropping them is easier
+                // than adding a bunch of useless translations for payloads
+                // which don't do anything on the client anyway.
                 wrapper.cancel();
                 return;
             }
 
             if (version.olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-                // Skip remaining bytes after reading the payload and cancel if the payload fails to read
+                // Skip all remaining bytes after reading the payload and cancel if the payload fails to read
                 final PacketReader reader = payloadDiff.get(channel).getRight();
                 try {
                     reader.read(wrapper);
@@ -89,6 +95,25 @@ public class ViaFabricPlusProtocol extends AbstractSimpleProtocol {
                 }
             }
         });
+    }
+
+    @Override
+    public void init(UserConnection connection) {
+        super.init(connection);
+
+        final ProtocolVersion serverVersion = connection.getChannel().attr(ProtocolTranslator.TARGET_VERSION_ATTRIBUTE_KEY).get();
+
+        // Add storages we need for different fixes here
+        if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
+            connection.put(new BedrockJoinGameTracker());
+        } else {
+            if (serverVersion.olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+                connection.put(new WolfHealthTracker1_14_4());
+            }
+            if (serverVersion.olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
+                connection.put(new TeleportTracker1_7_6_10());
+            }
+        }
     }
 
     private void registerMapping(final CustomPayload.Id<?> id, final ProtocolVersion version, final PacketReader reader) {

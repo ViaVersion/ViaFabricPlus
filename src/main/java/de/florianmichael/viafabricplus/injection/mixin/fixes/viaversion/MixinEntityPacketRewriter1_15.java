@@ -24,7 +24,7 @@ import com.viaversion.viaversion.protocols.v1_14_4to1_15.Protocol1_14_4To1_15;
 import com.viaversion.viaversion.protocols.v1_14_4to1_15.rewriter.EntityPacketRewriter1_15;
 import com.viaversion.viaversion.rewriter.EntityRewriter;
 import com.viaversion.viaversion.rewriter.entitydata.EntityDataFilter;
-import de.florianmichael.viafabricplus.fixes.viaversion.WolfHealthTracker;
+import de.florianmichael.viafabricplus.fixes.viaversion.WolfHealthTracker1_14_4;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -37,11 +37,11 @@ public abstract class MixinEntityPacketRewriter1_15 extends EntityRewriter<Clien
     }
 
     @Redirect(method = "registerRewrites", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/rewriter/entitydata/EntityDataFilter$Builder;removeIndex(I)V"))
-    private void trackHealth(EntityDataFilter.Builder instance, int index) {
-        instance.handler((event, meta) -> { // Basically removeIndex, but we need to track the actual health value
+    private void removeAndTrackHealth(EntityDataFilter.Builder instance, int index) {
+        instance.handler((event, meta) -> {
             final int metaIndex = event.index();
             if (metaIndex == index) {
-                WolfHealthTracker.get(event.user()).setWolfHealth(event.entityId(), meta.value());
+                event.user().get(WolfHealthTracker1_14_4.class).setWolfHealth(event.entityId(), meta.value());
                 event.cancel();
             } else if (metaIndex > index) {
                 event.setIndex(metaIndex - 1);

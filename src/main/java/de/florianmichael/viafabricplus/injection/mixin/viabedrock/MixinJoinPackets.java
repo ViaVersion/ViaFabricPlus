@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.viabedrock;
 
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
-import de.florianmichael.viafabricplus.fixes.viaversion.JoinGameDataTracker;
+import de.florianmichael.viafabricplus.fixes.viaversion.BedrockJoinGameTracker;
 import net.raphimc.viabedrock.protocol.packet.JoinPackets;
 import net.raphimc.viabedrock.protocol.types.primitive.LongLEType;
 import net.raphimc.viabedrock.protocol.types.primitive.StringType;
@@ -36,21 +36,21 @@ public abstract class MixinJoinPackets {
     @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 5))
     private static Object trackWorldSeed(PacketWrapper instance, Type<LongLEType> tType) {
         final Object seed = instance.read(tType);
-        instance.user().get(JoinGameDataTracker.class).setSeed((long) seed);
+        instance.user().get(BedrockJoinGameTracker.class).setSeed((long) seed);
         return seed;
     }
 
     @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 56))
     private static Object trackLevelId(PacketWrapper instance, Type<StringType> tType) {
         final Object levelId = instance.read(tType);
-        instance.user().get(JoinGameDataTracker.class).setLevelId((String) levelId);
+        instance.user().get(BedrockJoinGameTracker.class).setLevelId((String) levelId);
         return levelId;
     }
 
     @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 64))
     private static Object trackEnchantmentSeed(PacketWrapper instance, Type<VarIntType> tType) {
         final Object enchantmentSeed = instance.read(tType);
-        instance.user().get(JoinGameDataTracker.class).setEnchantmentSeed((Integer) enchantmentSeed);
+        instance.user().get(BedrockJoinGameTracker.class).setEnchantmentSeed((Integer) enchantmentSeed);
         return enchantmentSeed;
     }
 

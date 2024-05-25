@@ -19,23 +19,36 @@
 
 package de.florianmichael.viafabricplus.fixes.viaversion;
 
-import com.viaversion.viaversion.api.connection.StoredObject;
-import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.connection.StorableObject;
 
-public class TeleportTracker extends StoredObject {
+public class BedrockJoinGameTracker implements StorableObject {
 
-    private Boolean onGround = null;
+    private long seed;
+    private String levelId;
+    private long enchantmentSeed;
 
-    public TeleportTracker(UserConnection user) {
-        super(user);
+    public long getSeed() {
+        return seed;
     }
 
-    public Boolean getPending() {
-        return onGround;
+    public void setSeed(long seed) {
+        this.seed = seed;
     }
 
-    public void setPending(Boolean onGround) {
-        this.onGround = onGround;
+    public String getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(String levelId) {
+        this.levelId = levelId;
+    }
+
+    public long getEnchantmentSeed() {
+        return enchantmentSeed;
+    }
+
+    public void setEnchantmentSeed(long enchantmentSeed) {
+        this.enchantmentSeed = enchantmentSeed;
     }
 
 }

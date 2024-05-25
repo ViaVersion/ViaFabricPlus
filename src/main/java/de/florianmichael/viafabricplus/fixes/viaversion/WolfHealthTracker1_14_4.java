@@ -19,18 +19,13 @@
 
 package de.florianmichael.viafabricplus.fixes.viaversion;
 
-import com.viaversion.viaversion.api.connection.StoredObject;
-import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.connection.StorableObject;
 import it.unimi.dsi.fastutil.ints.Int2FloatMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 
-public class WolfHealthTracker extends StoredObject {
+public class WolfHealthTracker1_14_4 implements StorableObject {
 
     private final Int2FloatMap healthDataMap = new Int2FloatOpenHashMap();
-
-    public WolfHealthTracker(UserConnection user) {
-        super(user);
-    }
 
     public float getWolfHealth(final int entityId, final float fallback) {
         return this.healthDataMap.getOrDefault(entityId, fallback);
@@ -38,14 +33,6 @@ public class WolfHealthTracker extends StoredObject {
 
     public void setWolfHealth(final int entityId, final float wolfHealth) {
         this.healthDataMap.put(entityId, wolfHealth);
-    }
-
-    public static WolfHealthTracker get(final UserConnection userConnection) {
-        var tracker = userConnection.get(WolfHealthTracker.class);
-        if (tracker == null) {
-            userConnection.put(tracker = new WolfHealthTracker(userConnection));
-        }
-        return tracker;
     }
 
 }

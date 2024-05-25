@@ -17,22 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.viabedrock;
+package de.florianmichael.viafabricplus.fixes.viaversion;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.fixes.viaversion.JoinGameDataTracker;
-import net.raphimc.viabedrock.protocol.BedrockProtocol;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import com.viaversion.viaversion.api.connection.StorableObject;
 
-@Mixin(value = BedrockProtocol.class, remap = false)
-public abstract class MixinBedrockProtocol {
+public class TeleportTracker1_7_6_10 implements StorableObject {
 
-    @Inject(method = "init", at = @At("RETURN"))
-    private void hookStorages(UserConnection user, CallbackInfo ci) {
-        user.put(new JoinGameDataTracker(user));
+    private Boolean onGround = null;
+
+    public Boolean getPending() {
+        return onGround;
+    }
+
+    public void setPending(Boolean onGround) {
+        this.onGround = onGround;
     }
 
 }

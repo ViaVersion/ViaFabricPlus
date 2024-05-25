@@ -21,7 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viafabricplus.fixes.viaversion.JoinGameDataTracker;
+import de.florianmichael.viafabricplus.fixes.viaversion.BedrockJoinGameTracker;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.injection.access.IChunkTracker;
 import de.florianmichael.viafabricplus.injection.access.IRakSessionCodec;
@@ -94,7 +94,7 @@ public abstract class MixinDebugHud {
         }
 
         // Bedrock
-        final JoinGameDataTracker joinGameDataTracker = userConnection.get(JoinGameDataTracker.class);
+        final BedrockJoinGameTracker joinGameDataTracker = userConnection.get(BedrockJoinGameTracker.class);
         if (joinGameDataTracker != null) {
             final ServerAuthMovementMode movementMode = userConnection.get(GameSessionStorage.class).getMovementMode();
             information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed() + ", Movement: " + movementMode.name());

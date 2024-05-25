@@ -63,7 +63,7 @@ public class ClientsideFixes {
     private static final Map<String, Consumer<RegistryByteBuf>> PENDING_EXECUTION_TASKS = new ConcurrentHashMap<>();
 
     /**
-     * This identifier is an internal identifier that is used to identify packets that are sent by ViaFabricPlus
+     * This identifier is an internal identifier used to identify packets that are sent by ViaFabricPlus
      */
     public static final String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 

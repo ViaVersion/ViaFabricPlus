@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.fixes.viaversion.WolfHealthTracker;
+import de.florianmichael.viafabricplus.fixes.viaversion.WolfHealthTracker1_14_4;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.FoodComponent;
@@ -102,7 +102,8 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
 
     @Unique
     private float viaFabricPlus$getWolfHealth() {
-        return WolfHealthTracker.get(ProtocolTranslator.getPlayNetworkUserConnection()).getWolfHealth(this.getId(), this.getHealth());
+        return ProtocolTranslator.getPlayNetworkUserConnection().get(WolfHealthTracker1_14_4.class).
+                getWolfHealth(this.getId(), this.getHealth());
     }
 
 }

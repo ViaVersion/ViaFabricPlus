@@ -194,7 +194,6 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_16_2",
     "fixes.viaversion.MixinWorldPacketRewriter1_17",
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
-    "viabedrock.MixinBedrockProtocol",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig"
