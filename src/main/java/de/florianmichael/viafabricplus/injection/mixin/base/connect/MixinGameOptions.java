@@ -17,25 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
+package de.florianmichael.viafabricplus.injection.mixin.base.connect;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.option.GameOptions;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(GameOptions.class)
-public abstract class MixinGameOptions {
+public class MixinGameOptions {
 
-    @ModifyVariable(method = "setServerViewDistance", at = @At("HEAD"), ordinal = 0, argsOnly = true)
-    private int changeServerViewDistance(int viewDistance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
-            return 0;
-        } else {
-            return viewDistance;
+    @Shadow
+    public boolean useNativeTransport;
+
+    /**
+     * @author RK_01
+     * @reason Needed as an indicator if the client wants to ping a server or connect to a server
+     */
+    @Overwrite
+    public boolean shouldUseNativeTransport() {
+        if (!this.useNativeTransport) {
+            ViaFabricPlus.global().getLogger().error("Native transport is disabled, but enabling it anyway since we use it as an indicator if the client wants to ping a server or connect to a server.");
         }
+        return true;
     }
 
 }
