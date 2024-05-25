@@ -196,7 +196,9 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig"
+    "vialegacy.MixinViaLegacyConfig",
+    "fixes.minecraft.network.MixinNetworkStateTransitionHandler",
+    "fixes.minecraft.network.MixinNetworkStateTransitions"
   ],
   "injectors": {
     "defaultRequire": 1
