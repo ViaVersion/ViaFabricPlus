@@ -38,7 +38,7 @@ public class BlockStateTranslator {
     private static final UserConnection DUMMY_USER_CONNECTION = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, ProtocolVersion.v1_18_2);
 
     /**
-     * Converts a 1.18.2 block state to a native block state (the current version)
+     * Converts a 1.18.2-block state to a native block state (the current version)
      *
      * @param blockStateId The block state id
      * @return The native block state
