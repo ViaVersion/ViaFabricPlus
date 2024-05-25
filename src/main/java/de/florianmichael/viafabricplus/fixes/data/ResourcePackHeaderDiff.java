@@ -25,6 +25,7 @@ import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.resource.ResourceType;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -84,6 +85,7 @@ public class ResourcePackHeaderDiff {
     /**
      * Checks if the registry is outdated.
      */
+    @ApiStatus.Internal
     public static void checkOutdated() {
         for (ProtocolVersion version : ProtocolVersion.getProtocols()) {
             if (version.isSnapshot()) continue;

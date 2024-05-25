@@ -164,7 +164,7 @@ public class EntityDimensionDiff {
     }
 
     public static void init() {
-        // Loads the class and triggers the static initializer.
+        // Calls the static block
     }
 
     /**

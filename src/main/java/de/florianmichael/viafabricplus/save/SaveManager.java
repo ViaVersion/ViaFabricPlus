@@ -23,6 +23,7 @@ import de.florianmichael.viafabricplus.event.LoadSaveFilesCallback;
 import de.florianmichael.viafabricplus.save.impl.AccountsSave;
 import de.florianmichael.viafabricplus.save.impl.SettingsSave;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,6 +60,7 @@ public class SaveManager {
         LoadSaveFilesCallback.EVENT.invoker().onLoadSaveFiles(this, LoadSaveFilesCallback.State.POST);
     }
 
+    @ApiStatus.Internal
     public void postInit() {
         for (AbstractSave save : saves) {
             save.postInit();

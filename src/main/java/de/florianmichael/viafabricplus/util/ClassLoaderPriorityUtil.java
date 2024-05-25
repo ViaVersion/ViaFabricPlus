@@ -22,12 +22,14 @@ package de.florianmichael.viafabricplus.util;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import net.lenni0451.reflect.ClassLoaders;
 import net.lenni0451.reflect.stream.RStream;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
 
 /**
  * Allows the user to override the Via* jar files with custom ones using the "jars" folder in the run directory
  */
+@ApiStatus.Internal
 public class ClassLoaderPriorityUtil {
 
     /**

@@ -45,6 +45,7 @@ import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Map;
 import java.util.Objects;
@@ -82,7 +83,7 @@ public class ClientsideFixes {
      */
     public static int GLOBAL_TABLIST_INDEX = 0;
 
-    public static void init() {
+    static {
         // Register additional CPE features
         CPEAdditions.modifyMappings();
 
@@ -133,6 +134,10 @@ public class ClientsideFixes {
 
         // Register the custom payload packet for sync tasks
         DataCustomPayload.init();
+    }
+
+    public static void init() {
+        // Calls the static block
     }
 
     /**
@@ -188,6 +193,7 @@ public class ClientsideFixes {
         return uuid;
     }
 
+    @ApiStatus.Internal
     public static void handleSyncTask(final PacketByteBuf buf) {
         final String uuid = buf.readString();
 

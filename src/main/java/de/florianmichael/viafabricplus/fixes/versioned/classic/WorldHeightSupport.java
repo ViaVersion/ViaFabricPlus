@@ -32,11 +32,13 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.model.ClassicLevel;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.ClassicWorldHeightProvider;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.storage.ClassicLevelStorage;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
+@ApiStatus.Internal
 public class WorldHeightSupport {
 
     public static PacketHandler handleJoinGame(final PacketHandler parentHandler) {

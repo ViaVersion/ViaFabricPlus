@@ -32,6 +32,7 @@ import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.ScreenHandler;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -703,6 +704,7 @@ public class Recipes1_11_2 {
      * @param screenHandler The screen handler
      * @param inventory     The inventory of the screen handler
      */
+    @ApiStatus.Internal
     public static void setCraftingResultSlot(final int syncId, final ScreenHandler screenHandler, final RecipeInputInventory inventory) {
         final var network = MinecraftClient.getInstance().getNetworkHandler();
         final var world = MinecraftClient.getInstance().world;

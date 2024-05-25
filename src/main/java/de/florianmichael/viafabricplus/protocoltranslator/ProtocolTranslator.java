@@ -58,6 +58,7 @@ import net.raphimc.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaBedrockPlatformImpl;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
@@ -126,6 +127,7 @@ public class ProtocolTranslator {
      *
      * @param connection the Minecraft connection
      */
+    @ApiStatus.Internal
     public static void injectViaPipeline(final ClientConnection connection, final Channel channel) {
         final IClientConnection mixinClientConnection = (IClientConnection) connection;
         final ProtocolVersion serverVersion = mixinClientConnection.viaFabricPlus$getTargetVersion();
@@ -202,6 +204,7 @@ public class ProtocolTranslator {
     /**
      * Resets the previous version if it is set. Calling {@link #setTargetVersion(ProtocolVersion, boolean)} with revertOnDisconnect set to true will set it.
      */
+    @ApiStatus.Internal
     public static void injectPreviousVersionReset(final Channel channel) {
         if (previousVersion == null) {
             return;
@@ -259,7 +262,7 @@ public class ProtocolTranslator {
      *
      * @param configFolder The directory where the ViaVersion config files are located
      */
-    public static void patchConfigs(final File configFolder) {
+    private static void patchConfigs(final File configFolder) {
         configFolder.mkdirs();
 
         try {
@@ -310,6 +313,7 @@ public class ProtocolTranslator {
      * @param directory The directory where the ViaVersion config files are located
      * @return A CompletableFuture that will be completed when the initialization is done
      */
+    @ApiStatus.Internal
     public static CompletableFuture<Void> init(final File directory) {
         patchConfigs(new File(directory, "ViaLoader"));
 
