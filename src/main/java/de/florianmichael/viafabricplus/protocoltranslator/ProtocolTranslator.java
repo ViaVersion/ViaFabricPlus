@@ -159,6 +159,19 @@ public class ProtocolTranslator {
     }
 
     /**
+     * Gets the target version from the channel attribute, can be used in early stages of the connection
+     *
+     * @param channel the channel
+     * @return the target version
+     */
+    public static ProtocolVersion getTargetVersion(final Channel channel) {
+        if (channel == null || !channel.hasAttr(TARGET_VERSION_ATTRIBUTE_KEY)) {
+            throw new IllegalStateException("Target version attribute not set");
+        }
+        return channel.attr(TARGET_VERSION_ATTRIBUTE_KEY).get();
+    }
+
+    /**
      * Sets the target version
      *
      * @param newVersion the target version

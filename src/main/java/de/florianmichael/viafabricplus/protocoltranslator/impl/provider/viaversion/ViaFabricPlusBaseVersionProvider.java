@@ -29,7 +29,7 @@ public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
     @Override
     public ProtocolVersion getClosestServerProtocol(UserConnection connection) throws Exception {
         if (connection.isClientSide()) {
-            return connection.getChannel().attr(ProtocolTranslator.TARGET_VERSION_ATTRIBUTE_KEY).get();
+            return ProtocolTranslator.getTargetVersion(connection.getChannel());
         } else {
             return super.getClosestServerProtocol(connection);
         }

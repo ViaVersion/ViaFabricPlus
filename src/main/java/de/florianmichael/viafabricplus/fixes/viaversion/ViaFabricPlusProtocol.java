@@ -74,11 +74,8 @@ public class ViaFabricPlusProtocol extends AbstractSimpleProtocol {
 
             final ProtocolVersion version = wrapper.user().getProtocolInfo().serverProtocolVersion();
             if (!payloadDiff.containsKey(channel) || version.olderThan(payloadDiff.get(channel).getLeft())) {
-                // Technically, it's wrong to just drop all payloads.
-                // However, ViaVersion doesn't translate them and the server can't detect if
-                // we handled the payload or not,
-                // so dropping them is easier
-                // than adding a bunch of useless translations for payloads
+                // Technically, it's wrong to just drop all payloads. However, ViaVersion doesn't translate them and the server can't detect if
+                // we handled the payload or not, so dropping them is easier than adding a bunch of useless translations for payloads
                 // which don't do anything on the client anyway.
                 wrapper.cancel();
                 return;
@@ -101,7 +98,7 @@ public class ViaFabricPlusProtocol extends AbstractSimpleProtocol {
     public void init(UserConnection connection) {
         super.init(connection);
 
-        final ProtocolVersion serverVersion = connection.getChannel().attr(ProtocolTranslator.TARGET_VERSION_ATTRIBUTE_KEY).get();
+        final ProtocolVersion serverVersion = ProtocolTranslator.getTargetVersion(connection.getChannel());
 
         // Add storages we need for different fixes here
         if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
