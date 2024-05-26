@@ -86,6 +86,20 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_5);
     }
 
+    @Inject(method = "onEnterReconfiguration", at = @At("HEAD"))
+    private void disableAutoRead(EnterReconfigurationS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+            this.connection.channel.config().setAutoRead(false);
+        }
+    }
+
+    @Inject(method = "onEnterReconfiguration", at = @At("RETURN"))
+    private void enableAutoRead(EnterReconfigurationS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+            this.connection.channel.config().setAutoRead(true);
+        }
+    }
+
     @Redirect(method = "sendChatCommand", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
     private boolean alwaysSignCommands(List<?> instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
