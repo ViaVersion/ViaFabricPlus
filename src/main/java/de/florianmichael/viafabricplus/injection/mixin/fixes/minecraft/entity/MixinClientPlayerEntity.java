@@ -77,8 +77,8 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     public abstract void setClientPermissionLevel(int clientPermissionLevel);
 
     @WrapWithCondition(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;jump()V"))
-    private boolean dontJump(ClientPlayerEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5);
+    private boolean dontJumpBeforeFlying(ClientPlayerEntity instance) {
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_5);
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 0))

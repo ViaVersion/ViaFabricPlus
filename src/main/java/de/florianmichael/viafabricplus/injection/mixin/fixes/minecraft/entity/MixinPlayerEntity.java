@@ -164,7 +164,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     }
 
     @Redirect(method = "adjustMovementForSneaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getStepHeight()F"))
-    private float modifyStepHeight1_10(PlayerEntity instance) {
+    private float modifyStepHeight(PlayerEntity instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
             return 1.0F;
         } else {

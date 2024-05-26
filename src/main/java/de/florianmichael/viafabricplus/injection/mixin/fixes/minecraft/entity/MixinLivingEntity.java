@@ -120,7 +120,7 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isChunkLoaded(Lnet/minecraft/util/math/BlockPos;)Z"))
-    private boolean modify1_13LoadedCheck(World instance, BlockPos blockPos) {
+    private boolean modifyLoadedCheck(World instance, BlockPos blockPos) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return this.getWorld().isChunkLoaded(blockPos) && instance.getChunkManager().isChunkLoaded(blockPos.getX() >> 4, blockPos.getZ() >> 4);
         } else {
@@ -214,7 +214,7 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Inject(method = "tickMovement", at = @At("HEAD"))
-    private void removeJumpDelay1_0(CallbackInfo ci) {
+    private void removeJumpDelay(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_0_0tor1_0_1)) {
             this.jumpingCooldown = 0;
         }
