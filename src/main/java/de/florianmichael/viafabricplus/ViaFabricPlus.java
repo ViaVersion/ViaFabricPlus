@@ -33,6 +33,13 @@ import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
 /*
+ * TODO | Port 1.20.6
+ *  - ClientPlayNetworkHandler#processAll in onEnterReconfiguration is new
+ *  - ClientPlayerInteractionManager#interactBlockInternal added new condition
+ *  - Camera zoom calculation uses entity size now (?)
+ *  - MouseHandling changed (not sure if relevant)
+ *  - Command arguments (Probably not everything worth, but least them with nbt)
+ *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
