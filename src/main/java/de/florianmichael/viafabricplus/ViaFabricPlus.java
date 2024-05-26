@@ -39,6 +39,7 @@ import java.util.concurrent.CompletableFuture;
  *  - Camera zoom calculation uses entity size now (?)
  *  - MouseHandling changed (not sure if relevant)
  *  - Command arguments (Probably not everything worth, but least them with nbt)
+ *  - Entity attachment calculation got changed completely
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
