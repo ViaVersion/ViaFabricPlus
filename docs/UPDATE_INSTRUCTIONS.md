@@ -57,6 +57,10 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
    
     => If you are unsure if a change is relevant, ask in the ViaVersion discord, in general you should only implement changes
        which could be detected by a server side anti cheat.
+
+   From experience, most changes are related to either movement or networking,
+   packages like `gametest` or `server` can be skipped usually when updating. It's important to always diff code inside 
+   the `net.minecraft.client` package as well as `net.minecraft.world` package, as these are the most likely to contain changes. (Mojang mappings)
 7. Update protocol constants in the `VFPProtocol` class
 8. Check the ViaVersion/upstream protocol implementation for issues and report them if necessary or if these issues can't be fixed,
    without tons of work, implement a workaround in ViaFabricPlus.
