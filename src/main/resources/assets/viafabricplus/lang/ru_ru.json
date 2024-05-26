@@ -1,6 +1,6 @@
 {
   "modmenu.summaryTranslation.viafabricplus": "Мод для подключения к серверам любых версий.",
-  "modmenu.descriptionTranslation.viafabricplus": "Мод для Fabric, предназначенный для подключения к серверам §lлюбых§r версий Minecraft (Classic, Alpha, Beta, снапшотам, релизам и даже Bedrock) и содержащий приятные исправления для улучшения игрового процесса.",
+  "modmenu.descriptionTranslation.viafabricplus": "Мод для Fabric, предназначенный для подключения к серверам §lлюбых§r версий Minecraft (Classic, Alpha, Beta, снапшотам, релизам и даже Bedrock) с исправлениями для улучшения игрового процесса.",
 
   "base.viafabricplus.settings": "Настройки",
   "base.viafabricplus.on": "Вкл",
@@ -9,7 +9,7 @@
   "base.viafabricplus.right_top": "Справа сверху",
   "base.viafabricplus.left_bottom": "Слева снизу",
   "base.viafabricplus.right_bottom": "Справа снизу",
-  "base.viafabricplus.cancel": "Подавлять",
+  "base.viafabricplus.cancel": "Отменить",
   "base.viafabricplus.cancel_and_reset": "Сброс",
   "base.viafabricplus.logout": "Выйти",
   "base.viafabricplus.online_mode": "Лицензионный",
@@ -23,7 +23,7 @@
   "base.viafabricplus.vanilla_and_modded": "Других вресий и модов",
   "base.viafabricplus.vanilla_only": "Других версий",
   "base.viafabricplus.kick": "Отключаться",
-  "base.viafabricplus.cancel_and_notify": "Подавлять и уведомлять",
+  "base.viafabricplus.cancel_and_notify": "Отменить и уведомить",
   "base.viafabricplus.force_version_title": "Укажите версию для проверки связи с сервером и подключения к нему.",
   "base.viafabricplus.detecting_server_version": "Проверка версии сервера...",
   "base.viafabricplus.this_will_require_a_restart": "Для применения необходим перезапуск.",
@@ -48,6 +48,7 @@
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Эмулировать действия в инвентаре в alpha-версиях",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Нажмите для настройки учётной записи Bedrock Edition",
+  "bedrock_settings.viafabricplus.replace_default_port": "Заменить порт по умолчанию в списке серверов",
 
   "debug_settings.viafabricplus.queue_config_packets": "Очередь пакетов этапа настройки",
   "debug_settings.viafabricplus.disable_sequencing": "Отключить последовательность",
@@ -62,6 +63,7 @@
   "debug_settings.viafabricplus.legacy_mining_speeds": "Старая скорость добычи блоков",
   "debug_settings.viafabricplus.prevent_entity_cramming": "Обходить предел сущностей в одном блоке",
   "debug_settings.viafabricplus.always_tick_client_player": "Всегда обрабатывать игрока в клиентском мире",
+  "debug_settings.viafabricplus.print_networking_errors_to_logs": "Выводить сетевые ошибки в журнал",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Использовать аутентификацию BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Разрешить ViaLegacy вызов joinServer() для проверки сессии",
@@ -81,6 +83,9 @@
   "visual_settings.viafabricplus.change_font_renderer_behaviour": "Старый шрифт",
   "visual_settings.viafabricplus.enable_sword_blocking": "Анимация меча",
   "visual_settings.viafabricplus.enable_block_hit_animation": "Парирование атак из версии 1.7",
+  "visual_settings.viafabricplus.disable_server_pinging": "Не проверять соединение",
+  "visual_settings.viafabricplus.sideways_backwards_walking": "Старая походка спиной",
+  "visual_settings.viafabricplus.enable_legacy_tablist": "Старый список игроков",
 
   "bedrock.viafabricplus.login": "Сейчас должен открыться браузер.\nВведите следующий код: %s\nЗакрытие этого экрана приведёт к отмене процесса!",
   "authentication.viafabricplus.failed_to_verify_session": "Не удалось проверить вашу сессию. Войдите в свою учётную запись или отключите аутентификацию BetaCraft в настройках ViaFabricPlus.",
