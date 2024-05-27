@@ -89,7 +89,7 @@ public class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryProvider 
 
     @Override
     public void addToInventory(UserConnection user, Item item) {
-        getPlayer().getInventory().insertStack(ItemTranslator.viaB1_8toMc(item));
+        getPlayer().getInventory().insertStack(ItemTranslator.viaToMc(item, LegacyProtocolVersion.b1_8tob1_8_1));
     }
 
     protected ClientPlayerEntity getPlayer() {
