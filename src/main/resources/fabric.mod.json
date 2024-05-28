@@ -55,7 +55,7 @@
     "fabric-particles-v1": ">=1.1.6",
     "fabric-registry-sync-v0": ">=4.0.13",
     "minecraft": ">=1.20.5",
-    "java": ">=17"
+    "java": ">=21"
   },
   "breaks": {
     "viafabric": "*"
