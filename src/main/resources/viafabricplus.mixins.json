@@ -137,6 +137,8 @@
     "fixes.minecraft.network.MixinClientPlayerInteractionManager",
     "fixes.minecraft.network.MixinClientPlayNetworkHandler",
     "fixes.minecraft.network.MixinMultiplayerServerListPinger",
+    "fixes.minecraft.network.MixinNetworkStateTransitionHandler",
+    "fixes.minecraft.network.MixinNetworkStateTransitions",
     "fixes.minecraft.network.MixinPlayerListEntry",
     "fixes.minecraft.network.MixinUpdatePlayerAbilitiesC2SPacket",
     "fixes.minecraft.screen.MixinAbstractCommandBlockScreen",
@@ -197,8 +199,7 @@
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.network.MixinNetworkStateTransitionHandler",
-    "fixes.minecraft.network.MixinNetworkStateTransitions"
+    "fixes.viaversion.MixinParticleMappings"
   ],
   "injectors": {
     "defaultRequire": 1
