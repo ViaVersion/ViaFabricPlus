@@ -62,5 +62,9 @@
   },
   "custom": {
     "vfp:implVersion": "${implVersion}"
-  }
+  },
+  "provides": [
+    "viaversion",
+    "viabackwards"
+  ]
 }
