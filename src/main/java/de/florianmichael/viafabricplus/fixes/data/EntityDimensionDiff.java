@@ -134,12 +134,14 @@ public class EntityDimensionDiff {
                     ProtocolVersion.v1_17, EntityType.LEASH_KNOT.getDimensions()
             ),
             EntityType.SLIME, linkedHashMap(
-                    ProtocolVersion.v1_13_2, EntityDimensionsBuilder.create(EntityType.SLIME).withChangingDimensions(2F, 2F).build(),
-                    ProtocolVersion.v1_14, EntityType.SLIME.getDimensions()
+                    ProtocolVersion.v1_13_2, EntityDimensionsBuilder.create(EntityType.SLIME).withChangingDimensions(2F * 0.255F, 2F * 0.255F).build(),
+                    ProtocolVersion.v1_14, EntityDimensionsBuilder.create(EntityType.SLIME).withChangingDimensions(2.04F * 0.255F, 2.04F * 0.255F).build(),
+                    ProtocolVersion.v1_20_5, EntityType.SLIME.getDimensions()
             ),
             EntityType.MAGMA_CUBE, linkedHashMap(
-                    ProtocolVersion.v1_13_2, EntityDimensionsBuilder.create(EntityType.MAGMA_CUBE).withChangingDimensions(2F, 2F).build(),
-                    ProtocolVersion.v1_14, EntityType.MAGMA_CUBE.getDimensions()
+                    ProtocolVersion.v1_13_2, EntityDimensionsBuilder.create(EntityType.MAGMA_CUBE).withChangingDimensions(2F * 0.255F, 2F * 0.255F).build(),
+                    ProtocolVersion.v1_14, EntityDimensionsBuilder.create(EntityType.MAGMA_CUBE).withChangingDimensions(2.04F * 0.255F, 2.04F * 0.255F).build(),
+                    ProtocolVersion.v1_20_5, EntityType.MAGMA_CUBE.getDimensions()
             ),
             EntityType.ARROW, linkedHashMap(
                     LegacyProtocolVersion.c0_28toc0_30, EntityDimensionsBuilder.create(EntityType.ARROW).withChangingDimensions(0.3F, 0.5F).build(),
