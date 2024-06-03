@@ -40,6 +40,7 @@ import java.util.concurrent.CompletableFuture;
  *  - MouseHandling changed (not sure if relevant)
  *  - Command arguments (Probably not everything worth, but least them with nbt)
  *  - Entity attachment calculation got changed completely
+ *  - Particle handling has slightly changed
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes

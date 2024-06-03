@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(NetworkStateTransitions.class)
-public class MixinNetworkStateTransitions {
+public abstract class MixinNetworkStateTransitions {
 
     @WrapWithCondition(method = "method_56353", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelConfig;setAutoRead(Z)Lio/netty/channel/ChannelConfig;", remap = false))
     private static boolean dontChangeAutoRead(ChannelConfig instance, boolean b) {
