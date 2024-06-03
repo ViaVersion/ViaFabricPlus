@@ -41,6 +41,9 @@ import java.util.concurrent.CompletableFuture;
  *  - Command arguments (Probably not everything worth, but least them with nbt)
  *  - Entity attachment calculation got changed completely
  *  - Particle handling has slightly changed
+ *  - handleOpenBook now also handles writeable book contents (not sure if relevant)
+ *  - Entity fall damage calculation is different
+ *  -
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
