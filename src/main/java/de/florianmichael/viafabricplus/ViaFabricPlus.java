@@ -34,7 +34,6 @@ import java.util.concurrent.CompletableFuture;
 
 /*
  * TODO | Port 1.20.6
- *  - ClientPlayNetworkHandler#processAll in onEnterReconfiguration is new
  *  - ClientPlayerInteractionManager#interactBlockInternal added new condition
  *  - Camera zoom calculation uses entity size now (?)
  *  - MouseHandling changed (not sure if relevant)
@@ -43,7 +42,6 @@ import java.util.concurrent.CompletableFuture;
  *  - Particle handling has slightly changed
  *  - handleOpenBook now also handles writeable book contents (not sure if relevant)
  *  - Entity fall damage calculation is different
- *  -
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes

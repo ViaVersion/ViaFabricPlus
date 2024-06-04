@@ -104,7 +104,7 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      */
     @Override
     public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        // Allows cross sharing of global variables between util methods
+        // Allows cross-sharing of global variables between util methods
         this.context = context;
         this.x = x;
         this.y = y;

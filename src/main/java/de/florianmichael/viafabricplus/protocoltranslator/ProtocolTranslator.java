@@ -260,7 +260,7 @@ public class ProtocolTranslator {
     /**
      * Apply recommended config options to the ViaVersion config files
      *
-     * @param configFolder The directory where the ViaVersion config files are located
+     * @param configFolder The directory where the ViaVersion config files is located
      */
     private static void patchConfigs(final File configFolder) {
         configFolder.mkdirs();
@@ -268,6 +268,7 @@ public class ProtocolTranslator {
         try {
             final File viaVersionConfig = new File(configFolder, "viaversion.yml");
             Files.writeString(viaVersionConfig.toPath(), """
+                    check-for-updates: false
                     fix-infested-block-breaking: false
                     shield-blocking: false
                     no-delay-shield-blocking: true
