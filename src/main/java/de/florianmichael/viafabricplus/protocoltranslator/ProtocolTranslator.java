@@ -268,11 +268,9 @@ public class ProtocolTranslator {
         try {
             final File viaVersionConfig = new File(configFolder, "viaversion.yml");
             Files.writeString(viaVersionConfig.toPath(), """
-                    check-for-updates: false
                     fix-infested-block-breaking: false
                     shield-blocking: false
                     no-delay-shield-blocking: true
-                    chunk-border-fix: true
                     handle-invalid-item-count: true
                     """, StandardOpenOption.CREATE_NEW);
         } catch (FileAlreadyExistsException ignored) {
