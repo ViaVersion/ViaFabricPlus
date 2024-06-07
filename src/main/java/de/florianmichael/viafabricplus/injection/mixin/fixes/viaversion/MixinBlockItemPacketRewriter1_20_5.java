@@ -135,7 +135,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
     // of modifying tons of code in the game.
     @Inject(method = "toStructuredItem", at = @At("RETURN"))
     private void appendItemDataFixComponents(UserConnection user, Item old, CallbackInfoReturnable<Item> cir) {
-        final StructuredDataContainer data = cir.getReturnValue().structuredData();
+        final StructuredDataContainer data = cir.getReturnValue().dataContainer();
         final String identifier = this.protocol.getMappingData().getFullItemMappings().identifier(cir.getReturnValue().identifier());
 
         // Fix damage bar being displayed wrong
