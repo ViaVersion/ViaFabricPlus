@@ -35,23 +35,24 @@ import java.util.concurrent.CompletableFuture;
 /*
  * TODO | Port 1.20.6
  *  - ClientPlayerInteractionManager#interactBlockInternal added new condition
- *  - Camera zoom calculation uses entity size now (?)
  *  - MouseHandling changed (not sure if relevant)
  *  - Command arguments (Probably not everything worth, but least them with nbt)
  *  - Entity attachment calculation got changed completely
  *  - Particle handling has slightly changed
  *  - handleOpenBook now also handles writeable book contents (not sure if relevant)
- *  - Entity fall damage calculation is different
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
  *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
  *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
+ *  - Via: 1.13 -> 1.12.2 block entities recode
  *
  * TODO | Movement
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
  *  - Blip-jumping is not supported in <= 1.13.2 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
+ *  - 1.8 lava movement
+ *  - 1.13.2 water movement
  */
 public class ViaFabricPlus {
 
