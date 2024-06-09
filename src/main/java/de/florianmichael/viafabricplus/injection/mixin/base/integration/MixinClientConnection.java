@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientConnection.class)
-public class MixinClientConnection {
+public abstract class MixinClientConnection {
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"))
     private void printNetworkingErrors(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {

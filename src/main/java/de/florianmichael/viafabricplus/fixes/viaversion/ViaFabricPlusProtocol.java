@@ -131,4 +131,5 @@ public class ViaFabricPlusProtocol extends AbstractSimpleProtocol {
         void read(PacketWrapper wrapper);
 
     }
+
 }
