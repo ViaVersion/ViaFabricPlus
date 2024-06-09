@@ -29,8 +29,9 @@ public class ItemUtil {
     public static NbtCompound getTagOrNull(final ItemStack stack) {
         if (!stack.contains(DataComponentTypes.CUSTOM_DATA)) {
             return null;
+        } else {
+            return stack.get(DataComponentTypes.CUSTOM_DATA).getNbt();
         }
-        return stack.get(DataComponentTypes.CUSTOM_DATA).getNbt();
     }
 
 }
