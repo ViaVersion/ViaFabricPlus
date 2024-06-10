@@ -22,7 +22,6 @@ package de.florianmichael.viafabricplus.fixes.versioned;
 import com.viaversion.viaversion.util.Key;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +71,7 @@ public class Enchantments1_14_4 {
         ENCHANTMENT_REGISTRY.put("vanishing_curse", Enchantments.VANISHING_CURSE);
     }
 
-    public static Optional<Enchantment> getOrEmpty(final @Nullable String identifier) {
+    public static Optional<Enchantment> getOrEmpty(final String identifier) {
         if (identifier == null) {
             return Optional.empty();
         }
