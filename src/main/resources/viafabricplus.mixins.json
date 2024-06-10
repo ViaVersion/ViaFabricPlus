@@ -171,7 +171,6 @@
     "fixes.viaversion.MixinBlockItemPacketRewriter1_20_5",
     "fixes.viaversion.MixinCommandBlockProvider",
     "fixes.viaversion.MixinCommonBoss",
-    "fixes.viaversion.MixinEntityMappings1_11",
     "fixes.viaversion.MixinEntityPacketRewriter1_15",
     "fixes.viaversion.MixinEntityPacketRewriter1_17",
     "fixes.viaversion.MixinEntityPacketRewriter1_19_4",

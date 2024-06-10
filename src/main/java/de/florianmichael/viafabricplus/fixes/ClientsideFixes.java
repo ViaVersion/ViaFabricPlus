@@ -69,11 +69,6 @@ public class ClientsideFixes {
     public static final String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 
     /**
-     * This identifier is an internal identifier used to store the item count in <= 1.10 to implement negative item counts
-     */
-    public static final String ITEM_COUNT_FIX_KEY = "VFP|ItemCountFix";
-
-    /**
      * This identifier is used to store attributes in legacy versions were we replace them using data components
      */
     public static final String ATTRIBUTE_FIX_KEY = "VFP|AttributeFix";
