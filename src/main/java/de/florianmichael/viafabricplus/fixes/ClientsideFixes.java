@@ -69,11 +69,6 @@ public class ClientsideFixes {
     public static final String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 
     /**
-     * This identifier is used to store attributes in legacy versions were we replace them using data components
-     */
-    public static final String ATTRIBUTE_FIX_KEY = "VFP|AttributeFix";
-
-    /**
      * This is an incremental index used for tablist entries to implement FIFO behavior <= 1.7
      */
     public static int GLOBAL_TABLIST_INDEX = 0;
