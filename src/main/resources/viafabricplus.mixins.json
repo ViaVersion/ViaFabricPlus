@@ -59,6 +59,7 @@
     "fixes.minecraft.MixinServerResourcePackLoader_4",
     "fixes.minecraft.MixinStringHelper",
     "fixes.minecraft.MixinTextRenderer",
+    "fixes.minecraft.MixinWorldRenderer",
     "fixes.minecraft.block.MixinAbstractBlock",
     "fixes.minecraft.block.MixinAbstractBlock_AbstractBlockState",
     "fixes.minecraft.block.MixinAbstractSignBlock",
@@ -186,6 +187,7 @@
     "fixes.viaversion.MixinMappingDataBase",
     "fixes.viaversion.MixinNamedCompoundTagType",
     "fixes.viaversion.MixinParticleIdMappings1_13",
+    "fixes.viaversion.MixinParticleMappings",
     "fixes.viaversion.MixinProtocol1_10To1_11",
     "fixes.viaversion.MixinProtocol1_11_1To1_12",
     "fixes.viaversion.MixinProtocol1_20_3To1_20_5",
@@ -197,8 +199,7 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig",
-    "fixes.viaversion.MixinParticleMappings"
+    "vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1
