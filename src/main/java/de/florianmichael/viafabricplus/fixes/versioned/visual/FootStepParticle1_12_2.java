@@ -36,7 +36,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
 
-    public static int ID;
+    public static final Identifier ID = new Identifier("viafabricplus", "footstep");
+    public static int RAW_ID;
 
     protected FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z) {
         super(clientWorld, x, y, z);
@@ -80,10 +81,10 @@ public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
     public static void init() {
         final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
 
-        Registry.register(Registries.PARTICLE_TYPE, new Identifier("viafabricplus", "footstep"), footStepType);
+        Registry.register(Registries.PARTICLE_TYPE, ID, footStepType);
         ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
 
-        ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
+        RAW_ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
     }
 
     public static class Factory implements ParticleFactory<SimpleParticleType> {

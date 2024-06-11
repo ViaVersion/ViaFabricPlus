@@ -199,7 +199,8 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig"
+    "vialegacy.MixinViaLegacyConfig",
+    "compat.fabricapi.MixinRegistrySyncManager"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -17,29 +17,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
+package de.florianmichael.viafabricplus.injection.mixin.compat.fabricapi;
 
-import com.viaversion.viaversion.api.data.FullMappingsBase;
-import com.viaversion.viaversion.api.data.Mappings;
-import com.viaversion.viaversion.api.data.ParticleMappings;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
+import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
+import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.List;
+@Mixin(RegistrySyncManager.class)
+public abstract class MixinRegistrySyncManager {
 
-@Mixin(ParticleMappings.class)
-public abstract class MixinParticleMappings extends FullMappingsBase {
-
-    public MixinParticleMappings(List<String> unmappedIdentifiers, List<String> mappedIdentifiers, Mappings mappings) {
-        super(unmappedIdentifiers, mappedIdentifiers, mappings);
-    }
-
-    @Override
-    public int getNewId(int id) {
-        if (id == FootStepParticle1_12_2.RAW_ID) {
-            return id;
+    @Redirect(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/Registry;getId(Ljava/lang/Object;)Lnet/minecraft/util/Identifier;"))
+    private static @Nullable <T> Identifier skipFootStepParticle(Registry<T> instance, T t) {
+        final Identifier id = instance.getId(t);
+        if (id == FootStepParticle1_12_2.ID) {
+            return null;
         } else {
-            return super.getNewId(id);
+            return id;
         }
     }
 
