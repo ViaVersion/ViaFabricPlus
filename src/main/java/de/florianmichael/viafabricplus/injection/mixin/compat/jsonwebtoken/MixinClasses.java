@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /*
- * JsonWebToken is used by MinecraftAuth and since it's using Java services, it's not working with the fabric loader
+ * JsonWebToken is used by MinecraftAuth, and since it's using Java services, it's not working with the fabric loader,
  * So we have to change all services usages by using the normal Java API
  */
 @Mixin(value = Classes.class, remap = false)

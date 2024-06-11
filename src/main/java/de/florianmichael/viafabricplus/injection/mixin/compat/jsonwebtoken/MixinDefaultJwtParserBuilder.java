@@ -26,13 +26,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /*
- * JsonWebToken is used by MinecraftAuth and since it's using Java services, it's not working with the fabric loader
+ * JsonWebToken is used by MinecraftAuth, and since it's using Java services, it's not working with the fabric loader,
  * So we have to change all services usages by using the normal Java API
  */
 @Mixin(value = DefaultJwtParserBuilder.class, remap = false)
 public abstract class MixinDefaultJwtParserBuilder {
 
-    @Redirect(method = "build()Lio/jsonwebtoken/JwtParser;", at = @At(value = "INVOKE", target = "Lio/jsonwebtoken/impl/lang/Services;get(Ljava/lang/Class;)Ljava/lang/Object;"))
+    @Redirect(method = "build()Lio/jsonwebtoken/JwtParser;", at = @At(value = "INVOKE", target = "Lio/jsonwebtoken/impl/lang/Services;loadFirst(Ljava/lang/Class;)Ljava/lang/Object;"))
     public Object removeServicesSupport(Class<?> spi) {
         return new GsonDeserializer<>();
     }
