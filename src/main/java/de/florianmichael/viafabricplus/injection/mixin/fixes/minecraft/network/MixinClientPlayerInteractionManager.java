@@ -53,6 +53,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -108,6 +109,13 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
     @Unique
     private final ClientPlayerInteractionManager1_18_2 viaFabricPlus$1_18_2InteractionManager = new ClientPlayerInteractionManager1_18_2();
 
+    @Inject(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;syncSelectedSlot()V", shift = At.Shift.AFTER))
+    private void sendPlayerPosPacket(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_17, ProtocolVersion.v1_20_5)) {
+            this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Full(player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch(), player.isOnGround()));
+        }
+    }
+
     @Inject(method = "getBlockBreakingProgress", at = @At("HEAD"), cancellable = true)
     private void changeCalculation(CallbackInfoReturnable<Integer> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
@@ -128,11 +136,6 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
             this.viaFabricPlus$1_18_2InteractionManager.trackPlayerAction(action, pos);
         }
         return new PlayerActionC2SPacket(action, pos, direction);
-    }
-
-    @WrapWithCondition(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
-    private boolean redirectPlayerPosPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_16_4);
     }
 
     @ModifyVariable(method = "clickSlot", at = @At(value = "STORE"), ordinal = 0)

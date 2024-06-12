@@ -36,7 +36,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
 
-    public static final Identifier ID = new Identifier("viafabricplus", "footstep");
+    public static final Identifier ID = Identifier.of("viafabricplus", "footstep");
     public static int RAW_ID;
 
     protected FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z) {
@@ -72,10 +72,10 @@ public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         final float maxV = this.getMaxV();
 
         final int light = this.getBrightness(tickDelta); // This is missing in the original code, that's why the particles are broken
-        vertexConsumer.vertex(x - scale, y, z + scale).texture(maxU, maxV).color(this.red, this.green, this.blue, this.alpha).light(light).next();
-        vertexConsumer.vertex(x + scale, y, z + scale).texture(maxU, minV).color(this.red, this.green, this.blue, this.alpha).light(light).next();
-        vertexConsumer.vertex(x + scale, y, z - scale).texture(minU, minV).color(this.red, this.green, this.blue, this.alpha).light(light).next();
-        vertexConsumer.vertex(x - scale, y, z - scale).texture(minU, maxV).color(this.red, this.green, this.blue, this.alpha).light(light).next();
+        vertexConsumer.vertex(x - scale, y, z + scale).texture(maxU, maxV).color(this.red, this.green, this.blue, this.alpha).light(light);
+        vertexConsumer.vertex(x + scale, y, z + scale).texture(maxU, minV).color(this.red, this.green, this.blue, this.alpha).light(light);
+        vertexConsumer.vertex(x + scale, y, z - scale).texture(minU, minV).color(this.red, this.green, this.blue, this.alpha).light(light);
+        vertexConsumer.vertex(x - scale, y, z - scale).texture(minU, maxV).color(this.red, this.green, this.blue, this.alpha).light(light);
     }
 
     public static void init() {

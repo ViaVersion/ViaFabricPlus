@@ -31,7 +31,7 @@ import net.minecraft.util.Identifier;
  */
 public class BoatModel1_8 extends CompositeEntityModel<BoatEntity> {
 
-    public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(new Identifier("viafabricplus", "boat1_8"), "main");
+    public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(Identifier.of("viafabricplus", "boat1_8"), "main");
     private final ImmutableList<ModelPart> parts;
 
     public BoatModel1_8(ModelPart root) {

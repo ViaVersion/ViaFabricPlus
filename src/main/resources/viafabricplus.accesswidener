@@ -1,6 +1,6 @@
 accessWidener v1 named
 
-accessible field net/minecraft/item/Item ATTACK_DAMAGE_MODIFIER_ID Ljava/util/UUID;
+#accessible field net/minecraft/item/Item ATTACK_DAMAGE_MODIFIER_ID Ljava/util/UUID;
 accessible field net/minecraft/network/ClientConnection channel Lio/netty/channel/Channel;
 accessible field net/minecraft/client/MinecraftClient fontManager Lnet/minecraft/client/font/FontManager;
 accessible field net/minecraft/client/network/AllowedAddressResolver redirectResolver Lnet/minecraft/client/network/RedirectResolver;

@@ -22,7 +22,6 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
@@ -48,7 +47,7 @@ public interface MixinEquipment {
     private void cancelArmorSwap(Item item, World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             final ItemStack heldItem = user.getStackInHand(hand);
-            final EquipmentSlot targetSlot = MobEntity.getPreferredEquipmentSlot(heldItem);
+            final EquipmentSlot targetSlot = user.getPreferredEquipmentSlot(heldItem);
             final ItemStack targetItem = user.getEquippedStack(targetSlot);
 
             if (!targetItem.isEmpty()) {

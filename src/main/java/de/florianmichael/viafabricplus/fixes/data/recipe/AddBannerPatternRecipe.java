@@ -23,7 +23,6 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BannerPatternsComponent;
-import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.BannerItem;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
@@ -32,6 +31,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.DyeColor;
@@ -46,10 +46,10 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(RecipeInputInventory inv, World world) {
+    public boolean matches(CraftingRecipeInput inv, World world) {
         boolean foundBanner = false;
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getStack(i);
+        for (int i = 0; i < inv.getSize(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
             if (stack.getItem() instanceof BannerItem) {
                 if (foundBanner)
                     return false;
@@ -62,11 +62,11 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inv, RegistryWrapper.WrapperLookup lookup) {
+    public ItemStack craft(CraftingRecipeInput inv, RegistryWrapper.WrapperLookup lookup) {
         ItemStack result = ItemStack.EMPTY;
 
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getStack(i);
+        for (int i = 0; i < inv.getSize(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty() && stack.getItem() instanceof BannerItem) {
                 result = stack.copy();
                 result.setCount(1);
@@ -78,8 +78,8 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
         if (pattern != null) {
             final var patternKey = lookup.getWrapperOrThrow(RegistryKeys.BANNER_PATTERN).getOrThrow(pattern.getKey());
             DyeColor color = ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ? DyeColor.BLACK : DyeColor.WHITE;
-            for (int i = 0; i < inv.size(); i++) {
-                Item item = inv.getStack(i).getItem();
+            for (int i = 0; i < inv.getSize(); i++) {
+                Item item = inv.getStackInSlot(i).getItem();
                 if (item instanceof DyeItem dyeItem) {
                     color = dyeItem.getColor();
                 }
@@ -106,7 +106,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
         return SERIALIZER;
     }
 
-    private static BannerPattern_1_13_2 getBannerPattern(RecipeInputInventory inv) {
+    private static BannerPattern_1_13_2 getBannerPattern(CraftingRecipeInput inv) {
         for (BannerPattern_1_13_2 pattern : BannerPattern_1_13_2.values()) {
             if (!pattern.isCraftable())
                 continue;
@@ -115,8 +115,8 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
             if (pattern.hasBaseStack()) {
                 boolean foundBaseItem = false;
                 boolean foundDye = false;
-                for (int i = 0; i < inv.size(); i++) {
-                    ItemStack stack = inv.getStack(i);
+                for (int i = 0; i < inv.getSize(); i++) {
+                    ItemStack stack = inv.getStackInSlot(i);
                     if (!stack.isEmpty() && !(stack.getItem() instanceof BannerItem)) {
                         if (stack.getItem() instanceof DyeItem) {
                             if (foundDye) {
@@ -134,12 +134,12 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
                     }
                 }
                 if (!foundBaseItem || (!foundDye && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_10))) matches = false;
-            } else if (inv.size() == pattern.getRecipePattern().length * pattern.getRecipePattern()[0].length()) {
+            } else if (inv.getSize() == pattern.getRecipePattern().length * pattern.getRecipePattern()[0].length()) {
                 DyeColor patternColor = null;
-                for (int i = 0; i < inv.size(); i++) {
+                for (int i = 0; i < inv.getSize(); i++) {
                     int row = i / 3;
                     int col = i % 3;
-                    ItemStack stack = inv.getStack(i);
+                    ItemStack stack = inv.getStackInSlot(i);
                     Item item = stack.getItem();
                     if (!stack.isEmpty() && !(item instanceof BannerItem)) {
                         if (!(item instanceof DyeItem)) {

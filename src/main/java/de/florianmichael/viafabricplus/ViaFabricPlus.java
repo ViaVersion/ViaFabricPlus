@@ -40,6 +40,10 @@ import java.util.concurrent.CompletableFuture;
  *  - Entity attachment calculation got changed completely
  *  - Particle handling has slightly changed
  *
+ * TODO | Port 1.21
+ *  - Fix MixinMouseOptionsScreen
+ *  - Update Item diff
+ *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
