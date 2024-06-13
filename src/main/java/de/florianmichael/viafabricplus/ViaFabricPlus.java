@@ -42,7 +42,6 @@ import java.util.concurrent.CompletableFuture;
  *
  * TODO | Port 1.21
  *  - Fix MixinMouseOptionsScreen
- *  - Update Item diff
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes

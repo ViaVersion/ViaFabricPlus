@@ -61,7 +61,7 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
    From experience, most changes are related to either movement or networking,
    packages like `gametest` or `server` can be skipped usually when updating. It's important to always diff code inside 
    the `net.minecraft.client` package as well as `net.minecraft.world` package, as these are the most likely to contain changes. (Mojang mappings)
-7. Update protocol constants in the `VFPProtocol` class
+7. Update protocol constants in the `ViaFabricPlusProtocol` class
 8. Check the ViaVersion/upstream protocol implementation for issues and report them if necessary or if these issues can't be fixed,
    without tons of work, implement a workaround in ViaFabricPlus.
 9. Run the game and check all GUIs and other visuals for issues.
