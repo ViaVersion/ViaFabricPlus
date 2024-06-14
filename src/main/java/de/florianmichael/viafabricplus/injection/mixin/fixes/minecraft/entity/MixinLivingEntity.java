@@ -77,6 +77,15 @@ public abstract class MixinLivingEntity extends Entity {
         super(type, world);
     }
 
+    @ModifyExpressionValue(method = "tickStatusEffects", at = @At(value = "CONSTANT", args = "intValue=4"))
+    private int changeParticleDensity(int original) {
+        if (ProtocolTranslator.getTargetVersion().olderThan(ProtocolVersion.v1_20_5)) {
+            return 2;
+        } else {
+            return original;
+        }
+    }
+
     @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lnet/minecraft/util/math/Vec3d;"))
     private Vec3d getPassengerRidingPos1_20_1(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
@@ -234,13 +243,5 @@ public abstract class MixinLivingEntity extends Entity {
                 cir.setReturnValue(true);
             }
         }
-    }
-
-    @ModifyExpressionValue(method = "tickStatusEffects", at = @At(value = "CONSTANT", args = "intValue=4"))
-    private int tweakParticleDensity(int original) {
-        if (ProtocolTranslator.getTargetVersion().olderThan(ProtocolVersion.v1_20_5)) {
-            return 2;
-        }
-        return original;
     }
 }
