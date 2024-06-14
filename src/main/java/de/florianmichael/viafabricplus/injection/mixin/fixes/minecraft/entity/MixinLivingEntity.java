@@ -244,4 +244,5 @@ public abstract class MixinLivingEntity extends Entity {
             }
         }
     }
+
 }
