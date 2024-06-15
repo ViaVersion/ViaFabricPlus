@@ -25,7 +25,6 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.command.ListExtensionsCommand;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.command.SetTimeCommand;
-import de.florianmichael.viafabricplus.injection.access.IViaCommandHandler;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.raphimc.vialoader.impl.viaversion.VLCommandHandler;
 
@@ -36,13 +35,12 @@ public class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
     public ViaFabricPlusVLCommandHandler() {
         super();
 
+        this.removeSubCommand("list");
+        this.removeSubCommand("player");
+        this.removeSubCommand("pps");
+
         this.registerSubCommand(new ListExtensionsCommand());
         this.registerSubCommand(new SetTimeCommand());
-
-        final IViaCommandHandler mixin = (IViaCommandHandler) this;
-        mixin.viaFabricPlus$removeSubCommand("list");
-        mixin.viaFabricPlus$removeSubCommand("player");
-        mixin.viaFabricPlus$removeSubCommand("pps");
     }
 
     public int execute(final CommandContext<FabricClientCommandSource> ctx) {
