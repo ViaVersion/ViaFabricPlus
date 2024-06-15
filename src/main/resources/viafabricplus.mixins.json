@@ -29,6 +29,7 @@
     "base.perserverversion.MixinServerInfo",
     "compat.classic4j.MixinCCAuthenticationResponse",
     "compat.classic4j.MixinTextFieldWidget",
+    "compat.fabricapi.MixinRegistrySyncManager",
     "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "compat.jsonwebtoken.MixinClasses",
     "compat.jsonwebtoken.MixinDefaultJwtParserBuilder",
@@ -200,7 +201,7 @@
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
-    "compat.fabricapi.MixinRegistrySyncManager"
+    "viaversion.MixinViaCommandHandler"
   ],
   "injectors": {
     "defaultRequire": 1
