@@ -26,8 +26,11 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
@@ -37,6 +40,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
@@ -50,6 +54,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Optional;
 
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends LivingEntity {
@@ -69,7 +75,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F).withEyeHeight(1.54F);
 
     @Unique
-    private static final SoundEvent viaFabricPlus$oof_hurt = SoundEvent.of(new Identifier("viafabricplus", "oof.hurt"));
+    private static final SoundEvent viaFabricPlus$oof_hurt = SoundEvent.of(Identifier.of("viafabricplus", "oof.hurt"));
 
     @Unique
     public boolean viaFabricPlus$isSprinting;
@@ -78,7 +84,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         super(entityType, world);
     }
 
-    @ModifyConstant(method = "method_59818", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
+    @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
     private double removeOffsetWhenCheckingSneakingCollision(double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             return 0;
@@ -186,9 +192,23 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
+    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D", ordinal = 0))
+    private double getSpeedBasedOnEfficiency(PlayerEntity instance, RegistryEntry<EntityAttribute> attribute) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            final int effLevel = this.viaFabricPlus$getEfficiencyLevel();
+            if (effLevel > 0 && !this.getMainHandStack().isEmpty()) {
+                return effLevel * effLevel + 1;
+            } else {
+                return 0;
+            }
+        } else {
+            return instance.getAttributeValue(attribute);
+        }
+    }
+
     @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
     private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
-        final int efficiency = EnchantmentHelper.getEfficiency(this);
+        final int efficiency = this.viaFabricPlus$getEfficiencyLevel();
         if (efficiency <= 0) return;
 
         final float speed = this.inventory.getBlockBreakingSpeed(block);
@@ -217,6 +237,12 @@ public abstract class MixinPlayerEntity extends LivingEntity {
             return false; // disable original code
         }
         return hasMiningFatigue;
+    }
+
+    @Unique
+    private int viaFabricPlus$getEfficiencyLevel() {
+        final Optional<RegistryEntry.Reference<Enchantment>> enchantment = this.getWorld().getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOptional(Enchantments.EFFICIENCY);
+        return enchantment.map(e -> EnchantmentHelper.getEquipmentLevel(e, this)).orElse(-1);
     }
 
 }

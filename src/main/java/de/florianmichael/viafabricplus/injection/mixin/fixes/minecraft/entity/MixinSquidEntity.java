@@ -22,7 +22,6 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.entity.passive.SquidEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,8 +30,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SquidEntity.class)
 public abstract class MixinSquidEntity {
 
-    @Inject(method = "canBeLeashedBy", at = @At("HEAD"), cancellable = true)
-    private void cancelLeashing(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "canBeLeashed", at = @At("HEAD"), cancellable = true)
+    private void cancelLeashing(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(false);
         }

@@ -28,7 +28,7 @@ import net.minecraft.util.Identifier;
 
 public record DataCustomPayload(PacketByteBuf buf) implements CustomPayload {
 
-    public static final CustomPayload.Id<DataCustomPayload> ID = new CustomPayload.Id<>(new Identifier(ClientsideFixes.PACKET_SYNC_IDENTIFIER));
+    public static final CustomPayload.Id<DataCustomPayload> ID = new CustomPayload.Id<>(Identifier.of(ClientsideFixes.PACKET_SYNC_IDENTIFIER));
 
     static {
         PayloadTypeRegistry.playS2C().register(DataCustomPayload.ID, CustomPayload.codecOf((value, buf) -> {

@@ -35,7 +35,7 @@ import net.minecraft.util.math.RotationAxis;
  */
 public class BoatRenderer1_8 extends EntityRenderer<BoatEntity> {
 
-    private static final Identifier TEXTURE = new Identifier("viafabricplus", "textures/boat1_8.png");
+    private static final Identifier TEXTURE = Identifier.of("viafabricplus", "textures/boat1_8.png");
     private final BoatModel1_8 model;
 
     public BoatRenderer1_8(EntityRendererFactory.Context ctx) {
@@ -68,7 +68,7 @@ public class BoatRenderer1_8 extends EntityRenderer<BoatEntity> {
         matrices.scale(-1, -1, 1);
         model.setAngles(entity, tickDelta, 0, -0.1f, 0, 0);
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.getLayer(TEXTURE));
-        model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+        model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV);
 
         matrices.pop();
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);

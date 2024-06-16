@@ -80,6 +80,9 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Shadow
     protected abstract boolean isSecureChatEnforced();
 
+    @Shadow
+    private ClientWorld world;
+
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
     }
@@ -215,7 +218,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
             final List<RecipeEntry<?>> recipes = new ArrayList<>();
             final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolTranslator.getTargetVersion());
             for (int i = 0; i < recipeInfos.size(); i++) {
-                recipes.add(recipeInfos.get(i).create(new Identifier("viafabricplus", "recipe/" + i)));
+                recipes.add(recipeInfos.get(i).create(Identifier.of("viafabricplus", "recipe/" + i)));
             }
             this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
         }
