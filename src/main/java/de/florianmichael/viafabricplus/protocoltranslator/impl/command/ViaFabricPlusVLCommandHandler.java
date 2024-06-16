@@ -35,20 +35,21 @@ public class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
     public ViaFabricPlusVLCommandHandler() {
         super();
 
+        this.removeSubCommand("list");
+        this.removeSubCommand("player");
+        this.removeSubCommand("pps");
+
         this.registerSubCommand(new ListExtensionsCommand());
         this.registerSubCommand(new SetTimeCommand());
     }
 
-    public int execute(CommandContext<FabricClientCommandSource> ctx) {
+    public int execute(final CommandContext<FabricClientCommandSource> ctx) {
         String[] args = new String[0];
         try {
             args = StringArgumentType.getString(ctx, "args").split(" ");
         } catch (IllegalArgumentException ignored) {
         }
-        onCommand(
-                new ViaFabricPlusViaCommandSender(ctx.getSource()),
-                args
-        );
+        onCommand(new ViaFabricPlusViaCommandSender(ctx.getSource()), args);
         return 1;
     }
 
@@ -59,17 +60,15 @@ public class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
         } catch (IllegalArgumentException ignored) {
             args = new String[]{""};
         }
-        String[] pref = args.clone();
+        final String[] pref = args.clone();
         pref[pref.length - 1] = "";
-        String prefix = String.join(" ", pref);
-        onTabComplete(new ViaFabricPlusViaCommandSender(ctx.getSource()), args)
-                .stream()
-                .map(it -> {
-                    SuggestionsBuilder b = new SuggestionsBuilder(builder.getInput(), prefix.length() + builder.getStart());
-                    b.suggest(it);
-                    return b;
-                })
-                .forEach(builder::add);
+
+        final String prefix = String.join(" ", pref);
+        onTabComplete(new ViaFabricPlusViaCommandSender(ctx.getSource()), args).stream().map(it -> {
+            final var b = new SuggestionsBuilder(builder.getInput(), prefix.length() + builder.getStart());
+            b.suggest(it);
+            return b;
+        }).forEach(builder::add);
         return builder.buildFuture();
     }
 
