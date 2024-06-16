@@ -13,7 +13,7 @@
   "base.viafabricplus.logout": "Ausloggen",
   "base.viafabricplus.online_mode": "Online-Modus",
   "base.viafabricplus.reset": "Zurücksetzen",
-  "base.viafabricplus.copy_code": "Code kopieren",
+  "base.viafabricplus.copy_link": "Link kopieren",
   "base.viafabricplus.something_went_wrong": "Etwas ist schiefgegangen! Bitte versuche es später erneut.",
   "base.viafabricplus.via_translates_to": "Via übersetzt zu: %s",
   "base.viafabricplus.server_version": "Serverversion: %s",
