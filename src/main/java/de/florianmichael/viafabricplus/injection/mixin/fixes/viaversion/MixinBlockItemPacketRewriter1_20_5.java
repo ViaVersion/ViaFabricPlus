@@ -148,7 +148,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
         // Add item blocking by make the sword eatable, counterpart in MixinSwordItem
         if (user.getProtocolInfo().serverProtocolVersion().betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8)) {
             if (this.viaFabricPlus$swordItems1_8.contains(identifier)) {
-                data.set(StructuredDataKey.FOOD, new FoodProperties(0, 0F, true, 3600, new FoodEffect[0]));
+                data.set(StructuredDataKey.FOOD1_20_5, new FoodProperties(0, 0F, true, 3600, null, new FoodEffect[0]));
             }
         }
 
@@ -163,7 +163,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
         if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             if (this.viaFabricPlus$foodItems_b1_7_3.contains(identifier)) {
                 data.set(StructuredDataKey.MAX_STACK_SIZE, 1);
-                data.addEmpty(StructuredDataKey.FOOD);
+                data.addEmpty(StructuredDataKey.FOOD1_20_5);
             }
         }
 
