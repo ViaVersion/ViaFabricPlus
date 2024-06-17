@@ -13,7 +13,7 @@
   "base.viafabricplus.logout": "登出",
   "base.viafabricplus.online_mode": "線上模式",
   "base.viafabricplus.reset": "重設",
-  "base.viafabricplus.copy_code": "複製代碼",
+  "base.viafabricplus.copy_link": "複製連結",
   "base.viafabricplus.something_went_wrong": "發生錯誤！請稍後再試",
   "base.viafabricplus.via_translates_to": "轉換為：%s",
   "base.viafabricplus.server_version": "伺服器版本：%s",
@@ -62,6 +62,7 @@
   "debug_settings.viafabricplus.legacy_mining_speeds": "舊版挖礦速度",
   "debug_settings.viafabricplus.prevent_entity_cramming": "阻止實體擠壓",
   "debug_settings.viafabricplus.always_tick_client_player": "一律執行用戶端玩家刻",
+  "debug_settings.viafabricplus.print_networking_errors_to_logs": "輸出網路錯誤到日誌",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用 BetaCraft 驗證",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "允許 ViaLegacy 調用 joinServer() 來驗證 session",
@@ -82,9 +83,17 @@
   "visual_settings.viafabricplus.enable_sword_blocking": "啟用 1.8 劍阻擋動畫",
   "visual_settings.viafabricplus.enable_block_hit_animation": "啟用 1.7 阻擋攻擊動畫",
   "visual_settings.viafabricplus.disable_server_pinging": "禁用伺服器 pinging",
+  "visual_settings.viafabricplus.sideways_backwards_walking": "側身倒退行走",
+  "visual_settings.viafabricplus.enable_legacy_tablist": "啟用舊版 Tab 列表",
 
   "bedrock.viafabricplus.login": "你的瀏覽器應該已經開啟。\n請輸入以下代碼：%s\n關閉此畫面將取消流程！",
   "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus session 驗證失敗！請登入帳號或在 ViaFabricPlus 設定中停用 BetaCraft 認證",
+
+  "report.viafabricplus.button": "回報問題",
+  "report.viafabricplus.bug_report": "在 GitHub 上回報 Bug",
+  "report.viafabricplus.feature_request": "在 Github 上請求新功能",
+  "report.viafabricplus.create_via_dump": "建立一個 ViaVersion Dump，用於回報問題時收集資訊",
+  "report.viafabricplus.open_logs": "開啟遊戲日誌目錄",
 
   "classicube.viafabricplus.account": "你可以在這裡建立帳號：https://www.classicube.net/",
   "classicube.viafabricplus.loading": "正在載入個人檔案資訊和伺服器清單...",
@@ -95,11 +104,5 @@
   "classic4j_library.viafabricplus.error.username": "無效的使用者名稱。",
   "classic4j_library.viafabricplus.error.password": "無效的密碼。",
   "classic4j_library.viafabricplus.error.verification": "使用者尚未驗證電子郵件地址。",
-  "classic4j_library.viafabricplus.error.logincode": "要求多重要素驗證。請檢查你的電子郵件。",
-
-  "report.viafabricplus.button": "回報問題",
-  "report.viafabricplus.bug_report": "在 GitHub 上回報 Bug",
-  "report.viafabricplus.feature_request": "在 Github 上請求新功能",
-  "report.viafabricplus.create_via_dump": "建立一個 ViaVersion Dump，用於回報問題時收集資訊",
-  "report.viafabricplus.open_logs": "開啟遊戲日誌目錄"
+  "classic4j_library.viafabricplus.error.logincode": "要求多重要素驗證。請檢查你的電子郵件。"
 }
