@@ -42,6 +42,19 @@ import java.util.concurrent.CompletableFuture;
  *
  * TODO | Port 1.21
  *  - Fix MixinMouseOptionsScreen
+ *  - SetEntityMotion Lerp
+ *  - ClientboundRespawnPacket assigns base values now
+ *  - Win Game State 0 missing now
+ *  - LocalPlayer#aiStep nether portal logic and sneaking attribute
+ *  - Camera logic got changed again
+ *  - ExtraCodecs#QUATERNIONF_COMPONENTS
+ *  - Armadilllo removedd shouldPanic
+ *  - AbstractHorse canWearBodyArmor->canUseSlot
+ *  - horses getInvColumns behaviour
+ *  - Wolf hasArmor -> interactions
+ *  - HangingEntity, ItemFrame, Painting, PrimedTnt
+ *  - Villager offers are server only now
+ *  - Player#attack
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
