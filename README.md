@@ -16,13 +16,13 @@ ViaFabricPlus is a deep integration of ViaVersion on the Fabric platform, it imp
 At the time of writing, VFP is the only protocol translation platform for the client with which you can play on all Minecraft multiplayer versions with many QoL features and get the feel of the old versions.
 
 ## Supported Server versions
-- Release (1.0.0 - 1.20.6)
+- Release (1.0.0 - 1.21)
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - April Fools (3D Shareware, 20w14infinite)
 - Combat Snapshots (Combat Test 8c)
-- Bedrock Edition 1.20.80 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
+- Bedrock Edition 1.21.0 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
 
 ## For players
 - Tutorial for installing and using the mod can be found [here](docs/USAGE.md)
