@@ -54,7 +54,7 @@
     "fabric-lifecycle-events-v1": ">=2.2.28",
     "fabric-particles-v1": ">=1.1.6",
     "fabric-registry-sync-v0": ">=4.0.13",
-    "minecraft": ">=1.21",
+    "minecraft": "1.21",
     "java": ">=21"
   },
   "breaks": {
