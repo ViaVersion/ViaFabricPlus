@@ -41,7 +41,6 @@ import java.util.concurrent.CompletableFuture;
  *  - Particle handling has slightly changed
  *
  * TODO | Port 1.21
- *  - Fix MixinMouseOptionsScreen
  *  - SetEntityMotion Lerp
  *  - ClientboundRespawnPacket assigns base values now
  *  - Win Game State 0 missing now
@@ -55,6 +54,18 @@ import java.util.concurrent.CompletableFuture;
  *  - HangingEntity, ItemFrame, Painting, PrimedTnt
  *  - Villager offers are server only now
  *  - Player#attack
+ *  - Boat floating and interaction
+ *  - Entity collide functions and interaction
+ *  - LivingEntity#getBlockSpeedFactor, decreaseAirSupply, knockback, travel, getPreciseBodyRotation,
+ *  - Mob interact
+ *  - AxeItem playerHasShieldUseIntent new
+ *  - BucketItem, ChorusFruit, FoodOnAStickItem, KnowledgeBookItem, TridentItem,
+ *  - CakeBlock creative check in interaction
+ *  - Jukebox overrides new interaction function
+ *  - SignBlock, TntBlock creative check
+ *  - Check item rarity values
+ *  - ItemStack count max changed in codec
+ *  - SolidBucketItem useOn
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
