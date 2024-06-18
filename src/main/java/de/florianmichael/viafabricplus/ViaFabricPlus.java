@@ -41,8 +41,6 @@ import java.util.concurrent.CompletableFuture;
  *  - Particle handling has slightly changed
  *
  * TODO | Port 1.21
- *  - SetEntityMotion Lerp
- *  - ClientboundRespawnPacket assigns base values now
  *  - Win Game State 0 missing now
  *  - LocalPlayer#aiStep nether portal logic and sneaking attribute
  *  - Camera logic got changed again
