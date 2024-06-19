@@ -88,12 +88,12 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     }
 
     @WrapWithCondition(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/AttributeContainer;setBaseFrom(Lnet/minecraft/entity/attribute/AttributeContainer;)V"))
-    public boolean dontApplyBaseValues(AttributeContainer instance, AttributeContainer other) {
+    private boolean dontApplyBaseValues(AttributeContainer instance, AttributeContainer other) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21);
     }
 
     @Redirect(method = "onGameStateChange", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V", ordinal = 0))
-    public void handleWinGameState0(MinecraftClient instance, Screen screen, @Local int i) {
+    private void handleWinGameState0(MinecraftClient instance, Screen screen, @Local int i) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             if (i == 0) {
                 this.client.player.networkHandler.sendPacket(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
