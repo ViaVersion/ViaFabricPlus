@@ -13,7 +13,7 @@
   "base.viafabricplus.logout": "Wyloguj się",
   "base.viafabricplus.online_mode": "Tryb online",
   "base.viafabricplus.reset": "Resetuj",
-  "base.viafabricplus.copy_code": "Kopiuj kod",
+  "base.viafabricplus.copy_link": "Kopiuj link",
   "base.viafabricplus.something_went_wrong": "Coś poszło nie tak! Spróbuj ponownie później.",
   "base.viafabricplus.via_translates_to": "Via tłumaczy na: %s",
   "base.viafabricplus.server_version": "Wersja serwera: %s",
@@ -84,6 +84,7 @@
   "visual_settings.viafabricplus.enable_block_hit_animation": "Włącz animację niszczenia bloków 1.7",
   "visual_settings.viafabricplus.disable_server_pinging": "Wyłącz pingowanie serwerów",
   "visual_settings.viafabricplus.sideways_backwards_walking": "Chodzenie do tyłu na boki",
+  "visual_settings.viafabricplus.enable_legacy_tablist": "Włącz starą listę graczy",
 
   "bedrock.viafabricplus.login": "Powinna ci się otworzyć przeglądarka.\nNa otworzonej stronie wpisz ten kod: %s\nZamkanięcie tego ekranu będzie anulowało proces!",
   "authentication.viafabricplus.failed_to_verify_session": "Nie udało się zweryfikować twojej sesji! Zaloguj się na jakieś konto albo wyłącz uwierzytelnianie BetaCraft w ustawieniach.",
