@@ -25,12 +25,12 @@ import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
+import de.florianmichael.viafabricplus.util.EnchantmentUtil;
 import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
@@ -40,7 +40,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
@@ -54,8 +53,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Optional;
 
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends LivingEntity {
@@ -82,6 +79,20 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"))
+    private double handleEfficiencyClientside(PlayerEntity instance, RegistryEntry<EntityAttribute> attribute) {
+        if (attribute == EntityAttributes.PLAYER_MINING_EFFICIENCY && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            final int effLevel = EnchantmentUtil.getEquipmentLevel(Enchantments.EFFICIENCY, this);
+            if (effLevel > 0 && !this.getMainHandStack().isEmpty()) {
+                return effLevel * effLevel + 1;
+            } else {
+                return 0;
+            }
+        } else {
+            return instance.getAttributeValue(attribute);
+        }
     }
 
     @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
@@ -185,30 +196,20 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
-    private void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
-        if (VisualSettings.global().replaceHurtSoundWithOOFSound.isEnabled()) {
-            cir.setReturnValue(viaFabricPlus$oof_hurt);
+    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
+    private boolean changeSpeedCalculation(PlayerEntity instance, RegistryEntry<StatusEffect> statusEffect, @Local LocalFloatRef f) {
+        final boolean hasMiningFatigue = instance.hasStatusEffect(statusEffect);
+        if (hasMiningFatigue && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
+            f.set(f.get() * (1.0F - (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier() + 1) * 0.2F));
+            if (f.get() < 0) f.set(0);
+            return false; // disable original code
         }
-    }
-
-    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D", ordinal = 0))
-    private double getSpeedBasedOnEfficiency(PlayerEntity instance, RegistryEntry<EntityAttribute> attribute) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            final int effLevel = this.viaFabricPlus$getEfficiencyLevel();
-            if (effLevel > 0 && !this.getMainHandStack().isEmpty()) {
-                return effLevel * effLevel + 1;
-            } else {
-                return 0;
-            }
-        } else {
-            return instance.getAttributeValue(attribute);
-        }
+        return hasMiningFatigue;
     }
 
     @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
     private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
-        final int efficiency = this.viaFabricPlus$getEfficiencyLevel();
+        final int efficiency = EnchantmentUtil.getEquipmentLevel(Enchantments.EFFICIENCY, this);
         if (efficiency <= 0) return;
 
         final float speed = this.inventory.getBlockBreakingSpeed(block);
@@ -228,21 +229,11 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
-    private boolean changeSpeedCalculation(PlayerEntity instance, RegistryEntry<StatusEffect> statusEffect, @Local LocalFloatRef f) {
-        final boolean hasMiningFatigue = instance.hasStatusEffect(statusEffect);
-        if (hasMiningFatigue && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-            f.set(f.get() * (1.0F - (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier() + 1) * 0.2F));
-            if (f.get() < 0) f.set(0);
-            return false; // disable original code
+    @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
+    private void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
+        if (VisualSettings.global().replaceHurtSoundWithOOFSound.isEnabled()) {
+            cir.setReturnValue(viaFabricPlus$oof_hurt);
         }
-        return hasMiningFatigue;
-    }
-
-    @Unique
-    private int viaFabricPlus$getEfficiencyLevel() {
-        final Optional<RegistryEntry.Reference<Enchantment>> enchantment = this.getWorld().getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOptional(Enchantments.EFFICIENCY);
-        return enchantment.map(e -> EnchantmentHelper.getEquipmentLevel(e, this)).orElse(-1);
     }
 
 }
