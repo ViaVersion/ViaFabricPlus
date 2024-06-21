@@ -63,6 +63,7 @@
   "debug_settings.viafabricplus.prevent_entity_cramming": "Prevent entity cramming",
   "debug_settings.viafabricplus.always_tick_client_player": "Always tick client player",
   "debug_settings.viafabricplus.print_networking_errors_to_logs": "Print networking errors to logs",
+  "debug_settings.viafabricplus.ignore_fabric_sync_errors": "Ignore Fabric sync errors",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Use BetaCraft authentication",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Verify session for online mode servers",

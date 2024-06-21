@@ -19,16 +19,23 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.compat.fabricapi;
 
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(RegistrySyncManager.class)
+import java.util.Map;
+
+@Mixin(value = RegistrySyncManager.class, remap = false)
 public abstract class MixinRegistrySyncManager {
 
     @Redirect(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/Registry;getId(Ljava/lang/Object;)Lnet/minecraft/util/Identifier;"))
@@ -38,6 +45,14 @@ public abstract class MixinRegistrySyncManager {
             return null;
         } else {
             return id;
+        }
+    }
+
+    @Inject(method = "checkRemoteRemap", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;)V", ordinal = 0), cancellable = true)
+    private static void ignoreFabricSyncErrors(Map<Identifier, Object2IntMap<Identifier>> map, CallbackInfo ci) {
+        if (DebugSettings.global().ignoreFabricSyncErrors.getValue()) {
+            ViaFabricPlus.global().getLogger().warn("Ignoring missing registries from Fabric API");
+            ci.cancel();
         }
     }
 
