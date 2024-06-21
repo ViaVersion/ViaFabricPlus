@@ -21,10 +21,6 @@ configurations {
 repositories {
 	mavenCentral()
 	maven {
-		name = "Jitpack"
-		url = "https://jitpack.io"
-	}
-	maven {
 		name = "ViaVersion"
 		url = "https://repo.viaversion.com"
 	}
@@ -33,12 +29,12 @@ repositories {
 		url = "https://maven.lenni0451.net/everything"
 	}
 	maven {
-		name = "TerraformersMC"
-		url = "https://maven.terraformersmc.com/releases"
-	}
-	maven {
 		name = "OpenCollab Snapshots"
 		url = "https://repo.opencollab.dev/maven-snapshots/"
+	}
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/releases"
 	}
 }
 
