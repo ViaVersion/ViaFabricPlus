@@ -41,7 +41,7 @@ import java.util.concurrent.CompletableFuture;
  *  - Particle handling has slightly changed
  *
  * TODO | Port 1.21
- *  - LocalPlayer#aiStep nether portal logic and sneaking attribute
+ *  - LocalPlayer#aiStep nether portal logic
  *  - Camera logic got changed again
  *  - ExtraCodecs#QUATERNIONF_COMPONENTS
  *  - Armadilllo removedd shouldPanic

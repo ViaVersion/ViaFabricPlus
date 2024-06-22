@@ -92,7 +92,7 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Inject(method = "getVelocityMultiplier", at = @At("HEAD"), cancellable = true)
-    private void getVelocityMultiplier1_20_5(CallbackInfoReturnable<Float> cir) {
+    private void getVelocityMultiplier1_20_6(CallbackInfoReturnable<Float> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             cir.setReturnValue(this.isOnSoulSpeedBlock() && EnchantmentUtil.getEquipmentLevel(Enchantments.SOUL_SPEED, (LivingEntity) (Object) this) > 0 ? 1F : super.getVelocityMultiplier());
         }
