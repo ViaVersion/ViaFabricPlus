@@ -38,6 +38,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -45,6 +46,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.List;
 
 @SuppressWarnings("ConstantValue")
 @Mixin(Entity.class)
@@ -71,8 +74,47 @@ public abstract class MixinEntity implements IEntity {
     @Shadow
     protected abstract Vec3d getPassengerAttachmentPos(Entity passenger, EntityDimensions dimensions, float scaleFactor);
 
+    @Shadow
+    public abstract World getWorld();
+
+    @Shadow
+    public abstract boolean isOnGround();
+
+    @Shadow
+    public abstract float getStepHeight();
+
     @Unique
     private boolean viaFabricPlus$isInLoadedChunkAndShouldTick;
+
+    @Inject(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
+    private void use1_20_6StepCollisionCalculation(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            final Entity thiz = (Entity) (Object) this;
+            final Box box = this.getBoundingBox();
+            final List<VoxelShape> collisions = this.getWorld().getEntityCollisions(thiz, box.stretch(movement));
+            Vec3d adjustedMovement = movement.lengthSquared() == 0D ? movement : Entity.adjustMovementForCollisions(thiz, movement, box, this.getWorld(), collisions);
+            final boolean changedX = movement.x != adjustedMovement.x;
+            final boolean changedY = movement.y != adjustedMovement.y;
+            final boolean changedZ = movement.z != adjustedMovement.z;
+            final boolean mayTouchGround = this.isOnGround() || changedY && movement.y < 0D;
+            if (this.getStepHeight() > 0F && mayTouchGround && (changedX || changedZ)) {
+                Vec3d vec3d2 = Entity.adjustMovementForCollisions(thiz, new Vec3d(movement.x, this.getStepHeight(), movement.z), box, this.getWorld(), collisions);
+                Vec3d vec3d3 = Entity.adjustMovementForCollisions(thiz, new Vec3d(0D, this.getStepHeight(), 0D), box.stretch(movement.x, 0D, movement.z), this.getWorld(), collisions);
+                if (vec3d3.y < this.getStepHeight()) {
+                    Vec3d vec3d4 = Entity.adjustMovementForCollisions(thiz, new Vec3d(movement.x, 0D, movement.z), box.offset(vec3d3), this.getWorld(), collisions).add(vec3d3);
+                    if (vec3d4.horizontalLengthSquared() > vec3d2.horizontalLengthSquared()) {
+                        vec3d2 = vec3d4;
+                    }
+                }
+
+                if (vec3d2.horizontalLengthSquared() > adjustedMovement.horizontalLengthSquared()) {
+                    adjustedMovement = vec3d2.add(Entity.adjustMovementForCollisions(thiz, new Vec3d(0D, -vec3d2.y + movement.y, 0D), box.offset(vec3d2), this.getWorld(), collisions));
+                }
+            }
+
+            cir.setReturnValue(adjustedMovement);
+        }
+    }
 
     @Redirect(method = "updatePassengerPosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity$PositionUpdater;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getVehicleAttachmentPos(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/math/Vec3d;"))
     private Vec3d use1_20_1RidingOffset(Entity instance, Entity vehicle) {
