@@ -35,7 +35,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
-@Mixin(value = RegistrySyncManager.class, remap = false)
+@Mixin(RegistrySyncManager.class)
 public abstract class MixinRegistrySyncManager {
 
     @Redirect(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/Registry;getId(Ljava/lang/Object;)Lnet/minecraft/util/Identifier;"))
@@ -48,7 +48,7 @@ public abstract class MixinRegistrySyncManager {
         }
     }
 
-    @Inject(method = "checkRemoteRemap", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;)V", ordinal = 0), cancellable = true)
+    @Inject(method = "checkRemoteRemap", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;)V", ordinal = 0), cancellable = true, remap = false)
     private static void ignoreFabricSyncErrors(Map<Identifier, Object2IntMap<Identifier>> map, CallbackInfo ci) {
         if (DebugSettings.global().ignoreFabricSyncErrors.getValue()) {
             ViaFabricPlus.global().getLogger().warn("Ignoring missing registries from Fabric API");
