@@ -24,6 +24,7 @@ import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.fixes.data.EntityDimensionDiff;
 import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
+import de.florianmichael.viafabricplus.fixes.versioned.EnchantmentAttributesEmulation1_20_6;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.GridItemSelectionScreen;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.ArmorHudEmulation1_8;
@@ -82,6 +83,9 @@ public class ClientsideFixes {
         ResourcePackHeaderDiff.checkOutdated();
 
         PostGameLoadCallback.EVENT.register(() -> {
+            // Handle clientside enchantment calculations in <= 1.20.6
+            EnchantmentAttributesEmulation1_20_6.init();
+
             // Handles and updates entity dimension changes in <= 1.17
             EntityDimensionDiff.init();
 

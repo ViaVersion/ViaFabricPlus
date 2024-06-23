@@ -30,8 +30,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -80,15 +78,6 @@ public abstract class MixinLivingEntity extends Entity {
 
     public MixinLivingEntity(EntityType<?> type, World world) {
         super(type, world);
-    }
-
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"))
-    private double handleDepthStriderClientside(LivingEntity instance, RegistryEntry<EntityAttribute> attribute) {
-        if (attribute == EntityAttributes.GENERIC_WATER_MOVEMENT_EFFICIENCY && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            return Math.min(EnchantmentUtil.getEquipmentLevel(Enchantments.DEPTH_STRIDER, (LivingEntity) (Object) this), 3) / 3F;
-        } else {
-            return instance.getAttributeValue(attribute);
-        }
     }
 
     @Inject(method = "getVelocityMultiplier", at = @At("HEAD"), cancellable = true)

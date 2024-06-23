@@ -28,20 +28,15 @@ import com.viaversion.viaversion.api.type.Types;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
-import de.florianmichael.viafabricplus.util.EnchantmentUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.MathHelper;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.release.r1_5_2tor1_6_1.Protocolr1_5_2Tor1_6_1;
@@ -79,15 +74,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Shadow
     public abstract void setClientPermissionLevel(int clientPermissionLevel);
-
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"))
-    private double handleSwiftSneakClientside(ClientPlayerEntity instance, RegistryEntry<EntityAttribute> attribute) {
-        if (attribute == EntityAttributes.PLAYER_SNEAKING_SPEED && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            return MathHelper.clamp(0.3F + EnchantmentUtil.getEquipmentLevel(Enchantments.SWIFT_SNEAK, this) * 0.15F, 0.0F, 1.0F);
-        } else {
-            return instance.getAttributeValue(attribute);
-        }
-    }
 
     @WrapWithCondition(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;jump()V"))
     private boolean dontJumpBeforeFlying(ClientPlayerEntity instance) {
