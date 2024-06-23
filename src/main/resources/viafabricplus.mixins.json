@@ -58,6 +58,7 @@
     "fixes.minecraft.MixinRedirectResolver",
     "fixes.minecraft.MixinServerAddress",
     "fixes.minecraft.MixinServerResourcePackLoader_4",
+    "fixes.minecraft.MixinStaticSound",
     "fixes.minecraft.MixinStringHelper",
     "fixes.minecraft.MixinTextRenderer",
     "fixes.minecraft.MixinWorldRenderer",

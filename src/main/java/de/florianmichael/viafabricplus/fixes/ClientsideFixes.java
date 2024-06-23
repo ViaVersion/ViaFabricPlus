@@ -40,6 +40,7 @@ import net.minecraft.client.network.ServerAddress;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.Registries;
+import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -116,6 +117,11 @@ public class ClientsideFixes {
             // Rebuilds the item selection screen grid
             if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 GridItemSelectionScreen.INSTANCE.itemGrid = null;
+            }
+
+            // Reload sound system when switching between 3D Shareware and normal versions
+            if (oldVersion.equals(AprilFoolsProtocolVersion.s3d_shareware) || newVersion.equals(AprilFoolsProtocolVersion.s3d_shareware)) {
+                MinecraftClient.getInstance().getSoundManager().reloadSounds();
             }
         }));
 
