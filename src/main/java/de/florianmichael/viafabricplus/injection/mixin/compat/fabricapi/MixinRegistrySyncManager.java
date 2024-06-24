@@ -19,6 +19,8 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.compat.fabricapi;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
@@ -26,11 +28,9 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
@@ -38,9 +38,9 @@ import java.util.Map;
 @Mixin(RegistrySyncManager.class)
 public abstract class MixinRegistrySyncManager {
 
-    @Redirect(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/Registry;getId(Ljava/lang/Object;)Lnet/minecraft/util/Identifier;"))
-    private static @Nullable <T> Identifier skipFootStepParticle(Registry<T> instance, T t) {
-        final Identifier id = instance.getId(t);
+    @WrapOperation(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/Registry;getId(Ljava/lang/Object;)Lnet/minecraft/util/Identifier;"), require = 0)
+    private static Identifier skipFootStepParticle(Registry instance, Object t, Operation<Identifier> original) {
+        final Identifier id = original.call(instance, t);
         if (id == FootStepParticle1_12_2.ID) {
             return null;
         } else {
