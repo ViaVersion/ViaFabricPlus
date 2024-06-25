@@ -44,6 +44,7 @@ public class DebugSettings extends SettingGroup {
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting executeInputsSynchronously = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.execute_inputs_synchronously"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
     public final VersionedBooleanSetting sneakInstantly = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.sneak_instantly"), VersionRange.of(ProtocolVersion.v1_8, ProtocolVersion.v1_12_2));
+    public final VersionedBooleanSetting legacyTabCompletions = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.legacy_tab_completions"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
 
     // 1.12 -> 1.11.1-1.11.2
     public final VersionedBooleanSetting sendOpenInventoryPacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_open_inventory_packet"), VersionRange.andOlder(ProtocolVersion.v1_11_1));

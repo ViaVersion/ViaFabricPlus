@@ -62,6 +62,7 @@
   "debug_settings.viafabricplus.legacy_mining_speeds": "Veraltete Abbaugeschwindigkeiten",
   "debug_settings.viafabricplus.prevent_entity_cramming": "Entity-Cramming verhindern",
   "debug_settings.viafabricplus.always_tick_client_player": "Client-Spieler immer ticken",
+  "debug_settings.viafabricplus.legacy_tab_completions": "Veraltete Tab-Vervollständigungen",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "BetaCraft-Authentifizierung verwenden",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Sitzung für Online-Modus-Server verifizieren",
