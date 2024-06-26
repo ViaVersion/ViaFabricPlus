@@ -21,30 +21,68 @@ package de.florianmichael.viafabricplus.fixes.versioned;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import de.florianmichael.viafabricplus.util.EnchantmentUtil;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.BlockTags;
+
+import java.util.Optional;
 
 public class EnchantmentAttributesEmulation1_20_6 {
 
     public static void init() {
         ClientTickEvents.START_WORLD_TICK.register(world -> {
-            final ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            if (player != null && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-                final int efficiencyLevel = EnchantmentUtil.getEquipmentLevel(Enchantments.EFFICIENCY, player);
-                if (efficiencyLevel > 0) {
-                    player.getAttributeInstance(EntityAttributes.PLAYER_MINING_EFFICIENCY).setBaseValue(efficiencyLevel * efficiencyLevel + 1);
-                } else {
-                    player.getAttributeInstance(EntityAttributes.PLAYER_MINING_EFFICIENCY).setBaseValue(0);
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+                // Update generic attributes for all entities
+                for (Entity entity : world.getEntities()) {
+                    if (entity.isLogicalSideForUpdatingMovement() && entity instanceof LivingEntity livingEntity) {
+                        livingEntity.getAttributeInstance(EntityAttributes.GENERIC_WATER_MOVEMENT_EFFICIENCY).setBaseValue(getEquipmentLevel(Enchantments.DEPTH_STRIDER, livingEntity) / 3F);
+                        setGenericMovementEfficiencyAttribute(livingEntity);
+                    }
                 }
-                player.getAttributeInstance(EntityAttributes.PLAYER_SNEAKING_SPEED).setBaseValue(0.3F + EnchantmentUtil.getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15F);
-                player.getAttributeInstance(EntityAttributes.GENERIC_WATER_MOVEMENT_EFFICIENCY).setBaseValue(EnchantmentUtil.getEquipmentLevel(Enchantments.DEPTH_STRIDER, player) / 3F);
-                player.getAttributeInstance(EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED).setBaseValue(EnchantmentUtil.getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2F : 1F);
+
+                // Update player specific attributes for all players
+                for (PlayerEntity player : world.getPlayers()) {
+                    if (player.isLogicalSideForUpdatingMovement()) {
+                        final int efficiencyLevel = getEquipmentLevel(Enchantments.EFFICIENCY, player);
+                        if (efficiencyLevel > 0) {
+                            player.getAttributeInstance(EntityAttributes.PLAYER_MINING_EFFICIENCY).setBaseValue(efficiencyLevel * efficiencyLevel + 1);
+                        } else {
+                            player.getAttributeInstance(EntityAttributes.PLAYER_MINING_EFFICIENCY).setBaseValue(0);
+                        }
+
+                        player.getAttributeInstance(EntityAttributes.PLAYER_SNEAKING_SPEED).setBaseValue(0.3F + getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15F);
+                        player.getAttributeInstance(EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED).setBaseValue(getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2F : 1F);
+                    }
+                }
             }
         });
+    }
+
+    /**
+     * Called from MixinLivingEntity as well to ensure the attribute value is set at the correct place in the entity tick logic.
+     * Called above just as a fallback if a mod accesses the raw attribute value directly.
+     */
+    public static void setGenericMovementEfficiencyAttribute(final LivingEntity entity) {
+        final boolean isOnSoulSpeedBlock = entity.getWorld().getBlockState(entity.getVelocityAffectingPos()).isIn(BlockTags.SOUL_SPEED_BLOCKS);
+        if (isOnSoulSpeedBlock && getEquipmentLevel(Enchantments.SOUL_SPEED, entity) > 0) {
+            entity.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_EFFICIENCY).setBaseValue(1);
+        } else {
+            entity.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_EFFICIENCY).setBaseValue(0);
+        }
+    }
+
+    private static int getEquipmentLevel(final RegistryKey<Enchantment> enchantment, final LivingEntity entity) {
+        final Optional<RegistryEntry.Reference<Enchantment>> enchantmentRef = entity.getWorld().getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOptional(enchantment);
+        return enchantmentRef.map(e -> EnchantmentHelper.getEquipmentLevel(e, entity)).orElse(0);
     }
 
 }
