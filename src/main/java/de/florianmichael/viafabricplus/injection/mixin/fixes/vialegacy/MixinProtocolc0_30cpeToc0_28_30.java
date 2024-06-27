@@ -65,4 +65,9 @@ public abstract class MixinProtocolc0_30cpeToc0_28_30 extends AbstractProtocol<C
         });
     }
 
+    @Inject(method = "init", at = @At("HEAD"))
+    public void resetSnowing(CallbackInfo ci) {
+        CPEAdditions.setSnowing(false);
+    }
+
 }
