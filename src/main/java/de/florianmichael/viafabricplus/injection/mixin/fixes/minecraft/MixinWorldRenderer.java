@@ -19,12 +19,10 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.fixes.viaversion.SnowTrackerc0_30cpe;
-import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -32,14 +30,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(WorldRenderer.class)
 public abstract class MixinWorldRenderer {
 
-    @Redirect(method = "renderWeather", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/world/biome/Biome$Precipitation;"))
+    @Redirect(method = "renderWeather", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/world/biome/Biome$Precipitation;"), require = 0)
     private Biome.Precipitation forceSnow(Biome instance, BlockPos pos) {
-        if (ProtocolTranslator.getTargetVersion().equals(LegacyProtocolVersion.c0_30cpe)) {
-            if (ProtocolTranslator.getPlayNetworkUserConnection().has(SnowTrackerc0_30cpe.class)) {
-                return Biome.Precipitation.SNOW;
-            }
+        if (CPEAdditions.isSnowing()) {
+            return Biome.Precipitation.SNOW;
+        } else {
+            return instance.getPrecipitation(pos);
         }
-        return instance.getPrecipitation(pos);
     }
 
 }

@@ -26,7 +26,6 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.Protocol1_19_3To1_19_4;
 import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.packet.ClientboundPackets1_19_4;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
-import de.florianmichael.viafabricplus.fixes.viaversion.SnowTrackerc0_30cpe;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.packet.ClientboundPacketsc0_28;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.packet.ServerboundPacketsc0_28;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.Protocolc0_30cpeToc0_28_30;
@@ -60,11 +59,7 @@ public abstract class MixinProtocolc0_30cpeToc0_28_30 extends AbstractProtocol<C
                         changeRainType.write(Types.FLOAT, 1F);
                         changeRainType.send(Protocol1_19_3To1_19_4.class);
                     }
-                    if (weatherType == 2) {
-                        wrapper.user().put(SnowTrackerc0_30cpe.INSTANCE);
-                    } else {
-                        wrapper.user().remove(SnowTrackerc0_30cpe.class);
-                    }
+                    CPEAdditions.setSnowing(weatherType == 2);
                 });
             }
         });
