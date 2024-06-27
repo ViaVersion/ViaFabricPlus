@@ -40,29 +40,31 @@ public class EnchantmentAttributesEmulation1_20_6 {
 
     public static void init() {
         ClientTickEvents.START_WORLD_TICK.register(world -> {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-                // Update generic attributes for all entities
-                for (Entity entity : world.getEntities()) {
-                    if (entity.isLogicalSideForUpdatingMovement() && entity instanceof LivingEntity livingEntity) {
-                        livingEntity.getAttributeInstance(EntityAttributes.GENERIC_WATER_MOVEMENT_EFFICIENCY).setBaseValue(getEquipmentLevel(Enchantments.DEPTH_STRIDER, livingEntity) / 3F);
-                        setGenericMovementEfficiencyAttribute(livingEntity);
-                    }
+            if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5)) {
+                return;
+            }
+            // Update generic attributes for all entities
+            for (Entity entity : world.getEntities()) {
+                if (entity.isLogicalSideForUpdatingMovement() && entity instanceof LivingEntity livingEntity) {
+                    livingEntity.getAttributeInstance(EntityAttributes.GENERIC_WATER_MOVEMENT_EFFICIENCY).setBaseValue(getEquipmentLevel(Enchantments.DEPTH_STRIDER, livingEntity) / 3F);
+                    setGenericMovementEfficiencyAttribute(livingEntity);
+                }
+            }
+
+            // Update player specific attributes for all players
+            for (PlayerEntity player : world.getPlayers()) {
+                if (!player.isLogicalSideForUpdatingMovement()) {
+                    continue;
+                }
+                final int efficiencyLevel = getEquipmentLevel(Enchantments.EFFICIENCY, player);
+                if (efficiencyLevel > 0) {
+                    player.getAttributeInstance(EntityAttributes.PLAYER_MINING_EFFICIENCY).setBaseValue(efficiencyLevel * efficiencyLevel + 1);
+                } else {
+                    player.getAttributeInstance(EntityAttributes.PLAYER_MINING_EFFICIENCY).setBaseValue(0);
                 }
 
-                // Update player specific attributes for all players
-                for (PlayerEntity player : world.getPlayers()) {
-                    if (player.isLogicalSideForUpdatingMovement()) {
-                        final int efficiencyLevel = getEquipmentLevel(Enchantments.EFFICIENCY, player);
-                        if (efficiencyLevel > 0) {
-                            player.getAttributeInstance(EntityAttributes.PLAYER_MINING_EFFICIENCY).setBaseValue(efficiencyLevel * efficiencyLevel + 1);
-                        } else {
-                            player.getAttributeInstance(EntityAttributes.PLAYER_MINING_EFFICIENCY).setBaseValue(0);
-                        }
-
-                        player.getAttributeInstance(EntityAttributes.PLAYER_SNEAKING_SPEED).setBaseValue(0.3F + getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15F);
-                        player.getAttributeInstance(EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED).setBaseValue(getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2F : 1F);
-                    }
-                }
+                player.getAttributeInstance(EntityAttributes.PLAYER_SNEAKING_SPEED).setBaseValue(0.3F + getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15F);
+                player.getAttributeInstance(EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED).setBaseValue(getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2F : 1F);
             }
         });
     }
