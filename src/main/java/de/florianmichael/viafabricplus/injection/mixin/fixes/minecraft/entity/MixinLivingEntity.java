@@ -21,17 +21,14 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.fixes.versioned.EnchantmentAttributesEmulation1_20_6;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.EntityRidingOffsetsPre1_20_2;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
-import de.florianmichael.viafabricplus.util.EnchantmentUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,7 +47,6 @@ import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -82,19 +78,10 @@ public abstract class MixinLivingEntity extends Entity {
         super(type, world);
     }
 
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"))
-    private double handleDepthStriderClientside(LivingEntity instance, RegistryEntry<EntityAttribute> attribute) {
-        if (attribute == EntityAttributes.GENERIC_WATER_MOVEMENT_EFFICIENCY && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            return Math.min(EnchantmentUtil.getEquipmentLevel(Enchantments.DEPTH_STRIDER, (LivingEntity) (Object) this), 3) / 3F;
-        } else {
-            return instance.getAttributeValue(attribute);
-        }
-    }
-
-    @Inject(method = "getVelocityMultiplier", at = @At("HEAD"), cancellable = true)
-    private void getVelocityMultiplier1_20_6(CallbackInfoReturnable<Float> cir) {
+    @Inject(method = "getVelocityMultiplier", at = @At("HEAD"))
+    private void setGenericMovementEfficiencyAttribute(CallbackInfoReturnable<Float> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            cir.setReturnValue(this.isOnSoulSpeedBlock() && EnchantmentUtil.getEquipmentLevel(Enchantments.SOUL_SPEED, (LivingEntity) (Object) this) > 0 ? 1F : super.getVelocityMultiplier());
+            EnchantmentAttributesEmulation1_20_6.setGenericMovementEfficiencyAttribute((LivingEntity) (Object) this);
         }
     }
 
@@ -264,15 +251,6 @@ public abstract class MixinLivingEntity extends Entity {
                 cir.setReturnValue(true);
             }
         }
-    }
-
-    @Unique
-    protected boolean isOnSoulSpeedBlock() {
-        if ((Object) this instanceof PlayerEntity player && player.getAbilities().flying) {
-            return false;
-        }
-
-        return this.getWorld().getBlockState(this.getVelocityAffectingPos()).isIn(BlockTags.SOUL_SPEED_BLOCKS);
     }
 
 }

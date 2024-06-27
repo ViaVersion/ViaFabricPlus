@@ -25,12 +25,8 @@ import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
-import de.florianmichael.viafabricplus.util.EnchantmentUtil;
 import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
@@ -80,29 +76,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/EntityAttributeInstance;getValue()D"))
-    private double handleAquaAffinityClientside(EntityAttributeInstance instance) {
-        if (instance.getAttribute() == EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            return EnchantmentUtil.getEquipmentLevel(Enchantments.AQUA_AFFINITY, this) <= 0 ? 0.2F : 1F;
-        } else {
-            return instance.getValue();
-        }
-    }
-
-    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"))
-    private double handleEfficiencyClientside(PlayerEntity instance, RegistryEntry<EntityAttribute> attribute) {
-        if (attribute == EntityAttributes.PLAYER_MINING_EFFICIENCY && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            final int effLevel = EnchantmentUtil.getEquipmentLevel(Enchantments.EFFICIENCY, this);
-            if (effLevel > 0 && !this.getMainHandStack().isEmpty()) {
-                return effLevel * effLevel + 1;
-            } else {
-                return 0;
-            }
-        } else {
-            return instance.getAttributeValue(attribute);
-        }
     }
 
     @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
@@ -219,20 +192,19 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
     private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
-        final int efficiency = EnchantmentUtil.getEquipmentLevel(Enchantments.EFFICIENCY, this);
+        final float efficiency = (float) this.getAttributeValue(EntityAttributes.PLAYER_MINING_EFFICIENCY);
         if (efficiency <= 0) return;
 
         final float speed = this.inventory.getBlockBreakingSpeed(block);
-        final int effLevel = efficiency * efficiency + 1;
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_4tor1_4_5) && this.canHarvest(block)) {
-            f.set(speed + effLevel);
+            f.set(speed + efficiency);
         } else if (speed > 1F || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             if (!this.getMainHandStack().isEmpty()) {
                 if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
                     if (speed <= 1.0 && !this.canHarvest(block)) {
-                        f.set(speed + effLevel * 0.08F);
+                        f.set(speed + efficiency * 0.08F);
                     } else {
-                        f.set(speed + effLevel);
+                        f.set(speed + efficiency);
                     }
                 }
             }

@@ -42,7 +42,7 @@ public class ArmorHudEmulation1_8 {
     private static double previousArmorPoints = 0;
 
     public static void init() {
-        ClientTickEvents.START_CLIENT_TICK.register(world -> {
+        ClientTickEvents.START_WORLD_TICK.register(world -> {
             if (!VisualSettings.global().emulateArmorHud.isEnabled()) {
                 return;
             }
