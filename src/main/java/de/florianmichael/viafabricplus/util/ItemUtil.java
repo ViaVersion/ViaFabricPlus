@@ -19,11 +19,23 @@
 
 package de.florianmichael.viafabricplus.util;
 
+import com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
 public class ItemUtil {
+
+    private static final String VV_IDENTIFIER = "VV|" + Protocol1_10To1_11.class.getSimpleName(); // ItemRewriter#nbtTagName
+
+    public static int getCount(final ItemStack stack) {
+        final NbtCompound tag = getTagOrNull(stack);
+        if (tag != null && tag.contains(VV_IDENTIFIER)) {
+            return tag.getInt(VV_IDENTIFIER);
+        } else {
+            return stack.getCount();
+        }
+    }
 
     // Via 1.20.5->.3 will always put the original item data into CUSTOM_DATA if it's not empty.
     public static NbtCompound getTagOrNull(final ItemStack stack) {

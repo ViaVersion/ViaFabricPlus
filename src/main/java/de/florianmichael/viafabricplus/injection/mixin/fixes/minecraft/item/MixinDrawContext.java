@@ -19,31 +19,20 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11;
 import de.florianmichael.viafabricplus.util.ItemUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(DrawContext.class)
 public abstract class MixinDrawContext {
 
-    @Unique
-    private static final String viaFabricPlus$vvIdentifier = "VV|" + Protocol1_10To1_11.class.getSimpleName(); // ItemRewriter#nbtTagName
-
     @Redirect(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getCount()I"))
     private int handleNegativeItemCount(ItemStack instance) {
-        final NbtCompound tag = ItemUtil.getTagOrNull(instance);
-        if (tag != null && tag.contains(viaFabricPlus$vvIdentifier)) {
-            return tag.getInt(viaFabricPlus$vvIdentifier);
-        } else {
-            return instance.getCount();
-        }
+        return ItemUtil.getCount(instance);
     }
 
     @Redirect(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))
