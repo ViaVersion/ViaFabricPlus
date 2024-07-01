@@ -48,6 +48,7 @@ import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.ClientConnection;
@@ -315,6 +316,9 @@ public class ProtocolTranslator {
      */
     @ApiStatus.Internal
     public static CompletableFuture<Void> init(final File directory) {
+        if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
+            throw new IllegalStateException("Native version is not the same as the current version");
+        }
         patchConfigs(new File(directory, "ViaLoader"));
 
         // Register command callback for /viafabricplus
