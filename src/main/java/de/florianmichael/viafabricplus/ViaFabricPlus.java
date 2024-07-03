@@ -57,12 +57,12 @@ import java.util.concurrent.CompletableFuture;
  *  - Mob interact
  *  - AxeItem playerHasShieldUseIntent new
  *  - BucketItem, ChorusFruit, FoodOnAStickItem, KnowledgeBookItem, TridentItem,
- *  - CakeBlock creative check in interaction
  *  - Jukebox overrides new interaction function
- *  - SignBlock, TntBlock creative check
- *  - Check item rarity values
- *  - ItemStack count max changed in codec
+ *  - SignBlock creative check
  *  - SolidBucketItem useOn
+ *  - HangingEntity bounding box calculation changes
+ *  - BoatEntity#updateVelocity isSpaceEmpty condition new
+ *  - LivingEntity#remove -> activeEffects.clear
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes

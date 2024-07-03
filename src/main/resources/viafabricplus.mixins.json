@@ -97,6 +97,7 @@
     "fixes.minecraft.entity.MixinAbstractClientPlayerEntity",
     "fixes.minecraft.entity.MixinAbstractHorseEntity",
     "fixes.minecraft.entity.MixinAnimalEntity",
+    "fixes.minecraft.entity.MixinAxolotlEntity",
     "fixes.minecraft.entity.MixinBipedEntityModel",
     "fixes.minecraft.entity.MixinBoatEntity",
     "fixes.minecraft.entity.MixinCamelEntity",
@@ -202,7 +203,7 @@
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.entity.MixinAxolotlEntity"
+    "fixes.minecraft.item.MixinBucketItem"
   ],
   "injectors": {
     "defaultRequire": 1
