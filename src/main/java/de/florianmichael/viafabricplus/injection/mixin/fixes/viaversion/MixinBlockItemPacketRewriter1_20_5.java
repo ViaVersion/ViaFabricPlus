@@ -72,7 +72,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void loadItemMappings(Protocol1_20_3To1_20_5 protocol, CallbackInfo ci) {
+    private void loadItemMappings(Protocol1_20_3To1_20_5 protocol, CallbackInfo ci) {
         // Technically it would be cleaner to split mapping loading into there respective protocols, but that will be impossible
         // in a clean way, so let's just wait for Via* to load all protocols and then load everything in here.
         this.viaFabricPlus$foodItems_b1_7_3.add("minecraft:apple");
