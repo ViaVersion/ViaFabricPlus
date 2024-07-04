@@ -42,23 +42,18 @@ import java.util.concurrent.CompletableFuture;
  *
  * TODO | Port 1.21
  *  - ClientPlayerEntity#tickMovement nether portal logic has new screen conditions and changed
- *  - horses getInvColumns behaviour
- *  - Wolf hasArmor -> interactions
- *  - HangingEntity, ItemFrame, Painting, PrimedTnt
- *  - Villager offers are server only now
- *  - Player#attack
- *  - Boat floating and interaction
- *  - Entity collide functions and interaction
- *  - LivingEntity#getBlockSpeedFactor, decreaseAirSupply, knockback, travel, getPreciseBodyRotation,
- *  - Mob interact
- *  - AxeItem playerHasShieldUseIntent new
- *  - BucketItem, ChorusFruit, FoodOnAStickItem, KnowledgeBookItem, TridentItem,
- *  - Jukebox overrides new interaction function
- *  - SignBlock creative check
- *  - SolidBucketItem useOn
+ *  - Entity#interact now handles leashables interface which was previously handled in MobEntity
+ *  - shouldCancelInteraction condition in ChestBoatEntity#interact is new
+ *  - HangingEntity/ItemFrame/Painting bounding box calculation changed
+ *  - PlayerEntity#attack got refactored (?)
+ *  - LivingEntity#takeKnockback with 1.0E-5F for loop is new
+ *  - KnowledgeBookItem#use decrementUnlessCreative is new
+ *  - JukeboxBlock#onUse override is new (added state.get(HAS_RECORD) condition)
  *  - HangingEntity bounding box calculation changes
  *  - BoatEntity#updateVelocity isSpaceEmpty condition new
- *  - LivingEntity#remove -> activeEffects.clear
+ *  - LivingEntity#remove -> added activeEffects.clear call
+ *  - PlayerEntity#tickMovement getSaturationLevel/setSaturationLevel handling is new
+ *  - Check WorldBorder bounds check
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
@@ -66,6 +61,7 @@ import java.util.concurrent.CompletableFuture;
  *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
  *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
  *  - Via: 1.13 -> 1.12.2 block entities recode
+ *  - OXYGEN_BONUS 1.21 -> 1.20.5 handling is missing (only visual)
  *
  * TODO | Movement
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
