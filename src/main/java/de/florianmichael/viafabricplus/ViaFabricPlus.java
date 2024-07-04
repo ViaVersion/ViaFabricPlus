@@ -49,7 +49,6 @@ import java.util.concurrent.CompletableFuture;
  *  - LivingEntity#takeKnockback with 1.0E-5F for loop is new
  *  - KnowledgeBookItem#use decrementUnlessCreative is new
  *  - JukeboxBlock#onUse override is new (added state.get(HAS_RECORD) condition)
- *  - HangingEntity bounding box calculation changes
  *  - BoatEntity#updateVelocity isSpaceEmpty condition new
  *  - LivingEntity#remove -> added activeEffects.clear call
  *  - PlayerEntity#tickMovement getSaturationLevel/setSaturationLevel handling is new
