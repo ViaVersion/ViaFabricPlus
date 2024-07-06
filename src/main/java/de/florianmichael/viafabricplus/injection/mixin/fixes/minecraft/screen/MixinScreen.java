@@ -55,7 +55,7 @@ public abstract class MixinScreen {
     }
 
     @Inject(method = "addDrawableChild", at = @At("HEAD"), cancellable = true)
-    public <T extends Element & Drawable & Selectable> void removeRecipeBook(T drawableElement, CallbackInfoReturnable<T> cir) {
+    private <T extends Element & Drawable & Selectable> void removeRecipeBook(T drawableElement, CallbackInfoReturnable<T> cir) {
         if (drawableElement instanceof TexturedButtonWidget button && button.textures == RecipeBookWidget.BUTTON_TEXTURES) {
             final boolean furnace = ((Screen) (Object) this) instanceof FurnaceScreen;
 
