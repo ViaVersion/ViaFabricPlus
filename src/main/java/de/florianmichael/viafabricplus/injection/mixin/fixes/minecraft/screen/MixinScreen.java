@@ -21,8 +21,15 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.FurnaceScreen;
+import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.text.Style;
 import net.minecraft.util.StringHelper;
 import org.jetbrains.annotations.Nullable;
@@ -44,6 +51,19 @@ public abstract class MixinScreen {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
             this.client.player.networkHandler.sendChatMessage(StringHelper.stripInvalidChars(style.getClickEvent().getValue()));
             cir.setReturnValue(true);
+        }
+    }
+
+    @Inject(method = "addDrawableChild", at = @At("HEAD"), cancellable = true)
+    public <T extends Element & Drawable & Selectable> void removeRecipeBook(T drawableElement, CallbackInfoReturnable<T> cir) {
+        if (drawableElement instanceof TexturedButtonWidget button && button.textures == RecipeBookWidget.BUTTON_TEXTURES) {
+            final boolean furnace = ((Screen) (Object) this) instanceof FurnaceScreen;
+
+            if (VisualSettings.global().hideFurnaceRecipeBook.isEnabled() && furnace) {
+                cir.setReturnValue(drawableElement);
+            } else if (VisualSettings.global().hideCraftingRecipeBook.isEnabled() && !furnace) {
+                cir.setReturnValue(drawableElement);
+            }
         }
     }
 
