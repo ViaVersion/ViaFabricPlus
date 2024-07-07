@@ -24,8 +24,6 @@ import com.viaversion.viaversion.api.minecraft.HolderSet;
 import com.viaversion.viaversion.api.minecraft.data.StructuredDataContainer;
 import com.viaversion.viaversion.api.minecraft.data.StructuredDataKey;
 import com.viaversion.viaversion.api.minecraft.item.Item;
-import com.viaversion.viaversion.api.minecraft.item.data.FoodEffect;
-import com.viaversion.viaversion.api.minecraft.item.data.FoodProperties;
 import com.viaversion.viaversion.api.minecraft.item.data.ToolProperties;
 import com.viaversion.viaversion.api.minecraft.item.data.ToolRule;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -47,8 +45,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.*;
 
@@ -60,9 +58,6 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
 
     @Unique
     private final Map<String, Integer> viaFabricPlus$armorMaxDamage_b1_8_1 = new HashMap<>();
-
-    @Unique
-    private final Set<String> viaFabricPlus$swordItems1_8 = new HashSet<>();
 
     @Unique
     private final Map<ProtocolVersion, Map<String, ToolProperties>> viaFabricPlus$toolDataChanges = new LinkedHashMap<>();
@@ -87,16 +82,8 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
 
         final JsonObject armorMaxDamages = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("armor-damages-b1.8.1.json");
         for (Map.Entry<String, JsonElement> entry : armorMaxDamages.entrySet()) {
-            final String item = entry.getKey();
-            final int maxDamage = entry.getValue().getAsInt();
-            this.viaFabricPlus$armorMaxDamage_b1_8_1.put(item, maxDamage);
+            this.viaFabricPlus$armorMaxDamage_b1_8_1.put(entry.getKey(), entry.getValue().getAsInt());
         }
-
-        this.viaFabricPlus$swordItems1_8.add("minecraft:wooden_sword");
-        this.viaFabricPlus$swordItems1_8.add("minecraft:stone_sword");
-        this.viaFabricPlus$swordItems1_8.add("minecraft:iron_sword");
-        this.viaFabricPlus$swordItems1_8.add("minecraft:golden_sword");
-        this.viaFabricPlus$swordItems1_8.add("minecraft:diamond_sword");
 
         PostViaVersionLoadCallback.EVENT.register(() -> {
             final JsonObject itemToolComponents = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("item-tool-components.json");
@@ -131,26 +118,21 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
         });
     }
 
+    @Redirect(method = "appendItemDataFixComponents", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;olderThanOrEqualTo(Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;)Z"))
+    private boolean changeSwordFixVersionRange(ProtocolVersion instance, ProtocolVersion other) {
+        if (other == ProtocolVersion.v1_8) {
+            return instance.betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8);
+        } else {
+            return instance.olderThanOrEqualTo(other);
+        }
+    }
+
     // Older servers don't have these components, so we can use them to emulate old item behaviour without the need
     // of modifying tons of code in the game.
-    @Inject(method = "toStructuredItem", at = @At("RETURN"))
-    private void appendItemDataFixComponents(UserConnection user, Item old, CallbackInfoReturnable<Item> cir) {
-        final StructuredDataContainer data = cir.getReturnValue().dataContainer();
-        final String identifier = this.protocol.getMappingData().getFullItemMappings().identifier(cir.getReturnValue().identifier());
-
-        // Fix damage bar being displayed wrong
-        if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
-            if (identifier.equals("minecraft:crossbow")) {
-                data.set(StructuredDataKey.MAX_DAMAGE, 326);
-            }
-        }
-
-        // Add item blocking by make the sword eatable, counterpart in MixinSwordItem
-        if (user.getProtocolInfo().serverProtocolVersion().betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8)) {
-            if (this.viaFabricPlus$swordItems1_8.contains(identifier)) {
-                data.set(StructuredDataKey.FOOD1_20_5, new FoodProperties(0, 0F, true, 3600, null, new FoodEffect[0]));
-            }
-        }
+    @Inject(method = "appendItemDataFixComponents", at = @At("RETURN"))
+    private void appendItemDataFixComponents(UserConnection user, Item item, CallbackInfo ci) {
+        final StructuredDataContainer data = item.dataContainer();
+        final String identifier = this.protocol.getMappingData().getFullItemMappings().identifier(item.identifier());
 
         // Fix durability tooltip displaying wrong
         if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
@@ -179,8 +161,8 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
         }
     }
 
-    @Unique
     // Converts block identifiers as well as materials (prefixed with #) to block ids
+    @Unique
     private int[] viaFabricPlus$blockJsonArrayToIds(final ProtocolVersion protocolVersion, final JsonArray jsonArray) {
         final IntSet ids = new IntOpenHashSet();
         for (final JsonElement element : jsonArray) {
