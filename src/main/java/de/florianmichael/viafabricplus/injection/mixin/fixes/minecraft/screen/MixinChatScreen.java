@@ -36,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ChatScreen.class)
+@Mixin(value = ChatScreen.class, priority = 1) // Apply our mixin first so other mods can override the chat length
 public abstract class MixinChatScreen {
 
     @Shadow
