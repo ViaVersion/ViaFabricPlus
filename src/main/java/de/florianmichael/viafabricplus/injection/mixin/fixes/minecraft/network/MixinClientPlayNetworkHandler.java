@@ -42,6 +42,10 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.message.ArgumentSignatureDataMap;
+import net.minecraft.network.message.LastSeenMessagesCollector;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.ChatCommandSignedC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.recipe.RecipeEntry;
@@ -58,6 +62,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -82,6 +87,8 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Shadow
     protected abstract boolean isSecureChatEnforced();
+
+    @Shadow private LastSeenMessagesCollector lastSeenMessagesCollector;
 
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
@@ -140,6 +147,15 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
             return false;
         } else {
             return instance.isEmpty();
+        }
+    }
+
+    @Redirect(method = "sendCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
+    private void alwaysSignCommands(ClientPlayNetworkHandler instance, Packet<?> packet, @Local(argsOnly = true) String command) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+            this.sendPacket(new ChatCommandSignedC2SPacket(command, Instant.now(), 0L, ArgumentSignatureDataMap.EMPTY, this.lastSeenMessagesCollector.collect().update()));
+        } else {
+            instance.sendPacket(packet);
         }
     }
 
