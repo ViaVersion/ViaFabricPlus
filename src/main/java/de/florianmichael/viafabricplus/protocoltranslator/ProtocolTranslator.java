@@ -33,7 +33,6 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.VersionType;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.Protocol1_20_3To1_20_5;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.fixes.viaversion.ViaFabricPlusProtocol;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
@@ -342,7 +341,6 @@ public class ProtocolTranslator {
                     ViaAprilFoolsPlatformImpl::new,
                     ViaBedrockPlatformImpl::new
             );
-            Protocol1_20_3To1_20_5.strictErrorHandling = false;
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
             ViaFabricPlusProtocol.INSTANCE.initialize();
         });

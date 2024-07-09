@@ -63,6 +63,7 @@
   "debug_settings.viafabricplus.prevent_entity_cramming": "Prevent entity cramming",
   "debug_settings.viafabricplus.always_tick_client_player": "Always tick client player",
   "debug_settings.viafabricplus.print_networking_errors_to_logs": "Print networking errors to logs",
+  "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "Don't create packet error crash reports",
   "debug_settings.viafabricplus.ignore_fabric_sync_errors": "Ignore Fabric sync errors",
   "debug_settings.viafabricplus.legacy_tab_completions": "Legacy tab completions",
 
