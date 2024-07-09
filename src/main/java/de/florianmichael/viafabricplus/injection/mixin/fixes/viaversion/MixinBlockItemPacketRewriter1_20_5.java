@@ -177,8 +177,10 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
                         }
                     }
                 }
+            } else if (name.startsWith("-")) { // Block name
+                ids.remove(this.protocol.getMappingData().blockId(name.substring(1)));
             } else { // Block name
-                ids.add(this.protocol.getMappingData().blockId(element.getAsString()));
+                ids.add(this.protocol.getMappingData().blockId(name));
             }
         }
         return ids.toIntArray();

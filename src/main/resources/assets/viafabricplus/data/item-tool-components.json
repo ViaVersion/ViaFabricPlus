@@ -93,7 +93,23 @@
         "#stone",
         "#metal",
         "#repair_station",
-        "minecraft:nether_gold_ore"
+        "minecraft:nether_gold_ore",
+        "-minecraft:iron_block",
+        "-minecraft:iron_ore",
+        "-minecraft:lapis_block",
+        "-minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -137,13 +153,18 @@
         "minecraft:iron_ore",
         "minecraft:lapis_block",
         "minecraft:lapis_ore",
-        "minecraft:diamond_block",
-        "minecraft:diamond_ore",
-        "minecraft:emerald_block",
-        "minecraft:emerald_ore",
-        "minecraft:gold_block",
-        "minecraft:gold_ore",
-        "minecraft:redstone_ore"
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -193,7 +214,12 @@
         "minecraft:emerald_ore",
         "minecraft:gold_block",
         "minecraft:gold_ore",
-        "minecraft:redstone_ore"
+        "minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -232,7 +258,23 @@
         "#stone",
         "#metal",
         "#repair_station",
-        "minecraft:nether_gold_ore"
+        "minecraft:nether_gold_ore",
+        "-minecraft:iron_block",
+        "-minecraft:iron_ore",
+        "-minecraft:lapis_block",
+        "-minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -568,7 +610,23 @@
         "#stone",
         "#metal",
         "#repair_station",
-        "minecraft:nether_gold_ore"
+        "minecraft:nether_gold_ore",
+        "-minecraft:iron_block",
+        "-minecraft:iron_ore",
+        "-minecraft:lapis_block",
+        "-minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -673,7 +731,19 @@
         "minecraft:iron_block",
         "minecraft:iron_ore",
         "minecraft:lapis_block",
-        "minecraft:lapis_ore"
+        "minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -785,7 +855,12 @@
         "minecraft:emerald_ore",
         "minecraft:gold_block",
         "minecraft:gold_ore",
-        "minecraft:redstone_ore"
+        "minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -886,7 +961,23 @@
         "#stone",
         "#metal",
         "#repair_station",
-        "minecraft:nether_gold_ore"
+        "minecraft:nether_gold_ore",
+        "-minecraft:iron_block",
+        "-minecraft:iron_ore",
+        "-minecraft:lapis_block",
+        "-minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -1106,7 +1197,23 @@
         "#stone",
         "#metal",
         "#repair_station",
-        "minecraft:nether_gold_ore"
+        "minecraft:nether_gold_ore",
+        "-minecraft:iron_block",
+        "-minecraft:iron_ore",
+        "-minecraft:lapis_block",
+        "-minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -1211,7 +1318,19 @@
         "minecraft:iron_block",
         "minecraft:iron_ore",
         "minecraft:lapis_block",
-        "minecraft:lapis_ore"
+        "minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -1323,7 +1442,12 @@
         "minecraft:emerald_ore",
         "minecraft:gold_block",
         "minecraft:gold_ore",
-        "minecraft:redstone_ore"
+        "minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -1424,7 +1548,23 @@
         "#stone",
         "#metal",
         "#repair_station",
-        "minecraft:nether_gold_ore"
+        "minecraft:nether_gold_ore",
+        "-minecraft:iron_block",
+        "-minecraft:iron_ore",
+        "-minecraft:lapis_block",
+        "-minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -1853,7 +1993,23 @@
         "#stone",
         "#metal",
         "#repair_station",
-        "minecraft:nether_gold_ore"
+        "minecraft:nether_gold_ore",
+        "-minecraft:iron_block",
+        "-minecraft:iron_ore",
+        "-minecraft:lapis_block",
+        "-minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -1962,7 +2118,19 @@
         "minecraft:iron_block",
         "minecraft:iron_ore",
         "minecraft:lapis_block",
-        "minecraft:lapis_ore"
+        "minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -2078,7 +2246,12 @@
         "minecraft:emerald_ore",
         "minecraft:gold_block",
         "minecraft:gold_ore",
-        "minecraft:redstone_ore"
+        "minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
@@ -2183,7 +2356,23 @@
         "#stone",
         "#metal",
         "#repair_station",
-        "minecraft:nether_gold_ore"
+        "minecraft:nether_gold_ore",
+        "-minecraft:iron_block",
+        "-minecraft:iron_ore",
+        "-minecraft:lapis_block",
+        "-minecraft:lapis_ore",
+        "-minecraft:diamond_block",
+        "-minecraft:diamond_ore",
+        "-minecraft:emerald_block",
+        "-minecraft:emerald_ore",
+        "-minecraft:gold_block",
+        "-minecraft:gold_ore",
+        "-minecraft:redstone_ore",
+        "-minecraft:obsidian",
+        "-minecraft:crying_obsidian",
+        "-minecraft:netherite_block",
+        "-minecraft:ancient_debris",
+        "-minecraft:respawn_anchor"
       ],
       "mining_speeds": [
         {
