@@ -64,6 +64,7 @@
   "debug_settings.viafabricplus.always_tick_client_player": "Zawsze tickuj gracza po stronie klienta",
   "debug_settings.viafabricplus.print_networking_errors_to_logs": "Wypisuj informacje o sieci do logów",
   "debug_settings.viafabricplus.ignore_fabric_sync_errors": "Ignoruj błędy synchronizacji fabrica",
+  "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "Nie twórz raportów crashów o błędach pakietów",
   "debug_settings.viafabricplus.legacy_tab_completions": "Stare uzupełnianie komend",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Korzystaj z uwierzytelniania BetaCraft",
@@ -73,7 +74,7 @@
 
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Wyłącz ostrzeżenie dotyczące bezpiecznego czatu",
   "visual_settings.viafabricplus.hide_signature_indicator": "Ukrywaj wskaźnik podpisywania wiadomości na czacie",
-  "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "Usuń nowsze funkcje z ekranu bloku konstrukcyjnego",
+  "visual_settings.viafabricplus.hide_priority_selections_in_jigsaw_screen": "Ukrywaj priorytetowe selekcje w ekranie bloku konstrukcyjnego",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "Zamień skamieniałą płytę dębową na nieznaną teksturę",
   "visual_settings.viafabricplus.emulate_armor_hud": "Emuluj interfejs zbroi",
   "visual_settings.viafabricplus.remove_newer_features_from_command_block_screen": "Usuń nowsze funkcje z ekranu bloku komend",
@@ -87,13 +88,16 @@
   "visual_settings.viafabricplus.disable_server_pinging": "Wyłącz pingowanie serwerów",
   "visual_settings.viafabricplus.sideways_backwards_walking": "Chodzenie do tyłu na boki",
   "visual_settings.viafabricplus.enable_legacy_tablist": "Włącz starą listę graczy",
+  "visual_settings.viafabricplus.hide_furnace_recipe_book": "Ukrywaj książkę przepisów w piecach",
+  "visual_settings.viafabricplus.hide_crafting_recipe_book": "Ukrywaj książkę przepisów w stole rzemyślniczym",
+  "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Ukrywaj nowe funkcje ekranu bloku konstrukcyjnego",
 
   "bedrock.viafabricplus.login": "Powinna ci się otworzyć przeglądarka.\nNa otworzonej stronie wpisz ten kod: %s\nZamkanięcie tego ekranu będzie anulowało proces!",
   "authentication.viafabricplus.failed_to_verify_session": "Nie udało się zweryfikować twojej sesji! Zaloguj się na jakieś konto albo wyłącz uwierzytelnianie BetaCraft w ustawieniach.",
 
   "report.viafabricplus.button": "Zgłoś problem",
-  "report.viafabricplus.bug_report": "Zgłoś błąd",
-  "report.viafabricplus.feature_request": "Zaproponuj nową funkcję",
+  "report.viafabricplus.bug_report": "Zgłoś problem na GitHub",
+  "report.viafabricplus.feature_request": "Zaproponuj nową funkcję na GitHub",
   "report.viafabricplus.create_via_dump": "Utwórz dump ViaVersion",
   "report.viafabricplus.open_logs": "Otwórz folder z logami",
 
