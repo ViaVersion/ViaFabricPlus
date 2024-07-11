@@ -12,8 +12,13 @@
 </div>
 
 # Why another protocol translator?
-ViaFabricPlus is a deep integration of ViaVersion on the Fabric platform, it implements many changes that can't be fixed on protocol level (old animations, old movement/swimming, collisions and general rendering changes).
-At the time of writing, VFP is the only protocol translation platform for the client with which you can play on all Minecraft multiplayer versions with many QoL features and get the feel of the old versions.
+ViaFabricPlus implements the [ViaVersion projects](https://github.com/ViaVersion) into Fabric and provides tons of fixes to the existing protocol translation which can't be implemented in the original ViaVersion project.
+These fixes consist of movment changes, block/entity collisions, rendering changes, and many more.
+
+At the time of writing, ViaFabricPlus is the only mod that supports joining all Minecraft server versions down to the first multiplayer version while implementing
+legacy combat mechanics, movement, and rendering changes to make the gameplay more feel like the old days.
+
+**On the other hand, ViaFabricPlus supports only the latest Minecraft client version, and only on Fabric.**
 
 ## Supported Server versions
 - Release (1.0.0 - 1.21)
@@ -24,18 +29,28 @@ At the time of writing, VFP is the only protocol translation platform for the cl
 - Combat Snapshots (Combat Test 8c)
 - Bedrock Edition 1.21.0 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
 
-## For players
-- Tutorial for installing and using the mod can be found [here](docs/USAGE.md)
-- If you encounter any issues, please report them on the [issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues) or on the ViaVersion [Discord](https://discord.gg/viaversion)
+## How to (Users)
+- [A detailed guide on how to install and use the mod](docs/USAGE.md)
+- If you encounter any issues, please report them on either:
+  - [the issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues) 
+  - [the ViaVersion Discord](https://discord.gg/viaversion)
 
-## For contributors/volunteers
-- Guidelines for contributions can be found [here](docs/UPDATE_INSTRUCTIONS.md)
-- The current TODO list can be found [here](https://github.com/ViaVersion/ViaFabricPlus/blob/main/src/main/java/de/florianmichael/viafabricplus/ViaFabricPlus.java)
+## How to (Developers)
+- [Detailed guidelines for contributions as well as setting up a dev environment](docs/UPDATE_INSTRUCTIONS.md)
+- [API and integration examples for developers](docs/DEVELOPER_API.md)
 
-## Miscellaneous
-- API and integration examples can be found [here](docs/DEVELOPER_API.md)
-- An overview of the different Via* projects can be found [here](https://github.com/ViaVersion)
-#### If you just want to talk or need help with ViaFabricPlus feel free to join my [Discord](https://discord.gg/BwWhCHUKDf).
+## ViaFabric
+[ViaFabric](https://github.com/ViaVersion/ViaFabric) can be used for server-side purposes or when using older versions of the game.
+
+### Does it work with ViaFabricPlus:
+
+- No, ViaFabricPlus cannot be used with ViaFabric.
+
+### Differences with ViaFabric:
+https://github.com/ViaVersion/ViaFabric?tab=readme-ov-file#differences-with-viafabricplus
+
+## Credits
+Special thanks to all our [Contributors](https://github.com/ViaVersion/ViaFabricPllus/graphs/contributors).
 
 ## Disclaimer
 It cannot be guaranteed that this mod is allowed on specific servers as it can possibly cause problems with anti-cheat plugins.\
