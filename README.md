@@ -18,7 +18,7 @@ These fixes consist of movment changes, block/entity collisions, rendering chang
 At the time of writing, ViaFabricPlus is the only mod that supports joining all Minecraft server versions down to the first multiplayer version while implementing
 legacy combat mechanics, movement, and rendering changes to make the gameplay more feel like the old days.
 
-**On the other hand, ViaFabricPlus supports only the latest Minecraft client version, and only on Fabric.**
+**On the other hand, ViaFabricPlus supports only the latest Minecraft client version, and only Fabric.**
 
 ## Supported Server versions
 - Release (1.0.0 - 1.21)
