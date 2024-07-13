@@ -1,6 +1,5 @@
 accessWidener v1 named
 
-#accessible field net/minecraft/item/Item ATTACK_DAMAGE_MODIFIER_ID Ljava/util/UUID;
 accessible field net/minecraft/network/ClientConnection channel Lio/netty/channel/Channel;
 accessible field net/minecraft/client/MinecraftClient fontManager Lnet/minecraft/client/font/FontManager;
 accessible field net/minecraft/client/network/AllowedAddressResolver redirectResolver Lnet/minecraft/client/network/RedirectResolver;
@@ -17,6 +16,7 @@ accessible field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entit
 accessible field net/minecraft/block/AbstractBlock velocityMultiplier F
 accessible field net/minecraft/client/gui/screen/world/WorldIcon UNKNOWN_SERVER_ID Lnet/minecraft/util/Identifier;
 accessible field net/minecraft/client/gui/widget/TexturedButtonWidget textures Lnet/minecraft/client/gui/screen/ButtonTextures;
+accessible field net/minecraft/client/gui/screen/option/ControlsListWidget$KeyBindingEntry RESET_TEXT Lnet/minecraft/text/Text;
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
