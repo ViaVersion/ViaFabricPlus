@@ -27,7 +27,7 @@ legacy combat mechanics, movement, and rendering changes to make the gameplay mo
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - April Fools (3D Shareware, 20w14infinite)
 - Combat Snapshots (Combat Test 8c)
-- Bedrock Edition 1.21.0 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
+- Bedrock Edition 1.21.2 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
 
 ## How to (Users)
 - [A detailed guide on how to install and use the mod](docs/USAGE.md)
