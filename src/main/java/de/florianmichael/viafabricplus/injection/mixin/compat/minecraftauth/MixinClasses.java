@@ -17,24 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.compat.jsonwebtoken;
+package de.florianmichael.viafabricplus.injection.mixin.compat.minecraftauth;
 
-import io.jsonwebtoken.gson.io.GsonDeserializer;
-import io.jsonwebtoken.impl.DefaultJwtParserBuilder;
+import io.jsonwebtoken.lang.Classes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /*
  * JsonWebToken is used by MinecraftAuth, and since it's using Java services, it's not working with the fabric loader,
  * So we have to change all services usages by using the normal Java API
  */
-@Mixin(value = DefaultJwtParserBuilder.class, remap = false)
-public abstract class MixinDefaultJwtParserBuilder {
+@Mixin(value = Classes.class, remap = false)
+public abstract class MixinClasses {
 
-    @Redirect(method = "build()Lio/jsonwebtoken/JwtParser;", at = @At(value = "INVOKE", target = "Lio/jsonwebtoken/impl/lang/Services;get(Ljava/lang/Class;)Ljava/lang/Object;"))
-    public Object removeServicesSupport(Class<?> spi) {
-        return new GsonDeserializer<>();
+    @Inject(method = "forName", at = @At("HEAD"), cancellable = true)
+    private static void removeServicesSupport(String fqcn, CallbackInfoReturnable<Class<Object>> cir) throws ClassNotFoundException {
+        cir.setReturnValue((Class<Object>) Class.forName(fqcn));
     }
 
 }

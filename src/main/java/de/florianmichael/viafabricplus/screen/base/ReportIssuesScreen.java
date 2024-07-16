@@ -44,29 +44,30 @@ public class ReportIssuesScreen extends VFPScreen {
     public ReportIssuesScreen() {
         super("Report issues", true);
 
-        if (actions.isEmpty()) {
-            actions.put("report.viafabricplus.bug_report", () -> {
-                Util.getOperatingSystem().open(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml"));
-                this.setupSubtitle(Text.of("Opened GitHub issue page!"));
-            });
-            actions.put("report.viafabricplus.feature_request", () -> {
-                Util.getOperatingSystem().open(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml"));
-                this.setupSubtitle(Text.of("Opened GitHub issue page!"));
-            });
-            actions.put("report.viafabricplus.create_via_dump", () -> DumpUtil.postDump(client.getSession().getUuidOrNull()).whenComplete((s, throwable) -> {
-                if (throwable != null) {
-                    this.setupSubtitle(Text.of("Failed to create a dump! See logs for more information."));
-                    ViaFabricPlus.global().getLogger().error("Failed to create a dump", throwable);
-                    return;
-                }
-                this.setupSubtitle(Text.of("Dump created and copied to clipboard!"));
-                client.keyboard.setClipboard(s);
-            }));
-            actions.put("report.viafabricplus.open_logs", () -> {
-                Util.getOperatingSystem().open(new File(client.runDirectory, "logs") /* there is no constant for this in the game */);
-                this.setupSubtitle(Text.of("Logs folder opened!"));
-            });
+        if (!actions.isEmpty()) {
+            return;
         }
+        actions.put("report.viafabricplus.bug_report", () -> {
+            Util.getOperatingSystem().open(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml"));
+            this.setupSubtitle(Text.of("Opened GitHub issue page!"));
+        });
+        actions.put("report.viafabricplus.feature_request", () -> {
+            Util.getOperatingSystem().open(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml"));
+            this.setupSubtitle(Text.of("Opened GitHub issue page!"));
+        });
+        actions.put("report.viafabricplus.create_via_dump", () -> DumpUtil.postDump(client.getSession().getUuidOrNull()).whenComplete((s, throwable) -> {
+            if (throwable != null) {
+                this.setupSubtitle(Text.of("Failed to create a dump! See logs for more information."));
+                ViaFabricPlus.global().getLogger().error("Failed to create a dump", throwable);
+                return;
+            }
+            this.setupSubtitle(Text.of("Dump created and copied to clipboard!"));
+            client.keyboard.setClipboard(s);
+        }));
+        actions.put("report.viafabricplus.open_logs", () -> {
+            Util.getOperatingSystem().open(new File(client.runDirectory, "logs") /* there is no constant for this in the game */);
+            this.setupSubtitle(Text.of("Logs folder opened!"));
+        });
     }
 
     @Override

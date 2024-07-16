@@ -46,6 +46,7 @@
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Emulate inventory actions in alpha versions",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Click to set account for Bedrock Edition",
+  "bedrock_settings.viafabricplus.click_to_set_bedrock_account.notice": "Your browser should have opened.\nClosing this screen will cancel the process!",
   "bedrock_settings.viafabricplus.replace_default_port": "Replace default port in server list",
 
   "debug_settings.viafabricplus.queue_config_packets": "Queue config packets",
@@ -91,9 +92,6 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Hide crafting recipe book",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Hide modern Jigsaw screen features",
 
-  "bedrock.viafabricplus.login": "Your browser should have opened.\nClosing this screen will cancel the process!",
-  "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus couldn't verify your session! Please log in to an account or disable the BetaCraft authentication in the ViaFabricPlus Settings",
-
   "report.viafabricplus.button": "Report issues",
   "report.viafabricplus.bug_report": "Report a bug on GitHub",
   "report.viafabricplus.feature_request": "Request a feature on GitHub",
@@ -103,11 +101,19 @@
   "classicube.viafabricplus.account": "You can create an account here: https://www.classicube.net/",
   "classicube.viafabricplus.loading": "Loading profile information and server list...",
   "classicube.viafabricplus.warning": "This feature will send API requests to the ClassiCube API.",
+
+  "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus couldn't verify your session! Please log in to an account or disable the BetaCraft authentication in the ViaFabricPlus Settings",
   "betacraft.viafabricplus.warning": "Pressing this button will send API requests to \"betacraft.uk/serverlist\".",
 
   "classic4j_library.viafabricplus.error.token": "Incorrect token. Is your ViaFabricPlus out of date?",
   "classic4j_library.viafabricplus.error.username": "Invalid username.",
   "classic4j_library.viafabricplus.error.password": "Invalid password.",
   "classic4j_library.viafabricplus.error.verification": "User hasn't verified their email address yet.",
-  "classic4j_library.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your email."
+  "classic4j_library.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your email.",
+
+  "minecraftauth_library.viafabricplus.authenticate_xbox_live": "Authenticating device with Xbox Live...",
+  "minecraftauth_library.viafabricplus.authenticate_sisu": "Authenticating with Xbox Live using SISU...",
+  "minecraftauth_library.viafabricplus.authenticate_minecraft": "Authenticating with Minecraft Services...",
+  "minecraftauth_library.viafabricplus.requesting_xsts_token": "Requesting XSTS Token...",
+  "minecraftauth_library.viafabricplus.authenticate_playfab": "Authenticating with PlayFab..."
 }

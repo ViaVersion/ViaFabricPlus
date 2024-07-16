@@ -46,6 +46,7 @@
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Inventaraktionen in Alpha-Versionen emulieren",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Klicke, um den Account für die Bedrock-Edition einzustellen",
+  "bedrock_settings.viafabricplus.click_to_set_bedrock_account.notice": "Dein Browser sollte sich geöffnet haben.\nDas Schließen dieses Bildschirms unterbricht den Vorgang!",
   "bedrock_settings.viafabricplus.replace_default_port": "Standardport in der Serverliste ersetzen",
 
   "debug_settings.viafabricplus.queue_config_packets": "Konfigurationspakete in Warteschlange einreihen",
@@ -90,9 +91,6 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Bastelrezeptbuch verstecken",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Moderne Puzzle-Funktionen ausblenden",
 
-  "bedrock.viafabricplus.login": "Dein Browser sollte sich geöffnet haben.\nDas Schließen dieses Bildschirms unterbricht den Vorgang!",
-  "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus konnte deine Sitzung nicht verifizieren! Bitte logge dich in einen Account ein oder deaktiviere die BetaCraft-Authentifizierung in den ViaFabricPlus-Einstellungen.",
-
   "report.viafabricplus.button": "Probleme melden",
   "report.viafabricplus.bug_report": "Fehler auf GitHub melden",
   "report.viafabricplus.feature_request": "Funktion auf GitHub vorschlagen",
@@ -102,11 +100,19 @@
   "classicube.viafabricplus.account": "Du kannst hier einen Account erstellen: https://www.classicube.net/",
   "classicube.viafabricplus.loading": "Lade Profilinformationen und Serverliste...",
   "classicube.viafabricplus.warning": "Diese Funktion sendet API-Anfragen an die ClassiCube-API.",
+
+  "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus konnte deine Sitzung nicht verifizieren! Bitte logge dich in einen Account ein oder deaktiviere die BetaCraft-Authentifizierung in den ViaFabricPlus-Einstellungen.",
   "betacraft.viafabricplus.warning": "Durch Drücken dieser Schaltfläche werden API-Anfragen an \"betacraft.uk/serverlist\" gesendet.",
 
   "classic4j_library.viafabricplus.error.token": "Inkorrektes Token. Ist ViaFabricPlus veraltet?",
   "classic4j_library.viafabricplus.error.username": "Ungültiger Benutzername.",
   "classic4j_library.viafabricplus.error.password": "Ungültiges Passwort.",
   "classic4j_library.viafabricplus.error.verification": "Benutzer hat seine E-Mail-Adresse noch nicht verifiziert.",
-  "classic4j_library.viafabricplus.error.logincode": "Mehrstufige Authentifizierung angefordert. Bitte überprüfe deine E-Mails."
+  "classic4j_library.viafabricplus.error.logincode": "Mehrstufige Authentifizierung angefordert. Bitte überprüfe deine E-Mails.",
+
+  "minecraftauth_library.viafabricplus.authenticate_xbox_live": "Gerät mit Xbox Live authentifizieren...",
+  "minecraftauth_library.viafabricplus.authenticate_sisu": "Authentifizierung mit Xbox Live über SISU...",
+  "minecraftauth_library.viafabricplus.authenticate_minecraft": "Authentifizierung mit den Minecraft-Diensten...",
+  "minecraftauth_library.viafabricplus.requesting_xsts_token": "Anfordern des XSTS-Tokens...",
+  "minecraftauth_library.viafabricplus.authenticate_playfab": "Authentifizierung mit PlayFab..."
 }
