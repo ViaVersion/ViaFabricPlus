@@ -19,8 +19,6 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.entity.JigsawBlockEntity;
 import net.minecraft.client.gui.DrawContext;
@@ -60,7 +58,7 @@ public abstract class MixinJigsawBlockScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void disableWidgets(CallbackInfo ci) {
-        if (!VisualSettings.global().hidePrioritySelectionsInJigsawScreen.isEnabled()) {
+        if (VisualSettings.global().hidePrioritySelectionsInJigsawScreen.isEnabled()) {
             selectionPriorityField.active = false;
             placementPriorityField.active = false;
         }
