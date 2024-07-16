@@ -37,7 +37,7 @@ public class ServerListScreen extends VFPScreen {
     private ButtonWidget betaCraftButton;
 
     public ServerListScreen() {
-        super("Server lists", true);
+        super(Text.translatable("screen.viafabricplus.server_list"), true);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class ServerListScreen extends VFPScreen {
                     BetaCraftScreen.SERVER_LIST = serverList;
 
                     BetaCraftScreen.INSTANCE.open(this);
-                }, throwable -> showErrorScreen(BetaCraftScreen.INSTANCE.getTitle().getString(), throwable, this));
+                }, throwable -> showErrorScreen(BetaCraftScreen.INSTANCE.getTitle(), throwable, this));
 
             } else {
                 BetaCraftScreen.INSTANCE.open(this);
@@ -82,7 +82,9 @@ public class ServerListScreen extends VFPScreen {
 
     @Override
     public void tick() {
-        if (betaCraftButton != null) betaCraftButton.setMessage(Text.of("Loading..."));
+        if (betaCraftButton != null) {
+            betaCraftButton.setMessage(Text.translatable("betacraft.viafabricplus.loading"));
+        }
     }
 
     @Override

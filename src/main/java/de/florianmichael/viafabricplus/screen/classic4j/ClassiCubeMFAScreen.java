@@ -27,7 +27,6 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
@@ -37,7 +36,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
     public static final ClassiCubeMFAScreen INSTANCE = new ClassiCubeMFAScreen();
 
     public ClassiCubeMFAScreen() {
-        super("ClassiCube MFA", false);
+        super(Text.translatable("screen.viafabricplus.classicube_mfa"), false);
     }
 
     private TextFieldWidget mfaField;
@@ -49,9 +48,9 @@ public class ClassiCubeMFAScreen extends VFPScreen {
 
         this.addDrawableChild(mfaField = new TextFieldWidget(textRenderer, width / 2 - 150, 70 + 10, 300, 20, Text.empty()));
 
-        mfaField.setPlaceholder(Text.literal("MFA"));
+        mfaField.setPlaceholder(Text.of("MFA"));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("Login"), button -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.of("Login"), button -> {
             this.setupSubtitle(Text.translatable("classicube.viafabricplus.loading"));
             final CCAccount account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
 
@@ -68,7 +67,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
 
                 @Override
                 public void handleException(Throwable throwable) {
-                    setupSubtitle(Text.literal(throwable.getMessage()));
+                    setupSubtitle(Text.of(throwable.getMessage()));
                 }
             });
         }).position(width / 2 - 75, mfaField.getY() + (20 * 4) + 5).size(150, 20).build());

@@ -22,16 +22,24 @@
   "base.viafabricplus.vanilla_only": "Vanilla only",
   "base.viafabricplus.kick": "Kick",
   "base.viafabricplus.cancel_and_notify": "Cancel and notify",
-  "base.viafabricplus.force_version_title": "Please select the version with which the server should be pinged/connected",
   "base.viafabricplus.detecting_server_version": "Detecting server version...",
   "base.viafabricplus.this_will_require_a_restart": "This will require a restart!",
   "base.viafabricplus.none": "None",
+  "base.viafabricplus.name": "Name",
+  "base.viafabricplus.password": "Password",
+  "base.viafabricplus.login": "Login",
 
   "setting_group_name.viafabricplus.authentication": "Authentication",
   "setting_group_name.viafabricplus.visual": "Visual",
   "setting_group_name.viafabricplus.debug": "Debug",
   "setting_group_name.viafabricplus.general": "General",
   "setting_group_name.viafabricplus.bedrock": "Bedrock",
+
+  "screen.viafabricplus.force_version": "Force Version",
+  "screen.viafabricplus.report_issues": "Report issues",
+  "screen.viafabricplus.server_list": "Server Lists",
+  "screen.viafabricplus.classicube_login": "Classicube Login",
+  "screen.viafabricplus.classicube_mfa": "Classicube MFA",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Save selected protocol version",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "Show extra information in Debug HUD",
@@ -46,7 +54,6 @@
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Emulate inventory actions in alpha versions",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Click to set account for Bedrock Edition",
-  "bedrock_settings.viafabricplus.click_to_set_bedrock_account.notice": "Your browser should have opened.\nClosing this screen will cancel the process!",
   "bedrock_settings.viafabricplus.replace_default_port": "Replace default port in server list",
 
   "debug_settings.viafabricplus.queue_config_packets": "Queue config packets",
@@ -92,18 +99,33 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Hide crafting recipe book",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Hide modern Jigsaw screen features",
 
+  "force_version.viafabricplus.title": "Please select the version with which the server should be pinged/connected",
+
+  "click_to_set_bedrock_account.viafabricplus.notice": "Your browser should have opened.\nClosing this screen will cancel the process!",
+  "click_to_set_bedrock_account.viafabricplus.display": "Bedrock account: %s",
+
   "report.viafabricplus.button": "Report issues",
   "report.viafabricplus.bug_report": "Report a bug on GitHub",
   "report.viafabricplus.feature_request": "Request a feature on GitHub",
   "report.viafabricplus.create_via_dump": "Create a ViaVersion dump",
   "report.viafabricplus.open_logs": "Open the logs folder",
+  "report.viafabricplus.bug_report.response": "Opened GitHub issue page!",
+  "report.viafabricplus.feature_request.response": "Opened GitHub issue page!",
+  "report.viafabricplus.create_via_dump.failed": "Failed to create a dump! See logs for more information.",
+  "report.viafabricplus.create_via_dump.success": "Dump created and copied to clipboard!",
+  "report.viafabricplus.open_logs.response": "Logs folder opened!",
 
   "classicube.viafabricplus.account": "You can create an account here: https://www.classicube.net/",
   "classicube.viafabricplus.loading": "Loading profile information and server list...",
+  "classicube.viafabricplus.profile": "ClassiCube Profile:",
   "classicube.viafabricplus.warning": "This feature will send API requests to the ClassiCube API.",
 
   "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus couldn't verify your session! Please log in to an account or disable the BetaCraft authentication in the ViaFabricPlus Settings",
+  "betacraft.viafabricplus.loading": "Loading...",
   "betacraft.viafabricplus.warning": "Pressing this button will send API requests to \"betacraft.uk/serverlist\".",
+
+  "translation.viafabricplus.updates_1_20": "This server has the update_1_20 features enabled. This is not fully supported and may cause issues.",
+  "translation.viafabricplus.packet_error": "An error occurred while translating a packet! See more details in the logs!",
 
   "classic4j_library.viafabricplus.error.token": "Incorrect token. Is your ViaFabricPlus out of date?",
   "classic4j_library.viafabricplus.error.username": "Invalid username.",
@@ -111,9 +133,9 @@
   "classic4j_library.viafabricplus.error.verification": "User hasn't verified their email address yet.",
   "classic4j_library.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your email.",
 
-  "minecraftauth_library.viafabricplus.authenticate_xbox_live": "Authenticating device with Xbox Live...",
-  "minecraftauth_library.viafabricplus.authenticate_sisu": "Authenticating with Xbox Live using SISU...",
-  "minecraftauth_library.viafabricplus.authenticate_minecraft": "Authenticating with Minecraft Services...",
-  "minecraftauth_library.viafabricplus.requesting_xsts_token": "Requesting XSTS Token...",
-  "minecraftauth_library.viafabricplus.authenticate_playfab": "Authenticating with PlayFab..."
+  "minecraftauth_library.viafabricplus.xbldevicetoken": "Authenticating device with Xbox Live...",
+  "minecraftauth_library.viafabricplus.xblsisuauthentication": "Authenticating with Xbox Live using SISU...",
+  "minecraftauth_library.viafabricplus.mcchain": "Authenticating with Minecraft Services...",
+  "minecraftauth_library.viafabricplus.xblxststoken": "Requesting XSTS Token...",
+  "minecraftauth_library.viafabricplus.playfabtoken": "Authenticating with PlayFab..."
 }

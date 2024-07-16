@@ -81,7 +81,7 @@ public class BetaCraftScreen extends VFPScreen {
             for (BCVersionCategory value : BCVersionCategory.values()) {
                 final List<BCServerInfoSpec> servers = SERVER_LIST.serversOfVersionCategory(value);
                 if (servers.isEmpty()) continue;
-                addEntry(new TitleRenderer(Text.literal(value.name())));
+                addEntry(new TitleRenderer(Text.of(value.name())));
                 for (BCServerInfoSpec server : servers) {
                     addEntry(new ServerSlot(server));
                 }
@@ -108,7 +108,7 @@ public class BetaCraftScreen extends VFPScreen {
 
         @Override
         public Text getNarration() {
-            return Text.literal(server.name());
+            return Text.of(server.name());
         }
 
         @Override

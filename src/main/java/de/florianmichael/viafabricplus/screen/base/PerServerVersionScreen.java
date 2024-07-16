@@ -39,12 +39,12 @@ public class PerServerVersionScreen extends VFPScreen {
     private final Consumer<ProtocolVersion> selectionConsumer;
 
     public PerServerVersionScreen(final Screen prevScreen, final Consumer<ProtocolVersion> selectionConsumer) {
-        super("Force version", false);
+        super(Text.translatable("screen.viafabricplus.force_version"), false);
 
         this.prevScreen = prevScreen;
         this.selectionConsumer = selectionConsumer;
 
-        this.setupSubtitle(Text.translatable("base.viafabricplus.force_version_title"));
+        this.setupSubtitle(Text.translatable("force_version.viafabricplus.title"));
     }
 
     @Override
@@ -110,7 +110,7 @@ public class PerServerVersionScreen extends VFPScreen {
 
         @Override
         public Text getNarration() {
-            return Text.literal(this.protocolVersion.getName());
+            return Text.of(this.protocolVersion.getName());
         }
 
         @Override

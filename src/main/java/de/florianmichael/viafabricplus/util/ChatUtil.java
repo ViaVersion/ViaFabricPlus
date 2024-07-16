@@ -39,7 +39,7 @@ public class ChatUtil {
      * @return The prefixed message
      */
     public static Text prefixText(final String message) {
-        return prefixText(Text.literal(message));
+        return prefixText(Text.of(message));
     }
 
     /**

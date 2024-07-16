@@ -78,7 +78,7 @@ public abstract class MixinAddServerScreen extends Screen {
             viaFabricPlus$addressField = null;
         }
 
-        ButtonWidget.Builder buttonBuilder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("base.viafabricplus.set_version") : Text.literal(forcedVersion.getName()), button -> {
+        ButtonWidget.Builder buttonBuilder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("base.viafabricplus.set_version") : Text.of(forcedVersion.getName()), button -> {
             // Store current input in case the user cancels the version selection
             viaFabricPlus$nameField = serverNameField.getText();
             viaFabricPlus$addressField = addressField.getText();

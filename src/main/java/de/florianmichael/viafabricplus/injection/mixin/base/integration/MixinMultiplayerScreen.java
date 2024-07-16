@@ -50,7 +50,7 @@ public abstract class MixinMultiplayerScreen extends Screen {
         if (buttonPosition == 0) { // Off
             return;
         }
-        ButtonWidget.Builder builder = ButtonWidget.builder(Text.literal("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this)).size(98, 20);
+        ButtonWidget.Builder builder = ButtonWidget.builder(Text.of("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this)).size(98, 20);
 
         // Set the button's position according to the configured orientation and add the button to the screen
         this.addDrawableChild(GeneralSettings.withOrientation(builder, buttonPosition, width, height).build());

@@ -29,7 +29,6 @@ import de.florianmichael.viafabricplus.save.impl.AccountsSave;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
@@ -39,7 +38,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
     public static final ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
 
     public ClassiCubeLoginScreen() {
-        super("ClassiCube Login", true);
+        super(Text.translatable("screen.viafabricplus.classicube_login"), true);
     }
 
     private TextFieldWidget nameField;
@@ -52,10 +51,10 @@ public class ClassiCubeLoginScreen extends VFPScreen {
 
         this.addDrawableChild(nameField = new TextFieldWidget(textRenderer, width / 2 - 150, 70 + 10, 300, 20, Text.empty()));
         this.addDrawableChild(passwordField = new TextFieldWidget(textRenderer, width / 2 - 150, nameField.getY() + 20 + 5, 300, 20, Text.empty()));
-        passwordField.setRenderTextProvider((s, integer) -> Text.literal("*".repeat(s.length())).asOrderedText());
+        passwordField.setRenderTextProvider((s, integer) -> Text.of("*".repeat(s.length())).asOrderedText());
 
-        nameField.setPlaceholder(Text.literal("Name"));
-        passwordField.setPlaceholder(Text.literal("Password"));
+        nameField.setPlaceholder(Text.translatable("base.viafabricplus.name"));
+        passwordField.setPlaceholder(Text.translatable("base.viafabricplus.password"));
 
         nameField.setMaxLength(Integer.MAX_VALUE);
         passwordField.setMaxLength(Integer.MAX_VALUE);
@@ -69,7 +68,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
             passwordField.setText(accountsSave.getClassicubeAccount().username());
         }
 
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("Login"), button -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.of("Login"), button -> {
             accountsSave.setClassicubeAccount(new CCAccount(nameField.getText(), passwordField.getText()));
             this.setupSubtitle(Text.translatable("classicube.viafabricplus.loading"));
 
@@ -88,7 +87,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
                 @Override
                 public void handleException(Throwable throwable) {
                     ViaFabricPlus.global().getLogger().error("Error while logging in to ClassiCube!", throwable);
-                    setupSubtitle(Text.literal(throwable.getMessage()));
+                    setupSubtitle(Text.of(throwable.getMessage()));
                 }
             });
         }).position(width / 2 - 75, passwordField.getY() + (20 * 4) + 5).size(150, 20).build());

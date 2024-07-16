@@ -91,7 +91,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
         final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
         if (account != null) {
-            context.drawTextWithShadow(textRenderer, Text.of("ClassiCube Profile:"), 32, 6, -1);
+            context.drawTextWithShadow(textRenderer, Text.translatable("classicube.viafabricplus.profile"), 32, 6, -1);
             context.drawTextWithShadow(textRenderer, Text.of(account.username()), 32, 16, -1);
         }
     }
@@ -125,7 +125,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
         @Override
         public Text getNarration() {
-            return Text.literal(classiCubeServerInfo.name());
+            return Text.of(classiCubeServerInfo.name());
         }
 
         @Override

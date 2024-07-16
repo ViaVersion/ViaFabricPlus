@@ -84,7 +84,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
 
         @Override
         public Text getNarration() {
-            return Text.literal(this.protocolVersion.getName());
+            return Text.of(this.protocolVersion.getName());
         }
 
         @Override

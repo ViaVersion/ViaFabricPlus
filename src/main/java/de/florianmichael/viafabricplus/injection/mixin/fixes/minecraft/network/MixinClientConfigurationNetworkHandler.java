@@ -61,7 +61,7 @@ public abstract class MixinClientConfigurationNetworkHandler extends ClientCommo
     @Inject(method = "onFeatures", at = @At(value = "HEAD"))
     private void notifyAboutFeatures(FeaturesS2CPacket packet, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThan(ProtocolVersion.v1_20) && packet.features().contains(Identifier.of("update_1_20"))) {
-            ChatUtil.sendPrefixedMessage(Text.literal("This server has the update_1_20 features enabled. This is not fully supported and may cause issues.").formatted(Formatting.RED));
+            ChatUtil.sendPrefixedMessage(Text.translatable("translation.viafabricplus.updates_1_20").formatted(Formatting.RED));
         }
     }
 

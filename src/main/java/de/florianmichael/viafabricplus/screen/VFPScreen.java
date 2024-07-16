@@ -53,7 +53,11 @@ public class VFPScreen extends Screen {
     private PressableTextWidget subtitleWidget;
 
     public VFPScreen(final String title, final boolean backButton) {
-        super(Text.of(title));
+        this(Text.of(title), backButton);
+    }
+
+    public VFPScreen(final Text title, final boolean backButton) {
+        super(title);
         this.backButton = backButton;
     }
 
@@ -119,7 +123,7 @@ public class VFPScreen extends Screen {
     @Override
     protected void init() {
         if (backButton) {
-            this.addDrawableChild(ButtonWidget.builder(Text.literal("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
+            this.addDrawableChild(ButtonWidget.builder(Text.of("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
         }
     }
 
@@ -173,11 +177,11 @@ public class VFPScreen extends Screen {
      * @param throwable The throwable which should be thrown
      * @param next      The screen which should be opened after the error screen is closed
      */
-    public static void showErrorScreen(final String title, final Throwable throwable, final Screen next) {
+    public static void showErrorScreen(final Text title, final Throwable throwable, final Screen next) {
         ViaFabricPlus.global().getLogger().error("Something went wrong!", throwable);
 
         final MinecraftClient client = MinecraftClient.getInstance();
-        client.execute(() -> client.setScreen(new NoticeScreen(() -> client.setScreen(next), Text.of(title), Text.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Text.translatable("base.viafabricplus.cancel"), false)));
+        client.execute(() -> client.setScreen(new NoticeScreen(() -> client.setScreen(next), title, Text.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Text.translatable("base.viafabricplus.cancel"), false)));
     }
 
 }

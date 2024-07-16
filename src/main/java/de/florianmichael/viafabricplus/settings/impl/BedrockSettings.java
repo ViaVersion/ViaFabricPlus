@@ -35,21 +35,17 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.AbstractStep;
-import net.raphimc.minecraftauth.step.bedrock.StepMCChain;
-import net.raphimc.minecraftauth.step.bedrock.StepPlayFabToken;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCodeMsaCode;
-import net.raphimc.minecraftauth.step.xbl.StepXblDeviceToken;
-import net.raphimc.minecraftauth.step.xbl.StepXblSisuAuthentication;
-import net.raphimc.minecraftauth.step.xbl.StepXblXstsToken;
 import net.raphimc.minecraftauth.util.logging.ConsoleLogger;
 import net.raphimc.minecraftauth.util.logging.ILogger;
 
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public class BedrockSettings extends SettingGroup {
 
-    private static final Text TITLE = Text.literal("Microsoft Bedrock login");
+    private static final Text TITLE = Text.of("Microsoft Bedrock login");
 
     private static final BedrockSettings INSTANCE = new BedrockSettings();
 
@@ -59,7 +55,7 @@ public class BedrockSettings extends SettingGroup {
         public MutableText displayValue() {
             final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getBedrockAccount();
             if (account != null) {
-                return Text.literal("Bedrock account: " + account.getMcChain().getDisplayName());
+                return Text.translatable("click_to_set_bedrock_account.viafabricplus.display", account.getMcChain().getDisplayName());
             } else {
                 return super.displayValue();
             }
@@ -76,7 +72,7 @@ public class BedrockSettings extends SettingGroup {
             }
             MinecraftClient.getInstance().execute(() -> {
                 if (MinecraftClient.getInstance().currentScreen instanceof ConfirmScreen confirmScreen) {
-                    ((IConfirmScreen) confirmScreen).viaFabricPlus$setMessage(Text.translatable(translationKey(step)));
+                    ((IConfirmScreen) confirmScreen).viaFabricPlus$setMessage(Text.translatable("minecraftauth_library.viafabricplus." + step.name.toLowerCase(Locale.ROOT)));
                 }
             });
         }
@@ -100,26 +96,15 @@ public class BedrockSettings extends SettingGroup {
                         client.setScreen(prevScreen);
                         Thread.currentThread().interrupt();
                     }
-                }, TITLE, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account.notice"), Text.translatable("base.viafabricplus.copy_link"), Text.translatable("base.viafabricplus.cancel"))));
+                }, TITLE, Text.translatable("click_to_set_bedrock_account.viafabricplus.notice"), Text.translatable("base.viafabricplus.copy_link"), Text.translatable("base.viafabricplus.cancel"))));
                 Util.getOperatingSystem().open(msaDeviceCode.getDirectVerificationUri());
             })));
 
             RenderSystem.recordRenderCall(() -> client.setScreen(prevScreen));
         } catch (Throwable e) {
             Thread.currentThread().interrupt();
-            VFPScreen.showErrorScreen("Microsoft Bedrock Login", e, prevScreen);
+            VFPScreen.showErrorScreen(TITLE, e, prevScreen);
         }
-    }
-
-    private String translationKey(final AbstractStep<?, ?> step) {
-        return "minecraftauth_library.viafabricplus." + switch (step) {
-            case StepXblDeviceToken stepXblDeviceToken -> "authenticate_xbox_live";
-            case StepXblSisuAuthentication stepXblSisuAuthentication -> "authenticate_sisu";
-            case StepMCChain stepMCChain -> "authenticate_minecraft";
-            case StepXblXstsToken stepXblXstsToken -> "requesting_xsts_token";
-            case StepPlayFabToken stepPlayFabToken -> "authenticate_playfab";
-            case null, default -> throw new IllegalArgumentException("Unknown step: " + step);
-        };
     }
 
     public static BedrockSettings global() {
