@@ -13,7 +13,7 @@
   "base.viafabricplus.cancel_and_reset": "Сброс",
   "base.viafabricplus.logout": "Выйти",
   "base.viafabricplus.online_mode": "Лицензионный",
-  "base.viafabricplus.copy_code": "Копировать код",
+  "base.viafabricplus.copy_link": "Копировать ссылку",
   "base.viafabricplus.something_went_wrong": "Что-то пошло не так. Повторите попытку позже.",
   "base.viafabricplus.via_translates_to": "Конвертация в формат %s",
   "base.viafabricplus.server_version": "Версия сервера: %s",
@@ -63,6 +63,9 @@
   "debug_settings.viafabricplus.prevent_entity_cramming": "Обходить предел сущностей в одном блоке",
   "debug_settings.viafabricplus.always_tick_client_player": "Всегда обрабатывать игрока в клиентском мире",
   "debug_settings.viafabricplus.print_networking_errors_to_logs": "Выводить сетевые ошибки в журнал",
+  "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "Не создавать отчёты об ошибке пакетов",
+  "debug_settings.viafabricplus.ignore_fabric_sync_errors": "Пропускать ошибки синхронизации регистра Fabric",
+  "debug_settings.viafabricplus.legacy_tab_completions": "Автозаполнение в старых версиях",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Использовать аутентификацию BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Разрешить ViaLegacy вызов joinServer() для проверки сессии",
@@ -71,7 +74,7 @@
 
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Удалять уведомления о безопасности чата",
   "visual_settings.viafabricplus.hide_signature_indicator": "Скрывать индикатор цифровой подписи в чате",
-  "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "Старый блок головоломки",
+  "visual_settings.viafabricplus.hide_priority_selections_in_jigsaw_screen": "Блокировать выбор приоритета детали в пазле",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "Старая окаменевшая дубовая плита",
   "visual_settings.viafabricplus.emulate_armor_hud": "Эмулировать интерфейс брони",
   "visual_settings.viafabricplus.remove_newer_features_from_command_block_screen": "Старый командный блок",
@@ -85,6 +88,9 @@
   "visual_settings.viafabricplus.disable_server_pinging": "Не проверять соединение",
   "visual_settings.viafabricplus.sideways_backwards_walking": "Старая походка спиной",
   "visual_settings.viafabricplus.enable_legacy_tablist": "Старый список игроков",
+  "visual_settings.viafabricplus.hide_furnace_recipe_book": "Старые печки без рецептов",
+  "visual_settings.viafabricplus.hide_crafting_recipe_book": "Старые верстаки без рецептов",
+  "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Блокировать новые функции интерфейса пазла",
 
   "bedrock.viafabricplus.login": "Сейчас должен открыться браузер.\nВведите следующий код: %s\nЗакрытие этого экрана приведёт к отмене процесса!",
   "authentication.viafabricplus.failed_to_verify_session": "Не удалось проверить вашу сессию. Войдите в свою учётную запись или отключите аутентификацию BetaCraft в настройках ViaFabricPlus.",
