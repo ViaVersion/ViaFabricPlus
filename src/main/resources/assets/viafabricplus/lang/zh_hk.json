@@ -22,16 +22,24 @@
   "base.viafabricplus.vanilla_only": "僅原版",
   "base.viafabricplus.kick": "踢出",
   "base.viafabricplus.cancel_and_notify": "取消並通知",
-  "base.viafabricplus.force_version_title": "請選擇Ping/連接這個伺服器要使用嘅版本",
   "base.viafabricplus.detecting_server_version": "探測服務器版本中...",
   "base.viafabricplus.this_will_require_a_restart": "此功能需重啓游戲！",
   "base.viafabricplus.none": "無",
+  "base.viafabricplus.name": "用戶名",
+  "base.viafabricplus.password": "密碼",
+  "base.viafabricplus.login": "登入",
 
   "setting_group_name.viafabricplus.authentication": "驗證",
   "setting_group_name.viafabricplus.visual": "視覺",
   "setting_group_name.viafabricplus.debug": "調試",
   "setting_group_name.viafabricplus.general": "常規",
   "setting_group_name.viafabricplus.bedrock": "Bedrock 版",
+
+  "screen.viafabricplus.force_version": "强制使用設定版本",
+  "screen.viafabricplus.report_issues": "報告問題",
+  "screen.viafabricplus.server_list": "伺服器列表",
+  "screen.viafabricplus.classicube_login": "Classicube 登入",
+  "screen.viafabricplus.classicube_mfa": "Classicube MFA",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "儲存选中嘅版本",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "在 \u00a76[調試]\u00a7r中顯示額外資訊",
@@ -91,23 +99,43 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "隱藏合成熒幕嘅配方手冊",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "從拼圖方塊熒幕中移除較新嘅功能",
 
-  "bedrock.viafabricplus.login": "你嘅瀏覽器現在應該打開了。\n請輸入這個程式碼：%s\n關閉這個螢幕等於取消操作！",
-  "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus 驗證 session 失敗！請登入帳號或在 ViaFabricPlus 設定中停用 BetaCraft 認證",
+  "force_version.viafabricplus.title": "請選擇Ping/連接這個伺服器要使用嘅版本",
+
+  "click_to_set_bedrock_account.viafabricplus.notice": "你嘅瀏覽器現在應該打開了。\n請輸入這個程式碼：%s\n關閉這個螢幕等於取消操作！",
+  "click_to_set_bedrock_account.viafabricplus.display": "Bedrock 版賬號: %s",
 
   "report.viafabricplus.button": "報告問題",
   "report.viafabricplus.bug_report": "在 GitHub 上報告 Bug",
   "report.viafabricplus.feature_request": "在 Github 上請求新功能",
   "report.viafabricplus.create_via_dump": "創建一個 ViaVersion Dump，用於報告問題時收集訊息",
   "report.viafabricplus.open_logs": "打開游戲日志目錄",
+  "report.viafabricplus.bug_report.response": "打開 GitHub issue 問題報告網頁!",
+  "report.viafabricplus.feature_request.response": "已開啟 GitHub 問題報告網頁!",
+  "report.viafabricplus.create_via_dump.failed": "創建 ViaVersion Dump 鏈接失敗! 在日誌中查看更多訊息.",
+  "report.viafabricplus.create_via_dump.success": "已創建 ViaVersion Dump 鏈接並複製!",
+  "report.viafabricplus.open_logs.response": "已開啟遊戲日誌目錄!",
 
   "classicube.viafabricplus.account": "你可以在這裡創建一個帳戶: https://www.classicube.net",
   "classicube.viafabricplus.loading": "正在載入個人資訊和伺服器清單…",
+  "classicube.viafabricplus.profile": "ClassiCube 檔案:",
   "classicube.viafabricplus.warning": "該功能會向 ClassiCube API 發送請求",
+
+  "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus 不能認證你嘅會話! 請登入賬號或在 ViaFabricPlus 設定内禁用 BetaCraft 認證.",
+  "betacraft.viafabricplus.loading": "載入中...",
   "betacraft.viafabricplus.warning": "點擊這個按鈕會向 “betacraft.uk/serverlist” 發送 API 請求",
+
+  "translation.viafabricplus.updates_1_20": "這個伺服器啓用咗 1.20 更新特性. 這沒有被完全支援，可能導致問題.",
+  "translation.viafabricplus.packet_error": "翻譯網路封包時發生錯誤! 在游戲日誌中查看更多信息!",
 
   "classic4j_library.viafabricplus.error.token": "Token 唔正確。请确认你嘅 ViaFabricPlus 系最新版本！",
   "classic4j_library.viafabricplus.error.username": "無效嘅用戶名",
   "classic4j_library.viafabricplus.error.password": "無效嘅密碼",
   "classic4j_library.viafabricplus.error.verification": "用戶尚未驗證電子郵箱位址",
-  "classic4j_library.viafabricplus.error.logincode": "已請求身份驗證。請查看你嘅電郵！"
+  "classic4j_library.viafabricplus.error.logincode": "已請求身份驗證。請查看你嘅電郵！",
+
+  "minecraftauth_library.viafabricplus.xbldevicetoken": "正在 Xbox Live 認證...",
+  "minecraftauth_library.viafabricplus.xblsisuauthentication": "正在使用 SISU 認證 Xbox Live...",
+  "minecraftauth_library.viafabricplus.mcchain": "正在與 Minecraft 在線伺服器認證...",
+  "minecraftauth_library.viafabricplus.xblxststoken": "正在請求 XSTS Token...",
+  "minecraftauth_library.viafabricplus.playfabtoken": "正在認證 PlayFab..."
 }

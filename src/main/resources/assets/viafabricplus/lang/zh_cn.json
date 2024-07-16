@@ -22,16 +22,24 @@
   "base.viafabricplus.vanilla_only": "仅原版",
   "base.viafabricplus.kick": "踢出",
   "base.viafabricplus.cancel_and_notify": "取消并通知",
-  "base.viafabricplus.force_version_title": "请选择连接这个服务器要使用的版本",
   "base.viafabricplus.detecting_server_version": "检测服务器版本中…",
   "base.viafabricplus.this_will_require_a_restart": "这将需要重新启动！",
   "base.viafabricplus.none": "无",
+  "base.viafabricplus.name": "用户名",
+  "base.viafabricplus.password": "密码",
+  "base.viafabricplus.login": "登录",
 
   "setting_group_name.viafabricplus.authentication": "身份与认证",
   "setting_group_name.viafabricplus.visual": "特性模拟",
   "setting_group_name.viafabricplus.debug": "调试",
   "setting_group_name.viafabricplus.general": "全局",
   "setting_group_name.viafabricplus.bedrock": "基岩版",
+
+  "screen.viafabricplus.force_version": "强制使用设定版本",
+  "screen.viafabricplus.report_issues": "反馈问题",
+  "screen.viafabricplus.server_list": "服务器列表",
+  "screen.viafabricplus.classicube_login": "Classicube 登录",
+  "screen.viafabricplus.classicube_mfa": "Classicube MFA",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "保存选择的版本",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "在§6[调试]§r中显示额外信息",
@@ -91,23 +99,43 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "隐藏合成的配方书",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "从§o拼图方块§r界面中移除新版本特性",
 
-  "bedrock.viafabricplus.login": "你的浏览器现在应该打开了。\n请输入这个代码：%s\n关闭这个屏幕等于取消操作！",
-  "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus验证你的会话失败！请登录一个账户或在设置中关闭“使用BetaCraft进行身份验证”",
+  "force_version.viafabricplus.title": "请选择连接这个服务器要使用的版本",
+
+  "click_to_set_bedrock_account.viafabricplus.notice": "你的浏览器现在应该打开了。\n请输入这个代码：%s\n关闭这个屏幕等于取消操作！",
+  "click_to_set_bedrock_account.viafabricplus.display": "基岩版账户: %s",
 
   "report.viafabricplus.button": "反馈问题",
   "report.viafabricplus.bug_report": "在 GitHub 上反馈 Bug",
   "report.viafabricplus.feature_request": "在 Github 上请求新的功能",
   "report.viafabricplus.create_via_dump": "创建一个 ViaVersion Dump，用于反馈问题时收集信息",
   "report.viafabricplus.open_logs": "打开游戏日志文件夹",
+  "report.viafabricplus.bug_report.response": "打开 GitHub issue 问题反馈页面!",
+  "report.viafabricplus.feature_request.response": "已打开 GitHub 问题反馈页面!",
+  "report.viafabricplus.create_via_dump.failed": "创建 ViaVersion Dump 链接失败! 在日志中查看更多信息.",
+  "report.viafabricplus.create_via_dump.success": "已创建 ViaVersion Dump 链接并复制到剪贴板!",
+  "report.viafabricplus.open_logs.response": "已打开日志文件夹!",
 
   "classicube.viafabricplus.account": "你可以这里创建一个账户：https://www.classicube.net",
   "classicube.viafabricplus.loading": "正在加载个人信息和服务器列表……",
+  "classicube.viafabricplus.profile": "ClassiCube Profile:",
   "classicube.viafabricplus.warning": "该功能会向ClassiCube API发送API请求",
+
+  "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus 不能验证你的会话! 请登录一个账号或在 ViaFabricPlus 设置内禁用 BetaCraft 认证.",
+  "betacraft.viafabricplus.loading": "加载中...",
   "betacraft.viafabricplus.warning": "点击这个按钮会向“betacraft.uk/serverlist”发送API请求",
 
-  "classic4j_library.viafabricplus.error.token": "Token不正确。你的ViaFabricPlus是否为最新版？",
+  "translation.viafabricplus.updates_1_20": "此服务器启用了 1.20 更新特性. 这不被完全支持，可能导致问题发生.",
+  "translation.viafabricplus.packet_error": "翻译网络数据包时发生了错误! 在日志中查看更多信息!",
+
+  "classic4j_library.viafabricplus.error.token": "Token 不正确。你的 ViaFabricPlus 是否为最新版？",
   "classic4j_library.viafabricplus.error.username": "无效用户名",
   "classic4j_library.viafabricplus.error.password": "无效密码",
   "classic4j_library.viafabricplus.error.verification": "用户尚未验证电子邮箱地址！",
-  "classic4j_library.viafabricplus.error.logincode": "已请求身份验证。请查看你的电子邮箱！"
+  "classic4j_library.viafabricplus.error.logincode": "已请求身份验证。请查看你的电子邮箱！",
+
+  "minecraftauth_library.viafabricplus.xbldevicetoken": "正在 Xbox Live 认证...",
+  "minecraftauth_library.viafabricplus.xblsisuauthentication": "正在使用 SISU 认证 Xbox Live...",
+  "minecraftauth_library.viafabricplus.mcchain": "正在与 Minecraft 网络服务认证...",
+  "minecraftauth_library.viafabricplus.xblxststoken": "正在请求 XSTS Token...",
+  "minecraftauth_library.viafabricplus.playfabtoken": "正在认证 PlayFab..."
 }
