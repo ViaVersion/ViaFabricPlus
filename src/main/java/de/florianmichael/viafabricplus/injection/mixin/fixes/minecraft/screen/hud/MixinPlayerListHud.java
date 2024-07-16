@@ -19,20 +19,19 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.hud;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import de.florianmichael.viafabricplus.injection.access.IPlayerListEntry;
 import de.florianmichael.viafabricplus.injection.access.IPlayerListHud;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.network.ClientConnection;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
@@ -68,9 +67,9 @@ public abstract class MixinPlayerListHud implements IPlayerListHud {
         }
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;isEncrypted()Z"))
-    private boolean hideSkins(ClientConnection instance) {
-        return !viaFabricPlus$hideSkins && instance.isEncrypted();
+    @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;isEncrypted()Z"))
+    private boolean hideSkins(boolean original) {
+        return original && !viaFabricPlus$hideSkins;
     }
 
     @Unique

@@ -6,12 +6,12 @@ where you can change the settings and set the protocol version, the position of 
 Settings -> General -> multiplayer screen button orientation.
 
 ![](preview/multiplayer.png)
-![](preview/protocol.png)
+![](preview/protocol_selection.png)
 
 In the Add/Edit Server screen there is a button where you can select a specific version for this server, when you ping or connect to this server, 
 ViaFabricPlus will use the version set there, the versions are stored in the servers.dat too
 
-![](preview/force.png)
+![](preview/set_version_for_server.png)
 
 If you don't want to specify a specific version anymore, you can simply press the button and select **"Cancel and reset"**.
 
@@ -22,7 +22,7 @@ You can use the ViaVersion commands with **/viafabricplus** or **/viaversion**, 
 
 ### Settings<br>
 For users only the settings in the **General**, **Bedrock**, **Authentication** and **Visual** tab are relevant, the other settings are only for developers, you should not change the settings in the **Debug** tab if you don't know what you are doing.
-![](preview/settings.png)
+![](preview/settings-selection.png)
 
 ### Configuring the protocol translation libraries
 To change the protocol translation settings/features you can look into the ViaLoader folder. You can find 4 config files there depending on the platforms loaded:
@@ -48,10 +48,10 @@ then you can log in via device login, the account logged in there will be stored
 ### ClassiCube and BetaCraft integration
 In the main GUI there is an extra button for ClassiCube and BetaCraft, both buttons send API requests to the respective platforms to get the respective server list.
 ## BetaCraft
-![](preview/betacraft.png)
+![](preview/betacraft_servers.png)
 
 ## ClassiCube
-![](preview/classicube.png)
+![](preview/classicube_servers.png)
 
 For ClassiCube you need an account, which you can make on the official website (https://www.classicube.net/), in case ClassiCube requires MultiFactor, an extra GUI will open in ViaFabricPlus.
 ![](preview/classicube_login.png)

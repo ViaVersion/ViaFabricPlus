@@ -48,6 +48,10 @@ public class ItemRegistryDiff {
     public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
 
     static {
+        ITEM_DIFF.put(MUSIC_DISC_CREATOR_MUSIC_BOX, andNewer(v1_21));
+        ITEM_DIFF.put(MUSIC_DISC_CREATOR, andNewer(v1_21));
+        ITEM_DIFF.put(MUSIC_DISC_PRECIPICE, andNewer(v1_21));
+
         ITEM_DIFF.put(TUFF_SLAB, andNewer(v1_20_5));
         ITEM_DIFF.put(TUFF_STAIRS, andNewer(v1_20_5));
         ITEM_DIFF.put(TUFF_WALL, andNewer(v1_20_5));

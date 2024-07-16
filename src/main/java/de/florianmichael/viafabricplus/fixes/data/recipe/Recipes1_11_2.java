@@ -708,10 +708,11 @@ public class Recipes1_11_2 {
     public static void setCraftingResultSlot(final int syncId, final ScreenHandler screenHandler, final RecipeInputInventory inventory) {
         final var network = MinecraftClient.getInstance().getNetworkHandler();
         final var world = MinecraftClient.getInstance().world;
+        final var craftingRecipeInput = inventory.createRecipeInput();
 
         final var result = network.getRecipeManager()
-                .getFirstMatch(RecipeType.CRAFTING, inventory, world) // Get the first matching recipe
-                .map(recipe -> recipe.value().craft(inventory, network.getRegistryManager())) // Craft the recipe to get the result
+                .getFirstMatch(RecipeType.CRAFTING, craftingRecipeInput, world) // Get the first matching recipe
+                .map(recipe -> recipe.value().craft(craftingRecipeInput, network.getRegistryManager())) // Craft the recipe to get the result
                 .orElse(ItemStack.EMPTY); // If there is no recipe, set the result to air
 
         // Update the result slot

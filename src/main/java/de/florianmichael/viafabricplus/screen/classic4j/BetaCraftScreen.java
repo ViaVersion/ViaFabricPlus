@@ -31,6 +31,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
+import net.minecraft.client.gui.screen.option.ControlsListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
@@ -55,7 +56,7 @@ public class BetaCraftScreen extends VFPScreen {
         this.setupSubtitle(Text.of(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.opening(this, BETA_CRAFT_SERVER_LIST_URL));
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 2) * 3));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.reset"), button -> {
+        this.addDrawableChild(ButtonWidget.builder(ControlsListWidget.KeyBindingEntry.RESET_TEXT, button -> {
             SERVER_LIST = null;
             client.setScreen(prevScreen);
         }).position(width - 98 - 5, 5).size(98, 20).build());

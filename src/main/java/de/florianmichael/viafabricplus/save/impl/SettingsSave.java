@@ -25,7 +25,6 @@ import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.save.AbstractSave;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
 import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
-import de.florianmichael.viafabricplus.settings.base.ButtonSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
@@ -58,12 +57,13 @@ public class SettingsSave extends AbstractSave {
     @Override
     public void read(JsonObject object) {
         for (SettingGroup group : settingsManager.getGroups()) {
-            final JsonObject groupObject = object.getAsJsonObject(AbstractSetting.mapTranslationKey(ChatUtil.uncoverTranslationKey(group.getName())));
+            final String translationKey = ChatUtil.uncoverTranslationKey(group.getName());
+
+            final JsonObject groupObject = object.getAsJsonObject(AbstractSetting.mapTranslationKey(translationKey));
             for (AbstractSetting<?> setting : group.getSettings()) {
-                if (!groupObject.has(setting.getTranslationKey()) && !(setting instanceof ButtonSetting)) {
-                    continue;
+                if (groupObject.has(setting.getTranslationKey())) {
+                    setting.read(groupObject);
                 }
-                setting.read(groupObject);
             }
         }
 

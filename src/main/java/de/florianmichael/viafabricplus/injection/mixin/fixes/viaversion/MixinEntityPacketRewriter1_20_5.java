@@ -29,7 +29,6 @@ import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ClientboundPac
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.rewriter.EntityPacketRewriter1_20_5;
 import com.viaversion.viaversion.rewriter.EntityRewriter;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -53,7 +52,7 @@ public abstract class MixinEntityPacketRewriter1_20_5 extends EntityRewriter<Cli
     }
 
     @Shadow
-    protected abstract void writeAttribute(PacketWrapper wrapper, String attributeId, double base, @Nullable UUID modifierId, double amount);
+    protected abstract void writeAttribute(PacketWrapper wrapper, String attributeId, double base, UUID modifierId, double amount);
 
     /**
      * @author RK_01

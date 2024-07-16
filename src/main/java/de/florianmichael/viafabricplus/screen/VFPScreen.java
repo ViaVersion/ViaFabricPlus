@@ -95,7 +95,7 @@ public class VFPScreen extends Screen {
         this.subtitle = subtitle;
         this.subtitlePressAction = subtitlePressAction;
 
-        if (subtitleWidget != null) { // Allows to remove the subtitle when calling this method twice.
+        if (subtitleWidget != null) { // Allows removing the subtitle when calling this method twice.
             remove(subtitleWidget);
             subtitleWidget = null;
         }

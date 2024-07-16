@@ -19,11 +19,9 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.util.ItemUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,12 +32,7 @@ public abstract class MixinDrawContext {
 
     @Redirect(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getCount()I"))
     private int handleNegativeItemCount(ItemStack instance) {
-        final NbtCompound tag = ItemUtil.getTagOrNull(instance);
-        if (tag != null && tag.contains(ClientsideFixes.ITEM_COUNT_FIX_KEY)) {
-            return tag.getInt(ClientsideFixes.ITEM_COUNT_FIX_KEY);
-        } else {
-            return instance.getCount();
-        }
+        return ItemUtil.getCount(instance);
     }
 
     @Redirect(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))

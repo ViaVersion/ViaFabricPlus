@@ -46,18 +46,21 @@ public abstract class MixinHeldItemRenderer {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 2, shift = At.Shift.AFTER))
     private void transformLegacyBlockAnimations(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         final boolean blockHitAnimation = VisualSettings.global().enableBlockHitAnimation.isEnabled();
-
-        if (VisualSettings.global().enableSwordBlocking.isEnabled() || blockHitAnimation) {
-            final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
-            matrices.translate(arm == Arm.RIGHT ? -0.1F : 0.1F, 0.05F, 0.0F);
-
-            if (blockHitAnimation) {
-                applySwingOffset(matrices, arm, swingProgress);
-            }
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25f));
-            matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Y : RotationAxis.NEGATIVE_Y).rotationDegrees(13.365f));
-            matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Z : RotationAxis.NEGATIVE_Z).rotationDegrees(78.05f));
+        if (!VisualSettings.global().enableSwordBlocking.isEnabled() && !blockHitAnimation) {
+            return;
         }
+
+        final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
+
+        if (blockHitAnimation) {
+            applySwingOffset(matrices, arm, swingProgress);
+            matrices.translate(arm == Arm.RIGHT ? -0.14F : 0.14F, 0.12F, 0.12F);
+        } else {
+            matrices.translate(arm == Arm.RIGHT ? -0.15F : 0.15F, 0.07F, 0.12F);
+        }
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25f));
+        matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Y : RotationAxis.NEGATIVE_Y).rotationDegrees(13.365f));
+        matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Z : RotationAxis.NEGATIVE_Z).rotationDegrees(78.05f));
     }
 
 }

@@ -30,8 +30,8 @@ public class VisualSettings extends SettingGroup {
 
     private static final VisualSettings INSTANCE = new VisualSettings();
 
-    // 1.20.3 -> 1.20.2 and 1.16 -> 1.15.2
-    public final VersionedBooleanSetting removeNewerFeaturesFromJigsawScreen = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen"), VersionRange.andOlder(ProtocolVersion.v1_20_2));
+    // 1.20.3 -> 1.20.2
+    public final VersionedBooleanSetting hidePrioritySelectionsInJigsawScreen = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_priority_selections_in_jigsaw_screen"), VersionRange.andOlder(ProtocolVersion.v1_20_2));
 
     // 1.19.2 -> 1.19
     public final VersionedBooleanSetting disableSecureChatWarning = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.disable_secure_chat_warning"), VersionRange.andOlder(ProtocolVersion.v1_19));
@@ -39,12 +39,17 @@ public class VisualSettings extends SettingGroup {
     // 1.19 -> 1.18.2
     public final VersionedBooleanSetting hideSignatureIndicator = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_signature_indicator"), VersionRange.andOlder(ProtocolVersion.v1_18_2));
 
+    // 1.16 -> 1.15.2
+    public final VersionedBooleanSetting hideModernJigsawScreenFeatures = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_modern_jigsaw_screen_features"), VersionRange.andOlder(ProtocolVersion.v1_15_2));
+
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting replacePetrifiedOakSlab = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.replace_petrified_oak_slab"), VersionRange.of(LegacyProtocolVersion.r1_3_1tor1_3_2, ProtocolVersion.v1_12_2));
     public final VersionedBooleanSetting changeFontRendererBehaviour = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.change_font_renderer_behaviour"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
+    public final VersionedBooleanSetting hideFurnaceRecipeBook = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_furnace_recipe_book"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
 
     // 1.12 -> 1.11.1
     public final VersionedBooleanSetting sidewaysBackwardsRunning = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.sideways_backwards_walking"), VersionRange.andOlder(ProtocolVersion.v1_11_1));
+    public final VersionedBooleanSetting hideCraftingRecipeBook = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_crafting_recipe_book"), VersionRange.andOlder(ProtocolVersion.v1_11_1));
 
     // 1.9 -> 1.8.x
     public final VersionedBooleanSetting emulateArmorHud = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.emulate_armor_hud"), VersionRange.andOlder(ProtocolVersion.v1_8));

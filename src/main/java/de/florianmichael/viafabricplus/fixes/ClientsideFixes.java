@@ -24,6 +24,7 @@ import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.fixes.data.EntityDimensionDiff;
 import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
+import de.florianmichael.viafabricplus.fixes.versioned.EnchantmentAttributesEmulation1_20_6;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.GridItemSelectionScreen;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.ArmorHudEmulation1_8;
@@ -40,6 +41,7 @@ import net.minecraft.client.network.ServerAddress;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.Registries;
+import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -69,16 +71,6 @@ public class ClientsideFixes {
     public static final String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 
     /**
-     * This identifier is an internal identifier used to store the item count in <= 1.10 to implement negative item counts
-     */
-    public static final String ITEM_COUNT_FIX_KEY = "VFP|ItemCountFix";
-
-    /**
-     * This identifier is used to store attributes in legacy versions were we replace them using data components
-     */
-    public static final String ATTRIBUTE_FIX_KEY = "VFP|AttributeFix";
-
-    /**
      * This is an incremental index used for tablist entries to implement FIFO behavior <= 1.7
      */
     public static int GLOBAL_TABLIST_INDEX = 0;
@@ -91,6 +83,9 @@ public class ClientsideFixes {
         ResourcePackHeaderDiff.checkOutdated();
 
         PostGameLoadCallback.EVENT.register(() -> {
+            // Handle clientside enchantment calculations in <= 1.20.6
+            EnchantmentAttributesEmulation1_20_6.init();
+
             // Handles and updates entity dimension changes in <= 1.17
             EntityDimensionDiff.init();
 
@@ -126,6 +121,11 @@ public class ClientsideFixes {
             // Rebuilds the item selection screen grid
             if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 GridItemSelectionScreen.INSTANCE.itemGrid = null;
+            }
+
+            // Reload sound system when switching between 3D Shareware and normal versions
+            if (oldVersion.equals(AprilFoolsProtocolVersion.s3d_shareware) || newVersion.equals(AprilFoolsProtocolVersion.s3d_shareware)) {
+                MinecraftClient.getInstance().getSoundManager().reloadSounds();
             }
         }));
 

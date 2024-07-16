@@ -4,9 +4,18 @@ ViaFabricPlus provides various events and APIs for developers to use. This page 
 ## Include via Gradle/Maven
 ```groovy
 repositories {
+    mavenCentral()
     maven { 
         name = "ViaVersion"
         url = "https://repo.viaversion.com"
+    }
+    maven {
+        name = "Lenni0451"
+        url = "https://maven.lenni0451.net/everything"
+    }
+    maven {
+        name = "OpenCollab Snapshots"
+        url = "https://repo.opencollab.dev/maven-snapshots/"
     }
 }
 
@@ -20,6 +29,14 @@ dependencies {
     <repository>
         <id>viaversion</id>
         <url>https://repo.viaversion.com</url>
+    </repository>
+    <repository>
+        <id>lenni0451</id>
+        <url>https://maven.lenni0451.net/everything</url>
+    </repository>
+    <repository>
+        <id>opencollab-snapshots</id>
+        <url>https://repo.opencollab.dev/maven-snapshots/</url>
     </repository>
 </repositories>
 

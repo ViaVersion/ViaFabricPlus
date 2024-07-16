@@ -20,7 +20,7 @@
 package de.florianmichael.viafabricplus.fixes.data;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.protocol.version.VersionType;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
@@ -39,6 +39,7 @@ public class ResourcePackHeaderDiff {
     private final static Map<ProtocolVersion, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     static {
+        registerVersion(ProtocolVersion.v1_21, 34, "1.21");
         registerVersion(ProtocolVersion.v1_20_5, 32, "1.20.6");
         registerVersion(ProtocolVersion.v1_20_3, 22, "1.20.4");
         registerVersion(ProtocolVersion.v1_20_2, 18, "1.20.2");
@@ -82,17 +83,10 @@ public class ResourcePackHeaderDiff {
         registerVersion(ProtocolVersion.v1_7_2, 1, "1.7.5");
     }
 
-    /**
-     * Checks if the registry is outdated.
-     */
     @ApiStatus.Internal
     public static void checkOutdated() {
-        for (ProtocolVersion version : ProtocolVersion.getProtocols()) {
-            if (version.isSnapshot()) continue;
-            if (version.getVersionType() != VersionType.RELEASE) continue;
-            if (!GAME_VERSION_DIFF.containsKey(version)) {
-                throw new RuntimeException("The version " + version + " has no pack format registered");
-            }
+        if (!GAME_VERSION_DIFF.containsKey(ProtocolTranslator.NATIVE_VERSION)) {
+            throw new RuntimeException("The native client version is not registered in the resource pack header diff!");
         }
     }
 

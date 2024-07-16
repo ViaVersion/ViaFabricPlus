@@ -71,6 +71,16 @@ public abstract class MixinClientCommonNetworkHandler {
         return null;
     }
 
+    @Inject(method = "onResourcePackSend", at = @At("HEAD"), cancellable = true)
+    private void validateUrlInNetworkThread(ResourcePackSendS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
+            if (getParsedResourcePackUrl(packet.url()) == null) {
+                this.connection.send(new ResourcePackStatusC2SPacket(packet.id(), ResourcePackStatusC2SPacket.Status.INVALID_URL));
+                ci.cancel();
+            }
+        }
+    }
+
     @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientCommonNetworkHandler;send(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
     private void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
@@ -105,16 +115,6 @@ public abstract class MixinClientCommonNetworkHandler {
         if (packet.payload() instanceof DataCustomPayload dataCustomPayload) {
             ClientsideFixes.handleSyncTask(dataCustomPayload.buf());
             ci.cancel(); // Cancel the packet, so it doesn't get processed by the client
-        }
-    }
-
-    @Inject(method = "onResourcePackSend", at = @At("HEAD"), cancellable = true)
-    private void validateUrlInNetworkThread(ResourcePackSendS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
-            if (getParsedResourcePackUrl(packet.url()) == null) {
-                this.connection.send(new ResourcePackStatusC2SPacket(packet.id(), ResourcePackStatusC2SPacket.Status.INVALID_URL));
-                ci.cancel();
-            }
         }
     }
 

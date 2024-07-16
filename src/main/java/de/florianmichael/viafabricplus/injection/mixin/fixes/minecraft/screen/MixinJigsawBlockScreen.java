@@ -60,24 +60,23 @@ public abstract class MixinJigsawBlockScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void disableWidgets(CallbackInfo ci) {
-        if (VisualSettings.global().removeNewerFeaturesFromJigsawScreen.isEnabled()) {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
-                nameField.active = false;
-                jointRotationButton.active = false;
-                int index = children().indexOf(jointRotationButton);
-                ((ClickableWidget) children().get(index + 1)).active = false; // levels slider
-                ((ClickableWidget) children().get(index + 2)).active = false; // keep jigsaws toggle
-                ((ClickableWidget) children().get(index + 3)).active = false; // generate button
-            }
-
+        if (!VisualSettings.global().hidePrioritySelectionsInJigsawScreen.isEnabled()) {
             selectionPriorityField.active = false;
             placementPriorityField.active = false;
+        }
+        if (VisualSettings.global().hideModernJigsawScreenFeatures.isEnabled()) {
+            nameField.active = false;
+            jointRotationButton.active = false;
+            int index = children().indexOf(jointRotationButton);
+            ((ClickableWidget) children().get(index + 1)).active = false; // levels slider
+            ((ClickableWidget) children().get(index + 2)).active = false; // keep jigsaws toggle
+            ((ClickableWidget) children().get(index + 3)).active = false; // generate button
         }
     }
 
     @Inject(method = "render", at = @At("HEAD"))
     private void copyText(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (VisualSettings.global().removeNewerFeaturesFromJigsawScreen.isEnabled() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (VisualSettings.global().hideModernJigsawScreenFeatures.isEnabled()) {
             nameField.setText(targetField.getText());
         }
     }

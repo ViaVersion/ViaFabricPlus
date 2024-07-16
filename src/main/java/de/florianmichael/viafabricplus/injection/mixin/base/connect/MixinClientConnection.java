@@ -97,7 +97,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
             // Minecraft 1.6.4 supports split encryption/decryption which means the server can only enable one side of the encryption
             // So we only enable the encryption side and later enable the decryption side if the 1.7 -> 1.6 protocol
-            // tells us to do, therefore we need to store the cipher instance.
+            // tells us to do, therefore, we need to store the cipher instance.
             this.viaFabricPlus$decryptionCipher = decryptionCipher;
 
             // Enabling the encryption side

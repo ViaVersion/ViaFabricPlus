@@ -52,7 +52,7 @@ public class ClassLoaderPriorityUtil {
                     for (File file : files) {
                         if (file.getName().endsWith(".jar")) {
                             ClassLoaders.loadToFront(file.toURI().toURL());
-                            ViaFabricPlus.global().getLogger().info("Loaded overriding jar " + file.getName());
+                            ViaFabricPlus.global().getLogger().warn("Loaded overriding jar {}", file.getName());
                         }
                     }
                 } finally {

@@ -31,12 +31,22 @@ import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.BookScreen;
 import net.minecraft.client.network.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.message.ArgumentSignatureDataMap;
+import net.minecraft.network.message.LastSeenMessagesCollector;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.ChatCommandSignedC2SPacket;
+import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.RegistryKey;
@@ -52,6 +62,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -77,13 +88,57 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Shadow
     protected abstract boolean isSecureChatEnforced();
 
+    @Shadow private LastSeenMessagesCollector lastSeenMessagesCollector;
+
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
+    }
+
+    @WrapWithCondition(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/AttributeContainer;setBaseFrom(Lnet/minecraft/entity/attribute/AttributeContainer;)V"))
+    private boolean dontApplyBaseValues(AttributeContainer instance, AttributeContainer other) {
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21);
+    }
+
+    @Redirect(method = "onGameStateChange", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V", ordinal = 0))
+    private void handleWinGameState0(MinecraftClient instance, Screen screen, @Local int i) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            if (i == 0) {
+                this.client.player.networkHandler.sendPacket(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
+                this.client.setScreen(new DownloadingTerrainScreen(() -> false, DownloadingTerrainScreen.WorldEntryReason.END_PORTAL));
+            } else if (i == 1) {
+                instance.setScreen(screen);
+            }
+        } else {
+            instance.setScreen(screen);
+        }
     }
 
     @WrapWithCondition(method = "onEnterReconfiguration", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendAcknowledgment()V"))
     private boolean dontSendChatAck(ClientPlayNetworkHandler instance) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_5);
+    }
+
+    @Redirect(method = "onOpenWrittenBook", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen$Contents;create(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/client/gui/screen/ingame/BookScreen$Contents;"))
+    private BookScreen.Contents dontOpenWriteableBookScreen(ItemStack stack) {
+        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_5) || stack.isOf(Items.WRITTEN_BOOK)) {
+            return BookScreen.Contents.create(stack);
+        } else {
+            return null;
+        }
+    }
+
+    @Inject(method = "onEnterReconfiguration", at = @At("HEAD"))
+    private void disableAutoRead(EnterReconfigurationS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+            this.connection.channel.config().setAutoRead(false);
+        }
+    }
+
+    @Inject(method = "onEnterReconfiguration", at = @At("RETURN"))
+    private void enableAutoRead(EnterReconfigurationS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+            this.connection.channel.config().setAutoRead(true);
+        }
     }
 
     @Redirect(method = "sendChatCommand", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
@@ -92,6 +147,15 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
             return false;
         } else {
             return instance.isEmpty();
+        }
+    }
+
+    @Redirect(method = "sendCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
+    private void alwaysSignCommands(ClientPlayNetworkHandler instance, Packet<?> packet, @Local(argsOnly = true) String command) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+            this.sendPacket(new ChatCommandSignedC2SPacket(command, Instant.now(), 0L, ArgumentSignatureDataMap.EMPTY, this.lastSeenMessagesCollector.collect().update()));
+        } else {
+            instance.sendPacket(packet);
         }
     }
 
@@ -189,7 +253,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
             final List<RecipeEntry<?>> recipes = new ArrayList<>();
             final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolTranslator.getTargetVersion());
             for (int i = 0; i < recipeInfos.size(); i++) {
-                recipes.add(recipeInfos.get(i).create(new Identifier("viafabricplus", "recipe/" + i)));
+                recipes.add(recipeInfos.get(i).create(Identifier.of("viafabricplus", "recipe/" + i)));
             }
             this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
         }

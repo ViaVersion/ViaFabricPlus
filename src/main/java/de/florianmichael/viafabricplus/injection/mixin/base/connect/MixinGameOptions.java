@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(GameOptions.class)
-public class MixinGameOptions {
+public abstract class MixinGameOptions {
 
     @Shadow
     public boolean useNativeTransport;

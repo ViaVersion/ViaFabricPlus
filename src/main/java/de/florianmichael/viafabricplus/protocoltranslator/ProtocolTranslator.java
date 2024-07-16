@@ -33,7 +33,6 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.VersionType;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.Protocol1_20_3To1_20_5;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.fixes.viaversion.ViaFabricPlusProtocol;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
@@ -48,6 +47,7 @@ import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.ClientConnection;
@@ -87,7 +87,7 @@ public class ProtocolTranslator {
     /**
      * The native version of the client
      */
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_20_5;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21;
 
     /**
      * Protocol version that is used to enable protocol auto-detect
@@ -260,7 +260,7 @@ public class ProtocolTranslator {
     /**
      * Apply recommended config options to the ViaVersion config files
      *
-     * @param configFolder The directory where the ViaVersion config files are located
+     * @param configFolder The directory where the ViaVersion config files is located
      */
     private static void patchConfigs(final File configFolder) {
         configFolder.mkdirs();
@@ -271,7 +271,7 @@ public class ProtocolTranslator {
                     fix-infested-block-breaking: false
                     shield-blocking: false
                     no-delay-shield-blocking: true
-                    chunk-border-fix: true
+                    handle-invalid-item-count: true
                     """, StandardOpenOption.CREATE_NEW);
         } catch (FileAlreadyExistsException ignored) {
         } catch (Throwable e) {
@@ -315,6 +315,9 @@ public class ProtocolTranslator {
      */
     @ApiStatus.Internal
     public static CompletableFuture<Void> init(final File directory) {
+        if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
+            throw new IllegalStateException("Native version is not the same as the current version");
+        }
         patchConfigs(new File(directory, "ViaLoader"));
 
         // Register command callback for /viafabricplus
@@ -338,7 +341,6 @@ public class ProtocolTranslator {
                     ViaAprilFoolsPlatformImpl::new,
                     ViaBedrockPlatformImpl::new
             );
-            Protocol1_20_3To1_20_5.strictErrorHandling = false;
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
             ViaFabricPlusProtocol.INSTANCE.initialize();
         });

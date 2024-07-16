@@ -12,8 +12,7 @@
   "base.viafabricplus.cancel_and_reset": "取消并重置",
   "base.viafabricplus.logout": "登出",
   "base.viafabricplus.online_mode": "在线模式",
-  "base.viafabricplus.reset": "重置",
-  "base.viafabricplus.copy_code": "复制代码",
+  "base.viafabricplus.copy_link": "复制链接",
   "base.viafabricplus.something_went_wrong": "出错了！请稍后再试",
   "base.viafabricplus.via_translates_to": "连接所用版本：%s",
   "base.viafabricplus.server_version": "服务器版本：%s",
@@ -39,14 +38,15 @@
   "general_settings.viafabricplus.show_classic_loading_progress": "在连接服务器时使用旧版加载进度条",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "多人游戏界面的按钮位置",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "编辑服务器页面按钮位置",
+  "general_settings.viafabricplus.direct_connect_screen_button_orientation": "直接连接 界面的按钮位置",
   "general_settings.viafabricplus.filter_creative_tabs": "从创造模式选项卡中移除不可用的物品",
   "general_settings.viafabricplus.show_advertised_server_version": "在服务器列表-延迟中显示连接所用版本/服务器版本",
   "general_settings.viafabricplus.ignore_packet_translation_errors": "忽略数据包转换错误",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "加载旧版本皮肤和头颅",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "模拟Alpha版本的物品栏动作",
-  "general_settings.viafabricplus.direct_connect_screen_button_orientation": "直接连接 界面的按钮位置",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "点此连接到基岩版账户",
+  "bedrock_settings.viafabricplus.replace_default_port": "在服务器列表替换默认端口",
 
   "debug_settings.viafabricplus.queue_config_packets": "排列配置数据包",
   "debug_settings.viafabricplus.disable_sequencing": "禁用排序",
@@ -61,6 +61,10 @@
   "debug_settings.viafabricplus.legacy_mining_speeds": "远古版本挖掘速度",
   "debug_settings.viafabricplus.prevent_entity_cramming": "阻止实体挤压",
   "debug_settings.viafabricplus.always_tick_client_player": "始终执行客户端玩家刻",
+  "debug_settings.viafabricplus.print_networking_errors_to_logs": "在日志记录网络错误",
+  "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "不创造网络数据包错误导致的崩溃",
+  "debug_settings.viafabricplus.ignore_fabric_sync_errors": "忽略 Fabric 注册表同步错误",
+  "debug_settings.viafabricplus.legacy_tab_completions": "旧版 tab 补全",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用BetaCraft进行身份验证",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "允许ViaLegacy调用joinServer()来验证会话",
@@ -69,7 +73,7 @@
 
   "visual_settings.viafabricplus.disable_secure_chat_warning": "禁用安全聊天警告",
   "visual_settings.viafabricplus.hide_signature_indicator": "隐藏聊天签名提示",
-  "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "从§o拼图方块§r界面中移除新版本特性",
+  "visual_settings.viafabricplus.hide_priority_selections_in_jigsaw_screen": "从§o拼图方块§r界面中隐藏优先级选项",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "替换§o石化橡木台阶",
   "visual_settings.viafabricplus.emulate_armor_hud": "模拟护甲值",
   "visual_settings.viafabricplus.remove_newer_features_from_command_block_screen": "从§o命令方块§r编辑界面中移除新版本特性",
@@ -80,9 +84,21 @@
   "visual_settings.viafabricplus.change_font_renderer_behaviour": "更改字体渲染器行为",
   "visual_settings.viafabricplus.enable_sword_blocking": "启用1.8的剑格挡动画",
   "visual_settings.viafabricplus.enable_block_hit_animation": "启用1.7的格挡攻击动画",
+  "visual_settings.viafabricplus.disable_server_pinging": "禁用 ping 服务器",
+  "visual_settings.viafabricplus.sideways_backwards_walking": "侧身后退行走",
+  "visual_settings.viafabricplus.enable_legacy_tablist": "启用旧版 tab 列表",
+  "visual_settings.viafabricplus.hide_furnace_recipe_book": "隐藏熔炉的配方书",
+  "visual_settings.viafabricplus.hide_crafting_recipe_book": "隐藏合成的配方书",
+  "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "从§o拼图方块§r界面中移除新版本特性",
 
   "bedrock.viafabricplus.login": "你的浏览器现在应该打开了。\n请输入这个代码：%s\n关闭这个屏幕等于取消操作！",
   "authentication.viafabricplus.failed_to_verify_session": "ViaFabricPlus验证你的会话失败！请登录一个账户或在设置中关闭“使用BetaCraft进行身份验证”",
+
+  "report.viafabricplus.button": "反馈问题",
+  "report.viafabricplus.bug_report": "在 GitHub 上反馈 Bug",
+  "report.viafabricplus.feature_request": "在 Github 上请求新的功能",
+  "report.viafabricplus.create_via_dump": "创建一个 ViaVersion Dump，用于反馈问题时收集信息",
+  "report.viafabricplus.open_logs": "打开游戏日志文件夹",
 
   "classicube.viafabricplus.account": "你可以这里创建一个账户：https://www.classicube.net",
   "classicube.viafabricplus.loading": "正在加载个人信息和服务器列表……",
@@ -93,11 +109,5 @@
   "classic4j_library.viafabricplus.error.username": "无效用户名",
   "classic4j_library.viafabricplus.error.password": "无效密码",
   "classic4j_library.viafabricplus.error.verification": "用户尚未验证电子邮箱地址！",
-  "classic4j_library.viafabricplus.error.logincode": "已请求身份验证。请查看你的电子邮箱！",
-
-  "report.viafabricplus.button": "反馈问题",
-  "report.viafabricplus.bug_report": "在 GitHub 上反馈 Bug",
-  "report.viafabricplus.feature_request": "在 Github 上请求新的功能",
-  "report.viafabricplus.create_via_dump": "创建一个 ViaVersion Dump，用于反馈问题时收集信息",
-  "report.viafabricplus.open_logs": "打开游戏日志文件夹"
+  "classic4j_library.viafabricplus.error.logincode": "已请求身份验证。请查看你的电子邮箱！"
 }

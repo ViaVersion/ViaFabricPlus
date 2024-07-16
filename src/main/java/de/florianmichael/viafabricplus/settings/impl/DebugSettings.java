@@ -33,6 +33,10 @@ public class DebugSettings extends SettingGroup {
 
     public final BooleanSetting queueConfigPackets = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.queue_config_packets"), true);
     public final BooleanSetting printNetworkingErrorsToLogs = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.print_networking_errors_to_logs"), true);
+    public final BooleanSetting ignoreFabricSyncErrors = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.ignore_fabric_sync_errors"), false);
+
+    // 1.20.5 -> 1.20.4
+    public final VersionedBooleanSetting dontCreatePacketErrorCrashReports = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.dont_create_packet_error_crash_reports"), VersionRange.andOlder(ProtocolVersion.v1_20_3));
 
     // 1.19 -> 1.18.2
     public final VersionedBooleanSetting disableSequencing = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.disable_sequencing"), VersionRange.andOlder(ProtocolVersion.v1_18_2));
@@ -43,6 +47,7 @@ public class DebugSettings extends SettingGroup {
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting executeInputsSynchronously = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.execute_inputs_synchronously"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
     public final VersionedBooleanSetting sneakInstantly = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.sneak_instantly"), VersionRange.of(ProtocolVersion.v1_8, ProtocolVersion.v1_12_2));
+    public final VersionedBooleanSetting legacyTabCompletions = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.legacy_tab_completions"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
 
     // 1.12 -> 1.11.1-1.11.2
     public final VersionedBooleanSetting sendOpenInventoryPacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_open_inventory_packet"), VersionRange.andOlder(ProtocolVersion.v1_11_1));
@@ -51,9 +56,9 @@ public class DebugSettings extends SettingGroup {
     public final VersionedBooleanSetting removeCooldowns = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.remove_cooldowns"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting sendIdlePacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_idle_packet"), VersionRange.andOlder(LegacyProtocolVersion.r1_2_4tor1_2_5).add(VersionRange.of(LegacyProtocolVersion.r1_4_2, ProtocolVersion.v1_8)));
     public final VersionedBooleanSetting preventEntityCramming = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.prevent_entity_cramming"), VersionRange.andOlder(ProtocolVersion.v1_8));
+    public final VersionedBooleanSetting replaceSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.replace_sneaking"), VersionRange.andOlder(ProtocolVersion.v1_8));
 
     // 1.8.x -> 1.7.6
-    public final VersionedBooleanSetting replaceSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.replace_sneaking"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting longSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.long_sneaking"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
 
     // 1.5/1.5.1 -> 1.4.6/1.4.7

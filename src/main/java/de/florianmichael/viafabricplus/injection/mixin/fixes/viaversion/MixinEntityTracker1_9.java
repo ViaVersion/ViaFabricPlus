@@ -29,17 +29,17 @@ import org.spongepowered.asm.mixin.injection.Slice;
 @Mixin(value = EntityTracker1_9.class, remap = false)
 public abstract class MixinEntityTracker1_9 {
 
-    @Redirect(method = "handleMetadata", at = @At(value = "INVOKE", target = "Ljava/lang/Math;min(FF)F"), slice = @Slice(from = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/configuration/ViaVersionConfig;isBossbarAntiflicker()Z")))
+    @Redirect(method = "handleEntityData", at = @At(value = "INVOKE", target = "Ljava/lang/Math;min(FF)F"), slice = @Slice(from = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/configuration/ViaVersionConfig;isBossbarAntiflicker()Z")))
     private float removeMin(float a, float b) {
         return a;
     }
 
-    @Redirect(method = "handleMetadata", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(FF)F"), slice = @Slice(from = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/configuration/ViaVersionConfig;isBossbarAntiflicker()Z")))
+    @Redirect(method = "handleEntityData", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(FF)F"), slice = @Slice(from = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/configuration/ViaVersionConfig;isBossbarAntiflicker()Z")))
     private float removeMax(float a, float b) {
         return b;
     }
 
-    @Redirect(method = "handleMetadata", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/minecraft/entitydata/EntityData;getValue()Ljava/lang/Object;"), slice = @Slice(from = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/configuration/ViaVersionConfig;isBossbarAntiflicker()Z")))
+    @Redirect(method = "handleEntityData", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/minecraft/entitydata/EntityData;getValue()Ljava/lang/Object;"), slice = @Slice(from = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/configuration/ViaVersionConfig;isBossbarAntiflicker()Z")))
     private Object remapNaNToZero(EntityData instance) {
         if (instance.getValue() instanceof Float && ((Float) instance.getValue()).isNaN()) {
             return 0F;

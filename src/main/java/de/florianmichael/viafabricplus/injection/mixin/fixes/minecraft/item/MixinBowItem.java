@@ -37,14 +37,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinBowItem {
 
     @Inject(method = "getMaxUseTime", at = @At("HEAD"), cancellable = true)
-    private void makeInstantUsable(CallbackInfoReturnable<Integer> cir) {
+    private void makeInstantUsable_Time(CallbackInfoReturnable<Integer> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             cir.setReturnValue(0);
         }
     }
 
     @Inject(method = "getUseAction", at = @At("HEAD"), cancellable = true)
-    private void makeInstantUsable2(CallbackInfoReturnable<UseAction> cir) {
+    private void makeInstantUsable_Action(CallbackInfoReturnable<UseAction> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             cir.setReturnValue(UseAction.NONE);
         }

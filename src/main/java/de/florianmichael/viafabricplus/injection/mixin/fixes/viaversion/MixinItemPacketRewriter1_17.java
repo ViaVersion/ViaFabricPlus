@@ -41,9 +41,11 @@ public abstract class MixinItemPacketRewriter1_17 extends ItemRewriter<Clientbou
     }
 
     @Inject(method = "registerPackets", at = @At("RETURN"))
-    private void removeWindowClickHandler(CallbackInfo ci) {
+    private void removeContainerClickHandler(CallbackInfo ci) {
+        // Don't allow mods to directly send window interactions which would skip our clientside fix in MixinClientPlayerInteractionManager
+        // Use ClientPlayerInteractionManager#clickSlot instead
         this.protocol.registerServerbound(ServerboundPackets1_17.CONTAINER_CLICK, ServerboundPackets1_16_2.CONTAINER_CLICK, wrapper -> {
-            Via.getPlatform().getLogger().severe("Tried to remap >=1.17 CLICK_WINDOW packet which is impossible without breaking the content! Find the cause and fix it!");
+            Via.getPlatform().getLogger().severe("Tried to remap >=1.17 CONTAINER_CLICK packet which is impossible without breaking the content! Find the cause and fix it!");
             wrapper.cancel();
         }, true);
     }

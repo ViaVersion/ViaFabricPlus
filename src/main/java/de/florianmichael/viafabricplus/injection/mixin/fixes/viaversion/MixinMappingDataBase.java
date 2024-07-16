@@ -31,7 +31,7 @@ public abstract class MixinMappingDataBase {
 
     @Inject(method = "getNewParticleId", at = @At("HEAD"), cancellable = true)
     private void passthroughFootStepParticle(int id, CallbackInfoReturnable<Integer> cir) {
-        if (id == FootStepParticle1_12_2.ID) {
+        if (id == FootStepParticle1_12_2.RAW_ID) {
             cir.setReturnValue(id);
         }
     }

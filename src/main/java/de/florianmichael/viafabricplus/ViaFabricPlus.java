@@ -33,15 +33,40 @@ import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
 /*
+ * TODO | Port 1.20.6
+ *  - ClientPlayerInteractionManager#interactBlockInternal added new condition
+ *  - MouseHandling changed (not sure if relevant)
+ *  - Command arguments (Probably not everything worth, but least them with nbt)
+ *  - Entity attachment calculation got changed completely
+ *  - Particle handling has slightly changed
+ *
+ * TODO | Port 1.21
+ *  - ClientPlayerEntity#tickMovement nether portal logic has new screen conditions and changed
+ *  - Entity#interact now handles leashables interface which was previously handled in MobEntity
+ *  - shouldCancelInteraction condition in ChestBoatEntity#interact is new
+ *  - HangingEntity/ItemFrame/Painting bounding box calculation changed
+ *  - PlayerEntity#attack got refactored (?)
+ *  - LivingEntity#takeKnockback with 1.0E-5F for loop is new
+ *  - KnowledgeBookItem#use decrementUnlessCreative is new
+ *  - JukeboxBlock#onUse override is new (added state.get(HAS_RECORD) condition)
+ *  - BoatEntity#updateVelocity isSpaceEmpty condition new
+ *  - LivingEntity#remove -> added activeEffects.clear call
+ *  - PlayerEntity#tickMovement getSaturationLevel/setSaturationLevel handling is new
+ *  - Check WorldBorder bounds check
+ *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
  *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
  *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
  *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
+ *  - Via: 1.13 -> 1.12.2 block entities recode
+ *  - OXYGEN_BONUS 1.21 -> 1.20.5 handling is missing (only visual)
  *
  * TODO | Movement
  *  - Collision hit boxes has been changed (https://github.com/ViaVersion/ViaFabricPlus/issues/195)
  *  - Blip-jumping is not supported in <= 1.13.2 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
+ *  - 1.8 lava movement
+ *  - 1.13.2 water movement
  */
 public class ViaFabricPlus {
 

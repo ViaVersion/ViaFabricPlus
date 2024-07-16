@@ -57,14 +57,14 @@ public abstract class MixinFontStorage {
     }
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
-    private void filterGlyphs1(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
+    private void filterGlyphs(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlus$getBlankGlyphPair());
         }
     }
 
     @Inject(method = "findGlyphRenderer", at = @At("RETURN"), cancellable = true)
-    private void filterGlyphs2(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir) {
+    private void filterGlyphRenderer(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlus$getBlankGlyphRenderer());
         }

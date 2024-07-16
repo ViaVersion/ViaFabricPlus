@@ -40,14 +40,14 @@ public abstract class MixinJoinPackets {
         return seed;
     }
 
-    @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 56))
+    @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 59))
     private static Object trackLevelId(PacketWrapper instance, Type<StringType> tType) {
         final Object levelId = instance.read(tType);
         instance.user().get(BedrockJoinGameTracker.class).setLevelId((String) levelId);
         return levelId;
     }
 
-    @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 64))
+    @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 67))
     private static Object trackEnchantmentSeed(PacketWrapper instance, Type<VarIntType> tType) {
         final Object enchantmentSeed = instance.read(tType);
         instance.user().get(BedrockJoinGameTracker.class).setEnchantmentSeed((Integer) enchantmentSeed);

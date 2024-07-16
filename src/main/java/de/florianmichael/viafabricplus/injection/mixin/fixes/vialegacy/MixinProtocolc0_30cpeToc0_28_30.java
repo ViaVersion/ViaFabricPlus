@@ -49,19 +49,25 @@ public abstract class MixinProtocolc0_30cpeToc0_28_30 extends AbstractProtocol<C
                     final byte weatherType = wrapper.read(Types.BYTE);
 
                     final PacketWrapper changeRainState = PacketWrapper.create(ClientboundPackets1_19_4.GAME_EVENT, wrapper.user());
-                    changeRainState.write(Types.UNSIGNED_BYTE, weatherType == 0 /* sunny */ ? (short) 2 : (short) 1); // start raining
+                    changeRainState.write(Types.UNSIGNED_BYTE, weatherType == 0 /* sunny */ ? (short) 1 : (short) 2); // start raining
                     changeRainState.write(Types.FLOAT, 0F); // unused
                     changeRainState.send(Protocol1_19_3To1_19_4.class);
 
                     if (weatherType == 1 /* raining */ || weatherType == 2 /* snowing */) {
                         final PacketWrapper changeRainType = PacketWrapper.create(ClientboundPackets1_19_4.GAME_EVENT, wrapper.user());
-                        changeRainType.write(Types.UNSIGNED_BYTE, (short) 7);
-                        changeRainType.write(Types.FLOAT, weatherType == 1 /* raining */ ? 0F : 1F);
+                        changeRainType.write(Types.UNSIGNED_BYTE, (short) 7); // set rain gradient
+                        changeRainType.write(Types.FLOAT, 1F);
                         changeRainType.send(Protocol1_19_3To1_19_4.class);
                     }
+                    CPEAdditions.setSnowing(weatherType == 2);
                 });
             }
         });
+    }
+
+    @Inject(method = "init", at = @At("HEAD"))
+    private void resetSnowing(CallbackInfo ci) {
+        CPEAdditions.setSnowing(false);
     }
 
 }

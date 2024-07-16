@@ -21,18 +21,21 @@ package de.florianmichael.viafabricplus.settings.impl;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.injection.access.IConfirmScreen;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.base.ButtonSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.NoticeScreen;
+import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
+import net.raphimc.minecraftauth.util.logging.ConsoleLogger;
+import net.raphimc.minecraftauth.util.logging.ILogger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -40,9 +43,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class BedrockSettings extends SettingGroup {
 
+    private static final Text TITLE = Text.literal("Microsoft Bedrock login");
+
     private static final BedrockSettings INSTANCE = new BedrockSettings();
 
-    private final ButtonSetting ignored = new ButtonSetting(this, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> CompletableFuture.runAsync(this::openBedrockAccountLogin)) {
+    private final ButtonSetting _IGNORED = new ButtonSetting(this, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> CompletableFuture.runAsync(this::openBedrockAccountLogin)) {
         
         @Override
         public MutableText displayValue() {
@@ -56,6 +61,21 @@ public class BedrockSettings extends SettingGroup {
     };
     public final BooleanSetting replaceDefaultPort = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.replace_default_port"), true);
 
+    private final ILogger GUI_LOGGER = new ConsoleLogger() {
+        @Override
+        public void info(String message) {
+            super.info(message);
+            if (message.equals("Waiting for MSA login via device code...")) {
+                return;
+            }
+            MinecraftClient.getInstance().execute(() -> {
+                if (MinecraftClient.getInstance().currentScreen instanceof ConfirmScreen confirmScreen) {
+                    ((IConfirmScreen) confirmScreen).viaFabricPlus$setMessage(Text.literal(message));
+                }
+            });
+        }
+    };
+
     public BedrockSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.bedrock"));
     }
@@ -64,11 +84,15 @@ public class BedrockSettings extends SettingGroup {
         final MinecraftClient client = MinecraftClient.getInstance();
         final Screen prevScreen = client.currentScreen;
         try {
-            ViaFabricPlus.global().getSaveManager().getAccountsSave().setBedrockAccount(MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(MinecraftAuth.createHttpClient(), new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
-                client.execute(() -> client.setScreen(new NoticeScreen(() -> {
-                    client.setScreen(prevScreen);
-                    Thread.currentThread().interrupt();
-                }, Text.literal("Microsoft Bedrock login"), Text.translatable("bedrock.viafabricplus.login"), Text.translatable("base.viafabricplus.cancel"), true)));
+            ViaFabricPlus.global().getSaveManager().getAccountsSave().setBedrockAccount(MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(GUI_LOGGER, MinecraftAuth.createHttpClient(), new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
+                client.execute(() -> client.setScreen(new ConfirmScreen(copyUrl -> {
+                    if (copyUrl) {
+                        client.keyboard.setClipboard(msaDeviceCode.getDirectVerificationUri());
+                    } else {
+                        client.setScreen(prevScreen);
+                        Thread.currentThread().interrupt();
+                    }
+                }, TITLE, Text.translatable("bedrock.viafabricplus.login"), Text.translatable("base.viafabricplus.copy_link"), Text.translatable("base.viafabricplus.cancel"))));
                 try {
                     Util.getOperatingSystem().open(new URI(msaDeviceCode.getDirectVerificationUri()));
                 } catch (URISyntaxException e) {

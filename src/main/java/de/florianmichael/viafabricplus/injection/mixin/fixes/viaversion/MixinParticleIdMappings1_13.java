@@ -40,7 +40,7 @@ public abstract class MixinParticleIdMappings1_13 {
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void checkFootStepIdOverlap(CallbackInfo ci) {
-        if (FootStepParticle1_12_2.ID < particles.size()) {
+        if (FootStepParticle1_12_2.RAW_ID < particles.size()) {
             throw new IllegalStateException("ViaFabricPlus FootStepParticle ID overlaps with a vanilla 1.12.2 particle ID");
         }
     }
@@ -48,7 +48,7 @@ public abstract class MixinParticleIdMappings1_13 {
     @ModifyArg(method = "add(I)V", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/protocols/v1_12_2to1_13/data/ParticleIdMappings1_13$NewParticle;<init>(ILcom/viaversion/viaversion/protocols/v1_12_2to1_13/data/ParticleIdMappings1_13$ParticleDataHandler;)V"))
     private static int replaceFootStepId(int id) {
         if (particles.size() == 28) { // minecraft:footstep -> viafabricplus:footstep
-            return FootStepParticle1_12_2.ID;
+            return FootStepParticle1_12_2.RAW_ID;
         } else {
             return id;
         }

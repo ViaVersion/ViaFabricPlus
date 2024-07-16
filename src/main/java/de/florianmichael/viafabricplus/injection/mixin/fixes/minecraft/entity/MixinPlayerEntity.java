@@ -26,8 +26,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
@@ -66,10 +66,15 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     PlayerInventory inventory;
 
     @Unique
-    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F).withEyeHeight(1.54F);
+    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F).withEyeHeight(1.54F).
+            withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, PlayerEntity.VEHICLE_ATTACHMENT_POS));
 
     @Unique
-    private static final SoundEvent viaFabricPlus$oof_hurt = SoundEvent.of(new Identifier("viafabricplus", "oof.hurt"));
+    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_8 = EntityDimensions.changing(0.6F, 1.8F).withEyeHeight(1.54F).
+            withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, PlayerEntity.VEHICLE_ATTACHMENT_POS));
+
+    @Unique
+    private static final SoundEvent viaFabricPlus$oof_hurt = SoundEvent.of(Identifier.of("viafabricplus", "oof.hurt"));
 
     @Unique
     public boolean viaFabricPlus$isSprinting;
@@ -78,7 +83,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         super(entityType, world);
     }
 
-    @ModifyConstant(method = "method_59818", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
+    @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
     private double removeOffsetWhenCheckingSneakingCollision(double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             return 0;
@@ -156,7 +161,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private void modifyDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
         if (pose == EntityPose.CROUCHING) {
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-                cir.setReturnValue(PlayerEntity.STANDING_DIMENSIONS);
+                cir.setReturnValue(viaFabricPlus$sneaking_dimensions_v1_8);
             } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
                 cir.setReturnValue(viaFabricPlus$sneaking_dimensions_v1_13_2);
             }
@@ -164,7 +169,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     }
 
     @Redirect(method = "adjustMovementForSneaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getStepHeight()F"))
-    private float modifyStepHeight1_10(PlayerEntity instance) {
+    private float modifyStepHeight(PlayerEntity instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
             return 1.0F;
         } else {
@@ -179,35 +184,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
-    private void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
-        if (VisualSettings.global().replaceHurtSoundWithOOFSound.isEnabled()) {
-            cir.setReturnValue(viaFabricPlus$oof_hurt);
-        }
-    }
-
-    @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
-    private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
-        final int efficiency = EnchantmentHelper.getEfficiency(this);
-        if (efficiency <= 0) return;
-
-        final float speed = this.inventory.getBlockBreakingSpeed(block);
-        final int effLevel = efficiency * efficiency + 1;
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_4tor1_4_5) && this.canHarvest(block)) {
-            f.set(speed + effLevel);
-        } else if (speed > 1F || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            if (!this.getMainHandStack().isEmpty()) {
-                if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-                    if (speed <= 1.0 && !this.canHarvest(block)) {
-                        f.set(speed + effLevel * 0.08F);
-                    } else {
-                        f.set(speed + effLevel);
-                    }
-                }
-            }
-        }
-    }
-
     @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
     private boolean changeSpeedCalculation(PlayerEntity instance, RegistryEntry<StatusEffect> statusEffect, @Local LocalFloatRef f) {
         final boolean hasMiningFatigue = instance.hasStatusEffect(statusEffect);
@@ -217,6 +193,34 @@ public abstract class MixinPlayerEntity extends LivingEntity {
             return false; // disable original code
         }
         return hasMiningFatigue;
+    }
+
+    @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
+    private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
+        final float efficiency = (float) this.getAttributeValue(EntityAttributes.PLAYER_MINING_EFFICIENCY);
+        if (efficiency <= 0) return;
+
+        final float speed = this.inventory.getBlockBreakingSpeed(block);
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_4tor1_4_5) && this.canHarvest(block)) {
+            f.set(speed + efficiency);
+        } else if (speed > 1F || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
+            if (!this.getMainHandStack().isEmpty()) {
+                if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
+                    if (speed <= 1.0 && !this.canHarvest(block)) {
+                        f.set(speed + efficiency * 0.08F);
+                    } else {
+                        f.set(speed + efficiency);
+                    }
+                }
+            }
+        }
+    }
+
+    @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
+    private void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
+        if (VisualSettings.global().replaceHurtSoundWithOOFSound.isEnabled()) {
+            cir.setReturnValue(viaFabricPlus$oof_hurt);
+        }
     }
 
 }

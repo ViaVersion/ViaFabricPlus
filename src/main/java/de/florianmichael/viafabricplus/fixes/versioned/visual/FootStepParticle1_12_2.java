@@ -36,7 +36,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
 
-    public static int ID;
+    public static final Identifier ID = Identifier.of("viafabricplus", "footstep");
+    public static int RAW_ID;
 
     protected FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z) {
         super(clientWorld, x, y, z);
@@ -71,19 +72,19 @@ public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         final float maxV = this.getMaxV();
 
         final int light = this.getBrightness(tickDelta); // This is missing in the original code, that's why the particles are broken
-        vertexConsumer.vertex(x - scale, y, z + scale).texture(maxU, maxV).color(this.red, this.green, this.blue, this.alpha).light(light).next();
-        vertexConsumer.vertex(x + scale, y, z + scale).texture(maxU, minV).color(this.red, this.green, this.blue, this.alpha).light(light).next();
-        vertexConsumer.vertex(x + scale, y, z - scale).texture(minU, minV).color(this.red, this.green, this.blue, this.alpha).light(light).next();
-        vertexConsumer.vertex(x - scale, y, z - scale).texture(minU, maxV).color(this.red, this.green, this.blue, this.alpha).light(light).next();
+        vertexConsumer.vertex(x - scale, y, z + scale).texture(maxU, maxV).color(this.red, this.green, this.blue, this.alpha).light(light);
+        vertexConsumer.vertex(x + scale, y, z + scale).texture(maxU, minV).color(this.red, this.green, this.blue, this.alpha).light(light);
+        vertexConsumer.vertex(x + scale, y, z - scale).texture(minU, minV).color(this.red, this.green, this.blue, this.alpha).light(light);
+        vertexConsumer.vertex(x - scale, y, z - scale).texture(minU, maxV).color(this.red, this.green, this.blue, this.alpha).light(light);
     }
 
     public static void init() {
         final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
 
-        Registry.register(Registries.PARTICLE_TYPE, new Identifier("viafabricplus", "footstep"), footStepType);
+        Registry.register(Registries.PARTICLE_TYPE, ID, footStepType);
         ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
 
-        ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
+        RAW_ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
     }
 
     public static class Factory implements ParticleFactory<SimpleParticleType> {
