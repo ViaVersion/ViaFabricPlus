@@ -138,6 +138,8 @@ public class ProtocolTranslator {
 
             if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
                 channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, ProtocolConstants.BEDROCK_RAKNET_PROTOCOL_VERSION);
+                channel.config().setOption(RakChannelOption.RAK_COMPATIBILITY_MODE, true);
+                channel.config().setOption(RakChannelOption.RAK_CLIENT_INTERNAL_ADDRESSES, 20);
                 channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, 4_000L);
                 channel.config().setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
                 channel.config().setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());
