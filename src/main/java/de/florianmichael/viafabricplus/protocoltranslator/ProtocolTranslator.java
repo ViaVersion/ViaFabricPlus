@@ -44,6 +44,7 @@ import de.florianmichael.viafabricplus.protocoltranslator.impl.viaversion.ViaFab
 import de.florianmichael.viafabricplus.protocoltranslator.netty.ViaFabricPlusVLLegacyPipeline;
 import de.florianmichael.viafabricplus.protocoltranslator.util.NoPacketSendChannel;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelOption;
 import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
@@ -140,7 +141,7 @@ public class ProtocolTranslator {
                 channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, ProtocolConstants.BEDROCK_RAKNET_PROTOCOL_VERSION);
                 channel.config().setOption(RakChannelOption.RAK_COMPATIBILITY_MODE, true);
                 channel.config().setOption(RakChannelOption.RAK_CLIENT_INTERNAL_ADDRESSES, 20);
-                channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, 4_000L);
+                channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, channel.config().getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS).longValue());
                 channel.config().setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
                 channel.config().setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());
             }
