@@ -22,16 +22,24 @@
   "base.viafabricplus.vanilla_only": "Tylko vanilla",
   "base.viafabricplus.kick": "Wyrzuć",
   "base.viafabricplus.cancel_and_notify": "Anuluj i powiadom",
-  "base.viafabricplus.force_version_title": "Wybierz wersję, z którą chcesz łączyć się do serwera",
   "base.viafabricplus.detecting_server_version": "Wykrywanie wersji serwera...",
   "base.viafabricplus.this_will_require_a_restart": "To będzie wymagało restartu!",
   "base.viafabricplus.none": "Nic",
+  "base.viafabricplus.name": "Nazwa użytkownika",
+  "base.viafabricplus.password": "Hasło",
+  "base.viafabricplus.login": "Zaloguj się",
 
   "setting_group_name.viafabricplus.authentication": "Uwierzytelnianie",
   "setting_group_name.viafabricplus.visual": "Wizualne",
   "setting_group_name.viafabricplus.debug": "Debugowanie",
   "setting_group_name.viafabricplus.general": "Ogólne",
   "setting_group_name.viafabricplus.bedrock": "Bedrock",
+
+  "screen.viafabricplus.force_version": "Wymuś wersję",
+  "screen.viafabricplus.report_issues": "Zgłaszaj problemy",
+  "screen.viafabricplus.server_list": "Lista serwerów",
+  "screen.viafabricplus.classicube_login": "Logowanie Classicube",
+  "screen.viafabricplus.classicube_mfa": "Classicube MFA",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Zapisz wybraną wersję protokołu",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "Pokazuj dodatkowe informacje w interfejsie debugowania",
@@ -91,23 +99,43 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Ukrywaj książkę przepisów w stole rzemyślniczym",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Ukrywaj nowe funkcje ekranu bloku konstrukcyjnego",
 
-  "bedrock.viafabricplus.login": "Powinna ci się otworzyć przeglądarka.\nNa otworzonej stronie wpisz ten kod: %s\nZamkanięcie tego ekranu będzie anulowało proces!",
-  "authentication.viafabricplus.failed_to_verify_session": "Nie udało się zweryfikować twojej sesji! Zaloguj się na jakieś konto albo wyłącz uwierzytelnianie BetaCraft w ustawieniach.",
+  "force_version.viafabricplus.title": "Wybierz wersję na której chcesz łączyć się do serwera",
+
+  "click_to_set_bedrock_account.viafabricplus.notice": "Twoja przeglądarka powinna się otworzyć.\nZamyknięcie tego ekranu będzie anulowało proces!",
+  "click_to_set_bedrock_account.viafabricplus.display": "Konto na bedrocku: %s",
 
   "report.viafabricplus.button": "Zgłoś problem",
   "report.viafabricplus.bug_report": "Zgłoś problem na GitHub",
   "report.viafabricplus.feature_request": "Zaproponuj nową funkcję na GitHub",
   "report.viafabricplus.create_via_dump": "Utwórz dump ViaVersion",
   "report.viafabricplus.open_logs": "Otwórz folder z logami",
+  "report.viafabricplus.bug_report.response": "Otworzono stronę z problemami na github!",
+  "report.viafabricplus.feature_request.response": "Otworzono stronę z problemami na github!",
+  "report.viafabricplus.create_via_dump.failed": "Nie udało się utworzyć dumpa! Sprawdź logi po więcej informacji.",
+  "report.viafabricplus.create_via_dump.success": "Dump został stworzony i skopiowany do schowka!",
+  "report.viafabricplus.open_logs.response": "Folder z logami został otworzony!",
 
   "classicube.viafabricplus.account": "Możesz utworzyć swoje konto tutaj: https://www.classicube.net",
   "classicube.viafabricplus.loading": "Ładowanie informacji profilu i listy serwerów...",
+  "classicube.viafabricplus.profile": "Profil ClassiCube:",
   "classicube.viafabricplus.warning": "Ta funkcja będzie wysyłała zapytania api do ClassiCube api.",
+
+  "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus nie mogło zweryfikować twojej sesji! Zaloguj się do jakiegoś konta albo wyłącz autentykację betacraft w ustawieniach.",
+  "betacraft.viafabricplus.loading": "Ładowanie...",
   "betacraft.viafabricplus.warning": "Naciśnięcie tego przycisku wyśle zapytanie api pod ten adres: https://betacraft.uk/serverlist",
+
+  "translation.viafabricplus.updates_1_20": "Ten serwer ma włączony update_1_20. Nie jest to w pełni wspierane i może powodować problemy.",
+  "translation.viafabricplus.packet_error": "Wystąpił błąd podczas tłumaczenia pakietu! Więcej detali w logach.",
 
   "classic4j_library.viafabricplus.error.token": "Niepoprawny token. Czy jesteś pewnien, że twoja wersja ViaFabricPlus nie jest przestarzała? Spróbuj zaktualizować tą modyfikację.",
   "classic4j_library.viafabricplus.error.username": "Niepoprawna nazwa użytkownika.",
   "classic4j_library.viafabricplus.error.password": "Niepoprawne hasło.",
   "classic4j_library.viafabricplus.error.verification": "Niezweryfikowany adres e-mail.",
-  "classic4j_library.viafabricplus.error.logincode": "Wymagane jest uwierzytelnianie wieloskładnikowe. Sprawdź swój e-mail."
+  "classic4j_library.viafabricplus.error.logincode": "Wymagane jest uwierzytelnianie wieloskładnikowe. Sprawdź swój e-mail.",
+
+  "minecraftauth_library.viafabricplus.xbldevicetoken": "Uwierzytelnianie urządzenia z Xbox Live...",
+  "minecraftauth_library.viafabricplus.xblsisuauthentication": "Uwierzytelnianie z Xbox Live używając SISU...",
+  "minecraftauth_library.viafabricplus.mcchain": "Uwierzytelnianie z Minecraft Services...",
+  "minecraftauth_library.viafabricplus.xblxststoken": "Zapytanie o token XSTS...",
+  "minecraftauth_library.viafabricplus.playfabtoken": "Uwierzytelnianie z PlayFab..."
 }
