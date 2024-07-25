@@ -27,13 +27,14 @@ import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Text;
 
 public class SettingsScreen extends VFPScreen {
 
     public static final SettingsScreen INSTANCE = new SettingsScreen();
 
     public SettingsScreen() {
-        super("Setting", true);
+        super(Text.translatable("screen.viafabricplus.settings"), true);
     }
 
     @Override
@@ -68,11 +69,6 @@ public class SettingsScreen extends VFPScreen {
         @Override
         public int getRowWidth() {
             return super.getRowWidth() + 140;
-        }
-
-        @Override
-        protected int getScrollbarX() {
-            return this.width - 5;
         }
     }
 

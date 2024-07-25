@@ -40,6 +40,7 @@
   "screen.viafabricplus.server_list": "Server Lists",
   "screen.viafabricplus.classicube_login": "Classicube Login",
   "screen.viafabricplus.classicube_mfa": "Classicube MFA",
+  "screen.viafabricplus.settings": "Settings",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Save selected protocol version",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "Show extra information in Debug HUD",

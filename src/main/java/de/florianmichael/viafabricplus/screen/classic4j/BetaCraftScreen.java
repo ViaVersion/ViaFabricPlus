@@ -92,11 +92,6 @@ public class BetaCraftScreen extends VFPScreen {
         public int getRowWidth() {
             return super.getRowWidth() + 140;
         }
-
-        @Override
-        protected int getScrollbarX() {
-            return this.width - 5;
-        }
     }
 
     public static class ServerSlot extends VFPListEntry {
