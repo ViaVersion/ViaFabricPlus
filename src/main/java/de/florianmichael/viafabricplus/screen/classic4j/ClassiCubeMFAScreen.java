@@ -50,7 +50,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
 
         mfaField.setPlaceholder(Text.of("MFA"));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.of("Login"), button -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.login"), button -> {
             this.setupSubtitle(Text.translatable("classicube.viafabricplus.loading"));
             final CCAccount account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
 

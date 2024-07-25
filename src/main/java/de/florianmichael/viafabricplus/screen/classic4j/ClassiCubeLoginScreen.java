@@ -68,7 +68,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
             passwordField.setText(accountsSave.getClassicubeAccount().username());
         }
 
-        this.addDrawableChild(ButtonWidget.builder(Text.of("Login"), button -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.login"), button -> {
             accountsSave.setClassicubeAccount(new CCAccount(nameField.getText(), passwordField.getText()));
             this.setupSubtitle(Text.translatable("classicube.viafabricplus.loading"));
 
