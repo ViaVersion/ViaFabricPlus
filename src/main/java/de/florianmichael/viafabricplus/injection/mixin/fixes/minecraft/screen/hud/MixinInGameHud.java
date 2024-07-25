@@ -22,10 +22,11 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.h
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -34,7 +35,8 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 @Mixin(InGameHud.class)
 public abstract class MixinInGameHud {
 
-    // Removing newer elements
+    @Unique
+    private static final int viaFabricPlus$ARMOR_ICON_WIDTH = 8;
 
     @Inject(method = {"renderMountJumpBar", "renderMountHealth"}, at = @At("HEAD"), cancellable = true)
     private void removeMountJumpBar(CallbackInfo ci) {
@@ -50,34 +52,36 @@ public abstract class MixinInGameHud {
         }
     }
 
-    // Moving down all remaining elements
-
     @ModifyExpressionValue(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;getScaledWindowHeight()I"), require = 0)
     private int moveHealthDown(int value) {
         if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
-            return value + 6;
+            return value + 6; // Magical offset
         } else {
             return value;
         }
     }
 
     @ModifyArgs(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), require = 0)
-    private static void moveArmorPositions(Args args, @Local(argsOnly = true) DrawContext context) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
-            final int x = args.get(1);
-            final int y = args.get(2);
-            args.set(1, context.getScaledWindowWidth() - x - 9);
-            args.set(2, y + 9);
+    private static void moveArmorPositions(Args args, @Local(ordinal = 3, argsOnly = true) int x, @Local(ordinal = 6) int n) {
+        if (!VisualSettings.global().removeNewerHudElements.isEnabled()) {
+            return;
         }
+        final MinecraftClient client = MinecraftClient.getInstance();
 
+        final int armorWidth = 10 * viaFabricPlus$ARMOR_ICON_WIDTH;
+        final int offset = n * viaFabricPlus$ARMOR_ICON_WIDTH;
+
+        args.set(1, client.getWindow().getScaledWidth() - x - armorWidth + offset);
+        args.set(2, (int) args.get(2) + client.textRenderer.fontHeight);
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 2),
             to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V")), index = 1, require = 0)
-    private int moveAir(int value, @Local(argsOnly = true) DrawContext context) {
+    private int moveAir(int value) {
         if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
-            return context.getScaledWindowWidth() - value - 9;
+            final MinecraftClient client = MinecraftClient.getInstance();
+            return client.getWindow().getScaledWidth() - value - client.textRenderer.fontHeight;
         } else {
             return value;
         }
