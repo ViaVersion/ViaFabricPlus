@@ -169,49 +169,6 @@ public class EntityDimensionDiff {
         // Calls the static block
     }
 
-    /**
-     * @param entityType The {@link EntityType} to get the dimensions for.
-     * @return The dimensions for the given {@link EntityType} or null if there are none. The map is unmodifiable.
-     */
-    public static Map<ProtocolVersion, EntityDimensions> getEntityDimensions(final EntityType<?> entityType) {
-        if (!ENTITY_DIMENSIONS.containsKey(entityType)) {
-            return null;
-        }
-        return Collections.unmodifiableMap(ENTITY_DIMENSIONS.get(entityType));
-    }
-
-    /**
-     * @param entityType The {@link EntityType} to get the dimensions for.
-     * @param version    The {@link ProtocolVersion} to get the dimensions for.
-     * @return The closest dimensions for the given {@link EntityType} and {@link ProtocolVersion} or null if there are none.
-     */
-    public static EntityDimensions getEntityDimensions(final EntityType<?> entityType, final ProtocolVersion version) {
-        final Map<ProtocolVersion, EntityDimensions> dimensionMap = getEntityDimensions(entityType);
-        if (dimensionMap == null) {
-            return null;
-        }
-
-        EntityDimensions closestDimensions = null;
-        ProtocolVersion closestVersion = null;
-
-        for (Map.Entry<ProtocolVersion, EntityDimensions> entry : dimensionMap.entrySet()) {
-            final var currentVersion = entry.getKey();
-            final var currentDimensions = entry.getValue();
-
-            if (currentVersion == version) { // If the version is exactly the same, return the dimensions
-                return currentDimensions;
-            }
-
-            // If the current version is closer to the version you are looking for
-            if (closestVersion == null || ProtocolTranslator.isCloserTo(version, currentVersion, closestVersion)) {
-                closestVersion = currentVersion;
-                closestDimensions = currentDimensions;
-            }
-        }
-
-        return closestDimensions;
-    }
-
     private static class EntityDimensionsBuilder {
 
         private EntityDimensions entityDimensions;
