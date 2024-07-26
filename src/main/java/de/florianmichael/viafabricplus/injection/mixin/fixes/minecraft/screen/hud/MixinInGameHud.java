@@ -71,8 +71,8 @@ public abstract class MixinInGameHud {
         final int armorWidth = 10 * viaFabricPlus$ARMOR_ICON_WIDTH;
         final int offset = n * viaFabricPlus$ARMOR_ICON_WIDTH;
 
-        args.set(1, client.getWindow().getScaledWidth() - x - armorWidth + offset);
-        args.set(2, (int) args.get(2) + client.textRenderer.fontHeight);
+        args.set(1, client.getWindow().getScaledWidth() - x - armorWidth + offset - 1);
+        args.set(2, (int) args.get(2) + client.textRenderer.fontHeight + 1);
     }
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
