@@ -19,6 +19,7 @@ At the time of writing, ViaFabricPlus is the only mod that supports joining all 
 legacy combat mechanics, movement, and rendering changes to make the gameplay more feel like the old days.
 
 **On the other hand, ViaFabricPlus supports only the latest Minecraft client version, and only Fabric.**
+If you need ViaFabricPlus for older versions of the game, you can use [ViaFabric](https://viaversion.com/fabric)
 
 ## Supported Server versions
 - Release (1.0.0 - 1.21)
