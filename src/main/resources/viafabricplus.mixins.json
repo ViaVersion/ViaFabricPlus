@@ -43,7 +43,6 @@
     "fixes.minecraft.MixinCamera",
     "fixes.minecraft.MixinChatInputSuggestor",
     "fixes.minecraft.MixinClientCommandSource",
-    "fixes.minecraft.MixinClientCommonNetworkHandler",
     "fixes.minecraft.MixinClientWorld",
     "fixes.minecraft.MixinFlowableFluid",
     "fixes.minecraft.MixinFontStorage",

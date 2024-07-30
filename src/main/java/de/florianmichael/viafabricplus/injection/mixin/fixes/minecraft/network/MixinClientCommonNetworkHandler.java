@@ -19,15 +19,18 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.v1_16_4to1_17.storage.InventoryAcknowledgements;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import de.florianmichael.viafabricplus.util.DataCustomPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.network.listener.ServerPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.common.ResourcePackStatusC2SPacket;
@@ -43,9 +46,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.net.URL;
+import java.nio.file.Path;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
 @Mixin(value = ClientCommonNetworkHandler.class, priority = 1 /* Has to be applied before Fabric's Networking API, so it doesn't cancel our custom-payload packets */)
@@ -69,6 +75,19 @@ public abstract class MixinClientCommonNetworkHandler {
     @Nullable
     private static URL getParsedResourcePackUrl(String url) {
         return null;
+    }
+
+
+    @Inject(method = "savePacketErrorReport", at = @At("HEAD"), cancellable = true)
+    private void dontCreatePacketErrorCrashReports(CallbackInfoReturnable<Optional<Path>> cir) {
+        if (DebugSettings.global().dontCreatePacketErrorCrashReports.isEnabled()) {
+            cir.setReturnValue(Optional.empty());
+        }
+    }
+
+    @WrapWithCondition(method = "onPacketException", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;disconnect(Lnet/minecraft/network/DisconnectionInfo;)V"))
+    private boolean dontDisconnectOnPacketException(ClientConnection instance, DisconnectionInfo disconnectionInfo) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_3);
     }
 
     @Inject(method = "onResourcePackSend", at = @At("HEAD"), cancellable = true)
