@@ -30,6 +30,9 @@ public class VisualSettings extends SettingGroup {
 
     private static final VisualSettings INSTANCE = new VisualSettings();
 
+    // 1.21 -> 1.20.5
+    public final VersionedBooleanSetting hideDownloadTerrainScreenTransitionEffects = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects"), VersionRange.andOlder(ProtocolVersion.v1_20_5));
+
     // 1.20.3 -> 1.20.2
     public final VersionedBooleanSetting hidePrioritySelectionsInJigsawScreen = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_priority_selections_in_jigsaw_screen"), VersionRange.andOlder(ProtocolVersion.v1_20_2));
 
@@ -73,6 +76,8 @@ public class VisualSettings extends SettingGroup {
 
     public VisualSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.visual"));
+
+        this.hideDownloadTerrainScreenTransitionEffects.setValue(VersionedBooleanSetting.DISABLED_INDEX);
     }
 
     public static VisualSettings global() {

@@ -22,6 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IDownloadingTerrainScreen;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.packet.c2s.common.KeepAliveC2SPacket;
@@ -33,6 +34,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(DownloadingTerrainScreen.class)
@@ -41,6 +43,10 @@ public abstract class MixinDownloadingTerrainScreen extends Screen implements ID
     @Shadow
     @Final
     private long loadStartTime;
+
+    @Shadow
+    @Final
+    private DownloadingTerrainScreen.WorldEntryReason worldEntryReason;
 
     @Unique
     private int viaFabricPlus$tickCounter;
@@ -53,6 +59,15 @@ public abstract class MixinDownloadingTerrainScreen extends Screen implements ID
 
     public MixinDownloadingTerrainScreen(Text title) {
         super(title);
+    }
+
+    @Redirect(method = "renderBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;worldEntryReason:Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen$WorldEntryReason;"))
+    private DownloadingTerrainScreen.WorldEntryReason hideDownloadTerrainScreenTransitionEffects(DownloadingTerrainScreen downloadingTerrainScreen) {
+        if (VisualSettings.global().hideDownloadTerrainScreenTransitionEffects.isEnabled()) {
+            return DownloadingTerrainScreen.WorldEntryReason.OTHER;
+        } else {
+            return this.worldEntryReason;
+        }
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)

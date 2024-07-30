@@ -29,9 +29,9 @@ import net.raphimc.vialoader.util.VersionRange;
 
 public class VersionedBooleanSetting extends AbstractSetting<Integer> {
 
-    private static final int AUTO_INDEX = 2;
-    private static final int DISABLED_INDEX = 1;
-    private static final int ENABLED_INDEX = 0;
+    public static final int AUTO_INDEX = 2;
+    public static final int DISABLED_INDEX = 1;
+    public static final int ENABLED_INDEX = 0;
 
     private final VersionRange protocolRange;
 
