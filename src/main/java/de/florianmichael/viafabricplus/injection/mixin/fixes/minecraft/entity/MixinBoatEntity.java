@@ -44,6 +44,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -82,6 +83,15 @@ public abstract class MixinBoatEntity extends VehicleEntity {
 
     public MixinBoatEntity(EntityType<?> type, World world) {
         super(type, world);
+    }
+
+    @Redirect(method = "updateVelocity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isSpaceEmpty(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Box;)Z"))
+    private boolean alwaysUpdatePosition(World instance, Entity entity, Box box) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            return true;
+        } else {
+            return instance.isSpaceEmpty(entity, box);
+        }
     }
 
     @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
