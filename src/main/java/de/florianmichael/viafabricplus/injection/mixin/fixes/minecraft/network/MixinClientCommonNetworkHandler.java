@@ -77,7 +77,6 @@ public abstract class MixinClientCommonNetworkHandler {
         return null;
     }
 
-
     @Inject(method = "savePacketErrorReport", at = @At("HEAD"), cancellable = true)
     private void dontCreatePacketErrorCrashReports(CallbackInfoReturnable<Optional<Path>> cir) {
         if (DebugSettings.global().dontCreatePacketErrorCrashReports.isEnabled()) {

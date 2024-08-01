@@ -182,7 +182,7 @@ public class ClientsideFixes {
     }
 
     /**
-     * Executes a sync task and returns the uuid of the task
+     * Executes a task synchronized with the main thread from networking threads
      *
      * @param task The task to execute
      * @return The uuid of the task
