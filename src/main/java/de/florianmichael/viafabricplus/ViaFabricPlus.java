@@ -41,7 +41,6 @@ import java.util.concurrent.CompletableFuture;
  *  - Particle handling has slightly changed
  *
  * TODO | Port 1.21
- *  - ClientPlayerEntity#tickMovement nether portal logic has new screen conditions and changed
  *  - HangingEntity/ItemFrame/Painting bounding box calculation changed
  *
  * TODO | General

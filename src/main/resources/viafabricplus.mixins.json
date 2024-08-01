@@ -206,7 +206,8 @@
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.item.MixinKnowledgeBookItem"
+    "fixes.minecraft.item.MixinKnowledgeBookItem",
+    "fixes.minecraft.entity.MixinMobEntity"
   ],
   "injectors": {
     "defaultRequire": 1
