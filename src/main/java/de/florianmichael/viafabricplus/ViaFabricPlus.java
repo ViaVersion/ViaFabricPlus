@@ -42,17 +42,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * TODO | Port 1.21
  *  - ClientPlayerEntity#tickMovement nether portal logic has new screen conditions and changed
- *  - Entity#interact now handles leashables interface which was previously handled in MobEntity
- *  - shouldCancelInteraction condition in ChestBoatEntity#interact is new
  *  - HangingEntity/ItemFrame/Painting bounding box calculation changed
- *  - PlayerEntity#attack got refactored (?)
- *  - LivingEntity#takeKnockback with 1.0E-5F for loop is new
- *  - KnowledgeBookItem#use decrementUnlessCreative is new
- *  - JukeboxBlock#onUse override is new (added state.get(HAS_RECORD) condition)
- *  - BoatEntity#updateVelocity isSpaceEmpty condition new
- *  - LivingEntity#remove -> added activeEffects.clear call
- *  - PlayerEntity#tickMovement getSaturationLevel/setSaturationLevel handling is new
- *  - Check WorldBorder bounds check
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
