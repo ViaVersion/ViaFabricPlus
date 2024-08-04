@@ -33,9 +33,11 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(MobEntity.class)
 public abstract class MixinMobEntity {
 
-    @Shadow protected abstract ActionResult interactWithItem(PlayerEntity player, Hand hand);
+    @Shadow
+    protected abstract ActionResult interactWithItem(PlayerEntity player, Hand hand);
 
-    @Shadow protected abstract ActionResult interactMob(PlayerEntity player, Hand hand);
+    @Shadow
+    protected abstract ActionResult interactMob(PlayerEntity player, Hand hand);
 
     @Redirect(method = "interact", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/MobEntity;interactWithItem(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;"))
     private ActionResult cancelItemInteractions(MobEntity instance, PlayerEntity player, Hand hand) {

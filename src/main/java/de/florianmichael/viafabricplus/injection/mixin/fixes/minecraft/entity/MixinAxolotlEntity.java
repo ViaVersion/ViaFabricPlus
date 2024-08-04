@@ -35,7 +35,7 @@ public abstract class MixinAxolotlEntity {
     @Redirect(method = "eat", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemUsage;exchangeStack(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;"))
     private ItemStack dontExchangeStack(ItemStack inputStack, PlayerEntity player, ItemStack outputStack) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            return inputStack;
+            return outputStack;
         } else {
             return ItemUsage.exchangeStack(inputStack, player, outputStack);
         }
