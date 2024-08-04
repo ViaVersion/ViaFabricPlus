@@ -28,7 +28,9 @@ import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MobEntity.class)
 public abstract class MixinMobEntity {
@@ -36,11 +38,8 @@ public abstract class MixinMobEntity {
     @Shadow
     protected abstract ActionResult interactWithItem(PlayerEntity player, Hand hand);
 
-    @Shadow
-    protected abstract ActionResult interactMob(PlayerEntity player, Hand hand);
-
     @Redirect(method = "interact", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/MobEntity;interactWithItem(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;"))
-    private ActionResult cancelItemInteractions(MobEntity instance, PlayerEntity player, Hand hand) {
+    private ActionResult moveItemInteractionsAfterLeashing(MobEntity instance, PlayerEntity player, Hand hand) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             return ActionResult.FAIL;
         } else {
@@ -48,15 +47,14 @@ public abstract class MixinMobEntity {
         }
     }
 
-    @Redirect(method = "interact", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/MobEntity;interactMob(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;"))
-    private ActionResult moveItemInteractionsAfterLeashing(MobEntity instance, PlayerEntity player, Hand hand) {
+    @Inject(method = "interact", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/MobEntity;interactMob(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;", shift = At.Shift.BEFORE), cancellable = true)
+    private void moveItemInteractionsAfterLeashing(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             final ActionResult result = interactWithItem(player, hand);
             if (result.isAccepted()) {
-                return result;
+                cir.setReturnValue(result);
             }
         }
-        return interactMob(player, hand);
     }
 
 }
