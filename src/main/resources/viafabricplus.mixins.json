@@ -137,6 +137,7 @@
     "fixes.minecraft.item.MixinItemRenderer",
     "fixes.minecraft.item.MixinItemStack",
     "fixes.minecraft.item.MixinKnowledgeBookItem",
+    "fixes.minecraft.item.MixinMilkBucketItem",
     "fixes.minecraft.item.MixinShovelItem",
     "fixes.minecraft.item.MixinSwordItem",
     "fixes.minecraft.network.MixinChatMessageC2SPacket",
