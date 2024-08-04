@@ -112,6 +112,7 @@
     "fixes.minecraft.entity.MixinEntityRenderDispatcher",
     "fixes.minecraft.entity.MixinItemEntity",
     "fixes.minecraft.entity.MixinLivingEntity",
+    "fixes.minecraft.entity.MixinMobEntity",
     "fixes.minecraft.entity.MixinOtherClientPlayerEntity",
     "fixes.minecraft.entity.MixinPlayerEntity",
     "fixes.minecraft.entity.MixinPlayerEntityRenderer",
@@ -135,6 +136,7 @@
     "fixes.minecraft.item.MixinItemPlacementContext",
     "fixes.minecraft.item.MixinItemRenderer",
     "fixes.minecraft.item.MixinItemStack",
+    "fixes.minecraft.item.MixinKnowledgeBookItem",
     "fixes.minecraft.item.MixinShovelItem",
     "fixes.minecraft.item.MixinSwordItem",
     "fixes.minecraft.network.MixinChatMessageC2SPacket",
@@ -205,9 +207,7 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.item.MixinKnowledgeBookItem",
-    "fixes.minecraft.entity.MixinMobEntity"
+    "vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1
