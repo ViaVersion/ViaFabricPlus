@@ -93,7 +93,7 @@ public abstract class MixinBoatEntity extends VehicleEntity {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             return ActionResult.PASS;
         } else {
-            return instance.interact(player, hand);
+            return super.interact(player, hand);
         }
     }
 
