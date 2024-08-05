@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.screen;
 
+import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -29,9 +30,26 @@ public class VFPList<T extends AlwaysSelectedEntryListWidget.Entry<T>> extends A
         super(minecraftClient, width, height - top - bottom, top, entryHeight);
     }
 
+    public void initScrollAmount(final double amount) {
+        // Needs calling last in init to have data loaded before setting scroll amount
+        if (GeneralSettings.global().saveScrollPositionInSlotScreens.getValue()) {
+            this.setScrollAmount(amount);
+        }
+    }
+
+    @Override
+    public void setScrollAmountOnly(double amount) {
+        super.setScrollAmountOnly(amount);
+        updateSlotAmount(getScrollAmount()); // Ensure value is clamped
+    }
+
     @Override
     protected void drawSelectionHighlight(DrawContext context, int y, int entryWidth, int entryHeight, int borderColor, int fillColor) {
         // Remove selection box
+    }
+
+    protected void updateSlotAmount(final double amount) {
+        // To be overridden
     }
 
 }

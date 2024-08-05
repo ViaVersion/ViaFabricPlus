@@ -66,11 +66,18 @@ public class ProtocolSelectionScreen extends VFPScreen {
     }
 
     public static class SlotList extends VFPList<VFPListEntry> {
+        private static double scrollAmount;
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             ProtocolVersionList.getProtocolsNewToOld().stream().map(ProtocolSlot::new).forEach(this::addEntry);
+            initScrollAmount(scrollAmount);
+        }
+
+        @Override
+        protected void updateSlotAmount(double amount) {
+            scrollAmount = amount;
         }
     }
 

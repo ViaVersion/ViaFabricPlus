@@ -52,6 +52,7 @@
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Fehler bei der Übersetzung von Paketen ignorieren",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Skins und Schädel in alten Versionen laden",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Inventaraktionen in Alpha-Versionen emulieren",
+  "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "Scroll-Position in Slot-Bildschirmen speichern",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Klicke, um den Account für die Bedrock-Edition einzustellen",
   "bedrock_settings.viafabricplus.replace_default_port": "Standardport in der Serverliste ersetzen",

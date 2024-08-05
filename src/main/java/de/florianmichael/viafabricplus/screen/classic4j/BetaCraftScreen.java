@@ -73,6 +73,7 @@ public class BetaCraftScreen extends VFPScreen {
     }
 
     public static class SlotList extends VFPList<VFPListEntry> {
+        private static double scrollAmount;
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
@@ -86,11 +87,18 @@ public class BetaCraftScreen extends VFPScreen {
                     addEntry(new ServerSlot(server));
                 }
             }
+
+            initScrollAmount(scrollAmount);
         }
 
         @Override
         public int getRowWidth() {
             return super.getRowWidth() + 140;
+        }
+
+        @Override
+        protected void updateSlotAmount(double amount) {
+            scrollAmount = amount;
         }
     }
 
