@@ -43,14 +43,10 @@ loom {
 }
 
 dependencies {
-	// Minecraft/Fabric and mods
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	modCompileOnly "com.terraformersmc:modmenu:${project.mod_menu_version}"
-
-	// Fabric API
 	modJij(fabricApi.module("fabric-api-base", project.fabric_api_version))
 	modJij(fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version))
 	modJij(fabricApi.module("fabric-networking-api-v1", project.fabric_api_version))
@@ -59,37 +55,34 @@ dependencies {
 	modJij(fabricApi.module("fabric-particles-v1", project.fabric_api_version))
 	modJij(fabricApi.module("fabric-registry-sync-v0", project.fabric_api_version))
 
-	// ViaVersion Libraries
-	jij "com.viaversion:viaversion-common:${project.viaversion_version}"
-	jij "com.viaversion:viabackwards-common:${project.viabackwards_version}"
-	jij "net.raphimc:ViaLegacy:${project.vialegacy_version}"
-	jij "net.raphimc:viaaprilfools-common:${project.viaaprilfools_version}"
-	jij ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
+	modCompileOnly "com.terraformersmc:modmenu:11.0.0-beta.1"
+
+	jij "com.viaversion:viaversion-common:5.0.3-SNAPSHOT"
+	jij "com.viaversion:viabackwards-common:5.0.3-SNAPSHOT"
+	jij "net.raphimc:viaaprilfools-common:3.0.2-SNAPSHOT"
+	jij "net.raphimc:ViaLegacy:3.0.3-SNAPSHOT"
+	jij ("net.raphimc:ViaBedrock:0.0.10-SNAPSHOT") {
 		exclude group: "io.jsonwebtoken"
 		exclude group: "com.mojang", module: "brigadier"
 	}
-	jij ("net.raphimc:ViaLoader:${project.vialoader_version}") {
+	jij ("net.raphimc:ViaLoader:3.0.3-SNAPSHOT") {
 		exclude group: "com.google.guava", module: "guava"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
 
-	// RaphiMC Libraries
-	jij ("net.raphimc:MinecraftAuth:${project.minecraftauth_version}") {
+	jij ("net.raphimc:MinecraftAuth:4.1.0") {
 		exclude group: "com.google.code.gson", module: "gson"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
-
-	// Lenni0451 Libraries
-	jij "net.lenni0451:Reflect:${project.reflect_version}"
-	jij("net.lenni0451:MCPing:${project.mcping_version}") {
+	jij "net.lenni0451:Reflect:1.3.2"
+	jij("net.lenni0451:MCPing:1.4.0") {
 		exclude group: "com.google.code.gson", module: "gson"
 	}
 
-	// Misc Libraries
-	jij("org.cloudburstmc.netty:netty-transport-raknet:${project.raknet_transport_version}") {
+	jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
 		exclude group: "io.netty"
 	}
-	jij "de.florianmichael:Classic4J:${project.classic4j_version}"
+	jij "de.florianmichael:Classic4J:2.0.2"
 
 	// Fabric's jar in jar system doesn't support transitive dependencies, so we have to manually add them
 	afterEvaluate {
