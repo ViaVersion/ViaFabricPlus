@@ -3,7 +3,7 @@
   "id": "viafabricplus",
   "version": "${version}",
   "name": "ViaFabricPlus",
-  "description": "Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay",
+  "description": "${description}",
   "authors": [
     {
       "name": "FlorianMichael/EnZaXD",
@@ -54,7 +54,7 @@
     "fabric-lifecycle-events-v1": ">=2.2.28",
     "fabric-particles-v1": ">=1.1.6",
     "fabric-registry-sync-v0": ">=4.0.13",
-    "minecraft": "1.21",
+    "minecraft": "${mcVersion}",
     "java": ">=21"
   },
   "breaks": {

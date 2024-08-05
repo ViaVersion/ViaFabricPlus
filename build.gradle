@@ -4,9 +4,10 @@ plugins {
 }
 
 base {
-	archivesName = project.archives_base_name
-	version = project.mod_version
 	group = project.maven_group
+	archivesName = project.maven_name
+	version = project.maven_version
+	description = project.maven_description
 }
 
 configurations {
@@ -44,7 +45,7 @@ loom {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	mappings "net.fabricmc:yarn:${project.yarn_version}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modJij(fabricApi.module("fabric-api-base", project.fabric_api_version))
@@ -98,7 +99,9 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand(
 				"version": project.version,
+				"description": project.description,
 				"implVersion": "git-${project.name}-${project.version}:${project.latestCommitHash()}",
+				"mcVersion": project.minecraft_version
 		)
 	}
 }
@@ -142,10 +145,37 @@ publishing {
 	publications {
 		maven(MavenPublication) {
 			groupId = project.maven_group
-			artifactId = project.archives_base_name
-			version = project.mod_version
+			artifactId = project.maven_name
+			version = project.maven_version
 
 			from components.java
+
+			pom {
+				name = artifactId
+				description = project.description
+				url = "https://github.com/ViaVersion/ViaFabricPlus"
+				licenses {
+					license {
+						name = "GPL-3.0 License"
+						url = "https://github.com/ViaVersion/ViaFabricPlus/blob/main/LICENSE"
+					}
+				}
+				developers {
+					developer {
+						id = "FlorianMichael"
+						name = "EnZaXD"
+						email = "florian.michael07@gmail.com"
+					}
+					developer {
+						id = "RK_01"
+					}
+				}
+				scm {
+					connection = "scm:git:git://github.com/ViaVersion/ViaFabricPlus.git"
+					developerConnection = "scm:git:ssh://github.com/ViaVersion/ViaFabricPlus.git"
+					url = "github.com/ViaVersion/ViaFabricPlus"
+				}
+			}
 		}
 	}
 }
