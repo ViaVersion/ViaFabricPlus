@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.settings.impl;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.settings.base.ModeSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.base.VersionedBooleanSetting;
 import net.minecraft.text.Text;
@@ -29,6 +30,12 @@ import net.raphimc.vialoader.util.VersionRange;
 public class VisualSettings extends SettingGroup {
 
     private static final VisualSettings INSTANCE = new VisualSettings();
+
+    public final ModeSetting changeGameMenuScreenLayout = new ModeSetting(this, Text.translatable("visual_settings.viafabricplus.change_game_menu_screen_layout"),
+            Text.translatable("change_game_menu_screen_layout.viafabricplus.authentic"),
+            Text.translatable("change_game_menu_screen_layout.viafabricplus.adjusted"),
+            Text.translatable("base.viafabricplus.off")
+    );
 
     // 1.21 -> 1.20.5
     public final VersionedBooleanSetting hideDownloadTerrainScreenTransitionEffects = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects"), VersionRange.andOlder(ProtocolVersion.v1_20_5));
@@ -76,8 +83,14 @@ public class VisualSettings extends SettingGroup {
 
     public VisualSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.visual"));
+        changeGameMenuScreenLayout.setTooltip(() -> switch (changeGameMenuScreenLayout.getIndex()) {
+            case 0 -> Text.translatable("change_game_menu_screen_layout.viafabricplus.authentic.tooltip");
+            case 1 -> Text.translatable("change_game_menu_screen_layout.viafabricplus.adjusted.tooltip");
+            default -> Text.translatable("change_game_menu_screen_layout.viafabricplus.off.tooltip");
+        });
+        changeGameMenuScreenLayout.setValue(1);
 
-        this.hideDownloadTerrainScreenTransitionEffects.setValue(VersionedBooleanSetting.DISABLED_INDEX);
+        hideDownloadTerrainScreenTransitionEffects.setValue(VersionedBooleanSetting.DISABLED_INDEX);
     }
 
     public static VisualSettings global() {

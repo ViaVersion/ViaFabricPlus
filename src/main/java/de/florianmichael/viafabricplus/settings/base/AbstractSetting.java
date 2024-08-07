@@ -25,6 +25,8 @@ import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
+import java.util.function.Supplier;
+
 /**
  * This class is the base for all settings. It contains the name, the default value and the current value.
  * Developer's should always use the implementations of this class, and not this class itself.
@@ -38,7 +40,7 @@ public abstract class AbstractSetting<T> {
 
     private T value;
 
-    private Text tooltip;
+    private Supplier<Text> tooltip;
 
     public AbstractSetting(final SettingGroup parent, final MutableText name, final T defaultValue) {
         this.name = name;
@@ -92,10 +94,18 @@ public abstract class AbstractSetting<T> {
     }
 
     public Text getTooltip() {
-        return tooltip;
+        if (tooltip == null) {
+            return null;
+        } else {
+            return tooltip.get();
+        }
     }
 
     public void setTooltip(Text tooltip) {
+        this.tooltip = () -> tooltip;
+    }
+
+    public void setTooltip(Supplier<Text> tooltip) {
         this.tooltip = tooltip;
     }
 

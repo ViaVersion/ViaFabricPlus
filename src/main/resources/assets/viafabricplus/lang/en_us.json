@@ -81,6 +81,7 @@
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Automatically select CPE when using the ClassiCube server list",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Set session name to ClassiCube name when using the ClassiCube server list",
 
+  "visual_settings.viafabricplus.change_game_menu_screen_layout": "Change game menu screen layout",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Disable Secure Chat warning",
   "visual_settings.viafabricplus.hide_signature_indicator": "Hide signature indicator",
   "visual_settings.viafabricplus.hide_priority_selections_in_jigsaw_screen": "Hide priority selections in Jigsaw screen",
@@ -106,6 +107,13 @@
 
   "click_to_set_bedrock_account.viafabricplus.notice": "Your browser should have opened.\nClosing this screen will cancel the process!",
   "click_to_set_bedrock_account.viafabricplus.display": "Bedrock account: %s",
+
+  "change_game_menu_screen_layout.viafabricplus.authentic": "Authentic",
+  "change_game_menu_screen_layout.viafabricplus.adjusted": "Adjusted",
+
+  "change_game_menu_screen_layout.viafabricplus.authentic.tooltip": "Adjusts button positions and overlays based on the selected version.",
+  "change_game_menu_screen_layout.viafabricplus.adjusted.tooltip": "Replaces \"Player Reporting\" with \"Social Interactions\" screen in <= 1.18.2.",
+  "change_game_menu_screen_layout.viafabricplus.off.tooltip": "Does not modify the game menu screen at all.",
 
   "report.viafabricplus.button": "Report issues",
   "report.viafabricplus.bug_report": "Report a bug on GitHub",

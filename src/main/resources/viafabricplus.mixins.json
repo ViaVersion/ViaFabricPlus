@@ -104,6 +104,7 @@
     "fixes.minecraft.entity.MixinBipedEntityModel",
     "fixes.minecraft.entity.MixinBoatEntity",
     "fixes.minecraft.entity.MixinCamelEntity",
+    "fixes.minecraft.entity.MixinCatEntity",
     "fixes.minecraft.entity.MixinClientPlayerEntity",
     "fixes.minecraft.entity.MixinCowEntity",
     "fixes.minecraft.entity.MixinCreeperEntity",
@@ -160,6 +161,7 @@
     "fixes.minecraft.screen.MixinConnectScreen_1",
     "fixes.minecraft.screen.MixinCreativeInventoryScreen",
     "fixes.minecraft.screen.MixinDownloadingTerrainScreen",
+    "fixes.minecraft.screen.MixinGameMenuScreen",
     "fixes.minecraft.screen.MixinGameModeSelectionScreen",
     "fixes.minecraft.screen.MixinGameModeSelectionScreen_GameModeSelection",
     "fixes.minecraft.screen.MixinJigsawBlockScreen",
@@ -209,8 +211,7 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.entity.MixinCatEntity"
+    "vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1
