@@ -27,6 +27,7 @@ accessible method net/minecraft/item/BlockItem getPlacementState (Lnet/minecraft
 
 accessible class net/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection
 accessible class net/minecraft/client/font/FontStorage$GlyphPair
+accessible class net/minecraft/client/font/TextRenderer$Drawer
 
 mutable field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 mutable field net/minecraft/block/AbstractBlock velocityMultiplier F

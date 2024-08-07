@@ -62,6 +62,7 @@
     "fixes.minecraft.MixinStaticSound",
     "fixes.minecraft.MixinStringHelper",
     "fixes.minecraft.MixinTextRenderer",
+    "fixes.minecraft.MixinTextRenderer_Drawer",
     "fixes.minecraft.MixinWorldRenderer",
     "fixes.minecraft.block.MixinAbstractBlock",
     "fixes.minecraft.block.MixinAbstractBlock_AbstractBlockState",
