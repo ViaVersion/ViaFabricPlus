@@ -58,7 +58,8 @@ public class VisualSettings extends SettingGroup {
     public final VersionedBooleanSetting emulateArmorHud = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.emulate_armor_hud"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting removeNewerFeaturesFromCommandBlockScreen = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_newer_features_from_command_block_screen"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting enableSwordBlocking = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_sword_blocking"), VersionRange.andOlder(ProtocolVersion.v1_8));
-
+    public final VersionedBooleanSetting disableActionEquipProgress = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.disable_action_equip_progress"), VersionRange.single(ProtocolVersion.v1_8));
+    
     // 1.8.x -> 1.7.6 - 1.7.10
     public final VersionedBooleanSetting enableBlockHitAnimation = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_block_hit_animation"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
     public final VersionedBooleanSetting enableLegacyTablist = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_legacy_tablist"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
