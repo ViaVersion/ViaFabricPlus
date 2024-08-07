@@ -35,10 +35,12 @@ import java.util.concurrent.CompletableFuture;
 /*
  * TODO | Port 1.20.6
  *  - ClientPlayerInteractionManager#interactBlockInternal added new condition
- *  - MouseHandling changed (not sure if relevant)
  *  - Command arguments (Probably not everything worth, but least them with nbt)
  *  - Entity attachment calculation got changed completely
  *  - Particle handling has slightly changed
+ *  - BookViewScreen/BookEditScreen networking handling
+ *  - SetEquipment packet now only accepts living entities
+ *  - Wolf interaction
  *
  * TODO | General
  *  - Make recipe fixes dynamic instead of a data dump in java classes
