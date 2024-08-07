@@ -57,6 +57,7 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -225,6 +226,23 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
                 actionResult = ActionResult.PASS; // In <= 1.12.2 FAIL is the same as PASS
             }
             throw new ActionResultException1_12_2(actionResult);
+        }
+    }
+
+    @Redirect(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/TypedActionResult;getResult()Lnet/minecraft/util/ActionResult;"))
+    private ActionResult eitherSuccessOrPass(TypedActionResult<ItemStack> instance, @Local(ordinal = 0) ItemStack itemStack) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            // In <= 1.8, ActionResult weren't a thing and interactItem simply returned either true or false
+            // depending on if the input and output item are equal or not
+            final boolean accepted = instance.getValue() != itemStack;
+
+            if (instance.getResult().isAccepted() == accepted) {
+                return instance.getResult();
+            } else {
+                return accepted ? ActionResult.SUCCESS : ActionResult.PASS;
+            }
+        } else {
+            return instance.getResult();
         }
     }
 
