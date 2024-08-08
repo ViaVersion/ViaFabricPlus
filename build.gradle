@@ -100,9 +100,17 @@ processResources {
 		expand(
 				"version": project.version,
 				"description": project.description,
-				"implVersion": "git-${project.name}-${project.version}:${project.latestCommitHash()}",
-				"mcVersion": project.minecraft_version
+				"implVersion": "git-${project.name}-${project.version}:${latestCommitHash()}",
+				"mcVersion": mcVersion()
 		)
+	}
+}
+
+String mcVersion() {
+	if (project.supported_versions.isEmpty()) {
+		return project.minecraft_version
+	} else {
+		return project.supported_versions
 	}
 }
 
