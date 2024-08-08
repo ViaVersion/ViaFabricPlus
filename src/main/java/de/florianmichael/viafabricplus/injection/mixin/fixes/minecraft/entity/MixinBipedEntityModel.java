@@ -19,6 +19,8 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
@@ -29,24 +31,38 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BipedEntityModel.class)
 public abstract class MixinBipedEntityModel<T extends LivingEntity> {
 
-	@Shadow @Final public ModelPart rightArm;
+    @Shadow
+    @Final
+    public ModelPart rightArm;
 
-	@Shadow @Final public ModelPart leftArm;
+    @Shadow
+    @Final
+    public ModelPart leftArm;
 
-	@Inject(method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/model/ModelPart;roll:F", ordinal = 1, shift = At.Shift.AFTER))
-	private void addOldWalkAnimation(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
-		if (VisualSettings.global().oldWalkingAnimation.isEnabled()) {
-			this.rightArm.pitch = MathHelper.cos(f * 0.6662F + 3.1415927F) * 2.0F * g;
-			this.rightArm.roll = (MathHelper.cos(f * 0.2312F) + 1.0F) * 1.0F * g;
+    @Redirect(method = "positionBlockingArm", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(FFF)F"))
+    private float preventArmFollowingThirdPersonRotation(float value, float min, float max) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
+            return 0.0F;
+        } else {
+            return MathHelper.clamp(value, min, max);
+        }
+    }
 
-			this.leftArm.pitch = MathHelper.cos(f * 0.6662F) * 2.0F * g;
-			this.leftArm.roll = (MathHelper.cos(f * 0.2812F) - 1.0F) * 1.0F * g;
-		}
-	}
+    @Inject(method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/model/ModelPart;roll:F", ordinal = 1, shift = At.Shift.AFTER))
+    private void addOldWalkAnimation(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (VisualSettings.global().oldWalkingAnimation.isEnabled()) {
+            this.rightArm.pitch = MathHelper.cos(f * 0.6662F + 3.1415927F) * 2.0F * g;
+            this.rightArm.roll = (MathHelper.cos(f * 0.2312F) + 1.0F) * 1.0F * g;
+
+            this.leftArm.pitch = MathHelper.cos(f * 0.6662F) * 2.0F * g;
+            this.leftArm.roll = (MathHelper.cos(f * 0.2812F) - 1.0F) * 1.0F * g;
+        }
+    }
 
 }
