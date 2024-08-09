@@ -65,6 +65,7 @@ public class SaveManager {
         for (AbstractSave save : saves) {
             save.postInit();
         }
+        LoadSaveFilesCallback.EVENT.invoker().onLoadSaveFiles(this, LoadSaveFilesCallback.State.POST_INIT);
     }
 
     public void add(final AbstractSave... saves) {

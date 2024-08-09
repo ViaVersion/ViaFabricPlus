@@ -19,12 +19,17 @@
 
 package de.florianmichael.viafabricplus.event;
 
+import de.florianmichael.viafabricplus.save.AbstractSave;
 import de.florianmichael.viafabricplus.save.SaveManager;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
 /**
- * This event is fired when ViaFabricPlus has loaded its save files, and before it starts reading the values from the save files.
+ * This event is fired when loading save files:
+ * <ul>
+ *     <li>{@link State#PRE} before loading save files</li>
+ *     <li>{@link State#POST} after loading save files</li>
+ *     <li>{@link State#POST_INIT} after loading save files and calling {@link AbstractSave#postInit()} functions</li>
  */
 public interface LoadSaveFilesCallback {
 
@@ -37,7 +42,7 @@ public interface LoadSaveFilesCallback {
     void onLoadSaveFiles(final SaveManager saveManager, final State state);
 
     enum State {
-        PRE, POST
+        PRE, POST, POST_INIT
     }
 
 }
