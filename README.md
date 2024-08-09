@@ -37,7 +37,7 @@ If you need ViaFabricPlus for older versions of the game, you can use [ViaFabric
   - [the ViaVersion Discord](https://discord.gg/viaversion)
 
 ## How to (Developers)
-- [Detailed guidelines for contributions as well as setting up a dev environment](docs/UPDATE_INSTRUCTIONS.md)
+- [Detailed guidelines for contributions as well as setting up a dev environment](CONTRIBUTING.md)
 - [API and integration examples for developers](docs/DEVELOPER_API.md)
 
 ## ViaFabric

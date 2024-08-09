@@ -1,35 +1,5 @@
 # Updating instructions for the project
 
-## Update translation files
-Translation files are located in `src/main/resources/assets/viafabricplus/lang/`. To update them, you need to do the following:
-1. Copy the `en_us.json` file and rename it to the language code of the language you want to update (e.g. `de_de.json` for German)
-2. Translate all values in the file to the language you want to update
-3. Do not change the keys of the values, only the values themselves
-4. Do not change the formatting of the file (e.g. the spaces between the keys and values or the order of the keys)
-5. Try to be consistent with Minecraft language files.
-6. Take a look at UN's guidelines for Gender-inclusive language: https://www.un.org/en/gender-inclusive-language/guidelines.shtml
-7. Create a pull request and wait for it to be reviewed and merged.
-8. You're done, congrats!
-
-## Add a new feature or fix a bug
-1. Create a new branch for your feature/bugfix (e.g. `feature/fix-xyz` or `fix/fix-xyz`)
-2. Implement your feature/bugfix and make sure it works correctly
-3. Clean your code and make sure it is readable and understandable (e.g. use proper variable names)
-4. Use the Google java code style (https://google.github.io/styleguide/javaguide.html) and format your code accordingly
-5. If you're changing API, make sure to update the documentation in the `docs` folder, add javadocs to your code and don't break backwards compatibility if not necessary
-6. Increment the version number in `gradle.properties` by at least a patch version (e.g. 1.0.0 -> 1.0.1)
-7. Create a pull request and wait for it to be reviewed and merged.
-8. You're done, congrats!
-
-## Setting up a Workspace
-ViaFabricPlus uses Gradle, to make sure that it is installed properly you can check [Gradle's website](https://gradle.org/install/).
-1. Clone the repository using `git clone https://github.com/ViaVersion/ViaFabricPlus`.
-2. CD into the local repository.
-3. Run `./gradlew genSources`.
-4. Open the folder as a Gradle project in your preferred IDE.
-5. Run the mod.
-
-## Update to a new Minecraft version
 1. Update all upstream versions in `gradle.properties`. The main versions you need to update are:
     - `minecraft_version`
     - `yarn_mappings`
@@ -76,3 +46,19 @@ ViaFabricPlus uses Gradle, to make sure that it is installed properly you can ch
 - `backport/*`: Backport branches, these are used to backport newer ViaFabricPlus versions to older versions of the game
 - `recode/*`: Recode branches, these are used to port ViaFabricPlus to newer versions of the game or rewrite big parts of the code
 - `<version>`: Final release branches sorted by their Minecraft version (e.g. `1.8.9`, `1.16.5`, `1.17.1`, ...)
+
+## Versioning
+The versioning should only be updated every release and should only have one update between each release.
+- The versioning scheme is `major.minor.patch`, where:
+    - `major` is incremented when breaking changes are made
+    - `minor` is incremented when new features are added
+    - `patch` is incremented when bug fixes are made
+
+This scheme is used as follows:
+- `Major` versions are only incremented with breaking and fundamental changes to the existing codebase, such as migrating mappings
+or refactoring the entire codebase.
+
+- `Minor` versions are incremented when the mod gets ported to a new version of the game or when huge features are added / 
+upstream changes are implemented.
+
+- `Patch` versions are incremented when bug fixes are made or small features are added, they are the usual version increment.
