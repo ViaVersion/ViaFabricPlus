@@ -35,6 +35,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.math.MathHelper;
@@ -181,6 +182,11 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
     private boolean dontAllowSneakingWhileSwimming(ClientPlayerEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && instance.isSwimming();
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerAbilities;flying:Z", ordinal = 0))
+    private boolean allowSneakingWhileFlying(PlayerAbilities instance) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && instance.flying;
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z"))

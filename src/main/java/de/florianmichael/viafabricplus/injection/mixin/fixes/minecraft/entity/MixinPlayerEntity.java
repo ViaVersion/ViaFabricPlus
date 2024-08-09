@@ -147,7 +147,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
                 pose = EntityPose.SWIMMING;
             } else if (this.isUsingRiptide()) {
                 pose = EntityPose.SPIN_ATTACK;
-            } else if (this.isSneaking() && !this.abilities.flying) {
+            } else if (this.isSneaking()) {
                 pose = EntityPose.CROUCHING;
             } else {
                 pose = EntityPose.STANDING;
