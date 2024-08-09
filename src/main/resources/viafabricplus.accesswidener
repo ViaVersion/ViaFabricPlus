@@ -18,6 +18,7 @@ accessible field net/minecraft/client/gui/screen/world/WorldIcon UNKNOWN_SERVER_
 accessible field net/minecraft/client/gui/widget/TexturedButtonWidget textures Lnet/minecraft/client/gui/screen/ButtonTextures;
 accessible field net/minecraft/client/gui/screen/option/ControlsListWidget$KeyBindingEntry RESET_TEXT Lnet/minecraft/text/Text;
 accessible field net/minecraft/client/gui/screen/multiplayer/SocialInteractionsScreen TITLE Lnet/minecraft/text/Text;
+accessible field net/minecraft/client/resource/language/TranslationStorage translations Ljava/util/Map;
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
