@@ -73,12 +73,14 @@ public class ClientsideFixes {
     /**
      * This identifier is an internal identifier used to identify packets that are sent by ViaFabricPlus
      */
+    @ApiStatus.Internal
     public static final String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 
     /**
      * This is an incremental index used for tablist entries to implement FIFO behavior <= 1.7
      */
-    public static int GLOBAL_TABLIST_INDEX = 0;
+    @ApiStatus.Internal
+    public static int globalTablistIndex = 0;
 
     /**
      * Older versions only had unicode font support for some languages and therefore servers are expecting the client

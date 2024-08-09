@@ -257,7 +257,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
             }
             this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
         }
-        ClientsideFixes.GLOBAL_TABLIST_INDEX = 0;
+        ClientsideFixes.globalTablistIndex = 0;
         ((IPlayerListHud) MinecraftClient.getInstance().inGameHud.getPlayerListHud()).viaFabricPlus$setMaxPlayers(packet.maxPlayers());
     }
 

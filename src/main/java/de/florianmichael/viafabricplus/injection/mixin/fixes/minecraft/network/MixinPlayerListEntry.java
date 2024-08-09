@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.Unique;
 public abstract class MixinPlayerListEntry implements IPlayerListEntry {
 
     @Unique
-    private final int viaFabricPlus$index = ClientsideFixes.GLOBAL_TABLIST_INDEX++;
+    private final int viaFabricPlus$index = ClientsideFixes.globalTablistIndex++;
 
     @Override
     public int viaFabricPlus$getIndex() {
