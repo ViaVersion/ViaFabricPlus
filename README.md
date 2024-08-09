@@ -13,12 +13,13 @@
 
 # Why another protocol translator?
 ViaFabricPlus implements the [ViaVersion projects](https://github.com/ViaVersion) into Fabric and provides tons of fixes to the existing protocol translation which can't be implemented in the original ViaVersion project.
-These fixes consist of movment changes, block/entity collisions, rendering changes, and many more.
+These fixes consist of movement changes, block/entity collisions, rendering changes, and many more.
 
 At the time of writing, ViaFabricPlus is the only mod that supports joining all Minecraft server versions down to the first multiplayer version while implementing
-legacy combat mechanics, movement, and rendering changes to make the gameplay more feel like the old days.
+legacy combat mechanics, movement, and rendering changes to make the gameplay feel more like the old days.
 
 **On the other hand, ViaFabricPlus supports only the latest Minecraft client version, and only Fabric.**
+
 If you need ViaFabricPlus for older versions of the game, you can use [ViaFabric](https://viaversion.com/fabric)
 
 ## Supported Server versions
