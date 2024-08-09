@@ -35,7 +35,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class MixinPlayerEntityRenderer {
-
+    
+    @Redirect(method = "setModelPose", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isInSneakingPose()Z"))
+    public boolean setSneakingPoseWhenFlyingDown(AbstractClientPlayerEntity instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            return (instance.isSneaking() && !(instance.isInPose(EntityPose.SWIMMING) || instance.isInPose(EntityPose.FALL_FLYING))) || instance.isInSneakingPose();
+        } else {
+            return instance.isInSneakingPose();
+        }
+    }
+    
     @Inject(method = "getPositionOffset(Lnet/minecraft/client/network/AbstractClientPlayerEntity;F)Lnet/minecraft/util/math/Vec3d;", at = @At("RETURN"), cancellable = true)
     private void modifySleepingOffset(AbstractClientPlayerEntity player, float delta, CallbackInfoReturnable<Vec3d> cir) {
         if (player.getPose() == EntityPose.SLEEPING) {
