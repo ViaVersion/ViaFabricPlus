@@ -53,6 +53,7 @@
   "general_settings.viafabricplus.ignore_packet_translation_errors": "忽略数据包转换错误",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "加载旧版本皮肤和头颅",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "模拟Alpha版本物品栏操作",
+  "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "在槽位界面中保存滚动位置",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "单击以设置基岩版账户",
   "bedrock_settings.viafabricplus.replace_default_port": "在服务器列表中替换默认端口",
@@ -80,9 +81,11 @@
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "使用ClassiCube服务器列表时自动选择CPE",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "使用ClassiCube服务器列表时将会话名称设置为ClassiCube名称",
 
+  "visual_settings.viafabricplus.change_game_menu_screen_layout": "更改游戏菜单界面布局",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "禁用安全聊天警告",
   "visual_settings.viafabricplus.hide_signature_indicator": "隐藏签名指示器",
   "visual_settings.viafabricplus.hide_priority_selections_in_jigsaw_screen": "在拼图方块界面中隐藏优先级选项",
+  "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "隐藏下载地形界面过渡效果",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "将石化橡木台阶纹理替换为“未知”纹理",
   "visual_settings.viafabricplus.emulate_armor_hud": "模拟护甲HUD",
   "visual_settings.viafabricplus.remove_newer_features_from_command_block_screen": "从命令方块界面中移除新版功能",
@@ -99,11 +102,19 @@
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "隐藏熔炉配方书",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "隐藏合成配方书",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "隐藏现代拼图方块界面功能",
+  "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "强制为非ASCII语言使用Unicode字体",
 
   "force_version.viafabricplus.title": "请选择要Ping/连接服务器的版本",
 
   "click_to_set_bedrock_account.viafabricplus.notice": "你的浏览器应该已经打开。\n关闭此屏幕将取消该过程！",
   "click_to_set_bedrock_account.viafabricplus.display": "基岩版账户：%s",
+
+  "change_game_menu_screen_layout.viafabricplus.authentic": "真实",
+  "change_game_menu_screen_layout.viafabricplus.adjusted": "调整",
+
+  "change_game_menu_screen_layout.viafabricplus.authentic.tooltip": "根据所选版本调整按钮位置和叠加层。",
+  "change_game_menu_screen_layout.viafabricplus.adjusted.tooltip": "在≤1.18.2中将“举报玩家”替换为“社交”屏幕。",
+  "change_game_menu_screen_layout.viafabricplus.off.tooltip": "完全不修改游戏菜单界面。",
 
   "report.viafabricplus.button": "报告问题",
   "report.viafabricplus.bug_report": "在GitHub上报告漏洞",
