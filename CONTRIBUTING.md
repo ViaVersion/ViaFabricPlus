@@ -27,3 +27,19 @@ Translation files are located in `src/main/resources/assets/viafabricplus/lang/`
 5. If you're changing API, make sure to update the documentation in the `docs` folder, add javadocs to your code and don't break backwards compatibility if not necessary
 6. Create a pull request and wait for it to be reviewed and merged.
 7. You're done, congrats!
+
+## Adding protocol new fixes - which are important and which aren't?
+Protocol fixes are the core functionality of ViaFabricPlus, they make ViaFabricPlus stand out from all other existing
+protocol translation platforms, and so it's even more important to keep them working.
+
+When adding new fixes, you should always check if the fix is relevant for the current version of the game. If you're unsure, 
+ask in the ViaVersion discord.
+
+In general, you should only implement changes which could be detected by the server or are relevant for the gameplay. 
+
+From experience, most changes are related to either movement or networking. If you contribute new fixes, please proof
+your changes by showing that they are relevant and also by providing a game source diff. **It's important that fixes
+are changing the actual change happend in the game and not just visual changes.**
+
+## Maintaining the mod
+See [MAINTAINING.md](docs/MAINTAINING.md) for more information on how to maintain the mod.
