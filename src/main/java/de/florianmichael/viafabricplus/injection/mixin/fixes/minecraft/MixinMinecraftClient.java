@@ -163,4 +163,9 @@ public abstract class MixinMinecraftClient {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
     }
 
+    @ModifyExpressionValue(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"))
+    private boolean allowItemUsageAndBlockBreakAtTheSameTime(boolean original) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
+    }
+
 }
