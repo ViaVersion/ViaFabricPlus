@@ -40,6 +40,7 @@
   "screen.viafabricplus.server_list": "Lista serwerów",
   "screen.viafabricplus.classicube_login": "Logowanie Classicube",
   "screen.viafabricplus.classicube_mfa": "Classicube MFA",
+  "screen.viafabricplus.settings": "Ustawienia",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Zapisz wybraną wersję protokołu",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "Pokazuj dodatkowe informacje w interfejsie debugowania",
@@ -52,6 +53,7 @@
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Sposób obsługiwania błędów tłumaczenia pakietów",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Ładuj skórki graczy w starszych wersjach gry",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Emuluj akcje ekwipunku w wersjach alpha",
+  "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "Zapisuj pozycję scrolla w ekranach ze slotami",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Naciśnij, aby ustawić konto dla minecraft bedrock edition",
   "bedrock_settings.viafabricplus.replace_default_port": "Zamień domyślny port w liście serwerów",
@@ -79,9 +81,11 @@
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Automatycznie wybieraj wersję CPE podczas korzystania z listy serwerów ClassiCube",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Ustaw nazwę sesji na nazwę ClassiCube podczas korzystania z listy serwerów ClassiCube",
 
+  "visual_settings.viafabricplus.change_game_menu_screen_layout": "Zmień układ menu gry",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Wyłącz ostrzeżenie dotyczące bezpiecznego czatu",
   "visual_settings.viafabricplus.hide_signature_indicator": "Ukrywaj wskaźnik podpisywania wiadomości na czacie",
   "visual_settings.viafabricplus.hide_priority_selections_in_jigsaw_screen": "Ukrywaj priorytetowe selekcje w ekranie bloku konstrukcyjnego",
+  "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "Ukrywaj efekty przejścia z ekranu pobierania terenu",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "Zamień skamieniałą płytę dębową na nieznaną teksturę",
   "visual_settings.viafabricplus.emulate_armor_hud": "Emuluj interfejs zbroi",
   "visual_settings.viafabricplus.remove_newer_features_from_command_block_screen": "Usuń nowsze funkcje z ekranu bloku komend",
@@ -98,11 +102,19 @@
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "Ukrywaj książkę przepisów w piecach",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Ukrywaj książkę przepisów w stole rzemyślniczym",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Ukrywaj nowe funkcje ekranu bloku konstrukcyjnego",
+  "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Wymuszaj czcionkę Unicode dla języków niewspieranych przez ASCII",
 
   "force_version.viafabricplus.title": "Wybierz wersję na której chcesz łączyć się do serwera",
 
   "click_to_set_bedrock_account.viafabricplus.notice": "Twoja przeglądarka powinna się otworzyć.\nZamyknięcie tego ekranu będzie anulowało proces!",
   "click_to_set_bedrock_account.viafabricplus.display": "Konto na bedrocku: %s",
+
+  "change_game_menu_screen_layout.viafabricplus.authentic": "Autentyczne",
+  "change_game_menu_screen_layout.viafabricplus.adjusted": "Dostosowane",
+
+  "change_game_menu_screen_layout.viafabricplus.authentic.tooltip": "Dostosowywuje pozycje przycisków i nakładek na podstawie wybranej wersji.",
+  "change_game_menu_screen_layout.viafabricplus.adjusted.tooltip": "Zamienia zgłaszanie graczy i interakcje społeczne w wersjach <= 1.18.2.",
+  "change_game_menu_screen_layout.viafabricplus.off.tooltip": "W ogóle nie zmienia menu gry.",
 
   "report.viafabricplus.button": "Zgłoś problem",
   "report.viafabricplus.bug_report": "Zgłoś problem na GitHub",
