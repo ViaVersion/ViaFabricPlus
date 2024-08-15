@@ -19,6 +19,8 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.perserverversion;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IMultiValueDebugSampleLogImpl;
@@ -43,8 +45,8 @@ public abstract class MixinMultiplayerServerListPinger {
         return ClientsideFixes.replaceDefaultPort(address, ((IServerInfo) entry).viaFabricPlus$forcedVersion());
     }
 
-    @Redirect(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)Lnet/minecraft/network/ClientConnection;"))
-    private ClientConnection setForcedVersion(InetSocketAddress address, boolean useEpoll, MultiValueDebugSampleLogImpl packetSizeLog, @Local(argsOnly = true) ServerInfo serverInfo) {
+    @WrapOperation(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)Lnet/minecraft/network/ClientConnection;"))
+    private ClientConnection setForcedVersion(InetSocketAddress address, boolean useEpoll, MultiValueDebugSampleLogImpl packetSizeLog, Operation<ClientConnection> original, @Local(argsOnly = true) ServerInfo serverInfo) {
         final IServerInfo mixinServerInfo = (IServerInfo) serverInfo;
 
         if (mixinServerInfo.viaFabricPlus$forcedVersion() != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
@@ -60,7 +62,7 @@ public abstract class MixinMultiplayerServerListPinger {
             mixinServerInfo.viaFabricPlus$passDirectConnectScreen(false);
         }
 
-        return ClientConnection.connect(address, useEpoll, packetSizeLog);
+        return original.call(address, useEpoll, packetSizeLog);
     }
 
 }
