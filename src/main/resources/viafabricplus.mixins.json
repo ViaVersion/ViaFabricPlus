@@ -212,7 +212,8 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig"
+    "vialegacy.MixinViaLegacyConfig",
+    "fixes.minecraft.item.MixinFishingRodItem"
   ],
   "injectors": {
     "defaultRequire": 1
