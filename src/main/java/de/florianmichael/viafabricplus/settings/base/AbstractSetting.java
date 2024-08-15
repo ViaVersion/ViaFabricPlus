@@ -60,6 +60,9 @@ public abstract class AbstractSetting<T> {
     public abstract void write(final JsonObject object);
     public abstract void read(final JsonObject object);
 
+    public void onValueChanged() {
+    }
+
     public MutableText getName() {
         return name;
     }
@@ -91,6 +94,7 @@ public abstract class AbstractSetting<T> {
 
     public void setValue(T value) {
         this.value = value;
+        onValueChanged();
     }
 
     public Text getTooltip() {

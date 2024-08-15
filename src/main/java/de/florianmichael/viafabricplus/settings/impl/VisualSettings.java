@@ -20,9 +20,12 @@
 package de.florianmichael.viafabricplus.settings.impl;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.settings.base.BooleanSetting;
 import de.florianmichael.viafabricplus.settings.base.ModeSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.base.VersionedBooleanSetting;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.FontStorage;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialoader.util.VersionRange;
@@ -36,6 +39,19 @@ public class VisualSettings extends SettingGroup {
             Text.translatable("change_game_menu_screen_layout.viafabricplus.adjusted"),
             Text.translatable("base.viafabricplus.off")
     );
+    public final BooleanSetting filterNonExistingGlyphs = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.filter_non_existing_glyphs"), true) {
+
+        @Override
+        public void onValueChanged() {
+            final MinecraftClient client = MinecraftClient.getInstance();
+            if (client != null) {
+                for (FontStorage storage : client.fontManager.fontStorages.values()) {
+                    storage.glyphRendererCache.clear();
+                    storage.glyphCache.clear();
+                }
+            }
+        }
+    };
 
     // 1.21 -> 1.20.5
     public final VersionedBooleanSetting hideDownloadTerrainScreenTransitionEffects = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects"), VersionRange.andOlder(ProtocolVersion.v1_20_5));

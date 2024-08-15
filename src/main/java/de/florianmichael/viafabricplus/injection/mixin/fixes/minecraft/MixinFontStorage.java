@@ -87,7 +87,11 @@ public abstract class MixinFontStorage {
 
     @Unique
     private boolean viaFabricPlus$shouldBeInvisible(final int codePoint) {
-        return (this.id.equals(MinecraftClient.DEFAULT_FONT_ID) || this.id.equals(MinecraftClient.UNICODE_FONT_ID)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
+        if (VisualSettings.global().filterNonExistingGlyphs.getValue()) {
+            return (this.id.equals(MinecraftClient.DEFAULT_FONT_ID) || this.id.equals(MinecraftClient.UNICODE_FONT_ID)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
+        } else {
+            return false;
+        }
     }
 
     @Unique

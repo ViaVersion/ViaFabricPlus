@@ -101,6 +101,7 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Bastelrezeptbuch verstecken",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Moderne Puzzle-Funktionen ausblenden",
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Unicode-Schrift für nicht-ASCII-Sprachen erzwingen",
+  "visual_settings.viafabricplus.filter_non_existing_glyphs": "Nicht vorhandene Glyphen filtern",
 
   "force_version.viafabricplus.title": "Version festlegen, mit der der Server gepingt/verbunden werden soll",
 

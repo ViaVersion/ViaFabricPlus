@@ -37,7 +37,6 @@ import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import de.florianmichael.viafabricplus.util.DataCustomPayload;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.FontStorage;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.option.SimpleOption;
@@ -109,11 +108,7 @@ public class ClientsideFixes {
         // Reloads some clientside stuff when the protocol version changes
         ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> {
             MinecraftClient.getInstance().execute(() -> {
-                // Clear all font caches to enforce a reload of all fonts (this is needed because we change the font renderer behavior)
-                for (FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
-                    storage.glyphRendererCache.clear();
-                    storage.glyphCache.clear();
-                }
+                VisualSettings.global().filterNonExistingGlyphs.onValueChanged();
 
                 // Reloads all bounding boxes of the blocks that we changed
                 for (Block block : Registries.BLOCK) {

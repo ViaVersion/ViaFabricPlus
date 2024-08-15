@@ -103,6 +103,7 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Hide crafting recipe book",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Hide modern Jigsaw screen features",
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Force Unicode font for non-ASCII languages",
+  "visual_settings.viafabricplus.filter_non_existing_glyphs": "Filter non existing glyphs",
 
   "force_version.viafabricplus.title": "Please select the version with which the server should be pinged/connected",
 
