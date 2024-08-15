@@ -19,7 +19,6 @@
 
 package de.florianmichael.viafabricplus.fixes;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.event.*;
 import de.florianmichael.viafabricplus.fixes.data.EntityDimensionDiff;
@@ -29,9 +28,9 @@ import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.GridItemSelectionScreen;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.ArmorHudEmulation1_8;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
+import de.florianmichael.viafabricplus.fixes.versioned.visual.UnicodeFontFix1_12_2;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import de.florianmichael.viafabricplus.protocoltranslator.util.LanguageUtil;
 import de.florianmichael.viafabricplus.settings.impl.BedrockSettings;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import de.florianmichael.viafabricplus.util.DataCustomPayload;
@@ -39,12 +38,9 @@ import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.option.SimpleOption;
-import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.Registries;
-import net.minecraft.util.Language;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
@@ -81,18 +77,14 @@ public class ClientsideFixes {
     @ApiStatus.Internal
     public static int globalTablistIndex = 0;
 
-    /**
-     * Older versions only had unicode font support for some languages and therefore servers are expecting the client
-     * to use a unicode font, not using it on older versions can cause issues with wrong dimensions in chat components.
-     */
-    private static boolean forcingUnicodeFont = false;
-
     static {
         // Register additional CPE features
         CPEAdditions.modifyMappings();
 
         // Check if the pack format mappings are correct
         ResourcePackHeaderDiff.checkOutdated();
+
+        UnicodeFontFix1_12_2.init();
 
         PostGameLoadCallback.EVENT.register(() -> {
             // Handle clientside enchantment calculations in <= 1.20.6
@@ -106,41 +98,36 @@ public class ClientsideFixes {
         });
 
         // Reloads some clientside stuff when the protocol version changes
-        ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> {
-            MinecraftClient.getInstance().execute(() -> {
-                VisualSettings.global().filterNonExistingGlyphs.onValueChanged();
+        ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
+            VisualSettings.global().filterNonExistingGlyphs.onValueChanged();
 
-                // Reloads all bounding boxes of the blocks that we changed
-                for (Block block : Registries.BLOCK) {
-                    if (block instanceof AnvilBlock || block instanceof BedBlock || block instanceof BrewingStandBlock
-                            || block instanceof CarpetBlock || block instanceof CauldronBlock || block instanceof ChestBlock
-                            || block instanceof EnderChestBlock || block instanceof EndPortalBlock || block instanceof EndPortalFrameBlock
-                            || block instanceof FarmlandBlock || block instanceof FenceBlock || block instanceof FenceGateBlock
-                            || block instanceof HopperBlock || block instanceof LadderBlock || block instanceof LeavesBlock
-                            || block instanceof LilyPadBlock || block instanceof PaneBlock || block instanceof PistonBlock
-                            || block instanceof PistonHeadBlock || block instanceof SnowBlock || block instanceof WallBlock
-                            || block instanceof CropBlock || block instanceof FlowerbedBlock
-                    ) {
-                        for (BlockState state : block.getStateManager().getStates()) {
-                            state.initShapeCache();
-                        }
+            // Reloads all bounding boxes of the blocks that we changed
+            for (Block block : Registries.BLOCK) {
+                if (block instanceof AnvilBlock || block instanceof BedBlock || block instanceof BrewingStandBlock
+                        || block instanceof CarpetBlock || block instanceof CauldronBlock || block instanceof ChestBlock
+                        || block instanceof EnderChestBlock || block instanceof EndPortalBlock || block instanceof EndPortalFrameBlock
+                        || block instanceof FarmlandBlock || block instanceof FenceBlock || block instanceof FenceGateBlock
+                        || block instanceof HopperBlock || block instanceof LadderBlock || block instanceof LeavesBlock
+                        || block instanceof LilyPadBlock || block instanceof PaneBlock || block instanceof PistonBlock
+                        || block instanceof PistonHeadBlock || block instanceof SnowBlock || block instanceof WallBlock
+                        || block instanceof CropBlock || block instanceof FlowerbedBlock
+                ) {
+                    for (BlockState state : block.getStateManager().getStates()) {
+                        state.initShapeCache();
                     }
                 }
+            }
 
-                // Rebuilds the item selection screen grid
-                if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                    GridItemSelectionScreen.INSTANCE.itemGrid = null;
-                }
+            // Rebuilds the item selection screen grid
+            if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                GridItemSelectionScreen.INSTANCE.itemGrid = null;
+            }
 
-                // Reload sound system when switching between 3D Shareware and normal versions
-                if (oldVersion.equals(AprilFoolsProtocolVersion.s3d_shareware) || newVersion.equals(AprilFoolsProtocolVersion.s3d_shareware)) {
-                    MinecraftClient.getInstance().getSoundManager().reloadSounds();
-                }
-            });
-
-            // Runs its own code already inside the game thread
-            updateUnicodeFontOverride(newVersion);
-        });
+            // Reload sound system when switching between 3D Shareware and normal versions
+            if (oldVersion.equals(AprilFoolsProtocolVersion.s3d_shareware) || newVersion.equals(AprilFoolsProtocolVersion.s3d_shareware)) {
+                MinecraftClient.getInstance().getSoundManager().reloadSounds();
+            }
+        }));
 
         // Register the footstep particle
         FootStepParticle1_12_2.init();
@@ -151,21 +138,6 @@ public class ClientsideFixes {
 
     public static void init() {
         // Calls the static block
-    }
-
-    @ApiStatus.Internal
-    public static void updateUnicodeFontOverride(final ProtocolVersion version) {
-        final SimpleOption<Boolean> option = MinecraftClient.getInstance().options.getForceUnicodeFont();
-
-        if (VisualSettings.global().forceUnicodeFontForNonAsciiLanguages.isEnabled(version)) {
-            if (Language.getInstance() instanceof TranslationStorage storage) {
-                forcingUnicodeFont = LanguageUtil.isUnicodeFont1_12_2(storage.translations);
-                RenderSystem.recordRenderCall(() -> option.setValue(forcingUnicodeFont));
-            }
-        } else if (forcingUnicodeFont) {
-            RenderSystem.recordRenderCall(() -> option.setValue(false));
-            forcingUnicodeFont = false;
-        }
     }
 
     /**

@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
+import de.florianmichael.viafabricplus.fixes.versioned.visual.UnicodeFontFix1_12_2;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.resource.ResourceManager;
@@ -33,7 +33,7 @@ public abstract class MixinLanguageManager {
 
     @Inject(method = "reload", at = @At("RETURN"))
     private void updateUnicodeFontOverride(ResourceManager manager, CallbackInfo ci) {
-        ClientsideFixes.updateUnicodeFontOverride(ProtocolTranslator.getTargetVersion());
+        UnicodeFontFix1_12_2.updateUnicodeFontOverride(ProtocolTranslator.getTargetVersion());
     }
 
 }

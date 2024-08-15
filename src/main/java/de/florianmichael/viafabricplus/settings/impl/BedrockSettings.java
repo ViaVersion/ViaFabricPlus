@@ -89,18 +89,18 @@ public class BedrockSettings extends SettingGroup {
         final Screen prevScreen = client.currentScreen;
         try {
             accountsSave.setBedrockAccount(MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(GUI_LOGGER, MinecraftAuth.createHttpClient(), new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
-                client.execute(() -> client.setScreen(new ConfirmScreen(copyUrl -> {
+                VFPScreen.setScreen(new ConfirmScreen(copyUrl -> {
                     if (copyUrl) {
                         client.keyboard.setClipboard(msaDeviceCode.getDirectVerificationUri());
                     } else {
                         client.setScreen(prevScreen);
                         Thread.currentThread().interrupt();
                     }
-                }, TITLE, Text.translatable("click_to_set_bedrock_account.viafabricplus.notice"), Text.translatable("base.viafabricplus.copy_link"), Text.translatable("base.viafabricplus.cancel"))));
+                }, TITLE, Text.translatable("click_to_set_bedrock_account.viafabricplus.notice"), Text.translatable("base.viafabricplus.copy_link"), Text.translatable("base.viafabricplus.cancel")));
                 Util.getOperatingSystem().open(msaDeviceCode.getDirectVerificationUri());
             })));
 
-            RenderSystem.recordRenderCall(() -> client.setScreen(prevScreen));
+            VFPScreen.setScreen(prevScreen);
         } catch (Throwable e) {
             Thread.currentThread().interrupt();
             VFPScreen.showErrorScreen(TITLE, e, prevScreen);

@@ -81,7 +81,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
 
                 @Override
                 public void handleSuccessfulLogin(CCAccount account) {
-                    RenderSystem.recordRenderCall(() -> ClassiCubeServerListScreen.open(prevScreen, this));
+                    ClassiCubeServerListScreen.open(prevScreen, this);
                 }
 
                 @Override

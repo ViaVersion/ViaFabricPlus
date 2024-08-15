@@ -116,8 +116,13 @@ public class VFPScreen extends Screen {
      */
     public void open(final Screen prevScreen) {
         this.prevScreen = prevScreen;
+        setScreen(this);
+    }
 
-        RenderSystem.recordRenderCall(() -> MinecraftClient.getInstance().setScreen(this));
+    public static void setScreen(final Screen screen) {
+        final MinecraftClient client = MinecraftClient.getInstance();
+
+        client.execute(() -> client.setScreen(screen));
     }
 
     @Override

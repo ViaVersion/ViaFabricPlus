@@ -57,7 +57,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
         ClassiCubeHandler.requestServerList(account, serverList -> {
             ClassiCubeServerListScreen.SERVER_LIST.addAll(serverList.servers());
-            RenderSystem.recordRenderCall(() -> ClassiCubeServerListScreen.INSTANCE.open(prevScreen));
+            ClassiCubeServerListScreen.INSTANCE.open(prevScreen);
         }, loginProcessHandler::handleException);
     }
 
