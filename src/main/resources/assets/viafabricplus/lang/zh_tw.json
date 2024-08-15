@@ -94,7 +94,8 @@
   "visual_settings.viafabricplus.enable_block_hit_animation": "啟用 1.7 格擋攻擊動畫",
   "visual_settings.viafabricplus.disable_server_pinging": "停用伺服器 Ping",
   "visual_settings.viafabricplus.sideways_backwards_walking": "側身倒退行走",
-  "visual_settings.viafabricplus.enable_legacy_tablist": "啟用舊版 Tab 列表",
+  "visual_settings.viafabricplus.enable_legacy_tablist": "啟用舊版 Tab 清單",
+
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "隱藏熔爐介面的配方手冊",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "隱藏合成介面的配方手冊",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "從拼圖方塊畫面中移除較新的功能",
