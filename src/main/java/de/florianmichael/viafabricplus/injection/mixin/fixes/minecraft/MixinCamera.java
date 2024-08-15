@@ -19,10 +19,9 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
-import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.BlockView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,37 +38,10 @@ public abstract class MixinCamera {
     @Shadow
     private float lastCameraY;
 
-    @Shadow
-    private Entity focusedEntity;
-
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setPos(DDD)V", shift = At.Shift.BEFORE))
-    private void onUpdateHeight(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        if (!DebugSettings.global().replaceSneaking.isEnabled() && DebugSettings.global().sneakInstantly.isEnabled()) {
+    private void sneakInstantly(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
+        if (VisualSettings.global().sneakInstantly.isEnabled()) {
             cameraY = lastCameraY = focusedEntity.getStandingEyeHeight();
-        }
-    }
-
-    @Inject(method = "updateEyeHeight", at = @At(value = "HEAD"), cancellable = true)
-    private void onUpdateEyeHeight(CallbackInfo ci) {
-        if (this.focusedEntity == null) return;
-
-        if (DebugSettings.global().replaceSneaking.isEnabled()) {
-            ci.cancel();
-            this.lastCameraY = this.cameraY;
-
-            if (this.focusedEntity instanceof PlayerEntity player && !player.isSleeping()) {
-                if (player.isSneaking()) {
-                    cameraY = 1.54F;
-                } else if (!DebugSettings.global().longSneaking.isEnabled()) {
-                    cameraY = 1.62F;
-                } else if (cameraY < 1.62F) {
-                    float delta = 1.62F - cameraY;
-                    delta *= 0.4F;
-                    cameraY = 1.62F - delta;
-                }
-            } else {
-                cameraY = focusedEntity.getStandingEyeHeight();
-            }
         }
     }
 

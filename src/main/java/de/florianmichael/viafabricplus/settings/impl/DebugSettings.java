@@ -46,23 +46,19 @@ public class DebugSettings extends SettingGroup {
 
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting executeInputsSynchronously = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.execute_inputs_synchronously"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
-    public final VersionedBooleanSetting sneakInstantly = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.sneak_instantly"), VersionRange.of(ProtocolVersion.v1_8, ProtocolVersion.v1_12_2));
     public final VersionedBooleanSetting legacyTabCompletions = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.legacy_tab_completions"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
 
     // 1.12 -> 1.11.1-1.11.2
+    @Deprecated(forRemoval = true)
     public final VersionedBooleanSetting sendOpenInventoryPacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_open_inventory_packet"), VersionRange.andOlder(ProtocolVersion.v1_11_1));
 
     // 1.9 -> 1.8.x
+    @Deprecated(forRemoval = true)
     public final VersionedBooleanSetting removeCooldowns = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.remove_cooldowns"), VersionRange.andOlder(ProtocolVersion.v1_8));
+    @Deprecated(forRemoval = true)
     public final VersionedBooleanSetting sendIdlePacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_idle_packet"), VersionRange.andOlder(LegacyProtocolVersion.r1_2_4tor1_2_5).add(VersionRange.of(LegacyProtocolVersion.r1_4_2, ProtocolVersion.v1_8)));
+    @Deprecated(forRemoval = true)
     public final VersionedBooleanSetting preventEntityCramming = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.prevent_entity_cramming"), VersionRange.andOlder(ProtocolVersion.v1_8));
-    public final VersionedBooleanSetting replaceSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.replace_sneaking"), VersionRange.andOlder(ProtocolVersion.v1_8));
-
-    // 1.8.x -> 1.7.6
-    public final VersionedBooleanSetting longSneaking = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.long_sneaking"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
-
-    // 1.5/1.5.1 -> 1.4.6/1.4.7
-    public final VersionedBooleanSetting legacyMiningSpeeds = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.legacy_mining_speeds"), VersionRange.andOlder(LegacyProtocolVersion.r1_4_6tor1_4_7));
 
     public DebugSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.debug"));

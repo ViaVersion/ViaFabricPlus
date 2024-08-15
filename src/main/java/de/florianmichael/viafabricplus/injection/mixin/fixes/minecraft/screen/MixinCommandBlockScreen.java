@@ -46,7 +46,7 @@ public abstract class MixinCommandBlockScreen {
 
     @Inject(method = "init", at = @At("TAIL"))
     private void removeWidgets(CallbackInfo ci) {
-        if (VisualSettings.global().removeNewerFeaturesFromCommandBlockScreen.isEnabled()) {
+        if (VisualSettings.global().hideModernCommandBlockScreenFeatures.isEnabled()) {
             modeButton.visible = false;
             conditionalModeButton.visible = false;
             redstoneTriggerButton.visible = false;

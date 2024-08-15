@@ -19,12 +19,13 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 
-import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,7 +36,7 @@ public abstract class MixinAbstractBlock {
 
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
     private void changeMiningSpeedCalculation(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-        if (DebugSettings.global().legacyMiningSpeeds.isEnabled()) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             final float hardness = state.getHardness(world, pos);
             if (hardness == -1.0F) {
                 cir.setReturnValue(0.0F);

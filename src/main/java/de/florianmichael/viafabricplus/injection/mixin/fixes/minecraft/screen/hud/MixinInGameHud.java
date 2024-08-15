@@ -40,21 +40,21 @@ public abstract class MixinInGameHud {
 
     @Inject(method = {"renderMountJumpBar", "renderMountHealth"}, at = @At("HEAD"), cancellable = true)
     private void removeMountJumpBar(CallbackInfo ci) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+        if (VisualSettings.global().hideModernHUDElements.isEnabled()) {
             ci.cancel();
         }
     }
 
     @Inject(method = "getHeartCount", at = @At("HEAD"), cancellable = true)
     private void removeHungerBar(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+        if (VisualSettings.global().hideModernHUDElements.isEnabled()) {
             cir.setReturnValue(1);
         }
     }
 
     @ModifyExpressionValue(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;getScaledWindowHeight()I"), require = 0)
     private int moveHealthDown(int value) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+        if (VisualSettings.global().hideModernHUDElements.isEnabled()) {
             return value + 6; // Magical offset
         } else {
             return value;
@@ -63,7 +63,7 @@ public abstract class MixinInGameHud {
 
     @ModifyArgs(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), require = 0)
     private static void moveArmorPositions(Args args, @Local(ordinal = 3, argsOnly = true) int x, @Local(ordinal = 6) int n) {
-        if (!VisualSettings.global().removeNewerHudElements.isEnabled()) {
+        if (!VisualSettings.global().hideModernHUDElements.isEnabled()) {
             return;
         }
         final MinecraftClient client = MinecraftClient.getInstance();
@@ -79,7 +79,7 @@ public abstract class MixinInGameHud {
             from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 2),
             to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V")), index = 1, require = 0)
     private int moveAir(int value) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+        if (VisualSettings.global().hideModernHUDElements.isEnabled()) {
             final MinecraftClient client = MinecraftClient.getInstance();
             return client.getWindow().getScaledWidth() - value - client.textRenderer.fontHeight;
         } else {

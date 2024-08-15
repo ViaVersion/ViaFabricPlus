@@ -307,7 +307,7 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
 
     @Inject(method = "hasExperienceBar", at = @At("HEAD"), cancellable = true)
     private void removeExperienceBar(CallbackInfoReturnable<Boolean> cir) {
-        if (VisualSettings.global().removeNewerHudElements.isEnabled()) {
+        if (VisualSettings.global().hideModernHUDElements.isEnabled()) {
             cir.setReturnValue(false);
         }
     }
