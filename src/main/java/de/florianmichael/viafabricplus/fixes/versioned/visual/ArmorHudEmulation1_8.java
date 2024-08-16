@@ -32,16 +32,18 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
+@ApiStatus.Internal
 public class ArmorHudEmulation1_8 {
 
     private static final UUID ARMOR_POINTS_UUID = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
 
     private static double previousArmorPoints = 0;
 
-    public static void init() {
+    static {
         ClientTickEvents.START_WORLD_TICK.register(world -> {
             if (!VisualSettings.global().emulateArmorHud.isEnabled()) {
                 return;
@@ -60,6 +62,10 @@ public class ArmorHudEmulation1_8 {
                 previousArmorPoints = 0;
             }
         });
+    }
+
+    public static void init() {
+        // Calls the static block
     }
 
     private static void sendArmorUpdate(final UserConnection userConnection) {

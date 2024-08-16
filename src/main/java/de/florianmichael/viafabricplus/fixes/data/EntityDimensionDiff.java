@@ -21,7 +21,6 @@ package de.florianmichael.viafabricplus.fixes.data;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
-import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityAttachmentType;
 import net.minecraft.entity.EntityAttachments;
@@ -29,7 +28,6 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
-import java.util.Collections;
 import java.util.Map;
 
 import static de.florianmichael.viafabricplus.util.MapUtil.linkedHashMap;

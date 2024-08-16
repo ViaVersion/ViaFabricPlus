@@ -33,12 +33,14 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Optional;
 
+@ApiStatus.Internal
 public class EnchantmentAttributesEmulation1_20_6 {
 
-    public static void init() {
+    static {
         ClientTickEvents.START_WORLD_TICK.register(world -> {
             if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5)) {
                 return;
@@ -67,6 +69,10 @@ public class EnchantmentAttributesEmulation1_20_6 {
                 player.getAttributeInstance(EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED).setBaseValue(getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2F : 1F);
             }
         });
+    }
+
+    public static void init() {
+        // Calls the static block
     }
 
     /**

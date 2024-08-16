@@ -40,7 +40,7 @@ public class UnicodeFontFix1_12_2 {
     private static boolean enabled = false;
     private static Runnable task = null;
 
-    public static void init() {
+    static {
         ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> updateUnicodeFontOverride(newVersion));
 
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
@@ -50,6 +50,10 @@ public class UnicodeFontFix1_12_2 {
                 task = null;
             }
         });
+    }
+
+    public static void init() {
+        // Calls the static block
     }
 
     public static void updateUnicodeFontOverride(final ProtocolVersion version) {

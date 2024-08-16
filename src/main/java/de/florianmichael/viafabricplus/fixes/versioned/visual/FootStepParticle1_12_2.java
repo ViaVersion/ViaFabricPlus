@@ -33,11 +33,22 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Internal
 public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
 
     public static final Identifier ID = Identifier.of("viafabricplus", "footstep");
     public static int RAW_ID;
+
+    static {
+        final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
+
+        Registry.register(Registries.PARTICLE_TYPE, ID, footStepType);
+        ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
+
+        RAW_ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
+    }
 
     protected FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z) {
         super(clientWorld, x, y, z);
@@ -79,12 +90,7 @@ public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
     }
 
     public static void init() {
-        final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
-
-        Registry.register(Registries.PARTICLE_TYPE, ID, footStepType);
-        ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
-
-        RAW_ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
+        // Calls the static block
     }
 
     public static class Factory implements ParticleFactory<SimpleParticleType> {
