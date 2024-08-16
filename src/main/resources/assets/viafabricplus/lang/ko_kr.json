@@ -1,5 +1,5 @@
 {
-  "modmenu.descriptionTranslation.viafabricplus": "게임 플레이에 대한 QoL 수정을 통해 모든 Minecraft 서버 버전에 (릴리스, 베타, 알파, 클래식, 스냅샷, 베드락) 연결하는 패브릭 모드",
+  "modmenu.descriptionTranslation.viafabricplus": "게임 플레이에 대한 QoL 수정을 통해 모든 Minecraft 서버 버전에 (릴리스, 베타, 알파, 클래식, 스냅샷, 베드락) 연결할 수 있게 만들어주는 패브릭 모드",
 
   "base.viafabricplus.settings": "설정",
   "base.viafabricplus.on": "켜짐",
@@ -40,6 +40,7 @@
   "screen.viafabricplus.server_list": "서버 리스트",
   "screen.viafabricplus.classicube_login": "Classicube 로그인",
   "screen.viafabricplus.classicube_mfa": "Classicube MFA",
+  "screen.viafabricplus.settings": "설정",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "선택된 프로토콜 버전 저장",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "디버그 HUD에 추가 정보 표시",
@@ -52,25 +53,23 @@
   "general_settings.viafabricplus.ignore_packet_translation_errors": "패킷 이동 오류 무시",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "레거시 버전에서 스킨과 머리 로드",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "알파 버전에서 인벤토리 기능 추가",
+  "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "슬롯 화면에서 스크롤 지점 기억하기",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "베드락 에디션 계정 가져오기",
-  "bedrock_settings.viafabricplus.click_to_set_bedrock_account.notice": "브라우저가 열렸습니다.\n이 화면을 닫게 되면 진행이 중지됩니다!",
   "bedrock_settings.viafabricplus.replace_default_port": "서버 리스트의 기본 포트를 바꾸기",
 
   "debug_settings.viafabricplus.queue_config_packets": "구성 패킷 대기",
   "debug_settings.viafabricplus.disable_sequencing": "배열 끄기",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "상인 화면을 부드럽게",
   "debug_settings.viafabricplus.execute_inputs_synchronously": "실행 입력 동기화",
-  "visual_settings.viafabricplus.sneak_instantly": "즉시 웅크리기",
   "debug_settings.viafabricplus.send_open_inventory_packet": "인벤토리 열기 패킷 보내기",
   "debug_settings.viafabricplus.remove_cooldowns": "쿨다운 제거",
   "debug_settings.viafabricplus.send_idle_packet": "휴식 패킷 보내기",
-  "debug_settings.viafabricplus.replace_sneaking": "웅크리기 바꾸기",
-  "debug_settings.viafabricplus.long_sneaking": "긴 웅크리기",
   "debug_settings.viafabricplus.legacy_mining_speeds": "레거시 채굴 속도",
   "debug_settings.viafabricplus.prevent_entity_cramming": "엔티티 끼임 방지",
   "debug_settings.viafabricplus.always_tick_client_player": "항상 클라이언트 플레이어를 계산",
   "debug_settings.viafabricplus.print_networking_errors_to_logs": "로그에 네트워킹 오류 출력",
+  "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "패킷 오류로 인한 충돌 보고서 생성하지 않기",
   "debug_settings.viafabricplus.ignore_fabric_sync_errors": "페브릭 동기화 오류 무시",
   "debug_settings.viafabricplus.legacy_tab_completions": "레거시 탭 자동 완성",
 
@@ -79,13 +78,15 @@
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "ClassiCube 서버 리스트를 사용 중일 때 자동으로 CPE 선택",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "ClassiCube 서버 리스트를 사용 중일 때 시즌 이름을 ClassiCube 이름으로 사용",
 
+  "visual_settings.viafabricplus.change_game_menu_screen_layout": "게임 메뉴 화면 구성 바꾸기",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "보안 채팅 경고 끄기",
   "visual_settings.viafabricplus.hide_signature_indicator": "서명 표시 숨기기",
+  "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "지형 다운로드 화면 전환 효과 숨기기",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "규화한 참나무 반 블록 텍스처를 'unknown' 으로 바꾸기",
   "visual_settings.viafabricplus.emulate_armor_hud": "갑옷 HUD 추가",
-  "visual_settings.viafabricplus.hide_modern_command_block_screen_features": "명령 블록 화면에서 새로운 기능 제거",
+  "visual_settings.viafabricplus.hide_modern_command_block_screen_features": "새로운 명령 블록 기능 숨기기",
   "visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound": "다칠 떄 나는 소리를 OOF 소리로 변경",
-  "visual_settings.viafabricplus.hide_modern_hud_elements": "새로운 HUD 요소 제거",
+  "visual_settings.viafabricplus.hide_modern_hud_elements": "새로운 HUD 요소 숨기기",
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "크리에이티브 인벤토리를 클래식으로 바꾸기",
   "visual_settings.viafabricplus.old_walking_animation": "예전 걷기 에니메이션",
   "visual_settings.viafabricplus.change_font_renderer_behaviour": "폰트 렌더링 방식 바꾸기",
@@ -97,11 +98,21 @@
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "화로 제작법 책 숨기기",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "제작대 제작법 책 숨기기",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "최신 직소 화면 기능 숨기기",
+  "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "ASCII가 아닌 언어에 유니코드 글꼴 강제 적용",
+  "visual_settings.viafabricplus.filter_non_existing_glyphs": "존재하지 않는 글자 제거",
+  "visual_settings.viafabricplus.sneak_instantly": "즉시 웅크리기",
 
   "force_version.viafabricplus.title": "서버가 표시/연결되어야 하는 버전을 선택하세요.",
 
   "click_to_set_bedrock_account.viafabricplus.notice": "브라우저가 열렸습니다.\n이 화면을 닫게 되면 진행이 중지됩니다!",
   "click_to_set_bedrock_account.viafabricplus.display": "베드락 계정: %s",
+
+  "change_game_menu_screen_layout.viafabricplus.authentic": "자동",
+  "change_game_menu_screen_layout.viafabricplus.adjusted": "조절",
+
+  "change_game_menu_screen_layout.viafabricplus.authentic.tooltip": "버튼 위치와 오버레이를 선택된 버전에 따라 조정합니다.",
+  "change_game_menu_screen_layout.viafabricplus.adjusted.tooltip": "1.18.2 이하 버전에서 \"플레이어 신고\"를 사회적 상호작용 화면으로 바꿉니다.",
+  "change_game_menu_screen_layout.viafabricplus.off.tooltip": "게임 메뉴 화면을 수정하지 않습니다.",
 
   "report.viafabricplus.button": "문제 제보",
   "report.viafabricplus.bug_report": "문제를 GitHub에 보고합니다.",
