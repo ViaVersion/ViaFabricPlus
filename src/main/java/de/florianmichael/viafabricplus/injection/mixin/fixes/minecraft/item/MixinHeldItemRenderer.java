@@ -55,10 +55,11 @@ public abstract class MixinHeldItemRenderer {
             applySwingOffset(matrices, arm, swingProgress);
         }
         
-        matrices.translate(-0.14142136F * (arm == Arm.RIGHT ? 1 : -1), 0.08F, 0.14142136F);
+        final int direction = arm == Arm.RIGHT ? 1 : -1;
+        matrices.translate(direction * -0.14142136F, 0.08F, 0.14142136F);
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25F));
-        matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Y : RotationAxis.NEGATIVE_Y).rotationDegrees(13.365F));
-        matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Z : RotationAxis.NEGATIVE_Z).rotationDegrees(78.05F));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(direction * 13.365F));
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(direction * 78.05F));
     }
 
 }
