@@ -51,16 +51,14 @@ public abstract class MixinHeldItemRenderer {
         }
 
         final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
-
         if (blockHitAnimation) {
             applySwingOffset(matrices, arm, swingProgress);
-            matrices.translate(arm == Arm.RIGHT ? -0.14F : 0.14F, 0.12F, 0.12F);
-        } else {
-            matrices.translate(arm == Arm.RIGHT ? -0.15F : 0.15F, 0.07F, 0.12F);
         }
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25f));
-        matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Y : RotationAxis.NEGATIVE_Y).rotationDegrees(13.365f));
-        matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Z : RotationAxis.NEGATIVE_Z).rotationDegrees(78.05f));
+        
+        matrices.translate(-0.14142136F * (arm == Arm.RIGHT ? 1 : -1), 0.08F, 0.14142136F);
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25F));
+        matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Y : RotationAxis.NEGATIVE_Y).rotationDegrees(13.365F));
+        matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Z : RotationAxis.NEGATIVE_Z).rotationDegrees(78.05F));
     }
 
 }
