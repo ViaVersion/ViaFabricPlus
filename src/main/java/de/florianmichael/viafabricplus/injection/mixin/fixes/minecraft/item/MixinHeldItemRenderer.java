@@ -40,46 +40,46 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HeldItemRenderer.class)
 public abstract class MixinHeldItemRenderer {
-	
-	@Shadow
-	protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
-	
-	
-	@Inject(method = "renderFirstPersonItem",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", ordinal = 1))
-	private void transformItemPositions1_7(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack stack, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-		// Modifies the handheld position to be slightly tilted like in 1.7 and prior
-		if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) && !(stack.getItem() instanceof BlockItem)) {
-			final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
-			final int direction = arm == Arm.RIGHT ? 1 : -1;
-			final float scale = 0.7585F / 0.86F;
-			matrices.scale(scale, scale, scale);
-			matrices.translate(direction * -0.084F, 0.059F, 0.08F);
-			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(direction * 5.0F));
-		}
-	}
-	
-	@Inject(method = "renderFirstPersonItem",
-			slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getUseAction()Lnet/minecraft/util/UseAction;")),
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 2, shift = At.Shift.AFTER))
-	private void transformSwordBlockingPosition(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-		final boolean blockHitAnimation = VisualSettings.global().enableBlockHitAnimation.isEnabled();
-		if (!VisualSettings.global().enableSwordBlocking.isEnabled() && !blockHitAnimation) {
-			return;
-		}
-		
-		final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
-		final int direction = arm == Arm.RIGHT ? 1 : -1;
-		
-		if (blockHitAnimation) {
-			applySwingOffset(matrices, arm, swingProgress);
-		}
-		
-		// Values stripped from early 1.9 snapshots, 15w33b specifically, which is the version prior to them removing sword blocking
-		matrices.translate(direction * -0.14142136F, 0.08F, 0.14142136F);
-		matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25F));
-		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(direction * 13.365F));
-		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(direction * 78.05F));
-	}
-	
+    
+    @Shadow
+    protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
+    
+    
+    @Inject(method = "renderFirstPersonItem",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", ordinal = 1))
+    private void transformItemPositions1_7(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack stack, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        // Modifies the handheld position to be slightly tilted like in 1.7 and prior
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) && !(stack.getItem() instanceof BlockItem)) {
+            final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
+            final int direction = arm == Arm.RIGHT ? 1 : -1;
+            final float scale = 0.7585F / 0.86F;
+            matrices.scale(scale, scale, scale);
+            matrices.translate(direction * -0.084F, 0.059F, 0.08F);
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(direction * 5.0F));
+        }
+    }
+    
+    @Inject(method = "renderFirstPersonItem",
+            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getUseAction()Lnet/minecraft/util/UseAction;")),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 2, shift = At.Shift.AFTER))
+    private void transformSwordBlockingPosition(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        final boolean blockHitAnimation = VisualSettings.global().enableBlockHitAnimation.isEnabled();
+        if (!VisualSettings.global().enableSwordBlocking.isEnabled() && !blockHitAnimation) {
+            return;
+        }
+        
+        final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
+        final int direction = arm == Arm.RIGHT ? 1 : -1;
+        
+        if (blockHitAnimation) {
+            applySwingOffset(matrices, arm, swingProgress);
+        }
+        
+        // Values stripped from early 1.9 snapshots, 15w33b specifically, which is the version prior to them removing sword blocking
+        matrices.translate(direction * -0.14142136F, 0.08F, 0.14142136F);
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25F));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(direction * 13.365F));
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(direction * 78.05F));
+    }
+    
 }
