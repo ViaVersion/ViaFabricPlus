@@ -48,14 +48,15 @@ public abstract class MixinHeldItemRenderer {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getUseAction()Lnet/minecraft/util/UseAction;")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 2, shift = At.Shift.AFTER))
     private void transformSwordBlockingPosition(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (!VisualSettings.global().enableSwordBlocking.isEnabled()) {
+        final boolean enableItemSwingUsage = VisualSettings.global().enableItemSwingUsage.isEnabled();
+        if (!VisualSettings.global().enableSwordBlocking.isEnabled() && !enableItemSwingUsage) {
             return;
         }
 
         final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
         final int direction = arm == Arm.RIGHT ? 1 : -1;
 
-        if (VisualSettings.global().enableItemSwingUsage.isEnabled()) {
+        if (enableItemSwingUsage) {
             applySwingOffset(matrices, arm, swingProgress);
         }
 
