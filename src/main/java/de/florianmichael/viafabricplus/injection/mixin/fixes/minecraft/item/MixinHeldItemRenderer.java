@@ -44,23 +44,24 @@ public abstract class MixinHeldItemRenderer {
     @Inject(method = "renderFirstPersonItem",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getUseAction()Lnet/minecraft/util/UseAction;")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 2, shift = At.Shift.AFTER))
-    private void transformLegacyBlockAnimations(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+    private void transformSwordBlockingPosition(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         final boolean blockHitAnimation = VisualSettings.global().enableBlockHitAnimation.isEnabled();
         if (!VisualSettings.global().enableSwordBlocking.isEnabled() && !blockHitAnimation) {
             return;
         }
 
         final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
+        final int direction = arm == Arm.RIGHT ? 1 : -1;
 
         if (blockHitAnimation) {
             applySwingOffset(matrices, arm, swingProgress);
-            matrices.translate(arm == Arm.RIGHT ? -0.14F : 0.14F, 0.12F, 0.12F);
-        } else {
-            matrices.translate(arm == Arm.RIGHT ? -0.15F : 0.15F, 0.07F, 0.12F);
         }
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25f));
-        matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Y : RotationAxis.NEGATIVE_Y).rotationDegrees(13.365f));
-        matrices.multiply((arm == Arm.RIGHT ? RotationAxis.POSITIVE_Z : RotationAxis.NEGATIVE_Z).rotationDegrees(78.05f));
+
+        // Values stripped from early 1.9 snapshots, 15w33b specifically, which is the version prior to them removing sword blocking
+        matrices.translate(direction * -0.14142136F, 0.08F, 0.14142136F);
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25F));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(direction * 13.365F));
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(direction * 78.05F));
     }
 
 }
