@@ -56,7 +56,7 @@ public abstract class MixinHeldItemRenderer {
         final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
         final int direction = arm == Arm.RIGHT ? 1 : -1;
 
-        viaFabricPlus$applyItemSwingUsage(player, hand, swingProgress, matrices);
+        viaFabricPlus$applySwingOffset(player, hand, swingProgress, matrices);
 
         // Values stripped from early 1.9 snapshots, 15w33b specifically, which is the version prior to them removing sword blocking
         matrices.translate(direction * -0.14142136F, 0.08F, 0.14142136F);
@@ -68,13 +68,13 @@ public abstract class MixinHeldItemRenderer {
     @Inject(method = "renderFirstPersonItem",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 3, shift = At.Shift.AFTER))
     private void applyFoodSwingOffset(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        viaFabricPlus$applyItemSwingUsage(player, hand, swingProgress, matrices);
+        viaFabricPlus$applySwingOffset(player, hand, swingProgress, matrices);
     }
 
     @Inject(method = "renderFirstPersonItem",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 5, shift = At.Shift.AFTER))
     private void applyBowSwingOffset(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        viaFabricPlus$applyItemSwingUsage(player, hand, swingProgress, matrices);
+        viaFabricPlus$applySwingOffset(player, hand, swingProgress, matrices);
     }
 
     @Inject(method = "renderFirstPersonItem",
@@ -93,8 +93,8 @@ public abstract class MixinHeldItemRenderer {
     }
 
     @Unique
-    private void viaFabricPlus$applyItemSwingUsage(AbstractClientPlayerEntity player, Hand hand, float swingProgress, MatrixStack matrices) {
-        if (VisualSettings.global().enableItemSwingUsage.isEnabled()) {
+    private void viaFabricPlus$applySwingOffset(AbstractClientPlayerEntity player, Hand hand, float swingProgress, MatrixStack matrices) {
+        if (VisualSettings.global().swingHandOnItemUse.isEnabled()) {
             final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
             applySwingOffset(matrices, arm, swingProgress);
         }
