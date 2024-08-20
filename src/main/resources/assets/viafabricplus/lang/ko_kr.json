@@ -91,7 +91,7 @@
   "visual_settings.viafabricplus.old_walking_animation": "예전 걷기 에니메이션",
   "visual_settings.viafabricplus.change_font_renderer_behaviour": "폰트 렌더링 방식 바꾸기",
   "visual_settings.viafabricplus.enable_sword_blocking": "칼로 막기 허용",
-  "visual_settings.viafabricplus.enable_block_hit_animation": "블럭 치는 에니메이션 허용",
+  "visual_settings.viafabricplus.enable_enable_item_swing_usage": "블럭 치는 에니메이션 허용",
   "visual_settings.viafabricplus.disable_server_pinging": "서버 핑 비활성화",
   "visual_settings.viafabricplus.sideways_backwards_walking": "옆과 뒤로 걷기",
   "visual_settings.viafabricplus.enable_legacy_tablist": "레거시 탭 리스트 허용",

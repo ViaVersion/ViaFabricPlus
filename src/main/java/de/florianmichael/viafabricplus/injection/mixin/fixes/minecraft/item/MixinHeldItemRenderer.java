@@ -48,15 +48,15 @@ public abstract class MixinHeldItemRenderer {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getUseAction()Lnet/minecraft/util/UseAction;")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 2, shift = At.Shift.AFTER))
     private void transformSwordBlockingPosition(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        final boolean blockHitAnimation = VisualSettings.global().enableBlockHitAnimation.isEnabled();
-        if (!VisualSettings.global().enableSwordBlocking.isEnabled() && !blockHitAnimation) {
+        final boolean enableItemSwingUsage = VisualSettings.global().enableItemSwingUsage.isEnabled();
+        if (!VisualSettings.global().enableSwordBlocking.isEnabled() && !enableItemSwingUsage) {
             return;
         }
 
         final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
         final int direction = arm == Arm.RIGHT ? 1 : -1;
 
-        if (blockHitAnimation) {
+        if (enableItemSwingUsage) {
             applySwingOffset(matrices, arm, swingProgress);
         }
 
@@ -67,6 +67,14 @@ public abstract class MixinHeldItemRenderer {
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(direction * 78.05F));
     }
 
+    @Inject(method = "renderFirstPersonItem",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 3, shift = At.Shift.AFTER))
+    private void applyFoodSwingOffset1_7(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        if (VisualSettings.global().enableItemSwingUsage.isEnabled()) {
+            final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
+            applySwingOffset(matrices, arm, swingProgress);
+        }
+    }
 
     @Inject(method = "renderFirstPersonItem",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", ordinal = 1))
