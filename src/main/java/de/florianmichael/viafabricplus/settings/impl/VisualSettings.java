@@ -80,7 +80,7 @@ public class VisualSettings extends SettingGroup {
     public final VersionedBooleanSetting enableSwordBlocking = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_sword_blocking"), VersionRange.andOlder(ProtocolVersion.v1_8));
 
     // 1.8.x -> 1.7.6 - 1.7.10
-    public final VersionedBooleanSetting enableBlockHitAnimation = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_block_hit_animation"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
+    public final VersionedBooleanSetting swingHandOnItemUse = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.swing_hand_on_item_use"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
     public final VersionedBooleanSetting enableLegacyTablist = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_legacy_tablist"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
 
     // 1.0.0-1.0.1 -> b1.8-b1.8.1
