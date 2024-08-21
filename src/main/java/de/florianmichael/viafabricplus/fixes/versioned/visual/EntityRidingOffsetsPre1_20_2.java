@@ -80,7 +80,8 @@ public class EntityRidingOffsetsPre1_20_2 {
                     if (passenger instanceof AnimalEntity) xOffset += 0.2F;
                 }
 
-                return new Vec3d(xOffset, yOffset, 0F);
+
+                return new Vec3d(xOffset, yOffset, 0F).rotateY(-(float) (Math.PI / 2));
             }
         } else if (entity instanceof CamelEntity camelEntity) {
             if (!camelEntity.hasPassenger(passenger)) return Vec3d.ZERO;
