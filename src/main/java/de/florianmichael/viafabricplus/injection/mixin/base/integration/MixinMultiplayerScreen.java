@@ -19,7 +19,10 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.integration;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -34,7 +37,6 @@ import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MultiplayerScreen.class)
@@ -56,15 +58,17 @@ public abstract class MixinMultiplayerScreen extends Screen {
         this.addDrawableChild(GeneralSettings.withOrientation(builder, buttonPosition, width, height).build());
     }
 
-    @Redirect(method = "connect(Lnet/minecraft/client/network/ServerInfo;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
-    private ServerAddress replaceDefaultPort(String address, @Local(argsOnly = true) ServerInfo entry) {
-        if (((IServerInfo) entry).viaFabricPlus$passedDirectConnectScreen()) {
-            // If the user has already passed the direct connect screen, we use the target version
-            return ClientsideFixes.replaceDefaultPort(address, ProtocolTranslator.getTargetVersion());
+    @WrapOperation(method = "connect(Lnet/minecraft/client/network/ServerInfo;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
+    private ServerAddress replaceDefaultPort(String address, Operation<ServerAddress> original, @Local(argsOnly = true) ServerInfo entry) {
+        final IServerInfo mixinServerInfo = (IServerInfo) entry;
+
+        ProtocolVersion version;
+        if (mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
+            version = ProtocolTranslator.getTargetVersion();
         } else {
-            // Otherwise the forced version is used
-            return ClientsideFixes.replaceDefaultPort(address, ((IServerInfo) entry).viaFabricPlus$forcedVersion());
+            version = mixinServerInfo.viaFabricPlus$forcedVersion();
         }
+        return original.call(ClientsideFixes.replaceDefaultPort(address, version));
     }
 
 }

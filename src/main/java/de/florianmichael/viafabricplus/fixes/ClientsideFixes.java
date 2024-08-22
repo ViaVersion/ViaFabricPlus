@@ -171,13 +171,13 @@ public class ClientsideFixes {
      * @param version The protocol version
      * @return The server address with the replaced default port
      */
-    public static ServerAddress replaceDefaultPort(final String address, final ProtocolVersion version) {
+    public static String replaceDefaultPort(final String address, final ProtocolVersion version) {
         // If the default port for this entry should be replaced, check if the address already contains a port
         // We can't just replace vanilla's default port because a bedrock server might be running on the same port
         if (BedrockSettings.global().replaceDefaultPort.getValue() && Objects.equals(version, BedrockProtocolVersion.bedrockLatest) && !address.contains(":")) {
-            return ServerAddress.parse(address + ":" + ProtocolConstants.BEDROCK_DEFAULT_PORT);
+            return address + ":" + ProtocolConstants.BEDROCK_DEFAULT_PORT;
         } else {
-            return ServerAddress.parse(address);
+            return address;
         }
     }
 
