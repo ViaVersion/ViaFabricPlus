@@ -91,7 +91,7 @@
   "visual_settings.viafabricplus.old_walking_animation": "旧版行走动画",
   "visual_settings.viafabricplus.change_font_renderer_behaviour": "更改字体渲染器行为",
   "visual_settings.viafabricplus.enable_sword_blocking": "启用剑动画",
-  "visual_settings.viafabricplus.swing_hand_on_item_use": "启用格挡命中动画",
+  "visual_settings.viafabricplus.swing_hand_on_item_use": "使用物品时挥动手",
   "visual_settings.viafabricplus.disable_server_pinging": "禁用服务器Ping",
   "visual_settings.viafabricplus.sideways_backwards_walking": "侧身后退行走",
   "visual_settings.viafabricplus.enable_legacy_tablist": "启用旧版Tab列表",
