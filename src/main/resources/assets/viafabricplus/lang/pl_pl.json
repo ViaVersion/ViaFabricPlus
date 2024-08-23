@@ -66,8 +66,6 @@
   "debug_settings.viafabricplus.send_open_inventory_packet": "Wysyłaj pakiety otwierania ekwipunku",
   "debug_settings.viafabricplus.remove_cooldowns": "Usuń odstępy pomiędzy uderzeniami",
   "debug_settings.viafabricplus.send_idle_packet": "Wysyłaj pakiety bezczynności",
-  "debug_settings.viafabricplus.replace_sneaking": "Zamień kucanie",
-  "debug_settings.viafabricplus.long_sneaking": "Długie kucanie",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Stare prędkości kopania",
   "debug_settings.viafabricplus.prevent_entity_cramming": "Zapobiegaj entity cramming",
   "debug_settings.viafabricplus.always_tick_client_player": "Zawsze tickuj gracza po stronie klienta",
@@ -102,6 +100,7 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Ukrywaj książkę przepisów w stole rzemyślniczym",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Ukrywaj nowe funkcje ekranu bloku konstrukcyjnego",
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Wymuszaj czcionkę Unicode dla języków niewspieranych przez ASCII",
+  "visual_settings.viafabricplus.filter_non_existing_glyphs": "Filtruj nieistniejące znaki",
 
   "force_version.viafabricplus.title": "Wybierz wersję na której chcesz łączyć się do serwera",
 
