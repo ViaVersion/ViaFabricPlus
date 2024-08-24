@@ -74,6 +74,8 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     public abstract boolean hasStatusEffect(RegistryEntry<StatusEffect> effect);
 
+    @Shadow public float bodyYaw;
+
     public MixinLivingEntity(EntityType<?> type, World world) {
         super(type, world);
     }
@@ -109,6 +111,20 @@ public abstract class MixinLivingEntity extends Entity {
             return instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getWorld().isClient;
         } else {
             return instance.isLogicalSideForUpdatingMovement();
+        }
+    }
+
+    @Redirect(method = "turnHead", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(F)F"))
+    private float oldBodyRotationInterpolation(float g) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+            g = MathHelper.clamp(g, -75.0F, 75.0F);
+            this.bodyYaw = this.getYaw() - g;
+            if (Math.abs(g) > 50.0F) {
+                this.bodyYaw += g * 0.2F;
+            }
+            return Float.MIN_VALUE;
+        } else {
+            return Math.abs(g);
         }
     }
 
