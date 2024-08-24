@@ -122,7 +122,7 @@ public abstract class MixinLivingEntity extends Entity {
             if (Math.abs(g) > 50.0F) {
                 this.bodyYaw += g * 0.2F;
             }
-            return Float.MIN_VALUE;
+            return Float.MIN_VALUE; // Causes the if to always fail
         } else {
             return Math.abs(g);
         }
