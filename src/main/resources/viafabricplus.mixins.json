@@ -131,6 +131,7 @@
     "fixes.minecraft.item.MixinDrawContext",
     "fixes.minecraft.item.MixinEnderPearlItem",
     "fixes.minecraft.item.MixinEquipment",
+    "fixes.minecraft.item.MixinFireChargeItem",
     "fixes.minecraft.item.MixinFireworkRocketItem",
     "fixes.minecraft.item.MixinHeldItemRenderer",
     "fixes.minecraft.item.MixinItemCooldownManager",
