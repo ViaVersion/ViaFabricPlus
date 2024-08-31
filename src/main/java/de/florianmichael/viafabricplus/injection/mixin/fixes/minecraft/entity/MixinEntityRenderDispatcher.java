@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.versioned.visual.BoatRenderer1_8;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -42,8 +43,8 @@ public abstract class MixinEntityRenderDispatcher {
     @Unique
     private BoatRenderer1_8 viaFabricPlus$boatRenderer;
 
-    @Inject(method = "reload", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void createBoatRenderer1_8(ResourceManager manager, CallbackInfo ci, EntityRendererFactory.Context context) {
+    @Inject(method = "reload", at = @At("TAIL"))
+    private void createBoatRenderer1_8(ResourceManager manager, CallbackInfo ci, @Local EntityRendererFactory.Context context) {
         viaFabricPlus$boatRenderer = new BoatRenderer1_8(context);
     }
 

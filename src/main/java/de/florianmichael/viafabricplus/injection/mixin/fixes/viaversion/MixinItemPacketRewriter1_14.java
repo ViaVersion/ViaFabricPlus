@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;
@@ -59,8 +60,8 @@ public abstract class MixinItemPacketRewriter1_14 extends ItemRewriter<Clientbou
         this.protocol.registerServerbound(ServerboundPackets1_14.SELECT_TRADE, ServerboundPackets1_13.SELECT_TRADE, null, true);
     }
 
-    @Inject(method = "lambda$registerPackets$0", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/util/ProtocolLogger;warning(Ljava/lang/String;)V", remap = false), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void supportLargeContainers(PacketWrapper wrapper, CallbackInfo ci, Short windowId, String type, JsonElement title, Short slots) {
+    @Inject(method = "lambda$registerPackets$0", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/util/ProtocolLogger;warning(Ljava/lang/String;)V", remap = false), cancellable = true)
+    private void supportLargeContainers(PacketWrapper wrapper, CallbackInfo ci, @Local(ordinal = 0) Short windowId, @Local String type, @Local JsonElement title, @Local(ordinal = 1) Short slots) {
         if ((type.equals("minecraft:container") || type.equals("minecraft:chest")) && (slots > 54 || slots <= 0)) {
             ci.cancel();
 

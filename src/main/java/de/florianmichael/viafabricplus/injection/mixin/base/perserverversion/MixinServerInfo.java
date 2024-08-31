@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.base.perserverversion;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
 import de.florianmichael.viafabricplus.save.impl.SettingsSave;
@@ -48,15 +49,15 @@ public abstract class MixinServerInfo implements IServerInfo {
     @Unique
     private ProtocolVersion viaFabricPlus$translatingVersion;
 
-    @Inject(method = "toNbt", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void saveForcedVersion(CallbackInfoReturnable<NbtCompound> cir, NbtCompound nbtCompound) {
+    @Inject(method = "toNbt", at = @At("TAIL"))
+    private void saveForcedVersion(CallbackInfoReturnable<NbtCompound> cir, @Local NbtCompound nbtCompound) {
         if (viaFabricPlus$forcedVersion != null) {
             nbtCompound.putString("viafabricplus_forcedversion", viaFabricPlus$forcedVersion.getName());
         }
     }
 
-    @Inject(method = "fromNbt", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void loadForcedVersion(NbtCompound root, CallbackInfoReturnable<ServerInfo> cir, ServerInfo serverInfo) {
+    @Inject(method = "fromNbt", at = @At("TAIL"))
+    private static void loadForcedVersion(NbtCompound root, CallbackInfoReturnable<ServerInfo> cir, @Local ServerInfo serverInfo) {
         if (root.contains("viafabricplus_forcedversion")) {
             final ProtocolVersion version = SettingsSave.protocolVersionByName(root.getString("viafabricplus_forcedversion"));
             if (version != null) {
