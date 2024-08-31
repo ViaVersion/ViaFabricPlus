@@ -48,6 +48,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.util.AttributeKey;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.lenni0451.reflect.stream.RStream;
+import net.lenni0451.reflect.stream.field.FieldWrapper;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -293,6 +295,13 @@ public class ProtocolTranslator {
         }
     }
 
+    private static void changeBedrockProtocolName() {
+        final ProtocolVersion bedrockLatest = RStream.of(BedrockProtocolVersion.class).fields().by("bedrockLatest").get();
+
+        final FieldWrapper name = RStream.of(bedrockLatest).withSuper().fields().by("name");
+        name.set(name.get() + " (Work in progress)");
+    }
+
     /**
      * This method is used to initialize the whole Protocol Translator
      *
@@ -328,6 +337,7 @@ public class ProtocolTranslator {
                     ViaBedrockPlatformImpl::new
             );
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
+            changeBedrockProtocolName();
             ViaFabricPlusProtocol.INSTANCE.initialize();
         });
     }
