@@ -49,15 +49,15 @@ public class DebugSettings extends SettingGroup {
     public final VersionedBooleanSetting legacyTabCompletions = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.legacy_tab_completions"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
 
     // 1.12 -> 1.11.1-1.11.2
-    @Deprecated(forRemoval = true)
+    @Deprecated/*(forRemoval = true)*/
     public final VersionedBooleanSetting sendOpenInventoryPacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_open_inventory_packet"), VersionRange.andOlder(ProtocolVersion.v1_11_1));
 
     // 1.9 -> 1.8.x
-    @Deprecated(forRemoval = true)
+    @Deprecated/*(forRemoval = true)*/
     public final VersionedBooleanSetting removeCooldowns = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.remove_cooldowns"), VersionRange.andOlder(ProtocolVersion.v1_8));
-    @Deprecated(forRemoval = true)
+    @Deprecated/*(forRemoval = true)*/
     public final VersionedBooleanSetting sendIdlePacket = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.send_idle_packet"), VersionRange.andOlder(LegacyProtocolVersion.r1_2_4tor1_2_5).add(VersionRange.of(LegacyProtocolVersion.r1_4_2, ProtocolVersion.v1_8)));
-    @Deprecated(forRemoval = true)
+    @Deprecated/*(forRemoval = true)*/
     public final VersionedBooleanSetting preventEntityCramming = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.prevent_entity_cramming"), VersionRange.andOlder(ProtocolVersion.v1_8));
 
     public DebugSettings() {
