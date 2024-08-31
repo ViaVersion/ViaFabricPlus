@@ -21,6 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.base.perserverversion;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IServerInfo;
+import de.florianmichael.viafabricplus.save.impl.SettingsSave;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
@@ -57,7 +58,7 @@ public abstract class MixinServerInfo implements IServerInfo {
     @Inject(method = "fromNbt", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void loadForcedVersion(NbtCompound root, CallbackInfoReturnable<ServerInfo> cir, ServerInfo serverInfo) {
         if (root.contains("viafabricplus_forcedversion")) {
-            final ProtocolVersion version = ProtocolVersion.getClosest(root.getString("viafabricplus_forcedversion"));
+            final ProtocolVersion version = SettingsSave.protocolVersionByName(root.getString("viafabricplus_forcedversion"));
             if (version != null) {
                 ((IServerInfo) serverInfo).viaFabricPlus$forceVersion(version);
             }

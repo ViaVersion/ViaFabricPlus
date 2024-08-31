@@ -28,6 +28,7 @@ import de.florianmichael.viafabricplus.settings.base.AbstractSetting;
 import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import de.florianmichael.viafabricplus.util.ChatUtil;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 
 public class SettingsSave extends AbstractSave {
 
@@ -76,12 +77,20 @@ public class SettingsSave extends AbstractSave {
     public void postInit() {
         // Set target version AFTER protocol loading, so we can reach all versions
         if (GeneralSettings.global().saveSelectedProtocolVersion.getValue()) {
-            final ProtocolVersion protocolVersion = ProtocolVersion.getClosest(selectedProtocolVersion);
+            final ProtocolVersion protocolVersion = protocolVersionByName(selectedProtocolVersion);
             if (protocolVersion != null) {
                 ProtocolTranslator.setTargetVersion(protocolVersion);
             }
         } else {
             ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION);
+        }
+    }
+
+    public static ProtocolVersion protocolVersionByName(final String name) {
+        if (name.contains("Bedrock")) { // Always return latest bedrock since the version often changes
+            return BedrockProtocolVersion.bedrockLatest;
+        } else {
+            return ProtocolVersion.getClosest(name);
         }
     }
 
