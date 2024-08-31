@@ -33,21 +33,21 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = JoinPackets.class, remap = false)
 public abstract class MixinJoinPackets {
 
-    @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 5))
+    @Redirect(method = "lambda$register$7", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 5))
     private static Object trackWorldSeed(PacketWrapper instance, Type<LongLEType> tType) {
         final Object seed = instance.read(tType);
         instance.user().get(BedrockJoinGameTracker.class).setSeed((long) seed);
         return seed;
     }
 
-    @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 59))
+    @Redirect(method = "lambda$register$7", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 59))
     private static Object trackLevelId(PacketWrapper instance, Type<StringType> tType) {
         final Object levelId = instance.read(tType);
         instance.user().get(BedrockJoinGameTracker.class).setLevelId((String) levelId);
         return levelId;
     }
 
-    @Redirect(method = "lambda$register$8", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 67))
+    @Redirect(method = "lambda$register$7", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;read(Lcom/viaversion/viaversion/api/type/Type;)Ljava/lang/Object;", ordinal = 67))
     private static Object trackEnchantmentSeed(PacketWrapper instance, Type<VarIntType> tType) {
         final Object enchantmentSeed = instance.read(tType);
         instance.user().get(BedrockJoinGameTracker.class).setEnchantmentSeed((Integer) enchantmentSeed);
