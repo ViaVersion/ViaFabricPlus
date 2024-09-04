@@ -69,7 +69,6 @@
     "fixes.minecraft.block.MixinAbstractBlock_AbstractBlockState",
     "fixes.minecraft.block.MixinAbstractSignBlock",
     "fixes.minecraft.block.MixinAnvilBlock",
-    "fixes.minecraft.block.MixinBambooBlock",
     "fixes.minecraft.block.MixinBedBlock",
     "fixes.minecraft.block.MixinBrewingStandBlock",
     "fixes.minecraft.block.MixinCarpetBlock",
