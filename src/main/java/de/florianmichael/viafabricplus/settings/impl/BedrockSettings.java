@@ -19,7 +19,6 @@
 
 package de.florianmichael.viafabricplus.settings.impl;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.injection.access.IConfirmScreen;
 import de.florianmichael.viafabricplus.save.impl.AccountsSave;
@@ -41,7 +40,6 @@ import net.raphimc.minecraftauth.util.logging.ConsoleLogger;
 import net.raphimc.minecraftauth.util.logging.ILogger;
 
 import java.util.Locale;
-import java.util.concurrent.CompletableFuture;
 
 public class BedrockSettings extends SettingGroup {
 
@@ -49,7 +47,11 @@ public class BedrockSettings extends SettingGroup {
 
     private static final BedrockSettings INSTANCE = new BedrockSettings();
 
-    private final ButtonSetting clickToSetBedrockAccount = new ButtonSetting(this, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> CompletableFuture.runAsync(this::openBedrockAccountLogin)) {
+    private Thread thread;
+    private final ButtonSetting clickToSetBedrockAccount = new ButtonSetting(this, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> {
+        thread = new Thread(this::openBedrockAccountLogin);
+        thread.start();
+    }) {
         
         @Override
         public MutableText displayValue() {
@@ -94,15 +96,18 @@ public class BedrockSettings extends SettingGroup {
                         client.keyboard.setClipboard(msaDeviceCode.getDirectVerificationUri());
                     } else {
                         client.setScreen(prevScreen);
-                        Thread.currentThread().interrupt();
+                        this.thread.interrupt();
                     }
                 }, TITLE, Text.translatable("click_to_set_bedrock_account.viafabricplus.notice"), Text.translatable("base.viafabricplus.copy_link"), Text.translatable("base.viafabricplus.cancel")));
                 Util.getOperatingSystem().open(msaDeviceCode.getDirectVerificationUri());
             })));
 
             VFPScreen.setScreen(prevScreen);
-        } catch (Throwable e) {
-            Thread.currentThread().interrupt();
+        } catch (Exception e) {
+            if (e instanceof InterruptedException) {
+                return;
+            }
+            this.thread.interrupt();
             VFPScreen.showErrorScreen(TITLE, e, prevScreen);
         }
     }
