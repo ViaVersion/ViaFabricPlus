@@ -55,7 +55,7 @@ public abstract class AbstractSave {
             try (final FileReader fr = new FileReader(file)) {
                 read(GSON.fromJson(fr, JsonObject.class));
             } catch (Exception e) {
-                ViaFabricPlus.global().getLogger().error("Failed to read file: " + file.getName() + "!", e);
+                ViaFabricPlus.global().getLogger().error("Failed to read file: {}!", file.getName(), e);
             }
         }
     }
@@ -68,7 +68,7 @@ public abstract class AbstractSave {
             file.delete();
             file.createNewFile();
         } catch (IOException e) {
-            ViaFabricPlus.global().getLogger().error("Failed to create file: " + file.getName() + "!", e);
+            ViaFabricPlus.global().getLogger().error("Failed to create file: {}!", file.getName(), e);
         }
 
         try (final FileWriter fw = new FileWriter(file)) {
@@ -77,7 +77,7 @@ public abstract class AbstractSave {
             fw.write(GSON.toJson(parentNode));
             fw.flush();
         } catch (IOException e) {
-            ViaFabricPlus.global().getLogger().error("Failed to write file: " + file.getName() + "!", e);
+            ViaFabricPlus.global().getLogger().error("Failed to write file: {}!", file.getName(), e);
         }
     }
 
