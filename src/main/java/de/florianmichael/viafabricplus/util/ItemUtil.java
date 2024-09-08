@@ -21,6 +21,7 @@ package de.florianmichael.viafabricplus.util;
 
 import com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
@@ -28,6 +29,13 @@ public class ItemUtil {
 
     private static final String VV_IDENTIFIER = "VV|" + Protocol1_10To1_11.class.getSimpleName(); // ItemRewriter#nbtTagName
 
+    /**
+     * Returns the actual amount of items in the stack, versions older or equal to 1.10 can have negative stack sizes
+     * which are not represented by {@link ItemStack#getCount()}.
+     *
+     * @param stack The stack to get the count from
+     * @return The actual amount of items in the stack
+     */
     public static int getCount(final ItemStack stack) {
         final NbtCompound tag = getTagOrNull(stack);
         if (tag != null && tag.contains(VV_IDENTIFIER)) {
@@ -37,12 +45,14 @@ public class ItemUtil {
         }
     }
 
-    // Via 1.20.5->.3 will always put the original item data into CUSTOM_DATA if it's not empty.
+    // ViaVersion's 1.20.5 -> 1.20.3 protocol will save the original item nbt inside custom data to later restore
+    // it for creative clients, we can use this to get nbt stored in older protocols as well
     public static NbtCompound getTagOrNull(final ItemStack stack) {
-        if (!stack.contains(DataComponentTypes.CUSTOM_DATA)) {
-            return null;
+        final NbtComponent tag = stack.get(DataComponentTypes.CUSTOM_DATA);
+        if (tag != null) {
+            return tag.copyNbt();
         } else {
-            return stack.get(DataComponentTypes.CUSTOM_DATA).getNbt();
+            return null;
         }
     }
 

@@ -19,7 +19,6 @@
 
 package de.florianmichael.viafabricplus.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
