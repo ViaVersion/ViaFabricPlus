@@ -28,12 +28,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.net.SocketException;
+
 @Mixin(ClientConnection.class)
 public abstract class MixinClientConnection {
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"))
     private void printNetworkingErrors(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {
         if (DebugSettings.global().printNetworkingErrorsToLogs.getValue()) {
+            if (ex instanceof SocketException) {
+                // Thrown when server is not reachable
+                return;
+            }
             ViaFabricPlus.global().getLogger().error("An exception occurred while handling a packet", ex);
         }
     }
