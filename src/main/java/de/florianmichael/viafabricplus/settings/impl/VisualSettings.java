@@ -68,7 +68,7 @@ public class VisualSettings extends SettingGroup {
     public final VersionedBooleanSetting changeFontRendererBehaviour = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.change_font_renderer_behaviour"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
     public final VersionedBooleanSetting hideFurnaceRecipeBook = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_furnace_recipe_book"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
     public final VersionedBooleanSetting forceUnicodeFontForNonAsciiLanguages = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
-    public final VersionedBooleanSetting sneakInstantly = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.sneak_instantly"), VersionRange.of(ProtocolVersion.v1_8, ProtocolVersion.v1_12_2));
+    public final VersionedBooleanSetting sneakInstantly = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.sneak_instantly"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
 
     // 1.12 -> 1.11.1
     public final VersionedBooleanSetting sidewaysBackwardsRunning = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.sideways_backwards_walking"), VersionRange.andOlder(ProtocolVersion.v1_11_1));
