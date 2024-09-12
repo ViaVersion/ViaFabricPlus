@@ -22,7 +22,6 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
-import net.minecraft.world.BlockView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,9 +37,12 @@ public abstract class MixinCamera {
     @Shadow
     private float lastCameraY;
 
-    @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setPos(DDD)V", shift = At.Shift.BEFORE))
-    private void sneakInstantly(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        if (VisualSettings.global().sneakInstantly.isEnabled()) {
+    @Shadow private Entity focusedEntity;
+
+    @Inject(method = "updateEyeHeight", at = @At(value = "HEAD"), cancellable = true)
+    private void sneakInstantly(CallbackInfo ci) {
+        if (this.focusedEntity != null && VisualSettings.global().sneakInstantly.isEnabled()) {
+            ci.cancel();
             cameraY = lastCameraY = focusedEntity.getStandingEyeHeight();
         }
     }
