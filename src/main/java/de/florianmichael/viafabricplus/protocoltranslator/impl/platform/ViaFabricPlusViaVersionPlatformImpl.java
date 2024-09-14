@@ -32,8 +32,11 @@ import java.io.File;
 
 public class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatformImpl {
 
+    private final File rootFolder;
+
     public ViaFabricPlusViaVersionPlatformImpl(File rootFolder) {
         super(rootFolder);
+        this.rootFolder = rootFolder;
     }
 
     @Override
@@ -73,4 +76,11 @@ public class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatformImpl 
 
         return platformDump;
     }
+
+    @Override
+    public File getDataFolder() {
+        // Move ViaLoader files directly into root folder
+        return this.rootFolder;
+    }
+
 }
