@@ -21,9 +21,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.protocols.v1_16_4to1_17.storage.InventoryAcknowledgements;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
-import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
 import de.florianmichael.viafabricplus.util.DataCustomPayload;
@@ -109,21 +107,11 @@ public abstract class MixinClientCommonNetworkHandler {
     }
 
     @Inject(method = "onPing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER), cancellable = true)
-    private void onPing(CommonPingS2CPacket packet, CallbackInfo ci) {
+    private void addMissingConditions(CommonPingS2CPacket packet, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
-            final InventoryAcknowledgements acks = ((IClientConnection) this.connection).viaFabricPlus$getUserConnection().get(InventoryAcknowledgements.class);
-            if (acks.removeId(packet.getParameter())) {
-                final short inventoryId = (short) ((packet.getParameter() >> 16) & 0xFF);
-
-                ScreenHandler handler = null;
-                if (inventoryId == 0) handler = client.player.playerScreenHandler;
-                else if (inventoryId == client.player.currentScreenHandler.syncId) handler = client.player.currentScreenHandler;
-
-                if (handler != null) {
-                    acks.addId(packet.getParameter());
-                } else {
-                    ci.cancel();
-                }
+            final short inventoryId = (short) ((packet.getParameter() >> 16) & 0xFF);
+            if (inventoryId != 0 && inventoryId != client.player.currentScreenHandler.syncId) {
+                ci.cancel();
             }
         }
     }

@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(targets = "com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11$8", remap = false)
+@Mixin(targets = "com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11$6", remap = false)
 public abstract class MixinProtocol1_10To1_11 {
 
     @ModifyConstant(method = "lambda$register$0", constant = @Constant(intValue = 100))
