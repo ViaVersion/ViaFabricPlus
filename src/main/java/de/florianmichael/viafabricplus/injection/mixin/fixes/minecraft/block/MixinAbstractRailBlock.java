@@ -41,15 +41,24 @@ public abstract class MixinAbstractRailBlock extends Block {
     @Unique
     private static final VoxelShape viaFabricPlus$ascending_shape_r1_10_x = VoxelShapes.fullCube();
 
+    @Unique
+    private static final VoxelShape viaFabricPlus$ascending_shape_r1_9_x = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.5D, 16.0D);
+
+    @Unique
+    private static final VoxelShape viaFabricPlus$ascending_shape_r1_8_x = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D);
+
     public MixinAbstractRailBlock(Settings settings) {
         super(settings);
     }
 
     @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/AbstractRailBlock;ASCENDING_SHAPE:Lnet/minecraft/util/shape/VoxelShape;"))
     private VoxelShape changeOutlineShape() {
-        // https://bugs.mojang.com/browse/MC-102638
         if (ProtocolTranslator.getTargetVersion().equalTo(ProtocolVersion.v1_10)) {
             return viaFabricPlus$ascending_shape_r1_10_x;
+        } else if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_9, ProtocolVersion.v1_9_3)) {
+            return viaFabricPlus$ascending_shape_r1_9_x;
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            return viaFabricPlus$ascending_shape_r1_8_x;
         } else {
             return ASCENDING_SHAPE;
         }
