@@ -75,6 +75,9 @@ public class SettingsSave extends AbstractSave {
 
     @Override
     public void postInit() {
+        if (selectedProtocolVersion == null) {
+            return;
+        }
         // Set target version AFTER protocol loading, so we can reach all versions
         if (GeneralSettings.global().saveSelectedProtocolVersion.getValue()) {
             final ProtocolVersion protocolVersion = protocolVersionByName(selectedProtocolVersion);
