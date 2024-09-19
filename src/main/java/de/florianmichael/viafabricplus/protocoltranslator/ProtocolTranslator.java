@@ -265,13 +265,13 @@ public class ProtocolTranslator {
     /**
      * Apply recommended config options to the ViaVersion config files
      *
-     * @param configFolder The directory where the ViaVersion config files is located
+     * @param directory The directory where the ViaVersion config files is located
      */
-    private static void patchConfigs(final File configFolder) {
-        configFolder.mkdirs();
+    private static void patchConfigs(final File directory) {
+        directory.mkdirs();
 
         try {
-            final File viaVersionConfig = new File(configFolder, "viaversion.yml");
+            final File viaVersionConfig = new File(directory, "viaversion.yml");
             Files.writeString(viaVersionConfig.toPath(), """
                     fix-infested-block-breaking: false
                     shield-blocking: false
@@ -284,7 +284,7 @@ public class ProtocolTranslator {
         }
 
         try {
-            final File viaLegacyConfig = new File(configFolder, "vialegacy.yml");
+            final File viaLegacyConfig = new File(directory, "vialegacy.yml");
             Files.writeString(viaLegacyConfig.toPath(), """
                     legacy-skull-loading: true
                     legacy-skin-loading: true
