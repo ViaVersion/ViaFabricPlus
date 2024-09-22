@@ -31,10 +31,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(StatusEffectInstance.class)
 public class MixinStatusEffect {
-    @Shadow @Final public static int MIN_AMPLIFIER = ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3) ? -255 : 0;
 
-    @Redirect(method = "<init>(Lnet/minecraft/registry/entry/RegistryEntry;IIZZZLnet/minecraft/entity/effect/StatusEffectInstance;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(III)I"))
-    public int clamp(int value, int min, int max) {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3) ? MathHelper.clamp(value, -255, 255) : MathHelper.clamp(value, 0, 255);
+    @ModifyArg(method = "<init>(Lnet/minecraft/registry/entry/RegistryEntry;IIZZZLnet/minecraft/entity/effect/StatusEffectInstance;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(III)I"), index = 1)
+    public int clamp(int min) {
+        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3) ? -255 : 0;
     }
 }
