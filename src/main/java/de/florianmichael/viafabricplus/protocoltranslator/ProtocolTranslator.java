@@ -143,6 +143,7 @@ public class ProtocolTranslator {
                 channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, ProtocolConstants.BEDROCK_RAKNET_PROTOCOL_VERSION);
                 channel.config().setOption(RakChannelOption.RAK_COMPATIBILITY_MODE, true);
                 channel.config().setOption(RakChannelOption.RAK_CLIENT_INTERNAL_ADDRESSES, 20);
+                channel.config().setOption(RakChannelOption.RAK_TIME_BETWEEN_SEND_CONNECTION_ATTEMPTS_MS, 500);
                 channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, channel.config().getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS).longValue());
                 channel.config().setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
                 channel.config().setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());
