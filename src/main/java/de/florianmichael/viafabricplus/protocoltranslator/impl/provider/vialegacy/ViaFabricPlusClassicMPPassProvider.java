@@ -26,34 +26,31 @@ import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.settings.impl.AuthenticationSettings;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.provider.OldAuthProvider;
-import net.raphimc.vialegacy.protocol.release.r1_6_4tor1_7_2_5.storage.HandshakeStorage;
 
 public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
 
-    public static String classicMpPassForNextJoin;
+    public static String classicubeMPPass;
 
     @Override
     public String getMpPass(UserConnection user) {
-        if (classicMpPassForNextJoin != null) {
-            final String mpPass = classicMpPassForNextJoin;
-            classicMpPassForNextJoin = null;
+        if (classicubeMPPass != null) {
+            final String mpPass = classicubeMPPass;
+            classicubeMPPass = null;
             return mpPass;
         }
 
         if (AuthenticationSettings.global().useBetaCraftAuthentication.getValue()) {
-            final HandshakeStorage handshakeStorage = user.get(HandshakeStorage.class);
-            if (handshakeStorage == null) return super.getMpPass(user);
-
-            return BetaCraftHandler.requestMPPass(user.getProtocolInfo().getUsername(), handshakeStorage.getHostname(), handshakeStorage.getPort(), serverId -> {
+            // Doesn't use the MPPass system anymore, but still kept here for simplicity
+            BetaCraftHandler.authenticate(serverId -> {
                 try {
                     Via.getManager().getProviders().get(OldAuthProvider.class).sendAuthRequest(user, serverId);
                 } catch (Throwable e) {
                     ViaFabricPlus.global().getLogger().error("Error occurred while verifying session", e);
                 }
             }, throwable -> ViaFabricPlus.global().getLogger().error("Error occurred while requesting the MP-Pass to verify session", throwable));
-        } else {
-            return super.getMpPass(user);
         }
+
+        return super.getMpPass(user);
     }
 
 }

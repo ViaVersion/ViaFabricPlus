@@ -91,7 +91,7 @@ dependencies {
 	jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
 		exclude group: "io.netty"
 	}
-	jij "de.florianmichael:Classic4J:2.0.2"
+	jij "de.florianmichael:Classic4J:2.1.1-SNAPSHOT"
 
 	// Fabric's jar in jar system doesn't support transitive dependencies, so we have to manually add them
 	afterEvaluate {

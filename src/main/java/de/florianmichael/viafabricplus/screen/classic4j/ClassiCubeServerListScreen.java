@@ -19,7 +19,6 @@
 
 package de.florianmichael.viafabricplus.screen.classic4j;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
@@ -134,7 +133,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
             final ServerAddress serverAddress = ServerAddress.parse(classiCubeServerInfo.ip() + ":" + classiCubeServerInfo.port());
             final ServerInfo entry = new ServerInfo(classiCubeServerInfo.name(), serverAddress.getAddress(), ServerInfo.ServerType.OTHER);
-            ViaFabricPlusClassicMPPassProvider.classicMpPassForNextJoin = classiCubeServerInfo.mpPass();
+            ViaFabricPlusClassicMPPassProvider.classicubeMPPass = classiCubeServerInfo.mpPass();
 
             if (AuthenticationSettings.global().automaticallySelectCPEInClassiCubeServerList.getValue()) {
                 ((IServerInfo) entry).viaFabricPlus$forceVersion(LegacyProtocolVersion.c0_30cpe);

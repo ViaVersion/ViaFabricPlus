@@ -72,7 +72,7 @@ public abstract class MixinConnectScreen_1 {
         }
         ProtocolTranslator.setTargetVersion(targetVersion, true);
 
-        this.viaFabricPlus$useClassiCubeAccount = AuthenticationSettings.global().setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classicMpPassForNextJoin != null;
+        this.viaFabricPlus$useClassiCubeAccount = AuthenticationSettings.global().setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classicubeMPPass != null;
 
         final ChannelFuture future = original.call(address, useEpoll, connection);
         ProtocolTranslator.injectPreviousVersionReset(future.channel());
