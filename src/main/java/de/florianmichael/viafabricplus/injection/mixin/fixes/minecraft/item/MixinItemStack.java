@@ -25,7 +25,10 @@ import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.util.ItemUtil;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -35,9 +38,7 @@ import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
@@ -78,11 +79,27 @@ public abstract class MixinItemStack {
     }
 
     @Redirect(method = "appendAttributeModifierTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeBaseValue(Lnet/minecraft/registry/entry/RegistryEntry;)D", ordinal = 0))
-    private double removeAttackDamageValueFromCalculation(PlayerEntity instance, RegistryEntry<EntityAttribute> registryEntry) {
+    private double fixAttackDamageCalculation(PlayerEntity instance, RegistryEntry<EntityAttribute> registryEntry) {
+        double value = 0.0;
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            final ItemEnchantmentsComponent enchantments = EnchantmentHelper.getEnchantments((ItemStack) (Object) this);
+            for (RegistryEntry<Enchantment> enchantment : enchantments.getEnchantments()) {
+                if (enchantment.matchesKey(Enchantments.SHARPNESS)) {
+                    final int level = enchantments.getLevel(enchantment);
+                    if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+                        value = level * 1.25F;
+                    } else {
+                        value = 1.0F + (float) Math.max(0, level - 1) * 0.5F;
+                    }
+                    break;
+                }
+            }
+        }
+
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return 0;
+            return value;
         } else {
-            return instance.getAttributeBaseValue(registryEntry);
+            return instance.getAttributeBaseValue(registryEntry) + value;
         }
     }
 
