@@ -79,7 +79,7 @@ dependencies {
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
 
-	jij ("net.raphimc:MinecraftAuth:4.1.0") {
+	jij ("net.raphimc:MinecraftAuth:4.1.1") {
 		exclude group: "com.google.code.gson", module: "gson"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
