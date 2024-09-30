@@ -145,7 +145,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
         if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             if (this.viaFabricPlus$foodItems_b1_7_3.contains(identifier)) {
                 data.set(StructuredDataKey.MAX_STACK_SIZE, 1);
-                data.addEmpty(StructuredDataKey.FOOD1_20_5);
+                data.setEmpty(StructuredDataKey.FOOD1_20_5);
             }
         }
 
