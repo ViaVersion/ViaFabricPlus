@@ -116,6 +116,15 @@ public abstract class MixinEntity implements IEntity {
         }
     }
 
+    @Redirect(method = "updateSubmergedInWaterState", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeY()D"))
+    private double addMagicOffset(Entity instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+            return instance.getEyeY() - 0.11111111F;
+        } else {
+            return instance.getEyeY();
+        }
+    }
+
     @Redirect(method = "updatePassengerPosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity$PositionUpdater;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getVehicleAttachmentPos(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/math/Vec3d;"))
     private Vec3d use1_20_1RidingOffset(Entity instance, Entity vehicle) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
