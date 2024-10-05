@@ -62,6 +62,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.GameMode;
+import net.minecraft.world.World;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.spongepowered.asm.mixin.*;
@@ -229,20 +230,24 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
         }
     }
 
-    @Redirect(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/TypedActionResult;getResult()Lnet/minecraft/util/ActionResult;"))
-    private ActionResult eitherSuccessOrPass(TypedActionResult<ItemStack> instance, @Local(ordinal = 0) ItemStack itemStack) {
+    @Redirect(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/TypedActionResult;"))
+    private TypedActionResult<ItemStack> eitherSuccessOrPass(ItemStack instance, World world, PlayerEntity user, Hand hand, @Local ItemStack itemStack) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            final int count = instance.getCount();
+
+            final TypedActionResult<ItemStack> action = instance.use(world, user, hand);
+            final ItemStack output = action.getValue();
+
             // In <= 1.8, ActionResult weren't a thing and interactItem simply returned either true or false
             // depending on if the input and output item are equal or not
-            final boolean accepted = instance.getValue() != itemStack;
-
-            if (instance.getResult().isAccepted() == accepted) {
-                return instance.getResult();
+            final boolean accepted = !output.isEmpty() && (output != itemStack || output.getCount() != count);
+            if (action.getResult().isAccepted() == accepted) {
+                return action;
             } else {
-                return accepted ? ActionResult.SUCCESS : ActionResult.PASS;
+                return accepted ? TypedActionResult.success(output) : TypedActionResult.pass(output);
             }
         } else {
-            return instance.getResult();
+            return instance.use(world, user, hand);
         }
     }
 
