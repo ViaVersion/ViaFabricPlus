@@ -68,6 +68,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Shadow
     protected HungerManager hungerManager;
+
     @Unique
     private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F).withEyeHeight(1.54F).
             withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, PlayerEntity.VEHICLE_ATTACHMENT_POS));
@@ -124,7 +125,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2) && instance.hasStatusEffect(registryEntry);
     }
 
-    @Inject(method = "canConsume", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "canConsume", at = @At("HEAD"), cancellable = true)
     private void preventEatingFoodInCreative(boolean ignoreHunger, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             cir.setReturnValue(!this.abilities.invulnerable && (ignoreHunger || this.hungerManager.isNotFull()));
