@@ -22,6 +22,7 @@ package de.florianmichael.viafabricplus.util;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import net.lenni0451.reflect.ClassLoaders;
 import net.lenni0451.reflect.stream.RStream;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
@@ -36,6 +37,8 @@ public class ClassLoaderPriorityUtil {
      * Loads all overriding jars
      */
     public static void loadOverridingJars(final File directory) {
+        final Logger logger = ViaFabricPlus.global().getLogger();
+
         try {
             final File jarsDirectory = new File(directory, "jars");
             if (!jarsDirectory.exists()) {
@@ -49,18 +52,22 @@ public class ClassLoaderPriorityUtil {
                 try {
                     final ClassLoader actualLoader = RStream.of(oldLoader).fields().by("urlLoader").get();
                     Thread.currentThread().setContextClassLoader(actualLoader);
+
+                    logger.warn("================================");
+                    logger.warn("OVERRIDING JARS LOADING! THIS CAN CAUSE UNEXPECTED BEHAVIOR AND ISSUES!");
                     for (File file : files) {
                         if (file.getName().endsWith(".jar")) {
                             ClassLoaders.loadToFront(file.toURI().toURL());
-                            ViaFabricPlus.global().getLogger().warn("Loaded overriding jar {}", file.getName());
+                            logger.warn(" -> {}", file.getName());
                         }
                     }
+                    logger.warn("================================");
                 } finally {
                     Thread.currentThread().setContextClassLoader(oldLoader);
                 }
             }
         } catch (Throwable e) {
-            ViaFabricPlus.global().getLogger().error("Failed to load overriding jars", e);
+            logger.error("Failed to load overriding jars", e);
         }
     }
 
