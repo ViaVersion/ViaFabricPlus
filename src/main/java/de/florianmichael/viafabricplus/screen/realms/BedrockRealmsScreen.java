@@ -102,10 +102,7 @@ public class BedrockRealmsScreen extends VFPScreen {
         }
         this.addDrawableChild(slotList = new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, 30, (textRenderer.fontHeight + 2) * 4));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.refresh"), button -> {
-            realmsWorlds = null;
-            client.setScreen(this);
-        }).position(width - 60 - 5, 5).size(60, 20).build());
+        this.addRefreshButton(() -> realmsWorlds = null);
 
         final int slotWidth = 360 - 4;
 

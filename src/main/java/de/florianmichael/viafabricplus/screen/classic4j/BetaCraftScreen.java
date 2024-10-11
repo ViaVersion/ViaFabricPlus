@@ -67,10 +67,7 @@ public class BetaCraftScreen extends VFPScreen {
         this.setupSubtitle(Text.of(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.opening(this, BETA_CRAFT_SERVER_LIST_URL));
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 2) * 3));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.refresh"), button -> {
-            SERVER_LIST = null;
-            client.setScreen(this);
-        }).position(width - 60 - 5, 5).size(60, 20).build());
+        this.addRefreshButton(() -> SERVER_LIST = null);
     }
 
     @Override

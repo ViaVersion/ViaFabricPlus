@@ -49,7 +49,7 @@ import java.awt.*;
  *         <li>{@link #setupSubtitle(Text, ButtonWidget.PressAction)}</li>
  *     </ul>
  *     </li>
- *     <li>Automatically adds a button when set inside the constructor</li>
+ *     <li>Automatically adds a back button when set inside the constructor</li>
  *     <li>Helper functions:
  *     <ul>
  *         <li>{@link #playClickSound()}</li>
@@ -154,6 +154,13 @@ public class VFPScreen extends Screen {
         if (backButton) {
             this.addDrawableChild(ButtonWidget.builder(Text.of("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
         }
+    }
+
+    public void addRefreshButton(final Runnable click) {
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.refresh"), button -> {
+            click.run();
+            client.setScreen(this);
+        }).position(width - 60 - 5, 5).size(60, 20).build());
     }
 
     @Override
