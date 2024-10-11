@@ -81,6 +81,7 @@ public class VisualSettings extends SettingGroup {
 
     // 1.8.x -> 1.7.6 - 1.7.10
     public final VersionedBooleanSetting swingHandOnItemUse = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.swing_hand_on_item_use"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
+    public final VersionedBooleanSetting tiltItemPositions = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.tilt_item_positions"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
     public final VersionedBooleanSetting enableLegacyTablist = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_legacy_tablist"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
 
     // 1.0.0-1.0.1 -> b1.8-b1.8.1
