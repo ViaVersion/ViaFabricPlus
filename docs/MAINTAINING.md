@@ -12,7 +12,6 @@ These steps are the usual process for updating ViaFabricPlus to a new version of
    As well as the versions in the `dependencies` block in the `build.gradle` file.
 2. Update the `NATIVE_VERSION` field in the ProtocolTranslator class to the new version
 3. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
-    - `MixinClientPlayerEntity#removeBl8Boolean`
     - `MixinClientWorld#tickEntity` and `MixinClientWorld#tickPassenger`
     - `MixinPlayer#getBlockBreakingSpeed`
 4. Decompile the game source code with the tool of your choice.
