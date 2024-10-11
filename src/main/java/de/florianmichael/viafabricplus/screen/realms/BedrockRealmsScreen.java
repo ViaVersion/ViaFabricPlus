@@ -27,7 +27,6 @@ import de.florianmichael.viafabricplus.util.ConnectionUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.option.ControlsListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.raphimc.minecraftauth.MinecraftAuth;
@@ -103,10 +102,10 @@ public class BedrockRealmsScreen extends VFPScreen {
         }
         this.addDrawableChild(slotList = new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, 30, (textRenderer.fontHeight + 2) * 4));
 
-        this.addDrawableChild(ButtonWidget.builder(ControlsListWidget.KeyBindingEntry.RESET_TEXT, button -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.refresh"), button -> {
             realmsWorlds = null;
             client.setScreen(this);
-        }).position(width - 98 - 5, 5).size(98, 20).build());
+        }).position(width - 60 - 5, 5).size(60, 20).build());
 
         final int slotWidth = 360 - 4;
 

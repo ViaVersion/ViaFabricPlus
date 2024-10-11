@@ -30,6 +30,7 @@
   "base.viafabricplus.login": "Login",
   "base.viafabricplus.code": "Code",
   "base.viafabricplus.accept": "Accept",
+  "base.viafabricplus.refresh": "Refresh",
 
   "setting_group_name.viafabricplus.authentication": "Authentication",
   "setting_group_name.viafabricplus.visual": "Visual",
@@ -39,7 +40,7 @@
 
   "screen.viafabricplus.force_version": "Force Version",
   "screen.viafabricplus.report_issues": "Report issues",
-  "screen.viafabricplus.server_list": "Server Lists",
+  "screen.viafabricplus.server_list": "Server lists",
   "screen.viafabricplus.classicube_login": "Classicube Login",
   "screen.viafabricplus.classicube_mfa": "Classicube MFA",
   "screen.viafabricplus.settings": "Settings",

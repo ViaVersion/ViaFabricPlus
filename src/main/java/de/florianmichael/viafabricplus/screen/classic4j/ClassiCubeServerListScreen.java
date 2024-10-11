@@ -74,7 +74,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
             close();
             ViaFabricPlus.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
             SERVER_LIST.clear();
-        }).position(width - 98 - 5, 5).size(98, 20).build());
+        }).position(width - 60 - 5, 5).size(60, 20).build());
 
         super.init();
     }
