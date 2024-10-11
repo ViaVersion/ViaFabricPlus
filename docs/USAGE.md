@@ -47,8 +47,14 @@ yet and there is no guarantee that everything will work as it should.
 
 To log in to a Bedrock account you can press the button **"Click to set account for Bedrock edition"** in the settings.
 
+#### Bedrock Realms
+If you have a Bedrock account set in the settings, you can view its Bedrock Realms in the "Server lists" screen (can be found at the left bottom of the main GUI).
+![](preview/bedrock_realms.png)
+
+
 ### ClassiCube and BetaCraft integration
-In the main GUI there is an extra button for ClassiCube and BetaCraft, both buttons send API requests to the respective platforms to get the respective server list.
+In the main GUI there is a "Server lists" button where you can go to ClassiCube and BetaCraft server lists.
+
 ## BetaCraft
 ![](preview/betacraft_servers.png)
 
