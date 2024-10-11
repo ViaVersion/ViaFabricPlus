@@ -30,10 +30,16 @@ public class ViaFabricPlusVLViaConfig extends VLViaConfig {
         super(configFile, logger);
 
         UNSUPPORTED.add("simulate-pt");
+        UNSUPPORTED.add("fix-1_21-placement-rotation");
     }
 
     @Override
     public boolean isSimulatePlayerTick() {
+        return false;
+    }
+
+    @Override
+    public boolean fix1_21PlacementRotation() {
         return false;
     }
 
