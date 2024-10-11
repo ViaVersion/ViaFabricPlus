@@ -31,7 +31,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -65,9 +64,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Shadow
     @Final
     PlayerInventory inventory;
-
-    @Shadow
-    protected HungerManager hungerManager;
 
     @Unique
     private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F).withEyeHeight(1.54F).
@@ -127,8 +123,8 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Inject(method = "canConsume", at = @At("HEAD"), cancellable = true)
     private void preventEatingFoodInCreative(boolean ignoreHunger, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            cir.setReturnValue(!this.abilities.invulnerable && (ignoreHunger || this.hungerManager.isNotFull()));
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && this.abilities.invulnerable) {
+            cir.setReturnValue(false);
         }
     }
 
