@@ -75,15 +75,15 @@ public class BetaCraftScreen extends VFPScreen {
     }
 
     @Override
-    protected boolean subtitleCentered() {
-        return SERVER_LIST == null;
-    }
-
-    @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
         this.renderTitle(context);
+    }
+
+    @Override
+    protected boolean subtitleCentered() {
+        return SERVER_LIST == null;
     }
 
     public static class SlotList extends VFPList<VFPListEntry> {
