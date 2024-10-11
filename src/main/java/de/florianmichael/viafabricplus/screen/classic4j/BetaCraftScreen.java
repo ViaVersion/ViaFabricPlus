@@ -74,18 +74,11 @@ public class BetaCraftScreen extends VFPScreen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-
-        this.renderTitle(context);
-    }
-
-    @Override
     protected boolean subtitleCentered() {
         return SERVER_LIST == null;
     }
 
-    public static class SlotList extends VFPList<VFPListEntry> {
+    public static class SlotList extends VFPList {
         private static double scrollAmount;
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {

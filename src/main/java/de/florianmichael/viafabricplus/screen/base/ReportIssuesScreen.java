@@ -22,7 +22,6 @@ package de.florianmichael.viafabricplus.screen.base;
 import com.viaversion.viaversion.util.DumpUtil;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
@@ -99,9 +98,4 @@ public class ReportIssuesScreen extends VFPScreen {
         }
     }
 
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-        this.renderTitle(context);
-    }
 }

@@ -146,13 +146,6 @@ public class BedrockRealmsScreen extends VFPScreen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-
-        this.renderTitle(context);
-    }
-
-    @Override
     public void tick() {
         super.tick();
 
@@ -167,7 +160,7 @@ public class BedrockRealmsScreen extends VFPScreen {
         return slotList == null;
     }
 
-    public class SlotList extends VFPList<VFPListEntry> {
+    public class SlotList extends VFPList {
         private static double scrollAmount;
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {

@@ -20,7 +20,6 @@
 package de.florianmichael.viafabricplus.screen.realms;
 
 import de.florianmichael.viafabricplus.screen.VFPScreen;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
@@ -51,13 +50,6 @@ public class AcceptInvitationCodeScreen extends VFPScreen {
             this.serviceHandler.accept(codeField.getText());
             close();
         }).position(this.width / 2 - ButtonWidget.DEFAULT_WIDTH / 2, this.height / 2 + 20).build());
-    }
-
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-
-        this.renderTitle(context);
     }
 
 }

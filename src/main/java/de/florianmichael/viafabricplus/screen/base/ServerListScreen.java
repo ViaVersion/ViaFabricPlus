@@ -19,14 +19,12 @@
 
 package de.florianmichael.viafabricplus.screen.base;
 
-import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.BetaCraftScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.ClassiCubeLoginScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.ClassiCubeServerListScreen;
 import de.florianmichael.viafabricplus.screen.realms.BedrockRealmsScreen;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
@@ -80,12 +78,6 @@ public class ServerListScreen extends VFPScreen {
         if (missingAccount) {
             bedrockRealmsButton.active = false;
         }
-    }
-
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-        this.renderTitle(context);
     }
 
 }

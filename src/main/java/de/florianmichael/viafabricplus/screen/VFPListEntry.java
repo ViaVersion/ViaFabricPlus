@@ -30,8 +30,19 @@ import net.minecraft.util.math.MathHelper;
 import javax.annotation.Nullable;
 
 /**
- * This class is a wrapper for the {@link net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry} class which provides some global
- * functions and features used in all screens which are added by ViaFabricPlus
+ * This class is a wrapper for the {@link net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry} class.
+ * Features included:
+ * <ul>
+ *     <li>Add wrapper function {@link #mappedRender(DrawContext, int, int, int, int, int, int, int, boolean, float)} for:
+ *     <ul>
+ *         <li>cross-sharing entry position/dimension between other helper functions</li>
+ *         <li>Setting the entry position as start inside the {@link MatrixStack}</li>
+ *         <li>rendering a default background</li>
+ *     </ul>
+ *     <li>Adds {@link #mappedMouseClicked(double, double, int)} to automatically play a click sound</li>
+ *     <li>Adds some more utility functions, see {@link #renderScrollableText(Text, int, int)} and {@link #renderTooltip(Text, int, int)}</li>
+ *     </li>
+ * </ul>
  */
 public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<VFPListEntry> {
 

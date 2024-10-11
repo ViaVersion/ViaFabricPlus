@@ -54,14 +54,7 @@ public class PerServerVersionScreen extends VFPScreen {
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, textRenderer.fontHeight + 4));
     }
 
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-
-        this.renderTitle(context);
-    }
-
-    public class SlotList extends VFPList<VFPListEntry> {
+    public class SlotList extends VFPList {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);

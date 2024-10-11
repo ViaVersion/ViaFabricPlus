@@ -81,9 +81,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
-        this.renderTitle(context);
 
         final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
         if (account != null) {
@@ -92,7 +90,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
         }
     }
 
-    public static class SlotList extends VFPList<VFPListEntry> {
+    public static class SlotList extends VFPList {
         private static double scrollAmount;
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
@@ -112,7 +110,6 @@ public class ClassiCubeServerListScreen extends VFPScreen {
             scrollAmount = amount;
         }
     }
-
 
     public static class ServerSlot extends VFPListEntry {
         private final CCServerInfo classiCubeServerInfo;

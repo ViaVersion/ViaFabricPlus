@@ -19,12 +19,25 @@
 
 package de.florianmichael.viafabricplus.screen;
 
+import de.florianmichael.viafabricplus.screen.base.PerServerVersionScreen;
+import de.florianmichael.viafabricplus.screen.base.ProtocolSelectionScreen;
 import de.florianmichael.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 
-public class VFPList<T extends AlwaysSelectedEntryListWidget.Entry<T>> extends AlwaysSelectedEntryListWidget<T> {
+/**
+ * Wrapper class for {@link AlwaysSelectedEntryListWidget} including the following features:
+ * <ul>
+ *     <li>Changing the constructor arguments to be more readable and customizable</li>
+ *     <li>Adds {@link #initScrollAmount(double)} to save the scroll state after closing the screen, requires static tracking by the implementation</li>
+ *     <li>Removes the selection box</li>
+ * </ul>
+ *
+ * @see ProtocolSelectionScreen
+ * @see PerServerVersionScreen
+ */
+public class VFPList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
 
     public VFPList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
         super(minecraftClient, width, height - top - bottom, top, entryHeight);

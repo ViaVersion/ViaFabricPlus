@@ -37,7 +37,32 @@ import java.awt.*;
 
 /**
  * This class is a wrapper for the {@link net.minecraft.client.gui.screen.Screen} class which provides some global
- * functions and features used in all screens which are added by ViaFabricPlus
+ * functions and features used in all screens which are added by ViaFabricPlus.
+ * <p>
+ * Features:
+ * <ul>
+ *     <li>Title and subtitle system, see:
+ *     <ul>
+ *         <li>{@link #setupDefaultSubtitle()}</li>
+ *         <li>{@link #setupUrlSubtitle(String)}</li>
+ *         <li>{@link #setupSubtitle(Text)}</li>
+ *         <li>{@link #setupSubtitle(Text, ButtonWidget.PressAction)}</li>
+ *     </ul>
+ *     </li>
+ *     <li>Automatically adds a button when set inside the constructor</li>
+ *     <li>Helper functions:
+ *     <ul>
+ *         <li>{@link #playClickSound()}</li>
+ *         <li>{@link #showErrorScreen(Text, Throwable, Screen)}</li>
+ *     </ul>
+ *     </li>
+ * </ul>
+ *
+ * Terminology:
+ * <p>
+ *     Instead of creating the screen every time it needs to be opened, the screen is created once and hold by a static
+ *     field and later opened by calling the {@link #open(Screen)} method.
+ * </p>
  */
 public class VFPScreen extends Screen {
 
@@ -132,6 +157,13 @@ public class VFPScreen extends Screen {
     }
 
     @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
+
+        this.renderTitle(context);
+    }
+
+    @Override
     public void close() {
         if (prevScreen instanceof VFPScreen vfpScreen) {
             vfpScreen.open(vfpScreen.prevScreen); // Support recursive opening
@@ -171,6 +203,10 @@ public class VFPScreen extends Screen {
     protected boolean subtitleCentered() {
         // To be overriden
         return false;
+    }
+
+    public void renderScreenTitle(final DrawContext context) {
+        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
     }
 
     /**
