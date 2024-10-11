@@ -43,8 +43,9 @@ public abstract class MixinSwordItem extends ToolItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8)) {
+            ItemStack itemStack = user.getStackInHand(hand);
             user.setCurrentHand(hand);
-            return TypedActionResult.success(user.getStackInHand(hand));
+            return TypedActionResult.success(itemStack);
         } else {
             return super.use(world, user, hand);
         }
