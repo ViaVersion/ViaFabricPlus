@@ -163,8 +163,14 @@ public class VFPScreen extends Screen {
      */
     public void renderSubtitle(final DrawContext context) {
         if (subtitle != null && subtitlePressAction == null) {
-            context.drawCenteredTextWithShadow(textRenderer, subtitle, width / 2, (textRenderer.fontHeight + 2) * 2 + 3, -1);
+            final int startY = (textRenderer.fontHeight + 2) * 2 + 3;
+            context.drawCenteredTextWithShadow(textRenderer, subtitle, width / 2, subtitleCentered() ? this.height / 2 - startY : startY, -1);
         }
+    }
+
+    protected boolean subtitleCentered() {
+        // To be overriden
+        return false;
     }
 
     /**

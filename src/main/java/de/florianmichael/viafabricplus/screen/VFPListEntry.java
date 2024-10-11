@@ -62,18 +62,23 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    public void renderScrollableText(final Text name, final int offset) {
+        final var font = MinecraftClient.getInstance().textRenderer;
+
+        renderScrollableText(name, entryHeight / 2 - font.fontHeight / 2, offset);
+    }
+
     /**
      * Automatically scrolls the text if it is too long to be displayed in the slot. The text will be scrolled from right to left
      *
      * @param name   The text which should be displayed
+     * @param textY  The Y position of the text
      * @param offset The offset of the text from the left side of the slot, this is used to calculate the width of the text, which should be scrolled (Scrolling is enabled when entryWidth - offset < textWidth)
      */
-    public void renderScrollableText(final Text name, final int offset) {
+    public void renderScrollableText(final Text name, final int textY, final int offset) {
         final var font = MinecraftClient.getInstance().textRenderer;
 
         final int fontWidth = font.getWidth(name);
-        final int textY = entryHeight / 2 - font.fontHeight / 2;
-
         if (fontWidth > (entryWidth - offset)) {
             final double time = (double) Util.getMeasuringTimeMs() / 1000.0;
             final double interpolateEnd = fontWidth - (entryWidth - offset - (SCISSORS_OFFSET + SLOT_MARGIN));

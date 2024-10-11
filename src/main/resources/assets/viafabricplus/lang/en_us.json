@@ -28,6 +28,8 @@
   "base.viafabricplus.name": "Name",
   "base.viafabricplus.password": "Password",
   "base.viafabricplus.login": "Login",
+  "base.viafabricplus.code": "Code",
+  "base.viafabricplus.accept": "Accept",
 
   "setting_group_name.viafabricplus.authentication": "Authentication",
   "setting_group_name.viafabricplus.visual": "Visual",
@@ -41,6 +43,8 @@
   "screen.viafabricplus.classicube_login": "Classicube Login",
   "screen.viafabricplus.classicube_mfa": "Classicube MFA",
   "screen.viafabricplus.settings": "Settings",
+  "screen.viafabricplus.bedrock_realms": "Bedrock Realms",
+  "screen.viafabricplus.accept_invite": "Accept Invite",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Save selected protocol version",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "Show extra information in Debug HUD",
@@ -147,5 +151,17 @@
   "minecraftauth_library.viafabricplus.xblsisuauthentication": "Authenticating with Xbox Live using SISU...",
   "minecraftauth_library.viafabricplus.mcchain": "Authenticating with Minecraft Services...",
   "minecraftauth_library.viafabricplus.xblxststoken": "Requesting XSTS Token...",
-  "minecraftauth_library.viafabricplus.playfabtoken": "Authenticating with PlayFab..."
+  "minecraftauth_library.viafabricplus.playfabtoken": "Authenticating with PlayFab...",
+  "minecraftauth_library.viafabricplus.realmsxsts": "Requesting Realms XSTS Token...",
+
+  "bedrock_realms.viafabricplus.warning": "This feature requires a Bedrock Edition account to be set in the settings!",
+  "bedrock_realms.viafabricplus.availability_check": "Checking availability...",
+  "bedrock_realms.viafabricplus.no_worlds": "No worlds found :(",
+  "bedrock_realms.viafabricplus.unavailable": "Your ViaFabricPlus is outdated and not compatible with Minecraft Realms.",
+  "bedrock_realms.viafabricplus.error": "An error occurred, see the logs for more information",
+  "bedrock_realms.viafabricplus.join": "Join realm",
+  "bedrock_realms.viafabricplus.leave": "Leave realm",
+  "bedrock_realms.viafabricplus.invite": "Accept invite code",
+  "bedrock_realms.viafabricplus.expired": "The Realm is expired",
+  "bedrock_realms.viafabricplus.incompatible": "The Realms Minecraft version is either too old or too new"
 }

@@ -34,8 +34,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.AbstractStep;
+import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCodeMsaCode;
+import net.raphimc.minecraftauth.util.MicrosoftConstants;
 import net.raphimc.minecraftauth.util.logging.ConsoleLogger;
 import net.raphimc.minecraftauth.util.logging.ILogger;
 
@@ -46,6 +48,13 @@ public class BedrockSettings extends SettingGroup {
     private static final Text TITLE = Text.of("Microsoft Bedrock login");
 
     private static final BedrockSettings INSTANCE = new BedrockSettings();
+
+    public static final AbstractStep<?, StepFullBedrockSession.FullBedrockSession> BEDROCK_DEVICE_CODE_LOGIN = MinecraftAuth.builder()
+            .withClientId(MicrosoftConstants.BEDROCK_ANDROID_TITLE_ID).withScope(MicrosoftConstants.SCOPE_TITLE_AUTH)
+            .deviceCode()
+            .withDeviceToken("Android")
+            .sisuTitleAuthentication(MicrosoftConstants.BEDROCK_XSTS_RELYING_PARTY)
+            .buildMinecraftBedrockChainStep(true, true);
 
     private Thread thread;
     private final ButtonSetting clickToSetBedrockAccount = new ButtonSetting(this, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> {
@@ -90,7 +99,7 @@ public class BedrockSettings extends SettingGroup {
         final MinecraftClient client = MinecraftClient.getInstance();
         final Screen prevScreen = client.currentScreen;
         try {
-            accountsSave.setBedrockAccount(MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(GUI_LOGGER, MinecraftAuth.createHttpClient(), new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
+            accountsSave.setBedrockAccount(BEDROCK_DEVICE_CODE_LOGIN.getFromInput(GUI_LOGGER, MinecraftAuth.createHttpClient(), new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
                 VFPScreen.setScreen(new ConfirmScreen(copyUrl -> {
                     if (copyUrl) {
                         client.keyboard.setClipboard(msaDeviceCode.getDirectVerificationUri());

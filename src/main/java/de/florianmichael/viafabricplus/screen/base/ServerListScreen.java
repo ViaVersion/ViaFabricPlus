@@ -25,6 +25,7 @@ import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.BetaCraftScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.ClassiCubeLoginScreen;
 import de.florianmichael.viafabricplus.screen.classic4j.ClassiCubeServerListScreen;
+import de.florianmichael.viafabricplus.screen.realms.BedrockRealmsScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -78,6 +79,20 @@ public class ServerListScreen extends VFPScreen {
             betaCraftBuilder = betaCraftBuilder.tooltip(Tooltip.of(Text.translatable("betacraft.viafabricplus.warning")));
         }
         this.addDrawableChild(betaCraftBuilder.build());
+
+        ButtonWidget.Builder bedrockRealmsBuilder = ButtonWidget.builder(BedrockRealmsScreen.INSTANCE.getTitle(), button -> {
+            BedrockRealmsScreen.INSTANCE.open(this);
+        }).position(this.width / 2 - 50, this.height / 2 - 25 + 40 + 6).size(98, 20);
+        final boolean missingAccount = ViaFabricPlus.global().getSaveManager().getAccountsSave().getBedrockAccount() == null; // Only check for presence, later validate
+        if (missingAccount) {
+            bedrockRealmsBuilder.tooltip(Tooltip.of(Text.translatable("bedrock_realms.viafabricplus.warning")));
+        }
+
+        ButtonWidget bedrockRealmsButton = bedrockRealmsBuilder.build();
+        this.addDrawableChild(bedrockRealmsButton);
+        if (missingAccount) {
+            bedrockRealmsButton.active = false;
+        }
     }
 
     @Override

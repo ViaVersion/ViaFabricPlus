@@ -26,15 +26,13 @@ import de.florianmichael.viafabricplus.screen.VFPList;
 import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.VFPScreen;
 import de.florianmichael.viafabricplus.screen.settings.TitleRenderer;
+import de.florianmichael.viafabricplus.util.ConnectionUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
-import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.gui.screen.option.ControlsListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -66,7 +64,6 @@ public class BetaCraftScreen extends VFPScreen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
 
         this.renderTitle(context);
@@ -116,10 +113,7 @@ public class BetaCraftScreen extends VFPScreen {
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-            final ServerAddress serverAddress = ServerAddress.parse(server.socket());
-            final ServerInfo entry = new ServerInfo(server.name(), serverAddress.getAddress(), ServerInfo.ServerType.OTHER);
-
-            ConnectScreen.connect(MinecraftClient.getInstance().currentScreen, MinecraftClient.getInstance(), serverAddress, entry, false, null);
+            ConnectionUtil.connect(server.name(), server.socket());
             super.mappedMouseClicked(mouseX, mouseY, button);
         }
 
