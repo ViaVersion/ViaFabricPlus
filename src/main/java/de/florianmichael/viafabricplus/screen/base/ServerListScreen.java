@@ -35,8 +35,6 @@ public class ServerListScreen extends VFPScreen {
 
     public static final ServerListScreen INSTANCE = new ServerListScreen();
 
-    private ButtonWidget betaCraftButton;
-
     public ServerListScreen() {
         super(Text.translatable("screen.viafabricplus.server_list"), true);
     }
@@ -62,18 +60,7 @@ public class ServerListScreen extends VFPScreen {
         this.addDrawableChild(classiCubeBuilder.build());
 
         ButtonWidget.Builder betaCraftBuilder = ButtonWidget.builder(BetaCraftScreen.INSTANCE.getTitle(), button -> {
-            if (BetaCraftScreen.SERVER_LIST == null) {
-                betaCraftButton = button;
-
-                BetaCraftHandler.requestV2ServerList(serverList -> {
-                    BetaCraftScreen.SERVER_LIST = serverList;
-
-                    BetaCraftScreen.INSTANCE.open(this);
-                }, throwable -> showErrorScreen(BetaCraftScreen.INSTANCE.getTitle(), throwable, this));
-
-            } else {
-                BetaCraftScreen.INSTANCE.open(this);
-            }
+            BetaCraftScreen.INSTANCE.open(this);
         }).position(this.width / 2 - 50, this.height / 2 - 25 + 20 + 3).size(98, 20);
         if (BetaCraftScreen.SERVER_LIST == null) {
             betaCraftBuilder = betaCraftBuilder.tooltip(Tooltip.of(Text.translatable("betacraft.viafabricplus.warning")));
@@ -92,13 +79,6 @@ public class ServerListScreen extends VFPScreen {
         this.addDrawableChild(bedrockRealmsButton);
         if (missingAccount) {
             bedrockRealmsButton.active = false;
-        }
-    }
-
-    @Override
-    public void tick() {
-        if (betaCraftButton != null) {
-            betaCraftButton.setMessage(Text.translatable("betacraft.viafabricplus.loading"));
         }
     }
 

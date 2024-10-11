@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.screen.classic4j;
 
+import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
@@ -51,6 +52,19 @@ public class BetaCraftScreen extends VFPScreen {
 
     @Override
     protected void init() {
+        super.init();
+        if (SERVER_LIST != null) {
+            createView();
+            return;
+        }
+        setupSubtitle(Text.translatable("betacraft.viafabricplus.loading"));
+        BetaCraftHandler.requestV2ServerList(serverList -> {
+            BetaCraftScreen.SERVER_LIST = serverList;
+            createView();
+        }, throwable -> showErrorScreen(BetaCraftScreen.INSTANCE.getTitle(), throwable, this));
+    }
+
+    private void createView() {
         this.setupSubtitle(Text.of(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.opening(this, BETA_CRAFT_SERVER_LIST_URL));
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 2) * 3));
 
@@ -58,8 +72,11 @@ public class BetaCraftScreen extends VFPScreen {
             SERVER_LIST = null;
             client.setScreen(prevScreen);
         }).position(width - 98 - 5, 5).size(98, 20).build());
+    }
 
-        super.init();
+    @Override
+    protected boolean subtitleCentered() {
+        return SERVER_LIST == null;
     }
 
     @Override
