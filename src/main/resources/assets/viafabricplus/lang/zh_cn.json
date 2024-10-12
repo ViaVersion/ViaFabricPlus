@@ -28,19 +28,24 @@
   "base.viafabricplus.name": "名称",
   "base.viafabricplus.password": "密码",
   "base.viafabricplus.login": "登录",
+  "base.viafabricplus.code": "代码",
+  "base.viafabricplus.accept": "接受",
+  "base.viafabricplus.refresh": "刷新",
 
-  "setting_group_name.viafabricplus.authentication": "身份验证",
+  "setting_group_name.viafabricplus.authentication": "认证",
   "setting_group_name.viafabricplus.visual": "视觉",
   "setting_group_name.viafabricplus.debug": "调试",
   "setting_group_name.viafabricplus.general": "通用",
   "setting_group_name.viafabricplus.bedrock": "基岩版",
 
   "screen.viafabricplus.force_version": "强制使用版本",
-  "screen.viafabricplus.report_issues": "反馈问题",
+  "screen.viafabricplus.report_issues": "报告问题",
   "screen.viafabricplus.server_list": "服务器列表",
   "screen.viafabricplus.classicube_login": "Classicube登录",
-  "screen.viafabricplus.classicube_mfa": "Classicube多重身份验证",
+  "screen.viafabricplus.classicube_mfa": "Classicube多重认证",
   "screen.viafabricplus.settings": "设置",
+  "screen.viafabricplus.bedrock_realms": "基岩版Realm",
+  "screen.viafabricplus.accept_invite": "接受邀请",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "保存所选协议版本",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "在调试HUD中显示额外信息",
@@ -73,7 +78,7 @@
   "debug_settings.viafabricplus.ignore_fabric_sync_errors": "忽略Fabric同步错误",
   "debug_settings.viafabricplus.legacy_tab_completions": "旧版Tab补全",
 
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用BetaCraft进行认证",
+  "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用BetaCraft认证",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "验证在线模式服务器的会话",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "使用ClassiCube服务器列表时自动选择CPE",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "使用ClassiCube服务器列表时将会话名称设置为ClassiCube名称",
@@ -95,6 +100,7 @@
   "visual_settings.viafabricplus.disable_server_pinging": "禁用服务器Ping",
   "visual_settings.viafabricplus.sideways_backwards_walking": "侧身后退行走",
   "visual_settings.viafabricplus.enable_legacy_tablist": "启用旧版Tab列表",
+  "visual_settings.viafabricplus.tilt_item_positions": "倾斜物品位置",
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "隐藏熔炉配方书",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "隐藏合成配方书",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "隐藏新版拼图方块屏幕功能",
@@ -107,7 +113,7 @@
   "click_to_set_bedrock_account.viafabricplus.notice": "你的浏览器应该已经打开。\n关闭此屏幕将取消该过程！",
   "click_to_set_bedrock_account.viafabricplus.display": "基岩版账户：%s",
 
-  "change_game_menu_screen_layout.viafabricplus.authentic": "实际",
+  "change_game_menu_screen_layout.viafabricplus.authentic": "原版",
   "change_game_menu_screen_layout.viafabricplus.adjusted": "调整",
 
   "change_game_menu_screen_layout.viafabricplus.authentic.tooltip": "根据所选版本调整按钮位置和叠加层。",
@@ -130,22 +136,34 @@
   "classicube.viafabricplus.profile": "ClassiCube个人资料：",
   "classicube.viafabricplus.warning": "此功能将向ClassiCube API发送API请求。",
 
-  "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus无法验证你的会话！请登录账户或在ViaFabricPlus设置中禁用BetaCraft身份验证",
+  "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus无法验证你的会话！请登录账户或在ViaFabricPlus设置中禁用BetaCraft认证",
   "betacraft.viafabricplus.loading": "加载中…",
   "betacraft.viafabricplus.warning": "按下此按钮将向“betacraft.uk/serverlist”发送API请求。",
 
-  "translation.viafabricplus.updates_1_20": "此服务器启用了“update_1_20”功能。此功能未完全支持，可能会引起问题。",
+  "translation.viafabricplus.updates_1_20": "此服务器启用了“1.20更新”功能。此功能未完全支持，可能会引起问题。",
   "translation.viafabricplus.packet_error": "转译数据包时发生错误！请在日志中查看更多详细信息！",
 
-  "classic4j_library.viafabricplus.error.token": "令牌不正确。你的ViaFabricPlus是否版本过旧？",
+  "classic4j_library.viafabricplus.error.token": "令牌不正确。你的ViaFabricPlus版本是否过旧？",
   "classic4j_library.viafabricplus.error.username": "用户名无效。",
   "classic4j_library.viafabricplus.error.password": "密码无效。",
   "classic4j_library.viafabricplus.error.verification": "用户尚未验证电子邮件地址。",
-  "classic4j_library.viafabricplus.error.logincode": "已请求多重身份验证。请查看你的电子邮箱。",
+  "classic4j_library.viafabricplus.error.logincode": "已请求多重认证。请查看你的电子邮箱。",
 
-  "minecraftauth_library.viafabricplus.xbldevicetoken": "正在通过Xbox Live验证设备…",
-  "minecraftauth_library.viafabricplus.xblsisuauthentication": "正在使用SISU通过Xbox Live进行身份验证…",
-  "minecraftauth_library.viafabricplus.mcchain": "正在通过Minecraft服务进行身份验证…",
+  "minecraftauth_library.viafabricplus.xbldevicetoken": "正在使用Xbox Live进行设备认证…",
+  "minecraftauth_library.viafabricplus.xblsisuauthentication": "正在通过SISU进行Xbox Live认证…",
+  "minecraftauth_library.viafabricplus.mcchain": "正在使用Minecraft服务进行认证…",
   "minecraftauth_library.viafabricplus.xblxststoken": "正在请求XSTS令牌…",
-  "minecraftauth_library.viafabricplus.playfabtoken": "正在通过PlayFab进行身份验证…"
+  "minecraftauth_library.viafabricplus.playfabtoken": "正在使用PlayFab进行认证…",
+  "minecraftauth_library.viafabricplus.realmsxsts": "正在请求Realms XSTS令牌…",
+
+  "bedrock_realms.viafabricplus.warning": "此功能需要在设置中设置基岩版账户！",
+  "bedrock_realms.viafabricplus.availability_check": "正在检查可用性…",
+  "bedrock_realms.viafabricplus.no_worlds": "未找到任何世界 :(",
+  "bedrock_realms.viafabricplus.unavailable": "你的ViaFabricPlus版本过旧，并且与Minecraft Realms不兼容。",
+  "bedrock_realms.viafabricplus.error": "发生错误，请查看日志了解更多信息",
+  "bedrock_realms.viafabricplus.join": "加入Realm",
+  "bedrock_realms.viafabricplus.leave": "离开Realm",
+  "bedrock_realms.viafabricplus.invite": "接受邀请码",
+  "bedrock_realms.viafabricplus.expired": "Realm已过期",
+  "bedrock_realms.viafabricplus.incompatible": "Realm的Minecraft版本太旧或太新"
 }
