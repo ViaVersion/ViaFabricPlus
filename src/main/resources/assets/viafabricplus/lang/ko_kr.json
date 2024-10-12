@@ -28,6 +28,9 @@
   "base.viafabricplus.name": "이름",
   "base.viafabricplus.password": "비밀번호",
   "base.viafabricplus.login": "로그인",
+  "base.viafabricplus.code": "코드",
+  "base.viafabricplus.accept": "확인",
+  "base.viafabricplus.refresh": "새로고침",
 
   "setting_group_name.viafabricplus.authentication": "인증",
   "setting_group_name.viafabricplus.visual": "비주얼",
@@ -41,6 +44,8 @@
   "screen.viafabricplus.classicube_login": "Classicube 로그인",
   "screen.viafabricplus.classicube_mfa": "Classicube MFA",
   "screen.viafabricplus.settings": "설정",
+  "screen.viafabricplus.bedrock_realms": "베드락 Realms",
+  "screen.viafabricplus.accept_invite": "초대 수락",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "선택된 프로토콜 버전 저장",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "디버그 HUD에 추가 정보 표시",
@@ -95,6 +100,7 @@
   "visual_settings.viafabricplus.disable_server_pinging": "서버 핑 비활성화",
   "visual_settings.viafabricplus.sideways_backwards_walking": "옆과 뒤로 걷기",
   "visual_settings.viafabricplus.enable_legacy_tablist": "레거시 탭 리스트 허용",
+  "visual_settings.viafabricplus.tilt_item_positions": "손에 든 아이템 기울이기",
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "화로 제작법 책 숨기기",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "제작대 제작법 책 숨기기",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "최신 직소 화면 기능 숨기기",
@@ -147,5 +153,17 @@
   "minecraftauth_library.viafabricplus.xblsisuauthentication": "SISU를 사용해 Xbox Live로 인증중...",
   "minecraftauth_library.viafabricplus.mcchain": "마인크래프트 서버스로 인증중...",
   "minecraftauth_library.viafabricplus.xblxststoken": "XSTS 토큰 요청중...",
-  "minecraftauth_library.viafabricplus.playfabtoken": "PlayFab으로 인증중..."
+  "minecraftauth_library.viafabricplus.playfabtoken": "PlayFab으로 인증중...",
+  "minecraftauth_library.viafabricplus.realmsxsts": "Realms XSTS 토큰 요청중...",
+
+  "bedrock_realms.viafabricplus.warning": "이 기능은 베드락 에디션 계정을 설정해야 사용하실 수 있습니다!",
+  "bedrock_realms.viafabricplus.availability_check": "사용 가능한지 확인 중...",
+  "bedrock_realms.viafabricplus.no_worlds": "월드를 찾지 못했어요... ㅠ~ㅠ",
+  "bedrock_realms.viafabricplus.unavailable": "ViaFabricPlus가 오래되어 현재 Realms와 호환되지 않습니다.",
+  "bedrock_realms.viafabricplus.error": "오류가 발생했습니다. 자세한 정보는 로그를 참조하세요.",
+  "bedrock_realms.viafabricplus.join": "Realms 참가",
+  "bedrock_realms.viafabricplus.leave": "Realms 나가기",
+  "bedrock_realms.viafabricplus.invite": "초대 코드 수락",
+  "bedrock_realms.viafabricplus.expired": "Realms 만료됨",
+  "bedrock_realms.viafabricplus.incompatible": "Realms 버전이 이 버전과 호환되지 않습니다."
 }
