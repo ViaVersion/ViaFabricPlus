@@ -62,6 +62,7 @@
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Klicke, um das Konto für die Bedrock Edition festzulegen",
   "bedrock_settings.viafabricplus.replace_default_port": "Standard-Port in der Serverliste ersetzen",
+  
   "debug_settings.viafabricplus.queue_config_packets": "Konfigurationspakete in die Warteschlange stellen",
   "debug_settings.viafabricplus.disable_sequencing": "Sequenzierung deaktivieren",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Händlerbildschirme glätten",
@@ -99,6 +100,7 @@
   "visual_settings.viafabricplus.disable_server_pinging": "Server-Pinging deaktivieren",
   "visual_settings.viafabricplus.sideways_backwards_walking": "Seitliches Rückwärtsgehen",
   "visual_settings.viafabricplus.enable_legacy_tablist": "Legacy-Spielerliste aktivieren",
+  "visual_settings.viafabricplus.tilt_item_positions": "Item Neigungen ändern",
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "Ofenrezeptbuch ausblenden",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Handwerksrezeptbuch ausblenden",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Moderne Verbundblock-Bildschirmeigenschaften ausblenden",
