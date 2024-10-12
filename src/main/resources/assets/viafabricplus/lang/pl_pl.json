@@ -28,6 +28,9 @@
   "base.viafabricplus.name": "Nazwa użytkownika",
   "base.viafabricplus.password": "Hasło",
   "base.viafabricplus.login": "Zaloguj się",
+  "base.viafabricplus.code": "Kod",
+  "base.viafabricplus.accept": "Akceptuj",
+  "base.viafabricplus.refresh": "Odśwież",
 
   "setting_group_name.viafabricplus.authentication": "Uwierzytelnianie",
   "setting_group_name.viafabricplus.visual": "Wizualne",
@@ -41,6 +44,8 @@
   "screen.viafabricplus.classicube_login": "Logowanie Classicube",
   "screen.viafabricplus.classicube_mfa": "Classicube MFA",
   "screen.viafabricplus.settings": "Ustawienia",
+  "screen.viafabricplus.bedrock_realms": "Bedrock Realms",
+  "screen.viafabricplus.accept_invite": "Zaakceptuj zaproszenie",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Zapisz wybraną wersję protokołu",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "Pokazuj dodatkowe informacje w interfejsie debugowania",
@@ -96,6 +101,7 @@
   "visual_settings.viafabricplus.disable_server_pinging": "Wyłącz pingowanie serwerów",
   "visual_settings.viafabricplus.sideways_backwards_walking": "Chodzenie do tyłu na boki",
   "visual_settings.viafabricplus.enable_legacy_tablist": "Włącz starą listę graczy",
+  "visual_settings.viafabricplus.tilt_item_positions": "Przechyl pozycje przedmiotów",
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "Ukrywaj książkę przepisów w piecach",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Ukrywaj książkę przepisów w stole rzemyślniczym",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Ukrywaj nowe funkcje ekranu bloku konstrukcyjnego",
@@ -147,5 +153,17 @@
   "minecraftauth_library.viafabricplus.xblsisuauthentication": "Uwierzytelnianie z Xbox Live używając SISU...",
   "minecraftauth_library.viafabricplus.mcchain": "Uwierzytelnianie z Minecraft Services...",
   "minecraftauth_library.viafabricplus.xblxststoken": "Zapytanie o token XSTS...",
-  "minecraftauth_library.viafabricplus.playfabtoken": "Uwierzytelnianie z PlayFab..."
+  "minecraftauth_library.viafabricplus.playfabtoken": "Uwierzytelnianie z PlayFab...",
+  "minecraftauth_library.viafabricplus.realmsxsts": "Pytanie o token XSTS Realms...",
+
+  "bedrock_realms.viafabricplus.warning": "Ta funkcja wymaga ustawienia konta bedrock edition w ustawieniach!",
+  "bedrock_realms.viafabricplus.availability_check": "Sprawdzanie dostępności...",
+  "bedrock_realms.viafabricplus.no_worlds": "Nie znaleziono światów :(",
+  "bedrock_realms.viafabricplus.unavailable": "Twoje ViaFabricPlus jest przestarzałe i niekompatybilne z minecraft realms.",
+  "bedrock_realms.viafabricplus.error": "Nastąpił błąd, sprawdź logi po więcej informacji",
+  "bedrock_realms.viafabricplus.join": "Dołącz do realma",
+  "bedrock_realms.viafabricplus.leave": "Opuść realm",
+  "bedrock_realms.viafabricplus.invite": "Zaakceptuj kod zaproszenia",
+  "bedrock_realms.viafabricplus.expired": "Realm jest przeterminowany",
+  "bedrock_realms.viafabricplus.incompatible": "Wersja minecraft realms jest zbyt stara albo zbyt nowa"
 }
