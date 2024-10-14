@@ -59,7 +59,7 @@
   "general_settings.viafabricplus.ignore_packet_translation_errors": "Ошибки преобразования пакетов",
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Скины и головы игроков в старых версиях",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Эмулировать действия в инвентаре в alpha-версиях",
-  "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "Запоминать позицию прокрутки в списке версий",
+  "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "Запоминать позицию прокрутки в настройках ViaFabricPlus",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Нажмите для настройки учётной записи Bedrock Edition",
   "bedrock_settings.viafabricplus.replace_default_port": "Заменить порт по умолчанию в списке серверов",
@@ -95,7 +95,7 @@
   "visual_settings.viafabricplus.hide_modern_hud_elements": "Старый интерфейс",
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "Старый творческий инвентарь",
   "visual_settings.viafabricplus.old_walking_animation": "Старая анимация ходьбы",
-  "visual_settings.viafabricplus.change_font_renderer_behaviour": "Старый шрифт",
+  "visual_settings.viafabricplus.change_font_renderer_behaviour": "Скрывать неизвестные Unicode-символы",
   "visual_settings.viafabricplus.enable_sword_blocking": "Анимация меча",
   "visual_settings.viafabricplus.swing_hand_on_item_use": "Swing hand on item use",
   "visual_settings.viafabricplus.disable_server_pinging": "Не проверять соединение",
@@ -104,8 +104,8 @@
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "Старые печки без рецептов",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Старые верстаки без рецептов",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Блокировать новые функции интерфейса пазла",
-  "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Force Unicode font for non-ASCII languages",
-  "visual_settings.viafabricplus.filter_non_existing_glyphs": "Блокировать символы новых версий",
+  "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Старый шрифт",
+  "visual_settings.viafabricplus.filter_non_existing_glyphs": "Отключать неизвестные Unicode-символы",
   "visual_settings.viafabricplus.sneak_instantly": "Моментальное приседание",
 
   "force_version.viafabricplus.title": "Укажите версию для проверки связи с сервером и подключения к нему.",
