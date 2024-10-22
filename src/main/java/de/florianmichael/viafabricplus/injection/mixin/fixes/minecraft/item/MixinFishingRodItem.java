@@ -23,9 +23,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FishingRodItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,7 +35,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinFishingRodItem {
 
     @Inject(method = "use", at = @At("RETURN"))
-    private void swingHand(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+    private void swingHand(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             user.swingHand(hand);
         }

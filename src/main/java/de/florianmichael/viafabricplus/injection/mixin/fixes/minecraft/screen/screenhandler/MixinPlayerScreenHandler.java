@@ -23,16 +23,11 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.recipe.Recipes1_11_2;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.RecipeInputInventory;
-import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.screen.AbstractRecipeScreenHandler;
+import net.minecraft.screen.AbstractCraftingScreenHandler;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -40,20 +35,16 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerScreenHandler.class)
-public abstract class MixinPlayerScreenHandler extends AbstractRecipeScreenHandler<CraftingRecipeInput, CraftingRecipe> {
+public abstract class MixinPlayerScreenHandler extends AbstractCraftingScreenHandler {
 
-    @Shadow
-    @Final
-    private RecipeInputInventory craftingInput;
-
-    public MixinPlayerScreenHandler(ScreenHandlerType<?> screenHandlerType, int i) {
-        super(screenHandlerType, i);
+    public MixinPlayerScreenHandler(ScreenHandlerType<?> type, int syncId, int width, int height) {
+        super(type, syncId, width, height);
     }
 
     @Inject(method = "onContentChanged", at = @At("HEAD"))
     private void clientSideCrafting(Inventory inventory, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
-            Recipes1_11_2.setCraftingResultSlot(syncId, this, craftingInput);
+            Recipes1_11_2.setCraftingResultSlot(syncId, this, this.craftingInventory);
         }
     }
 

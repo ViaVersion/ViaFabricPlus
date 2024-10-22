@@ -35,7 +35,7 @@ public abstract class MixinAbstractSignEditScreen {
 
     @Shadow
     @Final
-    private SignBlockEntity blockEntity;
+    protected SignBlockEntity blockEntity;
 
     @Inject(method = "canEdit", at = @At("HEAD"), cancellable = true)
     private void dontCloseTooFarAwaySigns(CallbackInfoReturnable<Boolean> cir) {

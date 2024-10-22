@@ -38,7 +38,9 @@ import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.*;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
@@ -115,7 +117,7 @@ public abstract class MixinItemStack {
             value.ifPresent(e -> {
                 final int lvl = enchantment.getInt("lvl");
                 if (registryLookup != null) {
-                    final Optional<RegistryEntry.Reference<Enchantment>> v = registryLookup.getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOptional(e);
+                    final Optional<RegistryEntry.Reference<Enchantment>> v = registryLookup.getOrThrow(RegistryKeys.ENCHANTMENT).getOptional(e);
                     v.ifPresent(enchantmentReference -> tooltip.accept(Enchantment.getName(enchantmentReference, MathHelper.clamp(lvl, Short.MIN_VALUE, Short.MAX_VALUE))));
                 }
             });

@@ -71,9 +71,9 @@ public class EntityDimensionDiff {
                     ProtocolVersion.v1_7_6, EntityDimensionsBuilder.create(EntityType.OCELOT).withChangingDimensions(0.6F, 0.8F).build(),
                     ProtocolVersion.v1_8, EntityType.OCELOT.getDimensions()
             ),
-            EntityType.BOAT, linkedHashMap(
-                    ProtocolVersion.v1_8, EntityDimensionsBuilder.create(EntityType.BOAT).withChangingDimensions(1.5F, 0.6F).build(),
-                    ProtocolVersion.v1_9, EntityType.BOAT.getDimensions()
+            EntityType.OAK_BOAT, linkedHashMap(
+                    ProtocolVersion.v1_8, EntityDimensionsBuilder.create(EntityType.OAK_BOAT).withChangingDimensions(1.5F, 0.6F).build(),
+                    ProtocolVersion.v1_9, EntityType.OAK_BOAT.getDimensions()
             ),
             EntityType.CREEPER, linkedHashMap(
                     ProtocolVersion.v1_8, EntityDimensionsBuilder.create(EntityType.CREEPER).withChangingDimensions(0.6F, 1.8F).build(),

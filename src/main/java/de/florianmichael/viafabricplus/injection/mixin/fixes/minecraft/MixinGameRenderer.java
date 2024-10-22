@@ -40,7 +40,7 @@ public abstract class MixinGameRenderer {
 
     @Shadow
     @Final
-    MinecraftClient client;
+    private MinecraftClient client;
 
     @ModifyExpressionValue(method = "findCrosshairTarget", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"))
     private HitResult bedrockReachAroundRaycast(HitResult hitResult) {

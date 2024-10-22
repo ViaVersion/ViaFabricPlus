@@ -19,23 +19,21 @@
 
 package de.florianmichael.viafabricplus.fixes.versioned.visual;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.entity.model.CompositeEntityModel;
+import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.client.render.entity.state.BoatEntityRenderState;
 import net.minecraft.util.Identifier;
 
 /**
  * Model for boats in 1.8 and lower.
  */
-public class BoatModel1_8 extends CompositeEntityModel<BoatEntity> {
+public class BoatModel1_8 extends EntityModel<BoatEntityRenderState> {
 
     public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(Identifier.of("viafabricplus", "boat1_8"), "main");
-    private final ImmutableList<ModelPart> parts;
 
     public BoatModel1_8(ModelPart root) {
-        this.parts = ImmutableList.of(root.getChild("bottom"), root.getChild("back"), root.getChild("front"), root.getChild("right"), root.getChild("left"));
+        super(root);
     }
 
     public static TexturedModelData getTexturedModelData() {
@@ -54,12 +52,7 @@ public class BoatModel1_8 extends CompositeEntityModel<BoatEntity> {
     }
 
     @Override
-    public Iterable<ModelPart> getParts() {
-        return parts;
-    }
-
-    @Override
-    public void setAngles(BoatEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
+    public void setAngles(BoatEntityRenderState state) {
     }
 
 }

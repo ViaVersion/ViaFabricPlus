@@ -29,7 +29,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryKeys;
@@ -48,7 +47,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
     @Override
     public boolean matches(CraftingRecipeInput inv, World world) {
         boolean foundBanner = false;
-        for (int i = 0; i < inv.getSize(); i++) {
+        for (int i = 0; i < inv.size(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack.getItem() instanceof BannerItem) {
                 if (foundBanner)
@@ -65,7 +64,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
     public ItemStack craft(CraftingRecipeInput inv, RegistryWrapper.WrapperLookup lookup) {
         ItemStack result = ItemStack.EMPTY;
 
-        for (int i = 0; i < inv.getSize(); i++) {
+        for (int i = 0; i < inv.size(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty() && stack.getItem() instanceof BannerItem) {
                 result = stack.copy();
@@ -76,9 +75,9 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
 
         final BannerPattern_1_13_2 pattern = getBannerPattern(inv);
         if (pattern != null) {
-            final var patternKey = lookup.getWrapperOrThrow(RegistryKeys.BANNER_PATTERN).getOrThrow(pattern.getKey());
+            final var patternKey = lookup.getOrThrow(RegistryKeys.BANNER_PATTERN).getOrThrow(pattern.getKey());
             DyeColor color = ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ? DyeColor.BLACK : DyeColor.WHITE;
-            for (int i = 0; i < inv.getSize(); i++) {
+            for (int i = 0; i < inv.size(); i++) {
                 Item item = inv.getStackInSlot(i).getItem();
                 if (item instanceof DyeItem dyeItem) {
                     color = dyeItem.getColor();
@@ -97,11 +96,6 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean fits(int width, int height) {
-        return width >= 3 && height >= 3;
-    }
-
-    @Override
     public RecipeSerializer<AddBannerPatternRecipe> getSerializer() {
         return SERIALIZER;
     }
@@ -115,7 +109,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
             if (pattern.hasBaseStack()) {
                 boolean foundBaseItem = false;
                 boolean foundDye = false;
-                for (int i = 0; i < inv.getSize(); i++) {
+                for (int i = 0; i < inv.size(); i++) {
                     ItemStack stack = inv.getStackInSlot(i);
                     if (!stack.isEmpty() && !(stack.getItem() instanceof BannerItem)) {
                         if (stack.getItem() instanceof DyeItem) {
@@ -134,9 +128,9 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
                     }
                 }
                 if (!foundBaseItem || (!foundDye && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_10))) matches = false;
-            } else if (inv.getSize() == pattern.getRecipePattern().length * pattern.getRecipePattern()[0].length()) {
+            } else if (inv.size() == pattern.getRecipePattern().length * pattern.getRecipePattern()[0].length()) {
                 DyeColor patternColor = null;
-                for (int i = 0; i < inv.getSize(); i++) {
+                for (int i = 0; i < inv.size(); i++) {
                     int row = i / 3;
                     int col = i % 3;
                     ItemStack stack = inv.getStackInSlot(i);

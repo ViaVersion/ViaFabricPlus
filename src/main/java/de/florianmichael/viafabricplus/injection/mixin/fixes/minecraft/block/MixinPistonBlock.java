@@ -75,7 +75,7 @@ public abstract class MixinPistonBlock extends FacingBlock {
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+    public VoxelShape getCullingShape(BlockState state) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_1)) {
             if (state.get(PistonBlock.EXTENDED)) {
                 return switch (state.get(FACING)) {
@@ -90,7 +90,7 @@ public abstract class MixinPistonBlock extends FacingBlock {
                 return VoxelShapes.fullCube();
             }
         } else {
-            return super.getCullingShape(state, world, pos);
+            return super.getCullingShape(state);
         }
     }
 

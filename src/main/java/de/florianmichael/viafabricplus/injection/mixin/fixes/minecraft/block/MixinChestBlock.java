@@ -76,7 +76,7 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state, BlockView view, BlockPos pos) {
+    public VoxelShape getCullingShape(BlockState state) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             if (state.get(ChestBlock.CHEST_TYPE) == ChestType.SINGLE) {
                 return SINGLE_SHAPE;
@@ -89,7 +89,7 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
                 };
             }
         } else {
-            return super.getCullingShape(state, view, pos);
+            return super.getCullingShape(state);
         }
     }
 

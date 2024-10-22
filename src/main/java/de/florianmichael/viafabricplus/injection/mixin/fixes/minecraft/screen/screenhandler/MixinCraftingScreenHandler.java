@@ -23,31 +23,23 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.data.recipe.Recipes1_11_2;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.screen.AbstractRecipeScreenHandler;
+import net.minecraft.screen.AbstractCraftingScreenHandler;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CraftingScreenHandler.class)
-public abstract class MixinCraftingScreenHandler extends AbstractRecipeScreenHandler<CraftingRecipeInput, CraftingRecipe> {
+public abstract class MixinCraftingScreenHandler extends AbstractCraftingScreenHandler {
 
-    @Shadow
-    @Final
-    private RecipeInputInventory input;
-
-    public MixinCraftingScreenHandler(ScreenHandlerType<?> screenHandlerType, int i) {
-        super(screenHandlerType, i);
+    public MixinCraftingScreenHandler(ScreenHandlerType<?> type, int syncId, int width, int height) {
+        super(type, syncId, width, height);
     }
+
 
     @Redirect(method = "quickMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/CraftingScreenHandler;insertItem(Lnet/minecraft/item/ItemStack;IIZ)Z", ordinal = 1))
     private boolean noShiftClickMoveIntoCraftingTable(CraftingScreenHandler instance, ItemStack itemStack, int startIndex, int endIndex, boolean fromLast) {
@@ -57,7 +49,7 @@ public abstract class MixinCraftingScreenHandler extends AbstractRecipeScreenHan
     @Inject(method = "onContentChanged", at = @At("HEAD"))
     private void clientSideCrafting(Inventory inventory, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
-            Recipes1_11_2.setCraftingResultSlot(syncId, this, input);
+            Recipes1_11_2.setCraftingResultSlot(syncId, this, this.craftingInventory);
         }
     }
 

@@ -23,9 +23,9 @@ import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.consume.UseAction;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,15 +51,14 @@ public abstract class MixinBowItem {
     }
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
-    private void makeInstantUsable(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+    private void makeInstantUsable(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
-            final ItemStack stack = user.getStackInHand(hand);
-            final ItemStack arrowStack = user.getProjectileType(stack);
+            final ItemStack arrowStack = user.getProjectileType(user.getStackInHand(hand));
             if (arrowStack.isEmpty()) {
-                cir.setReturnValue(TypedActionResult.fail(stack));
+                cir.setReturnValue(ActionResult.FAIL);
             } else {
                 arrowStack.decrement(1);
-                cir.setReturnValue(TypedActionResult.pass(stack));
+                cir.setReturnValue(ActionResult.PASS);
             }
         }
     }

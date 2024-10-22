@@ -23,7 +23,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.*;
-import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -47,7 +47,7 @@ public abstract class MixinAnvilBlock extends FallingBlock {
 
     @Shadow
     @Final
-    public static DirectionProperty FACING;
+    public static EnumProperty<Direction> FACING;
 
     public MixinAnvilBlock(Settings settings) {
         super(settings);
@@ -66,11 +66,11 @@ public abstract class MixinAnvilBlock extends FallingBlock {
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+    protected VoxelShape getCullingShape(BlockState state) {
         // Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/246
         // MoreCulling is caching the culling shape and doesn't reload it, so we have to force vanilla's shape here.
         viaFabricPlus$requireOriginalShape = true;
-        return super.getCullingShape(state, world, pos);
+        return super.getCullingShape(state);
     }
 
 }

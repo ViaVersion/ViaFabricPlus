@@ -30,6 +30,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.vehicle.AbstractBoatEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.particle.ParticleTypes;
@@ -51,8 +52,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(BoatEntity.class)
-public abstract class MixinBoatEntity extends VehicleEntity {
+@Mixin(AbstractBoatEntity.class)
+public abstract class MixinAbstractBoatEntity extends VehicleEntity {
 
     @Shadow
     private double x;
@@ -72,9 +73,6 @@ public abstract class MixinBoatEntity extends VehicleEntity {
     @Shadow
     private BoatEntity.Location location;
 
-    @Shadow
-    public abstract LivingEntity getControllingPassenger();
-
     @Unique
     private double viaFabricPlus$speedMultiplier = 0.07D;
 
@@ -84,8 +82,8 @@ public abstract class MixinBoatEntity extends VehicleEntity {
     @Unique
     private Vec3d viaFabricPlus$boatVelocity = Vec3d.ZERO;
 
-    public MixinBoatEntity(EntityType<?> type, World world) {
-        super(type, world);
+    public MixinAbstractBoatEntity(EntityType<?> entityType, World world) {
+        super(entityType, world);
     }
 
     @Redirect(method = "interact", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/vehicle/VehicleEntity;interact(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;"))
