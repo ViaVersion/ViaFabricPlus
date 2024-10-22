@@ -9,8 +9,7 @@ accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/mi
 accessible field net/minecraft/network/ClientConnection packetSizeLogger Lnet/minecraft/network/handler/PacketSizeLogger;
 accessible field net/minecraft/entity/boss/dragon/EnderDragonEntity body Lnet/minecraft/entity/boss/dragon/EnderDragonPart;
 accessible field net/minecraft/entity/passive/AbstractHorseEntity lastAngryAnimationProgress F
-accessible field net/minecraft/entity/vehicle/BoatEntity yawVelocity F
-accessible field net/minecraft/client/font/FontStorage glyphRendererCache Lnet/minecraft/client/font/GlyphContainer;
+accessible field net/minecraft/entity/vehicle/AbstractBoatEntity yawVelocity F
 accessible field net/minecraft/client/font/FontStorage glyphCache Lnet/minecraft/client/font/GlyphContainer;
 accessible field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 accessible field net/minecraft/block/AbstractBlock velocityMultiplier F
@@ -23,7 +22,7 @@ accessible field net/minecraft/client/resource/language/TranslationStorage trans
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
 accessible method net/minecraft/entity/passive/CamelEntity getPassengerAttachmentY (ZFLnet/minecraft/entity/EntityDimensions;F)D
-accessible method net/minecraft/entity/vehicle/BoatEntity getMaxPassengers ()I
+accessible method net/minecraft/entity/vehicle/AbstractBoatEntity getMaxPassengers ()I
 accessible method net/minecraft/client/gui/screen/multiplayer/ConnectScreen setStatus (Lnet/minecraft/text/Text;)V
 accessible method net/minecraft/item/BlockItem getPlacementState (Lnet/minecraft/item/ItemPlacementContext;)Lnet/minecraft/block/BlockState;
 

@@ -57,7 +57,6 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -74,6 +73,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(ClientPlayerInteractionManager.class)
@@ -114,7 +114,7 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
     @Inject(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;syncSelectedSlot()V", shift = At.Shift.AFTER))
     private void sendPlayerPosPacket(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_17, ProtocolVersion.v1_20_5)) {
-            this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Full(player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch(), player.isOnGround()));
+            this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Full(player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch(), player.isOnGround(), player.horizontalCollision));
         }
     }
 
@@ -230,21 +230,26 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
         }
     }
 
-    @Redirect(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/TypedActionResult;"))
-    private TypedActionResult<ItemStack> eitherSuccessOrPass(ItemStack instance, World world, PlayerEntity user, Hand hand, @Local ItemStack itemStack) {
+    @Redirect(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;"))
+    private ActionResult eitherSuccessOrPass(ItemStack instance, World world, PlayerEntity user, Hand hand, @Local ItemStack itemStack) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             final int count = instance.getCount();
 
-            final TypedActionResult<ItemStack> action = instance.use(world, user, hand);
-            final ItemStack output = action.getValue();
+            final ActionResult actionResult = instance.use(world, user, hand);
+            final ItemStack output;
+            if (actionResult instanceof ActionResult.Success success) {
+                output = Objects.requireNonNullElseGet(success.getNewHandStack(), () -> user.getStackInHand(hand));
+            } else {
+                output = user.getStackInHand(hand);
+            }
 
             // In <= 1.8, ActionResult weren't a thing and interactItem simply returned either true or false
             // depending on if the input and output item are equal or not
             final boolean accepted = !output.isEmpty() && (output != itemStack || output.getCount() != count);
-            if (action.getResult().isAccepted() == accepted) {
-                return action;
+            if (actionResult.isAccepted() == accepted) {
+                return actionResult;
             } else {
-                return accepted ? TypedActionResult.success(output) : TypedActionResult.pass(output);
+                return accepted ? ActionResult.SUCCESS.withNewHandStack(output) : ActionResult.PASS;
             }
         } else {
             return instance.use(world, user, hand);

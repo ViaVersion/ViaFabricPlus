@@ -98,13 +98,13 @@
     "fixes.minecraft.block.MixinSnowBlock",
     "fixes.minecraft.block.MixinSoulSandBlock",
     "fixes.minecraft.block.MixinWallBlock",
+    "fixes.minecraft.entity.MixinAbstractBoatEntity",
     "fixes.minecraft.entity.MixinAbstractClientPlayerEntity",
     "fixes.minecraft.entity.MixinAbstractHorseEntity",
     "fixes.minecraft.entity.MixinAnimalEntity",
     "fixes.minecraft.entity.MixinArmadilloEntity",
     "fixes.minecraft.entity.MixinAxolotlEntity",
     "fixes.minecraft.entity.MixinBipedEntityModel",
-    "fixes.minecraft.entity.MixinBoatEntity",
     "fixes.minecraft.entity.MixinCamelEntity",
     "fixes.minecraft.entity.MixinCatEntity",
     "fixes.minecraft.entity.MixinClientPlayerEntity",
@@ -134,6 +134,7 @@
     "fixes.minecraft.item.MixinEquipment",
     "fixes.minecraft.item.MixinFireChargeItem",
     "fixes.minecraft.item.MixinFireworkRocketItem",
+    "fixes.minecraft.item.MixinFishingRodItem",
     "fixes.minecraft.item.MixinHeldItemRenderer",
     "fixes.minecraft.item.MixinItemCooldownManager",
     "fixes.minecraft.item.MixinItemGroup_EntriesImpl",
@@ -187,6 +188,7 @@
     "fixes.viaversion.MixinBlockItemPacketRewriter1_20_5",
     "fixes.viaversion.MixinCommandBlockProvider",
     "fixes.viaversion.MixinCommonBoss",
+    "fixes.viaversion.MixinEntityPacketRewriter1_12",
     "fixes.viaversion.MixinEntityPacketRewriter1_15",
     "fixes.viaversion.MixinEntityPacketRewriter1_17",
     "fixes.viaversion.MixinEntityPacketRewriter1_19_4",
@@ -203,7 +205,6 @@
     "fixes.viaversion.MixinParticleIdMappings1_13",
     "fixes.viaversion.MixinParticleMappings",
     "fixes.viaversion.MixinProtocol1_10To1_11",
-    "fixes.viaversion.MixinEntityPacketRewriter1_12",
     "fixes.viaversion.MixinProtocol1_20_3To1_20_5",
     "fixes.viaversion.MixinProtocol1_20To1_20_2",
     "fixes.viaversion.MixinTagType",
@@ -213,8 +214,7 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.item.MixinFishingRodItem"
+    "vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1

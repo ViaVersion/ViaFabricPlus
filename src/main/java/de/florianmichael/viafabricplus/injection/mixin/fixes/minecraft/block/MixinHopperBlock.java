@@ -67,10 +67,10 @@ public abstract class MixinHopperBlock extends BlockWithEntity {
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+    public VoxelShape getCullingShape(BlockState state) {
         // Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/45
         viaFabricPlus$requireOriginalShape = true;
-        return super.getCullingShape(state, world, pos);
+        return super.getCullingShape(state);
     }
 
 }

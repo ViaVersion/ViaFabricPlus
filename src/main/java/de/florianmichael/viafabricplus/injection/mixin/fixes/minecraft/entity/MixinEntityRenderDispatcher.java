@@ -35,7 +35,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(EntityRenderDispatcher.class)
 public abstract class MixinEntityRenderDispatcher {
@@ -50,9 +49,9 @@ public abstract class MixinEntityRenderDispatcher {
 
     @SuppressWarnings("unchecked")
     @Inject(method = "getRenderer", at = @At("HEAD"), cancellable = true)
-    private <T extends Entity> void useBoatRenderer1_8(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> ci) {
+    private <T extends Entity> void useBoatRenderer1_8(T entity, CallbackInfoReturnable<EntityRenderer<? super T, ?>> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && entity instanceof BoatEntity) {
-            ci.setReturnValue((EntityRenderer<? super T>) viaFabricPlus$boatRenderer);
+            cir.setReturnValue((EntityRenderer<? super T, ?>) viaFabricPlus$boatRenderer);
         }
     }
 

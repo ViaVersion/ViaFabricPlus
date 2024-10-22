@@ -22,7 +22,7 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.*;
-import net.minecraft.util.ItemActionResult;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -52,9 +52,9 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
     }
 
     @Inject(method = "onUseWithItem", at = @At("HEAD"), cancellable = true)
-    private void alwaysSuccess(CallbackInfoReturnable<ItemActionResult> cir) {
+    private void alwaysSuccess(CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
-            cir.setReturnValue(ItemActionResult.SUCCESS);
+            cir.setReturnValue(ActionResult.SUCCESS);
         }
     }
 

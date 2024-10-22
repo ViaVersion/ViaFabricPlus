@@ -99,11 +99,11 @@ public abstract class MixinWallBlock extends Block {
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+    public VoxelShape getCullingShape(BlockState state) {
         if (state.get(WallBlock.UP) && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return this.shapeMap.get(state);
         } else {
-            return super.getCullingShape(state, world, pos);
+            return super.getCullingShape(state);
         }
     }
 

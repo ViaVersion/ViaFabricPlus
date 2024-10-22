@@ -64,11 +64,11 @@ public abstract class MixinBedBlock extends HorizontalFacingBlock {
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+    public VoxelShape getCullingShape(BlockState state) {
         // Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/246
         // MoreCulling is caching the culling shape and doesn't reload it, so we have to force vanilla's shape here.
         viaFabricPlus$requireOriginalShape = true;
-        return super.getCullingShape(state, world, pos);
+        return super.getCullingShape(state);
     }
 
 }

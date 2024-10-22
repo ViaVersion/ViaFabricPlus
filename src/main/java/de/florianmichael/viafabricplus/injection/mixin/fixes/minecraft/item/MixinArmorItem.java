@@ -25,10 +25,8 @@ import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
@@ -44,9 +42,9 @@ public abstract class MixinArmorItem extends Item {
     }
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
-    private void disableRightClick(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+    private void disableRightClick(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            cir.setReturnValue(new TypedActionResult<>(ActionResult.FAIL, user.getStackInHand(hand)));
+            cir.setReturnValue(ActionResult.FAIL);
         }
     }
 

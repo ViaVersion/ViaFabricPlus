@@ -41,7 +41,7 @@ public abstract class MixinItemRenderer {
     @Final
     private ItemModels models;
 
-    @Inject(method = "getModel", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getModel(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;I)Lnet/minecraft/client/render/model/BakedModel;", at = @At("HEAD"), cancellable = true)
     private void removeModel(ItemStack stack, World world, LivingEntity entity, int seed, CallbackInfoReturnable<BakedModel> cir) {
         if (VisualSettings.global().replacePetrifiedOakSlab.isEnabled() && world != null /* world is null in gui rendering */ && stack.isOf(Items.PETRIFIED_OAK_SLAB)) {
             cir.setReturnValue(this.models.getModelManager().getMissingModel());

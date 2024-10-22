@@ -19,8 +19,8 @@
 
 package de.florianmichael.viafabricplus.fixes.versioned.visual;
 
+import net.minecraft.client.font.BakedGlyph;
 import net.minecraft.client.font.Glyph;
-import net.minecraft.client.font.GlyphRenderer;
 import net.minecraft.client.font.RenderableGlyph;
 
 import java.util.function.Function;
@@ -41,7 +41,7 @@ public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
     }
 
     @Override
-    public GlyphRenderer bake(Function<RenderableGlyph, GlyphRenderer> glyphRendererGetter) {
+    public BakedGlyph bake(Function<RenderableGlyph, BakedGlyph> glyphRendererGetter) {
         return glyphRendererGetter.apply(new RenderableGlyph() {
 
             @Override
