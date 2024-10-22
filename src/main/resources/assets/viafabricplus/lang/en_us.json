@@ -107,6 +107,7 @@
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Force Unicode font for non-ASCII languages",
   "visual_settings.viafabricplus.filter_non_existing_glyphs": "Filter non existing glyphs",
   "visual_settings.viafabricplus.sneak_instantly": "Sneak instantly",
+  "visual_settings.viafabricplus.change_body_rotation_interpolation": "Change body rotation interpolation",
 
   "force_version.viafabricplus.title": "Please select the version with which the server should be pinged/connected",
 

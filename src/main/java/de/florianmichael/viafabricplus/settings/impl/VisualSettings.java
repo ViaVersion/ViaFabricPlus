@@ -57,6 +57,9 @@ public class VisualSettings extends SettingGroup {
     // 1.21 -> 1.20.5
     public final VersionedBooleanSetting hideDownloadTerrainScreenTransitionEffects = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects"), VersionRange.andOlder(ProtocolVersion.v1_20_5));
 
+    // 1.19.4 -> 1.19.3
+    public final VersionedBooleanSetting changeBodyRotationInterpolation = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.change_body_rotation_interpolation"), VersionRange.andOlder(ProtocolVersion.v1_19_3));
+
     // 1.19.2 -> 1.19
     public final VersionedBooleanSetting disableSecureChatWarning = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.disable_secure_chat_warning"), VersionRange.andOlder(ProtocolVersion.v1_19));
 

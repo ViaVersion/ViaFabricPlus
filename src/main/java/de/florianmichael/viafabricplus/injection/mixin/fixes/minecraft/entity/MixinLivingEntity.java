@@ -116,7 +116,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "turnHead", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(F)F"))
     private float changeBodyRotationInterpolation(float g) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (VisualSettings.global().changeBodyRotationInterpolation.isEnabled()) {
             g = MathHelper.clamp(g, -75.0F, 75.0F);
             this.bodyYaw = this.getYaw() - g;
             if (Math.abs(g) > 50.0F) {
