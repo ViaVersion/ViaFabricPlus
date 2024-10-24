@@ -107,6 +107,7 @@
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Ukrywaj nowe funkcje ekranu bloku konstrukcyjnego",
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Wymuszaj czcionkę Unicode dla języków niewspieranych przez ASCII",
   "visual_settings.viafabricplus.filter_non_existing_glyphs": "Filtruj nieistniejące znaki",
+  "visual_settings.viafabricplus.change_body_rotation_interpolation": "Zmień interpolację rotacji ciała",
 
   "force_version.viafabricplus.title": "Wybierz wersję na której chcesz łączyć się do serwera",
 
