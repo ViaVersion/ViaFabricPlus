@@ -34,7 +34,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -116,11 +115,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2);
     }
 
-    @Redirect(method = "checkFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
-    private boolean allowElytraWhenLevitating(PlayerEntity instance, RegistryEntry<StatusEffect> registryEntry) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2) && instance.hasStatusEffect(registryEntry);
-    }
-
     @Inject(method = "canConsume", at = @At("HEAD"), cancellable = true)
     private void preventEatingFoodInCreative(boolean ignoreHunger, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && this.abilities.invulnerable) {
@@ -128,12 +122,12 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @Inject(method = "checkFallFlying", at = @At("HEAD"), cancellable = true)
-    private void replaceFallFlyingCondition(CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "checkGliding", at = @At("HEAD"), cancellable = true)
+    private void replaceGlidingCondition(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            if (!this.isOnGround() && this.getVelocity().y < 0D && !this.isFallFlying()) {
+            if (!this.isOnGround() && this.getVelocity().y < 0D && !this.isGliding()) {
                 final ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
-                if (itemStack.isOf(Items.ELYTRA) && ElytraItem.isUsable(itemStack)) {
+                if (itemStack.isOf(Items.ELYTRA) && canGlideWith(itemStack, EquipmentSlot.CHEST)) {
                     cir.setReturnValue(true);
                     return;
                 }
@@ -146,8 +140,8 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private void onUpdatePose(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             final EntityPose pose;
-            if (this.isFallFlying()) {
-                pose = EntityPose.FALL_FLYING;
+            if (this.isGliding()) {
+                pose = EntityPose.GLIDING;
             } else if (this.isSleeping()) {
                 pose = EntityPose.SLEEPING;
             } else if (this.isSwimming()) {
@@ -204,7 +198,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
     private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
-        final float efficiency = (float) this.getAttributeValue(EntityAttributes.PLAYER_MINING_EFFICIENCY);
+        final float efficiency = (float) this.getAttributeValue(EntityAttributes.MINING_EFFICIENCY);
         if (efficiency <= 0) return;
 
         final float speed = this.inventory.getBlockBreakingSpeed(block);

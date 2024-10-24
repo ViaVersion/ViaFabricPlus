@@ -21,37 +21,42 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.component.type.AttributeModifiersComponent;
+import net.minecraft.component.type.EquippableComponent;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ArmorItem.class)
-public abstract class MixinArmorItem extends Item {
+@Mixin(EquippableComponent.class)
+public class MixinEquippableComponent {
 
-    public MixinArmorItem(Settings settings) {
-        super(settings);
+    @Shadow
+    @Final
+    private EquipmentSlot slot;
+
+    @Redirect(method = "equip", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isCreative()Z"))
+    private boolean removeCreativeCondition(PlayerEntity instance) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20) && instance.isCreative();
     }
 
-    @Inject(method = "use", at = @At("HEAD"), cancellable = true)
-    private void disableRightClick(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(method = "equip", at = @At("HEAD"), cancellable = true)
+    private void cancelArmorSwap(ItemStack stack, PlayerEntity player, CallbackInfoReturnable<ActionResult> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+            final ItemStack targetItem = player.getEquippedStack(this.slot);
+            if (!targetItem.isEmpty()) {
+                cir.setReturnValue(ActionResult.FAIL);
+            }
+        }
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             cir.setReturnValue(ActionResult.FAIL);
-        }
-    }
-
-    @Inject(method = "getAttributeModifiers", at = @At("HEAD"), cancellable = true)
-    private void changeAttributeModifiers(CallbackInfoReturnable<AttributeModifiersComponent> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            cir.setReturnValue(super.getAttributeModifiers());
         }
     }
 

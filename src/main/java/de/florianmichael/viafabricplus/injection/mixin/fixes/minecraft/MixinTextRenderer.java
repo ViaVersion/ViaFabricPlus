@@ -55,19 +55,20 @@ public abstract class MixinTextRenderer {
     public int fontHeight;
 
     @Shadow
-    protected abstract int drawInternal(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light);
-
-    @Shadow
     public abstract int getWidth(OrderedText text);
 
-    @Inject(method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;IIZ)I", at = @At("HEAD"), cancellable = true)
-    private void allowNewLines_String(String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, boolean rightToLeft, CallbackInfoReturnable<Integer> cir) {
+    @Shadow public abstract boolean isRightToLeft();
+
+    @Shadow protected abstract int drawInternal(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, TextRenderer.TextLayerType layerType, int backgroundColor, int light, boolean swapZIndex);
+
+    @Inject(method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I", at = @At("HEAD"), cancellable = true)
+    private void allowNewLines_String(String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, CallbackInfoReturnable<Integer> cir) {
         if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
-            final List<OrderedText> lines = wrapLines(StringVisitable.plain(rightToLeft ? this.mirror(text) : text), Integer.MAX_VALUE);
+            final List<OrderedText> lines = wrapLines(StringVisitable.plain(isRightToLeft() ? this.mirror(text) : text), Integer.MAX_VALUE);
             if (lines.size() > 1) {
                 int offsetX = 0;
                 for (int i = 0; i < lines.size(); i++) {
-                    offsetX = this.drawInternal(lines.get(i), x, y - (lines.size() * (fontHeight + 2)) + (i * (fontHeight + 2)), color, shadow, new Matrix4f(matrix), vertexConsumers, layerType, backgroundColor, light);
+                    offsetX = this.drawInternal(lines.get(i), x, y - (lines.size() * (fontHeight + 2)) + (i * (fontHeight + 2)), color, shadow, new Matrix4f(matrix), vertexConsumers, layerType, backgroundColor, light, true);
                 }
                 cir.setReturnValue(offsetX);
             }

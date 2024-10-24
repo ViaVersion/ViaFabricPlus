@@ -17,29 +17,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
-
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.MilkBucketItem;
-import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-@Mixin(MilkBucketItem.class)
-public abstract class MixinMilkBucketItem {
-
-    @Inject(method = "finishUsing", at = @At("HEAD"), cancellable = true)
-    private void dontExchangeStack(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            stack.decrementUnlessCreative(1, user);
-            cir.setReturnValue(stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack);
-        }
-    }
-
-}
+//package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
+//
+//import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+//import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+//import net.minecraft.entity.LivingEntity;
+//import net.minecraft.item.ItemStack;
+//import net.minecraft.item.Items;
+//import net.minecraft.item.MilkBucketItem;
+//import net.minecraft.world.World;
+//import org.spongepowered.asm.mixin.Mixin;
+//import org.spongepowered.asm.mixin.injection.At;
+//import org.spongepowered.asm.mixin.injection.Inject;
+//import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//
+//@Mixin(MilkBucketItem.class)
+//public abstract class MixinMilkBucketItem {
+//
+//    @Inject(method = "finishUsing", at = @At("HEAD"), cancellable = true)
+//    private void dontExchangeStack(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
+//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+//            stack.decrementUnlessCreative(1, user);
+//            cir.setReturnValue(stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack);
+//        }
+//    }
+//
+//}

@@ -33,7 +33,7 @@ public abstract class MixinTextRenderer_Drawer {
     @Unique
     private static final float viaFabricPlus$offset = 0.5F; // Magical offset to revert the changes done in 1.13 pre6->1.13 pre7
 
-    @ModifyArg(method = "accept", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/GlyphRenderer$Rectangle;<init>(FFFFFFFFF)V", ordinal = 0), index = 1)
+    @ModifyArg(method = "accept", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/BakedGlyph$Rectangle;<init>(FFFFFI)V", ordinal = 0), index = 1)
     private float fixStrikethroughMinY(float value) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return value - viaFabricPlus$offset;
@@ -42,7 +42,7 @@ public abstract class MixinTextRenderer_Drawer {
         }
     }
 
-    @ModifyArg(method = "accept", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/GlyphRenderer$Rectangle;<init>(FFFFFFFFF)V", ordinal = 0), index = 3)
+    @ModifyArg(method = "accept", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/BakedGlyph$Rectangle;<init>(FFFFFI)V", ordinal = 0), index = 3)
     private float fixStrikethroughMaxY(float value) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return value - viaFabricPlus$offset;
