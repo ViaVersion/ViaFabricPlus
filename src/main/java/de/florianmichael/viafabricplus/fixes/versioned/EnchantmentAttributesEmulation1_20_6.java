@@ -60,13 +60,13 @@ public class EnchantmentAttributesEmulation1_20_6 {
                 }
                 final int efficiencyLevel = getEquipmentLevel(Enchantments.EFFICIENCY, player);
                 if (efficiencyLevel > 0) {
-                    player.getAttributeInstance(EntityAttributes.PLAYER_MINING_EFFICIENCY).setBaseValue(efficiencyLevel * efficiencyLevel + 1);
+                    player.getAttributeInstance(EntityAttributes.MINING_EFFICIENCY).setBaseValue(efficiencyLevel * efficiencyLevel + 1);
                 } else {
-                    player.getAttributeInstance(EntityAttributes.PLAYER_MINING_EFFICIENCY).setBaseValue(0);
+                    player.getAttributeInstance(EntityAttributes.MINING_EFFICIENCY).setBaseValue(0);
                 }
 
-                player.getAttributeInstance(EntityAttributes.PLAYER_SNEAKING_SPEED).setBaseValue(0.3F + getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15F);
-                player.getAttributeInstance(EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED).setBaseValue(getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2F : 1F);
+                player.getAttributeInstance(EntityAttributes.SNEAKING_SPEED).setBaseValue(0.3F + getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15F);
+                player.getAttributeInstance(EntityAttributes.SUBMERGED_MINING_SPEED).setBaseValue(getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2F : 1F);
             }
         });
     }
@@ -82,14 +82,14 @@ public class EnchantmentAttributesEmulation1_20_6 {
     public static void setGenericMovementEfficiencyAttribute(final LivingEntity entity) {
         final boolean isOnSoulSpeedBlock = entity.getWorld().getBlockState(entity.getVelocityAffectingPos()).isIn(BlockTags.SOUL_SPEED_BLOCKS);
         if (isOnSoulSpeedBlock && getEquipmentLevel(Enchantments.SOUL_SPEED, entity) > 0) {
-            entity.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_EFFICIENCY).setBaseValue(1);
+            entity.getAttributeInstance(EntityAttributes.MOVEMENT_EFFICIENCY).setBaseValue(1);
         } else {
-            entity.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_EFFICIENCY).setBaseValue(0);
+            entity.getAttributeInstance(EntityAttributes.MOVEMENT_EFFICIENCY).setBaseValue(0);
         }
     }
 
     private static int getEquipmentLevel(final RegistryKey<Enchantment> enchantment, final LivingEntity entity) {
-        final Optional<RegistryEntry.Reference<Enchantment>> enchantmentRef = entity.getWorld().getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOptional(enchantment);
+        final Optional<RegistryEntry.Reference<Enchantment>> enchantmentRef = entity.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOptional(enchantment);
         return enchantmentRef.map(e -> EnchantmentHelper.getEquipmentLevel(e, entity)).orElse(0);
     }
 

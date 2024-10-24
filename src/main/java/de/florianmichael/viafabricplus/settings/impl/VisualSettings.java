@@ -46,7 +46,7 @@ public class VisualSettings extends SettingGroup {
             final MinecraftClient client = MinecraftClient.getInstance();
             if (client != null) {
                 for (FontStorage storage : client.fontManager.fontStorages.values()) {
-                    storage.glyphRendererCache.clear();
+                    storage.bakedGlyphCache.clear();
                     storage.glyphCache.clear();
                 }
             }

@@ -9,6 +9,7 @@ accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/mi
 accessible field net/minecraft/network/ClientConnection packetSizeLogger Lnet/minecraft/network/handler/PacketSizeLogger;
 accessible field net/minecraft/entity/boss/dragon/EnderDragonEntity body Lnet/minecraft/entity/boss/dragon/EnderDragonPart;
 accessible field net/minecraft/entity/passive/AbstractHorseEntity lastAngryAnimationProgress F
+accessible field net/minecraft/client/font/FontStorage bakedGlyphCache Lnet/minecraft/client/font/GlyphContainer;
 accessible field net/minecraft/entity/vehicle/AbstractBoatEntity yawVelocity F
 accessible field net/minecraft/client/font/FontStorage glyphCache Lnet/minecraft/client/font/GlyphContainer;
 accessible field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
