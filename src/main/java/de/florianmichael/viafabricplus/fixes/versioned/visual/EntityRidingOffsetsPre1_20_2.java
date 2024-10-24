@@ -30,9 +30,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.entity.vehicle.ChestBoatEntity;
+import net.minecraft.entity.vehicle.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -52,25 +50,25 @@ public class EntityRidingOffsetsPre1_20_2 {
     public static Vec3d getMountedHeightOffset(final Entity entity, final Entity passenger) {
         double yOffset = entity.getHeight() * 0.75F;
 
-        if (entity instanceof BoatEntity boatEntity) {
-            if (!boatEntity.hasPassenger(passenger)) return Vec3d.ZERO;
+        if (entity instanceof AbstractBoatEntity abstractBoatEntity) {
+            if (!abstractBoatEntity.hasPassenger(passenger)) return Vec3d.ZERO;
 
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 yOffset = -0.3F;
-                final double xOffset = MathHelper.cos(boatEntity.getYaw() * MathHelper.PI / 180F);
-                final double zOffset = MathHelper.sin(boatEntity.getYaw() * MathHelper.PI / 180F);
+                final double xOffset = MathHelper.cos(abstractBoatEntity.getYaw() * MathHelper.PI / 180F);
+                final double zOffset = MathHelper.sin(abstractBoatEntity.getYaw() * MathHelper.PI / 180F);
 
                 return new Vec3d(0.4F * xOffset, yOffset, 0.4F * zOffset);
             } else {
-                if (boatEntity.isRemoved()) {
+                if (abstractBoatEntity.isRemoved()) {
                     yOffset = 0.01F;
                 } else {
-                    yOffset = boatEntity.getVariant() == BoatEntity.Type.BAMBOO ? 0.25F : -0.1F;
+                    yOffset = abstractBoatEntity.getType() == EntityType.BAMBOO_RAFT || abstractBoatEntity.getType() == EntityType.BAMBOO_CHEST_RAFT ? 0.25F : -0.1F;
                 }
 
-                double xOffset = boatEntity instanceof ChestBoatEntity ? 0.15F : 0F;
-                if (boatEntity.getPassengerList().size() > 1) {
-                    final int idx = boatEntity.getPassengerList().indexOf(passenger);
+                double xOffset = abstractBoatEntity instanceof AbstractChestBoatEntity ? 0.15F : 0F;
+                if (abstractBoatEntity.getPassengerList().size() > 1) {
+                    final int idx = abstractBoatEntity.getPassengerList().indexOf(passenger);
                     if (idx == 0) {
                         xOffset = 0.2F;
                     } else {
