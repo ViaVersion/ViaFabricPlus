@@ -39,21 +39,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinFontStorage {
 
     @Shadow
-    private GlyphRenderer blankGlyphRenderer;
-
-    @Shadow
-    protected abstract GlyphRenderer getGlyphRenderer(RenderableGlyph c);
-
-    @Shadow
     @Final
     private Identifier id;
 
-    @Unique
-    private GlyphRenderer viaFabricPlus$blankGlyphRenderer1_12_2;
+    @Shadow private BakedGlyph blankBakedGlyph;
 
-    @Inject(method = "clear", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/BuiltinEmptyGlyph;bake(Ljava/util/function/Function;)Lnet/minecraft/client/font/GlyphRenderer;", ordinal = 0))
+    @Shadow protected abstract BakedGlyph bake(RenderableGlyph c);
+
+    @Unique
+    private BakedGlyph viaFabricPlus$blankBakedGlyph1_12_2;
+
+    @Inject(method = "clear", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/BuiltinEmptyGlyph;bake(Ljava/util/function/Function;)Lnet/minecraft/client/font/BakedGlyph;", ordinal = 0))
     private void bakeBlankGlyph1_12_2(CallbackInfo ci) {
-        this.viaFabricPlus$blankGlyphRenderer1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this::getGlyphRenderer);
+        this.viaFabricPlus$blankBakedGlyph1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this::bake);
     }
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
@@ -63,10 +61,10 @@ public abstract class MixinFontStorage {
         }
     }
 
-    @Inject(method = "findGlyphRenderer", at = @At("RETURN"), cancellable = true)
-    private void filterGlyphRenderer(int codePoint, CallbackInfoReturnable<GlyphRenderer> cir) {
+    @Inject(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At("RETURN"), cancellable = true)
+    private void filterBakedGlyph(int codePoint, CallbackInfoReturnable<BakedGlyph> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
-            cir.setReturnValue(this.viaFabricPlus$getBlankGlyphRenderer());
+            cir.setReturnValue(this.viaFabricPlus$getBlankBakedGlyph());
         }
     }
 
@@ -80,9 +78,9 @@ public abstract class MixinFontStorage {
         }
     }
 
-    @Redirect(method = "findGlyphRenderer", at = @At(value = "FIELD", target = "Lnet/minecraft/client/font/FontStorage;blankGlyphRenderer:Lnet/minecraft/client/font/GlyphRenderer;"))
-    private GlyphRenderer fixBlankGlyphRenderer1_12_2(FontStorage instance) {
-        return this.viaFabricPlus$getBlankGlyphRenderer();
+    @Redirect(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At(value = "FIELD", target = "Lnet/minecraft/client/font/FontStorage;blankBakedGlyph:Lnet/minecraft/client/font/BakedGlyph;"))
+    private BakedGlyph fixBlankBakedGlyph1_12_2(FontStorage instance) {
+        return this.viaFabricPlus$getBlankBakedGlyph();
     }
 
     @Unique
@@ -104,11 +102,11 @@ public abstract class MixinFontStorage {
     }
 
     @Unique
-    private GlyphRenderer viaFabricPlus$getBlankGlyphRenderer() {
+    private BakedGlyph viaFabricPlus$getBlankBakedGlyph() {
         if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
-            return this.viaFabricPlus$blankGlyphRenderer1_12_2;
+            return this.viaFabricPlus$blankBakedGlyph1_12_2;
         } else {
-            return this.blankGlyphRenderer;
+            return this.blankBakedGlyph;
         }
     }
 
