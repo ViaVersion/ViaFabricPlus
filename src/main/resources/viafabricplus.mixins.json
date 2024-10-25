@@ -64,7 +64,7 @@
     "fixes.minecraft.MixinStringHelper",
     "fixes.minecraft.MixinTextRenderer",
     "fixes.minecraft.MixinTextRenderer_Drawer",
-    "fixes.minecraft.MixinWorldRenderer",
+    "fixes.minecraft.MixinWeatherRendering",
     "fixes.minecraft.block.MixinAbstractBlock",
     "fixes.minecraft.block.MixinAbstractBlock_AbstractBlockState",
     "fixes.minecraft.block.MixinAbstractRailBlock",
