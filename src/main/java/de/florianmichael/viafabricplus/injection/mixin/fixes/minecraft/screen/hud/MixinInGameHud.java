@@ -61,30 +61,31 @@ public abstract class MixinInGameHud {
         }
     }
 
-    @ModifyArgs(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), require = 0)
-    private static void moveArmorPositions(Args args, @Local(ordinal = 3, argsOnly = true) int x, @Local(ordinal = 6) int n) {
-        if (!VisualSettings.global().hideModernHUDElements.isEnabled()) {
-            return;
-        }
-        final MinecraftClient client = MinecraftClient.getInstance();
-
-        final int armorWidth = 10 * viaFabricPlus$ARMOR_ICON_WIDTH;
-        final int offset = n * viaFabricPlus$ARMOR_ICON_WIDTH;
-
-        args.set(1, client.getWindow().getScaledWidth() - x - armorWidth + offset - 1);
-        args.set(2, (int) args.get(2) + client.textRenderer.fontHeight + 1);
-    }
-
-    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
-            from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 2),
-            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V")), index = 1, require = 0)
-    private int moveAir(int value) {
-        if (VisualSettings.global().hideModernHUDElements.isEnabled()) {
-            final MinecraftClient client = MinecraftClient.getInstance();
-            return client.getWindow().getScaledWidth() - value - client.textRenderer.fontHeight;
-        } else {
-            return value;
-        }
-    }
+    // TODO UPDATE-1.21.3
+//    @ModifyArgs(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), require = 0)
+//    private static void moveArmorPositions(Args args, @Local(ordinal = 3, argsOnly = true) int x, @Local(ordinal = 6) int n) {
+//        if (!VisualSettings.global().hideModernHUDElements.isEnabled()) {
+//            return;
+//        }
+//        final MinecraftClient client = MinecraftClient.getInstance();
+//
+//        final int armorWidth = 10 * viaFabricPlus$ARMOR_ICON_WIDTH;
+//        final int offset = n * viaFabricPlus$ARMOR_ICON_WIDTH;
+//
+//        args.set(1, client.getWindow().getScaledWidth() - x - armorWidth + offset - 1);
+//        args.set(2, (int) args.get(2) + client.textRenderer.fontHeight + 1);
+//    }
+//
+//    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), slice = @Slice(
+//            from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 2),
+//            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V")), index = 1, require = 0)
+//    private int moveAir(int value) {
+//        if (VisualSettings.global().hideModernHUDElements.isEnabled()) {
+//            final MinecraftClient client = MinecraftClient.getInstance();
+//            return client.getWindow().getScaledWidth() - value - client.textRenderer.fontHeight;
+//        } else {
+//            return value;
+//        }
+//    }
 
 }

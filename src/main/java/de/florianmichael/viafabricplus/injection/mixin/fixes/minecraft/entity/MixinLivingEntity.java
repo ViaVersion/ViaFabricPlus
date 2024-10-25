@@ -137,7 +137,7 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
 //    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D", remap = false))
-//    private double fixCosTable(double a) {
+//    private double fixCosTable(double a) { TODO UPDATE-1.21.3
 //        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
 //            return MathHelper.cos((float) a);
 //        } else {

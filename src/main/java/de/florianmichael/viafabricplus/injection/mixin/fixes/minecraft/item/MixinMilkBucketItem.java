@@ -18,7 +18,7 @@
  */
 
 //package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
-//
+// TODO UPDATE-1.21.3
 //import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 //import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 //import net.minecraft.entity.LivingEntity;
