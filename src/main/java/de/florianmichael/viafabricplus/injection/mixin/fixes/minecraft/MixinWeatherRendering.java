@@ -20,22 +20,22 @@
 package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
 
 import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
-import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.render.WeatherRendering;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(WorldRenderer.class)
-public abstract class MixinWorldRenderer {
+@Mixin(WeatherRendering.class)
+public abstract class MixinWeatherRendering {
 
-    @Redirect(method = "renderWeather", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biome;getPrecipitation(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/world/biome/Biome$Precipitation;"), require = 0)
-    private Biome.Precipitation forceSnow(Biome instance, BlockPos pos) {
+    @Inject(method = "getPrecipitationAt", at = @At(value = "HEAD"), cancellable = true)
+    private void forceSnow(World world, BlockPos pos, CallbackInfoReturnable<Biome.Precipitation> cir) {
         if (CPEAdditions.isSnowing()) {
-            return Biome.Precipitation.SNOW;
-        } else {
-            return instance.getPrecipitation(pos);
+            cir.setReturnValue(Biome.Precipitation.SNOW);
         }
     }
 

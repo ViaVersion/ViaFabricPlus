@@ -163,14 +163,15 @@ public abstract class MixinEntity implements IEntity {
         }
     }
 
-    @ModifyConstant(method = "checkBlockCollision", constant = @Constant(doubleValue = 1.0E-7))
-    private double fixBlockCollisionMargin(double constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
-            return 1E-3;
-        } else {
-            return constant;
-        }
-    }
+    // TODO/NOTE: No longer subtracts 1.0E-7 from the box values, instead the boundingBox is contracted
+//    @ModifyConstant(method = "checkBlockCollision", constant = @Constant(doubleValue = 1.0E-7))
+//    private double fixBlockCollisionMargin(double constant) {
+//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+//            return 1E-3;
+//        } else {
+//            return constant;
+//        }
+//    }
 
     @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)
     private void modifyVelocityAffectingPos(CallbackInfoReturnable<BlockPos> cir) {
