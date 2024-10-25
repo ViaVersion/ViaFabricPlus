@@ -20,7 +20,8 @@
 package de.florianmichael.viafabricplus.fixes;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.event.*;
+import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
+import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.fixes.data.EntityDimensionDiff;
 import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
 import de.florianmichael.viafabricplus.fixes.versioned.EnchantmentAttributesEmulation1_20_6;
@@ -37,7 +38,6 @@ import de.florianmichael.viafabricplus.util.DataCustomPayload;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ServerAddress;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.Registries;
