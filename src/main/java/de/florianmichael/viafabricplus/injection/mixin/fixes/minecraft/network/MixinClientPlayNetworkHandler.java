@@ -249,14 +249,14 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Inject(method = "onGameJoin", at = @At("RETURN"))
     private void sendRecipes(GameJoinS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
-            final List<RecipeEntry<?>> recipes = new ArrayList<>();
-            final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolTranslator.getTargetVersion());
-            for (int i = 0; i < recipeInfos.size(); i++) {
-                recipes.add(recipeInfos.get(i).create(Identifier.of("viafabricplus", "recipe/" + i)));
-            }
-            this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
-        }
+//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+//            final List<RecipeEntry<?>> recipes = new ArrayList<>();
+//            final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolTranslator.getTargetVersion());
+//            for (int i = 0; i < recipeInfos.size(); i++) {
+//                recipes.add(recipeInfos.get(i).create(Identifier.of("viafabricplus", "recipe/" + i)));
+//            }
+//            this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
+//        }
         ClientsideFixes.globalTablistIndex = 0;
         ((IPlayerListHud) MinecraftClient.getInstance().inGameHud.getPlayerListHud()).viaFabricPlus$setMaxPlayers(packet.maxPlayers());
     }

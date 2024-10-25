@@ -57,7 +57,7 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.of(() -> new FireworkRocketRecipe(CraftingRecipeCategory.MISC)));
         }
         if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_11)) {
-            recipes.add(RecipeInfo.of(() -> new ShulkerBoxColoringRecipe(CraftingRecipeCategory.MISC)));
+        //    recipes.add(RecipeInfo.of(() -> new ShulkerBoxColoringRecipe(CraftingRecipeCategory.MISC)));
         }
         if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_9)) {
             recipes.add(RecipeInfo.of(() -> new TippedArrowRecipe(CraftingRecipeCategory.MISC)));
@@ -625,7 +625,7 @@ public class Recipes1_11_2 {
         recipes.add(RecipeInfo.smelting(Items.IRON_INGOT, Items.IRON_ORE, 0.7F));
         recipes.add(RecipeInfo.smelting(Items.GOLD_INGOT, Items.GOLD_ORE, 1.0F));
         recipes.add(RecipeInfo.smelting(Items.DIAMOND, Items.DIAMOND_ORE, 1.0F));
-        recipes.add(RecipeInfo.smelting(Items.GLASS, Ingredient.fromTag(ItemTags.SAND), 0.1F));
+      //  recipes.add(RecipeInfo.smelting(Items.GLASS, Ingredient.fromTag(ItemTags.SAND), 0.1F));
         recipes.add(RecipeInfo.smelting(Items.COOKED_PORKCHOP, Items.PORKCHOP, 0.35F));
         recipes.add(RecipeInfo.smelting(Items.STONE, Items.COBBLESTONE, 0.1F));
         recipes.add(RecipeInfo.smelting(Items.BRICK, Items.CLAY_BALL, 0.3F));
@@ -685,7 +685,7 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.smelting(Items.COOKED_BEEF, Items.BEEF, 0.35F));
         }
         if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_2_0tob1_2_2)) {
-            recipes.add(RecipeInfo.smelting(Items.CHARCOAL, Ingredient.fromTag(ItemTags.LOGS), 0.15F));
+  //          recipes.add(RecipeInfo.smelting(Items.CHARCOAL, Ingredient.fromTag(ItemTags.LOGS), 0.15F));
             recipes.add(RecipeInfo.smelting(Items.GREEN_DYE, Items.CACTUS, 0.2F));
         }
         if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
@@ -710,13 +710,13 @@ public class Recipes1_11_2 {
         final var world = MinecraftClient.getInstance().world;
         final var craftingRecipeInput = inventory.createRecipeInput();
 
-        final var result = network.getRecipeManager()
-                .getFirstMatch(RecipeType.CRAFTING, craftingRecipeInput, world) // Get the first matching recipe
-                .map(recipe -> recipe.value().craft(craftingRecipeInput, network.getRegistryManager())) // Craft the recipe to get the result
-                .orElse(ItemStack.EMPTY); // If there is no recipe, set the result to air
+//        final var result = network.getRecipeManager()
+//                .getFirstMatch(RecipeType.CRAFTING, craftingRecipeInput, world) // Get the first matching recipe
+//                .map(recipe -> recipe.value().craft(craftingRecipeInput, network.getRegistryManager())) // Craft the recipe to get the result
+//                .orElse(ItemStack.EMPTY); // If there is no recipe, set the result to air
 
         // Update the result slot
-        network.onScreenHandlerSlotUpdate(new ScreenHandlerSlotUpdateS2CPacket(syncId, screenHandler.getRevision(), 0, result));
+        //network.onScreenHandlerSlotUpdate(new ScreenHandlerSlotUpdateS2CPacket(syncId, screenHandler.getRevision(), 0, result));
     }
 
 }

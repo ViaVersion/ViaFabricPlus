@@ -317,7 +317,8 @@ public final class RecipeInfo {
      * @return The recipe info
      */
     public RecipeEntry<?> create(Identifier id) {
-        return new RecipeEntry<Recipe<?>>(id, this.creator.get());
+      //  return new RecipeEntry<Recipe<?>>(id, this.creator.get());
+        return null;
     }
 
 }
