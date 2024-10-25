@@ -34,9 +34,9 @@ public abstract class MixinKeyboardInput extends Input {
     @ModifyVariable(method = "tick", at = @At(value = "LOAD", ordinal = 0), argsOnly = true)
     private boolean changeSneakSlowdownCondition(boolean slowDown) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return this.sneaking;
+            return this.playerInput.sneak();
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            return !MinecraftClient.getInstance().player.isSpectator() && (this.sneaking || slowDown);
+            return !MinecraftClient.getInstance().player.isSpectator() && (this.playerInput.sneak() || slowDown);
         } else {
             return slowDown;
         }

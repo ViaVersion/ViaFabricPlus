@@ -109,19 +109,20 @@ public final class RecipeInfo {
         }
 
         final int height = shape.size();
-        final DefaultedList<Ingredient> ingredients = DefaultedList.of();
+        final DefaultedList<Optional<Ingredient>> ingredients = DefaultedList.of();
         for (String row : shape) {
             for (int x = 0; x < width; x++) {
                 final char key = row.charAt(x);
                 Ingredient ingredient = legend.get(key);
                 if (ingredient == null) {
                     if (key == ' ') {
-                        ingredient = Ingredient.EMPTY;
+                        ingredients.add(Optional.empty());
                     } else {
                         throw new IllegalArgumentException("Unknown character in shape: " + key);
                     }
+                } else {
+                    ingredients.add(Optional.of(ingredient));
                 }
-                ingredients.add(ingredient);
             }
         }
 

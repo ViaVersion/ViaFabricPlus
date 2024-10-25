@@ -48,7 +48,7 @@ public class EnchantmentAttributesEmulation1_20_6 {
             // Update generic attributes for all entities
             for (Entity entity : world.getEntities()) {
                 if (entity.isLogicalSideForUpdatingMovement() && entity instanceof LivingEntity livingEntity) {
-                    livingEntity.getAttributeInstance(EntityAttributes.GENERIC_WATER_MOVEMENT_EFFICIENCY).setBaseValue(getEquipmentLevel(Enchantments.DEPTH_STRIDER, livingEntity) / 3F);
+                    livingEntity.getAttributeInstance(EntityAttributes.WATER_MOVEMENT_EFFICIENCY).setBaseValue(getEquipmentLevel(Enchantments.DEPTH_STRIDER, livingEntity) / 3F);
                     setGenericMovementEfficiencyAttribute(livingEntity);
                 }
             }

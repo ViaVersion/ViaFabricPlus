@@ -147,10 +147,10 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Inject(method = "tickMovement()V",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isCamera()Z")),
-            at = @At(value = "FIELD", target = "Lnet/minecraft/client/input/Input;sneaking:Z", ordinal = 0))
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/PlayerInput;sneak()Z", ordinal = 0))
     private void injectTickMovement(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            if (this.input.sneaking) {
+            if (this.input.playerInput.sneak()) {
                 this.input.movementSideways = (float) ((double) this.input.movementSideways / 0.3D);
                 this.input.movementForward = (float) ((double) this.input.movementForward / 0.3D);
             }
