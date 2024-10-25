@@ -38,7 +38,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.entity.vehicle.AbstractBoatEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.ClientConnection;
@@ -222,7 +222,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     }
 
     @SuppressWarnings({"InvalidInjectorMethodSignature"})
-    @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = BoatEntity.class))
+    @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = AbstractBoatEntity.class))
     private Class<?> dontChangeYawWhenMountingBoats(Object entity, Class<?> boatClass) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
             return Integer.class; // Dummy class file to false the instanceof check
