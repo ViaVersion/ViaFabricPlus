@@ -140,12 +140,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_1) && original;
     }
 
-    // TODO UPDATE-1.21.3
-//    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 3))
-//    private boolean allowElytraInVehicle(ClientPlayerEntity instance) {
-//        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && instance.hasVehicle();
-//    }
-
     @Inject(method = "tickMovement()V",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isCamera()Z")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/PlayerInput;sneak()Z", ordinal = 0))
@@ -209,13 +203,14 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         }
     }
 
-    // TODO UPDATE-1.21.3
-//    @Inject(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
-//    private void moveLastPosPacketIncrement(CallbackInfo ci) {
-//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-//            this.ticksSinceLastPositionPacketSent++;
-//        }
-//    }
+    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;ticksSinceLastPositionPacketSent:I", ordinal = 2))
+    private int moveLastPosPacketIncrement2(ClientPlayerEntity instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            return this.ticksSinceLastPositionPacketSent++; // Return previous value, then increment
+        } else {
+            return this.ticksSinceLastPositionPacketSent;
+        }
+    }
 
     @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z", ordinal = 0))
     private boolean sendIdlePacket(ClientPlayerEntity instance) {

@@ -32,6 +32,7 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.gui.screen.world.WorldIcon;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
@@ -44,6 +45,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.function.Function;
 
 @Mixin(MultiplayerServerListWidget.ServerEntry.class)
 public abstract class MixinMultiplayerServerListWidget_ServerEntry {
@@ -98,11 +100,10 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
         return x;
     }
 
-    // TODO UPDATE-1.21.3
-//    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 0))
-//    private boolean disableServerPinging(DrawContext instance, Identifier texture, int x, int y, int width, int height) {
-//        return !viaFabricPlus$disableServerPinging; // Remove ping bar
-//    }
+    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V", ordinal = 0))
+    private boolean disableServerPinging(DrawContext instance, Function<Identifier, RenderLayer> renderLayers, Identifier sprite, int x, int y, int width, int height) {
+        return !viaFabricPlus$disableServerPinging; // Remove ping bar
+    }
 
     @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;setTooltip(Ljava/util/List;)V"))
     private boolean disableServerPinging(MultiplayerScreen instance, List<Text> tooltip) {

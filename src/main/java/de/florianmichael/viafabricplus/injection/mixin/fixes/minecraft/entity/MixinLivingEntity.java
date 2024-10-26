@@ -136,14 +136,14 @@ public abstract class MixinLivingEntity extends Entity {
         }
     }
 
-//    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D", remap = false))
-//    private double fixCosTable(double a) { TODO UPDATE-1.21.3
-//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
-//            return MathHelper.cos((float) a);
-//        } else {
-//            return Math.cos(a);
-//        }
-//    }
+    @Redirect(method = "calcGlidingVelocity", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D", remap = false))
+    private double fixCosTable(double a) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
+            return MathHelper.cos((float) a);
+        } else {
+            return Math.cos(a);
+        }
+    }
 
     @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
     private double dontApplyLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
@@ -157,6 +157,11 @@ public abstract class MixinLivingEntity extends Entity {
     @Redirect(method = "canGlide", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
     private boolean allowElytraWhenLevitating(LivingEntity instance, RegistryEntry<StatusEffect> effect) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2) && instance.hasStatusEffect(effect);
+    }
+
+    @Redirect(method = "canGlide", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasVehicle()Z"))
+    private boolean allowElytraInVehicle(LivingEntity instance) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && instance.hasVehicle();
     }
 
     @Redirect(method = "travelMidAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isChunkLoaded(Lnet/minecraft/util/math/BlockPos;)Z"))
