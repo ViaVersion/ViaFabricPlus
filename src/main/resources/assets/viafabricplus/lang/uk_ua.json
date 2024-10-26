@@ -84,11 +84,11 @@
   "classicube.viafabricplus.account": "Ви можете створити аккаунт тут: https://www.classicube.net/",
   "classicube.viafabricplus.loading": "Завантажуємо інформацію профілю та список серверів...",
   "classicube.viafabricplus.warning": "Ця фішка надішле API запит до ClassiCube API.",
-  "betacraft.viafabricplus.warning": "Нажимаючи цю кнопку ви надішлете API запит до \"betacraft.uk/serverlist\"."
+  "betacraft.viafabricplus.warning": "Нажимаючи цю кнопку ви надішлете API запит до \"betacraft.uk/serverlist\".",
   
   "classic4j_library.viafabricplus.error.token": "Неправильний токен. Чи ваша версія ViaFabricPlus найновіша?",
   "classic4j_library.viafabricplus.error.username": "Неправильний нікнейм.",
   "classic4j_library.viafabricplus.error.password": "Неправильний пароль.",
   "classic4j_library.viafabricplus.error.verification": "Користувач ще не підтвердив емейл.",
-  "classic4j_library.viafabricplus.error.logincode": "Потрібна багатофакторна автентифікація. Будь ласка, перевірте свою електронну пошту.",
+  "classic4j_library.viafabricplus.error.logincode": "Потрібна багатофакторна автентифікація. Будь ласка, перевірте свою електронну пошту."
 }
