@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 // Lithium is overriding the sorting with an optimized implementation
-// https://github.com/CaffeineMC/lithium-fabric/blob/develop/src/main/java/me/jellysquid/mods/lithium/mixin/entity/collisions/movement/EntityMixin.java#L84
+// https://github.com/CaffeineMC/lithium-fabric/blob/11892b8c0f0f14e81c3384510b0b2ac7293ca237/common/src/main/java/net/caffeinemc/mods/lithium/mixin/entity/collisions/movement/EntityMixin.java#L84
 @Mixin(value = Entity.class, priority = 1001 /* Lithium has to be applied first */)
 public abstract class MixinEntity {
 
