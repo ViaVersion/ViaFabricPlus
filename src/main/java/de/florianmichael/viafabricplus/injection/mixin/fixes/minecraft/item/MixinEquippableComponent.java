@@ -36,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EquippableComponent.class)
-public class MixinEquippableComponent {
+public abstract class MixinEquippableComponent {
 
     @Shadow
     @Final
