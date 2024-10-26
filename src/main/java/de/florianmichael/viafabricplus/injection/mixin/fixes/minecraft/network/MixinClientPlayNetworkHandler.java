@@ -23,8 +23,6 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.fixes.ClientsideFixes;
-import de.florianmichael.viafabricplus.fixes.data.recipe.RecipeInfo;
-import de.florianmichael.viafabricplus.fixes.data.recipe.Recipes1_11_2;
 import de.florianmichael.viafabricplus.injection.access.IDownloadingTerrainScreen;
 import de.florianmichael.viafabricplus.injection.access.IPlayerListHud;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -48,9 +46,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.ChatCommandSignedC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
 import net.minecraft.network.packet.s2c.play.*;
-import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
@@ -63,7 +59,6 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,12 +78,10 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     public abstract ClientConnection getConnection();
 
     @Shadow
-    public abstract void onSynchronizeRecipes(SynchronizeRecipesS2CPacket packet);
-
-    @Shadow
     protected abstract boolean isSecureChatEnforced();
 
-    @Shadow private LastSeenMessagesCollector lastSeenMessagesCollector;
+    @Shadow
+    private LastSeenMessagesCollector lastSeenMessagesCollector;
 
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
@@ -249,15 +242,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 //    }
 
     @Inject(method = "onGameJoin", at = @At("RETURN"))
-    private void sendRecipes(GameJoinS2CPacket packet, CallbackInfo ci) {
-//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) { TODO UPDATE-1.21.3
-//            final List<RecipeEntry<?>> recipes = new ArrayList<>();
-//            final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolTranslator.getTargetVersion());
-//            for (int i = 0; i < recipeInfos.size(); i++) {
-//                recipes.add(recipeInfos.get(i).create(Identifier.of("viafabricplus", "recipe/" + i)));
-//            }
-//            this.onSynchronizeRecipes(new SynchronizeRecipesS2CPacket(recipes));
-//        }
+    private void initPlayerListFix(GameJoinS2CPacket packet, CallbackInfo ci) {
         ClientsideFixes.globalTablistIndex = 0;
         ((IPlayerListHud) MinecraftClient.getInstance().inGameHud.getPlayerListHud()).viaFabricPlus$setMaxPlayers(packet.maxPlayers());
     }

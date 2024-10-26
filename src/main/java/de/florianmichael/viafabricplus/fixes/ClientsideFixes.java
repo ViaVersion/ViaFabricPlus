@@ -24,6 +24,7 @@ import de.florianmichael.viafabricplus.event.ChangeProtocolVersionCallback;
 import de.florianmichael.viafabricplus.event.PostGameLoadCallback;
 import de.florianmichael.viafabricplus.fixes.data.EntityDimensionDiff;
 import de.florianmichael.viafabricplus.fixes.data.ResourcePackHeaderDiff;
+import de.florianmichael.viafabricplus.fixes.data.recipe.Recipes1_11_2;
 import de.florianmichael.viafabricplus.fixes.versioned.EnchantmentAttributesEmulation1_20_6;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.CPEAdditions;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.GridItemSelectionScreen;
@@ -121,6 +122,11 @@ public class ClientsideFixes {
             // Rebuilds the item selection screen grid
             if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 GridItemSelectionScreen.INSTANCE.itemGrid = null;
+            }
+
+            // Reloads the clientside recipes
+            if (newVersion.olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+                Recipes1_11_2.reset();
             }
 
             // Reload sound system when switching between 3D Shareware and normal versions

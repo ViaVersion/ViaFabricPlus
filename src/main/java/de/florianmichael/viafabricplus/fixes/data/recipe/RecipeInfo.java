@@ -24,7 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.*;
 import net.minecraft.recipe.book.CookingRecipeCategory;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.util.Identifier;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.collection.DefaultedList;
 
 import java.util.*;
@@ -316,9 +316,8 @@ public final class RecipeInfo {
      * @param id The id
      * @return The recipe info
      */
-    public RecipeEntry<?> create(Identifier id) {
-      //  return new RecipeEntry<Recipe<?>>(id, this.creator.get()); TODO UPDATE-1.21.3
-        return null;
+    public RecipeEntry<?> create(RegistryKey<Recipe<?>> id) {
+        return new RecipeEntry<>(id, this.creator.get());
     }
 
 }

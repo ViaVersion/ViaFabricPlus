@@ -45,10 +45,10 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingRecipeInput inv, World world) {
+    public boolean matches(CraftingRecipeInput input, World world) {
         boolean foundBanner = false;
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < input.size(); i++) {
+            ItemStack stack = input.getStackInSlot(i);
             if (stack.getItem() instanceof BannerItem) {
                 if (foundBanner)
                     return false;
@@ -57,15 +57,15 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
                 foundBanner = true;
             }
         }
-        return foundBanner && getBannerPattern(inv) != null;
+        return foundBanner && getBannerPattern(input) != null;
     }
 
     @Override
-    public ItemStack craft(CraftingRecipeInput inv, RegistryWrapper.WrapperLookup lookup) {
+    public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
         ItemStack result = ItemStack.EMPTY;
 
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < input.size(); i++) {
+            ItemStack stack = input.getStackInSlot(i);
             if (!stack.isEmpty() && stack.getItem() instanceof BannerItem) {
                 result = stack.copy();
                 result.setCount(1);
@@ -73,12 +73,12 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
             }
         }
 
-        final BannerPattern_1_13_2 pattern = getBannerPattern(inv);
+        final BannerPattern_1_13_2 pattern = getBannerPattern(input);
         if (pattern != null) {
             final var patternKey = lookup.getOrThrow(RegistryKeys.BANNER_PATTERN).getOrThrow(pattern.getKey());
             DyeColor color = ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ? DyeColor.BLACK : DyeColor.WHITE;
-            for (int i = 0; i < inv.size(); i++) {
-                Item item = inv.getStackInSlot(i).getItem();
+            for (int i = 0; i < input.size(); i++) {
+                Item item = input.getStackInSlot(i).getItem();
                 if (item instanceof DyeItem dyeItem) {
                     color = dyeItem.getColor();
                 }
@@ -100,7 +100,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
         return SERIALIZER;
     }
 
-    private static BannerPattern_1_13_2 getBannerPattern(CraftingRecipeInput inv) {
+    private static BannerPattern_1_13_2 getBannerPattern(CraftingRecipeInput input) {
         for (BannerPattern_1_13_2 pattern : BannerPattern_1_13_2.values()) {
             if (!pattern.isCraftable())
                 continue;
@@ -109,8 +109,8 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
             if (pattern.hasBaseStack()) {
                 boolean foundBaseItem = false;
                 boolean foundDye = false;
-                for (int i = 0; i < inv.size(); i++) {
-                    ItemStack stack = inv.getStackInSlot(i);
+                for (int i = 0; i < input.size(); i++) {
+                    ItemStack stack = input.getStackInSlot(i);
                     if (!stack.isEmpty() && !(stack.getItem() instanceof BannerItem)) {
                         if (stack.getItem() instanceof DyeItem) {
                             if (foundDye) {
@@ -128,12 +128,12 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
                     }
                 }
                 if (!foundBaseItem || (!foundDye && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_10))) matches = false;
-            } else if (inv.size() == pattern.getRecipePattern().length * pattern.getRecipePattern()[0].length()) {
+            } else if (input.size() == pattern.getRecipePattern().length * pattern.getRecipePattern()[0].length()) {
                 DyeColor patternColor = null;
-                for (int i = 0; i < inv.size(); i++) {
+                for (int i = 0; i < input.size(); i++) {
                     int row = i / 3;
                     int col = i % 3;
-                    ItemStack stack = inv.getStackInSlot(i);
+                    ItemStack stack = input.getStackInSlot(i);
                     Item item = stack.getItem();
                     if (!stack.isEmpty() && !(item instanceof BannerItem)) {
                         if (!(item instanceof DyeItem)) {

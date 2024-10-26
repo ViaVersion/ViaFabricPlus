@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.fixes.data.recipe;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.inventory.RecipeInputInventory;
@@ -29,8 +30,10 @@ import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.recipe.*;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.util.Identifier;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -41,6 +44,26 @@ import java.util.List;
  * Recipe data dump for all versions below 1.12.
  */
 public class Recipes1_11_2 {
+
+    private static RecipeManager1_11_2 RECIPE_MANAGER;
+
+    public static RecipeManager1_11_2 getRecipeManager() {
+        if (RECIPE_MANAGER == null) {
+            final List<RecipeInfo> recipeInfos = Recipes1_11_2.getRecipes(ProtocolTranslator.getTargetVersion());
+            final List<RecipeEntry<?>> recipes = new ArrayList<>(recipeInfos.size());
+            for (int i = 0; i < recipeInfos.size(); i++) {
+                final RegistryKey<Recipe<?>> key = RegistryKey.of(RegistryKeys.RECIPE, Identifier.of("viafabricplus", "recipe/" + i));
+                recipes.add(recipeInfos.get(i).create(key));
+            }
+            RECIPE_MANAGER = new RecipeManager1_11_2(recipes);
+        }
+
+        return RECIPE_MANAGER;
+    }
+
+    public static void reset() {
+        RECIPE_MANAGER = null;
+    }
 
     /**
      * @return A list of all recipes for the given version.
@@ -57,7 +80,7 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.of(() -> new FireworkRocketRecipe(CraftingRecipeCategory.MISC)));
         }
         if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_11)) {
-        //    recipes.add(RecipeInfo.of(() -> new ShulkerBoxColoringRecipe(CraftingRecipeCategory.MISC))); TODO UPDATE-1.21.3
+            recipes.add(RecipeInfo.of(() -> new ShulkerBoxColoringRecipe(CraftingRecipeCategory.MISC)));
         }
         if (targetVersion.newerThanOrEqualTo(ProtocolVersion.v1_9)) {
             recipes.add(RecipeInfo.of(() -> new TippedArrowRecipe(CraftingRecipeCategory.MISC)));
@@ -625,7 +648,7 @@ public class Recipes1_11_2 {
         recipes.add(RecipeInfo.smelting(Items.IRON_INGOT, Items.IRON_ORE, 0.7F));
         recipes.add(RecipeInfo.smelting(Items.GOLD_INGOT, Items.GOLD_ORE, 1.0F));
         recipes.add(RecipeInfo.smelting(Items.DIAMOND, Items.DIAMOND_ORE, 1.0F));
-      //  recipes.add(RecipeInfo.smelting(Items.GLASS, Ingredient.fromTag(ItemTags.SAND), 0.1F)); TODO UPDATE-1.21.3
+        recipes.add(RecipeInfo.smelting(Items.GLASS, Ingredient.ofItems(Items.SAND, Items.RED_SAND), 0.1F));
         recipes.add(RecipeInfo.smelting(Items.COOKED_PORKCHOP, Items.PORKCHOP, 0.35F));
         recipes.add(RecipeInfo.smelting(Items.STONE, Items.COBBLESTONE, 0.1F));
         recipes.add(RecipeInfo.smelting(Items.BRICK, Items.CLAY_BALL, 0.3F));
@@ -685,7 +708,7 @@ public class Recipes1_11_2 {
             recipes.add(RecipeInfo.smelting(Items.COOKED_BEEF, Items.BEEF, 0.35F));
         }
         if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.b1_2_0tob1_2_2)) {
-  //          recipes.add(RecipeInfo.smelting(Items.CHARCOAL, Ingredient.fromTag(ItemTags.LOGS), 0.15F)); TODO UPDATE-1.21.3
+            recipes.add(RecipeInfo.smelting(Items.CHARCOAL, Ingredient.ofItems(Items.OAK_LOG, Items.SPRUCE_LOG, Items.BIRCH_LOG, Items.JUNGLE_LOG, Items.ACACIA_LOG, Items.DARK_OAK_LOG), 0.15F));
             recipes.add(RecipeInfo.smelting(Items.GREEN_DYE, Items.CACTUS, 0.2F));
         }
         if (targetVersion.newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
@@ -710,13 +733,13 @@ public class Recipes1_11_2 {
         final var world = MinecraftClient.getInstance().world;
         final var craftingRecipeInput = inventory.createRecipeInput();
 
-//        final var result = network.getRecipeManager() TODO UPDATE-1.21.3
-//                .getFirstMatch(RecipeType.CRAFTING, craftingRecipeInput, world) // Get the first matching recipe
-//                .map(recipe -> recipe.value().craft(craftingRecipeInput, network.getRegistryManager())) // Craft the recipe to get the result
-//                .orElse(ItemStack.EMPTY); // If there is no recipe, set the result to air
+        final var result = getRecipeManager()
+                .getFirstMatch(RecipeType.CRAFTING, craftingRecipeInput, world) // Get the first matching recipe
+                .map(recipe -> recipe.value().craft(craftingRecipeInput, network.getRegistryManager())) // Craft the recipe to get the result
+                .orElse(ItemStack.EMPTY); // If there is no recipe, set the result to air
 
         // Update the result slot
-        //network.onScreenHandlerSlotUpdate(new ScreenHandlerSlotUpdateS2CPacket(syncId, screenHandler.getRevision(), 0, result));
+        network.onScreenHandlerSlotUpdate(new ScreenHandlerSlotUpdateS2CPacket(syncId, screenHandler.getRevision(), 0, result));
     }
 
 }
