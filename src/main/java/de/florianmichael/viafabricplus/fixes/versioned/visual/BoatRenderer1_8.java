@@ -72,7 +72,6 @@ public class BoatRenderer1_8 extends AbstractBoatEntityRenderer {
         model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV);
 
         matrices.pop();
-        super.render(state, matrices, vertexConsumers, light);
     }
 
 }
