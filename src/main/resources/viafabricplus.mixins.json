@@ -52,7 +52,6 @@
     "fixes.minecraft.MixinLanguageManager",
     "fixes.minecraft.MixinMinecraftClient",
     "fixes.minecraft.MixinMouse",
-    "fixes.minecraft.MixinPlayerInventory",
     "fixes.minecraft.MixinPlayerListEntry",
     "fixes.minecraft.MixinPlayerPublicKey_PublicKeyData",
     "fixes.minecraft.MixinProfileKeysImpl",
