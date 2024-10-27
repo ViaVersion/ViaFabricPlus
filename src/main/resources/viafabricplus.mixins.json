@@ -219,5 +219,8 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "mixins": [
+    "fixes.minecraft.entity.MixinZombieVillagerEntity"
+  ]
 }

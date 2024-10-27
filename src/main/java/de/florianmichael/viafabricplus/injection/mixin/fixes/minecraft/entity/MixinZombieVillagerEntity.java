@@ -17,23 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.block;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.VaultBlock;
+import net.minecraft.entity.mob.ZombieVillagerEntity;
 import net.minecraft.util.ActionResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(VaultBlock.class)
-public abstract class MixinVaultBlock {
+@Mixin(ZombieVillagerEntity.class)
+public abstract class MixinZombieVillagerEntity {
 
-    @Redirect(method = "onUseWithItem", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;SUCCESS_SERVER:Lnet/minecraft/util/ActionResult$Success;"))
-    private ActionResult.Success dontSwingHand() {
+    @Redirect(method = "interactMob", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;SUCCESS_SERVER:Lnet/minecraft/util/ActionResult$Success;"))
+    private ActionResult.Success swingHand() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return ActionResult.CONSUME;
+            return ActionResult.SUCCESS;
         } else {
             return ActionResult.SUCCESS_SERVER;
         }
