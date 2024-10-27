@@ -19,8 +19,8 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.api.type.types.misc.TagType;
 import com.viaversion.nbt.limiter.TagLimiter;
+import com.viaversion.viaversion.api.type.types.misc.TagType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

@@ -85,6 +85,7 @@
     "fixes.minecraft.block.MixinFireBlock",
     "fixes.minecraft.block.MixinFlowerbedBlock",
     "fixes.minecraft.block.MixinFlowerPotBlock",
+    "fixes.minecraft.block.MixinHoneyBlock",
     "fixes.minecraft.block.MixinHopperBlock",
     "fixes.minecraft.block.MixinLadderBlock",
     "fixes.minecraft.block.MixinLeavesBlock",
@@ -211,8 +212,7 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.block.MixinHoneyBlock"
+    "vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1

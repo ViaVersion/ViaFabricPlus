@@ -28,7 +28,10 @@ import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicPro
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.packet.ClientboundPacketsc0_30cpe;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class CPEAdditions {
