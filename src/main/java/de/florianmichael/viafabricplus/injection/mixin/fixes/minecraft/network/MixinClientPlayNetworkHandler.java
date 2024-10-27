@@ -27,6 +27,7 @@ import de.florianmichael.viafabricplus.injection.access.IDownloadingTerrainScree
 import de.florianmichael.viafabricplus.injection.access.IPlayerListHud;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
+import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -48,6 +49,7 @@ import net.minecraft.network.packet.c2s.play.ChatCommandSignedC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
 import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
@@ -86,6 +88,9 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Shadow
     private LastSeenMessagesCollector lastSeenMessagesCollector;
 
+    @Shadow
+    private ClientWorld world;
+
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
     }
@@ -109,6 +114,19 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
             clientPlayerEntity.init();
             clientPlayerEntity.setYaw(-180.0F);
+        }
+    }
+
+    @Redirect(method = "onSignEditorOpen", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"))
+    private void openEmptySignEditor(Logger instance, String format, Object arg1, Object arg2, @Local(argsOnly = true) SignEditorOpenS2CPacket packet) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+            final BlockPos pos = packet.getPos();
+
+            final SignBlockEntity emptySignBlockEntity = new SignBlockEntity(pos, this.world.getBlockState(pos));
+            emptySignBlockEntity.setWorld(this.world);
+            this.client.player.openEditSignScreen(emptySignBlockEntity, packet.isFront());
+        } else {
+            instance.warn(format, arg1, arg2);
         }
     }
 
