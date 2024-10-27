@@ -51,13 +51,6 @@ public abstract class MixinBedBlock extends HorizontalFacingBlock {
     @Unique
     private boolean viaFabricPlus$requireOriginalShape;
 
-    @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-    private void dontSwingHand(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            cir.setReturnValue(ActionResult.CONSUME);
-        }
-    }
-
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaFabricPlusMixinPlugin.MORE_CULLING_PRESENT && viaFabricPlus$requireOriginalShape) {

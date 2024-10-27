@@ -36,7 +36,6 @@ import java.util.concurrent.CompletableFuture;
  * TODO | Port 1.21.3
  *  - VehicleMovePacket handling now has distance check
  *  - Game options are now only send if they changed
- *  - ArmorStand/MobEntity interaction CONSUME->SUCESS_SERVER
  *  - Illusioner/Sniffer doesn't override visibility bounding box anymore
  *  - AbstractFireabll#shouldRender new
  *
