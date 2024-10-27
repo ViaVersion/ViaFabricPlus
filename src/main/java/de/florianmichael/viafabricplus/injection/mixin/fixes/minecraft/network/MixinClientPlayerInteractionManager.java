@@ -111,6 +111,15 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
     @Unique
     private final ClientPlayerInteractionManager1_18_2 viaFabricPlus$1_18_2InteractionManager = new ClientPlayerInteractionManager1_18_2();
 
+    @Redirect(method = "interactBlockInternal", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;CONSUME:Lnet/minecraft/util/ActionResult$Success;"))
+    private ActionResult.Success changeSpectatorAction() {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+            return ActionResult.SUCCESS;
+        } else {
+            return ActionResult.CONSUME;
+        }
+    }
+
     @Inject(method = "interactItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;syncSelectedSlot()V", shift = At.Shift.AFTER))
     private void sendPlayerPosPacket(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_17, ProtocolVersion.v1_20_5)) {
