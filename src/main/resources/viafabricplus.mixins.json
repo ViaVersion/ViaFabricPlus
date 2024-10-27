@@ -96,7 +96,6 @@
     "fixes.minecraft.block.MixinPistonHeadBlock",
     "fixes.minecraft.block.MixinSnowBlock",
     "fixes.minecraft.block.MixinSoulSandBlock",
-    "fixes.minecraft.block.MixinVaultBlock",
     "fixes.minecraft.block.MixinWallBlock",
     "fixes.minecraft.entity.MixinAbstractBoatEntity",
     "fixes.minecraft.entity.MixinAbstractClientPlayerEntity",
