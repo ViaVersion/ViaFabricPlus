@@ -95,6 +95,7 @@
     "fixes.minecraft.block.MixinPistonHeadBlock",
     "fixes.minecraft.block.MixinSnowBlock",
     "fixes.minecraft.block.MixinSoulSandBlock",
+    "fixes.minecraft.block.MixinVaultBlock",
     "fixes.minecraft.block.MixinWallBlock",
     "fixes.minecraft.entity.MixinAbstractBoatEntity",
     "fixes.minecraft.entity.MixinAbstractClientPlayerEntity",
@@ -211,7 +212,7 @@
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.block.MixinVaultBlock"
+    "fixes.minecraft.block.MixinHoneyBlock"
   ],
   "injectors": {
     "defaultRequire": 1
