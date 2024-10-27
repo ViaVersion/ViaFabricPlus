@@ -78,18 +78,21 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     public abstract void setClientPermissionLevel(int clientPermissionLevel);
 
-    @Shadow private boolean inSneakingPose;
+    @Shadow
+    private boolean inSneakingPose;
 
-    @Shadow protected abstract void sendSneakingPacket();
+    @Shadow
+    protected abstract void sendSneakingPacket();
 
-    @Shadow private boolean lastHorizontalCollision;
+    @Shadow
+    private boolean lastHorizontalCollision;
 
     @WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSneakingPacket()V"))
     private boolean sendSneakingAfterSprinting(ClientPlayerEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_2);
     }
 
-    @Inject(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSprintingPacket()V"))
+    @Inject(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSprintingPacket()V", shift = At.Shift.AFTER))
     private void sendSneakingAfterSprinting(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             this.sendSneakingPacket();
