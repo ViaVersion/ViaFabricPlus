@@ -33,6 +33,10 @@ import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
 /*
+ * TODO | Port 1.21.3
+ *  - VehicleMovePacket handling now has distance check
+ *  - Game options are now only send if they changed
+ *
  * TODO | Port 1.20.6
  *  - ClientPlayerInteractionManager#interactBlockInternal added new condition
  *  - Command arguments (Probably not everything worth, but least them with nbt)

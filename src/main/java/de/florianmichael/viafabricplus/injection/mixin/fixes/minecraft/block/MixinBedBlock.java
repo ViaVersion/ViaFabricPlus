@@ -53,7 +53,7 @@ public abstract class MixinBedBlock extends HorizontalFacingBlock {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     private void dontSwingHand(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             cir.setReturnValue(ActionResult.CONSUME);
         }
     }

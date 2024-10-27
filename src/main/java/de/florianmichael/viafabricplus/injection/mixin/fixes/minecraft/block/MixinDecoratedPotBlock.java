@@ -41,7 +41,7 @@ public abstract class MixinDecoratedPotBlock {
 
     @Redirect(method = "onUseWithItem", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;SUCCESS:Lnet/minecraft/util/ActionResult$Success;", ordinal = 0))
     private ActionResult.Success dontSwingHand() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return ActionResult.CONSUME;
         } else {
             return ActionResult.SUCCESS;

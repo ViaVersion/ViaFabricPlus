@@ -167,7 +167,7 @@ public abstract class MixinEntity implements IEntity {
     private double fixBlockCollisionMargin(double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             return 1E-3;
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return 1E-7;
         } else {
             return constant;

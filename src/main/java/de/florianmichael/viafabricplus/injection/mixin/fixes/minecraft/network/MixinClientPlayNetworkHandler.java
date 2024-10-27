@@ -102,7 +102,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Redirect(method = "onEntityPosition", at = @At(value = "INVOKE", target = "Ljava/util/OptionalInt;isPresent()Z"))
     private boolean dontHandleRemovedVehiclePositionChange(OptionalInt instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return false;
         } else {
             return instance.isPresent();
@@ -111,7 +111,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Inject(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;addEntity(Lnet/minecraft/entity/Entity;)V", shift = At.Shift.BEFORE))
     private void dontApplyRotationAndVelocity(PlayerRespawnS2CPacket packet, CallbackInfo ci, @Local(ordinal = 1) ClientPlayerEntity clientPlayerEntity) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             clientPlayerEntity.init();
             clientPlayerEntity.setYaw(-180.0F);
         }
@@ -119,7 +119,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Redirect(method = "onSignEditorOpen", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"))
     private void openEmptySignEditor(Logger instance, String format, Object arg1, Object arg2, @Local(argsOnly = true) SignEditorOpenS2CPacket packet) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             final BlockPos pos = packet.getPos();
 
             final SignBlockEntity emptySignBlockEntity = new SignBlockEntity(pos, this.world.getBlockState(pos));
@@ -225,8 +225,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Redirect(method = {"onEntityPosition", "onEntity"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isLogicalSideForUpdatingMovement()Z"))
     private boolean allowPlayerToBeMovedByEntityPackets(Entity instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            final boolean logicalMovementSide = instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getWorld().isClient;
-            return !logicalMovementSide; // Older versions had the logic which is now executed if logicalMovementSide is false, so we need to invert values
+            return instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getWorld().isClient;
         } else {
             return instance.isLogicalSideForUpdatingMovement();
         }

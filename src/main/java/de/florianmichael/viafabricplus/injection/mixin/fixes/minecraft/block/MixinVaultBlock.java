@@ -32,7 +32,7 @@ public abstract class MixinVaultBlock {
 
     @Redirect(method = "onUseWithItem", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;SUCCESS_SERVER:Lnet/minecraft/util/ActionResult$Success;"))
     private ActionResult.Success dontSwingHand() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return ActionResult.CONSUME;
         } else {
             return ActionResult.SUCCESS_SERVER;

@@ -58,7 +58,7 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
 
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return stack.isOf(Items.LEAD) ? ActionResult.SUCCESS : ActionResult.PASS;
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
             return ActionResult.SUCCESS;

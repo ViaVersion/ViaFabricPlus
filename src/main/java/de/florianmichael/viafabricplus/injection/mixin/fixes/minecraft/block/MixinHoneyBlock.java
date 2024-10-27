@@ -32,7 +32,7 @@ public abstract class MixinHoneyBlock {
 
     @Inject(method = { "method_65067", "method_65068" }, at = @At("HEAD"), cancellable = true)
     private static void simplifyVelocityComparisons(double d, CallbackInfoReturnable<Double> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             cir.setReturnValue(d);
         }
     }

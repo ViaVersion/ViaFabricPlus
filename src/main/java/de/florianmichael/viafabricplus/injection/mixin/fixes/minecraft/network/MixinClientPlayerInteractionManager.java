@@ -113,7 +113,7 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
 
     @Redirect(method = "interactBlockInternal", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;CONSUME:Lnet/minecraft/util/ActionResult$Success;"))
     private ActionResult.Success changeSpectatorAction() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return ActionResult.SUCCESS;
         } else {
             return ActionResult.CONSUME;
