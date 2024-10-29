@@ -212,16 +212,13 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig"
+    "vialegacy.MixinViaLegacyConfig",
+    "fixes.minecraft.item.MixinLeadItem"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "overwrites": {
     "requireAnnotations": true
-  },
-  "mixins": [
-    "fixes.minecraft.item.MixinEmptyMapItem",
-    "fixes.minecraft.item.MixinLeadItem"
-  ]
+  }
 }

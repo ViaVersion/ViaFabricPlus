@@ -40,6 +40,7 @@ import java.util.concurrent.CompletableFuture;
  *  - Entity#baseTick doesn't set prev rotation anymore at top
  *  - LivingEntity movement code got refactored completely
  *  - BundleItem#use, ConsumableComponent behaviour in use functions
+ *  - Check all screen handlers for changes
  *
  * TODO | Port 1.20.6
  *  - ClientPlayerInteractionManager#interactBlockInternal added new condition
