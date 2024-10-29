@@ -86,6 +86,24 @@ public abstract class MixinEntity implements IEntity {
     @Unique
     private boolean viaFabricPlus$isInLoadedChunkAndShouldTick;
 
+    @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;lengthSquared()D"))
+    private double allowSmallValues(Vec3d instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            return 0;
+        } else {
+            return instance.lengthSquared();
+        }
+    }
+
+    @Redirect(method = "setPitch", at = @At(value = "INVOKE", target = "Ljava/lang/Math;clamp(FFF)F", remap = false))
+    private float dontClampPitch(float value, float min, float max) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            return value;
+        } else {
+            return Math.clamp(value, min, max);
+        }
+    }
+
     @Inject(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
     private void use1_20_6StepCollisionCalculation(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {

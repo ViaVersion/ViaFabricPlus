@@ -34,10 +34,12 @@ import java.util.concurrent.CompletableFuture;
 
 /*
  * TODO | Port 1.21.3
- *  - VehicleMovePacket handling now has distance check
- *  - Game options are now only send if they changed
- *  - Illusioner/Sniffer doesn't override visibility bounding box anymore
- *  - AbstractFireabll#shouldRender new
+ *  - VehicleMovePacket handling now has distance check in ClientPlayNetworkHandler
+ *  - Illusioner/Sniffer don't override visibility bounding box anymore
+ *  - AbstractFireabll/EyeOfEnder#shouldRender new
+ *  - Entity#baseTick doesn't set prev rotation anymore at top
+ *  - LivingEntity movement code got refactored completely
+ *  - BundleItem#use, ConsumableComponent behaviour in use functions
  *
  * TODO | Port 1.20.6
  *  - ClientPlayerInteractionManager#interactBlockInternal added new condition
