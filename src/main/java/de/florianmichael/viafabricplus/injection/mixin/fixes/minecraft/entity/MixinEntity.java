@@ -86,10 +86,12 @@ public abstract class MixinEntity implements IEntity {
     @Unique
     private boolean viaFabricPlus$isInLoadedChunkAndShouldTick;
 
-    @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;lengthSquared()D"))
+    @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;lengthSquared()D", ordinal = 1), slice = @Slice(
+            from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;")
+    ))
     private double allowSmallValues(Vec3d instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return 0;
+            return Double.MAX_VALUE;
         } else {
             return instance.lengthSquared();
         }
