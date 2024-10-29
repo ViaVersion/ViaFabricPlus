@@ -219,5 +219,9 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "mixins": [
+    "fixes.minecraft.item.MixinEmptyMapItem",
+    "fixes.minecraft.item.MixinLeadItem"
+  ]
 }
