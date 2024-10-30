@@ -161,7 +161,7 @@
   "bedrock_realms.viafabricplus.availability_check": "正在檢查可用性...",
   "bedrock_realms.viafabricplus.no_worlds": "找不到世界 :(",
   "bedrock_realms.viafabricplus.unavailable": "您的 ViaFabricPlus 版本已過時，與 Minecraft Realms 不相容。",
-  "bedrock_realms.viafabricplus.error": "發生錯誤，請查看日誌以獲取更多資訊",
+  "bedrock_realms.viafabricplus.error": "發生錯誤，請查看記錄檔以獲取更多資訊",
   "bedrock_realms.viafabricplus.join": "加入 Realm",
   "bedrock_realms.viafabricplus.leave": "離開 Realm",
   "bedrock_realms.viafabricplus.invite": "接受邀請碼",
