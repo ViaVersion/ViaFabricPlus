@@ -28,6 +28,9 @@
   "base.viafabricplus.name": "使用者名稱",
   "base.viafabricplus.password": "密碼",
   "base.viafabricplus.login": "登入",
+  "base.viafabricplus.code": "代碼",
+  "base.viafabricplus.accept": "接受",
+  "base.viafabricplus.refresh": "重新整理",
 
   "setting_group_name.viafabricplus.authentication": "驗證",
   "setting_group_name.viafabricplus.visual": "視覺",
@@ -41,6 +44,8 @@
   "screen.viafabricplus.classicube_login": "Classicube 登入",
   "screen.viafabricplus.classicube_mfa": "Classicube MFA",
   "screen.viafabricplus.settings": "設定",
+  "screen.viafabricplus.bedrock_realms": "基岩版 Realms",
+  "screen.viafabricplus.accept_invite": "接受邀請",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "儲存選擇的版本",
   "general_settings.viafabricplus.extra_information_in_debug_hud": "在除錯畫面中顯示更多資訊",
@@ -95,12 +100,14 @@
   "visual_settings.viafabricplus.disable_server_pinging": "停用伺服器 Ping",
   "visual_settings.viafabricplus.sideways_backwards_walking": "側身倒退行走",
   "visual_settings.viafabricplus.enable_legacy_tablist": "啟用舊版 Tab 清單",
+  "visual_settings.viafabricplus.tilt_item_positions": "傾斜物品位置",
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "隱藏熔爐介面的配方手冊",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "隱藏合成介面的配方手冊",
   "visual_settings.viafabricplus.hide_modern_jigsaw_screen_features": "從拼圖方塊畫面中移除較新的功能",
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "強制對非 ASCII 語言使用 Unicode 字型",
   "visual_settings.viafabricplus.filter_non_existing_glyphs": "過濾不存在的字元",
   "visual_settings.viafabricplus.sneak_instantly": "立即潛行",
+  "visual_settings.viafabricplus.change_body_rotation_interpolation": "變更身體旋轉插值",
 
   "force_version.viafabricplus.title": "請選擇用於 Ping／連線伺服器的版本",
 
@@ -146,6 +153,18 @@
   "minecraftauth_library.viafabricplus.xbldevicetoken": "正在 Xbox Live 驗證...",
   "minecraftauth_library.viafabricplus.xblsisuauthentication": "正在使用 SISU 驗證 Xbox Live...",
   "minecraftauth_library.viafabricplus.mcchain": "正在與 Minecraft 線上伺服器驗證...",
-  "minecraftauth_library.viafabricplus.xblxststoken": "正在請求 XSTS Token...",
-  "minecraftauth_library.viafabricplus.playfabtoken": "正在驗證 PlayFab..."
+  "minecraftauth_library.viafabricplus.xblxststoken": "正在請求 XSTS 權杖...",
+  "minecraftauth_library.viafabricplus.playfabtoken": "正在驗證 PlayFab...",
+  "minecraftauth_library.viafabricplus.realmsxsts": "正在請求 Realms XSTS 權杖...",
+
+  "bedrock_realms.viafabricplus.warning": "此功能需要在設定中設定基岩版帳號！",
+  "bedrock_realms.viafabricplus.availability_check": "正在檢查可用性...",
+  "bedrock_realms.viafabricplus.no_worlds": "找不到世界 :(",
+  "bedrock_realms.viafabricplus.unavailable": "您的 ViaFabricPlus 版本已過時，與 Minecraft Realms 不相容。",
+  "bedrock_realms.viafabricplus.error": "發生錯誤，請查看記錄檔以獲取更多資訊",
+  "bedrock_realms.viafabricplus.join": "加入 Realm",
+  "bedrock_realms.viafabricplus.leave": "離開 Realm",
+  "bedrock_realms.viafabricplus.invite": "接受邀請碼",
+  "bedrock_realms.viafabricplus.expired": "Realm 已過期",
+  "bedrock_realms.viafabricplus.incompatible": "Realms 的 Minecraft 版本太舊或太新"
 }
