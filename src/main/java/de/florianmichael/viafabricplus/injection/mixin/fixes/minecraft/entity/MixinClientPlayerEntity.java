@@ -84,9 +84,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     protected abstract void sendSneakingPacket();
 
-    @Shadow
-    private boolean lastHorizontalCollision;
-
     @WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSneakingPacket()V"))
     private boolean sendSneakingAfterSprinting(ClientPlayerEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_2);
@@ -96,16 +93,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     private void sendSneakingAfterSprinting(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             this.sendSneakingPacket();
-        }
-    }
-
-    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastHorizontalCollision:Z", ordinal = 0))
-    private boolean removeHorizontalCollisionFromOnGroundCheck(ClientPlayerEntity instance) {
-        // Since it doesn't exist in older versions, we need to exclude it from the check to prevent bad packets
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return this.horizontalCollision;
-        } else {
-            return this.lastHorizontalCollision;
         }
     }
 
