@@ -10,16 +10,20 @@ These steps are the usual process for updating ViaFabricPlus to a new version of
     - `supported_versions` (if necessary)
    
    As well as the versions in the `dependencies` block in the `build.gradle` file.
-2. Update the `NATIVE_VERSION` field in the ProtocolTranslator class to the new version
-3. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
-    - `MixinClientWorld#tickEntity` and `MixinClientWorld#tickPassenger`
-    - `MixinPlayer#getBlockBreakingSpeed`
-4. Decompile the game source code with the tool of your choice.
-5. Check all data dumps and diffs in the fixes/data package and update them if necessary, here is a list of some critical ones:
+2. Increment the version number in `gradle.properties` by at least a minor version (e.g. 1.0.0 -> 1.1.0)
+3. Check all data dumps and diffs in the fixes/data package and update them if necessary, here is a list of some critical ones:
     - `ResourcePackHeaderDiff` (add the new version at the top of the list)
     - `ItemRegistryDiff` (add all new items/blocks added in the new version)
-6. Try to compile the mod and start porting the code until all existing fixes are working again.
-7. Diff the game code with the code of the previous version (e.g. using git) and implement all changes that could be relevant for ViaFabricPlus, those are:
+    - `EntityDimensionDiff` (add entity dimension changes)
+4. Update the `NATIVE_VERSION` field in the ProtocolTranslator class to the new version
+5. Update protocol constants in the `ViaFabricPlusProtocol` class
+-------------
+6. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
+    - `MixinClientWorld#tickEntity` and `MixinClientWorld#tickPassenger`
+    - `MixinPlayer#getBlockBreakingSpeed`
+7. mDecompile the game source code with the tool of your choice.
+8. Try to compile the mod and start porting the code until all existing fixes are working again.
+9. Diff the game code with the code of the previous version (e.g. using git) and implement all changes that could be relevant for ViaFabricPlus, those are:
     - General logic changes (e.g. `if (a && b)` -> `if (b || a)`)
     - Changes to the movement code (e.g. `player.yaw` -> `player.headYaw`)
     - Networking changes (e.g. sending a new packet / changing the packet structure)
@@ -30,7 +34,7 @@ These steps are the usual process for updating ViaFabricPlus to a new version of
    
     **Read more about which fixes should be added [HERE](../CONTRIBUTING.md#adding-protocol-new-fixes---which-are-important-and-which-arent)**
 
-   - From experience, the following packages contain the usual important changes:
+   - From experience, the following packages contain the usual important changes (mojang mappings):
      - `net.minecraft`
      - `net.minecraft.client`
         - `net.minecraft.client.gui`
@@ -44,7 +48,7 @@ These steps are the usual process for updating ViaFabricPlus to a new version of
        - `net.minecraft.world.level`
          - `net.minecraft.world.level.block`
 
-   - While the following packages can be skipped completely (most of the time):
+   - While the following packages (mojang mappings) can be skipped completely (most of the time):
      - `com.mojang`
      - `net.minecraft.advancements`
      - `net.minecraft.commands`
@@ -59,13 +63,12 @@ These steps are the usual process for updating ViaFabricPlus to a new version of
      - `net.minecraft.stats`
      - `net.minecraft.tags`
 
-8. Update protocol constants in the `ViaFabricPlusProtocol` class
-9. Check the ViaVersion/upstream protocol implementation for issues and report them if necessary or if these issues can't be fixed,
+10. Check the ViaVersion/upstream protocol implementation for issues and report them if necessary or if these issues can't be fixed,
    without tons of work, implement a workaround in ViaFabricPlus.
-10. Run the game and check all GUIs and other visuals for issues.
-11. Clean your code and make sure it is readable and understandable, clientside fixes are sorted by their protocol versions, having
+11. Run the game and check all GUIs and other visuals for issues.
+12. Clean your code and make sure it is readable and understandable, clientside fixes are sorted by their protocol versions, having
    newer fixes at the top of the file.
-12. Increment the version number in `gradle.properties` by at least a minor version (e.g. 1.0.0 -> 1.1.0)
+-------------
 13. Create a pull request and wait for it to be reviewed and merged.
 14. You're done, congrats!
 
