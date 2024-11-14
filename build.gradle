@@ -1,6 +1,7 @@
 plugins {
-	id "fabric-loom" version "1.7-SNAPSHOT"
+	id "idea"
 	id "maven-publish"
+	id "fabric-loom" version "1.8-SNAPSHOT"
 }
 
 base {
