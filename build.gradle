@@ -109,7 +109,7 @@ processResources {
 		expand(
 				"version": project.version,
 				"description": project.description,
-				"implVersion": "git-${project.name}-${project.version}:${latestCommitHash()}",
+				"implVersion": "git-${project.name}-${project.version}:${latestCommitHash().get()}",
 				"mcVersion": mcVersion()
 		)
 	}
@@ -123,13 +123,10 @@ String mcVersion() {
 	}
 }
 
-String latestCommitHash() {
-	def stdout = new ByteArrayOutputStream()
-	exec {
-		commandLine "git", "rev-parse", "--short", "HEAD"
-		standardOutput = stdout
-	}
-	return stdout.toString().trim()
+Provider<String> latestCommitHash() {
+	return providers.exec {
+		commandLine = ["git", "rev-parse", "--short", "HEAD"]
+	}.standardOutput.getAsText().map(String::trim)
 }
 
 java {
