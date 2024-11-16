@@ -42,7 +42,7 @@ public abstract class MixinRegistryEntryList_Named {
     abstract void setEntries(List<RegistryEntry> entries);
 
     @Inject(method = "getEntries", at = @At("HEAD"))
-    public void preventNullableEntries(CallbackInfoReturnable<List<RegistryEntry<?>>> cir) {
+    private void preventNullableEntries(CallbackInfoReturnable<List<RegistryEntry<?>>> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             // Previoulsy didn't had unbounded entries
             if (this.entries == null) {
@@ -52,7 +52,7 @@ public abstract class MixinRegistryEntryList_Named {
     }
 
     @Inject(method = "isBound", at = @At("HEAD"), cancellable = true)
-    public void alwaysBound(CallbackInfoReturnable<Boolean> cir) {
+    private void alwaysBound(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             // Previously didn't exist
             cir.setReturnValue(true);

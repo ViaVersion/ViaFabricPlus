@@ -67,10 +67,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     private int ticksSinceLastPositionPacketSent;
 
-    public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
-        super(world, profile);
-    }
-
     @Shadow
     @Final
     public ClientPlayNetworkHandler networkHandler;
@@ -83,6 +79,10 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Shadow
     protected abstract void sendSneakingPacket();
+
+    public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
+        super(world, profile);
+    }
 
     @WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSneakingPacket()V"))
     private boolean sendSneakingAfterSprinting(ClientPlayerEntity instance) {
