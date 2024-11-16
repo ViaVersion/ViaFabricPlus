@@ -155,6 +155,7 @@
     "fixes.minecraft.network.MixinNetworkStateTransitionHandler",
     "fixes.minecraft.network.MixinNetworkStateTransitions",
     "fixes.minecraft.network.MixinPlayerListEntry",
+    "fixes.minecraft.network.MixinRegistryEntryListCodec",
     "fixes.minecraft.network.MixinUpdatePlayerAbilitiesC2SPacket",
     "fixes.minecraft.screen.MixinAbstractCommandBlockScreen",
     "fixes.minecraft.screen.MixinAbstractSignEditScreen",
@@ -215,7 +216,7 @@
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
     "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.network.MixinRegistryEntryListCodec"
+    "fixes.minecraft.network.MixinRegistryEntryList_Named"
   ],
   "injectors": {
     "defaultRequire": 1
