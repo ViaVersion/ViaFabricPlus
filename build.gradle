@@ -67,15 +67,15 @@ dependencies {
 
 	modCompileOnly "com.terraformersmc:modmenu:11.0.3"
 
-	jij "com.viaversion:viaversion-common:5.1.2-20241118.140618-18"
-	jij "com.viaversion:viabackwards-common:5.1.2-20241118.134019-9"
-	jij "net.raphimc:viaaprilfools-common:3.0.5-20241113.235618-5"
-	jij "net.raphimc:ViaLegacy:3.0.6-20241113.235820-5"
-	jij ("net.raphimc:ViaBedrock:0.0.13-20241117.111706-10") {
+	jij "com.viaversion:viaversion-common:5.1.2-SNAPSHOT"
+	jij "com.viaversion:viabackwards-common:5.1.2-SNAPSHOT"
+	jij "net.raphimc:viaaprilfools-common:3.0.5-SNAPSHOT"
+	jij "net.raphimc:ViaLegacy:3.0.6-SNAPSHOT"
+	jij ("net.raphimc:ViaBedrock:0.0.13-SNAPSHOT") {
 		exclude group: "io.jsonwebtoken"
 		exclude group: "com.mojang", module: "brigadier"
 	}
-	jij ("net.raphimc:ViaLoader:3.0.5-20241113.235950-3") {
+	jij ("net.raphimc:ViaLoader:3.0.5-SNAPSHOT") {
 		exclude group: "com.google.guava", module: "guava"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}
