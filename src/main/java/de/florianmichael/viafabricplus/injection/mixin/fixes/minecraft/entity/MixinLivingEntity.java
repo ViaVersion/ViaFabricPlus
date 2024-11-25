@@ -153,6 +153,15 @@ public abstract class MixinLivingEntity extends Entity {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && instance.hasVehicle();
     }
 
+    @Redirect(method = "tickActiveItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areItemsEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"))
+    private boolean replaceItemStackEqualsCheck(ItemStack left, ItemStack right) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
+            return left == right;
+        } else {
+            return ItemStack.areItemsEqual(left, right);
+        }
+    }
+
     @Redirect(method = "travelMidAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isChunkLoaded(Lnet/minecraft/util/math/BlockPos;)Z"))
     private boolean modifyLoadedCheck(World instance, BlockPos blockPos) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
