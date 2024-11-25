@@ -56,7 +56,7 @@ public abstract class MixinFarmlandBlock extends Block {
 
     @Override
     public VoxelShape getCullingShape(BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_9_3)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
             return SHAPE;
         } else {
             return super.getCullingShape(state);
