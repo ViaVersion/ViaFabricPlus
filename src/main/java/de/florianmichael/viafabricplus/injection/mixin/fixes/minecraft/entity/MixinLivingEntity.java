@@ -231,6 +231,15 @@ public abstract class MixinLivingEntity extends Entity {
         }
     }
 
+    @Redirect(method = "tickActiveItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areItemsEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"))
+    private boolean replaceItemStackEqualsCheck(ItemStack left, ItemStack right) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            return left == right;
+        } else {
+            return ItemStack.areItemsEqual(left, right);
+        }
+    }
+
     @ModifyConstant(method = "tickMovement", constant = @Constant(doubleValue = 0.003D))
     private double modifyVelocityZero(final double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
