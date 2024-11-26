@@ -78,6 +78,7 @@ public class VisualSettings extends SettingGroup {
     public final VersionedBooleanSetting hideCraftingRecipeBook = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_crafting_recipe_book"), VersionRange.andOlder(ProtocolVersion.v1_11_1));
 
     // 1.9 -> 1.8.x
+    public final VersionedBooleanSetting alwaysRenderCrosshair = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.always_render_crosshair"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting emulateArmorHud = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.emulate_armor_hud"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting hideModernCommandBlockScreenFeatures = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_modern_command_block_screen_features"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting enableSwordBlocking = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.enable_sword_blocking"), VersionRange.andOlder(ProtocolVersion.v1_8));
