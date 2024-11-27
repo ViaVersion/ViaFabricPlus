@@ -128,7 +128,7 @@ public abstract class MixinEntity implements IEntity {
                 }
 
                 if (vec3d2.horizontalLengthSquared() > adjustedMovement.horizontalLengthSquared()) {
-                    adjustedMovement = vec3d2.add(Entity.adjustMovementForCollisions(thiz, new Vec3d(0D, -vec3d2.y + movement.y, 0D), box.offset(vec3d2), this.getWorld(), collisions));
+                    adjustedMovement = vec3d2.add(Entity.adjustMovementForCollisions(thiz, new Vec3d(0D, -vec3d2.y + (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2) ? 0 : movement.y), 0D), box.offset(vec3d2), this.getWorld(), collisions));
                 }
             }
 
