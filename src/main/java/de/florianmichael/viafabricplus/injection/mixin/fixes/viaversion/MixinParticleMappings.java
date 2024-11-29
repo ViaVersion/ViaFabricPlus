@@ -43,4 +43,12 @@ public abstract class MixinParticleMappings extends FullMappingsBase {
         }
     }
 
+    @Override
+    public String mappedIdentifier(int mappedId) {
+        if (mappedId == FootStepParticle1_12_2.RAW_ID) {
+            return "";
+        } else {
+            return super.mappedIdentifier(mappedId);
+        }
+    }
 }
