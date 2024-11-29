@@ -88,6 +88,7 @@
   "visual_settings.viafabricplus.hide_signature_indicator": "隐藏签名指示器",
   "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "隐藏下载地形屏幕过渡效果",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "将石化橡木台阶纹理替换为“未知”纹理",
+  "visual_settings.viafabricplus.always_render_crosshair": "始终渲染十字准星",
   "visual_settings.viafabricplus.emulate_armor_hud": "模拟护甲HUD",
   "visual_settings.viafabricplus.hide_modern_command_block_screen_features": "隐藏新版命令方块屏幕功能",
   "visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound": "将受伤音效替换为“OOF”音效",
@@ -107,6 +108,7 @@
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "强制为非ASCII语言使用Unicode字体",
   "visual_settings.viafabricplus.filter_non_existing_glyphs": "过滤不存在的字形",
   "visual_settings.viafabricplus.sneak_instantly": "瞬间潜行",
+  "visual_settings.viafabricplus.change_body_rotation_interpolation": "更改身体旋转插值",
 
   "force_version.viafabricplus.title": "请选择要Ping/连接服务器的版本",
 
