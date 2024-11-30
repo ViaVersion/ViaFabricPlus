@@ -88,6 +88,7 @@
   "visual_settings.viafabricplus.hide_signature_indicator": "Signaturanzeige ausblenden",
   "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "Übergangseffekte des Download-Geländebildschirms ausblenden",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "Versteinerte Eichenplattentextur durch die 'unbekannte' Textur ersetzen",
+  "visual_settings.viafabricplus.always_render_crosshair": "Fadenkreuz immer anzeigen",
   "visual_settings.viafabricplus.emulate_armor_hud": "Rüstungs-HUD emulieren",
   "visual_settings.viafabricplus.hide_modern_command_block_screen_features": "Moderne Befehlsblock-Bildschirmfunktionen ausblenden",
   "visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound": "Verletzungsgeräusch durch OOF-Geräusch ersetzen",
