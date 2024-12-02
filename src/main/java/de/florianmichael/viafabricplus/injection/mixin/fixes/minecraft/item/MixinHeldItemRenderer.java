@@ -26,6 +26,7 @@ import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShieldItem;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.RotationAxis;
@@ -47,20 +48,18 @@ public abstract class MixinHeldItemRenderer {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getUseAction()Lnet/minecraft/item/consume/UseAction;")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 2, shift = At.Shift.AFTER))
     private void transformSwordBlockingPosition(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (!VisualSettings.global().enableSwordBlocking.isEnabled()) {
-            return;
+        if (VisualSettings.global().swordBlockingAnimation.isEnabled()) {
+            final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
+            final int direction = arm == Arm.RIGHT ? 1 : -1;
+            viaFabricPlus$applySwingOffset(player, hand, swingProgress, matrices);
+            if (!(item.getItem() instanceof ShieldItem)) {
+                // Values stripped from early 1.9 snapshots, 15w33b specifically, which is the version prior to them removing sword blocking
+                matrices.translate(direction * -0.14142136F, 0.08F, 0.14142136F);
+                matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25F));
+                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(direction * 13.365F));
+                matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(direction * 78.05F));
+            }
         }
-
-        final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
-        final int direction = arm == Arm.RIGHT ? 1 : -1;
-
-        viaFabricPlus$applySwingOffset(player, hand, swingProgress, matrices);
-
-        // Values stripped from early 1.9 snapshots, 15w33b specifically, which is the version prior to them removing sword blocking
-        matrices.translate(direction * -0.14142136F, 0.08F, 0.14142136F);
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25F));
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(direction * 13.365F));
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(direction * 78.05F));
     }
 
     @Inject(method = "renderFirstPersonItem",
