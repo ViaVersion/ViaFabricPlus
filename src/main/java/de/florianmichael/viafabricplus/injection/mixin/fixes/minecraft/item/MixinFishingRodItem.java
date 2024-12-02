@@ -37,7 +37,7 @@ public abstract class MixinFishingRodItem {
     @Inject(method = "use", at = @At("RETURN"))
     private void swingHand(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            user.swingHand(hand);
+            user.swingHand(hand, false);
         }
     }
 
