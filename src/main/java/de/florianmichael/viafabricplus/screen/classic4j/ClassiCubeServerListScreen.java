@@ -97,7 +97,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             SERVER_LIST.forEach(serverInfo -> this.addEntry(new ServerSlot(serverInfo)));
-            initScrollAmount(scrollAmount);
+            initScrollY(scrollAmount);
         }
 
         @Override

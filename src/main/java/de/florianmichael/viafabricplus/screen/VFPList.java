@@ -30,7 +30,7 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
  * Wrapper class for {@link AlwaysSelectedEntryListWidget} including the following features:
  * <ul>
  *     <li>Changing the constructor arguments to be more readable and customizable</li>
- *     <li>Adds {@link #initScrollAmount(double)} to save the scroll state after closing the screen, requires static tracking by the implementation</li>
+ *     <li>Adds {@link #initScrollY(double)} to save the scroll state after closing the screen, requires static tracking by the implementation</li>
  *     <li>Removes the selection box</li>
  * </ul>
  *
@@ -43,17 +43,17 @@ public class VFPList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
         super(minecraftClient, width, height - top - bottom, top, entryHeight);
     }
 
-    public void initScrollAmount(final double amount) {
+    public void initScrollY(final double scrollY) {
         // Needs calling last in init to have data loaded before setting scroll amount
         if (GeneralSettings.global().saveScrollPositionInSlotScreens.getValue()) {
-            this.setScrollAmount(amount);
+            this.setScrollY(scrollY);
         }
     }
 
     @Override
-    public void setScrollAmountOnly(double amount) {
-        super.setScrollAmountOnly(amount);
-        updateSlotAmount(getScrollAmount()); // Ensure value is clamped
+    public void setScrollY(double scrollY) {
+        super.setScrollY(scrollY);
+        updateSlotAmount(getScrollY()); // Ensure value is clamped
     }
 
     @Override

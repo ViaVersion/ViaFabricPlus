@@ -56,7 +56,7 @@ public class SettingsScreen extends VFPScreen {
                     this.addEntry(setting.makeSettingRenderer());
                 }
             }
-            initScrollAmount(scrollAmount);
+            initScrollY(scrollAmount);
         }
 
         @Override

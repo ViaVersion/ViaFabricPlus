@@ -90,7 +90,7 @@ public class BetaCraftScreen extends VFPScreen {
                 }
             }
 
-            initScrollAmount(scrollAmount);
+            initScrollY(scrollAmount);
         }
 
         @Override
