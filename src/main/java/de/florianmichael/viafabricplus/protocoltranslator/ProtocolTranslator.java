@@ -90,7 +90,7 @@ public class ProtocolTranslator {
     /**
      * The native version of the client
      */
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_2;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_4;
 
     /**
      * Protocol version that is used to enable protocol auto-detect
