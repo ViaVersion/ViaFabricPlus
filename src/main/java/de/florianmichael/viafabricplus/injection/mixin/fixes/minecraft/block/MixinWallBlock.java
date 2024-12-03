@@ -172,7 +172,7 @@ public abstract class MixinWallBlock extends Block {
 
     @Unique
     private static int viaFabricPlus$getDirectionMask(Direction dir) {
-        return 1 << dir.getHorizontal();
+        return 1 << dir.getHorizontalQuarterTurns();
     }
 
     @Unique
