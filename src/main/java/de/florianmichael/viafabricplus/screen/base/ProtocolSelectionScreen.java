@@ -65,7 +65,7 @@ public class ProtocolSelectionScreen extends VFPScreen {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             ProtocolVersionList.getProtocolsNewToOld().stream().map(ProtocolSlot::new).forEach(this::addEntry);
-            initScrollAmount(scrollAmount);
+            initScrollY(scrollAmount);
         }
 
         @Override
