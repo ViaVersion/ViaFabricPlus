@@ -49,7 +49,6 @@
     "fixes.minecraft.MixinGameOptions",
     "fixes.minecraft.MixinGameRenderer",
     "fixes.minecraft.MixinKeyboard",
-    "fixes.minecraft.MixinKeyboardInput",
     "fixes.minecraft.MixinLanguageManager",
     "fixes.minecraft.MixinMinecraftClient",
     "fixes.minecraft.MixinMouse",
