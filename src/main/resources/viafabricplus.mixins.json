@@ -30,6 +30,7 @@
     "base.perserverversion.MixinServerInfo",
     "compat.classic4j.MixinCCAuthenticationResponse",
     "compat.classic4j.MixinTextFieldWidget",
+    "compat.fabricapi.MixinClientRegistrySyncHandler",
     "compat.fabricapi.MixinRegistrySyncManager",
     "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "compat.lithium.MixinEntity",

@@ -19,25 +19,23 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.compat.fabricapi;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
-import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
+import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
+import net.fabricmc.fabric.impl.client.registry.sync.ClientRegistrySyncHandler;
+import net.fabricmc.fabric.impl.registry.sync.packet.RegistryPacketHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(RegistrySyncManager.class)
-public abstract class MixinRegistrySyncManager {
+@Mixin(ClientRegistrySyncHandler.class)
+public abstract class MixinClientRegistrySyncHandler {
 
-    @WrapOperation(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/Registry;getId(Ljava/lang/Object;)Lnet/minecraft/util/Identifier;"), require = 0)
-    private static Identifier skipFootStepParticle(Registry instance, Object t, Operation<Identifier> original) {
-        final Identifier id = original.call(instance, t);
-        if (id == FootStepParticle1_12_2.ID) {
-            return null;
-        } else {
-            return id;
+    @Inject(method = "checkRemoteRemap", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;)V", ordinal = 0), cancellable = true, remap = false)
+    private static void ignoreFabricSyncErrors(RegistryPacketHandler.SyncedPacketData data, CallbackInfo ci) {
+        if (DebugSettings.global().ignoreFabricSyncErrors.getValue()) {
+            ViaFabricPlus.global().getLogger().warn("Ignoring missing registries from Fabric API");
+            ci.cancel();
         }
     }
 

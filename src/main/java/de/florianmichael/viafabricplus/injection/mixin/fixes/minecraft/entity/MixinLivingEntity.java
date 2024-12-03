@@ -58,7 +58,7 @@ public abstract class MixinLivingEntity extends Entity {
     protected boolean jumping;
 
     @Shadow
-    protected abstract float getBaseMovementSpeedMultiplier();
+    protected abstract float getBaseWaterMovementSpeedMultiplier();
 
     @Shadow
     private Optional<BlockPos> climbingPos;
@@ -218,7 +218,7 @@ public abstract class MixinLivingEntity extends Entity {
     @ModifyConstant(method = "travelInFluid", constant = @Constant(floatValue = 0.9F))
     private float modifySwimFriction(float constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return this.getBaseMovementSpeedMultiplier();
+            return this.getBaseWaterMovementSpeedMultiplier();
         } else {
             return constant;
         }
