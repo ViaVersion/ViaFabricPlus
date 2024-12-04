@@ -55,10 +55,7 @@ import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.slf4j.Logger;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -91,8 +88,28 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Shadow
     private ClientWorld world;
 
+    @Unique
+    private Packet<?> viaFabricPlus$teleportConfirmPacket;
+
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
+    }
+
+    @WrapWithCondition(method = "onPlayerPositionLook", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
+    private boolean changePacketOrder(ClientConnection instance, Packet<?> packet) {
+        final boolean cancel = ProtocolTranslator.getTargetVersion().equalTo(ProtocolVersion.v1_21_2);
+        if (cancel) {
+            this.viaFabricPlus$teleportConfirmPacket = packet;
+        }
+        return !cancel;
+    }
+
+    @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
+    public void changePacketOrder(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
+        if (viaFabricPlus$teleportConfirmPacket != null) {
+            this.connection.send(viaFabricPlus$teleportConfirmPacket);
+            viaFabricPlus$teleportConfirmPacket = null;
+        }
     }
 
     @WrapWithCondition(method = "onEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/TrackedPosition;setPos(Lnet/minecraft/util/math/Vec3d;)V", ordinal = 0))
