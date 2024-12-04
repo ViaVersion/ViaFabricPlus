@@ -87,6 +87,16 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         super(world, profile);
     }
 
+    @WrapWithCondition(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldSlowDown()Z"))
+    private boolean removeSlowdownCondition(ClientPlayerEntity instance) {
+        return instance.shouldSlowDown() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_4);
+    }
+
+    @WrapWithCondition(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSubmergedInWater()Z"))
+    private boolean removeSlowdownCondition2(ClientPlayerEntity instance) {
+        return instance.isSubmergedInWater() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_4);
+    }
+
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldStopSprinting()Z"))
     private boolean dontUnsprint(ClientPlayerEntity instance) {
         return shouldStopSprinting() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_4);
