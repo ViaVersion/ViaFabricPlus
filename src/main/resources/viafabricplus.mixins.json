@@ -129,6 +129,7 @@
     "fixes.minecraft.item.MixinBrushItem",
     "fixes.minecraft.item.MixinBucketItem",
     "fixes.minecraft.item.MixinDrawContext",
+    "fixes.minecraft.item.MixinEnderEyeItem",
     "fixes.minecraft.item.MixinEnderPearlItem",
     "fixes.minecraft.item.MixinEquippableComponent",
     "fixes.minecraft.item.MixinFireChargeItem",
@@ -216,8 +217,7 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.item.MixinEnderEyeItem"
+    "vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1
