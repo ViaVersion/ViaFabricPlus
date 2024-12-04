@@ -60,7 +60,6 @@ import java.util.concurrent.CompletableFuture;
  *  - OXYGEN_BONUS 1.21 -> 1.20.5 handling is missing (only visual)
  *
  * TODO | Movement
- *  - Blip-jumping is not supported in <= 1.13.2 (https://github.com/ViaVersion/ViaFabricPlus/issues/225)
  *  - 1.8 lava movement
  *  - 1.13.2 water movement
  */

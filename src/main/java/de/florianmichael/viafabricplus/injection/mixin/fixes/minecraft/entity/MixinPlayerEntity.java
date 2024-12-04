@@ -82,6 +82,13 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         super(entityType, world);
     }
 
+    @Inject(method = "isLoaded", at = @At("HEAD"), cancellable = true)
+    public void alwaysLoadPlayer(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            cir.setReturnValue(true);
+        }
+    }
+
     @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
     private double removeOffsetWhenCheckingSneakingCollision(double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
