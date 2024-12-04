@@ -65,7 +65,7 @@ dependencies {
 	modJij(fabricApi.module("fabric-particles-v1", project.fabric_api_version))
 	modJij(fabricApi.module("fabric-registry-sync-v0", project.fabric_api_version))
 
-	modCompileOnly "com.terraformersmc:modmenu:11.0.3"
+	modCompileOnly "com.terraformersmc:modmenu:12.0.0"
 
 	jij "com.viaversion:viaversion-common:5.1.2-SNAPSHOT"
 	jij "com.viaversion:viabackwards-common:5.1.2-SNAPSHOT"
