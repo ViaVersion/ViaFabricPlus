@@ -92,7 +92,7 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
         }
     }
 
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Ljava/lang/String;III)I"), index = 2)
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)I"), index = 2)
     private int disableServerPinging(int x) {
         if (viaFabricPlus$disableServerPinging) { // Move server label to the right (as we remove the ping bar)
             x += 15 /* ping bar width */ - 3 /* magical offset */;
