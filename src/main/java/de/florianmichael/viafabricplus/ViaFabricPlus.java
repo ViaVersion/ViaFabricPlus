@@ -33,6 +33,14 @@ import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
 /*
+ * TODO | Port 1.21.4
+ *  - PlayerEntity#isClimbing override
+ *  - PlayerEntity#tick -> hasVehicle check at the top
+ *  - Entity#move
+ *  - LivingEntity#baseTick
+ *  - NameTagItem use
+ *  - MooshroomEntity interaction changes relevant?
+ *
  * TODO | Port 1.21.3
  *  - VehicleMovePacket handling now has distance check in ClientPlayNetworkHandler
  *  - Illusioner/Sniffer don't override visibility bounding box anymore
