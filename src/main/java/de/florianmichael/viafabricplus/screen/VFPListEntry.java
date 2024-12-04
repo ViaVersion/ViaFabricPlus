@@ -96,7 +96,7 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
 
             final double interpolatedValue = Math.sin((Math.PI / 2) * Math.cos(Math.PI * 2 * time / Math.max(interpolateEnd * 0.5, 3.0))) / 2.0 + 0.5;
 
-            context.enableScissor(x, y, x + entryWidth - offset - SCISSORS_OFFSET, y + entryHeight);
+            context.enableScissor(0, 0, entryWidth - offset - SCISSORS_OFFSET, entryHeight);
             context.drawTextWithShadow(font, name, SLOT_MARGIN - (int) MathHelper.lerp(interpolatedValue, 0.0, interpolateEnd), textY, -1);
             context.disableScissor();
         } else {

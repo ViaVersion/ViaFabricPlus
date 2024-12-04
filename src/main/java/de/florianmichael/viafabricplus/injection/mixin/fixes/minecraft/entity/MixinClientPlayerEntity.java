@@ -87,19 +87,8 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         super(world, profile);
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldSlowDown()Z"))
-    private boolean moveSlowDownAbove(ClientPlayerEntity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return instance.input.playerInput.sneak();
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            return !MinecraftClient.getInstance().player.isSpectator() && (instance.input.playerInput.sneak() || instance.shouldSlowDown());
-        } else {
-            return instance.shouldSlowDown();
-        }
-    }
-
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldStopSprinting()Z"))
-    private boolean keepSprintingStateOff(ClientPlayerEntity instance) {
+    private boolean dontUnsprint(ClientPlayerEntity instance) {
         return shouldStopSprinting() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_4);
     }
 
@@ -176,6 +165,17 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
     private boolean allowElytraWhenClimbing(boolean original) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_1) && original;
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldSlowDown()Z"))
+    private boolean changeSneakSlowdownCondition(ClientPlayerEntity instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            return instance.input.playerInput.sneak();
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+            return !MinecraftClient.getInstance().player.isSpectator() && (instance.input.playerInput.sneak() || instance.shouldSlowDown());
+        } else {
+            return instance.shouldSlowDown();
+        }
     }
 
     @Inject(method = "tickMovement()V",
