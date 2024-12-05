@@ -87,8 +87,9 @@ public abstract class MixinLivingEntity extends Entity {
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V", ordinal = 3, shift = At.Shift.AFTER))
     private void bedrockXZInput(CallbackInfo ci) {
         if (this.sidewaysSpeed != 0 && this.forwardSpeed != 0) {
-            this.sidewaysSpeed *= (float) (1F / Math.sqrt(2));
-            this.forwardSpeed *= (float) (1F / Math.sqrt(2));
+            float value = (float) (1F / Math.sqrt(2));
+            this.sidewaysSpeed *= value;
+            this.forwardSpeed *= value;
         }
     }
 
