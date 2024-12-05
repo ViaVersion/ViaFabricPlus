@@ -42,6 +42,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -75,8 +76,20 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     public float bodyYaw;
 
+    @Shadow public float sidewaysSpeed;
+
+    @Shadow public float forwardSpeed;
+
     public MixinLivingEntity(EntityType<?> type, World world) {
         super(type, world);
+    }
+
+    @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V", ordinal = 3, shift = At.Shift.AFTER))
+    private void bedrockXZInput(CallbackInfo ci) {
+        if (this.sidewaysSpeed != 0 && this.forwardSpeed != 0) {
+            this.sidewaysSpeed *= (float) (1F / Math.sqrt(2));
+            this.forwardSpeed *= (float) (1F / Math.sqrt(2));
+        }
     }
 
     @Inject(method = "getVelocityMultiplier", at = @At("HEAD"))
@@ -242,7 +255,9 @@ public abstract class MixinLivingEntity extends Entity {
 
     @ModifyConstant(method = "tickMovement", constant = @Constant(doubleValue = 0.003D))
     private double modifyVelocityZero(final double constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return 0D;
+        }else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 0.005D;
         } else {
             return constant;
