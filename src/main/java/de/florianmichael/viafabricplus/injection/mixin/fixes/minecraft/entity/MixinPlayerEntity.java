@@ -82,6 +82,13 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         super(entityType, world);
     }
 
+    @Inject(method = "isClimbing", at = @At("HEAD"), cancellable = true)
+    public void allowClimbingWhileFlying(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            cir.setReturnValue(super.isClimbing());
+        }
+    }
+
     @Inject(method = "isLoaded", at = @At("HEAD"), cancellable = true)
     public void alwaysLoadPlayer(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {

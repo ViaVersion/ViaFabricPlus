@@ -34,7 +34,6 @@ import java.util.concurrent.CompletableFuture;
 
 /*
  * TODO | Port 1.21.4
- *  - PlayerEntity#isClimbing override
  *  - PlayerEntity#tick -> hasVehicle check at the top
  *  - Entity#move
  *  - LivingEntity#baseTick
