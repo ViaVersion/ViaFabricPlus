@@ -22,7 +22,7 @@ legacy combat mechanics, movement, and rendering changes to make the gameplay fe
 If you need ViaFabricPlus for older versions of the game, you can use [ViaFabric](https://viaversion.com/fabric)
 
 ## Supported Server versions
-- Release (1.0.0 - 1.21.3)
+- Release (1.0.0 - 1.21.4)
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
