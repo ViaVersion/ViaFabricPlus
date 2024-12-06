@@ -26,6 +26,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_11_1to1_12.Protocol1_11_1To1_12;
 import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ServerboundPackets1_9_3;
+import de.florianmichael.viafabricplus.fixes.versioned.ItemPick1_21_3;
 import de.florianmichael.viafabricplus.injection.access.IMouseKeyboard;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
@@ -65,6 +66,14 @@ public abstract class MixinMinecraftClient {
     @Shadow
     @Final
     public Keyboard keyboard;
+
+    @Inject(method = "doItemPick", at = @At("HEAD"), cancellable = true)
+    public void pickItemClientside(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            ItemPick1_21_3.doItemPick((MinecraftClient) (Object) this);
+            ci.cancel();
+        }
+    }
 
     @WrapWithCondition(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
     private boolean disableSwing(ClientPlayerEntity instance, Hand hand) {

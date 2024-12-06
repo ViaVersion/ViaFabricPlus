@@ -26,6 +26,7 @@ accessible method net/minecraft/entity/passive/CamelEntity getPassengerAttachmen
 accessible method net/minecraft/entity/vehicle/AbstractBoatEntity getMaxPassengers ()I
 accessible method net/minecraft/client/gui/screen/multiplayer/ConnectScreen setStatus (Lnet/minecraft/text/Text;)V
 accessible method net/minecraft/item/BlockItem getPlacementState (Lnet/minecraft/item/ItemPlacementContext;)Lnet/minecraft/block/BlockState;
+accessible method net/minecraft/block/AbstractBlock getPickStack (Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)Lnet/minecraft/item/ItemStack;
 
 accessible class net/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection
 accessible class net/minecraft/client/font/FontStorage$GlyphPair
