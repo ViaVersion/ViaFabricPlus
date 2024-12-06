@@ -46,6 +46,7 @@ import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -80,16 +81,20 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Shadow public float forwardSpeed;
 
+    @Unique
+    private float viaFabricPlus$bedrockInputMultiplier = 0.70710677F;
+
     public MixinLivingEntity(EntityType<?> type, World world) {
         super(type, world);
     }
 
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V", ordinal = 3, shift = At.Shift.AFTER))
     private void bedrockXZInput(CallbackInfo ci) {
-        if (this.sidewaysSpeed != 0 && this.forwardSpeed != 0) {
-            float value = (float) (1F / Math.sqrt(2));
-            this.sidewaysSpeed *= value;
-            this.forwardSpeed *= value;
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            if (this.sidewaysSpeed != 0 && this.forwardSpeed != 0) {
+                this.sidewaysSpeed *= viaFabricPlus$bedrockInputMultiplier;
+                this.forwardSpeed *= viaFabricPlus$bedrockInputMultiplier;
+            }
         }
     }
 
@@ -258,7 +263,7 @@ public abstract class MixinLivingEntity extends Entity {
     private double modifyVelocityZero(final double constant) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return 0D;
-        }else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 0.005D;
         } else {
             return constant;
