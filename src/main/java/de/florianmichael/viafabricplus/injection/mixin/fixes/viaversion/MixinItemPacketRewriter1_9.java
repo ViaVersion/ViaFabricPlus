@@ -84,7 +84,9 @@ public abstract class MixinItemPacketRewriter1_9 extends ItemRewriter<Clientboun
     @Inject(method = "handleItemToClient", at = @At("RETURN"))
     private void addAttributeFixData(CallbackInfoReturnable<Item> cir) {
         final Item item = cir.getReturnValue();
-        if (item == null) return;
+        if (item == null) {
+            return;
+        }
 
         final String identifier = viaFabricPlus$itemIdentifiers.get(item.identifier());
         if (identifier != null && viaFabricPlus$itemAttributes.containsKey(identifier)) {
@@ -121,11 +123,17 @@ public abstract class MixinItemPacketRewriter1_9 extends ItemRewriter<Clientboun
     @Inject(method = "handleItemToServer", at = @At("RETURN"))
     private void removeAttributeFixData(CallbackInfoReturnable<Item> cir) {
         final Item item = cir.getReturnValue();
-        if (item == null) return;
+        if (item == null) {
+            return;
+        }
         final CompoundTag tag = item.tag();
-        if (tag == null) return;
+        if (tag == null) {
+            return;
+        }
         final CompoundTag attributeFixTag = tag.removeUnchecked(nbtTagName("attributeFix"));
-        if (attributeFixTag == null) return;
+        if (attributeFixTag == null) {
+            return;
+        }
 
         if (attributeFixTag.contains("RemoveAttributeModifiers")) {
             tag.remove("AttributeModifiers");

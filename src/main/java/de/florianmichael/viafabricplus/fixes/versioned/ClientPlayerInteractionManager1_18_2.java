@@ -27,6 +27,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
@@ -50,13 +51,15 @@ public class ClientPlayerInteractionManager1_18_2 {
     }
 
     public void handleBlockBreakAck(final BlockPos blockPos, final BlockState expectedState, final PlayerActionC2SPacket.Action action, final boolean allGood) {
-        final var player = MinecraftClient.getInstance().player;
-        if (player == null) return;
+        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player == null) {
+            return;
+        }
 
-        final var world = MinecraftClient.getInstance().getNetworkHandler().getWorld();
+        final ClientWorld world = MinecraftClient.getInstance().getNetworkHandler().getWorld();
 
-        final var oldPlayerState = unAckedActions.remove(Pair.of(blockPos, action));
-        final var actualState = world.getBlockState(blockPos);
+        final Pair<Vec3d, Vec2f> oldPlayerState = unAckedActions.remove(Pair.of(blockPos, action));
+        final BlockState actualState = world.getBlockState(blockPos);
 
         if ((oldPlayerState == null || !allGood || action != PlayerActionC2SPacket.Action.START_DESTROY_BLOCK && actualState != expectedState) && (actualState != expectedState || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2))) {
             world.setBlockState(blockPos, expectedState, Block.NOTIFY_ALL | Block.FORCE_STATE);

@@ -20,6 +20,7 @@
 package de.florianmichael.viafabricplus.screen;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.util.math.MatrixStack;
@@ -74,7 +75,7 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
     }
 
     public void renderScrollableText(final Text name, final int offset) {
-        final var font = MinecraftClient.getInstance().textRenderer;
+        final TextRenderer font = MinecraftClient.getInstance().textRenderer;
 
         renderScrollableText(name, entryHeight / 2 - font.fontHeight / 2, offset);
     }
@@ -87,7 +88,7 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      * @param offset The offset of the text from the left side of the slot, this is used to calculate the width of the text, which should be scrolled (Scrolling is enabled when entryWidth - offset < textWidth)
      */
     public void renderScrollableText(final Text name, final int textY, final int offset) {
-        final var font = MinecraftClient.getInstance().textRenderer;
+        final TextRenderer font = MinecraftClient.getInstance().textRenderer;
 
         final int fontWidth = font.getWidth(name);
         if (fontWidth > (entryWidth - offset)) {

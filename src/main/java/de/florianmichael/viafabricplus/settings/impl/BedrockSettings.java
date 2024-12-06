@@ -64,7 +64,7 @@ public class BedrockSettings extends SettingGroup {
         
         @Override
         public MutableText displayValue() {
-            final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getBedrockAccount();
+            final StepFullBedrockSession.FullBedrockSession account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getBedrockAccount();
             if (account != null) {
                 return Text.translatable("click_to_set_bedrock_account.viafabricplus.display", account.getMcChain().getDisplayName());
             } else {

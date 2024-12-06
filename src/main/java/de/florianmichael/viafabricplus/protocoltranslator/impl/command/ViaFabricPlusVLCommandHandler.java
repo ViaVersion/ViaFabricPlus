@@ -65,7 +65,7 @@ public class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
 
         final String prefix = String.join(" ", pref);
         onTabComplete(new ViaFabricPlusViaCommandSender(ctx.getSource()), args).stream().map(it -> {
-            final var b = new SuggestionsBuilder(builder.getInput(), prefix.length() + builder.getStart());
+            final SuggestionsBuilder b = new SuggestionsBuilder(builder.getInput(), prefix.length() + builder.getStart());
             b.suggest(it);
             return b;
         }).forEach(builder::add);

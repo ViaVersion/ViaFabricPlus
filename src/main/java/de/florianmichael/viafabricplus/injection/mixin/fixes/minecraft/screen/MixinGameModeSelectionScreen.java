@@ -33,6 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Mixin(GameModeSelectionScreen.class)
 public abstract class MixinGameModeSelectionScreen extends Screen {
@@ -52,14 +53,14 @@ public abstract class MixinGameModeSelectionScreen extends Screen {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void fixUIWidth(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-            final var gameModeSelections = new ArrayList<>(Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList());
+            final List<GameModeSelectionScreen.GameModeSelection> selections = new ArrayList<>(Arrays.stream(GameModeSelectionScreen.GameModeSelection.values()).toList());
 
-            gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
+            selections.remove(GameModeSelectionScreen.GameModeSelection.SPECTATOR);
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
-                gameModeSelections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
+                selections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
             }
 
-            viaFabricPlus$unwrappedGameModes = gameModeSelections.toArray(GameModeSelectionScreen.GameModeSelection[]::new);
+            viaFabricPlus$unwrappedGameModes = selections.toArray(GameModeSelectionScreen.GameModeSelection[]::new);
             UI_WIDTH = viaFabricPlus$unwrappedGameModes.length * 31 - 5;
         }
     }

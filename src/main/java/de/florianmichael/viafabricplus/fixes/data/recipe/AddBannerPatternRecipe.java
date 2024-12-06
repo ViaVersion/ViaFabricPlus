@@ -21,6 +21,7 @@ package de.florianmichael.viafabricplus.fixes.data.recipe;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BannerPatternsComponent;
 import net.minecraft.item.BannerItem;
@@ -33,6 +34,7 @@ import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
 
@@ -75,7 +77,7 @@ public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
 
         final BannerPattern_1_13_2 pattern = getBannerPattern(input);
         if (pattern != null) {
-            final var patternKey = lookup.getOrThrow(RegistryKeys.BANNER_PATTERN).getOrThrow(pattern.getKey());
+            final RegistryEntry.Reference<BannerPattern> patternKey = lookup.getOrThrow(RegistryKeys.BANNER_PATTERN).getOrThrow(pattern.getKey());
             DyeColor color = ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ? DyeColor.BLACK : DyeColor.WHITE;
             for (int i = 0; i < input.size(); i++) {
                 Item item = input.getStackInSlot(i).getItem();

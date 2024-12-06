@@ -23,6 +23,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
@@ -30,6 +32,7 @@ import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.recipe.*;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandler;
@@ -729,13 +732,13 @@ public class Recipes1_11_2 {
      */
     @ApiStatus.Internal
     public static void setCraftingResultSlot(final int syncId, final ScreenHandler screenHandler, final RecipeInputInventory inventory) {
-        final var network = MinecraftClient.getInstance().getNetworkHandler();
-        final var world = MinecraftClient.getInstance().world;
-        final var craftingRecipeInput = inventory.createRecipeInput();
+        final ClientPlayNetworkHandler network = MinecraftClient.getInstance().getNetworkHandler();
+        final ClientWorld world = MinecraftClient.getInstance().world;
+        final CraftingRecipeInput input = inventory.createRecipeInput();
 
-        final var result = getRecipeManager()
-                .getFirstMatch(RecipeType.CRAFTING, craftingRecipeInput, world) // Get the first matching recipe
-                .map(recipe -> recipe.value().craft(craftingRecipeInput, network.getRegistryManager())) // Craft the recipe to get the result
+        final ItemStack result = getRecipeManager()
+                .getFirstMatch(RecipeType.CRAFTING, input, world) // Get the first matching recipe
+                .map(recipe -> recipe.value().craft(input, network.getRegistryManager())) // Craft the recipe to get the result
                 .orElse(ItemStack.EMPTY); // If there is no recipe, set the result to air
 
         // Update the result slot

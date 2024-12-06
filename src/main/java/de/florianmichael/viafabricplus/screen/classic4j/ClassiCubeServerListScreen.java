@@ -21,6 +21,7 @@ package de.florianmichael.viafabricplus.screen.classic4j;
 
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
+import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
@@ -49,7 +50,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
     private static final String CLASSICUBE_SERVER_LIST_URL = "https://www.classicube.net/server/list/";
 
     public static void open(final Screen prevScreen, final LoginProcessHandler loginProcessHandler) {
-        final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+        final CCAccount account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
 
         ClassiCubeHandler.requestServerList(account, serverList -> {
             ClassiCubeServerListScreen.SERVER_LIST.addAll(serverList.servers());
@@ -63,7 +64,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
     @Override
     protected void init() {
-        final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+        final CCAccount account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
         if (account != null) {
             this.setupUrlSubtitle(CLASSICUBE_SERVER_LIST_URL);
         }
@@ -83,7 +84,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
-        final var account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+        final CCAccount account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
         if (account != null) {
             context.drawTextWithShadow(textRenderer, Text.translatable("classicube.viafabricplus.profile"), 32, 6, -1);
             context.drawTextWithShadow(textRenderer, Text.of(account.username()), 32, 16, -1);

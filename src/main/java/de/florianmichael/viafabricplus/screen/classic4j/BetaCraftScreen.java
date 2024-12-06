@@ -79,7 +79,9 @@ public class BetaCraftScreen extends VFPScreen {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
-            if (SERVER_LIST == null) return;
+            if (SERVER_LIST == null) {
+                return;
+            }
 
             for (BCVersionCategory value : BCVersionCategory.values()) {
                 final List<BCServerInfoSpec> servers = SERVER_LIST.serversOfVersionCategory(value);

@@ -195,7 +195,9 @@ public class ProtocolTranslator {
      * @param revertOnDisconnect if true, the previous version will be set when the player disconnects from the server
      */
     public static void setTargetVersion(final ProtocolVersion newVersion, final boolean revertOnDisconnect) {
-        if (newVersion == null) return;
+        if (newVersion == null) {
+            return;
+        }
 
         final ProtocolVersion oldVersion = targetVersion;
         targetVersion = newVersion;
@@ -331,8 +333,8 @@ public class ProtocolTranslator {
 
         // Register command callback for /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            final var commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
-            final var executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
+            final ViaFabricPlusVLCommandHandler commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
+            final RequiredArgumentBuilder<FabricClientCommandSource, String> executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
 
             dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viafabricplus").then(executor).executes(commandHandler::execute));
         });
