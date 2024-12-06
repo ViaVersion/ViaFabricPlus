@@ -111,7 +111,7 @@ public class ItemPick1_21_3 {
         }
         final PacketWrapper pickFromInventory = PacketWrapper.create(ServerboundPackets1_21_2.PICK_ITEM, ProtocolTranslator.getPlayNetworkUserConnection());
         pickFromInventory.write(Types.VAR_INT, index);
-        pickFromInventory.sendToServer(Protocol1_21_2To1_21_4.class);
+        pickFromInventory.scheduleSendToServer(Protocol1_21_2To1_21_4.class);
     }
 
 }
