@@ -21,6 +21,8 @@ package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.screen.h
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
@@ -37,7 +39,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
@@ -62,12 +63,12 @@ public abstract class MixinInGameHud {
         return !VisualSettings.global().hideEmptyBubbleIcons.getValue();
     }
 
-    @Redirect(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/Perspective;isFirstPerson()Z"))
-    private boolean alwaysRenderCrosshair(Perspective instance) {
+    @WrapOperation(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/Perspective;isFirstPerson()Z"))
+    private boolean alwaysRenderCrosshair(Perspective instance, Operation<Boolean> original) {
         if (VisualSettings.global().alwaysRenderCrosshair.isEnabled()) {
             return true;
         } else {
-            return instance.isFirstPerson();
+            return original.call(instance);
         }
     }
 
