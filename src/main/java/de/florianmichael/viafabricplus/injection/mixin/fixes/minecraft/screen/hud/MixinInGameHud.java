@@ -52,14 +52,14 @@ public abstract class MixinInGameHud {
 
     @Inject(method = "playBurstSound", at = @At("HEAD"), cancellable = true)
     private void disableBubblePopSound(int bubble, PlayerEntity player, int burstBubbles, CallbackInfo ci) {
-        if (VisualSettings.global().removeBubblePopSound.isEnabled()) {
+        if (VisualSettings.global().removeBubblePopSound.getValue()) {
             ci.cancel();
         }
     }
 
     @WrapWithCondition(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V", ordinal = 2))
     private boolean disableEmptyBubbles(DrawContext instance, Function<Identifier, RenderLayer> renderLayers, Identifier sprite, int x, int y, int width, int height) {
-        return !VisualSettings.global().hideEmptyBubbleIcons.isEnabled();
+        return !VisualSettings.global().hideEmptyBubbleIcons.getValue();
     }
 
     @Redirect(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/Perspective;isFirstPerson()Z"))
