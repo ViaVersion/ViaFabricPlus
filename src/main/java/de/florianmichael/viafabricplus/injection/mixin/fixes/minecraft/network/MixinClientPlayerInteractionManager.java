@@ -113,7 +113,7 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
     private final ClientPlayerInteractionManager1_18_2 viaFabricPlus$1_18_2InteractionManager = new ClientPlayerInteractionManager1_18_2();
 
     @Inject(method = {"pickItemFromBlock", "pickItemFromEntity"}, at = @At("HEAD"), cancellable = true)
-    public void pickItemClientside(CallbackInfo ci) {
+    private void pickItemClientside(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             ViaFabricPlus.global().getLogger().error("Directly calling pickItemFromBlock or pickItemFromEntity is not supported in <=1.21.3. Use MinecraftClient#doItemPick instead.");
             ci.cancel();

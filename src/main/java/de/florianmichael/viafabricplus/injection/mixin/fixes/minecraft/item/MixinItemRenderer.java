@@ -38,7 +38,7 @@ public abstract class MixinItemRenderer {
 
     @Redirect(method = "update(Lnet/minecraft/client/render/item/ItemRenderState;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ModelTransformationMode;Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;I)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;get(Lnet/minecraft/component/ComponentType;)Ljava/lang/Object;"))
-    public Object removeModel(ItemStack instance, ComponentType componentType) {
+    private Object removeModel(ItemStack instance, ComponentType componentType) {
         if (VisualSettings.global().replacePetrifiedOakSlab.isEnabled() && instance.isOf(Items.PETRIFIED_OAK_SLAB)) {
             return viaFabricPlus$missingIdentifier;
         } else {

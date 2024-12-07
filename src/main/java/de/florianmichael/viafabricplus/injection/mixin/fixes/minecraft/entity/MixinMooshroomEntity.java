@@ -45,7 +45,7 @@ public abstract class MixinMooshroomEntity extends AnimalEntity {
     }
 
     @Inject(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/MooshroomEntity;getStewEffectFrom(Lnet/minecraft/item/ItemStack;)Ljava/util/Optional;"), cancellable = true)
-    public void checkForItemTags(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+    private void checkForItemTags(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             final ItemStack itemStack = player.getStackInHand(hand);
             if (!itemStack.isIn(ItemTags.SMALL_FLOWERS)) {
@@ -55,7 +55,7 @@ public abstract class MixinMooshroomEntity extends AnimalEntity {
     }
 
     @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/CowEntity;interactMob(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;", ordinal = 0))
-    public ActionResult directPass(CowEntity instance, PlayerEntity player, Hand hand) {
+    private ActionResult directPass(CowEntity instance, PlayerEntity player, Hand hand) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             return ActionResult.PASS;
         } else {
