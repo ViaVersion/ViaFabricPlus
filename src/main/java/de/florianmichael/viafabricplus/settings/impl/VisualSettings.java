@@ -40,7 +40,6 @@ public class VisualSettings extends SettingGroup {
             Text.translatable("base.viafabricplus.off")
     );
     public final BooleanSetting filterNonExistingGlyphs = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.filter_non_existing_glyphs"), true) {
-
         @Override
         public void onValueChanged() {
             final MinecraftClient client = MinecraftClient.getInstance();
@@ -53,6 +52,10 @@ public class VisualSettings extends SettingGroup {
         }
     };
     public final BooleanSetting hideModernJigsawScreenFeatures = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_modern_jigsaw_screen_features"), true);
+
+    public final BooleanSetting removeBubblePopSound = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_bubble_pop_sound"), false);
+
+    public final BooleanSetting hideEmptyBubbleIcons = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_empty_bubble_icons"), false);
 
     // 1.21 -> 1.20.5
     public final VersionedBooleanSetting hideDownloadTerrainScreenTransitionEffects = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects"), VersionRange.andOlder(ProtocolVersion.v1_20_5));
