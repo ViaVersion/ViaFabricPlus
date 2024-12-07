@@ -57,6 +57,8 @@ public class VisualSettings extends SettingGroup {
 
     public final BooleanSetting hideEmptyBubbleIcons = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_empty_bubble_icons"), false);
 
+    public final BooleanSetting revertVillagerSkins = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.revert_villager_skins"), false);
+
     // 1.21 -> 1.20.5
     public final VersionedBooleanSetting hideDownloadTerrainScreenTransitionEffects = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects"), VersionRange.andOlder(ProtocolVersion.v1_20_5));
 
