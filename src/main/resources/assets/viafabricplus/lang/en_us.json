@@ -86,6 +86,8 @@
   "visual_settings.viafabricplus.change_game_menu_screen_layout": "Change game menu screen layout",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Disable Secure Chat warning",
   "visual_settings.viafabricplus.hide_signature_indicator": "Hide signature indicator",
+  "visual_settings.viafabricplus.remove_bubble_pop_sound": "Remove bubble pop sound",
+  "visual_settings.viafabricplus.hide_empty_bubble_icons": "Hide empty bubble icons",
   "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "Hide download terrain screen transition effects",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "Replace petrified oak slab texture with the 'unknown' texture",
   "visual_settings.viafabricplus.always_render_crosshair": "Always render crosshair",
