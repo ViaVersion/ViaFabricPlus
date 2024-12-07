@@ -88,7 +88,10 @@ public class ItemPick1_21_3 {
                     addBlockEntityNbt(itemStack, blockEntity, client.world.getRegistryManager());
                 }
             }
-        } else if (crosshairTarget.getType() == HitResult.Type.ENTITY && creativeMode) {
+        } else {
+            if (crosshairTarget.getType() != HitResult.Type.ENTITY || !creativeMode) {
+                return;
+            }
             final Entity entity = ((EntityHitResult) crosshairTarget).getEntity();
             itemStack = entity.getPickBlockStack();
             if (itemStack == null) {

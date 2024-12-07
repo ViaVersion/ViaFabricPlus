@@ -68,7 +68,7 @@ public abstract class MixinMinecraftClient {
     public Keyboard keyboard;
 
     @Inject(method = "doItemPick", at = @At("HEAD"), cancellable = true)
-    public void pickItemClientside(CallbackInfo ci) {
+    private void pickItemClientside(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             ItemPick1_21_3.doItemPick((MinecraftClient) (Object) this);
             ci.cancel();

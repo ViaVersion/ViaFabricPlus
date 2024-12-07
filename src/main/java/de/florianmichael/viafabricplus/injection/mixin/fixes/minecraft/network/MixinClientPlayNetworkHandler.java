@@ -105,7 +105,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     }
 
     @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
-    public void changePacketOrder(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
+    private void changePacketOrder(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
         if (viaFabricPlus$teleportConfirmPacket != null) {
             this.connection.send(viaFabricPlus$teleportConfirmPacket);
             viaFabricPlus$teleportConfirmPacket = null;

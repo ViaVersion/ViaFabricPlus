@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinBundleItem {
 
     @Redirect(method = "use", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;SUCCESS:Lnet/minecraft/util/ActionResult$Success;"))
-    public ActionResult.Success dontSwing() {
+    private ActionResult.Success dontSwing() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             return ActionResult.CONSUME;
         } else {
