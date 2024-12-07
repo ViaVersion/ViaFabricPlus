@@ -122,6 +122,7 @@
     "fixes.minecraft.entity.MixinPlayerEntityRenderer",
     "fixes.minecraft.entity.MixinSkeletonHorseEntity",
     "fixes.minecraft.entity.MixinSquidEntity",
+    "fixes.minecraft.entity.MixinVillagerClothingFeatureRenderer",
     "fixes.minecraft.entity.MixinWolfEntity",
     "fixes.minecraft.entity.MixinZombieVillagerEntity",
     "fixes.minecraft.item.MixinAxeItem",
