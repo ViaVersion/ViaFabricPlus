@@ -305,18 +305,6 @@ public class ProtocolTranslator {
         name.set(name.get() + " (Work in progress)");
     }
 
-    @Deprecated/*(forRemoval = true)*/
-    private static void migrateOldConfigs(final File directory) {
-        final File oldDirectory = new File(directory, "ViaLoader");
-        if (oldDirectory.exists()) {
-            // Move all files from this folder into the directory itself
-            for (File file : oldDirectory.listFiles()) {
-                file.renameTo(new File(directory, file.getName()));
-            }
-            oldDirectory.delete();
-        }
-    }
-
     /**
      * This method is used to initialize the whole Protocol Translator
      *
@@ -328,7 +316,6 @@ public class ProtocolTranslator {
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new IllegalStateException("Native version is not the same as the current version");
         }
-        migrateOldConfigs(directory);
         patchConfigs(directory);
 
         // Register command callback for /viafabricplus
