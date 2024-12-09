@@ -117,6 +117,7 @@
     "fixes.minecraft.entity.MixinItemEntity",
     "fixes.minecraft.entity.MixinLivingEntity",
     "fixes.minecraft.entity.MixinMobEntity",
+    "fixes.minecraft.entity.MixinMooshroomEntity",
     "fixes.minecraft.entity.MixinOtherClientPlayerEntity",
     "fixes.minecraft.entity.MixinPlayerEntity",
     "fixes.minecraft.entity.MixinPlayerEntityRenderer",
@@ -191,7 +192,7 @@
     "fixes.vialegacy.MixinProtocolc0_30cpeToc0_28_30",
     "fixes.vialegacy.MixinProtocolr1_7_6_10Tor1_8",
     "fixes.viaversion.MixinBlockItemPacketRewriter1_20_5",
-    "fixes.viaversion.MixinBlockItemPacketRewriter1_21_2",
+    "fixes.viaversion.MixinBlockItemPacketRewriter1_21_4",
     "fixes.viaversion.MixinCommandBlockProvider",
     "fixes.viaversion.MixinCommonBoss",
     "fixes.viaversion.MixinEntityPacketRewriter1_12",
@@ -220,8 +221,7 @@
     "fixes.viaversion.MixinWorldPacketRewriter1_19",
     "viabedrock.MixinJoinPackets",
     "vialegacy.MixinExtensionProtocolMetadataStorage",
-    "vialegacy.MixinViaLegacyConfig",
-    "fixes.minecraft.entity.MixinMooshroomEntity"
+    "vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1
