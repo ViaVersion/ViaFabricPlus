@@ -83,7 +83,6 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Unique
     private Cipher viaFabricPlus$decryptionCipher;
 
-
     @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
     private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
         channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
