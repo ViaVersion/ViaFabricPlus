@@ -26,6 +26,7 @@ import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.PlayerLookTargetProvider;
 import com.viaversion.viaversion.protocols.v1_15_2to1_16.provider.PlayerAbilitiesProvider;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.provider.AckSequenceProvider;
+import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.provider.PickItemProvider;
 import com.viaversion.viaversion.protocols.v1_8to1_9.provider.HandItemProvider;
 import de.florianmichael.viafabricplus.event.PostViaVersionLoadCallback;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
@@ -56,6 +57,7 @@ public class ViaFabricPlusVLLoader extends VLLoader {
         providers.use(PlayerAbilitiesProvider.class, new ViaFabricPlusPlayerAbilitiesProvider());
         providers.use(SignableCommandArgumentsProvider.class, new ViaFabricPlusCommandArgumentsProvider());
         providers.use(AckSequenceProvider.class, new ViaFabricPlusAckSequenceProvider());
+        providers.use(PickItemProvider.class, new ViaFabricPlusPickItemProvider());
 
         providers.use(OldAuthProvider.class, new ViaFabricPlusOldAuthProvider());
         providers.use(ClassicWorldHeightProvider.class, new ViaFabricPlusClassicWorldHeightProvider());

@@ -26,6 +26,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.packet.ServerboundPackets1_16_2;
 import com.viaversion.viaversion.protocols.v1_16_4to1_17.Protocol1_16_4To1_17;
+import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.fixes.versioned.ActionResultException1_12_2;
 import de.florianmichael.viafabricplus.fixes.versioned.ClientPlayerInteractionManager1_18_2;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
@@ -110,6 +111,14 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
 
     @Unique
     private final ClientPlayerInteractionManager1_18_2 viaFabricPlus$1_18_2InteractionManager = new ClientPlayerInteractionManager1_18_2();
+
+    @Inject(method = {"pickItemFromBlock", "pickItemFromEntity"}, at = @At("HEAD"), cancellable = true)
+    private void pickItemClientside(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            ViaFabricPlus.global().getLogger().error("Directly calling pickItemFromBlock or pickItemFromEntity is not supported in <=1.21.3. Use MinecraftClient#doItemPick instead.");
+            ci.cancel();
+        }
+    }
 
     @Redirect(method = "interactBlockInternal", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;CONSUME:Lnet/minecraft/util/ActionResult$Success;"))
     private ActionResult.Success changeSpectatorAction() {
@@ -351,7 +360,8 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
         if (type == SlotActionType.THROW) return true;
 
         // quick move always uses empty stack for verification since 1.12
-        if (type == SlotActionType.QUICK_MOVE && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_11_1)) return true;
+        if (type == SlotActionType.QUICK_MOVE && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_11_1))
+            return true;
 
         // pickup with slot -999 (outside window) to throw items always uses empty stack for verification
         return type == SlotActionType.PICKUP && slot == -999;

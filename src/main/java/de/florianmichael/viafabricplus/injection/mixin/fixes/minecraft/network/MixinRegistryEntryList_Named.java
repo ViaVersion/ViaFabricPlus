@@ -17,30 +17,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.SkeletonHorseEntity;
-import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.world.World;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryList;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(SkeletonHorseEntity.class)
-public abstract class MixinSkeletonHorseEntity extends AbstractHorseEntity {
+import java.util.List;
 
-    protected MixinSkeletonHorseEntity(EntityType<? extends AbstractHorseEntity> entityType, World world) {
-        super(entityType, world);
+@Mixin(RegistryEntryList.Named.class)
+public abstract class MixinRegistryEntryList_Named {
+
+    @Shadow
+    private @Nullable List<RegistryEntry> entries;
+
+    @Shadow
+    abstract void setEntries(List<RegistryEntry> entries);
+
+    @Inject(method = "getEntries", at = @At("HEAD"))
+    private void preventNullableEntries(CallbackInfoReturnable<List<RegistryEntry<?>>> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            // Previoulsy didn't had unbounded entries
+            if (this.entries == null) {
+                this.setEntries(List.of());
+            }
+        }
     }
 
-    @Inject(method = "getBaseWaterMovementSpeedMultiplier", at = @At("HEAD"), cancellable = true)
-    private void modifyBaseWaterMovementSpeedMultiplier(CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(super.getBaseWaterMovementSpeedMultiplier());
+    @Inject(method = "isBound", at = @At("HEAD"), cancellable = true)
+    private void alwaysBound(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            // Previously didn't exist
+            cir.setReturnValue(true);
         }
     }
 

@@ -17,30 +17,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.network;
 
+import com.mojang.serialization.DataResult;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.SkeletonHorseEntity;
-import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.world.World;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.registry.entry.RegistryEntryListCodec;
+import net.minecraft.registry.tag.TagKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(SkeletonHorseEntity.class)
-public abstract class MixinSkeletonHorseEntity extends AbstractHorseEntity {
+@Mixin(RegistryEntryListCodec.class)
+public abstract class MixinRegistryEntryListCodec {
 
-    protected MixinSkeletonHorseEntity(EntityType<? extends AbstractHorseEntity> entityType, World world) {
-        super(entityType, world);
-    }
-
-    @Inject(method = "getBaseWaterMovementSpeedMultiplier", at = @At("HEAD"), cancellable = true)
-    private void modifyBaseWaterMovementSpeedMultiplier(CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(super.getBaseWaterMovementSpeedMultiplier());
+    @Inject(method = "get", at = @At("RETURN"), cancellable = true)
+    private static void workaroundValidation(RegistryEntryLookup registry, TagKey tag, CallbackInfoReturnable<DataResult<RegistryEntryList>> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            // The client now throws if the server refernces tags which weren't previously send via protocol,
+            // instead of implementing verification on protocol level we just skip the error and return an empty registry list
+            if (cir.getReturnValue().isError()) {
+                cir.setReturnValue(DataResult.success(RegistryEntryList.empty()));
+            }
         }
     }
 

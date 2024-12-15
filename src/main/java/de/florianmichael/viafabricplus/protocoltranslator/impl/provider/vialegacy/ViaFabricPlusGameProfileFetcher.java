@@ -23,6 +23,7 @@ import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.HttpAuthenticationService;
 import com.mojang.authlib.ProfileLookupCallback;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
+import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.ProfileNotFoundException;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
@@ -30,6 +31,7 @@ import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.model.GameProfile;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 import java.net.Proxy;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -62,12 +64,14 @@ public class ViaFabricPlusGameProfileFetcher extends GameProfileFetcher {
     @Override
     public GameProfile loadGameProfile(UUID uuid) {
         final ProfileResult result = SESSION_SERVICE.fetchProfile(uuid, true);
-        if (result == null) throw new ProfileNotFoundException();
+        if (result == null) {
+            throw new ProfileNotFoundException();
+        }
 
-        final var authLibProfile = result.profile();
-        final var mcProfile = new GameProfile(authLibProfile.getName(), authLibProfile.getId());
+        final com.mojang.authlib.GameProfile authLibProfile = result.profile();
+        final GameProfile mcProfile = new GameProfile(authLibProfile.getName(), authLibProfile.getId());
 
-        for (final var entry : authLibProfile.getProperties().entries()) {
+        for (final Map.Entry<String, Property> entry : authLibProfile.getProperties().entries()) {
             mcProfile.addProperty(new GameProfile.Property(entry.getValue().name(), entry.getValue().value(), entry.getValue().signature()));
         }
         return mcProfile;

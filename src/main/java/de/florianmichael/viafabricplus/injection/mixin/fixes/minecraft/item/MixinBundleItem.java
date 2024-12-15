@@ -17,27 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.compat.fabricapi;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
-import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.item.BundleItem;
+import net.minecraft.util.ActionResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(RegistrySyncManager.class)
-public abstract class MixinRegistrySyncManager {
+@Mixin(BundleItem.class)
+public abstract class MixinBundleItem {
 
-    @WrapOperation(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/Registry;getId(Ljava/lang/Object;)Lnet/minecraft/util/Identifier;"), require = 0)
-    private static Identifier skipFootStepParticle(Registry instance, Object t, Operation<Identifier> original) {
-        final Identifier id = original.call(instance, t);
-        if (id == FootStepParticle1_12_2.ID) {
-            return null;
+    @Redirect(method = "use", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;SUCCESS:Lnet/minecraft/util/ActionResult$Success;"))
+    private ActionResult.Success dontSwing() {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            return ActionResult.CONSUME;
         } else {
-            return id;
+            return ActionResult.SUCCESS;
         }
     }
 

@@ -63,7 +63,7 @@ public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
     }
 
     @Override
-    public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
+    public void render(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
         final float strength = ((float) this.age + tickDelta) / (float) this.maxAge;
         this.alpha = 2.0F - (strength * strength) * 2.0F;
         if (this.alpha > 1.0F) {

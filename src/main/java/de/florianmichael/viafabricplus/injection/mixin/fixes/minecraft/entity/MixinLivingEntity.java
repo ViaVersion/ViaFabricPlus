@@ -31,7 +31,6 @@ import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -43,7 +42,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -60,7 +58,7 @@ public abstract class MixinLivingEntity extends Entity {
     protected boolean jumping;
 
     @Shadow
-    protected abstract float getBaseMovementSpeedMultiplier();
+    protected abstract float getBaseWaterMovementSpeedMultiplier();
 
     @Shadow
     private Optional<BlockPos> climbingPos;
@@ -103,15 +101,6 @@ public abstract class MixinLivingEntity extends Entity {
             return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, entity).rotateY(-instance.getYaw() * (float) (Math.PI / 180));
         } else {
             return getPassengerAttachmentPos(entity, entityDimensions, v);
-        }
-    }
-
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isLogicalSideForUpdatingMovement()Z"))
-    private boolean allowPlayerToBeMovedByEntityPackets(LivingEntity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getWorld().isClient;
-        } else {
-            return instance.isLogicalSideForUpdatingMovement();
         }
     }
 
@@ -162,6 +151,15 @@ public abstract class MixinLivingEntity extends Entity {
     @Redirect(method = "canGlide", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasVehicle()Z"))
     private boolean allowElytraInVehicle(LivingEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && instance.hasVehicle();
+    }
+
+    @Redirect(method = "tickActiveItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areItemsEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"))
+    private boolean replaceItemStackEqualsCheck(ItemStack left, ItemStack right) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
+            return left == right;
+        } else {
+            return ItemStack.areItemsEqual(left, right);
+        }
     }
 
     @Redirect(method = "travelMidAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isChunkLoaded(Lnet/minecraft/util/math/BlockPos;)Z"))
@@ -220,7 +218,7 @@ public abstract class MixinLivingEntity extends Entity {
     @ModifyConstant(method = "travelInFluid", constant = @Constant(floatValue = 0.9F))
     private float modifySwimFriction(float constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return this.getBaseMovementSpeedMultiplier();
+            return this.getBaseWaterMovementSpeedMultiplier();
         } else {
             return constant;
         }

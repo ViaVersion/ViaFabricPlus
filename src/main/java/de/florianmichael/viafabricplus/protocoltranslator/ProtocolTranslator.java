@@ -90,7 +90,7 @@ public class ProtocolTranslator {
     /**
      * The native version of the client
      */
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_2;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_4;
 
     /**
      * Protocol version that is used to enable protocol auto-detect
@@ -195,7 +195,9 @@ public class ProtocolTranslator {
      * @param revertOnDisconnect if true, the previous version will be set when the player disconnects from the server
      */
     public static void setTargetVersion(final ProtocolVersion newVersion, final boolean revertOnDisconnect) {
-        if (newVersion == null) return;
+        if (newVersion == null) {
+            return;
+        }
 
         final ProtocolVersion oldVersion = targetVersion;
         targetVersion = newVersion;
@@ -303,18 +305,6 @@ public class ProtocolTranslator {
         name.set(name.get() + " (Work in progress)");
     }
 
-    @Deprecated/*(forRemoval = true)*/
-    private static void migrateOldConfigs(final File directory) {
-        final File oldDirectory = new File(directory, "ViaLoader");
-        if (oldDirectory.exists()) {
-            // Move all files from this folder into the directory itself
-            for (File file : oldDirectory.listFiles()) {
-                file.renameTo(new File(directory, file.getName()));
-            }
-            oldDirectory.delete();
-        }
-    }
-
     /**
      * This method is used to initialize the whole Protocol Translator
      *
@@ -326,13 +316,12 @@ public class ProtocolTranslator {
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new IllegalStateException("Native version is not the same as the current version");
         }
-        migrateOldConfigs(directory);
         patchConfigs(directory);
 
         // Register command callback for /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            final var commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
-            final var executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
+            final ViaFabricPlusVLCommandHandler commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
+            final RequiredArgumentBuilder<FabricClientCommandSource, String> executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
 
             dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viafabricplus").then(executor).executes(commandHandler::execute));
         });

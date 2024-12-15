@@ -67,10 +67,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     private int ticksSinceLastPositionPacketSent;
 
-    public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
-        super(world, profile);
-    }
-
     @Shadow
     @Final
     public ClientPlayNetworkHandler networkHandler;
@@ -85,7 +81,26 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     protected abstract void sendSneakingPacket();
 
     @Shadow
-    private boolean lastHorizontalCollision;
+    protected abstract boolean shouldStopSprinting();
+
+    public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
+        super(world, profile);
+    }
+
+    @Redirect(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldSlowDown()Z"))
+    private boolean removeSlowdownCondition(ClientPlayerEntity instance) {
+        return instance.shouldSlowDown() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_4);
+    }
+
+    @Redirect(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSubmergedInWater()Z"))
+    private boolean removeSlowdownCondition2(ClientPlayerEntity instance) {
+        return instance.isSubmergedInWater() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_4);
+    }
+
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldStopSprinting()Z"))
+    private boolean dontUnsprint(ClientPlayerEntity instance) {
+        return shouldStopSprinting() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_4);
+    }
 
     @WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSneakingPacket()V"))
     private boolean sendSneakingAfterSprinting(ClientPlayerEntity instance) {
@@ -96,16 +111,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     private void sendSneakingAfterSprinting(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             this.sendSneakingPacket();
-        }
-    }
-
-    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastHorizontalCollision:Z", ordinal = 0))
-    private boolean removeHorizontalCollisionFromOnGroundCheck(ClientPlayerEntity instance) {
-        // Since it doesn't exist in older versions, we need to exclude it from the check to prevent bad packets
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return this.horizontalCollision;
-        } else {
-            return this.lastHorizontalCollision;
         }
     }
 
@@ -172,11 +177,22 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_1) && original;
     }
 
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldSlowDown()Z"))
+    private boolean changeSneakSlowdownCondition(ClientPlayerEntity instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            return instance.input.playerInput.sneak();
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+            return !MinecraftClient.getInstance().player.isSpectator() && (instance.input.playerInput.sneak() || instance.shouldSlowDown());
+        } else {
+            return instance.shouldSlowDown();
+        }
+    }
+
     @Inject(method = "tickMovement()V",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isCamera()Z")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/PlayerInput;sneak()Z", ordinal = 0))
-    private void injectTickMovement(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+    private void undoSneakSlowdownForFly(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_9, ProtocolVersion.v1_14_4)) {
             if (this.input.playerInput.sneak()) {
                 this.input.movementSideways = (float) ((double) this.input.movementSideways / 0.3D);
                 this.input.movementForward = (float) ((double) this.input.movementForward / 0.3D);

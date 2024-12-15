@@ -166,7 +166,7 @@ public class BedrockRealmsScreen extends VFPScreen {
             for (RealmsWorld realmsWorld : BedrockRealmsScreen.this.realmsWorlds) {
                 this.addEntry(new SlotEntry(this, realmsWorld));
             }
-            initScrollAmount(scrollAmount);
+            initScrollY(scrollAmount);
         }
 
         @Override

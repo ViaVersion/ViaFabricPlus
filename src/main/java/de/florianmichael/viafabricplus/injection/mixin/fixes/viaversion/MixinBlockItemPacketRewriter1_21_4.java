@@ -19,36 +19,23 @@
 
 package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
 
-import com.viaversion.viaversion.api.data.FullMappingsBase;
-import com.viaversion.viaversion.api.data.Mappings;
-import com.viaversion.viaversion.api.data.ParticleMappings;
-import de.florianmichael.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.rewriter.BlockItemPacketRewriter1_21_4;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.List;
+@Mixin(value = BlockItemPacketRewriter1_21_4.class, remap = false)
+public abstract class MixinBlockItemPacketRewriter1_21_4 {
 
-@Mixin(ParticleMappings.class)
-public abstract class MixinParticleMappings extends FullMappingsBase {
-
-    public MixinParticleMappings(List<String> unmappedIdentifiers, List<String> mappedIdentifiers, Mappings mappings) {
-        super(unmappedIdentifiers, mappedIdentifiers, mappings);
-    }
-
-    @Override
-    public int getNewId(int id) {
-        if (id == FootStepParticle1_12_2.RAW_ID) {
-            return id;
+    @Redirect(method = "appendItemDataFixComponents", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;olderThanOrEqualTo(Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;)Z"))
+    private boolean changeSwordFixVersionRange(ProtocolVersion instance, ProtocolVersion other) {
+        if (other == ProtocolVersion.v1_8) {
+            return instance.betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8);
         } else {
-            return super.getNewId(id);
+            return instance.olderThanOrEqualTo(other);
         }
     }
 
-    @Override
-    public String mappedIdentifier(int mappedId) {
-        if (mappedId == FootStepParticle1_12_2.RAW_ID) {
-            return "";
-        } else {
-            return super.mappedIdentifier(mappedId);
-        }
-    }
 }

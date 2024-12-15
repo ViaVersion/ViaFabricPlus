@@ -17,29 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.item;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.input.Input;
-import net.minecraft.client.input.KeyboardInput;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.EnderEyeItem;
+import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(KeyboardInput.class)
-public abstract class MixinKeyboardInput extends Input {
+@Mixin(EnderEyeItem.class)
+public abstract class MixinEnderEyeItem {
 
-    @ModifyVariable(method = "tick", at = @At(value = "LOAD", ordinal = 0), argsOnly = true)
-    private boolean changeSneakSlowdownCondition(boolean slowDown) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return this.playerInput.sneak();
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            return !MinecraftClient.getInstance().player.isSpectator() && (this.playerInput.sneak() || slowDown);
-        } else {
-            return slowDown;
-        }
+    @WrapWithCondition(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setCurrentHand(Lnet/minecraft/util/Hand;)V"))
+    private boolean removeItemSlowdown(PlayerEntity instance, Hand hand) {
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11);
     }
 
 }

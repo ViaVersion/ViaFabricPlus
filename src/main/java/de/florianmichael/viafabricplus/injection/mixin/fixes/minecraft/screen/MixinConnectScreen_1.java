@@ -35,6 +35,7 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PlayerKeyPair;
 import net.minecraft.network.encryption.PlayerPublicKey;
 import net.raphimc.minecraftauth.step.bedrock.StepMCChain;
+import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.storage.AuthChainData;
 import org.spongepowered.asm.mixin.Final;
@@ -93,7 +94,7 @@ public abstract class MixinConnectScreen_1 {
 
                 userConnection.put(new ChatSession1_19_1(uuid, privateKey, new ProfileKey(expiresAt, publicKey, publicKeyData.keySignature())));
                 if (ProtocolTranslator.getTargetVersion() == ProtocolVersion.v1_19) {
-                    final var legacyKeySignature = ((ILegacyKeySignatureStorage) (Object) publicKeyData).viafabricplus$getLegacyPublicKeySignature();
+                    final byte[] legacyKeySignature = ((ILegacyKeySignatureStorage) (Object) publicKeyData).viafabricplus$getLegacyPublicKeySignature();
                     if (legacyKeySignature != null) {
                         userConnection.put(new ChatSession1_19_0(uuid, privateKey, new ProfileKey(expiresAt, publicKey, legacyKeySignature)));
                     }
@@ -102,7 +103,7 @@ public abstract class MixinConnectScreen_1 {
                 ViaFabricPlus.global().getLogger().error("Could not get public key signature. Joining servers with enforce-secure-profiles enabled will not work!");
             }
         } else if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
-            final var bedrockSession = ViaFabricPlus.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
+            final StepFullBedrockSession.FullBedrockSession bedrockSession = ViaFabricPlus.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
             if (bedrockSession != null) {
                 final StepMCChain.MCChain mcChain = bedrockSession.getMcChain();
                 final UUID deviceId = mcChain.getXblXsts().getInitialXblSession().getXblDeviceToken().getId();

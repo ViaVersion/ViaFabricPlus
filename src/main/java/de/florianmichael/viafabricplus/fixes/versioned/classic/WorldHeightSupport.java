@@ -44,7 +44,9 @@ public class WorldHeightSupport {
     public static PacketHandler handleJoinGame(final PacketHandler parentHandler) {
         return wrapper -> {
             parentHandler.handle(wrapper);
-            if (wrapper.isCancelled()) return;
+            if (wrapper.isCancelled()) {
+                return;
+            }
 
             if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 for (CompoundTag dimension : wrapper.get(Types.NAMED_COMPOUND_TAG, 0).getCompoundTag("minecraft:dimension_type").getListTag("value", CompoundTag.class)) {
@@ -58,7 +60,9 @@ public class WorldHeightSupport {
     public static PacketHandler handleRespawn(final PacketHandler parentHandler) {
         return wrapper -> {
             parentHandler.handle(wrapper);
-            if (wrapper.isCancelled()) return;
+            if (wrapper.isCancelled()) {
+                return;
+            }
 
             if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 changeDimensionTagHeight(wrapper.user(), wrapper.get(Types.NAMED_COMPOUND_TAG, 0));
@@ -69,7 +73,9 @@ public class WorldHeightSupport {
     public static PacketHandler handleChunkData(final PacketHandler parentHandler) {
         return wrapper -> {
             parentHandler.handle(wrapper);
-            if (wrapper.isCancelled()) return;
+            if (wrapper.isCancelled()) {
+                return;
+            }
 
             if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 wrapper.resetReader();

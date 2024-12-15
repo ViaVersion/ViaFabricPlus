@@ -17,24 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.injection.mixin.fixes.viaversion;
+package de.florianmichael.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.protocols.v1_21to1_21_2.rewriter.BlockItemPacketRewriter1_21_2;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import de.florianmichael.viafabricplus.settings.impl.VisualSettings;
+import net.minecraft.client.render.entity.feature.VillagerClothingFeatureRenderer;
+import net.minecraft.village.VillagerData;
+import net.minecraft.village.VillagerProfession;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = BlockItemPacketRewriter1_21_2.class, remap = false)
-public abstract class MixinBlockItemPacketRewriter1_21_2 {
+@Mixin(VillagerClothingFeatureRenderer.class)
+public abstract class MixinVillagerClothingFeatureRenderer {
 
-    @Redirect(method = "appendItemDataFixComponents", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;olderThanOrEqualTo(Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;)Z"))
-    private boolean changeSwordFixVersionRange(ProtocolVersion instance, ProtocolVersion other) {
-        if (other == ProtocolVersion.v1_8) {
-            return instance.betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8);
+    @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/render/entity/state/LivingEntityRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/village/VillagerData;getProfession()Lnet/minecraft/village/VillagerProfession;"))
+    private VillagerProfession revertVillagerVisual(VillagerData instance) {
+        if (VisualSettings.global().hideVillagerProfession.getValue()) {
+            return VillagerProfession.NONE;
         } else {
-            return instance.olderThanOrEqualTo(other);
+            return instance.getProfession();
         }
     }
 

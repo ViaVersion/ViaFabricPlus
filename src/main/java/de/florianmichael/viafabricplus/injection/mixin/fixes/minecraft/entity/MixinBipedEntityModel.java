@@ -47,7 +47,7 @@ public abstract class MixinBipedEntityModel<T extends BipedEntityRenderState> {
 
     @Redirect(method = "positionBlockingArm", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(FFF)F"))
     private float preventArmFollowingThirdPersonRotation(float value, float min, float max) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
+        if (VisualSettings.global().lockBlockingArmRotation.isEnabled()) {
             return 0.0F;
         } else {
             return MathHelper.clamp(value, min, max);

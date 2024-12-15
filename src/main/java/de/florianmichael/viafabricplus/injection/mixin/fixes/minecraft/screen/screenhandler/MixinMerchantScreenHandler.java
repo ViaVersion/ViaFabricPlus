@@ -63,7 +63,9 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             ci.cancel();
 
-            if (recipeId >= this.getRecipes().size()) return;
+            if (recipeId >= this.getRecipes().size()) {
+                return;
+            }
 
             final ClientPlayerInteractionManager interactionManager = MinecraftClient.getInstance().interactionManager;
             final ClientPlayerEntity player = MinecraftClient.getInstance().player;
@@ -72,14 +74,18 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
             if (!this.merchantInventory.getStack(0).isEmpty()) {
                 final int count = this.merchantInventory.getStack(0).getCount();
                 interactionManager.clickSlot(syncId, 0, 0, SlotActionType.QUICK_MOVE, player);
-                if (count == this.merchantInventory.getStack(0).getCount()) return;
+                if (count == this.merchantInventory.getStack(0).getCount()) {
+                    return;
+                }
             }
 
             // move 2nd input slot to inventory
             if (!this.merchantInventory.getStack(1).isEmpty()) {
                 final int count = this.merchantInventory.getStack(1).getCount();
                 interactionManager.clickSlot(syncId, 1, 0, SlotActionType.QUICK_MOVE, player);
-                if (count == this.merchantInventory.getStack(1).getCount()) return;
+                if (count == this.merchantInventory.getStack(1).getCount()) {
+                    return;
+                }
             }
 
             // refill the slots
@@ -110,7 +116,9 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
                 }
             }
         }
-        if (slot == 39) return;
+        if (slot == 39) {
+            return;
+        }
 
         final boolean wasHoldingItem = !player.currentScreenHandler.getCursorStack().isEmpty();
         interactionManager.clickSlot(syncId, slot, 0, SlotActionType.PICKUP, player);

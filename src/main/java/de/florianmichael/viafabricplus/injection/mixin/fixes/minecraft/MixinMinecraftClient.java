@@ -26,7 +26,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_11_1to1_12.Protocol1_11_1To1_12;
 import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ServerboundPackets1_9_3;
-import de.florianmichael.viafabricplus.fixes.data.ItemRegistryDiff;
+import de.florianmichael.viafabricplus.fixes.versioned.ItemPick1_21_3;
 import de.florianmichael.viafabricplus.injection.access.IMouseKeyboard;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.settings.impl.DebugSettings;
@@ -34,10 +34,6 @@ import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.client.render.item.HeldItemRenderer;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import org.jetbrains.annotations.Nullable;
@@ -71,20 +67,11 @@ public abstract class MixinMinecraftClient {
     @Final
     public Keyboard keyboard;
 
-    @Redirect(method = "doItemPick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;addPickBlock(Lnet/minecraft/item/ItemStack;)V"))
-    private void filterItem(PlayerInventory instance, ItemStack stack) {
-        if (ItemRegistryDiff.keepItem(stack.getItem())) {
-            instance.addPickBlock(stack);
-        }
-    }
-
-    /**
-     * Never happens in Vanilla, this is only for {@link ItemRegistryDiff} to work
-     */
-    @Redirect(method = "doItemPick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;clickCreativeStack(Lnet/minecraft/item/ItemStack;I)V"))
-    private void dontSendEmptyItem(ClientPlayerInteractionManager instance, ItemStack stack, int slotId) {
-        if (!stack.isEmpty()) {
-            instance.clickCreativeStack(stack, slotId);
+    @Inject(method = "doItemPick", at = @At("HEAD"), cancellable = true)
+    private void pickItemClientside(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            ItemPick1_21_3.doItemPick((MinecraftClient) (Object) this);
+            ci.cancel();
         }
     }
 
@@ -93,15 +80,19 @@ public abstract class MixinMinecraftClient {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
-    @WrapWithCondition(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;resetEquipProgress(Lnet/minecraft/util/Hand;)V"))
-    private boolean disableSwing2(HeldItemRenderer instance, Hand hand) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
+    @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult$Success;swingSource()Lnet/minecraft/util/ActionResult$SwingSource;", ordinal = 0))
+    private ActionResult.SwingSource disableSwing(ActionResult.Success instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+            return ActionResult.SwingSource.NONE;
+        } else {
+            return instance.swingSource();
+        }
     }
 
-    @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult$Success;swingSource()Lnet/minecraft/util/ActionResult$SwingSource;"))
-    private ActionResult.SwingSource swingWhenConsume(ActionResult.Success instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && instance.isAccepted()) {
-            return ActionResult.SwingSource.CLIENT;
+    @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult$Success;swingSource()Lnet/minecraft/util/ActionResult$SwingSource;", ordinal = 2))
+    private ActionResult.SwingSource disableSwing2(ActionResult.Success instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+            return ActionResult.SwingSource.NONE;
         } else {
             return instance.swingSource();
         }

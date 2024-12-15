@@ -82,6 +82,20 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         super(entityType, world);
     }
 
+    @Inject(method = "isClimbing", at = @At("HEAD"), cancellable = true)
+    private void allowClimbingWhileFlying(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            cir.setReturnValue(super.isClimbing());
+        }
+    }
+
+    @Inject(method = "isLoaded", at = @At("HEAD"), cancellable = true)
+    private void alwaysLoadPlayer(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            cir.setReturnValue(true);
+        }
+    }
+
     @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
     private double removeOffsetWhenCheckingSneakingCollision(double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
@@ -190,7 +204,9 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         final boolean hasMiningFatigue = instance.hasStatusEffect(statusEffect);
         if (hasMiningFatigue && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             f.set(f.get() * (1.0F - (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier() + 1) * 0.2F));
-            if (f.get() < 0) f.set(0);
+            if (f.get() < 0) {
+                f.set(0);
+            }
             return false; // disable original code
         }
         return hasMiningFatigue;
@@ -199,7 +215,9 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
     private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
         final float efficiency = (float) this.getAttributeValue(EntityAttributes.MINING_EFFICIENCY);
-        if (efficiency <= 0) return;
+        if (efficiency <= 0) {
+            return;
+        }
 
         final float speed = this.inventory.getBlockBreakingSpeed(block);
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_4tor1_4_5) && this.canHarvest(block)) {

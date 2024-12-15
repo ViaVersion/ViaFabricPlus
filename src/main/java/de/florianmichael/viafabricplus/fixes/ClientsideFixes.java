@@ -205,7 +205,7 @@ public class ClientsideFixes {
 
         if (PENDING_EXECUTION_TASKS.containsKey(uuid)) {
             MinecraftClient.getInstance().execute(() -> { // Execute the task on the main thread
-                final var task = PENDING_EXECUTION_TASKS.remove(uuid);
+                final Consumer<RegistryByteBuf> task = PENDING_EXECUTION_TASKS.remove(uuid);
                 task.accept(new RegistryByteBuf(buf, MinecraftClient.getInstance().getNetworkHandler().getRegistryManager()));
             });
         }
