@@ -240,8 +240,17 @@ public abstract class MixinLivingEntity extends Entity {
         }
     }
 
+    @ModifyConstant(method = "getBlockingItem", constant = @Constant(intValue = 5))
+    private int removeBlockActionUseDelay(int constant) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            return 0;
+        } else {
+            return constant;
+        }
+    }
+
     @ModifyConstant(method = "tickMovement", constant = @Constant(doubleValue = 0.003D))
-    private double modifyVelocityZero(final double constant) {
+    private double modifyVelocityZero(double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 0.005D;
         } else {
