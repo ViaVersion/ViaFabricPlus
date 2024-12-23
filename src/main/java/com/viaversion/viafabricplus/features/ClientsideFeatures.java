@@ -30,7 +30,7 @@ import com.viaversion.viafabricplus.features2.recipe_emulation.Recipes1_11_2;
 import com.viaversion.viafabricplus.features.versioned.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.features2.cpe_extensions.CPEAdditions;
 import com.viaversion.viafabricplus.features2.ui.classic_creative_menu.GridItemSelectionScreen;
-import com.viaversion.viafabricplus.features.versioned.visual.ArmorHudEmulation1_8;
+import com.viaversion.viafabricplus.features2.ui.armor_hud.ArmorHudEmulation1_8;
 import com.viaversion.viafabricplus.features2.footstep_particle.FootStepParticle1_12_2;
 import com.viaversion.viafabricplus.features2.text_rendering.non_existing_characters.UnicodeFontFix1_12_2;
 import com.viaversion.viafabricplus.settings.impl.VisualSettings;

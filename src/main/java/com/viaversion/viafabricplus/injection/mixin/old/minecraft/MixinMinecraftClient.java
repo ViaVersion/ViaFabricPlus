@@ -28,8 +28,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_11_1to1_12.Protocol1_11_1To1_12;
 import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ServerboundPackets1_9_3;
-import com.viaversion.viafabricplus.features.versioned.ItemPick1_21_3;
-import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseKeyboard;
+import com.viaversion.viafabricplus.features2.world.item_picking.ItemPick1_21_3;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.Keyboard;
@@ -45,11 +44,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Queue;
 
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraftClient {
@@ -60,22 +56,6 @@ public abstract class MixinMinecraftClient {
 
     @Shadow
     protected int attackCooldown;
-
-    @Shadow
-    @Final
-    public Mouse mouse;
-
-    @Shadow
-    @Final
-    public Keyboard keyboard;
-
-    @Inject(method = "doItemPick", at = @At("HEAD"), cancellable = true)
-    private void pickItemClientside(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            ItemPick1_21_3.doItemPick((MinecraftClient) (Object) this);
-            ci.cancel();
-        }
-    }
 
     @WrapWithCondition(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
     private boolean disableSwing(ClientPlayerEntity instance, Hand hand) {
