@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.old.data;
 
+import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.event.ChangeProtocolVersionCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityAttachmentType;
 import net.minecraft.entity.EntityAttachments;
@@ -150,7 +150,7 @@ public class EntityDimensionDiff {
     );
 
     static {
-        ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
+        Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
             for (Map.Entry<ProtocolVersion, EntityDimensions> entry : dimensionMap.entrySet()) {
                 final ProtocolVersion version = entry.getKey();
                 final EntityDimensions dimensions = entry.getValue();

@@ -86,7 +86,7 @@ public abstract class MixinConnectScreen_1 {
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/session/Session;getUsername()Ljava/lang/String;"))
     private String useClassiCubeUsername(Session instance) {
         if (this.viaFabricPlus$useClassiCubeAccount) {
-            final CCAccount account = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+            final CCAccount account = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().getClassicubeAccount();
             if (account != null) {
                 return account.username();
             }

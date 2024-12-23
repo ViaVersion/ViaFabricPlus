@@ -21,13 +21,13 @@
 
 package com.viaversion.viafabricplus.util;
 
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.lenni0451.reflect.ClassLoaders;
 import net.lenni0451.reflect.stream.RStream;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -41,13 +41,13 @@ public class ClassLoaderPriorityUtil {
      */
     public static void loadOverridingJars(final Path path, final Logger logger) {
         try {
-            final File jarsDirectory = new File(directory, "jars");
-            if (!jarsDirectory.exists()) {
-                jarsDirectory.mkdir();
+            final Path jars = path.resolve("jars");
+            if (!Files.exists(jars)) {
+                Files.createDirectory(jars);
                 return;
             }
 
-            final File[] files = jarsDirectory.listFiles();
+            final File[] files = jars.toFile().listFiles();
             if (files != null && files.length > 0) {
                 final ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
                 try {

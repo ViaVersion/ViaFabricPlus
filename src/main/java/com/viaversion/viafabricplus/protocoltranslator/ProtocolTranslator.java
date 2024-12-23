@@ -25,6 +25,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -35,7 +36,6 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.VersionType;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import com.viaversion.viafabricplus.event.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.old.viaversion.ViaFabricPlusProtocol;
 import com.viaversion.viafabricplus.injection.access.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.ViaFabricPlusVLCommandHandler;
@@ -186,7 +186,7 @@ public class ProtocolTranslator {
             if (revertOnDisconnect) {
                 previousVersion = oldVersion;
             }
-            ChangeProtocolVersionCallback.EVENT.invoker().onChangeProtocolVersion(oldVersion, targetVersion);
+            Events.CHANGE_PROTOCOL_VERSION.invoker().onChangeProtocolVersion(oldVersion, targetVersion);
         }
     }
 
@@ -241,14 +241,12 @@ public class ProtocolTranslator {
     /**
      * Apply recommended config options to the ViaVersion config files
      *
-     * @param directory The directory where the ViaVersion config files is located
+     * @param path The path where the ViaVersion config files is located
      */
-    private static void patchConfigs(final File directory) {
-        directory.mkdirs();
-
+    private static void patchConfigs(final Path path) {
         try {
-            final File viaVersionConfig = new File(directory, "viaversion.yml");
-            Files.writeString(viaVersionConfig.toPath(), """
+            final Path viaVersionConfig = path.resolve("viaversion.yml");
+            Files.writeString(viaVersionConfig, """
                     fix-infested-block-breaking: false
                     shield-blocking: false
                     no-delay-shield-blocking: true
@@ -260,8 +258,8 @@ public class ProtocolTranslator {
         }
 
         try {
-            final File viaLegacyConfig = new File(directory, "vialegacy.yml");
-            Files.writeString(viaLegacyConfig.toPath(), """
+            final Path viaLegacyConfig = path.resolve("vialegacy.yml");
+            Files.writeString(viaLegacyConfig, """
                     legacy-skull-loading: true
                     legacy-skin-loading: true
                     """, StandardOpenOption.CREATE_NEW);
@@ -281,7 +279,7 @@ public class ProtocolTranslator {
     /**
      * This method is used to initialize the whole Protocol Translator
      *
-     * @param directory The directory where the ViaVersion config files are located
+     * @param path The path where the ViaVersion config files are located
      * @return A CompletableFuture that will be completed when the initialization is done
      */
     @ApiStatus.Internal
@@ -289,7 +287,7 @@ public class ProtocolTranslator {
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new IllegalStateException("Native version is not the same as the current version");
         }
-        patchConfigs(directory);
+        patchConfigs(path);
 
         // Register command callback for /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
@@ -302,7 +300,7 @@ public class ProtocolTranslator {
         return CompletableFuture.runAsync(() -> {
             // Load ViaVersion and register all platforms and their components
             ViaLoader.init(
-                    new ViaFabricPlusViaVersionPlatformImpl(directory),
+                    new ViaFabricPlusViaVersionPlatformImpl(path.toFile()),
                     new ViaFabricPlusVLLoader(),
                     new ViaFabricPlusVLInjector(),
                     new ViaFabricPlusVLCommandHandler(),

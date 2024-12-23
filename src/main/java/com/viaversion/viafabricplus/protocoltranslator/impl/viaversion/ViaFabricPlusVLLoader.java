@@ -21,6 +21,8 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
+import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.*;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.*;
 import com.viaversion.viaversion.api.Via;
@@ -32,7 +34,6 @@ import com.viaversion.viaversion.protocols.v1_15_2to1_16.provider.PlayerAbilitie
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.provider.AckSequenceProvider;
 import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.provider.PickItemProvider;
 import com.viaversion.viaversion.protocols.v1_8to1_9.provider.HandItemProvider;
-import com.viaversion.viafabricplus.event.PostViaVersionLoadCallback;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
 import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
 import net.raphimc.viabedrock.protocol.provider.NettyPipelineProvider;
@@ -72,7 +73,7 @@ public class ViaFabricPlusVLLoader extends VLLoader {
 
         providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
 
-        PostViaVersionLoadCallback.EVENT.invoker().onPostViaVersionLoad();
+        Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.POST_VIAVERSION_LOAD);
     }
 
 }

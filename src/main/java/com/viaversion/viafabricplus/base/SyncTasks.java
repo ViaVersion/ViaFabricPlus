@@ -30,7 +30,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-public class SyncTasks {
+public final class SyncTasks {
 
     /**
      * Contains all tasks that are waiting for a packet to be received, this system can be used to sync ViaVersion tasks with the correct thread
@@ -54,6 +54,11 @@ public class SyncTasks {
         return uuid;
     }
 
+    /**
+     * Handles a sync task that was sent from the networking thread
+     *
+     * @param buf The packet buffer
+     */
     public static void handleSyncTask(final PacketByteBuf buf) {
         final String uuid = buf.readString();
 

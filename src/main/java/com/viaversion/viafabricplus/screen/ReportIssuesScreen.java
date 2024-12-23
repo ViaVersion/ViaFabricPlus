@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.screen;
 
 import com.viaversion.viaversion.util.DumpUtil;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
@@ -59,7 +59,7 @@ public class ReportIssuesScreen extends VFPScreen {
         actions.put("report.viafabricplus.create_via_dump", () -> DumpUtil.postDump(client.getSession().getUuidOrNull()).whenComplete((s, throwable) -> {
             if (throwable != null) {
                 this.setupSubtitle(Text.translatable("report.viafabricplus.create_via_dump.failed"));
-                ViaFabricPlusImpl.global().getLogger().error("Failed to create a dump", throwable);
+                ViaFabricPlusImpl.INSTANCE.logger().error("Failed to create a dump", throwable);
                 return;
             }
             this.setupSubtitle(Text.translatable("report.viafabricplus.create_via_dump.success"));

@@ -46,7 +46,7 @@ public abstract class MixinConnectScreen_1 {
         final UserConnection userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
         if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
-            final StepFullBedrockSession.FullBedrockSession bedrockSession = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
+            final StepFullBedrockSession.FullBedrockSession bedrockSession = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
             if (bedrockSession != null) {
                 final StepMCChain.MCChain mcChain = bedrockSession.getMcChain();
                 final UUID deviceId = mcChain.getXblXsts().getInitialXblSession().getXblDeviceToken().getId();
@@ -54,7 +54,7 @@ public abstract class MixinConnectScreen_1 {
 
                 userConnection.put(new AuthChainData(mcChain.getMojangJwt(), mcChain.getIdentityJwt(), mcChain.getPublicKey(), mcChain.getPrivateKey(), deviceId, playFabId));
             } else {
-                ViaFabricPlusImpl.global().getLogger().warn("Could not get Bedrock account. Joining online mode servers will not work!");
+                ViaFabricPlusImpl.INSTANCE.logger().warn("Could not get Bedrock account. Joining online mode servers will not work!");
             }
         }
     }

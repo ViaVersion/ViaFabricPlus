@@ -55,7 +55,7 @@ public class ViaFabricPlus {
 
     @Deprecated
     public Object getSaveManager() {
-        throw new IllegalArgumentException("ViaFabricPlus#getSaveManager is not supported anymore..");
+        throw new IllegalArgumentException("ViaFabricPlus#getSaveManager is not supported anymore.");
     }
 
 }

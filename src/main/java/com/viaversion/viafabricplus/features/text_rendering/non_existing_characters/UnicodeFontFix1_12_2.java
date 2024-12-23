@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.features.text_rendering.non_existing_characters;
 
+import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.event.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.protocoltranslator.util.LanguageUtil;
 import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -43,7 +43,7 @@ public class UnicodeFontFix1_12_2 {
     private static Runnable task = null;
 
     static {
-        ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> updateUnicodeFontOverride(newVersion));
+        Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> updateUnicodeFontOverride(newVersion));
 
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
             // Prevent usages of RenderSystem.recordRenderCall()

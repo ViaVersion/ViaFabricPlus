@@ -21,6 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.mining_speeds;
 
+import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.HolderSet;
 import com.viaversion.viaversion.api.minecraft.data.StructuredDataContainer;
@@ -40,7 +42,6 @@ import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.Protocol1_20_3To1_20_
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ServerboundPacket1_20_5;
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.rewriter.BlockItemPacketRewriter1_20_5;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
-import com.viaversion.viafabricplus.event.PostViaVersionLoadCallback;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
@@ -86,7 +87,11 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
             this.viaFabricPlus$armorMaxDamage_b1_8_1.put(entry.getKey(), entry.getValue().getAsInt());
         }
 
-        PostViaVersionLoadCallback.EVENT.register(() -> {
+        Events.LOADING_CYCLE.register(cycle -> {
+            if (cycle != LoadingCycleCallback.LoadingCycle.POST_VIAVERSION_LOAD) {
+                return;
+            }
+
             final JsonObject itemToolComponents = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("item-tool-components.json");
             for (Map.Entry<String, JsonElement> entry : itemToolComponents.entrySet()) {
                 final ProtocolVersion version = ProtocolVersion.getClosest(entry.getKey());

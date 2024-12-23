@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.screen.realms;
 
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;

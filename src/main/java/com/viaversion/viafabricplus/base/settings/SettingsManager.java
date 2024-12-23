@@ -21,10 +21,10 @@
 
 package com.viaversion.viafabricplus.base.settings;
 
+import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.base.settings.impl.*;
-import com.viaversion.viafabricplus.event.RegisterSettingsCallback;
 import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
-import com.viaversion.viafabricplus.settings.impl.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +35,7 @@ public class SettingsManager {
     private final List<SettingGroup> groups = new ArrayList<>();
 
     public SettingsManager() {
-        RegisterSettingsCallback.EVENT.invoker().onRegisterSettings(this, RegisterSettingsCallback.State.PRE);
+        Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.PRE_SETTINGS_LOAD);
 
         addGroup(
                 GeneralSettings.global(),
@@ -45,7 +45,7 @@ public class SettingsManager {
                 DebugSettings.global()
         );
 
-        RegisterSettingsCallback.EVENT.invoker().onRegisterSettings(this, RegisterSettingsCallback.State.POST);
+        Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.POST_SETTINGS_LOAD);
     }
 
     public void addGroup(final SettingGroup... groups) {

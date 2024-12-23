@@ -21,13 +21,13 @@
 
 package com.viaversion.viafabricplus.screen.classic4j;
 
+import com.viaversion.viafabricplus.base.screen.VFPList;
+import com.viaversion.viafabricplus.base.screen.VFPListEntry;
+import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
-import com.viaversion.viafabricplus.screen.VFPList;
-import com.viaversion.viafabricplus.screen.VFPListEntry;
-import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viafabricplus.screen.settings.TitleRenderer;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
 import net.minecraft.client.MinecraftClient;
@@ -87,7 +87,9 @@ public class BetaCraftScreen extends VFPScreen {
 
             for (BCVersionCategory value : BCVersionCategory.values()) {
                 final List<BCServerInfoSpec> servers = SERVER_LIST.serversOfVersionCategory(value);
-                if (servers.isEmpty()) continue;
+                if (servers.isEmpty()) {
+                    continue;
+                }
                 addEntry(new TitleRenderer(Text.of(value.name())));
                 for (BCServerInfoSpec server : servers) {
                     addEntry(new ServerSlot(server));

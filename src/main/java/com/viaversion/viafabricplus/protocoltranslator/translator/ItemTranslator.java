@@ -68,7 +68,7 @@ public class ItemTranslator {
             setCreativeModeSlot.read(Types.SHORT); // slot
             return setCreativeModeSlot.read(getServerboundItemType(targetVersion)); // item
         } catch (Throwable t) {
-            ViaFabricPlusImpl.global().getLogger().error("Error converting native item stack to ViaVersion {} item stack", targetVersion, t);
+            ViaFabricPlusImpl.INSTANCE.logger().error("Error converting native item stack to ViaVersion {} item stack", targetVersion, t);
             return null;
         }
     }
@@ -105,7 +105,7 @@ public class ItemTranslator {
             buf.readShort(); // slot
             return ItemStack.OPTIONAL_PACKET_CODEC.decode(buf);
         } catch (Throwable t) {
-            ViaFabricPlusImpl.global().getLogger().error("Error converting ViaVersion {} item to native item stack", sourceVersion, t);
+            ViaFabricPlusImpl.INSTANCE.logger().error("Error converting ViaVersion {} item to native item stack", sourceVersion, t);
             return ItemStack.EMPTY;
         }
     }

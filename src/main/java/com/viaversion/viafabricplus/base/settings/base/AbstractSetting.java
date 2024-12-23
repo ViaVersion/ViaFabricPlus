@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.base.settings.base;
 
 import com.google.gson.JsonObject;
-import com.viaversion.viafabricplus.api.screen.VFPListEntry;
-import com.viaversion.viafabricplus.api.util.ChatUtil;
+import com.viaversion.viafabricplus.base.screen.VFPListEntry;
+import com.viaversion.viafabricplus.util.ChatUtil;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 

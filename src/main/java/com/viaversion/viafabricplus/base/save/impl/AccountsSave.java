@@ -69,7 +69,7 @@ public class AccountsSave extends AbstractSave {
             try {
                 output.accept(object.get(name).getAsJsonObject());
             } catch (Exception e) {
-                ViaFabricPlusImpl.global().getLogger().error("Failed to read {} account!", name, e);
+                ViaFabricPlusImpl.INSTANCE.logger().error("Failed to read {} account!", name, e);
             }
         }
     }

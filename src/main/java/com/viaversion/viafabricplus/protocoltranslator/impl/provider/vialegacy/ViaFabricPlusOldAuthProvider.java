@@ -43,7 +43,7 @@ public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
             client.getSessionService().joinServer(client.getSession().getUuidOrNull(), client.getSession().getAccessToken(), serverId);
         } catch (Exception e) {
             user.getChannel().attr(ProtocolTranslator.CLIENT_CONNECTION_ATTRIBUTE_KEY).get().disconnect(ChatUtil.prefixText(Text.translatable("betacraft.viafabricplus.failed_to_verify_session")));
-            ViaFabricPlusImpl.global().getLogger().error("Error occurred while calling join server to verify session", e);
+            ViaFabricPlusImpl.INSTANCE.logger().error("Error occurred while calling join server to verify session", e);
         }
     }
 

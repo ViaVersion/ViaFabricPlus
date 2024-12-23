@@ -60,7 +60,7 @@ public class BlockStateTranslator {
             levelEvent.read(Types.BLOCK_POSITION1_14); // position
             return Block.getStateFromRawId(levelEvent.read(Types.INT)); // data
         } catch (Throwable t) {
-            ViaFabricPlusImpl.global().getLogger().error("Error converting ViaVersion 1.18.2 block state to native block state", t);
+            ViaFabricPlusImpl.INSTANCE.logger().error("Error converting ViaVersion 1.18.2 block state to native block state", t);
             return Blocks.AIR.getDefaultState();
         }
     }

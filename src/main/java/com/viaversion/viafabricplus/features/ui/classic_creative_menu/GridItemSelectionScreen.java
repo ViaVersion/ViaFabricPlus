@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.features.ui.classic_creative_menu;
 
 import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemRegistryDiff;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

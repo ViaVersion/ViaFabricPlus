@@ -57,7 +57,7 @@ public class TextComponentTranslator {
             openScreen.read(Types.VAR_INT); // type id
             return openScreen.read(Types.TAG); // title
         } catch (Throwable t) {
-            ViaFabricPlusImpl.global().getLogger().error("Error converting ViaVersion 1.14 text component to native text component", t);
+            ViaFabricPlusImpl.INSTANCE.logger().error("Error converting ViaVersion 1.14 text component to native text component", t);
             return null;
         }
     }

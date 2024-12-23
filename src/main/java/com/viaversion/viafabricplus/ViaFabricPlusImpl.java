@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus;
 import com.viaversion.viafabricplus.api.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.api.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
+import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.base.save.SaveManager;
 import com.viaversion.viafabricplus.base.settings.SettingsManager;
 import com.viaversion.viafabricplus.features.max_chat_length.MaxChatLength;
@@ -74,22 +75,24 @@ import java.util.concurrent.CompletableFuture;
  */
 public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
+    public static final ViaFabricPlusImpl INSTANCE = new ViaFabricPlusImpl();
+
     private final Logger logger = LogManager.getLogger("ViaFabricPlus");
     private final Path path = FabricLoader.getInstance().getConfigDir().resolve("viafabricplus");
-
-    public static void init() throws IOException {
-        ViaFabricPlus.init(new ViaFabricPlusImpl());
-    }
 
     private final SettingsManager settingsManager;
     private final SaveManager saveManager;
 
-    private CompletableFuture<Void> loadingFuture;
+    private final CompletableFuture<Void> loadingFuture;
 
-    public ViaFabricPlusImpl() throws IOException {
+    private ViaFabricPlusImpl() {
         // Create the directory if it doesn't exist
         if (!Files.exists(path)) {
-            Files.createDirectory(path);
+            try {
+                Files.createDirectory(path);
+            } catch (IOException e) {
+                logger.error("Failed to create ViaFabricPlus directory", e);
+            }
         }
 
         // Load overriding jars first so other code can access the new classes
@@ -101,6 +104,14 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
         // Init ViaVersion protocol translator platform
         loadingFuture = ProtocolTranslator.init(path);
+
+        registerLoadingCycleCallback(cycle -> {
+            if (cycle != LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
+                return;
+            }
+            loadingFuture.join();
+            saveManager.postInit();
+        });
     }
 
     // Proxy most important functions to the API to prevent users depending on mod internals
@@ -147,12 +158,12 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
     @Override
     public void registerOnChangeProtocolVersionCallback(ChangeProtocolVersionCallback callback) {
-
+        Events.CHANGE_PROTOCOL_VERSION.register(callback);
     }
 
     @Override
     public void registerLoadingCycleCallback(LoadingCycleCallback callback) {
-
+        Events.LOADING_CYCLE.register(callback);
     }
 
     @Override
@@ -167,4 +178,5 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     public SaveManager getSaveManager() {
         return saveManager;
     }
+
 }

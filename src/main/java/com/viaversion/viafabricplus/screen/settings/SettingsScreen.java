@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.screen.settings;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.screen.VFPList;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.base.screen.VFPList;
+import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import com.viaversion.viafabricplus.base.settings.base.AbstractSetting;
 import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
 import net.minecraft.client.MinecraftClient;
@@ -51,7 +51,7 @@ public class SettingsScreen extends VFPScreen {
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
-            for (SettingGroup group : ViaFabricPlusImpl.global().getSettingsManager().getGroups()) {
+            for (SettingGroup group : ViaFabricPlusImpl.INSTANCE.getSettingsManager().getGroups()) {
                 this.addEntry(new TitleRenderer(group.getName()));
 
                 for (AbstractSetting<?> setting : group.getSettings()) {

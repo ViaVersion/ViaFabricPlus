@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.old;
 
+import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.event.ChangeProtocolVersionCallback;
-import com.viaversion.viafabricplus.event.PostGameLoadCallback;
 import com.viaversion.viafabricplus.old.data.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.networking.resource_pack_header.ResourcePackHeaderDiff;
 import com.viaversion.viafabricplus.features.recipe_emulation.Recipes1_11_2;
@@ -55,7 +55,11 @@ public class ClientsideFeatures {
 
         UnicodeFontFix1_12_2.init();
 
-        PostGameLoadCallback.EVENT.register(() -> {
+        Events.LOADING_CYCLE.register(cycle -> {
+            if (cycle != LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
+                return;
+            }
+
             // Handle clientside enchantment calculations in <= 1.20.6
             EnchantmentAttributesEmulation1_20_6.init();
 
@@ -67,7 +71,7 @@ public class ClientsideFeatures {
         });
 
         // Reloads some clientside stuff when the protocol version changes
-        ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
+        Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
             VisualSettings.global().filterNonExistingGlyphs.onValueChanged();
 
             // Reloads all bounding boxes of the blocks that we changed

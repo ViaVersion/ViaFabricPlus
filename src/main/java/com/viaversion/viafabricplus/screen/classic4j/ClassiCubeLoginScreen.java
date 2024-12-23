@@ -27,7 +27,7 @@ import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.ITextFieldWidget;
 import com.viaversion.viafabricplus.base.save.impl.AccountsSave;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -63,7 +63,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
         ((ITextFieldWidget) nameField).viaFabricPlus$unlockForbiddenCharacters();
         ((ITextFieldWidget) passwordField).viaFabricPlus$unlockForbiddenCharacters();
 
-        final AccountsSave accountsSave = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave();
+        final AccountsSave accountsSave = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave();
         if (accountsSave.getClassicubeAccount() != null) {
             nameField.setText(accountsSave.getClassicubeAccount().username());
             passwordField.setText(accountsSave.getClassicubeAccount().username());
@@ -87,7 +87,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
 
                 @Override
                 public void handleException(Throwable throwable) {
-                    ViaFabricPlusImpl.global().getLogger().error("Error while logging in to ClassiCube!", throwable);
+                    ViaFabricPlusImpl.INSTANCE.logger().error("Error while logging in to ClassiCube!", throwable);
                     setupSubtitle(Text.of(throwable.getMessage()));
                 }
             });
@@ -97,7 +97,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
     @Override
     public void close() {
         // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
-        ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
+        ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().setClassicubeAccount(null);
         super.close();
     }
 

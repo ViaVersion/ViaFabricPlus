@@ -27,9 +27,9 @@ import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
-import com.viaversion.viafabricplus.screen.VFPList;
-import com.viaversion.viafabricplus.screen.VFPListEntry;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.base.screen.VFPList;
+import com.viaversion.viafabricplus.base.screen.VFPListEntry;
+import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import com.viaversion.viafabricplus.base.settings.impl.AuthenticationSettings;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
 import net.minecraft.client.MinecraftClient;
@@ -52,7 +52,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
     private static final String CLASSICUBE_SERVER_LIST_URL = "https://www.classicube.net/server/list/";
 
     public static void open(final Screen prevScreen, final LoginProcessHandler loginProcessHandler) {
-        final CCAccount account = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+        final CCAccount account = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().getClassicubeAccount();
 
         ClassiCubeHandler.requestServerList(account, serverList -> {
             ClassiCubeServerListScreen.SERVER_LIST.addAll(serverList.servers());
@@ -66,7 +66,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
     @Override
     protected void init() {
-        final CCAccount account = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+        final CCAccount account = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().getClassicubeAccount();
         if (account != null) {
             this.setupUrlSubtitle(CLASSICUBE_SERVER_LIST_URL);
         }
@@ -75,7 +75,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.logout"), button -> {
             close();
-            ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
+            ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().setClassicubeAccount(null);
             SERVER_LIST.clear();
         }).position(width - 60 - 5, 5).size(60, 20).build());
 
@@ -86,7 +86,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
-        final CCAccount account = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+        final CCAccount account = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().getClassicubeAccount();
         if (account != null) {
             context.drawTextWithShadow(textRenderer, Text.translatable("classicube.viafabricplus.profile"), 32, 6, -1);
             context.drawTextWithShadow(textRenderer, Text.of(account.username()), 32, 16, -1);

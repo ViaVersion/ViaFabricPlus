@@ -23,9 +23,9 @@ package com.viaversion.viafabricplus.screen;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.screen.VFPList;
-import com.viaversion.viafabricplus.screen.VFPListEntry;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.base.screen.VFPList;
+import com.viaversion.viafabricplus.base.screen.VFPListEntry;
+import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import com.viaversion.viafabricplus.screen.settings.SettingsScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

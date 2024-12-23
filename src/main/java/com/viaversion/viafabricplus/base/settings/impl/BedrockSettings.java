@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.base.settings.impl;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.IConfirmScreen;
 import com.viaversion.viafabricplus.base.save.impl.AccountsSave;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import com.viaversion.viafabricplus.base.settings.base.BooleanSetting;
 import com.viaversion.viafabricplus.base.settings.base.ButtonSetting;
 import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
@@ -70,7 +70,7 @@ public class BedrockSettings extends SettingGroup {
         
         @Override
         public MutableText displayValue() {
-            final StepFullBedrockSession.FullBedrockSession account = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().getBedrockAccount();
+            final StepFullBedrockSession.FullBedrockSession account = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().getBedrockAccount();
             if (account != null) {
                 return Text.translatable("click_to_set_bedrock_account.viafabricplus.display", account.getMcChain().getDisplayName());
             } else {
@@ -100,7 +100,7 @@ public class BedrockSettings extends SettingGroup {
     }
     
     private void openBedrockAccountLogin() {
-        final AccountsSave accountsSave = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave();
+        final AccountsSave accountsSave = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave();
 
         final MinecraftClient client = MinecraftClient.getInstance();
         final Screen prevScreen = client.currentScreen;

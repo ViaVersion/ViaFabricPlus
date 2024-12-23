@@ -19,32 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.settings.base;
+package com.viaversion.viafabricplus.base;
 
-import com.google.gson.JsonObject;
-import com.viaversion.viafabricplus.base.screen.VFPListEntry;
-import com.viaversion.viafabricplus.screen.settings.ButtonSettingRenderer;
-import net.minecraft.text.MutableText;
+import com.viaversion.viafabricplus.api.ChangeProtocolVersionCallback;
+import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
-public class ButtonSetting extends AbstractSetting<Runnable> {
+public final class Events {
 
-    public ButtonSetting(SettingGroup parent, MutableText name, Runnable onClick) {
-        super(parent, name, onClick);
-    }
+    public static final Event<LoadingCycleCallback> LOADING_CYCLE = EventFactory.createArrayBacked(LoadingCycleCallback.class, listeners -> state -> {
+        for (LoadingCycleCallback listener : listeners) {
+            listener.onLoadCycle(state);
+        }
+    });
 
-    @Override
-    public VFPListEntry makeSettingRenderer() {
-        return new ButtonSettingRenderer(this);
-    }
-
-    public MutableText displayValue() {
-        return getName();
-    }
-
-    @Override
-    public void write(JsonObject object) {}
-
-    @Override
-    public void read(JsonObject object) {}
+    public static final Event<ChangeProtocolVersionCallback> CHANGE_PROTOCOL_VERSION = EventFactory.createArrayBacked(ChangeProtocolVersionCallback.class, listeners -> (oldVersion, newVersion) -> {
+        for (ChangeProtocolVersionCallback listener : listeners) {
+            listener.onChangeProtocolVersion(oldVersion, newVersion);
+        }
+    });
 
 }

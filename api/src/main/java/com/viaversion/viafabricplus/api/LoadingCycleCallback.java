@@ -21,18 +21,57 @@
 
 package com.viaversion.viafabricplus.api;
 
+/**
+ * This event is fired in various loading stages of ViaFabricPlus. See {@link LoadingCycle} for more information.
+ */
 public interface LoadingCycleCallback {
 
     enum LoadingCycle {
 
+        /**
+         * Earliest stage before ViaFabricPlus loads anything.
+         */
         INITIAL_LOAD,
+
+        /**
+         * Before the settings are loaded.
+         */
         PRE_SETTINGS_LOAD,
+
+        /**
+         * After the settings are loaded.
+         */
         POST_SETTINGS_LOAD,
+
+        /**
+         * Before the files are loaded.
+         */
         PRE_FILES_LOAD,
+
+        /**
+         * After the files are loaded.
+         */
         POST_FILES_LOAD,
+
+        /**
+         * Before ViaVersion is loaded.
+         */
         PRE_VIAVERSION_LOAD,
+
+        /**
+         * After ViaVersion is loaded.
+         */
         POST_VIAVERSION_LOAD,
-        FINAL_LOAD
+
+        /**
+         * Final stage after everything is loaded.
+         */
+        FINAL_LOAD,
+
+        /**
+         * After the game is loaded.
+         */
+        POST_GAME_LOAD
 
     }
 

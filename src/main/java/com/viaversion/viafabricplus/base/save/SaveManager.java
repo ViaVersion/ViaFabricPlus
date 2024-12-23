@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.base.save;
 
-import com.viaversion.viafabricplus.event.LoadSaveFilesCallback;
+import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.base.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.base.save.impl.SettingsSave;
 import com.viaversion.viafabricplus.base.settings.SettingsManager;
@@ -39,7 +40,7 @@ public class SaveManager {
     private final AccountsSave accountsSave;
 
     public SaveManager(final SettingsManager settingsManager) {
-        LoadSaveFilesCallback.EVENT.invoker().onLoadSaveFiles(this, LoadSaveFilesCallback.State.PRE);
+        Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.PRE_FILES_LOAD);
 
         // Register saves
         add(
@@ -58,8 +59,6 @@ public class SaveManager {
                 save.save();
             }
         }));
-
-        LoadSaveFilesCallback.EVENT.invoker().onLoadSaveFiles(this, LoadSaveFilesCallback.State.POST);
     }
 
     @ApiStatus.Internal
@@ -67,7 +66,7 @@ public class SaveManager {
         for (AbstractSave save : saves) {
             save.postInit();
         }
-        LoadSaveFilesCallback.EVENT.invoker().onLoadSaveFiles(this, LoadSaveFilesCallback.State.POST_INIT);
+        Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.POST_FILES_LOAD);
     }
 
     public void add(final AbstractSave... saves) {

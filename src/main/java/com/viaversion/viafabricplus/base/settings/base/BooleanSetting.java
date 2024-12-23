@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.base.settings.base;
 
 import com.google.gson.JsonObject;
-import com.viaversion.viafabricplus.screen.VFPListEntry;
+import com.viaversion.viafabricplus.base.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.settings.BooleanSettingRenderer;
 import net.minecraft.text.MutableText;
 

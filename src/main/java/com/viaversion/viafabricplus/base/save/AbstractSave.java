@@ -26,26 +26,25 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 /**
  * This class can be used to save data to a file.
  */
-@SuppressWarnings("ResultOfMethodCallIgnored")
 public abstract class AbstractSave {
 
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    private final File file;
+    private final Path path;
 
     /**
      * @param name The name of the file.
      */
     public AbstractSave(final String name) {
-        file = new File(ViaFabricPlusImpl.global().getDirectory(), name + ".json");
+        path = ViaFabricPlusImpl.INSTANCE.rootPath().resolve(name + ".json");
     }
 
     /**
@@ -53,11 +52,11 @@ public abstract class AbstractSave {
      * It will read the file and call the {@link #read(JsonObject)} method.
      */
     public void init() {
-        if (file.exists()) {
-            try (final FileReader fr = new FileReader(file)) {
-                read(GSON.fromJson(fr, JsonObject.class));
-            } catch (Exception e) {
-                ViaFabricPlusImpl.global().getLogger().error("Failed to read file: {}!", file.getName(), e);
+        if (Files.exists(path)) {
+            try {
+                read(GSON.fromJson(Files.readString(path), JsonObject.class));
+            } catch (IOException e) {
+                ViaFabricPlusImpl.INSTANCE.logger().error("Failed to read file: {}!", path.getFileName(), e);
             }
         }
     }
@@ -67,19 +66,12 @@ public abstract class AbstractSave {
      */
     public void save() {
         try {
-            file.delete();
-            file.createNewFile();
-        } catch (IOException e) {
-            ViaFabricPlusImpl.global().getLogger().error("Failed to create file: {}!", file.getName(), e);
-        }
+            final JsonObject object = new JsonObject();
+            write(object);
 
-        try (final FileWriter fw = new FileWriter(file)) {
-            final JsonObject parentNode = new JsonObject();
-            write(parentNode);
-            fw.write(GSON.toJson(parentNode));
-            fw.flush();
+            Files.writeString(path, GSON.toJson(object), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            ViaFabricPlusImpl.global().getLogger().error("Failed to write file: {}!", file.getName(), e);
+            ViaFabricPlusImpl.INSTANCE.logger().error("Failed to write file: {}!", path.getFileName(), e);
         }
     }
 
@@ -89,8 +81,8 @@ public abstract class AbstractSave {
     public void postInit() {
     }
 
-    public File getFile() {
-        return file;
+    public Path getPath() {
+        return path;
     }
 
 }

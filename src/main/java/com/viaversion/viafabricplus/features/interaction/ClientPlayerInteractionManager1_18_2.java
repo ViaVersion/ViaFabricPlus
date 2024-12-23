@@ -76,7 +76,7 @@ public class ClientPlayerInteractionManager1_18_2 {
         }
 
         while (unAckedActions.size() >= 50) {
-            ViaFabricPlusImpl.global().getLogger().warn("Too many unacked block actions, dropping {}", unAckedActions.firstKey());
+            ViaFabricPlusImpl.INSTANCE.logger().warn("Too many unacked block actions, dropping {}", unAckedActions.firstKey());
             unAckedActions.removeFirst();
         }
     }

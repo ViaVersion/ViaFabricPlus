@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.base.settings.base;
 import com.google.gson.JsonObject;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.screen.VFPListEntry;
+import com.viaversion.viafabricplus.base.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.settings.VersionedBooleanSettingRenderer;
 import net.minecraft.text.MutableText;
 import net.raphimc.vialoader.util.VersionRange;

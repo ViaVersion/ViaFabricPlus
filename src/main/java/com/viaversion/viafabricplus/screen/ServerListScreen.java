@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.screen;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import com.viaversion.viafabricplus.screen.classic4j.BetaCraftScreen;
 import com.viaversion.viafabricplus.screen.classic4j.ClassiCubeLoginScreen;
 import com.viaversion.viafabricplus.screen.classic4j.ClassiCubeServerListScreen;
@@ -45,7 +45,7 @@ public class ServerListScreen extends VFPScreen {
         this.setupDefaultSubtitle();
 
         // ClassiCube
-        final boolean loggedIn = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().getClassicubeAccount() != null;
+        final boolean loggedIn = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().getClassicubeAccount() != null;
 
         final ButtonWidget.Builder classiCubeBuilder = ButtonWidget.builder(ClassiCubeServerListScreen.INSTANCE.getTitle(), button -> {
             if (!loggedIn) {
@@ -70,7 +70,7 @@ public class ServerListScreen extends VFPScreen {
         final ButtonWidget.Builder bedrockRealmsBuilder = ButtonWidget.builder(BedrockRealmsScreen.INSTANCE.getTitle(), button -> {
             BedrockRealmsScreen.INSTANCE.open(this);
         }).position(this.width / 2 - 100, this.height / 2 - 25 + 40 + 6).size(200, 20);
-        final boolean missingAccount = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().getBedrockAccount() == null; // Only check for presence, later validate
+        final boolean missingAccount = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().getBedrockAccount() == null; // Only check for presence, later validate
         if (missingAccount) {
             bedrockRealmsBuilder.tooltip(Tooltip.of(Text.translatable("bedrock_realms.viafabricplus.warning")));
         }

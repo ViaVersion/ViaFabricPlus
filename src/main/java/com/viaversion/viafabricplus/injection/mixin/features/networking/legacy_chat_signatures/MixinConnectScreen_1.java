@@ -73,7 +73,7 @@ public abstract class MixinConnectScreen_1 {
                     }
                 }
             } else {
-                ViaFabricPlusImpl.global().getLogger().error("Could not get public key signature. Joining servers with enforce-secure-profiles enabled will not work!");
+                ViaFabricPlusImpl.INSTANCE.logger().error("Could not get public key signature. Joining servers with enforce-secure-profiles enabled will not work!");
             }
         }
     }

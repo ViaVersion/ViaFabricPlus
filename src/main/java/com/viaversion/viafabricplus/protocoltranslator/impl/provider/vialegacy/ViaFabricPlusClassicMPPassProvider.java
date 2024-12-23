@@ -47,9 +47,9 @@ public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
                 try {
                     Via.getManager().getProviders().get(OldAuthProvider.class).sendAuthRequest(user, serverId);
                 } catch (Throwable e) {
-                    ViaFabricPlusImpl.global().getLogger().error("Error occurred while verifying session", e);
+                    ViaFabricPlusImpl.INSTANCE.logger().error("Error occurred while verifying session", e);
                 }
-            }, throwable -> ViaFabricPlusImpl.global().getLogger().error("Error occurred while requesting the MP-Pass to verify session", throwable));
+            }, throwable -> ViaFabricPlusImpl.INSTANCE.logger().error("Error occurred while requesting the MP-Pass to verify session", throwable));
         }
 
         return super.getMpPass(user);
