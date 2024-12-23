@@ -25,8 +25,8 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.viaversion.viafabricplus.features.versioned.classic.command.ListExtensionsCommand;
-import com.viaversion.viafabricplus.features.versioned.classic.command.SetTimeCommand;
+import com.viaversion.viafabricplus.old.versioned.classic.command.ListExtensionsCommand;
+import com.viaversion.viafabricplus.old.versioned.classic.command.SetTimeCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.raphimc.vialoader.impl.viaversion.VLCommandHandler;
 

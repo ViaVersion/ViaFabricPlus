@@ -22,18 +22,14 @@
 package com.viaversion.viafabricplus.injection.mixin.old.minecraft.screen.screenhandler;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.features2.recipe_emulation.Recipes1_11_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.AbstractCraftingScreenHandler;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CraftingScreenHandler.class)
 public abstract class MixinCraftingScreenHandler extends AbstractCraftingScreenHandler {

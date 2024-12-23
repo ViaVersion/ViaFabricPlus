@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.old.minecraft.entity;
 
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
 import net.minecraft.client.render.entity.feature.VillagerClothingFeatureRenderer;
 import net.minecraft.village.VillagerData;
 import net.minecraft.village.VillagerProfession;

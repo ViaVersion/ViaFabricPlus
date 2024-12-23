@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.old.minecraft.item;
 
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
 import net.minecraft.client.item.ItemModelManager;
 import net.minecraft.component.ComponentType;
 import net.minecraft.item.ItemStack;

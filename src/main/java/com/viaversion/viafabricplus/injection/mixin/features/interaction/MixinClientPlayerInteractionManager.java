@@ -28,16 +28,15 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.packet.ServerboundPackets1_16_2;
 import com.viaversion.viaversion.protocols.v1_16_4to1_17.Protocol1_16_4To1_17;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.versioned.ActionResultException1_12_2;
-import com.viaversion.viafabricplus.features2.interaction.ClientPlayerInteractionManager1_18_2;
+import com.viaversion.viafabricplus.old.versioned.ActionResultException1_12_2;
+import com.viaversion.viafabricplus.features.interaction.ClientPlayerInteractionManager1_18_2;
 import com.viaversion.viafabricplus.injection.access.IClientConnection;
 import com.viaversion.viafabricplus.injection.access.IClientPlayerInteractionManager;
 import com.viaversion.viafabricplus.injection.access.IScreenHandler;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusHandItemProvider;
 import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowBlock;
@@ -113,14 +112,6 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
 
     @Unique
     private final ClientPlayerInteractionManager1_18_2 viaFabricPlus$1_18_2InteractionManager = new ClientPlayerInteractionManager1_18_2();
-
-    @Inject(method = {"pickItemFromBlock", "pickItemFromEntity"}, at = @At("HEAD"), cancellable = true)
-    private void pickItemClientside(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            ViaFabricPlus.global().getLogger().error("Directly calling pickItemFromBlock or pickItemFromEntity is not supported in <=1.21.3. Use MinecraftClient#doItemPick instead.");
-            ci.cancel();
-        }
-    }
 
     @Redirect(method = "interactBlockInternal", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;CONSUME:Lnet/minecraft/util/ActionResult$Success;"))
     private ActionResult.Success changeSpectatorAction() {

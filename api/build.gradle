@@ -1,0 +1,7 @@
+plugins {
+    id "vfp.base-conventions"
+}
+
+dependencies {
+    compileOnly "com.viaversion:viaversion-common:5.2.1-SNAPSHOT"
+}

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.ui.chat_indicator;
 
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,14 +1,13 @@
 plugins {
-	id "idea"
-	id "maven-publish"
-	id "fabric-loom" version "1.9-SNAPSHOT"
+	id "vfp.base-conventions"
 }
 
 base {
-	group = project.maven_group
-	archivesName = project.maven_name
-	version = project.maven_version
-	description = project.maven_description
+	archivesName = "ViaFabricPlus"
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/viafabricplus.accesswidener")
 }
 
 configurations {
@@ -20,58 +19,22 @@ configurations {
 	modCompileOnlyApi.extendsFrom modJij
 }
 
-repositories {
-	mavenCentral()
-	maven {
-		name = "ViaVersion"
-		url = "https://repo.viaversion.com"
-	}
-	maven {
-		name = "Lenni0451"
-		url = "https://maven.lenni0451.net/everything"
-	}
-	maven {
-		name = "OpenCollab Snapshots"
-		url = "https://repo.opencollab.dev/maven-snapshots/"
-	}
-	maven {
-		name = "TerraformersMC"
-		url = "https://maven.terraformersmc.com/releases"
-	}
-	maven {
-		name = "Jitpack"
-		url = "https://jitpack.io"
-
-		content {
-			includeGroup "com.github.Oryxel"
-		}
-	}
-}
-
-loom {
-	accessWidenerPath = file("src/main/resources/viafabricplus.accesswidener")
-}
-
 dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_version}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modJij fabricApi.module("fabric-api-base", project.fabric_api_version)
+	modJij fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
+	modJij fabricApi.module("fabric-networking-api-v1", project.fabric_api_version)
+	modJij fabricApi.module("fabric-command-api-v2", project.fabric_api_version)
+	modJij fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version)
+	modJij fabricApi.module("fabric-particles-v1", project.fabric_api_version)
+	modJij fabricApi.module("fabric-registry-sync-v0", project.fabric_api_version)
 
-	modJij(fabricApi.module("fabric-api-base", project.fabric_api_version))
-	modJij(fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version))
-	modJij(fabricApi.module("fabric-networking-api-v1", project.fabric_api_version))
-	modJij(fabricApi.module("fabric-command-api-v2", project.fabric_api_version))
-	modJij(fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version))
-	modJij(fabricApi.module("fabric-particles-v1", project.fabric_api_version))
-	modJij(fabricApi.module("fabric-registry-sync-v0", project.fabric_api_version))
+	include implementation(project(":viafabricplus-api")) // Workaround resolution errors by not using jij tasks
 
-	modCompileOnly "com.terraformersmc:modmenu:12.0.0"
-
-	jij "com.viaversion:viaversion-common:5.2.1-20241215.172424-10"
-	jij "com.viaversion:viabackwards-common:5.2.1-20241216.002516-2"
+	jij "com.viaversion:viaversion-common:5.2.1-SNAPSHOT"
+	jij "com.viaversion:viabackwards-common:5.2.1-SNAPSHOT"
 	jij "net.raphimc:viaaprilfools-common:3.0.4"
-	jij "net.raphimc:ViaLegacy:3.0.7-20241215.161313-3"
-	jij ("net.raphimc:ViaBedrock:0.0.14-20241216.001100-6") {
+	jij "net.raphimc:ViaLegacy:3.0.7-SNAPSHOT"
+	jij ("net.raphimc:ViaBedrock:0.0.14-SNAPSHOT") {
 		exclude group: "io.jsonwebtoken"
 		exclude group: "com.mojang", module: "brigadier"
 	}
@@ -93,6 +56,8 @@ dependencies {
 		exclude group: "io.netty"
 	}
 	jij "de.florianmichael:Classic4J:2.1.1-SNAPSHOT"
+
+	modCompileOnly "com.terraformersmc:modmenu:12.0.0"
 
 	// Fabric's jar in jar system doesn't support transitive dependencies, so we have to manually add them
 	afterEvaluate {
@@ -129,67 +94,11 @@ Provider<String> latestCommitHash() {
 	}.standardOutput.getAsText().map(String::trim)
 }
 
-java {
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
-}
-
 jar {
 	// Rename the project's license file to LICENSE_<project_name> to avoid conflicts
 	from("LICENSE") {
 		rename {
 			"${it}_${project.archivesBaseName}"
-		}
-	}
-}
-
-publishing {
-	repositories {
-		maven {
-			name = "Via"
-			url = "https://repo.viaversion.com/"
-			credentials(PasswordCredentials)
-			authentication {
-				basic(BasicAuthentication)
-			}
-		}
-	}
-	publications {
-		maven(MavenPublication) {
-			groupId = project.maven_group
-			artifactId = project.maven_name
-			version = project.maven_version
-
-			from components.java
-
-			pom {
-				name = artifactId
-				description = project.description
-				url = "https://github.com/ViaVersion/ViaFabricPlus"
-				licenses {
-					license {
-						name = "GPL-3.0 License"
-						url = "https://github.com/ViaVersion/ViaFabricPlus/blob/main/LICENSE"
-					}
-				}
-				developers {
-					developer {
-						id = "FlorianMichael"
-						name = "EnZaXD"
-						email = "florian.michael07@gmail.com"
-					}
-					developer {
-						id = "RK_01"
-					}
-				}
-				scm {
-					connection = "scm:git:git://github.com/ViaVersion/ViaFabricPlus.git"
-					developerConnection = "scm:git:ssh://github.com/ViaVersion/ViaFabricPlus.git"
-					url = "github.com/ViaVersion/ViaFabricPlus"
-				}
-			}
 		}
 	}
 }

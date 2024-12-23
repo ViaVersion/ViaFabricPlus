@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.screen.realms;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
@@ -72,7 +72,7 @@ public class BedrockRealmsScreen extends VFPScreen {
     }
 
     private void loadRealms() {
-        final StepFullBedrockSession.FullBedrockSession account = ViaFabricPlus.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
+        final StepFullBedrockSession.FullBedrockSession account = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
         if (account == null) { // Just in case...
             setupSubtitle(Text.translatable("bedrock_realms.viafabricplus.warning"));
             return;
@@ -92,7 +92,7 @@ public class BedrockRealmsScreen extends VFPScreen {
 
     private Void error(final String message, final Throwable throwable) {
         setupSubtitle(Text.translatable("bedrock_realms.viafabricplus.error"));
-        ViaFabricPlus.global().getLogger().log(Level.ERROR, message, throwable);
+        ViaFabricPlusImpl.global().getLogger().log(Level.ERROR, message, throwable);
         return null;
     }
 

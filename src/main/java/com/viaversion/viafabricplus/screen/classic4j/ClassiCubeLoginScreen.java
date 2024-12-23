@@ -24,9 +24,9 @@ package com.viaversion.viafabricplus.screen.classic4j;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.ITextFieldWidget;
-import com.viaversion.viafabricplus.save.impl.AccountsSave;
+import com.viaversion.viafabricplus.base.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
@@ -63,7 +63,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
         ((ITextFieldWidget) nameField).viaFabricPlus$unlockForbiddenCharacters();
         ((ITextFieldWidget) passwordField).viaFabricPlus$unlockForbiddenCharacters();
 
-        final AccountsSave accountsSave = ViaFabricPlus.global().getSaveManager().getAccountsSave();
+        final AccountsSave accountsSave = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave();
         if (accountsSave.getClassicubeAccount() != null) {
             nameField.setText(accountsSave.getClassicubeAccount().username());
             passwordField.setText(accountsSave.getClassicubeAccount().username());
@@ -87,7 +87,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
 
                 @Override
                 public void handleException(Throwable throwable) {
-                    ViaFabricPlus.global().getLogger().error("Error while logging in to ClassiCube!", throwable);
+                    ViaFabricPlusImpl.global().getLogger().error("Error while logging in to ClassiCube!", throwable);
                     setupSubtitle(Text.of(throwable.getMessage()));
                 }
             });
@@ -97,7 +97,7 @@ public class ClassiCubeLoginScreen extends VFPScreen {
     @Override
     public void close() {
         // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
-        ViaFabricPlus.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
+        ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
         super.close();
     }
 

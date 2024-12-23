@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.ClientConnection;
 import org.spongepowered.asm.mixin.Mixin;
@@ -43,7 +43,7 @@ public abstract class MixinClientConnection {
                 // Thrown when server is not reachable
                 return;
             }
-            ViaFabricPlus.global().getLogger().error("An exception occurred while handling a packet", ex);
+            ViaFabricPlusImpl.global().getLogger().error("An exception occurred while handling a packet", ex);
         }
     }
 

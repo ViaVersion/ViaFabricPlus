@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.text_rendering.non_existing_characters;
 
-import com.viaversion.viafabricplus.features2.text_rendering.non_existing_characters.UnicodeFontFix1_12_2;
+import com.viaversion.viafabricplus.features.text_rendering.non_existing_characters.UnicodeFontFix1_12_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.resource.ResourceManager;

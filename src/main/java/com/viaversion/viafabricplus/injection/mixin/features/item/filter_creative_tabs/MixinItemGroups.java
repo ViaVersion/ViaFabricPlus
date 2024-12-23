@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.filter_creati
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.RegistryWrapper;

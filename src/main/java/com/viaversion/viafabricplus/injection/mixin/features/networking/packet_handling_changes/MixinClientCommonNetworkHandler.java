@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.network.ClientConnection;

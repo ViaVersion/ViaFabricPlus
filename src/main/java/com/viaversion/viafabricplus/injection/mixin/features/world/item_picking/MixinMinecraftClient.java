@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.world.item_picking;
 
-import com.viaversion.viafabricplus.features2.world.item_picking.ItemPick1_21_3;
+import com.viaversion.viafabricplus.features.world.item_picking.ItemPick1_21_3;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;

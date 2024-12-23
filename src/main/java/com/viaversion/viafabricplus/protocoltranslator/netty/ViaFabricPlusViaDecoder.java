@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.protocoltranslator.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.text.Text;
@@ -47,7 +47,7 @@ public class ViaFabricPlusViaDecoder extends ViaDecoder {
                 super.channelRead(ctx, msg);
             } catch (Throwable t) {
                 // Mode 2: Just log the error
-                ViaFabricPlus.global().getLogger().error("Error occurred while decoding packet in ViaFabricPlus decoder", t);
+                ViaFabricPlusImpl.global().getLogger().error("Error occurred while decoding packet in ViaFabricPlus decoder", t);
                 if (mode == 1) {
                     // Mode 1: Send a message to the player that an error occurred and log the error
                     ChatUtil.sendPrefixedMessage(Text.translatable("translation.viafabricplus.packet_error").formatted(Formatting.RED));

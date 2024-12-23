@@ -21,13 +21,14 @@
 
 package com.viaversion.viafabricplus.util;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.lenni0451.reflect.ClassLoaders;
 import net.lenni0451.reflect.stream.RStream;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Allows the user to override the Via* jar files with custom ones using the "jars" folder in the run directory
@@ -38,9 +39,7 @@ public class ClassLoaderPriorityUtil {
     /**
      * Loads all overriding jars
      */
-    public static void loadOverridingJars(final File directory) {
-        final Logger logger = ViaFabricPlus.global().getLogger();
-
+    public static void loadOverridingJars(final Path path, final Logger logger) {
         try {
             final File jarsDirectory = new File(directory, "jars");
             if (!jarsDirectory.exists()) {

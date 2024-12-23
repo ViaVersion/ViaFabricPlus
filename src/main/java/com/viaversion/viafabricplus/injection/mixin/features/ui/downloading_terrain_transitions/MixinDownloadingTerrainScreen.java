@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.ui.downloading_terrain_transitions;
 
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

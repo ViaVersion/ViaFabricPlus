@@ -36,7 +36,7 @@ import com.viaversion.viaversion.api.protocol.version.VersionType;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import com.viaversion.viafabricplus.event.ChangeProtocolVersionCallback;
-import com.viaversion.viafabricplus.features.viaversion.ViaFabricPlusProtocol;
+import com.viaversion.viafabricplus.old.viaversion.ViaFabricPlusProtocol;
 import com.viaversion.viafabricplus.injection.access.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.ViaFabricPlusVLCommandHandler;
 import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
@@ -68,6 +68,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.List;
@@ -159,21 +160,10 @@ public class ProtocolTranslator {
         }
     }
 
-    /**
-     * This method is used when you need the target version after connecting to the server.
-     *
-     * @return the target version
-     */
     public static ProtocolVersion getTargetVersion() {
         return targetVersion;
     }
 
-    /**
-     * Gets the target version from the channel attribute, can be used in early stages of the connection
-     *
-     * @param channel the channel
-     * @return the target version
-     */
     public static ProtocolVersion getTargetVersion(final Channel channel) {
         if (channel == null || !channel.hasAttr(TARGET_VERSION_ATTRIBUTE_KEY)) {
             throw new IllegalStateException("Target version attribute not set");
@@ -181,21 +171,10 @@ public class ProtocolTranslator {
         return channel.attr(TARGET_VERSION_ATTRIBUTE_KEY).get();
     }
 
-    /**
-     * Sets the target version
-     *
-     * @param newVersion the target version
-     */
     public static void setTargetVersion(final ProtocolVersion newVersion) {
         setTargetVersion(newVersion, false);
     }
 
-    /**
-     * Sets the target version
-     *
-     * @param newVersion         the target version
-     * @param revertOnDisconnect if true, the previous version will be set when the player disconnects from the server
-     */
     public static void setTargetVersion(final ProtocolVersion newVersion, final boolean revertOnDisconnect) {
         if (newVersion == null) {
             return;
@@ -225,11 +204,6 @@ public class ProtocolTranslator {
         });
     }
 
-    /**
-     * @param clientVersion The client version
-     * @param serverVersion The server version
-     * @return Creates a dummy UserConnection class with a valid protocol pipeline to emulate packets
-     */
     public static UserConnection createDummyUserConnection(final ProtocolVersion clientVersion, final ProtocolVersion serverVersion) {
         final UserConnection user = new UserConnectionImpl(NoPacketSendChannel.INSTANCE, true);
         final ProtocolPipeline pipeline = new ProtocolPipelineImpl(user);
@@ -255,9 +229,6 @@ public class ProtocolTranslator {
         return user;
     }
 
-    /**
-     * @return the current UserConnection of the connection to the server, if the player isn't connected to a server it will return null
-     */
     public static UserConnection getPlayNetworkUserConnection() {
         final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
         if (handler == null) {
@@ -314,7 +285,7 @@ public class ProtocolTranslator {
      * @return A CompletableFuture that will be completed when the initialization is done
      */
     @ApiStatus.Internal
-    public static CompletableFuture<Void> init(final File directory) {
+    public static CompletableFuture<Void> init(final Path path) {
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new IllegalStateException("Native version is not the same as the current version");
         }

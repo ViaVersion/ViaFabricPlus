@@ -32,8 +32,8 @@ import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
 import com.viaversion.viaversion.protocols.v1_12to1_12_1.packet.ClientboundPackets1_12_1;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.viaversion.ViaFabricPlusProtocol;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.old.viaversion.ViaFabricPlusProtocol;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.MinecraftClient;
@@ -68,7 +68,7 @@ public class ItemTranslator {
             setCreativeModeSlot.read(Types.SHORT); // slot
             return setCreativeModeSlot.read(getServerboundItemType(targetVersion)); // item
         } catch (Throwable t) {
-            ViaFabricPlus.global().getLogger().error("Error converting native item stack to ViaVersion {} item stack", targetVersion, t);
+            ViaFabricPlusImpl.global().getLogger().error("Error converting native item stack to ViaVersion {} item stack", targetVersion, t);
             return null;
         }
     }
@@ -105,7 +105,7 @@ public class ItemTranslator {
             buf.readShort(); // slot
             return ItemStack.OPTIONAL_PACKET_CODEC.decode(buf);
         } catch (Throwable t) {
-            ViaFabricPlus.global().getLogger().error("Error converting ViaVersion {} item to native item stack", sourceVersion, t);
+            ViaFabricPlusImpl.global().getLogger().error("Error converting ViaVersion {} item to native item stack", sourceVersion, t);
             return ItemStack.EMPTY;
         }
     }

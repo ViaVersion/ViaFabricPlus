@@ -22,11 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_completions;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.features.ClientsideFeatures;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
-import net.minecraft.client.gui.hud.ChatHud;
-import net.minecraft.client.gui.hud.MessageIndicator;
+import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;

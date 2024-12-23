@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.footstep_particle;
 
 import com.viaversion.viaversion.api.data.MappingDataBase;
-import com.viaversion.viafabricplus.features2.footstep_particle.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1_12_2;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

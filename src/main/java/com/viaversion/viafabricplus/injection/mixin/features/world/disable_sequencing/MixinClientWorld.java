@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.world.disable_sequencing;
 
-import com.viaversion.viafabricplus.features2.world.disable_sequencing.PendingUpdateManager1_18_2;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.features.world.disable_sequencing.PendingUpdateManager1_18_2;
+import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
 import net.minecraft.client.network.PendingUpdateManager;
 import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Final;

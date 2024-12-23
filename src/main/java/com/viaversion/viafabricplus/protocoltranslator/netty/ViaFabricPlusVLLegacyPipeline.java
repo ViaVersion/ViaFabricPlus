@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.protocoltranslator.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.viaversion.ViaFabricPlusProtocol;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.old.viaversion.ViaFabricPlusProtocol;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.handler.HandlerNames;
@@ -63,7 +63,7 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
         if (evt.getClass().getName().equals("me.steinborn.krypton.mod.shared.misc.KryptonPipelineEvent")) {
             if (evt.toString().equals("COMPRESSION_ENABLED")) {
                 super.userEventTriggered(ctx, CompressionReorderEvent.INSTANCE);
-                ViaFabricPlus.global().getLogger().info("Compression has been re-ordered after \"Krypton\"");
+                ViaFabricPlusImpl.global().getLogger().info("Compression has been re-ordered after \"Krypton\"");
                 return;
             }
         }

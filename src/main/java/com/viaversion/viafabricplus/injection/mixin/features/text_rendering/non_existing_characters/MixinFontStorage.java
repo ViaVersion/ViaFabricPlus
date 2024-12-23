@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.text_rendering.non_existing_characters;
 
-import com.viaversion.viafabricplus.features2.text_rendering.non_existing_characters.RenderableGlyphDiff;
-import com.viaversion.viafabricplus.features2.text_rendering.non_existing_characters.BuiltinEmptyGlyph1_12_2;
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.features.text_rendering.non_existing_characters.RenderableGlyphDiff;
+import com.viaversion.viafabricplus.features.text_rendering.non_existing_characters.BuiltinEmptyGlyph1_12_2;
+import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.*;
 import net.minecraft.util.Identifier;

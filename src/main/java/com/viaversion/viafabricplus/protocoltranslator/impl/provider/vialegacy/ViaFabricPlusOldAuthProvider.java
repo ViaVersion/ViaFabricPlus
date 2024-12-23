@@ -22,9 +22,9 @@
 package com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
+import com.viaversion.viafabricplus.base.settings.impl.AuthenticationSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -43,7 +43,7 @@ public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
             client.getSessionService().joinServer(client.getSession().getUuidOrNull(), client.getSession().getAccessToken(), serverId);
         } catch (Exception e) {
             user.getChannel().attr(ProtocolTranslator.CLIENT_CONNECTION_ATTRIBUTE_KEY).get().disconnect(ChatUtil.prefixText(Text.translatable("betacraft.viafabricplus.failed_to_verify_session")));
-            ViaFabricPlus.global().getLogger().error("Error occurred while calling join server to verify session", e);
+            ViaFabricPlusImpl.global().getLogger().error("Error occurred while calling join server to verify session", e);
         }
     }
 

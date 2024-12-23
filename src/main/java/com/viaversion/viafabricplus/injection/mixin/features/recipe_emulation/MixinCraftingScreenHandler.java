@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.recipe_emulation;
 
-import com.viaversion.viafabricplus.features2.recipe_emulation.Recipes1_11_2;
+import com.viaversion.viafabricplus.features.recipe_emulation.Recipes1_11_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.inventory.Inventory;

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.cpe_extensions;
 
-import com.viaversion.viafabricplus.features2.cpe_extensions.CPEAdditions;
+import com.viaversion.viafabricplus.features.cpe_extensions.CPEAdditions;
 import net.minecraft.client.render.WeatherRendering;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

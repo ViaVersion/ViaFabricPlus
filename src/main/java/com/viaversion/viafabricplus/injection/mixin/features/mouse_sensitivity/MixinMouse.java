@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.mouse_sensitivity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.features2.mouse_sensitivity.MouseSensitivity1_13_2;
+import com.viaversion.viafabricplus.features.mouse_sensitivity.MouseSensitivity1_13_2;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.option.SimpleOption;

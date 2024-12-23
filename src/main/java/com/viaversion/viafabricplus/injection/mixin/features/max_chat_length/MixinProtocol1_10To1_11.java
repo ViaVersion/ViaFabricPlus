@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.max_chat_length;
 
-import com.viaversion.viafabricplus.features2.max_chat_length.MaxChatLength;
+import com.viaversion.viafabricplus.features.max_chat_length.MaxChatLength;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;

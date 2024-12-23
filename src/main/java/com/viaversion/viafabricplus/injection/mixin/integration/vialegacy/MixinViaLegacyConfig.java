@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.integration.vialegacy;
 
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
 import net.raphimc.vialegacy.ViaLegacyConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

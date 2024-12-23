@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.legacy_chat_signatures;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.IClientConnection;
 import com.viaversion.viafabricplus.injection.access.legacy_chat_signatures.ILegacyKeySignatureStorage;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -73,7 +73,7 @@ public abstract class MixinConnectScreen_1 {
                     }
                 }
             } else {
-                ViaFabricPlus.global().getLogger().error("Could not get public key signature. Joining servers with enforce-secure-profiles enabled will not work!");
+                ViaFabricPlusImpl.global().getLogger().error("Could not get public key signature. Joining servers with enforce-secure-profiles enabled will not work!");
             }
         }
     }

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.ui.remove_newer_screen_features;
 
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
 import net.minecraft.block.entity.CommandBlockBlockEntity;
 import net.minecraft.client.gui.screen.ingame.CommandBlockScreen;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;

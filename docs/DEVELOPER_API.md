@@ -87,7 +87,7 @@ ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> {
 
 ViaFabricPlus uses [ViaVersion](https://github.com/ViaVersion/ViaVersion) for protocol translation, so the ViaVersion API can be used.
 
-The general API endpoint for ViaFabricPlus specifics is `ProtocolTranslator` 
+The general API point for ViaFabricPlus specifics is `ProtocolTranslator` 
 ```java
 // Get and change the current selected version
 final ProtocolVersion version = ProtocolTranslator.getTargetVersion();

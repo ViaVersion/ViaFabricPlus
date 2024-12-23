@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_completions;
 
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.widget.TextFieldWidget;

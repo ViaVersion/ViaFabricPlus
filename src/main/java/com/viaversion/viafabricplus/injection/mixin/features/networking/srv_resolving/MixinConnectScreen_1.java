@@ -21,28 +21,16 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.srv_resolving;
 
-import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.injection.access.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.network.ServerAddress;
-import net.minecraft.network.ClientConnection;
-import net.raphimc.minecraftauth.step.bedrock.StepMCChain;
-import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
-import net.raphimc.viabedrock.protocol.storage.AuthChainData;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.net.InetSocketAddress;
-import java.util.UUID;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {

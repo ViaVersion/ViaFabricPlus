@@ -27,7 +27,7 @@ import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;
 import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.packet.ClientboundPackets1_16_2;
 import com.viaversion.viaversion.protocols.v1_16_4to1_17.Protocol1_16_4To1_17;
 import com.viaversion.viaversion.protocols.v1_16_4to1_17.rewriter.WorldPacketRewriter1_17;
-import com.viaversion.viafabricplus.features2.classic_world_height.WorldHeightSupport;
+import com.viaversion.viafabricplus.features.classic_world_height.WorldHeightSupport;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

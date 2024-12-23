@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.item.tooltip_changes;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.features2.item.tooltip_changes.Enchantments1_14_4;
+import com.viaversion.viafabricplus.features.item.tooltip_changes.Enchantments1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.util.ItemUtil;
 import net.minecraft.component.ComponentType;

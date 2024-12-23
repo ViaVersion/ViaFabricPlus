@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.access;
 
-import com.viaversion.viafabricplus.features2.interaction.ClientPlayerInteractionManager1_18_2;
+import com.viaversion.viafabricplus.features.interaction.ClientPlayerInteractionManager1_18_2;
 
 public interface IClientPlayerInteractionManager {
 

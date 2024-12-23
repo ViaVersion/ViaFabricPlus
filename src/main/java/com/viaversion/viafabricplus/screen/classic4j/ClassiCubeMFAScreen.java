@@ -24,9 +24,9 @@ package com.viaversion.viafabricplus.screen.classic4j;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.screen.VFPScreen;
-import com.viaversion.viafabricplus.screen.base.ProtocolSelectionScreen;
+import com.viaversion.viafabricplus.screen.ProtocolSelectionScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -53,7 +53,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.login"), button -> {
             this.setupSubtitle(Text.translatable("classicube.viafabricplus.loading"));
-            final CCAccount account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+            final CCAccount account = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().getClassicubeAccount();
 
             ClassiCubeHandler.requestAuthentication(account, mfaField.getText(), new LoginProcessHandler() {
                 @Override
@@ -77,7 +77,7 @@ public class ClassiCubeMFAScreen extends VFPScreen {
     @Override
     public void close() {
         // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
-        ViaFabricPlus.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
+        ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().setClassicubeAccount(null);
         ProtocolSelectionScreen.INSTANCE.open(prevScreen);
     }
 

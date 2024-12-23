@@ -23,11 +23,11 @@ package com.viaversion.viafabricplus.injection.mixin.old.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.features.versioned.EnchantmentAttributesEmulation1_20_6;
-import com.viaversion.viafabricplus.features.versioned.visual.EntityRidingOffsetsPre1_20_2;
+import com.viaversion.viafabricplus.old.versioned.EnchantmentAttributesEmulation1_20_6;
+import com.viaversion.viafabricplus.old.versioned.visual.EntityRidingOffsetsPre1_20_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.entity.*;

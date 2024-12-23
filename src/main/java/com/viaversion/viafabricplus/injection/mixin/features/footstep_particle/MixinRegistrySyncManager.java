@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.footstep_particle;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.viaversion.viafabricplus.features2.footstep_particle.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1_12_2;
 import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;

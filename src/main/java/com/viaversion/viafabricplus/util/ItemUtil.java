@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.util;
 
-import com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;

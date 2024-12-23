@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.old.minecraft;
 
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;

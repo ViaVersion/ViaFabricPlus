@@ -30,7 +30,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ClientboundPackets1_14;
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 
 public class TextComponentTranslator {
@@ -57,7 +57,7 @@ public class TextComponentTranslator {
             openScreen.read(Types.VAR_INT); // type id
             return openScreen.read(Types.TAG); // title
         } catch (Throwable t) {
-            ViaFabricPlus.global().getLogger().error("Error converting ViaVersion 1.14 text component to native text component", t);
+            ViaFabricPlusImpl.global().getLogger().error("Error converting ViaVersion 1.14 text component to native text component", t);
             return null;
         }
     }

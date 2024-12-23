@@ -25,12 +25,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
-import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
+import com.viaversion.viafabricplus.base.settings.impl.AuthenticationSettings;
 import io.netty.channel.ChannelFuture;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.network.ServerInfo;
@@ -86,7 +86,7 @@ public abstract class MixinConnectScreen_1 {
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/session/Session;getUsername()Ljava/lang/String;"))
     private String useClassiCubeUsername(Session instance) {
         if (this.viaFabricPlus$useClassiCubeAccount) {
-            final CCAccount account = ViaFabricPlus.global().getSaveManager().getAccountsSave().getClassicubeAccount();
+            final CCAccount account = ViaFabricPlusImpl.global().getSaveManager().getAccountsSave().getClassicubeAccount();
             if (account != null) {
                 return account.username();
             }

@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.platform;
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonObject;
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusVLViaConfig;
@@ -81,7 +81,7 @@ public class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatformImpl 
     @Override
     public File getDataFolder() {
         // Move ViaLoader files directly into root folder
-        return ViaFabricPlus.global().getDirectory();
+        return ViaFabricPlusImpl.global().getDirectory();
     }
 
 }

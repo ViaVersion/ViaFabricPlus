@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.filter_creati
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.viaversion.viafabricplus.features2.item.filter_creative_tabs.ItemRegistryDiff;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemRegistryDiff;
+import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.max_chat_length;
 
-import com.viaversion.viafabricplus.features2.max_chat_length.MaxChatLength;
+import com.viaversion.viafabricplus.features.max_chat_length.MaxChatLength;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import org.spongepowered.asm.mixin.Mixin;

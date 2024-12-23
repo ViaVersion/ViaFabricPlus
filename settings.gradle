@@ -8,14 +8,16 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+rootProject.name = "viafabricplus"
+
+includeBuild("build-logic")
 
 setupViaSubproject("api")
-setupViaSubproject("legacy-compat")
-setupViaSubproject("visuals")
 setupViaSubproject("diff-generator")
 
 void setupViaSubproject(String name) {
-    var maven = "viafabricplus-" + name
-    include maven
-    project(":" + maven).projectDir = file(name)
+    var pName = "viafabricplus-" + name
+
+    include pName
+    project(":" + pName).projectDir = file(name)
 }
