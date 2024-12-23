@@ -8,3 +8,14 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+setupViaSubproject("api")
+setupViaSubproject("legacy-compat")
+setupViaSubproject("visuals")
+setupViaSubproject("diff-generator")
+
+void setupViaSubproject(String name) {
+    var maven = "viafabricplus-" + name
+    include maven
+    project(":" + maven).projectDir = file(name)
+}
