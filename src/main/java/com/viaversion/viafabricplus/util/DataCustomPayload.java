@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.util;
 
-import com.viaversion.viafabricplus.fixes.ClientsideFixes;
+import com.viaversion.viafabricplus.features.ClientsideFixes;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.network.PacketByteBuf;

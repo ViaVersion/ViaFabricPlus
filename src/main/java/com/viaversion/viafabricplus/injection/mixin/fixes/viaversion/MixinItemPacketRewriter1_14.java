@@ -34,7 +34,7 @@ import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ClientboundPacke
 import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ServerboundPackets1_14;
 import com.viaversion.viaversion.protocols.v1_13_2to1_14.rewriter.ItemPacketRewriter1_14;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
-import com.viaversion.viafabricplus.fixes.ClientsideFixes;
+import com.viaversion.viafabricplus.features.ClientsideFixes;
 import com.viaversion.viafabricplus.protocoltranslator.translator.TextComponentTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;

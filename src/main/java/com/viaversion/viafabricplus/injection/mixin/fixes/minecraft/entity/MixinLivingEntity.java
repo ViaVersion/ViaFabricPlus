@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.fixes.versioned.EnchantmentAttributesEmulation1_20_6;
-import com.viaversion.viafabricplus.fixes.versioned.visual.EntityRidingOffsetsPre1_20_2;
+import com.viaversion.viafabricplus.features.versioned.EnchantmentAttributesEmulation1_20_6;
+import com.viaversion.viafabricplus.features.versioned.visual.EntityRidingOffsetsPre1_20_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viafabricplus.settings.impl.VisualSettings;

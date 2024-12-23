@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft.network;
 
-import com.viaversion.viafabricplus.fixes.ClientsideFixes;
+import com.viaversion.viafabricplus.features.ClientsideFixes;
 import com.viaversion.viafabricplus.injection.access.IPlayerListEntry;
 import net.minecraft.client.network.PlayerListEntry;
 import org.spongepowered.asm.mixin.Mixin;

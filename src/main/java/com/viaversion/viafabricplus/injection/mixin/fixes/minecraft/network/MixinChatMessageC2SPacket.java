@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft.network;
 
-import com.viaversion.viafabricplus.fixes.ClientsideFixes;
+import com.viaversion.viafabricplus.features.ClientsideFixes;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;

@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.fixes.viaversion.WolfHealthTracker1_14_4;
+import com.viaversion.viafabricplus.features.viaversion.WolfHealthTracker1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.FoodComponent;

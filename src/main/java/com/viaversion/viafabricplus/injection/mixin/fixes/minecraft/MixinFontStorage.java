@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft;
 
-import com.viaversion.viafabricplus.fixes.data.RenderableGlyphDiff;
-import com.viaversion.viafabricplus.fixes.versioned.visual.BuiltinEmptyGlyph1_12_2;
+import com.viaversion.viafabricplus.features.data.RenderableGlyphDiff;
+import com.viaversion.viafabricplus.features.versioned.visual.BuiltinEmptyGlyph1_12_2;
 import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.*;

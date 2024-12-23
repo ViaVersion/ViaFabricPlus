@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.base.perserverversion;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.fixes.ClientsideFixes;
+import com.viaversion.viafabricplus.features.ClientsideFixes;
 import com.viaversion.viafabricplus.injection.access.IMultiValueDebugSampleLogImpl;
 import com.viaversion.viafabricplus.injection.access.IServerInfo;
 import net.minecraft.client.network.MultiplayerServerListPinger;

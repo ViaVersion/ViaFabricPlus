@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft.item;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.viaversion.viafabricplus.fixes.data.ItemRegistryDiff;
+import com.viaversion.viafabricplus.features.data.ItemRegistryDiff;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;

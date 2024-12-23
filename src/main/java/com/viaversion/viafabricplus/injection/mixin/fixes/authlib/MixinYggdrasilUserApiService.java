@@ -25,7 +25,7 @@ import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.fixes.versioned.KeyPairResponse1_19_0;
+import com.viaversion.viafabricplus.features.versioned.KeyPairResponse1_19_0;
 import com.viaversion.viafabricplus.injection.access.ILegacyKeySignatureStorage;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

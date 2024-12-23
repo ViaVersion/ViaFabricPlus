@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.fixes.versioned.visual.EntityRidingOffsetsPre1_20_2;
+import com.viaversion.viafabricplus.features.versioned.visual.EntityRidingOffsetsPre1_20_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.fixes.vialegacy;
 
-import com.viaversion.viafabricplus.fixes.versioned.classic.CPEAdditions;
+import com.viaversion.viafabricplus.features.versioned.classic.CPEAdditions;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

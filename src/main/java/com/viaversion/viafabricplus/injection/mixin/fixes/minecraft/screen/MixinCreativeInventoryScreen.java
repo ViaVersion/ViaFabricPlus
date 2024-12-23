@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft.screen;
 
-import com.viaversion.viafabricplus.fixes.versioned.classic.GridItemSelectionScreen;
+import com.viaversion.viafabricplus.features.versioned.classic.GridItemSelectionScreen;
 import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;

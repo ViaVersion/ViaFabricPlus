@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft;
 
-import com.viaversion.viafabricplus.fixes.versioned.classic.CPEAdditions;
+import com.viaversion.viafabricplus.features.versioned.classic.CPEAdditions;
 import net.minecraft.client.render.WeatherRendering;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

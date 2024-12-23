@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft;
 
-import com.viaversion.viafabricplus.fixes.versioned.visual.UnicodeFontFix1_12_2;
+import com.viaversion.viafabricplus.features.versioned.visual.UnicodeFontFix1_12_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.resource.ResourceManager;

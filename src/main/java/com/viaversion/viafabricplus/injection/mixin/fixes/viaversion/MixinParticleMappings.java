@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.fixes.viaversion;
 import com.viaversion.viaversion.api.data.FullMappingsBase;
 import com.viaversion.viaversion.api.data.Mappings;
 import com.viaversion.viaversion.api.data.ParticleMappings;
-import com.viaversion.viafabricplus.fixes.versioned.visual.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.features.versioned.visual.FootStepParticle1_12_2;
 import org.spongepowered.asm.mixin.Mixin;
 
 import java.util.List;

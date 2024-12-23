@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.fixes.data.ResourcePackHeaderDiff;
+import com.viaversion.viafabricplus.features.data.ResourcePackHeaderDiff;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.GameVersion;
 import org.spongepowered.asm.mixin.Mixin;

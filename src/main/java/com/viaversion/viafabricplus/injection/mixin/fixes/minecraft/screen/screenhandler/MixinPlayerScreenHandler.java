@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft.screen.screenhandler;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.fixes.data.recipe.Recipes1_11_2;
+import com.viaversion.viafabricplus.features.data.recipe.Recipes1_11_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.AbstractCraftingScreenHandler;

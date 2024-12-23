@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus;
 
 import com.viaversion.viafabricplus.event.PostGameLoadCallback;
-import com.viaversion.viafabricplus.fixes.ClientsideFixes;
+import com.viaversion.viafabricplus.features.ClientsideFixes;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.settings.SettingsManager;

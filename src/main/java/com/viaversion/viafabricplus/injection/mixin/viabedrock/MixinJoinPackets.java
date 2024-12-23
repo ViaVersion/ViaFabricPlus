@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.viabedrock;
 
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viafabricplus.fixes.viaversion.BedrockJoinGameTracker;
+import com.viaversion.viafabricplus.features.viaversion.BedrockJoinGameTracker;
 import net.raphimc.viabedrock.protocol.packet.JoinPackets;
 import net.raphimc.viabedrock.protocol.types.primitive.LongLEType;
 import net.raphimc.viabedrock.protocol.types.primitive.StringType;

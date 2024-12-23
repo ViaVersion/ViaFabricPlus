@@ -36,7 +36,7 @@ import com.viaversion.viaversion.api.protocol.version.VersionType;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import com.viaversion.viafabricplus.event.ChangeProtocolVersionCallback;
-import com.viaversion.viafabricplus.fixes.viaversion.ViaFabricPlusProtocol;
+import com.viaversion.viafabricplus.features.viaversion.ViaFabricPlusProtocol;
 import com.viaversion.viafabricplus.injection.access.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.ViaFabricPlusVLCommandHandler;
 import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;

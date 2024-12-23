@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.fixes.minecraft;
 
-import com.viaversion.viafabricplus.fixes.versioned.PendingUpdateManager1_18_2;
+import com.viaversion.viafabricplus.features.versioned.PendingUpdateManager1_18_2;
 import com.viaversion.viafabricplus.injection.access.IEntity;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.network.PendingUpdateManager;

@@ -28,7 +28,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_11_1to1_12.Protocol1_11_1To1_12;
 import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ServerboundPackets1_9_3;
-import com.viaversion.viafabricplus.fixes.versioned.ItemPick1_21_3;
+import com.viaversion.viafabricplus.features.versioned.ItemPick1_21_3;
 import com.viaversion.viafabricplus.injection.access.IMouseKeyboard;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
