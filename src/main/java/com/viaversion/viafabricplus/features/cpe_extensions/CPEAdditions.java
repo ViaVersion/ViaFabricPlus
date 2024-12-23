@@ -28,7 +28,6 @@ import net.lenni0451.reflect.Enums;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.packet.ClientboundPacketsc0_30cpe;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +44,7 @@ public class CPEAdditions {
 
     private static boolean snowing = false;
 
-    public static void modifyMappings() {
+    public static void init() {
         allowExtension(ClassicProtocolExtension.ENV_WEATHER_TYPE);
         EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
     }

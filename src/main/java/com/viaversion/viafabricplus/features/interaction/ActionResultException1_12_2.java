@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.old.versioned;
+package com.viaversion.viafabricplus.features.interaction;
 
 import net.minecraft.util.ActionResult;
 

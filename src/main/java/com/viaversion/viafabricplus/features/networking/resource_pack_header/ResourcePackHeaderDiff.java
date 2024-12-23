@@ -27,7 +27,6 @@ import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.resource.ResourceType;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -87,10 +86,11 @@ public class ResourcePackHeaderDiff {
         registerVersion(ProtocolVersion.v1_7_2, 1, "1.7.5");
     }
 
-    public static void checkOutdated() {
+    public static void init() {
         if (!GAME_VERSION_DIFF.containsKey(ProtocolTranslator.NATIVE_VERSION)) {
             throw new RuntimeException("The native client version is not registered in the resource pack header diff!");
         }
+        // Also calls the static block
     }
 
     /**

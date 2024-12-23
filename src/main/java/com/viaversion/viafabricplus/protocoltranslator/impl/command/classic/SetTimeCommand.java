@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.old.versioned.classic.command;
+package com.viaversion.viafabricplus.protocoltranslator.impl.command.classic;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.VFPViaSubCommand;

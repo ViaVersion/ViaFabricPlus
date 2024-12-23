@@ -27,6 +27,7 @@ import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.base.save.SaveManager;
 import com.viaversion.viafabricplus.base.settings.SettingsManager;
+import com.viaversion.viafabricplus.features.FeaturesLoading;
 import com.viaversion.viafabricplus.features.max_chat_length.MaxChatLength;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.util.ClassLoaderPriorityUtil;
@@ -101,6 +102,9 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
         // Load settings and config files
         settingsManager = new SettingsManager();
         saveManager = new SaveManager(settingsManager);
+
+        // Init features
+        FeaturesLoading.init();
 
         // Init ViaVersion protocol translator platform
         loadingFuture = ProtocolTranslator.init(path);
