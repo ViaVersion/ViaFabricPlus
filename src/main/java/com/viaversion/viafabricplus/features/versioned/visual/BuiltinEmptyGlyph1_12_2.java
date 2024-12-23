@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.features.versioned.visual;
 
-import com.viaversion.viafabricplus.injection.mixin.fixes.minecraft.MixinFontStorage;
+import com.viaversion.viafabricplus.injection.mixin.features.text_rendering.MixinFontStorage;
 import net.minecraft.client.font.BakedGlyph;
 import net.minecraft.client.font.Glyph;
 import net.minecraft.client.font.RenderableGlyph;

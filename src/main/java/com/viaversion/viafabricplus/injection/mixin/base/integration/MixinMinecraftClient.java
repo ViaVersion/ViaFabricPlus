@@ -21,15 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.event.PostGameLoadCallback;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.resource.ResourcePackManager;
-import net.minecraft.server.SaveLoader;
-import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -41,12 +35,6 @@ public abstract class MixinMinecraftClient {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void callPostGameLoadEvent(RunArgs args, CallbackInfo ci) {
         PostGameLoadCallback.EVENT.invoker().postGameLoad();
-    }
-
-    @Inject(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/lang/String;ILnet/minecraft/network/listener/ClientLoginPacketListener;)V", shift = At.Shift.BEFORE))
-    private void disableProtocolTranslator(LevelStorage.Session session, ResourcePackManager dataPackManager, SaveLoader saveLoader, boolean newWorld, CallbackInfo ci, @Local ClientConnection clientConnection) {
-        ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION, true);
-        ProtocolTranslator.injectPreviousVersionReset(clientConnection.channel);
     }
 
 }

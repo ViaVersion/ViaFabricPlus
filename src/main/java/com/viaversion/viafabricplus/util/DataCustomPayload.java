@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.util;
 
-import com.viaversion.viafabricplus.features.ClientsideFixes;
+import com.viaversion.viafabricplus.features.ClientsideFeatures;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.network.PacketByteBuf;
@@ -30,7 +30,7 @@ import net.minecraft.util.Identifier;
 
 public record DataCustomPayload(PacketByteBuf buf) implements CustomPayload {
 
-    public static final CustomPayload.Id<DataCustomPayload> ID = new CustomPayload.Id<>(Identifier.of(ClientsideFixes.PACKET_SYNC_IDENTIFIER));
+    public static final CustomPayload.Id<DataCustomPayload> ID = new CustomPayload.Id<>(Identifier.of(ClientsideFeatures.PACKET_SYNC_IDENTIFIER));
 
     static {
         PayloadTypeRegistry.playS2C().register(DataCustomPayload.ID, CustomPayload.codecOf((value, buf) -> {

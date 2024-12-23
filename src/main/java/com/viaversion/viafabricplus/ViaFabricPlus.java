@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus;
 
 import com.viaversion.viafabricplus.event.PostGameLoadCallback;
-import com.viaversion.viafabricplus.features.ClientsideFixes;
+import com.viaversion.viafabricplus.features.ClientsideFeatures;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.settings.SettingsManager;
@@ -84,7 +84,7 @@ public class ViaFabricPlus {
         settingsManager = new SettingsManager();
         saveManager = new SaveManager(settingsManager);
 
-        ClientsideFixes.init(); // Init clientside related fixes
+        ClientsideFeatures.init(); // Init clientside related fixes
         loadingFuture = ProtocolTranslator.init(directory); // Init ViaVersion protocol translator platform
 
         // Block game loading until ViaVersion has loaded
