@@ -29,7 +29,7 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_11_1to1_12.Protocol1_11_1To1_12;
 import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ServerboundPackets1_9_3;
 import com.viaversion.viafabricplus.features.versioned.ItemPick1_21_3;
-import com.viaversion.viafabricplus.injection.access.IMouseKeyboard;
+import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseKeyboard;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.Keyboard;
@@ -97,23 +97,6 @@ public abstract class MixinMinecraftClient {
             return ActionResult.SwingSource.NONE;
         } else {
             return instance.swingSource();
-        }
-    }
-
-    @Inject(method = "tick",
-            at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;", ordinal = 0, shift = At.Shift.BEFORE),
-            slice = @Slice(
-                    from = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 0),
-                    to = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;addCrashReportSection(Lnet/minecraft/util/crash/CrashReport;)V")
-            )
-    )
-    private void processInputQueues(CallbackInfo ci) {
-        if (DebugSettings.global().executeInputsSynchronously.isEnabled()) {
-            Queue<Runnable> inputEvents = ((IMouseKeyboard) this.mouse).viaFabricPlus$getPendingScreenEvents();
-            while (!inputEvents.isEmpty()) inputEvents.poll().run();
-
-            inputEvents = ((IMouseKeyboard) this.keyboard).viaFabricPlus$getPendingScreenEvents();
-            while (!inputEvents.isEmpty()) inputEvents.poll().run();
         }
     }
 

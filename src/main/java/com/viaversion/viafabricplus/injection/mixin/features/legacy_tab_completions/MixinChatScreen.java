@@ -38,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = ChatScreen.class, priority = 1) // Apply our mixin first so other mods can override the chat length
+@Mixin(value = ChatScreen.class)
 public abstract class MixinChatScreen {
 
     @Shadow
@@ -49,20 +49,6 @@ public abstract class MixinChatScreen {
 
     @Shadow
     ChatInputSuggestor chatInputSuggestor;
-
-    @Inject(method = "init", at = @At("RETURN"))
-    private void changeChatLength(CallbackInfo ci) {
-        this.chatField.setMaxLength(ClientsideFeatures.getChatLength());
-    }
-
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;getIndicatorAt(DD)Lnet/minecraft/client/gui/hud/MessageIndicator;"))
-    private MessageIndicator removeIndicator(ChatHud instance, double mouseX, double mouseY) {
-        if (VisualSettings.global().hideSignatureIndicator.isEnabled()) {
-            return null;
-        } else {
-            return instance.getIndicatorAt(mouseX, mouseY);
-        }
-    }
 
     @WrapWithCondition(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;setText(Ljava/lang/String;)V"))
     public boolean moveSetTextDown(TextFieldWidget instance, String text) {

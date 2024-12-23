@@ -19,10 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.old.viaversion;
+package com.viaversion.viafabricplus.injection.mixin.features.footstep_particle;
 
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.data.ParticleIdMappings1_13;
-import com.viaversion.viafabricplus.features.versioned.visual.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.features2.footstep_particle.FootStepParticle1_12_2;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

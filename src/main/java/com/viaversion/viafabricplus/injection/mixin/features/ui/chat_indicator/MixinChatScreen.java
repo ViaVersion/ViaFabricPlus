@@ -19,38 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.old.viaversion;
+package com.viaversion.viafabricplus.injection.mixin.features.ui.chat_indicator;
 
-import com.viaversion.viaversion.api.data.FullMappingsBase;
-import com.viaversion.viaversion.api.data.Mappings;
-import com.viaversion.viaversion.api.data.ParticleMappings;
-import com.viaversion.viafabricplus.features.versioned.visual.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import net.minecraft.client.gui.hud.ChatHud;
+import net.minecraft.client.gui.hud.MessageIndicator;
+import net.minecraft.client.gui.screen.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.List;
+@Mixin(value = ChatScreen.class)
+public abstract class MixinChatScreen {
 
-@Mixin(ParticleMappings.class)
-public abstract class MixinParticleMappings extends FullMappingsBase {
-
-    public MixinParticleMappings(List<String> unmappedIdentifiers, List<String> mappedIdentifiers, Mappings mappings) {
-        super(unmappedIdentifiers, mappedIdentifiers, mappings);
-    }
-
-    @Override
-    public int getNewId(int id) {
-        if (id == FootStepParticle1_12_2.RAW_ID) {
-            return id;
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;getIndicatorAt(DD)Lnet/minecraft/client/gui/hud/MessageIndicator;"))
+    private MessageIndicator removeIndicator(ChatHud instance, double mouseX, double mouseY) {
+        if (VisualSettings.global().hideSignatureIndicator.isEnabled()) {
+            return null;
         } else {
-            return super.getNewId(id);
+            return instance.getIndicatorAt(mouseX, mouseY);
         }
     }
 
-    @Override
-    public String mappedIdentifier(int mappedId) {
-        if (mappedId == FootStepParticle1_12_2.RAW_ID) {
-            return "";
-        } else {
-            return super.mappedIdentifier(mappedId);
-        }
-    }
 }

@@ -19,11 +19,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.access;
+package com.viaversion.viafabricplus.features2.legacy_chat_signatures;
 
-public interface ILegacyKeySignatureStorage {
+import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
 
-    byte[] viafabricplus$getLegacyPublicKeySignature();
+import java.nio.ByteBuffer;
 
-    void viafabricplus$setLegacyPublicKeySignature(final byte[] signature);
+/**
+ * This class is part of the AuthLib, we are overwriting this class to add the {@link #publicKeySignature} field.
+ */
+
+public record KeyPairResponse1_19_0(
+        KeyPairResponse.KeyPair keyPair,
+        ByteBuffer publicKeySignatureV2,
+        ByteBuffer publicKeySignature /* removed in 1.20-rc1 */,
+        String expiresAt,
+        String refreshedAfter) {
 }

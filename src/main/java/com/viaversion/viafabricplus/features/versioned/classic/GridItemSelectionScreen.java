@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.features.versioned.classic;
 
-import com.viaversion.viafabricplus.features.data.ItemRegistryDiff;
+import com.viaversion.viafabricplus.features2.item.filter_creative_tabs.ItemRegistryDiff;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;

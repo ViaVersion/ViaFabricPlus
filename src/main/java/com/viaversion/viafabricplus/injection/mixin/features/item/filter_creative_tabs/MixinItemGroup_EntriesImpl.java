@@ -19,11 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.old.minecraft.item;
+package com.viaversion.viafabricplus.injection.mixin.features.item.filter_creative_tabs;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.viaversion.viafabricplus.features.data.ItemRegistryDiff;
+import com.viaversion.viafabricplus.features2.item.filter_creative_tabs.ItemRegistryDiff;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;

@@ -19,18 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.protocoltranslator.util;
+package com.viaversion.viafabricplus.injection.access.execute_inputs_sync;
 
-import it.unimi.dsi.fastutil.floats.FloatIntPair;
+import java.util.Queue;
 
-public class MathUtil {
+public interface IMouseKeyboard {
 
-    public static FloatIntPair get1_13SliderValue(final float value1_14) {
-        final int oldSliderWidth = 150 - 8;
-        final int mousePos = (int) (oldSliderWidth * value1_14);
-        final float oldValue = mousePos / (float) oldSliderWidth;
-        final int oldDisplay = (int) (oldValue * 200);
-        return FloatIntPair.of(oldValue, oldDisplay);
-    }
+    Queue<Runnable> viaFabricPlus$getPendingScreenEvents();
 
 }

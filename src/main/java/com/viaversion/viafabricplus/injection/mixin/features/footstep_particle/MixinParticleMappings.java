@@ -19,23 +19,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.old.viaversion;
+package com.viaversion.viafabricplus.injection.mixin.features.footstep_particle;
 
-import com.viaversion.viaversion.api.data.MappingDataBase;
-import com.viaversion.viafabricplus.features.versioned.visual.FootStepParticle1_12_2;
+import com.viaversion.viaversion.api.data.FullMappingsBase;
+import com.viaversion.viaversion.api.data.Mappings;
+import com.viaversion.viaversion.api.data.ParticleMappings;
+import com.viaversion.viafabricplus.features2.footstep_particle.FootStepParticle1_12_2;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = MappingDataBase.class, remap = false)
-public abstract class MixinMappingDataBase {
+import java.util.List;
 
-    @Inject(method = "getNewParticleId", at = @At("HEAD"), cancellable = true)
-    private void passthroughFootStepParticle(int id, CallbackInfoReturnable<Integer> cir) {
+@Mixin(ParticleMappings.class)
+public abstract class MixinParticleMappings extends FullMappingsBase {
+
+    public MixinParticleMappings(List<String> unmappedIdentifiers, List<String> mappedIdentifiers, Mappings mappings) {
+        super(unmappedIdentifiers, mappedIdentifiers, mappings);
+    }
+
+    @Override
+    public int getNewId(int id) {
         if (id == FootStepParticle1_12_2.RAW_ID) {
-            cir.setReturnValue(id);
+            return id;
+        } else {
+            return super.getNewId(id);
         }
     }
 
+    @Override
+    public String mappedIdentifier(int mappedId) {
+        if (mappedId == FootStepParticle1_12_2.RAW_ID) {
+            return "";
+        } else {
+            return super.mappedIdentifier(mappedId);
+        }
+    }
 }

@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.mouse_sensitivity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.protocoltranslator.util.MathUtil;
+import com.viaversion.viafabricplus.features2.mouse_sensitivity.MouseSensitivity1_13_2;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
@@ -43,7 +43,7 @@ public abstract class MixinMouseOptionsScreen extends GameOptionsScreen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2) && this.body.getWidgetFor(this.gameOptions.getMouseSensitivity()).isHovered()) {
-            context.drawTooltip(textRenderer, Text.of("<=1.13.2 Sensitivity: " + MathUtil.get1_13SliderValue(this.gameOptions.getMouseSensitivity().getValue().floatValue()).valueInt() + "%"), mouseX, mouseY);
+            context.drawTooltip(textRenderer, Text.of("<=1.13.2 Sensitivity: " + MouseSensitivity1_13_2.get1_13SliderValue(this.gameOptions.getMouseSensitivity().getValue().floatValue()).valueInt() + "%"), mouseX, mouseY);
         }
     }
 

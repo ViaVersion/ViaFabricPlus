@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.mouse_sensitivity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.protocoltranslator.util.MathUtil;
+import com.viaversion.viafabricplus.features2.mouse_sensitivity.MouseSensitivity1_13_2;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.option.SimpleOption;
@@ -39,7 +39,7 @@ public abstract class MixinMouse {
         final Double value = original.call(instance);
 
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return (double) MathUtil.get1_13SliderValue(value.floatValue()).keyFloat();
+            return (double) MouseSensitivity1_13_2.get1_13SliderValue(value.floatValue()).keyFloat();
         } else {
             return value;
         }

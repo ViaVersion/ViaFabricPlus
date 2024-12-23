@@ -23,40 +23,45 @@ package com.viaversion.viafabricplus.injection.mixin.features.execute_inputs_syn
 
 import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseKeyboard;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-@Mixin(Mouse.class)
-public abstract class MixinMouse implements IMouseKeyboard {
+@Mixin(MinecraftClient.class)
+public abstract class MixinMinecraftClient {
 
     @Shadow
     @Final
-    private MinecraftClient client;
+    public Mouse mouse;
 
-    @Unique
-    private final Queue<Runnable> viaFabricPlus$pendingScreenEvents = new ConcurrentLinkedQueue<>();
+    @Shadow
+    @Final
+    public Keyboard keyboard;
 
-    @Redirect(method = {"method_22684", "method_22685"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;execute(Ljava/lang/Runnable;)V"))
-    private void storeEvent(MinecraftClient instance, Runnable runnable) {
-        if (this.client.getNetworkHandler() != null && this.client.currentScreen != null && DebugSettings.global().executeInputsSynchronously.isEnabled()) {
-            this.viaFabricPlus$pendingScreenEvents.offer(runnable);
-        } else {
-            instance.execute(runnable);
+    @Inject(method = "tick",
+            at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;", ordinal = 0, shift = At.Shift.BEFORE),
+            slice = @Slice(
+                    from = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 0),
+                    to = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;addCrashReportSection(Lnet/minecraft/util/crash/CrashReport;)V")
+            )
+    )
+    private void processInputQueues(CallbackInfo ci) {
+        if (DebugSettings.global().executeInputsSynchronously.isEnabled()) {
+            Queue<Runnable> inputEvents = ((IMouseKeyboard) this.mouse).viaFabricPlus$getPendingScreenEvents();
+            while (!inputEvents.isEmpty()) inputEvents.poll().run();
+
+            inputEvents = ((IMouseKeyboard) this.keyboard).viaFabricPlus$getPendingScreenEvents();
+            while (!inputEvents.isEmpty()) inputEvents.poll().run();
         }
-    }
-
-    @Override
-    public Queue<Runnable> viaFabricPlus$getPendingScreenEvents() {
-        return this.viaFabricPlus$pendingScreenEvents;
     }
 
 }

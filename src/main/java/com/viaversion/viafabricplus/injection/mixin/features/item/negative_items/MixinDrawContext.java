@@ -19,32 +19,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.bedrock;
+package com.viaversion.viafabricplus.injection.mixin.features.item.negative_items;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.client.network.ClientCommandSource;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
-import org.spongepowered.asm.mixin.Final;
+import com.viaversion.viafabricplus.features2.item.negative_items.NegativeItemUtil;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.Collection;
-import java.util.Set;
+@Mixin(DrawContext.class)
+public abstract class MixinDrawContext {
 
-@Mixin(ClientCommandSource.class)
-public abstract class MixinClientCommandSource {
+    @Redirect(method = "drawStackCount", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getCount()I"))
+    private int handleNegativeItemCount(ItemStack instance) {
+        return NegativeItemUtil.getCount(instance);
+    }
 
-    @Shadow
-    @Final
-    private Set<String> chatSuggestions;
-
-    @Inject(method = {"getPlayerNames", "getChatSuggestions"}, at = @At("HEAD"), cancellable = true)
-    private void returnChatSuggestions(CallbackInfoReturnable<Collection<String>> cir) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            cir.setReturnValue(this.chatSuggestions);
+    @Redirect(method = "drawStackCount", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))
+    private String makeTextRed(int count) {
+        if (count <= 0) {
+            return Formatting.RED.toString() + count;
+        } else {
+            return String.valueOf(count);
         }
     }
 

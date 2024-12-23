@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.max_chat_length;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.viaversion.viafabricplus.features.ClientsideFeatures;
+import com.viaversion.viafabricplus.features2.max_chat_length.MaxChatLength;
 import net.minecraft.util.StringHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +32,7 @@ public abstract class MixinStringHelper {
 
     @ModifyExpressionValue(method = "truncateChat", at = @At(value = "CONSTANT", args = "intValue=256"))
     private static int modifyMaxChatLength(int constant) {
-        return ClientsideFeatures.getChatLength();
+        return MaxChatLength.getChatLength();
     }
 
 }

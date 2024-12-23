@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.max_chat_length;
 
-import com.viaversion.viafabricplus.features.ClientsideFeatures;
+import com.viaversion.viafabricplus.features2.max_chat_length.MaxChatLength;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -32,7 +32,7 @@ public abstract class MixinChatMessageC2SPacket {
 
     @ModifyConstant(method = "write", constant = @Constant(intValue = 256))
     private int modifyChatLength(int maxLength) {
-        return ClientsideFeatures.getChatLength();
+        return MaxChatLength.getChatLength();
     }
 
 }

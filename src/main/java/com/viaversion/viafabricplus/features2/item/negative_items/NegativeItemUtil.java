@@ -19,30 +19,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.old.minecraft.item;
+package com.viaversion.viafabricplus.features2.item.negative_items;
 
 import com.viaversion.viafabricplus.util.ItemUtil;
-import net.minecraft.client.gui.DrawContext;
+import com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Formatting;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import net.minecraft.nbt.NbtCompound;
 
-@Mixin(DrawContext.class)
-public abstract class MixinDrawContext {
+public class NegativeItemUtil {
 
-    @Redirect(method = "drawStackCount", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getCount()I"))
-    private int handleNegativeItemCount(ItemStack instance) {
-        return ItemUtil.getCount(instance);
-    }
+    private static final String VV_IDENTIFIER = "VV|" + Protocol1_10To1_11.class.getSimpleName(); // ItemRewriter#nbtTagName
 
-    @Redirect(method = "drawStackCount", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))
-    private String makeTextRed(int count) {
-        if (count <= 0) {
-            return Formatting.RED.toString() + count;
+    /**
+     * Returns the actual amount of items in the stack, versions older or equal to 1.10 can have negative stack sizes
+     * which are not represented by {@link ItemStack#getCount()}.
+     *
+     * @param stack The stack to get the count from
+     * @return The actual amount of items in the stack
+     */
+    public static int getCount(final ItemStack stack) {
+        final NbtCompound tag = ItemUtil.getTagOrNull(stack);
+        if (tag != null && tag.contains(VV_IDENTIFIER)) {
+            return tag.getInt(VV_IDENTIFIER);
         } else {
-            return String.valueOf(count);
+            return stack.getCount();
         }
     }
 

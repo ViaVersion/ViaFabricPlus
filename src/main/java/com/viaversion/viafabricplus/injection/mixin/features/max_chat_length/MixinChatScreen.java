@@ -19,28 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.compat.fabricapi;
+package com.viaversion.viafabricplus.injection.mixin.features.max_chat_length;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.viaversion.viafabricplus.features.versioned.visual.FootStepParticle1_12_2;
-import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import com.viaversion.viafabricplus.features2.max_chat_length.MaxChatLength;
+import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(RegistrySyncManager.class)
-public abstract class MixinRegistrySyncManager {
+@Mixin(value = ChatScreen.class, priority = 1) // Apply our mixin first so other mods can override the chat length
+public abstract class MixinChatScreen {
 
-    @WrapOperation(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/Registry;getId(Ljava/lang/Object;)Lnet/minecraft/util/Identifier;"), require = 0)
-    private static Identifier skipFootStepParticle(Registry instance, Object t, Operation<Identifier> original) {
-        final Identifier id = original.call(instance, t);
-        if (id == FootStepParticle1_12_2.ID) {
-            return null;
-        } else {
-            return id;
-        }
+    @Shadow
+    protected TextFieldWidget chatField;
+
+    @Inject(method = "init", at = @At("RETURN"))
+    private void changeChatLength(CallbackInfo ci) {
+        this.chatField.setMaxLength(MaxChatLength.getChatLength());
     }
 
 }

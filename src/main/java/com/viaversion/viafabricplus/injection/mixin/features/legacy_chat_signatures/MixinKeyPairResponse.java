@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.legacy_chat_signatures;
 
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
-import com.viaversion.viafabricplus.injection.access.ILegacyKeySignatureStorage;
+import com.viaversion.viafabricplus.injection.access.legacy_chat_signatures.ILegacyKeySignatureStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 

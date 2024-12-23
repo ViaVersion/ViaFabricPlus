@@ -19,35 +19,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.cpe_extensions;
+package com.viaversion.viafabricplus.injection.mixin.features.bedrock.chat_suggestions;
 
-import com.viaversion.viafabricplus.features2.cpe_extensions.CPEAdditions;
-import net.minecraft.client.render.WeatherRendering;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.client.network.ClientCommandSource;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(WeatherRendering.class)
-public abstract class MixinWeatherRendering {
+import java.util.Collection;
+import java.util.Set;
 
-    @Redirect(method = "renderPrecipitation(Lnet/minecraft/world/World;Lnet/minecraft/client/render/VertexConsumerProvider;IFLnet/minecraft/util/math/Vec3d;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getRainGradient(F)F"))
-    private float forceSnow(World instance, float delta) {
-        if (CPEAdditions.isSnowing()) {
-            return 1F;
-        } else {
-            return instance.getRainGradient(delta);
-        }
-    }
+@Mixin(ClientCommandSource.class)
+public abstract class MixinClientCommandSource {
 
-    @Inject(method = "getPrecipitationAt", at = @At(value = "HEAD"), cancellable = true)
-    private void forceSnow(World world, BlockPos pos, CallbackInfoReturnable<Biome.Precipitation> cir) {
-        if (CPEAdditions.isSnowing()) {
-            cir.setReturnValue(Biome.Precipitation.SNOW);
+    @Shadow
+    @Final
+    private Set<String> chatSuggestions;
+
+    @Inject(method = {"getPlayerNames", "getChatSuggestions"}, at = @At("HEAD"), cancellable = true)
+    private void returnChatSuggestions(CallbackInfoReturnable<Collection<String>> cir) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            cir.setReturnValue(this.chatSuggestions);
         }
     }
 

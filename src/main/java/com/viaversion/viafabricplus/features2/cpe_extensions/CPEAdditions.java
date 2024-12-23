@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.versioned.classic;
+package com.viaversion.viafabricplus.features2.cpe_extensions;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;

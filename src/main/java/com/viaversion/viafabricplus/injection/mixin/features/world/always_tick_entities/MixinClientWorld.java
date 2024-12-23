@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.old.minecraft;
+package com.viaversion.viafabricplus.injection.mixin.features.world.always_tick_entities;
 
 import com.viaversion.viafabricplus.features.versioned.PendingUpdateManager1_18_2;
 import com.viaversion.viafabricplus.injection.access.IEntity;

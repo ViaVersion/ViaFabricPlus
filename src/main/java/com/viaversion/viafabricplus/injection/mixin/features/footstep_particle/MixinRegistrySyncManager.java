@@ -19,22 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.cpe_extensions;
+package com.viaversion.viafabricplus.injection.mixin.features.footstep_particle;
 
-import com.viaversion.viafabricplus.features2.cpe_extensions.CPEAdditions;
-import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.packet.ClientboundPacketsc0_30cpe;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.viaversion.viafabricplus.features2.footstep_particle.FootStepParticle1_12_2;
+import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
+import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = ClientboundPacketsc0_30cpe.class, remap = false)
-public abstract class MixinClientboundPacketsc0_30cpe {
+@Mixin(RegistrySyncManager.class)
+public abstract class MixinRegistrySyncManager {
 
-    @Inject(method = "getPacket", at = @At("HEAD"), cancellable = true)
-    private static void addCustomPackets(int id, CallbackInfoReturnable<ClientboundPacketsc0_30cpe> cir) {
-        if (CPEAdditions.CUSTOM_PACKETS.containsKey(id)) {
-            cir.setReturnValue(CPEAdditions.CUSTOM_PACKETS.get(id));
+    @WrapOperation(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/Registry;getId(Ljava/lang/Object;)Lnet/minecraft/util/Identifier;"), require = 0)
+    private static Identifier skipFootStepParticle(Registry instance, Object t, Operation<Identifier> original) {
+        final Identifier id = original.call(instance, t);
+        if (id == FootStepParticle1_12_2.ID) {
+            return null;
+        } else {
+            return id;
         }
     }
 
