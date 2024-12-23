@@ -24,9 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.old.minecraft.network;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.features.ClientsideFeatures;
-import com.viaversion.viafabricplus.injection.access.IDownloadingTerrainScreen;
-import com.viaversion.viafabricplus.injection.access.IPlayerListHud;
+import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain_handling.IDownloadingTerrainScreen;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.entity.SignBlockEntity;
@@ -83,9 +81,6 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Shadow
     protected abstract boolean isSecureChatEnforced();
-
-    @Shadow
-    private LastSeenMessagesCollector lastSeenMessagesCollector;
 
     @Shadow
     private ClientWorld world;
@@ -182,38 +177,6 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         }
     }
 
-    @Inject(method = "onEnterReconfiguration", at = @At("HEAD"))
-    private void disableAutoRead(EnterReconfigurationS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            this.connection.channel.config().setAutoRead(false);
-        }
-    }
-
-    @Inject(method = "onEnterReconfiguration", at = @At("RETURN"))
-    private void enableAutoRead(EnterReconfigurationS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            this.connection.channel.config().setAutoRead(true);
-        }
-    }
-
-    @Redirect(method = "sendChatCommand", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
-    private boolean alwaysSignCommands(List<?> instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            return false;
-        } else {
-            return instance.isEmpty();
-        }
-    }
-
-    @Redirect(method = "sendCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
-    private void alwaysSignCommands(ClientPlayNetworkHandler instance, Packet<?> packet, @Local(argsOnly = true) String command) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            this.sendPacket(new ChatCommandSignedC2SPacket(command, Instant.now(), 0L, ArgumentSignatureDataMap.EMPTY, this.lastSeenMessagesCollector.collect().update()));
-        } else {
-            instance.sendPacket(packet);
-        }
-    }
-
     @WrapWithCondition(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;startWorldLoading(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen$WorldEntryReason;)V"))
     private boolean checkDimensionChange(ClientPlayNetworkHandler instance, ClientPlayerEntity player, ClientWorld world, DownloadingTerrainScreen.WorldEntryReason worldEntryReason, @Local(ordinal = 0) RegistryKey<World> registryKey) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_3) || registryKey != this.client.player.getWorld().getRegistryKey();
@@ -262,20 +225,6 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         return isSecureChatEnforced() || VisualSettings.global().disableSecureChatWarning.isEnabled();
     }
 
-    @Inject(method = "onPlayerSpawnPosition", at = @At("RETURN"))
-    private void moveDownloadingTerrainClosing(PlayerSpawnPositionS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_18_2, ProtocolVersion.v1_20_2) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
-            mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
-        }
-    }
-
-    @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
-    private void closeDownloadingTerrain(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
-            mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
-        }
-    }
-
     @SuppressWarnings({"InvalidInjectorMethodSignature"})
     @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = AbstractBoatEntity.class))
     private Class<?> dontChangeYawWhenMountingBoats(Object entity, Class<?> boatClass) {
@@ -300,12 +249,6 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         } else {
             instance.updateTrackedPositionAndAngles(x, y, z, yaw, pitch, interpolationSteps);
         }
-    }
-
-    @Inject(method = "onGameJoin", at = @At("RETURN"))
-    private void initPlayerListFix(GameJoinS2CPacket packet, CallbackInfo ci) {
-        ClientsideFeatures.globalTablistIndex = 0;
-        ((IPlayerListHud) MinecraftClient.getInstance().inGameHud.getPlayerListHud()).viaFabricPlus$setMaxPlayers(packet.maxPlayers());
     }
 
 }

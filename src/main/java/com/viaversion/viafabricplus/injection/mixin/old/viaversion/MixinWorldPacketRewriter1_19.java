@@ -21,13 +21,13 @@
 
 package com.viaversion.viafabricplus.injection.mixin.old.viaversion;
 
+import com.viaversion.viafabricplus.base.SyncTasks;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_17_1to1_18.packet.ClientboundPackets1_18;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.Protocol1_18_2To1_19;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.packet.ClientboundPackets1_19;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.rewriter.WorldPacketRewriter1_19;
-import com.viaversion.viafabricplus.features.ClientsideFeatures;
 import com.viaversion.viafabricplus.injection.access.IClientPlayerInteractionManager;
 import com.viaversion.viafabricplus.protocoltranslator.translator.BlockStateTranslator;
 import net.minecraft.block.BlockState;
@@ -46,7 +46,7 @@ public abstract class MixinWorldPacketRewriter1_19 {
         instance.registerClientbound(ClientboundPackets1_18.BLOCK_BREAK_ACK, ClientboundPackets1_19.CUSTOM_PAYLOAD, wrapper -> {
             wrapper.resetReader();
 
-            final String uuid = ClientsideFeatures.executeSyncTask(data -> {
+            final String uuid = SyncTasks.executeSyncTask(data -> {
                 try {
                     final BlockPos pos = data.readBlockPos();
                     final BlockState blockState = BlockStateTranslator.via1_18_2toMc(data.readVarInt());
@@ -59,7 +59,7 @@ public abstract class MixinWorldPacketRewriter1_19 {
                     throw new RuntimeException("Failed to handle BlockBreakAck packet data", t);
                 }
             });
-            wrapper.write(Types.STRING, ClientsideFeatures.PACKET_SYNC_IDENTIFIER);
+            wrapper.write(Types.STRING, SyncTasks.PACKET_SYNC_IDENTIFIER);
             wrapper.write(Types.STRING, uuid);
         });
     }

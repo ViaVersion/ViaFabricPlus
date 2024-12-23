@@ -48,14 +48,6 @@ public abstract class MixinScreen {
     @Nullable
     protected MinecraftClient client;
 
-    @Inject(method = "handleTextClick", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", shift = At.Shift.BEFORE, ordinal = 1, remap = false), cancellable = true)
-    private void allowRunCommandAction(Style style, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
-            this.client.player.networkHandler.sendChatMessage(StringHelper.stripInvalidChars(style.getClickEvent().getValue()));
-            cir.setReturnValue(true);
-        }
-    }
-
     @Inject(method = "addDrawableChild", at = @At("HEAD"), cancellable = true)
     private <T extends Element & Drawable & Selectable> void removeRecipeBook(T drawableElement, CallbackInfoReturnable<T> cir) {
         if (drawableElement instanceof TexturedButtonWidget button && button.textures == RecipeBookWidget.BUTTON_TEXTURES) {

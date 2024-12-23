@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.old.minecraft.screen.screenhandler;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.features.data.recipe.Recipes1_11_2;
+import com.viaversion.viafabricplus.features2.recipe_emulation.Recipes1_11_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -42,17 +42,9 @@ public abstract class MixinCraftingScreenHandler extends AbstractCraftingScreenH
         super(type, syncId, width, height);
     }
 
-
     @Redirect(method = "quickMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/CraftingScreenHandler;insertItem(Lnet/minecraft/item/ItemStack;IIZ)Z", ordinal = 1))
     private boolean noShiftClickMoveIntoCraftingTable(CraftingScreenHandler instance, ItemStack itemStack, int startIndex, int endIndex, boolean fromLast) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && this.insertItem(itemStack, startIndex, endIndex, fromLast);
-    }
-
-    @Inject(method = "onContentChanged", at = @At("HEAD"))
-    private void clientSideCrafting(Inventory inventory, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
-            Recipes1_11_2.setCraftingResultSlot(syncId, this, this.craftingInventory);
-        }
     }
 
 }

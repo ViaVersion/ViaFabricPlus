@@ -28,6 +28,7 @@ import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viafabricplus.settings.base.BooleanSetting;
 import com.viaversion.viafabricplus.settings.base.ButtonSetting;
 import com.viaversion.viafabricplus.settings.base.SettingGroup;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -42,8 +43,11 @@ import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCodeMsaCode;
 import net.raphimc.minecraftauth.util.MicrosoftConstants;
 import net.raphimc.minecraftauth.util.logging.ConsoleLogger;
 import net.raphimc.minecraftauth.util.logging.ILogger;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 
 import java.util.Locale;
+import java.util.Objects;
 
 public class BedrockSettings extends SettingGroup {
 
@@ -120,6 +124,23 @@ public class BedrockSettings extends SettingGroup {
             }
             this.thread.interrupt();
             VFPScreen.showErrorScreen(TITLE, e, prevScreen);
+        }
+    }
+
+    /**
+     * Replaces the default port when parsing a server address if the default port should be replaced
+     *
+     * @param address The original address of the server
+     * @param version The protocol version
+     * @return The server address with the replaced default port
+     */
+    public static String replaceDefaultPort(final String address, final ProtocolVersion version) {
+        // If the default port for this entry should be replaced, check if the address already contains a port
+        // We can't just replace vanilla's default port because a bedrock server might be running on the same port
+        if (BedrockSettings.global().replaceDefaultPort.getValue() && Objects.equals(version, BedrockProtocolVersion.bedrockLatest) && !address.contains(":")) {
+            return address + ":" + ProtocolConstants.BEDROCK_DEFAULT_PORT;
+        } else {
+            return address;
         }
     }
 

@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.old.viaversion;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.viaversion.viafabricplus.base.SyncTasks;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
@@ -34,7 +35,6 @@ import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ClientboundPacke
 import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ServerboundPackets1_14;
 import com.viaversion.viaversion.protocols.v1_13_2to1_14.rewriter.ItemPacketRewriter1_14;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
-import com.viaversion.viafabricplus.features.ClientsideFeatures;
 import com.viaversion.viafabricplus.protocoltranslator.translator.TextComponentTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -65,7 +65,7 @@ public abstract class MixinItemPacketRewriter1_14 extends ItemRewriter<Clientbou
         if ((type.equals("minecraft:container") || type.equals("minecraft:chest")) && (slots > 54 || slots <= 0)) {
             ci.cancel();
 
-            final String uuid = ClientsideFeatures.executeSyncTask(data -> {
+            final String uuid = SyncTasks.executeSyncTask(data -> {
                 final MinecraftClient mc = MinecraftClient.getInstance();
 
                 try {
@@ -83,7 +83,7 @@ public abstract class MixinItemPacketRewriter1_14 extends ItemRewriter<Clientbou
 
             wrapper.clearPacket();
             wrapper.setPacketType(ClientboundPackets1_14.CUSTOM_PAYLOAD);
-            wrapper.write(Types.STRING, ClientsideFeatures.PACKET_SYNC_IDENTIFIER); // sync task header
+            wrapper.write(Types.STRING, SyncTasks.PACKET_SYNC_IDENTIFIER); // sync task header
             wrapper.write(Types.STRING, uuid); // sync task id
             wrapper.write(Types.UNSIGNED_BYTE, windowId);
             wrapper.write(Types.UNSIGNED_BYTE, slots);

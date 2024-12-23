@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.ui.v1_7_tab_list_style;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.viaversion.viafabricplus.injection.access.IPlayerListEntry;
-import com.viaversion.viafabricplus.injection.access.IPlayerListHud;
+import com.viaversion.viafabricplus.injection.access.v1_7_tab_list_style.IPlayerListEntry;
+import com.viaversion.viafabricplus.injection.access.v1_7_tab_list_style.IPlayerListHud;
 import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.PlayerListHud;

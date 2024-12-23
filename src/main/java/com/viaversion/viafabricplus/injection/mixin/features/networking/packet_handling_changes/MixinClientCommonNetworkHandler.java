@@ -23,10 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.features.ClientsideFeatures;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
-import com.viaversion.viafabricplus.util.DataCustomPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.network.ClientConnection;
@@ -35,7 +33,6 @@ import net.minecraft.network.listener.ServerPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.common.ResourcePackStatusC2SPacket;
 import net.minecraft.network.packet.s2c.common.CommonPingS2CPacket;
-import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
 import net.minecraft.network.packet.s2c.common.ResourcePackSendS2CPacket;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -53,7 +50,7 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
-@Mixin(value = ClientCommonNetworkHandler.class, priority = 1 /* Has to be applied before Fabric's Networking API, so it doesn't cancel our custom-payload packets */)
+@Mixin(ClientCommonNetworkHandler.class)
 public abstract class MixinClientCommonNetworkHandler {
 
     @Shadow
@@ -114,14 +111,6 @@ public abstract class MixinClientCommonNetworkHandler {
             if (inventoryId != 0 && inventoryId != client.player.currentScreenHandler.syncId) {
                 ci.cancel();
             }
-        }
-    }
-
-    @Inject(method = "onCustomPayload(Lnet/minecraft/network/packet/s2c/common/CustomPayloadS2CPacket;)V", at = @At("HEAD"), cancellable = true)
-    private void handleSyncTask(CustomPayloadS2CPacket packet, CallbackInfo ci) {
-        if (packet.payload() instanceof DataCustomPayload dataCustomPayload) {
-            ClientsideFeatures.handleSyncTask(dataCustomPayload.buf());
-            ci.cancel(); // Cancel the packet, so it doesn't get processed by the client
         }
     }
 

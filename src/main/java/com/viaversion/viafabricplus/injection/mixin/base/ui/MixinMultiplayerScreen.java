@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.base.ui;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.features.ClientsideFeatures;
 import com.viaversion.viafabricplus.injection.access.IServerInfo;
@@ -70,7 +71,7 @@ public abstract class MixinMultiplayerScreen extends Screen {
         } else {
             version = mixinServerInfo.viaFabricPlus$forcedVersion();
         }
-        return original.call(ClientsideFeatures.replaceDefaultPort(address, version));
+        return original.call(BedrockSettings.replaceDefaultPort(address, version));
     }
 
     @WrapOperation(method = "directConnect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;connect(Lnet/minecraft/client/network/ServerInfo;)V"))

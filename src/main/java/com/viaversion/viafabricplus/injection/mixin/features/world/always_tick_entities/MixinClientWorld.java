@@ -21,10 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.world.always_tick_entities;
 
-import com.viaversion.viafabricplus.features.versioned.PendingUpdateManager1_18_2;
 import com.viaversion.viafabricplus.injection.access.IEntity;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
-import net.minecraft.client.network.PendingUpdateManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,9 +36,6 @@ import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = ClientWorld.class, priority = 900)
 public abstract class MixinClientWorld extends World {
@@ -50,20 +44,8 @@ public abstract class MixinClientWorld extends World {
     @Final
     EntityList entityList;
 
-    @Mutable
-    @Shadow
-    @Final
-    private PendingUpdateManager pendingUpdateManager;
-
     protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, DynamicRegistryManager registryManager, RegistryEntry<DimensionType> dimensionEntry, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates) {
         super(properties, registryRef, registryManager, dimensionEntry, isClient, debugWorld, seed, maxChainedNeighborUpdates);
-    }
-
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void removePendingUpdateManager(CallbackInfo ci) {
-        if (DebugSettings.global().disableSequencing.isEnabled()) {
-            this.pendingUpdateManager = new PendingUpdateManager1_18_2();
-        }
     }
 
     /**

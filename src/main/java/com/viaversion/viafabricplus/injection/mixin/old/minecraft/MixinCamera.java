@@ -39,7 +39,8 @@ public abstract class MixinCamera {
     @Shadow
     private float lastCameraY;
 
-    @Shadow private Entity focusedEntity;
+    @Shadow
+    private Entity focusedEntity;
 
     @Inject(method = "updateEyeHeight", at = @At(value = "HEAD"), cancellable = true)
     private void sneakInstantly(CallbackInfo ci) {

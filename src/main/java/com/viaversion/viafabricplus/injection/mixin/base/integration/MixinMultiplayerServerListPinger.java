@@ -24,8 +24,8 @@ package com.viaversion.viafabricplus.injection.mixin.base.integration;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.features.ClientsideFeatures;
 import com.viaversion.viafabricplus.injection.access.IServerInfo;
+import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
@@ -38,7 +38,7 @@ public abstract class MixinMultiplayerServerListPinger {
     @WrapOperation(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
     private ServerAddress replaceDefaultPort(String address, Operation<ServerAddress> original, @Local(argsOnly = true) ServerInfo entry) {
         // Replace port when pinging the server and the forced version is set
-        return original.call(ClientsideFeatures.replaceDefaultPort(address, ((IServerInfo) entry).viaFabricPlus$forcedVersion()));
+        return original.call(BedrockSettings.replaceDefaultPort(address, ((IServerInfo) entry).viaFabricPlus$forcedVersion()));
     }
 
 }
