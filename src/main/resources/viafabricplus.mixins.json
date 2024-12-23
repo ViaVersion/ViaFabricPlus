@@ -1,9 +1,9 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "de.florianmichael.viafabricplus.injection.mixin",
+  "package": "com.viaversion.viafabricplus.injection.mixin",
   "compatibilityLevel": "JAVA_21",
-  "plugin": "de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin",
+  "plugin": "com.viaversion.viafabricplus.injection.ViaFabricPlusMixinPlugin",
   "client": [
     "base.MixinMain",
     "base.connect.MixinClientConnection",
