@@ -33,7 +33,6 @@ import java.nio.file.Path;
 /**
  * Allows the user to override the Via* jar files with custom ones using the "jars" folder in the run directory
  */
-@ApiStatus.Internal
 public class ClassLoaderPriorityUtil {
 
     /**

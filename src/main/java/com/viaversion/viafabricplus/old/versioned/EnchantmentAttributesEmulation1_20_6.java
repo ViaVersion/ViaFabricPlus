@@ -39,7 +39,6 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Optional;
 
-@ApiStatus.Internal
 public class EnchantmentAttributesEmulation1_20_6 {
 
     static {

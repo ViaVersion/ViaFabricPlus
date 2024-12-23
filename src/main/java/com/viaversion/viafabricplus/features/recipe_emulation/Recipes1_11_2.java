@@ -732,7 +732,6 @@ public class Recipes1_11_2 {
      * @param screenHandler The screen handler
      * @param inventory     The inventory of the screen handler
      */
-    @ApiStatus.Internal
     public static void setCraftingResultSlot(final int syncId, final ScreenHandler screenHandler, final RecipeInputInventory inventory) {
         final ClientPlayNetworkHandler network = MinecraftClient.getInstance().getNetworkHandler();
         final ClientWorld world = MinecraftClient.getInstance().world;

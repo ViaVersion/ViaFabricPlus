@@ -45,18 +45,15 @@ public class CPEAdditions {
 
     private static boolean snowing = false;
 
-    @ApiStatus.Internal
     public static void modifyMappings() {
         allowExtension(ClassicProtocolExtension.ENV_WEATHER_TYPE);
         EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
     }
 
-    @ApiStatus.Internal
     public static boolean isSnowing() {
         return ProtocolTranslator.getTargetVersion().equals(LegacyProtocolVersion.c0_30cpe) && snowing;
     }
 
-    @ApiStatus.Internal
     public static void setSnowing(boolean snowing) {
         CPEAdditions.snowing = snowing;
     }

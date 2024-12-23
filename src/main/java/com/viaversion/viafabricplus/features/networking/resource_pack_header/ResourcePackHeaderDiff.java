@@ -87,7 +87,6 @@ public class ResourcePackHeaderDiff {
         registerVersion(ProtocolVersion.v1_7_2, 1, "1.7.5");
     }
 
-    @ApiStatus.Internal
     public static void checkOutdated() {
         if (!GAME_VERSION_DIFF.containsKey(ProtocolTranslator.NATIVE_VERSION)) {
             throw new RuntimeException("The native client version is not registered in the resource pack header diff!");

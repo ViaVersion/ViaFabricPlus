@@ -61,7 +61,6 @@ public class SaveManager {
         }));
     }
 
-    @ApiStatus.Internal
     public void postInit() {
         for (AbstractSave save : saves) {
             save.postInit();

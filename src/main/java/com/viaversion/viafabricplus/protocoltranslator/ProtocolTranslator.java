@@ -133,7 +133,6 @@ public class ProtocolTranslator {
      *
      * @param connection the Minecraft connection
      */
-    @ApiStatus.Internal
     public static void injectViaPipeline(final ClientConnection connection, final Channel channel) {
         final IClientConnection mixinClientConnection = (IClientConnection) connection;
         final ProtocolVersion serverVersion = mixinClientConnection.viaFabricPlus$getTargetVersion();
@@ -193,7 +192,6 @@ public class ProtocolTranslator {
     /**
      * Resets the previous version if it is set. Calling {@link #setTargetVersion(ProtocolVersion, boolean)} with revertOnDisconnect set to true will set it.
      */
-    @ApiStatus.Internal
     public static void injectPreviousVersionReset(final Channel channel) {
         if (previousVersion == null) {
             return;
@@ -282,7 +280,6 @@ public class ProtocolTranslator {
      * @param path The path where the ViaVersion config files are located
      * @return A CompletableFuture that will be completed when the initialization is done
      */
-    @ApiStatus.Internal
     public static CompletableFuture<Void> init(final Path path) {
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new IllegalStateException("Native version is not the same as the current version");

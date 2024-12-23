@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-@ApiStatus.Internal
 public class WorldHeightSupport {
 
     public static PacketHandler handleJoinGame(final PacketHandler parentHandler) {
