@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.old.minecraft;
+package com.viaversion.viafabricplus.injection.mixin.features.open_inventory_packet;
 
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -27,7 +27,6 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_11_1to1_12.Protocol1_11_1To1_12;
 import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ServerboundPackets1_9_3;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.Nullable;

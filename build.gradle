@@ -35,15 +35,15 @@ dependencies {
 	// Will be removed in future versions
 	include implementation(project(":viafabricplus-api-legacy"))
 
-	jij "com.viaversion:viaversion-common:5.2.1-SNAPSHOT"
-	jij "com.viaversion:viabackwards-common:5.2.1-SNAPSHOT"
-	jij "net.raphimc:viaaprilfools-common:3.0.4"
-	jij "net.raphimc:ViaLegacy:3.0.7-SNAPSHOT"
-	jij ("net.raphimc:ViaBedrock:0.0.14-SNAPSHOT") {
+	jij "com.viaversion:viaversion-common:${project.viaversion_version}"
+	jij "com.viaversion:viabackwards-common:${project.viabackwards_version}"
+	jij "net.raphimc:viaaprilfools-common:${project.viaaprilfools_version}"
+	jij "net.raphimc:ViaLegacy:${project.vialegacy_version}"
+	jij ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
 		exclude group: "io.jsonwebtoken"
 		exclude group: "com.mojang", module: "brigadier"
 	}
-	jij ("net.raphimc:ViaLoader:3.0.4") {
+	jij ("net.raphimc:ViaLoader:${project.vialoader_version}") {
 		exclude group: "com.google.guava", module: "guava"
 		exclude group: "org.slf4j", module: "slf4j-api"
 	}

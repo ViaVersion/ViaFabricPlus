@@ -218,12 +218,12 @@
     "features.world.remove_server_view_distance.MixinGameOptions",
     "integration.viabedrock.MixinJoinPackets",
     "integration.vialegacy.MixinViaLegacyConfig",
-    "old.minecraft.MixinMinecraftClient",
-    "old.minecraft.entity.MixinClientPlayerEntity",
-    "old.minecraft.entity.MixinEntity",
-    "old.minecraft.entity.MixinLivingEntity",
-    "old.minecraft.entity.MixinPlayerEntity",
-    "old.minecraft.entity.MixinPlayerEntityRenderer"
+    "features.open_inventory_packet.MixinMinecraftClient",
+    "features.movement.entity.MixinClientPlayerEntity",
+    "features.movement.entity.MixinEntity",
+    "features.movement.entity.MixinLivingEntity",
+    "features.movement.entity.MixinPlayerEntity",
+    "features.movement.entity.MixinPlayerEntityRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

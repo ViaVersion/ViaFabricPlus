@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.old.minecraft.entity;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
