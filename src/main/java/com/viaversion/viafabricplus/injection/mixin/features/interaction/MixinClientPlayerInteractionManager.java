@@ -36,7 +36,7 @@ import com.viaversion.viafabricplus.injection.access.IScreenHandler;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusHandItemProvider;
 import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowBlock;
@@ -328,7 +328,7 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
 
     @Inject(method = "hasExperienceBar", at = @At("HEAD"), cancellable = true)
     private void removeExperienceBar(CallbackInfoReturnable<Boolean> cir) {
-        if (VisualSettings.global().hideModernHUDElements.isEnabled()) {
+        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             cir.setReturnValue(false);
         }
     }

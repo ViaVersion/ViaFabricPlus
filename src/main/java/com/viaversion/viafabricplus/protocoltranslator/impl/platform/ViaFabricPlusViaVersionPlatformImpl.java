@@ -33,7 +33,7 @@ import net.raphimc.vialoader.impl.platform.ViaVersionPlatformImpl;
 
 import java.io.File;
 
-public class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatformImpl {
+public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatformImpl {
 
     public ViaFabricPlusViaVersionPlatformImpl(File rootFolder) { // Only required to not throw an exception, not used
         super(rootFolder);

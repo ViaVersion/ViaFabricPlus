@@ -26,7 +26,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -239,7 +239,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
     private void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
-        if (VisualSettings.global().replaceHurtSoundWithOOFSound.isEnabled()) {
+        if (VisualSettings.INSTANCE.replaceHurtSoundWithOOFSound.isEnabled()) {
             cir.setReturnValue(viaFabricPlus$oof_hurt);
         }
     }

@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.screen.settings;
 
 import com.viaversion.viafabricplus.base.screen.VFPListEntry;
-import com.viaversion.viafabricplus.base.settings.base.BooleanSetting;
+import com.viaversion.viafabricplus.settings.base.BooleanSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -31,7 +31,7 @@ import net.minecraft.util.Formatting;
 
 import java.awt.*;
 
-public class BooleanSettingRenderer extends VFPListEntry {
+public final class BooleanSettingRenderer extends VFPListEntry {
     private final BooleanSetting value;
 
     public BooleanSettingRenderer(BooleanSetting value) {

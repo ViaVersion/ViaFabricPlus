@@ -19,15 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.settings.impl;
+package com.viaversion.viafabricplus.settings.impl;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IConfirmScreen;
-import com.viaversion.viafabricplus.base.save.impl.AccountsSave;
+import com.viaversion.viafabricplus.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.base.screen.VFPScreen;
-import com.viaversion.viafabricplus.base.settings.base.BooleanSetting;
-import com.viaversion.viafabricplus.base.settings.base.ButtonSetting;
-import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.settings.base.BooleanSetting;
+import com.viaversion.viafabricplus.settings.base.ButtonSetting;
+import com.viaversion.viafabricplus.settings.base.SettingGroup;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
@@ -49,11 +49,11 @@ import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import java.util.Locale;
 import java.util.Objects;
 
-public class BedrockSettings extends SettingGroup {
+public final class BedrockSettings extends SettingGroup {
 
     private static final Text TITLE = Text.of("Microsoft Bedrock login");
 
-    private static final BedrockSettings INSTANCE = new BedrockSettings();
+    public static final BedrockSettings INSTANCE = new BedrockSettings();
 
     public static final AbstractStep<?, StepFullBedrockSession.FullBedrockSession> BEDROCK_DEVICE_CODE_LOGIN = MinecraftAuth.builder()
             .withClientId(MicrosoftConstants.BEDROCK_ANDROID_TITLE_ID).withScope(MicrosoftConstants.SCOPE_TITLE_AUTH)
@@ -137,15 +137,11 @@ public class BedrockSettings extends SettingGroup {
     public static String replaceDefaultPort(final String address, final ProtocolVersion version) {
         // If the default port for this entry should be replaced, check if the address already contains a port
         // We can't just replace vanilla's default port because a bedrock server might be running on the same port
-        if (BedrockSettings.global().replaceDefaultPort.getValue() && Objects.equals(version, BedrockProtocolVersion.bedrockLatest) && !address.contains(":")) {
+        if (BedrockSettings.INSTANCE.replaceDefaultPort.getValue() && Objects.equals(version, BedrockProtocolVersion.bedrockLatest) && !address.contains(":")) {
             return address + ":" + ProtocolConstants.BEDROCK_DEFAULT_PORT;
         } else {
             return address;
         }
-    }
-
-    public static BedrockSettings global() {
-        return INSTANCE;
     }
 
 }

@@ -43,7 +43,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class BedrockRealmsScreen extends VFPScreen {
+public final class BedrockRealmsScreen extends VFPScreen {
 
     public static final BedrockRealmsScreen INSTANCE = new BedrockRealmsScreen();
 
@@ -159,7 +159,7 @@ public class BedrockRealmsScreen extends VFPScreen {
         return slotList == null;
     }
 
-    public class SlotList extends VFPList {
+    public final class SlotList extends VFPList {
         private static double scrollAmount;
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
@@ -183,7 +183,7 @@ public class BedrockRealmsScreen extends VFPScreen {
 
     }
 
-    public class SlotEntry extends VFPListEntry {
+    public final class SlotEntry extends VFPListEntry {
 
         private final SlotList slotList;
         private final RealmsWorld realmsWorld;

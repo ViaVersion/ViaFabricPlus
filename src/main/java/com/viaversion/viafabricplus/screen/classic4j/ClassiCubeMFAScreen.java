@@ -32,7 +32,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 
-public class ClassiCubeMFAScreen extends VFPScreen {
+public final class ClassiCubeMFAScreen extends VFPScreen {
 
     public static final ClassiCubeMFAScreen INSTANCE = new ClassiCubeMFAScreen();
 

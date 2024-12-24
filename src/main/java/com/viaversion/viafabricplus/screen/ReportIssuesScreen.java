@@ -34,7 +34,7 @@ import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ReportIssuesScreen extends VFPScreen {
+public final class ReportIssuesScreen extends VFPScreen {
 
     public static final ReportIssuesScreen INSTANCE = new ReportIssuesScreen();
 

@@ -40,7 +40,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
 
-public class AddBannerPatternRecipe extends SpecialCraftingRecipe {
+public final class AddBannerPatternRecipe extends SpecialCraftingRecipe {
 
     public static final RecipeSerializer<AddBannerPatternRecipe> SERIALIZER = new SpecialRecipeSerializer<>(AddBannerPatternRecipe::new);
 

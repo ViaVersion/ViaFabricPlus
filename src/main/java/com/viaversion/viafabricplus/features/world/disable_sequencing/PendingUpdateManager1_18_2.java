@@ -31,7 +31,7 @@ import net.minecraft.util.math.BlockPos;
  * No-op implementation of {@link PendingUpdateManager} for 1.18.2 and lower since those versions don't have the
  * {@link PendingUpdateManager} class.
  */
-public class PendingUpdateManager1_18_2 extends PendingUpdateManager {
+public final class PendingUpdateManager1_18_2 extends PendingUpdateManager {
 
     @Override
     public void addPendingUpdate(BlockPos pos, BlockState state, ClientPlayerEntity player) {

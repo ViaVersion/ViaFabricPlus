@@ -28,7 +28,7 @@ import com.viaversion.viaversion.protocols.v1_8to1_9.provider.HandItemProvider;
 import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
 import net.minecraft.item.ItemStack;
 
-public class ViaFabricPlusHandItemProvider extends HandItemProvider {
+public final class ViaFabricPlusHandItemProvider extends HandItemProvider {
 
     public static ItemStack lastUsedItem = null;
 

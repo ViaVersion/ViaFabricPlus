@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.features.ui.v1_7_tab_list_style;
 
-public class LegacyTabList {
+public final class LegacyTabList {
 
     /**
      * This is an incremental index used for tablist entries to implement FIFO behavior <= 1.7

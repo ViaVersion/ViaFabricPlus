@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * This class file contains the {@link GameVersion} for each protocol version.
  */
-public class ResourcePackHeaderDiff {
+public final class ResourcePackHeaderDiff {
 
     private final static Map<ProtocolVersion, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 

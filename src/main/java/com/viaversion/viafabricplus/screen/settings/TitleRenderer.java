@@ -29,7 +29,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class TitleRenderer extends VFPListEntry {
+public final class TitleRenderer extends VFPListEntry {
 
     private final Text name;
 

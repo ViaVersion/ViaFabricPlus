@@ -76,7 +76,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * This class represents the whole Protocol Translator, here all important variables are stored
  */
-public class ProtocolTranslator {
+public final class ProtocolTranslator {
 
     /**
      * These attribute keys are used to track the main connections of Minecraft and ViaVersion, so that they can be used later during the connection to send packets.

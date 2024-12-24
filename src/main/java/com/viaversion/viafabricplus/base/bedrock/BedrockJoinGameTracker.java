@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.base.bedrock;
 
 import com.viaversion.viaversion.api.connection.StorableObject;
 
-public class BedrockJoinGameTracker implements StorableObject {
+public final class BedrockJoinGameTracker implements StorableObject {
 
     private long seed;
     private String levelId;

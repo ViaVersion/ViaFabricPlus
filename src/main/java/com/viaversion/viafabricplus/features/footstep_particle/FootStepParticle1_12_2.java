@@ -37,7 +37,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.ApiStatus;
 
-public class FootStepParticle1_12_2 extends SpriteBillboardParticle {
+public final class FootStepParticle1_12_2 extends SpriteBillboardParticle {
 
     public static final Identifier ID = Identifier.of("viafabricplus", "footstep");
     public static int RAW_ID;

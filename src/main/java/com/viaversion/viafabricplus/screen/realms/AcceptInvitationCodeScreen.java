@@ -28,7 +28,7 @@ import net.minecraft.text.Text;
 
 import java.util.function.Consumer;
 
-public class AcceptInvitationCodeScreen extends VFPScreen {
+public final class AcceptInvitationCodeScreen extends VFPScreen {
 
     private final Consumer<String> serviceHandler;
 

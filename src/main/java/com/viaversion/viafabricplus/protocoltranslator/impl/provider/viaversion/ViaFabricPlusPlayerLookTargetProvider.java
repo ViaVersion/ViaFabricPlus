@@ -28,7 +28,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 
-public class ViaFabricPlusPlayerLookTargetProvider extends PlayerLookTargetProvider {
+public final class ViaFabricPlusPlayerLookTargetProvider extends PlayerLookTargetProvider {
 
     @Override
     public BlockPosition getPlayerLookTarget(UserConnection info) {

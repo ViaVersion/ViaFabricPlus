@@ -19,15 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.settings.impl;
+package com.viaversion.viafabricplus.settings.impl;
 
-import com.viaversion.viafabricplus.base.settings.base.BooleanSetting;
-import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.settings.base.BooleanSetting;
+import com.viaversion.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.text.Text;
 
-public class AuthenticationSettings extends SettingGroup {
+public final class AuthenticationSettings extends SettingGroup {
 
-    private static final AuthenticationSettings INSTANCE = new AuthenticationSettings();
+    public static final AuthenticationSettings INSTANCE = new AuthenticationSettings();
 
     public final BooleanSetting useBetaCraftAuthentication = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.use_beta_craft_authentication"), true);
     public final BooleanSetting verifySessionForOnlineModeServers = new BooleanSetting(this, Text.translatable("authentication_settings.viafabricplus.verify_session_for_online_mode"), true);
@@ -36,10 +36,6 @@ public class AuthenticationSettings extends SettingGroup {
 
     public AuthenticationSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.authentication"));
-    }
-
-    public static AuthenticationSettings global() {
-        return INSTANCE;
     }
 
 }

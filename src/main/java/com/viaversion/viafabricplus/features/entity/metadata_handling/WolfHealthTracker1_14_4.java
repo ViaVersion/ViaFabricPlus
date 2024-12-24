@@ -25,7 +25,7 @@ import com.viaversion.viaversion.api.connection.StorableObject;
 import it.unimi.dsi.fastutil.ints.Int2FloatMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 
-public class WolfHealthTracker1_14_4 implements StorableObject {
+public final class WolfHealthTracker1_14_4 implements StorableObject {
 
     private final Int2FloatMap healthDataMap = new Int2FloatOpenHashMap();
 

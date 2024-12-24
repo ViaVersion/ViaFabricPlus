@@ -28,7 +28,7 @@ import com.viaversion.viafabricplus.screen.settings.SettingsScreen;
 /**
  * Implementation of the ModMenu integration allowing users to open the settings screen from the mod menu.
  */
-public class ModMenuScreenFactory implements ModMenuApi {
+public final class ModMenuScreenFactory implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {

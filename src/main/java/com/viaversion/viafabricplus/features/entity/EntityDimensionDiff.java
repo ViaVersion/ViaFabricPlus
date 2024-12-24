@@ -37,7 +37,7 @@ import static com.viaversion.viafabricplus.util.MapUtil.linkedHashMap;
 /**
  * Data dump for entity dimension changes between versions.
  */
-public class EntityDimensionDiff {
+public final class EntityDimensionDiff {
 
     /**
      * A map of entity types to a map of versions to dimensions.

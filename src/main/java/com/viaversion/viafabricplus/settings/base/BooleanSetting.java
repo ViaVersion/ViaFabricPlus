@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.settings.base;
+package com.viaversion.viafabricplus.settings.base;
 
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.base.screen.VFPListEntry;

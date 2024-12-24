@@ -30,7 +30,7 @@ import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
-import com.viaversion.viafabricplus.base.settings.impl.AuthenticationSettings;
+import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import io.netty.channel.ChannelFuture;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.network.ServerInfo;
@@ -75,7 +75,7 @@ public abstract class MixinConnectScreen_1 {
         }
         ProtocolTranslator.setTargetVersion(targetVersion, true);
 
-        this.viaFabricPlus$useClassiCubeAccount = AuthenticationSettings.global().setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classicubeMPPass != null;
+        this.viaFabricPlus$useClassiCubeAccount = AuthenticationSettings.INSTANCE.setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classicubeMPPass != null;
 
         final ChannelFuture future = original.call(address, useEpoll, connection);
         ProtocolTranslator.injectPreviousVersionReset(future.channel());

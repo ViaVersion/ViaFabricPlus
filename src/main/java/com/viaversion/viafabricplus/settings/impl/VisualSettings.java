@@ -19,22 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.settings.impl;
+package com.viaversion.viafabricplus.settings.impl;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.base.settings.base.BooleanSetting;
-import com.viaversion.viafabricplus.base.settings.base.ModeSetting;
-import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
-import com.viaversion.viafabricplus.base.settings.base.VersionedBooleanSetting;
+import com.viaversion.viafabricplus.settings.base.BooleanSetting;
+import com.viaversion.viafabricplus.settings.base.ModeSetting;
+import com.viaversion.viafabricplus.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.settings.base.VersionedBooleanSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialoader.util.VersionRange;
 
-public class VisualSettings extends SettingGroup {
+public final class VisualSettings extends SettingGroup {
 
-    private static final VisualSettings INSTANCE = new VisualSettings();
+    public static final VisualSettings INSTANCE = new VisualSettings();
 
     public final ModeSetting changeGameMenuScreenLayout = new ModeSetting(this, Text.translatable("visual_settings.viafabricplus.change_game_menu_screen_layout"),
             Text.translatable("change_game_menu_screen_layout.viafabricplus.authentic"),
@@ -116,10 +116,6 @@ public class VisualSettings extends SettingGroup {
 
         hideDownloadTerrainScreenTransitionEffects.setValue(VersionedBooleanSetting.DISABLED_INDEX);
         forceUnicodeFontForNonAsciiLanguages.setValue(VersionedBooleanSetting.DISABLED_INDEX);
-    }
-
-    public static VisualSettings global() {
-        return INSTANCE;
     }
 
 }

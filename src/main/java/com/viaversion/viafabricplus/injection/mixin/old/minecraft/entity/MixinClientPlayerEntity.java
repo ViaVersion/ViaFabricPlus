@@ -29,7 +29,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -264,7 +264,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z", ordinal = 0))
     private boolean sendIdlePacket(ClientPlayerEntity instance) {
-        if (DebugSettings.global().sendIdlePacket.isEnabled()) {
+        if (DebugSettings.INSTANCE.sendIdlePacket.isEnabled()) {
             return !isOnGround();
         } else {
             return this.lastOnGround;

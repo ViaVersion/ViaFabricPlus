@@ -26,7 +26,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocol.version.BaseVersionProvider;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 
-public class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
+public final class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
 
     @Override
     public ProtocolVersion getClosestServerProtocol(UserConnection connection) throws Exception {

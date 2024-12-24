@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.old.minecraft.entity;
 
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.state.BipedEntityRenderState;
@@ -47,7 +47,7 @@ public abstract class MixinBipedEntityModel<T extends BipedEntityRenderState> {
 
     @Redirect(method = "positionBlockingArm", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(FFF)F"))
     private float preventArmFollowingThirdPersonRotation(float value, float min, float max) {
-        if (VisualSettings.global().lockBlockingArmRotation.isEnabled()) {
+        if (VisualSettings.INSTANCE.lockBlockingArmRotation.isEnabled()) {
             return 0.0F;
         } else {
             return MathHelper.clamp(value, min, max);
@@ -56,7 +56,7 @@ public abstract class MixinBipedEntityModel<T extends BipedEntityRenderState> {
 
     @Inject(method = "setAngles(Lnet/minecraft/client/render/entity/state/BipedEntityRenderState;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/model/ModelPart;roll:F", ordinal = 1, shift = At.Shift.AFTER))
     private void addOldWalkAnimation(T bipedEntityRenderState, CallbackInfo ci) {
-        if (VisualSettings.global().oldWalkingAnimation.isEnabled()) {
+        if (VisualSettings.INSTANCE.oldWalkingAnimation.isEnabled()) {
             final float limbFrequency = bipedEntityRenderState.limbFrequency;
             final float limbAmplitudeMultiplier = bipedEntityRenderState.limbAmplitudeMultiplier;
 

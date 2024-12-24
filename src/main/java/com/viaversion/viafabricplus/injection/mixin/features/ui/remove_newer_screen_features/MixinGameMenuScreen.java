@@ -26,7 +26,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.OpenToLanScreen;
@@ -95,7 +95,7 @@ public abstract class MixinGameMenuScreen extends Screen {
 
     @WrapOperation(method = "initWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/GameMenuScreen;createButton(Lnet/minecraft/text/Text;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/widget/ButtonWidget;"), require = 0)
     private ButtonWidget replaceButtons(GameMenuScreen instance, Text text, Supplier<Screen> screenSupplier, Operation<ButtonWidget> original) {
-        if (VisualSettings.global().changeGameMenuScreenLayout.getIndex() == 0) {
+        if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() == 0) {
             // Player reporting -> share to lan
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19) && text.equals(PLAYER_REPORTING_TEXT)) {
                 final ButtonWidget button = ButtonWidget.builder(SHARE_TO_LAN_TEXT, buttonWidget -> new OpenToLanScreen(instance)).width(NORMAL_BUTTON_WIDTH).build();
@@ -106,7 +106,7 @@ public abstract class MixinGameMenuScreen extends Screen {
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1) && text.equals(ADVANCEMENTS_TEXT)) {
                 return ButtonWidget.builder(ScreenTexts.DISCONNECT, viaFabricPlus$disconnectSupplier).width(viaFabricPlus$disconnectButtonWidth).build();
             }
-        } else if (VisualSettings.global().changeGameMenuScreenLayout.getIndex() == 1) {
+        } else if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() == 1) {
             // Player reporting -> Social interactions
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19) && text.equals(PLAYER_REPORTING_TEXT)) {
                 return createButton(SocialInteractionsScreen.TITLE, () -> new SocialInteractionsScreen(instance));
@@ -117,12 +117,12 @@ public abstract class MixinGameMenuScreen extends Screen {
 
     @WrapWithCondition(method = "initWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/GameMenuScreen;addFeedbackAndBugsButtons(Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/client/gui/widget/GridWidget$Adder;)V"), require = 0)
     private boolean removeFeedbackAndBugsButtons(Screen parentScreen, GridWidget.Adder gridAdder) {
-        return VisualSettings.global().changeGameMenuScreenLayout.getIndex() != 0 || ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2);
+        return VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() != 0 || ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2);
     }
 
     @Inject(method = "initWidgets", at = @At("RETURN"))
     private void moveButtonPositions(CallbackInfo ci) {
-        if (VisualSettings.global().changeGameMenuScreenLayout.getIndex() != 0) {
+        if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() != 0) {
             return;
         }
         // Manually adjust positions in older versions since the grid system doesn't work for these layouts
@@ -161,7 +161,7 @@ public abstract class MixinGameMenuScreen extends Screen {
 
     @WrapWithCondition(method = "initWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/Widget;)Lnet/minecraft/client/gui/widget/Widget;"), require = 0)
     private boolean removeButtons(GridWidget.Adder instance, Widget widget) {
-        if (VisualSettings.global().changeGameMenuScreenLayout.getIndex() != 0) {
+        if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() != 0) {
             return true;
         }
         // Mods could add other widgets as well

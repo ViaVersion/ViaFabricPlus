@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class RecipeManager1_11_2 {
+public final class RecipeManager1_11_2 {
 
     private final Multimap<RecipeType<?>, RecipeEntry<?>> recipesByType;
     private final Map<RegistryKey<Recipe<?>>, RecipeEntry<?>> recipesById;

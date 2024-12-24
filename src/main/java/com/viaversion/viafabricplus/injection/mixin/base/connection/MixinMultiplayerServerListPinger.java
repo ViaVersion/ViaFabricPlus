@@ -36,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.net.InetSocketAddress;
 
 @Mixin(MultiplayerServerListPinger.class)
-public class MixinMultiplayerServerListPinger {
+public final class MixinMultiplayerServerListPinger {
 
     @WrapOperation(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)Lnet/minecraft/network/ClientConnection;"))
     private ClientConnection setForcedVersion(InetSocketAddress address, boolean useEpoll, MultiValueDebugSampleLogImpl packetSizeLog, Operation<ClientConnection> original, @Local(argsOnly = true) ServerInfo serverInfo) {

@@ -26,7 +26,7 @@ import net.raphimc.vialoader.impl.viaversion.VLViaConfig;
 import java.io.File;
 import java.util.logging.Logger;
 
-public class ViaFabricPlusVLViaConfig extends VLViaConfig {
+public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
 
     public ViaFabricPlusVLViaConfig(File configFile, Logger logger) {
         super(configFile, logger);

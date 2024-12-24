@@ -26,8 +26,8 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
@@ -69,7 +69,7 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
         ProtocolVersion version = ((IServerInfo) server).viaFabricPlus$forcedVersion();
         if (version == null) version = ProtocolTranslator.getTargetVersion();
 
-        viaFabricPlus$disableServerPinging = VisualSettings.global().disableServerPinging.isEnabled(version);
+        viaFabricPlus$disableServerPinging = VisualSettings.INSTANCE.disableServerPinging.isEnabled(version);
         if (viaFabricPlus$disableServerPinging) {
             this.server.version = Text.of(version.getName()); // Show target version
         }
@@ -128,7 +128,7 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
         }
         final List<Text> tooltips = new ArrayList<>();
         tooltips.add(text);
-        if (GeneralSettings.global().showAdvertisedServerVersion.getValue()) {
+        if (GeneralSettings.INSTANCE.showAdvertisedServerVersion.getValue()) {
             final ProtocolVersion version = ((IServerInfo) server).viaFabricPlus$translatingVersion();
             if (version != null) {
                 tooltips.add(Text.translatable("base.viafabricplus.via_translates_to", version.getName() + " (" + version.getOriginalVersion() + ")"));

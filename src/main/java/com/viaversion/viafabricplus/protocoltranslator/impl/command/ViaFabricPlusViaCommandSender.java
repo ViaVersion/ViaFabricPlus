@@ -28,7 +28,7 @@ import net.minecraft.text.Text;
 
 import java.util.UUID;
 
-public class ViaFabricPlusViaCommandSender implements ViaCommandSender {
+public final class ViaFabricPlusViaCommandSender implements ViaCommandSender {
 
     private final CommandSource source;
 

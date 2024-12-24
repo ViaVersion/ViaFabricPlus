@@ -32,7 +32,7 @@ import net.raphimc.vialoader.impl.viaversion.VLCommandHandler;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
+public final class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
 
     public ViaFabricPlusVLCommandHandler() {
         super();

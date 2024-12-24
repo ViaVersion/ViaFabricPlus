@@ -39,7 +39,7 @@ import net.minecraft.util.Formatting;
 
 import java.util.List;
 
-public class BetaCraftScreen extends VFPScreen {
+public final class BetaCraftScreen extends VFPScreen {
 
     public static final BetaCraftScreen INSTANCE = new BetaCraftScreen();
 

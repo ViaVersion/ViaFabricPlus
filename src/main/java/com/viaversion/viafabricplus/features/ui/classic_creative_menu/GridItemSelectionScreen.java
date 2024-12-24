@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
-public class GridItemSelectionScreen extends VFPScreen {
+public final class GridItemSelectionScreen extends VFPScreen {
 
     public static final GridItemSelectionScreen INSTANCE = new GridItemSelectionScreen();
 

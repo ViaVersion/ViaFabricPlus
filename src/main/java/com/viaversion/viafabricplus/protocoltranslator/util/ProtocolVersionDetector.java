@@ -31,7 +31,7 @@ import java.net.InetSocketAddress;
 /**
  * This class can be used to detect the protocol version of a server without connecting to it.
  */
-public class ProtocolVersionDetector {
+public final class ProtocolVersionDetector {
 
     private static final int TIMEOUT = 3000;
 

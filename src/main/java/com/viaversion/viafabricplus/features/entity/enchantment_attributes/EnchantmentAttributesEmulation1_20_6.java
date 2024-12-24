@@ -38,7 +38,7 @@ import net.minecraft.registry.tag.BlockTags;
 
 import java.util.Optional;
 
-public class EnchantmentAttributesEmulation1_20_6 {
+public final class EnchantmentAttributesEmulation1_20_6 {
 
     static {
         ClientTickEvents.START_WORLD_TICK.register(world -> {

@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.base.ui;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
@@ -44,7 +44,7 @@ public abstract class MixinDownloadingTerrainScreen extends Screen {
 
     @Inject(method = "render", at = @At("RETURN"))
     private void renderClassicProgress(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (GeneralSettings.global().showClassicLoadingProgressInConnectScreen.getValue()) {
+        if (GeneralSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) {
             // Check if ViaVersion is translating
             final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
             if (connection == null) {

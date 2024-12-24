@@ -19,19 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.settings.impl;
+package com.viaversion.viafabricplus.settings.impl;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.base.settings.base.BooleanSetting;
-import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
-import com.viaversion.viafabricplus.base.settings.base.VersionedBooleanSetting;
+import com.viaversion.viafabricplus.settings.base.BooleanSetting;
+import com.viaversion.viafabricplus.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.settings.base.VersionedBooleanSetting;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialoader.util.VersionRange;
 
-public class DebugSettings extends SettingGroup {
+public final class DebugSettings extends SettingGroup {
 
-    private static final DebugSettings INSTANCE = new DebugSettings();
+    public static final DebugSettings INSTANCE = new DebugSettings();
 
     public final BooleanSetting queueConfigPackets = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.queue_config_packets"), true);
     public final BooleanSetting printNetworkingErrorsToLogs = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.print_networking_errors_to_logs"), true);
@@ -64,10 +64,6 @@ public class DebugSettings extends SettingGroup {
 
     public DebugSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.debug"));
-    }
-
-    public static DebugSettings global() {
-        return INSTANCE;
     }
 
 }

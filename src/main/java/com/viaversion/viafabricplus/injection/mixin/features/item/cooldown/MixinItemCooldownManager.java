@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.cooldown;
 
-import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.entity.player.ItemCooldownManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +33,7 @@ public abstract class MixinItemCooldownManager {
 
     @Inject(method = "set(Lnet/minecraft/util/Identifier;I)V", at = @At("HEAD"), cancellable = true)
     private void dontSetCooldown(CallbackInfo ci) {
-        if (DebugSettings.global().removeCooldowns.isEnabled()) {
+        if (DebugSettings.INSTANCE.removeCooldowns.isEnabled()) {
             ci.cancel();
         }
     }

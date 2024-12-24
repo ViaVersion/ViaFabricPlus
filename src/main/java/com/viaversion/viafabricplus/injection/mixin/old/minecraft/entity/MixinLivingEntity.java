@@ -23,11 +23,10 @@ package com.viaversion.viafabricplus.injection.mixin.old.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.features.entity.enchantment_attributes.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.features.entity.riding_offsets.EntityRidingOffsetsPre1_20_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.entity.*;
@@ -101,7 +100,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "turnHead", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(F)F"))
     private float changeBodyRotationInterpolation(float g) {
-        if (VisualSettings.global().changeBodyRotationInterpolation.isEnabled()) {
+        if (VisualSettings.INSTANCE.changeBodyRotationInterpolation.isEnabled()) {
             g = MathHelper.clamp(g, -75.0F, 75.0F);
             this.bodyYaw = this.getYaw() - g;
             if (Math.abs(g) > 50.0F) {
@@ -115,7 +114,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Inject(method = "tickCramming", at = @At("HEAD"), cancellable = true)
     private void preventEntityPush(CallbackInfo ci) {
-        if (DebugSettings.global().preventEntityCramming.isEnabled()) {
+        if (DebugSettings.INSTANCE.preventEntityCramming.isEnabled()) {
             ci.cancel();
         }
     }
@@ -221,7 +220,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;abs(F)F"))
     private float alwaysRotateWhenWalkingBackwards(float value) {
-        if (VisualSettings.global().sidewaysBackwardsRunning.isEnabled()) {
+        if (VisualSettings.INSTANCE.sidewaysBackwardsRunning.isEnabled()) {
             return 0F;
         } else {
             return MathHelper.abs(value);

@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.screen.settings;
 
 import com.viaversion.viafabricplus.base.screen.VFPListEntry;
-import com.viaversion.viafabricplus.base.settings.base.ModeSetting;
+import com.viaversion.viafabricplus.settings.base.ModeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -31,7 +31,7 @@ import net.minecraft.util.Formatting;
 
 import java.util.Arrays;
 
-public class ModeSettingRenderer extends VFPListEntry {
+public final class ModeSettingRenderer extends VFPListEntry {
     private final ModeSetting value;
 
     public ModeSettingRenderer(ModeSetting value) {

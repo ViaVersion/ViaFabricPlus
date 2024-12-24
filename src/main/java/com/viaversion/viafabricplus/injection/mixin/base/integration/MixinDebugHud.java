@@ -28,7 +28,7 @@ import com.viaversion.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IChunkTracker;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IRakSessionCodec;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
@@ -56,7 +56,7 @@ public abstract class MixinDebugHud {
 
     @Inject(method = "getLeftText", at = @At("RETURN"))
     public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
-        if (!GeneralSettings.global().showExtraInformationInDebugHud.getValue()) { // Only show if enabled
+        if (!GeneralSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) { // Only show if enabled
             return;
         }
         if (MinecraftClient.getInstance().isInSingleplayer() && MinecraftClient.getInstance().player != null) { // Don't show in singleplayer

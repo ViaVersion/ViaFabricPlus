@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.integration.vialegacy;
 
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.raphimc.vialegacy.ViaLegacyConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +33,7 @@ public abstract class MixinViaLegacyConfig {
 
     @Inject(method = { "isLegacySkullLoading", "isLegacySkinLoading" }, at = @At("HEAD"), cancellable = true)
     private void replaceWithVFPSetting(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(GeneralSettings.global().loadSkinsAndSkullsInLegacyVersions.getValue());
+        cir.setReturnValue(GeneralSettings.INSTANCE.loadSkinsAndSkullsInLegacyVersions.getValue());
     }
 
 }

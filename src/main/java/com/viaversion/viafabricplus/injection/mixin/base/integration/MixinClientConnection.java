@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.ClientConnection;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,7 +38,7 @@ public abstract class MixinClientConnection {
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"))
     private void printNetworkingErrors(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {
-        if (DebugSettings.global().printNetworkingErrorsToLogs.getValue()) {
+        if (DebugSettings.INSTANCE.printNetworkingErrorsToLogs.getValue()) {
             if (ex instanceof SocketException || ex instanceof ConnectException) {
                 // Thrown when server is not reachable
                 return;

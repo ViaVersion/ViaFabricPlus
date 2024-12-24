@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.features.interaction;
 
 import net.minecraft.util.ActionResult;
 
-public class ActionResultException1_12_2 extends RuntimeException {
+public final class ActionResultException1_12_2 extends RuntimeException {
 
     private final ActionResult actionResult;
 

@@ -45,7 +45,7 @@ import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.types.Types1_2_
 import net.raphimc.vialegacy.protocol.release.r1_4_2tor1_4_4_5.types.Types1_4_2;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.types.Types1_7_6;
 
-public class ItemTranslator {
+public final class ItemTranslator {
 
     /**
      * Converts a Minecraft item stack to a ViaVersion item

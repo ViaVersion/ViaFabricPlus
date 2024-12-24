@@ -43,7 +43,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 
-public class ItemPick1_21_3 {
+public final class ItemPick1_21_3 {
 
     private static void addPickBlock(final PlayerInventory inventory, final ItemStack stack) {
         final int index = inventory.getSlotWithStack(stack);

@@ -24,17 +24,17 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.AuthenticationSettings;
+import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.provider.OldAuthProvider;
 
-public class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
+public final class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
 
     @Override
     public void sendAuthRequest(UserConnection user, String serverId) {
-        if (!AuthenticationSettings.global().verifySessionForOnlineModeServers.getValue()) {
+        if (!AuthenticationSettings.INSTANCE.verifySessionForOnlineModeServers.getValue()) {
             return;
         }
 

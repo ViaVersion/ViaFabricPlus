@@ -19,19 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.save.impl;
+package com.viaversion.viafabricplus.save.impl;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.base.save.AbstractSave;
-import com.viaversion.viafabricplus.base.settings.impl.BedrockSettings;
+import com.viaversion.viafabricplus.save.AbstractSave;
+import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
 import net.raphimc.minecraftauth.step.msa.StepMsaToken;
 import net.raphimc.minecraftauth.step.xbl.session.StepInitialXblSession;
 
-public class AccountsSave extends AbstractSave {
+public final class AccountsSave extends AbstractSave {
 
     private StepFullBedrockSession.FullBedrockSession bedrockAccount;
     private CCAccount classicubeAccount;

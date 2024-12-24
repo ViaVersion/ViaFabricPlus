@@ -28,7 +28,7 @@ import io.netty.channel.local.LocalChannel;
  * This class will prevent packets created by ViaVersion from being sent to the server. This is mainly used in the
  * translator system. See {@link com.viaversion.viafabricplus.protocoltranslator.translator} for more information.
  */
-public class NoPacketSendChannel extends LocalChannel {
+public final class NoPacketSendChannel extends LocalChannel {
 
     public static final NoPacketSendChannel INSTANCE = new NoPacketSendChannel();
 

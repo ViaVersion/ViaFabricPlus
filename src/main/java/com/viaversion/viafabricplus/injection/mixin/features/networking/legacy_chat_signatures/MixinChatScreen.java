@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.legacy_chat_signatures;
 
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -34,7 +34,7 @@ public abstract class MixinChatScreen {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;getIndicatorAt(DD)Lnet/minecraft/client/gui/hud/MessageIndicator;"))
     private MessageIndicator removeIndicator(ChatHud instance, double mouseX, double mouseY) {
-        if (VisualSettings.global().hideSignatureIndicator.isEnabled()) {
+        if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
             return null;
         } else {
             return instance.getIndicatorAt(mouseX, mouseY);

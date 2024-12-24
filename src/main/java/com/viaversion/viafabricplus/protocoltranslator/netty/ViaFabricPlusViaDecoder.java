@@ -23,14 +23,14 @@ package com.viaversion.viafabricplus.protocoltranslator.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialoader.netty.ViaDecoder;
 
-public class ViaFabricPlusViaDecoder extends ViaDecoder {
+public final class ViaFabricPlusViaDecoder extends ViaDecoder {
 
     public ViaFabricPlusViaDecoder(UserConnection user) {
         super(user);
@@ -38,7 +38,7 @@ public class ViaFabricPlusViaDecoder extends ViaDecoder {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        final int mode = GeneralSettings.global().ignorePacketTranslationErrors.getIndex();
+        final int mode = GeneralSettings.INSTANCE.ignorePacketTranslationErrors.getIndex();
         if (mode == 0) {
             // Mode 0: Just pass the exception to the next handler
             super.channelRead(ctx, msg);

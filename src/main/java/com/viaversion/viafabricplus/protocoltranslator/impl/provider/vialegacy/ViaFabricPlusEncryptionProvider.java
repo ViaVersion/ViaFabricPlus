@@ -26,7 +26,7 @@ import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.raphimc.vialegacy.protocol.release.r1_6_4tor1_7_2_5.provider.EncryptionProvider;
 
-public class ViaFabricPlusEncryptionProvider extends EncryptionProvider {
+public final class ViaFabricPlusEncryptionProvider extends EncryptionProvider {
 
     @Override
     public void enableDecryption(UserConnection user) {

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.ui.downloading_terrain_transitions;
 
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,7 +36,7 @@ public abstract class MixinDownloadingTerrainScreen {
 
     @Redirect(method = "renderBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;worldEntryReason:Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen$WorldEntryReason;"))
     private DownloadingTerrainScreen.WorldEntryReason hideDownloadTerrainScreenTransitionEffects(DownloadingTerrainScreen downloadingTerrainScreen) {
-        if (VisualSettings.global().hideDownloadTerrainScreenTransitionEffects.isEnabled()) {
+        if (VisualSettings.INSTANCE.hideDownloadTerrainScreenTransitionEffects.isEnabled()) {
             return DownloadingTerrainScreen.WorldEntryReason.OTHER;
         } else {
             return this.worldEntryReason;

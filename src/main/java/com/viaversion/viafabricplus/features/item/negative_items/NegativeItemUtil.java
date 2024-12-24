@@ -26,7 +26,7 @@ import com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
-public class NegativeItemUtil {
+public final class NegativeItemUtil {
 
     private static final String VV_IDENTIFIER = "VV|" + Protocol1_10To1_11.class.getSimpleName(); // ItemRewriter#nbtTagName
 

@@ -43,7 +43,7 @@ import net.minecraft.util.math.Vec3d;
  * Minecraft 1.20.2 changed the calculation of the mounted height offset for all entities, this class contains the old
  * values for all entities. This class is used for 1.20.1 and lower.
  */
-public class EntityRidingOffsetsPre1_20_2 {
+public final class EntityRidingOffsetsPre1_20_2 {
 
     /**
      * Returns the mounted height offset for the given entity and passenger. This method is used for 1.20.1 and lower.

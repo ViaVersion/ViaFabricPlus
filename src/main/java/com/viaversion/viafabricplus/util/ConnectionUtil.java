@@ -28,7 +28,7 @@ import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 
-public class ConnectionUtil {
+public final class ConnectionUtil {
 
     public static void connect(final String address, final ProtocolVersion version) {
         connect(address, address, version);

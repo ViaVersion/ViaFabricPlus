@@ -29,16 +29,15 @@ import com.viaversion.viaversion.protocols.v1_8to1_9.data.ArmorTypes1_8;
 import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ClientboundPackets1_9;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
-public class ArmorHudEmulation1_8 {
+public final class ArmorHudEmulation1_8 {
 
     private static final UUID ARMOR_POINTS_UUID = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
 
@@ -46,7 +45,7 @@ public class ArmorHudEmulation1_8 {
 
     static {
         ClientTickEvents.START_WORLD_TICK.register(world -> {
-            if (!VisualSettings.global().emulateArmorHud.isEnabled()) {
+            if (!VisualSettings.INSTANCE.emulateArmorHud.isEnabled()) {
                 return;
             }
 

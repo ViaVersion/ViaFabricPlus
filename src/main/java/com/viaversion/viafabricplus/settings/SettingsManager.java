@@ -19,18 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.settings;
+package com.viaversion.viafabricplus.settings;
 
 import com.viaversion.viafabricplus.api.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
-import com.viaversion.viafabricplus.base.settings.impl.*;
-import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.settings.impl.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SettingsManager {
+public final class SettingsManager {
 
     private final List<SettingGroup> groups = new ArrayList<>();
 
@@ -38,11 +38,11 @@ public class SettingsManager {
         Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.PRE_SETTINGS_LOAD);
 
         addGroup(
-                GeneralSettings.global(),
-                BedrockSettings.global(),
-                AuthenticationSettings.global(),
-                VisualSettings.global(),
-                DebugSettings.global()
+                GeneralSettings.INSTANCE,
+                BedrockSettings.INSTANCE,
+                AuthenticationSettings.INSTANCE,
+                VisualSettings.INSTANCE,
+                DebugSettings.INSTANCE
         );
 
         Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.POST_SETTINGS_LOAD);

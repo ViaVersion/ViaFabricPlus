@@ -31,7 +31,7 @@ import net.minecraft.network.handler.HandlerNames;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
 
-public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
+public final class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
     public static final String VIA_FLOW_CONTROL = "via-flow-control";
 

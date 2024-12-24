@@ -44,7 +44,7 @@ import static net.raphimc.vialoader.util.VersionRange.*;
 /**
  * Class file which contains the {@link VersionRange} for every item added in the game.
  */
-public class ItemRegistryDiff {
+public final class ItemRegistryDiff {
 
     public static final Map<Item, VersionRange> ITEM_DIFF = new HashMap<>();
     public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();

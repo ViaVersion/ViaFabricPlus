@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.filter_creati
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.RegistryWrapper;
@@ -55,9 +55,9 @@ public abstract class MixinItemGroups {
 
     @Inject(method = "updateDisplayContext", at = @At("HEAD"), cancellable = true)
     private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, RegistryWrapper.WrapperLookup lookup, CallbackInfoReturnable<Boolean> cir) {
-        if (viaFabricPlus$version != ProtocolTranslator.getTargetVersion() || viaFabricPlus$state != GeneralSettings.global().removeNotAvailableItemsFromCreativeTab.getIndex()) {
+        if (viaFabricPlus$version != ProtocolTranslator.getTargetVersion() || viaFabricPlus$state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex()) {
             viaFabricPlus$version = ProtocolTranslator.getTargetVersion();
-            viaFabricPlus$state = GeneralSettings.global().removeNotAvailableItemsFromCreativeTab.getIndex();
+            viaFabricPlus$state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
 
             displayContext = new ItemGroup.DisplayContext(enabledFeatures, operatorEnabled, lookup);
             updateEntries(displayContext);

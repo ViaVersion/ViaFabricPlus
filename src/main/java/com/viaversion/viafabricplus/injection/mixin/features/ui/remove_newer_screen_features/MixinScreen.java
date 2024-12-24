@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.ui.remove_newer_screen_features;
 
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
@@ -49,9 +49,9 @@ public abstract class MixinScreen {
         if (drawableElement instanceof TexturedButtonWidget button && button.textures == RecipeBookWidget.BUTTON_TEXTURES) {
             final boolean furnace = ((Screen) (Object) this) instanceof FurnaceScreen;
 
-            if (VisualSettings.global().hideFurnaceRecipeBook.isEnabled() && furnace) {
+            if (VisualSettings.INSTANCE.hideFurnaceRecipeBook.isEnabled() && furnace) {
                 cir.setReturnValue(drawableElement);
-            } else if (VisualSettings.global().hideCraftingRecipeBook.isEnabled() && !furnace) {
+            } else if (VisualSettings.INSTANCE.hideCraftingRecipeBook.isEnabled() && !furnace) {
                 cir.setReturnValue(drawableElement);
             }
         }

@@ -25,11 +25,11 @@ import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.classic4j.BetaCraftHandler;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.base.settings.impl.AuthenticationSettings;
+import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.provider.OldAuthProvider;
 
-public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
+public final class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
 
     public static String classicubeMPPass;
 
@@ -41,7 +41,7 @@ public class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvider {
             return mpPass;
         }
 
-        if (AuthenticationSettings.global().useBetaCraftAuthentication.getValue()) {
+        if (AuthenticationSettings.INSTANCE.useBetaCraftAuthentication.getValue()) {
             // Doesn't use the MPPass system anymore, but still kept here for simplicity
             BetaCraftHandler.authenticate(serverId -> {
                 try {

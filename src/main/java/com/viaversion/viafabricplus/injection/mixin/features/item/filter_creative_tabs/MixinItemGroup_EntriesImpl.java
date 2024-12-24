@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.filter_creati
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemRegistryDiff;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -46,7 +46,7 @@ public abstract class MixinItemGroup_EntriesImpl {
     @WrapOperation(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;isEnabled(Lnet/minecraft/resource/featuretoggle/FeatureSet;)Z"))
     private boolean removeUnknownItems(Item instance, FeatureSet featureSet, Operation<Boolean> original) {
         final boolean originalValue = original.call(instance, featureSet);
-        final int index = GeneralSettings.global().removeNotAvailableItemsFromCreativeTab.getIndex();
+        final int index = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
 
         if (index == 2 /* Off */ || MinecraftClient.getInstance().isInSingleplayer()) {
             return originalValue;

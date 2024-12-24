@@ -35,7 +35,7 @@ import com.viaversion.viaversion.protocols.v1_18_2to1_19.provider.AckSequencePro
 import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.provider.PickItemProvider;
 import com.viaversion.viaversion.protocols.v1_8to1_9.provider.HandItemProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viabedrock.ViaFabricPlusNettyPipelineProvider;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.raphimc.viabedrock.protocol.provider.NettyPipelineProvider;
 import net.raphimc.vialegacy.protocol.alpha.a1_2_3_5_1_2_6tob1_0_1_1_1.provider.AlphaInventoryProvider;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.ClassicMPPassProvider;
@@ -45,7 +45,7 @@ import net.raphimc.vialegacy.protocol.release.r1_6_4tor1_7_2_5.provider.Encrypti
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 import net.raphimc.vialoader.impl.viaversion.VLLoader;
 
-public class ViaFabricPlusVLLoader extends VLLoader {
+public final class ViaFabricPlusVLLoader extends VLLoader {
 
     @Override
     public void load() {
@@ -67,7 +67,7 @@ public class ViaFabricPlusVLLoader extends VLLoader {
         providers.use(EncryptionProvider.class, new ViaFabricPlusEncryptionProvider());
         providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
         providers.use(ClassicMPPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
-        if (GeneralSettings.global().emulateInventoryActionsInAlphaVersions.getValue()) {
+        if (GeneralSettings.INSTANCE.emulateInventoryActionsInAlphaVersions.getValue()) {
             providers.use(AlphaInventoryProvider.class, new ViaFabricPlusAlphaInventoryProvider());
         }
 

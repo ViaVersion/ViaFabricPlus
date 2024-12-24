@@ -29,7 +29,7 @@ import net.minecraft.util.Formatting;
 /**
  * This class contains methods to send messages to the player with the ViaFabricPlus prefix
  */
-public class ChatUtil {
+public final class ChatUtil {
 
     public static final String PREFIX = Formatting.WHITE + "[" + Formatting.GOLD + "ViaFabricPlus" + Formatting.WHITE + "]";
     public static final Text PREFIX_TEXT = Text.literal("[").formatted(Formatting.WHITE).append(Text.literal("ViaFabricPlus").formatted(Formatting.GOLD)).append("]");

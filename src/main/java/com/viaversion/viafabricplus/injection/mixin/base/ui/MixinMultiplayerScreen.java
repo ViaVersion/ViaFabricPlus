@@ -24,12 +24,12 @@ package com.viaversion.viafabricplus.injection.mixin.base.ui;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.base.settings.impl.BedrockSettings;
+import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.screen.ProtocolSelectionScreen;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -50,7 +50,7 @@ public abstract class MixinMultiplayerScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void addProtocolSelectionButton(CallbackInfo ci) {
-        final int buttonPosition = GeneralSettings.global().multiplayerScreenButtonOrientation.getIndex();
+        final int buttonPosition = GeneralSettings.INSTANCE.multiplayerScreenButtonOrientation.getIndex();
         if (buttonPosition == 0) { // Off
             return;
         }

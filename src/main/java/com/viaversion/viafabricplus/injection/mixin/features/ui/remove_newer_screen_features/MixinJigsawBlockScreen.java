@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.ui.remove_newer_sc
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.entity.JigsawBlockEntity;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -62,7 +62,7 @@ public abstract class MixinJigsawBlockScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void disableWidgets(CallbackInfo ci) {
-        if (!VisualSettings.global().hideModernJigsawScreenFeatures.getValue()) {
+        if (!VisualSettings.INSTANCE.hideModernJigsawScreenFeatures.getValue()) {
             return;
         }
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
@@ -81,7 +81,7 @@ public abstract class MixinJigsawBlockScreen extends Screen {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void copyText(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (VisualSettings.global().hideModernJigsawScreenFeatures.getValue() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (VisualSettings.INSTANCE.hideModernJigsawScreenFeatures.getValue() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             nameField.setText(targetField.getText());
         }
     }

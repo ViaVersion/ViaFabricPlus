@@ -30,7 +30,7 @@ import net.minecraft.command.argument.SignedArgumentList;
 import java.util.Collections;
 import java.util.List;
 
-public class ViaFabricPlusCommandArgumentsProvider extends SignableCommandArgumentsProvider {
+public final class ViaFabricPlusCommandArgumentsProvider extends SignableCommandArgumentsProvider {
 
     @Override
     public List<Pair<String, String>> getSignableArguments(String command) {

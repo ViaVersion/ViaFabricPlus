@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.platform;
 
 import net.raphimc.vialoader.impl.platform.ViaLegacyPlatformImpl;
 
-public class ViaFabricPlusViaLegacyPlatformImpl extends ViaLegacyPlatformImpl {
+public final class ViaFabricPlusViaLegacyPlatformImpl extends ViaLegacyPlatformImpl {
 
     @Override
     public String getCpeAppName() {

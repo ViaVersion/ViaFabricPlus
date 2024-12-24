@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.ui.v1_7_tab_list_s
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viafabricplus.injection.access.v1_7_tab_list_style.IPlayerListEntry;
 import com.viaversion.viafabricplus.injection.access.v1_7_tab_list_style.IPlayerListHud;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
@@ -59,7 +59,7 @@ public abstract class MixinPlayerListHud implements IPlayerListHud {
 
     @Inject(method = "collectPlayerEntries", at = @At("HEAD"), cancellable = true)
     private void collectPlayerEntries(CallbackInfoReturnable<List<PlayerListEntry>> result) {
-        if (VisualSettings.global().enableLegacyTablist.isEnabled()) {
+        if (VisualSettings.INSTANCE.enableLegacyTablist.isEnabled()) {
             result.setReturnValue(this.client.player.networkHandler.getListedPlayerListEntries().stream()
                     .sorted(viaFabricPlus$FIFO_COMPARATOR)
                     .limit(viaFabricPlus$maxSlots)

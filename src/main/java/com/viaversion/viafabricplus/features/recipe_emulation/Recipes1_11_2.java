@@ -48,7 +48,7 @@ import java.util.List;
 /**
  * Recipe data dump for all versions below 1.12.
  */
-public class Recipes1_11_2 {
+public final class Recipes1_11_2 {
 
     private static RecipeManager1_11_2 RECIPE_MANAGER;
 

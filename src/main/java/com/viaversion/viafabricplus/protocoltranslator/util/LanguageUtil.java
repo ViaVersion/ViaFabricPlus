@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.protocoltranslator.util;
 
 import java.util.Map;
 
-public class LanguageUtil {
+public final class LanguageUtil {
 
     private static final int NON_ASCII_THRESHOLD = 256;
 

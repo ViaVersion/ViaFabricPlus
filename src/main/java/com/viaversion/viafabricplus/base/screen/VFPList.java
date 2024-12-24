@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.base.screen;
 
 import com.viaversion.viafabricplus.screen.PerServerVersionScreen;
 import com.viaversion.viafabricplus.screen.ProtocolSelectionScreen;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -47,7 +47,7 @@ public class VFPList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
 
     public void initScrollY(final double scrollY) {
         // Needs calling last in init to have data loaded before setting scroll amount
-        if (GeneralSettings.global().saveScrollPositionInSlotScreens.getValue()) {
+        if (GeneralSettings.INSTANCE.saveScrollPositionInSlotScreens.getValue()) {
             this.setScrollY(scrollY);
         }
     }

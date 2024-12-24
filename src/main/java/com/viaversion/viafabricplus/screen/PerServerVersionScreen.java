@@ -36,7 +36,7 @@ import net.raphimc.vialoader.util.ProtocolVersionList;
 
 import java.util.function.Consumer;
 
-public class PerServerVersionScreen extends VFPScreen {
+public final class PerServerVersionScreen extends VFPScreen {
 
     private final Consumer<ProtocolVersion> selectionConsumer;
 
@@ -56,7 +56,7 @@ public class PerServerVersionScreen extends VFPScreen {
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, textRenderer.fontHeight + 4));
     }
 
-    public class SlotList extends VFPList {
+    public final class SlotList extends VFPList {
 
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
@@ -74,7 +74,7 @@ public class PerServerVersionScreen extends VFPScreen {
         }
     }
 
-    public class ResetSlot extends SharedSlot {
+    public final class ResetSlot extends SharedSlot {
 
         @Override
         public Text getNarration() {
@@ -95,7 +95,7 @@ public class PerServerVersionScreen extends VFPScreen {
         }
     }
 
-    public class ProtocolSlot extends SharedSlot {
+    public final class ProtocolSlot extends SharedSlot {
 
         private final ProtocolVersion protocolVersion;
 

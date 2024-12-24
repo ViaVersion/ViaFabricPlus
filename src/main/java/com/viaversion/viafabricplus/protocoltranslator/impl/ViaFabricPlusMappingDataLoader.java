@@ -32,7 +32,7 @@ import net.minecraft.registry.Registries;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
+public final class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
 
     public static final Map<String, Material> MATERIALS = new HashMap<>();
     public static final Map<String, Map<ProtocolVersion, String>> BLOCK_MATERIALS = new HashMap<>();

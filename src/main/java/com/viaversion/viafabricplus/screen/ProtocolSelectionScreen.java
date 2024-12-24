@@ -37,7 +37,7 @@ import net.raphimc.vialoader.util.ProtocolVersionList;
 
 import java.awt.*;
 
-public class ProtocolSelectionScreen extends VFPScreen {
+public final class ProtocolSelectionScreen extends VFPScreen {
 
     public static final ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
 

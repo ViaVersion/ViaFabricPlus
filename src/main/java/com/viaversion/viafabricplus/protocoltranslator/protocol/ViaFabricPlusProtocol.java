@@ -48,7 +48,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Protocol to handle error handling changes in older protocols, always last element of the pipeline
-public class ViaFabricPlusProtocol extends AbstractSimpleProtocol {
+public final class ViaFabricPlusProtocol extends AbstractSimpleProtocol {
 
     public static final ViaFabricPlusProtocol INSTANCE = new ViaFabricPlusProtocol();
 

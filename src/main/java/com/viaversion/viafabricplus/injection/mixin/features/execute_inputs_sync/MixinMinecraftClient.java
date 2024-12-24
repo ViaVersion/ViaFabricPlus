@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.execute_inputs_sync;
 
 import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseKeyboard;
-import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
@@ -55,7 +55,7 @@ public abstract class MixinMinecraftClient {
             )
     )
     private void processInputQueues(CallbackInfo ci) {
-        if (DebugSettings.global().executeInputsSynchronously.isEnabled()) {
+        if (DebugSettings.INSTANCE.executeInputsSynchronously.isEnabled()) {
             Queue<Runnable> inputEvents = ((IMouseKeyboard) this.mouse).viaFabricPlus$getPendingScreenEvents();
             while (!inputEvents.isEmpty()) inputEvents.poll().run();
 

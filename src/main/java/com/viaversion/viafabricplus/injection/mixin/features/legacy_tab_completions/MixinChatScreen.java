@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_completions;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -48,12 +48,12 @@ public abstract class MixinChatScreen {
 
     @WrapWithCondition(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;setText(Ljava/lang/String;)V"))
     public boolean moveSetTextDown(TextFieldWidget instance, String text) {
-        return !DebugSettings.global().legacyTabCompletions.isEnabled();
+        return !DebugSettings.INSTANCE.legacyTabCompletions.isEnabled();
     }
 
     @Inject(method = "init", at = @At("RETURN"))
     private void moveSetTextDown(CallbackInfo ci) {
-        if (DebugSettings.global().legacyTabCompletions.isEnabled()) {
+        if (DebugSettings.INSTANCE.legacyTabCompletions.isEnabled()) {
             this.chatField.setText(this.originalChatText);
             this.chatInputSuggestor.refresh();
         }
@@ -75,7 +75,7 @@ public abstract class MixinChatScreen {
 
     @Unique
     private boolean viaFabricPlus$keepTabComplete() {
-        return !DebugSettings.global().legacyTabCompletions.isEnabled() || !this.chatField.getText().startsWith("/");
+        return !DebugSettings.INSTANCE.legacyTabCompletions.isEnabled() || !this.chatField.getText().startsWith("/");
     }
 
 }

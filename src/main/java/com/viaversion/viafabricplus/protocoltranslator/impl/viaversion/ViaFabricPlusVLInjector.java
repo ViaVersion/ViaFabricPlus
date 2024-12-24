@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 import net.raphimc.vialoader.impl.viaversion.VLInjector;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
 
-public class ViaFabricPlusVLInjector extends VLInjector {
+public final class ViaFabricPlusVLInjector extends VLInjector {
 
     @Override
     public String getEncoderName() {

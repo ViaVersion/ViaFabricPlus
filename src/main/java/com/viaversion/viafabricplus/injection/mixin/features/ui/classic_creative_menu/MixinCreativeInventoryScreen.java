@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.ui.classic_creative_menu;
 
 import com.viaversion.viafabricplus.features.ui.classic_creative_menu.GridItemSelectionScreen;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +35,7 @@ public abstract class MixinCreativeInventoryScreen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void replaceCreativeMenu(CallbackInfo ci) {
-        if (VisualSettings.global().replaceCreativeInventory.isEnabled()) {
+        if (VisualSettings.INSTANCE.replaceCreativeInventory.isEnabled()) {
             MinecraftClient.getInstance().setScreen(GridItemSelectionScreen.INSTANCE);
         }
     }

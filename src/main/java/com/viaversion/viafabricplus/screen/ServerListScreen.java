@@ -31,7 +31,7 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
-public class ServerListScreen extends VFPScreen {
+public final class ServerListScreen extends VFPScreen {
 
     public static final ServerListScreen INSTANCE = new ServerListScreen();
 

@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-public class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
+public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
 
     public static final String INJECTOR_PACKAGE = "com.viaversion.viafabricplus.injection.mixin.";
 

@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class CPEAdditions {
+public final class CPEAdditions {
 
     public final static List<ClassicProtocolExtension> ALLOWED_EXTENSIONS = new ArrayList<>();
     public final static Map<Integer, ClientboundPacketsc0_30cpe> CUSTOM_PACKETS = new HashMap<>();

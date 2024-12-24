@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * Utility class for maps.
  */
-public class MapUtil {
+public final class MapUtil {
 
     /**
      * Creates a new linked hash map with the given objects as key-value pairs.

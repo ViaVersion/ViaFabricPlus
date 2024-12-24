@@ -25,8 +25,8 @@ import com.viaversion.viafabricplus.api.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.api.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
 import com.viaversion.viafabricplus.base.Events;
-import com.viaversion.viafabricplus.base.save.SaveManager;
-import com.viaversion.viafabricplus.base.settings.SettingsManager;
+import com.viaversion.viafabricplus.save.SaveManager;
+import com.viaversion.viafabricplus.settings.SettingsManager;
 import com.viaversion.viafabricplus.features.FeaturesLoading;
 import com.viaversion.viafabricplus.features.max_chat_length.MaxChatLength;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -81,12 +81,14 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     private final Logger logger = LogManager.getLogger("ViaFabricPlus");
     private final Path path = FabricLoader.getInstance().getConfigDir().resolve("viafabricplus");
 
-    private final SettingsManager settingsManager;
-    private final SaveManager saveManager;
+    private SettingsManager settingsManager;
+    private SaveManager saveManager;
 
-    private final CompletableFuture<Void> loadingFuture;
+    private CompletableFuture<Void> loadingFuture;
 
-    private ViaFabricPlusImpl() {
+    public void init() {
+        ViaFabricPlus.init(this);
+
         // Create the directory if it doesn't exist
         if (!Files.exists(path)) {
             try {
@@ -117,8 +119,6 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
             saveManager.postInit();
         });
     }
-
-    // Proxy most important functions to the API to prevent users depending on mod internals
 
     @Override
     public Logger logger() {

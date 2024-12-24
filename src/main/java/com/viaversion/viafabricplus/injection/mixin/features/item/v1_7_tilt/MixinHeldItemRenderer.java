@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.v1_7_tilt;
 
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
@@ -65,7 +65,7 @@ public abstract class MixinHeldItemRenderer {
     @Inject(method = "renderFirstPersonItem",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", ordinal = 1))
     private void slightlyTiltItemPosition(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack stack, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (VisualSettings.global().tiltItemPositions.isEnabled() && !(stack.getItem() instanceof BlockItem)) {
+        if (VisualSettings.INSTANCE.tiltItemPositions.isEnabled() && !(stack.getItem() instanceof BlockItem)) {
             final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
             final int direction = arm == Arm.RIGHT ? 1 : -1;
 
@@ -78,7 +78,7 @@ public abstract class MixinHeldItemRenderer {
 
     @Unique
     private void viaFabricPlus$applySwingOffset(AbstractClientPlayerEntity player, Hand hand, float swingProgress, MatrixStack matrices) {
-        if (VisualSettings.global().swingHandOnItemUse.isEnabled()) {
+        if (VisualSettings.INSTANCE.swingHandOnItemUse.isEnabled()) {
             final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
             applySwingOffset(matrices, arm, swingProgress);
         }

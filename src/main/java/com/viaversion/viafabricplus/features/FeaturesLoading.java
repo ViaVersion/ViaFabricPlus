@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.features;
 
 import com.viaversion.viafabricplus.api.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import com.viaversion.viafabricplus.features.block.CollisionShapes;
 import com.viaversion.viafabricplus.features.cpe_extensions.CPEAdditions;
 import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1_12_2;
@@ -40,7 +40,7 @@ import net.minecraft.client.MinecraftClient;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
-public class FeaturesLoading {
+public final class FeaturesLoading {
 
     static {
         ResourcePackHeaderDiff.init();
@@ -58,7 +58,7 @@ public class FeaturesLoading {
         });
 
         Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
-            VisualSettings.global().filterNonExistingGlyphs.onValueChanged();
+            VisualSettings.INSTANCE.filterNonExistingGlyphs.onValueChanged();
             CollisionShapes.reloadBlockShapes();
 
             if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {

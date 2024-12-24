@@ -19,18 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.settings.impl;
+package com.viaversion.viafabricplus.settings.impl;
 
-import com.viaversion.viafabricplus.base.settings.base.BooleanSetting;
-import com.viaversion.viafabricplus.base.settings.base.ModeSetting;
-import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.settings.base.BooleanSetting;
+import com.viaversion.viafabricplus.settings.base.ModeSetting;
+import com.viaversion.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
-public class GeneralSettings extends SettingGroup {
+public final class GeneralSettings extends SettingGroup {
 
-    private static final GeneralSettings INSTANCE = new GeneralSettings();
+    public static final GeneralSettings INSTANCE = new GeneralSettings();
 
     private final MutableText[] ORIENTATION_OPTIONS = new MutableText[] {
             Text.translatable("base.viafabricplus.none"),
@@ -74,10 +74,6 @@ public class GeneralSettings extends SettingGroup {
             case 4 -> builder.position(width - 98 - 5, height - 20 - 5);
             default -> builder;
         };
-    }
-
-    public static GeneralSettings global() {
-        return INSTANCE;
     }
 
 }

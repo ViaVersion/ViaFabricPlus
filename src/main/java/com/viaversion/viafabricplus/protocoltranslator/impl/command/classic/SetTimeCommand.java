@@ -27,7 +27,7 @@ import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.alpha.a1_0_16_2toa1_0_17_1_0_17_4.storage.TimeLockStorage;
 
-public class SetTimeCommand implements VFPViaSubCommand {
+public final class SetTimeCommand implements VFPViaSubCommand {
 
     @Override
     public String name() {

@@ -25,7 +25,7 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
@@ -216,7 +216,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Redirect(method = "onGameJoin", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;isSecureChatEnforced()Z"))
     private boolean removeSecureChatWarning(ClientPlayNetworkHandler instance) {
-        return isSecureChatEnforced() || VisualSettings.global().disableSecureChatWarning.isEnabled();
+        return isSecureChatEnforced() || VisualSettings.INSTANCE.disableSecureChatWarning.isEnabled();
     }
 
     @SuppressWarnings({"InvalidInjectorMethodSignature"})

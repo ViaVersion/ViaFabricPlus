@@ -34,7 +34,7 @@ import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 
-public class ShulkerBoxColoringRecipe extends SpecialCraftingRecipe {
+public final class ShulkerBoxColoringRecipe extends SpecialCraftingRecipe {
 
     public static final RecipeSerializer<ShulkerBoxColoringRecipe> SERIALIZER = new SpecialRecipeSerializer<>(ShulkerBoxColoringRecipe::new);
 

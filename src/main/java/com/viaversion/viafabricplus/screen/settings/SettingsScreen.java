@@ -24,12 +24,12 @@ package com.viaversion.viafabricplus.screen.settings;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.base.screen.VFPList;
 import com.viaversion.viafabricplus.base.screen.VFPScreen;
-import com.viaversion.viafabricplus.base.settings.base.AbstractSetting;
-import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.settings.base.AbstractSetting;
+import com.viaversion.viafabricplus.settings.base.SettingGroup;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
-public class SettingsScreen extends VFPScreen {
+public final class SettingsScreen extends VFPScreen {
 
     public static final SettingsScreen INSTANCE = new SettingsScreen();
 

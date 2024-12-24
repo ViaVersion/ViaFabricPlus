@@ -32,7 +32,7 @@ import net.raphimc.vialoader.netty.VLPipeline;
 
 import javax.crypto.SecretKey;
 
-public class ViaFabricPlusNettyPipelineProvider extends NettyPipelineProvider {
+public final class ViaFabricPlusNettyPipelineProvider extends NettyPipelineProvider {
 
     @Override
     public void enableCompression(UserConnection user, ProtocolCompression protocolCompression) {

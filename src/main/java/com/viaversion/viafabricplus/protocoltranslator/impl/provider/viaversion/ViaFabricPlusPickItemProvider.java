@@ -26,7 +26,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
 import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.provider.PickItemProvider;
 
-public class ViaFabricPlusPickItemProvider extends PickItemProvider {
+public final class ViaFabricPlusPickItemProvider extends PickItemProvider {
 
     @Override
     public void pickItemFromBlock(UserConnection connection, BlockPosition blockPosition, boolean includeData) {

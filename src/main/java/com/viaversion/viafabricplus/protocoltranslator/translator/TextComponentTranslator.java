@@ -33,7 +33,7 @@ import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ClientboundPacke
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 
-public class TextComponentTranslator {
+public final class TextComponentTranslator {
 
     private static final UserConnection DUMMY_USER_CONNECTION = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, ProtocolVersion.v1_14);
 

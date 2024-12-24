@@ -30,7 +30,7 @@ import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.V
 import com.viaversion.viafabricplus.base.screen.VFPList;
 import com.viaversion.viafabricplus.base.screen.VFPListEntry;
 import com.viaversion.viafabricplus.base.screen.VFPScreen;
-import com.viaversion.viafabricplus.base.settings.impl.AuthenticationSettings;
+import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -44,7 +44,7 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassiCubeServerListScreen extends VFPScreen {
+public final class ClassiCubeServerListScreen extends VFPScreen {
 
     public static final ClassiCubeServerListScreen INSTANCE = new ClassiCubeServerListScreen();
 
@@ -128,7 +128,7 @@ public class ClassiCubeServerListScreen extends VFPScreen {
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-            final boolean selectCPE = AuthenticationSettings.global().automaticallySelectCPEInClassiCubeServerList.getValue();
+            final boolean selectCPE = AuthenticationSettings.INSTANCE.automaticallySelectCPEInClassiCubeServerList.getValue();
             ViaFabricPlusClassicMPPassProvider.classicubeMPPass = classiCubeServerInfo.mpPass();
 
             ConnectionUtil.connect(classiCubeServerInfo.name(), classiCubeServerInfo.ip() + ":" + classiCubeServerInfo.port(), selectCPE ? LegacyProtocolVersion.c0_30cpe : null);

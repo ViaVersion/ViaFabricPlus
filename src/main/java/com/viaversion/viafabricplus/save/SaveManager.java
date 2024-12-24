@@ -19,19 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.save;
+package com.viaversion.viafabricplus.save;
 
 import com.viaversion.viafabricplus.api.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
-import com.viaversion.viafabricplus.base.save.impl.AccountsSave;
-import com.viaversion.viafabricplus.base.save.impl.SettingsSave;
-import com.viaversion.viafabricplus.base.settings.SettingsManager;
+import com.viaversion.viafabricplus.save.impl.AccountsSave;
+import com.viaversion.viafabricplus.save.impl.SettingsSave;
+import com.viaversion.viafabricplus.settings.SettingsManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SaveManager {
+public final class SaveManager {
 
     private final List<AbstractSave> saves = new ArrayList<>();
 

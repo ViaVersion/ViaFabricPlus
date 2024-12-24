@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.legacy_chat_signatures;
 
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +33,7 @@ public abstract class MixinChatHud {
 
     @ModifyVariable(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private MessageIndicator removeIndicator(MessageIndicator instance) {
-        return VisualSettings.global().hideSignatureIndicator.isEnabled() ? null : instance;
+        return VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled() ? null : instance;
     }
 
 }

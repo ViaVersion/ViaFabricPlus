@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.filter_non_existin
 
 import com.viaversion.viafabricplus.features.filter_non_existing_characters.RenderableGlyphDiff;
 import com.viaversion.viafabricplus.features.filter_non_existing_characters.BuiltinEmptyGlyph1_12_2;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.*;
 import net.minecraft.util.Identifier;
@@ -72,7 +72,7 @@ public abstract class MixinFontStorage {
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
     private void fixBlankGlyph1_12_2(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
-        if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
+        if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled()) {
             final FontStorage.GlyphPair glyphPair = cir.getReturnValue();
             final Glyph glyph1 = glyphPair.glyph();
             final Glyph glyph2 = glyphPair.advanceValidatedGlyph();
@@ -87,7 +87,7 @@ public abstract class MixinFontStorage {
 
     @Unique
     private boolean viaFabricPlus$shouldBeInvisible(final int codePoint) {
-        if (VisualSettings.global().filterNonExistingGlyphs.getValue()) {
+        if (VisualSettings.INSTANCE.filterNonExistingGlyphs.getValue()) {
             return (this.id.equals(MinecraftClient.DEFAULT_FONT_ID) || this.id.equals(MinecraftClient.UNICODE_FONT_ID)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
         } else {
             return false;
@@ -96,7 +96,7 @@ public abstract class MixinFontStorage {
 
     @Unique
     private FontStorage.GlyphPair viaFabricPlus$getBlankGlyphPair() {
-        if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
+        if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled()) {
             return new FontStorage.GlyphPair(BuiltinEmptyGlyph1_12_2.INSTANCE, BuiltinEmptyGlyph1_12_2.INSTANCE);
         } else {
             return FontStorage.GlyphPair.MISSING;
@@ -105,7 +105,7 @@ public abstract class MixinFontStorage {
 
     @Unique
     private BakedGlyph viaFabricPlus$getBlankBakedGlyph() {
-        if (VisualSettings.global().changeFontRendererBehaviour.isEnabled()) {
+        if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled()) {
             return this.viaFabricPlus$blankBakedGlyph1_12_2;
         } else {
             return this.blankBakedGlyph;

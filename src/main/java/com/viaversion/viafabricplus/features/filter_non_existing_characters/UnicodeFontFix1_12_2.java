@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.features.filter_non_existing_characters;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.util.LanguageUtil;
-import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.SimpleOption;
@@ -35,7 +35,7 @@ import net.minecraft.util.Language;
  * Older versions only had unicode font support for some languages and therefore servers are expecting the client
  * to use a unicode font, not using it on older versions can cause issues with wrong dimensions in chat components.
  */
-public class UnicodeFontFix1_12_2 {
+public final class UnicodeFontFix1_12_2 {
 
     private static boolean enabled = false;
     private static Runnable task = null;
@@ -59,7 +59,7 @@ public class UnicodeFontFix1_12_2 {
     public static void updateUnicodeFontOverride(final ProtocolVersion version) {
         final SimpleOption<Boolean> option = MinecraftClient.getInstance().options.getForceUnicodeFont();
 
-        if (VisualSettings.global().forceUnicodeFontForNonAsciiLanguages.isEnabled(version)) {
+        if (VisualSettings.INSTANCE.forceUnicodeFontForNonAsciiLanguages.isEnabled(version)) {
             if (Language.getInstance() instanceof TranslationStorage storage) {
                 enabled = LanguageUtil.isUnicodeFont1_12_2(storage.translations);
                 task = () -> option.setValue(enabled);

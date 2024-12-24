@@ -19,20 +19,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.save.impl;
+package com.viaversion.viafabricplus.save.impl;
 
 import com.google.gson.JsonObject;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.save.AbstractSave;
-import com.viaversion.viafabricplus.base.settings.SettingsManager;
-import com.viaversion.viafabricplus.base.settings.base.AbstractSetting;
-import com.viaversion.viafabricplus.base.settings.base.SettingGroup;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.save.AbstractSave;
+import com.viaversion.viafabricplus.settings.SettingsManager;
+import com.viaversion.viafabricplus.settings.base.AbstractSetting;
+import com.viaversion.viafabricplus.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 
-public class SettingsSave extends AbstractSave {
+public final class SettingsSave extends AbstractSave {
 
     private final SettingsManager settingsManager;
     private String selectedProtocolVersion;
@@ -81,7 +81,7 @@ public class SettingsSave extends AbstractSave {
             return;
         }
         // Set target version AFTER protocol loading, so we can reach all versions
-        if (GeneralSettings.global().saveSelectedProtocolVersion.getValue()) {
+        if (GeneralSettings.INSTANCE.saveSelectedProtocolVersion.getValue()) {
             final ProtocolVersion protocolVersion = protocolVersionByName(selectedProtocolVersion);
             if (protocolVersion != null) {
                 ProtocolTranslator.setTargetVersion(protocolVersion);

@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.base.ui;
 
 import com.viaversion.viafabricplus.screen.ProtocolSelectionScreen;
-import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.DirectConnectScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -41,7 +41,7 @@ public abstract class MixinDirectConnectScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void addProtocolSelectionButton(CallbackInfo ci) {
-        final int buttonPosition = GeneralSettings.global().directConnectScreenButtonOrientation.getIndex();
+        final int buttonPosition = GeneralSettings.INSTANCE.directConnectScreenButtonOrientation.getIndex();
         if (buttonPosition == 0) { // Off
             return;
         }
