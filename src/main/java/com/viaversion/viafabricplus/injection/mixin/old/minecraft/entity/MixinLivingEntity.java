@@ -114,7 +114,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Inject(method = "tickCramming", at = @At("HEAD"), cancellable = true)
     private void preventEntityPush(CallbackInfo ci) {
-        if (DebugSettings.INSTANCE.preventEntityCramming.isEnabled()) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
         }
     }

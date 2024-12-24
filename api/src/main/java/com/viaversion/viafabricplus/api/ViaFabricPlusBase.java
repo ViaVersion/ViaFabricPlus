@@ -30,8 +30,11 @@ import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.ClientConnection;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -78,6 +81,14 @@ public interface ViaFabricPlusBase {
     ProtocolVersion getTargetVersion(final Channel channel);
 
     /**
+     * Gets the target version from the connection, can be used in early stages of the connection
+     *
+     * @param connection the connection
+     * @return the target version
+     */
+    ProtocolVersion getTargetVersion(final ClientConnection connection);
+
+    /**
      * Sets the target version
      *
      * @param newVersion the target version
@@ -103,6 +114,22 @@ public interface ViaFabricPlusBase {
      * @return the current UserConnection of the connection to the server, if the player isn't connected to a server it will return null
      */
     UserConnection getPlayNetworkUserConnection();
+
+    /**
+     * Get the UserConnection for the given connection {@link ClientConnection}.
+     *
+     * @param connection the connection
+     * @return the UserConnection
+     */
+    UserConnection getUserConnection(final ClientConnection connection);
+
+    /**
+     * Gets the per-server protocol version for the given server.
+     *
+     * @param serverInfo the server info
+     * @return the server version
+     */
+    @Nullable ProtocolVersion getServerVersion(final ServerInfo serverInfo);
 
     /**
      * Register a callback for when the user changes the target version in the screen, or if the user joins a server with a different version.
@@ -162,20 +189,20 @@ public interface ViaFabricPlusBase {
     void openSettingsScreen(final Screen parent);
 
     /**
-     * Converts a Minecraft item stack to a ViaVersion item
+     * Converts a Minecraft item stack {@link ItemStack} to a ViaVersion item {@link Item}
      *
-     * @param stack         The Minecraft item stack
-     * @param targetVersion The target version to convert to (e.g. v1.13)
-     * @return The ViaVersion item for the target version
+     * @param stack         The Minecraft item stack to convert {@link ItemStack}
+     * @param targetVersion The target version to convert to (e.g. v1.13) {@link ProtocolVersion}
+     * @return The ViaVersion item for the target version {@link Item}
      */
     Item translateItem(final ItemStack stack, final ProtocolVersion targetVersion);
 
     /**
-     * Converts a ViaVersion item to a Minecraft item stack
+     * Converts a ViaVersion item {@link Item} to a Minecraft item stack {@link ItemStack}
      *
-     * @param item          The ViaVersion item
-     * @param sourceVersion The source version of the item (e.g. b1.8)
-     * @return The Minecraft item stack
+     * @param item          The ViaVersion item to convert {@link Item}
+     * @param sourceVersion The source version of the item (e.g. b1.8) {@link ProtocolVersion}
+     * @return The Minecraft item stack for the source version {@link ItemStack}
      */
     ItemStack translateItem(final Item item, final ProtocolVersion sourceVersion);
 

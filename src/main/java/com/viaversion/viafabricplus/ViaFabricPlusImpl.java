@@ -25,6 +25,8 @@ import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
+import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
+import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viafabricplus.base.Events;
@@ -43,9 +45,12 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.ClientConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -128,6 +133,9 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
         });
     }
 
+    // --------------------------------------------------------------------------------------------
+    // Proxy the most important/used internals to a general API point for mods
+
     @Override
     public Logger logger() {
         return logger;
@@ -149,6 +157,11 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
+    public ProtocolVersion getTargetVersion(ClientConnection connection) {
+        return ((IClientConnection) connection).viaFabricPlus$getTargetVersion();
+    }
+
+    @Override
     public void setTargetVersion(ProtocolVersion newVersion) {
         ProtocolTranslator.setTargetVersion(newVersion);
     }
@@ -166,6 +179,16 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     @Override
     public UserConnection getPlayNetworkUserConnection() {
         return ProtocolTranslator.getPlayNetworkUserConnection();
+    }
+
+    @Override
+    public UserConnection getUserConnection(ClientConnection connection) {
+        return ((IClientConnection) connection).viaFabricPlus$getUserConnection();
+    }
+
+    @Override
+    public @Nullable ProtocolVersion getServerVersion(ServerInfo serverInfo) {
+        return ((IServerInfo) serverInfo).viaFabricPlus$forcedVersion();
     }
 
     @Override

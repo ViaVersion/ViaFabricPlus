@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.save.impl;
 
 import com.google.gson.JsonObject;
+import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.save.AbstractSave;
@@ -47,7 +48,7 @@ public final class SettingsSave extends AbstractSave {
                 setting.write(groupObject);
             }
 
-            object.add(AbstractSetting.mapTranslationKey(group.getTranslationKey()), groupObject);
+            object.add(AbstractSetting.mapTranslationKey(ChatUtil.uncoverTranslationKey(group.getName())), groupObject);
         }
 
         object.addProperty("selected-protocol-version", ProtocolTranslator.getTargetVersion().getName());
@@ -56,7 +57,7 @@ public final class SettingsSave extends AbstractSave {
     @Override
     public void read(JsonObject object) {
         for (SettingGroup group : SettingsManager.INSTANCE.getGroups()) {
-            final String translationKey = group.getTranslationKey();
+            final String translationKey = ChatUtil.uncoverTranslationKey(group.getName());
 
             final JsonObject groupObject = object.getAsJsonObject(AbstractSetting.mapTranslationKey(translationKey));
             for (AbstractSetting<?> setting : group.getSettings()) {

@@ -50,13 +50,9 @@
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Kereskedelmi képernyő kisimítása",
   "debug_settings.viafabricplus.execute_inputs_synchronously": "Bemenetek szinkronizált végrehajtása",
   "visual_settings.viafabricplus.sneak_instantly": "Közvetlen lopakodás",
-  "debug_settings.viafabricplus.send_open_inventory_packet": "Felszerelést kinyitó adatcsomagok küldése",
-  "debug_settings.viafabricplus.remove_cooldowns": "Lehűlések eltávolítása",
-  "debug_settings.viafabricplus.send_idle_packet": "Tétlen adatcsomagok küldése",
   "debug_settings.viafabricplus.replace_sneaking": "Lopakodás kicserélése",
   "debug_settings.viafabricplus.long_sneaking": "Hosszú lopakodás",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Régi bányászati sebességek",
-  "debug_settings.viafabricplus.prevent_entity_cramming": "Entitások zsúfoltságának megelőzése",
   "debug_settings.viafabricplus.always_tick_client_player": "Mindig tickelje a kliensjátékost",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "BetaCraft hitelesítés használata",
