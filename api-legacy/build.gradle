@@ -4,5 +4,7 @@ plugins {
 
 dependencies {
     compileOnly project(":viafabricplus-api")
+
+    // They don't matter and are only used to compile against
     compileOnly "com.viaversion:viaversion-common:5.2.1-SNAPSHOT"
 }

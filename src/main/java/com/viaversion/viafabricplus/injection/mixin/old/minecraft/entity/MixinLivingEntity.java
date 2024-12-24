@@ -25,8 +25,6 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.features.entity.riding_offsets.EntityRidingOffsetsPre1_20_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.entity.*;
@@ -73,9 +71,6 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     public abstract boolean hasStatusEffect(RegistryEntry<StatusEffect> effect);
 
-    @Shadow
-    public float bodyYaw;
-
     public MixinLivingEntity(EntityType<?> type, World world) {
         super(type, world);
     }
@@ -95,20 +90,6 @@ public abstract class MixinLivingEntity extends Entity {
             return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, entity).rotateY(-instance.getYaw() * (float) (Math.PI / 180));
         } else {
             return getPassengerAttachmentPos(entity, entityDimensions, v);
-        }
-    }
-
-    @Redirect(method = "turnHead", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(F)F"))
-    private float changeBodyRotationInterpolation(float g) {
-        if (VisualSettings.INSTANCE.changeBodyRotationInterpolation.isEnabled()) {
-            g = MathHelper.clamp(g, -75.0F, 75.0F);
-            this.bodyYaw = this.getYaw() - g;
-            if (Math.abs(g) > 50.0F) {
-                this.bodyYaw += g * 0.2F;
-            }
-            return Float.MIN_VALUE; // Causes the if to always fail
-        } else {
-            return Math.abs(g);
         }
     }
 
@@ -215,15 +196,6 @@ public abstract class MixinLivingEntity extends Entity {
             return this.getBaseWaterMovementSpeedMultiplier();
         } else {
             return constant;
-        }
-    }
-
-    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;abs(F)F"))
-    private float alwaysRotateWhenWalkingBackwards(float value) {
-        if (VisualSettings.INSTANCE.sidewaysBackwardsRunning.isEnabled()) {
-            return 0F;
-        } else {
-            return MathHelper.abs(value);
         }
     }
 

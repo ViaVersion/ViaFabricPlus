@@ -29,11 +29,6 @@ public interface LoadingCycleCallback {
     enum LoadingCycle {
 
         /**
-         * Earliest stage before ViaFabricPlus loads anything.
-         */
-        INITIAL_LOAD,
-
-        /**
          * Before the settings are loaded.
          */
         PRE_SETTINGS_LOAD,

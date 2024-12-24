@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.settings;
 
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
-import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
+import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.settings.impl.*;
 
 import java.util.ArrayList;
@@ -43,7 +43,6 @@ public final class SettingsManager {
                 GeneralSettings.INSTANCE,
                 BedrockSettings.INSTANCE,
                 AuthenticationSettings.INSTANCE,
-                VisualSettings.INSTANCE,
                 DebugSettings.INSTANCE
         );
 

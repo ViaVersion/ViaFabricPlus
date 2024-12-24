@@ -139,7 +139,8 @@ public interface ViaFabricPlusBase {
     void registerOnChangeProtocolVersionCallback(final ChangeProtocolVersionCallback callback);
 
     /**
-     * Register a callback for the loading cycle which covers most of the loading process of the mod.
+     * Register a callback for the loading cycle which covers most of the loading process of the mod. Intended to be used
+     * inside {@link com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusLoadEntrypoint} implementations.
      *
      * @param callback the callback
      */

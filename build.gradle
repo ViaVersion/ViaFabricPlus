@@ -30,7 +30,7 @@ dependencies {
 
 	// Manually include to ignore dependencies
 	include implementation(project(path: ":viafabricplus-api", configuration: "namedElements"))
-	include implementation(project(path: ":viafabricplus-visual-changes", configuration: "namedElements"))
+	include implementation(project(path: ":viafabricplus-visuals", configuration: "namedElements"))
 
 	// Will be removed in future versions
 	include implementation(project(":viafabricplus-api-legacy"))

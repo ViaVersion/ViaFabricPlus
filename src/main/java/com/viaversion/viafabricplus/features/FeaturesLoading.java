@@ -23,22 +23,17 @@ package com.viaversion.viafabricplus.features;
 
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import com.viaversion.viafabricplus.features.block.CollisionShapes;
 import com.viaversion.viafabricplus.features.cpe_extensions.CPEAdditions;
 import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1_12_2;
 import com.viaversion.viafabricplus.features.networking.resource_pack_header.ResourcePackHeaderDiff;
 import com.viaversion.viafabricplus.features.recipe_emulation.Recipes1_11_2;
-import com.viaversion.viafabricplus.features.filter_non_existing_characters.UnicodeFontFix1_12_2;
-import com.viaversion.viafabricplus.features.ui.armor_hud.ArmorHudEmulation1_8;
-import com.viaversion.viafabricplus.features.ui.classic_creative_menu.GridItemSelectionScreen;
 import com.viaversion.viafabricplus.features.entity.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.entity.enchantment_attributes.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.base.sync_tasks.DataCustomPayload;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 public final class FeaturesLoading {
 
@@ -46,24 +41,18 @@ public final class FeaturesLoading {
         ResourcePackHeaderDiff.init();
         CPEAdditions.init();
         DataCustomPayload.init();
-        UnicodeFontFix1_12_2.init();
         FootStepParticle1_12_2.init();
 
         Events.LOADING_CYCLE.register(cycle -> {
             if (cycle == LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
                 EntityDimensionDiff.init();
                 EnchantmentAttributesEmulation1_20_6.init();
-                ArmorHudEmulation1_8.init();
             }
         });
 
         Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
-            VisualSettings.INSTANCE.filterNonExistingGlyphs.onValueChanged();
             CollisionShapes.reloadBlockShapes();
 
-            if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                GridItemSelectionScreen.INSTANCE.itemGrid = null;
-            }
             if (newVersion.olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
                 Recipes1_11_2.reset();
             }

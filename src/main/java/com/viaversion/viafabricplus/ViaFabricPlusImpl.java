@@ -21,17 +21,19 @@
 
 package com.viaversion.viafabricplus;
 
+import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusLoadEntrypoint;
 import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
-import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
+import com.viaversion.viafabricplus.base.Events;
+import com.viaversion.viafabricplus.base.overriding_jars.ClassLoaderPriorityUtil;
 import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemRegistryDiff;
 import com.viaversion.viafabricplus.features.item.negative_items.NegativeItemUtil;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
 import com.viaversion.viafabricplus.util.ChatUtil;
-import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.base.sync_tasks.SyncTasks;
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
@@ -102,6 +104,9 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
     public void init() {
         ViaFabricPlus.init(this);
+        FabricLoader.getInstance().getEntrypointContainers("viafabricplus", ViaFabricPlusLoadEntrypoint.class).forEach(container -> {
+            container.getEntrypoint().onPlatformLoad(this);
+        });
 
         // Create the directory if it doesn't exist
         if (!Files.exists(path)) {
@@ -133,6 +138,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
             loadingFuture.join();
             SaveManager.INSTANCE.postInit();
         });
+        Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.FINAL_LOAD);
     }
 
     // --------------------------------------------------------------------------------------------
@@ -262,4 +268,5 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     public int getStackCount(ItemStack stack) {
         return NegativeItemUtil.getCount(stack);
     }
+
 }

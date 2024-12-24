@@ -60,6 +60,10 @@ public final class SettingsSave extends AbstractSave {
             final String translationKey = ChatUtil.uncoverTranslationKey(group.getName());
 
             final JsonObject groupObject = object.getAsJsonObject(AbstractSetting.mapTranslationKey(translationKey));
+            if (groupObject == null) {
+                continue;
+            }
+
             for (AbstractSetting<?> setting : group.getSettings()) {
                 if (groupObject.has(setting.getTranslationKey())) {
                     setting.read(groupObject);

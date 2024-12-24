@@ -22,8 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.base;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
-import com.viaversion.viafabricplus.base.Events;
 import net.minecraft.client.main.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,9 +33,7 @@ public abstract class MixinMain {
 
     @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;startTimerHack()V"))
     private static void bootstrap(CallbackInfo ci) {
-        Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.INITIAL_LOAD);
         ViaFabricPlusImpl.INSTANCE.init();
-        Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.FINAL_LOAD);
     }
 
 }

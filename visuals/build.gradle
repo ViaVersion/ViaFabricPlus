@@ -1,0 +1,30 @@
+plugins {
+    id "vfp.base-conventions"
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/viafabricplus-visuals.accesswidener")
+}
+
+dependencies {
+    compileOnly project(":viafabricplus-api")
+    modCompileOnly fabricApi.module("fabric-api-base", project.fabric_api_version)
+    modCompileOnly fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version)
+
+    // They don't matter and are only used to compile against
+    compileOnly "com.viaversion:viaversion-common:5.2.1-SNAPSHOT"
+    compileOnly ("net.raphimc:ViaLoader:3.0.4") {
+        exclude group: "com.google.guava", module: "guava"
+        exclude group: "org.slf4j", module: "slf4j-api"
+    }
+    compileOnly "net.raphimc:ViaLegacy:3.0.7-SNAPSHOT"
+}
+
+processResources {
+    filesMatching("fabric.mod.json") {
+        expand(
+                "version": project.version,
+                "description": project.description
+        )
+    }
+}

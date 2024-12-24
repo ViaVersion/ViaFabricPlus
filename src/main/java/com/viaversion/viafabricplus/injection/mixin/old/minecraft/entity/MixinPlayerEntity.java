@@ -26,11 +26,9 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerAbilities;
@@ -73,9 +71,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Unique
     private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_8 = EntityDimensions.changing(0.6F, 1.8F).withEyeHeight(1.54F).
             withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, PlayerEntity.VEHICLE_ATTACHMENT_POS));
-
-    @Unique
-    private static final SoundEvent viaFabricPlus$oof_hurt = SoundEvent.of(Identifier.of("viafabricplus", "oof.hurt"));
 
     @Unique
     public boolean viaFabricPlus$isSprinting;
@@ -234,13 +229,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
                     }
                 }
             }
-        }
-    }
-
-    @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
-    private void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
-        if (VisualSettings.INSTANCE.replaceHurtSoundWithOOFSound.isEnabled()) {
-            cir.setReturnValue(viaFabricPlus$oof_hurt);
         }
     }
 

@@ -1,0 +1,41 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.viaversion.viafabricplus.visuals.injection.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "classic_creative_menu.MixinCreativeInventoryScreen",
+    "classic_walking_animation.MixinBipedEntityModel",
+    "disable_server_pinging.MixinMultiplayerServerListWidget_ServerEntry",
+    "downloading_terrain_transitions.MixinDownloadingTerrainScreen",
+    "filter_game_mode_selections.MixinGameModeSelectionScreen",
+    "filter_game_mode_selections.MixinGameModeSelectionScreen_GameModeSelection",
+    "filter_non_existing_characters.MixinFontStorage",
+    "filter_non_existing_characters.MixinLanguageManager",
+    "hud_element_changes.MixinChatHud",
+    "hud_element_changes.MixinChatScreen",
+    "hud_element_changes.MixinClientPlayerInteractionManager",
+    "hud_element_changes.MixinInGameHud",
+    "oof_sound.MixinPlayerEntity",
+    "petrified_oak_slab_model.MixinItemRenderer",
+    "player_rotations.MixinBipedEntityModel",
+    "player_rotations.MixinLivingEntity",
+    "remove_newer_screen_features.MixinCommandBlockScreen",
+    "remove_newer_screen_features.MixinGameMenuScreen",
+    "remove_newer_screen_features.MixinJigsawBlockScreen",
+    "remove_newer_screen_features.MixinScreen",
+    "remove_newer_screen_features.MixinStructureBlockScreen_1",
+    "secure_chat_warning.MixinClientPlayNetworkHandler",
+    "v1_7_item_tilt.MixinHeldItemRenderer",
+    "v1_7_tab_list_style.MixinClientPlayNetworkHandler",
+    "v1_7_tab_list_style.MixinPlayerListEntry",
+    "v1_7_tab_list_style.MixinPlayerListHud",
+    "villager_profession.MixinVillagerClothingFeatureRenderer"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
