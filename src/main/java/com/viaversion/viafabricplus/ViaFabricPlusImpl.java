@@ -25,6 +25,8 @@ import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemRegistryDiff;
+import com.viaversion.viafabricplus.features.item.negative_items.NegativeItemUtil;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
@@ -246,4 +248,18 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
         return ItemTranslator.viaToMc(item, sourceVersion);
     }
 
+    @Override
+    public boolean itemExists(net.minecraft.item.Item item, ProtocolVersion version) {
+        return ItemRegistryDiff.contains(item, version);
+    }
+
+    @Override
+    public boolean itemExistsInConnection(net.minecraft.item.Item item) {
+        return ItemRegistryDiff.keepItem(item);
+    }
+
+    @Override
+    public int getStackCount(ItemStack stack) {
+        return NegativeItemUtil.getCount(stack);
+    }
 }

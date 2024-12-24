@@ -1496,10 +1496,6 @@ public final class ItemRegistryDiff {
         // https://minecraft.gamepedia.com/Java_Edition_version_history
     }
 
-    /**
-     * @param item The item to check
-     * @return true if the item exists in the current version, false otherwise, this will also check for CPE items (CustomBlocks V1 extension)
-     */
     public static boolean keepItem(final Item item) {
         if (ProtocolTranslator.getTargetVersion().equals(c0_30cpe)) {
             final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
@@ -1519,11 +1515,6 @@ public final class ItemRegistryDiff {
         return contains(item, ProtocolTranslator.getTargetVersion());
     }
 
-    /**
-     * @param item    The item to check
-     * @param version The version to check
-     * @return true if the item is present in the version, false otherwise
-     */
     public static boolean contains(final Item item, final ProtocolVersion version) {
         return !ITEM_DIFF.containsKey(item) || ITEM_DIFF.get(item).contains(version);
     }

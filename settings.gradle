@@ -14,7 +14,8 @@ includeBuild("build-logic")
 
 setupViaSubproject("api")
 setupViaSubproject("api-legacy")
-setupViaSubproject("diff-generator")
+setupViaSubproject("generator-tools")
+setupViaSubproject("visual-changes")
 
 void setupViaSubproject(String name) {
     var pName = "viafabricplus-" + name

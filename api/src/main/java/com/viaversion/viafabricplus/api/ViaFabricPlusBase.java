@@ -206,4 +206,24 @@ public interface ViaFabricPlusBase {
      */
     ItemStack translateItem(final Item item, final ProtocolVersion sourceVersion);
 
+    /**
+     * @param item    The item to check
+     * @param version The version to check for
+     * @return true if the item exists in the given version, false otherwise, this will also check for CPE items (CustomBlocks V1 extension)
+     */
+    boolean itemExists(final net.minecraft.item.Item item, final ProtocolVersion version);
+
+    /**
+     * @param item The item to check
+     * @return Similar to {@link #itemExists(net.minecraft.item.Item, ProtocolVersion)}, but takes in the current connection details (e.g. classic protocol extensions being loaded)
+     */
+    boolean itemExistsInConnection(final net.minecraft.item.Item item);
+
+    /**
+     * @param stack The item stack to get the count of
+     * @return Similar to {@link ItemStack#getCount()}, but also handles negative item counts in pre 1.11 versions
+     */
+    int getStackCount(final ItemStack stack);
+
+
 }
