@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction;
 
-import com.viaversion.viafabricplus.base.SyncTasks;
+import com.viaversion.viafabricplus.base.sync_tasks.SyncTasks;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_17_1to1_18.packet.ClientboundPackets1_18;

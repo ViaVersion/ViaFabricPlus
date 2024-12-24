@@ -21,26 +21,36 @@
 
 package com.viaversion.viafabricplus;
 
-import com.viaversion.viafabricplus.api.ChangeProtocolVersionCallback;
-import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
+import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
+import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viafabricplus.base.Events;
+import com.viaversion.viafabricplus.base.sync_tasks.SyncTasks;
 import com.viaversion.viafabricplus.save.SaveManager;
+import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
+import com.viaversion.viafabricplus.screen.impl.settings.SettingsScreen;
 import com.viaversion.viafabricplus.settings.SettingsManager;
 import com.viaversion.viafabricplus.features.FeaturesLoading;
 import com.viaversion.viafabricplus.features.max_chat_length.MaxChatLength;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.util.ClassLoaderPriorityUtil;
+import com.viaversion.viafabricplus.base.overriding_jars.ClassLoaderPriorityUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /*
@@ -81,9 +91,6 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     private final Logger logger = LogManager.getLogger("ViaFabricPlus");
     private final Path path = FabricLoader.getInstance().getConfigDir().resolve("viafabricplus");
 
-    private SettingsManager settingsManager;
-    private SaveManager saveManager;
-
     private CompletableFuture<Void> loadingFuture;
 
     public void init() {
@@ -102,10 +109,11 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
         ClassLoaderPriorityUtil.loadOverridingJars(path, logger);
 
         // Load settings and config files
-        settingsManager = new SettingsManager();
-        saveManager = new SaveManager(settingsManager);
+        SettingsManager.INSTANCE.init();
+        SaveManager.INSTANCE.init();
 
         // Init features
+        SyncTasks.init();
         FeaturesLoading.init();
 
         // Init ViaVersion protocol translator platform
@@ -116,7 +124,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
                 return;
             }
             loadingFuture.join();
-            saveManager.postInit();
+            SaveManager.INSTANCE.postInit();
         });
     }
 
@@ -175,12 +183,44 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
         return MaxChatLength.getChatLength();
     }
 
-    public SettingsManager getSettingsManager() {
-        return settingsManager;
+    @Override
+    public List<SettingGroup> settingGroups() {
+        return SettingsManager.INSTANCE.getGroups();
     }
 
-    public SaveManager getSaveManager() {
-        return saveManager;
+    @Override
+    public void addSettingGroup(SettingGroup group) {
+        SettingsManager.INSTANCE.addGroup(group);
+    }
+
+    @Override
+    public SettingGroup getSettingGroup(String translationKey) {
+        for (SettingGroup group : SettingsManager.INSTANCE.getGroups()) {
+            if (ChatUtil.uncoverTranslationKey(group.getName()).equals(translationKey)) {
+                return group;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void openProtocolSelectionScreen(Screen parent) {
+        ProtocolSelectionScreen.INSTANCE.open(parent);
+    }
+
+    @Override
+    public void openSettingsScreen(Screen parent) {
+        SettingsScreen.INSTANCE.open(parent);
+    }
+
+    @Override
+    public Item translateItem(ItemStack stack, ProtocolVersion targetVersion) {
+        return ItemTranslator.mcToVia(stack, targetVersion);
+    }
+
+    @Override
+    public ItemStack translateItem(Item item, ProtocolVersion sourceVersion) {
+        return ItemTranslator.viaToMc(item, sourceVersion);
     }
 
 }

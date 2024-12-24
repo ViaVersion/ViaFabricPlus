@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.integration.sync_tasks;
 
-import com.viaversion.viafabricplus.base.SyncTasks;
-import com.viaversion.viafabricplus.util.DataCustomPayload;
+import com.viaversion.viafabricplus.base.sync_tasks.SyncTasks;
+import com.viaversion.viafabricplus.base.sync_tasks.DataCustomPayload;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;

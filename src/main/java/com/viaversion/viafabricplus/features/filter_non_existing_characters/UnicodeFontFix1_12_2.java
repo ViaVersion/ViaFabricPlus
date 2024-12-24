@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.features.filter_non_existing_characters;
 
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.protocoltranslator.util.LanguageUtil;
 import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
-import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;

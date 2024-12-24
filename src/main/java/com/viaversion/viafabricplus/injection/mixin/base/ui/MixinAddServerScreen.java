@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.base.ui;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
-import com.viaversion.viafabricplus.screen.PerServerVersionScreen;
+import com.viaversion.viafabricplus.screen.impl.PerServerVersionScreen;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.AddServerScreen;

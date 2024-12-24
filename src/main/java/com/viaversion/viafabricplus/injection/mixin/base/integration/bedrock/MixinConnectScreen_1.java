@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.base.integration.bedrock;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
@@ -46,7 +47,7 @@ public abstract class MixinConnectScreen_1 {
         final UserConnection userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
         if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
-            final StepFullBedrockSession.FullBedrockSession bedrockSession = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().refreshAndGetBedrockAccount();
+            final StepFullBedrockSession.FullBedrockSession bedrockSession = SaveManager.INSTANCE.getAccountsSave().refreshAndGetBedrockAccount();
             if (bedrockSession != null) {
                 final StepMCChain.MCChain mcChain = bedrockSession.getMcChain();
                 final UUID deviceId = mcChain.getXblXsts().getInitialXblSession().getXblDeviceToken().getId();

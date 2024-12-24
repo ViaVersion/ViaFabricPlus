@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.features;
 
-import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import com.viaversion.viafabricplus.features.block.CollisionShapes;
@@ -34,7 +34,7 @@ import com.viaversion.viafabricplus.features.ui.armor_hud.ArmorHudEmulation1_8;
 import com.viaversion.viafabricplus.features.ui.classic_creative_menu.GridItemSelectionScreen;
 import com.viaversion.viafabricplus.features.entity.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.entity.enchantment_attributes.EnchantmentAttributesEmulation1_20_6;
-import com.viaversion.viafabricplus.util.DataCustomPayload;
+import com.viaversion.viafabricplus.base.sync_tasks.DataCustomPayload;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;

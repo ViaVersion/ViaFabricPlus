@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.protocol;
 
-import com.viaversion.viafabricplus.base.bedrock.BedrockJoinGameTracker;
+import com.viaversion.viafabricplus.protocoltranslator.protocol.storage.BedrockJoinGameTracker;
 import com.viaversion.viafabricplus.features.entity.metadata_handling.WolfHealthTracker1_14_4;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.AbstractSimpleProtocol;

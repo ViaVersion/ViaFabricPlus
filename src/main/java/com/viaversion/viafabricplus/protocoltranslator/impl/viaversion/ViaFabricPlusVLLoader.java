@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
-import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.*;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.*;

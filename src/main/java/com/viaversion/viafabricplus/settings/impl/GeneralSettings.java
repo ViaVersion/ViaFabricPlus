@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.settings.impl;
 
-import com.viaversion.viafabricplus.settings.base.BooleanSetting;
-import com.viaversion.viafabricplus.settings.base.ModeSetting;
-import com.viaversion.viafabricplus.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
+import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;

@@ -21,13 +21,13 @@
 
 package com.viaversion.viafabricplus.settings.impl;
 
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IConfirmScreen;
+import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.save.impl.AccountsSave;
-import com.viaversion.viafabricplus.base.screen.VFPScreen;
-import com.viaversion.viafabricplus.settings.base.BooleanSetting;
-import com.viaversion.viafabricplus.settings.base.ButtonSetting;
-import com.viaversion.viafabricplus.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
+import com.viaversion.viafabricplus.api.settings.type.ButtonSetting;
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
@@ -70,7 +70,7 @@ public final class BedrockSettings extends SettingGroup {
         
         @Override
         public MutableText displayValue() {
-            final StepFullBedrockSession.FullBedrockSession account = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().getBedrockAccount();
+            final StepFullBedrockSession.FullBedrockSession account = SaveManager.INSTANCE.getAccountsSave().getBedrockAccount();
             if (account != null) {
                 return Text.translatable("click_to_set_bedrock_account.viafabricplus.display", account.getMcChain().getDisplayName());
             } else {
@@ -100,7 +100,7 @@ public final class BedrockSettings extends SettingGroup {
     }
     
     private void openBedrockAccountLogin() {
-        final AccountsSave accountsSave = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave();
+        final AccountsSave accountsSave = SaveManager.INSTANCE.getAccountsSave();
 
         final MinecraftClient client = MinecraftClient.getInstance();
         final Screen prevScreen = client.currentScreen;

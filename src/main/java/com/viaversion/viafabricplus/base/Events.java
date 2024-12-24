@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.base;
 
-import com.viaversion.viafabricplus.api.ChangeProtocolVersionCallback;
-import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 

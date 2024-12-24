@@ -22,10 +22,10 @@
 package com.viaversion.viafabricplus.settings.impl;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.settings.base.BooleanSetting;
-import com.viaversion.viafabricplus.settings.base.ModeSetting;
-import com.viaversion.viafabricplus.settings.base.SettingGroup;
-import com.viaversion.viafabricplus.settings.base.VersionedBooleanSetting;
+import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
+import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
+import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
 import net.minecraft.text.Text;

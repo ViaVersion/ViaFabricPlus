@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.ui.triple_chests;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.base.SyncTasks;
+import com.viaversion.viafabricplus.base.sync_tasks.SyncTasks;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;

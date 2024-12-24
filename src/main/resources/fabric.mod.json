@@ -40,7 +40,7 @@
   "environment": "client",
   "entrypoints": {
     "modmenu": [
-      "com.viaversion.viafabricplus.util.ModMenuScreenFactory"
+      "com.viaversion.viafabricplus.base.modmenu.ModMenuScreenFactory"
     ]
   },
   "mixins": [

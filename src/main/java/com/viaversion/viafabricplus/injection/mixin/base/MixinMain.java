@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.base;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
 import net.minecraft.client.main.Main;
 import org.spongepowered.asm.mixin.Mixin;

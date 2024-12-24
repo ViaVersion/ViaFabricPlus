@@ -47,13 +47,6 @@ import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.types.Types1_7_6;
 
 public final class ItemTranslator {
 
-    /**
-     * Converts a Minecraft item stack to a ViaVersion item
-     *
-     * @param stack         The Minecraft item stack
-     * @param targetVersion The target version to convert to (e.g. v1.13)
-     * @return The ViaVersion item for the target version
-     */
     public static Item mcToVia(final ItemStack stack, final ProtocolVersion targetVersion) {
         final UserConnection user = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, targetVersion);
 
@@ -73,13 +66,6 @@ public final class ItemTranslator {
         }
     }
 
-    /**
-     * Converts a ViaVersion item to a Minecraft item stack
-     *
-     * @param item          The ViaVersion item
-     * @param sourceVersion The source version of the item (e.g. b1.8)
-     * @return The Minecraft item stack
-     */
     public static ItemStack viaToMc(final Item item, final ProtocolVersion sourceVersion) {
         final UserConnection user = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, sourceVersion);
 

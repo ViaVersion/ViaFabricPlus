@@ -26,32 +26,28 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.save.AbstractSave;
 import com.viaversion.viafabricplus.settings.SettingsManager;
-import com.viaversion.viafabricplus.settings.base.AbstractSetting;
-import com.viaversion.viafabricplus.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.api.settings.AbstractSetting;
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
-import com.viaversion.viafabricplus.util.ChatUtil;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 
 public final class SettingsSave extends AbstractSave {
 
-    private final SettingsManager settingsManager;
     private String selectedProtocolVersion;
 
-    public SettingsSave(final SettingsManager settingsManager) {
+    public SettingsSave() {
         super("settings");
-
-        this.settingsManager = settingsManager;
     }
 
     @Override
     public void write(JsonObject object) {
-        for (SettingGroup group : settingsManager.getGroups()) {
+        for (SettingGroup group : SettingsManager.INSTANCE.getGroups()) {
             final JsonObject groupObject = new JsonObject();
             for (AbstractSetting<?> setting : group.getSettings()) {
                 setting.write(groupObject);
             }
 
-            object.add(AbstractSetting.mapTranslationKey(ChatUtil.uncoverTranslationKey(group.getName())), groupObject);
+            object.add(AbstractSetting.mapTranslationKey(group.getTranslationKey()), groupObject);
         }
 
         object.addProperty("selected-protocol-version", ProtocolTranslator.getTargetVersion().getName());
@@ -59,8 +55,8 @@ public final class SettingsSave extends AbstractSave {
 
     @Override
     public void read(JsonObject object) {
-        for (SettingGroup group : settingsManager.getGroups()) {
-            final String translationKey = ChatUtil.uncoverTranslationKey(group.getName());
+        for (SettingGroup group : SettingsManager.INSTANCE.getGroups()) {
+            final String translationKey = group.getTranslationKey();
 
             final JsonObject groupObject = object.getAsJsonObject(AbstractSetting.mapTranslationKey(translationKey));
             for (AbstractSetting<?> setting : group.getSettings()) {

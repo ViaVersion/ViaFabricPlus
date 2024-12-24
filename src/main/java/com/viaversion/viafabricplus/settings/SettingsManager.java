@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.settings;
 
-import com.viaversion.viafabricplus.api.LoadingCycleCallback;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
-import com.viaversion.viafabricplus.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.settings.impl.*;
 
 import java.util.ArrayList;
@@ -32,9 +32,11 @@ import java.util.List;
 
 public final class SettingsManager {
 
+    public static final SettingsManager INSTANCE = new SettingsManager();
+
     private final List<SettingGroup> groups = new ArrayList<>();
 
-    public SettingsManager() {
+    public void init() {
         Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.PRE_SETTINGS_LOAD);
 
         addGroup(

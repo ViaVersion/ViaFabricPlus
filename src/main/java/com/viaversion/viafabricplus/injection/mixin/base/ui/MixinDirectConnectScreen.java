@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.ui;
 
-import com.viaversion.viafabricplus.screen.ProtocolSelectionScreen;
+import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.DirectConnectScreen;

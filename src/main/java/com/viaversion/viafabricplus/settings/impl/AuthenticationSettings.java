@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.settings.impl;
 
-import com.viaversion.viafabricplus.settings.base.BooleanSetting;
-import com.viaversion.viafabricplus.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import net.minecraft.text.Text;
 
 public final class AuthenticationSettings extends SettingGroup {

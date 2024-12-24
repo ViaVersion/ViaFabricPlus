@@ -21,6 +21,7 @@
 
 package de.florianmichael.viafabricplus;
 
+import de.florianmichael.viafabricplus.settings.SettingsManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
@@ -32,6 +33,8 @@ import java.io.File;
 public class ViaFabricPlus {
 
     private static final ViaFabricPlus INSTANCE = new ViaFabricPlus();
+
+    private final SettingsManager settingsManager = new SettingsManager();
 
     @Deprecated
     public static ViaFabricPlus global() {
@@ -50,7 +53,7 @@ public class ViaFabricPlus {
 
     @Deprecated
     public Object getSettingsManager() {
-        throw new IllegalArgumentException("ViaFabricPlus#getSettingsManager is not supported anymore.");
+        return settingsManager;
     }
 
     @Deprecated

@@ -22,12 +22,19 @@
 package com.viaversion.viafabricplus.api;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * General API point for mods. Get instance via {@link ViaFabricPlus#getImpl()}.
@@ -117,5 +124,59 @@ public interface ViaFabricPlusBase {
      * @return The maximum chat length
      */
     int getMaxChatLength(final ProtocolVersion version);
+
+    /**
+     * All setting groups of the mod.
+     *
+     * @return The setting groups
+     */
+    List<SettingGroup> settingGroups();
+
+    /**
+     * Add a setting group to the mod.
+     *
+     * @param group The setting group
+     */
+    void addSettingGroup(final SettingGroup group);
+
+    /**
+     * Get a setting group by its translationKey.
+     *
+     * @param translationKey The translationKey of the setting group
+     * @return The setting group or null if it does not exist
+     */
+    SettingGroup getSettingGroup(final String translationKey);
+
+    /**
+     * Open the protocol selection screen.
+     *
+     * @param parent The parent screen
+     */
+    void openProtocolSelectionScreen(final Screen parent);
+
+    /**
+     * Open the settings screen.
+     *
+     * @param parent The parent screen
+     */
+    void openSettingsScreen(final Screen parent);
+
+    /**
+     * Converts a Minecraft item stack to a ViaVersion item
+     *
+     * @param stack         The Minecraft item stack
+     * @param targetVersion The target version to convert to (e.g. v1.13)
+     * @return The ViaVersion item for the target version
+     */
+    Item translateItem(final ItemStack stack, final ProtocolVersion targetVersion);
+
+    /**
+     * Converts a ViaVersion item to a Minecraft item stack
+     *
+     * @param item          The ViaVersion item
+     * @param sourceVersion The source version of the item (e.g. b1.8)
+     * @return The Minecraft item stack
+     */
+    ItemStack translateItem(final Item item, final ProtocolVersion sourceVersion);
 
 }

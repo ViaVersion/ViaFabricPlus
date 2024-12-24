@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.base.ui;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
@@ -86,7 +87,7 @@ public abstract class MixinConnectScreen_1 {
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/session/Session;getUsername()Ljava/lang/String;"))
     private String useClassiCubeUsername(Session instance) {
         if (this.viaFabricPlus$useClassiCubeAccount) {
-            final CCAccount account = ViaFabricPlusImpl.INSTANCE.getSaveManager().getAccountsSave().getClassicubeAccount();
+            final CCAccount account = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount();
             if (account != null) {
                 return account.username();
             }
