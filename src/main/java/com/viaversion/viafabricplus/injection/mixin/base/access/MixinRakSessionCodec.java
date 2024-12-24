@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.access;
 
-import com.viaversion.viafabricplus.injection.access.IRakSessionCodec;
+import com.viaversion.viafabricplus.injection.access.base.bedrock.IRakSessionCodec;
 import io.netty.util.collection.IntObjectMap;
 import org.cloudburstmc.netty.channel.raknet.packet.EncapsulatedPacket;
 import org.cloudburstmc.netty.channel.raknet.packet.RakDatagramPacket;

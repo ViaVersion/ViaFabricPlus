@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.base.access;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.injection.access.IMultiValueDebugSampleLogImpl;
+import com.viaversion.viafabricplus.injection.access.base.IMultiValueDebugSampleLogImpl;
 import net.minecraft.util.profiler.MultiValueDebugSampleLogImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

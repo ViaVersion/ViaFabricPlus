@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.old.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.old.versioned.EnchantmentAttributesEmulation1_20_6;
-import com.viaversion.viafabricplus.old.versioned.visual.EntityRidingOffsetsPre1_20_2;
+import com.viaversion.viafabricplus.features.entity.enchantment_attributes.EnchantmentAttributesEmulation1_20_6;
+import com.viaversion.viafabricplus.features.entity.riding_offsets.EntityRidingOffsetsPre1_20_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
 import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;
@@ -79,13 +79,6 @@ public abstract class MixinLivingEntity extends Entity {
 
     public MixinLivingEntity(EntityType<?> type, World world) {
         super(type, world);
-    }
-
-    @Inject(method = "getVelocityMultiplier", at = @At("HEAD"))
-    private void setGenericMovementEfficiencyAttribute(CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            EnchantmentAttributesEmulation1_20_6.setGenericMovementEfficiencyAttribute((LivingEntity) (Object) this);
-        }
     }
 
     @ModifyExpressionValue(method = "tickStatusEffects", at = @At(value = "CONSTANT", args = "intValue=4"))

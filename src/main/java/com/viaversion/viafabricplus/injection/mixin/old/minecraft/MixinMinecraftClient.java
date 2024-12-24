@@ -53,29 +53,6 @@ public abstract class MixinMinecraftClient {
     @Shadow
     protected int attackCooldown;
 
-    @WrapWithCondition(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
-    private boolean disableSwing(ClientPlayerEntity instance, Hand hand) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
-    }
-
-    @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult$Success;swingSource()Lnet/minecraft/util/ActionResult$SwingSource;", ordinal = 0))
-    private ActionResult.SwingSource disableSwing(ActionResult.Success instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            return ActionResult.SwingSource.NONE;
-        } else {
-            return instance.swingSource();
-        }
-    }
-
-    @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult$Success;swingSource()Lnet/minecraft/util/ActionResult$SwingSource;", ordinal = 2))
-    private ActionResult.SwingSource disableSwing2(ActionResult.Success instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            return ActionResult.SwingSource.NONE;
-        } else {
-            return instance.swingSource();
-        }
-    }
-
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/TutorialManager;onInventoryOpened()V", shift = At.Shift.AFTER))
     private void sendOpenInventoryPacket(CallbackInfo ci) {
         if (DebugSettings.global().sendOpenInventoryPacket.isEnabled()) {
@@ -83,18 +60,6 @@ public abstract class MixinMinecraftClient {
             clientCommand.write(Types.VAR_INT, 2); // Open Inventory Achievement
             clientCommand.scheduleSendToServer(Protocol1_11_1To1_12.class);
         }
-    }
-
-    @Inject(method = "doAttack", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;crosshairTarget:Lnet/minecraft/util/hit/HitResult;", shift = At.Shift.BEFORE, ordinal = 0))
-    private void fixSwingPacketOrder(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.player.swingHand(Hand.MAIN_HAND);
-        }
-    }
-
-    @WrapWithCondition(method = "doAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
-    private boolean fixSwingPacketOrder(ClientPlayerEntity instance, Hand hand) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
     }
 
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 1))
@@ -113,16 +78,6 @@ public abstract class MixinMinecraftClient {
                 --this.attackCooldown;
             }
         }
-    }
-
-    @ModifyExpressionValue(method = "handleBlockBreaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
-    private boolean allowBlockBreakAndItemUsageAtTheSameTime(boolean original) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
-    }
-
-    @ModifyExpressionValue(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"))
-    private boolean allowItemUsageAndBlockBreakAtTheSameTime(boolean original) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
     }
 
 }

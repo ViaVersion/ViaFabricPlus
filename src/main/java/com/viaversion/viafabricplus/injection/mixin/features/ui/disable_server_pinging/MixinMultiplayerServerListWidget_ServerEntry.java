@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.ui.disable_server_
 import com.google.common.collect.Lists;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.injection.access.IServerInfo;
+import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.base.settings.impl.VisualSettings;

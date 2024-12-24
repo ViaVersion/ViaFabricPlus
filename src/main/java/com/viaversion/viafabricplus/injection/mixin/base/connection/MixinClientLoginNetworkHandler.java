@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.connection;
 
-import com.viaversion.viafabricplus.injection.access.IClientConnection;
+import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import net.minecraft.client.network.ClientLoginNetworkHandler;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.text.Text;

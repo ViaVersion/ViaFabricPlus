@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.protocoltranslator.impl.command.classic;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
-import com.viaversion.viafabricplus.injection.access.IExtensionProtocolMetadataStorage;
+import com.viaversion.viafabricplus.injection.access.base.IExtensionProtocolMetadataStorage;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.VFPViaSubCommand;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;

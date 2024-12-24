@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.protocoltranslator.netty;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.old.viaversion.ViaFabricPlusProtocol;
+import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.handler.HandlerNames;

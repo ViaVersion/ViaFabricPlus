@@ -26,7 +26,6 @@ import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.base.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.base.save.impl.SettingsSave;
 import com.viaversion.viafabricplus.base.settings.SettingsManager;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;

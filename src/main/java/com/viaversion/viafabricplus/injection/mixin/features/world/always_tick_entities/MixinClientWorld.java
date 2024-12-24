@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.world.always_tick_entities;
 
-import com.viaversion.viafabricplus.injection.access.IEntity;
+import com.viaversion.viafabricplus.injection.access.world.always_tick_entities.IEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

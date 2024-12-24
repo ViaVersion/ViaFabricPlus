@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.base.settings.impl;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.injection.access.IConfirmScreen;
+import com.viaversion.viafabricplus.injection.access.base.bedrock.IConfirmScreen;
 import com.viaversion.viafabricplus.base.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.base.screen.VFPScreen;
 import com.viaversion.viafabricplus.base.settings.base.BooleanSetting;

@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.base.integration.bedrock;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.injection.access.IClientConnection;
+import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.network.ClientConnection;
 import net.raphimc.minecraftauth.step.bedrock.StepMCChain;

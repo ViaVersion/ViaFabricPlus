@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.ui;
 
-import com.viaversion.viafabricplus.injection.access.IConfirmScreen;
+import com.viaversion.viafabricplus.injection.access.base.bedrock.IConfirmScreen;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;

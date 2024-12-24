@@ -22,10 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.old.minecraft.entity;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.old.versioned.visual.EntityRidingOffsetsPre1_20_2;
-import com.viaversion.viafabricplus.injection.access.IEntity;
+import com.viaversion.viafabricplus.features.entity.riding_offsets.EntityRidingOffsetsPre1_20_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.base.settings.impl.DebugSettings;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
@@ -44,7 +42,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -53,7 +50,7 @@ import java.util.List;
 
 @SuppressWarnings("ConstantValue")
 @Mixin(Entity.class)
-public abstract class MixinEntity implements IEntity {
+public abstract class MixinEntity {
 
     @Shadow
     private World world;
@@ -84,9 +81,6 @@ public abstract class MixinEntity implements IEntity {
 
     @Shadow
     public abstract float getStepHeight();
-
-    @Unique
-    private boolean viaFabricPlus$isInLoadedChunkAndShouldTick;
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;lengthSquared()D", ordinal = 1), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;")
@@ -299,16 +293,6 @@ public abstract class MixinEntity implements IEntity {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(0.1F);
         }
-    }
-
-    @Override
-    public boolean viaFabricPlus$isInLoadedChunkAndShouldTick() {
-        return this.viaFabricPlus$isInLoadedChunkAndShouldTick || DebugSettings.global().alwaysTickClientPlayer.isEnabled();
-    }
-
-    @Override
-    public void viaFabricPlus$setInLoadedChunkAndShouldTick(final boolean inLoadedChunkAndShouldTick) {
-        this.viaFabricPlus$isInLoadedChunkAndShouldTick = inLoadedChunkAndShouldTick;
     }
 
 }

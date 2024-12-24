@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.compat.classic4j;
 
-import com.viaversion.viafabricplus.injection.access.ITextFieldWidget;
+import com.viaversion.viafabricplus.injection.access.base.ITextFieldWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.util.StringHelper;
 import org.spongepowered.asm.mixin.Mixin;

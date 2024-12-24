@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.util;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.injection.access.IServerInfo;
+import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;

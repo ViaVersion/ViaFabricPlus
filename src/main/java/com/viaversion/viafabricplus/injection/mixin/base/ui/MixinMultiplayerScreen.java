@@ -26,7 +26,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.base.settings.impl.BedrockSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.injection.access.IServerInfo;
+import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.screen.ProtocolSelectionScreen;
 import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;

@@ -30,7 +30,7 @@ import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.packet.ServerboundPac
 import com.viaversion.viaversion.protocols.v1_16_4to1_17.Protocol1_16_4To1_17;
 import com.viaversion.viafabricplus.features.interaction.ActionResultException1_12_2;
 import com.viaversion.viafabricplus.features.interaction.ClientPlayerInteractionManager1_18_2;
-import com.viaversion.viafabricplus.injection.access.IClientConnection;
+import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.injection.access.IClientPlayerInteractionManager;
 import com.viaversion.viafabricplus.injection.access.IScreenHandler;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;

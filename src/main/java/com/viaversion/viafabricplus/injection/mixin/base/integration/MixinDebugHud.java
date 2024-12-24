@@ -23,10 +23,10 @@ package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viafabricplus.old.viaversion.BedrockJoinGameTracker;
+import com.viaversion.viafabricplus.base.bedrock.BedrockJoinGameTracker;
 import com.viaversion.viafabricplus.injection.ViaFabricPlusMixinPlugin;
-import com.viaversion.viafabricplus.injection.access.IChunkTracker;
-import com.viaversion.viafabricplus.injection.access.IRakSessionCodec;
+import com.viaversion.viafabricplus.injection.access.base.bedrock.IChunkTracker;
+import com.viaversion.viafabricplus.injection.access.base.bedrock.IRakSessionCodec;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.base.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
