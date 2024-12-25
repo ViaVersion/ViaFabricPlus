@@ -18,15 +18,15 @@
     "base.connection.MixinMultiplayerServerListPinger",
     "base.integration.MixinClientConnection",
     "base.integration.MixinDebugHud",
-    "base.integration.MixinMinecraftClient",
-    "base.integration.MixinMultiplayerServerListPinger",
     "base.integration.MixinMultiplayerServerListPinger_1",
     "base.integration.MixinServerInfo",
     "base.integration.MixinUserConnectionImpl",
+    "base.integration.bedrock.MixinConfirmScreen",
     "base.integration.bedrock.MixinConnectScreen_1",
+    "base.integration.bedrock.MixinMultiplayerServerListPinger",
+    "base.integration.event.MixinMinecraftClient",
     "base.integration.sync_tasks.MixinClientCommonNetworkHandler",
     "base.ui.MixinAddServerScreen",
-    "base.ui.MixinConfirmScreen",
     "base.ui.MixinConnectScreen_1",
     "base.ui.MixinDirectConnectScreen",
     "base.ui.MixinDownloadingTerrainScreen",
@@ -107,7 +107,7 @@
     "features.entity.metadata_handling.MixinEntityTracker1_9",
     "features.entity.pose.MixinOtherClientPlayerEntity",
     "features.entity.riding_offsets.MixinCamelEntity",
-    "features.entity.v1_8_boat.MixinAbstractBoatEntity",
+    "features.movement.entity.MixinAbstractBoatEntity",
     "features.entity.v1_8_boat.MixinEntityModels",
     "features.entity.v1_8_boat.MixinEntityRenderDispatcher",
     "features.execute_inputs_sync.MixinKeyboard",
@@ -167,6 +167,11 @@
     "features.movement.block.MixinHoneyBlock",
     "features.movement.block.MixinSoulSandBlock",
     "features.movement.elytra.MixinFireworkRocketItem",
+    "features.movement.entity.MixinClientPlayerEntity",
+    "features.movement.entity.MixinEntity",
+    "features.movement.entity.MixinLivingEntity",
+    "features.movement.entity.MixinPlayerEntity",
+    "features.movement.entity.MixinPlayerEntityRenderer",
     "features.movement.entity.MixinSkeletonHorseEntity",
     "features.movement.item.MixinEnderEyeItem",
     "features.movement.levitation_value.MixinStatusEffectInstance",
@@ -200,6 +205,7 @@
     "features.networking.srv_resolving.MixinRedirectResolver",
     "features.networking.srv_resolving.MixinServerAddress",
     "features.networking.warn_feature_updates.MixinClientConfigurationNetworkHandler",
+    "features.open_inventory_packet.MixinMinecraftClient",
     "features.player_abilities.MixinUpdatePlayerAbilitiesC2SPacket",
     "features.recipe_emulation.MixinCraftingScreenHandler",
     "features.recipe_emulation.MixinEntityPacketRewriter1_12",
@@ -217,18 +223,16 @@
     "features.world.item_picking.MixinMinecraftClient",
     "features.world.remove_server_view_distance.MixinGameOptions",
     "integration.viabedrock.MixinJoinPackets",
-    "integration.vialegacy.MixinViaLegacyConfig",
-    "features.open_inventory_packet.MixinMinecraftClient",
-    "features.movement.entity.MixinClientPlayerEntity",
-    "features.movement.entity.MixinEntity",
-    "features.movement.entity.MixinLivingEntity",
-    "features.movement.entity.MixinPlayerEntity",
-    "features.movement.entity.MixinPlayerEntityRenderer"
+    "integration.vialegacy.MixinViaLegacyConfig"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "mixins": [
+    "features.entity.interactions.MixinAbstractBoatEntity",
+    "features.entity.riding_offsets.MixinAbstractBoatEntity"
+  ]
 }

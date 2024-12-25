@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.base.ui;
+package com.viaversion.viafabricplus.injection.mixin.base.integration.bedrock;
 
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IConfirmScreen;
 import net.minecraft.client.gui.screen.ConfirmScreen;

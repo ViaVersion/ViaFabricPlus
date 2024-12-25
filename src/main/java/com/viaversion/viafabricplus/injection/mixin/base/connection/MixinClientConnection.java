@@ -87,6 +87,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
     @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
     private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
+        // Compression enabled and elements put into pipeline, move via handlers
         channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
     }
 
