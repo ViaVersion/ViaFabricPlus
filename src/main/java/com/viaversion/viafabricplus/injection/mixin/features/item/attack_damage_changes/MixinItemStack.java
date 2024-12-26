@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.item.tooltip_changes;
+package com.viaversion.viafabricplus.injection.mixin.features.item.attack_damage_changes;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.features.item.tooltip_changes.Enchantments1_14_4;
@@ -63,25 +63,6 @@ public abstract class MixinItemStack {
     @Shadow
     public abstract Item getItem();
 
-    @Inject(method = "appendTooltip", at = @At("HEAD"), cancellable = true)
-    private <T extends TooltipAppender> void replaceEnchantmentTooltip(ComponentType<T> componentType, Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4)) {
-            return;
-        }
-
-        final NbtCompound tag = ItemUtil.getTagOrNull((ItemStack) (Object) this);
-        if (tag == null) {
-            return;
-        }
-        if (componentType == DataComponentTypes.ENCHANTMENTS) {
-            this.viaFabricPlus$appendEnchantments1_14_4("Enchantments", tag, context, textConsumer);
-            ci.cancel();
-        } else if (componentType == DataComponentTypes.STORED_ENCHANTMENTS) {
-            this.viaFabricPlus$appendEnchantments1_14_4("StoredEnchantments", tag, context, textConsumer);
-            ci.cancel();
-        }
-    }
-
     @Redirect(method = "appendAttributeModifierTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeBaseValue(Lnet/minecraft/registry/entry/RegistryEntry;)D", ordinal = 0))
     private double fixAttackDamageCalculation(PlayerEntity instance, RegistryEntry<EntityAttribute> registryEntry) {
         double value = 0.0;
@@ -104,25 +85,6 @@ public abstract class MixinItemStack {
             return value;
         } else {
             return instance.getAttributeBaseValue(registryEntry) + value;
-        }
-    }
-
-    @Unique
-    private void viaFabricPlus$appendEnchantments1_14_4(final String name, final NbtCompound nbt, Item.TooltipContext context, final Consumer<Text> tooltip) {
-        final RegistryWrapper.WrapperLookup registryLookup = context.getRegistryLookup();
-        final NbtList enchantments = nbt.getList(name, NbtElement.COMPOUND_TYPE);
-        for (NbtElement element : enchantments) {
-            final NbtCompound enchantment = (NbtCompound) element;
-
-            final String id = enchantment.getString("id");
-            final Optional<RegistryKey<Enchantment>> value = Enchantments1_14_4.getOrEmpty(id);
-            value.ifPresent(e -> {
-                final int lvl = enchantment.getInt("lvl");
-                if (registryLookup != null) {
-                    final Optional<RegistryEntry.Reference<Enchantment>> v = registryLookup.getOrThrow(RegistryKeys.ENCHANTMENT).getOptional(e);
-                    v.ifPresent(enchantmentReference -> tooltip.accept(Enchantment.getName(enchantmentReference, MathHelper.clamp(lvl, Short.MIN_VALUE, Short.MAX_VALUE))));
-                }
-            });
         }
     }
 

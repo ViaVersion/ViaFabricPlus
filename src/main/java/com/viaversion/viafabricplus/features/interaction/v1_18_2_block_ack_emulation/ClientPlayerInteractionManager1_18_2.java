@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.interaction;
+package com.viaversion.viafabricplus.features.interaction.v1_18_2_block_ack_emulation;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;

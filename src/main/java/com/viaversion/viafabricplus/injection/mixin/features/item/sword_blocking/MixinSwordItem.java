@@ -19,34 +19,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.interaction.inventory_clicking;
+package com.viaversion.viafabricplus.injection.mixin.features.item.sword_blocking;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.SwordItem;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "net.minecraft.screen.BrewingStandScreenHandler$FuelSlot")
-public abstract class MixinBrewingStandScreenHandler_FuelSlot extends Slot {
+@Mixin(SwordItem.class)
+public abstract class MixinSwordItem extends Item {
 
-    public MixinBrewingStandScreenHandler_FuelSlot(Inventory inventory, int index, int x, int y) {
-        super(inventory, index, x, y);
-    }
-
-    @Inject(method = "matches(Lnet/minecraft/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
-    private static void removeFuelSlot(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            cir.setReturnValue(false);
-        }
+    public MixinSwordItem(Settings settings) {
+        super(settings);
     }
 
     @Override
-    public boolean isEnabled() {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8)) {
+            user.setCurrentHand(hand);
+            return ActionResult.SUCCESS;
+        } else {
+            return super.use(world, user, hand);
+        }
     }
 
 }

@@ -19,25 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.interaction;
+package com.viaversion.viafabricplus.injection.mixin.features.interaction.replace_block_item_use_logic.item_and_block_use_at_same_time;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.rewriter.BlockItemPacketRewriter1_21_4;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = BlockItemPacketRewriter1_21_4.class, remap = false)
-public abstract class MixinBlockItemPacketRewriter1_21_4 {
+@Mixin(MinecraftClient.class)
+public abstract class MixinMinecraftClient {
 
-    @Redirect(method = "appendItemDataFixComponents", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;olderThanOrEqualTo(Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;)Z"))
-    private boolean changeSwordFixVersionRange(ProtocolVersion instance, ProtocolVersion other) {
-        if (other == ProtocolVersion.v1_8) {
-            return instance.betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8);
-        } else {
-            return instance.olderThanOrEqualTo(other);
-        }
+    @ModifyExpressionValue(method = "handleBlockBreaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
+    private boolean allowBlockBreakAndItemUsageAtTheSameTime(boolean original) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
+    }
+
+    @ModifyExpressionValue(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"))
+    private boolean allowItemUsageAndBlockBreakAtTheSameTime(boolean original) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
     }
 
 }

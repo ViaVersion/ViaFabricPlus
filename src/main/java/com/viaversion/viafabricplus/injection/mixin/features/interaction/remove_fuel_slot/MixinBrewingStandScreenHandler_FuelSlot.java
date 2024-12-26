@@ -19,26 +19,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.interaction;
+package com.viaversion.viafabricplus.injection.mixin.features.interaction.remove_fuel_slot;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.screen.slot.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MinecraftClient.class)
-public abstract class MixinMinecraftClient {
+@Mixin(targets = "net.minecraft.screen.BrewingStandScreenHandler$FuelSlot")
+public abstract class MixinBrewingStandScreenHandler_FuelSlot extends Slot {
 
-    @ModifyExpressionValue(method = "handleBlockBreaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
-    private boolean allowBlockBreakAndItemUsageAtTheSameTime(boolean original) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
+    public MixinBrewingStandScreenHandler_FuelSlot(Inventory inventory, int index, int x, int y) {
+        super(inventory, index, x, y);
     }
 
-    @ModifyExpressionValue(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"))
-    private boolean allowItemUsageAndBlockBreakAtTheSameTime(boolean original) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
+    @Inject(method = "matches(Lnet/minecraft/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
+    private static void removeFuelSlot(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
     }
 
 }

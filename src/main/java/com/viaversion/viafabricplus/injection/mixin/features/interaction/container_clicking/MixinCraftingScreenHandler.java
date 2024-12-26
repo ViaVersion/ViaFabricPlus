@@ -19,34 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.item.interactions;
+package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.SwordItem;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.AbstractCraftingScreenHandler;
+import net.minecraft.screen.CraftingScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(SwordItem.class)
-public abstract class MixinSwordItem extends Item {
+@Mixin(CraftingScreenHandler.class)
+public abstract class MixinCraftingScreenHandler extends AbstractCraftingScreenHandler {
 
-    public MixinSwordItem(Settings settings) {
-        super(settings);
+    public MixinCraftingScreenHandler(ScreenHandlerType<?> type, int syncId, int width, int height) {
+        super(type, syncId, width, height);
     }
 
-    @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8)) {
-            user.setCurrentHand(hand);
-            return ActionResult.SUCCESS;
-        } else {
-            return super.use(world, user, hand);
-        }
+    @Redirect(method = "quickMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/CraftingScreenHandler;insertItem(Lnet/minecraft/item/ItemStack;IIZ)Z", ordinal = 1))
+    private boolean noShiftClickMoveIntoCraftingTable(CraftingScreenHandler instance, ItemStack itemStack, int startIndex, int endIndex, boolean fromLast) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && this.insertItem(itemStack, startIndex, endIndex, fromLast);
     }
 
 }

@@ -19,23 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.item;
+package com.viaversion.viafabricplus.injection.mixin.features.item.sword_blocking;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.entity.ItemEntity;
+import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.rewriter.BlockItemPacketRewriter1_21_4;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ItemEntity.class)
-public abstract class MixinItemEntity {
+@Mixin(value = BlockItemPacketRewriter1_21_4.class, remap = false)
+public abstract class MixinBlockItemPacketRewriter1_21_4 {
 
-    @Inject(method = "applyWaterBuoyancy", at = @At("HEAD"), cancellable = true)
-    private void dontApplyWaterBuoyancy(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            ci.cancel();
+    @Redirect(method = "appendItemDataFixComponents", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;olderThanOrEqualTo(Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;)Z"))
+    private boolean changeSwordFixVersionRange(ProtocolVersion instance, ProtocolVersion other) {
+        if (other == ProtocolVersion.v1_8) {
+            return instance.betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8);
+        } else {
+            return instance.olderThanOrEqualTo(other);
         }
     }
 

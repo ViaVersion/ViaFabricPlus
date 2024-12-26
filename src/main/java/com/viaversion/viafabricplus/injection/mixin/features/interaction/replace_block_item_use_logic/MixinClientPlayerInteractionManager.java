@@ -19,23 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.interaction;
+package com.viaversion.viafabricplus.injection.mixin.features.interaction.replace_block_item_use_logic;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.type.Types;
-import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.packet.ServerboundPackets1_16_2;
-import com.viaversion.viaversion.protocols.v1_16_4to1_17.Protocol1_16_4To1_17;
-import com.viaversion.viafabricplus.features.interaction.ActionResultException1_12_2;
-import com.viaversion.viafabricplus.features.interaction.ClientPlayerInteractionManager1_18_2;
-import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
-import com.viaversion.viafabricplus.injection.access.IClientPlayerInteractionManager;
-import com.viaversion.viafabricplus.injection.access.IScreenHandler;
+import com.viaversion.viafabricplus.features.interaction.replace_block_placement_logic.ActionResultException1_12_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusHandItemProvider;
-import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowBlock;
@@ -51,11 +41,8 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -63,22 +50,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(ClientPlayerInteractionManager.class)
-public abstract class MixinClientPlayerInteractionManager implements IClientPlayerInteractionManager {
+public abstract class MixinClientPlayerInteractionManager {
 
     @Shadow
     @Final
@@ -103,15 +86,6 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
     @Shadow
     private GameMode gameMode;
 
-    @Unique
-    private ItemStack viaFabricPlus$oldCursorStack;
-
-    @Unique
-    private List<ItemStack> viaFabricPlus$oldItems;
-
-    @Unique
-    private final ClientPlayerInteractionManager1_18_2 viaFabricPlus$1_18_2InteractionManager = new ClientPlayerInteractionManager1_18_2();
-
     @Redirect(method = "interactBlockInternal", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;CONSUME:Lnet/minecraft/util/ActionResult$Success;"))
     private ActionResult.Success changeSpectatorAction() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
@@ -133,56 +107,6 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue((int) (this.currentBreakingProgress * 10.0F) - 1);
         }
-    }
-
-    @Inject(method = "sendSequencedPacket", at = @At("HEAD"))
-    private void trackPlayerAction(ClientWorld world, SequencedPacketCreator packetCreator, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_14_4, ProtocolVersion.v1_18_2) && packetCreator instanceof PlayerActionC2SPacket playerActionC2SPacket) {
-            this.viaFabricPlus$1_18_2InteractionManager.trackPlayerAction(playerActionC2SPacket.getAction(), playerActionC2SPacket.getPos());
-        }
-    }
-
-    @Redirect(method = {"attackBlock", "cancelBlockBreaking"}, at = @At(value = "NEW", target = "(Lnet/minecraft/network/packet/c2s/play/PlayerActionC2SPacket$Action;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;)Lnet/minecraft/network/packet/c2s/play/PlayerActionC2SPacket;"))
-    private PlayerActionC2SPacket trackPlayerAction(PlayerActionC2SPacket.Action action, BlockPos pos, Direction direction) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_14_4, ProtocolVersion.v1_18_2)) {
-            this.viaFabricPlus$1_18_2InteractionManager.trackPlayerAction(action, pos);
-        }
-        return new PlayerActionC2SPacket(action, pos, direction);
-    }
-
-    @ModifyVariable(method = "clickSlot", at = @At(value = "STORE"), ordinal = 0)
-    private List<ItemStack> captureOldItems(List<ItemStack> oldItems) {
-        viaFabricPlus$oldCursorStack = client.player.currentScreenHandler.getCursorStack().copy();
-        return this.viaFabricPlus$oldItems = oldItems;
-    }
-
-    @WrapWithCondition(method = "clickSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
-    private boolean handleWindowClick1_16_5(ClientPlayNetworkHandler instance, Packet<?> packet) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
-            ItemStack slotItemBeforeModification;
-            if (this.viaFabricPlus$shouldBeEmpty(clickSlot.getActionType(), clickSlot.getSlot())) {
-                slotItemBeforeModification = ItemStack.EMPTY;
-            } else if (clickSlot.getSlot() < 0 || clickSlot.getSlot() >= viaFabricPlus$oldItems.size()) {
-                slotItemBeforeModification = viaFabricPlus$oldCursorStack;
-            } else {
-                slotItemBeforeModification = viaFabricPlus$oldItems.get(clickSlot.getSlot());
-            }
-
-            final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ((IClientConnection) networkHandler.getConnection()).viaFabricPlus$getUserConnection());
-            containerClick.write(Types.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
-            containerClick.write(Types.SHORT, (short) clickSlot.getSlot());
-            containerClick.write(Types.BYTE, (byte) clickSlot.getButton());
-            containerClick.write(Types.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viaFabricPlus$incrementAndGetActionId());
-            containerClick.write(Types.VAR_INT, clickSlot.getActionType().ordinal());
-            containerClick.write(Types.ITEM1_13_2, ItemTranslator.mcToVia(slotItemBeforeModification, ProtocolVersion.v1_16_4));
-            containerClick.scheduleSendToServer(Protocol1_16_4To1_17.class);
-
-            viaFabricPlus$oldCursorStack = null;
-            viaFabricPlus$oldItems = null;
-            return false;
-        }
-
-        return true;
     }
 
     @Redirect(method = {"method_41936", "method_41935"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;breakBlock(Lnet/minecraft/util/math/BlockPos;)Z"))
@@ -240,6 +164,20 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
         }
     }
 
+    @Inject(method = "interactItem", at = @At("HEAD"), cancellable = true)
+    private void cancelOffHandItemInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && !Hand.MAIN_HAND.equals(hand)) {
+            cir.setReturnValue(ActionResult.PASS);
+        }
+    }
+
+    @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
+    private void cancelOffHandBlockPlace(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && !Hand.MAIN_HAND.equals(hand)) {
+            cir.setReturnValue(ActionResult.PASS);
+        }
+    }
+
     @Redirect(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;"))
     private ActionResult eitherSuccessOrPass(ItemStack instance, World world, PlayerEntity user, Hand hand, @Local ItemStack itemStack) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
@@ -273,20 +211,6 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
         }
     }
 
-    @Inject(method = "interactItem", at = @At("HEAD"), cancellable = true)
-    private void cancelOffHandItemInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && !Hand.MAIN_HAND.equals(hand)) {
-            cir.setReturnValue(ActionResult.PASS);
-        }
-    }
-
-    @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
-    private void cancelOffHandBlockPlace(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && !Hand.MAIN_HAND.equals(hand)) {
-            cir.setReturnValue(ActionResult.PASS);
-        }
-    }
-
     /**
      * @author RK_01
      * @reason Block place fix
@@ -313,18 +237,6 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
         }
     }
 
-    @Inject(method = "clickSlot", at = @At("HEAD"), cancellable = true)
-    private void removeClickActions(int syncId, int slotId, int button, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !actionType.equals(SlotActionType.PICKUP)) {
-            ci.cancel();
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !actionType.equals(SlotActionType.PICKUP) && !actionType.equals(SlotActionType.QUICK_MOVE) && !actionType.equals(SlotActionType.SWAP) && !actionType.equals(SlotActionType.CLONE)) {
-            ci.cancel();
-        }
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && actionType == SlotActionType.SWAP && button == 40) { // Pressing 'F' in inventory
-            ci.cancel();
-        }
-    }
-
     @Unique
     private boolean viaFabricPlus$extinguishFire(BlockPos blockPos, final Direction direction) {
         blockPos = blockPos.offset(direction);
@@ -334,27 +246,6 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
             return true;
         }
         return false;
-    }
-
-    @Unique
-    private boolean viaFabricPlus$shouldBeEmpty(final SlotActionType type, final int slot) {
-        // quick craft always uses empty stack for verification
-        if (type == SlotActionType.QUICK_CRAFT) return true;
-
-        // Special case: throw always uses empty stack for verification
-        if (type == SlotActionType.THROW) return true;
-
-        // quick move always uses empty stack for verification since 1.12
-        if (type == SlotActionType.QUICK_MOVE && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_11_1))
-            return true;
-
-        // pickup with slot -999 (outside window) to throw items always uses empty stack for verification
-        return type == SlotActionType.PICKUP && slot == -999;
-    }
-
-    @Override
-    public ClientPlayerInteractionManager1_18_2 viaFabricPlus$get1_18_2InteractionManager() {
-        return this.viaFabricPlus$1_18_2InteractionManager;
     }
 
 }
