@@ -32,7 +32,7 @@ dependencies {
 	modJij fabricApi.module("fabric-registry-sync-v0", project.fabric_api_version)
 
 	// Sub projects, since they are Fabric mods as well (mainly to access the game code) we have to first
-	// implement the namedElements (raw output) to compile against, then include the mappedElements into the output jar1
+	// implement the namedElements (raw output) to compile against, then include the mappedElements into the output jar
 	implementation project(path: ":viafabricplus-api", configuration: "namedElements")
 	implementation project(path: ":viafabricplus-api-legacy", configuration: "namedElements")
 	implementation project(path: ":viafabricplus-visuals", configuration: "namedElements")

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.screen;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
@@ -233,7 +233,7 @@ public class VFPScreen extends Screen {
      * @param next      The screen which should be opened after the error screen is closed
      */
     public static void showErrorScreen(final Text title, final Throwable throwable, final Screen next) {
-        ViaFabricPlus.getImpl().logger().error("Something went wrong!", throwable);
+        ViaFabricPlusImpl.INSTANCE.logger().error("Something went wrong!", throwable);
 
         final MinecraftClient client = MinecraftClient.getInstance();
         client.execute(() -> client.setScreen(new NoticeScreen(() -> client.setScreen(next), title, Text.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Text.translatable("base.viafabricplus.cancel"), false)));

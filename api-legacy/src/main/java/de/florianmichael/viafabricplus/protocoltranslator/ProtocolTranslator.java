@@ -54,7 +54,7 @@ public class ProtocolTranslator {
 
     @Deprecated
     public static UserConnection createDummyUserConnection(final ProtocolVersion clientVersion, final ProtocolVersion serverVersion) {
-        return ViaFabricPlus.getImpl().createDummyUserConnection(clientVersion, serverVersion);
+        throw new UnsupportedOperationException("This method is not supported anymore");
     }
 
     @Deprecated

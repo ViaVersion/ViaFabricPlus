@@ -22,20 +22,22 @@
 package com.viaversion.viafabricplus.visuals.features.classic_creative_menu;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.screen.VFPScreen;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
-public final class GridItemSelectionScreen extends VFPScreen {
+public final class GridItemSelectionScreen extends Screen {
 
     public static final GridItemSelectionScreen INSTANCE = new GridItemSelectionScreen();
 
@@ -48,7 +50,7 @@ public final class GridItemSelectionScreen extends VFPScreen {
     public ItemStack selectedItem = null;
 
     public GridItemSelectionScreen() {
-        super("Classic item selection", false);
+        super(Text.of("Classic item selection"));
     }
 
     @Override
@@ -88,7 +90,7 @@ public final class GridItemSelectionScreen extends VFPScreen {
             this.client.player.getInventory().main.set(client.player.getInventory().selectedSlot, selectedItem);
             this.client.player.playerScreenHandler.sendContentUpdates();
 
-            playClickSound();
+            ClickableWidget.playClickSound(this.client.getSoundManager());
             this.close();
         }
         return super.mouseClicked(mouseX, mouseY, button);

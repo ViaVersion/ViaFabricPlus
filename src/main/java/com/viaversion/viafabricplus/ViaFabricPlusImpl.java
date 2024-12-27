@@ -145,11 +145,6 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     // Proxy the most important/used internals to a general API point for mods
 
     @Override
-    public Logger logger() {
-        return logger;
-    }
-
-    @Override
     public Path rootPath() {
         return path;
     }
@@ -177,11 +172,6 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     @Override
     public void setTargetVersion(ProtocolVersion newVersion, boolean revertOnDisconnect) {
         ProtocolTranslator.setTargetVersion(newVersion, revertOnDisconnect);
-    }
-
-    @Override
-    public UserConnection createDummyUserConnection(ProtocolVersion clientVersion, ProtocolVersion serverVersion) {
-        return ProtocolTranslator.createDummyUserConnection(clientVersion, serverVersion);
     }
 
     @Override
@@ -267,6 +257,10 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     @Override
     public int getStackCount(ItemStack stack) {
         return NegativeItemUtil.getCount(stack);
+    }
+
+    public Logger logger() {
+        return logger;
     }
 
 }

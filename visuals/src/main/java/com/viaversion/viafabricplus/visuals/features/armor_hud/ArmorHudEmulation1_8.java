@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.visuals.features.armor_hud;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.visuals.ViaFabricPlusVisuals;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Types;
@@ -54,7 +55,7 @@ public final class ArmorHudEmulation1_8 {
                     try {
                         sendArmorUpdate(userConnection);
                     } catch (Throwable t) {
-                        ViaFabricPlus.getImpl().logger().error("Error sending armor update", t);
+                        ViaFabricPlusVisuals.INSTANCE.logger().error("Error sending armor update", t);
                     }
                 }
             } else {

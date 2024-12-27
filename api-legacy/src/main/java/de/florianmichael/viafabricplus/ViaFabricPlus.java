@@ -21,7 +21,9 @@
 
 package de.florianmichael.viafabricplus;
 
+import de.florianmichael.viafabricplus.save.SaveManager;
 import de.florianmichael.viafabricplus.settings.SettingsManager;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
@@ -34,7 +36,10 @@ public class ViaFabricPlus {
 
     private static final ViaFabricPlus INSTANCE = new ViaFabricPlus();
 
+    private final Logger logger = LogManager.getLogger("ViaFabricPlus-Legacy");
+
     private final SettingsManager settingsManager = new SettingsManager();
+    private final SaveManager saveManager = new SaveManager();
 
     @Deprecated
     public static ViaFabricPlus global() {
@@ -43,7 +48,7 @@ public class ViaFabricPlus {
 
     @Deprecated
     public Logger getLogger() {
-        return com.viaversion.viafabricplus.ViaFabricPlus.getImpl().logger();
+        return logger;
     }
 
     @Deprecated
@@ -52,13 +57,13 @@ public class ViaFabricPlus {
     }
 
     @Deprecated
-    public Object getSettingsManager() {
+    public SettingsManager getSettingsManager() {
         return settingsManager;
     }
 
     @Deprecated
-    public Object getSaveManager() {
-        throw new IllegalArgumentException("ViaFabricPlus#getSaveManager is not supported anymore.");
+    public SaveManager getSaveManager() {
+        return saveManager;
     }
 
 }

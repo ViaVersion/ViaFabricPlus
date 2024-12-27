@@ -30,8 +30,14 @@ import com.viaversion.viafabricplus.visuals.features.classic_creative_menu.GridI
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ViaFabricPlusVisuals implements ViaFabricPlusLoadEntrypoint {
+
+    public static final ViaFabricPlusVisuals INSTANCE = new ViaFabricPlusVisuals();
+
+    private final Logger logger = LogManager.getLogger("ViaFabricPlus-Visuals");
 
     @Override
     public void onPlatformLoad(ViaFabricPlusBase platform) {
@@ -53,6 +59,10 @@ public class ViaFabricPlusVisuals implements ViaFabricPlusLoadEntrypoint {
                 GridItemSelectionScreen.INSTANCE.itemGrid = null;
             }
         }));
+    }
+
+    public Logger logger() {
+        return logger;
     }
 
 }

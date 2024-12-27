@@ -52,13 +52,6 @@ public interface ViaFabricPlusBase {
     }
 
     /**
-     * Get the logger for this mod.
-     *
-     * @return The logger
-     */
-    Logger logger();
-
-    /**
      * Get the root path of the mod.
      *
      * @return The root path
@@ -102,13 +95,6 @@ public interface ViaFabricPlusBase {
      * @param revertOnDisconnect if true, the previous version will be set when the player disconnects from the server
      */
     void setTargetVersion(final ProtocolVersion newVersion, final boolean revertOnDisconnect);
-
-    /**
-     * @param clientVersion The client version
-     * @param serverVersion The server version
-     * @return Creates a dummy UserConnection class with a valid protocol pipeline to emulate packets
-     */
-    UserConnection createDummyUserConnection(final ProtocolVersion clientVersion, final ProtocolVersion serverVersion);
 
     /**
      * @return the current UserConnection of the connection to the server, if the player isn't connected to a server it will return null
