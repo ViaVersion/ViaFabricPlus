@@ -54,7 +54,6 @@ import java.awt.*;
  *     <li>Automatically adds a back button when set inside the constructor</li>
  *     <li>Helper functions:
  *     <ul>
- *         <li>{@link #playClickSound()}</li>
  *         <li>{@link #showErrorScreen(Text, Throwable, Screen)}</li>
  *     </ul>
  *     </li>
@@ -216,13 +215,6 @@ public class VFPScreen extends Screen {
 
     public void renderScreenTitle(final DrawContext context) {
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
-    }
-
-    /**
-     * Plays Minecraft's button click sound
-     */
-    public static void playClickSound() {
-        MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
     /**
