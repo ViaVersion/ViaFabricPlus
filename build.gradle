@@ -17,9 +17,12 @@ configurations {
 	include.extendsFrom modJij
 	modImplementation.extendsFrom modJij
 	modCompileOnlyApi.extendsFrom modJij
+
+	jij.extendsFrom vvDependencies
 }
 
 dependencies {
+	// Fabric API
 	modJij fabricApi.module("fabric-api-base", project.fabric_api_version)
 	modJij fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
 	modJij fabricApi.module("fabric-networking-api-v1", project.fabric_api_version)
@@ -28,26 +31,17 @@ dependencies {
 	modJij fabricApi.module("fabric-particles-v1", project.fabric_api_version)
 	modJij fabricApi.module("fabric-registry-sync-v0", project.fabric_api_version)
 
-	// Manually include to ignore dependencies
-	include implementation(compileOnlyApi(project(path: ":viafabricplus-api", configuration: "namedElements")))
-	include implementation(compileOnlyApi(project(path: ":viafabricplus-visuals", configuration: "namedElements")))
+	// Sub projects, since they are Fabric mods as well (mainly to access the game code) we have to first
+	// implement the namedElements (raw output) to compile against, then include the mappedElements into the output jar1
+	implementation project(path: ":viafabricplus-api", configuration: "namedElements")
+	implementation project(path: ":viafabricplus-api-legacy", configuration: "namedElements")
+	implementation project(path: ":viafabricplus-visuals", configuration: "namedElements")
 
-	// Will be removed in future versions
-	include implementation(compileOnlyApi(project(":viafabricplus-api-legacy")))
+	include project(":viafabricplus-api")
+	include project(":viafabricplus-api-legacy")
+	include project(":viafabricplus-visuals")
 
-	jij "com.viaversion:viaversion-common:${project.viaversion_version}"
-	jij "com.viaversion:viabackwards-common:${project.viabackwards_version}"
-	jij "net.raphimc:viaaprilfools-common:${project.viaaprilfools_version}"
-	jij "net.raphimc:ViaLegacy:${project.vialegacy_version}"
-	jij ("net.raphimc:ViaBedrock:${project.viabedrock_version}") {
-		exclude group: "io.jsonwebtoken"
-		exclude group: "com.mojang", module: "brigadier"
-	}
-	jij ("net.raphimc:ViaLoader:${project.vialoader_version}") {
-		exclude group: "com.google.guava", module: "guava"
-		exclude group: "org.slf4j", module: "slf4j-api"
-	}
-
+	// Dependencies exclusively to the root mod
 	jij ("net.raphimc:MinecraftAuth:4.1.1") {
 		exclude group: "com.google.code.gson", module: "gson"
 		exclude group: "org.slf4j", module: "slf4j-api"
@@ -56,12 +50,12 @@ dependencies {
 	jij("net.lenni0451:MCPing:1.4.2") {
 		exclude group: "com.google.code.gson", module: "gson"
 	}
-
 	jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
 		exclude group: "io.netty"
 	}
 	jij "de.florianmichael:Classic4J:2.1.1-SNAPSHOT"
 
+	// Only to compile against for the ModMenu integration
 	modCompileOnly "com.terraformersmc:modmenu:12.0.0"
 
 	// Fabric's jar in jar system doesn't support transitive dependencies, so we have to manually add them

@@ -1,8 +1,3 @@
 plugins {
-    id "vfp.base-conventions"
-}
-
-dependencies {
-    compileOnly "com.viaversion:viaversion-common:${project.viaversion_version}"
-    compileOnly "net.raphimc:ViaLoader:${project.vialoader_version}"
+    id "vfp.mod-conventions"
 }

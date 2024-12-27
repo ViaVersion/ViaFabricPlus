@@ -1,10 +1,7 @@
 plugins {
-    id "vfp.base-conventions"
+    id "vfp.mod-conventions"
 }
 
 dependencies {
     compileOnly project(":viafabricplus-api")
-
-    compileOnly "com.viaversion:viaversion-common:${project.viaversion_version}"
-    compileOnly "net.raphimc:ViaLoader:${project.vialoader_version}"
 }

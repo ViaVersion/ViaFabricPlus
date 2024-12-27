@@ -40,10 +40,31 @@ repositories {
     }
 }
 
+configurations {
+    // Workaround Gradle 8+ not supporting including a configuration as dependency by
+    // just extending a defined configuration later to other configurations :)
+    vvDependencies
+
+    compileOnly.extendsFrom vvDependencies
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_version}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    vvDependencies "com.viaversion:viaversion-common:5.2.1-SNAPSHOT"
+    vvDependencies "com.viaversion:viabackwards-common:5.2.1-SNAPSHOT"
+    vvDependencies "net.raphimc:viaaprilfools-common:3.0.4"
+    vvDependencies "net.raphimc:ViaLegacy:3.0.7-SNAPSHOT"
+    vvDependencies ("net.raphimc:ViaBedrock:0.0.14-SNAPSHOT") {
+        exclude group: "io.jsonwebtoken"
+        exclude group: "com.mojang", module: "brigadier"
+    }
+    vvDependencies ("net.raphimc:ViaLoader:3.0.4") {
+        exclude group: "com.google.guava", module: "guava"
+        exclude group: "org.slf4j", module: "slf4j-api"
+    }
 }
 
 java {
