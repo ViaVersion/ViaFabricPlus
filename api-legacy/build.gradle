@@ -4,4 +4,7 @@ plugins {
 
 dependencies {
     compileOnly project(":viafabricplus-api")
+
+    modCompileOnly fabricApi.module("fabric-api-base", project.fabric_api_version)
+    modCompileOnly fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version)
 }

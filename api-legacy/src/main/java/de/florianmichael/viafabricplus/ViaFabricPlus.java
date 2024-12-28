@@ -34,7 +34,7 @@ import java.io.File;
 @Deprecated
 public class ViaFabricPlus {
 
-    private static final ViaFabricPlus INSTANCE = new ViaFabricPlus();
+    static final ViaFabricPlus INSTANCE = new ViaFabricPlus();
 
     private final Logger logger = LogManager.getLogger("ViaFabricPlus-Legacy");
 
@@ -43,6 +43,7 @@ public class ViaFabricPlus {
 
     @Deprecated
     public static ViaFabricPlus global() {
+        LegacyCompatBridge.warn();
         return INSTANCE;
     }
 

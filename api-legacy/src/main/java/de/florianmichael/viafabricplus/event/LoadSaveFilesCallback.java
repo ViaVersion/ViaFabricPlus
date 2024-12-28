@@ -19,29 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.data;
+package de.florianmichael.viafabricplus.event;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.LegacyCompatBridge;
-import net.minecraft.item.Item;
+import de.florianmichael.viafabricplus.save.SaveManager;
+import net.fabricmc.fabric.api.event.Event;
 
 /**
  * Please migrate to the general {@link com.viaversion.viafabricplus.ViaFabricPlus} API point.
  */
 @Deprecated
-public class ItemRegistryDiff {
+public interface LoadSaveFilesCallback {
 
     @Deprecated
-    public static boolean keepItem(final Item item) {
-        LegacyCompatBridge.warn();
-        return ViaFabricPlus.getImpl().itemExistsInConnection(item);
-    }
+    Event<LoadSaveFilesCallback> EVENT = LegacyCompatBridge.createArrayBacked(LoadSaveFilesCallback.class, listeners -> (saveManager, state) -> {
+        for (LoadSaveFilesCallback listener : listeners) {
+            listener.onLoadSaveFiles(saveManager, state);
+        }
+    });
 
     @Deprecated
-    public static boolean contains(final Item item, final ProtocolVersion version) {
-        LegacyCompatBridge.warn();
-        return ViaFabricPlus.getImpl().itemExists(item, version);
+    void onLoadSaveFiles(final SaveManager saveManager, final State state);
+
+    @Deprecated
+    enum State {
+        PRE, POST, POST_INIT
     }
 
 }

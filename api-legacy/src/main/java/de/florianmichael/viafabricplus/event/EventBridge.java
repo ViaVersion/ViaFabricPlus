@@ -19,29 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.data;
+package de.florianmichael.viafabricplus.event;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viafabricplus.LegacyCompatBridge;
-import net.minecraft.item.Item;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
-/**
- * Please migrate to the general {@link com.viaversion.viafabricplus.ViaFabricPlus} API point.
- */
-@Deprecated
-public class ItemRegistryDiff {
+import java.util.function.Function;
 
-    @Deprecated
-    public static boolean keepItem(final Item item) {
-        LegacyCompatBridge.warn();
-        return ViaFabricPlus.getImpl().itemExistsInConnection(item);
-    }
+public class EventBridge {
 
-    @Deprecated
-    public static boolean contains(final Item item, final ProtocolVersion version) {
-        LegacyCompatBridge.warn();
-        return ViaFabricPlus.getImpl().itemExists(item, version);
+    public static <T> Event<T> createArrayBacked(Class<? super T> type, Function<T[], T> invokerFactory) {
+        return EventFactory.createArrayBacked(type, invokerFactory);
     }
 
 }

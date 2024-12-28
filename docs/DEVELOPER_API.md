@@ -4,9 +4,6 @@ ViaFabricPlus in your project comes with some requirements:
 - The target version is Java 17
 - Fabric loom setup (As ViaFabricPlus is a Minecraft mod and has no API-only dependency like other projects)
 
-Since the API is not exposed as standalone submodule (yet), functions that shouldn't be used are marked with
-`ApiStatus.Internal`. Further information about certain functions can be found in the Javadoc in the corresponding file.
-
 ## How to include the mod as dependency
 ### Gradle
 ```groovy
@@ -31,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation("com.viaversion:viafabricplus:x.x.x") // Get the latest version from releases
+    modImplementation("com.viaversion:viafabricplus-api:x.x.x") // Get the latest version from releases
 }
 ```
 
@@ -55,7 +52,7 @@ dependencies {
 <dependencies>
     <dependency>
         <groupId>com.viaversion</groupId>
-        <artifactId>viafabricplus</artifactId>
+        <artifactId>viafabricplus-api</artifactId>
         <version>x.x.x</version> <!-- Get the latest version from releases -->
     </dependency>
 </dependencies>

@@ -33,7 +33,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.ClientConnection;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;

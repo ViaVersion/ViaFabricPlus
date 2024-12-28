@@ -19,29 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viafabricplus.fixes.data;
+package de.florianmichael.viafabricplus.event;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.LegacyCompatBridge;
-import net.minecraft.item.Item;
+import net.fabricmc.fabric.api.event.Event;
+import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
+
 
 /**
  * Please migrate to the general {@link com.viaversion.viafabricplus.ViaFabricPlus} API point.
  */
 @Deprecated
-public class ItemRegistryDiff {
+public interface LoadClassicProtocolExtensionCallback {
 
     @Deprecated
-    public static boolean keepItem(final Item item) {
-        LegacyCompatBridge.warn();
-        return ViaFabricPlus.getImpl().itemExistsInConnection(item);
-    }
+    Event<LoadClassicProtocolExtensionCallback> EVENT = LegacyCompatBridge.createArrayBacked(LoadClassicProtocolExtensionCallback.class, listeners -> classicProtocolExtension -> {
+        for (LoadClassicProtocolExtensionCallback listener : listeners) {
+            listener.onLoadClassicProtocolExtension(classicProtocolExtension);
+        }
+    });
 
     @Deprecated
-    public static boolean contains(final Item item, final ProtocolVersion version) {
-        LegacyCompatBridge.warn();
-        return ViaFabricPlus.getImpl().itemExists(item, version);
-    }
+    void onLoadClassicProtocolExtension(final ClassicProtocolExtension classicProtocolExtension);
 
 }
