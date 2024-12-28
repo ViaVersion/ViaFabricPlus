@@ -103,9 +103,9 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     private CompletableFuture<Void> loadingFuture;
 
     public void init() {
-        ViaFabricPlus.init(this);
+        ViaFabricPlus.init(INSTANCE);
         FabricLoader.getInstance().getEntrypointContainers("viafabricplus", ViaFabricPlusLoadEntrypoint.class).forEach(container -> {
-            container.getEntrypoint().onPlatformLoad(this);
+            container.getEntrypoint().onPlatformLoad(INSTANCE);
         });
 
         // Create the directory if it doesn't exist

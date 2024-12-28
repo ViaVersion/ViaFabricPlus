@@ -5,6 +5,9 @@ ViaFabricPlus in your project comes with some requirements:
 - Fabric loom setup (As ViaFabricPlus is a Minecraft mod and has no API-only dependency like other projects)
 
 ## How to include the mod as dependency
+If you are targetting to only use the provided API, you should include the ```viafabricplus-api``` artifact. For including the internals use
+```viafabricplus```. Including the internals will also provide the legacy compatibility layer.
+
 ### Gradle
 ```groovy
 repositories {
@@ -58,43 +61,71 @@ dependencies {
 </dependencies>
 ```
 
-## Interacting with Events
-ViaFabricPlus events are the intended way of interacting with the mod.
-Events are fired in various situations and are using the [Fabric Event API](https://fabricmc.net/wiki/tutorial:events). 
+## Using the API
+Get the general API using ``ViaFabricPlus.getImpl()`` which will return a ``ViaFabricPlusBase`` interface reflecting API functions for mods to use.
+All functions provided there are safe to use and will most likely never be removed.
 
 #### Example
 ```java
-ChangeProtocolVersionCallback.EVENT.register((oldVersion, newVersion) -> {
-    System.out.println("Version changed to " + newVersion.getName());
+final ViaFabricPlusBase platform = ViaFabricPlus.getImpl();
+```
+
+## Using event callbacks
+
+The API provides two event callbacks which can be used:
+- ``LoadingCycleCallback`` fired in various loading stages of ViaFabricPlus such as config or settings loading.
+- ``ChangeProtocolVersionCallback`` fired when the user changes the target version in the screen, or if the user joins a server with a different version.
+
+Event callbacks can be registered through the API:
+
+```java
+final ViaFabricPlusBase platform = ViaFabricPlus.getImpl();
+
+platform.registerOnChangeProtocolVersionCallback((oldVersion, newVersion) -> {
+    // Called when the target version changes
 });
 ```
-### List of events/callbacks
-| Callback class name                  | Description                                                                                                                                                                                                   |
-|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ChangeProtocolVersionCallback        | Called when the user changes the target version in the screen, or if you connect to a server for which a specific version has been selected, you disconnect, the event for the actual version is also called. |
-| DisconnectCallback                   | Called when the user disconnects from a server                                                                                                                                                                |
-| LoadCallback                         | Called at the earliest point ViaFabricPlus is injecting too                                                                                                                                                   |
-| LoadClassicProtocolExtensionCallback | Called when the classic server sends the protocol extensions (only in **c0.30 CPE**)                                                                                                                          |
-| PostGameLoadCallback                 | Called when Minecraft is finished with loading all its components                                                                                                                                             |
-| PostViaVersionLoadCallback           | Called when ViaVersion is loaded and ready to use                                                                                                                                                             |
-| RegisterSettingsCallback             | Called after the default setting groups are loaded and before the setting config is loaded                                                                                                                    |
-| LoadSaveFilesCallback                | Called before and after the save files are loaded                                                                                                                                                             |
 
-### Other API calls
+### Using the loading cycle callback
 
-ViaFabricPlus uses [ViaVersion](https://github.com/ViaVersion/ViaVersion) for protocol translation, so the ViaVersion API can be used.
+As your mod might load after ViaFabricPlus, you will need to register the loading cycle callback inside a `ViaFabricPlusLoadEntrypoint` marked as `viafabricplus`
+in your `fabric.mod.json` file. The entrypoint also acts as `INITAL_LOAD` stage.
 
-The general API point for ViaFabricPlus specifics is `ProtocolTranslator` 
 ```java
-// Get and change the current selected version
-final ProtocolVersion version = ProtocolTranslator.getTargetVersion();
-if (version == ProtocolVersion.v1_8) {
-    ProtocolTranslator.setTargetVersion(ProtocolVersion.v1_9);
-}
+public class Example implements ViaFabricPlusLoadEntrypoint {
 
-// Gets the ViaVersion user connection object for raw packet sending using ViaVersion API
-final UserConnection user = ProtocolTranslator.getPlayNetworkUserConnection();
-if (user == null) {
-    // Mod not active
+    @Override
+    public void onPlatformLoad(ViaFabricPlusBase platform) {
+        platform.registerLoadingCycleCallback(stage -> {
+            if (stage == LoadingCycleCallback.LoadingCycle.PRE_SETTINGS_LOAD) {
+                // Called before the settings are loaded
+            } else if (stage == LoadingCycleCallback.LoadingCycle.POST_SETTINGS_LOAD) {
+                // Called after the settings are loaded
+            } else if (stage == LoadingCycleCallback.LoadingCycle.PRE_FILES_LOAD) {
+                // Called before the files are loaded
+            } else if (stage == LoadingCycleCallback.LoadingCycle.POST_FILES_LOAD) {
+                // Called after the files are loaded
+            } else if (stage == LoadingCycleCallback.LoadingCycle.PRE_VIAVERSION_LOAD) {
+                // Called before ViaVersion is loaded
+            } else if (stage == LoadingCycleCallback.LoadingCycle.POST_VIAVERSION_LOAD) {
+                // Called after ViaVersion is loaded
+            } else if (stage == LoadingCycleCallback.LoadingCycle.FINAL_LOAD) {
+                // Called after everything is loaded
+            } else if (stage == LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
+                // Called after the game is loaded
+            }
+        });
+    }
 }
+```
+
+## More extensive API
+
+For any version specific functionality, ViaFabricPlus provides common API functions. ViaFabricPlus uses [ViaVersion](https://github.com/ViaVersion/ViaVersion) 
+for protocol translation, so the ViaVersion API can be used as well.
+
+### Getting the current target version
+
+```java
+final ProtocolVersion version = ViaFabricPlus.getImpl().getTargetVersion();
 ```
