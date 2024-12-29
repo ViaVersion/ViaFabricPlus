@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.r1_14_4_enchantment_tooltip;
 
-import com.viaversion.viafabricplus.features.item.tooltip_changes.Enchantments1_14_4;
+import com.viaversion.viafabricplus.features.item.r1_14_4_enchantment_tooltip.Enchantments1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.util.ItemUtil;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;

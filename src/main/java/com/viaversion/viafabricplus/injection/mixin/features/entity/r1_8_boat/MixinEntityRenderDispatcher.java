@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.r1_8_boat;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.features.entity.v1_8_boat.BoatRenderer1_8;
+import com.viaversion.viafabricplus.features.entity.r1_8_boat.BoatRenderer1_8;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;

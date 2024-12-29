@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.downloading_terrain;
 
-import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain_handling.IDownloadingTerrainScreen;
+import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain.IDownloadingTerrainScreen;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;

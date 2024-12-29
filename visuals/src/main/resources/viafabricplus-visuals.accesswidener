@@ -6,7 +6,6 @@ accessible field net/minecraft/client/font/FontStorage bakedGlyphCache Lnet/mine
 accessible field net/minecraft/client/font/FontStorage glyphCache Lnet/minecraft/client/font/GlyphContainer;
 accessible field net/minecraft/client/resource/language/TranslationStorage translations Ljava/util/Map;
 accessible field net/minecraft/client/gui/screen/multiplayer/SocialInteractionsScreen TITLE Lnet/minecraft/text/Text;
-accessible field net/minecraft/client/gui/screen/world/WorldIcon UNKNOWN_SERVER_ID Lnet/minecraft/util/Identifier;
 accessible field net/minecraft/client/gui/widget/TexturedButtonWidget textures Lnet/minecraft/client/gui/screen/ButtonTextures;
 accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/minecraft/client/font/FontStorage$GlyphPair;
 

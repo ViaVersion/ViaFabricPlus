@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.r1_18_2_block_ack_emulation;
 
-import com.viaversion.viafabricplus.features.interaction.v1_18_2_block_ack_emulation.ClientPlayerInteractionManager1_18_2;
-import com.viaversion.viafabricplus.injection.access.IClientPlayerInteractionManager;
+import com.viaversion.viafabricplus.features.interaction.r1_18_2_block_ack_emulation.ClientPlayerInteractionManager1_18_2;
+import com.viaversion.viafabricplus.injection.access.interaction.r1_18_2_block_ack_emulation.IClientPlayerInteractionManager;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.network.ClientPlayerInteractionManager;

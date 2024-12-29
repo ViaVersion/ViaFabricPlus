@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.entity.r1_8_boat;
 
 import com.google.common.collect.ImmutableMap;
-import com.viaversion.viafabricplus.features.entity.v1_8_boat.BoatModel1_8;
+import com.viaversion.viafabricplus.features.entity.r1_8_boat.BoatModel1_8;
 import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModels;

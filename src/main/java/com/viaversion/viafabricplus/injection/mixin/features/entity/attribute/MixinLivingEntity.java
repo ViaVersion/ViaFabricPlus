@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.attribute;
 
-import com.viaversion.viafabricplus.features.entity.enchantment_attributes.EnchantmentAttributesEmulation1_20_6;
+import com.viaversion.viafabricplus.features.entity.attribute.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.LivingEntity;

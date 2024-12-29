@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.negative_item_count;
 
-import com.viaversion.viafabricplus.features.item.negative_items.NegativeItemUtil;
+import com.viaversion.viafabricplus.features.item.negative_item_count.NegativeItemUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Formatting;

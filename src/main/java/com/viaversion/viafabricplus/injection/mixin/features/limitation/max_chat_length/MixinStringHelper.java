@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.limitation.max_chat_length;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.viaversion.viafabricplus.features.max_chat_length.MaxChatLength;
+import com.viaversion.viafabricplus.features.limitation.max_chat_length.MaxChatLength;
 import net.minecraft.util.StringHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

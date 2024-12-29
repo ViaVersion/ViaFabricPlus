@@ -28,7 +28,7 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.packet.ServerboundPackets1_16_2;
 import com.viaversion.viaversion.protocols.v1_16_4to1_17.Protocol1_16_4To1_17;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
-import com.viaversion.viafabricplus.injection.access.IScreenHandler;
+import com.viaversion.viafabricplus.injection.access.interaction.container_clicking.IScreenHandler;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
 import net.minecraft.client.MinecraftClient;

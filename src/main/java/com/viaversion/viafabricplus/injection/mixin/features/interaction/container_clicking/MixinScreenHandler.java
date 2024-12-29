@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.injection.access.IScreenHandler;
+import com.viaversion.viafabricplus.injection.access.interaction.container_clicking.IScreenHandler;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
