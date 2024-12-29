@@ -19,27 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.always_set_highest_op_level;
+package com.viaversion.viafabricplus.injection.mixin.features.limitation.book_edit;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.gui.screen.ingame.BookEditScreen;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity {
+@Mixin(BookEditScreen.class)
+public abstract class MixinBookEditScreen {
 
-    @Shadow
-    public abstract void setClientPermissionLevel(int clientPermissionLevel);
+    @ModifyConstant(method = "method_27596", constant = @Constant(intValue = 1024))
+    private int modifyPageLength(int constant) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            return 256;
+        } else {
+            return constant;
+        }
+    }
 
-    @Inject(method = "init", at = @At("RETURN"))
-    private void setOpLevel4(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.setClientPermissionLevel(4);
+    @ModifyConstant(method = "appendNewPage", constant = @Constant(intValue = 100))
+    private int modifyPageCount(int constant) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            return 50;
+        } else {
+            return constant;
         }
     }
 

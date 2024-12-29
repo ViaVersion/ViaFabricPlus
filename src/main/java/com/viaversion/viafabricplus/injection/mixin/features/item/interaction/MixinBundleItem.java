@@ -19,27 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.always_set_highest_op_level;
+package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.item.BundleItem;
+import net.minecraft.util.ActionResult;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity {
+@Mixin(BundleItem.class)
+public abstract class MixinBundleItem {
 
-    @Shadow
-    public abstract void setClientPermissionLevel(int clientPermissionLevel);
-
-    @Inject(method = "init", at = @At("RETURN"))
-    private void setOpLevel4(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.setClientPermissionLevel(4);
+    @Redirect(method = "use", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;SUCCESS:Lnet/minecraft/util/ActionResult$Success;"))
+    private ActionResult.Success dontSwing() {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            return ActionResult.CONSUME;
+        } else {
+            return ActionResult.SUCCESS;
         }
     }
 

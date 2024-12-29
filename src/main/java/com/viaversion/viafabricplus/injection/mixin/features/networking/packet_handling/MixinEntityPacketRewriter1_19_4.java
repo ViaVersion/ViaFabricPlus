@@ -19,28 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.always_set_highest_op_level;
+package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_handling;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.ClientPlayerEntity;
+import com.viaversion.viaversion.protocols.v1_19_1to1_19_3.packet.ClientboundPackets1_19_3;
+import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.Protocol1_19_3To1_19_4;
+import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.packet.ClientboundPackets1_19_4;
+import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.rewriter.EntityPacketRewriter1_19_4;
+import com.viaversion.viaversion.rewriter.EntityRewriter;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity {
+@Mixin(value = EntityPacketRewriter1_19_4.class, remap = false)
+public abstract class MixinEntityPacketRewriter1_19_4 extends EntityRewriter<ClientboundPackets1_19_3, Protocol1_19_3To1_19_4> {
 
-    @Shadow
-    public abstract void setClientPermissionLevel(int clientPermissionLevel);
+    protected MixinEntityPacketRewriter1_19_4(Protocol1_19_3To1_19_4 protocol) {
+        super(protocol);
+    }
 
-    @Inject(method = "init", at = @At("RETURN"))
-    private void setOpLevel4(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.setClientPermissionLevel(4);
-        }
+    @Inject(method = "registerPackets", at = @At("RETURN"))
+    private void fixTeleportBehaviour(CallbackInfo ci) {
+        this.protocol.registerClientbound(ClientboundPackets1_19_3.TELEPORT_ENTITY, ClientboundPackets1_19_4.TELEPORT_ENTITY, wrapper -> {
+        }, true);
     }
 
 }

@@ -19,27 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.always_set_highest_op_level;
+package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.passive.ArmadilloEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity {
+@Mixin(ArmadilloEntity.class)
+public abstract class MixinArmadilloEntity {
 
-    @Shadow
-    public abstract void setClientPermissionLevel(int clientPermissionLevel);
-
-    @Inject(method = "init", at = @At("RETURN"))
-    private void setOpLevel4(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.setClientPermissionLevel(4);
+    @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/ArmadilloEntity;isNotIdle()Z"))
+    private boolean changeCondition(ArmadilloEntity instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            return false;
+        } else {
+            return instance.isNotIdle();
         }
     }
 

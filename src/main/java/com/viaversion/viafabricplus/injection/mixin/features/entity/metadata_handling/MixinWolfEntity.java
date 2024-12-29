@@ -19,27 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.always_set_highest_op_level;
+package com.viaversion.viafabricplus.injection.mixin.features.entity.metadata_handling;
 
+import com.viaversion.viafabricplus.features.entity.metadata_handling.WolfHealthTracker1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.Angerable;
+import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity {
+@Mixin(WolfEntity.class)
+public abstract class MixinWolfEntity extends TameableEntity implements Angerable {
 
-    @Shadow
-    public abstract void setClientPermissionLevel(int clientPermissionLevel);
+    protected MixinWolfEntity(EntityType<? extends TameableEntity> entityType, World world) {
+        super(entityType, world);
+    }
 
-    @Inject(method = "init", at = @At("RETURN"))
-    private void setOpLevel4(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.setClientPermissionLevel(4);
+    @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/WolfEntity;getHealth()F"))
+    private float fixWolfHealth(WolfEntity instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+            return WolfHealthTracker1_14_4.getWolfHealth(this);
+        } else {
+            return instance.getHealth();
         }
     }
 

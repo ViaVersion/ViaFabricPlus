@@ -19,27 +19,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.always_set_highest_op_level;
+package com.viaversion.viafabricplus.injection.mixin.features.networking.registry_validation;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryList;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity {
+import java.util.List;
+
+@Mixin(RegistryEntryList.Named.class)
+public abstract class MixinRegistryEntryList_Named {
 
     @Shadow
-    public abstract void setClientPermissionLevel(int clientPermissionLevel);
+    private @Nullable List<RegistryEntry> entries;
 
-    @Inject(method = "init", at = @At("RETURN"))
-    private void setOpLevel4(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.setClientPermissionLevel(4);
+    @Shadow
+    abstract void setEntries(List<RegistryEntry> entries);
+
+    @Inject(method = "getEntries", at = @At("HEAD"))
+    private void preventNullableEntries(CallbackInfoReturnable<List<RegistryEntry<?>>> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            // Previoulsy didn't had unbounded entries
+            if (this.entries == null) {
+                this.setEntries(List.of());
+            }
+        }
+    }
+
+    @Inject(method = "isBound", at = @At("HEAD"), cancellable = true)
+    private void alwaysBound(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            // Previously didn't exist
+            cir.setReturnValue(true);
         }
     }
 

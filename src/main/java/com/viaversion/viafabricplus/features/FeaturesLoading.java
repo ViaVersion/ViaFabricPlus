@@ -23,14 +23,14 @@ package com.viaversion.viafabricplus.features;
 
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
+import com.viaversion.viafabricplus.base.sync_tasks.DataCustomPayload;
 import com.viaversion.viafabricplus.features.block.CollisionShapes;
-import com.viaversion.viafabricplus.features.cpe_extensions.CPEAdditions;
+import com.viaversion.viafabricplus.features.classic.cpe_extensions.CPEAdditions;
+import com.viaversion.viafabricplus.features.entity.EntityDimensionDiff;
+import com.viaversion.viafabricplus.features.entity.enchantment_attributes.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1_12_2;
 import com.viaversion.viafabricplus.features.networking.resource_pack_header.ResourcePackHeaderDiff;
 import com.viaversion.viafabricplus.features.recipe_emulation.Recipes1_11_2;
-import com.viaversion.viafabricplus.features.entity.EntityDimensionDiff;
-import com.viaversion.viafabricplus.features.entity.enchantment_attributes.EnchantmentAttributesEmulation1_20_6;
-import com.viaversion.viafabricplus.base.sync_tasks.DataCustomPayload;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;

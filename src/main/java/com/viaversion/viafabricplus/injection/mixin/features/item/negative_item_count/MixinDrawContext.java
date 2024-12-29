@@ -19,27 +19,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.always_set_highest_op_level;
+package com.viaversion.viafabricplus.injection.mixin.features.item.negative_item_count;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.ClientPlayerEntity;
+import com.viaversion.viafabricplus.features.item.negative_items.NegativeItemUtil;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity {
+@Mixin(DrawContext.class)
+public abstract class MixinDrawContext {
 
-    @Shadow
-    public abstract void setClientPermissionLevel(int clientPermissionLevel);
+    @Redirect(method = "drawStackCount", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getCount()I"))
+    private int handleNegativeItemCount(ItemStack instance) {
+        return NegativeItemUtil.getCount(instance);
+    }
 
-    @Inject(method = "init", at = @At("RETURN"))
-    private void setOpLevel4(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.setClientPermissionLevel(4);
+    @Redirect(method = "drawStackCount", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))
+    private String makeTextRed(int count) {
+        if (count <= 0) {
+            return Formatting.RED.toString() + count;
+        } else {
+            return String.valueOf(count);
         }
     }
 
