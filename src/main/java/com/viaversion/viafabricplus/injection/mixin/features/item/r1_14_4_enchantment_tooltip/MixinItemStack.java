@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.item.v1_14_4_enchantment_tooltip;
+package com.viaversion.viafabricplus.injection.mixin.features.item.r1_14_4_enchantment_tooltip;
 
 import com.viaversion.viafabricplus.features.item.tooltip_changes.Enchantments1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.interaction.v1_18_2_block_ack_emulation;
+package com.viaversion.viafabricplus.injection.mixin.features.interaction.r1_18_2_block_ack_emulation;
 
 import com.viaversion.viafabricplus.features.interaction.v1_18_2_block_ack_emulation.ClientPlayerInteractionManager1_18_2;
 import com.viaversion.viafabricplus.injection.access.IClientPlayerInteractionManager;

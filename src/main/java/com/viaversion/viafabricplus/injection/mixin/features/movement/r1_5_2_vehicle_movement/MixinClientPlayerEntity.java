@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.v1_5_2_vehicle_movement;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.r1_5_2_vehicle_movement;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
