@@ -21,11 +21,15 @@
 
 package com.viaversion.viafabricplus.visuals.injection.mixin.filter_non_existing_characters;
 
-import com.viaversion.viafabricplus.visuals.features.filter_non_existing_characters.RenderableGlyphDiff;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.visuals.features.filter_non_existing_characters.BuiltinEmptyGlyph1_12_2;
+import com.viaversion.viafabricplus.visuals.features.filter_non_existing_characters.RenderableGlyphDiff;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.*;
+import net.minecraft.client.font.BakedGlyph;
+import net.minecraft.client.font.FontStorage;
+import net.minecraft.client.font.RenderableGlyph;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +37,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -44,45 +47,32 @@ public abstract class MixinFontStorage {
     @Final
     private Identifier id;
 
-    @Shadow private BakedGlyph blankBakedGlyph;
+    @Shadow
+    private BakedGlyph blankBakedGlyph;
 
-    @Shadow protected abstract BakedGlyph bake(RenderableGlyph c);
+    @Shadow
+    protected abstract BakedGlyph bake(RenderableGlyph c);
 
     @Unique
-    private BakedGlyph viaFabricPlus$blankBakedGlyph1_12_2;
+    private BakedGlyph viaFabricPlusVisuals$blankBakedGlyph1_12_2;
 
     @Inject(method = "clear", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/BuiltinEmptyGlyph;bake(Ljava/util/function/Function;)Lnet/minecraft/client/font/BakedGlyph;", ordinal = 0))
     private void bakeBlankGlyph1_12_2(CallbackInfo ci) {
-        this.viaFabricPlus$blankBakedGlyph1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this::bake);
+        this.viaFabricPlusVisuals$blankBakedGlyph1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this::bake);
     }
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
     private void filterGlyphs(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
-            cir.setReturnValue(this.viaFabricPlus$getBlankGlyphPair());
+            cir.setReturnValue(this.viaFabricPlusVisuals$getBlankGlyphPair());
         }
     }
 
     @Inject(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At("RETURN"), cancellable = true)
     private void filterBakedGlyph(int codePoint, CallbackInfoReturnable<BakedGlyph> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
-            cir.setReturnValue(this.viaFabricPlus$getBlankBakedGlyph());
+            cir.setReturnValue(this.viaFabricPlusVisuals$getBlankBakedGlyph());
         }
-    }
-
-    @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
-    private void fixBlankGlyph1_12_2(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
-        if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled()) {
-            final FontStorage.GlyphPair glyphPair = cir.getReturnValue();
-            final Glyph glyph1 = glyphPair.glyph();
-            final Glyph glyph2 = glyphPair.advanceValidatedGlyph();
-            cir.setReturnValue(new FontStorage.GlyphPair(glyph1 == BuiltinEmptyGlyph.MISSING ? BuiltinEmptyGlyph1_12_2.INSTANCE : glyph1, glyph2 == BuiltinEmptyGlyph.MISSING ? BuiltinEmptyGlyph1_12_2.INSTANCE : glyph2));
-        }
-    }
-
-    @Redirect(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At(value = "FIELD", target = "Lnet/minecraft/client/font/FontStorage;blankBakedGlyph:Lnet/minecraft/client/font/BakedGlyph;"))
-    private BakedGlyph fixBlankBakedGlyph1_12_2(FontStorage instance) {
-        return this.viaFabricPlus$getBlankBakedGlyph();
     }
 
     @Unique
@@ -95,8 +85,8 @@ public abstract class MixinFontStorage {
     }
 
     @Unique
-    private FontStorage.GlyphPair viaFabricPlus$getBlankGlyphPair() {
-        if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled()) {
+    private FontStorage.GlyphPair viaFabricPlusVisuals$getBlankGlyphPair() {
+        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             return new FontStorage.GlyphPair(BuiltinEmptyGlyph1_12_2.INSTANCE, BuiltinEmptyGlyph1_12_2.INSTANCE);
         } else {
             return FontStorage.GlyphPair.MISSING;
@@ -104,9 +94,9 @@ public abstract class MixinFontStorage {
     }
 
     @Unique
-    private BakedGlyph viaFabricPlus$getBlankBakedGlyph() {
-        if (VisualSettings.INSTANCE.changeFontRendererBehaviour.isEnabled()) {
-            return this.viaFabricPlus$blankBakedGlyph1_12_2;
+    private BakedGlyph viaFabricPlusVisuals$getBlankBakedGlyph() {
+        if (VisualSettings.INSTANCE.filterNonExistingGlyphs.getValue()) {
+            return this.viaFabricPlusVisuals$blankBakedGlyph1_12_2;
         } else {
             return this.blankBakedGlyph;
         }

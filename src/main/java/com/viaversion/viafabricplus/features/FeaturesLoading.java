@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus.features;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.base.sync_tasks.DataCustomPayload;
+import com.viaversion.viafabricplus.features.armor_hud.ArmorHudEmulation1_8;
 import com.viaversion.viafabricplus.features.block.CollisionShapes;
 import com.viaversion.viafabricplus.features.classic.cpe_extensions.CPEAdditions;
 import com.viaversion.viafabricplus.features.entity.EntityDimensionDiff;
@@ -47,6 +48,7 @@ public final class FeaturesLoading {
             if (cycle == LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
                 EntityDimensionDiff.init();
                 EnchantmentAttributesEmulation1_20_6.init();
+                ArmorHudEmulation1_8.init();
             }
         });
 

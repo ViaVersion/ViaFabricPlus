@@ -10,6 +10,7 @@ accessible field net/minecraft/entity/vehicle/AbstractBoatEntity yawVelocity F
 accessible field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 accessible field net/minecraft/block/AbstractBlock velocityMultiplier F
 accessible field net/minecraft/client/gui/screen/option/ControlsListWidget$KeyBindingEntry RESET_TEXT Lnet/minecraft/text/Text;
+accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/minecraft/client/font/FontStorage$GlyphPair;
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 accessible method net/minecraft/entity/passive/CamelEntity getPassengerAttachmentY (ZFLnet/minecraft/entity/EntityDimensions;F)D
@@ -17,8 +18,9 @@ accessible method net/minecraft/entity/vehicle/AbstractBoatEntity getMaxPassenge
 accessible method net/minecraft/client/gui/screen/multiplayer/ConnectScreen setStatus (Lnet/minecraft/text/Text;)V
 accessible method net/minecraft/item/BlockItem getPlacementState (Lnet/minecraft/item/ItemPlacementContext;)Lnet/minecraft/block/BlockState;
 accessible method net/minecraft/block/AbstractBlock getPickStack (Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)Lnet/minecraft/item/ItemStack;
+accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
 
 mutable field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 mutable field net/minecraft/block/AbstractBlock velocityMultiplier F
 
-accessible class net/minecraft/client/font/TextRenderer$Drawer
+accessible class net/minecraft/client/font/FontStorage$GlyphPair

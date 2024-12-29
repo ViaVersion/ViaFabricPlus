@@ -102,6 +102,7 @@ public abstract class MixinInGameHud {
         if (!VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             return;
         }
+
         final MinecraftClient client = MinecraftClient.getInstance();
 
         final int armorWidth = 10 * viaFabricPlus$ARMOR_ICON_WIDTH;

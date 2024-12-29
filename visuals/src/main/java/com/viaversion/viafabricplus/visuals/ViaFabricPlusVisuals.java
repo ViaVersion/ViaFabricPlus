@@ -25,8 +25,7 @@ import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
 import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusLoadEntrypoint;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.visuals.features.filter_non_existing_characters.UnicodeFontFix1_12_2;
-import com.viaversion.viafabricplus.visuals.features.armor_hud.ArmorHudEmulation1_8;
-import com.viaversion.viafabricplus.visuals.features.classic_creative_menu.GridItemSelectionScreen;
+import com.viaversion.viafabricplus.visuals.features.classic.creative_menu.GridItemSelectionScreen;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -46,9 +45,6 @@ public class ViaFabricPlusVisuals implements ViaFabricPlusLoadEntrypoint {
         platform.registerLoadingCycleCallback(cycle -> {
             if (cycle == LoadingCycleCallback.LoadingCycle.POST_SETTINGS_LOAD) {
                 platform.addSettingGroup(VisualSettings.INSTANCE);
-            }
-            if (cycle == LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
-                ArmorHudEmulation1_8.init();
             }
         });
 
