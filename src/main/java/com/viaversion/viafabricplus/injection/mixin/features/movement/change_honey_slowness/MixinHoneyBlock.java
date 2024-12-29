@@ -19,23 +19,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.item;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.change_honey_slowness;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.entity.ItemEntity;
+import net.minecraft.block.HoneyBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ItemEntity.class)
-public abstract class MixinItemEntity {
+@Mixin(HoneyBlock.class)
+public abstract class MixinHoneyBlock {
 
-    @Inject(method = "applyWaterBuoyancy", at = @At("HEAD"), cancellable = true)
-    private void dontApplyWaterBuoyancy(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            ci.cancel();
+    @Inject(method = { "method_65067", "method_65068" }, at = @At("HEAD"), cancellable = true)
+    private static void simplifyVelocityComparisons(double d, CallbackInfoReturnable<Double> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            cir.setReturnValue(d);
         }
     }
 

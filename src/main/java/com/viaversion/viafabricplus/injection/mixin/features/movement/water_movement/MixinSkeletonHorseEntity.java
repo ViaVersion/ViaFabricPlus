@@ -19,25 +19,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.levitation_value;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.water_movement;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.SkeletonHorseEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(StatusEffectInstance.class)
-public abstract class MixinStatusEffectInstance {
+@Mixin(SkeletonHorseEntity.class)
+public abstract class MixinSkeletonHorseEntity extends AbstractHorseEntity {
 
-    @Redirect(method = "<init>(Lnet/minecraft/registry/entry/RegistryEntry;IIZZZLnet/minecraft/entity/effect/StatusEffectInstance;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(III)I"))
-    private int dontClampValue(int value, int min, int max) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            return value;
-        } else {
-            return MathHelper.clamp(value, min, max);
+    protected MixinSkeletonHorseEntity(EntityType<? extends AbstractHorseEntity> entityType, World world) {
+        super(entityType, world);
+    }
+
+    @Inject(method = "getBaseWaterMovementSpeedMultiplier", at = @At("HEAD"), cancellable = true)
+    private void modifyBaseWaterMovementSpeedMultiplier(CallbackInfoReturnable<Float> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            cir.setReturnValue(super.getBaseWaterMovementSpeedMultiplier());
         }
     }
 

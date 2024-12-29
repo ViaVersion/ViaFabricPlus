@@ -56,22 +56,10 @@ public abstract class MixinEntity {
     private World world;
 
     @Shadow
-    protected Object2DoubleMap<TagKey<Fluid>> fluidHeight;
-
-    @Shadow
     private Vec3d pos;
 
     @Shadow
     public abstract Box getBoundingBox();
-
-    @Shadow
-    public abstract Vec3d getVelocity();
-
-    @Shadow
-    public abstract void setVelocity(Vec3d velocity);
-
-    @Shadow
-    protected abstract Vec3d getPassengerAttachmentPos(Entity passenger, EntityDimensions dimensions, float scaleFactor);
 
     @Shadow
     public abstract World getWorld();
@@ -129,33 +117,6 @@ public abstract class MixinEntity {
             }
 
             cir.setReturnValue(adjustedMovement);
-        }
-    }
-
-    @Redirect(method = "updateSubmergedInWaterState", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeY()D"))
-    private double addMagicOffset(Entity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            return instance.getEyeY() - 0.11111111F;
-        } else {
-            return instance.getEyeY();
-        }
-    }
-
-    @Redirect(method = "updatePassengerPosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity$PositionUpdater;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getVehicleAttachmentPos(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/math/Vec3d;"))
-    private Vec3d use1_20_1RidingOffset(Entity instance, Entity vehicle) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-            return new Vec3d(0, -EntityRidingOffsetsPre1_20_2.getHeightOffset(instance), 0);
-        } else {
-            return instance.getVehicleAttachmentPos(vehicle);
-        }
-    }
-
-    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lnet/minecraft/util/math/Vec3d;"))
-    private Vec3d getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-            return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger).rotateY(-instance.getYaw() * (float) (Math.PI / 180));
-        } else {
-            return getPassengerAttachmentPos(passenger, dimensions, scaleFactor);
         }
     }
 
@@ -227,65 +188,6 @@ public abstract class MixinEntity {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(Vec3d.fromPolar(pitch, yaw));
         }
-    }
-
-    @Inject(method = "setSwimming", at = @At("HEAD"), cancellable = true)
-    private void cancelSwimming(boolean swimming, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && swimming) {
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "updateMovementInFluid", at = @At("HEAD"), cancellable = true)
-    private void modifyFluidMovementBoundingBox(TagKey<Fluid> fluidTag, double d, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
-            return;
-        }
-
-        Box box = this.getBoundingBox().expand(0, -0.4, 0).contract(0.001);
-        int minX = MathHelper.floor(box.minX);
-        int maxX = MathHelper.ceil(box.maxX);
-        int minY = MathHelper.floor(box.minY);
-        int maxY = MathHelper.ceil(box.maxY);
-        int minZ = MathHelper.floor(box.minZ);
-        int maxZ = MathHelper.ceil(box.maxZ);
-
-        if (!this.world.isRegionLoaded(minX, minY, minZ, maxX, maxY, maxZ)) {
-            cir.setReturnValue(false);
-            return;
-        }
-
-        double waterHeight = 0;
-        boolean foundFluid = false;
-        Vec3d pushVec = Vec3d.ZERO;
-
-        BlockPos.Mutable mutable = new BlockPos.Mutable();
-
-        for (int x = minX; x < maxX; x++) {
-            for (int y = minY - 1; y < maxY; y++) {
-                for (int z = minZ; z < maxZ; z++) {
-                    mutable.set(x, y, z);
-                    FluidState state = this.world.getFluidState(mutable);
-                    if (state.isIn(fluidTag)) {
-                        double height = y + state.getHeight(this.world, mutable);
-                        if (height >= box.minY - 0.4)
-                            waterHeight = Math.max(height - box.minY + 0.4, waterHeight);
-                        if (y >= minY && maxY >= height) {
-                            foundFluid = true;
-                            pushVec = pushVec.add(state.getVelocity(this.world, mutable));
-                        }
-                    }
-                }
-            }
-        }
-
-        if (pushVec.length() > 0) {
-            pushVec = pushVec.normalize().multiply(0.014);
-            this.setVelocity(this.getVelocity().add(pushVec));
-        }
-
-        this.fluidHeight.put(fluidTag, waterHeight);
-        cir.setReturnValue(foundFluid);
     }
 
     @Inject(method = "getTargetingMargin", at = @At("HEAD"), cancellable = true)

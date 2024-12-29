@@ -57,9 +57,6 @@ public abstract class MixinLivingEntity extends Entity {
     protected boolean jumping;
 
     @Shadow
-    protected abstract float getBaseWaterMovementSpeedMultiplier();
-
-    @Shadow
     private Optional<BlockPos> climbingPos;
 
     @Shadow
@@ -84,48 +81,11 @@ public abstract class MixinLivingEntity extends Entity {
         }
     }
 
-    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lnet/minecraft/util/math/Vec3d;"))
-    private Vec3d getPassengerRidingPos1_20_1(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-            return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, entity).rotateY(-instance.getYaw() * (float) (Math.PI / 180));
-        } else {
-            return getPassengerAttachmentPos(entity, entityDimensions, v);
-        }
-    }
-
     @Inject(method = "tickCramming", at = @At("HEAD"), cancellable = true)
     private void preventEntityPush(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
         }
-    }
-
-    @Redirect(method = "calcGlidingVelocity", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D", remap = false))
-    private double fixCosTable(double a) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
-            return MathHelper.cos((float) a);
-        } else {
-            return Math.cos(a);
-        }
-    }
-
-    @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
-    private double dontApplyLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
-            return Double.MAX_VALUE;
-        } else {
-            return instance.getFluidHeight(tagKey);
-        }
-    }
-
-    @Redirect(method = "canGlide", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
-    private boolean allowElytraWhenLevitating(LivingEntity instance, RegistryEntry<StatusEffect> effect) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2) && instance.hasStatusEffect(effect);
-    }
-
-    @Redirect(method = "canGlide", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasVehicle()Z"))
-    private boolean allowElytraInVehicle(LivingEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && instance.hasVehicle();
     }
 
     @Redirect(method = "tickActiveItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areItemsEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"))
@@ -151,51 +111,10 @@ public abstract class MixinLivingEntity extends Entity {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && jumping;
     }
 
-    @Redirect(method = "travelInFluid",
-            slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/effect/StatusEffects;DOLPHINS_GRACE:Lnet/minecraft/registry/entry/RegistryEntry;")),
-            at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;horizontalCollision:Z", ordinal = 0))
-    private boolean disableClimbing(LivingEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && instance.horizontalCollision;
-    }
-
-    @ModifyVariable(method = "applyFluidMovingSpeed", ordinal = 0, at = @At("HEAD"), argsOnly = true)
-    private boolean modifyMovingDown(boolean movingDown) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && movingDown;
-    }
-
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;onLanding()V"))
     private void dontResetLevitationFallDistance(LivingEntity instance) {
         if (this.hasStatusEffect(StatusEffects.SLOW_FALLING) || ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
             instance.onLanding();
-        }
-    }
-
-    @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSprinting()Z", ordinal = 0))
-    private boolean modifySwimSprintSpeed(LivingEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && instance.isSprinting();
-    }
-
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
-    private double redirectFluidHeight(LivingEntity instance, TagKey<Fluid> tagKey) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && tagKey == FluidTags.WATER) {
-            if (instance.getFluidHeight(tagKey) > 0) return 1;
-        }
-        return instance.getFluidHeight(tagKey);
-    }
-
-    @Inject(method = "applyFluidMovingSpeed", at = @At("HEAD"), cancellable = true)
-    private void modifySwimSprintFallSpeed(double gravity, boolean movingDown, Vec3d velocity, CallbackInfoReturnable<Vec3d> ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !this.hasNoGravity()) {
-            ci.setReturnValue(new Vec3d(velocity.x, velocity.y - 0.02, velocity.z));
-        }
-    }
-
-    @ModifyConstant(method = "travelInFluid", constant = @Constant(floatValue = 0.9F))
-    private float modifySwimFriction(float constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return this.getBaseWaterMovementSpeedMultiplier();
-        } else {
-            return constant;
         }
     }
 

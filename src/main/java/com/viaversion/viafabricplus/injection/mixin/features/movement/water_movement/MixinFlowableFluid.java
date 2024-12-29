@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.block;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.water_movement;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;

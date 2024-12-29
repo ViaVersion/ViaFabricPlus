@@ -19,35 +19,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.block;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.slowdown_calculation_changes;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoulSandBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.EnderEyeItem;
+import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(SoulSandBlock.class)
-public abstract class MixinSoulSandBlock extends Block {
+@Mixin(EnderEyeItem.class)
+public abstract class MixinEnderEyeItem {
 
-    public MixinSoulSandBlock(Settings settings) {
-        super(settings);
-    }
-
-    @Override
-    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            entity.setVelocity(entity.getVelocity().multiply(0.4D, 1, 0.4D));
-        }
-    }
-
-    @Override
-    public float getVelocityMultiplier() {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1F : super.getVelocityMultiplier();
+    @WrapWithCondition(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setCurrentHand(Lnet/minecraft/util/Hand;)V"))
+    private boolean removeItemSlowdown(PlayerEntity instance, Hand hand) {
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11);
     }
 
 }

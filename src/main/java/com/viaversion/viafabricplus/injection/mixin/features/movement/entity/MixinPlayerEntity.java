@@ -131,42 +131,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @Inject(method = "checkGliding", at = @At("HEAD"), cancellable = true)
-    private void replaceGlidingCondition(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            if (!this.isOnGround() && this.getVelocity().y < 0D && !this.isGliding()) {
-                final ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
-                if (itemStack.isOf(Items.ELYTRA) && canGlideWith(itemStack, EquipmentSlot.CHEST)) {
-                    cir.setReturnValue(true);
-                    return;
-                }
-            }
-            cir.setReturnValue(false);
-        }
-    }
-
-    @Inject(method = "updatePose", at = @At("HEAD"), cancellable = true)
-    private void onUpdatePose(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            final EntityPose pose;
-            if (this.isGliding()) {
-                pose = EntityPose.GLIDING;
-            } else if (this.isSleeping()) {
-                pose = EntityPose.SLEEPING;
-            } else if (this.isSwimming()) {
-                pose = EntityPose.SWIMMING;
-            } else if (this.isUsingRiptide()) {
-                pose = EntityPose.SPIN_ATTACK;
-            } else if (this.isSneaking()) {
-                pose = EntityPose.CROUCHING;
-            } else {
-                pose = EntityPose.STANDING;
-            }
-            this.setPose(pose);
-            ci.cancel();
-        }
-    }
-
     @Inject(method = "getBaseDimensions", at = @At("HEAD"), cancellable = true)
     private void modifyDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
         if (pose == EntityPose.CROUCHING) {
