@@ -31,10 +31,10 @@ import org.spongepowered.asm.mixin.Unique;
 public abstract class MixinPlayerListEntry implements IPlayerListEntry {
 
     @Unique
-    private final int viaFabricPlus$index = LegacyTabList.globalTablistIndex++;
+    private final int viaFabricPlusVisuals$index = LegacyTabList.globalTablistIndex++;
 
     @Override
-    public int viaFabricPlus$getIndex() {
-        return viaFabricPlus$index;
+    public int viaFabricPlusVisuals$getIndex() {
+        return viaFabricPlusVisuals$index;
     }
 }

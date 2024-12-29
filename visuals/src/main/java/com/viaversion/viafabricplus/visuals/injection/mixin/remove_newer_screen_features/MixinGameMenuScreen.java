@@ -84,10 +84,10 @@ public abstract class MixinGameMenuScreen extends Screen {
     private static int NORMAL_BUTTON_WIDTH;
 
     @Unique
-    private int viaFabricPlus$disconnectButtonWidth;
+    private int viaFabricPlusVisuals$disconnectButtonWidth;
 
     @Unique
-    private ButtonWidget.PressAction viaFabricPlus$disconnectSupplier;
+    private ButtonWidget.PressAction viaFabricPlusVisuals$disconnectSupplier;
 
     protected MixinGameMenuScreen(Text title) {
         super(title);
@@ -104,7 +104,7 @@ public abstract class MixinGameMenuScreen extends Screen {
             }
             // Advancements -> disconnect
             if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1) && text.equals(ADVANCEMENTS_TEXT)) {
-                return ButtonWidget.builder(ScreenTexts.DISCONNECT, viaFabricPlus$disconnectSupplier).width(viaFabricPlus$disconnectButtonWidth).build();
+                return ButtonWidget.builder(ScreenTexts.DISCONNECT, viaFabricPlusVisuals$disconnectSupplier).width(viaFabricPlusVisuals$disconnectButtonWidth).build();
             }
         } else if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() == 1) {
             // Player reporting -> Social interactions
@@ -130,20 +130,20 @@ public abstract class MixinGameMenuScreen extends Screen {
 
         // Move all buttons below feebdack/bug down since they are removed
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            viaFabricPlus$applyTo(OPTIONS_TEXT, moveDown);
-            viaFabricPlus$applyTo(SHARE_TO_LAN_TEXT, moveDown);
-            viaFabricPlus$applyTo(ScreenTexts.DISCONNECT, moveDown);
+            viaFabricPlusVisuals$applyTo(OPTIONS_TEXT, moveDown);
+            viaFabricPlusVisuals$applyTo(SHARE_TO_LAN_TEXT, moveDown);
+            viaFabricPlusVisuals$applyTo(ScreenTexts.DISCONNECT, moveDown);
         }
 
         // Tracked for dimensions in case some mod changes them
-        final ButtonWidget returnToGame = viaFabricPlus$getButton(RETURN_TO_GAME_TEXT);
+        final ButtonWidget returnToGame = viaFabricPlusVisuals$getButton(RETURN_TO_GAME_TEXT);
         if (returnToGame == null) {
             return;
         }
 
         // Make options button wider since lan is removed
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
-            viaFabricPlus$applyTo(OPTIONS_TEXT, buttonWidget -> {
+            viaFabricPlusVisuals$applyTo(OPTIONS_TEXT, buttonWidget -> {
                 buttonWidget.setX(returnToGame.getX());
                 buttonWidget.setWidth(returnToGame.getWidth());
             });
@@ -151,8 +151,8 @@ public abstract class MixinGameMenuScreen extends Screen {
 
         // Make space between return to game and options, put disconnect button below options
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1)) {
-            viaFabricPlus$applyTo(OPTIONS_TEXT, moveDown);
-            viaFabricPlus$applyTo(ScreenTexts.DISCONNECT, buttonWidget -> {
+            viaFabricPlusVisuals$applyTo(OPTIONS_TEXT, moveDown);
+            viaFabricPlusVisuals$applyTo(ScreenTexts.DISCONNECT, buttonWidget -> {
                 // Magical offset which would be calculated by the grid system, nothing we can do about it
                 buttonWidget.setY(returnToGame.getY() + ButtonWidget.DEFAULT_HEIGHT + 3);
             });
@@ -176,8 +176,8 @@ public abstract class MixinGameMenuScreen extends Screen {
                 if (button.getMessage().equals(STATS_TEXT)) {
                     return false;
                 } else if (button.getMessage().equals(ScreenTexts.DISCONNECT)) {
-                    viaFabricPlus$disconnectSupplier = buttonWidget -> button.onPress();
-                    viaFabricPlus$disconnectButtonWidth = button.getWidth();
+                    viaFabricPlusVisuals$disconnectSupplier = buttonWidget -> button.onPress();
+                    viaFabricPlusVisuals$disconnectButtonWidth = button.getWidth();
                     return false;
                 }
             }
@@ -186,15 +186,15 @@ public abstract class MixinGameMenuScreen extends Screen {
     }
 
     @Unique
-    private void viaFabricPlus$applyTo(final Text text, final Consumer<ButtonWidget> action) {
-        final ButtonWidget button = viaFabricPlus$getButton(text);
+    private void viaFabricPlusVisuals$applyTo(final Text text, final Consumer<ButtonWidget> action) {
+        final ButtonWidget button = viaFabricPlusVisuals$getButton(text);
         if (button != null) {
             action.accept(button);
         }
     }
 
     @Unique
-    private ButtonWidget viaFabricPlus$getButton(final Text text) {
+    private ButtonWidget viaFabricPlusVisuals$getButton(final Text text) {
         for (Element child : children()) {
             if (child instanceof ButtonWidget buttonWidget) {
                 if (buttonWidget.getMessage().equals(text)) {

@@ -37,7 +37,7 @@ public abstract class MixinClientPlayNetworkHandler {
     @Inject(method = "onGameJoin", at = @At("RETURN"))
     private void initPlayerListFix(GameJoinS2CPacket packet, CallbackInfo ci) {
         LegacyTabList.globalTablistIndex = 0;
-        ((IPlayerListHud) MinecraftClient.getInstance().inGameHud.getPlayerListHud()).viaFabricPlus$setMaxPlayers(packet.maxPlayers());
+        ((IPlayerListHud) MinecraftClient.getInstance().inGameHud.getPlayerListHud()).viaFabricPlusVisuals$setMaxPlayers(packet.maxPlayers());
     }
 
 }

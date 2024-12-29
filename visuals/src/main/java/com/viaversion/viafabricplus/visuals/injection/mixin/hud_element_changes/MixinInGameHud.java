@@ -51,7 +51,7 @@ import java.util.function.Function;
 public abstract class MixinInGameHud {
 
     @Unique
-    private static final int viaFabricPlus$ARMOR_ICON_WIDTH = 8;
+    private static final int viaFabricPlusVisuals$ARMOR_ICON_WIDTH = 8;
 
     @Inject(method = "playBurstSound", at = @At("HEAD"), cancellable = true)
     private void disableBubblePopSound(int bubble, PlayerEntity player, int burstBubbles, CallbackInfo ci) {
@@ -105,8 +105,8 @@ public abstract class MixinInGameHud {
 
         final MinecraftClient client = MinecraftClient.getInstance();
 
-        final int armorWidth = 10 * viaFabricPlus$ARMOR_ICON_WIDTH;
-        final int offset = n * viaFabricPlus$ARMOR_ICON_WIDTH;
+        final int armorWidth = 10 * viaFabricPlusVisuals$ARMOR_ICON_WIDTH;
+        final int offset = n * viaFabricPlusVisuals$ARMOR_ICON_WIDTH;
 
         args.set(1, client.getWindow().getScaledWidth() - x - armorWidth + offset - 1);
         args.set(2, (int) args.get(2) + client.textRenderer.fontHeight + 1);

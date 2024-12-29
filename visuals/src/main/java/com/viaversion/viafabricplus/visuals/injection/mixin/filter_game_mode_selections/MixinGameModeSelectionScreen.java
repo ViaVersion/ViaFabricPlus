@@ -46,7 +46,7 @@ public abstract class MixinGameModeSelectionScreen extends Screen {
     private static int UI_WIDTH;
 
     @Unique
-    private GameModeSelectionScreen.GameModeSelection[] viaFabricPlus$unwrappedGameModes;
+    private GameModeSelectionScreen.GameModeSelection[] viaFabricPlusVisuals$unwrappedGameModes;
 
     public MixinGameModeSelectionScreen(Text title) {
         super(title);
@@ -62,15 +62,15 @@ public abstract class MixinGameModeSelectionScreen extends Screen {
                 selections.remove(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
             }
 
-            viaFabricPlus$unwrappedGameModes = selections.toArray(GameModeSelectionScreen.GameModeSelection[]::new);
-            UI_WIDTH = viaFabricPlus$unwrappedGameModes.length * 31 - 5;
+            viaFabricPlusVisuals$unwrappedGameModes = selections.toArray(GameModeSelectionScreen.GameModeSelection[]::new);
+            UI_WIDTH = viaFabricPlusVisuals$unwrappedGameModes.length * 31 - 5;
         }
     }
 
     @Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;VALUES:[Lnet/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection;"))
     private GameModeSelectionScreen.GameModeSelection[] removeNewerGameModes() {
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-            return viaFabricPlus$unwrappedGameModes;
+            return viaFabricPlusVisuals$unwrappedGameModes;
         } else {
             return GameModeSelectionScreen.GameModeSelection.values();
         }

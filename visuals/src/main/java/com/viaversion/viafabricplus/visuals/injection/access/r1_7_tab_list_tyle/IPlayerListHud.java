@@ -23,6 +23,6 @@ package com.viaversion.viafabricplus.visuals.injection.access.r1_7_tab_list_tyle
 
 public interface IPlayerListHud {
 
-    void viaFabricPlus$setMaxPlayers(final int maxPlayers);
+    void viaFabricPlusVisuals$setMaxPlayers(final int maxPlayers);
 
 }

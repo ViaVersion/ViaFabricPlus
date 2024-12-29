@@ -63,20 +63,20 @@ public abstract class MixinFontStorage {
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
     private void filterGlyphs(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
-        if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
+        if (this.viaFabricPlusVisuals$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlusVisuals$getBlankGlyphPair());
         }
     }
 
     @Inject(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At("RETURN"), cancellable = true)
     private void filterBakedGlyph(int codePoint, CallbackInfoReturnable<BakedGlyph> cir) {
-        if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
+        if (this.viaFabricPlusVisuals$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlusVisuals$getBlankBakedGlyph());
         }
     }
 
     @Unique
-    private boolean viaFabricPlus$shouldBeInvisible(final int codePoint) {
+    private boolean viaFabricPlusVisuals$shouldBeInvisible(final int codePoint) {
         if (VisualSettings.INSTANCE.filterNonExistingGlyphs.getValue()) {
             return (this.id.equals(MinecraftClient.DEFAULT_FONT_ID) || this.id.equals(MinecraftClient.UNICODE_FONT_ID)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
         } else {

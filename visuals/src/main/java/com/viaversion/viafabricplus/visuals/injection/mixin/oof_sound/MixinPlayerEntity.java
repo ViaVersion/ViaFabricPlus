@@ -36,12 +36,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPlayerEntity {
 
     @Unique
-    private static final SoundEvent viaFabricPlus$oof_hurt = SoundEvent.of(Identifier.of("viafabricplus-visuals", "oof.hurt"));
+    private static final SoundEvent viaFabricPlusVisuals$oof_hurt = SoundEvent.of(Identifier.of("viafabricplus-visuals", "oof.hurt"));
 
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
     private void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
         if (VisualSettings.INSTANCE.replaceHurtSoundWithOOFSound.isEnabled()) {
-            cir.setReturnValue(viaFabricPlus$oof_hurt);
+            cir.setReturnValue(viaFabricPlusVisuals$oof_hurt);
         }
     }
 

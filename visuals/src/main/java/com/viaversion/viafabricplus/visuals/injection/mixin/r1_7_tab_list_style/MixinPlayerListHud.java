@@ -49,57 +49,57 @@ public abstract class MixinPlayerListHud implements IPlayerListHud {
     private MinecraftClient client;
 
     @Unique
-    private static final Comparator<PlayerListEntry> viaFabricPlus$FIFO_COMPARATOR = Comparator.comparingInt(e -> ((IPlayerListEntry) e).viaFabricPlus$getIndex());
+    private static final Comparator<PlayerListEntry> viaFabricPlusVisuals$FIFO_COMPARATOR = Comparator.comparingInt(e -> ((IPlayerListEntry) e).viaFabricPlusVisuals$getIndex());
 
     @Unique
-    private int viaFabricPlus$maxSlots;
+    private int viaFabricPlusVisuals$maxSlots;
 
     @Unique
-    private boolean viaFabricPlus$hideSkins = true;
+    private boolean viaFabricPlusVisuals$hideSkins = true;
 
     @Inject(method = "collectPlayerEntries", at = @At("HEAD"), cancellable = true)
     private void collectPlayerEntries(CallbackInfoReturnable<List<PlayerListEntry>> result) {
         if (VisualSettings.INSTANCE.enableLegacyTablist.isEnabled()) {
             result.setReturnValue(this.client.player.networkHandler.getListedPlayerListEntries().stream()
-                    .sorted(viaFabricPlus$FIFO_COMPARATOR)
-                    .limit(viaFabricPlus$maxSlots)
-                    .collect(Collectors.collectingAndThen(Collectors.toList(), this::viaFabricPlus$transpose)));
+                    .sorted(viaFabricPlusVisuals$FIFO_COMPARATOR)
+                    .limit(viaFabricPlusVisuals$maxSlots)
+                    .collect(Collectors.collectingAndThen(Collectors.toList(), this::viaFabricPlusVisuals$transpose)));
         } else {
-            viaFabricPlus$hideSkins = false;
+            viaFabricPlusVisuals$hideSkins = false;
         }
     }
 
     @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;isEncrypted()Z"))
     private boolean hideSkins(boolean original) {
-        return original && !viaFabricPlus$hideSkins;
+        return original && !viaFabricPlusVisuals$hideSkins;
     }
 
     @Unique
-    private List<PlayerListEntry> viaFabricPlus$transpose(final List<PlayerListEntry> list) {
+    private List<PlayerListEntry> viaFabricPlusVisuals$transpose(final List<PlayerListEntry> list) {
         // Only bother transposing if we know the list is full
-        if (list.size() != viaFabricPlus$maxSlots) {
-            viaFabricPlus$hideSkins = list.stream().noneMatch(e -> e.getProfile().getProperties().containsKey("textures"));
+        if (list.size() != viaFabricPlusVisuals$maxSlots) {
+            viaFabricPlusVisuals$hideSkins = list.stream().noneMatch(e -> e.getProfile().getProperties().containsKey("textures"));
             return list;
         }
 
         final List<PlayerListEntry> result = new ArrayList<>(list.size());
 
-        final int columns = viaFabricPlus$maxSlots / PlayerListHud.MAX_ROWS;
+        final int columns = viaFabricPlusVisuals$maxSlots / PlayerListHud.MAX_ROWS;
         boolean anyHasSkinData = false;
-        for (int i = 0; i < viaFabricPlus$maxSlots; i++) {
+        for (int i = 0; i < viaFabricPlusVisuals$maxSlots; i++) {
             final int row = i % PlayerListHud.MAX_ROWS;
             final int col = i / PlayerListHud.MAX_ROWS;
             final PlayerListEntry current = list.get(row * columns + col);
             result.add(current);
             anyHasSkinData = anyHasSkinData || current.getProfile().getProperties().containsKey("textures");
         }
-        viaFabricPlus$hideSkins = !anyHasSkinData;
+        viaFabricPlusVisuals$hideSkins = !anyHasSkinData;
         return result;
     }
 
     @Override
-    public void viaFabricPlus$setMaxPlayers(int maxPlayers) {
-        this.viaFabricPlus$maxSlots = Math.min(200, Math.max(20, ((maxPlayers + PlayerListHud.MAX_ROWS - 1) / PlayerListHud.MAX_ROWS) * PlayerListHud.MAX_ROWS));
+    public void viaFabricPlusVisuals$setMaxPlayers(int maxPlayers) {
+        this.viaFabricPlusVisuals$maxSlots = Math.min(200, Math.max(20, ((maxPlayers + PlayerListHud.MAX_ROWS - 1) / PlayerListHud.MAX_ROWS) * PlayerListHud.MAX_ROWS));
     }
 
 }
