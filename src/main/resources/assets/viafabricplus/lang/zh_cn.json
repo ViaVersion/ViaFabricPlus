@@ -86,6 +86,9 @@
   "visual_settings.viafabricplus.change_game_menu_screen_layout": "更改游戏菜单屏幕布局",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "禁用安全聊天警告",
   "visual_settings.viafabricplus.hide_signature_indicator": "隐藏签名指示器",
+  "visual_settings.viafabricplus.remove_bubble_pop_sound": "去除气泡爆裂声",
+  "visual_settings.viafabricplus.hide_empty_bubble_icons": "隐藏空气泡图标",
+  "visual_settings.viafabricplus.hide_villager_profession": "隐藏村民职业",
   "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "隐藏下载地形屏幕过渡效果",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "将石化橡木台阶纹理替换为“未知”纹理",
   "visual_settings.viafabricplus.always_render_crosshair": "始终渲染十字准星",
@@ -107,6 +110,7 @@
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "强制为非ASCII语言使用Unicode字体",
   "visual_settings.viafabricplus.filter_non_existing_glyphs": "过滤不存在的字形",
   "visual_settings.viafabricplus.sneak_instantly": "瞬间潜行",
+  "visual_settings.viafabricplus.lock_blocking_arm_rotation": "格挡时锁定第三人称手臂旋转",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "更改身体旋转插值",
 
   "force_version.viafabricplus.title": "请选择要Ping/连接服务器的版本",
