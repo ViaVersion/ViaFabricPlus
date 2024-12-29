@@ -141,7 +141,6 @@
   "betacraft.viafabricplus.loading": "Loading...",
   "betacraft.viafabricplus.warning": "Pressing this button will send API requests to \"betacraft.uk/serverlist\".",
 
-  "translation.viafabricplus.updates_1_20": "This server has the update_1_20 features enabled. This is not fully supported and may cause issues.",
   "translation.viafabricplus.packet_error": "An error occurred while translating a packet! See more details in the logs!",
 
   "classic4j_library.viafabricplus.error.token": "Incorrect token. Is your ViaFabricPlus out of date?",

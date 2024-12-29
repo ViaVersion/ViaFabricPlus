@@ -135,7 +135,6 @@
   "betacraft.viafabricplus.loading": "Загрузка...",
   "betacraft.viafabricplus.warning": "Нажатие этой кнопки отправит запрос к API \"betacraft.uk/serverlist\".",
 
-  "translation.viafabricplus.updates_1_20": "На этом сервере включены эксперименты обновления 1.20. Они полноценно не поддерживаются и могут привести к ошибкам.",
   "translation.viafabricplus.packet_error": "Во время преобразования пакета произошла ошибка. Проверьте журнал для получения подробностей.",
 
   "classic4j_library.viafabricplus.error.token": "Некорректный токен. Возможно, версия ViaFabricPlus устарела.",

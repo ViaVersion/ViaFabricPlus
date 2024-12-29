@@ -118,7 +118,6 @@
   "betacraft.viafabricplus.loading": "Yükleniyor...",
   "betacraft.viafabricplus.warning": "Bu butona tıklamak şuraya API isteği gönderir: \"betacraft.uk/serverlist\".",
 
-  "translation.viafabricplus.updates_1_20": "Bu sunucuda update_1_20 özellikleri etkinleştirilmiştir. Bu tam olarak desteklenmemektedir ve sorunlara neden olabilir.",
   "translation.viafabricplus.packet_error": "Bir paket çevrilirken bir hata oluştu! Daha fazla ayrıntı için logları konrol edin!",
 
   "classic4j_library.viafabricplus.error.token": "Yanlış token. ViaFabricPlus'ınızın güncel olup olmadığını kontrol edin.",

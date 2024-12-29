@@ -141,7 +141,6 @@
   "betacraft.viafabricplus.loading": "Ładowanie...",
   "betacraft.viafabricplus.warning": "Naciśnięcie tego przycisku wyśle zapytanie api pod ten adres: https://betacraft.uk/serverlist",
 
-  "translation.viafabricplus.updates_1_20": "Ten serwer ma włączony update_1_20. Nie jest to w pełni wspierane i może powodować problemy.",
   "translation.viafabricplus.packet_error": "Wystąpił błąd podczas tłumaczenia pakietu! Więcej detali w logach.",
 
   "classic4j_library.viafabricplus.error.token": "Niepoprawny token. Czy jesteś pewnien, że twoja wersja ViaFabricPlus nie jest przestarzała? Spróbuj zaktualizować tą modyfikację.",

@@ -135,7 +135,6 @@
   "betacraft.viafabricplus.loading": "불러오는 중...",
   "betacraft.viafabricplus.warning": "이것으로 betacraft.uk/serverlist에 API 요청을 보내게 됩니다.",
 
-  "translation.viafabricplus.updates_1_20": "이 서버는 update_1_20 실험 기능이 켜져있습니다. 이는 전체적으로 지원되지 않으며, 오류를 일으킬 수 있습니다.",
   "translation.viafabricplus.packet_error": "패킷을 변환하는 도중 오류가 발생했습니다... 자세한 정보는 로그를 참조하세요.",
 
   "classic4j_library.viafabricplus.error.token": "잘못된 토큰입니다. ViaFabricPlus 버전이 오래되었나요?",

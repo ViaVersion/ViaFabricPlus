@@ -139,7 +139,6 @@
   "betacraft.viafabricplus.loading": "正在載入...",
   "betacraft.viafabricplus.warning": "按下這個按鈕將向「betacraft.uk/serverlist」傳送 API 請求。",
 
-  "translation.viafabricplus.updates_1_20": "這個伺服器啟用了 1.20 更新特性。這沒有被完全支援，可能導致問題。",
   "translation.viafabricplus.packet_error": "轉譯網路封包時發生錯誤！在遊戲記錄檔中查看更多資訊！",
 
   "classic4j_library.viafabricplus.error.token": "權杖不正確。您的 ViaFabricPlus 版本是否太舊？",

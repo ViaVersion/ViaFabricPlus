@@ -137,7 +137,6 @@
   "betacraft.viafabricplus.loading": "加载中…",
   "betacraft.viafabricplus.warning": "按下此按钮将向“betacraft.uk/serverlist”发送API请求。",
 
-  "translation.viafabricplus.updates_1_20": "此服务器启用了“1.20更新”功能。此功能未完全支持，可能会引起问题。",
   "translation.viafabricplus.packet_error": "转译数据包时发生错误！请在日志中查看更多详细信息！",
 
   "classic4j_library.viafabricplus.error.token": "令牌不正确。你的ViaFabricPlus版本是否过旧？",

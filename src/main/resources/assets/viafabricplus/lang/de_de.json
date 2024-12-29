@@ -140,7 +140,6 @@
   "betacraft.viafabricplus.loading": "Laden...",
   "betacraft.viafabricplus.warning": "Durch Drücken dieser Schaltfläche werden API-Anfragen an \"betacraft.de/serverlist\" gesendet.",
 
-  "translation.viafabricplus.updates_1_20": "Dieser Server hat die update_1_20-Funktionen aktiviert. Dies wird nicht vollständig unterstützt und kann zu Problemen führen.",
   "translation.viafabricplus.packet_error": "Beim Übersetzen eines Pakets ist ein Fehler aufgetreten! Weitere Details findest du in den Protokollen!",
 
   "classic4j_library.viafabricplus.error.token": "Falsches Token. Ist dein ViaFabricPlus veraltet?",
