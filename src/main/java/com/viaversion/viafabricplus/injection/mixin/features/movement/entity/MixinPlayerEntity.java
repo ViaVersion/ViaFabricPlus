@@ -91,15 +91,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
-    private double removeOffsetWhenCheckingSneakingCollision(double constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            return 0;
-        } else {
-            return constant;
-        }
-    }
-
     @Redirect(method = "getMaxRelativeHeadRotation", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isBlocking()Z"))
     private boolean dontModifyHeadRotationWhenBlocking(PlayerEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_2) && instance.isBlocking();

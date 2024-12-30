@@ -27,7 +27,7 @@ import org.jetbrains.annotations.ApiStatus;
 /**
  * Holder class for the {@link ViaFabricPlusBase} implementation
  */
-public class ViaFabricPlus {
+public final class ViaFabricPlus {
 
     private static ViaFabricPlusBase impl;
 
@@ -35,7 +35,7 @@ public class ViaFabricPlus {
      * Invoked by the internals to set the ViaFabricPlusBase implementation, DO NOT CALL THIS METHOD
      */
     @ApiStatus.Internal
-    public static void init(ViaFabricPlusBase impl) {
+    public static void init(final ViaFabricPlusBase impl) {
         if (ViaFabricPlus.impl != null) {
             throw new IllegalStateException("ViaFabricPlus has already been initialized!");
         }

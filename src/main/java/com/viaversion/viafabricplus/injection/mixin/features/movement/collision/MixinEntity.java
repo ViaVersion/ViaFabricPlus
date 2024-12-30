@@ -19,13 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.entity;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
@@ -41,15 +40,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-@SuppressWarnings("ConstantValue")
 @Mixin(Entity.class)
 public abstract class MixinEntity {
 
     @Shadow
-    private World world;
-
-    @Shadow
     private Vec3d pos;
+    @Shadow
+    private World world;
 
     @Shadow
     public abstract Box getBoundingBox();
@@ -71,15 +68,6 @@ public abstract class MixinEntity {
             return Double.MAX_VALUE;
         } else {
             return instance.lengthSquared();
-        }
-    }
-
-    @Redirect(method = "setPitch", at = @At(value = "INVOKE", target = "Ljava/lang/Math;clamp(FFF)F", remap = false))
-    private float dontClampPitch(float value, float min, float max) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return value;
-        } else {
-            return Math.clamp(value, min, max);
         }
     }
 
@@ -133,17 +121,6 @@ public abstract class MixinEntity {
         }
     }
 
-    @ModifyConstant(method = "checkBlockCollision", constant = @Constant(doubleValue = 9.999999747378752E-6))
-    private double fixBlockCollisionMargin(double constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
-            return 1E-3;
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return 1E-7;
-        } else {
-            return constant;
-        }
-    }
-
     @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)
     private void modifyVelocityAffectingPos(CallbackInfoReturnable<BlockPos> cir) {
         final ProtocolVersion target = ProtocolTranslator.getTargetVersion();
@@ -153,40 +130,12 @@ public abstract class MixinEntity {
         }
     }
 
-    @Redirect(method = {"setYaw", "setPitch"}, at = @At(value = "INVOKE", target = "Ljava/lang/Float;isFinite(F)Z"))
-    private boolean allowInfiniteValues(float f) {
-        return Float.isFinite(f) || ((Object) this instanceof ClientPlayerEntity && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4));
-    }
-
-    @ModifyConstant(method = "movementInputToVelocity", constant = @Constant(doubleValue = 1E-7))
-    private static double fixVelocityEpsilon(double epsilon) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return 1E-4;
-        } else {
-            return epsilon;
-        }
-    }
-
     @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0))
     private static double alwaysSortYXZ(double a) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return Double.MAX_VALUE;
         } else {
             return Math.abs(a);
-        }
-    }
-
-    @Inject(method = "getRotationVector(FF)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
-    private void revertCalculation(float pitch, float yaw, CallbackInfoReturnable<Vec3d> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(Vec3d.fromPolar(pitch, yaw));
-        }
-    }
-
-    @Inject(method = "getTargetingMargin", at = @At("HEAD"), cancellable = true)
-    private void expandHitBox(CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            cir.setReturnValue(0.1F);
         }
     }
 

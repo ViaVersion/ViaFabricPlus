@@ -19,22 +19,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_handling;
+package com.viaversion.viafabricplus.injection.mixin.features.run_command_action;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.ClientLoginNetworkHandler;
-import net.minecraft.network.ClientConnection;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Style;
+import net.minecraft.util.StringHelper;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ClientLoginNetworkHandler.class)
-public abstract class MixinClientLoginNetworkHandler {
+@Mixin(Screen.class)
+public abstract class MixinScreen {
 
-    @Redirect(method = "onCompression", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;setCompressionThreshold(IZ)V"))
-    private void pre1_17_1CompressionBehaviour(ClientConnection instance, int compressionThreshold, boolean rejectsBadPackets) {
-        instance.setCompressionThreshold(compressionThreshold, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17));
+    @Shadow
+    @Nullable
+    protected MinecraftClient client;
+
+    @Inject(method = "handleTextClick", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", shift = At.Shift.BEFORE, ordinal = 1, remap = false), cancellable = true)
+    private void allowRunCommandAction(Style style, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
+            this.client.player.networkHandler.sendChatMessage(StringHelper.stripInvalidChars(style.getClickEvent().getValue()));
+            cir.setReturnValue(true);
+        }
     }
 
 }

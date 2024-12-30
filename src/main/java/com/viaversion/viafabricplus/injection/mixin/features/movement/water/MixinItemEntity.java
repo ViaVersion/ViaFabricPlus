@@ -19,35 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.handle_slowness_on_collision;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoulSandBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.entity.ItemEntity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(SoulSandBlock.class)
-public abstract class MixinSoulSandBlock extends Block {
+@Mixin(ItemEntity.class)
+public abstract class MixinItemEntity {
 
-    public MixinSoulSandBlock(Settings settings) {
-        super(settings);
-    }
-
-    @Override
-    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            entity.setVelocity(entity.getVelocity().multiply(0.4D, 1, 0.4D));
+    @Inject(method = "applyWaterBuoyancy", at = @At("HEAD"), cancellable = true)
+    private void dontApplyWaterBuoyancy(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            ci.cancel();
         }
-    }
-
-    @Override
-    public float getVelocityMultiplier() {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1F : super.getVelocityMultiplier();
     }
 
 }

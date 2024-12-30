@@ -19,21 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.integration.vialegacy;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
 
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
-import net.raphimc.vialegacy.ViaLegacyConfig;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.SkeletonHorseEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = ViaLegacyConfig.class, remap = false)
-public abstract class MixinViaLegacyConfig {
+@Mixin(SkeletonHorseEntity.class)
+public abstract class MixinSkeletonHorseEntity extends AbstractHorseEntity {
 
-    @Inject(method = { "isLegacySkullLoading", "isLegacySkinLoading" }, at = @At("HEAD"), cancellable = true)
-    private void replaceWithVFPSetting(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(GeneralSettings.INSTANCE.loadSkinsAndSkullsInLegacyVersions.getValue());
+    protected MixinSkeletonHorseEntity(EntityType<? extends AbstractHorseEntity> entityType, World world) {
+        super(entityType, world);
+    }
+
+    @Inject(method = "getBaseWaterMovementSpeedMultiplier", at = @At("HEAD"), cancellable = true)
+    private void modifyBaseWaterMovementSpeedMultiplier(CallbackInfoReturnable<Float> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            cir.setReturnValue(super.getBaseWaterMovementSpeedMultiplier());
+        }
     }
 
 }

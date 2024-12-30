@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.features;
 
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
-import com.viaversion.viafabricplus.base.sync_tasks.DataCustomPayload;
 import com.viaversion.viafabricplus.features.emulation.armor_hud.ArmorHudEmulation1_8;
 import com.viaversion.viafabricplus.features.block.shape.CollisionShapes;
 import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
@@ -39,25 +38,39 @@ import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 public final class FeaturesLoading {
 
     static {
+        // Check if the pack format mappings are correct
         ResourcePackHeaderDiff.init();
+
+        // Register additional CPE features
         CPEAdditions.init();
-        DataCustomPayload.init();
+
+        // Register the footstep particle
         FootStepParticle1_12_2.init();
 
         Events.LOADING_CYCLE.register(cycle -> {
             if (cycle == LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
-                EntityDimensionDiff.init();
+                // Handle clientside enchantment calculations in <= 1.20.6
                 EnchantmentAttributesEmulation1_20_6.init();
+
+                // Handles and updates entity dimension changes in <= 1.17
+                EntityDimensionDiff.init();
+
+                // Ticks the armor hud manually in <= 1.8.x
                 ArmorHudEmulation1_8.init();
             }
         });
 
+        // Reloads some clientside stuff when the protocol version changes
         Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
+            // Reloads all bounding boxes of the blocks that we changed
             CollisionShapes.reloadBlockShapes();
 
+            // Reloads the clientside recipes
             if (newVersion.olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
                 Recipes1_11_2.reset();
             }
+
+            // Reload sound system when switching between 3D Shareware and normal versions
             if (oldVersion.equals(AprilFoolsProtocolVersion.s3d_shareware) || newVersion.equals(AprilFoolsProtocolVersion.s3d_shareware)) {
                 MinecraftClient.getInstance().getSoundManager().reloadSounds();
             }

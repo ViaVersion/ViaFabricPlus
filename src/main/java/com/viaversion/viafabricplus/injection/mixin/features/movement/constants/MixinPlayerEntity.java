@@ -19,23 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.water_movement;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.constants;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.entity.ItemEntity;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(ItemEntity.class)
-public abstract class MixinItemEntity {
+@Mixin(PlayerEntity.class)
+public abstract class MixinPlayerEntity {
 
-    @Inject(method = "applyWaterBuoyancy", at = @At("HEAD"), cancellable = true)
-    private void dontApplyWaterBuoyancy(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            ci.cancel();
+    @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
+    private double removeOffsetWhenCheckingSneakingCollision(double constant) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+            return 0;
+        } else {
+            return constant;
         }
     }
 

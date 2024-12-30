@@ -19,19 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_nbt_limitation;
+package com.viaversion.viafabricplus.injection.mixin.features.networking.limitation.nbt;
 
 import com.viaversion.nbt.limiter.TagLimiter;
-import com.viaversion.viaversion.api.type.types.misc.NamedCompoundTagType;
+import com.viaversion.viaversion.api.type.types.misc.TagType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = NamedCompoundTagType.class, remap = false)
-public abstract class MixinNamedCompoundTagType {
+@Mixin(value = TagType.class, remap = false)
+public abstract class MixinTagType {
 
-    @Redirect(method = "read(Lio/netty/buffer/ByteBuf;Z)Lcom/viaversion/nbt/tag/CompoundTag;", at = @At(value = "INVOKE", target = "Lcom/viaversion/nbt/limiter/TagLimiter;create(II)Lcom/viaversion/nbt/limiter/TagLimiter;"))
-    private static TagLimiter removeNBTSizeLimit(int maxBytes, int maxLevels) {
+    @Redirect(method = "read(Lio/netty/buffer/ByteBuf;)Lcom/viaversion/nbt/tag/Tag;", at = @At(value = "INVOKE", target = "Lcom/viaversion/nbt/limiter/TagLimiter;create(II)Lcom/viaversion/nbt/limiter/TagLimiter;"))
+    private TagLimiter removeNBTSizeLimit(int maxBytes, int maxLevels) {
         return TagLimiter.noop();
     }
 
