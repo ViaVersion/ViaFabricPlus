@@ -82,8 +82,12 @@
   "visual_settings.viafabricplus.change_game_menu_screen_layout": "게임 메뉴 화면 구성 바꾸기",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "보안 채팅 경고 끄기",
   "visual_settings.viafabricplus.hide_signature_indicator": "서명 표시 숨기기",
+  "visual_settings.viafabricplus.remove_bubble_pop_sound": "거품 터지는 소리 없에기",
+  "visual_settings.viafabricplus.hide_empty_bubble_icons": "빈 거품 아이콘 숨기기",
+  "visual_settings.viafabricplus.hide_villager_profession": "주민 직업 숨기기",
   "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "지형 다운로드 화면 전환 효과 숨기기",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "규화한 참나무 반 블록 텍스처를 'unknown' 으로 바꾸기",
+  "visual_settings.viafabricplus.always_render_crosshair": "조준점 항상 보이기",
   "visual_settings.viafabricplus.emulate_armor_hud": "갑옷 HUD 추가",
   "visual_settings.viafabricplus.hide_modern_command_block_screen_features": "새로운 명령 블록 기능 숨기기",
   "visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound": "다칠 떄 나는 소리를 OOF 소리로 변경",
@@ -101,6 +105,8 @@
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "ASCII가 아닌 언어에 유니코드 글꼴 강제 적용",
   "visual_settings.viafabricplus.filter_non_existing_glyphs": "존재하지 않는 글자 제거",
   "visual_settings.viafabricplus.sneak_instantly": "즉시 웅크리기",
+  "visual_settings.viafabricplus.lock_blocking_arm_rotation": "방어하는 동안 3인칭 팔 회전 막기",
+  "visual_settings.viafabricplus.change_body_rotation_interpolation": "몸체 회전 보간 방법 바꾸기",
 
   "force_version.viafabricplus.title": "서버가 표시/연결되어야 하는 버전을 선택하세요.",
 
