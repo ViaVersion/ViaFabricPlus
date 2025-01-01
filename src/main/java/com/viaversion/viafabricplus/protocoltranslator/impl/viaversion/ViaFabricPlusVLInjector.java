@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
-import net.raphimc.vialoader.impl.viaversion.VLInjector;
-import net.raphimc.vialoader.netty.VLLegacyPipeline;
+import com.viaversion.vialoader.impl.viaversion.VLInjector;
+import com.viaversion.vialoader.netty.VLLegacyPipeline;
 
 public final class ViaFabricPlusVLInjector extends VLInjector {
 

@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.april_fools_8bit_sound;
 
+import com.viaversion.viaaprilfools.api.AprilFoolsProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.sound.StaticSound;
-import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

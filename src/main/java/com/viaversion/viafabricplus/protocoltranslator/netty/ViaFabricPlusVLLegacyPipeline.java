@@ -21,6 +21,8 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.netty;
 
+import com.viaversion.vialoader.netty.CompressionReorderEvent;
+import com.viaversion.vialoader.netty.VLLegacyPipeline;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
@@ -28,8 +30,6 @@ import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusPro
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.handler.HandlerNames;
-import net.raphimc.vialoader.netty.CompressionReorderEvent;
-import net.raphimc.vialoader.netty.VLLegacyPipeline;
 
 public final class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 

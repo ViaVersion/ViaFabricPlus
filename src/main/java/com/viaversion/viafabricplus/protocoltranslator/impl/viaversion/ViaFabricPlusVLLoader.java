@@ -25,6 +25,7 @@ import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.*;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.*;
+import com.viaversion.vialoader.impl.viaversion.VLLoader;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.minecraft.signature.SignableCommandArgumentsProvider;
 import com.viaversion.viaversion.api.platform.providers.ViaProviders;
@@ -43,7 +44,6 @@ import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.Classic
 import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.provider.OldAuthProvider;
 import net.raphimc.vialegacy.protocol.release.r1_6_4tor1_7_2_5.provider.EncryptionProvider;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
-import net.raphimc.vialoader.impl.viaversion.VLLoader;
 
 public final class ViaFabricPlusVLLoader extends VLLoader {
 

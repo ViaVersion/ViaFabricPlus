@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.visuals.settings;
 
+import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
@@ -30,7 +31,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialoader.util.VersionRange;
 
 public final class VisualSettings extends SettingGroup {
 

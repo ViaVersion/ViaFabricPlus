@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.netty;
 
+import com.viaversion.vialoader.netty.ViaDecoder;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
@@ -28,7 +29,6 @@ import com.viaversion.viafabricplus.util.ChatUtil;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.raphimc.vialoader.netty.ViaDecoder;
 
 public final class ViaFabricPlusViaDecoder extends ViaDecoder {
 

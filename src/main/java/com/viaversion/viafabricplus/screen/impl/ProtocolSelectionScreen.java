@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.screen.impl;
 
+import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.screen.VFPList;
@@ -33,7 +34,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.raphimc.vialoader.util.ProtocolVersionList;
 
 import java.awt.*;
 

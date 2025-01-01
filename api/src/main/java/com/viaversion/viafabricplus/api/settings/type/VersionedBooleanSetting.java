@@ -25,9 +25,9 @@ import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.api.settings.AbstractSetting;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
+import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.text.MutableText;
-import net.raphimc.vialoader.util.VersionRange;
 
 public class VersionedBooleanSetting extends AbstractSetting<Integer> {
 

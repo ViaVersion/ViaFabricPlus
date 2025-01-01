@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.features;
 
+import com.viaversion.viaaprilfools.api.AprilFoolsProtocolVersion;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.features.emulation.armor_hud.ArmorHudEmulation1_8;
@@ -33,7 +34,6 @@ import com.viaversion.viafabricplus.features.networking.resource_pack_header.Res
 import com.viaversion.viafabricplus.features.emulation.recipe.Recipes1_11_2;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
-import net.raphimc.viaaprilfools.api.AprilFoolsProtocolVersion;
 
 public final class FeaturesLoading {
 
