@@ -182,13 +182,13 @@
     "features.movement.collision.MixinEntity",
     "features.movement.collision.MixinHoneyBlock",
     "features.movement.collision.MixinSoulSandBlock",
+    "features.movement.constants.MixinPlayerEntityRenderer",
     "features.movement.elytra.MixinClientPlayerEntity",
     "features.movement.elytra.MixinFireworkRocketItem",
     "features.movement.elytra.MixinLivingEntity",
     "features.movement.elytra.MixinPlayerEntity",
     "features.movement.entity.MixinLivingEntity",
     "features.movement.entity.MixinPlayerEntity",
-    "features.movement.entity.MixinPlayerEntityRenderer",
     "features.movement.jump.MixinClientPlayerEntity",
     "features.movement.remove_bed_bounce.MixinBedBlock",
     "features.movement.slowdown_calculation.MixinClientPlayerEntity",
@@ -247,17 +247,20 @@
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinClientPlayerInteractionManager",
     "features.world.item_picking.MixinMinecraftClient",
-    "features.world.remove_server_view_distance.MixinGameOptions"
+    "features.world.remove_server_view_distance.MixinGameOptions",
+    "features.block.mining_calculation.MixinPlayerEntity",
+    "features.interaction.attack_cooldown.MixinPlayerEntity",
+    "features.movement.constants.MixinEntity",
+    "features.movement.constants.MixinLivingEntity",
+    "features.movement.constants.MixinPlayerEntity",
+    "features.movement.limitation.rotation.MixinEntity",
+    "features.movement.limitation.rotation.MixinPlayerEntity",
+    "features.swinging.MixinPlayerEntity"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "overwrites": {
     "requireAnnotations": true
-  },
-  "mixins": [
-    "features.movement.constants.MixinEntity",
-    "features.movement.constants.MixinPlayerEntity",
-    "features.movement.limitation.rotation.MixinEntity"
-  ]
+  }
 }

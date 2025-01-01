@@ -55,21 +55,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Final
     private PlayerAbilities abilities;
 
-    @Shadow
-    public abstract boolean canHarvest(BlockState state);
-
-    @Shadow
-    @Final
-    PlayerInventory inventory;
-
-    @Unique
-    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F).withEyeHeight(1.54F).
-            withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, PlayerEntity.VEHICLE_ATTACHMENT_POS));
-
-    @Unique
-    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_8 = EntityDimensions.changing(0.6F, 1.8F).withEyeHeight(1.54F).
-            withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, PlayerEntity.VEHICLE_ATTACHMENT_POS));
-
     @Unique
     public boolean viaFabricPlus$isSprinting;
 
@@ -91,11 +76,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @Redirect(method = "getMaxRelativeHeadRotation", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isBlocking()Z"))
-    private boolean dontModifyHeadRotationWhenBlocking(PlayerEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_2) && instance.isBlocking();
-    }
-
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setMovementSpeed(F)V"))
     private void storeSprintingState(CallbackInfo ci) {
         viaFabricPlus$isSprinting = this.isSprinting();
@@ -110,78 +90,10 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @WrapWithCondition(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
-    private boolean dontSwingHand(PlayerEntity instance, Hand hand) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2);
-    }
-
     @Inject(method = "canConsume", at = @At("HEAD"), cancellable = true)
     private void preventEatingFoodInCreative(boolean ignoreHunger, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && this.abilities.invulnerable) {
             cir.setReturnValue(false);
-        }
-    }
-
-    @Inject(method = "getBaseDimensions", at = @At("HEAD"), cancellable = true)
-    private void modifyDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
-        if (pose == EntityPose.CROUCHING) {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-                cir.setReturnValue(viaFabricPlus$sneaking_dimensions_v1_8);
-            } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-                cir.setReturnValue(viaFabricPlus$sneaking_dimensions_v1_13_2);
-            }
-        }
-    }
-
-    @Redirect(method = "adjustMovementForSneaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getStepHeight()F"))
-    private float modifyStepHeight(PlayerEntity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
-            return 1.0F;
-        } else {
-            return instance.getStepHeight();
-        }
-    }
-
-    @Inject(method = "getAttackCooldownProgress", at = @At("HEAD"), cancellable = true)
-    private void removeAttackCooldown(CallbackInfoReturnable<Float> ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            ci.setReturnValue(1F);
-        }
-    }
-
-    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
-    private boolean changeSpeedCalculation(PlayerEntity instance, RegistryEntry<StatusEffect> statusEffect, @Local LocalFloatRef f) {
-        final boolean hasMiningFatigue = instance.hasStatusEffect(statusEffect);
-        if (hasMiningFatigue && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-            f.set(f.get() * (1.0F - (this.getStatusEffect(StatusEffects.MINING_FATIGUE).getAmplifier() + 1) * 0.2F));
-            if (f.get() < 0) {
-                f.set(0);
-            }
-            return false; // disable original code
-        }
-        return hasMiningFatigue;
-    }
-
-    @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
-    private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
-        final float efficiency = (float) this.getAttributeValue(EntityAttributes.MINING_EFFICIENCY);
-        if (efficiency <= 0) {
-            return;
-        }
-
-        final float speed = this.inventory.getBlockBreakingSpeed(block);
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_4tor1_4_5) && this.canHarvest(block)) {
-            f.set(speed + efficiency);
-        } else if (speed > 1F || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            if (!this.getMainHandStack().isEmpty()) {
-                if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-                    if (speed <= 1.0 && !this.canHarvest(block)) {
-                        f.set(speed + efficiency * 0.08F);
-                    } else {
-                        f.set(speed + efficiency);
-                    }
-                }
-            }
         }
     }
 

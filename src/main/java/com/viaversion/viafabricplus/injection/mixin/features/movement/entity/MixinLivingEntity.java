@@ -66,15 +66,6 @@ public abstract class MixinLivingEntity extends Entity {
         super(type, world);
     }
 
-    @ModifyExpressionValue(method = "tickStatusEffects", at = @At(value = "CONSTANT", args = "intValue=4"))
-    private int changeParticleDensity(int original) {
-        if (ProtocolTranslator.getTargetVersion().olderThan(ProtocolVersion.v1_20_5)) {
-            return 2;
-        } else {
-            return original;
-        }
-    }
-
     @Inject(method = "tickCramming", at = @At("HEAD"), cancellable = true)
     private void preventEntityPush(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
@@ -116,24 +107,6 @@ public abstract class MixinLivingEntity extends Entity {
     private void removeShieldSlotPreference(ItemStack stack, CallbackInfoReturnable<EquipmentSlot> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3) && stack.isOf(Items.SHIELD)) {
             cir.setReturnValue(EquipmentSlot.MAINHAND);
-        }
-    }
-
-    @ModifyConstant(method = "getBlockingItem", constant = @Constant(intValue = 5))
-    private int removeBlockActionUseDelay(int constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return 0;
-        } else {
-            return constant;
-        }
-    }
-
-    @ModifyConstant(method = "tickMovement", constant = @Constant(doubleValue = 0.003D))
-    private double modifyVelocityZero(double constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return 0.005D;
-        } else {
-            return constant;
         }
     }
 
