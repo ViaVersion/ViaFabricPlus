@@ -58,8 +58,8 @@ dependencies {
         exclude group: "com.google.guava", module: "guava"
         exclude group: "org.slf4j", module: "slf4j-api"
     }
-    vvDependencies "net.raphimc:ViaLegacy:3.0.7-SNAPSHOT"
-    vvDependencies("net.raphimc:ViaBedrock:0.0.14-SNAPSHOT") {
+    vvDependencies "net.raphimc:ViaLegacy:3.0.7"
+    vvDependencies("net.raphimc:ViaBedrock:0.0.14-20241220.132943-7") {
         exclude group: "io.jsonwebtoken"
         exclude group: "com.mojang", module: "brigadier"
     }
