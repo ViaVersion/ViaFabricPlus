@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.item.cooldown;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.player.ItemCooldownManager;
 import org.spongepowered.asm.mixin.Mixin;

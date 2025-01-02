@@ -21,12 +21,11 @@
 
 package com.viaversion.viafabricplus.screen.impl.settings;
 
-import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
+import com.viaversion.viafabricplus.screen.VFPListEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 

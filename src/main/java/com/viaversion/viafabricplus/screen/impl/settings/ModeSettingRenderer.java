@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.screen.impl.settings;
 
-import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
+import com.viaversion.viafabricplus.screen.VFPListEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

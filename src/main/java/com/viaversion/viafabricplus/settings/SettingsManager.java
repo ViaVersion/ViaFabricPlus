@@ -24,7 +24,10 @@ package com.viaversion.viafabricplus.settings;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.base.Events;
-import com.viaversion.viafabricplus.settings.impl.*;
+import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
+import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;

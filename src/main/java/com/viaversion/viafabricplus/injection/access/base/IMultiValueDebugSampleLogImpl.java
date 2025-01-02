@@ -26,6 +26,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 public interface IMultiValueDebugSampleLogImpl {
 
     ProtocolVersion viaFabricPlus$getForcedVersion();
+
     void viaFabricPlus$setForcedVersion(final ProtocolVersion version);
 
 }

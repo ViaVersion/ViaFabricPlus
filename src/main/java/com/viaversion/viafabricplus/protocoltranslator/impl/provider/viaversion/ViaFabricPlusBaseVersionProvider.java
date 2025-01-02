@@ -21,10 +21,10 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion;
 
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocol.version.BaseVersionProvider;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 
 public final class ViaFabricPlusBaseVersionProvider extends BaseVersionProvider {
 

@@ -21,10 +21,10 @@
 
 package com.viaversion.viafabricplus.features.item.filter_creative_tabs;
 
-import com.viaversion.vialoader.util.VersionRange;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.vialoader.util.VersionRange;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.item.Item;

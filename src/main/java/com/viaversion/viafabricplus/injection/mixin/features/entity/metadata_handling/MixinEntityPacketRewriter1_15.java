@@ -21,12 +21,12 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.metadata_handling;
 
+import com.viaversion.viafabricplus.features.entity.metadata_handling.WolfHealthTracker1_14_4;
 import com.viaversion.viaversion.protocols.v1_14_3to1_14_4.packet.ClientboundPackets1_14_4;
 import com.viaversion.viaversion.protocols.v1_14_4to1_15.Protocol1_14_4To1_15;
 import com.viaversion.viaversion.protocols.v1_14_4to1_15.rewriter.EntityPacketRewriter1_15;
 import com.viaversion.viaversion.rewriter.EntityRewriter;
 import com.viaversion.viaversion.rewriter.entitydata.EntityDataFilter;
-import com.viaversion.viafabricplus.features.entity.metadata_handling.WolfHealthTracker1_14_4;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

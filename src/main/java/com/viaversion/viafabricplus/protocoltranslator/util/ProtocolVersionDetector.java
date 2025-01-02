@@ -69,7 +69,7 @@ public final class ProtocolVersionDetector {
                             return protocol;
                         }
                     }
-                 }
+                }
                 throw new RuntimeException("Unable to detect the server version\nServer sent an invalid protocol id: "
                         + response.version.protocol + " (" + response.version.name + Formatting.RESET + ")");
             }

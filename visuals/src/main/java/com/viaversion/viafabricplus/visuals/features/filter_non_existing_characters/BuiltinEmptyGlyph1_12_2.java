@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.visuals.features.filter_non_existing_characters;
 
-import com.viaversion.viafabricplus.visuals.injection.mixin.filter_non_existing_characters.MixinFontStorage;
 import net.minecraft.client.font.BakedGlyph;
 import net.minecraft.client.font.Glyph;
 import net.minecraft.client.font.RenderableGlyph;

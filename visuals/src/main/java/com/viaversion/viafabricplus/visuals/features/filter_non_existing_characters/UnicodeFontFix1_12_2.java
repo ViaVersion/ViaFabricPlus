@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.visuals.features.filter_non_existing_characters;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.SimpleOption;

@@ -22,9 +22,9 @@
 package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.save.impl.SettingsSave;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;

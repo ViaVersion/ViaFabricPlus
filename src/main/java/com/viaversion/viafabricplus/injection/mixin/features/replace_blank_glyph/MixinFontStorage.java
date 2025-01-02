@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.injection.mixin.features.replace_blank_glyp
 
 import com.viaversion.viafabricplus.features.replace_blank_glyph.BuiltinEmptyGlyph1_12_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.font.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,9 +37,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FontStorage.class)
 public abstract class MixinFontStorage {
 
-    @Shadow private BakedGlyph blankBakedGlyph;
+    @Shadow
+    private BakedGlyph blankBakedGlyph;
 
-    @Shadow protected abstract BakedGlyph bake(RenderableGlyph c);
+    @Shadow
+    protected abstract BakedGlyph bake(RenderableGlyph c);
 
     @Unique
     private BakedGlyph viaFabricPlus$blankBakedGlyph1_12_2;

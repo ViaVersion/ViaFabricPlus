@@ -21,14 +21,14 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.platform;
 
-import com.viaversion.vialoader.impl.platform.ViaVersionPlatformImpl;
-import com.viaversion.viaversion.configuration.AbstractViaConfig;
-import com.viaversion.viaversion.libs.gson.JsonArray;
-import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusVLViaConfig;
+import com.viaversion.vialoader.impl.platform.ViaVersionPlatformImpl;
+import com.viaversion.viaversion.configuration.AbstractViaConfig;
+import com.viaversion.viaversion.libs.gson.JsonArray;
+import com.viaversion.viaversion.libs.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;

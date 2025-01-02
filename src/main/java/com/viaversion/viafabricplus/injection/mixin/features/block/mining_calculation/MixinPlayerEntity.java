@@ -47,9 +47,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends LivingEntity {
 
-    @Shadow @Final private PlayerInventory inventory;
+    @Shadow
+    @Final
+    private PlayerInventory inventory;
 
-    @Shadow public abstract boolean canHarvest(BlockState state);
+    @Shadow
+    public abstract boolean canHarvest(BlockState state);
 
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);

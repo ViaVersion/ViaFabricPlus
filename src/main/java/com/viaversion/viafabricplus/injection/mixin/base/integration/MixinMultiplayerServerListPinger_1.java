@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;

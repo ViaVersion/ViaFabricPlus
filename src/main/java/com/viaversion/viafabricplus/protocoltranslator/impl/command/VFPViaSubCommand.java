@@ -21,11 +21,11 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.command;
 
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.util.ChatUtil;
 
 public interface VFPViaSubCommand extends ViaSubCommand {
 

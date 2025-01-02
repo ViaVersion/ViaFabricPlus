@@ -22,14 +22,14 @@
 package com.viaversion.viafabricplus.save.impl;
 
 import com.google.gson.JsonObject;
-import com.viaversion.viafabricplus.util.ChatUtil;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viafabricplus.api.settings.AbstractSetting;
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.save.AbstractSave;
 import com.viaversion.viafabricplus.settings.SettingsManager;
-import com.viaversion.viafabricplus.api.settings.AbstractSetting;
-import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.util.ChatUtil;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 
 public final class SettingsSave extends AbstractSave {

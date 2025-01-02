@@ -32,7 +32,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(DownloadingTerrainScreen.class)
 public abstract class MixinDownloadingTerrainScreen {
 
-    @Shadow @Final private DownloadingTerrainScreen.WorldEntryReason worldEntryReason;
+    @Shadow
+    @Final
+    private DownloadingTerrainScreen.WorldEntryReason worldEntryReason;
 
     @Redirect(method = "renderBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;worldEntryReason:Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen$WorldEntryReason;"))
     private DownloadingTerrainScreen.WorldEntryReason hideDownloadTerrainScreenTransitionEffects(DownloadingTerrainScreen downloadingTerrainScreen) {

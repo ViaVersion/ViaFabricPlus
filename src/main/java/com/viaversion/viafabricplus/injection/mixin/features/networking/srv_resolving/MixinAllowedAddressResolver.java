@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.srv_resolving;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.network.Address;
 import net.minecraft.client.network.AddressResolver;
 import net.minecraft.client.network.AllowedAddressResolver;

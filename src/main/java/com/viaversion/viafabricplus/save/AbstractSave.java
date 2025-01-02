@@ -76,6 +76,7 @@ public abstract class AbstractSave {
     }
 
     public abstract void write(final JsonObject object);
+
     public abstract void read(final JsonObject object);
 
     public void postInit() {

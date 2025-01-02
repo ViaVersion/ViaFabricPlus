@@ -38,7 +38,7 @@ public final class ViaFabricPlusCommandArgumentsProvider extends SignableCommand
 
         if (network != null) {
             return SignedArgumentList.of(
-                    network.getCommandDispatcher().parse(command, network.getCommandSource())).
+                            network.getCommandDispatcher().parse(command, network.getCommandSource())).
                     arguments().stream().
                     map(function -> new Pair<>(function.getNodeName(), function.value())).
                     toList();

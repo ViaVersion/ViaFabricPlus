@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.integration.bedrock;
 
+import com.viaversion.viafabricplus.protocoltranslator.protocol.storage.BedrockJoinGameTracker;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
-import com.viaversion.viafabricplus.protocoltranslator.protocol.storage.BedrockJoinGameTracker;
 import net.raphimc.viabedrock.protocol.packet.JoinPackets;
 import net.raphimc.viabedrock.protocol.types.primitive.LongLEType;
 import net.raphimc.viabedrock.protocol.types.primitive.StringType;

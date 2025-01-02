@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.settings.impl;
 
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
-import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -32,7 +32,7 @@ public final class GeneralSettings extends SettingGroup {
 
     public static final GeneralSettings INSTANCE = new GeneralSettings();
 
-    private final MutableText[] ORIENTATION_OPTIONS = new MutableText[] {
+    private final MutableText[] ORIENTATION_OPTIONS = new MutableText[]{
             Text.translatable("base.viafabricplus.none"),
             Text.translatable("base.viafabricplus.left_top"),
             Text.translatable("base.viafabricplus.right_top"),

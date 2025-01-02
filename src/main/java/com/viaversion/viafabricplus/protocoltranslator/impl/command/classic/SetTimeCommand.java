@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.command.classic;
 
-import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.VFPViaSubCommand;
+import com.viaversion.viaversion.api.command.ViaCommandSender;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.alpha.a1_0_16_2toa1_0_17_1_0_17_4.storage.TimeLockStorage;

@@ -1,112 +1,112 @@
 plugins {
-	id "vfp.base-conventions"
+    id "vfp.base-conventions"
 }
 
 base {
-	archivesName = "ViaFabricPlus"
+    archivesName = "ViaFabricPlus"
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/viafabricplus.accesswidener")
+    accessWidenerPath = file("src/main/resources/viafabricplus.accesswidener")
 }
 
 configurations {
-	jij // jar in jar configuration
-	modJij // jar in jar configuration for mods
+    jij // jar in jar configuration
+    modJij // jar in jar configuration for mods
 
-	include.extendsFrom modJij
-	modImplementation.extendsFrom modJij
-	modCompileOnlyApi.extendsFrom modJij
+    include.extendsFrom modJij
+    modImplementation.extendsFrom modJij
+    modCompileOnlyApi.extendsFrom modJij
 
-	// Include VV dependencies as jij
-	jij.extendsFrom vvDependencies
+    // Include VV dependencies as jij
+    jij.extendsFrom vvDependencies
 }
 
 dependencies {
-	// Fabric API
-	modJij fabricApi.module("fabric-api-base", project.fabric_api_version)
-	modJij fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
-	modJij fabricApi.module("fabric-networking-api-v1", project.fabric_api_version)
-	modJij fabricApi.module("fabric-command-api-v2", project.fabric_api_version)
-	modJij fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version)
-	modJij fabricApi.module("fabric-particles-v1", project.fabric_api_version)
-	modJij fabricApi.module("fabric-registry-sync-v0", project.fabric_api_version)
+    // Fabric API
+    modJij fabricApi.module("fabric-api-base", project.fabric_api_version)
+    modJij fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
+    modJij fabricApi.module("fabric-networking-api-v1", project.fabric_api_version)
+    modJij fabricApi.module("fabric-command-api-v2", project.fabric_api_version)
+    modJij fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version)
+    modJij fabricApi.module("fabric-particles-v1", project.fabric_api_version)
+    modJij fabricApi.module("fabric-registry-sync-v0", project.fabric_api_version)
 
-	// Sub projects, since they are Fabric mods as well (mainly to access the game code) we have to first
-	// implement the namedElements (raw output) to compile against, then include the mappedElements into the output jar
-	implementation compileOnlyApi(project(path: ":viafabricplus-api", configuration: "namedElements"))
-	implementation compileOnlyApi(project(path: ":viafabricplus-api-legacy", configuration: "namedElements"))
-	implementation compileOnlyApi(project(path: ":viafabricplus-visuals", configuration: "namedElements"))
+    // Sub projects, since they are Fabric mods as well (mainly to access the game code) we have to first
+    // implement the namedElements (raw output) to compile against, then include the mappedElements into the output jar
+    implementation compileOnlyApi(project(path: ":viafabricplus-api", configuration: "namedElements"))
+    implementation compileOnlyApi(project(path: ":viafabricplus-api-legacy", configuration: "namedElements"))
+    implementation compileOnlyApi(project(path: ":viafabricplus-visuals", configuration: "namedElements"))
 
-	include project(":viafabricplus-api")
-	include project(":viafabricplus-api-legacy")
-	include project(":viafabricplus-visuals")
+    include project(":viafabricplus-api")
+    include project(":viafabricplus-api-legacy")
+    include project(":viafabricplus-visuals")
 
-	// Dependencies exclusively to the root mod
-	jij ("net.raphimc:MinecraftAuth:4.1.1") {
-		exclude group: "com.google.code.gson", module: "gson"
-		exclude group: "org.slf4j", module: "slf4j-api"
-	}
-	jij "net.lenni0451:Reflect:1.4.0"
-	jij("net.lenni0451:MCPing:1.4.2") {
-		exclude group: "com.google.code.gson", module: "gson"
-	}
-	jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
-		exclude group: "io.netty"
-	}
-	jij "de.florianmichael:Classic4J:2.1.1-SNAPSHOT"
+    // Dependencies exclusively to the root mod
+    jij("net.raphimc:MinecraftAuth:4.1.1") {
+        exclude group: "com.google.code.gson", module: "gson"
+        exclude group: "org.slf4j", module: "slf4j-api"
+    }
+    jij "net.lenni0451:Reflect:1.4.0"
+    jij("net.lenni0451:MCPing:1.4.2") {
+        exclude group: "com.google.code.gson", module: "gson"
+    }
+    jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
+        exclude group: "io.netty"
+    }
+    jij "de.florianmichael:Classic4J:2.1.1-SNAPSHOT"
 
-	// Only to compile against for the ModMenu integration
-	modCompileOnly "com.terraformersmc:modmenu:12.0.0"
+    // Only to compile against for the ModMenu integration
+    modCompileOnly "com.terraformersmc:modmenu:12.0.0"
 
-	// Fabric's jar in jar system doesn't support transitive dependencies, so we have to manually add them
-	afterEvaluate {
-		configurations.jij.incoming.resolutionResult.allDependencies.each {
-			dependencies.include(dependencies.implementation(dependencies.compileOnlyApi(it.requested.toString()) {
-				transitive = false
-			}))
-		}
-	}
+    // Fabric's jar in jar system doesn't support transitive dependencies, so we have to manually add them
+    afterEvaluate {
+        configurations.jij.incoming.resolutionResult.allDependencies.each {
+            dependencies.include(dependencies.implementation(dependencies.compileOnlyApi(it.requested.toString()) {
+                transitive = false
+            }))
+        }
+    }
 }
 
 processResources {
-	filesMatching("fabric.mod.json") {
-		expand(
-				"version": project.version,
-				"description": project.description,
-				"implVersion": "git-${project.name}-${project.version}:${latestCommitHash().get()}",
-				"mcVersion": mcVersion()
-		)
-	}
+    filesMatching("fabric.mod.json") {
+        expand(
+                "version": project.version,
+                "description": project.description,
+                "implVersion": "git-${project.name}-${project.version}:${latestCommitHash().get()}",
+                "mcVersion": mcVersion()
+        )
+    }
 }
 
 String mcVersion() {
-	if (project.supported_versions.isEmpty()) {
-		return project.minecraft_version
-	} else {
-		return project.supported_versions
-	}
+    if (project.supported_versions.isEmpty()) {
+        return project.minecraft_version
+    } else {
+        return project.supported_versions
+    }
 }
 
 Provider<String> latestCommitHash() {
-	return providers.exec {
-		commandLine = ["git", "rev-parse", "--short", "HEAD"]
-	}.standardOutput.getAsText().map(String::trim)
+    return providers.exec {
+        commandLine = ["git", "rev-parse", "--short", "HEAD"]
+    }.standardOutput.getAsText().map(String::trim)
 }
 
 jar {
-	// Rename the project's license file to LICENSE_<project_name> to avoid conflicts
-	from("LICENSE") {
-		rename {
-			"${it}_${project.archivesBaseName}"
-		}
-	}
+    // Rename the project's license file to LICENSE_<project_name> to avoid conflicts
+    from("LICENSE") {
+        rename {
+            "${it}_${project.archivesBaseName}"
+        }
+    }
 }
 
 idea {
-	module {
-		["run"].each {
-			excludeDirs << file("$it")
-		}
-	}
+    module {
+        ["run"].each {
+            excludeDirs << file("$it")
+        }
+    }
 }

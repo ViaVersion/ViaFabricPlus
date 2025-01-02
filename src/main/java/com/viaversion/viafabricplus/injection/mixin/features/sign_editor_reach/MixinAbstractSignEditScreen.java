@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.sign_editor_reach;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.gui.screen.ingame.AbstractSignEditScreen;
 import org.spongepowered.asm.mixin.Final;

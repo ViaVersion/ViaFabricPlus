@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
-import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viafabricplus.protocoltranslator.util.NoPacketSendChannel;
+import com.viaversion.viaversion.connection.UserConnectionImpl;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import org.spongepowered.asm.mixin.Final;

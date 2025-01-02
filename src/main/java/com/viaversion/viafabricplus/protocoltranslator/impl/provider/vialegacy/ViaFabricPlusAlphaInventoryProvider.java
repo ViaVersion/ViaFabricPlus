@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy;
 
+import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
-import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;

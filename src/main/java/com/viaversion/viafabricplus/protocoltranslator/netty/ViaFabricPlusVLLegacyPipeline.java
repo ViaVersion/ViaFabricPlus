@@ -21,12 +21,12 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.netty;
 
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
 import com.viaversion.vialoader.netty.CompressionReorderEvent;
 import com.viaversion.vialoader.netty.VLLegacyPipeline;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.handler.HandlerNames;

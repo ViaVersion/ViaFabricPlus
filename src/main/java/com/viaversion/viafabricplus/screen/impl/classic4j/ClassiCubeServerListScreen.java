@@ -21,18 +21,17 @@
 
 package com.viaversion.viafabricplus.screen.impl.classic4j;
 
-import com.viaversion.viafabricplus.save.SaveManager;
-import de.florianmichael.classic4j.ClassiCubeHandler;
-import de.florianmichael.classic4j.api.LoginProcessHandler;
-import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
+import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
+import de.florianmichael.classic4j.ClassiCubeHandler;
+import de.florianmichael.classic4j.api.LoginProcessHandler;
+import de.florianmichael.classic4j.model.classicube.account.CCAccount;
+import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

@@ -29,9 +29,11 @@ public interface IClientConnection {
     void viaFabricPlus$setupPreNettyDecryption();
 
     ProtocolVersion viaFabricPlus$getTargetVersion();
+
     void viaFabricPlus$setTargetVersion(final ProtocolVersion serverVersion);
 
     UserConnection viaFabricPlus$getUserConnection();
+
     void viaFabricPlus$setUserConnection(final UserConnection userConnection);
 
 }

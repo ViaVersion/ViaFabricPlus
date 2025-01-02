@@ -38,9 +38,11 @@ public class ButtonSetting extends AbstractSetting<Runnable> {
     }
 
     @Override
-    public void write(JsonObject object) {}
+    public void write(JsonObject object) {
+    }
 
     @Override
-    public void read(JsonObject object) {}
+    public void read(JsonObject object) {
+    }
 
 }

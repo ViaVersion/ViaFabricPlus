@@ -22,14 +22,14 @@
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.r1_18_2_block_ack_emulation;
 
 import com.viaversion.viafabricplus.base.sync_tasks.SyncTasks;
+import com.viaversion.viafabricplus.injection.access.interaction.r1_18_2_block_ack_emulation.IClientPlayerInteractionManager;
+import com.viaversion.viafabricplus.protocoltranslator.translator.BlockStateTranslator;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_17_1to1_18.packet.ClientboundPackets1_18;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.Protocol1_18_2To1_19;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.packet.ClientboundPackets1_19;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.rewriter.WorldPacketRewriter1_19;
-import com.viaversion.viafabricplus.injection.access.interaction.r1_18_2_block_ack_emulation.IClientPlayerInteractionManager;
-import com.viaversion.viafabricplus.protocoltranslator.translator.BlockStateTranslator;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;

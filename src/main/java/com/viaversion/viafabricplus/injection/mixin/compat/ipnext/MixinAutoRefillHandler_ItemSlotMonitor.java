@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.compat.ipnext;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,7 +44,7 @@ public abstract class MixinAutoRefillHandler_ItemSlotMonitor {
     @Shadow
     public int currentSlotId;
 
-    @Inject(method = { "checkHandle", "checkShouldHandle" }, at = @At("HEAD"), cancellable = true)
+    @Inject(method = {"checkHandle", "checkShouldHandle"}, at = @At("HEAD"), cancellable = true)
     public void dontHandleOffhandSlot(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             if (currentSlotId == 45) ci.cancel();

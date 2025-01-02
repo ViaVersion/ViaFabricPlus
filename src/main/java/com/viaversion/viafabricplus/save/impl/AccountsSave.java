@@ -22,10 +22,10 @@
 package com.viaversion.viafabricplus.save.impl;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.save.AbstractSave;
 import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
+import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
 import net.raphimc.minecraftauth.step.msa.StepMsaToken;

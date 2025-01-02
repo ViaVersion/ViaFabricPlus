@@ -21,10 +21,10 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.ui;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
+import com.viaversion.viaversion.api.connection.UserConnection;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;

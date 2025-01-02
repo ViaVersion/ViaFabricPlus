@@ -29,9 +29,7 @@ import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PressableTextWidget;
-import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +56,7 @@ import java.awt.*;
  *     </ul>
  *     </li>
  * </ul>
- *
+ * <p>
  * Terminology:
  * <p>
  *     Instead of creating the screen every time it needs to be opened, the screen is created once and hold by a static
@@ -117,7 +115,7 @@ public class VFPScreen extends Screen {
     /**
      * Sets the subtitle and the subtitle press action
      *
-     * @param subtitle The subtitle which should be rendered
+     * @param subtitle            The subtitle which should be rendered
      * @param subtitlePressAction The press action which should be executed when the subtitle is clicked
      */
     public void setupSubtitle(@Nullable final Text subtitle, @Nullable final ButtonWidget.PressAction subtitlePressAction) {

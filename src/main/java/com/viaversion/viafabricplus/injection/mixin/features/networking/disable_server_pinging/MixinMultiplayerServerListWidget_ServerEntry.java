@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.disable
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
@@ -45,7 +45,8 @@ import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Function;
 
-@Mixin(value = MultiplayerServerListWidget.ServerEntry.class, priority = 1001) // Apply after the mixin in the main project
+@Mixin(value = MultiplayerServerListWidget.ServerEntry.class, priority = 1001)
+// Apply after the mixin in the main project
 public abstract class MixinMultiplayerServerListWidget_ServerEntry {
 
     @Shadow

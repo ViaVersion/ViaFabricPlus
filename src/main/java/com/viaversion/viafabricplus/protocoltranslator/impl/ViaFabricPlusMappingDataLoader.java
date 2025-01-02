@@ -21,11 +21,11 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl;
 
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.data.MappingDataLoader;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
 
@@ -84,7 +84,8 @@ public final class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
         return null;
     }
 
-    public record Material(boolean blocksMovement, boolean burnable, boolean liquid, boolean blocksLight, boolean replaceable, boolean solid) {
+    public record Material(boolean blocksMovement, boolean burnable, boolean liquid, boolean blocksLight,
+                           boolean replaceable, boolean solid) {
     }
 
 }

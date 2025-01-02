@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.screen.impl;
 
-import com.viaversion.viaversion.util.DumpUtil;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viaversion.util.DumpUtil;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;

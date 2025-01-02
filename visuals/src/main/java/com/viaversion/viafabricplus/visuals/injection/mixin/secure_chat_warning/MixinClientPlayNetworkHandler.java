@@ -31,7 +31,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class MixinClientPlayNetworkHandler {
 
-    @Shadow protected abstract boolean isSecureChatEnforced();
+    @Shadow
+    protected abstract boolean isSecureChatEnforced();
 
     @Redirect(method = "onGameJoin", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;isSecureChatEnforced()Z"))
     private boolean removeSecureChatWarning(ClientPlayNetworkHandler instance) {

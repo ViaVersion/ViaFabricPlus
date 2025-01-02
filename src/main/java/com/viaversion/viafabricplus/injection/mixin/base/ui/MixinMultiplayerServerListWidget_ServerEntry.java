@@ -42,7 +42,9 @@ import java.util.List;
 @Mixin(MultiplayerServerListWidget.ServerEntry.class)
 public abstract class MixinMultiplayerServerListWidget_ServerEntry {
 
-    @Shadow @Final private ServerInfo server;
+    @Shadow
+    @Final
+    private ServerInfo server;
 
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;setTooltip(Lnet/minecraft/text/Text;)V"))
     private void drawTranslatingState(MultiplayerScreen instance, Text text, Operation<Void> original) {

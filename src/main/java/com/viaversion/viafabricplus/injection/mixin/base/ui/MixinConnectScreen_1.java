@@ -23,15 +23,14 @@ package com.viaversion.viafabricplus.injection.mixin.base.ui;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.viaversion.viafabricplus.save.SaveManager;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
+import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import io.netty.channel.ChannelFuture;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.network.ServerInfo;

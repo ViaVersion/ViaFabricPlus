@@ -21,13 +21,13 @@
 
 package com.viaversion.viafabricplus.settings.impl;
 
+import com.viaversion.viafabricplus.api.settings.SettingGroup;
+import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
+import com.viaversion.viafabricplus.api.settings.type.ButtonSetting;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IConfirmScreen;
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.screen.VFPScreen;
-import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
-import com.viaversion.viafabricplus.api.settings.type.ButtonSetting;
-import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
@@ -67,7 +67,7 @@ public final class BedrockSettings extends SettingGroup {
         thread = new Thread(this::openBedrockAccountLogin);
         thread.start();
     }) {
-        
+
         @Override
         public MutableText displayValue() {
             final StepFullBedrockSession.FullBedrockSession account = SaveManager.INSTANCE.getAccountsSave().getBedrockAccount();
@@ -98,7 +98,7 @@ public final class BedrockSettings extends SettingGroup {
     public BedrockSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.bedrock"));
     }
-    
+
     private void openBedrockAccountLogin() {
         final AccountsSave accountsSave = SaveManager.INSTANCE.getAccountsSave();
 
