@@ -82,6 +82,10 @@ There are also older formats which aren't used anymore:
 - `recode/*`: Recode branches, these are used to port ViaFabricPlus to newer versions of the game or rewrite big parts of the code
 - `backport/*`: Backport branches, these are used to backport newer ViaFabricPlus versions to older versions of the game
 
+## Project structure
+Every change made to the game is called a `feature`. Each feature has its package under both `features/` and `injection/mixin/features/`, organizing utility and mixin classes for easier project maintenance and porting
+Loading of features is done via `static` blocks and dummy `init` function called in the `FeaturesLoading` class.
+
 ## Versioning
 The versioning should only be updated every release and should only have one update between each release.
 - The versioning scheme is `major.minor.patch`, where:

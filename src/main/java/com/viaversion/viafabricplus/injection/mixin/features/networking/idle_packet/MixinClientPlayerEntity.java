@@ -19,17 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement;
+package com.viaversion.viafabricplus.injection.mixin.features.networking.idle_packet;
 
 import com.mojang.authlib.GameProfile;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.input.Input;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import org.spongepowered.asm.mixin.Final;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,34 +37,18 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
 
     @Shadow
-    public Input input;
-
-    @Shadow
-    @Final
-    protected MinecraftClient client;
-
-    @Shadow
-    private int ticksSinceLastPositionPacketSent;
+    private boolean lastOnGround;
 
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
     }
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;ticksSinceLastPositionPacketSent:I", ordinal = 0))
-    private int moveLastPosPacketIncrement(ClientPlayerEntity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return this.ticksSinceLastPositionPacketSent - 1; // Reverting original operation
+    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z", ordinal = 0))
+    private boolean sendIdlePacket(ClientPlayerEntity instance) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(LegacyProtocolVersion.r1_4_2, ProtocolVersion.v1_8) || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
+            return !isOnGround();
         } else {
-            return this.ticksSinceLastPositionPacketSent;
-        }
-    }
-
-    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;ticksSinceLastPositionPacketSent:I", ordinal = 2))
-    private int moveLastPosPacketIncrement2(ClientPlayerEntity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return this.ticksSinceLastPositionPacketSent++; // Return previous value, then increment
-        } else {
-            return this.ticksSinceLastPositionPacketSent;
+            return this.lastOnGround;
         }
     }
 

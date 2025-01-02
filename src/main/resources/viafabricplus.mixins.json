@@ -180,6 +180,7 @@
     "features.mouse_sensitivity.MixinMouse",
     "features.mouse_sensitivity.MixinMouseOptionsScreen",
     "features.movement.MixinClientPlayerEntity",
+    "features.movement.MixinLivingEntity",
     "features.movement.collision.MixinAbstractBoatEntity",
     "features.movement.collision.MixinBedBlock",
     "features.movement.collision.MixinEntity",
@@ -194,9 +195,8 @@
     "features.movement.elytra.MixinFireworkRocketItem",
     "features.movement.elytra.MixinLivingEntity",
     "features.movement.elytra.MixinPlayerEntity",
-    "features.movement.entity.MixinLivingEntity",
-    "features.movement.limitation.MixinPlayerEntity",
     "features.movement.jump.MixinClientPlayerEntity",
+    "features.movement.limitation.MixinPlayerEntity",
     "features.movement.limitation.rotation.MixinEntity",
     "features.movement.limitation.rotation.MixinPlayerEntity",
     "features.movement.slowdown.MixinClientPlayerEntity",
@@ -217,6 +217,7 @@
     "features.networking.disable_server_pinging.MixinMultiplayerServerListWidget_ServerEntry",
     "features.networking.downloading_terrain.MixinClientPlayNetworkHandler",
     "features.networking.downloading_terrain.MixinDownloadingTerrainScreen",
+    "features.networking.idle_packet.MixinClientPlayerEntity",
     "features.networking.legacy_chat_signature.MixinConnectScreen_1",
     "features.networking.legacy_chat_signature.MixinKeyPairResponse",
     "features.networking.legacy_chat_signature.MixinPlayerPublicKey_PublicKeyData",
@@ -256,18 +257,18 @@
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinClientPlayerInteractionManager",
     "features.world.item_picking.MixinMinecraftClient",
-    "features.world.remove_server_view_distance.MixinGameOptions"
+    "features.world.remove_server_view_distance.MixinGameOptions",
+    "features.interaction.MixinLivingEntity",
+    "features.interaction.MixinPlayerEntity",
+    "features.movement.collision.MixinLivingEntity",
+    "features.movement.jump.MixinLivingEntity",
+    "features.movement.sprinting_and_sneaking.MixinPlayerEntity",
+    "features.networking.keep_player_loaded.MixinPlayerEntity"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "overwrites": {
     "requireAnnotations": true
-  },
-  "mixins": [
-    "features.interaction.MixinPlayerEntity",
-    "features.movement.jump.MixinLivingEntity",
-    "features.movement.sprinting_and_sneaking.MixinPlayerEntity",
-    "features.networking.keep_player_loaded.MixinPlayerEntity"
-  ]
+  }
 }

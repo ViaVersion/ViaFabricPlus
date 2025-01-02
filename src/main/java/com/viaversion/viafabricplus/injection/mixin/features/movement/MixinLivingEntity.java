@@ -19,18 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.entity;
+package com.viaversion.viafabricplus.injection.mixin.features.movement;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapdoorBlock;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
@@ -38,8 +37,9 @@ import net.minecraft.world.World;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
@@ -50,31 +50,15 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     private Optional<BlockPos> climbingPos;
 
+    public MixinLivingEntity(EntityType<?> type, World world) {
+        super(type, world);
+    }
+
     @Shadow
     protected abstract boolean canEnterTrapdoor(BlockPos pos, BlockState state);
 
     @Shadow
     public abstract boolean hasStatusEffect(RegistryEntry<StatusEffect> effect);
-
-    public MixinLivingEntity(EntityType<?> type, World world) {
-        super(type, world);
-    }
-
-    @Inject(method = "tickCramming", at = @At("HEAD"), cancellable = true)
-    private void preventEntityPush(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            ci.cancel();
-        }
-    }
-
-    @Redirect(method = "tickActiveItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areItemsEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"))
-    private boolean replaceItemStackEqualsCheck(ItemStack left, ItemStack right) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
-            return left == right;
-        } else {
-            return ItemStack.areItemsEqual(left, right);
-        }
-    }
 
     @Redirect(method = "travelMidAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isChunkLoaded(Lnet/minecraft/util/math/BlockPos;)Z"))
     private boolean modifyLoadedCheck(World instance, BlockPos blockPos) {
@@ -89,13 +73,6 @@ public abstract class MixinLivingEntity extends Entity {
     private void dontResetLevitationFallDistance(LivingEntity instance) {
         if (this.hasStatusEffect(StatusEffects.SLOW_FALLING) || ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
             instance.onLanding();
-        }
-    }
-
-    @Inject(method = "getPreferredEquipmentSlot", at = @At("HEAD"), cancellable = true)
-    private void removeShieldSlotPreference(ItemStack stack, CallbackInfoReturnable<EquipmentSlot> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3) && stack.isOf(Items.SHIELD)) {
-            cir.setReturnValue(EquipmentSlot.MAINHAND);
         }
     }
 

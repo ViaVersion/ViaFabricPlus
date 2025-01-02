@@ -29,6 +29,7 @@ import java.util.List;
 
 /**
  * This class represents a group of settings. It is used to group settings in the settings screen.
+ *
  * @see AbstractSetting
  */
 public class SettingGroup {
@@ -50,6 +51,12 @@ public class SettingGroup {
         return settings;
     }
 
+    /**
+     * Returns a setting by its translation key.
+     *
+     * @param translationKey The translation key of the setting.
+     * @return The setting or null if no setting with the given translation key was found.
+     */
     public AbstractSetting<?> getSetting(final String translationKey) {
         for (AbstractSetting<?> setting : settings) {
             if (ChatUtil.uncoverTranslationKey(setting.getName()).equals(translationKey)) {

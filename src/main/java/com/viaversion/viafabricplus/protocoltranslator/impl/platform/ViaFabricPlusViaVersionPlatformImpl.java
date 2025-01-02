@@ -64,7 +64,9 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
                 final JsonObject contact = new JsonObject();
                 it.getContact().asMap().forEach(contact::addProperty);
 
-                if (!contact.isEmpty()) info.add("contact", contact);
+                if (!contact.isEmpty()) {
+                    info.add("contact", contact);
+                }
                 info.addProperty("name", it.getName());
                 return info;
             }).forEach(authors::add);
