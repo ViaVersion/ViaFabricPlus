@@ -45,6 +45,7 @@ public abstract class MixinEntity {
 
     @Shadow
     private Vec3d pos;
+
     @Shadow
     private World world;
 

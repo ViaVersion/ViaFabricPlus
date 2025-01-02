@@ -48,16 +48,10 @@ import java.util.Optional;
 public abstract class MixinLivingEntity extends Entity {
 
     @Shadow
-    protected boolean jumping;
-
-    @Shadow
     private Optional<BlockPos> climbingPos;
 
     @Shadow
     protected abstract boolean canEnterTrapdoor(BlockPos pos, BlockState state);
-
-    @Shadow
-    private int jumpingCooldown;
 
     @Shadow
     public abstract boolean hasStatusEffect(RegistryEntry<StatusEffect> effect);
@@ -91,11 +85,6 @@ public abstract class MixinLivingEntity extends Entity {
         }
     }
 
-    @Redirect(method = "applyMovementInput", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;jumping:Z"))
-    private boolean disableJumpOnLadder(LivingEntity self) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && jumping;
-    }
-
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;onLanding()V"))
     private void dontResetLevitationFallDistance(LivingEntity instance) {
         if (this.hasStatusEffect(StatusEffects.SLOW_FALLING) || ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
@@ -114,13 +103,6 @@ public abstract class MixinLivingEntity extends Entity {
     private void disableCrawling(CallbackInfoReturnable<Boolean> ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.setReturnValue(false);
-        }
-    }
-
-    @Inject(method = "tickMovement", at = @At("HEAD"))
-    private void removeJumpDelay(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_0_0tor1_0_1)) {
-            this.jumpingCooldown = 0;
         }
     }
 
