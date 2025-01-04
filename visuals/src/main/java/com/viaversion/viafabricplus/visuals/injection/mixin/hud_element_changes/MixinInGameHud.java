@@ -108,8 +108,8 @@ public abstract class MixinInGameHud {
         final int armorWidth = 10 * viaFabricPlusVisuals$ARMOR_ICON_WIDTH;
         final int offset = n * viaFabricPlusVisuals$ARMOR_ICON_WIDTH;
 
-        args.set(1, client.getWindow().getScaledWidth() - x - armorWidth + offset - 1);
-        args.set(2, (int) args.get(2) + client.textRenderer.fontHeight + 1);
+        args.set(2, client.getWindow().getScaledWidth() - x - armorWidth + offset - 1);
+        args.set(3, (int) args.get(3) + client.textRenderer.fontHeight + 1);
     }
 
     @ModifyArg(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
