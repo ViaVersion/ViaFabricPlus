@@ -29,14 +29,10 @@ import com.viaversion.viafabricplus.visuals.features.filter_non_existing_charact
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ViaFabricPlusVisuals implements ViaFabricPlusLoadEntrypoint {
 
     public static final ViaFabricPlusVisuals INSTANCE = new ViaFabricPlusVisuals();
-
-    private final Logger logger = LogManager.getLogger("ViaFabricPlus-Visuals");
 
     @Override
     public void onPlatformLoad(ViaFabricPlusBase platform) {
@@ -55,10 +51,6 @@ public class ViaFabricPlusVisuals implements ViaFabricPlusLoadEntrypoint {
                 GridItemSelectionScreen.INSTANCE.itemGrid = null;
             }
         }));
-    }
-
-    public Logger logger() {
-        return logger;
     }
 
 }
