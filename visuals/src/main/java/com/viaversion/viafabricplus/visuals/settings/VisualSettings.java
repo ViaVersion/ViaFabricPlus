@@ -53,7 +53,6 @@ public final class VisualSettings extends SettingGroup {
             }
         }
     };
-    public final BooleanSetting hideModernJigsawScreenFeatures = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_modern_jigsaw_screen_features"), true);
     public final BooleanSetting removeBubblePopSound = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_bubble_pop_sound"), false);
     public final BooleanSetting hideEmptyBubbleIcons = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_empty_bubble_icons"), false);
     public final BooleanSetting hideVillagerProfession = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_villager_profession"), false);
@@ -85,8 +84,6 @@ public final class VisualSettings extends SettingGroup {
 
     // 1.9 -> 1.8.x
     public final VersionedBooleanSetting alwaysRenderCrosshair = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.always_render_crosshair"), VersionRange.andOlder(ProtocolVersion.v1_8));
-    public final VersionedBooleanSetting emulateArmorHud = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.emulate_armor_hud"), VersionRange.andOlder(ProtocolVersion.v1_8));
-    public final VersionedBooleanSetting hideModernCommandBlockScreenFeatures = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_modern_command_block_screen_features"), VersionRange.andOlder(ProtocolVersion.v1_8));
 
     // 1.8.x -> 1.7.6 - 1.7.10
     public final VersionedBooleanSetting swingHandOnItemUse = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.swing_hand_on_item_use"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
@@ -98,7 +95,6 @@ public final class VisualSettings extends SettingGroup {
 
     // b1.8/b1.8.1 -> b1_7/b1.7.3
     public final VersionedBooleanSetting hideModernHUDElements = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_modern_hud_elements"), VersionRange.andOlder(LegacyProtocolVersion.b1_7tob1_7_3));
-    public final VersionedBooleanSetting disableServerPinging = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.disable_server_pinging"), VersionRange.andOlder(LegacyProtocolVersion.b1_7tob1_7_3));
 
     // a1.0.15 -> c0_28/c0_30
     public final VersionedBooleanSetting replaceCreativeInventory = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory"), VersionRange.andOlder(LegacyProtocolVersion.c0_28toc0_30));

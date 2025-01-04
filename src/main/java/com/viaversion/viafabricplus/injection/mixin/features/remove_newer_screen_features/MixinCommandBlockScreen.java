@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.remove_newer_screen_features;
 
-import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.block.entity.CommandBlockBlockEntity;
 import net.minecraft.client.gui.screen.ingame.CommandBlockScreen;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
@@ -48,7 +48,7 @@ public abstract class MixinCommandBlockScreen {
 
     @Inject(method = "init", at = @At("TAIL"))
     private void removeWidgets(CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.hideModernCommandBlockScreenFeatures.isEnabled()) {
+        if (DebugSettings.INSTANCE.hideModernCommandBlockScreenFeatures.isEnabled()) {
             modeButton.visible = false;
             conditionalModeButton.visible = false;
             redstoneTriggerButton.visible = false;

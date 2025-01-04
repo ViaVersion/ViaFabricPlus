@@ -23,7 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.disable
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -65,10 +66,10 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
     private boolean disableServerPinging(ThreadPoolExecutor instance, Runnable runnable) {
         ProtocolVersion version = ViaFabricPlus.getImpl().getServerVersion(server);
         if (version == null) {
-            version = ViaFabricPlus.getImpl().getTargetVersion();
+            version = ProtocolTranslator.getTargetVersion();
         }
 
-        viaFabricPlus$disableServerPinging = VisualSettings.INSTANCE.disableServerPinging.isEnabled(version);
+        viaFabricPlus$disableServerPinging = DebugSettings.INSTANCE.disableServerPinging.isEnabled(version);
         if (viaFabricPlus$disableServerPinging) {
             this.server.version = Text.of(version.getName()); // Show target version
         }

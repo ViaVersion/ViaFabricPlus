@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.remove_newer_screen_features;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.entity.JigsawBlockEntity;
 import net.minecraft.client.gui.DrawContext;
@@ -62,14 +62,15 @@ public abstract class MixinJigsawBlockScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void disableWidgets(CallbackInfo ci) {
-        if (!VisualSettings.INSTANCE.hideModernJigsawScreenFeatures.getValue()) {
+        if (!DebugSettings.INSTANCE.hideModernJigsawScreenFeatures.getValue()) {
             return;
         }
-        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
+
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             selectionPriorityField.active = false;
             placementPriorityField.active = false;
         }
-        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             nameField.active = false;
             jointRotationButton.active = false;
             int index = children().indexOf(jointRotationButton);
@@ -81,7 +82,7 @@ public abstract class MixinJigsawBlockScreen extends Screen {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void copyText(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.hideModernJigsawScreenFeatures.getValue() && ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (DebugSettings.INSTANCE.hideModernJigsawScreenFeatures.getValue() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             nameField.setText(targetField.getText());
         }
     }
