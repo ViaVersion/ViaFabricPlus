@@ -10,16 +10,27 @@ pluginManagement {
 }
 rootProject.name = "viafabricplus"
 
-includeBuild("build-logic")
+includeBuild "build-logic"
 
-setupViaSubproject("api")
-setupViaSubproject("api-legacy")
-setupViaSubproject("generator-tools")
-setupViaSubproject("visuals")
+include "viafabricplus-api"
+include "viafabricplus-api-legacy"
+include "viafabricplus-visuals"
 
-void setupViaSubproject(String name) {
-    var pName = "viafabricplus-" + name
+project(":viafabricplus-api").projectDir = file("api")
+project(":viafabricplus-api-legacy").projectDir = file("api-legacy")
+project(":viafabricplus-visuals").projectDir = file("visuals")
 
-    include pName
-    project(":" + pName).projectDir = file(name)
+File file = file("generator.settings.gradle")
+if (!file.exists()) {
+    file.write(
+            """
+// Uncomment to enable the generator project
+// include ":viafabricplus-generator"
+// project(":viafabricplus-generator").projectDir = file("generator")
+            """.trim()
+     )
+}
+
+apply {
+    from(file)
 }
