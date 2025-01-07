@@ -34,6 +34,9 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
+import com.viaversion.viaversion.api.type.types.version.Types1_21;
+import com.viaversion.viaversion.api.type.types.version.Types1_21_2;
+import com.viaversion.viaversion.api.type.types.version.Types1_21_4;
 import com.viaversion.viaversion.protocols.v1_12to1_12_1.packet.ClientboundPackets1_12_1;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.MinecraftClient;
@@ -131,8 +134,14 @@ public final class ItemTranslator {
             return Types.ITEM1_13_2;
         } else if (targetVersion.olderThan(ProtocolVersion.v1_20_5)) {
             return Types.ITEM1_20_2;
-        } else {
+        } else if (targetVersion.olderThan(ProtocolVersion.v1_21)) {
             return Types1_20_5.ITEM;
+        } else if (targetVersion.olderThan(ProtocolVersion.v1_21_2)) {
+            return Types1_21.ITEM;
+        } else if (targetVersion.olderThan(ProtocolVersion.v1_21_4)) {
+            return Types1_21_2.ITEM;
+        } else {
+            return Types1_21_4.ITEM;
         }
     }
 
