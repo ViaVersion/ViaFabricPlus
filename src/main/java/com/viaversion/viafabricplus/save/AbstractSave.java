@@ -54,7 +54,12 @@ public abstract class AbstractSave {
     public void init() {
         if (Files.exists(path)) {
             try {
-                read(GSON.fromJson(Files.readString(path), JsonObject.class));
+                final JsonObject object = GSON.fromJson(Files.readString(path), JsonObject.class);
+                if (object != null) {
+                    read(object);
+                } else {
+                    ViaFabricPlusImpl.INSTANCE.logger().error("The file {} is empty!", path.getFileName());
+                }
             } catch (IOException e) {
                 ViaFabricPlusImpl.INSTANCE.logger().error("Failed to read file: {}!", path.getFileName(), e);
             }
