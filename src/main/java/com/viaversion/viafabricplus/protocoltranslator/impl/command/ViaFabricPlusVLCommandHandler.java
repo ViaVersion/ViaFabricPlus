@@ -40,6 +40,7 @@ public final class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
         this.removeSubCommand("list");
         this.removeSubCommand("player");
         this.removeSubCommand("pps");
+        this.removeSubCommand("dump");
 
         this.registerSubCommand(new ListExtensionsCommand());
         this.registerSubCommand(new SetTimeCommand());
