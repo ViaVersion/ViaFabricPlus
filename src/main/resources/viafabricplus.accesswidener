@@ -12,6 +12,10 @@ accessible field net/minecraft/block/AbstractBlock velocityMultiplier F
 accessible field net/minecraft/client/gui/screen/option/ControlsListWidget$KeyBindingEntry RESET_TEXT Lnet/minecraft/text/Text;
 accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/minecraft/client/font/FontStorage$GlyphPair;
 accessible field net/minecraft/client/gui/screen/world/WorldIcon UNKNOWN_SERVER_ID Lnet/minecraft/util/Identifier;
+accessible field net/minecraft/client/MinecraftClient fontManager Lnet/minecraft/client/font/FontManager;
+accessible field net/minecraft/client/font/FontManager fontStorages Ljava/util/Map;
+accessible field net/minecraft/client/font/FontStorage bakedGlyphCache Lnet/minecraft/client/font/GlyphContainer;
+accessible field net/minecraft/client/font/FontStorage glyphCache Lnet/minecraft/client/font/GlyphContainer;
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
 accessible method net/minecraft/entity/passive/CamelEntity getPassengerAttachmentY (ZFLnet/minecraft/entity/EntityDimensions;F)D

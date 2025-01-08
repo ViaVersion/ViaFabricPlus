@@ -251,7 +251,7 @@
     "features.remove_newer_screen_features.MixinCommandBlockScreen",
     "features.remove_newer_screen_features.MixinJigsawBlockScreen",
     "features.remove_newer_screen_features.MixinStructureBlockScreen_1",
-    "features.replace_blank_glyph.MixinFontStorage",
+    "features.font.MixinFontStorage",
     "features.run_command_action.MixinScreen",
     "features.sign_editor_reach.MixinAbstractSignEditScreen",
     "features.skin_loading.MixinPlayerListEntry",

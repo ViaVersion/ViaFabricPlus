@@ -77,6 +77,7 @@
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "Moderne Befehlsblock-Bildschirmfunktionen ausblenden",
   "debug_settings.viafabricplus.disable_server_pinging": "Server-Pinging deaktivieren",
   "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Moderne Verbundblock-Bildschirmeigenschaften ausblenden",
+  "debug_settings.viafabricplus.filter_non_existing_glyphs": "Nicht vorhandene Glyphen filtern",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "BetaCraft-Authentifizierung verwenden",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Sitzung für Server im Online-Modus verifizieren",
@@ -103,7 +104,6 @@
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "Ofenrezeptbuch ausblenden",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Handwerksrezeptbuch ausblenden",
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Unicode-Schriftart für Nicht-ASCII-Sprachen erzwingen",
-  "visual_settings.viafabricplus.filter_non_existing_glyphs": "Nicht vorhandene Glyphen filtern",
   "visual_settings.viafabricplus.sneak_instantly": "Sofort schleichen",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "Interpolation der Körperdrehung ändern",
 

@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus.settings.impl;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
+import com.viaversion.viafabricplus.features.font.replace_blank_glyph.FontCacheReload;
 import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.text.Text;
@@ -37,6 +38,12 @@ public final class DebugSettings extends SettingGroup {
     public final BooleanSetting printNetworkingErrorsToLogs = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.print_networking_errors_to_logs"), true);
     public final BooleanSetting ignoreFabricSyncErrors = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.ignore_fabric_sync_errors"), false);
     public final BooleanSetting hideModernJigsawScreenFeatures = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.hide_modern_jigsaw_screen_features"), true);
+    public final BooleanSetting filterNonExistingGlyphs = new BooleanSetting(this, Text.translatable("debug_settings.viafabricplus.filter_non_existing_glyphs"), true) {
+        @Override
+        public void onValueChanged() {
+            FontCacheReload.reload();
+        }
+    };
 
     // 1.20.5 -> 1.20.4
     public final VersionedBooleanSetting dontCreatePacketErrorCrashReports = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.dont_create_packet_error_crash_reports"), VersionRange.andOlder(ProtocolVersion.v1_20_3));

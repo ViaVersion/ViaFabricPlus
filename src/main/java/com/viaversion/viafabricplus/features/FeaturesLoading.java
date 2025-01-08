@@ -32,6 +32,7 @@ import com.viaversion.viafabricplus.features.entity.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.entity.attribute.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1_12_2;
 import com.viaversion.viafabricplus.features.networking.resource_pack_header.ResourcePackHeaderDiff;
+import com.viaversion.viafabricplus.features.font.replace_blank_glyph.FontCacheReload;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 
@@ -64,6 +65,9 @@ public final class FeaturesLoading {
         Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
             // Reloads all bounding boxes of the blocks that we changed
             CollisionShapes.reloadBlockShapes();
+
+            // Clears the font cache to replace the empty glyph
+            FontCacheReload.reload();
 
             // Reloads the clientside recipes
             if (newVersion.olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {

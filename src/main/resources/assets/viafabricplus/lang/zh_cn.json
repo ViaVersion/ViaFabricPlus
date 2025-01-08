@@ -77,6 +77,7 @@
   "debug_settings.viafabricplus.emulate_armor_hud": "模拟护甲HUD",
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "隐藏新式命令方块屏幕功能",
   "debug_settings.viafabricplus.disable_server_pinging": "禁用服务器Ping",
+  "debug_settings.viafabricplus.filter_non_existing_glyphs": "过滤不存在的字形",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用BetaCraft认证",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "验证在线模式服务器的会话",
@@ -103,7 +104,6 @@
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "隐藏熔炉配方书",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "隐藏合成配方书",
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "强制为非ASCII语言使用Unicode字体",
-  "visual_settings.viafabricplus.filter_non_existing_glyphs": "过滤不存在的字形",
   "visual_settings.viafabricplus.sneak_instantly": "瞬间潜行",
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "格挡时锁定第三人称手臂旋转",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "更改身体旋转插值",

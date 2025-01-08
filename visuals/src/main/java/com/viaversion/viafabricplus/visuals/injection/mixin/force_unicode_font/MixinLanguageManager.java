@@ -19,10 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.visuals.injection.mixin.filter_non_existing_characters;
+package com.viaversion.viafabricplus.visuals.injection.mixin.force_unicode_font;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.visuals.features.filter_non_existing_characters.UnicodeFontFix1_12_2;
+import com.viaversion.viafabricplus.visuals.features.force_unicode_font.UnicodeFontFix1_12_2;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.resource.ResourceManager;
 import org.spongepowered.asm.mixin.Mixin;

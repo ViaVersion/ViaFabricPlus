@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.visuals.features.filter_non_existing_characters;
+package com.viaversion.viafabricplus.visuals.features.force_unicode_font;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;

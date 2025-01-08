@@ -41,18 +41,6 @@ public final class VisualSettings extends SettingGroup {
             Text.translatable("change_game_menu_screen_layout.viafabricplus.adjusted"),
             Text.translatable("base.viafabricplus.off")
     );
-    public final BooleanSetting filterNonExistingGlyphs = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.filter_non_existing_glyphs"), true) {
-        @Override
-        public void onValueChanged() {
-            final MinecraftClient client = MinecraftClient.getInstance();
-            if (client != null) {
-                for (FontStorage storage : client.fontManager.fontStorages.values()) {
-                    storage.bakedGlyphCache.clear();
-                    storage.glyphCache.clear();
-                }
-            }
-        }
-    };
     public final BooleanSetting removeBubblePopSound = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.remove_bubble_pop_sound"), false);
     public final BooleanSetting hideEmptyBubbleIcons = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_empty_bubble_icons"), false);
     public final BooleanSetting hideVillagerProfession = new BooleanSetting(this, Text.translatable("visual_settings.viafabricplus.hide_villager_profession"), false);

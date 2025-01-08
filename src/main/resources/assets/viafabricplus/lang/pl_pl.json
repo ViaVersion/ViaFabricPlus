@@ -77,6 +77,7 @@
   "debug_settings.viafabricplus.emulate_armor_hud": "Emuluj interfejs zbroi",
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "Usuń nowsze funkcje z ekranu bloku komend",
   "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Ukrywaj nowe funkcje ekranu bloku konstrukcyjnego",
+  "debug_settings.viafabricplus.filter_non_existing_glyphs": "Filtruj nieistniejące znaki",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Korzystaj z uwierzytelniania BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Weryfikuj sesję dla serwerów w trybie online",
@@ -103,7 +104,6 @@
   "visual_settings.viafabricplus.hide_furnace_recipe_book": "Ukrywaj książkę przepisów w piecach",
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Ukrywaj książkę przepisów w stole rzemyślniczym",
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Wymuszaj czcionkę Unicode dla języków niewspieranych przez ASCII",
-  "visual_settings.viafabricplus.filter_non_existing_glyphs": "Filtruj nieistniejące znaki",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "Zmień interpolację rotacji ciała",
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "Zablokuj rotację ręki w trzeciej osobie podczas blokowania",
   "visual_settings.viafabricplus.sneak_instantly": "Kucaj natychmiastowo",
