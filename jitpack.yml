@@ -1,7 +1,0 @@
-# Deploys the latest stable JDK 21 available and sets it to default without having to manually specify it here,
-# Which includes using temurin as the distribution.
-before_install:
-  - curl -s "https://get.sdkman.io" | bash
-  - source ~/.sdkman/bin/sdkman-init.sh
-  - sdk install java 21.0.3-tem
-  - sdk use java 21.0.3-tem

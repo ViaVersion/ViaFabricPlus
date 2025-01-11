@@ -1,0 +1,12 @@
+plugins {
+    id "vfp.base-conventions"
+}
+
+processResources {
+    filesMatching("fabric.mod.json") {
+        expand(
+                "version": project.version,
+                "description": project.description
+        )
+    }
+}

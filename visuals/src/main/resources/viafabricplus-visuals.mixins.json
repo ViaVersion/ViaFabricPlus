@@ -1,0 +1,38 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.viaversion.viafabricplus.visuals.injection.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "classic.creative_menu.MixinCreativeInventoryScreen",
+    "classic.walking_animation.MixinBipedEntityModel",
+    "downloading_terrain_transitions.MixinDownloadingTerrainScreen",
+    "filter_game_mode_selections.MixinGameModeSelectionScreen",
+    "filter_game_mode_selections.MixinGameModeSelectionScreen_GameModeSelection",
+    "force_unicode_font.MixinLanguageManager",
+    "hud_element_changes.MixinChatHud",
+    "hud_element_changes.MixinChatScreen",
+    "hud_element_changes.MixinClientPlayerInteractionManager",
+    "hud_element_changes.MixinInGameHud",
+    "instant_sneaking.MixinCamera",
+    "oof_sound.MixinPlayerEntity",
+    "petrified_oak_slab_model.MixinItemRenderer",
+    "player_rotations.MixinBipedEntityModel",
+    "player_rotations.MixinLivingEntity",
+    "r1_7_item_tilt.MixinHeldItemRenderer",
+    "r1_7_tab_list_style.MixinClientPlayNetworkHandler",
+    "r1_7_tab_list_style.MixinPlayerListEntry",
+    "r1_7_tab_list_style.MixinPlayerListHud",
+    "remove_newer_screen_features.MixinGameMenuScreen",
+    "remove_newer_screen_features.MixinScreen",
+    "secure_chat_warning.MixinClientPlayNetworkHandler",
+    "strike_through_offset.MixinTextRenderer_Drawer",
+    "villager_profession.MixinVillagerClothingFeatureRenderer"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

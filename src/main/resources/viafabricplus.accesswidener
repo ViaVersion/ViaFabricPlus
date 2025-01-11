@@ -1,36 +1,31 @@
 accessWidener v1 named
 
 accessible field net/minecraft/network/ClientConnection channel Lio/netty/channel/Channel;
-accessible field net/minecraft/client/MinecraftClient fontManager Lnet/minecraft/client/font/FontManager;
 accessible field net/minecraft/client/network/AllowedAddressResolver redirectResolver Lnet/minecraft/client/network/RedirectResolver;
-accessible field net/minecraft/client/font/FontManager fontStorages Ljava/util/Map;
 accessible field net/minecraft/client/gui/screen/GameMenuScreen exitButton Lnet/minecraft/client/gui/widget/ButtonWidget;
-accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/minecraft/client/font/FontStorage$GlyphPair;
 accessible field net/minecraft/network/ClientConnection packetSizeLogger Lnet/minecraft/network/handler/PacketSizeLogger;
 accessible field net/minecraft/entity/boss/dragon/EnderDragonEntity body Lnet/minecraft/entity/boss/dragon/EnderDragonPart;
 accessible field net/minecraft/entity/passive/AbstractHorseEntity lastAngryAnimationProgress F
-accessible field net/minecraft/client/font/FontStorage bakedGlyphCache Lnet/minecraft/client/font/GlyphContainer;
 accessible field net/minecraft/entity/vehicle/AbstractBoatEntity yawVelocity F
-accessible field net/minecraft/client/font/FontStorage glyphCache Lnet/minecraft/client/font/GlyphContainer;
 accessible field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 accessible field net/minecraft/block/AbstractBlock velocityMultiplier F
-accessible field net/minecraft/client/gui/screen/world/WorldIcon UNKNOWN_SERVER_ID Lnet/minecraft/util/Identifier;
-accessible field net/minecraft/client/gui/widget/TexturedButtonWidget textures Lnet/minecraft/client/gui/screen/ButtonTextures;
 accessible field net/minecraft/client/gui/screen/option/ControlsListWidget$KeyBindingEntry RESET_TEXT Lnet/minecraft/text/Text;
-accessible field net/minecraft/client/gui/screen/multiplayer/SocialInteractionsScreen TITLE Lnet/minecraft/text/Text;
-accessible field net/minecraft/client/resource/language/TranslationStorage translations Ljava/util/Map;
+accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/minecraft/client/font/FontStorage$GlyphPair;
+accessible field net/minecraft/client/gui/screen/world/WorldIcon UNKNOWN_SERVER_ID Lnet/minecraft/util/Identifier;
+accessible field net/minecraft/client/MinecraftClient fontManager Lnet/minecraft/client/font/FontManager;
+accessible field net/minecraft/client/font/FontManager fontStorages Ljava/util/Map;
+accessible field net/minecraft/client/font/FontStorage bakedGlyphCache Lnet/minecraft/client/font/GlyphContainer;
+accessible field net/minecraft/client/font/FontStorage glyphCache Lnet/minecraft/client/font/GlyphContainer;
 
 accessible method net/minecraft/screen/GenericContainerScreenHandler <init> (Lnet/minecraft/screen/ScreenHandlerType;ILnet/minecraft/entity/player/PlayerInventory;I)V
-accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
 accessible method net/minecraft/entity/passive/CamelEntity getPassengerAttachmentY (ZFLnet/minecraft/entity/EntityDimensions;F)D
 accessible method net/minecraft/entity/vehicle/AbstractBoatEntity getMaxPassengers ()I
 accessible method net/minecraft/client/gui/screen/multiplayer/ConnectScreen setStatus (Lnet/minecraft/text/Text;)V
 accessible method net/minecraft/item/BlockItem getPlacementState (Lnet/minecraft/item/ItemPlacementContext;)Lnet/minecraft/block/BlockState;
 accessible method net/minecraft/block/AbstractBlock getPickStack (Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)Lnet/minecraft/item/ItemStack;
-
-accessible class net/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection
-accessible class net/minecraft/client/font/FontStorage$GlyphPair
-accessible class net/minecraft/client/font/TextRenderer$Drawer
+accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
 
 mutable field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 mutable field net/minecraft/block/AbstractBlock velocityMultiplier F
+
+accessible class net/minecraft/client/font/FontStorage$GlyphPair

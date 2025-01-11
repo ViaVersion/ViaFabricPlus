@@ -1,0 +1,15 @@
+plugins {
+    id "groovy-gradle-plugin"
+}
+
+repositories {
+    gradlePluginPortal()
+
+    maven {
+        url = "https://maven.fabricmc.net/"
+    }
+}
+
+dependencies {
+    implementation "net.fabricmc:fabric-loom:1.9-SNAPSHOT"
+}
