@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(LivingEntity.class)
+@Mixin(value = LivingEntity.class, priority = 999 /* Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/684 */)
 public abstract class MixinLivingEntity {
 
     @ModifyExpressionValue(method = "tickStatusEffects", at = @At(value = "CONSTANT", args = "intValue=4"))
@@ -42,7 +42,7 @@ public abstract class MixinLivingEntity {
         }
     }
 
-    @ModifyConstant(method = "getBlockingItem", constant = @Constant(intValue = 5))
+    @ModifyConstant(method = "getBlockingItem", constant = @Constant(intValue = 5), require = 0 /* Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/684 */)
     private int removeBlockActionUseDelay(int constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 0;
