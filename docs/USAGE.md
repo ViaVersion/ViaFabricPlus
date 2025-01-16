@@ -2,7 +2,7 @@
 
 ## Introduction
 
-At the top left of the multiplayer screen is the ViaFabricPlus button, with it you can enter the main menu of the mod
+At the top right of the multiplayer screen is the ViaFabricPlus button, with it you can enter the main menu of the mod
 where you can change the settings and set the protocol version, the position of the button can be changed in the
 Settings -> General -> multiplayer screen button orientation.
 
