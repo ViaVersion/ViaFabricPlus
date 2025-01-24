@@ -185,7 +185,6 @@
     "fixes.vialegacy.MixinProtocolc0_30cpeToc0_28_30",
     "fixes.vialegacy.MixinProtocolr1_7_6_10Tor1_8",
     "fixes.viaversion.MixinBlockItemPacketRewriter1_20_5",
-    "fixes.viaversion.MixinCommandBlockProvider",
     "fixes.viaversion.MixinCommonBoss",
     "fixes.viaversion.MixinEntityPacketRewriter1_15",
     "fixes.viaversion.MixinEntityPacketRewriter1_17",

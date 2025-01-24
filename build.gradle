@@ -66,11 +66,11 @@ dependencies {
 
 	modCompileOnly "com.terraformersmc:modmenu:11.0.3"
 
-	jij "com.viaversion:viaversion-common:5.1.2-SNAPSHOT"
-	jij "com.viaversion:viabackwards-common:5.1.2-SNAPSHOT"
+	jij "com.viaversion:viaversion-common:5.2.2-SNAPSHOT"
+	jij "com.viaversion:viabackwards-common:5.2.2-SNAPSHOT"
 	jij "net.raphimc:viaaprilfools-common:3.0.5-SNAPSHOT"
-	jij "net.raphimc:ViaLegacy:3.0.6-SNAPSHOT"
-	jij ("net.raphimc:ViaBedrock:0.0.13-SNAPSHOT") {
+	jij "net.raphimc:ViaLegacy:3.0.8-SNAPSHOT"
+	jij ("net.raphimc:ViaBedrock:0.0.14-SNAPSHOT") {
 		exclude group: "io.jsonwebtoken"
 		exclude group: "com.mojang", module: "brigadier"
 	}
