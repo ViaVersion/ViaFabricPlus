@@ -60,7 +60,7 @@ public abstract class AbstractSave {
                 } else {
                     ViaFabricPlusImpl.INSTANCE.logger().error("The file {} is empty!", path.getFileName());
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 ViaFabricPlusImpl.INSTANCE.logger().error("Failed to read file: {}!", path.getFileName(), e);
             }
         }
@@ -75,7 +75,7 @@ public abstract class AbstractSave {
             write(object);
 
             Files.writeString(path, GSON.toJson(object), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException e) {
+        } catch (Exception e) {
             ViaFabricPlusImpl.INSTANCE.logger().error("Failed to write file: {}!", path.getFileName(), e);
         }
     }
