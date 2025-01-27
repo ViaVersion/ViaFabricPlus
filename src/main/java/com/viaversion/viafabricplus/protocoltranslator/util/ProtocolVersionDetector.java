@@ -43,7 +43,7 @@ public final class ProtocolVersionDetector {
      * @return The protocol version of the server
      */
     public static ProtocolVersion get(final InetSocketAddress serverAddress, final ProtocolVersion clientVersion) {
-        MCPingResponse response = MCPing
+        final MCPingResponse response = MCPing
                 .pingModern(clientVersion.getOriginalVersion())
                 .address(serverAddress)
                 .noResolve()
@@ -52,27 +52,20 @@ public final class ProtocolVersionDetector {
 
         if (response.version.protocol == clientVersion.getOriginalVersion()) { // If the server is on the same version as the client, we can just connect
             return clientVersion;
-        } else { // Else ping again with protocol id -1 to get the protocol id of the server
-            response = MCPing
-                    .pingModern(-1)
-                    .address(serverAddress)
-                    .noResolve()
-                    .timeout(TIMEOUT, TIMEOUT)
-                    .getSync();
+        }
 
-            if (ProtocolVersion.isRegistered(response.version.protocol)) { // If the protocol is registered, we can use it
-                return ProtocolVersion.getProtocol(response.version.protocol);
-            } else {
-                for (ProtocolVersion protocol : ProtocolVersionList.getProtocolsNewToOld()) {
-                    for (String version : protocol.getIncludedVersions()) {
-                        if (response.version.name.contains(version)) {
-                            return protocol;
-                        }
+        if (ProtocolVersion.isRegistered(response.version.protocol)) { // If the protocol is registered, we can use it
+            return ProtocolVersion.getProtocol(response.version.protocol);
+        } else {
+            for (ProtocolVersion protocol : ProtocolVersionList.getProtocolsNewToOld()) {
+                for (String version : protocol.getIncludedVersions()) {
+                    if (response.version.name.contains(version)) {
+                        return protocol;
                     }
                 }
-                throw new RuntimeException("Unable to detect the server version\nServer sent an invalid protocol id: "
-                        + response.version.protocol + " (" + response.version.name + Formatting.RESET + ")");
             }
+            throw new RuntimeException("Unable to detect the server version\nServer sent an invalid protocol id: "
+                    + response.version.protocol + " (" + response.version.name + Formatting.RESET + ")");
         }
     }
 
