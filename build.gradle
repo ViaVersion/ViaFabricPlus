@@ -48,7 +48,7 @@ dependencies {
         exclude group: "org.slf4j", module: "slf4j-api"
     }
     jij "net.lenni0451:Reflect:1.4.0"
-    jij("net.lenni0451:MCPing:1.4.2") {
+    jij("net.lenni0451:MCPing:1.4.3") {
         exclude group: "com.google.code.gson", module: "gson"
     }
     jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
