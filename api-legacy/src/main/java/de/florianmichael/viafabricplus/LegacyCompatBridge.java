@@ -38,12 +38,11 @@ public class LegacyCompatBridge {
     public static void warn() {
         if (!warned) {
             warned = true;
-            ViaFabricPlus.INSTANCE.getLogger().warn("===========================================");
-            ViaFabricPlus.INSTANCE.getLogger().warn("A mod is using deprecated ViaFabricPlus internals which will be removed in the future.");
-            ViaFabricPlus.INSTANCE.getLogger().warn("Please contact the mod author to update their code to use the general API point added in 4.0.0.");
-            ViaFabricPlus.INSTANCE.getLogger().warn("The error below will point to the mod calling the deprecated API.");
-            Thread.dumpStack();
-            ViaFabricPlus.INSTANCE.getLogger().warn("===========================================");
+            ViaFabricPlus.INSTANCE.getLogger().error("===========================================");
+            ViaFabricPlus.INSTANCE.getLogger().error("A mod is using deprecated ViaFabricPlus internals which will be removed in the future.");
+            ViaFabricPlus.INSTANCE.getLogger().error("Please contact the mod author to update their code to use the general API point added in 4.0.0.");
+            ViaFabricPlus.INSTANCE.getLogger().error("The error will point to the mod calling the deprecated API:", new Exception());
+            ViaFabricPlus.INSTANCE.getLogger().error("===========================================");
         }
     }
 
