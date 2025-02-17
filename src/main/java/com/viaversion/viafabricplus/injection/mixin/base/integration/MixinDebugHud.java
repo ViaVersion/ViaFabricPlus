@@ -30,7 +30,6 @@ import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
 import net.minecraft.util.Formatting;
 import net.raphimc.viabedrock.protocol.data.enums.bedrock.ServerAuthMovementMode;
@@ -56,46 +55,34 @@ public abstract class MixinDebugHud {
 
     @Inject(method = "getLeftText", at = @At("RETURN"))
     public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
-        if (!GeneralSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) { // Only show if enabled
-            return;
-        }
-        if (MinecraftClient.getInstance().isInSingleplayer() && MinecraftClient.getInstance().player != null) { // Don't show in singleplayer
-            return;
-        }
-        final UserConnection userConnection = ProtocolTranslator.getPlayNetworkUserConnection();
-        if (userConnection == null) { // Only show if ViaVersion is active
+        if (!GeneralSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) {
             return;
         }
 
         final List<String> information = new ArrayList<>();
         information.add("");
-
-        // Title
         information.add(ChatUtil.PREFIX + Formatting.RESET + " " + ViaFabricPlus.getImpl().getVersion());
 
-        // Connection
+        final UserConnection userConnection = ProtocolTranslator.getPlayNetworkUserConnection();
+        if (userConnection == null) {
+            cir.getReturnValue().addAll(information);
+            return;
+        }
+
         final ProtocolInfo info = userConnection.getProtocolInfo();
         information.add("P: " + info.getPipeline().pipes().size() + " C: " + info.protocolVersion() + " S: " + info.serverProtocolVersion());
-
-        // 1.7.10
         final EntityTracker entityTracker1_7_10 = userConnection.get(EntityTracker.class);
         if (entityTracker1_7_10 != null) {
             information.add("1.7 Entities: " + entityTracker1_7_10.getTrackedEntities().size() + ", Virtual holograms: " + entityTracker1_7_10.getVirtualHolograms().size());
         }
-
-        // 1.1
         final SeedStorage seedStorage = userConnection.get(SeedStorage.class);
         if (seedStorage != null && userConnection.getProtocolInfo().serverProtocolVersion().newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
             information.add("World Seed: " + seedStorage.seed);
         }
-
-        // c0.30 cpe
         final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = userConnection.get(ExtensionProtocolMetadataStorage.class);
         if (extensionProtocolMetadataStorage != null) {
             information.add("CPE extensions: " + extensionProtocolMetadataStorage.getExtensionCount());
         }
-
-        // Bedrock
         final BedrockJoinGameTracker joinGameDataTracker = userConnection.get(BedrockJoinGameTracker.class);
         if (joinGameDataTracker != null) {
             final ServerAuthMovementMode movementMode = userConnection.get(GameSessionStorage.class).getMovementMode();
@@ -106,16 +93,18 @@ public abstract class MixinDebugHud {
         }
         final ChunkTracker chunkTracker = userConnection.get(ChunkTracker.class);
         if (chunkTracker != null) {
-            final int subChunkRequests = ((IChunkTracker) chunkTracker).viaFabricPlus$getSubChunkRequests();
-            final int pendingSubChunks = ((IChunkTracker) chunkTracker).viaFabricPlus$getPendingSubChunks();
-            final int chunks = ((IChunkTracker) chunkTracker).viaFabricPlus$getChunks();
+            final IChunkTracker mixinChunkTracker = (IChunkTracker) chunkTracker;
+            final int subChunkRequests = mixinChunkTracker.viaFabricPlus$getSubChunkRequests();
+            final int pendingSubChunks = mixinChunkTracker.viaFabricPlus$getPendingSubChunks();
+            final int chunks = mixinChunkTracker.viaFabricPlus$getChunks();
             cir.getReturnValue().add("Chunk Tracker: R: " + subChunkRequests + ", P: " + pendingSubChunks + ", C: " + chunks);
         }
         if (userConnection.getChannel() instanceof RakClientChannel rakClientChannel) {
             final RakSessionCodec rakSessionCodec = rakClientChannel.parent().pipeline().get(RakSessionCodec.class);
             if (rakSessionCodec != null) {
-                final int transmitQueue = ((IRakSessionCodec) rakSessionCodec).viaFabricPlus$getOutgoingPackets();
-                final int retransmitQueue = ((IRakSessionCodec) rakSessionCodec).viaFabricPlus$SentDatagrams();
+                final IRakSessionCodec mixinRakSessionCodec = (IRakSessionCodec) rakSessionCodec;
+                final int transmitQueue = mixinRakSessionCodec.viaFabricPlus$getOutgoingPackets();
+                final int retransmitQueue = mixinRakSessionCodec.viaFabricPlus$SentDatagrams();
                 cir.getReturnValue().add("RTT: " + Math.round(rakSessionCodec.getRTT()) + " ms, P: " + rakSessionCodec.getPing() + " ms" + ", TQ: " + transmitQueue + ", RTQ: " + retransmitQueue);
             }
         }
