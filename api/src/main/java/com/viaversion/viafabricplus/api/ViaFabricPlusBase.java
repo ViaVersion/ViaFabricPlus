@@ -47,8 +47,22 @@ public interface ViaFabricPlusBase {
      * @return an <b>internally based API version</b> incremented with meaningful or breaking changes.
      */
     default int apiVersion() {
-        return 1;
+        return 2;
     }
+
+    /**
+     * The version of the mod, this is the version that is displayed in the mod list (e.g. 4.0.0)
+     *
+     * @return the version of the mod
+     */
+    String getVersion();
+
+    /**
+     * The implementation version of the current running jar file, containing commit-hash as well as the {@link #getVersion()}.
+     *
+     * @return the implementation version of the mod
+     */
+    String getImplVersion();
 
     /**
      * Get the root path of the mod.

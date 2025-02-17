@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.protocoltranslator.impl.platform;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusVLViaConfig;
 import com.viaversion.vialoader.impl.platform.ViaVersionPlatformImpl;
@@ -48,8 +47,8 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
     @Override
     public JsonObject getDump() {
         final JsonObject platformDump = new JsonObject();
-        platformDump.addProperty("version", ViaFabricPlusMixinPlugin.VFP_VERSION);
-        platformDump.addProperty("impl_version", ViaFabricPlusMixinPlugin.VFP_IMPL_VERSION);
+        platformDump.addProperty("version", ViaFabricPlusImpl.INSTANCE.getVersion());
+        platformDump.addProperty("impl_version", ViaFabricPlusImpl.INSTANCE.getImplVersion());
         platformDump.addProperty("native_version", ProtocolTranslator.NATIVE_VERSION.toString());
 
         final JsonArray mods = new JsonArray();

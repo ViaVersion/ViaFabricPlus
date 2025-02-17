@@ -47,6 +47,7 @@ import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.item.ItemStack;
@@ -99,10 +100,17 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     private final Logger logger = LogManager.getLogger("ViaFabricPlus");
     private final Path path = FabricLoader.getInstance().getConfigDir().resolve("viafabricplus");
 
+    private String version;
+    private String implVersion;
+
     private CompletableFuture<Void> loadingFuture;
 
     public void init() {
         ViaFabricPlus.init(INSTANCE);
+
+        final ModMetadata metadata = FabricLoader.getInstance().getModContainer("viafabricplus").get().getMetadata();
+        version = metadata.getVersion().getFriendlyString();
+        implVersion = metadata.getCustomValue("vfp:implVersion").getAsString();
         FabricLoader.getInstance().getEntrypointContainers("viafabricplus", ViaFabricPlusLoadEntrypoint.class).forEach(container -> {
             container.getEntrypoint().onPlatformLoad(INSTANCE);
         });
@@ -142,6 +150,16 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
     // --------------------------------------------------------------------------------------------
     // Proxy the most important/used internals to a general API point for mods
+
+    @Override
+    public String getVersion() {
+        return version;
+    }
+
+    @Override
+    public String getImplVersion() {
+        return implVersion;
+    }
 
     @Override
     public Path rootPath() {
