@@ -46,7 +46,7 @@ public final class BetaCraftScreen extends VFPScreen {
     public static BCServerList SERVER_LIST;
     private static final String BETA_CRAFT_SERVER_LIST_URL = "https://betacraft.uk/serverlist/";
 
-    protected BetaCraftScreen() {
+    private BetaCraftScreen() {
         super("BetaCraft", true);
     }
 

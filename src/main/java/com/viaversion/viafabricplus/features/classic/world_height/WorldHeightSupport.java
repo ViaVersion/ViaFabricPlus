@@ -136,7 +136,7 @@ public final class WorldHeightSupport {
 
                     int skyLightCount = 16;
                     int blockLightCount = sectionYCount;
-                    if (lightArrays.size() == 16 + 0 + 2) {
+                    if (lightArrays.size() == 16 + 2) {
                         blockLightCount = 0;
                     } else if (lightArrays.size() == 16 + sectionYCount + 2) {
                     } else if (lightArrays.size() == sectionYCount + sectionYCount + 2) {

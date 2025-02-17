@@ -50,7 +50,7 @@ public final class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         RAW_ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
     }
 
-    protected FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z) {
+    private FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z) {
         super(clientWorld, x, y, z);
 
         this.scale = 0.125F;

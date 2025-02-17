@@ -41,7 +41,7 @@ public final class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryPro
         return false;
     }
 
-    protected Item[] getMinecraftContainerItems(final List<ItemStack> trackingItems) {
+    private Item[] getMinecraftContainerItems(final List<ItemStack> trackingItems) {
         final Item[] items = new Item[trackingItems.size()];
 
         for (int i = 0; i < items.length; i++) {
@@ -94,7 +94,7 @@ public final class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryPro
         getPlayer().getInventory().insertStack(ItemTranslator.viaToMc(item, LegacyProtocolVersion.b1_8tob1_8_1));
     }
 
-    protected ClientPlayerEntity getPlayer() {
+    private ClientPlayerEntity getPlayer() {
         return MinecraftClient.getInstance().player;
     }
 
