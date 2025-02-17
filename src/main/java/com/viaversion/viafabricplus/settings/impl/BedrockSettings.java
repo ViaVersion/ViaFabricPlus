@@ -41,8 +41,8 @@ import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCodeMsaCode;
 import net.raphimc.minecraftauth.util.MicrosoftConstants;
-import net.raphimc.minecraftauth.util.logging.ConsoleLogger;
 import net.raphimc.minecraftauth.util.logging.ILogger;
+import net.raphimc.minecraftauth.util.logging.Slf4jConsoleLogger;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 
@@ -80,7 +80,7 @@ public final class BedrockSettings extends SettingGroup {
     };
     public final BooleanSetting replaceDefaultPort = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.replace_default_port"), true);
 
-    private final ILogger GUI_LOGGER = new ConsoleLogger() {
+    private final ILogger GUI_LOGGER = new Slf4jConsoleLogger() {
         @Override
         public void info(AbstractStep<?, ?> step, String message) {
             super.info(step, message);
