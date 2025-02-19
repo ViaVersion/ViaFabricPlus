@@ -67,7 +67,7 @@ public final class ItemPick1_21_3 {
     public static void doItemPick(final MinecraftClient client) {
         final boolean creativeMode = client.player.getAbilities().creativeMode;
 
-        ItemStack itemStack = null;
+        ItemStack itemStack;
         final HitResult crosshairTarget = client.crosshairTarget;
         if (crosshairTarget.getType() == HitResult.Type.BLOCK) {
             final BlockPos blockPos = ((BlockHitResult) crosshairTarget).getBlockPos();
@@ -92,12 +92,14 @@ public final class ItemPick1_21_3 {
             if (crosshairTarget.getType() != HitResult.Type.ENTITY || !creativeMode) {
                 return;
             }
+
             final Entity entity = ((EntityHitResult) crosshairTarget).getEntity();
             itemStack = entity.getPickBlockStack();
             if (itemStack == null) {
                 return;
             }
         }
+
         if (itemStack.isEmpty()) {
             return;
         }
@@ -107,16 +109,16 @@ public final class ItemPick1_21_3 {
         if (creativeMode) {
             addPickBlock(inventory, itemStack);
             client.interactionManager.clickCreativeStack(client.player.getStackInHand(Hand.MAIN_HAND), 36 + inventory.selectedSlot);
-        } else if (index == -1) {
-            return;
+        } else if (index != -1) {
+            if (PlayerInventory.isValidHotbarIndex(index)) {
+                inventory.selectedSlot = index;
+                return;
+            }
+
+            final PacketWrapper pickFromInventory = PacketWrapper.create(ServerboundPackets1_21_2.PICK_ITEM, ProtocolTranslator.getPlayNetworkUserConnection());
+            pickFromInventory.write(Types.VAR_INT, index);
+            pickFromInventory.scheduleSendToServer(Protocol1_21_2To1_21_4.class);
         }
-        if (PlayerInventory.isValidHotbarIndex(index)) {
-            inventory.selectedSlot = index;
-            return;
-        }
-        final PacketWrapper pickFromInventory = PacketWrapper.create(ServerboundPackets1_21_2.PICK_ITEM, ProtocolTranslator.getPlayNetworkUserConnection());
-        pickFromInventory.write(Types.VAR_INT, index);
-        pickFromInventory.scheduleSendToServer(Protocol1_21_2To1_21_4.class);
     }
 
 }
