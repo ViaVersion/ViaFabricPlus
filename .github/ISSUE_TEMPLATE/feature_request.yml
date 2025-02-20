@@ -1,6 +1,6 @@
 name: Feature Request
 description: Suggest a feature to be added in ViaFabricPlus
-labels: [ enhancement ]
+labels: [ S-needs-triage, T-feature ]
 
 body:
   - type: markdown
