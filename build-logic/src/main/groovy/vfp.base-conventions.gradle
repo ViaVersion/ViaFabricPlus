@@ -51,15 +51,15 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_version}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    vvDependencies "com.viaversion:viaversion-common:5.2.2-20250219.131513-18"
-    vvDependencies "com.viaversion:viabackwards-common:5.2.2-20250208.132513-10"
-    vvDependencies "com.viaversion:viaaprilfools-common:4.0.1-20250211.153211-4"
-    vvDependencies("com.viaversion:vialoader:4.0.1-20250217.155514-3") {
+    vvDependencies "com.viaversion:viaversion-common:5.2.2-SNAPSHOT"
+    vvDependencies "com.viaversion:viabackwards-common:5.2.2-SNAPSHOT"
+    vvDependencies "com.viaversion:viaaprilfools-common:4.0.1-SNAPSHOT"
+    vvDependencies("com.viaversion:vialoader:4.0.1-SNAPSHOT") {
         exclude group: "com.google.guava", module: "guava"
         exclude group: "org.slf4j", module: "slf4j-api"
     }
-    vvDependencies "net.raphimc:ViaLegacy:3.0.8-20250211.153410-9"
-    vvDependencies("net.raphimc:ViaBedrock:0.0.15-20250216.171932-1") {
+    vvDependencies "net.raphimc:ViaLegacy:3.0.8-SNAPSHOT"
+    vvDependencies("net.raphimc:ViaBedrock:0.0.15-SNAPSHOT") {
         exclude group: "io.jsonwebtoken"
         exclude group: "com.mojang", module: "brigadier"
     }
