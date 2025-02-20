@@ -62,37 +62,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-/*
- * TODO | Port 1.21.3
- *  - VehicleMovePacket handling now has distance check in ClientPlayNetworkHandler
- *  - Illusioner/Sniffer don't override visibility bounding box anymore
- *  - AbstractFireabll/EyeOfEnder#shouldRender new
- *  - Entity#baseTick doesn't set prev rotation anymore at top
- *  - LivingEntity movement code got refactored completely
- *  - BundleItem#use, ConsumableComponent behaviour in use functions
- *  - Check all screen handlers for changes
- *
- * TODO | Port 1.20.6
- *  - ClientPlayerInteractionManager#interactBlockInternal added new condition
- *  - Command arguments (Probably not everything worth, but least them with nbt)
- *  - Entity attachment calculation got changed completely
- *  - Particle handling has slightly changed
- *  - BookViewScreen/BookEditScreen networking handling
- *  - SetEquipment packet now only accepts living entities
- *  - Wolf interaction
- *
- * TODO | General
- *  - Make recipe fixes dynamic instead of a data dump in java classes
- *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
- *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
- *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
- *  - Via: 1.13 -> 1.12.2 block entities recode
- *  - OXYGEN_BONUS 1.21 -> 1.20.5 handling is missing (only visual)
- *
- * TODO | Movement
- *  - 1.8 lava movement
- *  - 1.13.2 water movement
- */
 public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
     public static final ViaFabricPlusImpl INSTANCE = new ViaFabricPlusImpl();
