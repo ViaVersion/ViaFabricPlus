@@ -38,6 +38,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     public static boolean MORE_CULLING_PRESENT;
     public static boolean LITHIUM_PRESENT;
     public static boolean MOONRISE_PRESENT;
+    public static boolean LEGENDARYTOOLTIPS_PRESENT;
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -46,6 +47,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
         MORE_CULLING_PRESENT = loader.isModLoaded("moreculling");
         LITHIUM_PRESENT = loader.isModLoaded("lithium");
         MOONRISE_PRESENT = loader.isModLoaded("moonrise");
+        LEGENDARYTOOLTIPS_PRESENT = loader.isModLoaded("legendarytooltips");
 
         // Force unload some FabricAPI mixins because FabricAPI overwrites some of the elytra code
         final Set<String> loadedMixins = RStream.of("org.spongepowered.asm.mixin.transformer.MixinConfig").fields().by("globalMixinList").get();
@@ -64,6 +66,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
         return switch (mixinClassName) {
             case MIXINS_PACKAGE + "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor" -> IPNEXT_PRESENT;
             case MIXINS_PACKAGE + "compat.lithium.MixinEntity" -> LITHIUM_PRESENT && !MOONRISE_PRESENT;
+            case MIXINS_PACKAGE + "features.item.attack_damage.MixinItemStack" -> !LEGENDARYTOOLTIPS_PRESENT;
             default -> true;
         };
     }
