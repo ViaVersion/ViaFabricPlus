@@ -61,7 +61,7 @@ public abstract class MixinMooshroomEntity extends AnimalEntity {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             return ActionResult.PASS;
         } else {
-            return instance.interactMob(player, hand);
+            return super.interactMob(player, hand);
         }
     }
 
