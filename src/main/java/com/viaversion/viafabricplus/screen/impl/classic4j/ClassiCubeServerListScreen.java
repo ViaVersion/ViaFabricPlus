@@ -74,9 +74,9 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 4) * 3));
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.logout"), button -> {
-            close();
             SaveManager.INSTANCE.getAccountsSave().setClassicubeAccount(null);
             SERVER_LIST.clear();
+            close();
         }).position(width - 60 - 5, 5).size(60, 20).build());
 
         super.init();
