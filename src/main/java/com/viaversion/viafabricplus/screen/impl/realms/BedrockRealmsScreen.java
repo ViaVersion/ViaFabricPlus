@@ -157,7 +157,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
 
     @Override
     protected boolean subtitleCentered() {
-        return slotList == null;
+        return realmsWorlds == null;
     }
 
     public final class SlotList extends VFPList {
