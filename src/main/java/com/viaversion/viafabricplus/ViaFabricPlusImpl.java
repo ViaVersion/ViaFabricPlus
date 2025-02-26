@@ -136,17 +136,17 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public ProtocolVersion getTargetVersion() {
+    public @Nullable ProtocolVersion getTargetVersion() {
         return ProtocolTranslator.getTargetVersion();
     }
 
     @Override
-    public ProtocolVersion getTargetVersion(Channel channel) {
+    public @Nullable ProtocolVersion getTargetVersion(Channel channel) {
         return ProtocolTranslator.getTargetVersion(channel);
     }
 
     @Override
-    public ProtocolVersion getTargetVersion(ClientConnection connection) {
+    public @Nullable ProtocolVersion getTargetVersion(ClientConnection connection) {
         return ((IClientConnection) connection).viaFabricPlus$getTargetVersion();
     }
 
@@ -161,12 +161,12 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public UserConnection getPlayNetworkUserConnection() {
+    public @Nullable UserConnection getPlayNetworkUserConnection() {
         return ProtocolTranslator.getPlayNetworkUserConnection();
     }
 
     @Override
-    public UserConnection getUserConnection(ClientConnection connection) {
+    public @Nullable UserConnection getUserConnection(ClientConnection connection) {
         return ((IClientConnection) connection).viaFabricPlus$getUserConnection();
     }
 
@@ -201,7 +201,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public SettingGroup getSettingGroup(String translationKey) {
+    public @Nullable SettingGroup getSettingGroup(String translationKey) {
         for (SettingGroup group : SettingsManager.INSTANCE.getGroups()) {
             if (ChatUtil.uncoverTranslationKey(group.getName()).equals(translationKey)) {
                 return group;
@@ -221,12 +221,12 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public Item translateItem(ItemStack stack, ProtocolVersion targetVersion) {
+    public @Nullable Item translateItem(ItemStack stack, ProtocolVersion targetVersion) {
         return ItemTranslator.mcToVia(stack, targetVersion);
     }
 
     @Override
-    public ItemStack translateItem(Item item, ProtocolVersion sourceVersion) {
+    public @Nullable ItemStack translateItem(Item item, ProtocolVersion sourceVersion) {
         return ItemTranslator.viaToMc(item, sourceVersion);
     }
 

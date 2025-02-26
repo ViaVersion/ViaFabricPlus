@@ -29,14 +29,13 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
+import java.nio.file.Path;
+import java.util.List;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.ClientConnection;
 import org.jetbrains.annotations.Nullable;
-
-import java.nio.file.Path;
-import java.util.List;
 
 /**
  * General API point for mods. Get instance via {@link ViaFabricPlus#getImpl()}.
@@ -112,7 +111,7 @@ public interface ViaFabricPlusBase {
     /**
      * @return the current UserConnection of the connection to the server, if the player isn't connected to a server it will return null
      */
-    UserConnection getPlayNetworkUserConnection();
+    @Nullable UserConnection getPlayNetworkUserConnection();
 
     /**
      * Get the UserConnection for the given connection {@link ClientConnection}.
@@ -120,7 +119,7 @@ public interface ViaFabricPlusBase {
      * @param connection the connection
      * @return the UserConnection
      */
-    UserConnection getUserConnection(final ClientConnection connection);
+    @Nullable UserConnection getUserConnection(final ClientConnection connection);
 
     /**
      * Gets the per-server protocol version for the given server.
@@ -172,7 +171,7 @@ public interface ViaFabricPlusBase {
      * @param translationKey The translationKey of the setting group
      * @return The setting group or null if it does not exist
      */
-    SettingGroup getSettingGroup(final String translationKey);
+    @Nullable SettingGroup getSettingGroup(final String translationKey);
 
     /**
      * Open the protocol selection screen.
@@ -195,7 +194,7 @@ public interface ViaFabricPlusBase {
      * @param targetVersion The target version to convert to (e.g. v1.13) {@link ProtocolVersion}
      * @return The ViaVersion item for the target version {@link Item}
      */
-    Item translateItem(final ItemStack stack, final ProtocolVersion targetVersion);
+    @Nullable Item translateItem(final ItemStack stack, final ProtocolVersion targetVersion);
 
     /**
      * Converts a ViaVersion item {@link Item} to a Minecraft item stack {@link ItemStack}
@@ -204,7 +203,7 @@ public interface ViaFabricPlusBase {
      * @param sourceVersion The source version of the item (e.g. b1.8) {@link ProtocolVersion}
      * @return The Minecraft item stack for the source version {@link ItemStack}
      */
-    ItemStack translateItem(final Item item, final ProtocolVersion sourceVersion);
+    @Nullable ItemStack translateItem(final Item item, final ProtocolVersion sourceVersion);
 
     /**
      * @param item    The item to check
