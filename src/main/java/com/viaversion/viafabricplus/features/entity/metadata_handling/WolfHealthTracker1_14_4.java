@@ -32,7 +32,13 @@ public final class WolfHealthTracker1_14_4 implements StorableObject {
     private final Int2FloatMap healthDataMap = new Int2FloatOpenHashMap();
 
     public static float getWolfHealth(final LivingEntity entity) {
-        return ProtocolTranslator.getPlayNetworkUserConnection().get(WolfHealthTracker1_14_4.class).getWolfHealth(entity.getId(), entity.getHealth());
+        final WolfHealthTracker1_14_4 tracker = ProtocolTranslator.getPlayNetworkUserConnection().get(WolfHealthTracker1_14_4.class);
+        if (tracker != null) {
+            return tracker.getWolfHealth(entity.getId(), entity.getHealth());
+        } else {
+            // Mods might get the wolf health before our tracker is set, so returning back to the original value as well.
+            return entity.getHealth();
+        }
     }
 
     public float getWolfHealth(final int entityId, final float fallback) {
