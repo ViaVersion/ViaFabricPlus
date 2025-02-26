@@ -3,6 +3,7 @@ plugins {
 }
 
 base {
+    description = "Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay"
     archivesName = "ViaFabricPlus"
 }
 

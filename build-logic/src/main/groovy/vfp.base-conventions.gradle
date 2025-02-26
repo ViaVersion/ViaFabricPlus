@@ -9,7 +9,6 @@ plugins {
 base {
     group = project.maven_group
     version = project.maven_version
-    description = project.maven_description
 }
 
 repositories {

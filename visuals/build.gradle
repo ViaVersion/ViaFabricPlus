@@ -2,6 +2,10 @@ plugins {
     id "vfp.mod-conventions"
 }
 
+base {
+    description = "Additional mod for ViaFabricPlus to add visual-only changes."
+}
+
 loom {
     accessWidenerPath = file("src/main/resources/viafabricplus-visuals.accesswidener")
 }

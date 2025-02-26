@@ -2,6 +2,10 @@ plugins {
     id "vfp.mod-conventions"
 }
 
+base {
+    description = "Interface for third-party mods to interact with ViaFabricPlus internals."
+}
+
 configurations {
     compileOnlyApi.extendsFrom vvDependencies
 }
