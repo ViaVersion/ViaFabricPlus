@@ -237,7 +237,7 @@
     "features.networking.packet_handling.MixinClientCommonNetworkHandler",
     "features.networking.packet_handling.MixinClientPlayNetworkHandler",
     "features.networking.packet_handling.MixinEntityPacketRewriter1_19_4",
-    "features.networking.packet_handling.MixinEntityPacketRewriter1_20_3",
+    "features.networking.downloading_terrain.MixinEntityPacketRewriter1_20_3",
     "features.networking.player_abilities.MixinUpdatePlayerAbilitiesC2SPacket",
     "features.networking.registry_validation.MixinRegistryEntryList_Named",
     "features.networking.registry_validation.MixinRegistryEntryListCodec",
