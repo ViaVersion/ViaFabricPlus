@@ -28,7 +28,7 @@ public final class ViaFabricPlusViaLegacyPlatformImpl extends ViaLegacyPlatformI
 
     @Override
     public String getCpeAppName() {
-        return Via.getPlatform().getPlatformName();
+        return Via.getPlatform().getPlatformName() + " " + Via.getPlatform().getPlatformVersion();
     }
 
 }
