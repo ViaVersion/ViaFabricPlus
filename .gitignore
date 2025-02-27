@@ -36,6 +36,3 @@ run/
 runV2/
 *.cap
 *.rdc
-
-# Other
-generator.settings.gradle

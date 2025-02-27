@@ -68,6 +68,18 @@ dependencies {
             }))
         }
     }
+
+    // Generator dependencies
+    testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
+}
+
+test {
+    if (!rootProject.hasProperty("updating_minecraft") || rootProject.property("updating_minecraft").toString().toBoolean() != true) {
+        enabled = false
+    }
+
+    useJUnitPlatform()
+    workingDir = file("run")
 }
 
 processResources {

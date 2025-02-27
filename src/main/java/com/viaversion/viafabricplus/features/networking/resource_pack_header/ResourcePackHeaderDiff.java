@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.features.networking.resource_pack_header;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
@@ -87,9 +86,6 @@ public final class ResourcePackHeaderDiff {
     }
 
     public static void init() {
-        if (!GAME_VERSION_DIFF.containsKey(ProtocolTranslator.NATIVE_VERSION)) {
-            throw new RuntimeException("The native client version is not registered in the resource pack header diff!");
-        }
         // Also calls the static block
     }
 
