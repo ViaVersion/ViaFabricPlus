@@ -39,6 +39,16 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
     }
 
     @Override
+    public String getPlatformName() {
+        return "ViaFabricPlus";
+    }
+
+    @Override
+    public String getPlatformVersion() {
+        return ViaFabricPlusImpl.INSTANCE.getVersion();
+    }
+
+    @Override
     protected AbstractViaConfig createConfig() {
         // Use config overload and change directory to root folder
         return new ViaFabricPlusVLViaConfig(new File(getDataFolder(), "viaversion.yml"), this.getLogger());
@@ -47,9 +57,9 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
     @Override
     public JsonObject getDump() {
         final JsonObject platformDump = new JsonObject();
-        platformDump.addProperty("version", ViaFabricPlusImpl.INSTANCE.getVersion());
         platformDump.addProperty("impl_version", ViaFabricPlusImpl.INSTANCE.getImplVersion());
         platformDump.addProperty("native_version", ProtocolTranslator.NATIVE_VERSION.toString());
+        platformDump.addProperty("target_version", ProtocolTranslator.getTargetVersion().toString());
 
         final JsonArray mods = new JsonArray();
         FabricLoader.getInstance().getAllMods().stream().map(mod -> {
