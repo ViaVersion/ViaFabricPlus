@@ -71,7 +71,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         return hasMiningFatigue;
     }
 
-    @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
+    @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z"))
     private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
         final float efficiency = (float) this.getAttributeValue(EntityAttributes.MINING_EFFICIENCY);
         if (efficiency <= 0) {
