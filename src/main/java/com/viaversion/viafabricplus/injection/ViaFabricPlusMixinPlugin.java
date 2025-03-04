@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection;
 
+import com.viaversion.viafabricplus.features.movement.elytra.FabricAPIWorkaround;
 import net.fabricmc.loader.api.FabricLoader;
-import net.lenni0451.reflect.stream.RStream;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -51,11 +51,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
         LEGENDARYTOOLTIPS_PRESENT = loader.isModLoaded("legendarytooltips");
         LEGACY_PRESENT = loader.isModLoaded("legacy");
 
-        // Force unload some FabricAPI mixins because FabricAPI overwrites some of the elytra code
-        final Set<String> loadedMixins = RStream.of("org.spongepowered.asm.mixin.transformer.MixinConfig").fields().by("globalMixinList").get();
-        loadedMixins.add("net.fabricmc.fabric.mixin.client.entity.event.elytra.ClientPlayerEntityMixin");
-        loadedMixins.add("net.fabricmc.fabric.mixin.entity.event.elytra.LivingEntityMixin");
-        loadedMixins.add("net.fabricmc.fabric.mixin.entity.event.elytra.PlayerEntityMixin");
+        FabricAPIWorkaround.init();
     }
 
     @Override
