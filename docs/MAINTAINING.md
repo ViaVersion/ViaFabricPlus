@@ -12,23 +12,25 @@ something, ask in the ViaVersion discord.
     - `supported_versions` (if necessary)
 
    As well as the versions in the `dependencies` block in the `build.gradle` file.
+   Set `updating_minecraft` to `true` (Required for automatic data dumping).
 2. Increment the version number in `gradle.properties` by at least a minor version (e.g. 1.0.0 -> 1.1.0)
 3. Check all data dumps and diffs in the fixes/data package and update them if necessary, here is a list of some
    critical ones:
     - `ResourcePackHeaderDiff` (add the new version at the top of the list)
     - `ItemRegistryDiff` (add all new items/blocks added in the new version)
     - `EntityDimensionDiff` (add entity dimension changes)
+   For this process you can also run `gradle test` which will automatically dump changes of diff classes.
 4. Update the `NATIVE_VERSION` field in the ProtocolTranslator class to the new version
 5. Update protocol constants in the `ViaFabricPlusProtocol` class
-
+6. Update `ItemTranslator#getClientboundItemType` if a new item type exists
 -------------
 
-6. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
+7. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
     - `MixinClientWorld#tickEntity` and `MixinClientWorld#tickPassenger`
     - `MixinPlayer#getBlockBreakingSpeed`
-7. mDecompile the game source code with the tool of your choice.
-8. Try to compile the mod and start porting the code until all existing fixes are working again.
-9. Diff the game code with the code of the previous version (e.g. using git) and implement all changes that could be
+8. mDecompile the game source code with the tool of your choice.
+9. Try to compile the mod and start porting the code until all existing fixes are working again.
+10. Diff the game code with the code of the previous version (e.g. using git) and implement all changes that could be
    relevant for ViaFabricPlus, those are:
     - General logic changes (e.g. `if (a && b)` -> `if (b || a)`)
     - Changes to the movement code (e.g. `player.yaw` -> `player.headYaw`)
@@ -72,18 +74,19 @@ something, ask in the ViaVersion discord.
         - `net.minecraft.stats`
         - `net.minecraft.tags`
 
-10. Check the ViaVersion/upstream protocol implementation for issues and report them if necessary or if these issues
+11. Check the ViaVersion/upstream protocol implementation for issues and report them if necessary or if these issues
     can't be fixed,
     without tons of work, implement a workaround in ViaFabricPlus.
-11. Run the game and check all GUIs and other visuals for issues.
-12. Clean your code and make sure it is readable and understandable, clientside fixes are sorted by their protocol
+12. Run the game and check all GUIs and other visuals for issues.
+13. Clean your code and make sure it is readable and understandable, clientside fixes are sorted by their protocol
     versions, having
     newer fixes at the top of the file.
+    Set `updating_minecraft` to `false`.
 
 -------------
 
-13. Create a pull request and wait for it to be reviewed and merged.
-14. You're done, congrats!
+14. Create a pull request and wait for it to be reviewed and merged.
+15. You're done, congrats!
 
 ## Git branches
 
@@ -104,24 +107,25 @@ Every change made to the game is called a `feature`. Each feature has its packag
 `injection/mixin/features/`, organizing utility and mixin classes for easier project maintenance and porting
 Loading of features is done via `static` blocks and dummy `init` function called in the `FeaturesLoading` class.
 
+## Release process
+1. Set `maven_version` in `gradle.properties` to the next release version.
+2. Pin version ids of `vvDependencies` in `build-logic/src/main/groovy/vfp.base-conventions.gradle`
+3. Commit `<version> Release`
+
+Usually you should go back to a -SNAPSHOT `maven_version` and unpin `vvDependencies` again in your next commit. If the next commit
+would be a merged pull request of someone else, you can do a commit with this format before merging the PR:
+`Bump version to <version>`
+
 ## Versioning
 
 The versioning should only be updated every release and should only have one update between each release.
 
-- The versioning scheme is `major.minor.patch`, where:
-    - `major` is incremented when breaking changes are made
-    - `minor` is incremented when new features are added
-    - `patch` is incremented when bug fixes are made
-
-This scheme is used as follows:
-
+The versioning scheme is `major.minor.patch`, where:
 - `Major` versions are only incremented with breaking and fundamental changes to the existing codebase, such as
-  migrating mappings
-  or refactoring the entire codebase.
+  migrating mappings or refactoring the entire codebase.
 
 - `Minor` versions are incremented when the mod gets ported to a new version of the game or when huge features are
-  added /
-  upstream changes are implemented.
+  added / upstream changes are implemented.
 
 - `Patch` versions are incremented when bug fixes are made or small features are added, they are the usual version
   increment.
