@@ -28,7 +28,7 @@ something, ask in the ViaVersion discord.
 7. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
     - `MixinClientWorld#tickEntity` and `MixinClientWorld#tickPassenger`
     - `MixinPlayer#getBlockBreakingSpeed`
-8. mDecompile the game source code with the tool of your choice.
+8. Decompile the game source code with the tool of your choice.
 9. Try to compile the mod and start porting the code until all existing fixes are working again.
 10. Diff the game code with the code of the previous version (e.g. using git) and implement all changes that could be
    relevant for ViaFabricPlus, those are:

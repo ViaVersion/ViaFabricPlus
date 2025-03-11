@@ -132,7 +132,6 @@
     "features.interaction.MixinAbstractClientPlayerEntity",
     "features.interaction.MixinLivingEntity",
     "features.interaction.MixinPlayerEntity",
-    "features.interaction.attack_cooldown.MixinClientPlayerInteractionManager",
     "features.interaction.attack_cooldown.MixinMinecraftClient",
     "features.interaction.attack_cooldown.MixinPlayerEntity",
     "features.interaction.container_clicking.MixinAbstractFurnaceScreenHandler",
