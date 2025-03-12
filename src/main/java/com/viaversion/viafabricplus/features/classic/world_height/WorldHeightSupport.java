@@ -175,8 +175,8 @@ public final class WorldHeightSupport {
         };
     }
 
-    private static void changeDimensionTagHeight(final UserConnection user, final CompoundTag tag) {
-        tag.putInt("height", Via.getManager().getProviders().get(ClassicWorldHeightProvider.class).getMaxChunkSectionCount(user) << 4);
+    private static void changeDimensionTagHeight(final UserConnection connection, final CompoundTag tag) {
+        tag.putInt("height", Via.getManager().getProviders().get(ClassicWorldHeightProvider.class).getMaxChunkSectionCount(connection) << 4);
     }
 
 }

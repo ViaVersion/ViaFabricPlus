@@ -39,8 +39,8 @@ public final class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
     public static final String VIABEDROCK_ENCRYPTION_HANDLER_NAME = "viabedrock-encryption";
     public static final String VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME = "viabedrock-ping-encapsulation";
 
-    public ViaFabricPlusVLLegacyPipeline(UserConnection user, ProtocolVersion version) {
-        super(user, version);
+    public ViaFabricPlusVLLegacyPipeline(UserConnection connection, ProtocolVersion version) {
+        super(connection, version);
     }
 
     @Override
@@ -49,12 +49,12 @@ public final class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
         ctx.pipeline().addAfter(VIA_DECODER_NAME, VIA_FLOW_CONTROL, new NoReadFlowControlHandler());
 
-        this.user.getProtocolInfo().getPipeline().add(ViaFabricPlusProtocol.INSTANCE);
+        this.connection.getProtocolInfo().getPipeline().add(ViaFabricPlusProtocol.INSTANCE);
     }
 
     @Override
     protected ChannelHandler createViaDecoder() {
-        return new ViaFabricPlusViaDecoder(this.user);
+        return new ViaFabricPlusViaDecoder(this.connection);
     }
 
     @Override

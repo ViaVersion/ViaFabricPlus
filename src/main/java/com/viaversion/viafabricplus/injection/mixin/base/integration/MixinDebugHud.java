@@ -63,35 +63,35 @@ public abstract class MixinDebugHud {
         information.add("");
         information.add(ChatUtil.PREFIX + Formatting.RESET + " " + ViaFabricPlus.getImpl().getVersion());
 
-        final UserConnection userConnection = ProtocolTranslator.getPlayNetworkUserConnection();
-        if (userConnection == null) {
+        final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+        if (connection == null) {
             cir.getReturnValue().addAll(information);
             return;
         }
 
-        final ProtocolInfo info = userConnection.getProtocolInfo();
+        final ProtocolInfo info = connection.getProtocolInfo();
         information.add("P: " + info.getPipeline().pipes().size() + " C: " + info.protocolVersion() + " S: " + info.serverProtocolVersion());
-        final EntityTracker entityTracker1_7_10 = userConnection.get(EntityTracker.class);
+        final EntityTracker entityTracker1_7_10 = connection.get(EntityTracker.class);
         if (entityTracker1_7_10 != null) {
             information.add("1.7 Entities: " + entityTracker1_7_10.getTrackedEntities().size() + ", Virtual holograms: " + entityTracker1_7_10.getVirtualHolograms().size());
         }
-        final SeedStorage seedStorage = userConnection.get(SeedStorage.class);
-        if (seedStorage != null && userConnection.getProtocolInfo().serverProtocolVersion().newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
+        final SeedStorage seedStorage = connection.get(SeedStorage.class);
+        if (seedStorage != null && connection.getProtocolInfo().serverProtocolVersion().newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
             information.add("World Seed: " + seedStorage.seed);
         }
-        final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = userConnection.get(ExtensionProtocolMetadataStorage.class);
+        final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = connection.get(ExtensionProtocolMetadataStorage.class);
         if (extensionProtocolMetadataStorage != null) {
             information.add("CPE extensions: " + extensionProtocolMetadataStorage.getExtensionCount());
         }
-        final BedrockJoinGameTracker joinGameDataTracker = userConnection.get(BedrockJoinGameTracker.class);
+        final BedrockJoinGameTracker joinGameDataTracker = connection.get(BedrockJoinGameTracker.class);
         if (joinGameDataTracker != null) {
-            final ServerAuthMovementMode movementMode = userConnection.get(GameSessionStorage.class).getMovementMode();
+            final ServerAuthMovementMode movementMode = connection.get(GameSessionStorage.class).getMovementMode();
             information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed() + ", Movement: " + movementMode.name());
         }
         if (joinGameDataTracker != null) {
             information.add("World Seed: " + joinGameDataTracker.getSeed());
         }
-        final ChunkTracker chunkTracker = userConnection.get(ChunkTracker.class);
+        final ChunkTracker chunkTracker = connection.get(ChunkTracker.class);
         if (chunkTracker != null) {
             final IChunkTracker mixinChunkTracker = (IChunkTracker) chunkTracker;
             final int subChunkRequests = mixinChunkTracker.viaFabricPlus$getSubChunkRequests();
@@ -99,7 +99,7 @@ public abstract class MixinDebugHud {
             final int chunks = mixinChunkTracker.viaFabricPlus$getChunks();
             cir.getReturnValue().add("Chunk Tracker: R: " + subChunkRequests + ", P: " + pendingSubChunks + ", C: " + chunks);
         }
-        if (userConnection.getChannel() instanceof RakClientChannel rakClientChannel) {
+        if (connection.getChannel() instanceof RakClientChannel rakClientChannel) {
             final RakSessionCodec rakSessionCodec = rakClientChannel.parent().pipeline().get(RakSessionCodec.class);
             if (rakSessionCodec != null) {
                 final IRakSessionCodec mixinRakSessionCodec = (IRakSessionCodec) rakSessionCodec;

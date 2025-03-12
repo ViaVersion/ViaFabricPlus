@@ -50,10 +50,10 @@ public final class ArmorHudEmulation1_8 {
             }
 
             if (MinecraftClient.getInstance().player != null) {
-                final UserConnection userConnection = ProtocolTranslator.getPlayNetworkUserConnection();
-                if (userConnection != null) {
+                final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+                if (connection != null) {
                     try {
-                        sendArmorUpdate(userConnection);
+                        sendArmorUpdate(connection);
                     } catch (Throwable t) {
                         ViaFabricPlusImpl.INSTANCE.logger().error("Error sending armor update", t);
                     }
@@ -68,7 +68,7 @@ public final class ArmorHudEmulation1_8 {
         // Calls the static block
     }
 
-    private static void sendArmorUpdate(final UserConnection userConnection) {
+    private static void sendArmorUpdate(final UserConnection connection) {
         // Calculate the armor points.
         int armor = 0;
         for (final ItemStack stack : MinecraftClient.getInstance().player.getInventory().armor) {
@@ -81,7 +81,7 @@ public final class ArmorHudEmulation1_8 {
         }
         previousArmorPoints = armor;
 
-        final PacketWrapper updateAttributes = PacketWrapper.create(ClientboundPackets1_9.UPDATE_ATTRIBUTES, userConnection);
+        final PacketWrapper updateAttributes = PacketWrapper.create(ClientboundPackets1_9.UPDATE_ATTRIBUTES, connection);
         updateAttributes.write(Types.VAR_INT, MinecraftClient.getInstance().player.getId());
         updateAttributes.write(Types.INT, 1);
         updateAttributes.write(Types.STRING, "generic.armor");

@@ -51,15 +51,15 @@ import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.types.Types1_7_6;
 public final class ItemTranslator {
 
     public static Item mcToVia(final ItemStack stack, final ProtocolVersion targetVersion) {
-        final UserConnection user = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, targetVersion);
+        final UserConnection connection = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, targetVersion);
 
         try {
             final RegistryByteBuf buf = new RegistryByteBuf(Unpooled.buffer(), MinecraftClient.getInstance().getNetworkHandler().getRegistryManager());
             buf.writeShort(0); // slot
             ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
 
-            final PacketWrapper setCreativeModeSlot = PacketWrapper.create(ViaFabricPlusProtocol.getSetCreativeModeSlot(), buf, user);
-            user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, setCreativeModeSlot);
+            final PacketWrapper setCreativeModeSlot = PacketWrapper.create(ViaFabricPlusProtocol.getSetCreativeModeSlot(), buf, connection);
+            connection.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, setCreativeModeSlot);
 
             setCreativeModeSlot.read(Types.SHORT); // slot
             return setCreativeModeSlot.read(getServerboundItemType(targetVersion)); // item
@@ -70,11 +70,11 @@ public final class ItemTranslator {
     }
 
     public static ItemStack viaToMc(final Item item, final ProtocolVersion sourceVersion) {
-        final UserConnection user = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, sourceVersion);
+        final UserConnection connection = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, sourceVersion);
 
         try {
-            final Protocol<?, ?, ?, ?> sourceProtocol = user.getProtocolInfo().getPipeline().reversedPipes().stream().filter(p -> !p.isBaseProtocol()).findFirst().orElseThrow();
-            final PacketWrapper containerSetSlot = PacketWrapper.create(sourceProtocol.getPacketTypesProvider().unmappedClientboundType(State.PLAY, ClientboundPackets1_12_1.CONTAINER_SET_SLOT.getName()), user);
+            final Protocol<?, ?, ?, ?> sourceProtocol = connection.getProtocolInfo().getPipeline().reversedPipes().stream().filter(p -> !p.isBaseProtocol()).findFirst().orElseThrow();
+            final PacketWrapper containerSetSlot = PacketWrapper.create(sourceProtocol.getPacketTypesProvider().unmappedClientboundType(State.PLAY, ClientboundPackets1_12_1.CONTAINER_SET_SLOT.getName()), connection);
             if (sourceVersion.newerThanOrEqualTo(ProtocolVersion.v1_8)) {
                 containerSetSlot.write(Types.UNSIGNED_BYTE, (short) 0); // window id
             } else {

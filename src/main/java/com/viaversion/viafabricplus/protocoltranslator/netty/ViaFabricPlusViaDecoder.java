@@ -32,8 +32,8 @@ import net.minecraft.util.Formatting;
 
 public final class ViaFabricPlusViaDecoder extends ViaDecoder {
 
-    public ViaFabricPlusViaDecoder(UserConnection user) {
-        super(user);
+    public ViaFabricPlusViaDecoder(UserConnection connection) {
+        super(connection);
     }
 
     @Override

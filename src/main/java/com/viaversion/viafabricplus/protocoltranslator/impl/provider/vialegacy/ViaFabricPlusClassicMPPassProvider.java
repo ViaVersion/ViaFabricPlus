@@ -34,7 +34,7 @@ public final class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvi
     public static String classicubeMPPass;
 
     @Override
-    public String getMpPass(UserConnection user) {
+    public String getMpPass(UserConnection connection) {
         if (classicubeMPPass != null) {
             final String mpPass = classicubeMPPass;
             classicubeMPPass = null;
@@ -45,14 +45,14 @@ public final class ViaFabricPlusClassicMPPassProvider extends ClassicMPPassProvi
             // Doesn't use the MPPass system anymore, but still kept here for simplicity
             BetaCraftHandler.authenticate(serverId -> {
                 try {
-                    Via.getManager().getProviders().get(OldAuthProvider.class).sendAuthRequest(user, serverId);
+                    Via.getManager().getProviders().get(OldAuthProvider.class).sendAuthRequest(connection, serverId);
                 } catch (Throwable e) {
                     ViaFabricPlusImpl.INSTANCE.logger().error("Error occurred while verifying session", e);
                 }
             }, throwable -> ViaFabricPlusImpl.INSTANCE.logger().error("Error occurred while requesting the MP-Pass to verify session", throwable));
         }
 
-        return super.getMpPass(user);
+        return super.getMpPass(connection);
     }
 
 }

@@ -54,7 +54,7 @@ public final class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryPro
     }
 
     @Override
-    public Item[] getMainInventoryItems(UserConnection user) {
+    public Item[] getMainInventoryItems(UserConnection connection) {
         if (getPlayer() == null) {
             return new Item[37];
         } else {
@@ -63,7 +63,7 @@ public final class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryPro
     }
 
     @Override
-    public Item[] getCraftingInventoryItems(UserConnection user) {
+    public Item[] getCraftingInventoryItems(UserConnection connection) {
         if (getPlayer() == null) {
             return new Item[4];
         } else {
@@ -72,7 +72,7 @@ public final class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryPro
     }
 
     @Override
-    public Item[] getArmorInventoryItems(UserConnection user) {
+    public Item[] getArmorInventoryItems(UserConnection connection) {
         if (getPlayer() == null) {
             return new Item[4];
         } else {
@@ -81,7 +81,7 @@ public final class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryPro
     }
 
     @Override
-    public Item[] getContainerItems(UserConnection user) {
+    public Item[] getContainerItems(UserConnection connection) {
         if (getPlayer() == null) {
             return new Item[37];
         } else {
@@ -90,7 +90,7 @@ public final class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryPro
     }
 
     @Override
-    public void addToInventory(UserConnection user, Item item) {
+    public void addToInventory(UserConnection connection, Item item) {
         getPlayer().getInventory().insertStack(ItemTranslator.viaToMc(item, LegacyProtocolVersion.b1_8tob1_8_1));
     }
 

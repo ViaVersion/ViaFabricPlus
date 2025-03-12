@@ -54,7 +54,7 @@ public abstract class MixinConnectScreen_1 {
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelFuture;syncUninterruptibly()Lio/netty/channel/ChannelFuture;", remap = false, shift = At.Shift.AFTER))
     private void setupChatSessions(CallbackInfo ci, @Local ClientConnection clientConnection) {
-        final UserConnection userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
+        final UserConnection connection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_19, ProtocolVersion.v1_19_1)) {
             final PlayerKeyPair keyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
@@ -65,11 +65,11 @@ public abstract class MixinConnectScreen_1 {
                 final byte[] publicKey = publicKeyData.key().getEncoded();
                 final UUID uuid = this.field_33738.getSession().getUuidOrNull();
 
-                userConnection.put(new ChatSession1_19_1(uuid, privateKey, new ProfileKey(expiresAt, publicKey, publicKeyData.keySignature())));
+                connection.put(new ChatSession1_19_1(uuid, privateKey, new ProfileKey(expiresAt, publicKey, publicKeyData.keySignature())));
                 if (ProtocolTranslator.getTargetVersion() == ProtocolVersion.v1_19) {
                     final byte[] legacyKeySignature = ((ILegacyKeySignatureStorage) (Object) publicKeyData).viafabricplus$getLegacyPublicKeySignature();
                     if (legacyKeySignature != null) {
-                        userConnection.put(new ChatSession1_19_0(uuid, privateKey, new ProfileKey(expiresAt, publicKey, legacyKeySignature)));
+                        connection.put(new ChatSession1_19_0(uuid, privateKey, new ProfileKey(expiresAt, publicKey, legacyKeySignature)));
                     }
                 }
             } else {

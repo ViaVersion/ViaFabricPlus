@@ -44,7 +44,7 @@ public abstract class MixinConnectScreen_1 {
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelFuture;syncUninterruptibly()Lio/netty/channel/ChannelFuture;", remap = false, shift = At.Shift.AFTER))
     private void setupBedrockAccount(CallbackInfo ci, @Local ClientConnection clientConnection) {
-        final UserConnection userConnection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
+        final UserConnection connection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
         if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
             final StepFullBedrockSession.FullBedrockSession bedrockSession = SaveManager.INSTANCE.getAccountsSave().refreshAndGetBedrockAccount();
@@ -53,7 +53,7 @@ public abstract class MixinConnectScreen_1 {
                 final UUID deviceId = mcChain.getXblXsts().getInitialXblSession().getXblDeviceToken().getId();
                 final String playFabId = bedrockSession.getPlayFabToken().getPlayFabId();
 
-                userConnection.put(new AuthChainData(mcChain.getMojangJwt(), mcChain.getIdentityJwt(), mcChain.getPublicKey(), mcChain.getPrivateKey(), deviceId, playFabId));
+                connection.put(new AuthChainData(mcChain.getMojangJwt(), mcChain.getIdentityJwt(), mcChain.getPublicKey(), mcChain.getPrivateKey(), deviceId, playFabId));
             } else {
                 ViaFabricPlusImpl.INSTANCE.logger().warn("Could not get Bedrock account. Joining online mode servers will not work!");
             }

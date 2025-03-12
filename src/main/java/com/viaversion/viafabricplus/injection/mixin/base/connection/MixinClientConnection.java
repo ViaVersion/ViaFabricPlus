@@ -201,8 +201,8 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     }
 
     @Override
-    public void viaFabricPlus$setUserConnection(UserConnection userConnection) {
-        this.viaFabricPlus$userConnection = userConnection;
+    public void viaFabricPlus$setUserConnection(UserConnection connection) {
+        this.viaFabricPlus$userConnection = connection;
     }
 
     @Override

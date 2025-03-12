@@ -34,6 +34,6 @@ public interface IClientConnection {
 
     UserConnection viaFabricPlus$getUserConnection();
 
-    void viaFabricPlus$setUserConnection(final UserConnection userConnection);
+    void viaFabricPlus$setUserConnection(final UserConnection connection);
 
 }
