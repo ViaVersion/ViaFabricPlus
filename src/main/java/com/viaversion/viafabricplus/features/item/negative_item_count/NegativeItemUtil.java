@@ -39,8 +39,8 @@ public final class NegativeItemUtil {
      */
     public static int getCount(final ItemStack stack) {
         final NbtCompound tag = ItemUtil.getTagOrNull(stack);
-        if (tag != null && tag.contains(VV_IDENTIFIER)) {
-            return tag.getInt(VV_IDENTIFIER);
+        if (tag != null) {
+            return tag.getInt(VV_IDENTIFIER, stack.getCount());
         } else {
             return stack.getCount();
         }

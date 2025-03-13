@@ -19,33 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.item.sword_blocking;
+package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.AbstractCowEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.SwordItem;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(SwordItem.class)
-public abstract class MixinSwordItem extends Item {
+@Mixin(AbstractCowEntity.class)
+public abstract class MixinAbstractCowEntity extends AnimalEntity {
 
-    public MixinSwordItem(Settings settings) {
-        super(settings);
+    public MixinAbstractCowEntity(EntityType<? extends AnimalEntity> entityType, World world) {
+        super(entityType, world);
     }
 
-    @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(LegacyProtocolVersion.b1_8tob1_8_1, ProtocolVersion.v1_8)) {
-            user.setCurrentHand(hand);
-            return ActionResult.SUCCESS;
-        } else {
-            return super.use(world, user, hand);
+    @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
+    private void disableMilkingInCreative(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && player.getAbilities().creativeMode) {
+            cir.setReturnValue(super.interactMob(player, hand));
         }
     }
 

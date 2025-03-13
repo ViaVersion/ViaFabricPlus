@@ -25,14 +25,13 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Style;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.util.StringHelper;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Screen.class)
 public abstract class MixinScreen {
@@ -41,11 +40,18 @@ public abstract class MixinScreen {
     @Nullable
     protected MinecraftClient client;
 
-    @Inject(method = "handleTextClick", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 1, remap = false), cancellable = true)
-    private void allowRunCommandAction(Style style, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
-            this.client.player.networkHandler.sendChatMessage(StringHelper.stripInvalidChars(style.getClickEvent().getValue()));
-            cir.setReturnValue(true);
+    @Redirect(method = "handleTextClick", at = @At(value = "INVOKE", target = "Ljava/lang/String;startsWith(Ljava/lang/String;)Z"))
+    private boolean dontSanitizeCommand(String instance, String prefix) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4) && instance.startsWith(prefix);
+    }
+
+    @Redirect(method = "handleTextClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendCommand(Ljava/lang/String;)Z"))
+    private boolean allowRunCommandAction(ClientPlayNetworkHandler instance, String command) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19) && !command.startsWith("/")) {
+            this.client.player.networkHandler.sendChatMessage(StringHelper.stripInvalidChars(command));
+            return true;
+        } else {
+            return instance.sendCommand(command);
         }
     }
 

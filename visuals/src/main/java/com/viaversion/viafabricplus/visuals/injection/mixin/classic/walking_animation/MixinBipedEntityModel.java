@@ -47,14 +47,14 @@ public abstract class MixinBipedEntityModel<T extends BipedEntityRenderState> {
     @Inject(method = "setAngles(Lnet/minecraft/client/render/entity/state/BipedEntityRenderState;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/model/ModelPart;roll:F", ordinal = 1, shift = At.Shift.AFTER))
     private void addOldWalkAnimation(T bipedEntityRenderState, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.oldWalkingAnimation.isEnabled()) {
-            final float limbFrequency = bipedEntityRenderState.limbFrequency;
-            final float limbAmplitudeMultiplier = bipedEntityRenderState.limbAmplitudeMultiplier;
+            final float limbSwingAnimationProgress = bipedEntityRenderState.limbSwingAnimationProgress;
+            final float limbSwingAmplitude = bipedEntityRenderState.limbSwingAmplitude;
 
-            this.rightArm.pitch = MathHelper.cos(limbFrequency * 0.6662F + 3.1415927F) * 2.0F * limbAmplitudeMultiplier;
-            this.rightArm.roll = (MathHelper.cos(limbFrequency * 0.2312F) + 1.0F) * 1.0F * limbAmplitudeMultiplier;
+            this.rightArm.pitch = MathHelper.cos(limbSwingAnimationProgress * 0.6662F + 3.1415927F) * 2.0F * limbSwingAmplitude;
+            this.rightArm.roll = (MathHelper.cos(limbSwingAnimationProgress * 0.2312F) + 1.0F) * 1.0F * limbSwingAmplitude;
 
-            this.leftArm.pitch = MathHelper.cos(limbFrequency * 0.6662F) * 2.0F * limbAmplitudeMultiplier;
-            this.leftArm.roll = (MathHelper.cos(limbFrequency * 0.2812F) - 1.0F) * 1.0F * limbAmplitudeMultiplier;
+            this.leftArm.pitch = MathHelper.cos(limbSwingAnimationProgress * 0.6662F) * 2.0F * limbSwingAmplitude;
+            this.leftArm.roll = (MathHelper.cos(limbSwingAnimationProgress * 0.2812F) - 1.0F) * 1.0F * limbSwingAmplitude;
         }
     }
 

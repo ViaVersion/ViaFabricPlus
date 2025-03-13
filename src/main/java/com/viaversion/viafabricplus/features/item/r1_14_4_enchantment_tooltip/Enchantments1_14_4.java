@@ -75,9 +75,6 @@ public final class Enchantments1_14_4 {
     }
 
     public static Optional<RegistryKey<Enchantment>> getOrEmpty(final String identifier) {
-        if (identifier == null) {
-            return Optional.empty();
-        }
         return Optional.ofNullable(ENCHANTMENT_REGISTRY.get(Key.stripMinecraftNamespace(identifier)));
     }
 

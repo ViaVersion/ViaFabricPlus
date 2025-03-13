@@ -19,22 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.swinging;
+package com.viaversion.viafabricplus.injection.access.block.shape;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Hand;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
+import net.minecraft.block.BlockState;
 
-@Mixin(PlayerEntity.class)
-public abstract class MixinPlayerEntity {
+public interface IHorizontalConnectingBlock {
 
-    @WrapWithCondition(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
-    private boolean dontSwingHand(PlayerEntity instance, Hand hand) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2);
-    }
+    int viaFabricPlus$getShapeIndex(final BlockState state);
 
 }

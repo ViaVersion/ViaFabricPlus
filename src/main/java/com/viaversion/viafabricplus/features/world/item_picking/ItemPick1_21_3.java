@@ -48,7 +48,7 @@ public final class ItemPick1_21_3 {
     private static void addPickBlock(final PlayerInventory inventory, final ItemStack stack) {
         final int index = inventory.getSlotWithStack(stack);
         if (PlayerInventory.isValidHotbarIndex(index)) {
-            inventory.selectedSlot = index;
+            inventory.setSelectedSlot(index);
         } else if (index != -1) {
             inventory.swapSlotWithHotbar(index);
         } else {
@@ -108,10 +108,10 @@ public final class ItemPick1_21_3 {
         final int index = inventory.getSlotWithStack(itemStack);
         if (creativeMode) {
             addPickBlock(inventory, itemStack);
-            client.interactionManager.clickCreativeStack(client.player.getStackInHand(Hand.MAIN_HAND), 36 + inventory.selectedSlot);
+            client.interactionManager.clickCreativeStack(client.player.getStackInHand(Hand.MAIN_HAND), 36 + inventory.getSelectedSlot());
         } else if (index != -1) {
             if (PlayerInventory.isValidHotbarIndex(index)) {
-                inventory.selectedSlot = index;
+                inventory.setSelectedSlot(index);
                 return;
             }
 

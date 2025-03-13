@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
+import com.viaversion.viafabricplus.injection.access.block.shape.IHorizontalConnectingBlock;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.*;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FenceBlock.class)
-public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
+public abstract class MixinFenceBlock extends HorizontalConnectingBlock implements IHorizontalConnectingBlock {
 
     @Unique
     private static final VoxelShape viaFabricPlus$shape_b1_8_1 = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 24.0D, 16.0D);
@@ -61,7 +62,7 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return VoxelShapes.fullCube();
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            return this.viaFabricPlus$outline_shape_r1_4_7[this.getShapeIndex(state)];
+            return this.viaFabricPlus$outline_shape_r1_4_7[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getOutlineShape(state, world, pos, context);
         }
@@ -72,7 +73,7 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return viaFabricPlus$shape_b1_8_1;
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            return this.viaFabricPlus$collision_shape_r1_4_7[this.getShapeIndex(state)];
+            return this.viaFabricPlus$collision_shape_r1_4_7[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getCollisionShape(state, world, pos, context);
         }

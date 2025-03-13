@@ -134,13 +134,14 @@ public abstract class MixinEntity {
         }
     }
 
-    @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0))
-    private static double alwaysSortYXZ(double a) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return Double.MAX_VALUE;
-        } else {
-            return Math.abs(a);
-        }
-    }
+    // TODO UPDATE-1.21.5
+//    @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0))
+//    private static double alwaysSortYXZ(double a) {
+//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+//            return Double.MAX_VALUE;
+//        } else {
+//            return Math.abs(a);
+//        }
+//    }
 
 }
