@@ -251,6 +251,7 @@
     "features.networking.srv_resolving.MixinServerAddress",
     "features.remove_newer_screen_features.MixinCommandBlockScreen",
     "features.remove_newer_screen_features.MixinJigsawBlockScreen",
+    "features.remove_newer_screen_features.MixinStructureBlockScreen",
     "features.remove_newer_screen_features.MixinStructureBlockScreen_1",
     "features.run_command_action.MixinScreen",
     "features.sign_editor_reach.MixinAbstractSignEditScreen",
