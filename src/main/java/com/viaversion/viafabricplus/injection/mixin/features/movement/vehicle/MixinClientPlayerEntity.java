@@ -70,7 +70,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Inject(method = "startRiding", at = @At("RETURN"))
     private void setRotationsWhenInBoat(Entity entity, boolean force, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValueZ() && entity instanceof BoatEntity && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
-            this.prevYaw = entity.getYaw();
+            this.lastYaw = entity.getYaw();
             this.setYaw(entity.getYaw());
             this.setHeadYaw(entity.getYaw());
         }

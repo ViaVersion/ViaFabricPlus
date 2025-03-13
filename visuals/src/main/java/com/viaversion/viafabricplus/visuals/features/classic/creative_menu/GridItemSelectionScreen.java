@@ -85,9 +85,8 @@ public final class GridItemSelectionScreen extends Screen {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (selectedItem != null) {
-            this.client.interactionManager.clickCreativeStack(selectedItem, client.player.getInventory().selectedSlot + 36); // Beta Inventory Tracker
-
-            this.client.player.getInventory().main.set(client.player.getInventory().selectedSlot, selectedItem);
+            this.client.interactionManager.clickCreativeStack(selectedItem, client.player.getInventory().getSelectedSlot() + 36); // Beta Inventory Tracker
+            this.client.player.getInventory().setSelectedStack(selectedItem);
             this.client.player.playerScreenHandler.sendContentUpdates();
 
             ClickableWidget.playClickSound(this.client.getSoundManager());

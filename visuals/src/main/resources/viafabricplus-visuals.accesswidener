@@ -7,6 +7,6 @@ accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/mi
 
 accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
 
-accessible class net/minecraft/client/gui/screen/GameModeSelectionScreen$GameModeSelection
+accessible class net/minecraft/client/gui/screen/GameModeSwitcherScreen$GameModeSelection
 accessible class net/minecraft/client/font/TextRenderer$Drawer
 accessible class net/minecraft/client/font/FontStorage$GlyphPair

@@ -79,20 +79,20 @@ public abstract class MixinClientPlayerInteractionManager {
     private boolean handleWindowClick1_16_5(ClientPlayNetworkHandler instance, Packet<?> packet) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4) && packet instanceof ClickSlotC2SPacket clickSlot) {
             ItemStack slotItemBeforeModification;
-            if (this.viaFabricPlus$shouldBeEmpty(clickSlot.getActionType(), clickSlot.getSlot())) {
+            if (this.viaFabricPlus$shouldBeEmpty(clickSlot.actionType(), clickSlot.slot())) {
                 slotItemBeforeModification = ItemStack.EMPTY;
-            } else if (clickSlot.getSlot() < 0 || clickSlot.getSlot() >= viaFabricPlus$oldItems.size()) {
+            } else if (clickSlot.slot() < 0 || clickSlot.slot() >= viaFabricPlus$oldItems.size()) {
                 slotItemBeforeModification = viaFabricPlus$oldCursorStack;
             } else {
-                slotItemBeforeModification = viaFabricPlus$oldItems.get(clickSlot.getSlot());
+                slotItemBeforeModification = viaFabricPlus$oldItems.get(clickSlot.slot());
             }
 
             final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ((IClientConnection) networkHandler.getConnection()).viaFabricPlus$getUserConnection());
-            containerClick.write(Types.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
-            containerClick.write(Types.SHORT, (short) clickSlot.getSlot());
-            containerClick.write(Types.BYTE, (byte) clickSlot.getButton());
+            containerClick.write(Types.UNSIGNED_BYTE, (short) clickSlot.syncId());
+            containerClick.write(Types.SHORT, clickSlot.slot());
+            containerClick.write(Types.BYTE, clickSlot.button());
             containerClick.write(Types.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viaFabricPlus$incrementAndGetActionId());
-            containerClick.write(Types.VAR_INT, clickSlot.getActionType().ordinal());
+            containerClick.write(Types.VAR_INT, clickSlot.actionType().ordinal());
             containerClick.write(Types.ITEM1_13_2, ItemTranslator.mcToVia(slotItemBeforeModification, ProtocolVersion.v1_16_4));
             containerClick.scheduleSendToServer(Protocol1_16_4To1_17.class);
 

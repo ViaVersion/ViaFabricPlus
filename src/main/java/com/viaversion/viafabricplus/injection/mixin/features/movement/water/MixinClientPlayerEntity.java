@@ -41,19 +41,20 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         super(world, profile);
     }
 
-    @Inject(method = "isWalking", at = @At("HEAD"), cancellable = true)
-    private void easierUnderwaterSprinting(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
-            cir.setReturnValue(((ClientPlayerEntity) (Object) this).input.movementForward >= 0.8);
-        }
-    }
-
-    @Redirect(method = "tickMovement",
-            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isWalking()Z")),
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
-    private boolean dontAllowSneakingWhileSwimming(ClientPlayerEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && instance.isSwimming();
-    }
+    // TODO UPDATE-1.21.5
+//    @Inject(method = "isWalking", at = @At("HEAD"), cancellable = true)
+//    private void easierUnderwaterSprinting(CallbackInfoReturnable<Boolean> cir) {
+//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
+//            cir.setReturnValue(((ClientPlayerEntity) (Object) this).input.movementForward >= 0.8);
+//        }
+//    }
+//
+//    @Redirect(method = "tickMovement",
+//            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isWalking()Z")),
+//            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
+//    private boolean dontAllowSneakingWhileSwimming(ClientPlayerEntity instance) {
+//        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && instance.isSwimming();
+//    }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z"))
     private boolean disableWaterRelatedMovement(ClientPlayerEntity self) {

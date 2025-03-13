@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.visuals.injection.mixin.filter_game_mode_se
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.GameModeSelectionScreen;
+import net.minecraft.client.gui.screen.GameModeSwitcherScreen;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,27 +34,27 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("DataFlowIssue")
-@Mixin(GameModeSelectionScreen.GameModeSelection.class)
-public abstract class MixinGameModeSelectionScreen_GameModeSelection {
+@Mixin(GameModeSwitcherScreen.GameModeSelection.class)
+public abstract class MixinGameModeSwitcherScreen_GameModeSelection {
 
     @Shadow
     @Final
-    public static GameModeSelectionScreen.GameModeSelection SURVIVAL;
+    public static GameModeSwitcherScreen.GameModeSelection SURVIVAL;
 
     @Shadow
     @Final
-    public static GameModeSelectionScreen.GameModeSelection CREATIVE;
+    public static GameModeSwitcherScreen.GameModeSelection CREATIVE;
 
     @Inject(method = "next", at = @At("HEAD"), cancellable = true)
-    private void unwrapGameModes(CallbackInfoReturnable<GameModeSelectionScreen.GameModeSelection> cir) {
+    private void unwrapGameModes(CallbackInfoReturnable<GameModeSwitcherScreen.GameModeSelection> cir) {
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-            switch ((GameModeSelectionScreen.GameModeSelection) (Object) this) {
+            switch ((GameModeSwitcherScreen.GameModeSelection) (Object) this) {
                 case CREATIVE -> cir.setReturnValue(SURVIVAL);
                 case SURVIVAL -> {
                     if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
                         cir.setReturnValue(CREATIVE);
                     } else {
-                        cir.setReturnValue(GameModeSelectionScreen.GameModeSelection.ADVENTURE);
+                        cir.setReturnValue(GameModeSwitcherScreen.GameModeSelection.ADVENTURE);
                     }
                 }
                 case ADVENTURE -> cir.setReturnValue(CREATIVE);
