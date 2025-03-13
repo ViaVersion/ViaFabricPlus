@@ -50,6 +50,18 @@ public final class ItemRegistryDiff {
     public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
 
     static {
+        ITEM_DIFF.put(BUSH, andNewer(v1_21_5));
+        ITEM_DIFF.put(FIREFLY_BUSH, andNewer(v1_21_5));
+        ITEM_DIFF.put(SHORT_DRY_GRASS, andNewer(v1_21_5));
+        ITEM_DIFF.put(TALL_DRY_GRASS, andNewer(v1_21_5));
+        ITEM_DIFF.put(WILDFLOWERS, andNewer(v1_21_5));
+        ITEM_DIFF.put(LEAF_LITTER, andNewer(v1_21_5));
+        ITEM_DIFF.put(CACTUS_FLOWER, andNewer(v1_21_5));
+        ITEM_DIFF.put(TEST_BLOCK, andNewer(v1_21_5));
+        ITEM_DIFF.put(TEST_INSTANCE_BLOCK, andNewer(v1_21_5));
+        ITEM_DIFF.put(BLUE_EGG, andNewer(v1_21_5));
+        ITEM_DIFF.put(BROWN_EGG, andNewer(v1_21_5));
+
         ITEM_DIFF.put(OPEN_EYEBLOSSOM, andNewer(v1_21_4));
         ITEM_DIFF.put(CLOSED_EYEBLOSSOM, andNewer(v1_21_4));
         ITEM_DIFF.put(RESIN_CLUMP, andNewer(v1_21_4));
