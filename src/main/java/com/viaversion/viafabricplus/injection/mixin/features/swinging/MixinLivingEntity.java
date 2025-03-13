@@ -19,33 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction;
+package com.viaversion.viafabricplus.injection.mixin.features.swinging;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(CowEntity.class)
-public abstract class MixinCowEntity extends AnimalEntity {
+@Mixin(LivingEntity.class)
+public abstract class MixinLivingEntity {
 
-    public MixinCowEntity(EntityType<? extends AnimalEntity> entityType, World world) {
-        super(entityType, world);
-    }
-
-    @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
-    private void disableMilkingInCreative(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && player.getAbilities().creativeMode) {
-            cir.setReturnValue(super.interactMob(player, hand));
+    @WrapWithCondition(method = "dropItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
+    private boolean dontSwingHand(LivingEntity instance, Hand hand) {
+        if (instance instanceof PlayerEntity) {
+            return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2);
+        } else {
+            return true;
         }
     }
 

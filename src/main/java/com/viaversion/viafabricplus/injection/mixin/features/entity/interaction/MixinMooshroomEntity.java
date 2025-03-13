@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.AbstractCowEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.MooshroomEntity;
@@ -56,8 +57,8 @@ public abstract class MixinMooshroomEntity extends AnimalEntity {
         }
     }
 
-    @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/CowEntity;interactMob(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;", ordinal = 0))
-    private ActionResult directPass(CowEntity instance, PlayerEntity player, Hand hand) {
+    @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AbstractCowEntity;interactMob(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;", ordinal = 0))
+    private ActionResult directPass(AbstractCowEntity instance, PlayerEntity player, Hand hand) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             return ActionResult.PASS;
         } else {

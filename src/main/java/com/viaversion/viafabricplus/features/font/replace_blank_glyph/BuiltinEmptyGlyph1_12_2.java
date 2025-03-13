@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.features.font.replace_blank_glyph;
 
+import com.mojang.blaze3d.textures.GpuTexture;
 import net.minecraft.client.font.BakedGlyph;
 import net.minecraft.client.font.Glyph;
 import net.minecraft.client.font.RenderableGlyph;
@@ -58,7 +59,7 @@ public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
             }
 
             @Override
-            public void upload(int x, int y) {
+            public void method_2030(final int i, final int j, final GpuTexture gpuTexture) {
             }
 
             @Override
