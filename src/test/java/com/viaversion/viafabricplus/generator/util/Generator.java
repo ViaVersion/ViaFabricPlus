@@ -45,4 +45,12 @@ public interface Generator {
         System.out.println(generate(nativeVersion).toString());
     }
 
+    default String readFromFile(final File file) {
+        try {
+            return Files.readString(file.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
