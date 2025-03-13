@@ -21,6 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.r1_8_boat;
 
+import com.viaversion.viafabricplus.features.entity.r1_8_boat.PositionInterpolator1_8;
+import com.viaversion.viafabricplus.injection.access.entity.r1_8_boat.IAbstractBoatEntity;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.Block;
@@ -30,6 +32,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
+import net.minecraft.entity.PositionInterpolator;
 import net.minecraft.entity.vehicle.AbstractBoatEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
@@ -50,25 +53,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractBoatEntity.class)
-public abstract class MixinAbstractBoatEntity extends VehicleEntity {
-
-    @Shadow
-    private double x;
-
-    @Shadow
-    private double y;
-
-    @Shadow
-    private double z;
-
-    @Shadow
-    private double boatYaw;
-
-    @Shadow
-    private double boatPitch;
+public abstract class MixinAbstractBoatEntity extends VehicleEntity implements IAbstractBoatEntity {
 
     @Shadow
     private BoatEntity.Location location;
+
+    @Shadow
+    public abstract PositionInterpolator getInterpolator();
+
+    @Unique
+    private final PositionInterpolator viaFabricPlus$positionInterpolator = new PositionInterpolator1_8((AbstractBoatEntity) (Object) this);
 
     @Unique
     private double viaFabricPlus$speedMultiplier = 0.07D;
@@ -91,36 +85,10 @@ public abstract class MixinAbstractBoatEntity extends VehicleEntity {
         }
     }
 
-    @Inject(method = "updateTrackedPositionAndAngles", at = @At("HEAD"), cancellable = true)
-    private void updateTrackedPositionAndAngles1_8(double x, double y, double z, float yaw, float pitch, int interpolationSteps, CallbackInfo ci) {
+    @Inject(method = "getInterpolator", at = @At("HEAD"), cancellable = true)
+    private void replaceInterpolation(CallbackInfoReturnable<PositionInterpolator> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            ci.cancel();
-            if (/*interpolate &&*/ this.hasPassengers() && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6)) {
-                this.prevX = x;
-                this.prevY = y;
-                this.prevZ = z;
-                this.viaFabricPlus$boatInterpolationSteps = 0;
-                this.setPosition(x, y, z);
-                this.setRotation(yaw, pitch);
-                this.setVelocity(Vec3d.ZERO);
-                this.viaFabricPlus$boatVelocity = Vec3d.ZERO;
-            } else {
-                if (!this.hasPassengers()) {
-                    this.viaFabricPlus$boatInterpolationSteps = interpolationSteps + 5;
-                } else {
-                    if (this.squaredDistanceTo(x, y, z) <= 1) {
-                        return;
-                    }
-                    this.viaFabricPlus$boatInterpolationSteps = 3;
-                }
-
-                this.x = x;
-                this.y = y;
-                this.z = z;
-                this.boatYaw = yaw;
-                this.boatPitch = pitch;
-                this.setVelocity(this.viaFabricPlus$boatVelocity);
-            }
+            cir.setReturnValue(viaFabricPlus$positionInterpolator);
         }
     }
 
@@ -145,9 +113,9 @@ public abstract class MixinAbstractBoatEntity extends VehicleEntity {
             if (this.getDamageWobbleStrength() > 0) {
                 this.setDamageWobbleStrength(this.getDamageWobbleStrength() - 1);
             }
-            this.prevX = this.getX();
-            this.prevY = this.getY();
-            this.prevZ = this.getZ();
+            this.lastX = this.getX();
+            this.lastY = this.getY();
+            this.lastZ = this.getZ();
 
             final int yPartitions = 5;
             double percentSubmerged = 0;
@@ -170,22 +138,23 @@ public abstract class MixinAbstractBoatEntity extends VehicleEntity {
                     if (this.random.nextBoolean()) {
                         final double x = this.getX() - rx * dForward * 0.8 + rz * dSideways;
                         final double z = this.getZ() - rz * dForward * 0.8 - rx * dSideways;
-                        this.getWorld().addParticle(ParticleTypes.SPLASH, x, this.getY() - 0.125D, z, this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
+                        this.getWorld().addParticleClient(ParticleTypes.SPLASH, x, this.getY() - 0.125D, z, this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
                     } else {
                         final double x = this.getX() + rx + rz * dForward * 0.7;
                         final double z = this.getZ() + rz - rx * dForward * 0.7;
-                        this.getWorld().addParticle(ParticleTypes.SPLASH, x, this.getY() - 0.125D, z, this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
+                        this.getWorld().addParticleClient(ParticleTypes.SPLASH, x, this.getY() - 0.125D, z, this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
                     }
                 }
             }
 
             if (this.getWorld().isClient && !this.hasPassengers()) {
                 if (this.viaFabricPlus$boatInterpolationSteps > 0) {
-                    final double newX = this.getX() + (this.x - this.getX()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newY = this.getY() + (this.y - this.getY()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newZ = this.getZ() + (this.z - this.getZ()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newYaw = this.getYaw() + MathHelper.wrapDegrees(this.boatYaw - this.getYaw()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newPitch = this.getPitch() + (this.boatPitch - this.getPitch()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final PositionInterpolator.Data data = viaFabricPlus$positionInterpolator.data;
+                    final double newX = this.getX() + (data.pos.x - this.getX()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newY = this.getY() + (data.pos.y - this.getY()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newZ = this.getZ() + (data.pos.z - this.getZ()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newYaw = this.getYaw() + MathHelper.wrapDegrees(data.yaw - this.getYaw()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newPitch = this.getPitch() + (data.pitch - this.getPitch()) / this.viaFabricPlus$boatInterpolationSteps;
                     this.viaFabricPlus$boatInterpolationSteps--;
                     this.setPosition(newX, newY, newZ);
                     this.setRotation((float) newYaw, (float) newPitch);
@@ -277,8 +246,8 @@ public abstract class MixinAbstractBoatEntity extends VehicleEntity {
                 }
 
                 this.setPitch(0);
-                final double deltaX = this.prevX - this.getX();
-                final double deltaZ = this.prevZ - this.getZ();
+                final double deltaX = this.lastX - this.getX();
+                final double deltaZ = this.lastZ - this.getZ();
                 if (deltaX * deltaX + deltaZ * deltaZ > 0.001D) {
                     final double yawDelta = MathHelper.clamp(MathHelper.wrapDegrees((MathHelper.atan2(deltaZ, deltaX) * 180 / Math.PI) - this.getYaw()), -20, 20);
                     this.setYaw((float) (this.getYaw() + yawDelta));
@@ -310,6 +279,21 @@ public abstract class MixinAbstractBoatEntity extends VehicleEntity {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(super.canAddPassenger(passenger));
         }
+    }
+
+    @Override
+    public void viaFabricPlus$setBoatInterpolationSteps(final int steps) {
+        viaFabricPlus$boatInterpolationSteps = steps;
+    }
+
+    @Override
+    public Vec3d viaFabricPlus$getBoatVelocity() {
+        return viaFabricPlus$boatVelocity;
+    }
+
+    @Override
+    public void viaFabricPlus$setBoatVelocity(final Vec3d velocity) {
+        viaFabricPlus$boatVelocity = velocity;
     }
 
 }

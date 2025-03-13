@@ -73,9 +73,9 @@ public final class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         }
 
         final Vec3d cameraPos = camera.getPos();
-        final float x = (float) (MathHelper.lerp(tickDelta, this.prevPosX, this.x) - cameraPos.getX());
-        final float y = (float) (MathHelper.lerp(tickDelta, this.prevPosY, this.y) - cameraPos.getY());
-        final float z = (float) (MathHelper.lerp(tickDelta, this.prevPosZ, this.z) - cameraPos.getZ());
+        final float x = (float) (MathHelper.lerp(tickDelta, this.lastX, this.x) - cameraPos.getX());
+        final float y = (float) (MathHelper.lerp(tickDelta, this.lastY, this.y) - cameraPos.getY());
+        final float z = (float) (MathHelper.lerp(tickDelta, this.lastZ, this.z) - cameraPos.getZ());
 
         final float minU = this.getMinU();
         final float maxU = this.getMaxU();

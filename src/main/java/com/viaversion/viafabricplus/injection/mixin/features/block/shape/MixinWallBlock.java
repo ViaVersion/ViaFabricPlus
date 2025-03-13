@@ -25,6 +25,7 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import java.util.function.Function;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -44,17 +45,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Map;
-
 @Mixin(WallBlock.class)
 public abstract class MixinWallBlock extends Block {
 
-    @Shadow
-    @Final
-    private Map<BlockState, VoxelShape> shapeMap;
-
     @Unique
     private final Object2IntMap<BlockState> viaFabricPlus$shapeIndexCache_r1_12_2 = new Object2IntOpenHashMap<>();
+
+    @Shadow
+    @Final
+    private Function<BlockState, VoxelShape> outlineShapeFunction;
 
     @Unique
     private VoxelShape[] viaFabricPlus$collision_shape_r1_12_2;
@@ -64,6 +63,36 @@ public abstract class MixinWallBlock extends Block {
 
     public MixinWallBlock(Settings settings) {
         super(settings);
+    }
+
+    @Unique
+    private static BlockState viaFabricPlus$oldWallPlacementLogic(BlockState state) {
+        boolean addUp = false;
+        if (state.get(WallBlock.NORTH_WALL_SHAPE) == WallShape.TALL) {
+            state = state.with(WallBlock.NORTH_WALL_SHAPE, WallShape.LOW);
+            addUp = true;
+        }
+        if (state.get(WallBlock.EAST_WALL_SHAPE) == WallShape.TALL) {
+            state = state.with(WallBlock.EAST_WALL_SHAPE, WallShape.LOW);
+            addUp = true;
+        }
+        if (state.get(WallBlock.SOUTH_WALL_SHAPE) == WallShape.TALL) {
+            state = state.with(WallBlock.SOUTH_WALL_SHAPE, WallShape.LOW);
+            addUp = true;
+        }
+        if (state.get(WallBlock.WEST_WALL_SHAPE) == WallShape.TALL) {
+            state = state.with(WallBlock.WEST_WALL_SHAPE, WallShape.LOW);
+            addUp = true;
+        }
+        if (addUp) {
+            state = state.with(WallBlock.UP, true);
+        }
+        return state;
+    }
+
+    @Unique
+    private static int viaFabricPlus$getDirectionMask(Direction dir) {
+        return 1 << dir.getHorizontalQuarterTurns();
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
@@ -103,7 +132,7 @@ public abstract class MixinWallBlock extends Block {
     @Override
     public VoxelShape getCullingShape(BlockState state) {
         if (state.get(WallBlock.UP) && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return this.shapeMap.get(state);
+            return this.outlineShapeFunction.apply(state);
         } else {
             return super.getCullingShape(state);
         }
@@ -122,22 +151,22 @@ public abstract class MixinWallBlock extends Block {
         final VoxelShape westShape = Block.createCuboidShape(0.0D, 0.0, h, i, height2, i);
         final VoxelShape eastShape = Block.createCuboidShape(h, 0.0, h, 16.0D, height2, i);
         final VoxelShape[] voxelShapes = new VoxelShape[]{
-                VoxelShapes.empty(),
-                Block.createCuboidShape(f, 0.0, h, g, height1, 16.0D),
-                Block.createCuboidShape(0.0D, 0.0, f, i, height1, g),
-                Block.createCuboidShape(f - 4, 0.0, h - 1, g, height1, 16.0D),
-                Block.createCuboidShape(f, 0.0, 0.0D, g, height1, i),
-                VoxelShapes.union(southShape, northShape),
-                Block.createCuboidShape(f - 4, 0.0, 0.0D, g, height1, i + 1),
-                Block.createCuboidShape(f - 4, 0.0, h - 5, g, height1, 16.0D),
-                Block.createCuboidShape(h, 0.0, f, 16.0D, height1, g),
-                Block.createCuboidShape(h - 1, 0.0, f, 16.0D, height1, g + 4),
-                VoxelShapes.union(westShape, eastShape),
-                Block.createCuboidShape(h - 5, 0.0, f, 16.0D, height1, g + 4),
-                Block.createCuboidShape(f, 0.0, 0.0D, g + 4, height1, i + 1),
-                Block.createCuboidShape(f, 0.0, 0.0D, g + 4, height1, i + 5),
-                Block.createCuboidShape(h - 5, 0.0, f - 4, 16.0D, height1, g),
-                Block.createCuboidShape(0, 0.0, 0, 16.0D, height1, 16.0D)
+            VoxelShapes.empty(),
+            Block.createCuboidShape(f, 0.0, h, g, height1, 16.0D),
+            Block.createCuboidShape(0.0D, 0.0, f, i, height1, g),
+            Block.createCuboidShape(f - 4, 0.0, h - 1, g, height1, 16.0D),
+            Block.createCuboidShape(f, 0.0, 0.0D, g, height1, i),
+            VoxelShapes.union(southShape, northShape),
+            Block.createCuboidShape(f - 4, 0.0, 0.0D, g, height1, i + 1),
+            Block.createCuboidShape(f - 4, 0.0, h - 5, g, height1, 16.0D),
+            Block.createCuboidShape(h, 0.0, f, 16.0D, height1, g),
+            Block.createCuboidShape(h - 1, 0.0, f, 16.0D, height1, g + 4),
+            VoxelShapes.union(westShape, eastShape),
+            Block.createCuboidShape(h - 5, 0.0, f, 16.0D, height1, g + 4),
+            Block.createCuboidShape(f, 0.0, 0.0D, g + 4, height1, i + 1),
+            Block.createCuboidShape(f, 0.0, 0.0D, g + 4, height1, i + 5),
+            Block.createCuboidShape(h - 5, 0.0, f - 4, 16.0D, height1, g),
+            Block.createCuboidShape(0, 0.0, 0, 16.0D, height1, 16.0D)
         };
 
         for (int j = 0; j < 16; ++j) {
@@ -148,52 +177,22 @@ public abstract class MixinWallBlock extends Block {
     }
 
     @Unique
-    private static BlockState viaFabricPlus$oldWallPlacementLogic(BlockState state) {
-        boolean addUp = false;
-        if (state.get(WallBlock.NORTH_SHAPE) == WallShape.TALL) {
-            state = state.with(WallBlock.NORTH_SHAPE, WallShape.LOW);
-            addUp = true;
-        }
-        if (state.get(WallBlock.EAST_SHAPE) == WallShape.TALL) {
-            state = state.with(WallBlock.EAST_SHAPE, WallShape.LOW);
-            addUp = true;
-        }
-        if (state.get(WallBlock.SOUTH_SHAPE) == WallShape.TALL) {
-            state = state.with(WallBlock.SOUTH_SHAPE, WallShape.LOW);
-            addUp = true;
-        }
-        if (state.get(WallBlock.WEST_SHAPE) == WallShape.TALL) {
-            state = state.with(WallBlock.WEST_SHAPE, WallShape.LOW);
-            addUp = true;
-        }
-        if (addUp) {
-            state = state.with(WallBlock.UP, true);
-        }
-        return state;
-    }
-
-    @Unique
-    private static int viaFabricPlus$getDirectionMask(Direction dir) {
-        return 1 << dir.getHorizontalQuarterTurns();
-    }
-
-    @Unique
     private int viaFabricPlus$getShapeIndex(BlockState state) {
         return this.viaFabricPlus$shapeIndexCache_r1_12_2.computeIntIfAbsent(state, statex -> {
             int i = 0;
-            if (!WallShape.NONE.equals(statex.get(WallBlock.NORTH_SHAPE))) {
+            if (!WallShape.NONE.equals(statex.get(WallBlock.NORTH_WALL_SHAPE))) {
                 i |= viaFabricPlus$getDirectionMask(Direction.NORTH);
             }
 
-            if (!WallShape.NONE.equals(statex.get(WallBlock.EAST_SHAPE))) {
+            if (!WallShape.NONE.equals(statex.get(WallBlock.EAST_WALL_SHAPE))) {
                 i |= viaFabricPlus$getDirectionMask(Direction.EAST);
             }
 
-            if (!WallShape.NONE.equals(statex.get(WallBlock.SOUTH_SHAPE))) {
+            if (!WallShape.NONE.equals(statex.get(WallBlock.SOUTH_WALL_SHAPE))) {
                 i |= viaFabricPlus$getDirectionMask(Direction.SOUTH);
             }
 
-            if (!WallShape.NONE.equals(statex.get(WallBlock.WEST_SHAPE))) {
+            if (!WallShape.NONE.equals(statex.get(WallBlock.WEST_WALL_SHAPE))) {
                 i |= viaFabricPlus$getDirectionMask(Direction.WEST);
             }
 

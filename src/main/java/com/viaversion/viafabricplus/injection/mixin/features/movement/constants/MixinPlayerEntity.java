@@ -44,14 +44,15 @@ public abstract class MixinPlayerEntity {
     private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_8 = EntityDimensions.changing(0.6F, 1.8F).withEyeHeight(1.54F).
             withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, PlayerEntity.VEHICLE_ATTACHMENT_POS));
 
-    @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
-    private double removeOffsetWhenCheckingSneakingCollision(double constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            return 0;
-        } else {
-            return constant;
-        }
-    }
+    // TODO UPDATE-1.21.5
+//    @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
+//    private double removeOffsetWhenCheckingSneakingCollision(double constant) {
+//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+//            return 0;
+//        } else {
+//            return constant;
+//        }
+//    }
 
     @Inject(method = "getBaseDimensions", at = @At("HEAD"), cancellable = true)
     private void modifyDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {

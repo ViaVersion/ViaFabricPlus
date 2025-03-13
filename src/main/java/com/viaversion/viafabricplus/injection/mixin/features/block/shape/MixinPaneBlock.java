@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
+import com.viaversion.viafabricplus.injection.access.block.shape.IHorizontalConnectingBlock;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.*;
@@ -35,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PaneBlock.class)
-public abstract class MixinPaneBlock extends HorizontalConnectingBlock {
+public abstract class MixinPaneBlock extends HorizontalConnectingBlock implements IHorizontalConnectingBlock {
 
     @Unique
     private VoxelShape[] viaFabricPlus$shape_r1_8;
@@ -88,7 +89,7 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock {
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return this.viaFabricPlus$shape_r1_8[this.getShapeIndex(state)];
+            return this.viaFabricPlus$shape_r1_8[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getOutlineShape(state, world, pos, context);
         }
@@ -97,7 +98,7 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock {
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return this.viaFabricPlus$shape_r1_8[this.getShapeIndex(state)];
+            return this.viaFabricPlus$shape_r1_8[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getCollisionShape(state, world, pos, context);
         }

@@ -27,6 +27,7 @@ import com.viaversion.viafabricplus.util.ItemUtil;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -57,8 +58,8 @@ public abstract class MixinItemStack {
     @Shadow
     public abstract Item getItem();
 
-    @Inject(method = "appendTooltip", at = @At("HEAD"), cancellable = true)
-    private <T extends TooltipAppender> void replaceEnchantmentTooltip(ComponentType<T> componentType, Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, CallbackInfo ci) {
+    @Inject(method = "appendComponentTooltip", at = @At("HEAD"), cancellable = true)
+    private <T extends TooltipAppender> void replaceEnchantmentTooltip(ComponentType<T> componentType, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4)) {
             return;
         }
@@ -79,14 +80,18 @@ public abstract class MixinItemStack {
     @Unique
     private void viaFabricPlus$appendEnchantments1_14_4(final String name, final NbtCompound nbt, Item.TooltipContext context, final Consumer<Text> tooltip) {
         final RegistryWrapper.WrapperLookup registryLookup = context.getRegistryLookup();
-        final NbtList enchantments = nbt.getList(name, NbtElement.COMPOUND_TYPE);
+        final NbtList enchantments = nbt.getList(name).orElse(null);
+        if (enchantments == null) {
+            return;
+        }
+
         for (NbtElement element : enchantments) {
             final NbtCompound enchantment = (NbtCompound) element;
 
-            final String id = enchantment.getString("id");
+            final String id = enchantment.getString("id", "");
             final Optional<RegistryKey<Enchantment>> value = Enchantments1_14_4.getOrEmpty(id);
             value.ifPresent(e -> {
-                final int lvl = enchantment.getInt("lvl");
+                final int lvl = enchantment.getInt("lvl", 0);
                 if (registryLookup != null) {
                     final Optional<RegistryEntry.Reference<Enchantment>> v = registryLookup.getOrThrow(RegistryKeys.ENCHANTMENT).getOptional(e);
                     v.ifPresent(enchantmentReference -> tooltip.accept(Enchantment.getName(enchantmentReference, MathHelper.clamp(lvl, Short.MIN_VALUE, Short.MAX_VALUE))));

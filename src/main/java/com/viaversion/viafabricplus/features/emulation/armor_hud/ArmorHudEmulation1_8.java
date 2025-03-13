@@ -30,16 +30,17 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_8to1_9.Protocol1_8To1_9;
 import com.viaversion.viaversion.protocols.v1_8to1_9.data.ArmorTypes1_8;
 import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ClientboundPackets1_9;
+import java.util.UUID;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
-
-import java.util.UUID;
 
 public final class ArmorHudEmulation1_8 {
 
     private static final UUID ARMOR_POINTS_UUID = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
+    private static final EquipmentSlot[] ARMOR_SLOTS = new EquipmentSlot[] {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
     private static double previousArmorPoints = 0;
 
@@ -71,8 +72,14 @@ public final class ArmorHudEmulation1_8 {
     private static void sendArmorUpdate(final UserConnection connection) {
         // Calculate the armor points.
         int armor = 0;
-        for (final ItemStack stack : MinecraftClient.getInstance().player.getInventory().armor) {
-            armor += ArmorTypes1_8.findByType(Registries.ITEM.getId(stack.getItem()).toString()).getArmorPoints();
+        for (final EquipmentSlot slot : ARMOR_SLOTS) {
+            final ItemStack stack = MinecraftClient.getInstance().player.getInventory().equipment.get(slot);
+            if (stack == null) {
+                continue;
+            }
+
+            final String identifier = Registries.ITEM.getId(stack.getItem()).toString();
+            armor += ArmorTypes1_8.findByType(identifier).getArmorPoints();
         }
 
         // We only want to update the armor points if they actually changed.

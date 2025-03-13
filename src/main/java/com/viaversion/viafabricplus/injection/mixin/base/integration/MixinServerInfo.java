@@ -60,7 +60,7 @@ public abstract class MixinServerInfo implements IServerInfo {
     @Inject(method = "fromNbt", at = @At("TAIL"))
     private static void loadForcedVersion(NbtCompound root, CallbackInfoReturnable<ServerInfo> cir, @Local ServerInfo serverInfo) {
         if (root.contains("viafabricplus_forcedversion")) {
-            final ProtocolVersion version = SettingsSave.protocolVersionByName(root.getString("viafabricplus_forcedversion"));
+            final ProtocolVersion version = SettingsSave.protocolVersionByName(root.getString("viafabricplus_forcedversion", null));
             if (version != null) {
                 ((IServerInfo) serverInfo).viaFabricPlus$forceVersion(version);
             }
