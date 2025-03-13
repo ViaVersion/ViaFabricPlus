@@ -13,9 +13,7 @@ rootProject.name = "viafabricplus"
 includeBuild "build-logic"
 
 include "viafabricplus-api"
-include "viafabricplus-api-legacy"
 include "viafabricplus-visuals"
 
 project(":viafabricplus-api").projectDir = file("api")
-project(":viafabricplus-api-legacy").projectDir = file("api-legacy")
 project(":viafabricplus-visuals").projectDir = file("visuals")
