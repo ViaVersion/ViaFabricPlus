@@ -70,6 +70,7 @@
     "features.block.shape.MixinFireBlock",
     "features.block.shape.MixinFlowerbedBlock",
     "features.block.shape.MixinHopperBlock",
+    "features.block.shape.MixinHorizontalConnectingBlock",
     "features.block.shape.MixinLadderBlock",
     "features.block.shape.MixinLeavesBlock",
     "features.block.shape.MixinLilyPadBlock",
@@ -167,7 +168,7 @@
     "features.item.interaction.MixinShovelItem",
     "features.item.negative_item_count.MixinDrawContext",
     "features.item.r1_14_4_enchantment_tooltip.MixinItemStack",
-    "features.item.sword_blocking.MixinBlockItemPacketRewriter1_21_4",
+    "features.item.sword_blocking.MixinBlockItemPacketRewriter1_21_X",
     "features.large_container.MixinItemPacketRewriter1_14",
     "features.legacy_tab_completion.MixinAbstractCommandBlockScreen",
     "features.legacy_tab_completion.MixinChatInputSuggestor",
@@ -255,14 +256,13 @@
     "features.sign_editor_reach.MixinAbstractSignEditScreen",
     "features.skin_loading.MixinPlayerListEntry",
     "features.swinging.MixinInventoryTracker1_16",
-    "features.swinging.MixinMinecraftClient",
     "features.swinging.MixinLivingEntity",
+    "features.swinging.MixinMinecraftClient",
     "features.world.always_tick_entities.MixinClientWorld",
     "features.world.always_tick_entities.MixinEntity",
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
-    "features.world.remove_server_view_distance.MixinGameOptions",
-    "features.block.shape.MixinHorizontalConnectingBlock"
+    "features.world.remove_server_view_distance.MixinGameOptions"
   ],
   "injectors": {
     "defaultRequire": 1
