@@ -74,6 +74,10 @@ public final class ArmorHudEmulation1_8 {
         int armor = 0;
         for (final EquipmentSlot slot : ARMOR_SLOTS) {
             final ItemStack stack = MinecraftClient.getInstance().player.getInventory().equipment.get(slot);
+            if (stack.isEmpty()) {
+                continue;
+            }
+
             final String identifier = Registries.ITEM.getId(stack.getItem()).toString();
             armor += ArmorTypes1_8.findByType(identifier).getArmorPoints();
         }
