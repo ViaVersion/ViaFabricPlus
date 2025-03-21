@@ -181,6 +181,7 @@
     "features.mouse_sensitivity.MixinMouse",
     "features.mouse_sensitivity.MixinMouseOptionsScreen",
     "features.movement.MixinClientPlayerEntity",
+    "features.movement.MixinKeyboardInput",
     "features.movement.MixinLivingEntity",
     "features.movement.collision.MixinAbstractBoatEntity",
     "features.movement.collision.MixinBedBlock",
