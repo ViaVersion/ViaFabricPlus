@@ -29,12 +29,14 @@ import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.Vec2f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ClientPlayerEntity.class, priority = 2000)
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
@@ -88,12 +90,11 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         }
     }
 
-    // TODO UPDATE-1.21.5
-//    @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"))
-//    private void removeSneakingConditions(CallbackInfo ci) { // Allows sneaking while flying, inside blocks and vehicles
-//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-//            this.inSneakingPose = this.isSneaking() && !this.isSleeping();
-//        }
-//    }
+    @Inject(method = "applyMovementSpeedFactors", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"))
+    private void removeSneakingConditions(Vec2f input, CallbackInfoReturnable<Vec2f> cir) { // Allows sneaking while flying, inside blocks and vehicles
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            this.inSneakingPose = this.isSneaking() && !this.isSleeping();
+        }
+    }
 
 }
