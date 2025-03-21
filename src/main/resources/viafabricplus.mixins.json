@@ -129,7 +129,6 @@
     "features.footstep_particle.MixinParticleIdMappings1_13",
     "features.footstep_particle.MixinParticleMappings",
     "features.footstep_particle.MixinRegistrySyncManager",
-    "features.interaction.MixinAbstractClientPlayerEntity",
     "features.interaction.MixinLivingEntity",
     "features.interaction.MixinPlayerEntity",
     "features.interaction.container_clicking.MixinAbstractFurnaceScreenHandler",

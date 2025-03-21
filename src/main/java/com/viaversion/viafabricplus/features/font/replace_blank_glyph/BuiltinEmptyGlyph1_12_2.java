@@ -54,12 +54,12 @@ public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
             }
 
             @Override
-            public float getOversample() {
-                return 1F;
+            public void upload(final int x, final int y, final GpuTexture texture) {
             }
 
             @Override
-            public void method_2030(final int i, final int j, final GpuTexture gpuTexture) {
+            public float getOversample() {
+                return 1F;
             }
 
             @Override
