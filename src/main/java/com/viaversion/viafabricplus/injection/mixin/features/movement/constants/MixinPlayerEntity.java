@@ -27,14 +27,18 @@ import net.minecraft.entity.EntityAttachmentType;
 import net.minecraft.entity.EntityAttachments;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public abstract class MixinPlayerEntity {
+public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Unique
     private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F).withEyeHeight(1.54F).
@@ -44,15 +48,23 @@ public abstract class MixinPlayerEntity {
     private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_8 = EntityDimensions.changing(0.6F, 1.8F).withEyeHeight(1.54F).
             withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, PlayerEntity.VEHICLE_ATTACHMENT_POS));
 
-    // TODO UPDATE-1.21.5
-//    @ModifyConstant(method = "isSpaceAroundPlayerEmpty", constant = @Constant(doubleValue = 9.999999747378752E-6 /* 1.0E-5F */))
-//    private double removeOffsetWhenCheckingSneakingCollision(double constant) {
-//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-//            return 0;
-//        } else {
-//            return constant;
-//        }
-//    }
+    protected MixinPlayerEntity(final EntityType<? extends LivingEntity> entityType, final World world) {
+        super(entityType, world);
+    }
+
+    @Inject(method = "isSpaceAroundPlayerEmpty", at = @At("HEAD"), cancellable = true)
+    private void changeOffsetsForSneakingCollisionDetection(double offsetX, double offsetZ, double d, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            final double constant;
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+                constant = 0.0;
+            } else {
+                constant = 1.0E-5F;
+            }
+            final Box box = getBoundingBox();
+            cir.setReturnValue(getWorld().isSpaceEmpty(this, new Box(box.minX + offsetX, box.minY - d - constant, box.minZ + offsetZ, box.maxX + offsetX, box.minY, box.maxZ + offsetZ)));
+        }
+    }
 
     @Inject(method = "getBaseDimensions", at = @At("HEAD"), cancellable = true)
     private void modifyDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {

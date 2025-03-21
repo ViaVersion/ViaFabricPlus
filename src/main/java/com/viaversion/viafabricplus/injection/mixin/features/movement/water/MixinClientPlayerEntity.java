@@ -24,37 +24,42 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ClientPlayerEntity.class, priority = 2000)
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
+
+    @Shadow
+    public Input input;
 
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
     }
 
-    // TODO UPDATE-1.21.5
-//    @Inject(method = "isWalking", at = @At("HEAD"), cancellable = true)
-//    private void easierUnderwaterSprinting(CallbackInfoReturnable<Boolean> cir) {
-//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
-//            cir.setReturnValue(((ClientPlayerEntity) (Object) this).input.movementForward >= 0.8);
-//        }
-//    }
-//
-//    @Redirect(method = "tickMovement",
-//            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isWalking()Z")),
-//            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
-//    private boolean dontAllowSneakingWhileSwimming(ClientPlayerEntity instance) {
-//        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && instance.isSwimming();
-//    }
+    @Redirect(method = { "tickMovement", "canStartSprinting" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z"))
+    private boolean easierUnderwaterSprinting(Input instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            final boolean submergedInWater = ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && isSubmergedInWater();
+            return submergedInWater ? input.hasForwardMovement() : input.movementVector.y >= 0.8;
+        } else {
+            return input.hasForwardMovement();
+        }
+    }
+
+    @Redirect(method = "tickMovement",
+            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z")),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
+    private boolean dontAllowSneakingWhileSwimming(ClientPlayerEntity instance) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && instance.isSwimming();
+    }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z"))
     private boolean disableWaterRelatedMovement(ClientPlayerEntity self) {
