@@ -33,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinKeyboardInput {
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec2f;normalize()Lnet/minecraft/util/math/Vec2f;"))
-    private Vec2f dontNormalizeDiagonalMovement(Vec2f instance) {
+    private Vec2f simplifyDiagonalMovementSpeedValues(Vec2f instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return instance;
         } else {
