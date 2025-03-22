@@ -32,8 +32,8 @@ import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
-import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.packet.ServerboundPackets1_21_4;
-import com.viaversion.viaversion.protocols.v1_21to1_21_2.packet.ClientboundPackets1_21_2;
+import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.packet.ClientboundPackets1_21_5;
+import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.packet.ServerboundPackets1_21_5;
 import com.viaversion.viaversion.util.Key;
 import net.minecraft.network.packet.BrandCustomPayload;
 import net.minecraft.network.packet.CustomPayload;
@@ -118,11 +118,11 @@ public final class ViaFabricPlusProtocol extends AbstractSimpleProtocol {
     }
 
     public static ServerboundPacketType getSetCreativeModeSlot() {
-        return ServerboundPackets1_21_4.SET_CREATIVE_MODE_SLOT;
+        return ServerboundPackets1_21_5.SET_CREATIVE_MODE_SLOT;
     }
 
     public static ClientboundPacketType getCustomPayload() {
-        return ClientboundPackets1_21_2.CUSTOM_PAYLOAD;
+        return ClientboundPackets1_21_5.CUSTOM_PAYLOAD;
     }
 
     @FunctionalInterface
