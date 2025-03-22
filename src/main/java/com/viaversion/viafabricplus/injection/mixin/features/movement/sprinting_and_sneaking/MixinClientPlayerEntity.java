@@ -81,14 +81,15 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_19_1) && instance.hasVehicle();
     }
 
-    @Redirect(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z", ordinal = 0))
-    private boolean disableSprintSneak(Input input) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
-            return input.getMovementInput().y >= 0.8F;
-        } else {
-            return input.hasForwardMovement();
-        }
-    }
+    // TODO UPDATE-1.21.5
+//    @Redirect(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z", ordinal = 0))
+//    private boolean disableSprintSneak(Input input) {
+//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
+//            return input.getMovementInput().y >= 0.8F;
+//        } else {
+//            return input.hasForwardMovement();
+//        }
+//    }
 
     @Inject(method = "applyMovementSpeedFactors", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"))
     private void removeSneakingConditions(Vec2f input, CallbackInfoReturnable<Vec2f> cir) { // Allows sneaking while flying, inside blocks and vehicles
