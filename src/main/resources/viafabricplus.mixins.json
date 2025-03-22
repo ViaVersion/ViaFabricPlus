@@ -165,6 +165,7 @@
     "features.item.interaction.MixinFishingRodItem",
     "features.item.interaction.MixinKnowledgeBookItem",
     "features.item.interaction.MixinLeadItem",
+    "features.item.interaction.MixinNameTagItem",
     "features.item.interaction.MixinShovelItem",
     "features.item.negative_item_count.MixinDrawContext",
     "features.item.r1_14_4_enchantment_tooltip.MixinItemStack",
@@ -265,7 +266,7 @@
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
     "features.world.remove_server_view_distance.MixinGameOptions",
-    "features.item.interaction.MixinNameTagItem"
+    "features.block.shape.MixinPistonHeadBlock"
   ],
   "injectors": {
     "defaultRequire": 1
