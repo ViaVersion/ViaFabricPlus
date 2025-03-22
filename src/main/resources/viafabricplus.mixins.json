@@ -132,6 +132,7 @@
     "features.interaction.MixinLivingEntity",
     "features.interaction.MixinPlayerEntity",
     "features.interaction.container_clicking.MixinAbstractFurnaceScreenHandler",
+    "features.interaction.container_clicking.MixinBlockItemPacketRewriter1_21_5",
     "features.interaction.container_clicking.MixinClientPlayerInteractionManager",
     "features.interaction.container_clicking.MixinCraftingScreenHandler",
     "features.interaction.container_clicking.MixinItemPacketRewriter1_17",
@@ -264,7 +265,7 @@
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
     "features.world.remove_server_view_distance.MixinGameOptions",
-    "features.interaction.container_clicking.MixinBlockItemPacketRewriter1_21_5"
+    "features.item.interaction.MixinNameTagItem"
   ],
   "injectors": {
     "defaultRequire": 1
