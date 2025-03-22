@@ -263,7 +263,8 @@
     "features.world.always_tick_entities.MixinEntity",
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
-    "features.world.remove_server_view_distance.MixinGameOptions"
+    "features.world.remove_server_view_distance.MixinGameOptions",
+    "features.interaction.container_clicking.MixinBlockItemPacketRewriter1_21_5"
   ],
   "injectors": {
     "defaultRequire": 1

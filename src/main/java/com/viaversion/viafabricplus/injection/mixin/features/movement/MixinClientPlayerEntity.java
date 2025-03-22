@@ -59,7 +59,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     }
 
     @Redirect(method = "applyMovementSpeedFactors", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;applyDirectionalMovementSpeedFactors(Lnet/minecraft/util/math/Vec2f;)Lnet/minecraft/util/math/Vec2f;"))
-    private Vec2f dontNormalizeDiagonalMovement(Vec2f vec) {
+    private Vec2f simplifyDiagonalMovementSpeedValues(Vec2f vec) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return vec;
         } else {
