@@ -37,6 +37,7 @@ import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
 import com.viaversion.viaversion.api.type.types.version.Types1_21;
 import com.viaversion.viaversion.api.type.types.version.Types1_21_2;
 import com.viaversion.viaversion.api.type.types.version.Types1_21_4;
+import com.viaversion.viaversion.api.type.types.version.Types1_21_5;
 import com.viaversion.viaversion.protocols.v1_12to1_12_1.packet.ClientboundPackets1_12_1;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.MinecraftClient;
@@ -100,7 +101,7 @@ public final class ItemTranslator {
     }
 
     /**
-     * Gets the ViaVersion item type for the target version in the serverbound direction
+     * Gets the ViaVersion item type for the target version in the serverbound direction (creative inventory action packet)
      *
      * @param targetVersion The target version
      * @return The ViaVersion item type
@@ -140,8 +141,10 @@ public final class ItemTranslator {
             return Types1_21.ITEM;
         } else if (targetVersion.olderThan(ProtocolVersion.v1_21_4)) {
             return Types1_21_2.ITEM;
-        } else {
+        } else if (targetVersion.olderThan(ProtocolVersion.v1_21_5)) {
             return Types1_21_4.ITEM;
+        } else {
+            return Types1_21_5.ITEM;
         }
     }
 
