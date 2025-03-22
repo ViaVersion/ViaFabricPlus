@@ -22,11 +22,12 @@
 package com.viaversion.viafabricplus.api.entrypoint;
 
 import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
+import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 
 /**
- * Entrypoint called before the ViaFabricPlus loading cycle starts. To be used by addons to register their own callbacks.
+ * Optional Entrypoint called before the ViaFabricPlus loading cycle starts. This is needed to register a {@link LoadingCycleCallback} callback.
  * <p>
- * See {@link com.viaversion.viafabricplus.api.events.LoadingCycleCallback} for more information.
+ * See {@link LoadingCycleCallback} for more information.
  */
 @FunctionalInterface
 public interface ViaFabricPlusLoadEntrypoint {
