@@ -57,7 +57,7 @@ public final class ItemTranslator {
         try {
             final RegistryByteBuf buf = new RegistryByteBuf(Unpooled.buffer(), MinecraftClient.getInstance().getNetworkHandler().getRegistryManager());
             buf.writeShort(0); // slot
-            ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
+            ItemStack.LENGTH_PREPENDED_OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
 
             final PacketWrapper setCreativeModeSlot = PacketWrapper.create(ViaFabricPlusProtocol.getSetCreativeModeSlot(), buf, connection);
             connection.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, setCreativeModeSlot);
