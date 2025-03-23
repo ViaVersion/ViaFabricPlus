@@ -109,8 +109,10 @@ public final class ItemTranslator {
     public static Type<Item> getServerboundItemType(final ProtocolVersion targetVersion) {
         if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return Typesb1_8_0_1.CREATIVE_ITEM;
-        } else {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return getClientboundItemType(targetVersion);
+        } else {
+            return Types1_21_5.LENGTH_PREFIXED_ITEM;
         }
     }
 
