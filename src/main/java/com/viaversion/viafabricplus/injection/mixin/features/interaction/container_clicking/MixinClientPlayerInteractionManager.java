@@ -28,7 +28,7 @@ import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
-import com.viaversion.viaversion.api.type.types.version.Types1_21_5;
+import com.viaversion.viaversion.api.type.types.version.Types1_21_4;
 import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.packet.ServerboundPackets1_16_2;
 import com.viaversion.viaversion.protocols.v1_16_4to1_17.Protocol1_16_4To1_17;
 import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.packet.ServerboundPackets1_21_4;
@@ -118,11 +118,11 @@ public abstract class MixinClientPlayerInteractionManager {
         for (int i = 0; i < stacks.size(); i++) {
             final ItemStack itemStack = client.player.currentScreenHandler.slots.get(i).getStack();
             containerClick.write(Types.SHORT, (short) i);
-            containerClick.write(Types1_21_5.ITEM, ItemTranslator.mcToVia(itemStack, ProtocolVersion.v1_21_4));
+            containerClick.write(Types1_21_4.ITEM, ItemTranslator.mcToVia(itemStack, ProtocolVersion.v1_21_4));
         }
 
         final ItemStack cursorStack = client.player.currentScreenHandler.getCursorStack();
-        containerClick.write(Types1_21_5.ITEM, ItemTranslator.mcToVia(cursorStack, ProtocolVersion.v1_21_4));
+        containerClick.write(Types1_21_4.ITEM, ItemTranslator.mcToVia(cursorStack, ProtocolVersion.v1_21_4));
         containerClick.scheduleSendToServer(Protocol1_21_4To1_21_5.class);
     }
 
