@@ -72,12 +72,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     protected abstract boolean canVehicleSprint(final Entity vehicle);
 
     @Shadow
-    protected abstract boolean canStartSprinting();
-
-    @Shadow
-    protected int ticksLeftToDoubleTapSprint;
-
-    @Shadow
     @Final
     protected MinecraftClient client;
 
@@ -90,10 +84,8 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/TutorialManager;onMovement(Lnet/minecraft/client/input/Input;)V", shift = At.Shift.AFTER))
     private void checkShouldStopSprinting(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            if (ProtocolTranslator.getTargetVersion().equals(ProtocolVersion.v1_21_4) && this.shouldStopSprinting()) {
-                this.setSprinting(false);
-            }
+        if (ProtocolTranslator.getTargetVersion().equals(ProtocolVersion.v1_21_4) && this.shouldStopSprinting()) {
+            this.setSprinting(false);
         }
     }
 
