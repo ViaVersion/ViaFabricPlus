@@ -56,7 +56,7 @@ dependencies {
     jij "de.florianmichael:Classic4J:2.1.1-SNAPSHOT"
 
     // Only to compile against for the ModMenu integration
-    modCompileOnly "com.terraformersmc:modmenu:12.0.0"
+    modCompileOnly "com.terraformersmc:modmenu:14.0.0-rc.2"
 
     // Fabric's jar in jar system doesn't support transitive dependencies, so we have to manually add them
     afterEvaluate {
