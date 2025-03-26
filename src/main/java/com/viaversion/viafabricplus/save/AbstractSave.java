@@ -26,7 +26,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -44,7 +43,7 @@ public abstract class AbstractSave {
      * @param name The name of the file.
      */
     public AbstractSave(final String name) {
-        path = ViaFabricPlusImpl.INSTANCE.rootPath().resolve(name + ".json");
+        path = ViaFabricPlusImpl.INSTANCE.getPath().resolve(name + ".json");
     }
 
     /**
@@ -58,10 +57,10 @@ public abstract class AbstractSave {
                 if (object != null) {
                     read(object);
                 } else {
-                    ViaFabricPlusImpl.INSTANCE.logger().error("The file {} is empty!", path.getFileName());
+                    ViaFabricPlusImpl.INSTANCE.getLogger().error("The file {} is empty!", path.getFileName());
                 }
             } catch (Exception e) {
-                ViaFabricPlusImpl.INSTANCE.logger().error("Failed to read file: {}!", path.getFileName(), e);
+                ViaFabricPlusImpl.INSTANCE.getLogger().error("Failed to read file: {}!", path.getFileName(), e);
             }
         }
     }
@@ -76,7 +75,7 @@ public abstract class AbstractSave {
 
             Files.writeString(path, GSON.toJson(object), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (Exception e) {
-            ViaFabricPlusImpl.INSTANCE.logger().error("Failed to write file: {}!", path.getFileName(), e);
+            ViaFabricPlusImpl.INSTANCE.getLogger().error("Failed to write file: {}!", path.getFileName(), e);
         }
     }
 

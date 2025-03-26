@@ -59,7 +59,7 @@ public final class ReportIssuesScreen extends VFPScreen {
         actions.put("report.viafabricplus.create_via_dump", () -> DumpUtil.postDump(client.getSession().getUuidOrNull()).whenComplete((s, throwable) -> {
             if (throwable != null) {
                 this.setupSubtitle(Text.translatable("report.viafabricplus.create_via_dump.failed"));
-                ViaFabricPlusImpl.INSTANCE.logger().error("Failed to create a dump", throwable);
+                ViaFabricPlusImpl.INSTANCE.getLogger().error("Failed to create a dump", throwable);
                 return;
             }
             this.setupSubtitle(Text.translatable("report.viafabricplus.create_via_dump.success"));

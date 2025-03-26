@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 public final class NotificationUtil {
 
     public static void warnIncompatibilityPacket(final String version, final String packet, final String yarnMethod, final String mojmapMethod) {
-        final Logger logger = ViaFabricPlusImpl.INSTANCE.logger();
+        final Logger logger = ViaFabricPlusImpl.INSTANCE.getLogger();
         logger.error("===========================================");
         logger.error("The " + packet + " packet (>= " + version + ") could not be remapped without breaking content!");
         logger.error("Try disabling mods one by one or using a binary search method to identify the problematic mod.");

@@ -63,7 +63,7 @@ public final class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
         if (evt.getClass().getName().equals("me.steinborn.krypton.mod.shared.misc.KryptonPipelineEvent")) {
             if (evt.toString().equals("COMPRESSION_ENABLED")) {
                 super.userEventTriggered(ctx, CompressionReorderEvent.INSTANCE);
-                ViaFabricPlusImpl.INSTANCE.logger().info("Compression has been re-ordered after \"Krypton\"");
+                ViaFabricPlusImpl.INSTANCE.getLogger().info("Compression has been re-ordered after \"Krypton\"");
                 return;
             }
         }

@@ -55,7 +55,7 @@ public abstract class MixinConnectScreen_1 {
 
                 connection.put(new AuthChainData(mcChain.getMojangJwt(), mcChain.getIdentityJwt(), mcChain.getPublicKey(), mcChain.getPrivateKey(), deviceId, playFabId));
             } else {
-                ViaFabricPlusImpl.INSTANCE.logger().warn("Could not get Bedrock account. Joining online mode servers will not work!");
+                ViaFabricPlusImpl.INSTANCE.getLogger().warn("Could not get Bedrock account. Joining online mode servers will not work!");
             }
         }
     }
