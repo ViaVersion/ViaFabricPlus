@@ -43,7 +43,7 @@ public abstract class MixinClientConnection {
                 // Thrown when server is not reachable
                 return;
             }
-            ViaFabricPlusImpl.INSTANCE.logger().error("An exception occurred while handling a packet", ex);
+            ViaFabricPlusImpl.INSTANCE.getLogger().error("An exception occurred while handling a packet", ex);
         }
     }
 

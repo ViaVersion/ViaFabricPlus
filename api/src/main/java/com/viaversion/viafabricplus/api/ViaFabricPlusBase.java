@@ -68,7 +68,12 @@ public interface ViaFabricPlusBase {
      *
      * @return The root path
      */
-    Path rootPath();
+    Path getPath();
+
+    @Deprecated
+    default Path rootPath() {
+        return getPath();
+    }
 
     /**
      * This method is used when you need the target version after connecting to the server.

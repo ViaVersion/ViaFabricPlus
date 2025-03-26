@@ -93,7 +93,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
 
     private Void error(final String message, final Throwable throwable) {
         setupSubtitle(Text.translatable("bedrock_realms.viafabricplus.error"));
-        ViaFabricPlusImpl.INSTANCE.logger().log(Level.ERROR, message, throwable);
+        ViaFabricPlusImpl.INSTANCE.getLogger().log(Level.ERROR, message, throwable);
         return null;
     }
 

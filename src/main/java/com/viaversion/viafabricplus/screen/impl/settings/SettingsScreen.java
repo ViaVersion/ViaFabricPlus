@@ -69,7 +69,7 @@ public final class SettingsScreen extends VFPScreen {
                         case final VersionedBooleanSetting versionedBooleanSetting ->
                                 this.addEntry(new VersionedBooleanSettingRenderer(versionedBooleanSetting));
                         case null, default ->
-                                ViaFabricPlusImpl.INSTANCE.logger().warn("Unknown setting type: " + setting.getClass().getName());
+                                ViaFabricPlusImpl.INSTANCE.getLogger().warn("Unknown setting type: " + setting.getClass().getName());
                     }
                 }
             }

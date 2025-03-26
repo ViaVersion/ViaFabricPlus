@@ -92,7 +92,7 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
     @Override
     public File getDataFolder() {
         // Move ViaLoader files directly into root folder
-        return ViaFabricPlusImpl.INSTANCE.rootPath().toFile();
+        return ViaFabricPlusImpl.INSTANCE.getPath().toFile();
     }
 
 }

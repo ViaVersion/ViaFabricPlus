@@ -131,7 +131,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public Path rootPath() {
+    public Path getPath() {
         return path;
     }
 
@@ -245,7 +245,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
         return NegativeItemUtil.getCount(stack);
     }
 
-    public Logger logger() {
+    public Logger getLogger() {
         return logger;
     }
 

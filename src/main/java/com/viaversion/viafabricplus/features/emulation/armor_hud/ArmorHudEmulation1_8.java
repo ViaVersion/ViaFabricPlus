@@ -56,7 +56,7 @@ public final class ArmorHudEmulation1_8 {
                     try {
                         sendArmorUpdate(connection);
                     } catch (Throwable t) {
-                        ViaFabricPlusImpl.INSTANCE.logger().error("Error sending armor update", t);
+                        ViaFabricPlusImpl.INSTANCE.getLogger().error("Error sending armor update", t);
                     }
                 }
             } else {
