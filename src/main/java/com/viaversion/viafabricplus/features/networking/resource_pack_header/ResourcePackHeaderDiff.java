@@ -39,6 +39,7 @@ public final class ResourcePackHeaderDiff {
     private final static Map<ProtocolVersion, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     static {
+        registerVersion(ProtocolVersion.v1_21_5, 55, "1.21.5");
         registerVersion(ProtocolVersion.v1_21_4, 46, "1.21.4");
         registerVersion(ProtocolVersion.v1_21_2, 42, "1.21.3");
         registerVersion(ProtocolVersion.v1_21, 34, "1.21.1");

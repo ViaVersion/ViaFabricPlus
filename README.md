@@ -27,13 +27,13 @@ If you need ViaFabricPlus for older versions of the game, you can use [ViaFabric
 
 ## Supported Server versions
 
-- Release (1.0.0 - 1.21.4)
+- Release (1.0.0 - 1.21.5)
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - April Fools (3D Shareware, 20w14infinite)
 - Combat Snapshots (Combat Test 8c)
-- Bedrock Edition 1.21.60 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
+- Bedrock Edition 1.21.70 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
 
 ## How to (Users)
 

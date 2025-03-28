@@ -151,7 +151,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
             if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(entry.getKey())) {
                 final ToolProperties toolProperties = entry.getValue().get(identifier);
                 if (toolProperties != null) {
-                    data.set(StructuredDataKey.TOOL, toolProperties);
+                    data.set(StructuredDataKey.TOOL1_20_5, toolProperties);
                     break;
                 }
             }
