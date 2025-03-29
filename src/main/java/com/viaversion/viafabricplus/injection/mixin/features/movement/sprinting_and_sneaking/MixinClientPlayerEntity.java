@@ -22,6 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.movement.sprinting_and_sneaking;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -78,6 +80,12 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     public abstract void tickMovementInput();
 
+    @Shadow
+    protected abstract boolean canStartSprinting();
+
+    @Shadow
+    protected int ticksLeftToDoubleTapSprint;
+
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
     }
@@ -103,30 +111,34 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         }
     }
 
-    // TODO For some reason this is not working even thoug being a 1:1 of the original method
+    @Inject(method = "tickMovement", at = @At("HEAD"))
+    private void storeSprintingSneakingState(CallbackInfo ci, @Share("sneakSprint") LocalBooleanRef ref) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            ref.set(!this.input.playerInput.sneak() && !this.viaFabricPlus$isWalking1_21_4());
+        }
+    }
 
-//    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;canStartSprinting()Z"))
-//    private boolean changeCanStartSprintingConditions(ClientPlayerEntity instance) {
-//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-//            boolean z5 = this.canStartSprinting();
-//            boolean z6 = this.hasVehicle() ? this.getVehicle().isOnGround() : this.isOnGround();
-//            boolean z7 = !this.input.playerInput.sneak() && !this.viaFabricPlus$isWalking1_21_4();
-//            if ((z6 || this.isSubmergedInWater()) && z7 && z5) {
-//                if (this.ticksLeftToDoubleTapSprint <= 0 && !this.client.options.sprintKey.isPressed()) {
-//                    this.ticksLeftToDoubleTapSprint = 7;
-//                } else {
-//                    this.setSprinting(true);
-//                }
-//            }
-//
-//            if ((!this.isTouchingWater() || this.isSubmergedInWater()) && z5 && this.client.options.sprintKey.isPressed()) {
-//                this.setSprinting(true);
-//            }
-//            return false;
-//        } else {
-//            return this.canStartSprinting();
-//        }
-//    }
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;canStartSprinting()Z"))
+    private boolean changeCanStartSprintingConditions(ClientPlayerEntity instance, @Share("sneakSprint") LocalBooleanRef ref) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            final boolean canStartSprinting = this.canStartSprinting();
+            final boolean onGround = this.hasVehicle() ? this.getVehicle().isOnGround() : this.isOnGround();
+            if ((onGround || this.isSubmergedInWater()) && ref.get() && canStartSprinting) {
+                if (this.ticksLeftToDoubleTapSprint <= 0 && !this.client.options.sprintKey.isPressed()) {
+                    this.ticksLeftToDoubleTapSprint = 7;
+                } else {
+                    this.setSprinting(true);
+                }
+            }
+
+            if ((!this.isTouchingWater() || this.isSubmergedInWater()) && canStartSprinting && this.client.options.sprintKey.isPressed()) {
+                this.setSprinting(true);
+            }
+            return false;
+        } else {
+            return this.canStartSprinting();
+        }
+    }
 
     @Inject(method = "canStartSprinting", at = @At("HEAD"), cancellable = true)
     private void changeCanStartSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
@@ -190,7 +202,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Unique
     private boolean viaFabricPlus$shouldCancelSprinting() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
-            return this.input.getMovementInput().y < 0.8F || !this.canSprint(); // Disables sprint sneaking
+            return this.input.movementVector.y < 0.8F || !this.canSprint(); // Disables sprint sneaking
         } else {
             return !this.input.hasForwardMovement() || !this.canSprint();
         }
