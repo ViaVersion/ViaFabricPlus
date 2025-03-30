@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base.overriding_jars;
+package com.viaversion.viafabricplus.util;
 
 import net.lenni0451.reflect.ClassLoaders;
 import net.lenni0451.reflect.stream.RStream;

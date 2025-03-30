@@ -27,7 +27,7 @@ import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.base.Events;
-import com.viaversion.viafabricplus.base.overriding_jars.ClassLoaderPriorityUtil;
+import com.viaversion.viafabricplus.util.ClassLoaderPriorityUtil;
 import com.viaversion.viafabricplus.base.sync_tasks.SyncTasks;
 import com.viaversion.viafabricplus.features.FeaturesLoading;
 import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemRegistryDiff;
@@ -47,6 +47,7 @@ import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ServerInfo;
@@ -62,6 +63,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusLoadEntrypoint.KEY;
+
 public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
     public static final ViaFabricPlusImpl INSTANCE = new ViaFabricPlusImpl();
@@ -75,22 +78,24 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     private CompletableFuture<Void> loadingFuture;
 
     public void init() {
+        // Set API instance
         ViaFabricPlus.init(INSTANCE);
 
+        // Get mod version
         final ModMetadata metadata = FabricLoader.getInstance().getModContainer("viafabricplus").get().getMetadata();
         version = metadata.getVersion().getFriendlyString();
         implVersion = metadata.getCustomValue("vfp:implVersion").getAsString();
-        FabricLoader.getInstance().getEntrypointContainers("viafabricplus", ViaFabricPlusLoadEntrypoint.class).forEach(container -> {
-            container.getEntrypoint().onPlatformLoad(INSTANCE);
-        });
 
-        // Create the directory if it doesn't exist
-        if (!Files.exists(path)) {
-            try {
-                Files.createDirectory(path);
-            } catch (IOException e) {
-                logger.error("Failed to create ViaFabricPlus directory", e);
-            }
+        // Call entrypoint for addons
+        for (final EntrypointContainer<ViaFabricPlusLoadEntrypoint> container : FabricLoader.getInstance().getEntrypointContainers(KEY, ViaFabricPlusLoadEntrypoint.class)) {
+            container.getEntrypoint().onPlatformLoad(INSTANCE);
+        }
+
+        // Create ViaFabricPlus directory if it doesn't exist
+        try {
+            Files.createDirectories(path);
+        } catch (IOException e) {
+            logger.error("Failed to create ViaFabricPlus directory", e);
         }
 
         // Load overriding jars first so other code can access the new classes
@@ -107,7 +112,8 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
         // Init ViaVersion protocol translator platform
         loadingFuture = ProtocolTranslator.init(path);
 
-        registerLoadingCycleCallback(cycle -> {
+        // Initialize stuff after minecraft is loaded
+        Events.LOADING_CYCLE.register(cycle -> {
             if (cycle != LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
                 return;
             }

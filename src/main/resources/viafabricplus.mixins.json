@@ -227,7 +227,6 @@
     "features.networking.downloading_terrain.MixinClientPlayNetworkHandler",
     "features.networking.downloading_terrain.MixinDownloadingTerrainScreen",
     "features.networking.downloading_terrain.MixinEntityPacketRewriter1_20_3",
-    "features.networking.idle_packet.MixinClientPlayerEntity",
     "features.networking.keep_player_loaded.MixinPlayerEntity",
     "features.networking.legacy_chat_signature.MixinConnectScreen_1",
     "features.networking.legacy_chat_signature.MixinKeyPairResponse",
