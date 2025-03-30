@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = ClientPlayerEntity.class, priority = 2000)
+@Mixin(ClientPlayerEntity.class)
 public abstract class MixinClientPlayerEntity {
 
     @Shadow

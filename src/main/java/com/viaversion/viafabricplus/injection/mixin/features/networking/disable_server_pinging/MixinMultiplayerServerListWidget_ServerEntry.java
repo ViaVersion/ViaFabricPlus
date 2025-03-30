@@ -46,8 +46,7 @@ import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Function;
 
-@Mixin(value = MultiplayerServerListWidget.ServerEntry.class, priority = 1001)
-// Apply after the mixin in the main project
+@Mixin(MultiplayerServerListWidget.ServerEntry.class)
 public abstract class MixinMultiplayerServerListWidget_ServerEntry {
 
     @Shadow

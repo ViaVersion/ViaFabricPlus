@@ -31,7 +31,7 @@ import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(value = ClientPlayerEntity.class, priority = 2000)
+@Mixin(ClientPlayerEntity.class)
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
 
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {

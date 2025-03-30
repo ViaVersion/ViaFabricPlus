@@ -37,7 +37,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import org.spongepowered.asm.mixin.*;
 
-@Mixin(value = ClientWorld.class, priority = 900)
+@Mixin(ClientWorld.class)
 public abstract class MixinClientWorld extends World {
 
     @Shadow
