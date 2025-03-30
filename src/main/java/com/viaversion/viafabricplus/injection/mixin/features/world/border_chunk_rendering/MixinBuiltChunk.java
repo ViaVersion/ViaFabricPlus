@@ -19,19 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.emulation.recipe;
+package com.viaversion.viafabricplus.injection.mixin.features.world.border_chunk_rendering;
 
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.client.render.chunk.ChunkBuilder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "com.viaversion.viaversion.protocols.v1_11_1to1_12.rewriter.EntityPacketRewriter1_12$1", remap = false)
-public abstract class MixinEntityPacketRewriter1_12 {
+@Mixin(ChunkBuilder.BuiltChunk.class)
+public abstract class MixinBuiltChunk {
 
-    @Redirect(method = "lambda$register$1", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;newerThanOrEqualTo(Lcom/viaversion/viaversion/api/protocol/version/ProtocolVersion;)Z"))
-    private static boolean dontClearRecipes(ProtocolVersion instance, ProtocolVersion other) {
-        return false;
+    @Inject(method = "shouldBuild", at = @At("HEAD"), cancellable = true)
+    private void modifyRenderCondition(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            cir.setReturnValue(true);
+        }
     }
 
 }

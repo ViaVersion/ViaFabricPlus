@@ -19,25 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement;
+package com.viaversion.viafabricplus.injection.mixin.features.recipe;
 
+import com.viaversion.viafabricplus.features.recipe.Recipes1_11_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.input.KeyboardInput;
-import net.minecraft.util.math.Vec2f;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.screen.AbstractCraftingScreenHandler;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(KeyboardInput.class)
-public abstract class MixinKeyboardInput {
+@Mixin(PlayerScreenHandler.class)
+public abstract class MixinPlayerScreenHandler extends AbstractCraftingScreenHandler {
 
-    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec2f;normalize()Lnet/minecraft/util/math/Vec2f;"))
-    private Vec2f simplifyDiagonalMovementSpeedValues(Vec2f instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return instance;
-        } else {
-            return instance.normalize();
+    public MixinPlayerScreenHandler(ScreenHandlerType<?> type, int syncId, int width, int height) {
+        super(type, syncId, width, height);
+    }
+
+    @Inject(method = "onContentChanged", at = @At("HEAD"))
+    private void clientSideCrafting(Inventory inventory, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+            Recipes1_11_2.setCraftingResultSlot(syncId, this, this.craftingInventory);
         }
     }
 

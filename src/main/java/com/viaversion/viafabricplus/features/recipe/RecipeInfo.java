@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.emulation.recipe;
+package com.viaversion.viafabricplus.features.recipe;
 
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;

@@ -19,23 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.border_chunk_rendering;
+package com.viaversion.viafabricplus.injection.mixin.features.recipe;
 
+import com.viaversion.viafabricplus.features.recipe.Recipes1_11_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.render.chunk.ChunkBuilder;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.screen.AbstractCraftingScreenHandler;
+import net.minecraft.screen.CraftingScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ChunkBuilder.BuiltChunk.class)
-public abstract class MixinBuiltChunk {
+@Mixin(CraftingScreenHandler.class)
+public abstract class MixinCraftingScreenHandler extends AbstractCraftingScreenHandler {
 
-    @Inject(method = "shouldBuild", at = @At("HEAD"), cancellable = true)
-    private void modifyRenderCondition(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            cir.setReturnValue(true);
+    public MixinCraftingScreenHandler(ScreenHandlerType<?> type, int syncId, int width, int height) {
+        super(type, syncId, width, height);
+    }
+
+    @Inject(method = "onContentChanged", at = @At("HEAD"))
+    private void clientSideCrafting(Inventory inventory, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+            Recipes1_11_2.setCraftingResultSlot(syncId, this, this.craftingInventory);
         }
     }
 

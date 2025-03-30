@@ -157,6 +157,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Inject(method = "shouldStopSwimSprinting", at = @At("HEAD"), cancellable = true)
     private void changeStopSwimSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
+        // Not needed, but for consistency and in case a mod uses this method
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             cir.setReturnValue(!this.isOnGround() && !this.input.playerInput.sneak() && this.viaFabricPlus$shouldCancelSprinting() || !this.isTouchingWater());
         }
