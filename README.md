@@ -58,7 +58,12 @@ of the game.
 
 ### Differences with ViaFabric:
 
-https://github.com/ViaVersion/ViaFabric?tab=readme-ov-file#differences-with-viafabricplus
+|                                  | ViaFabric                                       | ViaFabricPlus                                                   |
+|----------------------------------|-------------------------------------------------|-----------------------------------------------------------------|
+| Can be installed on              | Multiple client/server versions with fabric     | Latest client-side version with fabric                          |
+| Objectives                       | Simply implement ViaVersion                     | Implements ViaVersion with client-side fixes to version changes |
+| How does it work?                | Modifying packets at network code               | Modifying client code more deeply                               |
+| Triggering anti-cheats           | Very likely                                     | Mostly not                                                      |
 
 ## Credits
 
