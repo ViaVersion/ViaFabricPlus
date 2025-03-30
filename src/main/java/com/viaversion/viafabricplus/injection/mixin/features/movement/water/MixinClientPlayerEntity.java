@@ -21,6 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -45,12 +47,12 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         super(world, profile);
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z"))
-    private boolean easierUnderwaterSprinting(Input instance) {
+    @WrapOperation(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z"))
+    private boolean easierUnderwaterSprinting(Input instance, Operation<Boolean> original) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return this.viaFabricPlus$isWalking1_21_4();
         } else {
-            return this.input.hasForwardMovement();
+            return original.call(instance);
         }
     }
 
