@@ -60,6 +60,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -197,8 +198,8 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public List<SettingGroup> settingGroups() {
-        return SettingsManager.INSTANCE.getGroups();
+    public List<SettingGroup> getSettingGroups() {
+        return Collections.unmodifiableList(SettingsManager.INSTANCE.getGroups());
     }
 
     @Override

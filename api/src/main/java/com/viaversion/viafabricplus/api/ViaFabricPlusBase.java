@@ -46,7 +46,7 @@ public interface ViaFabricPlusBase {
      * @return an <b>internally based API version</b> incremented with meaningful or breaking changes.
      */
     default int apiVersion() {
-        return 3;
+        return 4;
     }
 
     /**
@@ -157,11 +157,16 @@ public interface ViaFabricPlusBase {
     int getMaxChatLength(final ProtocolVersion version);
 
     /**
-     * All setting groups of the mod.
+     * All setting groups of the mod. Note that this list is not modifiable.
      *
      * @return The setting groups
      */
-    List<SettingGroup> settingGroups();
+    List<SettingGroup> getSettingGroups();
+
+    @Deprecated
+    default List<SettingGroup> settingGroups() {
+        return getSettingGroups();
+    }
 
     /**
      * Add a setting group to the mod.
