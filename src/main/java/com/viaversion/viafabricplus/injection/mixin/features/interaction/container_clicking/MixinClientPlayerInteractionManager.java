@@ -88,7 +88,7 @@ public abstract class MixinClientPlayerInteractionManager {
             }
 
             final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ((IClientConnection) networkHandler.getConnection()).viaFabricPlus$getUserConnection());
-            containerClick.write(Types.UNSIGNED_BYTE, (short) clickSlot.getSyncId());
+            containerClick.write(Types.BYTE, (byte) clickSlot.getSyncId());
             containerClick.write(Types.SHORT, (short) clickSlot.getSlot());
             containerClick.write(Types.BYTE, (byte) clickSlot.getButton());
             containerClick.write(Types.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viaFabricPlus$incrementAndGetActionId());
