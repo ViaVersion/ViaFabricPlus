@@ -138,7 +138,7 @@ public abstract class MixinClientPlayerInteractionManager {
         }
 
         final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ProtocolTranslator.getPlayNetworkUserConnection());
-        containerClick.write(Types.UNSIGNED_BYTE, (short) packet.syncId());
+        containerClick.write(Types.BYTE, (byte) packet.syncId());
         containerClick.write(Types.SHORT, packet.slot());
         containerClick.write(Types.BYTE, packet.button());
         containerClick.write(Types.SHORT, ((IScreenHandler) client.player.currentScreenHandler).viaFabricPlus$incrementAndGetActionId());
