@@ -88,19 +88,6 @@ something, ask in the ViaVersion discord.
 14. Create a pull request and wait for it to be reviewed and merged.
 15. You're done, congrats!
 
-## Git branches
-
-- `main`: The main branch, this is where all changes are merged into
-- `dev`: Used for changes which needs reviewing by all developers, usually merged into `main` shortly after
-- `update/*`: Update branches, these are used to port ViaFabricPlus to newer versions of the game
-- `<version>`: Final release branches sorted by their Minecraft version (e.g. `1.8.9`, `1.16.5`, `1.17.1`, ...)
-
-There are also older formats which aren't used anymore:
-
-- `recode/*`: Recode branches, these are used to port ViaFabricPlus to newer versions of the game or rewrite big parts
-  of the code
-- `backport/*`: Backport branches, these are used to backport newer ViaFabricPlus versions to older versions of the game
-
 ## Project structure
 
 Every change made to the game is called a `feature`. Each feature has its package under both `features/` and
@@ -115,6 +102,19 @@ Loading of features is done via `static` blocks and dummy `init` function called
 Usually you should go back to a -SNAPSHOT `maven_version` and unpin `vvDependencies` again in your next commit. If the next commit
 would be a merged pull request of someone else, you can do a commit with this format before merging the PR:
 `Bump version to <version>`
+
+## Git branches
+
+See https://github.com/FlorianMichael/ViaFabricPlus-archive for older branches.
+
+The `main` branch where all changes are merged into. After the last ViaFabricPlus release for a Minecraft version,
+a branch with the version as name is created (e.g `1.21.5`).
+
+## Backporting
+
+Releases for older Minecraft versions are called backports (usually for updating Via* libraries). Their 
+version strings should be suffixed with `-BACKPORT` to identify them. Backports are pushed to the branch matching their
+Minecraft version.
 
 ## Versioning
 
