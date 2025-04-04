@@ -24,7 +24,6 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.slowdown;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -34,7 +33,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -46,17 +44,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
-    }
-
-    @Redirect(method = "applyMovementSpeedFactors", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldSlowDown()Z"))
-    private boolean changeSneakSlowdownCondition(ClientPlayerEntity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return instance.input.playerInput.sneak();
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            return !MinecraftClient.getInstance().player.isSpectator() && (instance.input.playerInput.sneak() || instance.shouldSlowDown());
-        } else {
-            return instance.shouldSlowDown();
-        }
     }
 
     @Inject(method = "tickMovement()V",

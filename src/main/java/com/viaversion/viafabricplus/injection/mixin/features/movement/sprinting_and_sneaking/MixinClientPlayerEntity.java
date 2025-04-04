@@ -34,7 +34,9 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.util.PlayerInput;
+import net.minecraft.util.math.Vec2f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -89,10 +91,45 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         super(world, profile);
     }
 
+    @Shadow
+    protected abstract Vec2f applyMovementSpeedFactors(final Vec2f input);
+
+    @Redirect(method = "tickMovementInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;applyMovementSpeedFactors(Lnet/minecraft/util/math/Vec2f;)Lnet/minecraft/util/math/Vec2f;"))
+    private Vec2f moveMovementSpeedFactors(ClientPlayerEntity instance, Vec2f input) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            return input;
+        } else {
+            return this.applyMovementSpeedFactors(input);
+        }
+    }
+
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/TutorialManager;onMovement(Lnet/minecraft/client/input/Input;)V", shift = At.Shift.AFTER))
-    private void checkShouldStopSprinting(CallbackInfo ci) {
+    private void moveMovementSpeedFactors(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4)) {
+            return;
+        }
+
+        //... and also add this hotfix back
         if (ProtocolTranslator.getTargetVersion().equals(ProtocolVersion.v1_21_4) && this.shouldStopSprinting()) {
             this.setSprinting(false);
+        }
+
+        if (this.isUsingItem() && !this.hasVehicle()) {
+            this.input.movementVector = this.input.movementVector.multiply(0.2F);
+            this.ticksLeftToDoubleTapSprint = 0;
+        }
+
+        final boolean shouldSlowDown;
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            shouldSlowDown = this.input.playerInput.sneak();
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+            shouldSlowDown = !MinecraftClient.getInstance().player.isSpectator() && (this.input.playerInput.sneak() || this.shouldSlowDown());
+        } else {
+            shouldSlowDown = this.shouldSlowDown();
+        }
+        if (shouldSlowDown) {
+            final float sneakingSpeed = (float) this.getAttributeValue(EntityAttributes.SNEAKING_SPEED);
+            this.input.movementVector = this.input.movementVector.multiply(sneakingSpeed);
         }
     }
 
@@ -202,7 +239,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Unique
     private boolean viaFabricPlus$shouldCancelSprinting() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
-            return this.input.movementVector.y < 0.8F || !this.canSprint(); // Disables sprint sneaking
+            return !(this.input.movementVector.y >= 0.8F) || !this.canSprint(); // Disables sprint sneaking
         } else {
             return !this.input.hasForwardMovement() || !this.canSprint();
         }
