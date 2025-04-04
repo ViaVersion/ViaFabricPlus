@@ -46,6 +46,15 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     public abstract boolean hasStatusEffect(RegistryEntry<StatusEffect> effect);
 
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Ljava/lang/Object;equals(Ljava/lang/Object;)Z"))
+    private boolean useEuclideanDistanceCalculation(Object instance, Object o) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4) && instance instanceof EntityType<?>) {
+            return false;
+        } else {
+            return instance.equals(o);
+        }
+    }
+
     @Redirect(method = "travelMidAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isChunkLoaded(Lnet/minecraft/util/math/BlockPos;)Z"))
     private boolean modifyLoadedCheck(World instance, BlockPos blockPos) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
