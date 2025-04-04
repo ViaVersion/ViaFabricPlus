@@ -40,6 +40,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     public static boolean MOONRISE_PRESENT;
     public static boolean LEGENDARYTOOLTIPS_PRESENT;
     public static boolean LEGACY_PRESENT;
+    public static boolean LAMBDYNLIGHTS_PRESENT;
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -50,6 +51,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
         MOONRISE_PRESENT = loader.isModLoaded("moonrise");
         LEGENDARYTOOLTIPS_PRESENT = loader.isModLoaded("legendarytooltips");
         LEGACY_PRESENT = loader.isModLoaded("legacy");
+        LAMBDYNLIGHTS_PRESENT = loader.isModLoaded("lambdynlights");
 
         FabricAPIWorkaround.init();
     }
@@ -66,6 +68,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
             case MIXINS_PACKAGE + "compat.lithium.MixinEntity" -> LITHIUM_PRESENT && !MOONRISE_PRESENT;
             case MIXINS_PACKAGE + "features.item.attack_damage.MixinItemStack" -> !LEGENDARYTOOLTIPS_PRESENT;
             case MIXINS_PACKAGE + "features.item.negative_item_count.MixinDrawContext" -> !LEGACY_PRESENT;
+            case MIXINS_PACKAGE + "features.world.always_tick_entities.MixinClientWorld" -> !LAMBDYNLIGHTS_PRESENT;
             default -> true;
         };
     }
