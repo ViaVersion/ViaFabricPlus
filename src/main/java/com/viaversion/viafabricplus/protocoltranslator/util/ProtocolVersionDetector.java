@@ -22,8 +22,6 @@ package com.viaversion.viafabricplus.protocoltranslator.util;
 
 import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.lenni0451.mcping.MCPing;
-import net.lenni0451.mcping.responses.MCPingResponse;
 import net.minecraft.util.Formatting;
 
 import java.net.InetSocketAddress;
@@ -43,30 +41,27 @@ public final class ProtocolVersionDetector {
      * @return The protocol version of the server
      */
     public static ProtocolVersion get(final InetSocketAddress serverAddress, final ProtocolVersion clientVersion) {
-        final MCPingResponse response = MCPing
-                .pingModern(clientVersion.getOriginalVersion())
-                .address(serverAddress)
-                .noResolve()
-                .timeout(TIMEOUT, TIMEOUT)
-                .getSync();
-
-        if (response.version.protocol == clientVersion.getOriginalVersion()) { // If the server is on the same version as the client, we can just connect
+        // All servers (I have tested a few million...) will always respond with their highest supported version if you ping with -1
+        final JavaPinger.Response response = JavaPinger.ping(serverAddress, TIMEOUT, -1);
+        final int protocolVersion = response.version().protocol();
+        // If the server is on the same version as the client, we can just connect
+        if (protocolVersion == clientVersion.getOriginalVersion()) {
             return clientVersion;
         }
-
-        if (ProtocolVersion.isRegistered(response.version.protocol)) { // If the protocol is registered, we can use it
-            return ProtocolVersion.getProtocol(response.version.protocol);
+        final String versionName = response.version().name();
+        // If the protocol is registered, we can use it
+        if (ProtocolVersion.isRegistered(protocolVersion)) {
+            return ProtocolVersion.getProtocol(protocolVersion);
         } else {
             for (ProtocolVersion protocol : ProtocolVersionList.getProtocolsNewToOld()) {
                 for (String version : protocol.getIncludedVersions()) {
-                    if (response.version.name.contains(version)) {
+                    if (versionName.contains(version)) {
                         return protocol;
                     }
                 }
             }
             throw new RuntimeException("Unable to detect the server version\nServer sent an invalid protocol id: "
-                    + response.version.protocol + " (" + response.version.name + Formatting.RESET + ")");
+                    + protocolVersion + " (" + response.version().name() + Formatting.RESET + ")");
         }
     }
-
 }
