@@ -41,8 +41,7 @@ public final class ProtocolVersionDetector {
      * @return The protocol version of the server
      */
     public static ProtocolVersion get(final InetSocketAddress serverAddress, final ProtocolVersion clientVersion) {
-        // All servers (I have tested a few million...) will always respond with their highest supported version if you ping with -1
-        final JavaPinger.Response response = JavaPinger.ping(serverAddress, TIMEOUT, -1);
+        final JavaPinger.Response response = JavaPinger.ping(serverAddress, TIMEOUT, clientVersion.getOriginalVersion());
         final int protocolVersion = response.version().protocol();
         // If the server is on the same version as the client, we can just connect
         if (protocolVersion == clientVersion.getOriginalVersion()) {
