@@ -38,7 +38,9 @@ public abstract class MixinChatScreen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void changeChatLength(CallbackInfo ci) {
-        this.chatField.setMaxLength(MaxChatLength.getChatLength());
+        if (this.chatField.getMaxLength() == MaxChatLength.MAX_CHAT_LENGTH_LATEST) {
+            this.chatField.setMaxLength(MaxChatLength.getChatLength());
+        }
     }
 
 }

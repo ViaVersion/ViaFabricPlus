@@ -25,13 +25,15 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
 import net.minecraft.util.StringHelper;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Screen.class)
 public abstract class MixinScreen {
@@ -40,18 +42,21 @@ public abstract class MixinScreen {
     @Nullable
     protected MinecraftClient client;
 
-    @Redirect(method = "handleTextClick", at = @At(value = "INVOKE", target = "Ljava/lang/String;startsWith(Ljava/lang/String;)Z"))
-    private boolean dontSanitizeCommand(String instance, String prefix) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4) && instance.startsWith(prefix);
-    }
-
-    @Redirect(method = "handleTextClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendCommand(Ljava/lang/String;)Z"))
-    private boolean allowRunCommandAction(ClientPlayNetworkHandler instance, String command) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19) && !command.startsWith("/")) {
-            this.client.player.networkHandler.sendChatMessage(StringHelper.stripInvalidChars(command));
-            return true;
-        } else {
-            return instance.sendCommand(command);
+    @Inject(method = "handleTextClick", at = @At(value = "INVOKE", target = "Ljava/lang/String;startsWith(Ljava/lang/String;)Z"), cancellable = true)
+    private void allowRunCommandAction(Style style, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            final String command = ((ClickEvent.RunCommand) style.getClickEvent()).command();
+            if (command.startsWith("/")) {
+                return;
+            }
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
+                // Send as normal chat message
+                this.client.player.networkHandler.sendChatMessage(StringHelper.stripInvalidChars(command));
+                cir.setReturnValue(true);
+            } else {
+                // Just cancel it
+                cir.setReturnValue(false);
+            }
         }
     }
 

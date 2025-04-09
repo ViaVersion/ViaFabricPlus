@@ -35,6 +35,7 @@ accessible method net/minecraft/item/BlockItem getPlacementState (Lnet/minecraft
 accessible method net/minecraft/block/AbstractBlock getPickStack (Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)Lnet/minecraft/item/ItemStack;
 accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
 accessible method net/minecraft/entity/Entity setRotation (FF)V
+accessible method net/minecraft/client/gui/widget/TextFieldWidget getMaxLength ()I
 
 extendable method net/minecraft/entity/Entity updateTrackedPositionAndAngles (Lnet/minecraft/util/math/Vec3d;FF)V
 
