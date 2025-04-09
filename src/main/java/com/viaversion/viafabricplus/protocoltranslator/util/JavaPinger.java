@@ -96,27 +96,8 @@ public final class JavaPinger {
         out.writeByte(value);
     }
 
-    /**
-     * Represents the response received from a server after sending a ping request.
-     * The response contains a {@link Version} object providing specific details
-     * about the server's version.
-     */
     public record Response(Version version) {}
 
-    /**
-     * Represents the version information of a server. This record encapsulates
-     * the specific details about the server's name and protocol version.
-     *
-     * The name provides a human-readable identifier or description of the version,
-     * while the protocol indicates the unique numeric protocol version used for
-     * communication.
-     *
-     * Instances of this record are typically used to convey version information
-     * within the context of server ping responses.
-     *
-     * @param name       the name of the server version
-     * @param protocol   the numeric protocol version of the server
-     */
     public record Version(String name, int protocol) {}
 
     public JavaPinger() {}
