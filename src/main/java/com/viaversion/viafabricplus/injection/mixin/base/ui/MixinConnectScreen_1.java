@@ -33,6 +33,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import io.netty.channel.ChannelFuture;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
+import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.session.Session;
 import net.minecraft.network.ClientConnection;
@@ -53,6 +54,10 @@ public abstract class MixinConnectScreen_1 {
     @Final
     ServerInfo field_40415;
 
+    @Final
+    @Shadow
+    ServerAddress field_33737;
+
     @Shadow
     @Final
     ConnectScreen field_2416;
@@ -61,7 +66,7 @@ public abstract class MixinConnectScreen_1 {
     private boolean viaFabricPlus$useClassiCubeAccount;
 
     @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;"))
-    private ChannelFuture setServerInfoAndHandleDisconnect(InetSocketAddress address, boolean useEpoll, ClientConnection connection, Operation<ChannelFuture> original) {
+    private ChannelFuture setServerInfoAndHandleDisconnect(InetSocketAddress address, boolean useEpoll, ClientConnection connection, Operation<ChannelFuture> original) throws Exception {
         final IServerInfo mixinServerInfo = (IServerInfo) this.field_40415;
 
         ProtocolVersion targetVersion = ProtocolTranslator.getTargetVersion();
@@ -71,7 +76,7 @@ public abstract class MixinConnectScreen_1 {
         }
         if (targetVersion == ProtocolTranslator.AUTO_DETECT_PROTOCOL) {
             this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
-            targetVersion = ProtocolVersionDetector.get(address, ProtocolTranslator.NATIVE_VERSION);
+            targetVersion = ProtocolVersionDetector.get(field_33737, address, ProtocolTranslator.NATIVE_VERSION);
         }
         ProtocolTranslator.setTargetVersion(targetVersion, true);
 
