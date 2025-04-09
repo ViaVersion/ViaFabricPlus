@@ -245,10 +245,10 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Redirect(method = "setPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;updateTrackedPositionAndAngles(Lnet/minecraft/util/math/Vec3d;FF)V"))
     private static void cancelSmallChanges(Entity instance, Vec3d pos, float yaw, float pitch) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) && Math.abs(instance.getX() - pos.x) < 0.03125 && Math.abs(instance.getY() - pos.y) < 0.015625 && Math.abs(instance.getZ() - pos.z) < 0.03125) {
-            instance.updateTrackedPositionAndAngles(instance.getPos(), yaw, pitch);
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && instance.getInterpolator() != null) {
                 instance.getInterpolator().setLerpDuration(0);
             }
+            instance.updateTrackedPositionAndAngles(instance.getPos(), yaw, pitch);
         } else {
             instance.updateTrackedPositionAndAngles(pos, yaw, pitch);
         }
