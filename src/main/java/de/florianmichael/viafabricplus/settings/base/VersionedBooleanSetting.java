@@ -25,7 +25,7 @@ import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.screen.VFPListEntry;
 import de.florianmichael.viafabricplus.screen.settings.VersionedBooleanSettingRenderer;
 import net.minecraft.text.MutableText;
-import net.raphimc.vialoader.util.VersionRange;
+import com.viaversion.vialoader.util.VersionRange;
 
 public class VersionedBooleanSetting extends AbstractSetting<Integer> {
 

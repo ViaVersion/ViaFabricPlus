@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.protocoltranslator.impl.viaversion;
 
-import net.raphimc.vialoader.impl.viaversion.VLViaConfig;
+import com.viaversion.vialoader.impl.viaversion.VLViaConfig;
 
 import java.io.File;
 import java.util.logging.Logger;

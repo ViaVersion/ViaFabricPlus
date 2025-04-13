@@ -19,6 +19,7 @@
 
 package de.florianmichael.viafabricplus.fixes.data;
 
+import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viafabricplus.injection.access.IClientConnection;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -27,7 +28,6 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.item.Item;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
-import net.raphimc.vialoader.util.VersionRange;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import java.util.Map;
 import static com.viaversion.viaversion.api.protocol.version.ProtocolVersion.*;
 import static net.minecraft.item.Items.*;
 import static net.raphimc.vialegacy.api.LegacyProtocolVersion.*;
-import static net.raphimc.vialoader.util.VersionRange.*;
+import static com.viaversion.vialoader.util.VersionRange.*;
 
 /**
  * Class file which contains the {@link VersionRange} for every item added in the game.

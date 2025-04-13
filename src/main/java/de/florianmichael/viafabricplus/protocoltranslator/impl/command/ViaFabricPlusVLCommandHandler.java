@@ -26,7 +26,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.command.ListExtensionsCommand;
 import de.florianmichael.viafabricplus.fixes.versioned.classic.command.SetTimeCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.raphimc.vialoader.impl.viaversion.VLCommandHandler;
+import com.viaversion.vialoader.impl.viaversion.VLCommandHandler;
 
 import java.util.concurrent.CompletableFuture;
 

@@ -28,7 +28,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialoader.util.VersionRange;
+import com.viaversion.vialoader.util.VersionRange;
 
 public class VisualSettings extends SettingGroup {
 

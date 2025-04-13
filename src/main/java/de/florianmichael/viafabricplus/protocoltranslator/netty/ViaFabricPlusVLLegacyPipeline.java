@@ -26,8 +26,8 @@ import de.florianmichael.viafabricplus.fixes.viaversion.ViaFabricPlusProtocol;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.handler.HandlerNames;
-import net.raphimc.vialoader.netty.CompressionReorderEvent;
-import net.raphimc.vialoader.netty.VLLegacyPipeline;
+import com.viaversion.vialoader.netty.CompressionReorderEvent;
+import com.viaversion.vialoader.netty.VLLegacyPipeline;
 
 public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
@@ -47,12 +47,12 @@ public class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
         ctx.pipeline().addAfter(VIA_DECODER_NAME, VIA_FLOW_CONTROL, new NoReadFlowControlHandler());
 
-        this.user.getProtocolInfo().getPipeline().add(ViaFabricPlusProtocol.INSTANCE);
+        this.connection.getProtocolInfo().getPipeline().add(ViaFabricPlusProtocol.INSTANCE);
     }
 
     @Override
     protected ChannelHandler createViaDecoder() {
-        return new ViaFabricPlusViaDecoder(this.user);
+        return new ViaFabricPlusViaDecoder(this.connection);
     }
 
     @Override

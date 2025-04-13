@@ -19,7 +19,7 @@
 
 package de.florianmichael.viafabricplus.protocoltranslator.impl.platform;
 
-import net.raphimc.vialoader.impl.platform.ViaLegacyPlatformImpl;
+import com.viaversion.vialoader.impl.platform.ViaLegacyPlatformImpl;
 
 public class ViaFabricPlusViaLegacyPlatformImpl extends ViaLegacyPlatformImpl {
 

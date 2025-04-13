@@ -30,7 +30,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.raphimc.vialoader.util.ProtocolVersionList;
+import com.viaversion.vialoader.util.ProtocolVersionList;
 
 import java.util.function.Consumer;
 

@@ -26,7 +26,7 @@ import de.florianmichael.viafabricplus.util.ChatUtil;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.raphimc.vialoader.netty.ViaDecoder;
+import com.viaversion.vialoader.netty.ViaDecoder;
 
 public class ViaFabricPlusViaDecoder extends ViaDecoder {
 

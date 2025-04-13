@@ -25,7 +25,7 @@ import de.florianmichael.viafabricplus.settings.base.SettingGroup;
 import de.florianmichael.viafabricplus.settings.base.VersionedBooleanSetting;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialoader.util.VersionRange;
+import com.viaversion.vialoader.util.VersionRange;
 
 public class DebugSettings extends SettingGroup {
 

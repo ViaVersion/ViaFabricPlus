@@ -27,7 +27,7 @@ import de.florianmichael.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import de.florianmichael.viafabricplus.protocoltranslator.ProtocolTranslator;
 import de.florianmichael.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusVLViaConfig;
 import net.fabricmc.loader.api.FabricLoader;
-import net.raphimc.vialoader.impl.platform.ViaVersionPlatformImpl;
+import com.viaversion.vialoader.impl.platform.ViaVersionPlatformImpl;
 
 import java.io.File;
 
