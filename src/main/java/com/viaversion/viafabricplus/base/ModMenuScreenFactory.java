@@ -23,10 +23,10 @@ package com.viaversion.viafabricplus.base;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import com.viaversion.viafabricplus.screen.impl.settings.SettingsScreen;
+import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 
 /**
- * Implementation of the ModMenu integration allowing users to open the settings screen from the mod menu.
+ * Implementation of the ModMenu integration allowing users to open the protocol selection screen from the mod menu.
  */
 public final class ModMenuScreenFactory implements ModMenuApi {
 
@@ -34,8 +34,8 @@ public final class ModMenuScreenFactory implements ModMenuApi {
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> {
             // Sadly, we can't use the open() function here because mod menu needs the screen to be returned
-            SettingsScreen.INSTANCE.prevScreen = parent;
-            return SettingsScreen.INSTANCE;
+            ProtocolSelectionScreen.INSTANCE.prevScreen = parent;
+            return ProtocolSelectionScreen.INSTANCE;
         };
     }
 
