@@ -68,10 +68,10 @@ public final class ProtocolVersionDetector {
 
             writeVarInt(handshakePacket, clientVersion.getOriginalVersion());
             if (clientVersion.olderThanOrEqualTo(ProtocolVersion.v1_17)) {
-                writeVarString(handshakePacket, serverAddress.getAddress());
+                writeString(handshakePacket, serverAddress.getAddress());
                 handshakePacket.writeShort(serverAddress.getPort());
             } else {
-                writeVarString(handshakePacket, socketAddress.getHostString());
+                writeString(handshakePacket, socketAddress.getHostString());
                 handshakePacket.writeShort(socketAddress.getPort());
             }
             writeVarInt(handshakePacket, ConnectionIntent.STATUS.getId());
@@ -93,7 +93,7 @@ public final class ProtocolVersionDetector {
                 throw new IllegalStateException("Invalid packet ID");
             }
 
-            final String response = readVarString(dataInputStream);
+            final String response = readString(dataInputStream);
             final JsonObject object = GSON.fromJson(response, JsonObject.class);
             if (!object.has("version")) {
                 throw new IllegalStateException("Invalid ping response");
@@ -145,7 +145,7 @@ public final class ProtocolVersionDetector {
         return i;
     }
 
-    private static String readVarString(final DataInputStream in) throws IOException {
+    private static String readString(final DataInputStream in) throws IOException {
         final int length = readVarInt(in);
         if (length > Short.MAX_VALUE * 4) {
             throw new IOException("Cannot receive string longer than Short.MAX_VALUE * 4 bytes (got " + length + " bytes)");
@@ -172,7 +172,7 @@ public final class ProtocolVersionDetector {
         out.writeByte(value);
     }
 
-    private static void writeVarString(final DataOutputStream out, final String value) throws IOException {
+    private static void writeString(final DataOutputStream out, final String value) throws IOException {
         final byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
         writeVarInt(out, bytes.length);
         out.write(bytes);

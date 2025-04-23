@@ -43,7 +43,7 @@ public abstract class MixinBeeEntity extends AnimalEntity {
     }
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
-    public void removeStatusEffectInteraction(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+    private void removeStatusEffectInteraction(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             cir.setReturnValue(super.interactMob(player, hand));
         }
