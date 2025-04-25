@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.util;
 
+import com.viaversion.viaversion.api.protocol.Protocol;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
@@ -37,6 +38,16 @@ public final class ItemUtil {
         } else {
             return null;
         }
+    }
+
+    // See ItemRewriter#nbtTagName for the format
+
+    public static String vvNbtName(final Class<? extends Protocol<?, ?, ?, ?>> protocolClass) {
+        return "VV|" + protocolClass.getSimpleName();
+    }
+
+    public static String vvNbtName(final Class<? extends Protocol<?, ?, ?, ?>> protocolClass, final String name) {
+        return "VV|" + protocolClass.getSimpleName() + "|" + name;
     }
 
 }

@@ -28,8 +28,6 @@ import net.minecraft.nbt.NbtCompound;
 
 public final class NegativeItemUtil {
 
-    private static final String VV_IDENTIFIER = "VV|" + Protocol1_10To1_11.class.getSimpleName(); // ItemRewriter#nbtTagName
-
     /**
      * Returns the actual amount of items in the stack, versions older or equal to 1.10 can have negative stack sizes
      * which are not represented by {@link ItemStack#getCount()}.
@@ -40,7 +38,7 @@ public final class NegativeItemUtil {
     public static int getCount(final ItemStack stack) {
         final NbtCompound tag = ItemUtil.getTagOrNull(stack);
         if (tag != null) {
-            return tag.getInt(VV_IDENTIFIER, stack.getCount());
+            return tag.getInt(ItemUtil.vvNbtName(Protocol1_10To1_11.class), stack.getCount());
         } else {
             return stack.getCount();
         }

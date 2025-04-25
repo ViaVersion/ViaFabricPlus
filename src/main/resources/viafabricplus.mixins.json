@@ -167,8 +167,8 @@
     "features.item.interaction.MixinNameTagItem",
     "features.item.interaction.MixinShovelItem",
     "features.item.negative_item_count.MixinDrawContext",
-    "features.item.r1_14_4_enchantment_tooltip.MixinItemStack",
     "features.item.sword_blocking.MixinBlockItemPacketRewriter1_21_X",
+    "features.item.tooltip.MixinItemStack",
     "features.large_container.MixinItemPacketRewriter1_14",
     "features.legacy_tab_completion.MixinAbstractCommandBlockScreen",
     "features.legacy_tab_completion.MixinChatInputSuggestor",
@@ -269,7 +269,8 @@
     "features.world.border_chunk_rendering.MixinBuiltChunk",
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
-    "features.world.remove_server_view_distance.MixinGameOptions"
+    "features.world.remove_server_view_distance.MixinGameOptions",
+    "features.item.tooltip.MixinComponentRewriter1_21_5"
   ],
   "injectors": {
     "defaultRequire": 1
