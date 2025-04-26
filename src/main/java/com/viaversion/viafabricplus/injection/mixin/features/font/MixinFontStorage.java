@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.font;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.font.filter_non_existing_characters.RenderableGlyphDiff;
-import com.viaversion.viafabricplus.features.font.replace_blank_glyph.BuiltinEmptyGlyph1_12_2;
+import com.viaversion.viafabricplus.features.font.RenderableGlyphDiff;
+import com.viaversion.viafabricplus.features.font.BuiltinEmptyGlyph1_12_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -102,7 +102,7 @@ public abstract class MixinFontStorage {
         }
     }
 
-    // Ignore obfuscated texts in the character filter as obfuscated texts uses *all* characters, even does not existing in the current target version.
+    // Ignore obfuscated texts in the character filter as obfuscated text uses *all* characters, even those not existing in the current target version.
     @Inject(method = "getObfuscatedBakedGlyph", at = @At("HEAD"))
     private void pauseCharacterFiltering(Glyph glyph, CallbackInfoReturnable<BakedGlyph> cir) {
         viaFabricPlus$obfuscatedLookup = true;

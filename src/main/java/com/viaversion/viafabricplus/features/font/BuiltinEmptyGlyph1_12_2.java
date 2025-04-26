@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.font.replace_blank_glyph;
+package com.viaversion.viafabricplus.features.font;
 
 import com.mojang.blaze3d.textures.GpuTexture;
 import net.minecraft.client.font.BakedGlyph;

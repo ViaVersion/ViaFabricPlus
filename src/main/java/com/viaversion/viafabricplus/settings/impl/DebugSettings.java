@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.settings.impl;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
-import com.viaversion.viafabricplus.features.font.replace_blank_glyph.FontCacheReload;
+import com.viaversion.viafabricplus.features.font.FontCacheReload;
 import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.text.Text;
