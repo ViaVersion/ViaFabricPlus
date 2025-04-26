@@ -45,11 +45,16 @@ public abstract class MixinFontStorage {
 
     @Shadow
     private BakedGlyph blankBakedGlyph;
+
     @Shadow
     @Final
     private Identifier id;
+
     @Unique
     private BakedGlyph viaFabricPlus$blankBakedGlyph1_12_2;
+
+    @Unique
+    private boolean viaFabricPlus$obfuscatedLookup;
 
     @Shadow
     protected abstract BakedGlyph bake(RenderableGlyph c);
@@ -61,18 +66,17 @@ public abstract class MixinFontStorage {
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
     private void filterGlyphs(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
-        if (this.viaFabricPlusVisuals$shouldBeInvisible(codePoint)) {
+        if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlus$getBlankGlyphPair());
         }
     }
 
     @Inject(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At("RETURN"), cancellable = true)
     private void filterBakedGlyph(int codePoint, CallbackInfoReturnable<BakedGlyph> cir) {
-        if (this.viaFabricPlusVisuals$shouldBeInvisible(codePoint)) {
+        if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlus$getBlankBakedGlyph());
         }
     }
-
 
     @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
     private void fixBlankGlyph1_12_2(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
@@ -84,19 +88,29 @@ public abstract class MixinFontStorage {
         }
     }
 
-
     @Redirect(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At(value = "FIELD", target = "Lnet/minecraft/client/font/FontStorage;blankBakedGlyph:Lnet/minecraft/client/font/BakedGlyph;"))
     private BakedGlyph fixBlankBakedGlyph1_12_2(FontStorage instance) {
         return this.viaFabricPlus$getBlankBakedGlyph();
     }
 
     @Unique
-    private boolean viaFabricPlusVisuals$shouldBeInvisible(final int codePoint) {
-        if (DebugSettings.INSTANCE.filterNonExistingGlyphs.getValue()) {
+    private boolean viaFabricPlus$shouldBeInvisible(final int codePoint) {
+        if (!viaFabricPlus$obfuscatedLookup && DebugSettings.INSTANCE.filterNonExistingGlyphs.getValue()) {
             return (this.id.equals(MinecraftClient.DEFAULT_FONT_ID) || this.id.equals(MinecraftClient.UNICODE_FONT_ID)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
         } else {
             return false;
         }
+    }
+
+    // Ignore obfuscated texts in the character filter as obfuscated texts uses *all* characters, even does not existing in the current target version.
+    @Inject(method = "getObfuscatedBakedGlyph", at = @At("HEAD"))
+    private void pauseCharacterFiltering(Glyph glyph, CallbackInfoReturnable<BakedGlyph> cir) {
+        viaFabricPlus$obfuscatedLookup = true;
+    }
+
+    @Inject(method = "getBaked", at = @At("RETURN"))
+    private void resumeCharacterFiltering(int codePoint, CallbackInfoReturnable<BakedGlyph> cir) {
+        viaFabricPlus$obfuscatedLookup = false;
     }
 
     @Unique

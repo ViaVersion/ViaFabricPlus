@@ -31,9 +31,6 @@ public final class ViaFabricPlus {
 
     private static ViaFabricPlusBase impl;
 
-    /**
-     * Invoked by the internals to set the ViaFabricPlusBase implementation, DO NOT CALL THIS METHOD
-     */
     @ApiStatus.Internal
     public static void init(final ViaFabricPlusBase impl) {
         if (ViaFabricPlus.impl != null) {

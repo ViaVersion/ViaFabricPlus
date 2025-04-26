@@ -27,12 +27,13 @@ import net.minecraft.client.font.FontStorage;
 public final class FontCacheReload {
 
     public static void reload() {
-        final MinecraftClient client = MinecraftClient.getInstance();
-        if (client != null) {
-            for (FontStorage storage : client.fontManager.fontStorages.values()) {
-                storage.bakedGlyphCache.clear();
-                storage.glyphCache.clear();
-            }
+        if (MinecraftClient.getInstance() == null) {
+            return;
+        }
+
+        for (final FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
+            storage.bakedGlyphCache.clear();
+            storage.glyphCache.clear();
         }
     }
 
