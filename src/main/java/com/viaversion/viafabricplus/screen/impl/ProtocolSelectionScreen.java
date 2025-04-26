@@ -91,6 +91,12 @@ public final class ProtocolSelectionScreen extends VFPScreen {
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
+            if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+                // Setting the target version while connected to a server is not allowed as this will
+                // literally break our code away.
+                return;
+            }
+
             ProtocolTranslator.setTargetVersion(this.protocolVersion);
         }
 
@@ -103,8 +109,13 @@ public final class ProtocolSelectionScreen extends VFPScreen {
             matrices.push();
             matrices.translate(x, y - 1, 0);
 
+            Color color = isSelected ? Color.GREEN : Color.RED;
+            if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+                color = color.darker();
+            }
+
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
+            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
             matrices.pop();
         }
     }
