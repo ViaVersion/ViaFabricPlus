@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.disable_server_pinging;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -63,7 +63,7 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
 
     @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Ljava/util/concurrent/ThreadPoolExecutor;submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;"))
     private boolean disableServerPinging(ThreadPoolExecutor instance, Runnable runnable) {
-        ProtocolVersion version = ViaFabricPlus.getImpl().getServerVersion(server);
+        ProtocolVersion version = ((IServerInfo) server).viaFabricPlus$forcedVersion();
         if (version == null) {
             version = ProtocolTranslator.getTargetVersion();
         }

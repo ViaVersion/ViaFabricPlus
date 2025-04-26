@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.font;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.features.font.RenderableGlyphDiff;
 import com.viaversion.viafabricplus.features.font.BuiltinEmptyGlyph1_12_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -115,7 +114,7 @@ public abstract class MixinFontStorage {
 
     @Unique
     private FontStorage.GlyphPair viaFabricPlus$getBlankGlyphPair() {
-        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             return new FontStorage.GlyphPair(BuiltinEmptyGlyph1_12_2.INSTANCE, BuiltinEmptyGlyph1_12_2.INSTANCE);
         } else {
             return FontStorage.GlyphPair.MISSING;

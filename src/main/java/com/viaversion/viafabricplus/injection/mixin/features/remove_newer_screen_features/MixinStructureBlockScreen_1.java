@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.remove_newer_screen_features;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -40,7 +40,7 @@ public abstract class MixinStructureBlockScreen_1 extends TextFieldWidget {
 
     @Inject(method = "charTyped(CI)Z", at = @At("HEAD"), cancellable = true)
     private void removeValidation(char chr, int keyCode, CallbackInfoReturnable<Boolean> ci) {
-        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             ci.setReturnValue(super.charTyped(chr, keyCode));
         }
     }

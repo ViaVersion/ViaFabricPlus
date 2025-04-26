@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IChunkTracker;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IRakSessionCodec;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -61,7 +61,7 @@ public abstract class MixinDebugHud {
 
         final List<String> information = new ArrayList<>();
         information.add("");
-        information.add(ChatUtil.PREFIX + Formatting.RESET + " " + ViaFabricPlus.getImpl().getVersion());
+        information.add(ChatUtil.PREFIX + Formatting.RESET + " " + ViaFabricPlusImpl.INSTANCE.getVersion());
 
         final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
         if (connection == null) {
