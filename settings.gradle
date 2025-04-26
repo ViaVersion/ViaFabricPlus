@@ -14,6 +14,3 @@ includeBuild "build-logic"
 
 include "viafabricplus-api"
 include "viafabricplus-visuals"
-
-project(":viafabricplus-api").projectDir = file("api")
-project(":viafabricplus-visuals").projectDir = file("visuals")
