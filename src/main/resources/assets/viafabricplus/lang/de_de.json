@@ -105,6 +105,7 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "Handwerksrezeptbuch ausblenden",
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "Unicode-Schriftart für Nicht-ASCII-Sprachen erzwingen",
   "visual_settings.viafabricplus.sneak_instantly": "Sofort schleichen",
+  "visual_settings.viafabricplus.lock_blocking_arm_rotation": "Rotation des Armes in der dritten Person beim blockieren verhindern",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "Interpolation der Körperdrehung ändern",
 
   "force_version.viafabricplus.title": "Bitte wähle die Version, mit der der Server gepingt/verbunden werden soll",
