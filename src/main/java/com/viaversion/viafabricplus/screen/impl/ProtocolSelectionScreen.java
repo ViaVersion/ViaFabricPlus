@@ -52,8 +52,10 @@ public final class ProtocolSelectionScreen extends VFPScreen {
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, 30, textRenderer.fontHeight + 4));
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.settings"), button -> SettingsScreen.INSTANCE.open(this)).position(width - 98 - 5, 5).size(98, 20).build());
 
-        this.addDrawableChild(ButtonWidget.builder(ServerListScreen.INSTANCE.getTitle(), button -> ServerListScreen.INSTANCE.open(this))
+        final ButtonWidget serverList = this.addDrawableChild(ButtonWidget.builder(ServerListScreen.INSTANCE.getTitle(), button -> ServerListScreen.INSTANCE.open(this))
                 .position(5, height - 25).size(98, 20).build());
+        serverList.active = MinecraftClient.getInstance().getNetworkHandler() == null;
+
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("report.viafabricplus.button"), button -> ReportIssuesScreen.INSTANCE.open(this))
                 .position(width - 98 - 5, height - 25).size(98, 20).build());
 
@@ -91,6 +93,12 @@ public final class ProtocolSelectionScreen extends VFPScreen {
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
+            if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+                // Setting the target version while connected to a server is not allowed as this will
+                // literally break our code away.
+                return;
+            }
+
             ProtocolTranslator.setTargetVersion(this.protocolVersion);
         }
 
@@ -103,8 +111,13 @@ public final class ProtocolSelectionScreen extends VFPScreen {
             matrices.push();
             matrices.translate(x, y - 1, 0);
 
+            Color color = isSelected ? Color.GREEN : Color.RED;
+            if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+                color = color.darker();
+            }
+
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
+            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
             matrices.pop();
         }
     }
