@@ -14,3 +14,20 @@ includeBuild "build-logic"
 
 include "viafabricplus-api"
 include "viafabricplus-visuals"
+
+if (!file(".git").exists()) {
+    val errorText = """
+
+        =====================[ ERROR ]=====================
+         The ViaFabricPlus project directory is not a properly cloned Git repository.
+
+         In order to build ViaFabricPlus from source you must clone
+         the ViaFabricPlus repository using Git, not download a code
+         zip from GitHub.
+
+         Built ViaFabricPlus jars are available for download at
+         https://ci.viaversion.com/view/Platforms/job/ViaFabricPlus/
+        ===================================================
+    """.trimIndent()
+    error(errorText)
+}
