@@ -34,6 +34,7 @@ import com.viaversion.viaversion.protocols.v1_16_4to1_17.Protocol1_16_4To1_17;
 import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.packet.ServerboundPackets1_21_4;
 import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.Protocol1_21_4To1_21_5;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -52,8 +53,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(ClientPlayerInteractionManager.class)
@@ -113,11 +112,11 @@ public abstract class MixinClientPlayerInteractionManager {
         containerClick.write(Types.BYTE, packet.button());
         containerClick.write(Types.VAR_INT, packet.actionType().getIndex());
 
-        final Int2ObjectMap<ItemStackHash> stacks = packet.modifiedStacks();
-        containerClick.write(Types.VAR_INT, stacks.size());
-        for (int i = 0; i < stacks.size(); i++) {
-            final ItemStack itemStack = client.player.currentScreenHandler.slots.get(i).getStack();
-            containerClick.write(Types.SHORT, (short) i);
+        final Int2ObjectMap<ItemStackHash> modifiedStacks = packet.modifiedStacks();
+        containerClick.write(Types.VAR_INT, modifiedStacks.size());
+        for (Int2ObjectMap.Entry<ItemStackHash> entry : modifiedStacks.int2ObjectEntrySet()) {
+            final ItemStack itemStack = client.player.currentScreenHandler.slots.get(entry.getIntKey()).getStack();
+            containerClick.write(Types.SHORT, (short) entry.getIntKey());
             containerClick.write(Types1_21_4.ITEM, ItemTranslator.mcToVia(itemStack, ProtocolVersion.v1_21_4));
         }
 
