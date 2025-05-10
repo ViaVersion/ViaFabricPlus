@@ -4,6 +4,7 @@
 build/
 out/
 classes/
+.kotlin/
 
 # Eclipse
 
@@ -16,7 +17,7 @@ classes/
 *.ipr
 *.iws
 
-# VScode
+# VSCode
 
 .settings/
 .vscode/
@@ -26,13 +27,8 @@ bin/
 
 # macOS
 
-.DS_Store
-.AppleDouble
-.LSOverride
+*.DS_Store
 
-# Fabric
+# Misc
 
 run/
-runV2/
-*.cap
-*.rdc
