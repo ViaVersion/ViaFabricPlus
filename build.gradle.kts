@@ -63,7 +63,7 @@ dependencies {
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.3.2-SNAPSHOT")
+        configuration("com.viaversion:viaversion-common:5.3.3-SNAPSHOT")
         configuration("com.viaversion:viabackwards-common:5.3.2-SNAPSHOT")
         configuration("com.viaversion:viaaprilfools-common:4.0.2-SNAPSHOT")
         configuration("com.viaversion:vialoader:4.0.3-SNAPSHOT") {
