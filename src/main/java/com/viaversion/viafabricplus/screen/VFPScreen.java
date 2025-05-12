@@ -207,7 +207,7 @@ public class VFPScreen extends Screen {
     }
 
     protected boolean subtitleCentered() {
-        // To be overriden
+        // To be overridden
         return false;
     }
 
