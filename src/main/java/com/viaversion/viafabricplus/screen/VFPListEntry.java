@@ -87,7 +87,7 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      *
      * @param text   The text which should be displayed
      * @param textY  The Y position of the text
-     * @param offset The offset of the text from the left side of the slot, this is used to calculate the width of the text, which should be scrolled (Scrolling is enabled when entryWidth - offset < textWidth)
+     * @param offset The offset of the text from the left side of the slot, this is used to calculate the width of the text, which should be scrolled
      */
     public void renderScrollableText(final Text text, final int textY, final int offset) {
         final TextRenderer font = MinecraftClient.getInstance().textRenderer;

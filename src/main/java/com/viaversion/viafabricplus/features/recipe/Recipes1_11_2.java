@@ -723,7 +723,7 @@ public final class Recipes1_11_2 {
     }
 
     /**
-     * Sets the result slot of a crafting screen handler to the correct item stack. In MC <= 1.11.2 the result slot
+     * Sets the result slot of a crafting screen handler to the correct item stack. In Minecraft versions up to 1.11.2 the result slot
      * is not updated when the input slots change, so we need to update it manually, Spigot and Paper re-syncs the slot,
      * so we don't notice this bug on servers that use Spigot or Paper
      *

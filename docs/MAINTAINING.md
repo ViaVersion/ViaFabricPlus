@@ -5,13 +5,13 @@ something, ask in the ViaVersion discord.
 
 1. Update all upstream versions in `gradle.properties`. The main versions you need to update are:
     - `minecraft_version`
-    - `yarn_version`
-    - `loader_version`
+    - `yarn_mappings_version`
+    - `fabric_loader_version`
     - `fabric_api_version`
 
-    - `supported_versions` (if necessary)
+    - `supported_minecraft_versions` (if necessary)
 
-   As well as the versions in the `dependencies` block in the `build.gradle` file.
+   As well as the versions in the `dependencies` block in the `build.gradle.kts` file.
    Set `updating_minecraft` to `true` (Required for automatic data dumping).
 2. Increment the version number in `gradle.properties` by at least a minor version (e.g. 1.0.0 -> 1.1.0)
 3. Check all data dumps and diffs in the fixes/data package and update them if necessary, here is a list of some
@@ -88,35 +88,25 @@ something, ask in the ViaVersion discord.
 14. Create a pull request and wait for it to be reviewed and merged.
 15. You're done, congrats!
 
-## Project structure
+# Project structure
 
 Every change made to the game is called a `feature`. Each feature has its package under both `features/` and
 `injection/mixin/features/`, organizing utility and mixin classes for easier project maintenance and porting
 Loading of features is done via `static` blocks and dummy `init` function called in the `FeaturesLoading` class.
 
+## Build files
+
+Common build logic is handled by the [BaseProject Gradle convention plugin](https://github.com/FlorianMichael/BaseProject).
+Note that the root project includes the classpaths of all submodules — including optional ones like `viafabricplus-visuals`.
+To avoid potential issues, ensure your code does not include any unintended references to these optional submodules.
+
 ## Release process
-1. Set `maven_version` in `gradle.properties` to the next release version.
-2. Pin version ids of `vvDependencies` in `build-logic/src/main/groovy/vfp.base-conventions.gradle`
-3. Commit `<version> Release`
 
-Usually you should go back to a -SNAPSHOT `maven_version` and unpin `vvDependencies` again in your next commit. If the next commit
-would be a merged pull request of someone else, you can do a commit with this format before merging the PR:
-`Bump version to <version>`
+1. Set `project_version` in `gradle.properties` to the next release version.
+2. Pin version ids of `configureVVDependencies` in `build.gradle.kts`.
+3. Commit `<version> Release`.
 
-## Git branches
-
-See https://github.com/FlorianMichael/ViaFabricPlus-archive for older branches.
-
-The `main` branch where all changes are merged into. After the last ViaFabricPlus release for a Minecraft version,
-a branch with the version as name is created (e.g `1.21.5`).
-
-## Backporting
-
-Releases for older Minecraft versions are called backports (usually for updating Via* libraries). Their 
-version strings should be suffixed with `-BACKPORT` to identify them. Backports are pushed to the branch matching their
-Minecraft version.
-
-## Versioning
+### Versioning
 
 The versioning should only be updated every release and should only have one update between each release.
 
@@ -129,3 +119,20 @@ The versioning scheme is `major.minor.patch`, where:
 
 - `Patch` versions are incremented when bug fixes are made or small features are added, they are the usual version
   increment.
+
+Usually you should go back to a -SNAPSHOT `project_version` and unpin `configureVVDependencies` again in your next commit. If the next commit
+would be a merged pull request of someone else, you can do a commit with this format before merging the PR:
+`Bump version to <version>`
+
+## Git branches
+
+See https://github.com/FlorianMichael/ViaFabricPlus-archive for older branches.
+
+The `main` branch where all changes are merged into. After the last ViaFabricPlus release for a Minecraft version,
+a branch with the version as name is created (e.g `1.21.5`).
+
+## Backporting
+
+Releases for older Minecraft versions are called backports (usually for updating Via* libraries). Their
+version strings should be suffixed with `-BACKPORT` to identify them. Backports are pushed to the branch matching their
+Minecraft version.
