@@ -67,7 +67,7 @@ of the game.
 
 ## Credits
 
-Special thanks to all our [Contributors](https://github.com/ViaVersion/ViaFabricPllus/graphs/contributors).
+Special thanks to all our [Contributors](https://github.com/ViaVersion/ViaFabricPlus/graphs/contributors).
 
 ## Disclaimer
 
