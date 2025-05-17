@@ -40,11 +40,11 @@ configureTestTasks(project.findProperty("updating_minecraft") as? Boolean ?: fal
 val jij = configureJij()
 configureVVDependencies("jij")
 
-dependencies {
-    includeFabricApiModules("fabric-resource-loader-v0", "fabric-networking-api-v1", "fabric-command-api-v2", "fabric-lifecycle-events-v1", "fabric-particles-v1", "fabric-registry-sync-v0")
-    includeFabricSubmodule("viafabricplus-api")
-    includeFabricSubmodule("viafabricplus-visuals")
+includeFabricApiModules("fabric-resource-loader-v0", "fabric-networking-api-v1", "fabric-command-api-v2", "fabric-lifecycle-events-v1", "fabric-particles-v1", "fabric-registry-sync-v0")
+includeFabricSubmodule("viafabricplus-api")
+includeFabricSubmodule("viafabricplus-visuals")
 
+dependencies {
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")
     modCompileOnly("com.terraformersmc:modmenu:14.0.0-rc.2")
 
@@ -57,9 +57,9 @@ dependencies {
         exclude(group = "io.netty")
     }
     jij("de.florianmichael:Classic4J:2.1.1-SNAPSHOT")
-
-    includeTransitiveJijDependencies()
 }
+
+includeTransitiveJijDependencies()
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
