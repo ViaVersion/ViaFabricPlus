@@ -134,7 +134,7 @@
     "features.interaction.container_clicking.MixinClientPlayerInteractionManager",
     "features.interaction.container_clicking.MixinCraftingScreenHandler",
     "features.interaction.container_clicking.MixinItemPacketRewriter1_17",
-    "features.interaction.container_clicking.MixinItemRewriter",
+    "features.interaction.container_clicking.MixinStructuredItemRewriter",
     "features.interaction.container_clicking.MixinMerchantScreenHandler",
     "features.interaction.container_clicking.MixinScreenHandler",
     "features.interaction.cooldown.MixinItemCooldownManager",

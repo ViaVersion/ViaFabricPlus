@@ -33,11 +33,7 @@ import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
-import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
-import com.viaversion.viaversion.api.type.types.version.Types1_21;
-import com.viaversion.viaversion.api.type.types.version.Types1_21_2;
-import com.viaversion.viaversion.api.type.types.version.Types1_21_4;
-import com.viaversion.viaversion.api.type.types.version.Types1_21_5;
+import com.viaversion.viaversion.api.type.types.version.VersionedTypes;
 import com.viaversion.viaversion.protocols.v1_12to1_12_1.packet.ClientboundPackets1_12_1;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.MinecraftClient;
@@ -112,7 +108,7 @@ public final class ItemTranslator {
         } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return getClientboundItemType(targetVersion);
         } else {
-            return Types1_21_5.LENGTH_PREFIXED_ITEM;
+            return VersionedTypes.V1_21_5.lengthPrefixedItem;
         }
     }
 
@@ -138,15 +134,15 @@ public final class ItemTranslator {
         } else if (targetVersion.olderThan(ProtocolVersion.v1_20_5)) {
             return Types.ITEM1_20_2;
         } else if (targetVersion.olderThan(ProtocolVersion.v1_21)) {
-            return Types1_20_5.ITEM;
+            return VersionedTypes.V1_20_5.item;
         } else if (targetVersion.olderThan(ProtocolVersion.v1_21_2)) {
-            return Types1_21.ITEM;
+            return VersionedTypes.V1_21.item;
         } else if (targetVersion.olderThan(ProtocolVersion.v1_21_4)) {
-            return Types1_21_2.ITEM;
+            return VersionedTypes.V1_21_2.item;
         } else if (targetVersion.olderThan(ProtocolVersion.v1_21_5)) {
-            return Types1_21_4.ITEM;
+            return VersionedTypes.V1_21_4.item;
         } else {
-            return Types1_21_5.ITEM;
+            return VersionedTypes.V1_21_5.item;
         }
     }
 

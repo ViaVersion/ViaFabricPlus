@@ -39,8 +39,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = BlockItemPacketRewriter1_21_5.class, remap = false)
 public abstract class MixinBlockItemPacketRewriter1_21_5 extends StructuredItemRewriter<ClientboundPacket1_21_2, ServerboundPacket1_21_5, Protocol1_21_4To1_21_5> {
 
-    public MixinBlockItemPacketRewriter1_21_5(final Protocol1_21_4To1_21_5 protocol, final Type<Item> itemType, final Type<Item[]> itemArrayType, final Type<Item> mappedItemType, final Type<Item[]> mappedItemArrayType, final Type<Item> itemCostType, final Type<Item> optionalItemCostType, final Type<Item> mappedItemCostType, final Type<Item> mappedOptionalItemCostType) {
-        super(protocol, itemType, itemArrayType, mappedItemType, mappedItemArrayType, itemCostType, optionalItemCostType, mappedItemCostType, mappedOptionalItemCostType);
+    public MixinBlockItemPacketRewriter1_21_5(final Protocol1_21_4To1_21_5 protocol) {
+        super(protocol);
     }
 
     @Inject(method = "registerPackets", at = @At("RETURN"))
