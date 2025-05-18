@@ -83,7 +83,7 @@ public abstract class MixinClientPlayerInteractionManager {
             viaFabricPlus$clickSlot1_16_5(clickSlotPacket);
             return false;
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            // Contain the actual item and not only the item hash
+            // Contains the actual item and not only the item hash
             viaFabricPlus$clickSlot1_21_4(clickSlotPacket);
             return false;
         }
