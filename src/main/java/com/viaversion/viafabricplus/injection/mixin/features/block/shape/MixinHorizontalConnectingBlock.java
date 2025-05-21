@@ -38,17 +38,18 @@ public abstract class MixinHorizontalConnectingBlock implements IHorizontalConne
 
     @Override
     public int viaFabricPlus$getShapeIndex(final BlockState blockState) {
-        return viaFabricPlus$SHAPE_INDEX_CACHE.computeIntIfPresent(blockState, (state, index) -> {
-            if (state.get(HorizontalConnectingBlock.NORTH)) {
+        return viaFabricPlus$SHAPE_INDEX_CACHE.computeIfAbsent(blockState, statex -> {
+            int index = 0;
+            if (blockState.get(HorizontalConnectingBlock.NORTH)) {
                 index |= 1 << Direction.NORTH.getHorizontalQuarterTurns();
             }
-            if (state.get(HorizontalConnectingBlock.EAST)) {
+            if (blockState.get(HorizontalConnectingBlock.EAST)) {
                 index |= 1 << Direction.EAST.getHorizontalQuarterTurns();
             }
-            if (state.get(HorizontalConnectingBlock.SOUTH)) {
+            if (blockState.get(HorizontalConnectingBlock.SOUTH)) {
                 index |= 1 << Direction.SOUTH.getHorizontalQuarterTurns();
             }
-            if (state.get(HorizontalConnectingBlock.WEST)) {
+            if (blockState.get(HorizontalConnectingBlock.WEST)) {
                 index |= 1 << Direction.WEST.getHorizontalQuarterTurns();
             }
 
