@@ -75,8 +75,15 @@ public abstract class MixinConnectScreen_1 {
             mixinServerInfo.viaFabricPlus$passDirectConnectScreen(false); // reset state
         }
         if (targetVersion == ProtocolTranslator.AUTO_DETECT_PROTOCOL) {
-            this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
-            targetVersion = ProtocolVersionDetector.get(field_33737, address, ProtocolTranslator.NATIVE_VERSION);
+            // If the server got already pinged, try to use that version if it's valid. Otherwise, perform auto-detect
+            final boolean serverPinged = this.field_40415.getStatus() == ServerInfo.Status.SUCCESSFUL || this.field_40415.getStatus() == ServerInfo.Status.INCOMPATIBLE;
+            if (serverPinged) {
+                targetVersion = ProtocolVersion.getProtocol(this.field_40415.protocolVersion);
+            }
+            if (!serverPinged || !targetVersion.isKnown()) {
+                this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
+                targetVersion = ProtocolVersionDetector.get(field_33737, address, ProtocolTranslator.NATIVE_VERSION);
+            }
         }
         ProtocolTranslator.setTargetVersion(targetVersion, true);
 
