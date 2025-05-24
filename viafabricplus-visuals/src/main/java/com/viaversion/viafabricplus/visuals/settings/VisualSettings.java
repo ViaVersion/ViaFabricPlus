@@ -72,6 +72,7 @@ public final class VisualSettings extends SettingGroup {
 
     // 1.9 -> 1.8.x
     public final VersionedBooleanSetting alwaysRenderCrosshair = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.always_render_crosshair"), VersionRange.andOlder(ProtocolVersion.v1_8));
+    public final VersionedBooleanSetting legacyCropOutlines = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.legacy_crop_outlines"), VersionRange.andOlder(ProtocolVersion.v1_8));
 
     // 1.8.x -> 1.7.6 - 1.7.10
     public final VersionedBooleanSetting swingHandOnItemUse = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.swing_hand_on_item_use"), VersionRange.andOlder(ProtocolVersion.v1_7_6));
