@@ -29,6 +29,7 @@
   "debug_settings.viafabricplus.replace_sneaking": "Remplacer le sneaking",
   "debug_settings.viafabricplus.long_sneaking": "Sneaking prolongé",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Vitesses d'exploitation minière héritées",
+  "debug_settings.viafabricplus.legacy_crop_outlines": "Silhouettes de cultures agricoles héritées",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Utiliser l'authentification BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Autoriser ViaLegacy à appeler joinServer() pour vérifier la session",
@@ -44,7 +45,6 @@
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "Remplacer la dalle en chêne pétrifiée",
   "visual_settings.viafabricplus.emulate_armor_hud": "Émuler l'HUD d'armure",
   "visual_settings.viafabricplus.hide_modern_command_block_screen_features": "Supprimer les fonctionnalités plus récentes de l'écran du bloc de commande",
-  "visual_settings.viafabricplus.legacy_crop_outlines": "Silhouettes de cultures agricoles héritées",
   "visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound": "Remplacer le son de blessure par le son OOF",
   "visual_settings.viafabricplus.hide_modern_hud_elements": "Supprimer les nouveaux éléments de l'HUD",
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "Remplacer l'inventaire créatif",

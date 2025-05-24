@@ -61,6 +61,7 @@ public final class DebugSettings extends SettingGroup {
     // 1.9 -> 1.8.x
     public final VersionedBooleanSetting emulateArmorHud = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.emulate_armor_hud"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting hideModernCommandBlockScreenFeatures = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.hide_modern_command_block_screen_features"), VersionRange.andOlder(ProtocolVersion.v1_8));
+    public final VersionedBooleanSetting legacyCropOutlines = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.legacy_crop_outlines"), VersionRange.andOlder(ProtocolVersion.v1_8));
 
     // b1.8/b1.8.1 -> b1_7/b1.7.3
     public final VersionedBooleanSetting disableServerPinging = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.disable_server_pinging"), VersionRange.andOlder(LegacyProtocolVersion.b1_7tob1_7_3));

@@ -19,9 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.visuals.injection.mixin.crop_outline;
+package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
-import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.CarrotsBlock;
 import net.minecraft.block.CropBlock;
@@ -41,7 +41,7 @@ public abstract class MixinCropBlock {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(CallbackInfoReturnable<VoxelShape> cir) {
-        if (VisualSettings.INSTANCE.legacyCropOutlines.isEnabled()) {
+        if (DebugSettings.INSTANCE.legacyCropOutlines.isEnabled()) {
             cir.setReturnValue(viaFabricPlus$shape_r1_8_x);
         }
     }

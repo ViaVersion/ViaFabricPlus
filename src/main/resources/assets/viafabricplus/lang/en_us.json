@@ -76,6 +76,7 @@
   "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Hide modern Jigsaw screen features",
   "debug_settings.viafabricplus.emulate_armor_hud": "Emulate armor HUD",
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "Hide modern command block screen features",
+  "debug_settings.viafabricplus.legacy_crop_outlines": "Legacy crop outlines",
   "debug_settings.viafabricplus.disable_server_pinging": "Disable server pinging",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "Filter non existing glyphs",
 
@@ -93,7 +94,6 @@
   "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "Hide download terrain screen transition effects",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "Replace petrified oak slab texture with the 'unknown' texture",
   "visual_settings.viafabricplus.always_render_crosshair": "Always render crosshair",
-  "visual_settings.viafabricplus.legacy_crop_outlines": "Legacy crop outlines",
   "visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound": "Replace hurt sound with OOF sound",
   "visual_settings.viafabricplus.hide_modern_hud_elements": "Hide modern HUD elements",
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "Replace creative inventory",

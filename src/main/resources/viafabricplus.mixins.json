@@ -60,6 +60,7 @@
     "features.block.shape.MixinCarpetBlock",
     "features.block.shape.MixinCauldronBlock",
     "features.block.shape.MixinChestBlock",
+    "features.block.shape.MixinCropBlock",
     "features.block.shape.MixinEnderChestBlock",
     "features.block.shape.MixinEndPortalBlock",
     "features.block.shape.MixinEndPortalFrameBlock",
