@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin({CropBlock.class, CarrotsBlock.class, PotatoesBlock.class})
-public abstract class MixinCropBlock {
+public abstract class MixinCropBlocks {
 
     @Unique
     private static final VoxelShape viaFabricPlus$shape_r1_8_x = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
