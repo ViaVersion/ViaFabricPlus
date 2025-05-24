@@ -49,6 +49,7 @@
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "Remplacer l'inventaire créatif",
   "visual_settings.viafabricplus.old_walking_animation": "Ancienne animation de marche",
   "visual_settings.viafabricplus.sodium": "Corriger le rendu de chunk de Sodium",
+  "visual_settings.viafabricplus.potion_enchantment_glint": "Afficher le reflet d'enchantement sur les potions",
 
   "bedrock.viafabricplus.login": "Votre navigateur devrait s'être ouvert. Veuillez entrer le code suivant: %s. Fermer cette fenêtre annulera le processus!",
   "bedrocklogin.viafabricplus.error": "Une erreur s'est produite ! Veuillez consulter latest.log pour plus d'informations. Veuillez signaler le bogue à l'adresse : \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
