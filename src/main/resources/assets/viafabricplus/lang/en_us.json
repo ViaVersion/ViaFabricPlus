@@ -108,6 +108,7 @@
   "visual_settings.viafabricplus.sneak_instantly": "Sneak instantly",
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "Lock third-person arm rotation whilst blocking",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "Change body rotation interpolation",
+  "visual_settings.viafabricplus.potion_enchantment_glint": "Show enchantment glint on potions",
 
   "force_version.viafabricplus.title": "Please select the version with which the server should be pinged/connected",
 
