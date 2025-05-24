@@ -6,6 +6,7 @@
   "client": [
     "classic.creative_menu.MixinCreativeInventoryScreen",
     "classic.walking_animation.MixinBipedEntityModel",
+    "crop_outline.MixinCropBlock",
     "downloading_terrain_transitions.MixinDownloadingTerrainScreen",
     "filter_game_mode_selections.MixinGameModeSwitcherScreen",
     "filter_game_mode_selections.MixinGameModeSwitcherScreen_GameModeSelection",
