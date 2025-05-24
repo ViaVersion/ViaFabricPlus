@@ -93,6 +93,7 @@
   "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "Hide download terrain screen transition effects",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "Replace petrified oak slab texture with the 'unknown' texture",
   "visual_settings.viafabricplus.always_render_crosshair": "Always render crosshair",
+  "visual_settings.viafabricplus.full_block_crop_outline": "Use full block outlines for crops",
   "visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound": "Replace hurt sound with OOF sound",
   "visual_settings.viafabricplus.hide_modern_hud_elements": "Hide modern HUD elements",
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "Replace creative inventory",
