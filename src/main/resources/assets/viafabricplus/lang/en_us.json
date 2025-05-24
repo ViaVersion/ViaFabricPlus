@@ -76,6 +76,7 @@
   "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Hide modern Jigsaw screen features",
   "debug_settings.viafabricplus.emulate_armor_hud": "Emulate armor HUD",
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "Hide modern command block screen features",
+  "debug_settings.viafabricplus.legacy_crop_outlines": "Legacy crop outlines",
   "debug_settings.viafabricplus.disable_server_pinging": "Disable server pinging",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "Filter non existing glyphs",
 
