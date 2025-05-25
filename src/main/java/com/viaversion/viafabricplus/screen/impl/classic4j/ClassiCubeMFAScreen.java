@@ -65,7 +65,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
 
                 @Override
                 public void handleSuccessfulLogin(CCAccount account) {
-                    ClassiCubeServerListScreen.open(prevScreen, this);
+                    ClassiCubeServerListScreen.INSTANCE.open(prevScreen);
                 }
 
                 @Override
