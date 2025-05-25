@@ -59,11 +59,12 @@ public final class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        // Bypass, because Krypton overwrites the entire compression instead of modifying the handlers.
+        // Krypton mixins are badly implemented and override parts of the network pipeline. They rejected
+        // to make the mixins mod compatible and instead added this bad API which mods now have to use for no reason.
         if (evt.getClass().getName().equals("me.steinborn.krypton.mod.shared.misc.KryptonPipelineEvent")) {
             if (evt.toString().equals("COMPRESSION_ENABLED")) {
                 super.userEventTriggered(ctx, CompressionReorderEvent.INSTANCE);
-                ViaFabricPlusImpl.INSTANCE.getLogger().info("Compression has been re-ordered after \"Krypton\"");
+                ViaFabricPlusImpl.INSTANCE.getLogger().warn("ViaFabricPlus has detected that the Krypton mod is installed. Please note that Krypton is mostly snake oil on the client side, and it is not recommended to use it.");
                 return;
             }
         }
