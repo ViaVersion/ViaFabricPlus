@@ -75,9 +75,11 @@
   "debug_settings.viafabricplus.legacy_tab_completions": "Legacy-Tab-Vervollständigungen",
   "debug_settings.viafabricplus.emulate_armor_hud": "Rüstungs-HUD emulieren",
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "Moderne Befehlsblock-Bildschirmfunktionen ausblenden",
+  "debug_settings.viafabricplus.legacy_crop_outlines": "Legacy-Ernte-Umrisse",
   "debug_settings.viafabricplus.disable_server_pinging": "Server-Pinging deaktivieren",
   "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Moderne Verbundblock-Bildschirmeigenschaften ausblenden",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "Nicht vorhandene Glyphen filtern",
+  "debug_settings.viafabricplus.legacy_pane_outlines": "Legacy-Glasscheiben-Umrisse",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "BetaCraft-Authentifizierung verwenden",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Sitzung für Server im Online-Modus verifizieren",
@@ -107,6 +109,7 @@
   "visual_settings.viafabricplus.sneak_instantly": "Sofort schleichen",
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "Rotation des Armes in der dritten Person beim blockieren verhindern",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "Interpolation der Körperdrehung ändern",
+  "visual_settings.viafabricplus.potion_enchantment_glint": "Zeige Verzauberungs-Glanz für Tränke an",
 
   "force_version.viafabricplus.title": "Bitte wähle die Version, mit der der Server gepingt/verbunden werden soll",
 

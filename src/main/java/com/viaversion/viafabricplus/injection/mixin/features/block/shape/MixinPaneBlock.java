@@ -40,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinPaneBlock extends HorizontalConnectingBlock implements IHorizontalConnectingBlock {
 
     @Unique
-    private VoxelShape[] viaFabricPlus$shape_r1_12;
+    private VoxelShape[] viaFabricPlus$shape_r1_12_2;
 
     @Unique
     private VoxelShape[] viaFabricPlus$shape_r1_8;
@@ -58,7 +58,7 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock implement
 
         final VoxelShape baseShape = Block.createCuboidShape(f, 0.0, f, g, (float) 16.0, g);
 
-        viaFabricPlus$shape_r1_12 = new VoxelShape[]{
+        viaFabricPlus$shape_r1_12_2 = new VoxelShape[]{
             baseShape,
             Block.createCuboidShape(h, 0.0, h, i, 16.0, 16.0), // south
             Block.createCuboidShape(0.0, 0.0, h, i, 16.0, i), // west
@@ -108,7 +108,7 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock implement
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (DebugSettings.INSTANCE.legacyPaneOutlines.isEnabled()) {
-            return this.viaFabricPlus$shape_r1_12[this.viaFabricPlus$getShapeIndex(state)];
+            return this.viaFabricPlus$shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getOutlineShape(state, world, pos, context);
         }

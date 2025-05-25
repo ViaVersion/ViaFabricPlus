@@ -44,4 +44,5 @@ public abstract class MixinPotionItem extends Item {
             return super.hasGlint(stack);
         }
     }
+
 }
