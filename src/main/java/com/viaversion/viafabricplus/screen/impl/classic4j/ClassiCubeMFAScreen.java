@@ -78,7 +78,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
     public void close() {
         // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
         SaveManager.INSTANCE.getAccountsSave().setClassicubeAccount(null);
-        ProtocolSelectionScreen.INSTANCE.open(prevScreen);
+        super.close();
     }
 
     @Override
