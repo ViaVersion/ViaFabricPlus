@@ -37,7 +37,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
     public static final ClassiCubeMFAScreen INSTANCE = new ClassiCubeMFAScreen();
 
     public ClassiCubeMFAScreen() {
-        super(Text.translatable("screen.viafabricplus.classicube_mfa"), false);
+        super(Text.translatable("screen.viafabricplus.classicube_mfa"), true);
     }
 
     private TextFieldWidget mfaField;
