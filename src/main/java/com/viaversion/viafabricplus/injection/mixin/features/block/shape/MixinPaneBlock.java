@@ -105,7 +105,7 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock implement
     }
 
     @Override
-    public VoxelShape getOutlineShape(final BlockState state, final BlockView world, final BlockPos pos, final ShapeContext context) {
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (DebugSettings.INSTANCE.legacyPaneOutlines.isEnabled()) {
             return this.viaFabricPlus$shape_r1_12[this.viaFabricPlus$getShapeIndex(state)];
         } else {
