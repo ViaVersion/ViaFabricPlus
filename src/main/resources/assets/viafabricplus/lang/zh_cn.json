@@ -1,5 +1,5 @@
 {
-  "modmenu.descriptionTranslation.viafabricplus": "可连接到任何版本的Minecraft服务器（正式版、Beta版、Alpha版、Classic版、快照版、基岩版）的Fabric Mod，并对游戏玩法进行了更多兼容性改进和体验改善修正",
+  "modmenu.descriptionTranslation.viafabricplus": "一款Minecraft Fabric模组，可让您加入所有Minecraft服务器版本（Classic版、Alpha版、Beta版、正式版、愚人节特别版、基岩版）",
 
   "base.viafabricplus.settings": "设置",
   "base.viafabricplus.on": "开",
@@ -18,7 +18,7 @@
   "base.viafabricplus.server_version": "服务器版本：%s",
   "base.viafabricplus.auto": "自动",
   "base.viafabricplus.set_version": "设置版本",
-  "base.viafabricplus.vanilla_and_modded": "原版和Mod",
+  "base.viafabricplus.vanilla_and_modded": "原版和模组",
   "base.viafabricplus.vanilla_only": "仅原版",
   "base.viafabricplus.kick": "踢出",
   "base.viafabricplus.cancel_and_notify": "取消并通知",
@@ -76,8 +76,10 @@
   "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "隐藏新式拼图方块屏幕功能",
   "debug_settings.viafabricplus.emulate_armor_hud": "模拟护甲HUD",
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "隐藏新式命令方块屏幕功能",
+  "debug_settings.viafabricplus.legacy_crop_outlines": "旧版农作物轮廓",
   "debug_settings.viafabricplus.disable_server_pinging": "禁用服务器Ping",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "过滤不存在的字形",
+  "debug_settings.viafabricplus.legacy_pane_outlines": "旧版玻璃板轮廓",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用BetaCraft认证",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "验证在线模式服务器的会话",
@@ -107,6 +109,7 @@
   "visual_settings.viafabricplus.sneak_instantly": "瞬间潜行",
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "格挡时锁定第三人称手臂旋转",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "更改身体旋转插值",
+  "visual_settings.viafabricplus.potion_enchantment_glint": "在药水上显示附魔光效",
 
   "force_version.viafabricplus.title": "请选择要Ping/连接服务器的版本",
 
