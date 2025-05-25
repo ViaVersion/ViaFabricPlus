@@ -53,24 +53,24 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock implement
         final float i = 9.0F;
 
         final VoxelShape baseShape = Block.createCuboidShape(f, 0.0, f, g, (float) 16.0, g);
-        final VoxelShape northShape = Block.createCuboidShape(h, (float) 0.0, 0.0, i, (float) 16.0, i);
-        final VoxelShape southShape = Block.createCuboidShape(h, (float) 0.0, h, i, (float) 16.0, 16.0);
-        final VoxelShape westShape = Block.createCuboidShape(0.0, (float) 0.0, h, i, (float) 16.0, i);
-        final VoxelShape eastShape = Block.createCuboidShape(h, (float) 0.0, h, 16.0, (float) 16.0, i);
+        final VoxelShape northShape = Block.createCuboidShape(h, (float) 0.0, 0.0, i, (float) 16.0, i - 1);
+        final VoxelShape southShape = Block.createCuboidShape(h, (float) 0.0, h + 1, i, (float) 16.0, 16.0);
+        final VoxelShape westShape = Block.createCuboidShape(0.0, (float) 0.0, h, i - 1, (float) 16.0, i);
+        final VoxelShape eastShape = Block.createCuboidShape(h + 1, (float) 0.0, h, 16.0, (float) 16.0, i);
 
         final VoxelShape northEastCornerShape = VoxelShapes.union(northShape, eastShape);
         final VoxelShape southWestCornerShape = VoxelShapes.union(southShape, westShape);
 
         viaFabricPlus$shape_r1_8 = new VoxelShape[]{
-                VoxelShapes.empty(),
-                Block.createCuboidShape(h, (float) 0.0, h + 1, i, (float) 16.0, 16.0D), // south
-                Block.createCuboidShape(0.0D, (float) 0.0, h, i - 1, (float) 16.0, i), // west
+                baseShape,
+                southShape,
+                westShape,
                 southWestCornerShape,
-                Block.createCuboidShape(h, (float) 0.0, 0.0D, i, (float) 16.0, i - 1), // north
+                northShape,
                 VoxelShapes.union(southShape, northShape),
                 VoxelShapes.union(westShape, northShape),
                 VoxelShapes.union(southWestCornerShape, northShape),
-                Block.createCuboidShape(h + 1, (float) 0.0, h, 16.0D, (float) 16.0, i), // east
+                eastShape,
                 VoxelShapes.union(southShape, eastShape),
                 VoxelShapes.union(westShape, eastShape),
                 VoxelShapes.union(southWestCornerShape, eastShape),
@@ -80,10 +80,6 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock implement
                 VoxelShapes.union(southWestCornerShape, northEastCornerShape)
         };
 
-        for (int j = 0; j < 16; ++j) {
-            if (j == 1 || j == 2 || j == 4 || j == 8) continue;
-            viaFabricPlus$shape_r1_8[j] = VoxelShapes.union(baseShape, viaFabricPlus$shape_r1_8[j]);
-        }
     }
 
     @Override
