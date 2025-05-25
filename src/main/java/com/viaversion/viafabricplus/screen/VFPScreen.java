@@ -215,6 +215,10 @@ public class VFPScreen extends Screen {
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
     }
 
+    public Text getSubtitle() {
+        return subtitle;
+    }
+
     /**
      * Opens an error screen with a specific title and throws the given throwable
      *

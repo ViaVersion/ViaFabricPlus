@@ -45,7 +45,9 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
     @Override
     protected void init() {
         super.init();
-        this.setupSubtitle(Text.translatable("classic4j_library.viafabricplus.error.logincode"));
+        if (this.getSubtitle() == null) {
+            this.setupSubtitle(Text.translatable("classic4j_library.viafabricplus.error.logincode"));
+        }
 
         this.addDrawableChild(mfaField = new TextFieldWidget(textRenderer, width / 2 - 150, 70 + 10, 300, 20, Text.empty()));
 
