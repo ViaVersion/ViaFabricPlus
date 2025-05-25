@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.screen.impl.settings;
+package com.viaversion.viafabricplus.screen.impl;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.settings.AbstractSetting;
@@ -30,6 +30,7 @@ import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
 import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.screen.impl.settings.*;
 import com.viaversion.viafabricplus.settings.SettingsManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -57,19 +58,19 @@ public final class SettingsScreen extends VFPScreen {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             for (SettingGroup group : SettingsManager.INSTANCE.getGroups()) {
-                this.addEntry(new TitleRenderer(group.getName()));
+                this.addEntry(new TitleEntry(group.getName()));
 
                 for (AbstractSetting<?> setting : group.getSettings()) {
                     switch (setting) {
                         case final BooleanSetting booleanSetting ->
-                                this.addEntry(new BooleanSettingRenderer(booleanSetting));
+                                this.addEntry(new BooleanListEntry(booleanSetting));
                         case final ButtonSetting buttonSetting ->
-                                this.addEntry(new ButtonSettingRenderer(buttonSetting));
-                        case final ModeSetting modeSetting -> this.addEntry(new ModeSettingRenderer(modeSetting));
+                                this.addEntry(new ButtonListEntry(buttonSetting));
+                        case final ModeSetting modeSetting -> this.addEntry(new ModeListEntry(modeSetting));
                         case final VersionedBooleanSetting versionedBooleanSetting ->
-                                this.addEntry(new VersionedBooleanSettingRenderer(versionedBooleanSetting));
+                                this.addEntry(new VersionedBooleanListEntry(versionedBooleanSetting));
                         case null, default ->
-                                ViaFabricPlusImpl.INSTANCE.getLogger().warn("Unknown setting type: " + setting.getClass().getName());
+                            ViaFabricPlusImpl.INSTANCE.getLogger().warn("Unknown setting type: {}", setting.getClass().getName());
                     }
                 }
             }

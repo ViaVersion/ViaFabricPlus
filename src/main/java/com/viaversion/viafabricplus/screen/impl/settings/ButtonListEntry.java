@@ -28,11 +28,11 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 
-public final class ButtonSettingRenderer extends VFPListEntry {
+public final class ButtonListEntry extends VFPListEntry {
 
     private final ButtonSetting value;
 
-    public ButtonSettingRenderer(ButtonSetting value) {
+    public ButtonListEntry(ButtonSetting value) {
         this.value = value;
     }
 

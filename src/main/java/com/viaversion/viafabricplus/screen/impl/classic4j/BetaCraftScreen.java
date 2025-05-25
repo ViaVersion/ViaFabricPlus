@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.screen.impl.classic4j;
 import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
-import com.viaversion.viafabricplus.screen.impl.settings.TitleRenderer;
+import com.viaversion.viafabricplus.screen.impl.settings.TitleEntry;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
@@ -90,7 +90,7 @@ public final class BetaCraftScreen extends VFPScreen {
                 if (servers.isEmpty()) {
                     continue;
                 }
-                addEntry(new TitleRenderer(Text.of(value.name())));
+                addEntry(new TitleEntry(Text.of(value.name())));
                 for (BCServerInfoSpec server : servers) {
                     addEntry(new ServerSlot(server));
                 }
