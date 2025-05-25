@@ -55,7 +55,7 @@ public final class ItemTranslator {
             buf.writeShort(0); // slot
             ItemStack.LENGTH_PREPENDED_OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
 
-            final PacketWrapper setCreativeModeSlot = PacketWrapper.create(ViaFabricPlusProtocol.getSetCreativeModeSlot(), buf, connection);
+            final PacketWrapper setCreativeModeSlot = PacketWrapper.create(ViaFabricPlusProtocol.INSTANCE.getSetCreativeModeSlot(), buf, connection);
             connection.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, setCreativeModeSlot);
 
             setCreativeModeSlot.read(Types.SHORT); // slot
