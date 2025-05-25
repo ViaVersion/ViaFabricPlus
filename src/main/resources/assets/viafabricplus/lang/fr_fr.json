@@ -29,6 +29,7 @@
   "debug_settings.viafabricplus.replace_sneaking": "Remplacer le sneaking",
   "debug_settings.viafabricplus.long_sneaking": "Sneaking prolongé",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Vitesses d'exploitation minière héritées",
+  "debug_settings.viafabricplus.legacy_pane_outlines": "Silhouettes de vitres et barreaux héritées",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Utiliser l'authentification BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Autoriser ViaLegacy à appeler joinServer() pour vérifier la session",

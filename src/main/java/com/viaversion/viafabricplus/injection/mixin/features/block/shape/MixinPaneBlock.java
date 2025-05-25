@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.injection.access.block.shape.IHorizontalConnectingBlock;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.*;
 import net.minecraft.util.math.BlockPos;
@@ -40,6 +41,9 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock implement
 
     @Unique
     private VoxelShape[] viaFabricPlus$shape_r1_8;
+
+    @Unique
+    private VoxelShape[] viaFabricPlus$shape_r1_12;
 
     protected MixinPaneBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Settings settings) {
         super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
@@ -80,6 +84,33 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock implement
                 VoxelShapes.union(southWestCornerShape, northEastCornerShape)
         };
 
+        viaFabricPlus$shape_r1_12 = new VoxelShape[]{
+                baseShape,
+                Block.createCuboidShape(h, 0.0, h, i, 16.0, 16.0), // south
+                Block.createCuboidShape(0.0, 0.0, h, i, 16.0, i), // west
+                Block.createCuboidShape(0.0, 0.0, h, i, 16.0, 16.0), // south-west corner
+                Block.createCuboidShape(h, 0.0, 0.0, i, 16.0, i), // north
+                Block.createCuboidShape(h, 0.0, 0.0, i, 16.0, 16.0), // south-north line
+                Block.createCuboidShape(0.0, 0.0, 0.0, i, 16.0, i), // west-north corner
+                Block.createCuboidShape(0.0, 0.0, 0.0, i, 16.0, 16.0), // south-west-north T
+                Block.createCuboidShape(h, 0.0, h, 16.0, 16.0, i), // east
+                Block.createCuboidShape(h, 0.0, h, 16.0, 16.0, 16.0), // south-east corner
+                Block.createCuboidShape(0.0, 0.0, h, 16.0, 16.0, i), // west-east line
+                Block.createCuboidShape(0.0, 0.0, h, 16.0, 16.0, 16.0), // south-west-east T
+                Block.createCuboidShape(h, 0.0, 0.0, 16.0, 16.0, i), // north-east corner
+                Block.createCuboidShape(h, 0.0, 0.0, 16.0, 16.0, 16.0), // south-north-east T
+                Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 16.0, i), // west-north-east T
+                VoxelShapes.fullCube() // cross
+        };
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(final BlockState state, final BlockView world, final BlockPos pos, final ShapeContext context) {
+        if (DebugSettings.INSTANCE.legacyPaneOutlines.isEnabled()) {
+            return this.viaFabricPlus$shape_r1_12[this.viaFabricPlus$getShapeIndex(state)];
+        } else {
+            return super.getOutlineShape(state, world, pos, context);
+        }
     }
 
     @Override
