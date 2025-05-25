@@ -1,5 +1,5 @@
 {
-  "modmenu.descriptionTranslation.viafabricplus": "게임 플레이에 대한 QoL 수정을 통해 모든 Minecraft 서버 버전에 (릴리스, 베타, 알파, 클래식, 스냅샷, 베드락) 연결할 수 있게 만들어주는 패브릭 모드",
+  "modmenu.descriptionTranslation.viafabricplus": "게임 플레이에 대한 QoL 수정을 통해 모든 Minecraft 서버 버전에 (릴리스, 베타, 알파, 클래식, 스냅샷, 만우절, 베드락) 연결할 수 있게 만들어주는 패브릭 모드",
 
   "base.viafabricplus.settings": "설정",
   "base.viafabricplus.on": "켜짐",
@@ -75,9 +75,11 @@
   "debug_settings.viafabricplus.legacy_tab_completions": "레거시 탭 자동 완성",
   "debug_settings.viafabricplus.emulate_armor_hud": "갑옷 HUD 추가",
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "새로운 명령 블록 기능 숨기기",
+  "debug_settings.viafabricplus.legacy_crop_outlines": "레거시 작물 테두리",
   "debug_settings.viafabricplus.disable_server_pinging": "서버 핑 비활성화",
   "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "최신 직소 화면 기능 숨기기",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "존재하지 않는 글자 제거",
+  "debug_settings.viafabricplus.legacy_pane_outlines": "레거시 창 테두리",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "BetaCraft 인증 사용",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "온라인 모드 서버에 대한 세션 검증",
@@ -107,6 +109,7 @@
   "visual_settings.viafabricplus.sneak_instantly": "즉시 웅크리기",
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "방어하는 동안 3인칭 팔 회전 막기",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "몸체 회전 보간 방법 바꾸기",
+  "visual_settings.viafabricplus.potion_enchantment_glint": "마법부여 효과 포션에 적용하기",
 
   "force_version.viafabricplus.title": "서버가 표시/연결되어야 하는 버전을 선택하세요.",
 
