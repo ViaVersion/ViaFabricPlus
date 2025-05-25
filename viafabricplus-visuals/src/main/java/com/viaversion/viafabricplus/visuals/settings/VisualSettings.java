@@ -53,6 +53,7 @@ public final class VisualSettings extends SettingGroup {
 
     // 1.19.4 -> 1.19.3
     public final VersionedBooleanSetting changeBodyRotationInterpolation = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.change_body_rotation_interpolation"), VersionRange.andOlder(ProtocolVersion.v1_19_3));
+    public final VersionedBooleanSetting potionEnchantmentGlint = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.potion_enchantment_glint"), VersionRange.andOlder(ProtocolVersion.v1_19_3));
 
     // 1.19.2 -> 1.19
     public final VersionedBooleanSetting disableSecureChatWarning = new VersionedBooleanSetting(this, Text.translatable("visual_settings.viafabricplus.disable_secure_chat_warning"), VersionRange.andOlder(ProtocolVersion.v1_19));

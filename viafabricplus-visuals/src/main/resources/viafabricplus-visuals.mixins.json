@@ -19,6 +19,7 @@
     "petrified_oak_slab_model.MixinItemRenderer",
     "player_rotations.MixinBipedEntityModel",
     "player_rotations.MixinLivingEntity",
+    "potion_glint.MixinPotionItem",
     "r1_7_item_tilt.MixinHeldItemRenderer",
     "r1_7_tab_list_style.MixinClientPlayNetworkHandler",
     "r1_7_tab_list_style.MixinPlayerListEntry",
