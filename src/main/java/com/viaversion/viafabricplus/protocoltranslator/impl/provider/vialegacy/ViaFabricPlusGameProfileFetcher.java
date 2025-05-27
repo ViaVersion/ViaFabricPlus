@@ -29,13 +29,13 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.ProfileNotFoundException;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.model.GameProfile;
-import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
-
+import com.viaversion.viaversion.api.minecraft.GameProfile;
 import java.net.Proxy;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 public final class ViaFabricPlusGameProfileFetcher extends GameProfileFetcher {
 
@@ -44,16 +44,16 @@ public final class ViaFabricPlusGameProfileFetcher extends GameProfileFetcher {
     private static final GameProfileRepository GAME_PROFILE_REPOSITORY = AUTHENTICATION_SERVICE.createProfileRepository();
 
     @Override
-    public UUID loadMojangUUID(String playerName) throws Exception {
+    public UUID loadMojangUuid(final String playerName) throws ExecutionException, InterruptedException {
         final CompletableFuture<com.mojang.authlib.GameProfile> future = new CompletableFuture<>();
         GAME_PROFILE_REPOSITORY.findProfilesByNames(new String[]{playerName}, new ProfileLookupCallback() {
             @Override
-            public void onProfileLookupSucceeded(com.mojang.authlib.GameProfile profile) {
-                future.complete(profile);
+            public void onProfileLookupSucceeded(final com.mojang.authlib.GameProfile gameProfile) {
+                future.complete(gameProfile);
             }
 
             @Override
-            public void onProfileLookupFailed(String profileName, Exception exception) {
+            public void onProfileLookupFailed(final String profileName, final Exception exception) {
                 future.completeExceptionally(exception);
             }
         });
@@ -64,19 +64,19 @@ public final class ViaFabricPlusGameProfileFetcher extends GameProfileFetcher {
     }
 
     @Override
-    public GameProfile loadGameProfile(UUID uuid) {
+    public GameProfile loadGameProfile(final UUID uuid) {
         final ProfileResult result = SESSION_SERVICE.fetchProfile(uuid, true);
         if (result == null) {
             throw new ProfileNotFoundException();
         }
 
-        final com.mojang.authlib.GameProfile authLibProfile = result.profile();
-        final GameProfile mcProfile = new GameProfile(authLibProfile.getName(), authLibProfile.getId());
-
-        for (final Map.Entry<String, Property> entry : authLibProfile.getProperties().entries()) {
-            mcProfile.addProperty(new GameProfile.Property(entry.getValue().name(), entry.getValue().value(), entry.getValue().signature()));
+        final com.mojang.authlib.GameProfile gameProfile = result.profile();
+        final GameProfile.Property[] properties = new GameProfile.Property[gameProfile.getProperties().size()];
+        int i = 0;
+        for (final Map.Entry<String, Property> entry : gameProfile.getProperties().entries()) {
+            properties[i++] = new GameProfile.Property(entry.getValue().name(), entry.getValue().value(), entry.getValue().signature());
         }
-        return mcProfile;
+        return new GameProfile(gameProfile.getName(), gameProfile.getId(), properties);
     }
 
 }
