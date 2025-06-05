@@ -38,30 +38,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PaneBlock.class)
 public abstract class MixinPaneBlock extends HorizontalConnectingBlock {
+
     protected MixinPaneBlock(final float radius1, final float radius2, final float boundingHeight1, final float boundingHeight2, final float collisionHeight, final Settings settings) {
         super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
     }
 
     @WrapOperation(method = "getPlacementState", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/PaneBlock;connectsTo(Lnet/minecraft/block/BlockState;Z)Z"))
     private boolean countConnections(PaneBlock instance, BlockState state, boolean sideSolidFullSquare, Operation<Boolean> original, @Share("count") LocalIntRef countRef) {
-        boolean connectsTo = original.call(instance, state, sideSolidFullSquare);
-
+        final boolean connectsTo = original.call(instance, state, sideSolidFullSquare);
         if (connectsTo) {
             countRef.set(countRef.get() + 1);
         }
-
         return connectsTo;
     }
 
     @Inject(method = "getPlacementState", at = @At("RETURN"), cancellable = true)
     private void changePlacementState(ItemPlacementContext ctx, CallbackInfoReturnable<BlockState> cir, @Share("count") LocalIntRef countRef) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && countRef.get() == 0) {
-            cir.setReturnValue(cir.getReturnValue()
-                .with(NORTH, true)
-                .with(SOUTH, true)
-                .with(WEST, true)
-                .with(EAST, true)
-            );
+            cir.setReturnValue(cir.getReturnValue().with(NORTH, true).with(SOUTH, true).with(WEST, true).with(EAST, true));
         }
     }
+
 }
