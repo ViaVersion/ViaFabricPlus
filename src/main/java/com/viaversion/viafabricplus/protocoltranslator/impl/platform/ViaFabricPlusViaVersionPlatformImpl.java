@@ -29,6 +29,7 @@ import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
 
 import java.io.File;
 
@@ -60,6 +61,7 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
         platformDump.addProperty("impl_version", ViaFabricPlusImpl.INSTANCE.getImplVersion());
         platformDump.addProperty("native_version", ProtocolTranslator.NATIVE_VERSION.toString());
         platformDump.addProperty("target_version", ProtocolTranslator.getTargetVersion().toString());
+        platformDump.addProperty("in_world", MinecraftClient.getInstance().world != null);
 
         final JsonArray mods = new JsonArray();
         FabricLoader.getInstance().getAllMods().stream().map(mod -> {
