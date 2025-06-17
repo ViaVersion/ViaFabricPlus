@@ -31,8 +31,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import org.joml.Matrix3x2fStack;
 
 import java.awt.*;
 
@@ -105,10 +105,10 @@ public final class ProtocolSelectionScreen extends VFPScreen {
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final boolean isSelected = ProtocolTranslator.getTargetVersion().equals(protocolVersion);
 
-            final MatrixStack matrices = context.getMatrices();
+            final Matrix3x2fStack matrices = context.getMatrices();
 
-            matrices.push();
-            matrices.translate(x, y - 1, 0);
+            matrices.pushMatrix();
+            matrices.translate(x, y - 1);
 
             Color color = isSelected ? Color.GREEN : Color.RED;
             if (MinecraftClient.getInstance().getNetworkHandler() != null) {
@@ -117,7 +117,7 @@ public final class ProtocolSelectionScreen extends VFPScreen {
 
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
             context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
-            matrices.pop();
+            matrices.popMatrix();
         }
     }
 

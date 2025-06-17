@@ -25,9 +25,9 @@ import com.viaversion.viafabricplus.screen.VFPListEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.joml.Matrix3x2fStack;
 
 public final class TitleEntry extends VFPListEntry {
 
@@ -44,12 +44,12 @@ public final class TitleEntry extends VFPListEntry {
 
     @Override
     public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        final MatrixStack matrices = context.getMatrices();
+        final Matrix3x2fStack matrices = context.getMatrices();
 
-        matrices.push();
-        matrices.translate(x, y, 0);
+        matrices.pushMatrix();
+        matrices.translate(x, y);
         mappedRender(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
-        matrices.pop();
+        matrices.popMatrix();
     }
 
     @Override

@@ -89,7 +89,7 @@ public final class BedrockSettings extends SettingGroup {
             }
             MinecraftClient.getInstance().execute(() -> {
                 if (MinecraftClient.getInstance().currentScreen instanceof ConfirmScreen confirmScreen) {
-                    ((IConfirmScreen) confirmScreen).viaFabricPlus$setMessage(Text.translatable("minecraftauth_library.viafabricplus." + step.name.toLowerCase(Locale.ROOT)));
+                    ((IConfirmScreen) confirmScreen).viaFabricPlus$updateMessage(Text.translatable("minecraftauth_library.viafabricplus." + step.name.toLowerCase(Locale.ROOT)));
                 }
             });
         }

@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.features.world.item_picking;
 
+import com.mojang.logging.LogUtils;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Types;
@@ -35,15 +36,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.storage.NbtWriteView;
+import net.minecraft.util.ErrorReporter;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import org.slf4j.Logger;
 
 public final class ItemPick1_21_3 {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     private static void addPickBlock(final PlayerInventory inventory, final ItemStack stack) {
         final int index = inventory.getSlotWithStack(stack);
@@ -57,11 +62,12 @@ public final class ItemPick1_21_3 {
     }
 
     private static void addBlockEntityNbt(final ItemStack stack, final BlockEntity blockEntity, final DynamicRegistryManager manager) {
-        final NbtCompound nbtCompound = blockEntity.createComponentlessNbtWithIdentifyingData(manager);
-        blockEntity.removeFromCopiedStackNbt(nbtCompound);
-
-        BlockItem.setBlockEntityData(stack, blockEntity.getType(), nbtCompound);
-        stack.applyComponentsFrom(blockEntity.createComponentMap());
+        try (final ErrorReporter.Logging logging = new ErrorReporter.Logging(blockEntity.getReporterContext(), LOGGER)) {
+            final NbtWriteView view = NbtWriteView.create(logging, manager);
+            blockEntity.writeIdentifyingData(view);
+            BlockItem.setBlockEntityData(stack, blockEntity.getType(), view);
+            stack.applyComponentsFrom(blockEntity.createComponentMap());
+        }
     }
 
     public static void doItemPick(final MinecraftClient client) {

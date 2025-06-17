@@ -26,12 +26,12 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.option.Perspective;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
@@ -44,8 +44,6 @@ import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
-
-import java.util.function.Function;
 
 @Mixin(InGameHud.class)
 public abstract class MixinInGameHud {
@@ -60,8 +58,8 @@ public abstract class MixinInGameHud {
         }
     }
 
-    @WrapWithCondition(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V", ordinal = 2))
-    private boolean disableEmptyBubbles(DrawContext instance, Function<Identifier, RenderLayer> renderLayers, Identifier sprite, int x, int y, int width, int height) {
+    @WrapWithCondition(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIII)V", ordinal = 2))
+    private boolean disableEmptyBubbles(DrawContext instance, RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height) {
         return !VisualSettings.INSTANCE.hideEmptyBubbleIcons.getValue();
     }
 
@@ -74,7 +72,14 @@ public abstract class MixinInGameHud {
         }
     }
 
-    @Inject(method = {"renderMountJumpBar", "renderMountHealth"}, at = @At("HEAD"), cancellable = true)
+    @Inject(method = "shouldShowJumpBar", at = @At("HEAD"), cancellable = true)
+    private void removeMountJumpBar(CallbackInfoReturnable<Boolean> cir) {
+        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
     private void removeMountJumpBar(CallbackInfo ci) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             ci.cancel();
@@ -97,7 +102,7 @@ public abstract class MixinInGameHud {
         }
     }
 
-    @ModifyArgs(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"), require = 0)
+    @ModifyArgs(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIII)V"), require = 0)
     private static void moveArmorPositions(Args args, @Local(ordinal = 3, argsOnly = true) int x, @Local(ordinal = 6) int n) {
         if (!VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             return;
@@ -112,7 +117,7 @@ public abstract class MixinInGameHud {
         args.set(3, (int) args.get(3) + client.textRenderer.fontHeight + 1);
     }
 
-    @ModifyArg(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+    @ModifyArg(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIII)V"),
             index = 2, require = 0)
     private int moveAirBubbles(int value) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {

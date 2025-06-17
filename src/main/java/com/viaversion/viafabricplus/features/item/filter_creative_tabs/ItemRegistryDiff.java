@@ -50,6 +50,26 @@ public final class ItemRegistryDiff {
     public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
 
     static {
+        ITEM_DIFF.put(DRIED_GHAST, andNewer(v1_21_6));
+        ITEM_DIFF.put(WHITE_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(ORANGE_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(MAGENTA_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(LIGHT_BLUE_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(YELLOW_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(LIME_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(PINK_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(GRAY_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(LIGHT_GRAY_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(CYAN_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(PURPLE_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(BLUE_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(BROWN_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(GREEN_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(RED_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(BLACK_HARNESS, andNewer(v1_21_6));
+        ITEM_DIFF.put(HAPPY_GHAST_SPAWN_EGG, andNewer(v1_21_6));
+        ITEM_DIFF.put(MUSIC_DISC_TEARS, andNewer(v1_21_6));
+
         ITEM_DIFF.put(BUSH, andNewer(v1_21_5));
         ITEM_DIFF.put(FIREFLY_BUSH, andNewer(v1_21_5));
         ITEM_DIFF.put(SHORT_DRY_GRASS, andNewer(v1_21_5));

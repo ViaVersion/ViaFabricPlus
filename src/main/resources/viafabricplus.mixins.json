@@ -39,6 +39,7 @@
     "compat.fabricapi.MixinClientRegistrySyncHandler",
     "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor",
     "compat.lithium.MixinEntity",
+    "compat.mcstructs.MixinTextComponentSerializer",
     "compat.minecraftauth.MixinClasses",
     "compat.minecraftauth.MixinDefaultJwtParserBuilder",
     "features.april_fools_8bit_sound.MixinStaticSound",
@@ -148,8 +149,8 @@
     "features.interaction.replace_block_item_use_logic.MixinClientPlayerInteractionManager",
     "features.interaction.replace_block_item_use_logic.MixinItemPlacementContext",
     "features.interaction.replace_block_item_use_logic.MixinMinecraftClient",
+    "features.item.attack_damage.MixinAttributeModifiersComponent_Display_Default",
     "features.item.attack_damage.MixinItemPacketRewriter1_9",
-    "features.item.attack_damage.MixinItemStack",
     "features.item.data_fix.MixinBlockItemPacketRewriter1_20_5",
     "features.item.filter_creative_tabs.MixinItemGroup_EntriesImpl",
     "features.item.filter_creative_tabs.MixinItemGroups",
@@ -272,7 +273,7 @@
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
     "features.world.remove_server_view_distance.MixinGameOptions",
-    "compat.mcstructs.MixinTextComponentSerializer"
+    "features.item.attack_damage.MixinItemStack"
   ],
   "injectors": {
     "defaultRequire": 1

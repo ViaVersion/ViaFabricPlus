@@ -54,7 +54,7 @@ public abstract class MixinStructureBlockScreen {
         }
     }
 
-    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)I"))
+    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)V"))
     private boolean hideStrictText(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int color) {
         if (text == STRICT_TEXT) {
             return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4);

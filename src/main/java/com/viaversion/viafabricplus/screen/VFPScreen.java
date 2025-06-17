@@ -29,9 +29,9 @@ import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PressableTextWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2fStack;
 
 import java.awt.*;
 
@@ -184,12 +184,12 @@ public class VFPScreen extends Screen {
      * @param context The current draw context
      */
     public void renderTitle(final DrawContext context) {
-        final MatrixStack matrices = context.getMatrices();
+        final Matrix3x2fStack matrices = context.getMatrices();
 
-        matrices.push();
-        matrices.scale(2F, 2F, 2F);
+        matrices.pushMatrix();
+        matrices.scale(2F, 2F);
         context.drawCenteredTextWithShadow(textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
-        matrices.pop();
+        matrices.popMatrix();
 
         renderSubtitle(context);
     }

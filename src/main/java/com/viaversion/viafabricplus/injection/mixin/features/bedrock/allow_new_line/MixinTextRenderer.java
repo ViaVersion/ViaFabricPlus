@@ -36,6 +36,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
@@ -45,9 +46,6 @@ public abstract class MixinTextRenderer {
 
     @Shadow
     public abstract List<OrderedText> wrapLines(StringVisitable text, int width);
-
-    @Shadow
-    public abstract int draw(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light);
 
     @Shadow
     public abstract String mirror(String text);
@@ -63,32 +61,30 @@ public abstract class MixinTextRenderer {
     public abstract boolean isRightToLeft();
 
     @Shadow
-    protected abstract int drawInternal(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, TextRenderer.TextLayerType layerType, int backgroundColor, int light, boolean swapZIndex);
+    public abstract void draw(final OrderedText text, final float x, final float y, final int color, final boolean shadow, final Matrix4f matrix, final VertexConsumerProvider vertexConsumers, final TextRenderer.TextLayerType layerType, final int backgroundColor, final int light);
 
-    @Inject(method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I", at = @At("HEAD"), cancellable = true)
-    private void allowNewLines_String(String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, CallbackInfoReturnable<Integer> cir) {
+    @Inject(method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V", at = @At("HEAD"), cancellable = true)
+    private void allowNewLines_String(String string, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
-            final List<OrderedText> lines = wrapLines(StringVisitable.plain(isRightToLeft() ? this.mirror(text) : text), Integer.MAX_VALUE);
-            if (lines.size() > 1) {
-                int offsetX = 0;
-                for (int i = 0; i < lines.size(); i++) {
-                    offsetX = this.drawInternal(lines.get(i), x, y - (lines.size() * (fontHeight + 2)) + (i * (fontHeight + 2)), color, shadow, new Matrix4f(matrix), vertexConsumers, layerType, backgroundColor, light, true);
+            final List<OrderedText> lines = wrapLines(StringVisitable.plain(isRightToLeft() ? this.mirror(string) : string), Integer.MAX_VALUE);
+            if (!lines.isEmpty()) {
+                ci.cancel();
+                for (int i = 0, size = lines.size(); i < size; i++) {
+                    this.draw(lines.get(i), x, y - (size * (fontHeight + 2)) + (i * (fontHeight + 2)), color, shadow, new Matrix4f(matrix), vertexConsumers, layerType, backgroundColor, light);
                 }
-                cir.setReturnValue(offsetX);
             }
         }
     }
 
-    @Inject(method = "draw(Lnet/minecraft/text/Text;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I", at = @At("HEAD"), cancellable = true)
-    private void allowNewLines_Text(Text text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, CallbackInfoReturnable<Integer> cir) {
+    @Inject(method = "draw(Lnet/minecraft/text/Text;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V", at = @At("HEAD"), cancellable = true)
+    private void allowNewLines_Text(Text text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
             final List<OrderedText> lines = wrapLines(text, Integer.MAX_VALUE);
-            if (lines.size() > 1) {
-                int offsetX = 0;
-                for (int i = 0; i < lines.size(); i++) {
-                    offsetX = this.draw(lines.get(i), x, y - (lines.size() * (fontHeight + 2)) + (i * (fontHeight + 2)), color, shadow, new Matrix4f(matrix), vertexConsumers, layerType, backgroundColor, light);
+            if (!lines.isEmpty()) {
+                ci.cancel();
+                for (int i = 0, size = lines.size(); i < size; i++) {
+                    this.draw(lines.get(i), x, y - (lines.size() * (fontHeight + 2)) + (i * (fontHeight + 2)), color, shadow, new Matrix4f(matrix), vertexConsumers, layerType, backgroundColor, light);
                 }
-                cir.setReturnValue(offsetX);
             }
         }
     }

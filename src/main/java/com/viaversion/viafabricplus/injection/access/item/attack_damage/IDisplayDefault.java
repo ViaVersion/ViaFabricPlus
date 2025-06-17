@@ -19,12 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.access.base.bedrock;
+package com.viaversion.viafabricplus.injection.access.item.attack_damage;
 
-import net.minecraft.text.Text;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 
-public interface IConfirmScreen {
+public interface IDisplayDefault {
 
-    void viaFabricPlus$updateMessage(final Text message);
+    void viaFabricPlus$setItemEnchantments(final ItemEnchantmentsComponent itemEnchantments);
 
 }

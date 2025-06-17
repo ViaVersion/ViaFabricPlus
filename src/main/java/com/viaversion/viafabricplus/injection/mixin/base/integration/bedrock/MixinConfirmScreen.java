@@ -22,40 +22,28 @@
 package com.viaversion.viafabricplus.injection.mixin.base.integration.bedrock;
 
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IConfirmScreen;
+import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.ConfirmScreen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.MultilineTextWidget;
 import net.minecraft.text.Text;
-import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ConfirmScreen.class)
-public abstract class MixinConfirmScreen implements IConfirmScreen {
+public abstract class MixinConfirmScreen extends Screen implements IConfirmScreen {
 
-    @Mutable
-    @Shadow
-    @Final
-    private Text message;
-
-    @Shadow
-    protected abstract void init();
-
-    @Unique
-    private boolean viaFabricPlus$selfInflicted = false;
-
-    @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(III)I", shift = At.Shift.AFTER), cancellable = true)
-    private void preventButtonClearing(CallbackInfo ci) {
-        if (viaFabricPlus$selfInflicted) {
-            viaFabricPlus$selfInflicted = false;
-            ci.cancel();
-        }
+    public MixinConfirmScreen(final Text title) {
+        super(title);
     }
 
     @Override
-    public void viaFabricPlus$setMessage(Text message) {
-        viaFabricPlus$selfInflicted = true;
-        this.message = message;
-        this.init();
+    public void viaFabricPlus$updateMessage(Text message) {
+        for (final Element element : children()) {
+            if (element instanceof final MultilineTextWidget textWidget) {
+                textWidget.setMessage(message);
+                refreshWidgetPositions();
+            }
+        }
     }
 
 }

@@ -38,7 +38,7 @@ public final class ResourcePackHeaderDiffGenerator implements Generator {
             .append(", ")
             .append(SharedConstants.RESOURCE_PACK_VERSION)
             .append(", \"")
-            .append(SharedConstants.getGameVersion().getName())
+            .append(SharedConstants.getGameVersion().name())
             .append("\");");
         return output;
     }

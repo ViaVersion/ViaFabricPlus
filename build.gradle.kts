@@ -35,7 +35,7 @@ base {
     archivesName.set("ViaFabricPlus")
 }
 
-configureTestTasks(project.findProperty("updating_minecraft") as? Boolean ?: false)
+configureTestTasks(project.property("updating_minecraft").toString().toBoolean())
 
 val jij = configureJij()
 configureVVDependencies("jij")
@@ -63,7 +63,7 @@ includeTransitiveJijDependencies()
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.4.1-20250620.234812-2")
+        configuration("com.viaversion:viaversion-common:5.4.1-SNAPSHOT")
         configuration("com.viaversion:viabackwards-common:5.4.0")
         configuration("com.viaversion:viaaprilfools-common:4.0.2")
         configuration("com.viaversion:vialoader:4.0.3") {
@@ -71,7 +71,7 @@ fun Project.configureVVDependencies(configuration: String) {
             exclude(group = "org.slf4j", module = "slf4j-api")
         }
         configuration("net.raphimc:ViaLegacy:3.0.10")
-        configuration("net.raphimc:ViaBedrock:0.0.18-20250620.232050-1") {
+        configuration("net.raphimc:ViaBedrock:0.0.17-SNAPSHOT") {
             exclude(group = "io.jsonwebtoken")
             exclude(group = "com.mojang", module = "brigadier")
         }

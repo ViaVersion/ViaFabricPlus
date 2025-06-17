@@ -107,8 +107,10 @@ public final class ItemTranslator {
             return Typesb1_8_0_1.CREATIVE_ITEM;
         } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return getClientboundItemType(targetVersion);
-        } else {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
             return VersionedTypes.V1_21_5.lengthPrefixedItem;
+        } else {
+            return VersionedTypes.V1_21_6.lengthPrefixedItem;
         }
     }
 
@@ -123,26 +125,28 @@ public final class ItemTranslator {
             return Types1_4_2.NBTLESS_ITEM;
         } else if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
             return Types1_2_4.NBT_ITEM;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_8)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             return Types1_7_6.ITEM;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_13)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return Types.ITEM1_8;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_13_2)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_13_1)) {
             return Types.ITEM1_13;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_20_2)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20)) {
             return Types.ITEM1_13_2;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_20_5)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             return Types.ITEM1_20_2;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_21)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             return VersionedTypes.V1_20_5.item;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_21_2)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return VersionedTypes.V1_21.item;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_21_4)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             return VersionedTypes.V1_21_2.item;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_21_5)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return VersionedTypes.V1_21_4.item;
-        } else {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
             return VersionedTypes.V1_21_5.item;
+        } else {
+            return VersionedTypes.V1_21_6.item;
         }
     }
 
