@@ -69,13 +69,13 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
         platformDump.addProperty("in_world", MinecraftClient.getInstance().world != null);
 
         final Collection<ModContainer> allMods = FabricLoader.getInstance().getAllMods();
-        final JsonArray jsonMods = new JsonArray(allMods.size());
-        for (final ModContainer mod : allMods) {
-            final ModMetadata metadata = mod.getMetadata();
-            final JsonObject jsonMod = new JsonObject();
-            jsonMod.addProperty("id", metadata.getId());
-            jsonMod.addProperty("name", metadata.getName());
-            jsonMod.addProperty("version", metadata.getVersion().getFriendlyString());
+        final JsonArray mods = new JsonArray(allMods.size());
+        for (final ModContainer modContainer : allMods) {
+            final ModMetadata metadata = modContainer.getMetadata();
+            final JsonObject mod = new JsonObject();
+            mod.addProperty("id", metadata.getId());
+            mod.addProperty("name", metadata.getName());
+            mod.addProperty("version", metadata.getVersion().getFriendlyString());
             final JsonArray authors = new JsonArray(metadata.getAuthors().size());
             for (final Person person : metadata.getAuthors()) {
                 final JsonObject info = new JsonObject();
@@ -88,12 +88,12 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
                 info.addProperty("name", person.getName());
                 authors.add(info);
             }
-            jsonMod.add("authors", authors);
+            mod.add("authors", authors);
 
-            jsonMods.add(jsonMod);
+            mods.add(mod);
         }
 
-        platformDump.add("mods", jsonMods);
+        platformDump.add("mods", mods);
 
         return platformDump;
     }
