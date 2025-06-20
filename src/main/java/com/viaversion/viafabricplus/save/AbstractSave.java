@@ -26,6 +26,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -52,8 +54,8 @@ public abstract class AbstractSave {
      */
     public void init() {
         if (Files.exists(path)) {
-            try {
-                final JsonObject object = GSON.fromJson(Files.readString(path), JsonObject.class);
+            try (final BufferedReader reader = Files.newBufferedReader(path)) {
+                final JsonObject object = GSON.fromJson(reader, JsonObject.class);
                 if (object != null) {
                     read(object);
                 } else {
@@ -69,11 +71,11 @@ public abstract class AbstractSave {
      * This method should be called when the file should be saved.
      */
     public void save() {
-        try {
+        try (final BufferedWriter writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
             final JsonObject object = new JsonObject();
             write(object);
 
-            Files.writeString(path, GSON.toJson(object), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            GSON.toJson(object, writer);
         } catch (Exception e) {
             ViaFabricPlusImpl.INSTANCE.getLogger().error("Failed to write file: {}!", path.getFileName(), e);
         }
