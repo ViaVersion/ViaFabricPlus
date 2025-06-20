@@ -68,16 +68,16 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
         platformDump.addProperty("target_version", ProtocolTranslator.getTargetVersion().toString());
         platformDump.addProperty("in_world", MinecraftClient.getInstance().world != null);
 
-        final Collection<ModContainer> mods = FabricLoader.getInstance().getAllMods();
-        final JsonArray jsonMods = new JsonArray(mods.size());
-        for (ModContainer modContainer : mods) {
-            final ModMetadata metadata = modContainer.getMetadata();
+        final Collection<ModContainer> allMods = FabricLoader.getInstance().getAllMods();
+        final JsonArray jsonMods = new JsonArray(allMods.size());
+        for (final ModContainer mod : allMods) {
+            final ModMetadata metadata = mod.getMetadata();
             final JsonObject jsonMod = new JsonObject();
             jsonMod.addProperty("id", metadata.getId());
             jsonMod.addProperty("name", metadata.getName());
             jsonMod.addProperty("version", metadata.getVersion().getFriendlyString());
             final JsonArray authors = new JsonArray(metadata.getAuthors().size());
-            for (Person person : metadata.getAuthors()) {
+            for (final Person person : metadata.getAuthors()) {
                 final JsonObject info = new JsonObject();
                 final Map<String, String> contactMap = person.getContact().asMap();
                 if (!contactMap.isEmpty()) {
