@@ -211,6 +211,7 @@
     "features.movement.slowdown.MixinClientPlayerEntity",
     "features.movement.slowdown.MixinEnderEyeItem",
     "features.movement.sprinting_and_sneaking.MixinClientPlayerEntity",
+    "features.movement.sprinting_and_sneaking.MixinEntityPacketRewriter1_21_6",
     "features.movement.sprinting_and_sneaking.MixinKeyboardInput",
     "features.movement.sprinting_and_sneaking.MixinLivingEntity",
     "features.movement.sprinting_and_sneaking.MixinPlayerEntity",
@@ -274,7 +275,7 @@
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
     "features.world.remove_server_view_distance.MixinGameOptions",
-    "features.movement.sprinting_and_sneaking.MixinEntityPacketRewriter1_21_6"
+    "features.item.interaction.MixinFireworkRocketItem"
   ],
   "injectors": {
     "defaultRequire": 1
