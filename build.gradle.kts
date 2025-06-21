@@ -46,7 +46,7 @@ includeFabricSubmodule("viafabricplus-visuals")
 
 dependencies {
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")
-    modCompileOnly("com.terraformersmc:modmenu:14.0.0-rc.2")
+    modCompileOnly("com.terraformersmc:modmenu:15.0.0-beta.2")
 
     jij("net.raphimc:MinecraftAuth:4.1.1") {
         exclude(group = "com.google.code.gson", module = "gson")
