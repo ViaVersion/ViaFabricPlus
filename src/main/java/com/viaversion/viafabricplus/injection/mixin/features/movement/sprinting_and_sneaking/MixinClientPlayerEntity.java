@@ -26,7 +26,11 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.packet.ServerboundPackets1_21_5;
+import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.Protocol1_21_5To1_21_6;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -98,6 +102,16 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     public abstract void init();
 
+    @Unique
+    private boolean viaFabricPlus$lastSneaking = false;
+
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V"))
+    private void sendSneakingPacket(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_21_2, ProtocolVersion.v1_21_5)) {
+            this.viaFabricPlus$sendSneakingPacket();
+        }
+    }
+
     @Redirect(method = "tickMovementInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;applyMovementSpeedFactors(Lnet/minecraft/util/math/Vec2f;)Lnet/minecraft/util/math/Vec2f;"))
     private Vec2f moveMovementSpeedFactors(ClientPlayerEntity instance, Vec2f input) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
@@ -147,6 +161,13 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             return this.viaFabricPlus$shouldCancelSprinting() || this.horizontalCollision && !this.collidedSoftly || this.isTouchingWater() && !this.isSubmergedInWater();
         } else {
             return this.shouldStopSprinting();
+        }
+    }
+
+    @Inject(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSprintingPacket()V", shift = At.Shift.AFTER))
+    private void sendSneakingAfterSprinting(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            this.viaFabricPlus$sendSneakingPacket();
         }
     }
 
@@ -225,6 +246,21 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             this.inSneakingPose = this.isSneaking() && !this.isSleeping();
         }
+    }
+
+    @Unique
+    private void viaFabricPlus$sendSneakingPacket() {
+        final boolean sneaking = this.isSneaking();
+        if (sneaking == this.viaFabricPlus$lastSneaking) {
+            return;
+        }
+
+        final PacketWrapper sneakingPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_COMMAND, ProtocolTranslator.getPlayNetworkUserConnection());
+        sneakingPacket.write(Types.VAR_INT, getId());
+        sneakingPacket.write(Types.VAR_INT, sneaking ? 0 : 1);
+        sneakingPacket.write(Types.VAR_INT, 0); // No data
+        sneakingPacket.sendToServer(Protocol1_21_5To1_21_6.class);
+        this.viaFabricPlus$lastSneaking = sneaking;
     }
 
     @Unique
