@@ -60,6 +60,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.util.Util;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
@@ -308,7 +309,7 @@ public final class ProtocolTranslator {
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
             changeBedrockProtocolName();
             ViaFabricPlusProtocol.INSTANCE.initialize();
-        });
+        }, Util.getMainWorkerExecutor());
     }
 
 }
