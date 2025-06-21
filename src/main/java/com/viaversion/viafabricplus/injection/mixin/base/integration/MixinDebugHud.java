@@ -85,8 +85,7 @@ public abstract class MixinDebugHud {
         }
         final BedrockJoinGameTracker joinGameDataTracker = connection.get(BedrockJoinGameTracker.class);
         if (joinGameDataTracker != null) {
-            final ServerAuthMovementMode movementMode = connection.get(GameSessionStorage.class).getMovementMode();
-            information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed() + ", Movement: " + movementMode.name());
+            information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed());
         }
         if (joinGameDataTracker != null) {
             information.add("World Seed: " + joinGameDataTracker.getSeed());
