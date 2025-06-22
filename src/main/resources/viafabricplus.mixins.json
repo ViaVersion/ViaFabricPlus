@@ -164,6 +164,7 @@
     "features.item.interaction.MixinEnderPearlItem",
     "features.item.interaction.MixinEquippableComponent",
     "features.item.interaction.MixinFireChargeItem",
+    "features.item.interaction.MixinFireworkRocketItem",
     "features.item.interaction.MixinFishingRodItem",
     "features.item.interaction.MixinKnowledgeBookItem",
     "features.item.interaction.MixinLeadItem",
@@ -250,7 +251,10 @@
     "features.networking.registry_validation.MixinRegistryEntryListCodec",
     "features.networking.remove_legacy_pinger.MixinMultiplayerServerListPinger",
     "features.networking.remove_signed_commands.MixinClientPlayNetworkHandler",
+    "features.networking.remove_signed_commands.MixinGameModeSwitcherScreen",
+    "features.networking.remove_signed_commands.MixinKeyboard",
     "features.networking.remove_signed_commands.MixinProtocol1_20_3To1_20_5",
+    "features.networking.remove_signed_commands.MixinProtocol1_21_5To1_21_6",
     "features.networking.resource_pack_header.MixinServerResourcePackLoader_4",
     "features.networking.srv_resolving.MixinAllowedAddressResolver",
     "features.networking.srv_resolving.MixinConnectScreen_1",
@@ -274,8 +278,7 @@
     "features.world.border_chunk_rendering.MixinBuiltChunk",
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
-    "features.world.remove_server_view_distance.MixinGameOptions",
-    "features.item.interaction.MixinFireworkRocketItem"
+    "features.world.remove_server_view_distance.MixinGameOptions"
   ],
   "injectors": {
     "defaultRequire": 1

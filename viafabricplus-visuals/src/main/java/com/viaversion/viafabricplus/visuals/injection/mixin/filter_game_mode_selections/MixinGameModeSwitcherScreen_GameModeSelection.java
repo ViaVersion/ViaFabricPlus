@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.visuals.injection.mixin.filter_game_mode_se
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.GameModeSwitcherScreen;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
@@ -59,19 +58,6 @@ public abstract class MixinGameModeSwitcherScreen_GameModeSelection {
                 }
                 case ADVENTURE -> cir.setReturnValue(CREATIVE);
             }
-        }
-    }
-
-    @Inject(method = "getCommand", at = @At("HEAD"), cancellable = true)
-    private void oldCommand(CallbackInfoReturnable<String> cir) {
-        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
-            cir.setReturnValue(
-                    "gamemode " + MinecraftClient.getInstance().getSession().getUsername() + ' ' + switch (((Enum<?>) (Object) this).ordinal()) {
-                        case 0, 3 -> 1;
-                        case 1, 2 -> 0;
-                        default -> throw new AssertionError();
-                    }
-            );
         }
     }
 
