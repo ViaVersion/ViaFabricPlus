@@ -22,6 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_signed_commands;
 
 import com.viaversion.viafabricplus.features.networking.remove_signed_commands.SignedCommands1_21_6;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.screen.GameModeSwitcherScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.listener.ServerPlayPacketListener;
@@ -37,7 +39,7 @@ public abstract class MixinGameModeSwitcherScreen {
 
     @Redirect(method = "apply(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/gui/screen/GameModeSwitcherScreen$GameModeSelection;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
     private static void wrapAsCommand(ClientPlayNetworkHandler instance, Packet<ServerPlayPacketListener> packet) {
-        if (packet instanceof ChangeGameModeC2SPacket(final GameMode mode)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof ChangeGameModeC2SPacket(final GameMode mode)) {
             SignedCommands1_21_6.sendGameMode(mode);
         } else {
             instance.sendPacket(packet);
