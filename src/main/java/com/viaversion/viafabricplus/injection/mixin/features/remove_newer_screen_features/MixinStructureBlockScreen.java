@@ -29,6 +29,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.StructureBlockScreen;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -47,6 +48,9 @@ public abstract class MixinStructureBlockScreen {
     @Final
     private static Text STRICT_TEXT;
 
+    @Shadow
+    private TextFieldWidget inputName;
+
     @Inject(method = "updateWidgets", at = @At("RETURN"))
     private void hideStrictButton(StructureBlockMode mode, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
@@ -60,6 +64,13 @@ public abstract class MixinStructureBlockScreen {
             return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4);
         } else {
             return true;
+        }
+    }
+
+    @Inject(method = "init", at = @At("TAIL"))
+    private void changeInputNameMaxLength(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
+            this.inputName.setMaxLength(64);
         }
     }
 
