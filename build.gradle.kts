@@ -32,10 +32,15 @@ subprojects {
 }
 
 base {
-    archivesName.set("ViaFabricPlus")
+    archivesName.set("ViaFabricPlus") // Override the set name as it's lowercase for publishing
 }
 
-configureTestTasks(project.property("updating_minecraft").toString().toBoolean())
+project.property("updating_minecraft").toString().toBoolean().apply {
+    configureTestTasks(this)
+    if (this) {
+        increaseVisibleBuildErrors()
+    }
+}
 
 val jij = configureJij()
 configureVVDependencies("jij")
