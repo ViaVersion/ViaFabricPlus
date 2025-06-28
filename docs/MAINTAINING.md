@@ -13,24 +13,21 @@ something, ask in the ViaVersion discord.
 
    As well as the versions in the `dependencies` block in the `build.gradle.kts` file.
    Set `updating_minecraft` to `true` (Required for automatic data dumping).
-2. Increment the version number in `gradle.properties` by at least a minor version (e.g. 1.0.0 -> 1.1.0)
-3. Check all data dumps and diffs in the fixes/data package and update them if necessary, here is a list of some
+2. Update the `NATIVE_VERSION` field in the ProtocolTranslator class to the new version
+3. Update protocol constants in the `ViaFabricPlusProtocol` class
+4. Update `ItemTranslator#getClientboundItemType` if a new item type exists
+5. Decompile the game source code with the tool of your choice.
+6. Try to compile the mod and start porting the code until all existing fixes are working again.
+7. Check all data dumps and diffs in the fixes/data package and update them if necessary, here is a list of some
    critical ones:
     - `ResourcePackHeaderDiff` (add the new version at the top of the list)
     - `ItemRegistryDiff` (add all new items/blocks added in the new version)
     - `EntityDimensionDiff` (add entity dimension changes)
-   For this process you can also run `gradle test` which will automatically dump changes of diff classes.
-4. Update the `NATIVE_VERSION` field in the ProtocolTranslator class to the new version
-5. Update protocol constants in the `ViaFabricPlusProtocol` class
-6. Update `ItemTranslator#getClientboundItemType` if a new item type exists
--------------
-
-7. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
+   For this process run `gradle test` which will automatically dump changes of diff classes into `run/`.
+8. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
     - `MixinClientWorld#tickEntity` and `MixinClientWorld#tickPassenger`
     - `MixinPlayer#getBlockBreakingSpeed`
-8. Decompile the game source code with the tool of your choice.
-9. Try to compile the mod and start porting the code until all existing fixes are working again.
-10. Diff the game code with the code of the previous version (e.g. using git) and implement all changes that could be
+9. Diff the game code with the code of the previous version (e.g. using git) and implement all changes that could be
    relevant for ViaFabricPlus, those are:
     - General logic changes (e.g. `if (a && b)` -> `if (b || a)`)
     - Changes to the movement code (e.g. `player.yaw` -> `player.headYaw`)
@@ -74,19 +71,15 @@ something, ask in the ViaVersion discord.
         - `net.minecraft.stats`
         - `net.minecraft.tags`
 
-11. Check the ViaVersion/upstream protocol implementation for issues and report them if necessary or if these issues
+10. Check the ViaVersion/upstream protocol implementation for issues and report them if necessary or if these issues
     can't be fixed,
     without tons of work, implement a workaround in ViaFabricPlus.
-12. Run the game and check all GUIs and other visuals for issues.
-13. Clean your code and make sure it is readable and understandable, clientside fixes are sorted by their protocol
+11. Run the game and check all GUIs and other visuals for issues.
+12. Clean your code and make sure it is readable and understandable, clientside fixes are sorted by their protocol
     versions, having
     newer fixes at the top of the file.
     Set `updating_minecraft` to `false`.
-
--------------
-
-14. Create a pull request and wait for it to be reviewed and merged.
-15. You're done, congrats!
+13. Create a pull request and wait for it to be reviewed and merged.
 
 # Project structure
 
