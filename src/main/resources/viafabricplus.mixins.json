@@ -94,6 +94,7 @@
     "features.entity.attribute.MixinEntityPacketRewriter1_20_5",
     "features.entity.attribute.MixinLivingEntity",
     "features.entity.interaction.MixinAbstractBoatEntity",
+    "features.entity.interaction.MixinAbstractChestBoatEntity",
     "features.entity.interaction.MixinAbstractCowEntity",
     "features.entity.interaction.MixinAbstractHorseEntity",
     "features.entity.interaction.MixinAnimalEntity",
@@ -278,7 +279,9 @@
     "features.world.border_chunk_rendering.MixinBuiltChunk",
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
-    "features.world.remove_server_view_distance.MixinGameOptions"
+    "features.world.remove_server_view_distance.MixinGameOptions",
+    "features.scoreboard.MixinComponentUtil",
+    "features.scoreboard.MixinTeam"
   ],
   "injectors": {
     "defaultRequire": 1
