@@ -50,6 +50,8 @@ public final class ItemRegistryDiff {
     public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
 
     static {
+        ITEM_DIFF.put(MUSIC_DISC_LAVA_CHICKEN, andNewer(v1_21_7));
+
         ITEM_DIFF.put(DRIED_GHAST, andNewer(v1_21_6));
         ITEM_DIFF.put(WHITE_HARNESS, andNewer(v1_21_6));
         ITEM_DIFF.put(ORANGE_HARNESS, andNewer(v1_21_6));
