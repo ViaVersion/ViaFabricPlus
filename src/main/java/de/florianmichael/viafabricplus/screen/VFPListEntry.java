@@ -27,8 +27,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 
-import javax.annotation.Nullable;
-
 /**
  * This class is a wrapper for the {@link net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry} class.
  * Features included:
@@ -111,7 +109,7 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      * @param mouseX  The current mouse X position
      * @param mouseY  The current mouse Y position
      */
-    public void renderTooltip(final @Nullable Text tooltip, final int mouseX, final int mouseY) {
+    public void renderTooltip(final Text tooltip, final int mouseX, final int mouseY) {
         if (tooltip != null && mouseX >= x && mouseX <= x + entryWidth && mouseY >= y && mouseY <= y + entryHeight) {
             context.drawTooltip(MinecraftClient.getInstance().textRenderer, tooltip, mouseX - x, mouseY - y);
         }

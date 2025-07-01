@@ -31,9 +31,7 @@ import de.florianmichael.viafabricplus.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.DebugHud;
 import net.minecraft.util.Formatting;
-import net.raphimc.viabedrock.protocol.data.enums.bedrock.ServerAuthMovementMode;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
-import net.raphimc.viabedrock.protocol.storage.GameSessionStorage;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 import net.raphimc.vialegacy.protocol.release.r1_1tor1_2_1_3.storage.SeedStorage;
@@ -96,8 +94,7 @@ public abstract class MixinDebugHud {
         // Bedrock
         final BedrockJoinGameTracker joinGameDataTracker = userConnection.get(BedrockJoinGameTracker.class);
         if (joinGameDataTracker != null) {
-            final ServerAuthMovementMode movementMode = userConnection.get(GameSessionStorage.class).getMovementMode();
-            information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed() + ", Movement: " + movementMode.name());
+            information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed());
         }
         if (joinGameDataTracker != null) {
             information.add("World Seed: " + joinGameDataTracker.getSeed());

@@ -29,6 +29,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
+import com.viaversion.viaversion.api.type.types.version.VersionedTypes;
 import com.viaversion.viaversion.protocols.v1_12to1_12_1.packet.ClientboundPackets1_12_1;
 import de.florianmichael.viafabricplus.ViaFabricPlus;
 import de.florianmichael.viafabricplus.fixes.viaversion.ViaFabricPlusProtocol;
@@ -117,8 +118,12 @@ public class ItemTranslator {
     public static Type<Item> getServerboundItemType(final ProtocolVersion targetVersion) {
         if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return Typesb1_8_0_1.CREATIVE_ITEM;
-        } else {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return getClientboundItemType(targetVersion);
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
+            return VersionedTypes.V1_21_5.lengthPrefixedItem;
+        } else {
+            return VersionedTypes.V1_21_6.lengthPrefixedItem;
         }
     }
 
@@ -133,18 +138,28 @@ public class ItemTranslator {
             return Types1_4_2.NBTLESS_ITEM;
         } else if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
             return Types1_2_4.NBT_ITEM;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_8)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             return Types1_7_6.ITEM;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_13)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return Types.ITEM1_8;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_13_2)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_13_1)) {
             return Types.ITEM1_13;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_20_2)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20)) {
             return Types.ITEM1_13_2;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_20_5)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             return Types.ITEM1_20_2;
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            return VersionedTypes.V1_20_5.item;
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            return VersionedTypes.V1_21.item;
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            return VersionedTypes.V1_21_2.item;
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            return VersionedTypes.V1_21_4.item;
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
+            return VersionedTypes.V1_21_5.item;
         } else {
-            return Types1_20_5.ITEM;
+            return VersionedTypes.V1_21_6.item;
         }
     }
 
