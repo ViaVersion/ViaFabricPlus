@@ -70,7 +70,7 @@ fun Project.configureVVDependencies(configuration: String) {
     dependencies {
         configuration("com.viaversion:viaversion-common:5.4.1")
         configuration("com.viaversion:viabackwards-common:5.4.1")
-        configuration("com.viaversion:viaaprilfools-common:4.0.2")
+        configuration("com.viaversion:viaaprilfools-common:4.0.3")
         configuration("com.viaversion:vialoader:4.0.3") {
             exclude(group = "com.google.guava", module = "guava")
             exclude(group = "org.slf4j", module = "slf4j-api")
