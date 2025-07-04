@@ -68,14 +68,14 @@ includeTransitiveJijDependencies()
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.4.1")
+        configuration("com.viaversion:viaversion-common:5.4.2-SNAPSHOT")
         configuration("com.viaversion:viabackwards-common:5.4.1")
-        configuration("com.viaversion:viaaprilfools-common:4.0.2")
-        configuration("com.viaversion:vialoader:4.0.3") {
+        configuration("com.viaversion:viaaprilfools-common:4.0.3")
+        configuration("com.viaversion:vialoader:4.0.5-SNAPSHOT") {
             exclude(group = "com.google.guava", module = "guava")
             exclude(group = "org.slf4j", module = "slf4j-api")
         }
-        configuration("net.raphimc:ViaLegacy:3.0.10")
+        configuration("net.raphimc:ViaLegacy:3.0.11-SNAPSHOT")
         configuration("net.raphimc:ViaBedrock:0.0.20-SNAPSHOT") {
             exclude(group = "io.jsonwebtoken")
             exclude(group = "com.mojang", module = "brigadier")
