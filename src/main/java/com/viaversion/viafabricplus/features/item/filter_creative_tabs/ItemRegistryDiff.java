@@ -27,14 +27,15 @@ import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.viaversion.vialoader.util.VersionRange.*;
 import static com.viaversion.viaversion.api.protocol.version.ProtocolVersion.*;
@@ -1528,6 +1529,24 @@ public final class ItemRegistryDiff {
         EXTENDED_CLASSIC_ITEMS.add(STONE_BRICKS);
 
         // https://minecraft.gamepedia.com/Java_Edition_version_history
+    }
+
+    public static boolean keepItem(final ItemStack stack) {
+        if (!keepItem(stack.getItem())) {
+            return false;
+        }
+
+        if (stack.contains(DataComponentTypes.POTION_CONTENTS)) {
+            PotionContentsComponent potionContents = stack.get(DataComponentTypes.POTION_CONTENTS);
+
+            for (final StatusEffectInstance effectInstance : Objects.requireNonNull(potionContents).getEffects()) {
+                if (!EffectRegistryDiff.keepEffect(effectInstance.getEffectType())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public static boolean keepItem(final Item item) {
