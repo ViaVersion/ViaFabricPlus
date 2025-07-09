@@ -28,10 +28,13 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.PotionContentsComponent;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 
@@ -1541,6 +1544,26 @@ public final class ItemRegistryDiff {
 
             for (final StatusEffectInstance effectInstance : Objects.requireNonNull(potionContents).getEffects()) {
                 if (!EffectRegistryDiff.keepEffect(effectInstance.getEffectType())) {
+                    return false;
+                }
+            }
+        }
+
+        if (stack.contains(DataComponentTypes.ENCHANTMENTS)) {
+            ItemEnchantmentsComponent enchantmentsComponent = stack.get(DataComponentTypes.ENCHANTMENTS);
+
+            for (final RegistryEntry<Enchantment> enchantment : Objects.requireNonNull(enchantmentsComponent).getEnchantments()) {
+                if (!enchantment.getKey().map(EnchantmentRegistryDiff::keepEnchantment).orElse(true)) {
+                    return false;
+                }
+            }
+        }
+
+        if (stack.contains(DataComponentTypes.STORED_ENCHANTMENTS)) {
+            ItemEnchantmentsComponent enchantmentsComponent = stack.get(DataComponentTypes.STORED_ENCHANTMENTS);
+
+            for (final RegistryEntry<Enchantment> enchantment : Objects.requireNonNull(enchantmentsComponent).getEnchantments()) {
+                if (!enchantment.getKey().map(EnchantmentRegistryDiff::keepEnchantment).orElse(true)) {
                     return false;
                 }
             }
