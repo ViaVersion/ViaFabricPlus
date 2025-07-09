@@ -28,6 +28,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BannerPatternsComponent;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.enchantment.Enchantment;
@@ -1564,6 +1565,16 @@ public final class ItemRegistryDiff {
 
             for (final RegistryEntry<Enchantment> enchantment : Objects.requireNonNull(enchantmentsComponent).getEnchantments()) {
                 if (!enchantment.getKey().map(EnchantmentRegistryDiff::keepEnchantment).orElse(true)) {
+                    return false;
+                }
+            }
+        }
+
+        if (stack.contains(DataComponentTypes.BANNER_PATTERNS)) {
+            BannerPatternsComponent patternsComponent = stack.get(DataComponentTypes.BANNER_PATTERNS);
+
+            for (final BannerPatternsComponent.Layer layer : Objects.requireNonNull(patternsComponent).layers()) {
+                if (!layer.pattern().getKey().map(BannerPatternRegistryDiff::keepBannerPattern).orElse(true)) {
                     return false;
                 }
             }
