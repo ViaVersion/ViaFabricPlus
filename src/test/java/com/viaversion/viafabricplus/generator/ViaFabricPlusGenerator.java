@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.generator;
 
+import com.viaversion.viafabricplus.generator.impl.EffectRegistryDiffGenerator;
 import com.viaversion.viafabricplus.generator.impl.EntityDimensionDiffGenerator;
 import com.viaversion.viafabricplus.generator.impl.ItemRegistryDiffGenerator;
 import com.viaversion.viafabricplus.generator.impl.ResourcePackHeaderDiffGenerator;
@@ -48,6 +49,7 @@ public final class ViaFabricPlusGenerator {
         new ItemRegistryDiffGenerator().writeToFile(NATIVE_VERSION, directory, "item_diff");
         new EntityDimensionDiffGenerator().writeToFile(NATIVE_VERSION, directory, "entity_dimensions");
         new ResourcePackHeaderDiffGenerator().writeToFile(NATIVE_VERSION, directory, "resource_pack_header");
+        new EffectRegistryDiffGenerator().writeToFile(NATIVE_VERSION, directory, "effect_diff");
     }
 
 }

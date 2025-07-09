@@ -65,14 +65,30 @@ public final class EffectRegistryDiff {
 
         EFFECT_DIFF.put(WITHER, andNewer(r1_4_2));
 
+        EFFECT_DIFF.put(SPEED, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(SLOWNESS, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(HASTE, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(MINING_FATIGUE, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(STRENGTH, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(INSTANT_HEALTH, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(INSTANT_DAMAGE, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(JUMP_BOOST, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(NAUSEA, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(REGENERATION, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(RESISTANCE, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(FIRE_RESISTANCE, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(WATER_BREATHING, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(INVISIBILITY, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(BLINDNESS, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(NIGHT_VISION, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(HUNGER, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(WEAKNESS, andNewer(b1_8tob1_8_1));
+        EFFECT_DIFF.put(POISON, andNewer(b1_8tob1_8_1));
+
         // https://minecraft.wiki/w/Effect#Effect_additions
     }
 
     public static boolean keepEffect(final RegistryEntry<StatusEffect> effect) {
-        if (ProtocolTranslator.getTargetVersion().olderThan(b1_8tob1_8_1)) {
-            return false;
-        }
-
         return contains(effect, ProtocolTranslator.getTargetVersion());
     }
 
