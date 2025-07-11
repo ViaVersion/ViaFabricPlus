@@ -27,10 +27,11 @@ import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.base.Events;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.RegistryDiffs;
 import com.viaversion.viafabricplus.util.ClassLoaderPriorityUtil;
 import com.viaversion.viafabricplus.base.sync_tasks.SyncTasks;
 import com.viaversion.viafabricplus.features.FeaturesLoading;
-import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemRegistryDiff;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemDiff;
 import com.viaversion.viafabricplus.features.item.negative_item_count.NegativeItemUtil;
 import com.viaversion.viafabricplus.features.limitation.max_chat_length.MaxChatLength;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
@@ -49,10 +50,15 @@ import io.netty.channel.Channel;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -239,12 +245,32 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
     @Override
     public boolean itemExists(net.minecraft.item.Item item, ProtocolVersion version) {
-        return ItemRegistryDiff.contains(item, version);
+        return ItemDiff.containsItem(item, version);
+    }
+
+    @Override
+    public boolean enchantmentExists(RegistryKey<Enchantment> enchantment, ProtocolVersion version) {
+        return RegistryDiffs.containsEnchantment(enchantment, version);
+    }
+
+    @Override
+    public boolean effectExists(RegistryEntry<StatusEffect> effect, ProtocolVersion version) {
+        return RegistryDiffs.containsEffect(effect, version);
+    }
+
+    @Override
+    public boolean bannerPatternExists(RegistryKey<BannerPattern> pattern, ProtocolVersion version) {
+        return RegistryDiffs.containsBannerPattern(pattern, version);
     }
 
     @Override
     public boolean itemExistsInConnection(net.minecraft.item.Item item) {
-        return ItemRegistryDiff.keepItem(item);
+        return ItemDiff.keepItem(item);
+    }
+
+    @Override
+    public boolean itemExistsInConnection(ItemStack stack) {
+        return ItemDiff.keepItem(stack);
     }
 
     @Override

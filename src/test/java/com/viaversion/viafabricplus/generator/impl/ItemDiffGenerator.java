@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.generator.impl;
 
-import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemRegistryDiff;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemDiff;
 import com.viaversion.viafabricplus.generator.util.Generator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.item.Item;
@@ -30,7 +30,7 @@ import net.minecraft.registry.Registries;
 
 import static com.viaversion.viafabricplus.generator.util.FieldUtil.getFieldName;
 
-public final class ItemRegistryDiffGenerator implements Generator {
+public final class ItemDiffGenerator implements Generator {
 
     @Override
     public StringBuilder generate(final ProtocolVersion nativeVersion) {
@@ -38,7 +38,7 @@ public final class ItemRegistryDiffGenerator implements Generator {
 
         final StringBuilder output = new StringBuilder();
         for (final Item item : Registries.ITEM) {
-            if (ItemRegistryDiff.ITEM_DIFF.containsKey(item) || item == Items.AIR) {
+            if (ItemDiff.ITEM_DIFF.containsKey(item) || item == Items.AIR) {
                 continue;
             }
 

@@ -29,13 +29,19 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
-import java.nio.file.Path;
-import java.util.List;
+import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
 import org.jetbrains.annotations.Nullable;
+
+import java.nio.file.Path;
+import java.util.List;
 
 /**
  * General API point for mods. Get instance via {@link ViaFabricPlus#getImpl()}.
@@ -46,7 +52,7 @@ public interface ViaFabricPlusBase {
      * @return an <b>internally based API version</b> incremented with meaningful or breaking changes.
      */
     default int apiVersion() {
-        return 4;
+        return 5;
     }
 
     /**
@@ -83,6 +89,13 @@ public interface ViaFabricPlusBase {
     ProtocolVersion getTargetVersion();
 
     /**
+     * Sets the target version
+     *
+     * @param newVersion the target version
+     */
+    void setTargetVersion(final ProtocolVersion newVersion);
+
+    /**
      * Gets the target version from the channel attribute, can be used in early stages of the connection
      *
      * @param channel the channel
@@ -97,13 +110,6 @@ public interface ViaFabricPlusBase {
      * @return the target version
      */
     ProtocolVersion getTargetVersion(final ClientConnection connection);
-
-    /**
-     * Sets the target version
-     *
-     * @param newVersion the target version
-     */
-    void setTargetVersion(final ProtocolVersion newVersion);
 
     /**
      * Sets the target version
@@ -223,14 +229,47 @@ public interface ViaFabricPlusBase {
     boolean itemExists(final net.minecraft.item.Item item, final ProtocolVersion version);
 
     /**
+     * @param enchantment The enchantment to check
+     * @param version     The version to check for
+     * @return true if the enchantment exists in the given version, false otherwise
+     */
+    boolean enchantmentExists(final RegistryKey<Enchantment> enchantment, final ProtocolVersion version);
+
+    /**
+     * @param effect  The status effect to check
+     * @param version The version to check for
+     * @return true if the status effect exists in the given version, false otherwise
+     */
+    boolean effectExists(final RegistryEntry<StatusEffect> effect, final ProtocolVersion version);
+
+    /**
+     * @param pattern The banner pattern to check
+     * @param version The version to check for
+     * @return true if the banner pattern exists in the given version, false otherwise
+     */
+    boolean bannerPatternExists(final RegistryKey<BannerPattern> pattern, final ProtocolVersion version);
+
+    /**
+     * Similar to {@link #itemExists(net.minecraft.item.Item, ProtocolVersion)}, but takes in the current connection details (e.g. classic protocol extensions being loaded)
+     *
      * @param item The item to check
-     * @return Similar to {@link #itemExists(net.minecraft.item.Item, ProtocolVersion)}, but takes in the current connection details (e.g. classic protocol extensions being loaded)
+     * @return true if the item exists in the current connection, false otherwise
      */
     boolean itemExistsInConnection(final net.minecraft.item.Item item);
 
     /**
+     * Same as {@link #itemExists(net.minecraft.item.Item, ProtocolVersion)}, but for item stacks. This also compares against certain data components like enchantments or banner patterns.
+     *
+     * @param stack The item stack to check
+     * @return true if the item stack exists in the given version, false otherwise
+     */
+    boolean itemExistsInConnection(final ItemStack stack);
+
+    /**
+     * Similar to {@link ItemStack#getCount()}, but also handles negative item counts in pre 1.11 versions
+     *
      * @param stack The item stack to get the count of
-     * @return Similar to {@link ItemStack#getCount()}, but also handles negative item counts in pre 1.11 versions
+     * @return the count of the item stack, can be negative in pre 1.11 versions
      */
     int getStackCount(final ItemStack stack);
 
