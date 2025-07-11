@@ -49,7 +49,7 @@ import static net.raphimc.vialegacy.api.LegacyProtocolVersion.*;
 /**
  * Class file which contains the {@link VersionRange} for every item added in the game.
  */
-public final class ItemRegistryDiff {
+public final class ItemDiff {
 
     public static final Map<Item, VersionRange> ITEM_DIFF = new HashMap<>();
     public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
@@ -1538,49 +1538,9 @@ public final class ItemRegistryDiff {
     public static boolean keepItem(final ItemStack stack) {
         if (!keepItem(stack.getItem())) {
             return false;
+        } else {
+            return RegistryDiffs.keepItem(stack);
         }
-
-        if (stack.contains(DataComponentTypes.POTION_CONTENTS)) {
-            PotionContentsComponent potionContents = stack.get(DataComponentTypes.POTION_CONTENTS);
-
-            for (final StatusEffectInstance effectInstance : Objects.requireNonNull(potionContents).getEffects()) {
-                if (!EffectRegistryDiff.keepEffect(effectInstance.getEffectType())) {
-                    return false;
-                }
-            }
-        }
-
-        if (stack.contains(DataComponentTypes.ENCHANTMENTS)) {
-            ItemEnchantmentsComponent enchantmentsComponent = stack.get(DataComponentTypes.ENCHANTMENTS);
-
-            for (final RegistryEntry<Enchantment> enchantment : Objects.requireNonNull(enchantmentsComponent).getEnchantments()) {
-                if (!enchantment.getKey().map(EnchantmentRegistryDiff::keepEnchantment).orElse(true)) {
-                    return false;
-                }
-            }
-        }
-
-        if (stack.contains(DataComponentTypes.STORED_ENCHANTMENTS)) {
-            ItemEnchantmentsComponent enchantmentsComponent = stack.get(DataComponentTypes.STORED_ENCHANTMENTS);
-
-            for (final RegistryEntry<Enchantment> enchantment : Objects.requireNonNull(enchantmentsComponent).getEnchantments()) {
-                if (!enchantment.getKey().map(EnchantmentRegistryDiff::keepEnchantment).orElse(true)) {
-                    return false;
-                }
-            }
-        }
-
-        if (stack.contains(DataComponentTypes.BANNER_PATTERNS)) {
-            BannerPatternsComponent patternsComponent = stack.get(DataComponentTypes.BANNER_PATTERNS);
-
-            for (final BannerPatternsComponent.Layer layer : Objects.requireNonNull(patternsComponent).layers()) {
-                if (!layer.pattern().getKey().map(BannerPatternRegistryDiff::keepBannerPattern).orElse(true)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
     public static boolean keepItem(final Item item) {
@@ -1599,10 +1559,10 @@ public final class ItemRegistryDiff {
             }
         }
 
-        return contains(item, ProtocolTranslator.getTargetVersion());
+        return containsItem(item, ProtocolTranslator.getTargetVersion());
     }
 
-    public static boolean contains(final Item item, final ProtocolVersion version) {
+    public static boolean containsItem(final Item item, final ProtocolVersion version) {
         return !ITEM_DIFF.containsKey(item) || ITEM_DIFF.get(item).contains(version);
     }
 

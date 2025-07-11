@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.filter_creati
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemRegistryDiff;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemDiff;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
@@ -55,7 +55,7 @@ public abstract class MixinItemGroup_EntriesImpl {
         } else if (index == 1 /* Vanilla only */ && !Registries.ITEM_GROUP.getId(this.group).getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
             return originalValue;
         } else {
-            return ItemRegistryDiff.keepItem(stack) && originalValue;
+            return ItemDiff.keepItem(stack) && originalValue;
         }
     }
 

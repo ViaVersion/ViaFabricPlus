@@ -21,28 +21,30 @@
 
 package com.viaversion.viafabricplus.generator.impl;
 
-import com.viaversion.viafabricplus.features.item.filter_creative_tabs.EffectRegistryDiff;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemDiff;
 import com.viaversion.viafabricplus.generator.util.Generator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 
 import static com.viaversion.viafabricplus.generator.util.FieldUtil.getFieldName;
 
-public final class EffectRegistryDiffGenerator implements Generator {
+public final class ItemDiffGenerator implements Generator {
 
     @Override
     public StringBuilder generate(final ProtocolVersion nativeVersion) {
         final String fieldName = getFieldName(ProtocolVersion.class, nativeVersion);
 
         final StringBuilder output = new StringBuilder();
-        Registries.STATUS_EFFECT.streamEntries().forEach(effect -> {
-            if (EffectRegistryDiff.EFFECT_DIFF.containsKey(effect) || effect == StatusEffects.SPEED) {
-                return;
+        for (final Item item : Registries.ITEM) {
+            if (ItemDiff.ITEM_DIFF.containsKey(item) || item == Items.AIR) {
+                continue;
             }
 
-            output.append("EFFECT_DIFF.put(").append(getFieldName(StatusEffects.class, effect)).append(", andNewer(").append(fieldName).append("));\n");
-        });
+            output.append("ITEM_DIFF.put(").append(getFieldName(Items.class, item)).append(", andNewer(").append(fieldName).append("));\n");
+        }
         return output;
     }
+
 }
