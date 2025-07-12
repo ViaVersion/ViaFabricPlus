@@ -24,6 +24,8 @@ package com.viaversion.viafabricplus.features.item.filter_creative_tabs;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
@@ -37,8 +39,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.viaversion.vialoader.util.VersionRange.andNewer;
@@ -53,9 +53,9 @@ import static net.raphimc.vialegacy.api.LegacyProtocolVersion.*;
  */
 public final class RegistryDiffs {
 
-    public static final Map<RegistryKey<Enchantment>, VersionRange> ENCHANTMENT_DIFF = new HashMap<>();
-    public static final Map<RegistryEntry<StatusEffect>, VersionRange> EFFECT_DIFF = new HashMap<>();
-    public static final Map<RegistryKey<BannerPattern>, VersionRange> PATTERN_DIFF = new HashMap<>();
+    public static final Reference2ObjectMap<RegistryKey<Enchantment>, VersionRange> ENCHANTMENT_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final Reference2ObjectMap<RegistryEntry<StatusEffect>, VersionRange> EFFECT_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final Reference2ObjectMap<RegistryKey<BannerPattern>, VersionRange> PATTERN_DIFF = new Reference2ObjectOpenHashMap<>();
 
     static {
         ENCHANTMENT_DIFF.put(BREACH, andNewer(v1_20_5));

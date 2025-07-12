@@ -25,21 +25,17 @@ import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BannerPatternsComponent;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.viaversion.vialoader.util.VersionRange.*;
 import static com.viaversion.viaversion.api.protocol.version.ProtocolVersion.*;
@@ -51,7 +47,7 @@ import static net.raphimc.vialegacy.api.LegacyProtocolVersion.*;
  */
 public final class ItemDiff {
 
-    public static final Map<Item, VersionRange> ITEM_DIFF = new HashMap<>();
+    public static final Reference2ObjectMap<Item, VersionRange> ITEM_DIFF = new Reference2ObjectOpenHashMap<>();
     public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
 
     static {
