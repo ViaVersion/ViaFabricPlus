@@ -269,6 +269,8 @@
     "features.remove_newer_screen_features.MixinStructureBlockScreen",
     "features.remove_newer_screen_features.MixinStructureBlockScreen_1",
     "features.run_command_action.MixinScreen",
+    "features.scoreboard.MixinComponentUtil",
+    "features.scoreboard.MixinTeam",
     "features.sign_editor_reach.MixinAbstractSignEditScreen",
     "features.skin_loading.MixinPlayerListEntry",
     "features.swinging.MixinInventoryTracker1_16",
@@ -280,8 +282,7 @@
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
     "features.world.remove_server_view_distance.MixinGameOptions",
-    "features.scoreboard.MixinComponentUtil",
-    "features.scoreboard.MixinTeam"
+    "features.entity.interaction.MixinEntity"
   ],
   "injectors": {
     "defaultRequire": 1
