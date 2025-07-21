@@ -41,6 +41,15 @@ public abstract class MixinLivingEntity {
     @Shadow
     private int jumpingCooldown;
 
+    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
+    private double dontLimitJumpVelocity(double a, double b) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            return a;
+        } else {
+            return Math.max(a, b);
+        }
+    }
+
     @Redirect(method = "applyMovementInput", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;jumping:Z"))
     private boolean disableJumpOnLadder(LivingEntity self) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && jumping;
