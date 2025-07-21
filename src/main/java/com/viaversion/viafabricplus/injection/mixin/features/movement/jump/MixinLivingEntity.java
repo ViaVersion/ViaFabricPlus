@@ -21,8 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.jump;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.LivingEntity;
@@ -52,16 +50,6 @@ public abstract class MixinLivingEntity {
     private void removeJumpDelay(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_0_0tor1_0_1)) {
             this.jumpingCooldown = 0;
-        }
-    }
-
-    @WrapOperation(method = "jump", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
-    private double fixJumpVelocity(double value, double max, Operation<Double> original) {
-        // https://minecraft.wiki/w/Slime_Block#cite_note-6
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return value;
-        } else {
-            return original.call(value, max);
         }
     }
 
