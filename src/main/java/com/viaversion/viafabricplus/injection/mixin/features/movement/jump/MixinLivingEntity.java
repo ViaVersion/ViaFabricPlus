@@ -41,6 +41,15 @@ public abstract class MixinLivingEntity {
     @Shadow
     private int jumpingCooldown;
 
+    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
+    private double dontLimitJumpVelocity(double a, double b) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            return a;
+        } else {
+            return Math.max(a, b);
+        }
+    }
+
     @Redirect(method = "applyMovementInput", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;jumping:Z"))
     private boolean disableJumpOnLadder(LivingEntity self) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && jumping;
@@ -51,16 +60,6 @@ public abstract class MixinLivingEntity {
         if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_0_0tor1_0_1)) {
             this.jumpingCooldown = 0;
         }
-    }
-
-    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
-    private double fixJumpVelocity(double a, double b) {
-        // https://minecraft.wiki/w/Slime_Block#cite_note-6
-        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            return Math.max(a, b);
-        }
-
-        return a;
     }
 
 }
