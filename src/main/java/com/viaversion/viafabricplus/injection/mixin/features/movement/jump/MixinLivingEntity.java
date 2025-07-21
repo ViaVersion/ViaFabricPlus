@@ -53,4 +53,14 @@ public abstract class MixinLivingEntity {
         }
     }
 
+    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
+    private double fixJumpVelocity(double a, double b) {
+        // https://minecraft.wiki/w/Slime_Block#cite_note-6
+        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            return Math.max(a, b);
+        }
+
+        return a;
+    }
+
 }
