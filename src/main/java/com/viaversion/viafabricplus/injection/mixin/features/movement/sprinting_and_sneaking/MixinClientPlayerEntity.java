@@ -122,7 +122,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         viaFabricPlus$lastSneaking = lastPlayerInput.sneak();
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V"))
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V", shift = At.Shift.AFTER))
     private void sendSneakingPacket(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_21_2, ProtocolVersion.v1_21_5)) {
             this.viaFabricPlus$sendSneakingPacket();
@@ -276,7 +276,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         sneakingPacket.write(Types.VAR_INT, getId());
         sneakingPacket.write(Types.VAR_INT, sneaking ? 0 : 1);
         sneakingPacket.write(Types.VAR_INT, 0); // No data
-        sneakingPacket.sendToServer(Protocol1_21_5To1_21_6.class);
+        sneakingPacket.scheduleSendToServer(Protocol1_21_5To1_21_6.class);
         this.viaFabricPlus$lastSneaking = sneaking;
     }
 

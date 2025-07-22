@@ -274,7 +274,6 @@
     "features.scoreboard.MixinTeam",
     "features.sign_editor_reach.MixinAbstractSignEditScreen",
     "features.skin_loading.MixinPlayerListEntry",
-    "features.swinging.MixinInventoryTracker1_16",
     "features.swinging.MixinLivingEntity",
     "features.swinging.MixinMinecraftClient",
     "features.world.always_tick_entities.MixinClientWorld",
