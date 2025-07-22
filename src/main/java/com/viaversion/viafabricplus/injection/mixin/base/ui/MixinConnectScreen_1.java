@@ -45,6 +45,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
@@ -82,7 +83,11 @@ public abstract class MixinConnectScreen_1 {
             }
             if (!serverPinged || !targetVersion.isKnown()) {
                 this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
-                targetVersion = ProtocolVersionDetector.get(field_33737, address, ProtocolTranslator.NATIVE_VERSION);
+                try {
+                    targetVersion = ProtocolVersionDetector.get(field_33737, address, ProtocolTranslator.NATIVE_VERSION);
+                } catch (final ConnectException ignored) {
+                    // Don't let this one through as not relevant
+                }
             }
         }
         ProtocolTranslator.setTargetVersion(targetVersion, true);
