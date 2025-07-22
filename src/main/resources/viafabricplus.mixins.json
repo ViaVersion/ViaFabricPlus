@@ -210,6 +210,7 @@
     "features.movement.limitation.rotation.MixinEntity",
     "features.movement.limitation.rotation.MixinPlayerEntity",
     "features.movement.packet.MixinClientPlayerEntity",
+    "features.movement.packet.MixinPlayerPosition",
     "features.movement.slowdown.MixinClientPlayerEntity",
     "features.movement.slowdown.MixinEnderEyeItem",
     "features.movement.sprinting_and_sneaking.MixinClientPlayerEntity",
