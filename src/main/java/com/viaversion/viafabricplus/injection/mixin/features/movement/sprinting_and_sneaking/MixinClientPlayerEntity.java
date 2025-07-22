@@ -34,10 +34,13 @@ import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.Protocol1_21_5To1_21_
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.recipebook.ClientRecipeBook;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.stat.StatHandler;
 import net.minecraft.util.PlayerInput;
 import net.minecraft.util.math.Vec2f;
 import org.spongepowered.asm.mixin.Final;
@@ -67,7 +70,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     private boolean inSneakingPose;
 
     @Unique
-    private boolean viaFabricPlus$lastSneaking = false;
+    private boolean viaFabricPlus$lastSneaking;
 
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
@@ -113,6 +116,11 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Shadow
     public abstract boolean isUsingItem();
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void initLastSneaking(MinecraftClient client, ClientWorld world, ClientPlayNetworkHandler networkHandler, StatHandler stats, ClientRecipeBook recipeBook, PlayerInput lastPlayerInput, boolean lastSprinting, CallbackInfo ci) {
+        viaFabricPlus$lastSneaking = lastPlayerInput.sneak();
+    }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V"))
     private void sendSneakingPacket(CallbackInfo ci) {
