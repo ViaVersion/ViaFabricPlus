@@ -66,6 +66,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     private boolean inSneakingPose;
 
+    @Unique
+    private boolean viaFabricPlus$lastSneaking = false;
+
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
     }
@@ -102,8 +105,14 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     public abstract void init();
 
-    @Unique
-    private boolean viaFabricPlus$lastSneaking = false;
+    @Shadow
+    public abstract boolean isSneaking();
+
+    @Shadow
+    public abstract boolean isSubmergedInWater();
+
+    @Shadow
+    public abstract boolean isUsingItem();
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V"))
     private void sendSneakingPacket(CallbackInfo ci) {
@@ -205,13 +214,13 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         final ProtocolVersion version = ProtocolTranslator.getTargetVersion();
         if (version.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             cir.setReturnValue(!this.isSprinting()
-                && this.viaFabricPlus$isWalking1_21_4()
-                && this.canSprint()
-                && !this.isUsingItem()
-                && !this.isBlind()
-                && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.hasVehicle()) || this.canVehicleSprint(this.getVehicle()))
-                && !(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding())
-                && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4))));
+                    && this.viaFabricPlus$isWalking1_21_4()
+                    && this.canSprint()
+                    && !this.isUsingItem()
+                    && !this.isBlind()
+                    && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.hasVehicle()) || this.canVehicleSprint(this.getVehicle()))
+                    && !(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding())
+                    && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4))));
         }
     }
 
