@@ -34,6 +34,7 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
         UNSUPPORTED.add("simulate-pt");
         UNSUPPORTED.add("fix-1_21-placement-rotation");
         UNSUPPORTED.add("team-colour-fix");
+        UNSUPPORTED.add("cancel-swing-in-inventory");
     }
 
     @Override
@@ -51,4 +52,8 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
         return false;
     }
 
+    @Override
+    public boolean cancelSwingInInventory() {
+        return false;
+    }
 }
