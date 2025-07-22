@@ -26,11 +26,10 @@ import com.viaversion.viaversion.api.data.MappingDataLoader;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
-import net.minecraft.block.Block;
-import net.minecraft.registry.Registries;
-
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.block.Block;
+import net.minecraft.registry.Registries;
 
 public final class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
 
@@ -76,6 +75,7 @@ public final class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
         if (materials == null) {
             return null;
         }
+
         for (Map.Entry<ProtocolVersion, String> materialEntry : materials.entrySet()) {
             if (version.olderThanOrEqualTo(materialEntry.getKey())) {
                 return materialEntry.getValue();

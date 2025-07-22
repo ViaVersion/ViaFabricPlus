@@ -26,14 +26,13 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.injection.access.base.IMultiValueDebugSampleLogImpl;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
+import java.net.InetSocketAddress;
 import net.minecraft.client.network.MultiplayerServerListPinger;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.util.profiler.MultiValueDebugSampleLogImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-
-import java.net.InetSocketAddress;
 
 @Mixin(MultiplayerServerListPinger.class)
 public final class MixinMultiplayerServerListPinger {

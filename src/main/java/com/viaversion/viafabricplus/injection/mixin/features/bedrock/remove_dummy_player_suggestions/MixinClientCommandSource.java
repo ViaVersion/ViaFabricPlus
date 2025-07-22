@@ -22,6 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.remove_dummy_player_suggestions;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import java.util.Collection;
+import java.util.Set;
 import net.minecraft.client.network.ClientCommandSource;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
@@ -30,9 +32,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Collection;
-import java.util.Set;
 
 @Mixin(ClientCommandSource.class)
 public abstract class MixinClientCommandSource {

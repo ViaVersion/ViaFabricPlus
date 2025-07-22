@@ -23,6 +23,8 @@ package com.viaversion.viafabricplus.features.recipe;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -32,7 +34,19 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
-import net.minecraft.recipe.*;
+import net.minecraft.recipe.ArmorDyeRecipe;
+import net.minecraft.recipe.BannerDuplicateRecipe;
+import net.minecraft.recipe.BookCloningRecipe;
+import net.minecraft.recipe.FireworkRocketRecipe;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.MapCloningRecipe;
+import net.minecraft.recipe.MapExtendingRecipe;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.RepairItemRecipe;
+import net.minecraft.recipe.ShieldDecorationRecipe;
+import net.minecraft.recipe.TippedArrowRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryKey;
@@ -40,9 +54,6 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Recipe data dump for all versions below 1.12.

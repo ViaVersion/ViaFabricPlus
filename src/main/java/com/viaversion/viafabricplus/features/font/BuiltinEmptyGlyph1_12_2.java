@@ -22,11 +22,10 @@
 package com.viaversion.viafabricplus.features.font;
 
 import com.mojang.blaze3d.textures.GpuTexture;
+import java.util.function.Function;
 import net.minecraft.client.font.BakedGlyph;
 import net.minecraft.client.font.Glyph;
 import net.minecraft.client.font.RenderableGlyph;
-
-import java.util.function.Function;
 
 public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
     INSTANCE;

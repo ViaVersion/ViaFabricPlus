@@ -22,8 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
 import com.viaversion.viafabricplus.util.NotificationUtil;
-import com.viaversion.viaversion.api.minecraft.item.Item;
-import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.packet.ServerboundPackets1_21_4;
 import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.Protocol1_21_4To1_21_5;
 import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.packet.ServerboundPacket1_21_5;

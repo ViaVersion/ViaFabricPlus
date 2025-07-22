@@ -24,15 +24,14 @@ package com.viaversion.viafabricplus.screen.impl;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viaversion.util.DumpUtil;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Util;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.File;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.text.Text;
+import net.minecraft.util.Util;
+import org.jetbrains.annotations.Nullable;
 
 public final class ReportIssuesScreen extends VFPScreen {
 

@@ -21,13 +21,12 @@
 
 package com.viaversion.viafabricplus.util;
 
-import net.lenni0451.reflect.ClassLoaders;
-import net.lenni0451.reflect.stream.RStream;
-import org.apache.logging.log4j.Logger;
-
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import net.lenni0451.reflect.ClassLoaders;
+import net.lenni0451.reflect.stream.RStream;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Allows the user to override the Via* jar files with custom ones using the "jars" folder in the run directory

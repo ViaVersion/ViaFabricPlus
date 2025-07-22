@@ -103,6 +103,7 @@
     "features.entity.interaction.MixinBeeEntity",
     "features.entity.interaction.MixinCatEntity",
     "features.entity.interaction.MixinCreeperEntity",
+    "features.entity.interaction.MixinEntity",
     "features.entity.interaction.MixinMobEntity",
     "features.entity.interaction.MixinMooshroomEntity",
     "features.entity.interaction.MixinSquidEntity",
@@ -281,8 +282,7 @@
     "features.world.border_chunk_rendering.MixinBuiltChunk",
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
-    "features.world.remove_server_view_distance.MixinGameOptions",
-    "features.entity.interaction.MixinEntity"
+    "features.world.remove_server_view_distance.MixinGameOptions"
   ],
   "injectors": {
     "defaultRequire": 1

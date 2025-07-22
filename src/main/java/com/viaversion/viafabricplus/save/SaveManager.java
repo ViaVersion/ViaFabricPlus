@@ -25,7 +25,6 @@ import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.save.impl.SettingsSave;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

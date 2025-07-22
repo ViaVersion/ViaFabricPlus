@@ -27,7 +27,10 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntConsumer;
 
-import static com.viaversion.viaversion.api.protocol.version.ProtocolVersion.*;
+import static com.viaversion.viaversion.api.protocol.version.ProtocolVersion.v1_16;
+import static com.viaversion.viaversion.api.protocol.version.ProtocolVersion.v1_16_2;
+import static com.viaversion.viaversion.api.protocol.version.ProtocolVersion.v1_17_1;
+import static com.viaversion.viaversion.api.protocol.version.ProtocolVersion.v1_20;
 import static java.util.stream.IntStream.rangeClosed;
 import static net.raphimc.vialegacy.api.LegacyProtocolVersion.c0_0_15a_1;
 

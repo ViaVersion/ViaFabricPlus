@@ -22,14 +22,13 @@
 package com.viaversion.viafabricplus.features.networking.resource_pack_header;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.resource.ResourceType;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class file contains the {@link GameVersion} for each protocol version.

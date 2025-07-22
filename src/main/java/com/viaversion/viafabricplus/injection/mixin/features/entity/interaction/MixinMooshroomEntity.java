@@ -26,7 +26,6 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AbstractCowEntity;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.MooshroomEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

@@ -31,6 +31,8 @@ import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_0;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_1;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.security.PrivateKey;
+import java.util.UUID;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PlayerKeyPair;
@@ -41,9 +43,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.security.PrivateKey;
-import java.util.UUID;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {

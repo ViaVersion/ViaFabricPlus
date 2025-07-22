@@ -27,14 +27,13 @@ import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.networking.legacy_chat_signature.KeyPairResponse1_19_0;
 import com.viaversion.viafabricplus.injection.access.networking.legacy_chat_signature.ILegacyKeySignatureStorage;
+import java.net.URL;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.net.URL;
 
 @Mixin(value = YggdrasilUserApiService.class, remap = false)
 public abstract class MixinYggdrasilUserApiService {

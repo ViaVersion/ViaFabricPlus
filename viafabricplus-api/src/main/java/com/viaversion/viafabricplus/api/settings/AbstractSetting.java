@@ -23,10 +23,9 @@ package com.viaversion.viafabricplus.api.settings;
 
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.util.ChatUtil;
+import java.util.function.Supplier;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-
-import java.util.function.Supplier;
 
 /**
  * This class is the base for all settings. It contains the name, the default value and the current value.

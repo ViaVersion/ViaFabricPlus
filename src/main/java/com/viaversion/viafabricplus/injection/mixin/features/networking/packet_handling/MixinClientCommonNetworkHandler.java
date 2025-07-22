@@ -25,6 +25,11 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.net.URL;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.Optional;
+import java.util.function.BooleanSupplier;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.network.ClientConnection;
@@ -43,12 +48,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.net.URL;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.util.Optional;
-import java.util.function.BooleanSupplier;
 
 @Mixin(ClientCommonNetworkHandler.class)
 public abstract class MixinClientCommonNetworkHandler {

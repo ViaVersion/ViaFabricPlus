@@ -32,6 +32,8 @@ import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import io.netty.channel.ChannelFuture;
+import java.net.ConnectException;
+import java.net.InetSocketAddress;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
@@ -44,9 +46,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-
-import java.net.ConnectException;
-import java.net.InetSocketAddress;
 
 @Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {

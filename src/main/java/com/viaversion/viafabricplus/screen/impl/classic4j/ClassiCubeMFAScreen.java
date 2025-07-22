@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.screen.impl.classic4j;
 
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.screen.VFPScreen;
-import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;

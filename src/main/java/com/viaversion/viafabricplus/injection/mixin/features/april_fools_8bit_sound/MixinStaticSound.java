@@ -23,6 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.april_fools_8bit_s
 
 import com.viaversion.viaaprilfools.api.AprilFoolsProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import java.nio.ByteBuffer;
+import javax.sound.sampled.AudioFormat;
 import net.minecraft.client.sound.StaticSound;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,9 +33,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import javax.sound.sampled.AudioFormat;
-import java.nio.ByteBuffer;
 
 @Mixin(StaticSound.class)
 public abstract class MixinStaticSound {

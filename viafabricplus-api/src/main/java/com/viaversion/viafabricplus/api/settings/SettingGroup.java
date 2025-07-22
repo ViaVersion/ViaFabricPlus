@@ -22,10 +22,9 @@
 package com.viaversion.viafabricplus.api.settings;
 
 import com.viaversion.viafabricplus.util.ChatUtil;
-import net.minecraft.text.Text;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.text.Text;
 
 /**
  * This class represents a group of settings. It is used to group settings in the settings screen.

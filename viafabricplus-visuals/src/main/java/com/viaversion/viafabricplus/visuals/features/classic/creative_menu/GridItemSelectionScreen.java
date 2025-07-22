@@ -22,6 +22,8 @@
 package com.viaversion.viafabricplus.visuals.features.classic.creative_menu;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -32,9 +34,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
 public final class GridItemSelectionScreen extends Screen {

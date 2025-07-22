@@ -29,6 +29,8 @@ import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.Locale;
+import java.util.Objects;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -45,9 +47,6 @@ import net.raphimc.minecraftauth.util.logging.ILogger;
 import net.raphimc.minecraftauth.util.logging.Slf4jConsoleLogger;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
-
-import java.util.Locale;
-import java.util.Objects;
 
 public final class BedrockSettings extends SettingGroup {
 
