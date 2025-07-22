@@ -276,7 +276,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         sneakingPacket.write(Types.VAR_INT, getId());
         sneakingPacket.write(Types.VAR_INT, sneaking ? 0 : 1);
         sneakingPacket.write(Types.VAR_INT, 0); // No data
-        sneakingPacket.sendToServer(Protocol1_21_5To1_21_6.class);
+        sneakingPacket.scheduleSendToServer(Protocol1_21_5To1_21_6.class);
         this.viaFabricPlus$lastSneaking = sneaking;
     }
 

@@ -56,4 +56,5 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
     public boolean cancelSwingInInventory() {
         return false;
     }
+
 }
