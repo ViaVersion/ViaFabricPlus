@@ -34,6 +34,7 @@ import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import io.netty.channel.ChannelFuture;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
+import java.util.Optional;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
@@ -65,8 +66,9 @@ public abstract class MixinConnectScreen_1 {
     @Unique
     private boolean viaFabricPlus$useClassiCubeAccount;
 
-    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;"))
-    private ChannelFuture setServerInfoAndHandleDisconnect(InetSocketAddress address, boolean useEpoll, ClientConnection connection, Operation<ChannelFuture> original) throws Exception {
+    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;", remap = false))
+    private Object setServerInfoAndProtocolVersion(Optional<InetSocketAddress> instance, Operation<Object> original) throws Exception {
+        final InetSocketAddress address = (InetSocketAddress) original.call(instance);
         final IServerInfo mixinServerInfo = (IServerInfo) this.field_40415;
 
         ProtocolVersion targetVersion = ProtocolTranslator.getTargetVersion();
@@ -83,19 +85,22 @@ public abstract class MixinConnectScreen_1 {
             if (!serverPinged || !targetVersion.isKnown()) {
                 this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
                 try {
-                    targetVersion = ProtocolVersionDetector.get(field_33737, address, ProtocolTranslator.NATIVE_VERSION);
+                    targetVersion = ProtocolVersionDetector.get(this.field_33737, address, ProtocolTranslator.NATIVE_VERSION);
                 } catch (final ConnectException ignored) {
                     // Don't let this one through as not relevant
                 }
             }
         }
         ProtocolTranslator.setTargetVersion(targetVersion, true);
-
         this.viaFabricPlus$useClassiCubeAccount = AuthenticationSettings.INSTANCE.setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classicubeMPPass != null;
 
+        return address;
+    }
+
+    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;"))
+    private ChannelFuture resetProtocolVersionAfterDisconnect(InetSocketAddress address, boolean useEpoll, ClientConnection connection, Operation<ChannelFuture> original) {
         final ChannelFuture future = original.call(address, useEpoll, connection);
         ProtocolTranslator.injectPreviousVersionReset(future.channel());
-
         return future;
     }
 
