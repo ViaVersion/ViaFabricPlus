@@ -90,8 +90,8 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
-    private void use1_20_6StepCollisionCalculation(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+    private void changeStepCollisionCalculation(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_14, ProtocolVersion.v1_20_5)) {
             final Entity thiz = (Entity) (Object) this;
             final Box box = this.getBoundingBox();
             final List<VoxelShape> collisions = this.getWorld().getEntityCollisions(thiz, box.stretch(movement));
