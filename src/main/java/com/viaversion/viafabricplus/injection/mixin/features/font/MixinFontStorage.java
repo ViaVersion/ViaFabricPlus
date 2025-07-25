@@ -21,13 +21,17 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.font;
 
-import com.viaversion.viafabricplus.features.font.RenderableGlyphDiff;
 import com.viaversion.viafabricplus.features.font.BuiltinEmptyGlyph1_12_2;
+import com.viaversion.viafabricplus.features.font.RenderableGlyphDiff;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.*;
+import net.minecraft.client.font.BakedGlyph;
+import net.minecraft.client.font.BuiltinEmptyGlyph;
+import net.minecraft.client.font.FontStorage;
+import net.minecraft.client.font.Glyph;
+import net.minecraft.client.font.RenderableGlyph;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

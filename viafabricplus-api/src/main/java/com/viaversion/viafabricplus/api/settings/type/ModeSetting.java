@@ -25,9 +25,8 @@ import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.api.settings.AbstractSetting;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.util.ChatUtil;
-import net.minecraft.text.MutableText;
-
 import java.util.Arrays;
+import net.minecraft.text.MutableText;
 
 public class ModeSetting extends AbstractSetting<MutableText> {
 

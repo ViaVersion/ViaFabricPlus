@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.srv_res
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.Optional;
 import net.minecraft.client.network.Address;
 import net.minecraft.client.network.AddressResolver;
 import net.minecraft.client.network.AllowedAddressResolver;
@@ -34,8 +35,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Optional;
 
 @Mixin(AllowedAddressResolver.class)
 public abstract class MixinAllowedAddressResolver {

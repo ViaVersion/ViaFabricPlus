@@ -24,16 +24,15 @@ package com.viaversion.viafabricplus.features.classic.cpe_extension;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import io.netty.buffer.ByteBuf;
-import net.lenni0451.reflect.Enums;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
-import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.packet.ClientboundPacketsc0_30cpe;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import net.lenni0451.reflect.Enums;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
+import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.packet.ClientboundPacketsc0_30cpe;
 
 public final class CPEAdditions {
 

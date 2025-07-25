@@ -33,11 +33,11 @@ import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.Protocol1_21_5To1_21_
 import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.packet.ClientboundPacket1_21_6;
 import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.packet.ServerboundPacket1_21_6;
 import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.packet.ServerboundPackets1_21_6;
+import java.util.Locale;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import java.util.Locale;
 
 @Mixin(value = Protocol1_21_5To1_21_6.class, remap = false)
 public abstract class MixinProtocol1_21_5To1_21_6 extends AbstractProtocol<ClientboundPacket1_21_5, ClientboundPacket1_21_6, ServerboundPacket1_21_5, ServerboundPacket1_21_6> {

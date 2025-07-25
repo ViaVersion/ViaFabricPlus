@@ -29,6 +29,8 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
+import java.nio.file.Path;
+import java.util.List;
 import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ServerInfo;
@@ -39,9 +41,6 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import org.jetbrains.annotations.Nullable;
-
-import java.nio.file.Path;
-import java.util.List;
 
 /**
  * General API point for mods. Get instance via {@link ViaFabricPlus#getImpl()}.

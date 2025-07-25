@@ -32,6 +32,8 @@ import com.viaversion.viafabricplus.util.ConnectionUtil;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -39,9 +41,6 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class ClassiCubeServerListScreen extends VFPScreen {
 

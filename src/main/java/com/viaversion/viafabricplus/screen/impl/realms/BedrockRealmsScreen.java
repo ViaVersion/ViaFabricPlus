@@ -27,6 +27,8 @@ import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
+import java.awt.*;
+import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -40,9 +42,6 @@ import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import org.apache.logging.log4j.Level;
-
-import java.awt.*;
-import java.util.List;
 
 public final class BedrockRealmsScreen extends VFPScreen {
 

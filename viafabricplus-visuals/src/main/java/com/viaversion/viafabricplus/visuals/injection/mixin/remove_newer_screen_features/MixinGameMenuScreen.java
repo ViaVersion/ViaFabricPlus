@@ -27,6 +27,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.OpenToLanScreen;
@@ -45,9 +47,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 @Mixin(GameMenuScreen.class)
 public abstract class MixinGameMenuScreen extends Screen {

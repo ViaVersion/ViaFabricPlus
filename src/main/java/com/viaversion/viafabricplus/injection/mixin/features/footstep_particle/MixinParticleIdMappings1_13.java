@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.footstep_particle;
 
 import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1_12_2;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.data.ParticleIdMappings1_13;
+import java.util.List;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,8 +31,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.List;
 
 @Mixin(value = ParticleIdMappings1_13.class, remap = false)
 public abstract class MixinParticleIdMappings1_13 {

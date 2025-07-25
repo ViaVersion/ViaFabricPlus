@@ -26,6 +26,9 @@ import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.awt.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -33,10 +36,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-
-import java.awt.*;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public final class PerServerVersionScreen extends VFPScreen {
 

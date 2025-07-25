@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.allow_new_line;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -38,8 +39,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.List;
 
 @Mixin(TextRenderer.class)
 public abstract class MixinTextRenderer {

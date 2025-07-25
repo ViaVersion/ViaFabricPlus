@@ -30,14 +30,13 @@ import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
+import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-
-import java.util.List;
 
 public final class BetaCraftScreen extends VFPScreen {
 

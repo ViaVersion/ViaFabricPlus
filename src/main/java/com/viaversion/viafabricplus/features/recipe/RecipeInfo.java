@@ -21,16 +21,25 @@
 
 package com.viaversion.viafabricplus.features.recipe;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.*;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RawShapedRecipe;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.recipe.ShapelessRecipe;
+import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.recipe.book.CookingRecipeCategory;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.collection.DefaultedList;
-
-import java.util.*;
-import java.util.function.Supplier;
 
 /**
  * A helper class for creating recipes.

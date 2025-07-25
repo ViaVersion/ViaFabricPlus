@@ -30,13 +30,12 @@ import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.Protocol1_20_3To1_20_
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ClientboundPackets1_20_5;
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.rewriter.EntityPacketRewriter1_20_5;
 import com.viaversion.viaversion.rewriter.EntityRewriter;
+import java.util.UUID;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-
-import java.util.UUID;
 
 @Mixin(value = EntityPacketRewriter1_20_5.class, remap = false)
 public abstract class MixinEntityPacketRewriter1_20_5 extends EntityRewriter<ClientboundPacket1_20_3, Protocol1_20_3To1_20_5> {

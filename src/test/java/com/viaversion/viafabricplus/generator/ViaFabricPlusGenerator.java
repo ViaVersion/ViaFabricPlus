@@ -21,15 +21,14 @@
 
 package com.viaversion.viafabricplus.generator;
 
-import com.viaversion.viafabricplus.generator.impl.RegistryDiffsGenerator;
 import com.viaversion.viafabricplus.generator.impl.EntityDimensionDiffGenerator;
 import com.viaversion.viafabricplus.generator.impl.ItemDiffGenerator;
+import com.viaversion.viafabricplus.generator.impl.RegistryDiffsGenerator;
 import com.viaversion.viafabricplus.generator.impl.ResourcePackHeaderDiffGenerator;
+import java.io.File;
 import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
 
 import static com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator.NATIVE_VERSION;
 

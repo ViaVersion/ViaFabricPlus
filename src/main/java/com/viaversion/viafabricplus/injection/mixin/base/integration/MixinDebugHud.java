@@ -30,11 +30,11 @@ import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.gui.hud.DebugHud;
 import net.minecraft.util.Formatting;
-import net.raphimc.viabedrock.protocol.data.enums.bedrock.ServerAuthMovementMode;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
-import net.raphimc.viabedrock.protocol.storage.GameSessionStorage;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 import net.raphimc.vialegacy.protocol.release.r1_1tor1_2_1_3.storage.SeedStorage;
@@ -45,9 +45,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(DebugHud.class)
