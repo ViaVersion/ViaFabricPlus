@@ -28,16 +28,20 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -45,6 +49,8 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity {
@@ -88,8 +94,8 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
-    private void use1_20_6StepCollisionCalculation(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+    private void changeStepCollisionCalculation(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_14, ProtocolVersion.v1_20_5)) {
             final Entity thiz = (Entity) (Object) this;
             final Box box = this.getBoundingBox();
             final List<VoxelShape> collisions = this.getWorld().getEntityCollisions(thiz, box.stretch(movement));
@@ -153,6 +159,76 @@ public abstract class MixinEntity {
         } else {
             return getAxisCheckOrder(movement);
         }
+    }
+
+    @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;",
+    at = @At(value = "INVOKE", target = "Lnet/minecraft/util/shape/VoxelShapes;calculateMaxOffset(Lnet/minecraft/util/math/Direction$Axis;Lnet/minecraft/util/math/Box;Ljava/lang/Iterable;D)D"))
+    private static double fixCollision(Direction.Axis axis, Box box, Iterable<VoxelShape> shapes, double maxDist) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            for (VoxelShape shape :  shapes) {
+                for (Box shapeBox : shape.getBoundingBoxes()) {
+                    maxDist = switch (axis) {
+                        case X -> intersectX(box, shapeBox, maxDist);
+                        case Y -> intersectY(box, shapeBox, maxDist);
+                        case Z -> intersectZ(box, shapeBox, maxDist);
+                    };
+                }
+            }
+            return maxDist;
+        } else {
+            return VoxelShapes.calculateMaxOffset(axis, box, shapes, maxDist);
+        }
+    }
+
+    @Unique
+    private static double intersectX(Box playerBox, Box shapeBox, double limit) {
+        double e;
+        if (playerBox.maxY <= shapeBox.minY || playerBox.minY >= shapeBox.maxY || playerBox.maxZ <= shapeBox.minZ || playerBox.minZ >= shapeBox.maxZ) {
+            return limit;
+        }
+        if (limit > 0.0 && playerBox.maxX <= shapeBox.minX) {
+            double d = shapeBox.minX - playerBox.maxX;
+            if (d < limit) {
+                limit = d;
+            }
+        } else if (limit < 0.0 && playerBox.minX >= shapeBox.maxX && (e = shapeBox.maxX - playerBox.minX) > limit) {
+            limit = e;
+        }
+        return limit;
+    }
+
+    @Unique
+    private static double intersectY(Box shapeBox, Box playerBox, double limit) {
+        double e;
+        if (playerBox.maxX <= shapeBox.minX || playerBox.minX >= shapeBox.maxX || playerBox.maxZ <= shapeBox.minZ || playerBox.minZ >= shapeBox.maxZ) {
+            return limit;
+        }
+        if (limit > 0.0 && playerBox.maxY <= shapeBox.minY) {
+            double d = shapeBox.minY - playerBox.maxY;
+            if (d < limit) {
+                limit = d;
+            }
+        } else if (limit < 0.0 && playerBox.minY >= shapeBox.maxY && (e = shapeBox.maxY - playerBox.minY) > limit) {
+            limit = e;
+        }
+        return limit;
+    }
+
+    @Unique
+    private static double intersectZ(Box shapeBox, Box playerBox, double limit) {
+        double e;
+        if (playerBox.maxX <= shapeBox.minX || playerBox.minX >= shapeBox.maxX || playerBox.maxY <= shapeBox.minY || playerBox.minY >= shapeBox.maxY) {
+            return limit;
+        }
+        if (limit > 0.0 && playerBox.maxZ <= shapeBox.minZ) {
+            double d = shapeBox.minZ - playerBox.maxZ;
+            if (d < limit) {
+                limit = d;
+            }
+        } else if (limit < 0.0 && playerBox.minZ >= shapeBox.maxZ && (e = shapeBox.maxZ - playerBox.minZ) > limit) {
+            limit = e;
+        }
+        return limit;
     }
 
 }
