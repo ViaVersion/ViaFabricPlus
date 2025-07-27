@@ -28,15 +28,14 @@ import com.viaversion.vialoader.impl.platform.ViaVersionPlatformImpl;
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonObject;
+import java.io.File;
+import java.util.Collection;
+import java.util.Map;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.Person;
 import net.minecraft.client.MinecraftClient;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.Map;
 
 public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatformImpl {
 

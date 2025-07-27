@@ -23,7 +23,11 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.mining_calcu
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.InfestedBlock;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;

@@ -34,10 +34,13 @@ import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.Protocol1_21_5To1_21_
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.recipebook.ClientRecipeBook;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.stat.StatHandler;
 import net.minecraft.util.PlayerInput;
 import net.minecraft.util.math.Vec2f;
 import org.spongepowered.asm.mixin.Final;
@@ -65,6 +68,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Shadow
     private boolean inSneakingPose;
+
+    @Unique
+    private boolean viaFabricPlus$lastSneaking;
 
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
@@ -102,10 +108,21 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     public abstract void init();
 
-    @Unique
-    private boolean viaFabricPlus$lastSneaking = false;
+    @Shadow
+    public abstract boolean isSneaking();
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V"))
+    @Shadow
+    public abstract boolean isSubmergedInWater();
+
+    @Shadow
+    public abstract boolean isUsingItem();
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void initLastSneaking(MinecraftClient client, ClientWorld world, ClientPlayNetworkHandler networkHandler, StatHandler stats, ClientRecipeBook recipeBook, PlayerInput lastPlayerInput, boolean lastSprinting, CallbackInfo ci) {
+        viaFabricPlus$lastSneaking = lastPlayerInput.sneak();
+    }
+
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V", shift = At.Shift.AFTER))
     private void sendSneakingPacket(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_21_2, ProtocolVersion.v1_21_5)) {
             this.viaFabricPlus$sendSneakingPacket();
@@ -205,13 +222,13 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         final ProtocolVersion version = ProtocolTranslator.getTargetVersion();
         if (version.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             cir.setReturnValue(!this.isSprinting()
-                && this.viaFabricPlus$isWalking1_21_4()
-                && this.canSprint()
-                && !this.isUsingItem()
-                && !this.isBlind()
-                && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.hasVehicle()) || this.canVehicleSprint(this.getVehicle()))
-                && !(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding())
-                && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4))));
+                    && this.viaFabricPlus$isWalking1_21_4()
+                    && this.canSprint()
+                    && !this.isUsingItem()
+                    && !this.isBlind()
+                    && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.hasVehicle()) || this.canVehicleSprint(this.getVehicle()))
+                    && !(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding())
+                    && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4))));
         }
     }
 
@@ -259,7 +276,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         sneakingPacket.write(Types.VAR_INT, getId());
         sneakingPacket.write(Types.VAR_INT, sneaking ? 0 : 1);
         sneakingPacket.write(Types.VAR_INT, 0); // No data
-        sneakingPacket.sendToServer(Protocol1_21_5To1_21_6.class);
+        sneakingPacket.scheduleSendToServer(Protocol1_21_5To1_21_6.class);
         this.viaFabricPlus$lastSneaking = sneaking;
     }
 

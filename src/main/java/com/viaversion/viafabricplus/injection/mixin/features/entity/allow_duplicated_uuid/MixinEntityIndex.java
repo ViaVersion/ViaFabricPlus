@@ -24,6 +24,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.allow_dupli
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import java.util.Map;
+import java.util.UUID;
 import net.minecraft.world.entity.EntityIndex;
 import net.minecraft.world.entity.EntityLike;
 import org.spongepowered.asm.mixin.Final;
@@ -33,9 +35,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Map;
-import java.util.UUID;
 
 @Mixin(EntityIndex.class)
 public abstract class MixinEntityIndex<T extends EntityLike> {

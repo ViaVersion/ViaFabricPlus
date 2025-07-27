@@ -28,6 +28,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.viaversion.viafabricplus.generator.util.Generator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
 import net.minecraft.block.Block;
@@ -35,11 +38,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import org.junit.jupiter.api.Test;
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Generates a file containing all collision shapes of static blocks. Can be used for game updates where Mojang refactors the collision shapes.

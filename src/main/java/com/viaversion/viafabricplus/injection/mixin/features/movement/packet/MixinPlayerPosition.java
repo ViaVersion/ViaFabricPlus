@@ -19,22 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.swinging;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.packet;
 
-import com.viaversion.viaversion.protocols.v1_15_2to1_16.storage.InventoryTracker1_16;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.entity.player.PlayerPosition;
+import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = InventoryTracker1_16.class, remap = false)
-public abstract class MixinInventoryTracker1_16 {
+@Mixin(PlayerPosition.class)
+public abstract class MixinPlayerPosition {
 
-    /**
-     * @author RK_01
-     * @reason Fix ViaVersion cancelling swing packets even when no inventory is open
-     */
-    @Overwrite
-    public boolean isInventoryOpen() {
-        return false;
+    @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(FFF)F"))
+    private static float uncapPlayerPitchMovement(float value, float min, float max) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            return value;
+        } else {
+            return MathHelper.clamp(value, min, max);
+        }
     }
 
 }
