@@ -154,4 +154,13 @@ public abstract class MixinEntity {
         }
     }
 
+    @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;approximatelyEquals(DD)Z"))
+    private static boolean horizontalExactCollisionEqualness(double a, double b) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return a == b;
+        } else {
+            return MathHelper.approximatelyEquals(a, b);
+        }
+    }
+
 }
