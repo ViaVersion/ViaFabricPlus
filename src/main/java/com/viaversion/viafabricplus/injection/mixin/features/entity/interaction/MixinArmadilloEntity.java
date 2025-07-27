@@ -33,11 +33,7 @@ public abstract class MixinArmadilloEntity {
 
     @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/ArmadilloEntity;isNotIdle()Z"))
     private boolean changeCondition(ArmadilloEntity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            return false;
-        } else {
-            return instance.isNotIdle();
-        }
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5) && instance.isNotIdle();
     }
 
 }
