@@ -58,8 +58,7 @@
     "java": ">=21"
   },
   "breaks": {
-    "viafabric": "*",
-    "unlockedcamera": "*"
+    "viafabric": "*"
   },
   "custom": {
     "vfp:implVersion": "${implVersion}"
