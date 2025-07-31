@@ -43,11 +43,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "travelGliding", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isClimbing()Z"))
     private boolean dontStopGlidingWhenClimbing(LivingEntity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return false;
-        } else {
-            return instance.isClimbing();
-        }
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4) && instance.isClimbing();
     }
 
     @Redirect(method = "calcGlidingVelocity", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D", remap = false))
