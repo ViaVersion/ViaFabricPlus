@@ -33,7 +33,7 @@ If you need ViaFabricPlus for older versions of the game, you can use [ViaFabric
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - April Fools (3D Shareware, 20w14infinite, 25w14craftmine)
 - Combat Snapshots (Combat Test 8c)
-- Bedrock Edition 1.21.93 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
+- Bedrock Edition 1.21.100 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
 
 ## How to (Users)
 
