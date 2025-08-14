@@ -40,6 +40,8 @@ import net.minecraft.client.recipebook.ClientRecipeBook;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.PlayerInputC2SPacket;
 import net.minecraft.stat.StatHandler;
 import net.minecraft.util.PlayerInput;
 import net.minecraft.util.math.Vec2f;
@@ -126,6 +128,17 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     private void sendSneakingPacket(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_21_2, ProtocolVersion.v1_21_5)) {
             this.viaFabricPlus$sendSneakingPacket();
+        }
+    }
+
+    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
+    private void skipVVProtocol(ClientPlayNetworkHandler instance, Packet<?> packet) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof PlayerInputC2SPacket(PlayerInput i)) {
+            // Directly send the player input packet in order to bypass the code in the 1.21.5->1.21.6 protocol.
+            // This allows mods to directly send raw packets which will then be remapped by VV instead of us.
+            this.viaFabricPlus$sendInputPacket(i);
+        } else {
+            instance.sendPacket(packet);
         }
     }
 
@@ -222,13 +235,13 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         final ProtocolVersion version = ProtocolTranslator.getTargetVersion();
         if (version.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             cir.setReturnValue(!this.isSprinting()
-                    && this.viaFabricPlus$isWalking1_21_4()
-                    && this.canSprint()
-                    && !this.isUsingItem()
-                    && !this.isBlind()
-                    && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.hasVehicle()) || this.canVehicleSprint(this.getVehicle()))
-                    && !(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding())
-                    && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4))));
+                && this.viaFabricPlus$isWalking1_21_4()
+                && this.canSprint()
+                && !this.isUsingItem()
+                && !this.isBlind()
+                && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.hasVehicle()) || this.canVehicleSprint(this.getVehicle()))
+                && !(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding())
+                && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4))));
         }
     }
 
@@ -278,6 +291,22 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         sneakingPacket.write(Types.VAR_INT, 0); // No data
         sneakingPacket.scheduleSendToServer(Protocol1_21_5To1_21_6.class);
         this.viaFabricPlus$lastSneaking = sneaking;
+    }
+
+    @Unique
+    private void viaFabricPlus$sendInputPacket(final PlayerInput playerInput) {
+        byte flags = 0;
+        flags = (byte) (flags | (playerInput.forward() ? 0x1 : 0));
+        flags = (byte) (flags | (playerInput.backward() ? 0x2 : 0));
+        flags = (byte) (flags | (playerInput.left() ? 0x4 : 0));
+        flags = (byte) (flags | (playerInput.right() ? 0x8 : 0));
+        flags = (byte) (flags | (playerInput.jump() ? 0x10 : 0));
+        flags = (byte) (flags | (playerInput.sneak() ? 0x20 : 0));
+        flags = (byte) (flags | (playerInput.sprint() ? 0x40 : 0));
+
+        final PacketWrapper inputPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_INPUT, ProtocolTranslator.getPlayNetworkUserConnection());
+        inputPacket.write(Types.BYTE, flags);
+        inputPacket.scheduleSendToServer(Protocol1_21_5To1_21_6.class);
     }
 
     @Unique

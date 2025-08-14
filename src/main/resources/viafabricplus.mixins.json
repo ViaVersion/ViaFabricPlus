@@ -215,7 +215,6 @@
     "features.movement.slowdown.MixinClientPlayerEntity",
     "features.movement.slowdown.MixinEnderEyeItem",
     "features.movement.sprinting_and_sneaking.MixinClientPlayerEntity",
-    "features.movement.sprinting_and_sneaking.MixinEntityPacketRewriter1_21_6",
     "features.movement.sprinting_and_sneaking.MixinKeyboardInput",
     "features.movement.sprinting_and_sneaking.MixinLivingEntity",
     "features.movement.sprinting_and_sneaking.MixinPlayerEntity",
