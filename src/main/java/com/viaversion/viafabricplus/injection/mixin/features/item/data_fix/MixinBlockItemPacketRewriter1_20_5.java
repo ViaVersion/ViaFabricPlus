@@ -43,14 +43,19 @@ import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.Protocol1_20_3To1_20_
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ServerboundPacket1_20_5;
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.rewriter.BlockItemPacketRewriter1_20_5;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.*;
 
 @Mixin(value = BlockItemPacketRewriter1_20_5.class, remap = false)
 public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<ClientboundPacket1_20_3, ServerboundPacket1_20_5, Protocol1_20_3To1_20_5> {
@@ -151,7 +156,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
             if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(entry.getKey())) {
                 final ToolProperties toolProperties = entry.getValue().get(identifier);
                 if (toolProperties != null) {
-                    data.set(StructuredDataKey.TOOL, toolProperties);
+                    data.set(StructuredDataKey.TOOL1_20_5, toolProperties);
                     break;
                 }
             }

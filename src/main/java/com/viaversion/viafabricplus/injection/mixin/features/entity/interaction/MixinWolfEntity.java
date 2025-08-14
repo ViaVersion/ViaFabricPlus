@@ -25,7 +25,9 @@ import com.viaversion.viafabricplus.features.entity.metadata_handling.WolfHealth
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.component.type.FoodComponent;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.passive.TameableEntity;
@@ -35,6 +37,7 @@ import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
@@ -48,20 +51,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(WolfEntity.class)
 public abstract class MixinWolfEntity extends TameableEntity implements Angerable {
 
+    protected MixinWolfEntity(EntityType<? extends TameableEntity> entityType, World world) {
+        super(entityType, world);
+    }
+
     @Shadow
     public abstract DyeColor getCollarColor();
 
     @Shadow
     protected abstract void setCollarColor(DyeColor color);
 
-    protected MixinWolfEntity(EntityType<? extends TameableEntity> entityType, World world) {
-        super(entityType, world);
-    }
-
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     private void fixWolfInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        final ItemStack itemStack = player.getStackInHand(hand);
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            final ItemStack itemStack = player.getStackInHand(hand);
             final Item item = itemStack.getItem();
             if (this.isTamed()) {
                 final FoodComponent foodComponent = itemStack.get(DataComponentTypes.FOOD);
@@ -88,6 +91,15 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
             }
 
             cir.setReturnValue(super.interactMob(player, hand));
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && this.isTamed()) {
+            // Call armor shearing manually as removed in MixinEntity
+            if (itemStack.isOf(Items.SHEARS)
+                && this.isOwner(player)
+                && this.isWearingBodyArmor()
+                && (!EnchantmentHelper.hasAnyEnchantmentsWith(this.getBodyArmor(), EnchantmentEffectComponentTypes.PREVENT_ARMOR_CHANGE) || player.isCreative())) {
+                this.playSoundIfNotSilent(SoundEvents.ITEM_ARMOR_UNEQUIP_WOLF);
+                cir.setReturnValue(ActionResult.SUCCESS);
+            }
         }
     }
 

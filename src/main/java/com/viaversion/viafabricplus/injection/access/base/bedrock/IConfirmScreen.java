@@ -25,6 +25,6 @@ import net.minecraft.text.Text;
 
 public interface IConfirmScreen {
 
-    void viaFabricPlus$setMessage(final Text message);
+    void viaFabricPlus$updateMessage(final Text message);
 
 }

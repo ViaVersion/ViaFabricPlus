@@ -23,14 +23,13 @@ package com.viaversion.viafabricplus.features.entity;
 
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.Map;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityAttachmentType;
 import net.minecraft.entity.EntityAttachments;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-
-import java.util.Map;
 
 import static com.viaversion.viafabricplus.util.MapUtil.linkedHashMap;
 

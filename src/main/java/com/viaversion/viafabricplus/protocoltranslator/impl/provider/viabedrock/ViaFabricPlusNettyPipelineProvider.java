@@ -25,12 +25,11 @@ import com.viaversion.viafabricplus.protocoltranslator.netty.ViaFabricPlusVLLega
 import com.viaversion.vialoader.netty.VLPipeline;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import io.netty.channel.Channel;
+import javax.crypto.SecretKey;
 import net.raphimc.viabedrock.api.io.compression.ProtocolCompression;
 import net.raphimc.viabedrock.netty.AesEncryptionCodec;
 import net.raphimc.viabedrock.netty.CompressionCodec;
 import net.raphimc.viabedrock.protocol.provider.NettyPipelineProvider;
-
-import javax.crypto.SecretKey;
 
 public final class ViaFabricPlusNettyPipelineProvider extends NettyPipelineProvider {
 

@@ -27,10 +27,10 @@ import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.base.Events;
-import com.viaversion.viafabricplus.base.overriding_jars.ClassLoaderPriorityUtil;
 import com.viaversion.viafabricplus.base.sync_tasks.SyncTasks;
 import com.viaversion.viafabricplus.features.FeaturesLoading;
-import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemRegistryDiff;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemDiff;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.RegistryDiffs;
 import com.viaversion.viafabricplus.features.item.negative_item_count.NegativeItemUtil;
 import com.viaversion.viafabricplus.features.limitation.max_chat_length.MaxChatLength;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
@@ -39,59 +39,38 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
-import com.viaversion.viafabricplus.screen.impl.settings.SettingsScreen;
+import com.viaversion.viafabricplus.screen.impl.SettingsScreen;
 import com.viaversion.viafabricplus.settings.SettingsManager;
 import com.viaversion.viafabricplus.util.ChatUtil;
+import com.viaversion.viafabricplus.util.ClassLoaderPriorityUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
+import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import static com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusLoadEntrypoint.KEY;
 
-/*
- * TODO | Port 1.21.3
- *  - VehicleMovePacket handling now has distance check in ClientPlayNetworkHandler
- *  - Illusioner/Sniffer don't override visibility bounding box anymore
- *  - AbstractFireabll/EyeOfEnder#shouldRender new
- *  - Entity#baseTick doesn't set prev rotation anymore at top
- *  - LivingEntity movement code got refactored completely
- *  - BundleItem#use, ConsumableComponent behaviour in use functions
- *  - Check all screen handlers for changes
- *
- * TODO | Port 1.20.6
- *  - ClientPlayerInteractionManager#interactBlockInternal added new condition
- *  - Command arguments (Probably not everything worth, but least them with nbt)
- *  - Entity attachment calculation got changed completely
- *  - Particle handling has slightly changed
- *  - BookViewScreen/BookEditScreen networking handling
- *  - SetEquipment packet now only accepts living entities
- *  - Wolf interaction
- *
- * TODO | General
- *  - Make recipe fixes dynamic instead of a data dump in java classes
- *  - Window interactions in <= 1.16.5 has changed and can be detected by the server
- *  - Most CTS protocol features aren't supported (see https://github.com/ViaVersion/ViaFabricPlus/issues/181)
- *  - Most CPE features aren't implemented correctly (see https://github.com/ViaVersion/ViaFabricPlus/issues/152)
- *  - Via: 1.13 -> 1.12.2 block entities recode
- *  - OXYGEN_BONUS 1.21 -> 1.20.5 handling is missing (only visual)
- *
- * TODO | Movement
- *  - 1.8 lava movement
- *  - 1.13.2 water movement
- */
 public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
     public static final ViaFabricPlusImpl INSTANCE = new ViaFabricPlusImpl();
@@ -99,21 +78,30 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     private final Logger logger = LogManager.getLogger("ViaFabricPlus");
     private final Path path = FabricLoader.getInstance().getConfigDir().resolve("viafabricplus");
 
+    private String version;
+    private String implVersion;
+
     private CompletableFuture<Void> loadingFuture;
 
     public void init() {
+        // Set API instance
         ViaFabricPlus.init(INSTANCE);
-        FabricLoader.getInstance().getEntrypointContainers("viafabricplus", ViaFabricPlusLoadEntrypoint.class).forEach(container -> {
-            container.getEntrypoint().onPlatformLoad(INSTANCE);
-        });
 
-        // Create the directory if it doesn't exist
-        if (!Files.exists(path)) {
-            try {
-                Files.createDirectory(path);
-            } catch (IOException e) {
-                logger.error("Failed to create ViaFabricPlus directory", e);
-            }
+        // Get mod version
+        final ModMetadata metadata = FabricLoader.getInstance().getModContainer("viafabricplus").get().getMetadata();
+        version = metadata.getVersion().getFriendlyString();
+        implVersion = metadata.getCustomValue("vfp:implVersion").getAsString();
+
+        // Call entrypoint for addons
+        for (final EntrypointContainer<ViaFabricPlusLoadEntrypoint> container : FabricLoader.getInstance().getEntrypointContainers(KEY, ViaFabricPlusLoadEntrypoint.class)) {
+            container.getEntrypoint().onPlatformLoad(INSTANCE);
+        }
+
+        // Create ViaFabricPlus directory if it doesn't exist
+        try {
+            Files.createDirectories(path);
+        } catch (IOException e) {
+            logger.error("Failed to create ViaFabricPlus directory", e);
         }
 
         // Load overriding jars first so other code can access the new classes
@@ -130,7 +118,8 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
         // Init ViaVersion protocol translator platform
         loadingFuture = ProtocolTranslator.init(path);
 
-        registerLoadingCycleCallback(cycle -> {
+        // Initialize stuff after minecraft is loaded
+        Events.LOADING_CYCLE.register(cycle -> {
             if (cycle != LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
                 return;
             }
@@ -144,22 +133,32 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     // Proxy the most important/used internals to a general API point for mods
 
     @Override
-    public Path rootPath() {
+    public String getVersion() {
+        return version;
+    }
+
+    @Override
+    public String getImplVersion() {
+        return implVersion;
+    }
+
+    @Override
+    public Path getPath() {
         return path;
     }
 
     @Override
-    public ProtocolVersion getTargetVersion() {
+    public @Nullable ProtocolVersion getTargetVersion() {
         return ProtocolTranslator.getTargetVersion();
     }
 
     @Override
-    public ProtocolVersion getTargetVersion(Channel channel) {
+    public @Nullable ProtocolVersion getTargetVersion(Channel channel) {
         return ProtocolTranslator.getTargetVersion(channel);
     }
 
     @Override
-    public ProtocolVersion getTargetVersion(ClientConnection connection) {
+    public @Nullable ProtocolVersion getTargetVersion(ClientConnection connection) {
         return ((IClientConnection) connection).viaFabricPlus$getTargetVersion();
     }
 
@@ -174,12 +173,12 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public UserConnection getPlayNetworkUserConnection() {
+    public @Nullable UserConnection getPlayNetworkUserConnection() {
         return ProtocolTranslator.getPlayNetworkUserConnection();
     }
 
     @Override
-    public UserConnection getUserConnection(ClientConnection connection) {
+    public @Nullable UserConnection getUserConnection(ClientConnection connection) {
         return ((IClientConnection) connection).viaFabricPlus$getUserConnection();
     }
 
@@ -204,8 +203,8 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public List<SettingGroup> settingGroups() {
-        return SettingsManager.INSTANCE.getGroups();
+    public List<SettingGroup> getSettingGroups() {
+        return Collections.unmodifiableList(SettingsManager.INSTANCE.getGroups());
     }
 
     @Override
@@ -214,7 +213,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public SettingGroup getSettingGroup(String translationKey) {
+    public @Nullable SettingGroup getSettingGroup(String translationKey) {
         for (SettingGroup group : SettingsManager.INSTANCE.getGroups()) {
             if (ChatUtil.uncoverTranslationKey(group.getName()).equals(translationKey)) {
                 return group;
@@ -234,23 +233,43 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public Item translateItem(ItemStack stack, ProtocolVersion targetVersion) {
+    public @Nullable Item translateItem(ItemStack stack, ProtocolVersion targetVersion) {
         return ItemTranslator.mcToVia(stack, targetVersion);
     }
 
     @Override
-    public ItemStack translateItem(Item item, ProtocolVersion sourceVersion) {
+    public @Nullable ItemStack translateItem(Item item, ProtocolVersion sourceVersion) {
         return ItemTranslator.viaToMc(item, sourceVersion);
     }
 
     @Override
     public boolean itemExists(net.minecraft.item.Item item, ProtocolVersion version) {
-        return ItemRegistryDiff.contains(item, version);
+        return ItemDiff.containsItem(item, version);
+    }
+
+    @Override
+    public boolean enchantmentExists(RegistryKey<Enchantment> enchantment, ProtocolVersion version) {
+        return RegistryDiffs.containsEnchantment(enchantment, version);
+    }
+
+    @Override
+    public boolean effectExists(RegistryEntry<StatusEffect> effect, ProtocolVersion version) {
+        return RegistryDiffs.containsEffect(effect, version);
+    }
+
+    @Override
+    public boolean bannerPatternExists(RegistryKey<BannerPattern> pattern, ProtocolVersion version) {
+        return RegistryDiffs.containsBannerPattern(pattern, version);
     }
 
     @Override
     public boolean itemExistsInConnection(net.minecraft.item.Item item) {
-        return ItemRegistryDiff.keepItem(item);
+        return ItemDiff.keepItem(item);
+    }
+
+    @Override
+    public boolean itemExistsInConnection(ItemStack stack) {
+        return ItemDiff.keepItem(stack);
     }
 
     @Override
@@ -258,7 +277,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
         return NegativeItemUtil.getCount(stack);
     }
 
-    public Logger logger() {
+    public Logger getLogger() {
         return logger;
     }
 

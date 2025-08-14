@@ -33,10 +33,7 @@ import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
-import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
-import com.viaversion.viaversion.api.type.types.version.Types1_21;
-import com.viaversion.viaversion.api.type.types.version.Types1_21_2;
-import com.viaversion.viaversion.api.type.types.version.Types1_21_4;
+import com.viaversion.viaversion.api.type.types.version.VersionedTypes;
 import com.viaversion.viaversion.protocols.v1_12to1_12_1.packet.ClientboundPackets1_12_1;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.MinecraftClient;
@@ -51,30 +48,30 @@ import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.types.Types1_7_6;
 public final class ItemTranslator {
 
     public static Item mcToVia(final ItemStack stack, final ProtocolVersion targetVersion) {
-        final UserConnection user = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, targetVersion);
+        final UserConnection connection = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, targetVersion);
 
         try {
             final RegistryByteBuf buf = new RegistryByteBuf(Unpooled.buffer(), MinecraftClient.getInstance().getNetworkHandler().getRegistryManager());
             buf.writeShort(0); // slot
-            ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
+            ItemStack.LENGTH_PREPENDED_OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
 
-            final PacketWrapper setCreativeModeSlot = PacketWrapper.create(ViaFabricPlusProtocol.getSetCreativeModeSlot(), buf, user);
-            user.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, setCreativeModeSlot);
+            final PacketWrapper setCreativeModeSlot = PacketWrapper.create(ViaFabricPlusProtocol.INSTANCE.getSetCreativeModeSlot(), buf, connection);
+            connection.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, setCreativeModeSlot);
 
             setCreativeModeSlot.read(Types.SHORT); // slot
             return setCreativeModeSlot.read(getServerboundItemType(targetVersion)); // item
         } catch (Throwable t) {
-            ViaFabricPlusImpl.INSTANCE.logger().error("Error converting native item stack to ViaVersion {} item stack", targetVersion, t);
+            ViaFabricPlusImpl.INSTANCE.getLogger().error("Error converting native item stack to ViaVersion {} item stack", targetVersion, t);
             return null;
         }
     }
 
     public static ItemStack viaToMc(final Item item, final ProtocolVersion sourceVersion) {
-        final UserConnection user = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, sourceVersion);
+        final UserConnection connection = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, sourceVersion);
 
         try {
-            final Protocol<?, ?, ?, ?> sourceProtocol = user.getProtocolInfo().getPipeline().reversedPipes().stream().filter(p -> !p.isBaseProtocol()).findFirst().orElseThrow();
-            final PacketWrapper containerSetSlot = PacketWrapper.create(sourceProtocol.getPacketTypesProvider().unmappedClientboundType(State.PLAY, ClientboundPackets1_12_1.CONTAINER_SET_SLOT.getName()), user);
+            final Protocol<?, ?, ?, ?> sourceProtocol = connection.getProtocolInfo().getPipeline().reversedPipes().stream().filter(p -> !p.isBaseProtocol()).findFirst().orElseThrow();
+            final PacketWrapper containerSetSlot = PacketWrapper.create(sourceProtocol.getPacketTypesProvider().unmappedClientboundType(State.PLAY, ClientboundPackets1_12_1.CONTAINER_SET_SLOT.getName()), connection);
             if (sourceVersion.newerThanOrEqualTo(ProtocolVersion.v1_8)) {
                 containerSetSlot.write(Types.UNSIGNED_BYTE, (short) 0); // window id
             } else {
@@ -94,13 +91,13 @@ public final class ItemTranslator {
             buf.readShort(); // slot
             return ItemStack.OPTIONAL_PACKET_CODEC.decode(buf);
         } catch (Throwable t) {
-            ViaFabricPlusImpl.INSTANCE.logger().error("Error converting ViaVersion {} item to native item stack", sourceVersion, t);
+            ViaFabricPlusImpl.INSTANCE.getLogger().error("Error converting ViaVersion {} item to native item stack", sourceVersion, t);
             return ItemStack.EMPTY;
         }
     }
 
     /**
-     * Gets the ViaVersion item type for the target version in the serverbound direction
+     * Gets the ViaVersion item type for the target version in the serverbound direction (creative inventory action packet)
      *
      * @param targetVersion The target version
      * @return The ViaVersion item type
@@ -108,8 +105,12 @@ public final class ItemTranslator {
     public static Type<Item> getServerboundItemType(final ProtocolVersion targetVersion) {
         if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return Typesb1_8_0_1.CREATIVE_ITEM;
-        } else {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return getClientboundItemType(targetVersion);
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
+            return VersionedTypes.V1_21_5.lengthPrefixedItem;
+        } else {
+            return VersionedTypes.V1_21_6.lengthPrefixedItem;
         }
     }
 
@@ -124,24 +125,28 @@ public final class ItemTranslator {
             return Types1_4_2.NBTLESS_ITEM;
         } else if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
             return Types1_2_4.NBT_ITEM;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_8)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             return Types1_7_6.ITEM;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_13)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return Types.ITEM1_8;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_13_2)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_13_1)) {
             return Types.ITEM1_13;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_20_2)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20)) {
             return Types.ITEM1_13_2;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_20_5)) {
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             return Types.ITEM1_20_2;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_21)) {
-            return Types1_20_5.ITEM;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_21_2)) {
-            return Types1_21.ITEM;
-        } else if (targetVersion.olderThan(ProtocolVersion.v1_21_4)) {
-            return Types1_21_2.ITEM;
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            return VersionedTypes.V1_20_5.item;
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            return VersionedTypes.V1_21.item;
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            return VersionedTypes.V1_21_2.item;
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            return VersionedTypes.V1_21_4.item;
+        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
+            return VersionedTypes.V1_21_5.item;
         } else {
-            return Types1_21_4.ITEM;
+            return VersionedTypes.V1_21_6.item;
         }
     }
 

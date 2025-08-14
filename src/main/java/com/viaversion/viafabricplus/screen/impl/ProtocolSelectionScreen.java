@@ -25,23 +25,21 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
-import com.viaversion.viafabricplus.screen.impl.settings.SettingsScreen;
 import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.awt.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-
-import java.awt.*;
+import org.joml.Matrix3x2fStack;
 
 public final class ProtocolSelectionScreen extends VFPScreen {
 
     public static final ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
 
-    protected ProtocolSelectionScreen() {
+    private ProtocolSelectionScreen() {
         super("ViaFabricPlus", true);
     }
 
@@ -52,8 +50,10 @@ public final class ProtocolSelectionScreen extends VFPScreen {
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, 30, textRenderer.fontHeight + 4));
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.settings"), button -> SettingsScreen.INSTANCE.open(this)).position(width - 98 - 5, 5).size(98, 20).build());
 
-        this.addDrawableChild(ButtonWidget.builder(ServerListScreen.INSTANCE.getTitle(), button -> ServerListScreen.INSTANCE.open(this))
+        final ButtonWidget serverList = this.addDrawableChild(ButtonWidget.builder(ServerListScreen.INSTANCE.getTitle(), button -> ServerListScreen.INSTANCE.open(this))
                 .position(5, height - 25).size(98, 20).build());
+        serverList.active = MinecraftClient.getInstance().getNetworkHandler() == null;
+
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("report.viafabricplus.button"), button -> ReportIssuesScreen.INSTANCE.open(this))
                 .position(width - 98 - 5, height - 25).size(98, 20).build());
 
@@ -91,6 +91,12 @@ public final class ProtocolSelectionScreen extends VFPScreen {
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
+            if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+                // Setting the target version while connected to a server is not allowed as this will
+                // literally break our code away.
+                return;
+            }
+
             ProtocolTranslator.setTargetVersion(this.protocolVersion);
         }
 
@@ -98,14 +104,19 @@ public final class ProtocolSelectionScreen extends VFPScreen {
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final boolean isSelected = ProtocolTranslator.getTargetVersion().equals(protocolVersion);
 
-            final MatrixStack matrices = context.getMatrices();
+            final Matrix3x2fStack matrices = context.getMatrices();
 
-            matrices.push();
-            matrices.translate(x, y - 1, 0);
+            matrices.pushMatrix();
+            matrices.translate(x, y - 1);
+
+            Color color = isSelected ? Color.GREEN : Color.RED;
+            if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+                color = color.darker();
+            }
 
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : Color.RED.getRGB());
-            matrices.pop();
+            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
+            matrices.popMatrix();
         }
     }
 

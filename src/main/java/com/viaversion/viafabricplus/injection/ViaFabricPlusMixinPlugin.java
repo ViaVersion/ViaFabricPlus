@@ -21,48 +21,36 @@
 
 package com.viaversion.viafabricplus.injection;
 
+import com.viaversion.viafabricplus.features.movement.elytra.FabricAPIWorkaround;
+import java.util.List;
+import java.util.Set;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.lenni0451.reflect.stream.RStream;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
-import java.util.List;
-import java.util.Set;
-
 public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
 
-    public static final String INJECTOR_PACKAGE = "com.viaversion.viafabricplus.injection.mixin.";
-
-    private static final String COMPAT_PACKAGE = "compat.";
-
-    public static String VFP_VERSION;
-    public static String VFP_IMPL_VERSION;
+    private static final String MIXINS_PACKAGE = "com.viaversion.viafabricplus.injection.mixin.";
 
     public static boolean IPNEXT_PRESENT;
     public static boolean MORE_CULLING_PRESENT;
     public static boolean LITHIUM_PRESENT;
     public static boolean MOONRISE_PRESENT;
+    public static boolean LEGENDARYTOOLTIPS_PRESENT;
+    public static boolean LEGACY_PRESENT;
 
     @Override
     public void onLoad(String mixinPackage) {
         final FabricLoader loader = FabricLoader.getInstance();
-
-        final ModMetadata metadata = loader.getModContainer("viafabricplus").get().getMetadata();
-        VFP_VERSION = metadata.getVersion().getFriendlyString();
-        VFP_IMPL_VERSION = metadata.getCustomValue("vfp:implVersion").getAsString();
-
         IPNEXT_PRESENT = loader.isModLoaded("inventoryprofilesnext");
         MORE_CULLING_PRESENT = loader.isModLoaded("moreculling");
         LITHIUM_PRESENT = loader.isModLoaded("lithium");
         MOONRISE_PRESENT = loader.isModLoaded("moonrise");
+        LEGENDARYTOOLTIPS_PRESENT = loader.isModLoaded("legendarytooltips");
+        LEGACY_PRESENT = loader.isModLoaded("legacy");
 
-        // Force unload some FabricAPI mixins because FabricAPI overwrites some of the elytra code
-        final Set<String> loadedMixins = RStream.of("org.spongepowered.asm.mixin.transformer.MixinConfig").fields().by("globalMixinList").get();
-        loadedMixins.add("net.fabricmc.fabric.mixin.client.entity.event.elytra.ClientPlayerEntityMixin");
-        loadedMixins.add("net.fabricmc.fabric.mixin.entity.event.elytra.LivingEntityMixin");
-        loadedMixins.add("net.fabricmc.fabric.mixin.entity.event.elytra.PlayerEntityMixin");
+        FabricAPIWorkaround.init();
     }
 
     @Override
@@ -73,8 +61,10 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         return switch (mixinClassName) {
-            case INJECTOR_PACKAGE + COMPAT_PACKAGE + "ipnext.MixinAutoRefillHandler_ItemSlotMonitor" -> IPNEXT_PRESENT;
-            case INJECTOR_PACKAGE + COMPAT_PACKAGE + "lithium.MixinEntity" -> LITHIUM_PRESENT && !MOONRISE_PRESENT;
+            case MIXINS_PACKAGE + "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor" -> IPNEXT_PRESENT;
+            case MIXINS_PACKAGE + "compat.lithium.MixinEntity" -> LITHIUM_PRESENT && !MOONRISE_PRESENT;
+            case MIXINS_PACKAGE + "features.item.attack_damage.MixinItemStack" -> !LEGENDARYTOOLTIPS_PRESENT;
+            case MIXINS_PACKAGE + "features.item.negative_item_count.MixinDrawContext" -> !LEGACY_PRESENT;
             default -> true;
         };
     }

@@ -29,8 +29,8 @@ import net.raphimc.vialegacy.protocol.release.r1_6_4tor1_7_2_5.provider.Encrypti
 public final class ViaFabricPlusEncryptionProvider extends EncryptionProvider {
 
     @Override
-    public void enableDecryption(UserConnection user) {
-        ((IClientConnection) user.getChannel().attr(ProtocolTranslator.CLIENT_CONNECTION_ATTRIBUTE_KEY).get()).viaFabricPlus$setupPreNettyDecryption();
+    public void enableDecryption(UserConnection connection) {
+        ((IClientConnection) connection.getChannel().attr(ProtocolTranslator.CLIENT_CONNECTION_ATTRIBUTE_KEY).get()).viaFabricPlus$setupPreNettyDecryption();
     }
 
 }

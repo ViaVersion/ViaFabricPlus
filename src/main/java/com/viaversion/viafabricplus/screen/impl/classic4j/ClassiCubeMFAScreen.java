@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.screen.impl.classic4j;
 
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.screen.VFPScreen;
-import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
@@ -37,7 +36,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
     public static final ClassiCubeMFAScreen INSTANCE = new ClassiCubeMFAScreen();
 
     public ClassiCubeMFAScreen() {
-        super(Text.translatable("screen.viafabricplus.classicube_mfa"), false);
+        super(Text.translatable("screen.viafabricplus.classicube_mfa"), true);
     }
 
     private TextFieldWidget mfaField;
@@ -45,7 +44,9 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
     @Override
     protected void init() {
         super.init();
-        this.setupSubtitle(Text.translatable("classic4j_library.viafabricplus.error.logincode"));
+        if (this.getSubtitle() == null) {
+            this.setupSubtitle(Text.translatable("classic4j_library.viafabricplus.error.logincode"));
+        }
 
         this.addDrawableChild(mfaField = new TextFieldWidget(textRenderer, width / 2 - 150, 70 + 10, 300, 20, Text.empty()));
 
@@ -63,7 +64,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
 
                 @Override
                 public void handleSuccessfulLogin(CCAccount account) {
-                    ClassiCubeServerListScreen.open(prevScreen, this);
+                    ClassiCubeServerListScreen.INSTANCE.open(prevScreen);
                 }
 
                 @Override
@@ -78,7 +79,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
     public void close() {
         // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
         SaveManager.INSTANCE.getAccountsSave().setClassicubeAccount(null);
-        ProtocolSelectionScreen.INSTANCE.open(prevScreen);
+        super.close();
     }
 
     @Override

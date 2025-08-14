@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.execute_inputs_syn
 
 import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseKeyboard;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import java.util.Queue;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
@@ -33,8 +34,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Queue;
 
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraftClient {
@@ -48,7 +47,7 @@ public abstract class MixinMinecraftClient {
     public Keyboard keyboard;
 
     @Inject(method = "tick",
-            at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;", ordinal = 0, shift = At.Shift.BEFORE),
+            at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;", ordinal = 0),
             slice = @Slice(
                     from = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;attackCooldown:I", ordinal = 0),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;addCrashReportSection(Lnet/minecraft/util/crash/CrashReport;)V")

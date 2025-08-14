@@ -4,6 +4,7 @@
 build/
 out/
 classes/
+.kotlin/
 
 # Eclipse
 
@@ -12,11 +13,13 @@ classes/
 # Idea
 
 .idea/
+!.idea/copyright/*
+!.idea/scopes/*
 *.iml
 *.ipr
 *.iws
 
-# VScode
+# VSCode
 
 .settings/
 .vscode/
@@ -26,16 +29,8 @@ bin/
 
 # macOS
 
-.DS_Store
-.AppleDouble
-.LSOverride
+DS_Store
 
-# Fabric
+# Misc
 
 run/
-runV2/
-*.cap
-*.rdc
-
-# Other
-generator.settings.gradle

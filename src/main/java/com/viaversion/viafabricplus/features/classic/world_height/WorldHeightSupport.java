@@ -30,14 +30,13 @@ import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.chunk.ChunkType1_17;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.model.ClassicLevel;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.ClassicWorldHeightProvider;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.storage.ClassicLevelStorage;
-
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
 
 public final class WorldHeightSupport {
 
@@ -136,7 +135,7 @@ public final class WorldHeightSupport {
 
                     int skyLightCount = 16;
                     int blockLightCount = sectionYCount;
-                    if (lightArrays.size() == 16 + 0 + 2) {
+                    if (lightArrays.size() == 16 + 2) {
                         blockLightCount = 0;
                     } else if (lightArrays.size() == 16 + sectionYCount + 2) {
                     } else if (lightArrays.size() == sectionYCount + sectionYCount + 2) {
@@ -175,8 +174,8 @@ public final class WorldHeightSupport {
         };
     }
 
-    private static void changeDimensionTagHeight(final UserConnection user, final CompoundTag tag) {
-        tag.putInt("height", Via.getManager().getProviders().get(ClassicWorldHeightProvider.class).getMaxChunkSectionCount(user) << 4);
+    private static void changeDimensionTagHeight(final UserConnection connection, final CompoundTag tag) {
+        tag.putInt("height", Via.getManager().getProviders().get(ClassicWorldHeightProvider.class).getMaxChunkSectionCount(connection) << 4);
     }
 
 }

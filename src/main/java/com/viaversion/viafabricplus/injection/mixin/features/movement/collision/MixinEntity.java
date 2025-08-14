@@ -21,18 +21,22 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
 
+import com.google.common.collect.ImmutableList;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.List;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,8 +44,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.List;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity {
@@ -63,6 +65,15 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract float getStepHeight();
+
+    @Shadow
+    private static Iterable<Direction.Axis> getAxisCheckOrder(final Vec3d movement) {
+        return null;
+    }
+
+    @Shadow
+    @Final
+    private static ImmutableList<Direction.Axis> X_THEN_Z;
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;lengthSquared()D", ordinal = 1), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;")
@@ -134,12 +145,21 @@ public abstract class MixinEntity {
         }
     }
 
-    @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0))
-    private static double alwaysSortYXZ(double a) {
+    @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getAxisCheckOrder(Lnet/minecraft/util/math/Vec3d;)Ljava/lang/Iterable;"))
+    private static Iterable<Direction.Axis> alwaysSortYXZ(Vec3d movement) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return Double.MAX_VALUE;
+            return X_THEN_Z;
         } else {
-            return Math.abs(a);
+            return getAxisCheckOrder(movement);
+        }
+    }
+
+    @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;approximatelyEquals(DD)Z"))
+    private static boolean horizontalExactCollisionEqualness(double a, double b) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return a == b;
+        } else {
+            return MathHelper.approximatelyEquals(a, b);
         }
     }
 

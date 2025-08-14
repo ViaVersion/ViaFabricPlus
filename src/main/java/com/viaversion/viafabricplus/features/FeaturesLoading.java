@@ -26,13 +26,13 @@ import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.features.block.shape.CollisionShapes;
 import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
-import com.viaversion.viafabricplus.features.emulation.armor_hud.ArmorHudEmulation1_8;
-import com.viaversion.viafabricplus.features.emulation.recipe.Recipes1_11_2;
 import com.viaversion.viafabricplus.features.entity.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.entity.attribute.EnchantmentAttributesEmulation1_20_6;
+import com.viaversion.viafabricplus.features.font.FontCacheReload;
 import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.features.networking.armor_hud.ArmorHudEmulation1_8;
 import com.viaversion.viafabricplus.features.networking.resource_pack_header.ResourcePackHeaderDiff;
-import com.viaversion.viafabricplus.features.font.replace_blank_glyph.FontCacheReload;
+import com.viaversion.viafabricplus.features.recipe.Recipes1_11_2;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 

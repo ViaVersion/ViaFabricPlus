@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.screen;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import java.awt.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
@@ -29,11 +30,9 @@ import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PressableTextWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
-
-import java.awt.*;
+import org.joml.Matrix3x2fStack;
 
 /**
  * This class is a wrapper for the {@link net.minecraft.client.gui.screen.Screen} class which provides some global
@@ -184,12 +183,12 @@ public class VFPScreen extends Screen {
      * @param context The current draw context
      */
     public void renderTitle(final DrawContext context) {
-        final MatrixStack matrices = context.getMatrices();
+        final Matrix3x2fStack matrices = context.getMatrices();
 
-        matrices.push();
-        matrices.scale(2F, 2F, 2F);
+        matrices.pushMatrix();
+        matrices.scale(2F, 2F);
         context.drawCenteredTextWithShadow(textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
-        matrices.pop();
+        matrices.popMatrix();
 
         renderSubtitle(context);
     }
@@ -207,12 +206,16 @@ public class VFPScreen extends Screen {
     }
 
     protected boolean subtitleCentered() {
-        // To be overriden
+        // To be overridden
         return false;
     }
 
     public void renderScreenTitle(final DrawContext context) {
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
+    }
+
+    public Text getSubtitle() {
+        return subtitle;
     }
 
     /**
@@ -223,7 +226,7 @@ public class VFPScreen extends Screen {
      * @param next      The screen which should be opened after the error screen is closed
      */
     public static void showErrorScreen(final Text title, final Throwable throwable, final Screen next) {
-        ViaFabricPlusImpl.INSTANCE.logger().error("Something went wrong!", throwable);
+        ViaFabricPlusImpl.INSTANCE.getLogger().error("Something went wrong!", throwable);
 
         final MinecraftClient client = MinecraftClient.getInstance();
         client.execute(() -> client.setScreen(new NoticeScreen(() -> client.setScreen(next), title, Text.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Text.translatable("base.viafabricplus.cancel"), false)));

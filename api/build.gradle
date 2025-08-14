@@ -1,7 +1,0 @@
-plugins {
-    id "vfp.mod-conventions"
-}
-
-configurations {
-    compileOnlyApi.extendsFrom vvDependencies
-}

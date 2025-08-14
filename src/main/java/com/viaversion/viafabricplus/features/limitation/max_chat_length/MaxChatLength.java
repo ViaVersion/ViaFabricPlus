@@ -33,6 +33,8 @@ import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.Extensi
 
 public final class MaxChatLength {
 
+    public static final int MAX_CHAT_LENGTH_LATEST = 256;
+
     public static int getChatLength() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
             final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
@@ -48,7 +50,7 @@ public final class MaxChatLength {
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
             return 100;
         } else {
-            return 256;
+            return MAX_CHAT_LENGTH_LATEST;
         }
     }
 

@@ -5,29 +5,28 @@ something, ask in the ViaVersion discord.
 
 1. Update all upstream versions in `gradle.properties`. The main versions you need to update are:
     - `minecraft_version`
-    - `yarn_version`
-    - `loader_version`
+    - `yarn_mappings_version`
+    - `fabric_loader_version`
     - `fabric_api_version`
 
-    - `supported_versions` (if necessary)
+    - `supported_minecraft_versions` (if necessary)
 
-   As well as the versions in the `dependencies` block in the `build.gradle` file.
-2. Increment the version number in `gradle.properties` by at least a minor version (e.g. 1.0.0 -> 1.1.0)
-3. Check all data dumps and diffs in the fixes/data package and update them if necessary, here is a list of some
+   As well as the versions in the `dependencies` block in the `build.gradle.kts` file.
+   Set `updating_minecraft` to `true` (Required for automatic data dumping).
+2. Update the `NATIVE_VERSION` field in the ProtocolTranslator class to the new version
+3. Update protocol constants in the `ViaFabricPlusProtocol` class
+4. Update `ItemTranslator#getClientboundItemType` if a new item type exists
+5. Decompile the game source code with the tool of your choice.
+6. Try to compile the mod and start porting the code until all existing fixes are working again.
+7. Check all data dumps and diffs in the fixes/data package and update them if necessary, here is a list of some
    critical ones:
     - `ResourcePackHeaderDiff` (add the new version at the top of the list)
     - `ItemRegistryDiff` (add all new items/blocks added in the new version)
     - `EntityDimensionDiff` (add entity dimension changes)
-4. Update the `NATIVE_VERSION` field in the ProtocolTranslator class to the new version
-5. Update protocol constants in the `ViaFabricPlusProtocol` class
-
--------------
-
-6. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
+   For this process run `gradle test` which will automatically dump changes of diff classes into `run/`.
+8. Check all mixins in the injection package if they still apply correctly, here is a list of some critical ones:
     - `MixinClientWorld#tickEntity` and `MixinClientWorld#tickPassenger`
     - `MixinPlayer#getBlockBreakingSpeed`
-7. mDecompile the game source code with the tool of your choice.
-8. Try to compile the mod and start porting the code until all existing fixes are working again.
 9. Diff the game code with the code of the previous version (e.g. using git) and implement all changes that could be
    relevant for ViaFabricPlus, those are:
     - General logic changes (e.g. `if (a && b)` -> `if (b || a)`)
@@ -79,49 +78,54 @@ something, ask in the ViaVersion discord.
 12. Clean your code and make sure it is readable and understandable, clientside fixes are sorted by their protocol
     versions, having
     newer fixes at the top of the file.
-
--------------
-
+    Set `updating_minecraft` to `false`.
 13. Create a pull request and wait for it to be reviewed and merged.
-14. You're done, congrats!
 
-## Git branches
-
-- `main`: The main branch, this is where all changes are merged into
-- `dev`: Used for changes which needs reviewing by all developers, usually merged into `main` shortly after
-- `update/*`: Update branches, these are used to port ViaFabricPlus to newer versions of the game
-- `<version>`: Final release branches sorted by their Minecraft version (e.g. `1.8.9`, `1.16.5`, `1.17.1`, ...)
-
-There are also older formats which aren't used anymore:
-
-- `recode/*`: Recode branches, these are used to port ViaFabricPlus to newer versions of the game or rewrite big parts
-  of the code
-- `backport/*`: Backport branches, these are used to backport newer ViaFabricPlus versions to older versions of the game
-
-## Project structure
+# Project structure
 
 Every change made to the game is called a `feature`. Each feature has its package under both `features/` and
 `injection/mixin/features/`, organizing utility and mixin classes for easier project maintenance and porting
 Loading of features is done via `static` blocks and dummy `init` function called in the `FeaturesLoading` class.
 
-## Versioning
+## Build files
+
+Common build logic is handled by the [BaseProject Gradle convention plugin](https://github.com/FlorianMichael/BaseProject).
+Note that the root project includes the classpaths of all submodules — including optional ones like `viafabricplus-visuals`.
+To avoid potential issues, ensure your code does not include any unintended references to these optional submodules.
+
+## Release process
+
+1. Set `project_version` in `gradle.properties` to the next release version.
+2. Pin version ids of `configureVVDependencies` in `build.gradle.kts`.
+3. Commit `<version> Release`.
+
+### Versioning
 
 The versioning should only be updated every release and should only have one update between each release.
 
-- The versioning scheme is `major.minor.patch`, where:
-    - `major` is incremented when breaking changes are made
-    - `minor` is incremented when new features are added
-    - `patch` is incremented when bug fixes are made
-
-This scheme is used as follows:
-
+The versioning scheme is `major.minor.patch`, where:
 - `Major` versions are only incremented with breaking and fundamental changes to the existing codebase, such as
-  migrating mappings
-  or refactoring the entire codebase.
+  migrating mappings or refactoring the entire codebase.
 
 - `Minor` versions are incremented when the mod gets ported to a new version of the game or when huge features are
-  added /
-  upstream changes are implemented.
+  added / upstream changes are implemented.
 
 - `Patch` versions are incremented when bug fixes are made or small features are added, they are the usual version
   increment.
+
+Usually you should go back to a -SNAPSHOT `project_version` and unpin `configureVVDependencies` again in your next commit. If the next commit
+would be a merged pull request of someone else, you can do a commit with this format before merging the PR:
+`Bump version to <version>`
+
+## Git branches
+
+See https://github.com/FlorianMichael/ViaFabricPlus-archive for older branches.
+
+The `main` branch where all changes are merged into. After the last ViaFabricPlus release for a Minecraft version,
+a branch with the version as name is created (e.g `1.21.5`).
+
+## Backporting
+
+Releases for older Minecraft versions are called backports (usually for updating Via* libraries). Their
+version strings should be suffixed with `-BACKPORT` to identify them. Backports are pushed to the branch matching their
+Minecraft version.

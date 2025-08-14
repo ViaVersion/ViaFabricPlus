@@ -22,6 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.block.AbstractChestBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
@@ -30,6 +32,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.enums.ChestType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -41,30 +44,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.function.Supplier;
-
 @Mixin(ChestBlock.class)
 public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntity> {
 
     @Shadow
     @Final
-    protected static VoxelShape SINGLE_SHAPE;
+    private static Map<Direction, VoxelShape> DOUBLE_SHAPES_BY_DIRECTION;
 
     @Shadow
     @Final
-    protected static VoxelShape DOUBLE_NORTH_SHAPE;
-
-    @Shadow
-    @Final
-    protected static VoxelShape DOUBLE_SOUTH_SHAPE;
-
-    @Shadow
-    @Final
-    protected static VoxelShape DOUBLE_WEST_SHAPE;
-
-    @Shadow
-    @Final
-    protected static VoxelShape DOUBLE_EAST_SHAPE;
+    private static VoxelShape SINGLE_SHAPE;
 
     protected MixinChestBlock(Settings settings, Supplier<BlockEntityType<? extends ChestBlockEntity>> blockEntityTypeSupplier) {
         super(settings, blockEntityTypeSupplier);
@@ -83,12 +72,7 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
             if (state.get(ChestBlock.CHEST_TYPE) == ChestType.SINGLE) {
                 return SINGLE_SHAPE;
             } else {
-                return switch (ChestBlock.getFacing(state)) {
-                    case NORTH -> DOUBLE_NORTH_SHAPE;
-                    case SOUTH -> DOUBLE_SOUTH_SHAPE;
-                    case WEST -> DOUBLE_WEST_SHAPE;
-                    default -> DOUBLE_EAST_SHAPE;
-                };
+                return DOUBLE_SHAPES_BY_DIRECTION.get(ChestBlock.getFacing(state));
             }
         } else {
             return super.getCullingShape(state);

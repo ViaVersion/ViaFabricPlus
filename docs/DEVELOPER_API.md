@@ -12,7 +12,27 @@ If you are targetting to only use the provided API, you should include the ```vi
 including the internals use
 ```viafabricplus```. Including the internals will also provide the legacy compatibility layer.
 
-### Gradle
+### Kotlin Gradle
+
+```kotlin
+repositories {
+    maven("https://repo.viaversion.com")
+    maven("https://maven.lenni0451.net/everything")
+    maven("https://repo.opencollab.dev/maven-snapshots")
+    maven("https://jitpack.io") {
+        content {
+            includeGroup("com.github.Oryxel")
+        }
+    }
+
+}
+
+dependencies {
+    modImplementation("com.viaversion:viafabricplus-api:x.x.x") // Replace with latest version
+}
+```
+
+### Groovy Gradle
 
 ```groovy
 repositories {
@@ -24,6 +44,10 @@ repositories {
     maven {
         name = "Lenni0451"
         url = "https://maven.lenni0451.net/everything"
+    }
+    maven {
+        name = "OpenCollab"
+        url = "https://repo.opencollab.dev/maven-snapshots"
     }
     maven {
         name = "Jitpack"
@@ -38,33 +62,6 @@ repositories {
 dependencies {
     modImplementation("com.viaversion:viafabricplus-api:x.x.x") // Get the latest version from releases
 }
-```
-
-### Maven
-
-```xml
-<repositories>
-    <repository>
-        <id>viaversion</id>
-        <url>https://repo.viaversion.com</url>
-    </repository>
-    <repository>
-        <id>lenni0451</id>
-        <url>https://maven.lenni0451.net/everything</url>
-    </repository>
-    <repository>
-        <id>jitpack</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>com.viaversion</groupId>
-        <artifactId>viafabricplus-api</artifactId>
-        <version>x.x.x</version> <!-- Get the latest version from releases -->
-    </dependency>
-</dependencies>
 ```
 
 ## Using the API

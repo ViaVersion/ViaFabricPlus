@@ -25,12 +25,19 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.LinkedHashSet;
+import java.util.OptionalInt;
+import java.util.Set;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
-import net.minecraft.client.network.*;
+import net.minecraft.client.network.ClientCommonNetworkHandler;
+import net.minecraft.client.network.ClientConnectionState;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TrackedPosition;
@@ -42,7 +49,10 @@ import net.minecraft.item.Items;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
-import net.minecraft.network.packet.s2c.play.*;
+import net.minecraft.network.packet.s2c.play.ChunkLoadDistanceS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
+import net.minecraft.network.packet.s2c.play.SignEditorOpenS2CPacket;
+import net.minecraft.network.packet.s2c.play.SimulationDistanceS2CPacket;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -50,13 +60,17 @@ import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.slf4j.Logger;
-import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.LinkedHashSet;
-import java.util.OptionalInt;
-import java.util.Set;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkHandler {
@@ -106,19 +120,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @Redirect(method = "onEntityPosition", at = @At(value = "INVOKE", target = "Ljava/util/OptionalInt;isPresent()Z"))
     private boolean dontHandleRemovedVehiclePositionChange(OptionalInt instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return false;
-        } else {
-            return instance.isPresent();
-        }
-    }
-
-    @Inject(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;addEntity(Lnet/minecraft/entity/Entity;)V", shift = At.Shift.BEFORE))
-    private void dontApplyRotationAndVelocity(PlayerRespawnS2CPacket packet, CallbackInfo ci, @Local(ordinal = 1) ClientPlayerEntity clientPlayerEntity) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            clientPlayerEntity.init();
-            clientPlayerEntity.setYaw(-180.0F);
-        }
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21) && instance.isPresent();
     }
 
     @Redirect(method = "onSignEditorOpen", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false))
@@ -227,12 +229,15 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         }
     }
 
-    @Redirect(method = "setPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;updateTrackedPositionAndAngles(DDDFFI)V"))
-    private static void cancelSmallChanges(Entity instance, double x, double y, double z, float yaw, float pitch, int interpolationSteps) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) && Math.abs(instance.getX() - x) < 0.03125 && Math.abs(instance.getY() - y) < 0.015625 && Math.abs(instance.getZ() - z) < 0.03125) {
-            instance.updateTrackedPositionAndAngles(instance.getX(), instance.getY(), instance.getZ(), yaw, pitch, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) ? 0 : interpolationSteps);
+    @Redirect(method = "setPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;updateTrackedPositionAndAngles(Lnet/minecraft/util/math/Vec3d;FF)V"))
+    private static void cancelSmallChanges(Entity instance, Vec3d pos, float yaw, float pitch) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) && Math.abs(instance.getX() - pos.x) < 0.03125 && Math.abs(instance.getY() - pos.y) < 0.015625 && Math.abs(instance.getZ() - pos.z) < 0.03125) {
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && instance.getInterpolator() != null) {
+                instance.getInterpolator().setLerpDuration(0);
+            }
+            instance.updateTrackedPositionAndAngles(instance.getPos(), yaw, pitch);
         } else {
-            instance.updateTrackedPositionAndAngles(x, y, z, yaw, pitch, interpolationSteps);
+            instance.updateTrackedPositionAndAngles(pos, yaw, pitch);
         }
     }
 

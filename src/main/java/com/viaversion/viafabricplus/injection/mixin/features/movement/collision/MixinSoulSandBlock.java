@@ -27,6 +27,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoulSandBlock;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCollisionHandler;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,7 +40,7 @@ public abstract class MixinSoulSandBlock extends Block {
     }
 
     @Override
-    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+    protected void onEntityCollision(final BlockState state, final World world, final BlockPos pos, final Entity entity, final EntityCollisionHandler handler) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             entity.setVelocity(entity.getVelocity().multiply(0.4D, 1, 0.4D));
         }

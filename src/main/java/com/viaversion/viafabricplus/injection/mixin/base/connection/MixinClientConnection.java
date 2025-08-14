@@ -37,10 +37,17 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.epoll.EpollDatagramChannel;
 import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import javax.crypto.Cipher;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.encryption.PacketDecryptor;
 import net.minecraft.network.encryption.PacketEncryptor;
@@ -59,10 +66,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import javax.crypto.Cipher;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 
 @Mixin(ClientConnection.class)
 public abstract class MixinClientConnection extends SimpleChannelInboundHandler<Packet<?>> implements IClientConnection {
@@ -125,7 +128,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         return !BedrockProtocolVersion.bedrockLatest.equals(this.viaFabricPlus$serverVersion);
     }
 
-    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", shift = At.Shift.BEFORE))
+    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;"))
     private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, MultiValueDebugSampleLogImpl packetSizeLog, CallbackInfoReturnable<ClientConnection> cir, @Local ClientConnection clientConnection) {
         // Set the target version stored in the PerformanceLog field to the ClientConnection instance
         if (packetSizeLog instanceof IMultiValueDebugSampleLogImpl mixinMultiValueDebugSampleLogImpl && mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion() != null) {
@@ -198,8 +201,8 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     }
 
     @Override
-    public void viaFabricPlus$setUserConnection(UserConnection userConnection) {
-        this.viaFabricPlus$userConnection = userConnection;
+    public void viaFabricPlus$setUserConnection(UserConnection connection) {
+        this.viaFabricPlus$userConnection = connection;
     }
 
     @Override

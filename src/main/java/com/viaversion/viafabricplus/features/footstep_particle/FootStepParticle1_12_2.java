@@ -25,7 +25,11 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.ParticleTextureSheet;
+import net.minecraft.client.particle.SpriteBillboardParticle;
+import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
@@ -50,7 +54,7 @@ public final class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         RAW_ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
     }
 
-    protected FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z) {
+    private FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z) {
         super(clientWorld, x, y, z);
 
         this.scale = 0.125F;
@@ -73,9 +77,9 @@ public final class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         }
 
         final Vec3d cameraPos = camera.getPos();
-        final float x = (float) (MathHelper.lerp(tickDelta, this.prevPosX, this.x) - cameraPos.getX());
-        final float y = (float) (MathHelper.lerp(tickDelta, this.prevPosY, this.y) - cameraPos.getY());
-        final float z = (float) (MathHelper.lerp(tickDelta, this.prevPosZ, this.z) - cameraPos.getZ());
+        final float x = (float) (MathHelper.lerp(tickDelta, this.lastX, this.x) - cameraPos.getX());
+        final float y = (float) (MathHelper.lerp(tickDelta, this.lastY, this.y) - cameraPos.getY());
+        final float z = (float) (MathHelper.lerp(tickDelta, this.lastZ, this.z) - cameraPos.getZ());
 
         final float minU = this.getMinU();
         final float maxU = this.getMaxU();

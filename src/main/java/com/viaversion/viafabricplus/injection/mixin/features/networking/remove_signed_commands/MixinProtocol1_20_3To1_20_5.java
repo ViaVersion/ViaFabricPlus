@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_signed_commands;
 
-import com.viaversion.viaversion.api.Via;
+import com.viaversion.viafabricplus.util.NotificationUtil;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
 import com.viaversion.viaversion.protocols.v1_20_2to1_20_3.packet.ClientboundPacket1_20_3;
 import com.viaversion.viaversion.protocols.v1_20_2to1_20_3.packet.ServerboundPacket1_20_3;
@@ -50,7 +50,7 @@ public abstract class MixinProtocol1_20_3To1_20_5 extends AbstractProtocol<Clien
 
         // Don't allow mods to directly send packets - Use ClientPlayNetworkHandler#sendChatCommand instead
         registerServerbound(ServerboundPackets1_20_5.CHAT_COMMAND, ServerboundPackets1_20_3.CHAT_COMMAND, wrapper -> {
-            Via.getPlatform().getLogger().severe("Tried to remap >=1.20.5 CHAT_COMMAND packet which is impossible without breaking the content! Find the cause and fix it!");
+            NotificationUtil.warnIncompatibilityPacket("1.20.5", "CHAT_COMMAND", "ClientPlayNetworkHandler#sendChatCommand", "ClientPacketListener#sendCommand");
             wrapper.cancel();
         }, true);
     }

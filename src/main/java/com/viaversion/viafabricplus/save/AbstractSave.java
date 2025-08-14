@@ -25,8 +25,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -44,7 +44,7 @@ public abstract class AbstractSave {
      * @param name The name of the file.
      */
     public AbstractSave(final String name) {
-        path = ViaFabricPlusImpl.INSTANCE.rootPath().resolve(name + ".json");
+        path = ViaFabricPlusImpl.INSTANCE.getPath().resolve(name + ".json");
     }
 
     /**
@@ -53,15 +53,15 @@ public abstract class AbstractSave {
      */
     public void init() {
         if (Files.exists(path)) {
-            try {
-                final JsonObject object = GSON.fromJson(Files.readString(path), JsonObject.class);
+            try (final BufferedReader reader = Files.newBufferedReader(path)) {
+                final JsonObject object = GSON.fromJson(reader, JsonObject.class);
                 if (object != null) {
                     read(object);
                 } else {
-                    ViaFabricPlusImpl.INSTANCE.logger().error("The file {} is empty!", path.getFileName());
+                    ViaFabricPlusImpl.INSTANCE.getLogger().error("The file {} is empty!", path.getFileName());
                 }
-            } catch (IOException e) {
-                ViaFabricPlusImpl.INSTANCE.logger().error("Failed to read file: {}!", path.getFileName(), e);
+            } catch (Exception e) {
+                ViaFabricPlusImpl.INSTANCE.getLogger().error("Failed to read file: {}!", path.getFileName(), e);
             }
         }
     }
@@ -70,13 +70,13 @@ public abstract class AbstractSave {
      * This method should be called when the file should be saved.
      */
     public void save() {
-        try {
+        try (final BufferedWriter writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
             final JsonObject object = new JsonObject();
             write(object);
 
-            Files.writeString(path, GSON.toJson(object), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException e) {
-            ViaFabricPlusImpl.INSTANCE.logger().error("Failed to write file: {}!", path.getFileName(), e);
+            GSON.toJson(object, writer);
+        } catch (Exception e) {
+            ViaFabricPlusImpl.INSTANCE.getLogger().error("Failed to write file: {}!", path.getFileName(), e);
         }
     }
 

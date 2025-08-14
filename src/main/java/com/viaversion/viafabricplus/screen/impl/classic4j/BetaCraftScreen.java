@@ -24,20 +24,19 @@ package com.viaversion.viafabricplus.screen.impl.classic4j;
 import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
-import com.viaversion.viafabricplus.screen.impl.settings.TitleRenderer;
+import com.viaversion.viafabricplus.screen.impl.settings.TitleEntry;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
+import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-
-import java.util.List;
 
 public final class BetaCraftScreen extends VFPScreen {
 
@@ -46,7 +45,7 @@ public final class BetaCraftScreen extends VFPScreen {
     public static BCServerList SERVER_LIST;
     private static final String BETA_CRAFT_SERVER_LIST_URL = "https://betacraft.uk/serverlist/";
 
-    protected BetaCraftScreen() {
+    private BetaCraftScreen() {
         super("BetaCraft", true);
     }
 
@@ -90,7 +89,7 @@ public final class BetaCraftScreen extends VFPScreen {
                 if (servers.isEmpty()) {
                     continue;
                 }
-                addEntry(new TitleRenderer(Text.of(value.name())));
+                addEntry(new TitleEntry(Text.of(value.name())));
                 for (BCServerInfoSpec server : servers) {
                     addEntry(new ServerSlot(server));
                 }

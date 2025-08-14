@@ -2,7 +2,7 @@
 
 ## Introduction
 
-At the top left of the multiplayer screen is the ViaFabricPlus button, with it you can enter the main menu of the mod
+At the top right of the multiplayer screen is the ViaFabricPlus button, with it you can enter the main menu of the mod
 where you can change the settings and set the protocol version, the position of the button can be changed in the
 Settings -> General -> multiplayer screen button orientation.
 
@@ -31,7 +31,7 @@ implemented:
 For users only the settings in the **General**, **Bedrock**, **Authentication** and **Visual** tab are relevant, the
 other settings are only for developers, you should not change the settings in the **Debug** tab if you don't know what
 you are doing.
-![](preview/settings-selection.png)
+![](preview/settings_selection.png)
 
 The settings are stored in the `settings.json` file. Account credentials for Bedrock/ClassiCube in `accounts.json`.
 

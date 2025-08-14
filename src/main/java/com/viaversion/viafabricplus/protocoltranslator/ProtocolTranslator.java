@@ -52,18 +52,6 @@ import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.util.AttributeKey;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.lenni0451.reflect.stream.RStream;
-import net.lenni0451.reflect.stream.field.FieldWrapper;
-import net.minecraft.SharedConstants;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.ClientConnection;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
-import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
-import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
-
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -72,6 +60,18 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.lenni0451.reflect.stream.RStream;
+import net.lenni0451.reflect.stream.field.FieldWrapper;
+import net.minecraft.SharedConstants;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.util.Util;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
+import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
 /**
  * This class represents the whole Protocol Translator, here all important variables are stored
@@ -91,7 +91,7 @@ public final class ProtocolTranslator {
     /**
      * The native version of the client
      */
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_4;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_7;
 
     /**
      * Protocol version that is used to enable protocol auto-detect
@@ -308,7 +308,7 @@ public final class ProtocolTranslator {
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
             changeBedrockProtocolName();
             ViaFabricPlusProtocol.INSTANCE.initialize();
-        });
+        }, Util.getMainWorkerExecutor());
     }
 
 }

@@ -21,16 +21,14 @@
 
 package com.viaversion.viafabricplus.features.networking.resource_pack_header;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.resource.ResourceType;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class file contains the {@link GameVersion} for each protocol version.
@@ -40,6 +38,9 @@ public final class ResourcePackHeaderDiff {
     private final static Map<ProtocolVersion, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     static {
+        registerVersion(ProtocolVersion.v1_21_7, 64, "1.21.8");
+        registerVersion(ProtocolVersion.v1_21_6, 63, "1.21.6");
+        registerVersion(ProtocolVersion.v1_21_5, 55, "1.21.5");
         registerVersion(ProtocolVersion.v1_21_4, 46, "1.21.4");
         registerVersion(ProtocolVersion.v1_21_2, 42, "1.21.3");
         registerVersion(ProtocolVersion.v1_21, 34, "1.21.1");
@@ -87,9 +88,6 @@ public final class ResourcePackHeaderDiff {
     }
 
     public static void init() {
-        if (!GAME_VERSION_DIFF.containsKey(ProtocolTranslator.NATIVE_VERSION)) {
-            throw new RuntimeException("The native client version is not registered in the resource pack header diff!");
-        }
         // Also calls the static block
     }
 
@@ -113,27 +111,27 @@ public final class ResourcePackHeaderDiff {
         GAME_VERSION_DIFF.put(version, new GameVersion() {
 
             @Override
-            public SaveVersion getSaveVersion() {
+            public SaveVersion dataVersion() {
                 return null;
             }
 
             @Override
-            public String getId() {
+            public String id() {
                 return id;
             }
 
             @Override
-            public String getName() {
+            public String name() {
                 return name;
             }
 
             @Override
-            public int getProtocolVersion() {
+            public int protocolVersion() {
                 return version.getOriginalVersion();
             }
 
             @Override
-            public int getResourceVersion(ResourceType type) {
+            public int packVersion(final ResourceType type) {
                 if (type == ResourceType.CLIENT_RESOURCES) {
                     return packFormat;
                 }
@@ -141,12 +139,12 @@ public final class ResourcePackHeaderDiff {
             }
 
             @Override
-            public Date getBuildTime() {
+            public Date buildTime() {
                 return null;
             }
 
             @Override
-            public boolean isStable() {
+            public boolean stable() {
                 return true;
             }
         });

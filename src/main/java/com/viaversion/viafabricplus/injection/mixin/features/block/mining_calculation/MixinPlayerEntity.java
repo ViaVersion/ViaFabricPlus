@@ -48,11 +48,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Shadow
-    @Final
-    private PlayerInventory inventory;
+    public abstract boolean canHarvest(BlockState state);
 
     @Shadow
-    public abstract boolean canHarvest(BlockState state);
+    @Final
+    PlayerInventory inventory;
 
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -71,14 +71,14 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         return hasMiningFatigue;
     }
 
-    @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.BEFORE))
+    @Inject(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectUtil;hasHaste(Lnet/minecraft/entity/LivingEntity;)Z"))
     private void changeSpeedCalculation(BlockState block, CallbackInfoReturnable<Float> cir, @Local LocalFloatRef f) {
         final float efficiency = (float) this.getAttributeValue(EntityAttributes.MINING_EFFICIENCY);
         if (efficiency <= 0) {
             return;
         }
 
-        final float speed = this.inventory.getBlockBreakingSpeed(block);
+        final float speed = this.inventory.getSelectedStack().getMiningSpeedMultiplier(block);
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_4tor1_4_5) && this.canHarvest(block)) {
             f.set(speed + efficiency);
         } else if (speed > 1F || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {

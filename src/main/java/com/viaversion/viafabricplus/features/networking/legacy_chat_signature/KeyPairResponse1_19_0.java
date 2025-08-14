@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.features.networking.legacy_chat_signature;
 
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
-
 import java.nio.ByteBuffer;
 
 /**

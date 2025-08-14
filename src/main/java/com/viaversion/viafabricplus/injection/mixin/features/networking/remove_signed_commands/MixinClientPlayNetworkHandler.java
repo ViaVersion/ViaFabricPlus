@@ -21,10 +21,14 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_signed_commands;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.time.Instant;
+import java.util.List;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.client.network.ClientConnectionState;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -38,9 +42,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.time.Instant;
-import java.util.List;
-
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkHandler {
 
@@ -51,16 +52,17 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         super(client, connection, connectionState);
     }
 
-    @Redirect(method = "sendChatCommand", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
-    private boolean alwaysSignCommands(List<?> instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            return false;
-        } else {
-            return instance.isEmpty();
-        }
+    @WrapWithCondition(method = "runClickEventCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;openConfirmCommandScreen(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/client/gui/screen/Screen;)V"))
+    private boolean dontOpenConfirmationScreens(ClientPlayNetworkHandler instance, String command, String message, Screen screenAfterRun) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_5);
     }
 
-    @Redirect(method = "sendCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
+    @Redirect(method = "sendChatCommand", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
+    private boolean alwaysSignCommands(List<?> instance) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_3) && instance.isEmpty();
+    }
+
+    @Redirect(method = "runClickEventCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
     private void alwaysSignCommands(ClientPlayNetworkHandler instance, Packet<?> packet, @Local(argsOnly = true) String command) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             this.sendPacket(new ChatCommandSignedC2SPacket(command, Instant.now(), 0L, ArgumentSignatureDataMap.EMPTY, this.lastSeenMessagesCollector.collect().update()));

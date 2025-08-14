@@ -29,6 +29,8 @@ import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.Locale;
+import java.util.Objects;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -41,13 +43,10 @@ import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
 import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCodeMsaCode;
 import net.raphimc.minecraftauth.util.MicrosoftConstants;
-import net.raphimc.minecraftauth.util.logging.ConsoleLogger;
 import net.raphimc.minecraftauth.util.logging.ILogger;
+import net.raphimc.minecraftauth.util.logging.Slf4jConsoleLogger;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
-
-import java.util.Locale;
-import java.util.Objects;
 
 public final class BedrockSettings extends SettingGroup {
 
@@ -80,7 +79,7 @@ public final class BedrockSettings extends SettingGroup {
     };
     public final BooleanSetting replaceDefaultPort = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.replace_default_port"), true);
 
-    private final ILogger GUI_LOGGER = new ConsoleLogger() {
+    private final ILogger GUI_LOGGER = new Slf4jConsoleLogger() {
         @Override
         public void info(AbstractStep<?, ?> step, String message) {
             super.info(step, message);
@@ -89,7 +88,7 @@ public final class BedrockSettings extends SettingGroup {
             }
             MinecraftClient.getInstance().execute(() -> {
                 if (MinecraftClient.getInstance().currentScreen instanceof ConfirmScreen confirmScreen) {
-                    ((IConfirmScreen) confirmScreen).viaFabricPlus$setMessage(Text.translatable("minecraftauth_library.viafabricplus." + step.name.toLowerCase(Locale.ROOT)));
+                    ((IConfirmScreen) confirmScreen).viaFabricPlus$updateMessage(Text.translatable("minecraftauth_library.viafabricplus." + step.name.toLowerCase(Locale.ROOT)));
                 }
             });
         }

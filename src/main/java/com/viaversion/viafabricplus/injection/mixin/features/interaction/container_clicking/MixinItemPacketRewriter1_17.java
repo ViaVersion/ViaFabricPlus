@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
-import com.viaversion.viaversion.api.Via;
+import com.viaversion.viafabricplus.util.NotificationUtil;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.packet.ClientboundPackets1_16_2;
@@ -47,7 +47,7 @@ public abstract class MixinItemPacketRewriter1_17 extends ItemRewriter<Clientbou
         // Don't allow mods to directly send window interactions which would skip our clientside fix in MixinClientPlayerInteractionManager
         // Use ClientPlayerInteractionManager#clickSlot instead
         this.protocol.registerServerbound(ServerboundPackets1_17.CONTAINER_CLICK, ServerboundPackets1_16_2.CONTAINER_CLICK, wrapper -> {
-            Via.getPlatform().getLogger().severe("Tried to remap >=1.17 CONTAINER_CLICK packet which is impossible without breaking the content! Find the cause and fix it!");
+            NotificationUtil.warnIncompatibilityPacket("1.17", "CONTAINER_CLICK", "ClientPlayerInteractionManager#clickSlot", "MultiPlayerGameMode#handleInventoryMouseClick");
             wrapper.cancel();
         }, true);
     }

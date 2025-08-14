@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.settings.impl;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
-import com.viaversion.viafabricplus.features.font.replace_blank_glyph.FontCacheReload;
+import com.viaversion.viafabricplus.features.font.FontCacheReload;
 import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.text.Text;
@@ -57,10 +57,12 @@ public final class DebugSettings extends SettingGroup {
     // 1.13 -> 1.12.2
     public final VersionedBooleanSetting executeInputsSynchronously = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.execute_inputs_synchronously"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
     public final VersionedBooleanSetting legacyTabCompletions = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.legacy_tab_completions"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
+    public final VersionedBooleanSetting legacyPaneOutlines = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.legacy_pane_outlines"), VersionRange.andOlder(ProtocolVersion.v1_12_2));
 
     // 1.9 -> 1.8.x
     public final VersionedBooleanSetting emulateArmorHud = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.emulate_armor_hud"), VersionRange.andOlder(ProtocolVersion.v1_8));
     public final VersionedBooleanSetting hideModernCommandBlockScreenFeatures = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.hide_modern_command_block_screen_features"), VersionRange.andOlder(ProtocolVersion.v1_8));
+    public final VersionedBooleanSetting legacyCropOutlines = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.legacy_crop_outlines"), VersionRange.andOlder(ProtocolVersion.v1_8));
 
     // b1.8/b1.8.1 -> b1_7/b1.7.3
     public final VersionedBooleanSetting disableServerPinging = new VersionedBooleanSetting(this, Text.translatable("debug_settings.viafabricplus.disable_server_pinging"), VersionRange.andOlder(LegacyProtocolVersion.b1_7tob1_7_3));

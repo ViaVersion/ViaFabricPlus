@@ -27,11 +27,14 @@ import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
+import java.awt.*;
+import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
+import net.minecraft.util.Util;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.service.realms.BedrockRealmsService;
 import net.raphimc.minecraftauth.service.realms.model.RealmsWorld;
@@ -39,10 +42,6 @@ import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import org.apache.logging.log4j.Level;
-
-import java.awt.*;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public final class BedrockRealmsScreen extends VFPScreen {
 
@@ -69,7 +68,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
         }
 
         setupSubtitle(Text.translatable("bedrock_realms.viafabricplus.availability_check"));
-        CompletableFuture.runAsync(this::loadRealms);
+        Util.getDownloadWorkerExecutor().execute(this::loadRealms);
     }
 
     private void loadRealms() {
@@ -93,7 +92,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
 
     private Void error(final String message, final Throwable throwable) {
         setupSubtitle(Text.translatable("bedrock_realms.viafabricplus.error"));
-        ViaFabricPlusImpl.INSTANCE.logger().log(Level.ERROR, message, throwable);
+        ViaFabricPlusImpl.INSTANCE.getLogger().log(Level.ERROR, message, throwable);
         return null;
     }
 
@@ -119,9 +118,9 @@ public final class BedrockRealmsScreen extends VFPScreen {
                 setupSubtitle(Text.translatable("bedrock_realms.viafabricplus.incompatible"));
                 return;
             }
-            service.joinWorld(entry.realmsWorld).thenAccept(address -> {
-                client.execute(() -> ConnectionUtil.connect(address, BedrockProtocolVersion.bedrockLatest));
-            }).exceptionally(throwable -> error("Failed to join realm", throwable));
+            service.joinWorld(entry.realmsWorld)
+                .thenAcceptAsync(address -> ConnectionUtil.connect(address, BedrockProtocolVersion.bedrockLatest), client)
+                .exceptionally(throwable -> error("Failed to join realm", throwable));
         }).position(xPos, height - 20 - 5).size(115, 20).build());
         joinButton.active = false;
 
@@ -157,7 +156,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
 
     @Override
     protected boolean subtitleCentered() {
-        return slotList == null;
+        return realmsWorlds == null;
     }
 
     public final class SlotList extends VFPList {

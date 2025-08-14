@@ -31,6 +31,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2fStack;
 
 /**
  * This class is a wrapper for the {@link net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry} class.
@@ -87,7 +88,7 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      *
      * @param text   The text which should be displayed
      * @param textY  The Y position of the text
-     * @param offset The offset of the text from the left side of the slot, this is used to calculate the width of the text, which should be scrolled (Scrolling is enabled when entryWidth - offset < textWidth)
+     * @param offset The offset of the text from the left side of the slot, this is used to calculate the width of the text, which should be scrolled
      */
     public void renderScrollableText(final Text text, final int textY, final int offset) {
         final TextRenderer font = MinecraftClient.getInstance().textRenderer;
@@ -116,7 +117,7 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      */
     public void renderTooltip(final @Nullable Text tooltip, final int mouseX, final int mouseY) {
         if (tooltip != null && mouseX >= x && mouseX <= x + entryWidth && mouseY >= y && mouseY <= y + entryHeight) {
-            context.drawTooltip(MinecraftClient.getInstance().textRenderer, tooltip, mouseX - x, mouseY - y);
+            context.drawTooltip(MinecraftClient.getInstance().textRenderer, tooltip, mouseX, mouseY);
         }
     }
 
@@ -132,13 +133,13 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
         this.entryWidth = entryWidth;
         this.entryHeight = entryHeight;
 
-        final MatrixStack matrices = context.getMatrices();
+        final Matrix3x2fStack matrices = context.getMatrices();
 
-        matrices.push();
-        matrices.translate(x, y, 0);
+        matrices.pushMatrix();
+        matrices.translate(x, y);
         context.fill(0, 0, entryWidth - 4 /* int i = this.left + (this.width - entryWidth) / 2; int j = this.left + (this.width + entryWidth) / 2; */, entryHeight, Integer.MIN_VALUE);
         mappedRender(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
-        matrices.pop();
+        matrices.popMatrix();
     }
 
 }

@@ -28,7 +28,6 @@ import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -21,23 +21,30 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.world.always_tick_entities;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.injection.access.world.always_tick_entities.IEntity;
+import java.util.List;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.profiler.Profilers;
 import net.minecraft.world.EntityList;
 import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = ClientWorld.class, priority = 900)
+@Mixin(ClientWorld.class)
 public abstract class MixinClientWorld extends World {
 
     @Shadow
@@ -48,53 +55,51 @@ public abstract class MixinClientWorld extends World {
         super(properties, registryRef, registryManager, dimensionEntry, isClient, debugWorld, seed, maxChainedNeighborUpdates);
     }
 
-    /**
-     * @author RK_01
-     * @reason Versions <= 1.8.x and >= 1.17 always tick entities, even if they are not in a loaded chunk.
-     */
-    @Overwrite
-    public void tickEntity(Entity entity) {
-        entity.resetPosition();
-        final IEntity mixinEntity = (IEntity) entity;
-        if (mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick() || entity.isSpectator()) {
-            entity.age++;
-            Profilers.get().push(() -> Registries.ENTITY_TYPE.getId(entity.getType()).toString());
-            entity.tick();
-            Profilers.get().pop();
-        }
-        this.viaFabricPlus$checkChunk(entity);
+    @Shadow
+    protected abstract void tickPassenger(final Entity entity, final Entity passenger);
 
-        if (mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
-            for (Entity entity2 : entity.getPassengerList()) {
-                this.tickPassenger(entity, entity2);
+    @Inject(method = "tickEntity", at = @At("HEAD"), cancellable = true)
+    private void alwaysTickEntities(Entity entity, CallbackInfo ci) {
+        final IEntity mixinEntity = (IEntity) entity;
+        if (!mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick() && !entity.isSpectator()) {
+            entity.resetPosition();
+            this.viaFabricPlus$checkChunk(entity);
+            if (mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
+                for (Entity entity2 : entity.getPassengerList()) {
+                    this.tickPassenger(entity, entity2);
+                }
             }
+            ci.cancel();
         }
     }
 
-    /**
-     * @author RK_01
-     * @reason Versions <= 1.8.x and >= 1.17 always tick entities, even if they are not in a loaded chunk.
-     */
-    @Overwrite
-    private void tickPassenger(Entity entity, Entity passenger) {
-        if (!passenger.isRemoved() && passenger.getVehicle() == entity) {
-            if (passenger instanceof PlayerEntity || this.entityList.has(passenger)) {
-                final IEntity mixinPassenger = (IEntity) passenger;
+    @Inject(method = "tickPassenger", at = @At("HEAD"), cancellable = true)
+    private void alwaysTickEntities(Entity entity, Entity passenger, CallbackInfo ci) {
+        final IEntity mixinPassenger = (IEntity) passenger;
+        if (!mixinPassenger.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
+            if (passenger.isRemoved() || passenger.getVehicle() != entity) {
+                passenger.stopRiding();
+            } else if (passenger instanceof PlayerEntity || this.entityList.has(passenger)) {
                 passenger.resetPosition();
-                if (mixinPassenger.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
-                    passenger.age++;
-                    passenger.tickRiding();
-                }
                 this.viaFabricPlus$checkChunk(passenger);
-
                 if (mixinPassenger.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
                     for (Entity entity2 : passenger.getPassengerList()) {
                         this.tickPassenger(passenger, entity2);
                     }
                 }
             }
+            ci.cancel();
+        }
+    }
+
+    @WrapOperation(method = "tickEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerList()Ljava/util/List;"))
+    private List<Entity> alwaysTickEntities(Entity instance, Operation<List<Entity>> original) {
+        this.viaFabricPlus$checkChunk(instance);
+        final IEntity mixinEntity = (IEntity) instance;
+        if (mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
+            return original.call(instance);
         } else {
-            passenger.stopRiding();
+            return List.of();
         }
     }
 

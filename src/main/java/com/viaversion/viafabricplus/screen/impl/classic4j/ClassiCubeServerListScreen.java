@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.screen.impl.classic4j;
 
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.screen.VFPList;
@@ -29,36 +30,24 @@ import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
 import de.florianmichael.classic4j.ClassiCubeHandler;
-import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class ClassiCubeServerListScreen extends VFPScreen {
 
     public static final ClassiCubeServerListScreen INSTANCE = new ClassiCubeServerListScreen();
 
-    public static final List<CCServerInfo> SERVER_LIST = new ArrayList<>();
+    private static List<CCServerInfo> SERVER_LIST;
     private static final String CLASSICUBE_SERVER_LIST_URL = "https://www.classicube.net/server/list/";
-
-    public static void open(final Screen prevScreen, final LoginProcessHandler loginProcessHandler) {
-        final CCAccount account = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount();
-
-        ClassiCubeHandler.requestServerList(account, serverList -> {
-            ClassiCubeServerListScreen.SERVER_LIST.addAll(serverList.servers());
-            ClassiCubeServerListScreen.INSTANCE.open(prevScreen);
-        }, loginProcessHandler::handleException);
-    }
 
     public ClassiCubeServerListScreen() {
         super("ClassiCube", true);
@@ -67,16 +56,25 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
     @Override
     protected void init() {
         final CCAccount account = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount();
-        if (account != null) {
-            this.setupUrlSubtitle(CLASSICUBE_SERVER_LIST_URL);
+        if (SERVER_LIST == null) {
+            ClassiCubeHandler.requestServerList(account, serverList -> {
+                SERVER_LIST = new ArrayList<>(serverList.servers());
+                open(prevScreen);
+                setupUrlSubtitle(CLASSICUBE_SERVER_LIST_URL);
+            }, throwable -> {
+                ViaFabricPlusImpl.INSTANCE.getLogger().error("Error while loading ClassiCube servers!", throwable);
+                showErrorScreen(INSTANCE.getTitle(), throwable, prevScreen);
+            });
+            setupSubtitle(Text.translatable("betacraft.viafabricplus.loading"));
+            return;
         }
 
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 4) * 3));
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.logout"), button -> {
-            close();
             SaveManager.INSTANCE.getAccountsSave().setClassicubeAccount(null);
-            SERVER_LIST.clear();
+            SERVER_LIST = null;
+            close();
         }).position(width - 60 - 5, 5).size(60, 20).build());
 
         super.init();
@@ -86,11 +84,18 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
-        final CCAccount account = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount();
-        if (account != null) {
-            context.drawTextWithShadow(textRenderer, Text.translatable("classicube.viafabricplus.profile"), 32, 6, -1);
-            context.drawTextWithShadow(textRenderer, Text.of(account.username()), 32, 16, -1);
+        if (SERVER_LIST == null) {
+            return;
         }
+
+        final CCAccount account = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount();
+        context.drawTextWithShadow(textRenderer, Text.translatable("classicube.viafabricplus.profile"), 32, 6, -1);
+        context.drawTextWithShadow(textRenderer, Text.of(account.username()), 32, 16, -1);
+    }
+
+    @Override
+    protected boolean subtitleCentered() {
+        return SERVER_LIST == null;
     }
 
     public static class SlotList extends VFPList {

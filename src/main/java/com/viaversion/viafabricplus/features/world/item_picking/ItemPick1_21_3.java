@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.features.world.item_picking;
 
+import com.mojang.logging.LogUtils;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Types;
@@ -35,20 +36,24 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.storage.NbtWriteView;
+import net.minecraft.util.ErrorReporter;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import org.slf4j.Logger;
 
 public final class ItemPick1_21_3 {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     private static void addPickBlock(final PlayerInventory inventory, final ItemStack stack) {
         final int index = inventory.getSlotWithStack(stack);
         if (PlayerInventory.isValidHotbarIndex(index)) {
-            inventory.selectedSlot = index;
+            inventory.setSelectedSlot(index);
         } else if (index != -1) {
             inventory.swapSlotWithHotbar(index);
         } else {
@@ -57,17 +62,18 @@ public final class ItemPick1_21_3 {
     }
 
     private static void addBlockEntityNbt(final ItemStack stack, final BlockEntity blockEntity, final DynamicRegistryManager manager) {
-        final NbtCompound nbtCompound = blockEntity.createComponentlessNbtWithIdentifyingData(manager);
-        blockEntity.removeFromCopiedStackNbt(nbtCompound);
-
-        BlockItem.setBlockEntityData(stack, blockEntity.getType(), nbtCompound);
-        stack.applyComponentsFrom(blockEntity.createComponentMap());
+        try (final ErrorReporter.Logging logging = new ErrorReporter.Logging(blockEntity.getReporterContext(), LOGGER)) {
+            final NbtWriteView view = NbtWriteView.create(logging, manager);
+            blockEntity.writeIdentifyingData(view);
+            BlockItem.setBlockEntityData(stack, blockEntity.getType(), view);
+            stack.applyComponentsFrom(blockEntity.createComponentMap());
+        }
     }
 
     public static void doItemPick(final MinecraftClient client) {
         final boolean creativeMode = client.player.getAbilities().creativeMode;
 
-        ItemStack itemStack = null;
+        ItemStack itemStack;
         final HitResult crosshairTarget = client.crosshairTarget;
         if (crosshairTarget.getType() == HitResult.Type.BLOCK) {
             final BlockPos blockPos = ((BlockHitResult) crosshairTarget).getBlockPos();
@@ -92,12 +98,14 @@ public final class ItemPick1_21_3 {
             if (crosshairTarget.getType() != HitResult.Type.ENTITY || !creativeMode) {
                 return;
             }
+
             final Entity entity = ((EntityHitResult) crosshairTarget).getEntity();
             itemStack = entity.getPickBlockStack();
             if (itemStack == null) {
                 return;
             }
         }
+
         if (itemStack.isEmpty()) {
             return;
         }
@@ -106,17 +114,17 @@ public final class ItemPick1_21_3 {
         final int index = inventory.getSlotWithStack(itemStack);
         if (creativeMode) {
             addPickBlock(inventory, itemStack);
-            client.interactionManager.clickCreativeStack(client.player.getStackInHand(Hand.MAIN_HAND), 36 + inventory.selectedSlot);
-        } else if (index == -1) {
-            return;
+            client.interactionManager.clickCreativeStack(client.player.getStackInHand(Hand.MAIN_HAND), 36 + inventory.getSelectedSlot());
+        } else if (index != -1) {
+            if (PlayerInventory.isValidHotbarIndex(index)) {
+                inventory.setSelectedSlot(index);
+                return;
+            }
+
+            final PacketWrapper pickFromInventory = PacketWrapper.create(ServerboundPackets1_21_2.PICK_ITEM, ProtocolTranslator.getPlayNetworkUserConnection());
+            pickFromInventory.write(Types.VAR_INT, index);
+            pickFromInventory.scheduleSendToServer(Protocol1_21_2To1_21_4.class);
         }
-        if (PlayerInventory.isValidHotbarIndex(index)) {
-            inventory.selectedSlot = index;
-            return;
-        }
-        final PacketWrapper pickFromInventory = PacketWrapper.create(ServerboundPackets1_21_2.PICK_ITEM, ProtocolTranslator.getPlayNetworkUserConnection());
-        pickFromInventory.write(Types.VAR_INT, index);
-        pickFromInventory.scheduleSendToServer(Protocol1_21_2To1_21_4.class);
     }
 
 }

@@ -32,7 +32,11 @@ import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import io.netty.channel.ChannelFuture;
+import java.net.ConnectException;
+import java.net.InetSocketAddress;
+import java.util.Optional;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
+import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.session.Session;
 import net.minecraft.network.ClientConnection;
@@ -44,14 +48,16 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.net.InetSocketAddress;
-
 @Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {
 
     @Shadow
     @Final
     ServerInfo field_40415;
+
+    @Final
+    @Shadow
+    ServerAddress field_33737;
 
     @Shadow
     @Final
@@ -60,8 +66,9 @@ public abstract class MixinConnectScreen_1 {
     @Unique
     private boolean viaFabricPlus$useClassiCubeAccount;
 
-    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;"))
-    private ChannelFuture setServerInfoAndHandleDisconnect(InetSocketAddress address, boolean useEpoll, ClientConnection connection, Operation<ChannelFuture> original) {
+    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;", remap = false))
+    private Object setServerInfoAndProtocolVersion(Optional<InetSocketAddress> instance, Operation<Object> original) throws Exception {
+        final InetSocketAddress address = (InetSocketAddress) original.call(instance);
         final IServerInfo mixinServerInfo = (IServerInfo) this.field_40415;
 
         ProtocolVersion targetVersion = ProtocolTranslator.getTargetVersion();
@@ -70,16 +77,30 @@ public abstract class MixinConnectScreen_1 {
             mixinServerInfo.viaFabricPlus$passDirectConnectScreen(false); // reset state
         }
         if (targetVersion == ProtocolTranslator.AUTO_DETECT_PROTOCOL) {
-            this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
-            targetVersion = ProtocolVersionDetector.get(address, ProtocolTranslator.NATIVE_VERSION);
+            // If the server got already pinged, try to use that version if it's valid. Otherwise, perform auto-detect
+            final boolean serverPinged = this.field_40415.getStatus() == ServerInfo.Status.SUCCESSFUL || this.field_40415.getStatus() == ServerInfo.Status.INCOMPATIBLE;
+            if (serverPinged) {
+                targetVersion = ProtocolVersion.getProtocol(this.field_40415.protocolVersion);
+            }
+            if (!serverPinged || !targetVersion.isKnown()) {
+                this.field_2416.setStatus(Text.translatable("base.viafabricplus.detecting_server_version"));
+                try {
+                    targetVersion = ProtocolVersionDetector.get(this.field_33737, address, ProtocolTranslator.NATIVE_VERSION);
+                } catch (final ConnectException ignored) {
+                    // Don't let this one through as not relevant
+                }
+            }
         }
         ProtocolTranslator.setTargetVersion(targetVersion, true);
-
         this.viaFabricPlus$useClassiCubeAccount = AuthenticationSettings.INSTANCE.setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classicubeMPPass != null;
 
+        return address;
+    }
+
+    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;"))
+    private ChannelFuture resetProtocolVersionAfterDisconnect(InetSocketAddress address, boolean useEpoll, ClientConnection connection, Operation<ChannelFuture> original) {
         final ChannelFuture future = original.call(address, useEpoll, connection);
         ProtocolTranslator.injectPreviousVersionReset(future.channel());
-
         return future;
     }
 

@@ -49,7 +49,9 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
     @Override
     protected void init() {
         super.init();
-        this.setupSubtitle(Text.translatable("classicube.viafabricplus.account"), ConfirmLinkScreen.opening(this, ClassiCubeHandler.CLASSICUBE_ROOT_URI.toString()));
+        if (this.getSubtitle() == null) {
+            this.setupSubtitle(Text.translatable("classicube.viafabricplus.account"), ConfirmLinkScreen.opening(this, ClassiCubeHandler.CLASSICUBE_ROOT_URI.toString()));
+        }
 
         this.addDrawableChild(nameField = new TextFieldWidget(textRenderer, width / 2 - 150, 70 + 10, 300, 20, Text.empty()));
         this.addDrawableChild(passwordField = new TextFieldWidget(textRenderer, width / 2 - 150, nameField.getY() + 20 + 5, 300, 20, Text.empty()));
@@ -83,12 +85,12 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
 
                 @Override
                 public void handleSuccessfulLogin(CCAccount account) {
-                    ClassiCubeServerListScreen.open(prevScreen, this);
+                    ClassiCubeServerListScreen.INSTANCE.open(prevScreen);
                 }
 
                 @Override
                 public void handleException(Throwable throwable) {
-                    ViaFabricPlusImpl.INSTANCE.logger().error("Error while logging in to ClassiCube!", throwable);
+                    ViaFabricPlusImpl.INSTANCE.getLogger().error("Error while logging in to ClassiCube!", throwable);
                     setupSubtitle(Text.of(throwable.getMessage()));
                 }
             });

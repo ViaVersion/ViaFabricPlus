@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "id": "viafabricplus-visuals",
+  "version": "${version}",
+  "name": "ViaFabricPlus Visuals",
+  "description": "${description}",
+  "authors": [
+    {
+      "name": "FlorianMichael/EnZaXD",
+      "contact": {
+        "email": "florian.michael07@gmail.com",
+        "homepage": "https://github.com/FlorianMichael"
+      }
+    },
+    {
+      "name": "RK_01",
+      "contact": {
+        "homepage": "https://github.com/RaphiMC"
+      }
+    }
+  ],
+  "contributors": [
+    "allinkdev",
+    "lowercasebtw",
+    {
+      "name": "GitHub contributors",
+      "contact": {
+        "homepage": "https://github.com/ViaVersion/ViaFabricPlus/graphs/contributors"
+      }
+    }
+  ],
+  "contact": {
+    "homepage": "https://florianmichael.de/",
+    "sources": "https://github.com/ViaVersion/ViaFabricPlus",
+    "issues": "https://github.com/ViaVersion/ViaFabricPlus/issues",
+    "email": "florian.michael07@gmail.com"
+  },
+  "license": "GPL-v3",
+  "environment": "client",
+  "entrypoints": {
+    "viafabricplus": [
+      "com.viaversion.viafabricplus.visuals.ViaFabricPlusVisuals"
+    ]
+  },
+  "mixins": [
+    "viafabricplus-visuals.mixins.json"
+  ],
+  "accessWidener": "viafabricplus-visuals.accesswidener",
+  "depends": {
+    "viafabricplus": ">=4.2.1"
+  },
+  "custom": {
+    "modmenu": {
+      "parent": "viafabricplus"
+    }
+  }
+}

@@ -46,7 +46,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = ClientPlayerEntity.class, priority = 2000)
+@Mixin(ClientPlayerEntity.class)
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
 
     @Shadow
@@ -62,15 +62,10 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20) && instance.hasVehicle();
     }
 
-    @Redirect(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
-    private boolean removeVehicleCheck(ClientPlayerEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_19_3) && instance.hasVehicle();
-    }
-
     @Inject(method = "startRiding", at = @At("RETURN"))
     private void setRotationsWhenInBoat(Entity entity, boolean force, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValueZ() && entity instanceof BoatEntity && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
-            this.prevYaw = entity.getYaw();
+            this.lastYaw = entity.getYaw();
             this.setYaw(entity.getYaw());
             this.setHeadYaw(entity.getYaw());
         }

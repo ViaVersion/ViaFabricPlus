@@ -23,14 +23,16 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FacingBlock;
+import net.minecraft.block.PistonHeadBlock;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -39,29 +41,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PistonHeadBlock.class)
 public abstract class MixinPistonHeadBlock extends FacingBlock {
 
-    @Shadow
-    @Final
-    protected static VoxelShape DOWN_HEAD_SHAPE;
+    @Unique
+    private static final VoxelShape viaFabricPlus$east_head_shape = Block.createCuboidShape(12.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 
-    @Shadow
-    @Final
-    protected static VoxelShape UP_HEAD_SHAPE;
+    @Unique
+    private static final VoxelShape viaFabricPlus$west_head_shape = Block.createCuboidShape(0.0, 0.0, 0.0, 4.0, 16.0, 16.0);
 
-    @Shadow
-    @Final
-    protected static VoxelShape NORTH_HEAD_SHAPE;
+    @Unique
+    private static final VoxelShape viaFabricPlus$south_head_shape = Block.createCuboidShape(0.0, 0.0, 12.0, 16.0, 16.0, 16.0);
 
-    @Shadow
-    @Final
-    protected static VoxelShape SOUTH_HEAD_SHAPE;
+    @Unique
+    private static final VoxelShape viaFabricPlus$north_head_shape = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 16.0, 4.0);
 
-    @Shadow
-    @Final
-    protected static VoxelShape WEST_HEAD_SHAPE;
+    @Unique
+    private static final VoxelShape viaFabricPlus$up_head_shape = Block.createCuboidShape(0.0, 12.0, 0.0, 16.0, 16.0, 16.0);
 
-    @Shadow
-    @Final
-    protected static VoxelShape EAST_HEAD_SHAPE;
+    @Unique
+    private static final VoxelShape viaFabricPlus$down_head_shape = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 4.0, 16.0);
 
     @Unique
     private static final VoxelShape viaFabricPlus$up_arm_shape_r1_8_x = Block.createCuboidShape(6.0, 0.0, 6.0, 10.0, 12.0, 10.0);
@@ -97,12 +93,12 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
         // Outline shape for piston head doesn't exist in <= 1.12.2
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(switch (state.get(PistonHeadBlock.FACING)) {
-                case DOWN -> DOWN_HEAD_SHAPE;
-                case UP -> UP_HEAD_SHAPE;
-                case NORTH -> NORTH_HEAD_SHAPE;
-                case SOUTH -> SOUTH_HEAD_SHAPE;
-                case WEST -> WEST_HEAD_SHAPE;
-                case EAST -> EAST_HEAD_SHAPE;
+                case DOWN -> viaFabricPlus$down_head_shape;
+                case UP -> viaFabricPlus$up_head_shape;
+                case NORTH -> viaFabricPlus$north_head_shape;
+                case SOUTH -> viaFabricPlus$south_head_shape;
+                case WEST -> viaFabricPlus$west_head_shape;
+                case EAST -> viaFabricPlus$east_head_shape;
             });
         }
     }
@@ -111,12 +107,12 @@ public abstract class MixinPistonHeadBlock extends FacingBlock {
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return switch (state.get(PistonHeadBlock.FACING)) {
-                case DOWN -> VoxelShapes.union(DOWN_HEAD_SHAPE, viaFabricPlus$down_arm_shape_r1_8_x);
-                case UP -> VoxelShapes.union(UP_HEAD_SHAPE, viaFabricPlus$up_arm_shape_r1_8_x);
-                case NORTH -> VoxelShapes.union(NORTH_HEAD_SHAPE, viaFabricPlus$north_arm_shape_r1_8_x);
-                case SOUTH -> VoxelShapes.union(SOUTH_HEAD_SHAPE, viaFabricPlus$south_arm_shape_r1_8_x);
-                case WEST -> VoxelShapes.union(WEST_HEAD_SHAPE, viaFabricPlus$west_arm_shape_r1_8_x);
-                case EAST -> VoxelShapes.union(EAST_HEAD_SHAPE, viaFabricPlus$east_arm_shape_r1_8_x);
+                case DOWN -> VoxelShapes.union(viaFabricPlus$down_head_shape, viaFabricPlus$down_arm_shape_r1_8_x);
+                case UP -> VoxelShapes.union(viaFabricPlus$up_head_shape, viaFabricPlus$up_arm_shape_r1_8_x);
+                case NORTH -> VoxelShapes.union(viaFabricPlus$north_head_shape, viaFabricPlus$north_arm_shape_r1_8_x);
+                case SOUTH -> VoxelShapes.union(viaFabricPlus$south_head_shape, viaFabricPlus$south_arm_shape_r1_8_x);
+                case WEST -> VoxelShapes.union(viaFabricPlus$west_head_shape, viaFabricPlus$west_arm_shape_r1_8_x);
+                case EAST -> VoxelShapes.union(viaFabricPlus$east_head_shape, viaFabricPlus$east_arm_shape_r1_8_x);
             };
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             // Collision shape for piston head in <= 1.12.2 needs to be the 1.13+ outline shape

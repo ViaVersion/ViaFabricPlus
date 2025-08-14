@@ -29,8 +29,31 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.mob.*;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.mob.AbstractPiglinEntity;
+import net.minecraft.entity.mob.AbstractSkeletonEntity;
+import net.minecraft.entity.mob.EndermiteEntity;
+import net.minecraft.entity.mob.HoglinEntity;
+import net.minecraft.entity.mob.PatrolEntity;
+import net.minecraft.entity.mob.PhantomEntity;
+import net.minecraft.entity.mob.PiglinEntity;
+import net.minecraft.entity.mob.RavagerEntity;
+import net.minecraft.entity.mob.ShulkerEntity;
+import net.minecraft.entity.mob.SilverfishEntity;
+import net.minecraft.entity.mob.SkeletonHorseEntity;
+import net.minecraft.entity.mob.SpiderEntity;
+import net.minecraft.entity.mob.VexEntity;
+import net.minecraft.entity.mob.ZoglinEntity;
+import net.minecraft.entity.mob.ZombieEntity;
+import net.minecraft.entity.mob.ZombifiedPiglinEntity;
+import net.minecraft.entity.passive.AbstractDonkeyEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
+import net.minecraft.entity.passive.AllayEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.CamelEntity;
+import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.passive.LlamaEntity;
+import net.minecraft.entity.passive.SnifferEntity;
+import net.minecraft.entity.passive.StriderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractBoatEntity;
 import net.minecraft.entity.vehicle.AbstractChestBoatEntity;
@@ -125,8 +148,8 @@ public final class EntityRidingOffsetsPre1_20_2 {
             yOffset = entity.getHeight() * 0.5F;
         } else if (entity instanceof StriderEntity striderEntity) {
             final float speed = Math.min(0.25F, striderEntity.limbAnimator.getSpeed());
-            final float pos = striderEntity.limbAnimator.getPos();
-            yOffset = striderEntity.getHeight() - 0.19F + (0.12F * MathHelper.cos(pos * 1.5F) * 2F * speed);
+            final float animationProgress = striderEntity.limbAnimator.getAnimationProgress();
+            yOffset = striderEntity.getHeight() - 0.19F + (0.12F * MathHelper.cos(animationProgress * 1.5F) * 2F * speed);
         } else if (entity instanceof ZoglinEntity zoglinEntity) {
             yOffset = zoglinEntity.getHeight() - (zoglinEntity.isBaby() ? 0.2F : 0.15F);
         } else if (entity instanceof AbstractDonkeyEntity) {

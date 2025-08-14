@@ -42,15 +42,6 @@ public abstract class MixinLivingEntity {
         }
     }
 
-    @ModifyConstant(method = "getBlockingItem", constant = @Constant(intValue = 5), require = 0 /* Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/684 */)
-    private int removeBlockActionUseDelay(int constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return 0;
-        } else {
-            return constant;
-        }
-    }
-
     @ModifyConstant(method = "tickMovement", constant = @Constant(doubleValue = 0.003D))
     private double modifyVelocityZero(double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {

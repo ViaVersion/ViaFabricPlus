@@ -25,14 +25,13 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Style;
-import net.minecraft.util.StringHelper;
+import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Screen.class)
 public abstract class MixinScreen {
@@ -41,11 +40,17 @@ public abstract class MixinScreen {
     @Nullable
     protected MinecraftClient client;
 
-    @Inject(method = "handleTextClick", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", shift = At.Shift.BEFORE, ordinal = 1, remap = false), cancellable = true)
-    private void allowRunCommandAction(Style style, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
-            this.client.player.networkHandler.sendChatMessage(StringHelper.stripInvalidChars(style.getClickEvent().getValue()));
-            cir.setReturnValue(true);
+    @Inject(method = "handleRunCommand", at = @At("HEAD"), cancellable = true)
+    private static void changeCommandHandling(ClientPlayerEntity player, String command, Screen screenAfterRun, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4)) {
+            return;
+        }
+
+        if (!command.startsWith("/")) {
+            ci.cancel();
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
+                player.networkHandler.sendChatMessage(command);
+            }
         }
     }
 

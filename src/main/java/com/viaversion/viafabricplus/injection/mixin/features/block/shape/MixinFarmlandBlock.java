@@ -55,7 +55,8 @@ public abstract class MixinFarmlandBlock extends Block {
         if (MinecraftClient.getInstance() != null && MinecraftClient.getInstance().isInSingleplayer()) {
             // When joining the singleplayer, we set the target version to the native version when the integrated server is started
             // However this is already to late for blocks since the world and entities have already been loaded, causing block collisions
-            // to make issues as described via https://github.com/ViaVersion/ViaFabricPlus/issues/436. TODO move version setting to earlier stage
+            // to make issues as described via https://github.com/ViaVersion/ViaFabricPlus/issues/436. A proper fix would be to
+            // move version setting to earlier stage but /shrug
             return;
         }
 

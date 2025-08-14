@@ -69,7 +69,8 @@ public abstract class MixinAddServerScreen extends Screen {
             return;
         }
 
-        final ProtocolVersion forcedVersion = ((IServerInfo) server).viaFabricPlus$forcedVersion();
+        final IServerInfo mixinServerInfo = (IServerInfo) server;
+        final ProtocolVersion forcedVersion = mixinServerInfo.viaFabricPlus$forcedVersion();
 
         // Restore input if the user cancels the version selection screen (or if the user is editing an existing server)
         if (viaFabricPlus$nameField != null && viaFabricPlus$addressField != null) {
@@ -85,7 +86,7 @@ public abstract class MixinAddServerScreen extends Screen {
             viaFabricPlus$nameField = serverNameField.getText();
             viaFabricPlus$addressField = addressField.getText();
 
-            client.setScreen(new PerServerVersionScreen(this, version -> ((IServerInfo) server).viaFabricPlus$forceVersion(version)));
+            client.setScreen(new PerServerVersionScreen(this, mixinServerInfo::viaFabricPlus$forceVersion, mixinServerInfo::viaFabricPlus$forcedVersion));
         }).size(98, 20);
 
         // Set the button's position according to the configured orientation and add the button to the screen
