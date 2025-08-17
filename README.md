@@ -12,20 +12,31 @@
   <p><strong>Minecraft Fabric mod which allows you to join <em>every</em> Minecraft server version (Classic, Alpha, Beta, Release, April Fools, Bedrock)</strong></p>
 </div>
 
-# Why another protocol translator?
+**ViaFabricPlus** is a Minecraft mod for [Fabric](https://fabricmc.net/) that builds on
+the [ViaVersion plugin](https://github.com/ViaVersion/ViaVersion).
+It lets you connect to servers from almost every Minecraft version while fixing issues that the original project
+couldn’t.
 
-ViaFabricPlus implements the [ViaVersion projects](https://github.com/ViaVersion) into Fabric and provides tons of fixes
-to the existing protocol translation which can't be implemented in the original ViaVersion project.
-These fixes consist of movement changes, block/entity collisions, rendering changes, and many more.
+These fixes make older servers feel much closer to how they originally played, with improvements to movement, block and
+entity interactions, graphics, and more. In short, it recreates the classic Minecraft experience on today’s client.
 
-At the time of writing, ViaFabricPlus is the only mod that supports joining all Minecraft server versions down to the
-first multiplayer version while implementing
-legacy combat mechanics, movement, and rendering changes to make the gameplay feel more like the old days.
+## Important to know
 
-**On the other hand, ViaFabricPlus supports only the latest Minecraft client version, and only Fabric.**
-If you need ViaFabricPlus for older versions of the game, you can use [ViaFabric](https://viaversion.com/fabric)
+- Works **only with the newest Minecraft client version**
+- Runs **only on [Fabric](https://fabricmc.net/)**. (There won't be a Forge or NeoForge version)
+- **Multiplayer only** – it does not affect singleplayer worlds
+- **Clientside only** - it does not run on Multiplayer servers
+- **No cross-version resource packs** – resource packs from older versions are not supported
+- If you want to play using **older Minecraft clients**, you should use the original [ViaFabric](https://viaversion.com/fabric) instead.
+  For a detailed comparison between the two projects, check out the [ViaFabric vs ViaFabricPlus section](https://github.com/ViaVersion/ViaFabric?tab=readme-ov-file#differences-with-viafabricplus).
 
-## Supported Server versions
+## How to use
+
+- [Step-by-step installation and usage guide](docs/USAGE.md)
+- Found a bug? Please report it on the [issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues)
+- Got questions? Join the [ViaVersion Discord](https://discord.gg/viaversion)
+
+### Supported Server versions
 
 - Release (1.0.0 - 1.21.8)
 - Beta (b1.0 - b1.8.1)
@@ -35,42 +46,18 @@ If you need ViaFabricPlus for older versions of the game, you can use [ViaFabric
 - Combat Snapshots (Combat Test 8c)
 - Bedrock Edition 1.21.100 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
 
-## How to (Users)
+## For Developers & Contributors
 
-- [A detailed guide on how to install and use the mod](docs/USAGE.md)
-- If you encounter any issues, please report them on either:
-    - [the issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues)
-    - [the ViaVersion Discord](https://discord.gg/viaversion)
-
-## How to (Developers)
-
-- [Detailed guidelines for contributions as well as setting up a dev environment](CONTRIBUTING.md)
-- [API and integration examples for developers](docs/DEVELOPER_API.md)
-
-## ViaFabric
-
-[ViaFabric](https://github.com/ViaVersion/ViaFabric) can be used for server-side purposes or when using older versions
-of the game.
-
-### Does it work with ViaFabricPlus:
-
-- No, ViaFabricPlus cannot be used with ViaFabric.
-
-### Differences with ViaFabric:
-
-|                                  | ViaFabric                                       | ViaFabricPlus                                                   |
-|----------------------------------|-------------------------------------------------|-----------------------------------------------------------------|
-| Can be installed on              | Multiple client/server versions with fabric     | Latest client-side version with fabric                          |
-| Objectives                       | Simply implement ViaVersion                     | Implements ViaVersion with client-side fixes to version changes |
-| How does it work?                | Modifying packets at network code               | Modifying client code more deeply                               |
-| Triggering anti-cheats           | Very likely                                     | Mostly not                                                      |
+- [Contribution guide & dev setup](CONTRIBUTING.md)
+- [API docs & integration examples](docs/DEVELOPER_API.md)
 
 ## Credits
 
-Special thanks to all our [Contributors](https://github.com/ViaVersion/ViaFabricPlus/graphs/contributors).
+Huge thanks to all our [contributors](https://github.com/ViaVersion/ViaFabricPlus/graphs/contributors) who made this
+project possible.
 
 ## Disclaimer
 
-It cannot be guaranteed that this mod is allowed on specific servers as it can possibly cause problems with anti-cheat
-plugins.\
-***(USE ONLY WITH CAUTION!)***
+We cannot guarantee this mod will be allowed on every server.
+Some servers may treat it as suspicious and flag it with anti-cheat plugins.
+**Use responsibly and at your own risk!**
