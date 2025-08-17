@@ -96,6 +96,15 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         super(client, connection, connectionState);
     }
 
+    @Redirect(method = "onVehicleMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;distanceTo(Lnet/minecraft/util/math/Vec3d;)D"))
+    private double allowSmallValues(Vec3d instance, Vec3d vec) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            return Integer.MAX_VALUE;
+        } else {
+            return instance.distanceTo(vec);
+        }
+    }
+
     @WrapWithCondition(method = "onPlayerPositionLook", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
     private boolean changePacketOrder(ClientConnection instance, Packet<?> packet) {
         final boolean cancel = ProtocolTranslator.getTargetVersion().equalTo(ProtocolVersion.v1_21_2);
