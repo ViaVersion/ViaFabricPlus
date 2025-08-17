@@ -61,7 +61,7 @@ dependencies {
     jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
         exclude(group = "io.netty")
     }
-    jij("de.florianmichael:Classic4J:2.1.1-SNAPSHOT")
+    jij("de.florianmichael:Classic4J:2.1.0")
 }
 
 includeTransitiveJijDependencies()
