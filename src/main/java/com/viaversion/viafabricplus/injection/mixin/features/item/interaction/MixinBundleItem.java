@@ -23,21 +23,32 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BundleContentsComponent;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BundleItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BundleItem.class)
 public abstract class MixinBundleItem {
 
-    @Redirect(method = "use", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;SUCCESS:Lnet/minecraft/util/ActionResult$Success;"))
-    private ActionResult.Success dontSwing() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            return ActionResult.CONSUME;
-        } else {
-            return ActionResult.SUCCESS;
+    @Inject(method = "use", at = @At("RETURN"), cancellable = true)
+    private void dontSwing(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            final ItemStack itemStack = user.getStackInHand(hand);
+            final BundleContentsComponent component = itemStack.get(DataComponentTypes.BUNDLE_CONTENTS);
+            if (component == null || component.isEmpty()) {
+                cir.setReturnValue(ActionResult.FAIL);
+            }
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            cir.setReturnValue(ActionResult.CONSUME);
         }
     }
 
