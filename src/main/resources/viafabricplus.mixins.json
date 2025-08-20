@@ -163,6 +163,7 @@
     "features.item.interaction.MixinBrushItem",
     "features.item.interaction.MixinBucketItem",
     "features.item.interaction.MixinBundleItem",
+    "features.item.interaction.MixinConsumableComponent",
     "features.item.interaction.MixinEnderPearlItem",
     "features.item.interaction.MixinEquippableComponent",
     "features.item.interaction.MixinFireChargeItem",
@@ -195,6 +196,7 @@
     "features.movement.collision.MixinHoneyBlock",
     "features.movement.collision.MixinLivingEntity",
     "features.movement.collision.MixinSoulSandBlock",
+    "features.movement.collision.MixinVoxelShapes",
     "features.movement.constants.MixinClientPlayerEntity",
     "features.movement.constants.MixinEntity",
     "features.movement.constants.MixinLivingEntity",
@@ -281,8 +283,7 @@
     "features.world.border_chunk_rendering.MixinBuiltChunk",
     "features.world.disable_sequencing.MixinClientWorld",
     "features.world.item_picking.MixinMinecraftClient",
-    "features.world.remove_server_view_distance.MixinGameOptions",
-    "features.movement.collision.MixinVoxelShapes"
+    "features.world.remove_server_view_distance.MixinGameOptions"
   ],
   "injectors": {
     "defaultRequire": 1
