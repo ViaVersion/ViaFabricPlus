@@ -1,7 +1,5 @@
 accessWidener v1 named
 
-accessible class net/minecraft/entity/Entity$QueuedCollisionCheck
-
 accessible field net/minecraft/network/ClientConnection channel Lio/netty/channel/Channel;
 accessible field net/minecraft/client/network/AllowedAddressResolver redirectResolver Lnet/minecraft/client/network/RedirectResolver;
 accessible field net/minecraft/client/gui/screen/GameMenuScreen exitButton Lnet/minecraft/client/gui/widget/ButtonWidget;
@@ -43,3 +41,4 @@ accessible method net/minecraft/block/entity/BlockEntity writeIdentifyingData (L
 extendable method net/minecraft/entity/Entity updateTrackedPositionAndAngles (Lnet/minecraft/util/math/Vec3d;FF)V
 
 accessible class net/minecraft/client/font/FontStorage$GlyphPair
+accessible class net/minecraft/entity/Entity$QueuedCollisionCheck

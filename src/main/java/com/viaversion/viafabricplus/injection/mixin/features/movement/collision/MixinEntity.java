@@ -22,8 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
 
 import com.google.common.collect.ImmutableList;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
@@ -165,12 +164,9 @@ public abstract class MixinEntity {
         }
     }
 
-    @WrapMethod(method = "addQueuedCollisionChecks")
-    private void removeExtraCollisionChecks(Entity.QueuedCollisionCheck queuedCollisionCheck, Operation<Void> original) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return;
-        }
-        original.call(queuedCollisionCheck);
+    @WrapWithCondition(method = "move",  at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;addQueuedCollisionChecks(Lnet/minecraft/entity/Entity$QueuedCollisionCheck;)V"))
+    private boolean removeExtraCollisionChecks(Entity instance, Entity.QueuedCollisionCheck queuedCollisionCheck) {
+        return !ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4);
     }
 
 }
