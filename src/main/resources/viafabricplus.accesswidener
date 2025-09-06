@@ -41,3 +41,4 @@ accessible method net/minecraft/block/entity/BlockEntity writeIdentifyingData (L
 extendable method net/minecraft/entity/Entity updateTrackedPositionAndAngles (Lnet/minecraft/util/math/Vec3d;FF)V
 
 accessible class net/minecraft/client/font/FontStorage$GlyphPair
+accessible class net/minecraft/entity/Entity$QueuedCollisionCheck

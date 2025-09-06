@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
 
 import com.google.common.collect.ImmutableList;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
@@ -74,6 +75,11 @@ public abstract class MixinEntity {
     @Shadow
     @Final
     private static ImmutableList<Direction.Axis> X_THEN_Z;
+
+    @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;addQueuedCollisionChecks(Lnet/minecraft/entity/Entity$QueuedCollisionCheck;)V"))
+    private boolean removeExtraCollisionChecks(Entity instance, Entity.QueuedCollisionCheck queuedCollisionCheck) {
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_5);
+    }
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;lengthSquared()D", ordinal = 1), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;")
