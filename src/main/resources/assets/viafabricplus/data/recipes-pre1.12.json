@@ -1,0 +1,5618 @@
+{
+  "a1.1.0-a1.1.2.1": [
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:iron_ingot",
+        "X": "minecraft:redstone_wire"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:compass"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stick",
+        "X": "minecraft:tripwire"
+      },
+      "pattern": [
+        "  #",
+        " #X",
+        "# X"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:fishing_rod"
+      }
+    }
+  ],
+  "a1.2.0-a1.2.1.1": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.35,
+      "ingredient": "minecraft:cod",
+      "result": {
+        "id": "minecraft:cooked_cod"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:gold_ingot",
+        "X": "minecraft:redstone_wire"
+      },
+      "pattern": [
+        " # ",
+        "#X#",
+        " # "
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:clock"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "A": "minecraft:carved_pumpkin",
+        "B": "minecraft:torch"
+      },
+      "pattern": [
+        "A",
+        "B"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:jack_o_lantern"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:glowstone_dust"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:glowstone"
+      }
+    }
+  ],
+  "b1.2-b1.2.2": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.2,
+      "ingredient": "minecraft:cactus",
+      "result": {
+        "id": "minecraft:green_dye"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.15,
+      "ingredient": "#minecraft:logs_that_burn",
+      "result": {
+        "id": "minecraft:charcoal"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:lapis_lazuli"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:lapis_block"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:lapis_block"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 9,
+        "id": "minecraft:lapis_lazuli"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "bonemeal",
+      "ingredients": [
+        "minecraft:bone"
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:bone_meal"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:cocoa",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:brown_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:ink_sac",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:black_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:lapis_lazuli",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:blue_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:lapis_lazuli",
+        "minecraft:green_dye"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:cyan_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:cyan_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:cyan_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:ink_sac",
+        "minecraft:bone_meal"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:gray_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:gray_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:gray_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:green_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:green_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "light_blue_dye",
+      "ingredients": [
+        "minecraft:lapis_lazuli",
+        "minecraft:bone_meal"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:light_blue_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:light_blue_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:light_blue_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "light_gray_dye",
+      "ingredients": [
+        "minecraft:gray_dye",
+        "minecraft:bone_meal"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:light_gray_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "light_gray_dye",
+      "ingredients": [
+        "minecraft:inc_sac",
+        "minecraft:bone_meal",
+        "minecraft:bone_meal"
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:light_gray_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:light_gray_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:light_gray_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:green_dye",
+        "minecraft:bone_meal"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:lime_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:lime_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:lime_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "magenta_dye",
+      "ingredients": [
+        "minecraft:lapis_lazuli",
+        "minecraft:red_dye",
+        "minecraft:red_dye",
+        "minecraft:bone_meal"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:magenta_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "magenta_dye",
+      "ingredients": [
+        "minecraft:lapis_lazuli",
+        "minecraft:red_dye",
+        "minecraft:pink_dye"
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:magenta_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "magenta_dye",
+      "ingredients": [
+        "minecraft:purple_dye",
+        "minecraft:pink_dye"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:magenta_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:magenta_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:magenta_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "orange_dye",
+      "ingredients": [
+        "minecraft:red_dye",
+        "minecraft:yellow_dye"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:orange_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:orange_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:orange_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "pink_dye",
+      "ingredients": [
+        "minecraft:red_dye",
+        "minecraft:bone_meal"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:pink_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:pink_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:pink_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:lapis_lazuli",
+        "minecraft:red_dye"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:purple_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:purple_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:purple_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "red_dye",
+      "ingredients": [
+        "minecraft:poppy"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:red_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:red_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:red_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "yellow_dye",
+      "ingredients": [
+        "minecraft:dandelion"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:yellow_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "wool",
+      "ingredients": [
+        "minecraft:yellow_dye",
+        "minecraft:white_wool"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:yellow_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:sand"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:sandstone"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:cobblestone",
+        "X": "minecraft:bow",
+        "R": "minecraft:redstone_wire"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "#R#"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:dispenser"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stick",
+        "X": ["minecraft:coal", "minecraft:charcoal"]
+      },
+      "pattern": [
+        "X",
+        "#"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:torch"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:sugar_cane"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:sugar"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "A": "minecraft:milk_bucket",
+        "B": "minecraft:sugar",
+        "C": "minecraft:wheat",
+        "E": "minecraft:egg"
+      },
+      "pattern": [
+        "AAA",
+        "BEB",
+        "CCC"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:cake"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "#minecraft:planks",
+        "X": "minecraft:redstone_wire"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:note_block"
+      }
+    }
+  ],
+  "b1.3-b1.3.1": [
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stone"
+      },
+      "pattern": [
+        "##"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:stone_pressure_plate"
+      },
+      "override": true
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "#minecraft:planks"
+      },
+      "pattern": [
+        "##"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:oak_pressure_plate"
+      },
+      "override": true
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:redstone_torch",
+        "X": "minecraft:redstone_wire",
+        "I": "minecraft:stone"
+      },
+      "pattern": [
+        "#X#",
+        "III"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:repeater"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:cobblestone"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:cobblestone_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": ["minecraft:sandstone", "minecraft:chiseled_sandstone", "minecraft:cut_sandstone"]
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:sandstone_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "#minecraft:planks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:oak_slab"
+      }
+    }
+  ],
+  "b1.4-b1.4.1": [
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:wheat",
+        "X": "minecraft:cocoa"
+      },
+      "pattern": [
+        "#X#"
+      ],
+      "result": {
+        "count": 8,
+        "id": "minecraft:cookie"
+      }
+    }
+  ],
+  "b1.5-b1.5.2": [
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stick",
+        "X": "minecraft:gold_ingot",
+        "R": "minecraft:redstone_wire"
+      },
+      "pattern": [
+        "X X",
+        "X#X",
+        "XRX"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:powered_rail"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stone_pressure_plate",
+        "X": "minecraft:iron_ingot",
+        "R": "minecraft:redstone_wire"
+      },
+      "pattern": [
+        "X X",
+        "X#X",
+        "XRX"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:detector_rail"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stick"
+      },
+      "pattern": [
+        "# #",
+        "###",
+        "# #"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:ladder"
+      },
+      "override": true
+    }
+  ],
+  "b1.6-b1.6.6": [
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:paper",
+        "X": "minecraft:compass"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:map"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:oak_trapdoor"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:tripwire"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:white_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:glowstone_dust"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:glowstone"
+      },
+      "override": true
+    }
+  ],
+  "b1.7-b1.7.3": [
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        " #",
+        "# "
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:shears"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:cobblestone",
+        "X": "minecraft:iron_ingot",
+        "R": "minecraft:redstone_wire",
+        "T": "#minecraft:planks"
+      },
+      "pattern": [
+        "TTT",
+        "#X#",
+        "#R#"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:piston"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "P": "minecraft:piston",
+        "S": "minecraft:slimeball"
+      },
+      "pattern": [
+        "S",
+        "P"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:sticky_piston"
+      }
+    }
+  ],
+  "b1.8-b1.8.1": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.35,
+      "ingredient": "minecraft:beef",
+      "result": {
+        "id": "minecraft:cooked_beef"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.35,
+      "ingredient": "minecraft:chicken",
+      "result": {
+        "id": "minecraft:cooked_chicken"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "M": "minecraft:melon_slice"
+      },
+      "pattern": [
+        "M"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:melon_stem"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "M": "minecraft:melon_slice"
+      },
+      "pattern": [
+        "MMM",
+        "MMM",
+        "MMM"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:melon"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 16,
+        "id": "minecraft:glass_pane"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 16,
+        "id": "minecraft:iron_bars"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stone"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:stone_bricks"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": ["minecraft:stone_bricks", "minecraft:mossy_stone_bricks", "minecraft:cracked_stone_bricks", "minecraft:chiseled_stone_bricks"]
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:stone_brick_stairs"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:bricks"
+      },
+      "pattern": [
+        "# ",
+        "## ",
+        "###"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:brick_stairs"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": ["minecraft:stone_bricks", "minecraft:mossy_stone_bricks", "minecraft:cracked_stone_bricks", "minecraft:chiseled_stone_bricks"]
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:stone_brick_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:bricks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:brick_slab"
+      }
+    }
+  ],
+  "1.0.0-1.0.1": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.2,
+      "ingredient": "minecraft:lapis_ore",
+      "result": {
+        "id": "minecraft:lapis_lazuli"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.7,
+      "ingredient": "minecraft:redstone_ore",
+      "result": {
+        "id": "minecraft:redstone"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:coal_ore",
+      "result": {
+        "id": "minecraft:coal"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "gold_ingot",
+      "key": {
+        "#": "minecraft:gold_nugget"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:gold_ingot"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:gold_ingot"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 9,
+        "id": "minecraft:gold_nugget"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:blaze_powder",
+        "minecraft:slime_ball"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:magma_cream"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:blaze_rod"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:blaze_powder"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:spider_eye",
+        "minecraft:brown_mushroom",
+        "minecraft:sugar"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:fermented_spider_eye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "M": "minecraft:carved_pumpkin"
+      },
+      "pattern": [
+        "M"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:pumpkin_stem"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:obsidian",
+        "B": "minecraft:book",
+        "D": "minecraft:diamond"
+      },
+      "pattern": [
+        " B ",
+        "D#D",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:enchanting_table"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:ender_pearl",
+        "minecraft:blaze_powder"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:ender_eye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "# #",
+        "# #",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:cauldron"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:cobblestone",
+        "B": "minecraft:blaze_rod"
+      },
+      "pattern": [
+        " B ",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:brewing_stand"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:glass"
+      },
+      "pattern": [
+        "# #",
+        " # "
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:glass_bottle"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:nether_bricks"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:nether_brick_fence"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:nether_bricks"
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:nether_brick_stairs"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:brown_mushroom",
+        "minecraft:red_mushroom",
+        "minecraft:bowl"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:mushroom_stew"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:melon_slice",
+        "minecraft:gold_nugget"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:glistering_melon_slice"
+      }
+    }
+  ],
+  "1.2.1-1.2.3": [
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:gunpowder",
+        "minecraft:blaze_powder",
+        ["minecraft:coal", "minecraft:charcoal"]
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:fire_charge"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "R": "minecraft:redstone_wire",
+        "G": "minecraft:glowstone"
+      },
+      "pattern": [
+        " R ",
+        "RGR",
+        " R "
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:redstone_lamp"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": ["minecraft:stone_bricks", "minecraft:mossy_stone_bricks", "minecraft:cracked_stone_bricks", "minecraft:chiseled_stone_bricks"]
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:stone_brick_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:bricks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:brick_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:cobblestone"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:cobblestone_slab"
+      },
+      "override": true
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": ["minecraft:sandstone", "minecraft:chiseled_sandstone", "minecraft:cut_sandstone"]
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:sandstone_slab"
+      },
+      "override": true
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stone"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:smooth_stone_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stick"
+      },
+      "pattern": [
+        "# #",
+        "###",
+        "# #"
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:ladder"
+      },
+      "override": true
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "#minecraft:planks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:oak_slab"
+      },
+      "override": true
+    }
+  ],
+  "1.2.4-1.2.5": [
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:sandstone"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:cut_sandstone"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:sandstone_slab"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:chiseled_sandstone"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "planks",
+      "key": {
+        "#": "minecraft:jungle_log"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:jungle_planks"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "planks",
+      "key": {
+        "#": "minecraft:spruce_log"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:spruce_planks"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "planks",
+      "key": {
+        "#": "minecraft:jungle_log"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:jungle_planks"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "planks",
+      "key": {
+        "#": "minecraft:birch_log"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:birch_planks"
+      }
+    }
+  ],
+  "1.3.1-1.3.2": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 1,
+      "ingredient": "minecraft:emerald_ore",
+      "result": {
+        "id": "minecraft:emerald"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:emerald_block"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 9,
+        "id": "minecraft:emerald"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:emerald"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:emerald_block"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:obsidian",
+        "E": "minecraft:eyer_of_ender"
+      },
+      "pattern": [
+        "###",
+        "#E#",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:ender_chest"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "#minecraft:planks",
+        "S": "minecraft:stick",
+        "I": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "I",
+        "S",
+        "#"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:tripwire_hook"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": [
+          "minecraft:sandstone",
+          "minecraft:chiseled_sandstone",
+          "minecraft:cut_sandstone"
+        ]
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:sandstone_stairs"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "#minecraft:planks",
+        "S": "minecraft:stick",
+        "I": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "I",
+        "S",
+        "#"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:tripwire_hook"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_stairs",
+      "key": {
+        "#": "minecraft:jungle_planks"
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:jungle_stairs"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_stairs",
+      "key": {
+        "#": "minecraft:birch_planks"
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:birch_stairs"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_stairs",
+      "key": {
+        "#": "minecraft:spruce_planks"
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:spruce_stairs"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_slab",
+      "key": {
+        "#": "minecraft:oak_planks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:oak_slab"
+      },
+      "override": true
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_slab",
+      "key": {
+        "#": "minecraft:jungle_planks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:jungle_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_slab",
+      "key": {
+        "#": "minecraft:birch_planks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:birch_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_slab",
+      "key": {
+        "#": "minecraft:spruce_planks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:spruce_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "#minecraft:planks",
+        "X": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " X "
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:oak_sign"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:paper",
+        "minecraft:paper",
+        "minecraft:paper",
+        "minecraft:leather"
+      ],
+      "result": {
+        "id": "minecraft:book"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:book",
+        "minecraft:ink_sac",
+        "minecraft:feather"
+      ],
+      "result": {
+        "id": "minecraft:writable_book"
+      }
+    }
+  ],
+  "1.4.2": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.35,
+      "ingredient": "minecraft:potato",
+      "result": {
+        "id": "minecraft:baked_potato"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:pumpkin_pie"
+      },
+      "ingredients": [
+        "minecraft:carved_pumpkin",
+        "minecraft:sugar",
+        "minecraft:egg"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "S": "minecraft:nether_star",
+        "G": "minecraft:glass",
+        "O": "minecraft:obsidian"
+      },
+      "pattern": [
+        "GGG",
+        "GSG",
+        "OOO"
+      ],
+      "result": {
+        "id": "minecraft:beacon"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "I": "minecraft:iron_block",
+        "i": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "III",
+        " i ",
+        "iii"
+      ],
+      "result": {
+        "id": "minecraft:anvil"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": [
+          "#minecraft:planks"
+        ]
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "id": "minecraft:oak_button"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:gold_nugget",
+        "X": "minecraft:carrots"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "result": {
+        "id": "minecraft:golden_carrot"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stick",
+        "X": "minecraft:leather"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "result": {
+        "id": "minecraft:item_frame"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:fishing_rod",
+        "X": "minecraft:carrots"
+      },
+      "pattern": [
+        "# ",
+        " X"
+      ],
+      "result": {
+        "id": "minecraft:carrot_on_a_stick"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:brick"
+      },
+      "pattern": [
+        "# #",
+        " # "
+      ],
+      "result": {
+        "id": "minecraft:flower_pot"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:mossy_cobblestone"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:mossy_cobblestone_wall"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:cobblestone"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:cobblestone_wall"
+      }
+    },
+    {
+      "type": "minecraft:crafting_special_mapextending",
+      "category": "misc"
+    },
+    {
+      "type": "minecraft:crafting_special_mapcloning",
+      "category": "misc"
+    },
+    {
+      "type": "minecraft:crafting_special_armordye",
+      "category": "misc"
+    }
+  ],
+  "1.4.6-1.4.7": [
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:nether_brick"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:nether_brick_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_special_firework_rocket",
+      "category": "misc"
+    }
+  ],
+  "1.5-1.5.1": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.2,
+      "ingredient": "minecraft:nether_quartz_ore",
+      "result": {
+        "id": "minecraft:quartz"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:netherrack",
+      "result": {
+        "id": "minecraft:nether_brick"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:redstone_block"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 9,
+        "id": "minecraft:redstone_wire"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:redstone_wire"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "result": {
+        "id": "minecraft:redstone_block"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "Q": "minecraft:quartz",
+        "G": "minecraft:glass",
+        "W": [
+          "#minecraft:wooden_slabs"
+        ]
+      },
+      "pattern": [
+        "GGG",
+        "QQQ",
+        "WWW"
+      ],
+      "result": {
+        "id": "minecraft:daylight_detector"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "N": "minecraft:nether_brick"
+      },
+      "pattern": [
+        "NN",
+        "NN"
+      ],
+      "result": {
+        "id": "minecraft:nether_bricks"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "C": "minecraft:chest",
+        "I": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "I I",
+        "ICI",
+        " I "
+      ],
+      "result": {
+        "id": "minecraft:hopper"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "R": "minecraft:redstone_wire",
+        "#": "minecraft:cobblestone"
+      },
+      "pattern": [
+        "###",
+        "# #",
+        "#R#"
+      ],
+      "result": {
+        "id": "minecraft:dropper"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "##"
+      ],
+      "result": {
+        "id": "minecraft:heavy_weighted_pressure_plate"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:gold_ingot"
+      },
+      "pattern": [
+        "##"
+      ],
+      "result": {
+        "id": "minecraft:light_weighted_pressure_plate"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:redstone_torch",
+        "X": "minecraft:quartz",
+        "I": "minecraft:stone"
+      },
+      "pattern": [
+        " # ",
+        "#X#",
+        "III"
+      ],
+      "result": {
+        "id": "minecraft:comparator"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": [
+          "minecraft:quartz_block",
+          "minecraft:chiseled_quartz_block",
+          "minecraft:quartz_pillar"
+        ]
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:quartz_stairs"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "A": "minecraft:hopper"
+      },
+      "pattern": [
+        "A",
+        "B"
+      ],
+      "result": {
+        "id": "minecraft:hopper_minecart"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "A": "minecraft:tnt"
+      },
+      "pattern": [
+        "A",
+        "B"
+      ],
+      "result": {
+        "id": "minecraft:tnt_minecart"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:redstone_torch",
+        "S": "minecraft:stick",
+        "X": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "XSX",
+        "X#X",
+        "XSX"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:activator_rail"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": [
+          "minecraft:quartz_block",
+          "minecraft:chiseled_quartz_block",
+          "minecraft:quartz_pillar"
+        ]
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:quartz_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:quartz_slab"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "result": {
+        "id": "minecraft:chiseled_quartz_block"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:quartz_block"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:quartz_pillar"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:quartz"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:quartz_block"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:snow_block"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:snow"
+      }
+    }
+  ],
+  "1.6.1": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.35,
+      "ingredient": "minecraft:salmon",
+      "result": {
+        "id": "minecraft:cooked_salmon"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.35,
+      "ingredient": "minecraft:clay",
+      "result": {
+        "id": "minecraft:terracotta"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 9,
+        "id": "minecraft:coal"
+      },
+      "key": {
+        "#": "minecraft:coal_block"
+      },
+      "pattern": [
+        "#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:coal_block"
+      },
+      "key": {
+        "#": "minecraft:coal"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 9,
+        "id": "minecraft:wheat"
+      },
+      "key": {
+        "#": "minecraft:hay_block"
+      },
+      "pattern": [
+        "#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:hay_block"
+      },
+      "key": {
+        "#": "minecraft:wheat"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 2,
+        "id": "minecraft:lead"
+      },
+      "key": {
+        "~": "minecraft:tripwire",
+        "O": "minecraft:slime_ball"
+      },
+      "pattern": [
+        "~~ ",
+        "~O ",
+        "  ~"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:black_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:ink_sac"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:blue_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:lapis_lazuli"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:brown_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:cocoa"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:cyan_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:cyan_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:gray_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:gray_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:green_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:green_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:light_blue_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:light_blue_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:light_gray_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:light_gray_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:lime_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:lime_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:magenta_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:magenta_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:orange_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:orange_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:pink_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:pink_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:purple_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:purple_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:red_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:red_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:white_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:bone_meal"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:yellow_terracotta"
+      },
+      "key": {
+        "#": "minecraft:terracotta",
+        "X": "minecraft:yellow_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:black_carpet"
+      },
+      "key": {
+        "#": "minecraft:black_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:blue_carpet"
+      },
+      "key": {
+        "#": "minecraft:blue_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:brown_carpet"
+      },
+      "key": {
+        "#": "minecraft:brown_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:cyan_carpet"
+      },
+      "key": {
+        "#": "minecraft:cyan_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:gray_carpet"
+      },
+      "key": {
+        "#": "minecraft:gray_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:green_carpet"
+      },
+      "key": {
+        "#": "minecraft:green_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:light_blue_carpet"
+      },
+      "key": {
+        "#": "minecraft:light_blue_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:light_gray_carpet"
+      },
+      "key": {
+        "#": "minecraft:light_gray_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:lime_carpet"
+      },
+      "key": {
+        "#": "minecraft:lime_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:magenta_carpet"
+      },
+      "key": {
+        "#": "minecraft:magenta_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:orange_carpet"
+      },
+      "key": {
+        "#": "minecraft:orange_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:pink_carpet"
+      },
+      "key": {
+        "#": "minecraft:pink_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:purple_carpet"
+      },
+      "key": {
+        "#": "minecraft:purple_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:red_carpet"
+      },
+      "key": {
+        "#": "minecraft:red_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:white_carpet"
+      },
+      "key": {
+        "#": "minecraft:white_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:yellow_carpet"
+      },
+      "key": {
+        "#": "minecraft:yellow_wool"
+      },
+      "pattern": [
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:glistering_melon_slice"
+      },
+      "key": {
+        "#": "minecraft:gold_nugget",
+        "X": "minecraft:melon_slice"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "override": true
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:golden_apple"
+      },
+      "key": {
+        "#": "minecraft:gold_ingot",
+        "X": "minecraft:apple"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    }
+  ],
+  "1.7.2": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.15,
+      "ingredient": "minecraft:wet_sponge",
+      "result": {
+        "id": "minecraft:sponge"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:stone_bricks",
+      "result": {
+        "id": "minecraft:cracked_stone_bricks"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.35,
+      "ingredient": "minecraft:mutton",
+      "result": {
+        "id": "minecraft:cooked_mutton"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.35,
+      "ingredient": "minecraft:rabbit",
+      "result": {
+        "id": "minecraft:cooked_rabbit"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:black_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:ink_sac"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:blue_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:lapis_lazuli"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:brown_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:cocoa"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:cyan_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:cyan_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:gray_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:gray_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:green_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:green_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:light_blue_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:light_blue_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:light_gray_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:light_gray_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:lime_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:lime_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:magenta_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:magenta_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:orange_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:orange_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:pink_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:pink_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:purple_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:purple_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:red_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:red_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:white_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:bone_meal"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 8,
+        "id": "minecraft:yellow_stained_glass"
+      },
+      "key": {
+        "#": "minecraft:glass",
+        "X": "minecraft:yellow_dye"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:yellow_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:yellow_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:white_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:white_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:red_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:red_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:purple_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:purple_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:pink_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:pink_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:orange_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:orange_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:magenta_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:magenta_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:lime_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:lime_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:light_gray_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:light_gray_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:light_blue_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:light_blue_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:green_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:green_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:gray_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:gray_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:cyan_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:cyan_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:brown_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:brown_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:blue_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:blue_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 16,
+        "id": "minecraft:black_stained_glass_pane"
+      },
+      "key": {
+        "#": "minecraft:black_stained_glass"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "planks",
+      "key": {
+        "#": "minecraft:acacia_log"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:acacia_planks"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "planks",
+      "key": {
+        "#": "minecraft:dark_oak_log"
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:dark_oak_planks"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_slab",
+      "key": {
+        "#": "minecraft:acacia_planks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:acacia_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_stairs",
+      "key": {
+        "#": "minecraft:acacia_planks"
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:acacia_stairs"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_slab",
+      "key": {
+        "#": "minecraft:dark_oak_planks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 6,
+        "id": "minecraft:dark_oak_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_stairs",
+      "key": {
+        "#": "minecraft:dark_oak_planks"
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:dark_oak_stairs"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": [
+          "minecraft:sand",
+          "minecraft:red_sand"
+        ],
+        "X": "minecraft:gunpowder"
+      },
+      "pattern": [
+        "X#X",
+        "#X#",
+        "X#X"
+      ],
+      "result": {
+        "id": "minecraft:tnt"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "red_dye",
+      "ingredients": [
+        "minecraft:red_tulip"
+      ],
+      "result": {
+        "id": "minecraft:red_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "orange_dye",
+      "ingredients": [
+        "minecraft:orange_tulip"
+      ],
+      "result": {
+        "id": "minecraft:orange_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "light_gray_dye",
+      "ingredients": [
+        "minecraft:white_tulip"
+      ],
+      "result": {
+        "id": "minecraft:light_gray_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "pink_dye",
+      "ingredients": [
+        "minecraft:pink_tulip"
+      ],
+      "result": {
+        "id": "minecraft:pink_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "light_blue_dye",
+      "ingredients": [
+        "minecraft:blue_orchid"
+      ],
+      "result": {
+        "id": "minecraft:light_blue_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "magenta_dye",
+      "ingredients": [
+        "minecraft:allium"
+      ],
+      "result": {
+        "id": "minecraft:magenta_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "light_gray_dye",
+      "ingredients": [
+        "minecraft:azure_bluet"
+      ],
+      "result": {
+        "id": "minecraft:light_gray_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "light_gray_dye",
+      "ingredients": [
+        "minecraft:oxeye_daisy"
+      ],
+      "result": {
+        "id": "minecraft:light_gray_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "yellow_dye",
+      "ingredients": [
+        "minecraft:sunflower"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:yellow_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "pink_dye",
+      "ingredients": [
+        "minecraft:peony"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:pink_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "red_dye",
+      "ingredients": [
+        "minecraft:rose_bush"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:red_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "magenta_dye",
+      "ingredients": [
+        "minecraft:lilac"
+      ],
+      "result": {
+        "count": 2,
+        "id": "minecraft:magenta_dye"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        "minecraft:iron_ingot",
+        "minecraft:flint"
+      ],
+      "result": {
+        "id": "minecraft:flint_and_steel"
+      }
+    },
+    {
+      "type": "minecraft:crafting_special_bookcloning",
+      "category": "misc"
+    }
+  ],
+  "1.8": [
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:iron_door"
+      },
+      "key": {
+        "#": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:iron_trapdoor"
+      },
+      "key": {
+        "#": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:red_sandstone"
+      },
+      "key": {
+        "#": "minecraft:red_sand"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 4,
+        "id": "minecraft:cut_red_sandstone"
+      },
+      "key": {
+        "#": "minecraft:red_sandstone"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 6,
+        "id": "minecraft:red_sandstone_slab"
+      },
+      "key": {
+        "#": [
+          "minecraft:red_sandstone",
+          "minecraft:chiseled_red_sandstone",
+          "minecraft:cut_red_sandstone"
+        ]
+      },
+      "pattern": [
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 4,
+        "id": "minecraft:red_sandstone_stairs"
+      },
+      "key": {
+        "#": [
+          "minecraft:red_sandstone",
+          "minecraft:chiseled_red_sandstone",
+          "minecraft:cut_red_sandstone"
+        ]
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:chiseled_red_sandstone"
+      },
+      "key": {
+        "#": "minecraft:red_sandstone_slab"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:leather"
+      },
+      "key": {
+        "#": "minecraft:rabbit_hide"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:armor_stand"
+      },
+      "key": {
+        "/": "minecraft:stick",
+        "_": "minecraft:smooth_stone_slab"
+      },
+      "pattern": [
+        "///",
+        " / ",
+        "/_/"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:sea_lantern"
+      },
+      "key": {
+        "S": "minecraft:prismarine_shard",
+        "C": "minecraft:prismarine_crystals"
+      },
+      "pattern": [
+        "SCS",
+        "CCC",
+        "SCS"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:prismarine_bricks"
+      },
+      "key": {
+        "S": "minecraft:prismarine_shard"
+      },
+      "pattern": [
+        "SSS",
+        "SSS",
+        "SSS"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:prismarine"
+      },
+      "key": {
+        "S": "minecraft:prismarine_shard"
+      },
+      "pattern": [
+        "SS",
+        "SS"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:dark_prismarine"
+      },
+      "key": {
+        "S": "minecraft:prismarine_shard",
+        "I": "minecraft:ink_sac"
+      },
+      "pattern": [
+        "SSS",
+        "SIS",
+        "SSS"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 9,
+        "id": "minecraft:slime_ball"
+      },
+      "key": {
+        "#": "minecraft:slime_block"
+      },
+      "pattern": [
+        "#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:slime_block"
+      },
+      "key": {
+        "#": "minecraft:slime_ball"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 2,
+        "id": "minecraft:diorite"
+      },
+      "key": {
+        "Q": "minecraft:quartz",
+        "C": "minecraft:cobblestone"
+      },
+      "pattern": [
+        "CQ",
+        "QC"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 2,
+        "id": "minecraft:andesite"
+      },
+      "ingredients": [
+        "minecraft:diorite",
+        "minecraft:cobblestone"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:granite"
+      },
+      "ingredients": [
+        "minecraft:diorite",
+        "minecraft:quartz"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 4,
+        "id": "minecraft:polished_granite"
+      },
+      "key": {
+        "S": "minecraft:granite"
+      },
+      "pattern": [
+        "SS",
+        "SS"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 4,
+        "id": "minecraft:polished_diorite"
+      },
+      "key": {
+        "S": "minecraft:diorite"
+      },
+      "pattern": [
+        "SS",
+        "SS"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 4,
+        "id": "minecraft:polished_andesite"
+      },
+      "key": {
+        "S": "minecraft:andesite"
+      },
+      "pattern": [
+        "SS",
+        "SS"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:oak_door"
+      },
+      "key": {
+        "#": "minecraft:oak_planks"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:spruce_door"
+      },
+      "key": {
+        "#": "minecraft:spruce_planks"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:jungle_door"
+      },
+      "key": {
+        "#": "minecraft:jungle_planks"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:dark_oak_door"
+      },
+      "key": {
+        "#": "minecraft:dark_oak_planks"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:birch_door"
+      },
+      "key": {
+        "#": "minecraft:birch_planks"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 3,
+        "id": "minecraft:acacia_door"
+      },
+      "key": {
+        "#": "minecraft:acacia_planks"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:yellow_banner"
+      },
+      "key": {
+        "#": "minecraft:yellow_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:red_banner"
+      },
+      "key": {
+        "#": "minecraft:red_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:purple_banner"
+      },
+      "key": {
+        "#": "minecraft:purple_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:pink_banner"
+      },
+      "key": {
+        "#": "minecraft:pink_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:orange_banner"
+      },
+      "key": {
+        "#": "minecraft:orange_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:magenta_banner"
+      },
+      "key": {
+        "#": "minecraft:magenta_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:lime_banner"
+      },
+      "key": {
+        "#": "minecraft:lime_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:light_gray_banner"
+      },
+      "key": {
+        "#": "minecraft:light_gray_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:light_blue_banner"
+      },
+      "key": {
+        "#": "minecraft:light_blue_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:green_banner"
+      },
+      "key": {
+        "#": "minecraft:green_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:gray_banner"
+      },
+      "key": {
+        "#": "minecraft:gray_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:cyan_banner"
+      },
+      "key": {
+        "#": "minecraft:cyan_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:brown_banner"
+      },
+      "key": {
+        "#": "minecraft:brown_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:blue_banner"
+      },
+      "key": {
+        "#": "minecraft:blue_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:black_banner"
+      },
+      "key": {
+        "#": "minecraft:black_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:white_banner"
+      },
+      "key": {
+        "#": "minecraft:white_wool",
+        "|": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:rabbit_stew"
+      },
+      "key": {
+        "P": "minecraft:baked_potato",
+        "R": "minecraft:cooked_rabbit",
+        "B": "minecraft:bowl",
+        "C": "minecraft:carrot",
+        "D": "minecraft:red_mushroom"
+      },
+      "pattern": [
+        " R ",
+        "CPD",
+        " B "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:rabbit_stew"
+      },
+      "key": {
+        "P": "minecraft:baked_potato",
+        "R": "minecraft:cooked_rabbit",
+        "B": "minecraft:bowl",
+        "C": "minecraft:carrot",
+        "M": "minecraft:brown_mushroom"
+      },
+      "pattern": [
+        " R ",
+        "CPM",
+        " B "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:mossy_cobblestone"
+      },
+      "ingredients": [
+        "minecraft:cobblestone",
+        "minecraft:vine"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:mossy_stone_bricks"
+      },
+      "ingredients": [
+        "minecraft:stone_bricks",
+        "minecraft:vine"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:chiseled_stone_bricks"
+      },
+      "key": {
+        "#": "minecraft:stone_brick_slab"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 4,
+        "id": "minecraft:coarse_dirt"
+      },
+      "key": {
+        "D": "minecraft:dirt",
+        "G": "minecraft:gravel"
+      },
+      "pattern": [
+        "DG",
+        "GD"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence",
+      "result": {
+        "count": 3,
+        "id": "minecraft:spruce_fence"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:spruce_planks"
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence",
+      "result": {
+        "count": 3,
+        "id": "minecraft:jungle_fence"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:jungle_planks"
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence",
+      "result": {
+        "count": 3,
+        "id": "minecraft:oak_fence"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:oak_planks"
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence",
+      "result": {
+        "count": 3,
+        "id": "minecraft:dark_oak_fence"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:dark_oak_planks"
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence",
+      "result": {
+        "count": 3,
+        "id": "minecraft:birch_fence"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:birch_planks"
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence",
+      "result": {
+        "count": 3,
+        "id": "minecraft:acacia_fence"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:acacia_planks"
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:spruce_fence_gate"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:spruce_planks"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:jungle_fence_gate"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:jungle_planks"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:oak_fence_gate"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:oak_planks"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:dark_oak_fence_gate"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:dark_oak_planks"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:birch_fence_gate"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:birch_planks"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:acacia_fence_gate"
+      },
+      "key": {
+        "#": "minecraft:stick",
+        "W": "minecraft:acacia_planks"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_special_bannerduplicate",
+      "category": "misc"
+    },
+    {
+      "type": "minecraft:crafting_special_repairitem",
+      "category": "misc"
+    }
+  ],
+  "1.9": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:chorus_fruit",
+      "result": {
+        "id": "minecraft:popped_chorus_fruit"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:trapped_chest"
+      },
+      "ingredients": [
+        "minecraft:chest",
+        "minecraft:tripwire_hook"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:shield"
+      },
+      "key": {
+        "W": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ],
+        "o": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "WoW",
+        "WWW",
+        " W "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 4,
+        "id": "minecraft:purpur_block"
+      },
+      "key": {
+        "F": "minecraft:popped_chorus_fruit"
+      },
+      "pattern": [
+        "FF",
+        "FF"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 6,
+        "id": "minecraft:purpur_slab"
+      },
+      "key": {
+        "#": "minecraft:purpur_block"
+      },
+      "pattern": [
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 4,
+        "id": "minecraft:purpur_stairs"
+      },
+      "key": {
+        "#": "minecraft:purpur_block"
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:purpur_pillar"
+      },
+      "key": {
+        "#": "minecraft:purpur_slab"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 4,
+        "id": "minecraft:end_stone_bricks"
+      },
+      "key": {
+        "#": "minecraft:end_stone"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "boat",
+      "result": {
+        "id": "minecraft:spruce_boat"
+      },
+      "key": {
+        "#": "minecraft:spruce_planks"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "boat",
+      "result": {
+        "id": "minecraft:jungle_boat"
+      },
+      "key": {
+        "#": "minecraft:jungle_planks"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "boat",
+      "result": {
+        "id": "minecraft:oak_boat"
+      },
+      "key": {
+        "#": "minecraft:oak_planks"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "boat",
+      "result": {
+        "id": "minecraft:dark_oak_boat"
+      },
+      "key": {
+        "#": "minecraft:dark_oak_planks"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "boat",
+      "result": {
+        "id": "minecraft:birch_boat"
+      },
+      "key": {
+        "#": "minecraft:birch_planks"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "boat",
+      "result": {
+        "id": "minecraft:acacia_boat"
+      },
+      "key": {
+        "#": "minecraft:acacia_planks"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 4,
+        "id": "minecraft:end_rod"
+      },
+      "key": {
+        "#": "minecraft:popped_chorus_fruit",
+        "/": "minecraft:blaze_rod"
+      },
+      "pattern": [
+        "/",
+        "#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:end_crystal"
+      },
+      "key": {
+        "T": "minecraft:ghast_tear",
+        "E": "minecraft:ender_eye",
+        "G": "minecraft:glass"
+      },
+      "pattern": [
+        "GGG",
+        "GEG",
+        "GTG"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 2,
+        "id": "minecraft:spectral_arrow"
+      },
+      "key": {
+        "#": "minecraft:glowstone_dust",
+        "X": "minecraft:arrow"
+      },
+      "pattern": [
+        " # ",
+        "#X#",
+        " # "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "group": "red_dye",
+      "result": {
+        "id": "minecraft:red_dye"
+      },
+      "ingredients": [
+        "minecraft:beetroot"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:beetroot_soup"
+      },
+      "key": {
+        "B": "minecraft:bowl",
+        "O": "minecraft:beetroot"
+      },
+      "pattern": [
+        "OOO",
+        "OOO",
+        " B "
+      ]
+    },
+    {
+      "type": "minecraft:crafting_special_shielddecoration",
+      "category": "misc"
+    },
+    {
+      "type": "minecraft:crafting_special_tippedarrow",
+      "category": "misc"
+    }
+  ],
+  "1.10": [
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 9,
+        "id": "minecraft:bone_meal"
+      },
+      "ingredients": [
+        "minecraft:bone_block"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:bone_block"
+      },
+      "key": {
+        "X": "minecraft:bone_meal"
+      },
+      "pattern": [
+        "XXX",
+        "XXX",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:magma_block"
+      },
+      "key": {
+        "#": "minecraft:magma_cream"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:nether_wart_block"
+      },
+      "key": {
+        "#": "minecraft:nether_wart"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:red_nether_bricks"
+      },
+      "key": {
+        "W": "minecraft:nether_wart",
+        "N": "minecraft:nether_brick"
+      },
+      "pattern": [
+        "NW",
+        "WN"
+      ]
+    }
+  ],
+  "1.11": [
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:observer"
+      },
+      "key": {
+        "#": "minecraft:cobblestone",
+        "R": "minecraft:redstone_wire",
+        "Q": "minecraft:quartz"
+      },
+      "pattern": [
+        "###",
+        "RRQ",
+        "###"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:purple_shulker_box"
+      },
+      "key": {
+        "#": "minecraft:chest",
+        "-": "minecraft:shulker_shell"
+      },
+      "pattern": [
+        "-",
+        "#",
+        "-"
+      ]
+    }
+  ],
+  "1.11.1": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": ["minecraft:golden_pickaxe", "minecraft:golden_shovel", "minecraft:golden_axe", "minecraft:golden_hoe", "minecraft:golden_sword", "minecraft:golden_helmet", "minecraft:golden_chestplate", "minecraft:golden_leggings", "minecraft:golden_boots", "minecraft:golden_horse_armour"],
+      "result": {
+        "id": "minecraft:gold_nugget"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": ["minecraft:chainmail_helmet", "minecraft:chainmail_chestplate", "minecraft:chainmail_leggings", "minecraft:chainmail_boots", "minecraft:iron_pickaxe", "minecraft:iron_shovel", "minecraft:iron_axe", "minecraft:iron_hoe", "minecraft:iron_sword", "minecraft:iron_helmet", "minecraft:iron_chestplate", "minecraft:iron_leggings", "minecraft:iron_boots", "minecraft:iron_horse_armour"],
+      "result": {
+        "id": "minecraft:iron_nugget"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "count": 9,
+        "id": "minecraft:iron_nugget"
+      },
+      "key": {
+        "#": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "#"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "result": {
+        "id": "minecraft:iron_ingot"
+      },
+      "key": {
+        "#": "minecraft:iron_nugget"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ]
+    }
+  ],
+  "1.12": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:black_terracotta",
+      "result": {
+        "id": "minecraft:black_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:red_terracotta",
+      "result": {
+        "id": "minecraft:red_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:green_terracotta",
+      "result": {
+        "id": "minecraft:green_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:brown_terracotta",
+      "result": {
+        "id": "minecraft:brown_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:blue_terracotta",
+      "result": {
+        "id": "minecraft:blue_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:purple_terracotta",
+      "result": {
+        "id": "minecraft:purple_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:cyan_terracotta",
+      "result": {
+        "id": "minecraft:cyan_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:light_gray_terracotta",
+      "result": {
+        "id": "minecraft:light_gray_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:gray_terracotta",
+      "result": {
+        "id": "minecraft:gray_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:pink_terracotta",
+      "result": {
+        "id": "minecraft:pink_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:lime_terracotta",
+      "result": {
+        "id": "minecraft:lime_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:yellow_terracotta",
+      "result": {
+        "id": "minecraft:yellow_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:light_blue_terracotta",
+      "result": {
+        "id": "minecraft:light_blue_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:magenta_terracotta",
+      "result": {
+        "id": "minecraft:magenta_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:orange_terracotta",
+      "result": {
+        "id": "minecraft:orange_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:white_terracotta",
+      "result": {
+        "id": "minecraft:white_glazed_terracotta"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:yellow_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:yellow_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:white_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:bone_meal",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:red_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:red_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:purple_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:purple_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:pink_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:pink_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:orange_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:orange_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:magenta_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:magenta_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:lime_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:lime_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:light_gray_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:light_gray_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:light_blue_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:light_blue_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:green_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:green_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:gray_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:gray_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:cyan_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:cyan_dye",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:brown_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:cocoa_beans",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:blue_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:lapis_lazuli",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "count": 8,
+        "id": "minecraft:black_concrete_powder"
+      },
+      "ingredients": [
+        "minecraft:ink_sac",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:sand",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel",
+        "minecraft:gravel"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:yellow_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:yellow_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:red_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:red_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:purple_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:purple_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:pink_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:pink_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:orange_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:orange_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:magenta_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:magenta_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:lime_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:lime_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:light_gray_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:light_gray_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:light_blue_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:light_blue_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:green_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:green_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:gray_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:gray_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:cyan_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:cyan_dye"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:brown_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:cocoa_beans"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:blue_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:lapis_lazuli"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shapeless",
+      "result": {
+        "id": "minecraft:black_bed"
+      },
+      "ingredients": [
+        "minecraft:white_bed",
+        "minecraft:ink_sac"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:yellow_bed"
+      },
+      "key": {
+        "#": "minecraft:yellow_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:white_bed"
+      },
+      "key": {
+        "#": "minecraft:white_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:red_bed"
+      },
+      "key": {
+        "#": "minecraft:red_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:purple_bed"
+      },
+      "key": {
+        "#": "minecraft:purple_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:pink_bed"
+      },
+      "key": {
+        "#": "minecraft:pink_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:orange_bed"
+      },
+      "key": {
+        "#": "minecraft:orange_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:magenta_bed"
+      },
+      "key": {
+        "#": "minecraft:magenta_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:lime_bed"
+      },
+      "key": {
+        "#": "minecraft:lime_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:light_gray_bed"
+      },
+      "key": {
+        "#": "minecraft:light_gray_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:light_blue_bed"
+      },
+      "key": {
+        "#": "minecraft:light_blue_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:green_bed"
+      },
+      "key": {
+        "#": "minecraft:green_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:gray_bed"
+      },
+      "key": {
+        "#": "minecraft:gray_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:cyan_bed"
+      },
+      "key": {
+        "#": "minecraft:cyan_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:brown_bed"
+      },
+      "key": {
+        "#": "minecraft:brown_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:blue_bed"
+      },
+      "key": {
+        "#": "minecraft:blue_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "bed",
+      "result": {
+        "id": "minecraft:black_bed"
+      },
+      "key": {
+        "#": "minecraft:black_wool",
+        "X": "#minecraft:planks"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ]
+    }
+  ]
+}
