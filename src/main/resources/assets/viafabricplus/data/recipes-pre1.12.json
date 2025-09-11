@@ -1,4 +1,318 @@
 {
+  "a1.0.15": [
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.7,
+      "ingredient": "minecraft:iron_ore",
+      "result": {
+        "id": "minecraft:iron_ingot"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 1,
+      "ingredient": "minecraft:gold_ore",
+      "result": {
+        "id": "minecraft:gold_ingot"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 1,
+      "ingredient": "minecraft:diamond_ore",
+      "result": {
+        "id": "minecraft:diamond"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": ["minecraft:sand", "minecraft:red_sand"],
+      "result": {
+        "id": "minecraft:glass"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.3,
+      "ingredient": "minecraft:clay_ball",
+      "result": {
+        "id": "minecraft:brick"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.35,
+      "ingredient": "minecraft:raw_porkchop",
+      "result": {
+        "id": "minecraft:cooked_porkchop"
+      }
+    },
+    {
+      "type": "minecraft:smelting",
+      "experience": 0.1,
+      "ingredient": "minecraft:cobblestone",
+      "result": {
+        "id": "minecraft:stone"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stick",
+        "X": "minecraft:coal"
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:torch"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stone"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:stone_pressure_plate"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "#minecraft:planks"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:oak_pressure_plate"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:tripwire"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:white_wool"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:bowl",
+        "X": "minecraft:brown_mushroom",
+        "Y": "minecraft:red_mushroom"
+      },
+      "pattern": [
+        "Y",
+        "X",
+        "#"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:stone_pressure_plate"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:bowl",
+        "Y": "minecraft:brown_mushroom",
+        "X": "minecraft:red_mushroom"
+      },
+      "pattern": [
+        "Y",
+        "X",
+        "#"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:stone_pressure_plate"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": ["minecraft:birch_log", "minecraft:spruce_log", "minecraft:jungle_log"]
+      },
+      "pattern": [
+        "#"
+      ],
+      "result": {
+        "count": 4,
+        "id": "minecraft:oak_planks"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stone"
+      },
+      "pattern": [
+        "###"
+      ],
+      "result": {
+        "count": 3,
+        "id": "minecraft:smooth_stone_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stick"
+      },
+      "pattern": [
+        "# #",
+        "###",
+        "# #"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:ladder"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "#minecraft:planks",
+        "X": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " X "
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:oak_sign"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:paper"
+      },
+      "pattern": [
+        "#",
+        "#",
+        "#"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:book"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:gold_nugget",
+        "X": "minecraft:apple"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:golden_apple"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:sand",
+        "X": "minecraft:gunpowder"
+      },
+      "pattern": [
+        "X#X",
+        "#X#",
+        "X#X"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:tnt"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "A": "minecraft:iron_ingot",
+        "B": "minecraft:flint"
+      },
+      "pattern": [
+        "A",
+        "B"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:flint_and_steel"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_door",
+      "key": {
+        "#": "#minecraft:planks"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:oak_door"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:iron_door"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "group": "wooden_fence",
+      "key": {
+        "#": "minecraft:stick"
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:oak_fence"
+      }
+    }
+  ],
   "a1.1.0-a1.1.2.1": [
     {
       "type": "minecraft:crafting_shaped",
@@ -535,7 +849,8 @@
       "result": {
         "count": 4,
         "id": "minecraft:torch"
-      }
+      },
+      "override": true
     },
     {
       "type": "minecraft:crafting_shaped",
@@ -781,7 +1096,8 @@
       "result": {
         "count": 1,
         "id": "minecraft:white_wool"
-      }
+      },
+      "override": true
     },
     {
       "type": "minecraft:crafting_shaped",
@@ -989,6 +1305,20 @@
       "result": {
         "count": 3,
         "id": "minecraft:brick_slab"
+      }
+    },
+    {
+      "type": "minecraft:crafting_shaped",
+      "key": {
+        "#": "minecraft:stick",
+        "W": "#minecraft:planks"
+      },
+      "pattern": [
+        "#W#"
+      ],
+      "result": {
+        "count": 1,
+        "id": "minecraft:oak_fence_gate"
       }
     }
   ],
@@ -1203,7 +1533,8 @@
       "result": {
         "count": 1,
         "id": "minecraft:mushroom_stew"
-      }
+      },
+      "override": true
     },
     {
       "type": "minecraft:crafting_shapeless",
@@ -1311,7 +1642,8 @@
       "result": {
         "count": 6,
         "id": "minecraft:smooth_stone_slab"
-      }
+      },
+      "override": true
     },
     {
       "type": "minecraft:crafting_shaped",
@@ -1655,7 +1987,8 @@
       "result": {
         "count": 3,
         "id": "minecraft:oak_sign"
-      }
+      },
+      "override": true
     },
     {
       "type": "minecraft:crafting_shapeless",
@@ -1667,7 +2000,8 @@
       ],
       "result": {
         "id": "minecraft:book"
-      }
+      },
+      "override": true
     },
     {
       "type": "minecraft:crafting_shapeless",
@@ -2722,7 +3056,8 @@
         "###",
         "#X#",
         "###"
-      ]
+      ],
+      "override": true
     }
   ],
   "1.7.2": [
@@ -3342,7 +3677,8 @@
       ],
       "result": {
         "id": "minecraft:tnt"
-      }
+      },
+      "override": true
     },
     {
       "type": "minecraft:crafting_shapeless",
@@ -3476,7 +3812,8 @@
       ],
       "result": {
         "id": "minecraft:flint_and_steel"
-      }
+      },
+      "override": true
     },
     {
       "type": "minecraft:crafting_special_bookcloning",
@@ -3497,7 +3834,8 @@
         "##",
         "##",
         "##"
-      ]
+      ],
+      "override": true
     },
     {
       "type": "minecraft:crafting_shaped",
@@ -3791,7 +4129,8 @@
         "##",
         "##",
         "##"
-      ]
+      ],
+      "override": true
     },
     {
       "type": "minecraft:crafting_shaped",
@@ -4238,7 +4577,8 @@
       "pattern": [
         "W#W",
         "W#W"
-      ]
+      ],
+      "override": true
     },
     {
       "type": "minecraft:crafting_shaped",
@@ -4331,7 +4671,8 @@
       "pattern": [
         "#W#",
         "#W#"
-      ]
+      ],
+      "override": true
     },
     {
       "type": "minecraft:crafting_shaped",
