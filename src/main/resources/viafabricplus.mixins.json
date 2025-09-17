@@ -50,6 +50,7 @@
     "features.block.interaction.MixinDecoratedPotBlock",
     "features.block.interaction.MixinFenceBlock",
     "features.block.interaction.MixinFlowerPotBlock",
+    "features.block.interaction.MixinLadderBlock",
     "features.block.interaction.MixinNoteBlock",
     "features.block.interaction.MixinPaneBlock",
     "features.block.mining_calculation.MixinAbstractBlock",
