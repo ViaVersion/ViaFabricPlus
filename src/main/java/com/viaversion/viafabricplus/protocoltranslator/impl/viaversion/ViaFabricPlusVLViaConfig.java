@@ -34,6 +34,7 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
         UNSUPPORTED.add("fix-1_21-placement-rotation");
         UNSUPPORTED.add("team-colour-fix");
         UNSUPPORTED.add("cancel-swing-in-inventory");
+        UNSUPPORTED.add("cancel-block-sounds");
     }
 
     @Override
@@ -53,6 +54,11 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
 
     @Override
     public boolean cancelSwingInInventory() {
+        return false;
+    }
+
+    @Override
+    public boolean cancelBlockSounds() {
         return false;
     }
 
