@@ -21,6 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
 
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LadderBlock;
@@ -43,7 +45,7 @@ public abstract class MixinLadderBlock {
     @Inject(method = "canPlaceOn", at = @At(value = "RETURN"), cancellable = true)
     public void fixLadderAttachment(BlockView world, BlockPos pos, Direction side, CallbackInfoReturnable<Boolean> cir) {
         Block block = world.getBlockState(pos).getBlock();
-        if (viaFabricPlus$isExceptionForAttachment(block)) {
+        if (ProtocolTranslator.getTargetVersion().olderThan(ProtocolVersion.v1_13) && viaFabricPlus$isExceptionForAttachment(block)) {
             cir.setReturnValue(false);
         }
     }
