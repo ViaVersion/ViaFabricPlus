@@ -1,0 +1,33 @@
+{
+  "entity.zombie_pigman.ambient": {
+    "sounds": [
+      "viafabricplus:sounds/mob/zombified_piglin/zpig1",
+      "viafabricplus:sounds/mob/zombified_piglin/zpig2",
+      "viafabricplus:sounds/mob/zombified_piglin/zpig3",
+      "viafabricplus:sounds/mob/zombified_piglin/zpig4"
+    ],
+    "subtitle": "subtitles.entity.zombified_piglin.ambient"
+  },
+  "entity.zombie_pigman.angry": {
+    "sounds": [
+      "viafabricplus:sounds/mob/zombified_piglin/zpigangry1",
+      "viafabricplus:sounds/mob/zombified_piglin/zpigangry2",
+      "viafabricplus:sounds/mob/zombified_piglin/zpigangry3",
+      "viafabricplus:sounds/mob/zombified_piglin/zpigangry4"
+    ],
+    "subtitle": "subtitles.entity.zombified_piglin.angry"
+  },
+  "entity.zombie_pigman.death": {
+    "sounds": [
+      "viafabricplus:sounds/mob/zombified_piglin/zpigdeath"
+    ],
+    "subtitle": "subtitles.entity.zombified_piglin.death"
+  },
+  "entity.zombie_pigman.hurt": {
+    "sounds": [
+      "viafabricplus:sounds/mob/zombified_piglin/zpighurt1",
+      "viafabricplus:sounds/mob/zombified_piglin/zpighurt2"
+    ],
+    "subtitle": "subtitles.entity.zombified_piglin.hurt"
+  }
+}
