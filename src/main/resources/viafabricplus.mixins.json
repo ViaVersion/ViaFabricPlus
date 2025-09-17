@@ -48,6 +48,8 @@
     "features.bedrock.remove_dummy_player_suggestions.MixinClientCommandSource",
     "features.block.interaction.MixinAbstractSignBlock",
     "features.block.interaction.MixinAbstractTorchBlock",
+    "features.block.interaction.MixinBlockItem",
+    "features.block.interaction.MixinButtonBlock",
     "features.block.interaction.MixinDecoratedPotBlock",
     "features.block.interaction.MixinFenceBlock",
     "features.block.interaction.MixinFlowerPotBlock",
