@@ -34,13 +34,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ButtonBlock.class)
-public class MixinButtonBlock {
+public abstract class MixinButtonBlock {
 
     @WrapWithCondition(
         method = "playClickSound",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldAccess;playSound(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;)V"))
     private boolean disableClientPlaceSounds(WorldAccess instance, Entity source, BlockPos pos, SoundEvent sound, SoundCategory category) {
-        return !ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8);
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
     }
 
 }
