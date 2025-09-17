@@ -21,14 +21,17 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
+import com.viaversion.viafabricplus.features.block.interaction.AttachmentLogic1_12;
 import com.viaversion.viafabricplus.injection.access.block.shape.IHorizontalConnectingBlock;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.HorizontalConnectingBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -38,6 +41,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FenceBlock.class)
 public abstract class MixinFenceBlock extends HorizontalConnectingBlock implements IHorizontalConnectingBlock {
@@ -53,6 +57,14 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock implemen
 
     protected MixinFenceBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Settings settings) {
         super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
+    }
+
+    @Inject(method = "canConnect", at = @At("RETURN"), cancellable = true)
+    private void fixConnectionLogic(BlockState state, boolean neighborIsFullSquare, Direction dir, CallbackInfoReturnable<Boolean> cir) {
+        final Block block = state.getBlock();
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !AttachmentLogic1_12.canAttachTo(block)) {
+            cir.setReturnValue(false);
+        }
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))

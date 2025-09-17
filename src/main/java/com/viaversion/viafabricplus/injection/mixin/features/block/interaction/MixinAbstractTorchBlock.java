@@ -24,9 +24,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
 import com.viaversion.viafabricplus.features.block.interaction.AttachmentLogic1_12;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.block.AbstractTorchBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.LadderBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldView;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,11 +34,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(LadderBlock.class)
-public abstract class MixinLadderBlock {
+@Mixin(AbstractTorchBlock.class)
+public abstract class MixinAbstractTorchBlock {
 
     @Inject(method = "canPlaceAt", at = @At(value = "RETURN"), cancellable = true)
-    public void fixLadderAttachment(BlockState state, WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+    public void fixTorchAttachment(BlockState state, WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         final Block block = world.getBlockState(pos).getBlock();
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && AttachmentLogic1_12.canAttachTo(block)) {
             cir.setReturnValue(false);
