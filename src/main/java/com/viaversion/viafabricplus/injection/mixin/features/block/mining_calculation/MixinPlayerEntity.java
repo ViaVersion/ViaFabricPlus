@@ -26,8 +26,12 @@ import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
@@ -56,6 +60,19 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D", ordinal = 0))
+    private double changeSpeedCalculation1_20(PlayerEntity instance, RegistryEntry<EntityAttribute> registryEntry, @Local LocalFloatRef f) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            final int lvl = EnchantmentHelper.getEquipmentLevel((RegistryEntry<Enchantment>) Enchantments.EFFICIENCY, instance);
+            if (lvl > 0 && !instance.getMainHandStack().isEmpty()) {
+                return (lvl * lvl + 1);
+            }
+            return 0.0;
+        } else {
+            return instance.getAttributeValue(registryEntry);
+        }
     }
 
     @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"))
