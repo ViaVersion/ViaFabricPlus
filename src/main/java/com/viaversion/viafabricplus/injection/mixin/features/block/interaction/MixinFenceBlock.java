@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
 
-import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.BlockState;
@@ -34,12 +33,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FenceBlock.class)
 public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
@@ -56,15 +51,6 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
             return ActionResult.SUCCESS;
         } else {
             return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
-        }
-    }
-
-    @Inject(method = "canConnect", at = @At("RETURN"), cancellable = true)
-    private void canConnect1_14(BlockState state, boolean neighborIsFullSquare, Direction dir, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14)) {
-            if (!Block1_14.isExceptBlockForAttachWithPiston(state.getBlock())) {
-                cir.setReturnValue(false);
-            }
         }
     }
 
