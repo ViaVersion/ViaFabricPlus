@@ -39,8 +39,8 @@ public abstract class MixinBlockItem {
     @WrapWithCondition(
         method = "place(Lnet/minecraft/item/ItemPlacementContext;)Lnet/minecraft/util/ActionResult;",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
-    private boolean disableClientPlaceSounds(World instance, Entity source, BlockPos pos, SoundEvent sound, SoundCategory category, float volume, float pitch) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
+    private boolean disableBlockPlaceSounds(World instance, Entity source, BlockPos pos, SoundEvent sound, SoundCategory category, float volume, float pitch) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8); // Sent by the server in older versions
     }
 
 }

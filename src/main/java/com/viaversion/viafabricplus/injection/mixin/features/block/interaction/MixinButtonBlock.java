@@ -39,8 +39,8 @@ public abstract class MixinButtonBlock {
     @WrapWithCondition(
         method = "playClickSound",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldAccess;playSound(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;)V"))
-    private boolean disableClientPlaceSounds(WorldAccess instance, Entity source, BlockPos pos, SoundEvent sound, SoundCategory category) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
+    private boolean disableClickSounds(WorldAccess instance, Entity source, BlockPos pos, SoundEvent sound, SoundCategory category) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8); // Sent by the server in older versions
     }
 
 }
