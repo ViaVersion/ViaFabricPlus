@@ -28,7 +28,7 @@ import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.StainedGlassBlock;
 import net.minecraft.block.TrapdoorBlock;
 
-public final class Block1_12_2 {
+public final class Block1_14 {
 
     public static boolean isExceptBlockForAttachWithPiston(final Block block) {
         return block instanceof ShulkerBoxBlock

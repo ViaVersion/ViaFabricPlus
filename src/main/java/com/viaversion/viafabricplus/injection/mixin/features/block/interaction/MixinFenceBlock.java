@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
 
-import com.viaversion.viafabricplus.features.block.interaction.Block1_12_2;
+import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.BlockState;
@@ -60,9 +60,9 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
     }
 
     @Inject(method = "canConnect", at = @At("RETURN"), cancellable = true)
-    private void canConnect1_12_2(BlockState state, boolean neighborIsFullSquare, Direction dir, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            if (!Block1_12_2.isExceptBlockForAttachWithPiston(state.getBlock())) {
+    private void canConnect1_14(BlockState state, boolean neighborIsFullSquare, Direction dir, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14)) {
+            if (!Block1_14.isExceptBlockForAttachWithPiston(state.getBlock())) {
                 cir.setReturnValue(false);
             }
         }

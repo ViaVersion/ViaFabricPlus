@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
 
-import com.viaversion.viafabricplus.features.block.interaction.Block1_12_2;
+import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.AbstractTorchBlock;
@@ -37,14 +37,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin({AbstractTorchBlock.class, LadderBlock.class, TripwireHookBlock.class})
-public abstract class MixinCanPlaceAt1_12_2 {
+public abstract class MixinCanPlaceAt1_14 {
 
     @Inject(method = "canPlaceAt", at = @At(value = "RETURN"), cancellable = true)
-    private void canPlaceAt1_12_2(BlockState state, WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+    private void canPlaceAt1_14(BlockState state, WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14)) {
 
             final Block block = world.getBlockState(pos).getBlock();
-            if (Block1_12_2.isExceptBlockForAttachWithPiston(block)) {
+            if (Block1_14.isExceptBlockForAttachWithPiston(block)) {
                 cir.setReturnValue(false);
             }
         }
