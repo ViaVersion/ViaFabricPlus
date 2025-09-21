@@ -21,27 +21,26 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
 
-import com.viaversion.viafabricplus.features.block.interaction.AttachmentLogic1_12;
+import com.viaversion.viafabricplus.features.block.interaction.Block1_12_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.AbstractTorchBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldView;
+import net.minecraft.block.WallBlock;
+import net.minecraft.util.math.Direction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(AbstractTorchBlock.class)
-public abstract class MixinAbstractTorchBlock {
+@Mixin(WallBlock.class)
+public abstract class MixinWallBlock {
 
-    @Inject(method = "canPlaceAt", at = @At(value = "RETURN"), cancellable = true)
-    public void fixTorchAttachment(BlockState state, WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        final Block block = world.getBlockState(pos).getBlock();
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && AttachmentLogic1_12.canAttachTo(block)) {
-            cir.setReturnValue(false);
+    @Inject(method = "shouldConnectTo", at = @At("RETURN"), cancellable = true)
+    private void shouldConnectTo1_12_2(BlockState state, boolean neighborIsFullSquare, Direction dir, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            if (!Block1_12_2.isExceptBlockForAttachWithPiston(state.getBlock())) {
+                cir.setReturnValue(false);
+            }
         }
     }
 

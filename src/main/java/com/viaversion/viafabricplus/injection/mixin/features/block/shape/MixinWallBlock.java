@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
-import com.viaversion.viafabricplus.features.block.interaction.AttachmentLogic1_12;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -94,14 +93,6 @@ public abstract class MixinWallBlock extends Block {
     @Unique
     private static int viaFabricPlus$getDirectionMask(Direction dir) {
         return 1 << dir.getHorizontalQuarterTurns();
-    }
-
-    @Inject(method = "shouldConnectTo", at = @At("RETURN"), cancellable = true)
-    private void fixConnectionLogic(BlockState state, boolean neighborIsFullSquare, Direction dir, CallbackInfoReturnable<Boolean> cir) {
-        final Block block = state.getBlock();
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !AttachmentLogic1_12.canAttachTo(block)) {
-            cir.setReturnValue(false);
-        }
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
-import com.viaversion.viafabricplus.features.block.interaction.AttachmentLogic1_12;
+import com.viaversion.viafabricplus.features.block.interaction.Block1_12_2;
 import com.viaversion.viafabricplus.injection.access.block.shape.IHorizontalConnectingBlock;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -57,14 +57,6 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock implemen
 
     protected MixinFenceBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Settings settings) {
         super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
-    }
-
-    @Inject(method = "canConnect", at = @At("RETURN"), cancellable = true)
-    private void fixConnectionLogic(BlockState state, boolean neighborIsFullSquare, Direction dir, CallbackInfoReturnable<Boolean> cir) {
-        final Block block = state.getBlock();
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !AttachmentLogic1_12.canAttachTo(block)) {
-            cir.setReturnValue(false);
-        }
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))

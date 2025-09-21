@@ -28,9 +28,9 @@ import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.StainedGlassBlock;
 import net.minecraft.block.TrapdoorBlock;
 
-public class AttachmentLogic1_12 {
+public final class Block1_12_2 {
 
-    public static boolean canAttachTo(Block block) {
+    public static boolean isExceptBlockForAttachWithPiston(final Block block) {
         return block instanceof ShulkerBoxBlock
             || block instanceof LeavesBlock
             || block instanceof TrapdoorBlock
@@ -44,7 +44,6 @@ public class AttachmentLogic1_12 {
             || block == Blocks.PISTON
             || block == Blocks.STICKY_PISTON
             || block == Blocks.PISTON_HEAD;
-        //|| block == Blocks.STAINED_GLASS;
     }
 
 }
