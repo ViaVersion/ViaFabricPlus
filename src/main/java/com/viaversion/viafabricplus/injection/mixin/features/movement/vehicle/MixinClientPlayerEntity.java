@@ -77,9 +77,13 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Redirect(method = "tick", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
     private void modifyPositionPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
-            final UserConnection connection = ((IClientConnection) this.networkHandler.getConnection()).viaFabricPlus$getUserConnection();
+        if (ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_5_2)) {
+            instance.sendPacket(packet);
+            return;
+        }
 
+        final UserConnection connection = ((IClientConnection) this.networkHandler.getConnection()).viaFabricPlus$getUserConnection();
+        connection.getChannel().eventLoop().execute(() -> {
             final PacketWrapper movePlayerPosRot = PacketWrapper.create(ServerboundPackets1_5_2.MOVE_PLAYER_POS_ROT, connection);
             movePlayerPosRot.write(Types.DOUBLE, this.getVelocity().x); // x
             movePlayerPosRot.write(Types.DOUBLE, -999.0D); // y
@@ -88,24 +92,20 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             movePlayerPosRot.write(Types.FLOAT, this.getYaw()); // yaw
             movePlayerPosRot.write(Types.FLOAT, this.getPitch()); // pitch
             movePlayerPosRot.write(Types.BOOLEAN, this.isOnGround()); // onGround
-            movePlayerPosRot.scheduleSendToServer(Protocolr1_5_2Tor1_6_1.class);
+            movePlayerPosRot.sendToServer(Protocolr1_5_2Tor1_6_1.class);
 
             // Copied from the 1.21->1.21.2 protocol since it's changing the packet order, and we manually send the movement packet here
-            connection.getChannel().eventLoop().execute(() -> {
-                final ClientVehicleStorage vehicleStorage = connection.get(ClientVehicleStorage.class);
-                if (vehicleStorage == null) {
-                    return;
-                }
+            final ClientVehicleStorage vehicleStorage = connection.get(ClientVehicleStorage.class);
+            if (vehicleStorage == null) {
+                return;
+            }
 
-                final PacketWrapper playerInput = PacketWrapper.create(ServerboundPackets1_20_5.PLAYER_INPUT, connection);
-                playerInput.write(Types.FLOAT, vehicleStorage.sidewaysMovement());
-                playerInput.write(Types.FLOAT, vehicleStorage.forwardMovement());
-                playerInput.write(Types.BYTE, vehicleStorage.flags());
-                playerInput.sendToServer(Protocol1_21To1_21_2.class);
-            });
-            return;
-        }
-        instance.sendPacket(packet);
+            final PacketWrapper playerInput = PacketWrapper.create(ServerboundPackets1_20_5.PLAYER_INPUT, connection);
+            playerInput.write(Types.FLOAT, vehicleStorage.sidewaysMovement());
+            playerInput.write(Types.FLOAT, vehicleStorage.forwardMovement());
+            playerInput.write(Types.BYTE, vehicleStorage.flags());
+            playerInput.sendToServer(Protocol1_21To1_21_2.class);
+        });
     }
 
 }
