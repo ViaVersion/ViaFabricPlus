@@ -24,9 +24,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.vehicle;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ServerboundPackets1_20_5;
+import com.viaversion.viaversion.protocols.v1_21to1_21_2.Protocol1_21To1_21_2;
+import com.viaversion.viaversion.protocols.v1_21to1_21_2.storage.ClientVehicleStorage;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -74,7 +78,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Redirect(method = "tick", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
     private void modifyPositionPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
-            final PacketWrapper movePlayerPosRot = PacketWrapper.create(ServerboundPackets1_5_2.MOVE_PLAYER_POS_ROT, ((IClientConnection) this.networkHandler.getConnection()).viaFabricPlus$getUserConnection());
+            final UserConnection connection = ((IClientConnection) this.networkHandler.getConnection()).viaFabricPlus$getUserConnection();
+
+            final PacketWrapper movePlayerPosRot = PacketWrapper.create(ServerboundPackets1_5_2.MOVE_PLAYER_POS_ROT, connection);
             movePlayerPosRot.write(Types.DOUBLE, this.getVelocity().x); // x
             movePlayerPosRot.write(Types.DOUBLE, -999.0D); // y
             movePlayerPosRot.write(Types.DOUBLE, -999.0D); // stance
@@ -83,6 +89,20 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             movePlayerPosRot.write(Types.FLOAT, this.getPitch()); // pitch
             movePlayerPosRot.write(Types.BOOLEAN, this.isOnGround()); // onGround
             movePlayerPosRot.scheduleSendToServer(Protocolr1_5_2Tor1_6_1.class);
+
+            // Copied from the 1.21->1.21.2 protocol since it's changing the packet order, and we manually send the movement packet here
+            connection.getChannel().eventLoop().execute(() -> {
+                final ClientVehicleStorage vehicleStorage = connection.get(ClientVehicleStorage.class);
+                if (vehicleStorage == null) {
+                    return;
+                }
+
+                final PacketWrapper playerInput = PacketWrapper.create(ServerboundPackets1_20_5.PLAYER_INPUT, connection);
+                playerInput.write(Types.FLOAT, vehicleStorage.sidewaysMovement());
+                playerInput.write(Types.FLOAT, vehicleStorage.forwardMovement());
+                playerInput.write(Types.BYTE, vehicleStorage.flags());
+                playerInput.sendToServer(Protocol1_21To1_21_2.class);
+            });
             return;
         }
         instance.sendPacket(packet);
