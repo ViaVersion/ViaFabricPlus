@@ -52,7 +52,6 @@
     "features.block.interaction.MixinCanPlaceAt1_14",
     "features.block.interaction.MixinDecoratedPotBlock",
     "features.block.interaction.MixinFenceBlock",
-    "features.block.interaction.MixinFireChargeItem",
     "features.block.interaction.MixinFlintAndSteelItem",
     "features.block.interaction.MixinFlowerPotBlock",
     "features.block.interaction.MixinHoeItem",
