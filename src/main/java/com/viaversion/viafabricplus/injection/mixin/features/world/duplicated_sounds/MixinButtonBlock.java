@@ -19,29 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
+package com.viaversion.viafabricplus.injection.mixin.features.world.duplicated_sounds;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.block.ButtonBlock;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.HoeItem;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(HoeItem.class)
-public abstract class MixinHoeItem {
+@Mixin(ButtonBlock.class)
+public abstract class MixinButtonBlock {
 
     @WrapWithCondition(
-        method = "useOnBlock",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V")
-    )
-    private boolean disableClientPlaceSounds(World instance, Entity source, BlockPos pos, SoundEvent sound, SoundCategory category, float volume, float pitch) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
+        method = "playClickSound",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldAccess;playSound(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;)V"))
+    private boolean disableClickSounds(WorldAccess instance, Entity source, BlockPos pos, SoundEvent sound, SoundCategory category) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8); // Sent by the server in older versions
     }
 
 }
