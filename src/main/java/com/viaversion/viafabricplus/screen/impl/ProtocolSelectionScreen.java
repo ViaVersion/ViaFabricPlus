@@ -76,7 +76,6 @@ public final class ProtocolSelectionScreen extends VFPScreen {
     }
 
     public static class ProtocolSlot extends VFPListEntry {
-
         private final ProtocolVersion protocolVersion;
 
         public ProtocolSlot(final ProtocolVersion protocolVersion) {
@@ -101,21 +100,17 @@ public final class ProtocolSelectionScreen extends VFPScreen {
 
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
             final boolean isSelected = ProtocolTranslator.getTargetVersion().equals(protocolVersion);
-
             final Matrix3x2fStack matrices = context.getMatrices();
-
-            matrices.pushMatrix();
-//            matrices.translate(x, y - 1); // TODO
-
             Color color = isSelected ? Color.GREEN : Color.RED;
             if (MinecraftClient.getInstance().getNetworkHandler() != null) {
                 color = color.darker();
             }
 
-            final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            // TODO
-//            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
+            matrices.pushMatrix();
+            matrices.translate(this.getX(), this.getY() - 1);
+            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), this.getWidth() / 2, this.getHeight() / 2 - textRenderer.fontHeight / 2, color.getRGB());
             matrices.popMatrix();
         }
     }
