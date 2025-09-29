@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.downloading_terrain;
 
-import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain.IDownloadingTerrainScreen;
+import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain.ILevelLoadingScreen;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.MinecraftClient;
@@ -38,23 +38,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkHandler {
-
     protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
         super(client, connection, connectionState);
     }
 
     @Inject(method = "onPlayerSpawnPosition", at = @At("RETURN"))
-    private void moveDownloadingTerrainClosing(PlayerSpawnPositionS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_18_2, ProtocolVersion.v1_20_2) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
-            mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
+    private void moveLevelLoadingClosing(PlayerSpawnPositionS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_18_2, ProtocolVersion.v1_20_2) && this.client.currentScreen instanceof ILevelLoadingScreen mixinLevelLoadingScreen) {
+            mixinLevelLoadingScreen.viaFabricPlus$setReady();
         }
     }
 
     @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
-    private void closeDownloadingTerrain(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18) && this.client.currentScreen instanceof IDownloadingTerrainScreen mixinDownloadingTerrainScreen) {
-            mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
+    private void closeLevelLoading(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18) && this.client.currentScreen instanceof ILevelLoadingScreen mixinLevelLoadingScreen) {
+            mixinLevelLoadingScreen.viaFabricPlus$setReady();
         }
     }
-
 }

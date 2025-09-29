@@ -25,11 +25,9 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-//import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.storage.ClassicProgressStorage;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,36 +35,35 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-// TODO DownloadingTerrainScreen
-@Mixin(TitleScreen.class)
-public abstract class MixinDownloadingTerrainScreen extends Screen {
-    public MixinDownloadingTerrainScreen(Text title) {
+@Mixin(LevelLoadingScreen.class)
+public abstract class MixinLevelLoadingScreen extends Screen {
+    public MixinLevelLoadingScreen(Text title) {
         super(title);
     }
 
-//    @Inject(method = "render", at = @At("RETURN"))
-//    private void renderClassicProgress(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-//        if (GeneralSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) {
-              // Check if ViaVersion is translating
-//            final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
-//            if (connection == null) {
-//                return;
-//            }
-//
-              // Check if the client is connecting to a classic server
-//            final ClassicProgressStorage classicProgressStorage = connection.get(ClassicProgressStorage.class);
-//            if (classicProgressStorage == null) {
-//                return;
-//            }
-//
-//            // Draw the classic loading progress
-//            context.drawCenteredTextWithShadow(
-//                    client.textRenderer,
-//                    ChatUtil.prefixText(classicProgressStorage.status),
-//                    width / 2,
-//                    height / 2 - 30,
-//                    -1
-//            );
-//        }
-//    }
+    @Inject(method = "render", at = @At("RETURN"))
+    private void renderClassicProgress(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (GeneralSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) {
+            // Check if ViaVersion is translating
+            final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+            if (connection == null) {
+                return;
+            }
+
+            // Check if the client is connecting to a classic server
+            final ClassicProgressStorage classicProgressStorage = connection.get(ClassicProgressStorage.class);
+            if (classicProgressStorage == null) {
+                return;
+            }
+
+            // Draw the classic loading progress
+            context.drawCenteredTextWithShadow(
+                client.textRenderer,
+                ChatUtil.prefixText(classicProgressStorage.status),
+                width / 2,
+                height / 2 - 30,
+                -1
+            );
+        }
+    }
 }

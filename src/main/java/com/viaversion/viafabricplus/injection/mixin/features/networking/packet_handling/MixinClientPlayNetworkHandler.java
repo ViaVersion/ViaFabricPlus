@@ -38,6 +38,7 @@ import net.minecraft.client.network.ClientConnectionState;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.world.ClientChunkLoadProgress;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TrackedPosition;
@@ -154,7 +155,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             if (i == 0) {
                 this.client.player.networkHandler.sendPacket(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
-//                this.client.setScreen(new DownloadingTerrainScreen(() -> false, DownloadingTerrainScreen.WorldEntryReason.END_PORTAL)); // TODO
+                this.client.setScreen(new LevelLoadingScreen(new ClientChunkLoadProgress(), LevelLoadingScreen.WorldEntryReason.END_PORTAL));
             } else if (i == 1) {
                 instance.setScreen(screen);
             }

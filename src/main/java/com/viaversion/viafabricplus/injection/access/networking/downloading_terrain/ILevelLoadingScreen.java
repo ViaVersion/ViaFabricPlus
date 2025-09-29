@@ -21,8 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.access.networking.downloading_terrain;
 
-public interface IDownloadingTerrainScreen {
-
+public interface ILevelLoadingScreen {
     void viaFabricPlus$setReady();
-
 }
