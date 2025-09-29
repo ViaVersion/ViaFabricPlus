@@ -36,7 +36,6 @@ import net.minecraft.text.Text;
 import org.joml.Matrix3x2fStack;
 
 public final class ProtocolSelectionScreen extends VFPScreen {
-
     public static final ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
 
     private ProtocolSelectionScreen() {
@@ -51,11 +50,11 @@ public final class ProtocolSelectionScreen extends VFPScreen {
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.settings"), button -> SettingsScreen.INSTANCE.open(this)).position(width - 98 - 5, 5).size(98, 20).build());
 
         final ButtonWidget serverList = this.addDrawableChild(ButtonWidget.builder(ServerListScreen.INSTANCE.getTitle(), button -> ServerListScreen.INSTANCE.open(this))
-                .position(5, height - 25).size(98, 20).build());
+            .position(5, height - 25).size(98, 20).build());
         serverList.active = MinecraftClient.getInstance().getNetworkHandler() == null;
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("report.viafabricplus.button"), button -> ReportIssuesScreen.INSTANCE.open(this))
-                .position(width - 98 - 5, height - 25).size(98, 20).build());
+            .position(width - 98 - 5, height - 25).size(98, 20).build());
 
         super.init();
     }
@@ -101,13 +100,13 @@ public final class ProtocolSelectionScreen extends VFPScreen {
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final boolean isSelected = ProtocolTranslator.getTargetVersion().equals(protocolVersion);
 
             final Matrix3x2fStack matrices = context.getMatrices();
 
             matrices.pushMatrix();
-            matrices.translate(x, y - 1);
+//            matrices.translate(x, y - 1); // TODO
 
             Color color = isSelected ? Color.GREEN : Color.RED;
             if (MinecraftClient.getInstance().getNetworkHandler() != null) {
@@ -115,9 +114,9 @@ public final class ProtocolSelectionScreen extends VFPScreen {
             }
 
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
+            // TODO
+//            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
             matrices.popMatrix();
         }
     }
-
 }

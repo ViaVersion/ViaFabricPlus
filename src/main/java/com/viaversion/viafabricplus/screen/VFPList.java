@@ -40,7 +40,6 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
  * @see PerServerVersionScreen
  */
 public class VFPList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
-
     public VFPList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
         super(minecraftClient, width, height - top - bottom, top, entryHeight);
     }
@@ -59,12 +58,11 @@ public class VFPList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
     }
 
     @Override
-    protected void drawSelectionHighlight(DrawContext context, int y, int entryWidth, int entryHeight, int borderColor, int fillColor) {
+    protected void drawSelectionHighlight(final DrawContext context, final VFPListEntry entry, final int color) {
         // Remove selection box
     }
 
     protected void updateSlotAmount(final double amount) {
         // To be overridden
     }
-
 }

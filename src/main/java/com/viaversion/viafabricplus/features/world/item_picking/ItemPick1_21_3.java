@@ -31,7 +31,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
@@ -47,7 +46,6 @@ import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 
 public final class ItemPick1_21_3 {
-
     private static final Logger LOGGER = LogUtils.getLogger();
 
     private static void addPickBlock(final PlayerInventory inventory, final ItemStack stack) {
@@ -88,7 +86,7 @@ public final class ItemPick1_21_3 {
                 return;
             }
 
-            if (creativeMode && Screen.hasControlDown() && blockState.hasBlockEntity()) {
+            if (creativeMode && client.isCtrlPressed() && blockState.hasBlockEntity()) {
                 final BlockEntity blockEntity = client.world.getBlockEntity(blockPos);
                 if (blockEntity != null) {
                     addBlockEntityNbt(itemStack, blockEntity, client.world.getRegistryManager());
@@ -126,5 +124,4 @@ public final class ItemPick1_21_3 {
             pickFromInventory.scheduleSendToServer(Protocol1_21_2To1_21_4.class);
         }
     }
-
 }

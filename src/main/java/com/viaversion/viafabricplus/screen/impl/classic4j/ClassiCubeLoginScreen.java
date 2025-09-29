@@ -36,7 +36,6 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 
 public final class ClassiCubeLoginScreen extends VFPScreen {
-
     public static final ClassiCubeLoginScreen INSTANCE = new ClassiCubeLoginScreen();
 
     public ClassiCubeLoginScreen() {
@@ -55,7 +54,7 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
 
         this.addDrawableChild(nameField = new TextFieldWidget(textRenderer, width / 2 - 150, 70 + 10, 300, 20, Text.empty()));
         this.addDrawableChild(passwordField = new TextFieldWidget(textRenderer, width / 2 - 150, nameField.getY() + 20 + 5, 300, 20, Text.empty()));
-        passwordField.setRenderTextProvider((s, integer) -> Text.of("*".repeat(s.length())).asOrderedText());
+        // TODO: passwordField.setRenderTextProvider((s, integer) -> Text.of("*".repeat(s.length())).asOrderedText());
 
         nameField.setPlaceholder(Text.translatable("base.viafabricplus.name"));
         passwordField.setPlaceholder(Text.translatable("base.viafabricplus.password"));
@@ -109,5 +108,4 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
         super.render(context, mouseX, mouseY, delta);
         this.renderScreenTitle(context);
     }
-
 }

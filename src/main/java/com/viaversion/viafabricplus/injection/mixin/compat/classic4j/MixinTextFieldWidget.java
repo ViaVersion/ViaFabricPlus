@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.compat.classic4j;
 
 import com.viaversion.viafabricplus.injection.access.base.ITextFieldWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.CharInput;
 import net.minecraft.util.StringHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -35,13 +36,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(TextFieldWidget.class)
 public abstract class MixinTextFieldWidget implements ITextFieldWidget {
-
     @Unique
     private boolean viaFabricPlus$forbiddenCharactersUnlocked = false;
 
-    @Redirect(method = "charTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/StringHelper;isValidChar(C)Z"))
-    private boolean allowForbiddenCharacters(char c) {
-        return this.viaFabricPlus$forbiddenCharactersUnlocked || StringHelper.isValidChar(c);
+    @Redirect(method = "charTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/CharInput;isValidChar()Z"))
+    private boolean allowForbiddenCharacters(CharInput instance) {
+        return this.viaFabricPlus$forbiddenCharactersUnlocked || instance.isValidChar();
     }
 
     @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/StringHelper;stripInvalidChars(Ljava/lang/String;)Ljava/lang/String;"))
@@ -57,5 +57,4 @@ public abstract class MixinTextFieldWidget implements ITextFieldWidget {
     public void viaFabricPlus$unlockForbiddenCharacters() {
         this.viaFabricPlus$forbiddenCharactersUnlocked = true;
     }
-
 }

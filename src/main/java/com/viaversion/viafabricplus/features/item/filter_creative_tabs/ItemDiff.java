@@ -263,7 +263,7 @@ import static net.minecraft.item.Items.CARVED_PUMPKIN;
 import static net.minecraft.item.Items.CAT_SPAWN_EGG;
 import static net.minecraft.item.Items.CAULDRON;
 import static net.minecraft.item.Items.CAVE_SPIDER_SPAWN_EGG;
-import static net.minecraft.item.Items.CHAIN;
+import static net.minecraft.item.Items.IRON_CHAIN;
 import static net.minecraft.item.Items.CHAINMAIL_BOOTS;
 import static net.minecraft.item.Items.CHAINMAIL_CHESTPLATE;
 import static net.minecraft.item.Items.CHAINMAIL_HELMET;
@@ -2017,7 +2017,7 @@ public final class ItemDiff {
         ITEM_DIFF.put(POLISHED_BASALT, andNewer(v1_16));
         ITEM_DIFF.put(RESPAWN_ANCHOR, andNewer(v1_16));
         ITEM_DIFF.put(LODESTONE, andNewer(v1_16));
-        ITEM_DIFF.put(CHAIN, andNewer(v1_16));
+        ITEM_DIFF.put(IRON_CHAIN, andNewer(v1_16));
         ITEM_DIFF.put(SOUL_CAMPFIRE, andNewer(v1_16));
         ITEM_DIFF.put(BLACKSTONE, andNewer(v1_16));
         ITEM_DIFF.put(BLACKSTONE_STAIRS, andNewer(v1_16));

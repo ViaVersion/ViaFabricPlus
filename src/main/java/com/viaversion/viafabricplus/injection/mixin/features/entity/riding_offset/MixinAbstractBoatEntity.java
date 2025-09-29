@@ -37,7 +37,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractBoatEntity.class)
 public abstract class MixinAbstractBoatEntity extends VehicleEntity {
-
     public MixinAbstractBoatEntity(EntityType<?> entityType, World world) {
         super(entityType, world);
     }
@@ -45,10 +44,9 @@ public abstract class MixinAbstractBoatEntity extends VehicleEntity {
     @Inject(method = "updatePassengerPosition", at = @At(value = "HEAD"), cancellable = true)
     private void updatePassengerPosition1_8(Entity passenger, Entity.PositionUpdater positionUpdater, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            final Vec3d newPosition = EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(this, passenger).add(this.getPos());
+            final Vec3d newPosition = EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(this, passenger).add(this.getEntityPos());
             positionUpdater.accept(passenger, newPosition.x, newPosition.y + EntityRidingOffsetsPre1_20_2.getHeightOffset(passenger), newPosition.z);
             ci.cancel();
         }
     }
-
 }

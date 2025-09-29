@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.screen;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -71,10 +72,10 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      * Automatically plays a click sound and calls the {@link #mappedMouseClicked(double, double, int)} method
      */
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        mappedMouseClicked(mouseX, mouseY, button);
+    public boolean mouseClicked(final Click input, final boolean doubled) {
+        mappedMouseClicked(input.x(), input.y(), input.button());
         ClickableWidget.playClickSound(MinecraftClient.getInstance().getSoundManager());
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(input, doubled);
     }
 
     public void renderScrollableText(final Text name, final int offset) {
@@ -125,21 +126,19 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(DrawContext, int, int, int, int, int, int, int, boolean, float)} method
      */
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
         // Allows cross-sharing of global variables between util methods
         this.context = context;
-        this.x = x;
-        this.y = y;
-        this.entryWidth = entryWidth;
-        this.entryHeight = entryHeight;
+//        this.x = x; // TODO
+//        this.y = y; // TODO
+//        this.entryWidth = entryWidth; // TODO
+//        this.entryHeight = entryHeight; // TODO
 
         final Matrix3x2fStack matrices = context.getMatrices();
-
         matrices.pushMatrix();
         matrices.translate(x, y);
         context.fill(0, 0, entryWidth - 4 /* int i = this.left + (this.width - entryWidth) / 2; int j = this.left + (this.width + entryWidth) / 2; */, entryHeight, Integer.MIN_VALUE);
-        mappedRender(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
+        mappedRender(context, 0 /* TODO */, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
         matrices.popMatrix();
     }
-
 }

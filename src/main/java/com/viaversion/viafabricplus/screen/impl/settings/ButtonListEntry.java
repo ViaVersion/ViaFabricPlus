@@ -29,7 +29,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 
 public final class ButtonListEntry extends VFPListEntry {
-
     private final ButtonSetting value;
 
     public ButtonListEntry(ButtonSetting value) {
@@ -49,10 +48,7 @@ public final class ButtonListEntry extends VFPListEntry {
     @Override
     public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
         context.drawCenteredTextWithShadow(textRenderer, this.value.displayValue(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
-
         renderTooltip(value.getTooltip(), mouseX, mouseY);
     }
-
 }

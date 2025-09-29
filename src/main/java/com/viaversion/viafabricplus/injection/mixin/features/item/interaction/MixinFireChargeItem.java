@@ -33,12 +33,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FireChargeItem.class)
 public abstract class MixinFireChargeItem {
-
     @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
     private void disableClientSideUsage(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && context.getWorld().isClient) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && context.getWorld().isClient()) {
             cir.setReturnValue(ActionResult.SUCCESS);
         }
     }
-
 }

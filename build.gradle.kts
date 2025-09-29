@@ -6,7 +6,6 @@ plugins {
 }
 
 allprojects {
-
     setupProject()
     setupFabric(yarnMapped())
     setupViaPublishing()
@@ -22,13 +21,10 @@ allprojects {
             }
         }
     }
-
 }
 
 subprojects {
-
     configureVVDependencies("compileOnlyApi")
-
 }
 
 base {

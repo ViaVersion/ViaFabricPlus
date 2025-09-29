@@ -44,8 +44,6 @@ import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.network.packet.BrandCustomPayload;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.network.packet.s2c.custom.DebugGameTestAddMarkerCustomPayload;
-import net.minecraft.network.packet.s2c.custom.DebugGameTestClearCustomPayload;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
@@ -55,7 +53,6 @@ import static com.viaversion.viaversion.util.ProtocolUtil.packetTypeMap;
 
 // Protocol to handle error handling changes in older protocols, always last element of the pipeline
 public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPacket1_21_6, ClientboundPacket1_21_6, ServerboundPacket1_21_6, ServerboundPacket1_21_6> {
-
     public static final ViaFabricPlusProtocol INSTANCE = new ViaFabricPlusProtocol();
 
     private final Map<String, Pair<ProtocolVersion, PacketHandler>> readers = new HashMap<>();
@@ -64,14 +61,15 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
         super(ClientboundPacket1_21_6.class, ClientboundPacket1_21_6.class, ServerboundPacket1_21_6.class, ServerboundPacket1_21_6.class);
 
         registerReader(BrandCustomPayload.ID, LegacyProtocolVersion.c0_0_15a_1, wrapper -> wrapper.passthrough(Types.STRING));
-        registerReader(DebugGameTestAddMarkerCustomPayload.ID, ProtocolVersion.v1_14, wrapper -> {
-            wrapper.passthrough(Types.BLOCK_POSITION1_14);
-            wrapper.passthrough(Types.INT);
-            wrapper.passthrough(Types.STRING);
-            wrapper.passthrough(Types.INT);
-        });
-        registerReader(DebugGameTestClearCustomPayload.ID, ProtocolVersion.v1_14, wrapper -> {
-        });
+        // TODO
+//        registerReader(DebugGameTestAddMarkerCustomPayload.ID, ProtocolVersion.v1_14, wrapper -> {
+//            wrapper.passthrough(Types.BLOCK_POSITION1_14);
+//            wrapper.passthrough(Types.INT);
+//            wrapper.passthrough(Types.STRING);
+//            wrapper.passthrough(Types.INT);
+//        });
+//        registerReader(DebugGameTestClearCustomPayload.ID, ProtocolVersion.v1_14, wrapper -> {
+//        });
     }
 
     @Override
@@ -138,5 +136,4 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
             packetTypeMap(unmappedServerboundPacketType, ServerboundPackets1_21_6.class, ServerboundConfigurationPackets1_21_6.class)
         );
     }
-
 }

@@ -38,7 +38,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity {
-
     public MixinLivingEntity(EntityType<?> type, World world) {
         super(type, world);
     }
@@ -58,9 +57,9 @@ public abstract class MixinLivingEntity extends Entity {
     @Redirect(method = "travelMidAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isChunkLoaded(Lnet/minecraft/util/math/BlockPos;)Z"))
     private boolean modifyLoadedCheck(World instance, BlockPos blockPos) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return this.getWorld().isChunkLoaded(blockPos) && instance.getChunkManager().isChunkLoaded(blockPos.getX() >> 4, blockPos.getZ() >> 4);
+            return this.getEntityWorld().isChunkLoaded(blockPos) && instance.getChunkManager().isChunkLoaded(blockPos.getX() >> 4, blockPos.getZ() >> 4);
         } else {
-            return this.getWorld().isChunkLoaded(blockPos);
+            return this.getEntityWorld().isChunkLoaded(blockPos);
         }
     }
 
@@ -71,5 +70,4 @@ public abstract class MixinLivingEntity extends Entity {
             instance.onLanding();
         }
     }
-
 }

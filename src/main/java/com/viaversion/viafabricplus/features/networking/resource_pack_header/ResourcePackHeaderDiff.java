@@ -28,6 +28,7 @@ import java.util.Map;
 import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
+import net.minecraft.resource.PackVersion;
 import net.minecraft.resource.ResourceType;
 
 /**
@@ -109,7 +110,6 @@ public final class ResourcePackHeaderDiff {
 
     private static void registerVersion(final ProtocolVersion version, final int packFormat, final String name, final String id) {
         GAME_VERSION_DIFF.put(version, new GameVersion() {
-
             @Override
             public SaveVersion dataVersion() {
                 return null;
@@ -131,10 +131,11 @@ public final class ResourcePackHeaderDiff {
             }
 
             @Override
-            public int packVersion(final ResourceType type) {
+            public PackVersion packVersion(final ResourceType type) {
                 if (type == ResourceType.CLIENT_RESOURCES) {
-                    return packFormat;
+                    return PackVersion.of(packFormat);
                 }
+
                 throw new UnsupportedOperationException();
             }
 

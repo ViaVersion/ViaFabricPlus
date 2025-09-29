@@ -77,7 +77,6 @@ import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
  * This class represents the whole Protocol Translator, here all important variables are stored
  */
 public final class ProtocolTranslator {
-
     /**
      * These attribute keys are used to track the main connections of Minecraft and ViaVersion, so that they can be used later during the connection to send packets.
      */
@@ -218,8 +217,8 @@ public final class ProtocolTranslator {
         final MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.player != null) {
             final GameProfile profile = mc.player.getGameProfile();
-            info.setUsername(profile.getName());
-            info.setUuid(profile.getId());
+            info.setUsername(profile.name());
+            info.setUuid(profile.id());
         }
 
         return user;
@@ -243,11 +242,11 @@ public final class ProtocolTranslator {
         try {
             final Path viaVersionConfig = path.resolve("viaversion.yml");
             Files.writeString(viaVersionConfig, """
-                    fix-infested-block-breaking: false
-                    shield-blocking: false
-                    no-delay-shield-blocking: true
-                    handle-invalid-item-count: true
-                    """, StandardOpenOption.CREATE_NEW);
+                fix-infested-block-breaking: false
+                shield-blocking: false
+                no-delay-shield-blocking: true
+                handle-invalid-item-count: true
+                """, StandardOpenOption.CREATE_NEW);
         } catch (FileAlreadyExistsException ignored) {
         } catch (Throwable e) {
             throw new RuntimeException("Failed to patch ViaVersion config", e);
@@ -256,9 +255,9 @@ public final class ProtocolTranslator {
         try {
             final Path viaLegacyConfig = path.resolve("vialegacy.yml");
             Files.writeString(viaLegacyConfig, """
-                    legacy-skull-loading: true
-                    legacy-skin-loading: true
-                    """, StandardOpenOption.CREATE_NEW);
+                legacy-skull-loading: true
+                legacy-skin-loading: true
+                """, StandardOpenOption.CREATE_NEW);
         } catch (FileAlreadyExistsException ignored) {
         } catch (Throwable e) {
             throw new RuntimeException("Failed to patch ViaLegacy config", e);
@@ -295,20 +294,19 @@ public final class ProtocolTranslator {
         return CompletableFuture.runAsync(() -> {
             // Load ViaVersion and register all platforms and their components
             ViaLoader.init(
-                    new ViaFabricPlusViaVersionPlatformImpl(path.toFile()),
-                    new ViaFabricPlusVLLoader(),
-                    new ViaFabricPlusVLInjector(),
-                    new ViaFabricPlusVLCommandHandler(),
+                new ViaFabricPlusViaVersionPlatformImpl(path.toFile()),
+                new ViaFabricPlusVLLoader(),
+                new ViaFabricPlusVLInjector(),
+                new ViaFabricPlusVLCommandHandler(),
 
-                    ViaBackwardsPlatformImpl::new,
-                    ViaFabricPlusViaLegacyPlatformImpl::new,
-                    ViaAprilFoolsPlatformImpl::new,
-                    ViaBedrockPlatformImpl::new
+                ViaBackwardsPlatformImpl::new,
+                ViaFabricPlusViaLegacyPlatformImpl::new,
+                ViaAprilFoolsPlatformImpl::new,
+                ViaBedrockPlatformImpl::new
             );
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
             changeBedrockProtocolName();
             ViaFabricPlusProtocol.INSTANCE.initialize();
         }, Util.getMainWorkerExecutor());
     }
-
 }

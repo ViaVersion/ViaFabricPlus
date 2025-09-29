@@ -44,7 +44,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity {
-
     @Shadow
     private Optional<BlockPos> climbingPos;
 
@@ -82,7 +81,7 @@ public abstract class MixinLivingEntity extends Entity {
     private void allowGappedLadderClimb(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.b1_5tob1_5_2) && !cir.getReturnValueZ() && !this.isSpectator()) {
             final BlockPos blockPos = this.getBlockPos().up();
-            final BlockState blockState = this.getWorld().getBlockState(blockPos);
+            final BlockState blockState = this.getEntityWorld().getBlockState(blockPos);
             if (blockState.isIn(BlockTags.CLIMBABLE)) {
                 this.climbingPos = Optional.of(blockPos);
                 cir.setReturnValue(true);
@@ -92,5 +91,4 @@ public abstract class MixinLivingEntity extends Entity {
             }
         }
     }
-
 }

@@ -25,7 +25,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
 
 public final class FontCacheReload {
-
     public static void reload() {
         if (MinecraftClient.getInstance() == null) {
             return;
@@ -33,8 +32,7 @@ public final class FontCacheReload {
 
         for (final FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
             storage.bakedGlyphCache.clear();
-            storage.glyphCache.clear();
+            // TODO: storage.glyphCache.clear();
         }
     }
-
 }

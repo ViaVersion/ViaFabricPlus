@@ -25,23 +25,25 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
+import net.minecraft.client.particle.BillboardParticle;
+import net.minecraft.client.particle.BillboardParticleSubmittable;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.particle.SpriteBillboardParticle;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
+import org.joml.Quaternionf;
 
-public final class FootStepParticle1_12_2 extends SpriteBillboardParticle {
-
+public final class FootStepParticle1_12_2 extends BillboardParticle {
     public static final Identifier ID = Identifier.of("viafabricplus", "footstep");
     public static int RAW_ID;
 
@@ -54,21 +56,16 @@ public final class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         RAW_ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
     }
 
-    private FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z) {
-        super(clientWorld, x, y, z);
+    private FootStepParticle1_12_2(ClientWorld world, double x, double y, double z, Sprite sprite) {
+        super(world, x, y, z, sprite);
 
         this.scale = 0.125F;
         this.setMaxAge(200);
     }
 
     @Override
-    public ParticleTextureSheet getType() {
-        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
-    }
-
-    @Override
-    public void render(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
-        final float strength = ((float) this.age + tickDelta) / (float) this.maxAge;
+    public void render(final BillboardParticleSubmittable submittable, final Camera camera, final Quaternionf rotation, final float tickProgress) {
+        final float strength = ((float) this.age + tickProgress) / (float) this.maxAge;
         this.alpha = 2.0F - (strength * strength) * 2.0F;
         if (this.alpha > 1.0F) {
             this.alpha = 0.2F;
@@ -77,28 +74,29 @@ public final class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         }
 
         final Vec3d cameraPos = camera.getPos();
-        final float x = (float) (MathHelper.lerp(tickDelta, this.lastX, this.x) - cameraPos.getX());
-        final float y = (float) (MathHelper.lerp(tickDelta, this.lastY, this.y) - cameraPos.getY());
-        final float z = (float) (MathHelper.lerp(tickDelta, this.lastZ, this.z) - cameraPos.getZ());
+        final float x = (float) (MathHelper.lerp(tickProgress, this.lastX, this.x) - cameraPos.getX());
+        final float y = (float) (MathHelper.lerp(tickProgress, this.lastY, this.y) - cameraPos.getY());
+        final float z = (float) (MathHelper.lerp(tickProgress, this.lastZ, this.z) - cameraPos.getZ());
 
         final float minU = this.getMinU();
         final float maxU = this.getMaxU();
         final float minV = this.getMinV();
         final float maxV = this.getMaxV();
 
-        final int light = this.getBrightness(tickDelta); // This is missing in the original code, that's why the particles are broken
-        vertexConsumer.vertex(x - scale, y, z + scale).texture(maxU, maxV).color(this.red, this.green, this.blue, this.alpha).light(light);
-        vertexConsumer.vertex(x + scale, y, z + scale).texture(maxU, minV).color(this.red, this.green, this.blue, this.alpha).light(light);
-        vertexConsumer.vertex(x + scale, y, z - scale).texture(minU, minV).color(this.red, this.green, this.blue, this.alpha).light(light);
-        vertexConsumer.vertex(x - scale, y, z - scale).texture(minU, maxV).color(this.red, this.green, this.blue, this.alpha).light(light);
+        final int light = this.getBrightness(tickProgress); // This is missing in the original code, that's why the particles are broken
+        submittable.render(this.getRenderType(), x, y, z, 0.0F, 0.0F, zRotation, 0.0F, this.scale, minU, maxU, minV, maxV, ColorHelper.fromFloats(this.alpha, this.red, this.green, this.blue), light);
     }
 
     public static void init() {
         // Calls the static block
     }
 
-    public static class Factory implements ParticleFactory<SimpleParticleType> {
+    @Override
+    protected RenderType getRenderType() {
+        return RenderType.PARTICLE_ATLAS_TRANSLUCENT;
+    }
 
+    public static class Factory implements ParticleFactory<SimpleParticleType> {
         private final SpriteProvider spriteProvider;
 
         public Factory(SpriteProvider spriteProvider) {
@@ -106,16 +104,15 @@ public final class FootStepParticle1_12_2 extends SpriteBillboardParticle {
         }
 
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+        public Particle createParticle(final SimpleParticleType parameters, final ClientWorld world, final double x, final double y, final double z, final double velocityX, final double velocityY, final double velocityZ, final Random random) {
             if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
                 throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
             }
 
-            final FootStepParticle1_12_2 particle = new FootStepParticle1_12_2(world, x, y, z);
-            particle.setSprite(this.spriteProvider);
+            final Sprite sprite = spriteProvider.getSprite(random);
+            final FootStepParticle1_12_2 particle = new FootStepParticle1_12_2(world, x, y, z, sprite);
+            particle.setSprite(sprite);
             return particle;
         }
-
     }
-
 }

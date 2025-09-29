@@ -52,7 +52,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
-
     @Shadow
     @Final
     public ClientPlayNetworkHandler networkHandler;
@@ -67,7 +66,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     }
 
     @Inject(method = "startRiding", at = @At("RETURN"))
-    private void setRotationsWhenInBoat(Entity entity, boolean force, CallbackInfoReturnable<Boolean> cir) {
+    private void setRotationsWhenInBoat(Entity entity, boolean force, boolean emitEvent, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValueZ() && entity instanceof BoatEntity && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
             this.lastYaw = entity.getYaw();
             this.setYaw(entity.getYaw());
@@ -107,5 +106,4 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             playerInput.sendToServer(Protocol1_21To1_21_2.class);
         });
     }
-
 }

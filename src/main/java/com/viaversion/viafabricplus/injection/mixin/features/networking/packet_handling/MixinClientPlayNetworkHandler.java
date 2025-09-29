@@ -30,9 +30,9 @@ import java.util.OptionalInt;
 import java.util.Set;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
+import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.client.network.ClientConnectionState;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -74,7 +74,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkHandler {
-
     @Mutable
     @Shadow
     @Final
@@ -155,7 +154,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             if (i == 0) {
                 this.client.player.networkHandler.sendPacket(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
-                this.client.setScreen(new DownloadingTerrainScreen(() -> false, DownloadingTerrainScreen.WorldEntryReason.END_PORTAL));
+//                this.client.setScreen(new DownloadingTerrainScreen(() -> false, DownloadingTerrainScreen.WorldEntryReason.END_PORTAL)); // TODO
             } else if (i == 1) {
                 instance.setScreen(screen);
             }
@@ -178,9 +177,9 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         }
     }
 
-    @WrapWithCondition(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;startWorldLoading(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen$WorldEntryReason;)V"))
-    private boolean checkDimensionChange(ClientPlayNetworkHandler instance, ClientPlayerEntity player, ClientWorld world, DownloadingTerrainScreen.WorldEntryReason worldEntryReason, @Local(ordinal = 0) RegistryKey<World> registryKey) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_3) || registryKey != this.client.player.getWorld().getRegistryKey();
+    @WrapWithCondition(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;startWorldLoading(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/gui/screen/world/LevelLoadingScreen$WorldEntryReason;)V"))
+    private boolean checkDimensionChange(ClientPlayNetworkHandler instance, ClientPlayerEntity player, ClientWorld world, LevelLoadingScreen.WorldEntryReason reason, @Local(ordinal = 0) RegistryKey<World> registryKey) {
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_3) || registryKey != this.client.player.getEntityWorld().getRegistryKey();
     }
 
     @WrapWithCondition(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
@@ -208,7 +207,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     @Redirect(method = {"onEntityPositionSync", "onEntity"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isLogicalSideForUpdatingMovement()Z"))
     private boolean allowPlayerToBeMovedByEntityPackets(Entity instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getWorld().isClient;
+            return instance.getControllingPassenger() instanceof PlayerEntity player ? player.isMainPlayer() : !instance.getEntityWorld().isClient();
         } else {
             return instance.isLogicalSideForUpdatingMovement();
         }
@@ -244,10 +243,9 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && instance.getInterpolator() != null) {
                 instance.getInterpolator().setLerpDuration(0);
             }
-            instance.updateTrackedPositionAndAngles(instance.getPos(), yaw, pitch);
+            instance.updateTrackedPositionAndAngles(instance.getEntityPos(), yaw, pitch);
         } else {
             instance.updateTrackedPositionAndAngles(pos, yaw, pitch);
         }
     }
-
 }

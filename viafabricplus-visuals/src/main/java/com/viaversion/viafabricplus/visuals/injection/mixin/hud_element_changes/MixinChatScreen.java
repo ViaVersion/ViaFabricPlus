@@ -31,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = ChatScreen.class)
 public abstract class MixinChatScreen {
-
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;getIndicatorAt(DD)Lnet/minecraft/client/gui/hud/MessageIndicator;"))
     private MessageIndicator removeIndicator(ChatHud instance, double mouseX, double mouseY) {
         if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
@@ -40,5 +39,4 @@ public abstract class MixinChatScreen {
             return instance.getIndicatorAt(mouseX, mouseY);
         }
     }
-
 }

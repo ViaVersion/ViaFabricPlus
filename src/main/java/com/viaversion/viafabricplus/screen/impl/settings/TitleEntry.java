@@ -30,7 +30,6 @@ import net.minecraft.util.Formatting;
 import org.joml.Matrix3x2fStack;
 
 public final class TitleEntry extends VFPListEntry {
-
     private final Text name;
 
     public TitleEntry(Text name) {
@@ -43,20 +42,19 @@ public final class TitleEntry extends VFPListEntry {
     }
 
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final Matrix3x2fStack matrices = context.getMatrices();
 
         matrices.pushMatrix();
-        matrices.translate(x, y);
-        mappedRender(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
+        // TODO
+//        matrices.translate(x, y);
+//        mappedRender(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
         matrices.popMatrix();
     }
 
     @Override
     public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
         context.drawTextWithShadow(textRenderer, this.name.copy().formatted(Formatting.BOLD), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
     }
-
 }

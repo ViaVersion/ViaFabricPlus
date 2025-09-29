@@ -32,7 +32,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = ChatScreen.class, priority = 1) // Apply our mixin first so other mods can override the chat length
 public abstract class MixinChatScreen {
-
     @Shadow
     protected TextFieldWidget chatField;
 
@@ -42,5 +41,4 @@ public abstract class MixinChatScreen {
             this.chatField.setMaxLength(MaxChatLength.getChatLength());
         }
     }
-
 }

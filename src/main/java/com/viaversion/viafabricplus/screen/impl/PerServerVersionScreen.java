@@ -26,19 +26,16 @@ import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.awt.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 public final class PerServerVersionScreen extends VFPScreen {
-
     private final Consumer<ProtocolVersion> selectionConsumer;
     private final Supplier<ProtocolVersion> selectionSupplier;
 
@@ -55,12 +52,10 @@ public final class PerServerVersionScreen extends VFPScreen {
     @Override
     protected void init() {
         super.init();
-
         this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, textRenderer.fontHeight + 4));
     }
 
     public final class SlotList extends VFPList {
-
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
@@ -70,7 +65,6 @@ public final class PerServerVersionScreen extends VFPScreen {
     }
 
     public abstract class SharedSlot extends VFPListEntry {
-
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
             close();
@@ -78,28 +72,26 @@ public final class PerServerVersionScreen extends VFPScreen {
     }
 
     public final class ResetSlot extends SharedSlot {
-
         @Override
         public Text getNarration() {
             return Text.translatable("base.viafabricplus.cancel_and_reset");
         }
 
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        public boolean mouseClicked(final Click click, final boolean doubled) {
             selectionConsumer.accept(null);
-
-            return super.mouseClicked(mouseX, mouseY, button);
+            return super.mouseClicked(click, doubled);
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, ((MutableText) getNarration()).formatted(Formatting.GOLD), x + entryWidth / 2, y + entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+            // TODO
+//            context.drawCenteredTextWithShadow(textRenderer, ((MutableText) getNarration()).formatted(Formatting.GOLD), x + entryWidth / 2, y + entryHeight / 2 - textRenderer.fontHeight / 2, -1);
         }
     }
 
     public final class ProtocolSlot extends SharedSlot {
-
         private final ProtocolVersion protocolVersion;
 
         public ProtocolSlot(final ProtocolVersion protocolVersion) {
@@ -112,19 +104,17 @@ public final class PerServerVersionScreen extends VFPScreen {
         }
 
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        public boolean mouseClicked(final Click click, final boolean doubled) {
             selectionConsumer.accept(protocolVersion);
-
-            return super.mouseClicked(mouseX, mouseY, button);
+            return super.mouseClicked(click, doubled);
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final boolean isSelected = protocolVersion.equals(selectionSupplier.get());
-
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), x + entryWidth / 2, y - 1 + entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
+            // TODO
+//            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), x + entryWidth / 2, y - 1 + entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
         }
     }
-
 }

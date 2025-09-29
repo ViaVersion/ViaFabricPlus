@@ -23,15 +23,14 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.packet;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.player.PlayerPosition;
+import net.minecraft.entity.EntityPosition;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(PlayerPosition.class)
+@Mixin(EntityPosition.class)
 public abstract class MixinPlayerPosition {
-
     @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(FFF)F"))
     private static float uncapPlayerPitchMovement(float value, float min, float max) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
@@ -40,5 +39,4 @@ public abstract class MixinPlayerPosition {
             return MathHelper.clamp(value, min, max);
         }
     }
-
 }
