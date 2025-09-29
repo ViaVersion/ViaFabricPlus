@@ -43,4 +43,5 @@ extendable method net/minecraft/entity/Entity updateTrackedPositionAndAngles (Ln
 accessible class net/minecraft/client/font/FontStorage$GlyphPair
 accessible class net/minecraft/entity/Entity$QueuedCollisionCheck
 
+accessible field net/minecraft/util/math/Direction YXZ Lcom/google/common/collect/ImmutableList;
 accessible field net/minecraft/client/font/GlyphBaker fontId Lnet/minecraft/util/Identifier;

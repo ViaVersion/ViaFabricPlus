@@ -134,7 +134,6 @@ public abstract class MixinEntity {
     @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)
     private void modifyVelocityAffectingPos(CallbackInfoReturnable<BlockPos> cir) {
         final ProtocolVersion target = ProtocolTranslator.getTargetVersion();
-
         if (target.olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - (target.olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1 : 0.5000001), pos.z));
         }
@@ -143,7 +142,7 @@ public abstract class MixinEntity {
     @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Direction;method_73163(Lnet/minecraft/util/math/Vec3d;)Lcom/google/common/collect/ImmutableList;"))
     private static ImmutableList<Direction.Axis> alwaysSortYXZ(Vec3d movement) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return ImmutableList.<Direction.Axis>builder().add(Direction.Axis.X).add(Direction.Axis.Z).build();
+            return Direction.YXZ;
         } else {
             return Direction.method_73163(movement);
         }

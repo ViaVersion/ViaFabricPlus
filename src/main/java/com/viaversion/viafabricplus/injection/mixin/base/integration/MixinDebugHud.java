@@ -42,15 +42,13 @@ import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.storage.EntityTrac
 import org.cloudburstmc.netty.channel.raknet.RakClientChannel;
 import org.cloudburstmc.netty.handler.codec.raknet.common.RakSessionCodec;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(DebugHud.class)
 public abstract class MixinDebugHud {
-
-    @Inject(method = "getLeftText", at = @At("RETURN"))
+    //    @Inject(method = "getLeftText", at = @At("RETURN"))
+    // TODO
     public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
         if (!GeneralSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) {
             return;
@@ -72,21 +70,26 @@ public abstract class MixinDebugHud {
         if (entityTracker1_7_10 != null) {
             information.add("1.7 Entities: " + entityTracker1_7_10.getTrackedEntities().size() + ", Virtual holograms: " + entityTracker1_7_10.getVirtualHolograms().size());
         }
+
         final SeedStorage seedStorage = connection.get(SeedStorage.class);
         if (seedStorage != null && connection.getProtocolInfo().serverProtocolVersion().newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
             information.add("World Seed: " + seedStorage.seed);
         }
+
         final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = connection.get(ExtensionProtocolMetadataStorage.class);
         if (extensionProtocolMetadataStorage != null) {
             information.add("CPE extensions: " + extensionProtocolMetadataStorage.getExtensionCount());
         }
+
         final BedrockJoinGameTracker joinGameDataTracker = connection.get(BedrockJoinGameTracker.class);
         if (joinGameDataTracker != null) {
             information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed());
         }
+
         if (joinGameDataTracker != null) {
             information.add("World Seed: " + joinGameDataTracker.getSeed());
         }
+
         final ChunkTracker chunkTracker = connection.get(ChunkTracker.class);
         if (chunkTracker != null) {
             final IChunkTracker mixinChunkTracker = (IChunkTracker) chunkTracker;
@@ -95,6 +98,7 @@ public abstract class MixinDebugHud {
             final int chunks = mixinChunkTracker.viaFabricPlus$getChunks();
             cir.getReturnValue().add("Chunk Tracker: R: " + subChunkRequests + ", P: " + pendingSubChunks + ", C: " + chunks);
         }
+
         if (connection.getChannel() instanceof RakClientChannel rakClientChannel) {
             final RakSessionCodec rakSessionCodec = rakClientChannel.parent().pipeline().get(RakSessionCodec.class);
             if (rakSessionCodec != null) {
@@ -107,5 +111,4 @@ public abstract class MixinDebugHud {
 
         cir.getReturnValue().addAll(information);
     }
-
 }

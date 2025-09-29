@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.classic.cpe_extension;
 
 import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
+import java.util.List;
 import net.minecraft.client.render.WeatherRendering;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -34,13 +35,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WeatherRendering.class)
 public abstract class MixinWeatherRendering {
-
-    @Redirect(method = "renderPrecipitation(Lnet/minecraft/world/World;Lnet/minecraft/client/render/VertexConsumerProvider;IFLnet/minecraft/util/math/Vec3d;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getRainGradient(F)F"))
-    private float forceSnow(World instance, float delta) {
+    @Redirect(method = "renderPrecipitation", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
+    private boolean forceSnow(List<?> instance) {
         if (CPEAdditions.isSnowing()) {
-            return 1F;
+            return false;
         } else {
-            return instance.getRainGradient(delta);
+            return instance.isEmpty();
         }
     }
 
@@ -50,5 +50,4 @@ public abstract class MixinWeatherRendering {
             cir.setReturnValue(Biome.Precipitation.SNOW);
         }
     }
-
 }

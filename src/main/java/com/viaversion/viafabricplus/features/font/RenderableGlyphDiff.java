@@ -980,7 +980,6 @@ public final class RenderableGlyphDiff {
      */
     public static boolean isGlyphRenderable(final int codePoint) {
         final ProtocolVersion targetVersion = ProtocolTranslator.getTargetVersion();
-
         if (targetVersion.newerThanOrEqualTo(v1_20)) { // 1.20 switched to using Unihex as a main font
             return !RENDERABLE_GLYPH_DIFF.containsKey(codePoint) || targetVersion.newerThanOrEqualTo(RENDERABLE_GLYPH_DIFF.get(codePoint));
         } else {

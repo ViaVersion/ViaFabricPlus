@@ -42,7 +42,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PistonBlock.class)
 public abstract class MixinPistonBlock extends FacingBlock {
-
     @Shadow
     @Final
     private static Map<Direction, VoxelShape> EXTENDED_SHAPES_BY_DIRECTION;
@@ -70,5 +69,4 @@ public abstract class MixinPistonBlock extends FacingBlock {
             return super.getCullingShape(state);
         }
     }
-
 }
