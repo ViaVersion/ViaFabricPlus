@@ -21,22 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.skin_loading;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.yggdrasil.ProfileResult;
-import com.mojang.datafixers.util.Either;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.texture.PlayerSkinProvider;
-import net.minecraft.entity.player.SkinTextures;
-import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PlayerListEntry.class)
 public abstract class MixinPlayerListEntry {
@@ -44,12 +30,12 @@ public abstract class MixinPlayerListEntry {
 //    @Redirect(method = "texturesSupplier", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/PlayerSkinProvider;supplySkinTextures(Lcom/mojang/authlib/GameProfile;Z)Ljava/util/function/Supplier;"))
 //    private static Supplier<SkinTextures> fetchGameProfileProperties(PlayerSkinProvider instance, GameProfile profile, boolean requireSecure) {
 //        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && !profile.properties().containsKey("textures")) {
-//            return CompletableFuture.supplyAsync(() -> {
-//                final Optional<GameProfile> profileResult = MinecraftClient.getInstance().getApiServices().profileResolver().getProfile(Either.right(profile.id()));
-//                return profileResult.orElse(profile);
-//            }, Util.getMainWorkerExecutor()).thenCompose(instance::fetchSkinTextures);
+//            return () -> {
+//                final ProfileResult profileResult = MinecraftClient.getInstance().getApiServices().sessionService().fetchProfile(profile.id(), true);
+//                return profileResult == null ? profile : profileResult.profile();
+//            };
 //        } else {
-//            return instance.fetchSkinTextures(profile).get();
+//            return instance.supplySkinTextures(profile, requireSecure);
 //        }
 //    }
 }
