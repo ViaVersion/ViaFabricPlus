@@ -37,7 +37,6 @@ import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
@@ -58,7 +57,6 @@ public final class FootStepParticle1_12_2 extends BillboardParticle {
 
     private FootStepParticle1_12_2(ClientWorld world, double x, double y, double z, Sprite sprite) {
         super(world, x, y, z, sprite);
-
         this.scale = 0.125F;
         this.setMaxAge(200);
     }
@@ -77,14 +75,7 @@ public final class FootStepParticle1_12_2 extends BillboardParticle {
         final float x = (float) (MathHelper.lerp(tickProgress, this.lastX, this.x) - cameraPos.getX());
         final float y = (float) (MathHelper.lerp(tickProgress, this.lastY, this.y) - cameraPos.getY());
         final float z = (float) (MathHelper.lerp(tickProgress, this.lastZ, this.z) - cameraPos.getZ());
-
-        final float minU = this.getMinU();
-        final float maxU = this.getMaxU();
-        final float minV = this.getMinV();
-        final float maxV = this.getMaxV();
-
-        final int light = this.getBrightness(tickProgress); // This is missing in the original code, that's why the particles are broken
-        submittable.render(this.getRenderType(), x, y, z, 0.0F, 0.0F, zRotation, 0.0F, this.scale, minU, maxU, minV, maxV, ColorHelper.fromFloats(this.alpha, this.red, this.green, this.blue), light);
+        this.renderVertex(submittable, new Quaternionf().rotateX(-1.5708F), x, y, z, tickProgress);
     }
 
     public static void init() {
@@ -107,12 +98,12 @@ public final class FootStepParticle1_12_2 extends BillboardParticle {
         public Particle createParticle(final SimpleParticleType parameters, final ClientWorld world, final double x, final double y, final double z, final double velocityX, final double velocityY, final double velocityZ, final Random random) {
             if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
                 throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
+            } else {
+                final Sprite sprite = spriteProvider.getSprite(random);
+                final FootStepParticle1_12_2 particle = new FootStepParticle1_12_2(world, x, y, z, sprite);
+                particle.setSprite(sprite);
+                return particle;
             }
-
-            final Sprite sprite = spriteProvider.getSprite(random);
-            final FootStepParticle1_12_2 particle = new FootStepParticle1_12_2(world, x, y, z, sprite);
-            particle.setSprite(sprite);
-            return particle;
         }
     }
 }

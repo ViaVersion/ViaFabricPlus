@@ -72,7 +72,7 @@ public final class BoatRenderer1_8 extends AbstractBoatEntityRenderer {
             model,
             state,
             matrices,
-            model.getLayer(TEXTURE),
+            this.getRenderLayer(),
             state.light,
             OverlayTexture.DEFAULT_UV,
             state.outlineColor,
