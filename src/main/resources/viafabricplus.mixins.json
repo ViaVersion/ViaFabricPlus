@@ -119,7 +119,7 @@
     "features.entity.pose.MixinPlayerEntity",
     "features.entity.r1_8_boat.MixinAbstractBoatEntity",
     "features.entity.r1_8_boat.MixinEntityModels",
-    "features.entity.r1_8_boat.MixinEntityRenderDispatcher",
+	  "features.entity.r1_8_boat.MixinEntityRenderManager",
     "features.entity.riding_offset.MixinAbstractBoatEntity",
     "features.entity.riding_offset.MixinCamelEntity",
     "features.entity.riding_offset.MixinEntity",
