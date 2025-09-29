@@ -21,10 +21,8 @@
 
 package com.viaversion.viafabricplus.features.entity.r1_8_boat;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.AbstractBoatEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -64,16 +62,22 @@ public final class BoatRenderer1_8 extends AbstractBoatEntityRenderer {
         matrices.push();
         matrices.translate(0, 0.25, 0);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180 - state.yaw));
-
         if (state.damageWobbleTicks > 0) {
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(MathHelper.sin(state.damageWobbleTicks) * state.damageWobbleTicks * state.damageWobbleStrength / 10 * state.damageWobbleSide));
         }
 
         matrices.scale(-1, -1, 1);
         model.setAngles(state);
-        VertexConsumer vertexConsumer = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers().getBuffer(model.getLayer(TEXTURE));
-        model.render(matrices, vertexConsumer, state.light, OverlayTexture.DEFAULT_UV);
-
+        orderedRenderCommandQueue.submitModel(
+            model,
+            state,
+            matrices,
+            model.getLayer(TEXTURE),
+            state.light,
+            OverlayTexture.DEFAULT_UV,
+            state.outlineColor,
+            null
+        );
         matrices.pop();
     }
 }

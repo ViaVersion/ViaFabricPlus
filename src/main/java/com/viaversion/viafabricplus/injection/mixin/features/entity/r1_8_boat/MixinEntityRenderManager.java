@@ -28,8 +28,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.render.entity.EntityRenderManager;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.client.render.entity.state.BoatEntityRenderState;
+import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.resource.ResourceManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -49,10 +49,10 @@ public abstract class MixinEntityRenderManager {
     }
 
     @SuppressWarnings("unchecked")
-    @Inject(method = "getRenderer*", at = @At("HEAD"), cancellable = true)
-    private <T extends Entity> void useBoatRenderer1_8(T entity, CallbackInfoReturnable<EntityRenderer<? super T, ?>> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && entity instanceof BoatEntity) {
-            cir.setReturnValue((EntityRenderer<? super T, ?>) viaFabricPlus$boatRenderer);
+    @Inject(method = "getRenderer(Lnet/minecraft/client/render/entity/state/EntityRenderState;)Lnet/minecraft/client/render/entity/EntityRenderer;", at = @At("HEAD"), cancellable = true)
+    private <S extends EntityRenderState> void useBoatRenderer1_8(S state, CallbackInfoReturnable<EntityRenderer<?, ? super S>> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && state instanceof BoatEntityRenderState) {
+            cir.setReturnValue((EntityRenderer<?, ? super S>) viaFabricPlus$boatRenderer);
         }
     }
 }

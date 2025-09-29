@@ -36,7 +36,6 @@ import net.minecraft.util.Identifier;
  * Model for boats in 1.8 and lower.
  */
 public final class BoatModel1_8 extends EntityModel<BoatEntityRenderState> {
-
     public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(Identifier.of("viafabricplus", "boat1_8"), "main");
 
     public BoatModel1_8(ModelPart root) {
@@ -61,5 +60,4 @@ public final class BoatModel1_8 extends EntityModel<BoatEntityRenderState> {
     @Override
     public void setAngles(BoatEntityRenderState state) {
     }
-
 }
