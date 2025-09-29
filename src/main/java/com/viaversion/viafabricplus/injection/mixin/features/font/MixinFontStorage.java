@@ -112,10 +112,10 @@ public abstract class MixinFontStorage {
     private FontStorage.GlyphPair viaFabricPlus$getBlankGlyphPair() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             return null; // TODO
-//            return new FontStorage.GlyphPair(BuiltinEmptyGlyph1_12_2.INSTANCE, BuiltinEmptyGlyph1_12_2.INSTANCE);
+            // return new FontStorage.GlyphPair(() -> BuiltinEmptyGlyph1_12_2.INSTANCE.bake((Glyph.AbstractGlyphBaker) this.glyphBaker), BuiltinEmptyGlyph1_12_2.INSTANCE.bake((Glyph.AbstractGlyphBaker) this.glyphBaker));
         } else {
             return null; // TODO
-//            return FontStorage.GlyphPair.MISSING;
+            // return new FontStorage.GlyphPair(() -> BuiltinEmptyGlyph.MISSING.bake(this.glyphBaker), () -> BuiltinEmptyGlyph.MISSING.bake(this.glyphBaker));
         }
     }
 
