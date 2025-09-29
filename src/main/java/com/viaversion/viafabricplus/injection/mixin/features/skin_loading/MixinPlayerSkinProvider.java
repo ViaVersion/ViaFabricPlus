@@ -35,7 +35,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Mixin(PlayerSkinProvider.class)
-public abstract class MixinPlayerListEntry {
+public abstract class MixinPlayerSkinProvider {
 
     @Redirect(method = "supplySkinTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/PlayerSkinProvider;fetchSkinTextures(Lcom/mojang/authlib/GameProfile;)Ljava/util/concurrent/CompletableFuture;"))
     private static CompletableFuture<Optional<SkinTextures>> fetchGameProfileProperties(PlayerSkinProvider instance, GameProfile profile) {
