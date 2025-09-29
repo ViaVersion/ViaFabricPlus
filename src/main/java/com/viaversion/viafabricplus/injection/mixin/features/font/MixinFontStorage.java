@@ -59,14 +59,14 @@ public abstract class MixinFontStorage {
         // TODO: this.viaFabricPlus$blankBakedGlyph1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this.glyphBaker);
     }
 
-    //    @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
+    // @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
     private void filterGlyphs(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlus$getBlankGlyphPair());
         }
     }
 
-    //    @Inject(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At("RETURN"), cancellable = true)
+    // @Inject(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At("RETURN"), cancellable = true)
     private void filterBakedGlyph(int codePoint, CallbackInfoReturnable<BakedGlyph> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             cir.setReturnValue(this.viaFabricPlus$getBlankBakedGlyph());
@@ -77,13 +77,18 @@ public abstract class MixinFontStorage {
     private void fixBlankGlyph1_12_2(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             final FontStorage.GlyphPair glyphPair = cir.getReturnValue();
-//            final Glyph glyph1 = glyphPair.glyph();
-//            final Glyph glyph2 = glyphPair.advanceValidatedGlyph();
-//            cir.setReturnValue(new FontStorage.GlyphPair(glyph1 == BuiltinEmptyGlyph.MISSING ? BuiltinEmptyGlyph1_12_2.INSTANCE : glyph1, glyph2 == BuiltinEmptyGlyph.MISSING ? BuiltinEmptyGlyph1_12_2.INSTANCE : glyph2));
+            final BakedGlyph glyph1 = glyphPair.any().get();
+            final BakedGlyph glyph2 = glyphPair.advanceValidating().get();
+//            cir.setReturnValue(
+//                new FontStorage.GlyphPair(
+//                    () -> glyph1 == BuiltinEmptyGlyph.MISSING ? BuiltinEmptyGlyph1_12_2.INSTANCE : glyph1,
+//                    () -> glyph2 == BuiltinEmptyGlyph.MISSING ? BuiltinEmptyGlyph1_12_2.INSTANCE : glyph2
+//                )
+//            );
         }
     }
 
-    //    @Redirect(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At(value = "FIELD", target = "Lnet/minecraft/client/font/FontStorage;blankBakedGlyph:Lnet/minecraft/client/font/BakedGlyph;"))
+    // @Redirect(method = "bake(I)Lnet/minecraft/client/font/BakedGlyph;", at = @At(value = "FIELD", target = "Lnet/minecraft/client/font/FontStorage;blankBakedGlyph:Lnet/minecraft/client/font/BakedGlyph;"))
     private BakedGlyph fixBlankBakedGlyph1_12_2(FontStorage instance) {
         return this.viaFabricPlus$getBlankBakedGlyph();
     }
@@ -111,11 +116,9 @@ public abstract class MixinFontStorage {
     @Unique
     private FontStorage.GlyphPair viaFabricPlus$getBlankGlyphPair() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            return null; // TODO
-            // return new FontStorage.GlyphPair(() -> BuiltinEmptyGlyph1_12_2.INSTANCE.bake((Glyph.AbstractGlyphBaker) this.glyphBaker), BuiltinEmptyGlyph1_12_2.INSTANCE.bake((Glyph.AbstractGlyphBaker) this.glyphBaker));
+            return null; // TODO: return new FontStorage.GlyphPair(() -> BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this.glyphBaker), () -> BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this.glyphBaker));
         } else {
-            return null; // TODO
-            // return new FontStorage.GlyphPair(() -> BuiltinEmptyGlyph.MISSING.bake(this.glyphBaker), () -> BuiltinEmptyGlyph.MISSING.bake(this.glyphBaker));
+            return null; // TODO: return new FontStorage.GlyphPair(() -> BuiltinEmptyGlyph.MISSING.bake(this.glyphBaker), () -> BuiltinEmptyGlyph.MISSING.bake(this.glyphBaker));
         }
     }
 

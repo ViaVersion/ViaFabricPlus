@@ -47,7 +47,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @SuppressWarnings("DataFlowIssue")
 @Mixin(DebugHud.class)
 public abstract class MixinDebugHud {
-    //    @Inject(method = "getLeftText", at = @At("RETURN"))
+    // @Inject(method = "getLeftText", at = @At("RETURN"))
     // TODO
     public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
         if (!GeneralSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) {
