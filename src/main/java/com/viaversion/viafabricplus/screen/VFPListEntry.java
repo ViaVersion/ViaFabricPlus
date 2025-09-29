@@ -38,7 +38,7 @@ import org.joml.Matrix3x2fStack;
  * This class is a wrapper for the {@link net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry} class.
  * Features included:
  * <ul>
- *     <li>Add wrapper function {@link #mappedRender(DrawContext, int, int, int, int, int, int, int, boolean, float)} for:
+ *     <li>Add wrapper function {@link #mappedRender(DrawContext, int, int, int, boolean, float)} for:
  *     <ul>
  *         <li>cross-sharing entry position/dimension between other helper functions</li>
  *         <li>Setting the entry position as start inside the {@link MatrixStack}</li>
@@ -50,17 +50,12 @@ import org.joml.Matrix3x2fStack;
  * </ul>
  */
 public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<VFPListEntry> {
-
     protected static final int SCISSORS_OFFSET = 4;
     public static final int SLOT_MARGIN = 3;
 
     private DrawContext context;
-    private int x;
-    private int y;
-    private int entryWidth;
-    private int entryHeight;
 
-    public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(DrawContext context, int index, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         // To be overridden
     }
 
@@ -80,8 +75,7 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
 
     public void renderScrollableText(final Text name, final int offset) {
         final TextRenderer font = MinecraftClient.getInstance().textRenderer;
-
-        renderScrollableText(name, entryHeight / 2 - font.fontHeight / 2, offset);
+        renderScrollableText(name, this.getHeight() / 2 - font.fontHeight / 2, offset);
     }
 
     /**
@@ -93,15 +87,12 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      */
     public void renderScrollableText(final Text text, final int textY, final int offset) {
         final TextRenderer font = MinecraftClient.getInstance().textRenderer;
-
         final int fontWidth = font.getWidth(text);
-        if (fontWidth > (entryWidth - offset)) {
+        if (fontWidth > (this.getWidth() - offset)) {
             final double time = (double) Util.getMeasuringTimeMs() / 1000.0;
-            final double interpolateEnd = fontWidth - (entryWidth - offset - (SCISSORS_OFFSET + SLOT_MARGIN));
-
+            final double interpolateEnd = fontWidth - (this.getWidth() - offset - (SCISSORS_OFFSET + SLOT_MARGIN));
             final double interpolatedValue = Math.sin((Math.PI / 2) * Math.cos(Math.PI * 2 * time / Math.max(interpolateEnd * 0.5, 3.0))) / 2.0 + 0.5;
-
-            context.enableScissor(0, 0, entryWidth - offset - SCISSORS_OFFSET, entryHeight);
+            context.enableScissor(0, 0, this.getWidth() - offset - SCISSORS_OFFSET, this.getHeight());
             context.drawTextWithShadow(font, text, SLOT_MARGIN - (int) MathHelper.lerp(interpolatedValue, 0.0, interpolateEnd), textY, -1);
             context.disableScissor();
         } else {
@@ -117,28 +108,23 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      * @param mouseY  The current mouse Y position
      */
     public void renderTooltip(final @Nullable Text tooltip, final int mouseX, final int mouseY) {
-        if (tooltip != null && mouseX >= x && mouseX <= x + entryWidth && mouseY >= y && mouseY <= y + entryHeight) {
+        if (tooltip != null && mouseX >= this.getX() && mouseX <= this.getX() + this.getWidth() && mouseY >= this.getY() && mouseY <= this.getY() + this.getHeight()) {
             context.drawTooltip(MinecraftClient.getInstance().textRenderer, tooltip, mouseX, mouseY);
         }
     }
 
     /**
-     * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(DrawContext, int, int, int, int, int, int, int, boolean, float)} method
+     * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(DrawContext, int, int, int, boolean, float)} method
      */
     @Override
     public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
         // Allows cross-sharing of global variables between util methods
         this.context = context;
-//        this.x = x; // TODO
-//        this.y = y; // TODO
-//        this.entryWidth = entryWidth; // TODO
-//        this.entryHeight = entryHeight; // TODO
-
         final Matrix3x2fStack matrices = context.getMatrices();
         matrices.pushMatrix();
-        matrices.translate(x, y);
-        context.fill(0, 0, entryWidth - 4 /* int i = this.left + (this.width - entryWidth) / 2; int j = this.left + (this.width + entryWidth) / 2; */, entryHeight, Integer.MIN_VALUE);
-        mappedRender(context, 0 /* TODO */, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
+        matrices.translate(this.getX(), this.getY());
+        context.fill(0, 0, this.getWidth() - 4 /* int i = this.left + (this.width - entryWidth) / 2; int j = this.left + (this.width + entryWidth) / 2; */, this.getHeight(), Integer.MIN_VALUE);
+        mappedRender(context, 0 /* TODO */, mouseX, mouseY, hovered, tickDelta);
         matrices.popMatrix();
     }
 }

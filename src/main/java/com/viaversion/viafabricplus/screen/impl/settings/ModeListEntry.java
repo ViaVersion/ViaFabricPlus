@@ -49,14 +49,11 @@ public final class ModeListEntry extends VFPListEntry {
     }
 
     @Override
-    public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(DrawContext context, int index, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
         final int offset = textRenderer.getWidth(this.value.getValue()) + 6;
         renderScrollableText(this.value.getName().formatted(Formatting.GRAY), offset);
-        context.drawTextWithShadow(textRenderer, this.value.getValue(), entryWidth - offset, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
-
+        context.drawTextWithShadow(textRenderer, this.value.getValue(), this.getWidth() - offset, this.getHeight() / 2 - textRenderer.fontHeight / 2, -1);
         renderTooltip(value.getTooltip(), mouseX, mouseY);
     }
-
 }

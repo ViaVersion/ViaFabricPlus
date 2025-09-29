@@ -21,19 +21,30 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.skin_loading;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.yggdrasil.ProfileResult;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.texture.PlayerSkinProvider;
+import net.minecraft.entity.player.SkinTextures;
+import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 @Mixin(PlayerListEntry.class)
 public abstract class MixinPlayerListEntry {
-    // TODO
 //    @Redirect(method = "texturesSupplier", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/PlayerSkinProvider;supplySkinTextures(Lcom/mojang/authlib/GameProfile;Z)Ljava/util/function/Supplier;"))
 //    private static Supplier<SkinTextures> fetchGameProfileProperties(PlayerSkinProvider instance, GameProfile profile, boolean requireSecure) {
 //        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && !profile.properties().containsKey("textures")) {
-//            return () -> {
+//            return CompletableFuture.supplyAsync(() -> {
 //                final ProfileResult profileResult = MinecraftClient.getInstance().getApiServices().sessionService().fetchProfile(profile.id(), true);
 //                return profileResult == null ? profile : profileResult.profile();
-//            };
+//            }, Util.getMainWorkerExecutor()).thenCompose(instance::fetchSkinTextures);
 //        } else {
 //            return instance.supplySkinTextures(profile, requireSecure);
 //        }

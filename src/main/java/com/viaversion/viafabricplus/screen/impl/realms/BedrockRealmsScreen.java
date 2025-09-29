@@ -44,7 +44,6 @@ import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import org.apache.logging.log4j.Level;
 
 public final class BedrockRealmsScreen extends VFPScreen {
-
     public static final BedrockRealmsScreen INSTANCE = new BedrockRealmsScreen();
 
     private BedrockRealmsService service;
@@ -61,7 +60,6 @@ public final class BedrockRealmsScreen extends VFPScreen {
     @Override
     protected void init() {
         super.init();
-
         if (realmsWorlds != null) {
             createView();
             return;
@@ -102,12 +100,11 @@ public final class BedrockRealmsScreen extends VFPScreen {
         } else {
             setupSubtitle(Text.translatable("bedrock_realms.viafabricplus.no_worlds"));
         }
-        this.addDrawableChild(slotList = new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, 30, (textRenderer.fontHeight + 2) * 4));
 
+        this.addDrawableChild(slotList = new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, 30, (textRenderer.fontHeight + 2) * 4));
         this.addRefreshButton(() -> realmsWorlds = null);
 
         final int slotWidth = 360 - 4;
-
         int xPos = width / 2 - slotWidth / 2;
         this.addDrawableChild(joinButton = ButtonWidget.builder(Text.translatable("bedrock_realms.viafabricplus.join"), button -> {
             final SlotEntry entry = (SlotEntry) slotList.getFocused();
@@ -147,7 +144,6 @@ public final class BedrockRealmsScreen extends VFPScreen {
     @Override
     public void tick() {
         super.tick();
-
         if (slotList != null && joinButton != null && leaveButton != null) {
             joinButton.active = slotList.getFocused() instanceof SlotEntry;
             leaveButton.active = slotList.getFocused() instanceof SlotEntry;
@@ -180,11 +176,9 @@ public final class BedrockRealmsScreen extends VFPScreen {
         public int getRowWidth() {
             return super.getRowWidth() + 140;
         }
-
     }
 
     public final class SlotEntry extends VFPListEntry {
-
         private final SlotList slotList;
         private final RealmsWorld realmsWorld;
 
@@ -199,7 +193,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
         }
 
         @Override
-        public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void mappedRender(DrawContext context, int index, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
             String name = "";
@@ -221,14 +215,12 @@ public final class BedrockRealmsScreen extends VFPScreen {
                 version += " - " + activeVersion;
             }
 
-            context.drawTextWithShadow(textRenderer, version, entryWidth - textRenderer.getWidth(version) - 4 - 3, 3, -1);
+            context.drawTextWithShadow(textRenderer, version, this.getWidth() - textRenderer.getWidth(version) - 4 - 3, 3, -1);
 
             final String motd = realmsWorld.getMotd();
             if (motd != null) {
-                renderScrollableText(Text.of(motd), entryHeight - textRenderer.fontHeight - 3, 3 * 2);
+                renderScrollableText(Text.of(motd), this.getHeight() - textRenderer.fontHeight - 3, 3 * 2);
             }
         }
-
     }
-
 }
