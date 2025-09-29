@@ -35,10 +35,10 @@ import net.minecraft.resource.ResourceType;
  * This class file contains the {@link GameVersion} for each protocol version.
  */
 public final class ResourcePackHeaderDiff {
-
     private final static Map<ProtocolVersion, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     static {
+        registerVersion(ProtocolVersion.v1_21_9, 69, "1.21.9");
         registerVersion(ProtocolVersion.v1_21_7, 64, "1.21.8");
         registerVersion(ProtocolVersion.v1_21_6, 63, "1.21.6");
         registerVersion(ProtocolVersion.v1_21_5, 55, "1.21.5");
@@ -150,5 +150,4 @@ public final class ResourcePackHeaderDiff {
             }
         });
     }
-
 }

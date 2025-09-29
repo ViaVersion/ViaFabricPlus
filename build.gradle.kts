@@ -11,6 +11,7 @@ allprojects {
     setupViaPublishing()
 
     repositories {
+        mavenLocal()
         maven("https://repo.viaversion.com")
         maven("https://maven.lenni0451.net/everything")
         maven("https://repo.opencollab.dev/maven-snapshots")
@@ -64,7 +65,7 @@ includeTransitiveJijDependencies()
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.5.0-SNAPSHOT")
+        configuration("com.viaversion:viaversion-common:5.5.0-mc1.21.9-SNAPSHOT")
         configuration("com.viaversion:viabackwards-common:5.4.3-SNAPSHOT")
         configuration("com.viaversion:viaaprilfools-common:4.0.4-SNAPSHOT")
         configuration("com.viaversion:vialoader:4.0.5-SNAPSHOT") {
