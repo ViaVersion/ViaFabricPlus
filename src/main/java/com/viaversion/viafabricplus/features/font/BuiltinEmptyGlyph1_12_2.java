@@ -22,61 +22,48 @@
 package com.viaversion.viafabricplus.features.font;
 
 import com.mojang.blaze3d.textures.GpuTexture;
-import java.util.function.Function;
 import net.minecraft.client.font.BakedGlyph;
 import net.minecraft.client.font.Glyph;
 import net.minecraft.client.font.GlyphMetrics;
-//import net.minecraft.client.font.RenderableGlyph;
+import net.minecraft.client.font.UploadableGlyph;
 
-// TODO
 public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
     INSTANCE;
 
     private static final int WIDTH = 0;
     private static final int HEIGHT = 8;
 
-//    @Override
-//    public float getAdvance() {
-//        return WIDTH;
-//    }
-//
-//    @Override
-//    public BakedGlyph bake(Function<RenderableGlyph, BakedGlyph> glyphRendererGetter) {
-//        return glyphRendererGetter.apply(new RenderableGlyph() {
-//
-//            @Override
-//            public int getWidth() {
-//                return WIDTH;
-//            }
-//
-//            @Override
-//            public int getHeight() {
-//                return HEIGHT;
-//            }
-//
-//            @Override
-//            public void upload(final int x, final int y, final GpuTexture texture) {
-//            }
-//
-//            @Override
-//            public float getOversample() {
-//                return 1F;
-//            }
-//
-//            @Override
-//            public boolean hasColor() {
-//                return true;
-//            }
-//        });
-//    }
-
     @Override
     public GlyphMetrics getMetrics() {
-        return null;
+        return GlyphMetrics.empty(WIDTH);
     }
 
     @Override
     public BakedGlyph bake(final AbstractGlyphBaker baker) {
-        return null;
+        return baker.bake(this.getMetrics(), new UploadableGlyph() {
+            @Override
+            public int getWidth() {
+                return WIDTH;
+            }
+
+            @Override
+            public int getHeight() {
+                return HEIGHT;
+            }
+
+            @Override
+            public void upload(final int x, final int y, final GpuTexture texture) {
+            }
+
+            @Override
+            public float getOversample() {
+                return 1.0F;
+            }
+
+            @Override
+            public boolean hasColor() {
+                return true;
+            }
+        });
     }
 }

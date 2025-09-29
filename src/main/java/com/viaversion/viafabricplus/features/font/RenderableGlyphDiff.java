@@ -41,7 +41,6 @@ import static net.raphimc.vialegacy.api.LegacyProtocolVersion.c0_0_15a_1;
  * to hide them because our client would render them as a different character.
  */
 public final class RenderableGlyphDiff {
-
     private static final Int2ObjectMap<ProtocolVersion> RENDERABLE_GLYPH_DIFF_LEGACY = new Int2ObjectOpenHashMap<>();
     private static final Int2ObjectMap<ProtocolVersion> RENDERABLE_GLYPH_DIFF = new Int2ObjectOpenHashMap<>();
 
@@ -996,5 +995,4 @@ public final class RenderableGlyphDiff {
     private static IntConsumer put(final ProtocolVersion version) {
         return i -> RENDERABLE_GLYPH_DIFF.put(i, version);
     }
-
 }
