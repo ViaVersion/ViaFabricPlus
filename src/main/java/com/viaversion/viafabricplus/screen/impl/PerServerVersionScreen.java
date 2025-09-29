@@ -26,6 +26,7 @@ import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.awt.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.client.MinecraftClient;
@@ -60,7 +61,6 @@ public final class PerServerVersionScreen extends VFPScreen {
     public final class SlotList extends VFPList {
         public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
-
             this.addEntry(new ResetSlot());
             ProtocolVersionList.getProtocolsNewToOld().stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }
@@ -88,8 +88,7 @@ public final class PerServerVersionScreen extends VFPScreen {
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            // TODO
-            // context.drawCenteredTextWithShadow(textRenderer, ((MutableText) getNarration()).formatted(Formatting.GOLD), x + entryWidth / 2, y + entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+            context.drawCenteredTextWithShadow(textRenderer, ((MutableText) getNarration()).formatted(Formatting.GOLD), this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() / 2 - textRenderer.fontHeight / 2, -1);
         }
     }
 
@@ -115,8 +114,7 @@ public final class PerServerVersionScreen extends VFPScreen {
         public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final boolean isSelected = protocolVersion.equals(selectionSupplier.get());
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            // TODO
-//            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), x + entryWidth / 2, y - 1 + entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
+            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), this.getX() + this.getWidth() / 2, this.getY() - 1 + this.getHeight() / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
         }
     }
 }
