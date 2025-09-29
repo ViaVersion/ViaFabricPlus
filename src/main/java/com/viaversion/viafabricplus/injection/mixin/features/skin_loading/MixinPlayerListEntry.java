@@ -21,21 +21,31 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.skin_loading;
 
-import net.minecraft.client.network.PlayerListEntry;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.yggdrasil.ProfileResult;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.texture.PlayerSkinProvider;
+import net.minecraft.entity.player.SkinTextures;
+import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
-@Mixin(PlayerListEntry.class)
+@Mixin(PlayerSkinProvider.class)
 public abstract class MixinPlayerListEntry {
-    // TODO
-//    @Redirect(method = "texturesSupplier", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/PlayerSkinProvider;supplySkinTextures(Lcom/mojang/authlib/GameProfile;Z)Ljava/util/function/Supplier;"))
-//    private static Supplier<SkinTextures> fetchGameProfileProperties(PlayerSkinProvider instance, GameProfile profile, boolean requireSecure) {
-//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && !profile.properties().containsKey("textures")) {
-//            return () -> {
-//                final ProfileResult profileResult = MinecraftClient.getInstance().getApiServices().sessionService().fetchProfile(profile.id(), true);
-//                return profileResult == null ? profile : profileResult.profile();
-//            };
-//        } else {
-//            return instance.supplySkinTextures(profile, requireSecure);
-//        }
-//    }
+
+    @Redirect(method = "supplySkinTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/PlayerSkinProvider;fetchSkinTextures(Lcom/mojang/authlib/GameProfile;)Ljava/util/concurrent/CompletableFuture;"))
+    private static CompletableFuture<Optional<SkinTextures>> fetchGameProfileProperties(PlayerSkinProvider instance, GameProfile profile) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && !profile.properties().containsKey("textures")) {
+            return CompletableFuture.supplyAsync(() -> {
+                final ProfileResult profileResult = MinecraftClient.getInstance().getApiServices().sessionService().fetchProfile(profile.id(), true);
+                return profileResult == null ? profile : profileResult.profile();
+            }, Util.getMainWorkerExecutor()).thenCompose(instance::fetchSkinTextures);
+        } else {
+            return instance.fetchSkinTextures(profile);
+        }
+    }
 }
