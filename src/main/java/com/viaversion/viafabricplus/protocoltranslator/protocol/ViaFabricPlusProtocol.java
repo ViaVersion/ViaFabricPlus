@@ -39,6 +39,11 @@ import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.packet.ClientboundPac
 import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.packet.ServerboundConfigurationPackets1_21_6;
 import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.packet.ServerboundPacket1_21_6;
 import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.packet.ServerboundPackets1_21_6;
+import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ClientboundConfigurationPackets1_21_9;
+import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ClientboundPacket1_21_9;
+import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ClientboundPackets1_21_9;
+import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ServerboundConfigurationPackets1_21_9;
+import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ServerboundPacket1_21_9;
 import com.viaversion.viaversion.util.Key;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,13 +57,13 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import static com.viaversion.viaversion.util.ProtocolUtil.packetTypeMap;
 
 // Protocol to handle error handling changes in older protocols, always last element of the pipeline
-public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPacket1_21_6, ClientboundPacket1_21_6, ServerboundPacket1_21_6, ServerboundPacket1_21_6> {
+public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPacket1_21_9, ClientboundPacket1_21_9, ServerboundPacket1_21_9, ServerboundPacket1_21_9> {
     public static final ViaFabricPlusProtocol INSTANCE = new ViaFabricPlusProtocol();
 
     private final Map<String, Pair<ProtocolVersion, PacketHandler>> readers = new HashMap<>();
 
     public ViaFabricPlusProtocol() {
-        super(ClientboundPacket1_21_6.class, ClientboundPacket1_21_6.class, ServerboundPacket1_21_6.class, ServerboundPacket1_21_6.class);
+        super(ClientboundPacket1_21_9.class, ClientboundPacket1_21_9.class, ServerboundPacket1_21_9.class, ServerboundPacket1_21_9.class);
 
         registerReader(BrandCustomPayload.ID, LegacyProtocolVersion.c0_0_15a_1, wrapper -> wrapper.passthrough(Types.STRING));
         // TODO
@@ -74,7 +79,7 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
 
     @Override
     protected void registerPackets() {
-        registerClientbound(ClientboundPackets1_21_6.CUSTOM_PAYLOAD, wrapper -> {
+        registerClientbound(ClientboundPackets1_21_9.CUSTOM_PAYLOAD, wrapper -> {
             final String channel = Key.namespaced(wrapper.passthrough(Types.STRING));
             if (!channel.startsWith(Identifier.DEFAULT_NAMESPACE)) {
                 // Mods might add custom payloads that we don't want to filter, so we check for the namespace.
@@ -108,9 +113,7 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
     @Override
     public void init(UserConnection connection) {
         super.init(connection);
-
         final ProtocolVersion serverVersion = ProtocolTranslator.getTargetVersion(connection.getChannel());
-
         // Add storages we need for different fixes here
         if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
             connection.put(new BedrockJoinGameTracker());
@@ -128,12 +131,12 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
     }
 
     @Override
-    protected PacketTypesProvider<ClientboundPacket1_21_6, ClientboundPacket1_21_6, ServerboundPacket1_21_6, ServerboundPacket1_21_6> createPacketTypesProvider() {
+    protected PacketTypesProvider<ClientboundPacket1_21_9, ClientboundPacket1_21_9, ServerboundPacket1_21_9, ServerboundPacket1_21_9> createPacketTypesProvider() {
         return new SimplePacketTypesProvider<>(
-            packetTypeMap(unmappedClientboundPacketType, ClientboundPackets1_21_6.class, ClientboundConfigurationPackets1_21_6.class),
-            packetTypeMap(mappedClientboundPacketType, ClientboundPackets1_21_6.class, ClientboundConfigurationPackets1_21_6.class),
-            packetTypeMap(mappedServerboundPacketType, ServerboundPackets1_21_6.class, ServerboundConfigurationPackets1_21_6.class),
-            packetTypeMap(unmappedServerboundPacketType, ServerboundPackets1_21_6.class, ServerboundConfigurationPackets1_21_6.class)
+            packetTypeMap(unmappedClientboundPacketType, ClientboundPackets1_21_9.class, ClientboundConfigurationPackets1_21_9.class),
+            packetTypeMap(mappedClientboundPacketType, ClientboundPackets1_21_9.class, ClientboundConfigurationPackets1_21_9.class),
+            packetTypeMap(mappedServerboundPacketType, ServerboundPackets1_21_6.class, ServerboundConfigurationPackets1_21_9.class),
+            packetTypeMap(unmappedServerboundPacketType, ServerboundPackets1_21_6.class, ServerboundConfigurationPackets1_21_9.class)
         );
     }
 }
