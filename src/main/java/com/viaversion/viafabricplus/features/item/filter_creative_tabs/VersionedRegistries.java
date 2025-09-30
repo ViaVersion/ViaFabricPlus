@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.features.item.filter_creative_tabs;
 
+import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import com.viaversion.vialoader.util.VersionRange;
@@ -28,8 +29,12 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import net.minecraft.block.entity.BannerPattern;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BannerPatternsComponent;
@@ -38,28 +43,34 @@ import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
+import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
+import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 
-/**
- * Similar to {@link ItemDiff} but for smaller registry references. Mainly used for item component diffing.
- */
+import static net.raphimc.vialegacy.api.LegacyProtocolVersion.c0_30cpe;
+
 public final class VersionedRegistries {
 
     public static final Reference2ObjectMap<RegistryKey<Enchantment>, VersionRange> ENCHANTMENT_DIFF = new Reference2ObjectOpenHashMap<>();
     public static final Reference2ObjectMap<RegistryKey<BannerPattern>, VersionRange> PATTERN_DIFF = new Reference2ObjectOpenHashMap<>();
     public static final Reference2ObjectMap<RegistryEntry<StatusEffect>, VersionRange> EFFECT_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final Reference2ObjectMap<Item, VersionRange> ITEM_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
 
     static {
         final JsonObject data = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("versioned-registries.json");
         fillKeys(data.getAsJsonObject("enchantments"), RegistryKeys.ENCHANTMENT, ENCHANTMENT_DIFF);
         fillKeys(data.getAsJsonObject("banner_patterns"), RegistryKeys.BANNER_PATTERN, PATTERN_DIFF);
         fillEntries(data.getAsJsonObject("effects"), Registries.STATUS_EFFECT, EFFECT_DIFF);
+        fillItems(data.getAsJsonObject("items"));
     }
 
     private static void fillKeys(final JsonObject object, final RegistryKey registryKey, final Reference2ObjectMap map) {
@@ -78,7 +89,54 @@ public final class VersionedRegistries {
         }
     }
 
+    private static void fillItems(final JsonObject object) {
+        for (final String element : object.keySet()) {
+            final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
+            final Item item = Registries.ITEM.get(Identifier.of(element));
+            if (item == Items.AIR) {
+                throw new IllegalStateException("Item " + element + " does not exist");
+            }
+            ITEM_DIFF.put(item, versions);
+        }
+
+        EXTENDED_CLASSIC_ITEMS.add(Items.COBBLESTONE_SLAB);
+        EXTENDED_CLASSIC_ITEMS.add(Items.DEAD_BUSH);
+        EXTENDED_CLASSIC_ITEMS.add(Items.SANDSTONE);
+        EXTENDED_CLASSIC_ITEMS.add(Items.SNOW);
+        EXTENDED_CLASSIC_ITEMS.add(Items.TORCH);
+        EXTENDED_CLASSIC_ITEMS.add(Items.BROWN_WOOL);
+        EXTENDED_CLASSIC_ITEMS.add(Items.ICE);
+        EXTENDED_CLASSIC_ITEMS.add(Items.CHISELED_QUARTZ_BLOCK);
+        EXTENDED_CLASSIC_ITEMS.add(Items.NETHER_QUARTZ_ORE);
+        EXTENDED_CLASSIC_ITEMS.add(Items.QUARTZ_PILLAR);
+        EXTENDED_CLASSIC_ITEMS.add(Items.JUKEBOX);
+        EXTENDED_CLASSIC_ITEMS.add(Items.STONE_BRICKS);
+    }
+
+    public static boolean keepItem(final Item item) {
+        if (ProtocolTranslator.getTargetVersion().equals(c0_30cpe)) {
+            final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
+            if (handler == null) {
+                // Don't drop any items if the connection is not established yet
+                return true;
+            }
+            final ExtensionProtocolMetadataStorage extensionProtocol = ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection().get(ExtensionProtocolMetadataStorage.class);
+            if (extensionProtocol == null) { // Should never happen
+                return false;
+            }
+            if (extensionProtocol.hasServerExtension(ClassicProtocolExtension.CUSTOM_BLOCKS, 1) && EXTENDED_CLASSIC_ITEMS.contains(item)) {
+                return true;
+            }
+        }
+
+        return containsItem(item, ProtocolTranslator.getTargetVersion());
+    }
+
     public static boolean keepItem(final ItemStack stack) {
+        if (!keepItem(stack.getItem())) {
+            return false;
+        }
+
         if (filterEnchantments(DataComponentTypes.ENCHANTMENTS, stack)) {
             return false;
         }
@@ -129,6 +187,10 @@ public final class VersionedRegistries {
 
     public static boolean containsEffect(final RegistryEntry<StatusEffect> effect, final ProtocolVersion version) {
         return !EFFECT_DIFF.containsKey(effect) || EFFECT_DIFF.get(effect).contains(version);
+    }
+
+    public static boolean containsItem(final Item item, final ProtocolVersion version) {
+        return !ITEM_DIFF.containsKey(item) || ITEM_DIFF.get(item).contains(version);
     }
 
 }

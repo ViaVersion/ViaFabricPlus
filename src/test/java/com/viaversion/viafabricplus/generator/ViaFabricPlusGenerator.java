@@ -22,9 +22,6 @@
 package com.viaversion.viafabricplus.generator;
 
 import com.viaversion.viafabricplus.generator.impl.EntityDimensionDiffGenerator;
-import com.viaversion.viafabricplus.generator.impl.ItemDiffGenerator;
-import com.viaversion.viafabricplus.generator.impl.RegistryDiffsGenerator;
-import com.viaversion.viafabricplus.generator.impl.ResourcePackHeaderDiffGenerator;
 import java.io.File;
 import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
@@ -45,10 +42,7 @@ public final class ViaFabricPlusGenerator {
         final File directory = new File("generated");
         directory.mkdirs();
 
-        new ItemDiffGenerator().writeToFile(NATIVE_VERSION, directory, "item_diff");
         new EntityDimensionDiffGenerator().writeToFile(NATIVE_VERSION, directory, "entity_dimensions");
-        new ResourcePackHeaderDiffGenerator().writeToFile(NATIVE_VERSION, directory, "resource_pack_header");
-        new RegistryDiffsGenerator().writeToFile(NATIVE_VERSION, directory, "effect_diff");
     }
 
 }

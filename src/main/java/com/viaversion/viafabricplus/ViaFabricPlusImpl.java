@@ -29,7 +29,6 @@ import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.base.sync_tasks.SyncTasks;
 import com.viaversion.viafabricplus.features.FeaturesLoading;
-import com.viaversion.viafabricplus.features.item.filter_creative_tabs.ItemDiff;
 import com.viaversion.viafabricplus.features.item.filter_creative_tabs.VersionedRegistries;
 import com.viaversion.viafabricplus.features.item.negative_item_count.NegativeItemUtil;
 import com.viaversion.viafabricplus.features.limitation.max_chat_length.MaxChatLength;
@@ -244,7 +243,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
     @Override
     public boolean itemExists(net.minecraft.item.Item item, ProtocolVersion version) {
-        return ItemDiff.containsItem(item, version);
+        return VersionedRegistries.containsItem(item, version);
     }
 
     @Override
@@ -264,12 +263,12 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
     @Override
     public boolean itemExistsInConnection(net.minecraft.item.Item item) {
-        return ItemDiff.keepItem(item);
+        return VersionedRegistries.keepItem(item);
     }
 
     @Override
     public boolean itemExistsInConnection(ItemStack stack) {
-        return ItemDiff.keepItem(stack);
+        return VersionedRegistries.keepItem(stack);
     }
 
     @Override
