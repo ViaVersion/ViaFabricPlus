@@ -92,7 +92,7 @@ public final class ItemDiff {
         if (!keepItem(stack.getItem())) {
             return false;
         } else {
-            return RegistryDiffs.keepItem(stack);
+            return VersionedRegistries.keepItem(stack);
         }
     }
 

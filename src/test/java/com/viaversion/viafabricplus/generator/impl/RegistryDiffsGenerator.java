@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.generator.impl;
 
-import com.viaversion.viafabricplus.features.item.filter_creative_tabs.RegistryDiffs;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.VersionedRegistries;
 import com.viaversion.viafabricplus.generator.util.Generator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.effect.StatusEffects;
@@ -37,7 +37,7 @@ public final class RegistryDiffsGenerator implements Generator {
 
         final StringBuilder output = new StringBuilder();
         Registries.STATUS_EFFECT.streamEntries().forEach(effect -> {
-            if (RegistryDiffs.EFFECT_DIFF.containsKey(effect) || effect == StatusEffects.SPEED) {
+            if (VersionedRegistries.EFFECT_DIFF.containsKey(effect) || effect == StatusEffects.SPEED) {
                 return;
             }
 
