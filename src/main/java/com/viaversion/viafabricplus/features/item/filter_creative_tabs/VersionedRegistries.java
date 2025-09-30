@@ -29,8 +29,6 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.MinecraftClient;
@@ -55,6 +53,7 @@ import net.minecraft.util.Identifier;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 
+import static com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions.EXTENDED_CLASSIC_ITEMS;
 import static net.raphimc.vialegacy.api.LegacyProtocolVersion.c0_30cpe;
 
 public final class VersionedRegistries {
@@ -63,7 +62,6 @@ public final class VersionedRegistries {
     public static final Reference2ObjectMap<RegistryKey<BannerPattern>, VersionRange> PATTERN_DIFF = new Reference2ObjectOpenHashMap<>();
     public static final Reference2ObjectMap<RegistryEntry<StatusEffect>, VersionRange> EFFECT_DIFF = new Reference2ObjectOpenHashMap<>();
     public static final Reference2ObjectMap<Item, VersionRange> ITEM_DIFF = new Reference2ObjectOpenHashMap<>();
-    public static final List<Item> EXTENDED_CLASSIC_ITEMS = new ArrayList<>();
 
     static {
         final JsonObject data = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("versioned-registries.json");
@@ -98,19 +96,6 @@ public final class VersionedRegistries {
             }
             ITEM_DIFF.put(item, versions);
         }
-
-        EXTENDED_CLASSIC_ITEMS.add(Items.COBBLESTONE_SLAB);
-        EXTENDED_CLASSIC_ITEMS.add(Items.DEAD_BUSH);
-        EXTENDED_CLASSIC_ITEMS.add(Items.SANDSTONE);
-        EXTENDED_CLASSIC_ITEMS.add(Items.SNOW);
-        EXTENDED_CLASSIC_ITEMS.add(Items.TORCH);
-        EXTENDED_CLASSIC_ITEMS.add(Items.BROWN_WOOL);
-        EXTENDED_CLASSIC_ITEMS.add(Items.ICE);
-        EXTENDED_CLASSIC_ITEMS.add(Items.CHISELED_QUARTZ_BLOCK);
-        EXTENDED_CLASSIC_ITEMS.add(Items.NETHER_QUARTZ_ORE);
-        EXTENDED_CLASSIC_ITEMS.add(Items.QUARTZ_PILLAR);
-        EXTENDED_CLASSIC_ITEMS.add(Items.JUKEBOX);
-        EXTENDED_CLASSIC_ITEMS.add(Items.STONE_BRICKS);
     }
 
     public static boolean keepItem(final Item item) {
