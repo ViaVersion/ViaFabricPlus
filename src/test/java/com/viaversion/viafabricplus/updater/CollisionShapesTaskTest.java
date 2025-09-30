@@ -19,56 +19,97 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.generator.blocks;
+package com.viaversion.viafabricplus.updater;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.viaversion.viafabricplus.generator.util.Generator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
-import net.minecraft.Bootstrap;
-import net.minecraft.SharedConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.shape.VoxelShape;
-import org.junit.jupiter.api.Test;
+
+import static com.viaversion.viafabricplus.save.AbstractSave.GSON;
 
 /**
  * Generates a file containing all collision shapes of static blocks. Can be used for game updates where Mojang refactors the collision shapes.
  * Please only use this when there are large changes where manual comparison is not feasible. Otherwise, manually checking the changes is recommended.
  */
-public final class GenerateCollisionShapes implements Generator {
+public final class CollisionShapesTaskTest {
 
-    @Test
+    //@Test
     void generate() {
-        SharedConstants.createGameVersion();
-        Bootstrap.initialize();
-
         final File toCompare = new File("old_blocks_collision_shapes.json");
-        if (toCompare.exists() && toCompare.isFile()) {
-            System.out.println("Starting comparison...");
-            final Gson gson = new Gson();
-            final JsonObject first = gson.fromJson(readFromFile(toCompare), JsonObject.class);
-            final JsonObject second = gson.fromJson(readFromFile(new File("blocks_collision_shapes.json")), JsonObject.class);
+
+        // First step, generate the "before" file if it doesn't exist
+        if (!toCompare.exists() || !toCompare.isFile()) {
+            final Path path = new File("blocks_collision_shapes.json").toPath();
+            try {
+                Files.write(path, dumpData().toString().getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return;
+        }
+
+        // Compare current data against before file
+        System.out.println("Starting comparison...");
+        try {
+            final JsonObject first = GSON.fromJson(Files.readString(toCompare.toPath()), JsonObject.class);
+            final JsonObject second = GSON.fromJson(Files.readString(new File("blocks_collision_shapes.json").toPath()), JsonObject.class);
             compare(first, second);
-        } else {
-            new GenerateCollisionShapes().writeToFile(null, new File(""), "blocks_collision_shapes.json");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private void printVoxelShape(final VoxelShape shape) {
+    private static void printVoxelShape(final VoxelShape shape) {
 //        if (shape.getBoundingBoxes().size() > 1) {
 //            System.out.println("Multiple boxes in shape: " + shape);
 //        }
         final Box box = shape.getBoundingBox();
         System.out.println("Min: " + box.minX * 16 + ", " + box.minY * 16 + ", " + box.minZ * 16 + " Max: " + box.maxX * 16 + ", " + box.maxY * 16 + ", " + box.maxZ * 16);
+    }
+
+    private static StringBuilder dumpData() {
+        final Set<Class<? extends Block>> skippedBlocks = new HashSet<>();
+        final JsonObject data = new JsonObject();
+        for (final Block block : Registries.BLOCK) {
+            final JsonObject blockData = new JsonObject();
+            for (final BlockState blockStates : block.getStateManager().getStates()) {
+                final JsonObject blockStateData = new JsonObject();
+                try {
+                    final VoxelShape collisionShape = blockStates.getCollisionShape(null, null);
+                    blockStateData.addProperty("collisionShape", collisionShape.toString());
+                    final VoxelShape outlineShape = blockStates.getOutlineShape(null, null);
+                    blockStateData.addProperty("outlineShape", outlineShape.toString());
+                    final VoxelShape raycastShape = blockStates.getRaycastShape(null, null);
+                    blockStateData.addProperty("raycastShape", raycastShape.toString());
+                } catch (Exception e) {
+                    skippedBlocks.add(block.getClass());
+                    break;
+                }
+                blockData.add(blockStates.toString(), blockStateData);
+            }
+
+            data.add(Registries.BLOCK.getId(block).toString(), blockData);
+        }
+
+        final JsonArray skippedBlocksData = new JsonArray();
+        for (final Class<? extends Block> skippedBlock : skippedBlocks) {
+            System.out.println("Skipped Block, check this one manually: " + skippedBlock.getSimpleName());
+            skippedBlocksData.add(skippedBlock.getSimpleName());
+        }
+        data.add("skippedBlocks", skippedBlocksData);
+        return new StringBuilder(data.toString());
     }
 
     private static void compare(final JsonObject first, final JsonObject second) {
@@ -132,40 +173,6 @@ public final class GenerateCollisionShapes implements Generator {
                 System.out.println("The block " + Registries.BLOCK.getId(block) + " is missing block states in one of the files.");
             }
         }
-    }
-
-    @Override
-    public StringBuilder generate(final ProtocolVersion nativeVersion) {
-        final Set<Class<? extends Block>> skippedBlocks = new HashSet<>();
-        final JsonObject data = new JsonObject();
-        for (final Block block : Registries.BLOCK) {
-            final JsonObject blockData = new JsonObject();
-            for (final BlockState blockStates : block.getStateManager().getStates()) {
-                final JsonObject blockStateData = new JsonObject();
-                try {
-                    final VoxelShape collisionShape = blockStates.getCollisionShape(null, null);
-                    blockStateData.addProperty("collisionShape", collisionShape.toString());
-                    final VoxelShape outlineShape = blockStates.getOutlineShape(null, null);
-                    blockStateData.addProperty("outlineShape", outlineShape.toString());
-                    final VoxelShape raycastShape = blockStates.getRaycastShape(null, null);
-                    blockStateData.addProperty("raycastShape", raycastShape.toString());
-                } catch (Exception e) {
-                    skippedBlocks.add(block.getClass());
-                    break;
-                }
-                blockData.add(blockStates.toString(), blockStateData);
-            }
-
-            data.add(Registries.BLOCK.getId(block).toString(), blockData);
-        }
-
-        final JsonArray skippedBlocksData = new JsonArray();
-        for (final Class<? extends Block> skippedBlock : skippedBlocks) {
-            System.out.println("Skipped Block, check this one manually: " + skippedBlock.getSimpleName());
-            skippedBlocksData.add(skippedBlock.getSimpleName());
-        }
-        data.add("skippedBlocks", skippedBlocksData);
-        return new StringBuilder(data.toString());
     }
 
 }

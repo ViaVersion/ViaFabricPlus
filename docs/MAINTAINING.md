@@ -17,8 +17,6 @@ Update all upstream versions in `gradle.properties`. The main ones are:
 
 Also update versions in the `dependencies` block of `build.gradle.kts`.
 
-Set `updating_minecraft = true` (required for automatic data dumping).
-
 ---
 
 ## 2. Update Core References
@@ -38,13 +36,14 @@ Set `updating_minecraft = true` (required for automatic data dumping).
 
 ## 4. Update Data Diffs
 
-Check the data dumps and diffs in the `fixes/data` package. Critical ones include:
+Set `updating_minecraft = true`.
 
-- `ResourcePackHeaderDiff` (add the new version at the top)
-- `ItemRegistryDiff` (add new items/blocks)
-- `EntityDimensionDiff` (update entity dimensions)
+Run `gradle test` to automatically update various data jsons in the assets.
 
-Run `gradle test` to automatically dump changes of diff classes into `run/`.
+Manually check the following files:
+- `entity-dimensions.json`
+
+Set `updating_minecraft = false`.
 
 ---
 
@@ -125,8 +124,7 @@ Check the ViaVersion/upstream protocol implementation.
 2. Clean up your code and ensure it’s readable.
 
     * Client-side fixes are sorted by protocol version, newest at the top.
-3. Set `updating_minecraft = false`.
-4. Open a pull request and wait for review.
+3. Open a pull request and wait for review.
 
 ---
 
