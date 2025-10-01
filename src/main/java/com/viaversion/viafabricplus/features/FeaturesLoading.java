@@ -56,6 +56,9 @@ public final class FeaturesLoading {
                 // Handles and updates entity dimension changes in <= 1.17
                 EntityDimensionDiff.init();
 
+                // Load the clientside recipes for <= 1.11.2
+                Recipes1_11_2.init();
+
                 // Ticks the armor hud manually in <= 1.8.x
                 ArmorHudEmulation1_8.init();
             }
