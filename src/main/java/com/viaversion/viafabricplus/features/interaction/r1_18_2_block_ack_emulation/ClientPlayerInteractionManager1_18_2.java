@@ -49,7 +49,7 @@ public final class ClientPlayerInteractionManager1_18_2 {
         } else {
             rotation = new Vec2f(player.getYaw(), player.getPitch());
         }
-        unAckedActions.put(Pair.of(blockPos, action), Pair.of(player.getPos(), rotation));
+        unAckedActions.put(Pair.of(blockPos, action), Pair.of(player.getEntityPos(), rotation));
     }
 
     public void handleBlockBreakAck(final BlockPos blockPos, final BlockState expectedState, final PlayerActionC2SPacket.Action action, final boolean allGood) {
@@ -65,7 +65,7 @@ public final class ClientPlayerInteractionManager1_18_2 {
 
         if ((oldPlayerState == null || !allGood || action != PlayerActionC2SPacket.Action.START_DESTROY_BLOCK && actualState != expectedState) && (actualState != expectedState || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2))) {
             world.setBlockState(blockPos, expectedState, Block.NOTIFY_ALL | Block.FORCE_STATE);
-            if (oldPlayerState != null && (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) || (world == player.getWorld() && player.collidesWithStateAtPos(blockPos, expectedState)))) {
+            if (oldPlayerState != null && (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) || (world == player.getEntityWorld() && player.collidesWithStateAtPos(blockPos, expectedState)))) {
                 final Vec3d oldPlayerPosition = oldPlayerState.getKey();
                 if (oldPlayerState.getValue() != null) {
                     player.updatePositionAndAngles(oldPlayerPosition.x, oldPlayerPosition.y, oldPlayerPosition.z, oldPlayerState.getValue().x, oldPlayerState.getValue().y);

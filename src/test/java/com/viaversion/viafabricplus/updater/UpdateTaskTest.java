@@ -40,6 +40,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.resource.PackVersion;
 import net.minecraft.resource.ResourceType;
 import org.junit.jupiter.api.Test;
 
@@ -122,9 +123,14 @@ public final class UpdateTaskTest {
             return;
         }
 
+        final PackVersion packVersion = version.packVersion(ResourceType.CLIENT_RESOURCES);
+        final JsonObject packFormat = new JsonObject();
+        packFormat.addProperty("major", packVersion.major());
+        packFormat.addProperty("minor", packVersion.minor());
+
         final JsonObject header = new JsonObject();
         header.addProperty("version", version.protocolVersion());
-        header.addProperty("pack_format", version.packVersion(ResourceType.CLIENT_RESOURCES));
+        header.add("pack_format", packFormat);
         data.add(version.name(), header);
 
         write("resource-pack-headers.json", data);

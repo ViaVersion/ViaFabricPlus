@@ -31,16 +31,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import java.util.List;
 
 @Mixin(WeatherRendering.class)
 public abstract class MixinWeatherRendering {
 
-    @Redirect(method = "renderPrecipitation(Lnet/minecraft/world/World;Lnet/minecraft/client/render/VertexConsumerProvider;IFLnet/minecraft/util/math/Vec3d;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getRainGradient(F)F"))
-    private float forceSnow(World instance, float delta) {
+    @Redirect(method = "renderPrecipitation", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
+    private boolean forceSnow(List<?> instance) {
         if (CPEAdditions.isSnowing()) {
-            return 1F;
+            return false;
         } else {
-            return instance.getRainGradient(delta);
+            return instance.isEmpty();
         }
     }
 

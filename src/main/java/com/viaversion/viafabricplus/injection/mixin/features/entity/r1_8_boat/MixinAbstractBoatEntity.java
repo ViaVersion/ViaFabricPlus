@@ -52,6 +52,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static com.ibm.icu.impl.ValidIdentifiers.Datatype.x;
+
 @Mixin(AbstractBoatEntity.class)
 public abstract class MixinAbstractBoatEntity extends VehicleEntity implements IAbstractBoatEntity {
 
@@ -93,11 +95,11 @@ public abstract class MixinAbstractBoatEntity extends VehicleEntity implements I
     }
 
     @Override
-    public void setVelocityClient(double x, double y, double z) {
-        super.setVelocityClient(x, y, z);
+    public void setVelocityClient(final Vec3d clientVelocity) {
+        super.setVelocityClient(clientVelocity);
 
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.viaFabricPlus$boatVelocity = new Vec3d(x, y, z);
+            this.viaFabricPlus$boatVelocity = clientVelocity;
         }
     }
 
@@ -123,7 +125,7 @@ public abstract class MixinAbstractBoatEntity extends VehicleEntity implements I
                 final double minY = this.getBoundingBox().minY + this.getBoundingBox().getLengthY() * partitionIndex / yPartitions - 0.125;
                 final double maxY = this.getBoundingBox().minY + this.getBoundingBox().getLengthY() * (partitionIndex + 1) / yPartitions - 0.125;
                 final Box box = new Box(this.getBoundingBox().minX, minY, this.getBoundingBox().minZ, this.getBoundingBox().maxX, maxY, this.getBoundingBox().maxZ);
-                if (BlockPos.stream(box).anyMatch(pos -> this.getWorld().getFluidState(pos).isIn(FluidTags.WATER))) {
+                if (BlockPos.stream(box).anyMatch(pos -> this.getEntityWorld().getFluidState(pos).isIn(FluidTags.WATER))) {
                     percentSubmerged += 1.0 / yPartitions;
                 }
             }
@@ -138,16 +140,16 @@ public abstract class MixinAbstractBoatEntity extends VehicleEntity implements I
                     if (this.random.nextBoolean()) {
                         final double x = this.getX() - rx * dForward * 0.8 + rz * dSideways;
                         final double z = this.getZ() - rz * dForward * 0.8 - rx * dSideways;
-                        this.getWorld().addParticleClient(ParticleTypes.SPLASH, x, this.getY() - 0.125D, z, this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
+                        this.getEntityWorld().addParticleClient(ParticleTypes.SPLASH, x, this.getY() - 0.125D, z, this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
                     } else {
                         final double x = this.getX() + rx + rz * dForward * 0.7;
                         final double z = this.getZ() + rz - rx * dForward * 0.7;
-                        this.getWorld().addParticleClient(ParticleTypes.SPLASH, x, this.getY() - 0.125D, z, this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
+                        this.getEntityWorld().addParticleClient(ParticleTypes.SPLASH, x, this.getY() - 0.125D, z, this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
                     }
                 }
             }
 
-            if (this.getWorld().isClient && !this.hasPassengers()) {
+            if (this.getEntityWorld().isClient() && !this.hasPassengers()) {
                 if (this.viaFabricPlus$boatInterpolationSteps > 0) {
                     final PositionInterpolator.Data data = viaFabricPlus$positionInterpolator.data;
                     final double newX = this.getX() + (data.pos.x - this.getX()) / this.viaFabricPlus$boatInterpolationSteps;
@@ -223,12 +225,12 @@ public abstract class MixinAbstractBoatEntity extends VehicleEntity implements I
                         for (int ddy = 0; ddy < 2; ddy++) {
                             final int dy = MathHelper.floor(this.getY()) + ddy;
                             final BlockPos pos = new BlockPos(dx, dy, dz);
-                            final Block block = this.getWorld().getBlockState(pos).getBlock();
+                            final Block block = this.getEntityWorld().getBlockState(pos).getBlock();
                             if (block == Blocks.SNOW) {
-                                this.getWorld().setBlockState(pos, Blocks.AIR.getDefaultState());
+                                this.getEntityWorld().setBlockState(pos, Blocks.AIR.getDefaultState());
                                 this.horizontalCollision = false;
                             } else if (block == Blocks.LILY_PAD) {
-                                this.getWorld().breakBlock(pos, true);
+                                this.getEntityWorld().breakBlock(pos, true);
                                 this.horizontalCollision = false;
                             }
                         }

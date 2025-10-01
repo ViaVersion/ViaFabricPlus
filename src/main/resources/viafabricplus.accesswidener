@@ -20,6 +20,7 @@ accessible field net/minecraft/entity/PositionInterpolator$Data yaw F
 accessible field net/minecraft/entity/PositionInterpolator$Data pitch F
 accessible field net/minecraft/entity/player/PlayerInventory equipment Lnet/minecraft/entity/EntityEquipment;
 accessible field net/minecraft/client/input/Input movementVector Lnet/minecraft/util/math/Vec2f;
+accessible field net/minecraft/util/math/Direction YXZ Lcom/google/common/collect/ImmutableList;
 
 mutable field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 mutable field net/minecraft/block/AbstractBlock velocityMultiplier F

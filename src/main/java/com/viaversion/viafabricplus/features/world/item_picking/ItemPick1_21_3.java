@@ -88,7 +88,7 @@ public final class ItemPick1_21_3 {
                 return;
             }
 
-            if (creativeMode && Screen.hasControlDown() && blockState.hasBlockEntity()) {
+            if (creativeMode && client.isCtrlPressed() && blockState.hasBlockEntity()) {
                 final BlockEntity blockEntity = client.world.getBlockEntity(blockPos);
                 if (blockEntity != null) {
                     addBlockEntityNbt(itemStack, blockEntity, client.world.getRegistryManager());

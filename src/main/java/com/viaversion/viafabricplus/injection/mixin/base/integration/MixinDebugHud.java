@@ -50,62 +50,63 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(DebugHud.class)
 public abstract class MixinDebugHud {
 
-    @Inject(method = "getLeftText", at = @At("RETURN"))
-    public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
-        if (!GeneralSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) {
-            return;
-        }
-
-        final List<String> information = new ArrayList<>();
-        information.add("");
-        information.add(ChatUtil.PREFIX + Formatting.RESET + " " + ViaFabricPlusImpl.INSTANCE.getVersion());
-
-        final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
-        if (connection == null) {
-            cir.getReturnValue().addAll(information);
-            return;
-        }
-
-        final ProtocolInfo info = connection.getProtocolInfo();
-        information.add("P: " + info.getPipeline().pipes().size() + " C: " + info.protocolVersion() + " S: " + info.serverProtocolVersion());
-        final EntityTracker entityTracker1_7_10 = connection.get(EntityTracker.class);
-        if (entityTracker1_7_10 != null) {
-            information.add("1.7 Entities: " + entityTracker1_7_10.getTrackedEntities().size() + ", Virtual holograms: " + entityTracker1_7_10.getVirtualHolograms().size());
-        }
-        final SeedStorage seedStorage = connection.get(SeedStorage.class);
-        if (seedStorage != null && connection.getProtocolInfo().serverProtocolVersion().newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
-            information.add("World Seed: " + seedStorage.seed);
-        }
-        final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = connection.get(ExtensionProtocolMetadataStorage.class);
-        if (extensionProtocolMetadataStorage != null) {
-            information.add("CPE extensions: " + extensionProtocolMetadataStorage.getExtensionCount());
-        }
-        final BedrockJoinGameTracker joinGameDataTracker = connection.get(BedrockJoinGameTracker.class);
-        if (joinGameDataTracker != null) {
-            information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed());
-        }
-        if (joinGameDataTracker != null) {
-            information.add("World Seed: " + joinGameDataTracker.getSeed());
-        }
-        final ChunkTracker chunkTracker = connection.get(ChunkTracker.class);
-        if (chunkTracker != null) {
-            final IChunkTracker mixinChunkTracker = (IChunkTracker) chunkTracker;
-            final int subChunkRequests = mixinChunkTracker.viaFabricPlus$getSubChunkRequests();
-            final int pendingSubChunks = mixinChunkTracker.viaFabricPlus$getPendingSubChunks();
-            final int chunks = mixinChunkTracker.viaFabricPlus$getChunks();
-            cir.getReturnValue().add("Chunk Tracker: R: " + subChunkRequests + ", P: " + pendingSubChunks + ", C: " + chunks);
-        }
-        if (connection.getChannel() instanceof RakClientChannel rakClientChannel) {
-            final RakSessionCodec rakSessionCodec = rakClientChannel.parent().pipeline().get(RakSessionCodec.class);
-            if (rakSessionCodec != null) {
-                final IRakSessionCodec mixinRakSessionCodec = (IRakSessionCodec) rakSessionCodec;
-                final int transmitQueue = mixinRakSessionCodec.viaFabricPlus$getOutgoingPackets();
-                final int retransmitQueue = mixinRakSessionCodec.viaFabricPlus$SentDatagrams();
-                cir.getReturnValue().add("RTT: " + Math.round(rakSessionCodec.getRTT()) + " ms, P: " + rakSessionCodec.getPing() + " ms" + ", TQ: " + transmitQueue + ", RTQ: " + retransmitQueue);
-            }
-        }
-
-        cir.getReturnValue().addAll(information);
-    }
+    // TODO 1.21.9
+//    @Inject(method = "getLeftText", at = @At("RETURN"))
+//    public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
+//        if (!GeneralSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) {
+//            return;
+//        }
+//
+//        final List<String> information = new ArrayList<>();
+//        information.add("");
+//        information.add(ChatUtil.PREFIX + Formatting.RESET + " " + ViaFabricPlusImpl.INSTANCE.getVersion());
+//
+//        final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+//        if (connection == null) {
+//            cir.getReturnValue().addAll(information);
+//            return;
+//        }
+//
+//        final ProtocolInfo info = connection.getProtocolInfo();
+//        information.add("P: " + info.getPipeline().pipes().size() + " C: " + info.protocolVersion() + " S: " + info.serverProtocolVersion());
+//        final EntityTracker entityTracker1_7_10 = connection.get(EntityTracker.class);
+//        if (entityTracker1_7_10 != null) {
+//            information.add("1.7 Entities: " + entityTracker1_7_10.getTrackedEntities().size() + ", Virtual holograms: " + entityTracker1_7_10.getVirtualHolograms().size());
+//        }
+//        final SeedStorage seedStorage = connection.get(SeedStorage.class);
+//        if (seedStorage != null && connection.getProtocolInfo().serverProtocolVersion().newerThanOrEqualTo(LegacyProtocolVersion.a1_2_0toa1_2_1_1)) {
+//            information.add("World Seed: " + seedStorage.seed);
+//        }
+//        final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = connection.get(ExtensionProtocolMetadataStorage.class);
+//        if (extensionProtocolMetadataStorage != null) {
+//            information.add("CPE extensions: " + extensionProtocolMetadataStorage.getExtensionCount());
+//        }
+//        final BedrockJoinGameTracker joinGameDataTracker = connection.get(BedrockJoinGameTracker.class);
+//        if (joinGameDataTracker != null) {
+//            information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed());
+//        }
+//        if (joinGameDataTracker != null) {
+//            information.add("World Seed: " + joinGameDataTracker.getSeed());
+//        }
+//        final ChunkTracker chunkTracker = connection.get(ChunkTracker.class);
+//        if (chunkTracker != null) {
+//            final IChunkTracker mixinChunkTracker = (IChunkTracker) chunkTracker;
+//            final int subChunkRequests = mixinChunkTracker.viaFabricPlus$getSubChunkRequests();
+//            final int pendingSubChunks = mixinChunkTracker.viaFabricPlus$getPendingSubChunks();
+//            final int chunks = mixinChunkTracker.viaFabricPlus$getChunks();
+//            cir.getReturnValue().add("Chunk Tracker: R: " + subChunkRequests + ", P: " + pendingSubChunks + ", C: " + chunks);
+//        }
+//        if (connection.getChannel() instanceof RakClientChannel rakClientChannel) {
+//            final RakSessionCodec rakSessionCodec = rakClientChannel.parent().pipeline().get(RakSessionCodec.class);
+//            if (rakSessionCodec != null) {
+//                final IRakSessionCodec mixinRakSessionCodec = (IRakSessionCodec) rakSessionCodec;
+//                final int transmitQueue = mixinRakSessionCodec.viaFabricPlus$getOutgoingPackets();
+//                final int retransmitQueue = mixinRakSessionCodec.viaFabricPlus$SentDatagrams();
+//                cir.getReturnValue().add("RTT: " + Math.round(rakSessionCodec.getRTT()) + " ms, P: " + rakSessionCodec.getPing() + " ms" + ", TQ: " + transmitQueue + ", RTQ: " + retransmitQueue);
+//            }
+//        }
+//
+//        cir.getReturnValue().addAll(information);
+//    }
 
 }

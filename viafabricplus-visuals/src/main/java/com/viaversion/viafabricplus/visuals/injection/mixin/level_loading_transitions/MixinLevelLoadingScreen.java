@@ -19,25 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.packet;
+package com.viaversion.viafabricplus.visuals.injection.mixin.level_loading_transitions;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.player.PlayerPosition;
-import net.minecraft.util.math.MathHelper;
+import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(PlayerPosition.class)
-public abstract class MixinPlayerPosition {
+@Mixin(LevelLoadingScreen.class)
+public abstract class MixinLevelLoadingScreen {
 
-    @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(FFF)F"))
-    private static float uncapPlayerPitchMovement(float value, float min, float max) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return value;
+    @Shadow
+    private LevelLoadingScreen.WorldEntryReason reason;
+
+    @Redirect(method = "renderBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/world/LevelLoadingScreen;reason:Lnet/minecraft/client/gui/screen/world/LevelLoadingScreen$WorldEntryReason;"))
+    private LevelLoadingScreen.WorldEntryReason hideDownloadTerrainScreenTransitionEffects(LevelLoadingScreen levelLoadingScreen) {
+        if (VisualSettings.INSTANCE.hideDownloadTerrainScreenTransitionEffects.isEnabled()) {
+            return LevelLoadingScreen.WorldEntryReason.OTHER;
         } else {
-            return MathHelper.clamp(value, min, max);
+            return this.reason;
         }
     }
 

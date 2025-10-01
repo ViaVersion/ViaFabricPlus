@@ -23,12 +23,12 @@ package com.viaversion.viafabricplus.features.entity.r1_8_boat;
 
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.AbstractBoatEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.state.BoatEntityRenderState;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -59,7 +59,7 @@ public final class BoatRenderer1_8 extends AbstractBoatEntityRenderer {
     }
 
     @Override
-    public void render(BoatEntityRenderState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    public void render(final BoatEntityRenderState state, final MatrixStack matrices, final OrderedRenderCommandQueue orderedRenderCommandQueue, final CameraRenderState cameraRenderState) {
         matrices.push();
         matrices.translate(0, 0.25, 0);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180 - state.yaw));
@@ -70,8 +70,7 @@ public final class BoatRenderer1_8 extends AbstractBoatEntityRenderer {
 
         matrices.scale(-1, -1, 1);
         model.setAngles(state);
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.getLayer(TEXTURE));
-        model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV);
+        orderedRenderCommandQueue.submitModel(model, state, matrices, this.getRenderLayer(), state.light, OverlayTexture.DEFAULT_UV, state.outlineColor, null);
 
         matrices.pop();
     }

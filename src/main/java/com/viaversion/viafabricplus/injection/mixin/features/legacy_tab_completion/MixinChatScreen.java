@@ -31,6 +31,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -59,10 +60,11 @@ public abstract class MixinChatScreen {
         }
     }
 
-    @Redirect(method = "onChatFieldUpdate", at = @At(value = "INVOKE", target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"))
-    private boolean fixCommandKey(String instance, Object other) {
+    @ModifyArg(method = "onChatFieldUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;setWindowActive(Z)V"), index = 0)
+    private boolean fixCommandKey(boolean windowActive) {
+        final String instance = this.chatField.getText();
         if (this.viaFabricPlus$keepTabComplete()) {
-            return instance.equals(other);
+            return instance.equals(this.originalChatText);
         } else {
             return instance.isEmpty();
         }

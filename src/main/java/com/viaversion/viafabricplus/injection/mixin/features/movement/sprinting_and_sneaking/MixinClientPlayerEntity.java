@@ -90,9 +90,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     protected abstract boolean canSprint();
 
     @Shadow
-    protected abstract boolean isBlind();
-
-    @Shadow
     public abstract boolean shouldSlowDown();
 
     @Shadow
@@ -238,7 +235,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
                 && this.viaFabricPlus$isWalking1_21_4()
                 && this.canSprint()
                 && !this.isUsingItem()
-                && !this.isBlind()
+                && !this.hasBlindnessEffect()
                 && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.hasVehicle()) || this.canVehicleSprint(this.getVehicle()))
                 && !(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding())
                 && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4))));
@@ -257,7 +254,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     private void changeStopSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             final boolean ridingCamel = getVehicle() != null && getVehicle().getType() == EntityType.CAMEL;
-            cir.setReturnValue(this.isGliding() || this.isBlind() || this.shouldSlowDown() || this.hasVehicle() && !ridingCamel || this.isUsingItem() && !this.hasVehicle() && !this.isSubmergedInWater());
+            cir.setReturnValue(this.isGliding() || this.hasBlindnessEffect() || this.shouldSlowDown() || this.hasVehicle() && !ridingCamel || this.isUsingItem() && !this.hasVehicle() && !this.isSubmergedInWater());
         }
     }
 

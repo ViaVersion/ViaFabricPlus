@@ -26,6 +26,7 @@ import java.util.List;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import org.jetbrains.annotations.Nullable;
@@ -65,12 +66,12 @@ public abstract class MixinChatInputSuggestor {
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    private void handle1_12_2KeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    private void handle1_12_2KeyPressed(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
         if (this.viaFabricPlus$cancelTabComplete()) {
-            if (keyCode == GLFW.GLFW_KEY_TAB && this.window == null) {
+            if (input.key() == GLFW.GLFW_KEY_TAB && this.window == null) {
                 this.refresh();
             } else if (this.window != null) {
-                if (this.window.keyPressed(keyCode, scanCode, modifiers)) {
+                if (this.window.keyPressed(input)) {
                     cir.setReturnValue(true);
                     return;
                 }

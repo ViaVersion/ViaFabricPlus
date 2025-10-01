@@ -49,7 +49,7 @@ public final class ModeListEntry extends VFPListEntry {
     }
 
     @Override
-    public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(DrawContext context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         final int offset = textRenderer.getWidth(this.value.getValue()) + 6;

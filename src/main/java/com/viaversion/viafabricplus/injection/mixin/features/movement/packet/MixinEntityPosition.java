@@ -19,29 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.visuals.injection.mixin.downloading_terrain_transitions;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.packet;
 
-import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
-import org.spongepowered.asm.mixin.Final;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.entity.EntityPosition;
+import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(DownloadingTerrainScreen.class)
-public abstract class MixinDownloadingTerrainScreen {
+@Mixin(EntityPosition.class)
+public abstract class MixinEntityPosition {
 
-    @Shadow
-    @Final
-    private DownloadingTerrainScreen.WorldEntryReason worldEntryReason;
-
-    @Redirect(method = "renderBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen;worldEntryReason:Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen$WorldEntryReason;"))
-    private DownloadingTerrainScreen.WorldEntryReason hideDownloadTerrainScreenTransitionEffects(DownloadingTerrainScreen downloadingTerrainScreen) {
-        if (VisualSettings.INSTANCE.hideDownloadTerrainScreenTransitionEffects.isEnabled()) {
-            return DownloadingTerrainScreen.WorldEntryReason.OTHER;
+    @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(FFF)F"))
+    private static float uncapPlayerPitchMovement(float value, float min, float max) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            return value;
         } else {
-            return this.worldEntryReason;
+            return MathHelper.clamp(value, min, max);
         }
     }
 

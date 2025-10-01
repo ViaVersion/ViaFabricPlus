@@ -28,22 +28,21 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.texture.PlayerSkinProvider;
-import net.minecraft.client.util.SkinTextures;
+import net.minecraft.entity.player.SkinTextures;
 import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(PlayerListEntry.class)
-public abstract class MixinPlayerListEntry {
+@Mixin(PlayerSkinProvider.class)
+public abstract class MixinPlayerSkinProvider {
 
-    @Redirect(method = "texturesSupplier", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/PlayerSkinProvider;fetchSkinTextures(Lcom/mojang/authlib/GameProfile;)Ljava/util/concurrent/CompletableFuture;"))
+    @Redirect(method = "supplySkinTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/PlayerSkinProvider;fetchSkinTextures(Lcom/mojang/authlib/GameProfile;)Ljava/util/concurrent/CompletableFuture;"))
     private static CompletableFuture<Optional<SkinTextures>> fetchGameProfileProperties(PlayerSkinProvider instance, GameProfile profile) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && !profile.getProperties().containsKey("textures")) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && !profile.properties().containsKey("textures")) {
             return CompletableFuture.supplyAsync(() -> {
-                final ProfileResult profileResult = MinecraftClient.getInstance().getSessionService().fetchProfile(profile.getId(), true);
+                final ProfileResult profileResult = MinecraftClient.getInstance().getApiServices().sessionService().fetchProfile(profile.id(), true);
                 return profileResult == null ? profile : profileResult.profile();
             }, Util.getMainWorkerExecutor()).thenCompose(instance::fetchSkinTextures);
         } else {

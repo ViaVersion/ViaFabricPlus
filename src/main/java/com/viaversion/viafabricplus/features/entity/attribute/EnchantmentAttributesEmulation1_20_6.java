@@ -79,7 +79,7 @@ public final class EnchantmentAttributesEmulation1_20_6 {
      * Called above just as a fallback if a mod accesses the raw attribute value directly.
      */
     public static void setGenericMovementEfficiencyAttribute(final LivingEntity entity) {
-        final boolean isOnSoulSpeedBlock = entity.getWorld().getBlockState(entity.getVelocityAffectingPos()).isIn(BlockTags.SOUL_SPEED_BLOCKS);
+        final boolean isOnSoulSpeedBlock = entity.getEntityWorld().getBlockState(entity.getVelocityAffectingPos()).isIn(BlockTags.SOUL_SPEED_BLOCKS);
         if (isOnSoulSpeedBlock && getEquipmentLevel(Enchantments.SOUL_SPEED, entity) > 0) {
             entity.getAttributeInstance(EntityAttributes.MOVEMENT_EFFICIENCY).setBaseValue(1);
         } else {
@@ -88,7 +88,7 @@ public final class EnchantmentAttributesEmulation1_20_6 {
     }
 
     private static int getEquipmentLevel(final RegistryKey<Enchantment> enchantment, final LivingEntity entity) {
-        final Optional<RegistryEntry.Reference<Enchantment>> enchantmentRef = entity.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOptional(enchantment);
+        final Optional<RegistryEntry.Reference<Enchantment>> enchantmentRef = entity.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOptional(enchantment);
         return enchantmentRef.map(e -> EnchantmentHelper.getEquipmentLevel(e, entity)).orElse(0);
     }
 

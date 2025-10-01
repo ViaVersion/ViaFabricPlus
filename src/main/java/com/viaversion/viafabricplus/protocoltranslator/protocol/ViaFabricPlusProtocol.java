@@ -44,8 +44,6 @@ import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.network.packet.BrandCustomPayload;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.network.packet.s2c.custom.DebugGameTestAddMarkerCustomPayload;
-import net.minecraft.network.packet.s2c.custom.DebugGameTestClearCustomPayload;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
@@ -64,14 +62,16 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
         super(ClientboundPacket1_21_6.class, ClientboundPacket1_21_6.class, ServerboundPacket1_21_6.class, ServerboundPacket1_21_6.class);
 
         registerReader(BrandCustomPayload.ID, LegacyProtocolVersion.c0_0_15a_1, wrapper -> wrapper.passthrough(Types.STRING));
-        registerReader(DebugGameTestAddMarkerCustomPayload.ID, ProtocolVersion.v1_14, wrapper -> {
-            wrapper.passthrough(Types.BLOCK_POSITION1_14);
-            wrapper.passthrough(Types.INT);
-            wrapper.passthrough(Types.STRING);
-            wrapper.passthrough(Types.INT);
-        });
-        registerReader(DebugGameTestClearCustomPayload.ID, ProtocolVersion.v1_14, wrapper -> {
-        });
+//        registerReader(DebugGameTestAddMarkerCustomPayload.ID, ProtocolVersion.v1_14, wrapper -> {
+//            wrapper.passthrough(Types.BLOCK_POSITION1_14);
+//            wrapper.passthrough(Types.INT);
+//            wrapper.passthrough(Types.STRING);
+//            wrapper.passthrough(Types.INT);
+//        });
+//        registerReader(DebugGameTestClearCustomPayload.ID, ProtocolVersion.v1_14, wrapper -> {
+//        });
+
+        // TODO 1.21.9
     }
 
     @Override

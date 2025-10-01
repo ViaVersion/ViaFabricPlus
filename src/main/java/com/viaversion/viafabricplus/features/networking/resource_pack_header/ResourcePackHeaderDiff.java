@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.features.networking.resource_pack_header;
 
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import java.util.Map;
 import net.minecraft.GameVersion;
 import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
+import net.minecraft.resource.PackVersion;
 import net.minecraft.resource.ResourceType;
 
 /**
@@ -46,10 +48,19 @@ public final class ResourcePackHeaderDiff {
 
         final JsonObject diff = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("resource-pack-headers.json");
         for (final String string : diff.keySet()) {
-            final JsonObject data = diff.getAsJsonObject(string);
-            final int version = data.get("version").getAsInt();
-            final int packFormat = data.get("pack_format").getAsInt();
-            registerVersion(ProtocolVersion.getProtocol(version), packFormat, string, string);
+            fill(string, diff.getAsJsonObject(string));
+        }
+    }
+
+    private static void fill(final String name, final JsonObject data) {
+        final ProtocolVersion version = ProtocolVersion.getProtocol(data.get("version").getAsInt());
+        final JsonElement packFormat = data.get("pack_format");
+        if (packFormat.isJsonObject()) {
+            final int major = packFormat.getAsJsonObject().get("major").getAsInt();
+            final int minor = packFormat.getAsJsonObject().get("minor").getAsInt();
+            registerVersion(version, major, minor, name, name);
+        } else {
+            registerVersion(version, packFormat.getAsInt(), -1, name, name);
         }
     }
 
@@ -65,7 +76,7 @@ public final class ResourcePackHeaderDiff {
         }
     }
 
-    private static void registerVersion(final ProtocolVersion version, final int packFormat, final String name, final String id) {
+    private static void registerVersion(final ProtocolVersion version, final int majorVersion, final int minorVersion, final String name, final String id) {
         GAME_VERSION_DIFF.put(version, new GameVersion() {
 
             @Override
@@ -89,9 +100,9 @@ public final class ResourcePackHeaderDiff {
             }
 
             @Override
-            public int packVersion(final ResourceType type) {
+            public PackVersion packVersion(final ResourceType type) {
                 if (type == ResourceType.CLIENT_RESOURCES) {
-                    return packFormat;
+                    return PackVersion.of(majorVersion, minorVersion);
                 }
                 throw new UnsupportedOperationException();
             }

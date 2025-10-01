@@ -19,30 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.downloading_terrain;
+package com.viaversion.viafabricplus.injection.mixin.features.networking.level_loading;
 
-import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain.IDownloadingTerrainScreen;
+import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain.ILevelLoadingScreen;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
 import net.minecraft.network.packet.c2s.common.KeepAliveC2SPacket;
 import net.minecraft.text.Text;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(DownloadingTerrainScreen.class)
-public abstract class MixinDownloadingTerrainScreen extends Screen implements IDownloadingTerrainScreen {
+@Mixin(LevelLoadingScreen.class)
+public abstract class MixinLevelLoadingScreen extends Screen implements ILevelLoadingScreen {
 
-    @Shadow
-    @Final
-    private long loadStartTime;
+    @Unique
+    private long viaFabricPlus$loadStartTime;
 
     @Unique
     private int viaFabricPlus$tickCounter;
@@ -53,8 +51,9 @@ public abstract class MixinDownloadingTerrainScreen extends Screen implements ID
     @Unique
     private boolean viaFabricPlus$closeOnNextTick = false;
 
-    public MixinDownloadingTerrainScreen(Text title) {
+    public MixinLevelLoadingScreen(Text title) {
         super(title);
+        this.viaFabricPlus$loadStartTime = Util.getMeasuringTimeMs();
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
@@ -74,7 +73,7 @@ public abstract class MixinDownloadingTerrainScreen extends Screen implements ID
                     }
                 }
             } else {
-                if (System.currentTimeMillis() > this.loadStartTime + 30000L) {
+                if (System.currentTimeMillis() > this.viaFabricPlus$loadStartTime + 30000L) {
                     this.close();
                 } else {
                     if (this.viaFabricPlus$closeOnNextTick) {
@@ -87,7 +86,7 @@ public abstract class MixinDownloadingTerrainScreen extends Screen implements ID
                         }
                     } else {
                         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
-                            this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready || System.currentTimeMillis() > this.loadStartTime + 2000;
+                            this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready || System.currentTimeMillis() > this.viaFabricPlus$loadStartTime + 2000;
                         } else {
                             this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready;
                         }

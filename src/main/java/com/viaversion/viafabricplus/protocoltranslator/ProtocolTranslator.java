@@ -218,8 +218,8 @@ public final class ProtocolTranslator {
         final MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.player != null) {
             final GameProfile profile = mc.player.getGameProfile();
-            info.setUsername(profile.getName());
-            info.setUuid(profile.getId());
+            info.setUsername(profile.name());
+            info.setUuid(profile.id());
         }
 
         return user;
