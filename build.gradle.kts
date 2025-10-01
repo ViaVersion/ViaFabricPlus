@@ -5,6 +5,8 @@ plugins {
     id("de.florianmichael.baseproject.BaseProject")
 }
 
+val updatingMc = project.property("updating_minecraft").toString().toBoolean()
+
 allprojects {
 
     setupProject()
@@ -12,6 +14,9 @@ allprojects {
     setupViaPublishing()
 
     repositories {
+        if (updatingMc) {
+            mavenLocal()
+        }
         maven("https://repo.viaversion.com")
         maven("https://maven.lenni0451.net/everything")
         maven("https://repo.opencollab.dev/maven-snapshots")
@@ -35,11 +40,9 @@ base {
     archivesName.set("ViaFabricPlus") // Override the set name as it's lowercase for publishing
 }
 
-project.property("updating_minecraft").toString().toBoolean().apply {
-    configureTestTasks(this)
-    if (this) {
-        increaseVisibleBuildErrors()
-    }
+configureTestTasks(updatingMc)
+if (updatingMc) {
+    increaseVisibleBuildErrors()
 }
 
 val jij = configureJij()

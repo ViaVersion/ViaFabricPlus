@@ -7,6 +7,8 @@ If you're unsure about anything, feel free to ask in the [ViaVersion Discord](ht
 
 ## 1. Update Dependencies
 
+Set `updating_minecraft = true`.
+
 Update all upstream versions in `gradle.properties`. The main ones are:
 
 - `minecraft_version`
@@ -36,14 +38,10 @@ Also update versions in the `dependencies` block of `build.gradle.kts`.
 
 ## 4. Update Data Diffs
 
-Set `updating_minecraft = true`.
-
 Run `gradle test` to automatically update various data jsons in the assets.
 
 Manually check the following files:
 - `entity-dimensions.json`
-
-Set `updating_minecraft = false`.
 
 ---
 
@@ -124,7 +122,8 @@ Check the ViaVersion/upstream protocol implementation.
 2. Clean up your code and ensure it’s readable.
 
     * Client-side fixes are sorted by protocol version, newest at the top.
-3. Open a pull request and wait for review.
+3. Set `updating_minecraft = false`.
+4. Open a pull request and wait for review.
 
 ---
 
