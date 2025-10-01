@@ -75,7 +75,7 @@ public final class UpdateTaskTest {
 
     private static void addMissingItems(final JsonObject items) {
         for (final Item item : Registries.ITEM) {
-            if (VersionedRegistries.containsItem(item, NATIVE_VERSION) || item == Items.AIR) {
+            if (VersionedRegistries.ITEM_DIFF.containsKey(item) || item == Items.AIR) {
                 continue;
             }
 
@@ -86,7 +86,7 @@ public final class UpdateTaskTest {
     private static void addMissingEnchantments(final JsonObject enchantments) {
         RStream.of(Enchantments.class).fields().forEach(fieldWrapper -> {
             final RegistryKey registryKey = fieldWrapper.get();
-            if (VersionedRegistries.containsEnchantment(registryKey, NATIVE_VERSION)) {
+            if (VersionedRegistries.ENCHANTMENT_DIFF.containsKey(registryKey)) {
                 return;
             }
 
@@ -97,7 +97,7 @@ public final class UpdateTaskTest {
     private static void addMissingPatterns(final JsonObject patterns) {
         RStream.of(BannerPatterns.class).fields().forEach(fieldWrapper -> {
             final RegistryKey registryKey = fieldWrapper.get();
-            if (VersionedRegistries.containsBannerPattern(registryKey, NATIVE_VERSION)) {
+            if (VersionedRegistries.PATTERN_DIFF.containsKey(registryKey)) {
                 return;
             }
 
@@ -107,7 +107,7 @@ public final class UpdateTaskTest {
 
     private static void addMissingEffects(final JsonObject effects) {
         for (final StatusEffect effect : Registries.STATUS_EFFECT) {
-            if (VersionedRegistries.containsEffect(Registries.STATUS_EFFECT.getEntry(effect), NATIVE_VERSION)) {
+            if (VersionedRegistries.EFFECT_DIFF.containsKey(Registries.STATUS_EFFECT.getEntry(effect))) {
                 continue;
             }
 
