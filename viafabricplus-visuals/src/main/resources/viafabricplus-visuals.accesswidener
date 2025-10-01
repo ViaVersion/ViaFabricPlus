@@ -3,9 +3,6 @@ accessWidener v1 named
 accessible field net/minecraft/client/resource/language/TranslationStorage translations Ljava/util/Map;
 accessible field net/minecraft/client/gui/screen/multiplayer/SocialInteractionsScreen TITLE Lnet/minecraft/text/Text;
 accessible field net/minecraft/client/gui/widget/TexturedButtonWidget textures Lnet/minecraft/client/gui/screen/ButtonTextures;
-accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/minecraft/client/font/FontStorage$GlyphPair;
-
-accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
 
 accessible class net/minecraft/client/gui/screen/GameModeSwitcherScreen$GameModeSelection
 accessible class net/minecraft/client/font/TextRenderer$Drawer
