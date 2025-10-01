@@ -54,6 +54,9 @@ public final class RenderableGlyphDiff {
     private static void fill(final CompoundTag glyphs, final Int2ObjectMap<ProtocolVersion> map) {
         for (final Map.Entry<String, Tag> entry : glyphs) {
             final ProtocolVersion version = ProtocolVersion.getClosest(entry.getKey());
+            if (version == null) {
+                throw new IllegalStateException("Unknown protocol version: " + entry.getKey());
+            }
             final MixedListTag list = (MixedListTag) entry.getValue();
             for (final Tag i : list) {
                 if (i instanceof final IntTag intTag) {

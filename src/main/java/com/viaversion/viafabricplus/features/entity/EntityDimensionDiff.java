@@ -59,6 +59,9 @@ public final class EntityDimensionDiff {
             final Map<ProtocolVersion, EntityDimensions> dimensionMap = new HashMap<>();
             for (final String version : versions.keySet()) {
                 final ProtocolVersion protocolVersion = ProtocolVersion.getClosest(version);
+                if (protocolVersion == null) {
+                    throw new IllegalStateException("Unknown protocol version: " + version);
+                }
                 final JsonObject dimensionData = versions.getAsJsonObject(version);
                 final float width = dimensionData.get("width").getAsFloat();
                 final float height = dimensionData.get("height").getAsFloat();
