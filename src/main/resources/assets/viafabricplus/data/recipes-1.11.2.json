@@ -1,0 +1,8151 @@
+{
+  "recipes": [
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:purple_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:purple_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:dark_oak_fence_gate"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_boots"
+      },
+      "pattern": [
+        "X X",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:mushroom_stew"
+      },
+      "pattern": [
+        "Y",
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:bowl"
+        ],
+        "X": [
+          "minecraft:brown_mushroom"
+        ],
+        "Y": [
+          "minecraft:red_mushroom"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - b1.8-b1.8.1"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:light_blue_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:light_blue_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:white_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:bone_meal"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_leggings"
+      },
+      "pattern": [
+        "XXX",
+        "X X",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:quartz_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:quartz_block",
+          "minecraft:chiseled_quartz_block",
+          "minecraft:quartz_pillar"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:chiseled_quartz_block"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:quartz_slab"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:mushroom_stew"
+      },
+      "pattern": [
+        "Y",
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:bowl"
+        ],
+        "X": [
+          "minecraft:red_mushroom"
+        ],
+        "Y": [
+          "minecraft:brown_mushroom"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - b1.8-b1.8.1"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:pink_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:pink_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "boat",
+      "result": {
+        "id": "minecraft:birch_boat"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:birch_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:green_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:green_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:quartz_pillar",
+        "count": 2
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:quartz_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:wooden_hoe"
+      },
+      "pattern": [
+        "XX",
+        " #",
+        " #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.8-b1.8.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_slab",
+      "result": {
+        "id": "minecraft:oak_slab",
+        "count": 3
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.3-b1.3.1 - 1.1"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_sword"
+      },
+      "pattern": [
+        "X",
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_stairs",
+      "result": {
+        "id": "minecraft:birch_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:birch_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_stairs",
+      "result": {
+        "id": "minecraft:dark_oak_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:snow_block"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:snowball"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond_block"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:powered_rail",
+        "count": 6
+      },
+      "pattern": [
+        "X X",
+        "X#X",
+        "XRX"
+      ],
+      "legend": {
+        "R": [
+          "minecraft:redstone"
+        ],
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.5-b1.5.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:purple_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:purple_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:chest"
+      },
+      "pattern": [
+        "###",
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:polished_granite",
+        "count": 4
+      },
+      "pattern": [
+        "SS",
+        "SS"
+      ],
+      "legend": {
+        "S": [
+          "minecraft:granite"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_slab",
+      "result": {
+        "id": "minecraft:oak_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:gold_block"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:black_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:black_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:smooth_stone_slab",
+        "count": 3
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.1"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_helmet"
+      },
+      "pattern": [
+        "XXX",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:slime_block"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:slime_ball"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:spruce_fence_gate"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:spruce_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:white_wool"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:string"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - b1.5-b1.5.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_axe"
+      },
+      "pattern": [
+        "XX",
+        "X#",
+        " #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_leggings"
+      },
+      "pattern": [
+        "XXX",
+        "X X",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:heavy_weighted_pressure_plate"
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:arrow",
+        "count": 4
+      },
+      "pattern": [
+        "X",
+        "#",
+        "Y"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:flint"
+        ],
+        "Y": [
+          "minecraft:feather"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:bucket"
+      },
+      "pattern": [
+        "# #",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:furnace"
+      },
+      "pattern": [
+        "###",
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:chest_minecart"
+      },
+      "pattern": [
+        "A",
+        "B"
+      ],
+      "legend": {
+        "A": [
+          "minecraft:chest"
+        ],
+        "B": [
+          "minecraft:minecart"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:lever"
+      },
+      "pattern": [
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:cobblestone"
+        ],
+        "X": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:tnt"
+      },
+      "pattern": [
+        "X#X",
+        "#X#",
+        "X#X"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:sand",
+          "minecraft:red_sand"
+        ],
+        "X": [
+          "minecraft:gunpowder"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:melon_seeds"
+      },
+      "pattern": [
+        "M"
+      ],
+      "legend": {
+        "M": [
+          "minecraft:melon_slice"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.8-b1.8.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:cyan_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:cyan_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:minecart"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "planks",
+      "result": {
+        "id": "minecraft:birch_planks",
+        "count": 4
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:birch_log"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.4-1.2.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:yellow_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:yellow_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond_axe"
+      },
+      "pattern": [
+        "XX",
+        "X#",
+        " #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:dispenser"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "#R#"
+      ],
+      "legend": {
+        "R": [
+          "minecraft:redstone"
+        ],
+        "#": [
+          "minecraft:cobblestone"
+        ],
+        "X": [
+          "minecraft:bow"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:wheat",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:hay_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:wooden_sword"
+      },
+      "pattern": [
+        "X",
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:light_gray_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:light_gray_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:mossy_cobblestone_wall",
+        "count": 6
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:mossy_cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:redstone_torch"
+      },
+      "pattern": [
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:redstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_trapdoor"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:light_blue_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:light_blue_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence",
+      "result": {
+        "id": "minecraft:acacia_fence",
+        "count": 3
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:acacia_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cake"
+      },
+      "pattern": [
+        "AAA",
+        "BEB",
+        "CCC"
+      ],
+      "legend": {
+        "A": [
+          "minecraft:milk_bucket"
+        ],
+        "B": [
+          "minecraft:sugar"
+        ],
+        "C": [
+          "minecraft:wheat"
+        ],
+        "E": [
+          "minecraft:egg"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:cyan_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:cyan_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cobblestone_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.1-1.2.3 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:blue_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:lapis_lazuli"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:yellow_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:yellow_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:enchanting_table"
+      },
+      "pattern": [
+        " B ",
+        "D#D",
+        "###"
+      ],
+      "legend": {
+        "B": [
+          "minecraft:book"
+        ],
+        "#": [
+          "minecraft:obsidian"
+        ],
+        "D": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:comparator"
+      },
+      "pattern": [
+        " # ",
+        "#X#",
+        "III"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:redstone_torch"
+        ],
+        "X": [
+          "minecraft:quartz"
+        ],
+        "I": [
+          "minecraft:stone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cut_red_sandstone",
+        "count": 4
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:red_sandstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "bed",
+      "result": {
+        "id": "minecraft:red_bed"
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:yellow_wool",
+          "minecraft:black_wool",
+          "minecraft:blue_wool",
+          "minecraft:brown_wool",
+          "minecraft:cyan_wool",
+          "minecraft:gray_wool",
+          "minecraft:green_wool",
+          "minecraft:light_blue_wool",
+          "minecraft:light_gray_wool",
+          "minecraft:white_wool",
+          "minecraft:red_wool",
+          "minecraft:purple_wool",
+          "minecraft:pink_wool",
+          "minecraft:orange_wool",
+          "minecraft:lime_wool",
+          "minecraft:magenta_wool"
+        ],
+        "X": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.3-b1.3.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:white_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:white_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:leather_boots"
+      },
+      "pattern": [
+        "X X",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:leather"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:pink_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:pink_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:black_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:black_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:jack_o_lantern"
+      },
+      "pattern": [
+        "A",
+        "B"
+      ],
+      "legend": {
+        "A": [
+          "minecraft:carved_pumpkin"
+        ],
+        "B": [
+          "minecraft:torch"
+        ]
+      },
+      "type": "shaped",
+      "version": "a1.2.0-a1.2.1.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence",
+      "result": {
+        "id": "minecraft:oak_fence",
+        "count": 2
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.7.6-1.7.10"
+    },
+    {
+      "result": {
+        "id": "minecraft:bone_block"
+      },
+      "pattern": [
+        "XXX",
+        "XXX",
+        "XXX"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:bone_meal"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.10.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:observer"
+      },
+      "pattern": [
+        "###",
+        "RRQ",
+        "###"
+      ],
+      "legend": {
+        "Q": [
+          "minecraft:quartz"
+        ],
+        "R": [
+          "minecraft:redstone"
+        ],
+        "#": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.11 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:oak_pressure_plate"
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.3-b1.3.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:jungle_fence_gate"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:jungle_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "planks",
+      "result": {
+        "id": "minecraft:acacia_planks",
+        "count": 4
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:acacia_log"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:prismarine_bricks"
+      },
+      "pattern": [
+        "SSS",
+        "SSS",
+        "SSS"
+      ],
+      "legend": {
+        "S": [
+          "minecraft:prismarine_shard"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:flint_and_steel"
+      },
+      "pattern": [
+        "A ",
+        " B"
+      ],
+      "legend": {
+        "A": [
+          "minecraft:iron_ingot"
+        ],
+        "B": [
+          "minecraft:flint"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.6.4"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:purple_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:purple_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:oak_pressure_plate"
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - b1.2-b1.2.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:dropper"
+      },
+      "pattern": [
+        "###",
+        "# #",
+        "#R#"
+      ],
+      "legend": {
+        "R": [
+          "minecraft:redstone"
+        ],
+        "#": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:orange_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:orange_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:acacia_fence_gate"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:acacia_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:wooden_pickaxe"
+      },
+      "pattern": [
+        "XXX",
+        " # ",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_door",
+        "count": 3
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:snow",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:snow_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:leather_chestplate"
+      },
+      "pattern": [
+        "X X",
+        "XXX",
+        "XXX"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:leather"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:carrot_on_a_stick"
+      },
+      "pattern": [
+        "# ",
+        " X"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:fishing_rod"
+        ],
+        "X": [
+          "minecraft:carrot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:smooth_stone_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.1-1.2.3 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "planks",
+      "result": {
+        "id": "minecraft:jungle_planks",
+        "count": 4
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:jungle_log"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.4-1.2.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:polished_andesite",
+        "count": 4
+      },
+      "pattern": [
+        "SS",
+        "SS"
+      ],
+      "legend": {
+        "S": [
+          "minecraft:andesite"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "planks",
+      "result": {
+        "id": "minecraft:spruce_planks",
+        "count": 4
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:spruce_log"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.4-1.2.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_nugget",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:blue_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:blue_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_bars",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.8-b1.8.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cobblestone_slab",
+        "count": 3
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.3-b1.3.1 - 1.1"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_brick_slab",
+        "count": 3
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stone_bricks",
+          "minecraft:mossy_stone_bricks",
+          "minecraft:cracked_stone_bricks",
+          "minecraft:chiseled_stone_bricks"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.8-b1.8.1 - 1.1"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:red_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:red_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_pressure_plate"
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stone"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.3-b1.3.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_door",
+      "result": {
+        "id": "minecraft:jungle_door",
+        "count": 3
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:jungle_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:tripwire_hook",
+        "count": 2
+      },
+      "pattern": [
+        "I",
+        "S",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ],
+        "S": [
+          "minecraft:stick"
+        ],
+        "I": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_hoe"
+      },
+      "pattern": [
+        "XX",
+        " #",
+        " #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:white_wool"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:string"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.6-b1.6.6 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_stairs",
+      "result": {
+        "id": "minecraft:jungle_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:jungle_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:red_sandstone_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:red_sandstone",
+          "minecraft:chiseled_red_sandstone",
+          "minecraft:cut_red_sandstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:oak_sign",
+        "count": 3
+      },
+      "pattern": [
+        "###",
+        "###",
+        " X "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ],
+        "X": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_stairs",
+      "result": {
+        "id": "minecraft:oak_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_slab",
+      "result": {
+        "id": "minecraft:oak_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.1-1.2.3 - 1.2.4-1.2.5"
+    },
+    {
+      "result": {
+        "id": "minecraft:chiseled_sandstone"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:sandstone_slab"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.4-1.2.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:brick_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:bricks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.1-1.2.3 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:yellow_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:yellow_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:emerald",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:emerald_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:torch",
+        "count": 4
+      },
+      "pattern": [
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:coal",
+          "minecraft:charcoal"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_stairs",
+      "result": {
+        "id": "minecraft:acacia_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:acacia_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:brick_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:bricks"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.8-b1.8.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "iron_ingot",
+      "result": {
+        "id": "minecraft:iron_ingot"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_nugget"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:red_nether_bricks"
+      },
+      "pattern": [
+        "NW",
+        "WN"
+      ],
+      "legend": {
+        "W": [
+          "minecraft:nether_wart"
+        ],
+        "N": [
+          "minecraft:nether_brick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.10.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:paper",
+        "count": 3
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:sugar_cane"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:emerald_block"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:emerald"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:torch",
+        "count": 4
+      },
+      "pattern": [
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:coal"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - b1.1.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:book"
+      },
+      "pattern": [
+        "#",
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:paper"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.2.4-1.2.5"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:white_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:white_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:shield"
+      },
+      "pattern": [
+        "WoW",
+        "WWW",
+        " W "
+      ],
+      "legend": {
+        "W": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ],
+        "o": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:nether_brick_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:nether_bricks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.4.6-1.4.7 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:sea_lantern"
+      },
+      "pattern": [
+        "SCS",
+        "CCC",
+        "SCS"
+      ],
+      "legend": {
+        "S": [
+          "minecraft:prismarine_shard"
+        ],
+        "C": [
+          "minecraft:prismarine_crystals"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence",
+      "result": {
+        "id": "minecraft:dark_oak_fence",
+        "count": 3
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:quartz_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:quartz_block",
+          "minecraft:chiseled_quartz_block",
+          "minecraft:quartz_pillar"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_shovel"
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:redstone_lamp"
+      },
+      "pattern": [
+        " R ",
+        "RGR",
+        " R "
+      ],
+      "legend": {
+        "R": [
+          "minecraft:redstone"
+        ],
+        "G": [
+          "minecraft:glowstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.1-1.2.3 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:leather_helmet"
+      },
+      "pattern": [
+        "XXX",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:leather"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_chestplate"
+      },
+      "pattern": [
+        "X X",
+        "XXX",
+        "XXX"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:clock"
+      },
+      "pattern": [
+        " # ",
+        "#X#",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_ingot"
+        ],
+        "X": [
+          "minecraft:redstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "a1.2.0-a1.2.1.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:lime_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:lime_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:sticky_piston"
+      },
+      "pattern": [
+        "S",
+        "P"
+      ],
+      "legend": {
+        "P": [
+          "minecraft:piston"
+        ],
+        "S": [
+          "minecraft:slime_ball"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.7-b1.7.3 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:purpur_block",
+        "count": 4
+      },
+      "pattern": [
+        "FF",
+        "FF"
+      ],
+      "legend": {
+        "F": [
+          "minecraft:popped_chorus_fruit"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond_leggings"
+      },
+      "pattern": [
+        "XXX",
+        "X X",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:brown_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:brown_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:light_weighted_pressure_plate"
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_sword"
+      },
+      "pattern": [
+        "X",
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:dark_prismarine"
+      },
+      "pattern": [
+        "SSS",
+        "SIS",
+        "SSS"
+      ],
+      "legend": {
+        "S": [
+          "minecraft:prismarine_shard"
+        ],
+        "I": [
+          "minecraft:ink_sac"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:hay_block"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:wheat"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:light_gray_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:light_gray_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:red_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:red_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:trapped_chest"
+      },
+      "pattern": [
+        "#-"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:chest"
+        ],
+        "-": [
+          "minecraft:tripwire_hook"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.8.x"
+    },
+    {
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:birch_fence_gate"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:birch_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_stairs",
+      "result": {
+        "id": "minecraft:spruce_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:spruce_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:lime_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:lime_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:leather_leggings"
+      },
+      "pattern": [
+        "XXX",
+        "X X",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:leather"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:green_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:green_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence",
+      "result": {
+        "id": "minecraft:birch_fence",
+        "count": 3
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:birch_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:gray_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gray_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond_helmet"
+      },
+      "pattern": [
+        "XXX",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "boat",
+      "result": {
+        "id": "minecraft:oak_boat"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:jungle_planks",
+          "minecraft:dark_oak_planks",
+          "minecraft:birch_planks",
+          "minecraft:acacia_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.8.x"
+    },
+    {
+      "group": "wooden_fence",
+      "result": {
+        "id": "minecraft:oak_fence",
+        "count": 3
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:glass_bottle",
+        "count": 3
+      },
+      "pattern": [
+        "# #",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:green_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:green_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:light_blue_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:light_blue_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:magenta_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:magenta_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:brown_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:cocoa_beans"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:nether_wart_block"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:nether_wart"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.10.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:sandstone_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:sandstone",
+          "minecraft:chiseled_sandstone",
+          "minecraft:cut_sandstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:bow"
+      },
+      "pattern": [
+        " #X",
+        "# X",
+        " #X"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:string"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:cyan_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:cyan_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_door",
+      "result": {
+        "id": "minecraft:acacia_door",
+        "count": 3
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:acacia_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:light_gray_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:light_gray_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:pink_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:pink_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_button"
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:end_rod",
+        "count": 4
+      },
+      "pattern": [
+        "/",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:popped_chorus_fruit"
+        ],
+        "/": [
+          "minecraft:blaze_rod"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:lime_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:lime_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_door"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.7.6-1.7.10"
+    },
+    {
+      "result": {
+        "id": "minecraft:sandstone_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:sandstone",
+          "minecraft:chiseled_sandstone",
+          "minecraft:cut_sandstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.1-1.2.3 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "boat",
+      "result": {
+        "id": "minecraft:oak_boat"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:purple_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:purple_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:coal",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:coal_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:nether_brick_fence",
+        "count": 6
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:nether_bricks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_chestplate"
+      },
+      "pattern": [
+        "X X",
+        "XXX",
+        "XXX"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:nether_brick_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:nether_bricks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:orange_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:orange_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_boots"
+      },
+      "pattern": [
+        "X X",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_brick_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stone_bricks",
+          "minecraft:mossy_stone_bricks",
+          "minecraft:cracked_stone_bricks",
+          "minecraft:chiseled_stone_bricks"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.8-b1.8.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:lead",
+        "count": 2
+      },
+      "pattern": [
+        "~~ ",
+        "~O ",
+        "  ~"
+      ],
+      "legend": {
+        "~": [
+          "minecraft:string"
+        ],
+        "O": [
+          "minecraft:slime_ball"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:enchanted_golden_apple"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_block"
+        ],
+        "X": [
+          "minecraft:apple"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.8.x"
+    },
+    {
+      "result": {
+        "id": "minecraft:bricks"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:brick"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "boat",
+      "result": {
+        "id": "minecraft:dark_oak_boat"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:map"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:paper"
+        ],
+        "X": [
+          "minecraft:compass"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.6-b1.6.6 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "boat",
+      "result": {
+        "id": "minecraft:spruce_boat"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:spruce_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "gold_ingot",
+      "result": {
+        "id": "minecraft:gold_ingot",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:redstone",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:redstone_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:ender_chest"
+      },
+      "pattern": [
+        "###",
+        "#E#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:obsidian"
+        ],
+        "E": [
+          "minecraft:ender_eye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:oak_sign"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " X "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ],
+        "X": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.2.4-1.2.5"
+    },
+    {
+      "result": {
+        "id": "minecraft:crafting_table"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond_chestplate"
+      },
+      "pattern": [
+        "X X",
+        "XXX",
+        "XXX"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:beetroot_soup"
+      },
+      "pattern": [
+        "OOO",
+        "OOO",
+        " B "
+      ],
+      "legend": {
+        "B": [
+          "minecraft:bowl"
+        ],
+        "O": [
+          "minecraft:beetroot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:ladder",
+        "count": 3
+      },
+      "pattern": [
+        "# #",
+        "###",
+        "# #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.1-1.2.3 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:shears"
+      },
+      "pattern": [
+        " #",
+        "# "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.7-b1.7.3 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stick",
+        "count": 4
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:light_gray_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:light_gray_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:lapis_block"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:lapis_lazuli"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:spectral_arrow",
+        "count": 2
+      },
+      "pattern": [
+        " # ",
+        "#X#",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glowstone_dust"
+        ],
+        "X": [
+          "minecraft:arrow"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:polished_diorite",
+        "count": 4
+      },
+      "pattern": [
+        "SS",
+        "SS"
+      ],
+      "legend": {
+        "S": [
+          "minecraft:diorite"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:magenta_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:magenta_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_bricks",
+        "count": 4
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stone"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.8-b1.8.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:lapis_lazuli",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:lapis_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:chiseled_stone_bricks"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stone_brick_slab"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:bread"
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:wheat"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:armor_stand"
+      },
+      "pattern": [
+        "///",
+        " / ",
+        "/_/"
+      ],
+      "legend": {
+        "/": [
+          "minecraft:stick"
+        ],
+        "_": [
+          "minecraft:smooth_stone_slab"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_door",
+      "result": {
+        "id": "minecraft:oak_door",
+        "count": 3
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:brown_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:cocoa_beans"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:black_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:ink_sac"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cut_sandstone",
+        "count": 4
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:sandstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.4-1.2.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:compass"
+      },
+      "pattern": [
+        " # ",
+        "#X#",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ],
+        "X": [
+          "minecraft:redstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "a1.1.0-a1.1.2.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_pickaxe"
+      },
+      "pattern": [
+        "XXX",
+        " # ",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:gold_nugget",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond_shovel"
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:fishing_rod"
+      },
+      "pattern": [
+        "  #",
+        " #X",
+        "# X"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:string"
+        ]
+      },
+      "type": "shaped",
+      "version": "a1.1.0-a1.1.2.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:purpur_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:purpur_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond_boots"
+      },
+      "pattern": [
+        "X X",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "rabbit_stew",
+      "result": {
+        "id": "minecraft:rabbit_stew"
+      },
+      "pattern": [
+        " R ",
+        "CPM",
+        " B "
+      ],
+      "legend": {
+        "P": [
+          "minecraft:baked_potato"
+        ],
+        "R": [
+          "minecraft:cooked_rabbit"
+        ],
+        "B": [
+          "minecraft:bowl"
+        ],
+        "C": [
+          "minecraft:carrot"
+        ],
+        "M": [
+          "minecraft:brown_mushroom"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "iron_ingot",
+      "result": {
+        "id": "minecraft:iron_ingot",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:yellow_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:yellow_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:cyan_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:cyan_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diorite",
+        "count": 2
+      },
+      "pattern": [
+        "CQ",
+        "QC"
+      ],
+      "legend": {
+        "Q": [
+          "minecraft:quartz"
+        ],
+        "C": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:furnace_minecart"
+      },
+      "pattern": [
+        "A",
+        "B"
+      ],
+      "legend": {
+        "A": [
+          "minecraft:furnace"
+        ],
+        "B": [
+          "minecraft:minecart"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:detector_rail",
+        "count": 6
+      },
+      "pattern": [
+        "X X",
+        "X#X",
+        "XRX"
+      ],
+      "legend": {
+        "R": [
+          "minecraft:redstone"
+        ],
+        "#": [
+          "minecraft:stone_pressure_plate"
+        ],
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.5-b1.5.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:glowstone"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glowstone_dust"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.6-b1.6.6 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "planks",
+      "result": {
+        "id": "minecraft:oak_planks",
+        "count": 4
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:birch_log",
+          "minecraft:spruce_log",
+          "minecraft:jungle_log"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.2.1-1.2.3"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond_sword"
+      },
+      "pattern": [
+        "X",
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:gray_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:gray_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:coal_block"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:coal"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:red_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:red_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "planks",
+      "result": {
+        "id": "minecraft:dark_oak_planks",
+        "count": 4
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:dark_oak_log"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:cyan_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:cyan_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:anvil"
+      },
+      "pattern": [
+        "III",
+        " i ",
+        "iii"
+      ],
+      "legend": {
+        "I": [
+          "minecraft:iron_block"
+        ],
+        "i": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:pumpkin_seeds",
+        "count": 4
+      },
+      "pattern": [
+        "M"
+      ],
+      "legend": {
+        "M": [
+          "minecraft:carved_pumpkin"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence",
+      "result": {
+        "id": "minecraft:jungle_fence",
+        "count": 3
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:jungle_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:light_blue_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:light_blue_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_block"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:purple_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:purple_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:piston"
+      },
+      "pattern": [
+        "TTT",
+        "#X#",
+        "#R#"
+      ],
+      "legend": {
+        "R": [
+          "minecraft:redstone"
+        ],
+        "#": [
+          "minecraft:cobblestone"
+        ],
+        "T": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ],
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.7-b1.7.3 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:white_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:white_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_axe"
+      },
+      "pattern": [
+        "XX",
+        "X#",
+        " #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:slime_ball",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:slime_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:daylight_detector"
+      },
+      "pattern": [
+        "GGG",
+        "QQQ",
+        "WWW"
+      ],
+      "legend": {
+        "Q": [
+          "minecraft:quartz"
+        ],
+        "G": [
+          "minecraft:glass"
+        ],
+        "W": [
+          "minecraft:oak_slab",
+          "minecraft:spruce_slab",
+          "minecraft:birch_slab",
+          "minecraft:jungle_slab",
+          "minecraft:acacia_slab",
+          "minecraft:dark_oak_slab"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:purpur_pillar"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:purpur_slab"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:red_sandstone"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:red_sand"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_door",
+      "result": {
+        "id": "minecraft:dark_oak_door",
+        "count": 3
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:orange_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:orange_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_carrot"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_nugget"
+        ],
+        "X": [
+          "minecraft:carrot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:flower_pot"
+      },
+      "pattern": [
+        "# #",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:brick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:melon"
+      },
+      "pattern": [
+        "MMM",
+        "MMM",
+        "MMM"
+      ],
+      "legend": {
+        "M": [
+          "minecraft:melon_slice"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.8-b1.8.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:oak_fence_gate"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:clay"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:clay_ball"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:light_blue_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:light_blue_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cauldron"
+      },
+      "pattern": [
+        "# #",
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:sugar"
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:sugar_cane"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_helmet"
+      },
+      "pattern": [
+        "XXX",
+        "X X"
+      ],
+      "legend": {
+        "X": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_slab",
+      "result": {
+        "id": "minecraft:birch_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:birch_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:purpur_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:purpur_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:brown_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:brown_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:gray_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:gray_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:black_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:black_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_door",
+      "result": {
+        "id": "minecraft:spruce_door",
+        "count": 3
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:spruce_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:blue_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:lapis_lazuli"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:end_stone_bricks",
+        "count": 4
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:end_stone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:white_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:bone_meal"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:redstone_block"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:redstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_slab",
+      "result": {
+        "id": "minecraft:acacia_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:acacia_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:bowl",
+        "count": 4
+      },
+      "pattern": [
+        "# #",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:coarse_dirt",
+        "count": 4
+      },
+      "pattern": [
+        "DG",
+        "GD"
+      ],
+      "legend": {
+        "D": [
+          "minecraft:dirt"
+        ],
+        "G": [
+          "minecraft:gravel"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_shovel"
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:magenta_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:magenta_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:pink_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:pink_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:rail",
+        "count": 16
+      },
+      "pattern": [
+        "X X",
+        "X#X",
+        "X X"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:orange_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:orange_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cobblestone_stairs",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:wooden_shovel"
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "rabbit_stew",
+      "result": {
+        "id": "minecraft:rabbit_stew"
+      },
+      "pattern": [
+        " R ",
+        "CPD",
+        " B "
+      ],
+      "legend": {
+        "P": [
+          "minecraft:baked_potato"
+        ],
+        "R": [
+          "minecraft:cooked_rabbit"
+        ],
+        "B": [
+          "minecraft:bowl"
+        ],
+        "C": [
+          "minecraft:carrot"
+        ],
+        "D": [
+          "minecraft:red_mushroom"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:beacon"
+      },
+      "pattern": [
+        "GGG",
+        "GSG",
+        "OOO"
+      ],
+      "legend": {
+        "S": [
+          "minecraft:nether_star"
+        ],
+        "G": [
+          "minecraft:glass"
+        ],
+        "O": [
+          "minecraft:obsidian"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:repeater"
+      },
+      "pattern": [
+        "#X#",
+        "III"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:redstone_torch"
+        ],
+        "X": [
+          "minecraft:redstone"
+        ],
+        "I": [
+          "minecraft:stone"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.3-b1.3.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:bookshelf"
+      },
+      "pattern": [
+        "###",
+        "XXX",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ],
+        "X": [
+          "minecraft:book"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:blue_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:blue_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:note_block"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ],
+        "X": [
+          "minecraft:redstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:jukebox"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ],
+        "X": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:leather"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:rabbit_hide"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gray_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:oak_trapdoor",
+        "count": 2
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.6-b1.6.6 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:item_frame"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:leather"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:purple_shulker_box"
+      },
+      "pattern": [
+        "-",
+        "#",
+        "-"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:chest"
+        ],
+        "-": [
+          "minecraft:shulker_shell"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.11 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "boat",
+      "result": {
+        "id": "minecraft:acacia_boat"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:acacia_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:green_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:green_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:diamond_block"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:ladder"
+      },
+      "pattern": [
+        "# #",
+        "###",
+        "# #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - b1.4-b1.4.1"
+    },
+    {
+      "result": {
+        "id": "minecraft:glowstone"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glowstone_dust"
+        ]
+      },
+      "type": "shaped",
+      "version": "a1.2.0-a1.2.1.1 - b1.5-b1.5.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:prismarine"
+      },
+      "pattern": [
+        "SS",
+        "SS"
+      ],
+      "legend": {
+        "S": [
+          "minecraft:prismarine_shard"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:green_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:green_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond_hoe"
+      },
+      "pattern": [
+        "XX",
+        " #",
+        " #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:gray_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gray_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:red_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:red_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_shovel"
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:blue_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:blue_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_pickaxe"
+      },
+      "pattern": [
+        "XXX",
+        " # ",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_pickaxe"
+      },
+      "pattern": [
+        "XXX",
+        " # ",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence",
+      "result": {
+        "id": "minecraft:spruce_fence",
+        "count": 3
+      },
+      "pattern": [
+        "W#W",
+        "W#W"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:spruce_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond_pickaxe"
+      },
+      "pattern": [
+        "XXX",
+        " # ",
+        " # "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:diamond"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:magenta_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:magenta_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:activator_rail",
+        "count": 6
+      },
+      "pattern": [
+        "XSX",
+        "X#X",
+        "XSX"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:redstone_torch"
+        ],
+        "S": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:sandstone_slab",
+        "count": 3
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:sandstone",
+          "minecraft:chiseled_sandstone",
+          "minecraft:cut_sandstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.3-b1.3.1 - 1.1"
+    },
+    {
+      "result": {
+        "id": "minecraft:sandstone"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:sand"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_slab",
+      "result": {
+        "id": "minecraft:dark_oak_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_sword"
+      },
+      "pattern": [
+        "X",
+        "X",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:tnt_minecart"
+      },
+      "pattern": [
+        "A",
+        "B"
+      ],
+      "legend": {
+        "A": [
+          "minecraft:tnt"
+        ],
+        "B": [
+          "minecraft:minecart"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cookie",
+        "count": 8
+      },
+      "pattern": [
+        "#X#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:wheat"
+        ],
+        "X": [
+          "minecraft:cocoa_beans"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.4-b1.4.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "planks",
+      "result": {
+        "id": "minecraft:oak_planks",
+        "count": 4
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_log"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:magma_block"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:magma_cream"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.10.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cobblestone_wall",
+        "count": 6
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_brick_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stone_bricks",
+          "minecraft:mossy_stone_bricks",
+          "minecraft:cracked_stone_bricks",
+          "minecraft:chiseled_stone_bricks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.2.1-1.2.3 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_hoe"
+      },
+      "pattern": [
+        "XX",
+        " #",
+        " #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:pink_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:pink_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_fence_gate",
+      "result": {
+        "id": "minecraft:oak_fence_gate"
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "W": [
+          "minecraft:oak_planks",
+          "minecraft:jungle_planks",
+          "minecraft:spruce_planks",
+          "minecraft:dark_oak_planks",
+          "minecraft:birch_planks",
+          "minecraft:acacia_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.8-b1.8.1 - 1.7.6-1.7.10"
+    },
+    {
+      "result": {
+        "id": "minecraft:quartz_block"
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:quartz"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_slab",
+      "result": {
+        "id": "minecraft:jungle_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:jungle_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:brick_slab",
+        "count": 3
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:bricks"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.8-b1.8.1 - 1.1"
+    },
+    {
+      "group": "wooden_door",
+      "result": {
+        "id": "minecraft:oak_door"
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:jungle_planks",
+          "minecraft:spruce_planks",
+          "minecraft:dark_oak_planks",
+          "minecraft:birch_planks",
+          "minecraft:acacia_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.7.6-1.7.10"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:magenta_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:magenta_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:ladder",
+        "count": 2
+      },
+      "pattern": [
+        "# #",
+        "###",
+        "# #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "b1.5-b1.5.2 - 1.1"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:black_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:ink_sac"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_apple"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_nugget"
+        ],
+        "X": [
+          "minecraft:apple"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.5.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_hoe"
+      },
+      "pattern": [
+        "XX",
+        " #",
+        " #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:gold_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:red_sandstone_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:red_sandstone",
+          "minecraft:chiseled_red_sandstone",
+          "minecraft:cut_red_sandstone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone_pressure_plate"
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stone"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - b1.2-b1.2.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:nether_bricks"
+      },
+      "pattern": [
+        "NN",
+        "NN"
+      ],
+      "legend": {
+        "N": [
+          "minecraft:nether_brick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "gold_ingot",
+      "result": {
+        "id": "minecraft:gold_ingot"
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_nugget"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:hopper"
+      },
+      "pattern": [
+        "I I",
+        "ICI",
+        " I "
+      ],
+      "legend": {
+        "C": [
+          "minecraft:chest"
+        ],
+        "I": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_door",
+      "result": {
+        "id": "minecraft:birch_door",
+        "count": 3
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:birch_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:lime_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:lime_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:red_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:red_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "carpet",
+      "result": {
+        "id": "minecraft:light_gray_carpet",
+        "count": 3
+      },
+      "pattern": [
+        "##"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:light_gray_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:tnt"
+      },
+      "pattern": [
+        "X#X",
+        "#X#",
+        "X#X"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:sand"
+        ],
+        "X": [
+          "minecraft:gunpowder"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.6.4"
+    },
+    {
+      "result": {
+        "id": "minecraft:oak_button"
+      },
+      "pattern": [
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "banner",
+      "result": {
+        "id": "minecraft:brown_banner"
+      },
+      "pattern": [
+        "###",
+        "###",
+        " | "
+      ],
+      "legend": {
+        "#": [
+          "minecraft:brown_wool"
+        ],
+        "|": [
+          "minecraft:stick"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass",
+      "result": {
+        "id": "minecraft:orange_stained_glass",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:glass"
+        ],
+        "X": [
+          "minecraft:orange_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:chiseled_red_sandstone"
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:red_sandstone_slab"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "boat",
+      "result": {
+        "id": "minecraft:jungle_boat"
+      },
+      "pattern": [
+        "# #",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:jungle_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:end_crystal"
+      },
+      "pattern": [
+        "GGG",
+        "GEG",
+        "GTG"
+      ],
+      "legend": {
+        "T": [
+          "minecraft:ghast_tear"
+        ],
+        "E": [
+          "minecraft:ender_eye"
+        ],
+        "G": [
+          "minecraft:glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:brewing_stand"
+      },
+      "pattern": [
+        " B ",
+        "###"
+      ],
+      "legend": {
+        "B": [
+          "minecraft:blaze_rod"
+        ],
+        "#": [
+          "minecraft:cobblestone"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:painting"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:white_wool",
+          "minecraft:orange_wool",
+          "minecraft:magenta_wool",
+          "minecraft:light_blue_wool",
+          "minecraft:yellow_wool",
+          "minecraft:lime_wool",
+          "minecraft:pink_wool",
+          "minecraft:gray_wool",
+          "minecraft:light_gray_wool",
+          "minecraft:cyan_wool",
+          "minecraft:purple_wool",
+          "minecraft:blue_wool",
+          "minecraft:brown_wool",
+          "minecraft:green_wool",
+          "minecraft:red_wool",
+          "minecraft:black_wool"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wooden_slab",
+      "result": {
+        "id": "minecraft:spruce_slab",
+        "count": 6
+      },
+      "pattern": [
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:spruce_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_hardened_clay",
+      "result": {
+        "id": "minecraft:lime_terracotta",
+        "count": 8
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:terracotta"
+        ],
+        "X": [
+          "minecraft:lime_dye"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:hopper_minecart"
+      },
+      "pattern": [
+        "A",
+        "B"
+      ],
+      "legend": {
+        "A": [
+          "minecraft:hopper"
+        ],
+        "B": [
+          "minecraft:minecart"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_axe"
+      },
+      "pattern": [
+        "XX",
+        "X#",
+        " #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:iron_ingot"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:glistering_melon_slice"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_nugget"
+        ],
+        "X": [
+          "minecraft:melon_slice"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:wooden_axe"
+      },
+      "pattern": [
+        "XX",
+        "X#",
+        " #"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:stick"
+        ],
+        "X": [
+          "minecraft:oak_planks",
+          "minecraft:spruce_planks",
+          "minecraft:birch_planks",
+          "minecraft:jungle_planks",
+          "minecraft:acacia_planks",
+          "minecraft:dark_oak_planks"
+        ]
+      },
+      "type": "shaped",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:golden_apple"
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:gold_ingot"
+        ],
+        "X": [
+          "minecraft:apple"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "stained_glass_pane",
+      "result": {
+        "id": "minecraft:yellow_stained_glass_pane",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "legend": {
+        "#": [
+          "minecraft:yellow_stained_glass"
+        ]
+      },
+      "type": "shaped",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:fermented_spider_eye"
+      },
+      "ingredients": [
+        [
+          "minecraft:spider_eye"
+        ],
+        [
+          "minecraft:brown_mushroom"
+        ],
+        [
+          "minecraft:sugar"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:purple_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:lapis_lazuli"
+        ],
+        [
+          "minecraft:red_dye"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "yellow_dye",
+      "result": {
+        "id": "minecraft:yellow_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:dandelion"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "magenta_dye",
+      "result": {
+        "id": "minecraft:magenta_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:purple_dye"
+        ],
+        [
+          "minecraft:pink_dye"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:writable_book"
+      },
+      "ingredients": [
+        [
+          "minecraft:book"
+        ],
+        [
+          "minecraft:ink_sac"
+        ],
+        [
+          "minecraft:feather"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "pink_dye",
+      "result": {
+        "id": "minecraft:pink_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:pink_tulip"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:white_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:white_wool"
+        ],
+        [
+          "minecraft:bone_meal"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:fire_charge",
+        "count": 3
+      },
+      "ingredients": [
+        [
+          "minecraft:gunpowder"
+        ],
+        [
+          "minecraft:blaze_powder"
+        ],
+        [
+          "minecraft:coal",
+          "minecraft:charcoal"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.2.1-1.2.3 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "magenta_dye",
+      "result": {
+        "id": "minecraft:magenta_dye",
+        "count": 3
+      },
+      "ingredients": [
+        [
+          "minecraft:lapis_lazuli"
+        ],
+        [
+          "minecraft:red_dye"
+        ],
+        [
+          "minecraft:pink_dye"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:light_blue_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:light_blue_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "light_gray_dye",
+      "result": {
+        "id": "minecraft:light_gray_dye",
+        "count": 3
+      },
+      "ingredients": [
+        [
+          "minecraft:ink_sac"
+        ],
+        [
+          "minecraft:bone_meal"
+        ],
+        [
+          "minecraft:bone_meal"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:ender_eye"
+      },
+      "ingredients": [
+        [
+          "minecraft:ender_pearl"
+        ],
+        [
+          "minecraft:blaze_powder"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "magenta_dye",
+      "result": {
+        "id": "minecraft:magenta_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:allium"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:gray_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:ink_sac"
+        ],
+        [
+          "minecraft:bone_meal"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:brown_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:cocoa_beans"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:yellow_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:yellow_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "red_dye",
+      "result": {
+        "id": "minecraft:red_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:red_tulip"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:gray_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:gray_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "orange_dye",
+      "result": {
+        "id": "minecraft:orange_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:red_dye"
+        ],
+        [
+          "minecraft:yellow_dye"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:lime_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:green_dye"
+        ],
+        [
+          "minecraft:bone_meal"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "yellow_dye",
+      "result": {
+        "id": "minecraft:yellow_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:sunflower"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:pumpkin_pie"
+      },
+      "ingredients": [
+        [
+          "minecraft:carved_pumpkin"
+        ],
+        [
+          "minecraft:sugar"
+        ],
+        [
+          "minecraft:egg"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "bonemeal",
+      "result": {
+        "id": "minecraft:bone_meal",
+        "count": 9
+      },
+      "ingredients": [
+        [
+          "minecraft:bone_block"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.10.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:purple_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:purple_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:trapped_chest"
+      },
+      "ingredients": [
+        [
+          "minecraft:chest"
+        ],
+        [
+          "minecraft:tripwire_hook"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:magenta_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:magenta_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "light_gray_dye",
+      "result": {
+        "id": "minecraft:light_gray_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:gray_dye"
+        ],
+        [
+          "minecraft:bone_meal"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:red_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:red_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cyan_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:lapis_lazuli"
+        ],
+        [
+          "minecraft:green_dye"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:andesite",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:diorite"
+        ],
+        [
+          "minecraft:cobblestone"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "light_blue_dye",
+      "result": {
+        "id": "minecraft:light_blue_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:blue_orchid"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:green_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:green_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:blue_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:lapis_lazuli"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "red_dye",
+      "result": {
+        "id": "minecraft:red_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:rose_bush"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:magma_cream"
+      },
+      "ingredients": [
+        [
+          "minecraft:blaze_powder"
+        ],
+        [
+          "minecraft:slime_ball"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:pink_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:pink_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "pink_dye",
+      "result": {
+        "id": "minecraft:pink_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:red_dye"
+        ],
+        [
+          "minecraft:bone_meal"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:mossy_stone_bricks"
+      },
+      "ingredients": [
+        [
+          "minecraft:stone_bricks"
+        ],
+        [
+          "minecraft:vine"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:blaze_powder",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:blaze_rod"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:light_gray_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:light_gray_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:glistering_melon_slice"
+      },
+      "ingredients": [
+        [
+          "minecraft:gold_nugget"
+        ],
+        [
+          "minecraft:melon_slice"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.0.0-1.0.1 - 1.5.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:orange_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:orange_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "light_blue_dye",
+      "result": {
+        "id": "minecraft:light_blue_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:lapis_lazuli"
+        ],
+        [
+          "minecraft:bone_meal"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "magenta_dye",
+      "result": {
+        "id": "minecraft:magenta_dye",
+        "count": 4
+      },
+      "ingredients": [
+        [
+          "minecraft:lapis_lazuli"
+        ],
+        [
+          "minecraft:red_dye"
+        ],
+        [
+          "minecraft:red_dye"
+        ],
+        [
+          "minecraft:bone_meal"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:flint_and_steel"
+      },
+      "ingredients": [
+        [
+          "minecraft:iron_ingot"
+        ],
+        [
+          "minecraft:flint"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "light_gray_dye",
+      "result": {
+        "id": "minecraft:light_gray_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:white_tulip"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "orange_dye",
+      "result": {
+        "id": "minecraft:orange_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:orange_tulip"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:cyan_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:cyan_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "magenta_dye",
+      "result": {
+        "id": "minecraft:magenta_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:lilac"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "light_gray_dye",
+      "result": {
+        "id": "minecraft:light_gray_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:azure_bluet"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:mushroom_stew"
+      },
+      "ingredients": [
+        [
+          "minecraft:brown_mushroom"
+        ],
+        [
+          "minecraft:red_mushroom"
+        ],
+        [
+          "minecraft:bowl"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:black_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:ink_sac"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:book"
+      },
+      "ingredients": [
+        [
+          "minecraft:paper"
+        ],
+        [
+          "minecraft:paper"
+        ],
+        [
+          "minecraft:paper"
+        ],
+        [
+          "minecraft:leather"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "red_dye",
+      "result": {
+        "id": "minecraft:red_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:poppy"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:granite"
+      },
+      "ingredients": [
+        [
+          "minecraft:diorite"
+        ],
+        [
+          "minecraft:quartz"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "group": "pink_dye",
+      "result": {
+        "id": "minecraft:pink_dye",
+        "count": 2
+      },
+      "ingredients": [
+        [
+          "minecraft:peony"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "red_dye",
+      "result": {
+        "id": "minecraft:red_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:beetroot"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "bonemeal",
+      "result": {
+        "id": "minecraft:bone_meal",
+        "count": 3
+      },
+      "ingredients": [
+        [
+          "minecraft:bone"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "light_gray_dye",
+      "result": {
+        "id": "minecraft:light_gray_dye"
+      },
+      "ingredients": [
+        [
+          "minecraft:oxeye_daisy"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "group": "wool",
+      "result": {
+        "id": "minecraft:lime_wool"
+      },
+      "ingredients": [
+        [
+          "minecraft:lime_dye"
+        ],
+        [
+          "minecraft:white_wool"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:mossy_cobblestone"
+      },
+      "ingredients": [
+        [
+          "minecraft:cobblestone"
+        ],
+        [
+          "minecraft:vine"
+        ]
+      ],
+      "type": "shapeless",
+      "version": "1.8.x - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cooked_cod"
+      },
+      "input": [
+        "minecraft:cod"
+      ],
+      "experience": 0.35,
+      "type": "smelting",
+      "version": "a1.2.0-a1.2.1.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:glass"
+      },
+      "input": [
+        "minecraft:sand",
+        "minecraft:red_sand"
+      ],
+      "experience": 0.1,
+      "type": "smelting",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:diamond"
+      },
+      "input": [
+        "minecraft:diamond_ore"
+      ],
+      "experience": 1.0,
+      "type": "smelting",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:quartz"
+      },
+      "input": [
+        "minecraft:nether_quartz_ore"
+      ],
+      "experience": 0.2,
+      "type": "smelting",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:coal"
+      },
+      "input": [
+        "minecraft:coal_ore"
+      ],
+      "experience": 0.1,
+      "type": "smelting",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:redstone"
+      },
+      "input": [
+        "minecraft:redstone_ore"
+      ],
+      "experience": 0.7,
+      "type": "smelting",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cooked_rabbit"
+      },
+      "input": [
+        "minecraft:rabbit"
+      ],
+      "experience": 0.35,
+      "type": "smelting",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:lapis_lazuli"
+      },
+      "input": [
+        "minecraft:lapis_ore"
+      ],
+      "experience": 0.2,
+      "type": "smelting",
+      "version": "1.0.0-1.0.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:green_dye"
+      },
+      "input": [
+        "minecraft:cactus"
+      ],
+      "experience": 0.2,
+      "type": "smelting",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_nugget"
+      },
+      "input": [
+        "minecraft:chainmail_helmet",
+        "minecraft:chainmail_chestplate",
+        "minecraft:chainmail_leggings",
+        "minecraft:chainmail_boots",
+        "minecraft:iron_pickaxe",
+        "minecraft:iron_shovel",
+        "minecraft:iron_axe",
+        "minecraft:iron_hoe",
+        "minecraft:iron_sword",
+        "minecraft:iron_helmet",
+        "minecraft:iron_chestplate",
+        "minecraft:iron_leggings",
+        "minecraft:iron_boots",
+        "minecraft:iron_horse_armor"
+      ],
+      "experience": 0.1,
+      "type": "smelting",
+      "version": "1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cooked_salmon"
+      },
+      "input": [
+        "minecraft:salmon"
+      ],
+      "experience": 0.35,
+      "type": "smelting",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cooked_mutton"
+      },
+      "input": [
+        "minecraft:mutton"
+      ],
+      "experience": 0.35,
+      "type": "smelting",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cooked_chicken"
+      },
+      "input": [
+        "minecraft:chicken"
+      ],
+      "experience": 0.35,
+      "type": "smelting",
+      "version": "b1.8-b1.8.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:iron_ingot"
+      },
+      "input": [
+        "minecraft:iron_ore"
+      ],
+      "experience": 0.7,
+      "type": "smelting",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:charcoal"
+      },
+      "input": [
+        "minecraft:oak_log",
+        "minecraft:spruce_log",
+        "minecraft:birch_log",
+        "minecraft:jungle_log",
+        "minecraft:acacia_log",
+        "minecraft:dark_oak_log"
+      ],
+      "experience": 0.15,
+      "type": "smelting",
+      "version": "b1.2-b1.2.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:terracotta"
+      },
+      "input": [
+        "minecraft:clay"
+      ],
+      "experience": 0.35,
+      "type": "smelting",
+      "version": "1.6.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:gold_ingot"
+      },
+      "input": [
+        "minecraft:gold_ore"
+      ],
+      "experience": 1.0,
+      "type": "smelting",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:popped_chorus_fruit"
+      },
+      "input": [
+        "minecraft:chorus_fruit"
+      ],
+      "experience": 0.1,
+      "type": "smelting",
+      "version": "1.9 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:stone"
+      },
+      "input": [
+        "minecraft:cobblestone"
+      ],
+      "experience": 0.1,
+      "type": "smelting",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:emerald"
+      },
+      "input": [
+        "minecraft:emerald_ore"
+      ],
+      "experience": 1.0,
+      "type": "smelting",
+      "version": "1.3.1-1.3.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cooked_porkchop"
+      },
+      "input": [
+        "minecraft:porkchop"
+      ],
+      "experience": 0.35,
+      "type": "smelting",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:baked_potato"
+      },
+      "input": [
+        "minecraft:potato"
+      ],
+      "experience": 0.35,
+      "type": "smelting",
+      "version": "1.4.2 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:nether_brick"
+      },
+      "input": [
+        "minecraft:netherrack"
+      ],
+      "experience": 0.1,
+      "type": "smelting",
+      "version": "1.5-1.5.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:sponge"
+      },
+      "input": [
+        "minecraft:wet_sponge"
+      ],
+      "experience": 0.15,
+      "type": "smelting",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cooked_beef"
+      },
+      "input": [
+        "minecraft:beef"
+      ],
+      "experience": 0.35,
+      "type": "smelting",
+      "version": "b1.8-b1.8.1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:cracked_stone_bricks"
+      },
+      "input": [
+        "minecraft:stone_bricks"
+      ],
+      "experience": 0.1,
+      "type": "smelting",
+      "version": "1.7.2-1.7.5 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:brick"
+      },
+      "input": [
+        "minecraft:clay_ball"
+      ],
+      "experience": 0.3,
+      "type": "smelting",
+      "version": "c0.0.15a-1 - 1.11.1-1.11.2"
+    },
+    {
+      "result": {
+        "id": "minecraft:gold_nugget"
+      },
+      "input": [
+        "minecraft:golden_pickaxe",
+        "minecraft:golden_shovel",
+        "minecraft:golden_axe",
+        "minecraft:golden_hoe",
+        "minecraft:golden_sword",
+        "minecraft:golden_helmet",
+        "minecraft:golden_chestplate",
+        "minecraft:golden_leggings",
+        "minecraft:golden_boots",
+        "minecraft:golden_horse_armor"
+      ],
+      "experience": 0.1,
+      "type": "smelting",
+      "version": "1.11.1-1.11.2"
+    }
+  ]
+}
