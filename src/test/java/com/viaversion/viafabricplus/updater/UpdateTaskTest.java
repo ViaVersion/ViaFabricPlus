@@ -79,7 +79,7 @@ public final class UpdateTaskTest {
                 continue;
             }
 
-            items.addProperty(Registries.ITEM.getId(item).getPath(), CURRENT_VERSION_RANGE);
+            items.addProperty(Registries.ITEM.getId(item).toString(), CURRENT_VERSION_RANGE);
         }
     }
 
@@ -90,7 +90,7 @@ public final class UpdateTaskTest {
                 return;
             }
 
-            enchantments.addProperty(registryKey.getValue().getPath(), CURRENT_VERSION_RANGE);
+            enchantments.addProperty(registryKey.getValue().toString(), CURRENT_VERSION_RANGE);
         });
     }
 
@@ -101,7 +101,7 @@ public final class UpdateTaskTest {
                 return;
             }
 
-            patterns.addProperty(registryKey.getValue().getPath(), CURRENT_VERSION_RANGE);
+            patterns.addProperty(registryKey.getValue().toString(), CURRENT_VERSION_RANGE);
         });
     }
 
@@ -111,7 +111,7 @@ public final class UpdateTaskTest {
                 continue;
             }
 
-            effects.addProperty(Registries.STATUS_EFFECT.getId(effect).getPath(), CURRENT_VERSION_RANGE);
+            effects.addProperty(Registries.STATUS_EFFECT.getId(effect).toString(), CURRENT_VERSION_RANGE);
         }
     }
 
