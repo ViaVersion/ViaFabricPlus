@@ -53,7 +53,7 @@ public final class BooleanListEntry extends VFPListEntry {
 
         final Text text = this.value.getValue() ? Text.translatable("base.viafabricplus.on") : Text.translatable("base.viafabricplus.off");
 
-        final int offset = textRenderer.getWidth(text) + 6;
+        final int offset = textRenderer.getWidth(text) + 2;
         renderScrollableText(this.value.getName().formatted(Formatting.GRAY), offset);
         context.drawTextWithShadow(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.fontHeight / 2, this.value.getValue() ? Color.GREEN.getRGB() : Color.RED.getRGB());
 

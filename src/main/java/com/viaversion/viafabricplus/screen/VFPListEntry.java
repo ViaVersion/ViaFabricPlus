@@ -91,13 +91,13 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
         final TextRenderer font = MinecraftClient.getInstance().textRenderer;
 
         final int fontWidth = font.getWidth(text);
-        if (fontWidth > (getWidth() - offset)) {
+        if (fontWidth > (getContentWidth() - offset)) {
             final double time = (double) Util.getMeasuringTimeMs() / 1000.0;
-            final double interpolateEnd = fontWidth - (getWidth() - offset - (SCISSORS_OFFSET + SLOT_MARGIN));
+            final double interpolateEnd = fontWidth - (getContentWidth() - offset - (SCISSORS_OFFSET + SLOT_MARGIN));
 
             final double interpolatedValue = Math.sin((Math.PI / 2) * Math.cos(Math.PI * 2 * time / Math.max(interpolateEnd * 0.5, 3.0))) / 2.0 + 0.5;
 
-            context.enableScissor(0, 0, getWidth() - offset - SCISSORS_OFFSET, getHeight());
+            context.enableScissor(0, 0, getContentWidth() - offset - SCISSORS_OFFSET, getContentHeight());
             context.drawTextWithShadow(font, text, SLOT_MARGIN - (int) MathHelper.lerp(interpolatedValue, 0.0, interpolateEnd), textY, -1);
             context.disableScissor();
         } else {
@@ -123,15 +123,14 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      */
     @Override
     public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
-        // Allows cross-sharing of global variables between util methods
-        this.context = context;
+        this.context = context; // Allows cross-sharing between util methods
 
         final Matrix3x2fStack matrices = context.getMatrices();
 
         matrices.pushMatrix();
-        matrices.translate(getX(), getY());
-        context.fill(0, 0, getContentWidth(), getHeight(), Integer.MIN_VALUE);
-        mappedRender(context, getX(), getY(), getWidth(), getHeight(), mouseX, mouseY, hovered, deltaTicks);
+        matrices.translate(getContentX(), getContentY());
+        context.fill(0, 0, getContentWidth(), getContentHeight(), Integer.MIN_VALUE);
+        mappedRender(context, getContentX(), getContentY(), getContentWidth(), getContentHeight(), mouseX, mouseY, hovered, deltaTicks);
         matrices.popMatrix();
     }
 

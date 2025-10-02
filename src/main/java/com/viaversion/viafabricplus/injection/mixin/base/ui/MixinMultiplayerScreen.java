@@ -66,8 +66,6 @@ public abstract class MixinMultiplayerScreen extends Screen {
                 .build();
             this.addDrawableChild(viaFabricPlus$button);
         }
-
-        // Set the button's position according to the configured orientation and add the button to the screen
         GeneralSettings.setOrientation(viaFabricPlus$button::setPosition, buttonPosition, width, height);
     }
 
