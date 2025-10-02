@@ -35,8 +35,10 @@ accessible method net/minecraft/block/AbstractBlock getPickStack (Lnet/minecraft
 accessible method net/minecraft/entity/Entity setRotation (FF)V
 accessible method net/minecraft/client/gui/widget/TextFieldWidget getMaxLength ()I
 accessible method net/minecraft/block/entity/BlockEntity writeIdentifyingData (Lnet/minecraft/storage/WriteView;)V
+accessible method net/minecraft/client/render/debug/GameTestDebugRenderer$Marker <init> (ILjava/lang/String;J)V
 
 extendable method net/minecraft/entity/Entity updateTrackedPositionAndAngles (Lnet/minecraft/util/math/Vec3d;FF)V
 
 accessible class net/minecraft/client/font/FontStorage$GlyphPair
 accessible class net/minecraft/entity/Entity$QueuedCollisionCheck
+accessible class net/minecraft/client/render/debug/GameTestDebugRenderer$Marker

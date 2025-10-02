@@ -203,6 +203,7 @@
     "features.movement.constants.MixinLivingEntity",
     "features.movement.constants.MixinPlayerEntity",
     "features.movement.constants.MixinPlayerEntityRenderer",
+    "features.movement.constants.MixinPlayerLikeEntity",
     "features.movement.elytra.MixinClientPlayerEntity",
     "features.movement.elytra.MixinFireworkRocketItem",
     "features.movement.elytra.MixinLivingEntity",
@@ -251,6 +252,8 @@
     "features.networking.packet_handling.MixinClientCommonNetworkHandler",
     "features.networking.packet_handling.MixinClientPlayNetworkHandler",
     "features.networking.packet_handling.MixinEntityPacketRewriter1_19_4",
+    "features.networking.packet_handling.MixinGameTestDebugRenderer",
+    "features.networking.packet_handling.MixinProtocol1_21_7To1_21_9",
     "features.networking.player_abilities.MixinUpdatePlayerAbilitiesC2SPacket",
     "features.networking.registry_validation.MixinRegistryEntryList_Named",
     "features.networking.registry_validation.MixinRegistryEntryListCodec",
@@ -287,8 +290,7 @@
     "features.world.duplicated_sounds.MixinButtonBlock",
     "features.world.duplicated_sounds.MixinItems",
     "features.world.item_picking.MixinMinecraftClient",
-    "features.world.remove_server_view_distance.MixinGameOptions",
-    "features.movement.constants.MixinPlayerLikeEntity"
+    "features.world.remove_server_view_distance.MixinGameOptions"
   ],
   "injectors": {
     "defaultRequire": 1

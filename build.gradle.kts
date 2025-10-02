@@ -12,7 +12,7 @@ allprojects {
     setupViaPublishing()
 
     repositories {
-        mavenLocal()
+        mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
         maven("https://repo.viaversion.com")
         maven("https://maven.lenni0451.net/everything")
         maven("https://repo.opencollab.dev/maven-snapshots")
