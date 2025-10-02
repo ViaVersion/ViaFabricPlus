@@ -84,14 +84,17 @@ public final class Recipes1_11_2 {
             throw new IllegalStateException("Recipes1_11_2 is already initialized");
         }
 
-        final JsonArray recipes = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("recipes-1.11.2.json").getAsJsonArray("recipes");
+        final JsonArray recipes = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("recipes-1.11.2.json").getAsJsonArray("");
         for (JsonElement recipeElement : recipes) {
             final String type = recipeElement.getAsJsonObject().get("type").getAsString();
             final VersionRange versionRange = VersionRange.fromString(recipeElement.getAsJsonObject().get("version").getAsString());
             switch (type) {
-                case "shaped" -> LEGACY_RECIPES.add(new Pair<>(LegacyShapedRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
-                case "shapeless" -> LEGACY_RECIPES.add(new Pair<>(LegacyShapelessRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
-                case "smelting" -> LEGACY_RECIPES.add(new Pair<>(LegacySmeltingRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "shaped" ->
+                    LEGACY_RECIPES.add(new Pair<>(LegacyShapedRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "shapeless" ->
+                    LEGACY_RECIPES.add(new Pair<>(LegacyShapelessRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "smelting" ->
+                    LEGACY_RECIPES.add(new Pair<>(LegacySmeltingRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
                 default -> throw new IllegalArgumentException("Unknown recipe type: " + type);
             }
         }
@@ -106,41 +109,45 @@ public final class Recipes1_11_2 {
                 final Pair<LegacyRecipe, VersionRange> legacyRecipe = LEGACY_RECIPES.get(i);
                 if (legacyRecipe.getRight().contains(ProtocolTranslator.getTargetVersion())) {
                     final RegistryKey<Recipe<?>> key = RegistryKey.of(RegistryKeys.RECIPE, Identifier.of("viafabricplus", "recipe/" + i));
-                    if (legacyRecipe.getLeft() instanceof LegacyShapedRecipe legacyShapedRecipe) {
-                        final Map<Character, Ingredient> ingredients = new HashMap<>();
-                        for (Map.Entry<Character, List<Item>> entry : legacyShapedRecipe.legend.entrySet()) {
-                            final ItemConvertible[] items = new ItemConvertible[entry.getValue().size()];
-                            for (int j = 0; j < entry.getValue().size(); j++) {
-                                items[j] = entry.getValue().get(j);
+                    switch (legacyRecipe.getLeft()) {
+                        case LegacyShapedRecipe legacyShapedRecipe -> {
+                            final Map<Character, Ingredient> ingredients = new HashMap<>();
+                            for (Map.Entry<Character, List<Item>> entry : legacyShapedRecipe.legend.entrySet()) {
+                                final ItemConvertible[] items = new ItemConvertible[entry.getValue().size()];
+                                for (int j = 0; j < entry.getValue().size(); j++) {
+                                    items[j] = entry.getValue().get(j);
+                                }
+                                ingredients.put(entry.getKey(), Ingredient.ofItems(items));
                             }
-                            ingredients.put(entry.getKey(), Ingredient.ofItems(items));
+                            final ItemStack output = legacyShapedRecipe.result.toItemStack();
+                            final CraftingRecipe recipe = new ShapedRecipe(legacyShapedRecipe.group, CraftingRecipeCategory.MISC, RawShapedRecipe.create(ingredients, legacyShapedRecipe.pattern), output, false);
+                            recipes.add(new RecipeEntry<>(key, recipe));
                         }
-                        final ItemStack output = legacyShapedRecipe.result.toItemStack();
-                        final CraftingRecipe recipe = new ShapedRecipe(legacyShapedRecipe.group, CraftingRecipeCategory.MISC, RawShapedRecipe.create(ingredients, legacyShapedRecipe.pattern), output, false);
-                        recipes.add(new RecipeEntry<>(key, recipe));
-                    } else if (legacyRecipe.getLeft() instanceof LegacyShapelessRecipe legacyShapelessRecipe) {
-                        final ItemStack output = legacyShapelessRecipe.result.toItemStack();
-                        final List<Ingredient> ingredients = new ArrayList<>();
-                        for (List<Item> ingredientIds : legacyShapelessRecipe.ingredients) {
-                            final ItemConvertible[] items = new ItemConvertible[ingredientIds.size()];
-                            for (int j = 0; j < ingredientIds.size(); j++) {
-                                items[j] = ingredientIds.get(j);
+                        case LegacyShapelessRecipe legacyShapelessRecipe -> {
+                            final ItemStack output = legacyShapelessRecipe.result.toItemStack();
+                            final List<Ingredient> ingredients = new ArrayList<>();
+                            for (List<Item> ingredientIds : legacyShapelessRecipe.ingredients) {
+                                final ItemConvertible[] items = new ItemConvertible[ingredientIds.size()];
+                                for (int j = 0; j < ingredientIds.size(); j++) {
+                                    items[j] = ingredientIds.get(j);
+                                }
+                                ingredients.add(Ingredient.ofItems(items));
                             }
-                            ingredients.add(Ingredient.ofItems(items));
+                            final CraftingRecipe recipe = new ShapelessRecipe(legacyShapelessRecipe.group, CraftingRecipeCategory.MISC, output, ingredients);
+                            recipes.add(new RecipeEntry<>(key, recipe));
                         }
-                        final CraftingRecipe recipe = new ShapelessRecipe(legacyShapelessRecipe.group, CraftingRecipeCategory.MISC, output, ingredients);
-                        recipes.add(new RecipeEntry<>(key, recipe));
-                    } else if (legacyRecipe.getLeft() instanceof LegacySmeltingRecipe legacySmeltingRecipe) {
-                        final ItemStack output = legacySmeltingRecipe.result.toItemStack();
-                        final ItemConvertible[] inputItems = new ItemConvertible[legacySmeltingRecipe.input.size()];
-                        for (int j = 0; j < legacySmeltingRecipe.input.size(); j++) {
-                            inputItems[j] = legacySmeltingRecipe.input.get(j);
+                        case LegacySmeltingRecipe legacySmeltingRecipe -> {
+                            final ItemStack output = legacySmeltingRecipe.result.toItemStack();
+                            final ItemConvertible[] inputItems = new ItemConvertible[legacySmeltingRecipe.input.size()];
+                            for (int j = 0; j < legacySmeltingRecipe.input.size(); j++) {
+                                inputItems[j] = legacySmeltingRecipe.input.get(j);
+                            }
+                            final Ingredient input = Ingredient.ofItems(inputItems);
+                            final SmeltingRecipe recipe = new SmeltingRecipe("", CookingRecipeCategory.MISC, input, output, legacySmeltingRecipe.experience, 200);
+                            recipes.add(new RecipeEntry<>(key, recipe));
                         }
-                        final Ingredient input = Ingredient.ofItems(inputItems);
-                        final SmeltingRecipe recipe = new SmeltingRecipe("", CookingRecipeCategory.MISC, input, output, legacySmeltingRecipe.experience, 200);
-                        recipes.add(new RecipeEntry<>(key, recipe));
-                    } else {
-                        throw new IllegalStateException("Unknown legacy recipe type: " + legacyRecipe.getLeft().getClass());
+                        default ->
+                            throw new IllegalStateException("Unknown legacy recipe type: " + legacyRecipe.getLeft().getClass());
                     }
                 }
             }
@@ -216,6 +223,9 @@ public final class Recipes1_11_2 {
         return item;
     }
 
+    private sealed interface LegacyRecipe permits LegacyShapedRecipe, LegacyShapelessRecipe, LegacySmeltingRecipe {
+    }
+
     private record RecipeItemStack(Item item, int count) {
 
         private static RecipeItemStack fromJson(final JsonObject obj) {
@@ -230,10 +240,8 @@ public final class Recipes1_11_2 {
 
     }
 
-    private sealed interface LegacyRecipe permits LegacyShapedRecipe, LegacyShapelessRecipe, LegacySmeltingRecipe {
-    }
-
-    private record LegacyShapedRecipe(String group, RecipeItemStack result, List<String> pattern, Map<Character, List<Item>> legend) implements LegacyRecipe {
+    private record LegacyShapedRecipe(String group, RecipeItemStack result, List<String> pattern,
+                                      Map<Character, List<Item>> legend) implements LegacyRecipe {
 
         public static LegacyShapedRecipe fromJson(final JsonObject obj) {
             final String group = obj.has("group") ? obj.get("group").getAsString() : "";
@@ -256,7 +264,8 @@ public final class Recipes1_11_2 {
 
     }
 
-    private record LegacyShapelessRecipe(String group, RecipeItemStack result, List<List<Item>> ingredients) implements LegacyRecipe {
+    private record LegacyShapelessRecipe(String group, RecipeItemStack result,
+                                         List<List<Item>> ingredients) implements LegacyRecipe {
 
         public static LegacyShapelessRecipe fromJson(final JsonObject obj) {
             final String group = obj.has("group") ? obj.get("group").getAsString() : "";
@@ -274,7 +283,8 @@ public final class Recipes1_11_2 {
 
     }
 
-    private record LegacySmeltingRecipe(String group, RecipeItemStack result, List<Item> input, float experience) implements LegacyRecipe {
+    private record LegacySmeltingRecipe(String group, RecipeItemStack result, List<Item> input,
+                                        float experience) implements LegacyRecipe {
 
         public static LegacySmeltingRecipe fromJson(final JsonObject obj) {
             final String group = obj.has("group") ? obj.get("group").getAsString() : "";
