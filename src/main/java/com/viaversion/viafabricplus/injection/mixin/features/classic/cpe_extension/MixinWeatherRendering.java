@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.classic.cpe_extension;
 
 import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
+import java.util.List;
 import net.minecraft.client.render.WeatherRendering;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,7 +32,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import java.util.List;
 
 @Mixin(WeatherRendering.class)
 public abstract class MixinWeatherRendering {

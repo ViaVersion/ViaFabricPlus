@@ -22,13 +22,13 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_handling;
 
 import com.viaversion.viafabricplus.injection.access.networking.packet_handling.IGameTestDebugRenderer;
+import java.util.Map;
 import net.minecraft.client.render.debug.GameTestDebugRenderer;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import java.util.Map;
 
 @Mixin(GameTestDebugRenderer.class)
 public abstract class MixinGameTestDebugRenderer implements IGameTestDebugRenderer {

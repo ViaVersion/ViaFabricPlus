@@ -52,8 +52,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static com.ibm.icu.impl.ValidIdentifiers.Datatype.x;
-
 @Mixin(AbstractBoatEntity.class)
 public abstract class MixinAbstractBoatEntity extends VehicleEntity implements IAbstractBoatEntity {
 
