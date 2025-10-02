@@ -13,7 +13,6 @@
   "base.viafabricplus.copy_code": "Copier le code",
 
   "general_settings.viafabricplus.super_secret_settings": "Montrer les Super Secret Settings",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Afficher des informations supplémentaires dans le Hud de debug",
   "general_settings.viafabricplus.show_classic_loading_progress": "Afficher la progression du chargement classique dans l'écran de connexion",
   "general_settings.viafabricplus.main": "Orientation du bouton principal",
   "general_settings.viafabricplus.filter_creative_tabs": "Supprimer les éléments non disponibles de l'inventaire créatif",

@@ -48,7 +48,6 @@
   "screen.viafabricplus.accept_invite": "招待コードを承認",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "選択したプロトコルバージョンを保存",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "デバッグ画面に追加情報を表示",
   "general_settings.viafabricplus.show_classic_loading_progress": "接続画面に昔の読み込み進行情報を表示",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "マルチプレイヤー画面ボタンの位置",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "サーバー画面ボタンの位置",

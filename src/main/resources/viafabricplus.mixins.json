@@ -17,7 +17,7 @@
     "base.connection.MixinMinecraftClient",
     "base.connection.MixinMultiplayerServerListPinger",
     "base.integration.MixinClientConnection",
-    "base.integration.MixinDebugHud",
+    "base.integration.MixinDebugHudEntries",
     "base.integration.MixinMultiplayerServerListPinger_1",
     "base.integration.MixinServerInfo",
     "base.integration.MixinUserConnectionImpl",

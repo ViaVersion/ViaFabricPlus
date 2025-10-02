@@ -48,7 +48,6 @@
   "screen.viafabricplus.accept_invite": "Прийняти запрошення",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Зберігати вибрану версію протоколу",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Показувати додаткову інформацію на екрані налагодження",
   "general_settings.viafabricplus.show_classic_loading_progress": "Показувати класичний прогрес завантаження на екрані приєднання",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Орієнтація кнопки гри в мережі",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Додайте орієнтацію кнопки екрана сервера",

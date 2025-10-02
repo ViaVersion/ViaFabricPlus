@@ -34,7 +34,6 @@
   "setting_group_name.viafabricplus.bedrock": "Bedrock",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Guardar versión de protocolo",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Mostrar información adicional en el HUD de depuración",
   "general_settings.viafabricplus.show_classic_loading_progress": "Mostrar el progreso de carga clásico en la pantalla de conexión",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Orientación de los botones de la pantalla multijugador",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Orientación del botón 'Añadir servidor'",

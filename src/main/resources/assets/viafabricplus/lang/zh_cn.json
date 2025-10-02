@@ -48,7 +48,6 @@
   "screen.viafabricplus.accept_invite": "接受邀请",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "保存所选协议版本",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "在调试HUD中显示额外信息",
   "general_settings.viafabricplus.show_classic_loading_progress": "在连接屏幕显示经典加载进度条",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "多人游戏屏幕按钮位置",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "添加服务器屏幕按钮位置",

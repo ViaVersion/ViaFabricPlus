@@ -48,7 +48,6 @@
   "screen.viafabricplus.accept_invite": "Einladung akzeptieren",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Ausgewählte Protokollversion speichern",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Zusätzliche Informationen im Debug-HUD anzeigen",
   "general_settings.viafabricplus.show_classic_loading_progress": "Ladefortschritt von Klassischen Versionen im Verbindungsbildschirm anzeigen",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Ausrichtung der Multiplayer-Bildschirmtasten",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Ausrichtung der Schaltfläche für den Serverbildschirm hinzufügen",

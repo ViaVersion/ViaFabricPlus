@@ -14,7 +14,6 @@
   "base.viafabricplus.something_went_wrong": "Jotain meni vikaan! Yritä myöhemmin uudelleen.",
 
   "general_settings.viafabricplus.super_secret_settings": "Näytä Super Secret Settings",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Näytä enemmän tietoa Debug-näkymässä",
   "general_settings.viafabricplus.show_classic_loading_progress": "Näytä klassinen latauksen tila Yhdistetään -näytössä",
   "general_settings.viafabricplus.main": "Pää-napin suunta",
   "general_settings.viafabricplus.filter_creative_tabs": "Poista saavuttamattomat esineet Luova-välilehdestä",

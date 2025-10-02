@@ -48,7 +48,6 @@
   "screen.viafabricplus.accept_invite": "Aceitar Convite",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Salvar versão do protocolo selecionada",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Mostrar informações adicionais na HUD de depuração",
   "general_settings.viafabricplus.show_classic_loading_progress": "Mostrar o progresso de carregamento clássico na tela de conexão",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Orientação dos botões na tela multijogador",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Adicionar orientação do botão da tela do servidor",

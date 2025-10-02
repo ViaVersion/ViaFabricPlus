@@ -42,7 +42,6 @@
   "screen.viafabricplus.classicube_mfa": "Classicube Doğrulama",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Seçilen protokol sürümünü kaydet",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Debug HUD'daki ekstra bilgileri göster",
   "general_settings.viafabricplus.show_classic_loading_progress": "Bağlantı ekranında klasik yükleme ilerlemesini gösterme",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Çok oyunculu ekran düğme yönü",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Sunucu listesi yönlendirmesi butonu ekle",
