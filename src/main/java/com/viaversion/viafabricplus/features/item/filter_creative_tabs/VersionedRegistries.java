@@ -90,10 +90,11 @@ public final class VersionedRegistries {
     private static void fillItems(final JsonObject object) {
         for (final String element : object.keySet()) {
             final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
-            final Item item = Registries.ITEM.get(Identifier.of(element));
-            if (item == Items.AIR) {
-                throw new IllegalStateException("Item " + element + " does not exist");
+            final Item item = Registries.ITEM.getOptionalValue(Identifier.of(element)).orElse(null);
+            if (item == null) {
+                throw new IllegalStateException("Unknown item: " + element);
             }
+
             ITEM_DIFF.put(item, versions);
         }
     }

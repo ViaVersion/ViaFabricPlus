@@ -54,6 +54,10 @@ public final class ResourcePackHeaderDiff {
 
     private static void fill(final String name, final JsonObject data) {
         final ProtocolVersion version = ProtocolVersion.getProtocol(data.get("version").getAsInt());
+        if (!version.isKnown()) {
+            throw new IllegalStateException("Unknown protocol version: " + version.getOriginalVersion());
+        }
+
         final JsonElement packFormat = data.get("pack_format");
         if (packFormat.isJsonObject()) {
             final int major = packFormat.getAsJsonObject().get("major").getAsInt();

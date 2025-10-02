@@ -57,6 +57,7 @@ public final class RenderableGlyphDiff {
             if (version == null) {
                 throw new IllegalStateException("Unknown protocol version: " + entry.getKey());
             }
+
             final MixedListTag list = (MixedListTag) entry.getValue();
             for (final Tag i : list) {
                 if (i instanceof final IntTag intTag) {

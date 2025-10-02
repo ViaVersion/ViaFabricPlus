@@ -216,10 +216,11 @@ public final class Recipes1_11_2 {
     }
 
     private static Item getItemById(final Identifier id) {
-        final Item item = Registries.ITEM.get(id);
-        if (item == Items.AIR) {
-            throw new IllegalStateException("Item with id " + id + " does not exist");
+        final Item item = Registries.ITEM.getOptionalValue(id).orElse(null);
+        if (item == null) {
+            throw new IllegalStateException("Unknown item: " + id.toString());
         }
+
         return item;
     }
 

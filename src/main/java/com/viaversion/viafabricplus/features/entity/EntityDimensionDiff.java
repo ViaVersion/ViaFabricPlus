@@ -50,9 +50,9 @@ public final class EntityDimensionDiff {
 
         final JsonObject dimensionDiff = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("entity-dimensions.json");
         for (final String entity : dimensionDiff.keySet()) {
-            final EntityType<?> entityType = Registries.ENTITY_TYPE.get(Identifier.of(entity));
-            if (entityType == EntityType.PIG) {
-                throw new IllegalStateException("Entity does not exist: " + entity);
+            final EntityType<?> entityType = Registries.ENTITY_TYPE.getOptionalValue(Identifier.of(entity)).orElse(null);
+            if (entityType == null) {
+                throw new IllegalStateException("Unknown entity: " + entity);
             }
 
             final JsonObject versions = dimensionDiff.getAsJsonObject(entity);
@@ -62,6 +62,7 @@ public final class EntityDimensionDiff {
                 if (protocolVersion == null) {
                     throw new IllegalStateException("Unknown protocol version: " + version);
                 }
+
                 final JsonObject dimensionData = versions.getAsJsonObject(version);
                 final float width = dimensionData.get("width").getAsFloat();
                 final float height = dimensionData.get("height").getAsFloat();
