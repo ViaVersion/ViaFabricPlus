@@ -51,7 +51,7 @@ public interface ViaFabricPlusBase {
      * @return an <b>internally based API version</b> incremented with meaningful or breaking changes.
      */
     default int apiVersion() {
-        return 5;
+        return 6;
     }
 
     /**
@@ -74,11 +74,6 @@ public interface ViaFabricPlusBase {
      * @return The root path
      */
     Path getPath();
-
-    @Deprecated
-    default Path rootPath() {
-        return getPath();
-    }
 
     /**
      * This method is used when you need the target version after connecting to the server.
@@ -167,11 +162,6 @@ public interface ViaFabricPlusBase {
      * @return The setting groups
      */
     List<SettingGroup> getSettingGroups();
-
-    @Deprecated
-    default List<SettingGroup> settingGroups() {
-        return getSettingGroups();
-    }
 
     /**
      * Add a setting group to the mod.
