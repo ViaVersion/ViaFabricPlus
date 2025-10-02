@@ -38,6 +38,8 @@ import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
+import static com.viaversion.viafabricplus.screen.VFPListEntry.SLOT_MARGIN;
+
 public final class BetaCraftScreen extends VFPScreen {
 
     public static final BetaCraftScreen INSTANCE = new BetaCraftScreen();
@@ -65,7 +67,9 @@ public final class BetaCraftScreen extends VFPScreen {
 
     private void createView() {
         this.setupSubtitle(Text.of(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.opening(this, BETA_CRAFT_SERVER_LIST_URL));
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 2) * 3));
+
+        final int entryHeight = (textRenderer.fontHeight + 2) * 3; // title is 2
+        this.addDrawableChild(new SlotList(this.client, width, height, 2 * SLOT_MARGIN + entryHeight, -5, entryHeight));
 
         this.addRefreshButton(() -> SERVER_LIST = null);
     }
@@ -136,7 +140,7 @@ public final class BetaCraftScreen extends VFPScreen {
                 context.drawTextWithShadow(textRenderer, Text.translatable("base.viafabricplus.online_mode").formatted(Formatting.GREEN), 1, 1, -1);
             }
             final String playerText = server.playerCount() + "/" + server.playerLimit();
-            context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 152 */ - 1, 1, -1);
+            context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 1, 1, -1);
         }
     }
 
