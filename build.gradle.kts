@@ -47,7 +47,7 @@ project.property("updating_minecraft").toString().toBoolean().apply {
 val jij = configureJij()
 configureVVDependencies("jij")
 
-includeFabricApiModules("fabric-resource-loader-v0", "fabric-networking-api-v1", "fabric-command-api-v2", "fabric-lifecycle-events-v1", "fabric-particles-v1", "fabric-registry-sync-v0")
+includeFabricApiModules("fabric-resource-loader-v1", "fabric-networking-api-v1", "fabric-command-api-v2", "fabric-lifecycle-events-v1", "fabric-particles-v1", "fabric-registry-sync-v0")
 includeFabricSubmodule("viafabricplus-api")
 includeFabricSubmodule("viafabricplus-visuals")
 
