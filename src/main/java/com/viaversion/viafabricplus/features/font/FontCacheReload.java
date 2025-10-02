@@ -33,7 +33,6 @@ public final class FontCacheReload {
 
         for (final FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
             storage.bakedGlyphCache.clear();
-            //storage.glyphCache.clear(); TODO 1.21.9
         }
     }
 

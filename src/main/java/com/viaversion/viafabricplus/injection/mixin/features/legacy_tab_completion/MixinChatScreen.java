@@ -63,9 +63,9 @@ public abstract class MixinChatScreen {
     private boolean fixCommandKey(boolean windowActive) {
         final String instance = this.chatField.getText();
         if (this.viaFabricPlus$keepTabComplete()) {
-            return instance.equals(this.originalChatText);
+            return true;
         } else {
-            return instance.isEmpty();
+            return !instance.isEmpty();
         }
     }
 

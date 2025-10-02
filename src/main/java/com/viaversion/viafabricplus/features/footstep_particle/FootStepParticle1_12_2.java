@@ -37,6 +37,7 @@ import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.joml.Quaternionf;
 
@@ -67,6 +68,11 @@ public final class FootStepParticle1_12_2 extends BillboardParticle {
     }
 
     @Override
+    public Rotator getRotator() {
+        return Rotator.Y_AND_W_ONLY;
+    }
+
+    @Override
     protected void render(final BillboardParticleSubmittable submittable, final Camera camera, final Quaternionf rotation, final float tickProgress) {
         final float strength = ((float) this.age + tickProgress) / (float) this.maxAge;
         this.alpha = 2.0F - (strength * strength) * 2.0F;
@@ -76,7 +82,7 @@ public final class FootStepParticle1_12_2 extends BillboardParticle {
             this.alpha *= 0.2F;
         }
 
-        super.render(submittable, camera, rotation, tickProgress);
+        super.render(submittable, camera, new Quaternionf().rotateX(-MathHelper.HALF_PI), tickProgress);
     }
 
     public static class Factory implements ParticleFactory<SimpleParticleType> {
