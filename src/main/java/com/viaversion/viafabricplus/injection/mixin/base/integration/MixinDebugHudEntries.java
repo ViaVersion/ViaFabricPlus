@@ -52,12 +52,12 @@ public abstract class MixinDebugHudEntries {
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void addViaFabricPlusEntry(CallbackInfo ci) {
-        final Identifier entryId = register(VFPDebugHudEntry.ID, new VFPDebugHudEntry());
+        final Identifier id = register(VFPDebugHudEntry.ID, new VFPDebugHudEntry());
         final Map<DebugProfileType, Map<Identifier, DebugHudEntryVisibility>> profiles = new HashMap<>();
         for (Map.Entry<DebugProfileType, Map<Identifier, DebugHudEntryVisibility>> entry : PROFILES.entrySet()) {
             final Map<Identifier, DebugHudEntryVisibility> entries = new HashMap<>(entry.getValue());
             if (entry.getKey() == DebugProfileType.DEFAULT) {
-                entries.put(entryId, DebugHudEntryVisibility.IN_F3);
+                entries.put(id, DebugHudEntryVisibility.IN_F3);
             }
             profiles.put(entry.getKey(), entries);
         }

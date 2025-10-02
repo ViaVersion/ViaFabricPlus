@@ -21,6 +21,7 @@ accessible field net/minecraft/entity/PositionInterpolator$Data pitch F
 accessible field net/minecraft/entity/player/PlayerInventory equipment Lnet/minecraft/entity/EntityEquipment;
 accessible field net/minecraft/client/input/Input movementVector Lnet/minecraft/util/math/Vec2f;
 accessible field net/minecraft/util/math/Direction YXZ Lcom/google/common/collect/ImmutableList;
+accessible field net/minecraft/client/font/GlyphBaker fontId Lnet/minecraft/util/Identifier;
 
 mutable field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 mutable field net/minecraft/block/AbstractBlock velocityMultiplier F
@@ -36,6 +37,7 @@ accessible method net/minecraft/entity/Entity setRotation (FF)V
 accessible method net/minecraft/client/gui/widget/TextFieldWidget getMaxLength ()I
 accessible method net/minecraft/block/entity/BlockEntity writeIdentifyingData (Lnet/minecraft/storage/WriteView;)V
 accessible method net/minecraft/client/render/debug/GameTestDebugRenderer$Marker <init> (ILjava/lang/String;J)V
+accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Ljava/util/function/Supplier;Ljava/util/function/Supplier;)V
 
 extendable method net/minecraft/entity/Entity updateTrackedPositionAndAngles (Lnet/minecraft/util/math/Vec3d;FF)V
 
