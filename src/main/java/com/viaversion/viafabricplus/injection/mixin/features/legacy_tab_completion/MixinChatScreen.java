@@ -32,7 +32,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = ChatScreen.class)
@@ -42,7 +41,7 @@ public abstract class MixinChatScreen {
     protected TextFieldWidget chatField;
 
     @Shadow
-    private String originalChatText;
+    protected String originalChatText;
 
     @Shadow
     ChatInputSuggestor chatInputSuggestor;
