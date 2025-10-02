@@ -90,7 +90,8 @@ public abstract class MixinAddServerScreen extends Screen {
         }).size(98, 20);
 
         // Set the button's position according to the configured orientation and add the button to the screen
-        this.addDrawableChild(GeneralSettings.withOrientation(buttonBuilder, buttonPosition, width, height).build());
+        GeneralSettings.setOrientation(buttonBuilder::position, buttonPosition, width, height);
+        this.addDrawableChild(buttonBuilder.build());
     }
 
 }

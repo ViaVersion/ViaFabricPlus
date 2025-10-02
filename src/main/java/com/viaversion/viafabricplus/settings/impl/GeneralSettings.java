@@ -66,14 +66,20 @@ public final class GeneralSettings extends SettingGroup {
         emulateInventoryActionsInAlphaVersions.setTooltip(Text.translatable("base.viafabricplus.this_will_require_a_restart"));
     }
 
-    public static ButtonWidget.Builder withOrientation(final ButtonWidget.Builder builder, final int orientationIndex, final int width, final int height) {
-        return switch (orientationIndex) {
-            case 1 -> builder.position(5, 5);
-            case 2 -> builder.position(width - 98 - 5, 5);
-            case 3 -> builder.position(5, height - 20 - 5);
-            case 4 -> builder.position(width - 98 - 5, height - 20 - 5);
-            default -> builder;
-        };
+    public static void setOrientation(final Position position, final int orientationIndex, final int width, final int height) {
+        switch (orientationIndex) {
+            case 1 -> position.setPosition(5, 5);
+            case 2 -> position.setPosition(width - 98 - 5, 5);
+            case 3 -> position.setPosition(5, height - 20 - 5);
+            case 4 -> position.setPosition(width - 98 - 5, height - 20 - 5);
+        }
+    }
+
+    @FunctionalInterface
+    public interface Position {
+
+        void setPosition(int x, int y);
+
     }
 
 }
