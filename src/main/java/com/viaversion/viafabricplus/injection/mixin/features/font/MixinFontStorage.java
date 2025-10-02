@@ -69,7 +69,7 @@ public abstract class MixinFontStorage {
     @Inject(method = "getBaked", at = @At("RETURN"), cancellable = true)
     private void filterBakedGlyph(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
                 cir.setReturnValue(viaFabricPlus$blankBakedGlyphPair1_12_2);
             } else {
                 cir.setReturnValue(blankBakedGlyphPair);

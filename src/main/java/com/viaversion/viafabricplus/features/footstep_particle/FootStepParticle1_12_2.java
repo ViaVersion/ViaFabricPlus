@@ -68,11 +68,6 @@ public final class FootStepParticle1_12_2 extends BillboardParticle {
     }
 
     @Override
-    public Rotator getRotator() {
-        return Rotator.Y_AND_W_ONLY;
-    }
-
-    @Override
     protected void render(final BillboardParticleSubmittable submittable, final Camera camera, final Quaternionf rotation, final float tickProgress) {
         final float strength = ((float) this.age + tickProgress) / (float) this.maxAge;
         this.alpha = 2.0F - (strength * strength) * 2.0F;
