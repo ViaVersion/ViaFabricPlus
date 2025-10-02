@@ -44,10 +44,6 @@ public final class EntityDimensionDiff {
     private static final Map<EntityType<?>, Map<ProtocolVersion, EntityDimensions>> ENTITY_DIMENSIONS = new HashMap<>();
 
     public static void init() {
-        if (!ENTITY_DIMENSIONS.isEmpty()) {
-            throw new IllegalStateException("EntityDimensionDiff is already initialized");
-        }
-
         final JsonObject dimensionDiff = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("entity-dimensions.json");
         for (final String entity : dimensionDiff.keySet()) {
             final EntityType<?> entityType = Registries.ENTITY_TYPE.getOptionalValue(Identifier.of(entity)).orElse(null);

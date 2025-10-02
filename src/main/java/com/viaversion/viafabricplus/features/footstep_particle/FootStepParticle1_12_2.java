@@ -45,15 +45,6 @@ public final class FootStepParticle1_12_2 extends BillboardParticle {
     public static final Identifier ID = Identifier.of("viafabricplus", "footstep");
     public static int RAW_ID;
 
-    static {
-        final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
-
-        Registry.register(Registries.PARTICLE_TYPE, ID, footStepType);
-        ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
-
-        RAW_ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
-    }
-
     private FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z, Sprite sprite) {
         super(clientWorld, x, y, z, sprite);
 
@@ -62,7 +53,12 @@ public final class FootStepParticle1_12_2 extends BillboardParticle {
     }
 
     public static void init() {
-        // Calls the static block
+        final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
+
+        Registry.register(Registries.PARTICLE_TYPE, ID, footStepType);
+        ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
+
+        RAW_ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
     }
 
     @Override

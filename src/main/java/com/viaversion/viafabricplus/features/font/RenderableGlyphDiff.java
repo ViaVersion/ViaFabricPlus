@@ -45,7 +45,7 @@ public final class RenderableGlyphDiff {
     private static final Int2ObjectMap<ProtocolVersion> RENDERABLE_GLYPH_DIFF_LEGACY = new Int2ObjectOpenHashMap<>();
     private static final Int2ObjectMap<ProtocolVersion> RENDERABLE_GLYPH_DIFF = new Int2ObjectOpenHashMap<>();
 
-    static {
+    public static void init() {
         final CompoundTag glyphs = ViaFabricPlusMappingDataLoader.INSTANCE.loadNBT("renderable-glyphs.nbt");
         fill(glyphs.getCompoundTag("legacy"), RENDERABLE_GLYPH_DIFF_LEGACY);
         fill(glyphs.getCompoundTag("unihex"), RENDERABLE_GLYPH_DIFF);

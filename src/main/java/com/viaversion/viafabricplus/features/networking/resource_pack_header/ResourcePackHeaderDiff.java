@@ -42,10 +42,6 @@ public final class ResourcePackHeaderDiff {
     private final static Map<ProtocolVersion, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     public static void init() {
-        if (!GAME_VERSION_DIFF.isEmpty()) {
-            throw new IllegalStateException("ResourcePackHeaderDiff is already initialized");
-        }
-
         final JsonObject diff = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("resource-pack-headers.json");
         for (final String string : diff.keySet()) {
             fill(string, diff.getAsJsonObject(string));

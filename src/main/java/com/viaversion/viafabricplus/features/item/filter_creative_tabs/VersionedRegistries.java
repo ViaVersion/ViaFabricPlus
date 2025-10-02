@@ -43,7 +43,6 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -63,7 +62,7 @@ public final class VersionedRegistries {
     public static final Reference2ObjectMap<RegistryEntry<StatusEffect>, VersionRange> EFFECT_DIFF = new Reference2ObjectOpenHashMap<>();
     public static final Reference2ObjectMap<Item, VersionRange> ITEM_DIFF = new Reference2ObjectOpenHashMap<>();
 
-    static {
+    public static void init() {
         final JsonObject data = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("versioned-registries.json");
         fillKeys(data.getAsJsonObject("enchantments"), RegistryKeys.ENCHANTMENT, ENCHANTMENT_DIFF);
         fillKeys(data.getAsJsonObject("banner_patterns"), RegistryKeys.BANNER_PATTERN, PATTERN_DIFF);

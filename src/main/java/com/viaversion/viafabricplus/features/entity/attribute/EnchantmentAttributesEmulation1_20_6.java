@@ -39,7 +39,7 @@ import net.minecraft.registry.tag.BlockTags;
 
 public final class EnchantmentAttributesEmulation1_20_6 {
 
-    static {
+    public static void init() {
         ClientTickEvents.START_WORLD_TICK.register(world -> {
             if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5)) {
                 return;
@@ -68,10 +68,6 @@ public final class EnchantmentAttributesEmulation1_20_6 {
                 player.getAttributeInstance(EntityAttributes.SUBMERGED_MINING_SPEED).setBaseValue(getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2F : 1F);
             }
         });
-    }
-
-    public static void init() {
-        // Calls the static block
     }
 
     /**
