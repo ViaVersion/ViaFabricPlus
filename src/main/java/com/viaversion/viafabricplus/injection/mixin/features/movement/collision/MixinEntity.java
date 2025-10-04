@@ -141,7 +141,7 @@ public abstract class MixinEntity {
         }
     }
 
-    @Redirect(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Direction;method_73163(Lnet/minecraft/util/math/Vec3d;)Lcom/google/common/collect/ImmutableList;"))
+    @Redirect(method = {"adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", "checkBlockCollisions"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Direction;method_73163(Lnet/minecraft/util/math/Vec3d;)Lcom/google/common/collect/ImmutableList;"))
     private static ImmutableList<Direction.Axis> alwaysSortYXZ(Vec3d movement) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return Direction.YXZ;
