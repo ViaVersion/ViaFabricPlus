@@ -119,7 +119,7 @@ public final class PerServerVersionScreen extends VFPScreen {
             final boolean isSelected = protocolVersion.equals(selectionSupplier.get());
 
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), getContentMiddleX(), getContentMiddleY() / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
+            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), getContentMiddleX(), getContentMiddleY() - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
         }
     }
 
