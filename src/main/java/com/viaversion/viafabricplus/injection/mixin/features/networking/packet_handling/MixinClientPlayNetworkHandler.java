@@ -229,11 +229,11 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
     @SuppressWarnings({"InvalidInjectorMethodSignature"})
     @ModifyConstant(method = "onEntityPassengersSet", constant = @Constant(classValue = AbstractBoatEntity.class))
-    private Class<?> dontChangeYawWhenMountingBoats(Object entity, Class<?> boatClass) {
+    private boolean dontChangeYawWhenMountingBoats(Object entity, Class<?> boatClass) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
-            return Integer.class; // Dummy class file to false the instanceof check
+            return false;
         } else {
-            return boatClass;
+            return boatClass.isInstance(entity);
         }
     }
 
