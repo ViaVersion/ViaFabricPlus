@@ -63,22 +63,22 @@ dependencies {
     jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
         exclude(group = "io.netty")
     }
-    jij("de.florianmichael:Classic4J:2.1.0")
+    jij("de.florianmichael:Classic4J:2.2.1")
 }
 
 includeTransitiveJijDependencies()
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.5.1-20251007.174515-15")
-        configuration("com.viaversion:viabackwards-common:5.5.1-20251007.141614-10")
-        configuration("com.viaversion:viaaprilfools-common:4.0.5-20251007.144114-4")
+        configuration("com.viaversion:viaversion-common:5.5.1-SNAPSHOT")
+        configuration("com.viaversion:viabackwards-common:5.5.1-SNAPSHOT")
+        configuration("com.viaversion:viaaprilfools-common:4.0.5-SNAPSHOT")
         configuration("com.viaversion:vialoader:4.0.5") {
             exclude(group = "com.google.guava", module = "guava")
             exclude(group = "org.slf4j", module = "slf4j-api")
         }
         configuration("net.raphimc:ViaLegacy:3.0.11")
-        configuration("net.raphimc:ViaBedrock:0.0.22-20251003.200622-1") {
+        configuration("net.raphimc:ViaBedrock:0.0.22-SNAPSHOT") {
             exclude(group = "io.jsonwebtoken")
             exclude(group = "com.mojang", module = "brigadier")
         }

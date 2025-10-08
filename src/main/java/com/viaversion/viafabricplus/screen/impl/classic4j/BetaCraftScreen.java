@@ -27,7 +27,7 @@ import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viafabricplus.screen.impl.settings.TitleEntry;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
 import de.florianmichael.classic4j.BetaCraftHandler;
-import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
+import de.florianmichael.classic4j.model.betacraft.BCServerInfo;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
 import java.util.List;
@@ -59,7 +59,7 @@ public final class BetaCraftScreen extends VFPScreen {
             return;
         }
         setupSubtitle(Text.translatable("betacraft.viafabricplus.loading"));
-        BetaCraftHandler.requestV2ServerList(serverList -> {
+        BetaCraftHandler.requestServerList(serverList -> {
             BetaCraftScreen.SERVER_LIST = serverList;
             createView();
         }, throwable -> showErrorScreen(BetaCraftScreen.INSTANCE.getTitle(), throwable, this));
@@ -89,12 +89,12 @@ public final class BetaCraftScreen extends VFPScreen {
             }
 
             for (BCVersionCategory value : BCVersionCategory.values()) {
-                final List<BCServerInfoSpec> servers = SERVER_LIST.serversOfVersionCategory(value);
+                final List<BCServerInfo> servers = SERVER_LIST.serversOfVersionCategory(value);
                 if (servers.isEmpty()) {
                     continue;
                 }
                 addEntry(new TitleEntry(Text.of(value.name())));
-                for (BCServerInfoSpec server : servers) {
+                for (BCServerInfo server : servers) {
                     addEntry(new ServerSlot(server));
                 }
             }
@@ -114,9 +114,9 @@ public final class BetaCraftScreen extends VFPScreen {
     }
 
     public static class ServerSlot extends VFPListEntry {
-        private final BCServerInfoSpec server;
+        private final BCServerInfo server;
 
-        public ServerSlot(BCServerInfoSpec server) {
+        public ServerSlot(BCServerInfo server) {
             this.server = server;
         }
 
