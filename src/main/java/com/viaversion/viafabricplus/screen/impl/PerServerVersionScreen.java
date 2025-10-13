@@ -85,16 +85,14 @@ public final class PerServerVersionScreen extends VFPScreen {
         }
 
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        public void mappedMouseClicked(final double mouseX, final double mouseY, final int button) {
             selectionConsumer.accept(null);
-
-            return super.mouseClicked(mouseX, mouseY, button);
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, ((MutableText) getNarration()).formatted(Formatting.GOLD), x + entryWidth / 2, y + entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+            context.drawCenteredTextWithShadow(textRenderer, ((MutableText) getNarration()).formatted(Formatting.GOLD), getContentMiddleX(), getContentMiddleY() - textRenderer.fontHeight / 2, -1);
         }
     }
 
@@ -112,18 +110,16 @@ public final class PerServerVersionScreen extends VFPScreen {
         }
 
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        public void mappedMouseClicked(final double mouseX, final double mouseY, final int button) {
             selectionConsumer.accept(protocolVersion);
-
-            return super.mouseClicked(mouseX, mouseY, button);
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             final boolean isSelected = protocolVersion.equals(selectionSupplier.get());
 
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), x + entryWidth / 2, y - 1 + entryHeight / 2 - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
+            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), getContentMiddleX(), getContentMiddleY() - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
         }
     }
 

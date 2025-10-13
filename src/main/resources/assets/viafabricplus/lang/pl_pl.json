@@ -48,7 +48,6 @@
   "screen.viafabricplus.accept_invite": "Zaakceptuj zaproszenie",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Zapisz wybraną wersję protokołu",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Pokazuj dodatkowe informacje w interfejsie debugowania",
   "general_settings.viafabricplus.show_classic_loading_progress": "Pokazuj klasyczny pasek ładowania w ekranie łączenia",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Pozycja przycisku w menu trybu wieloosobowego",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Pozycja przycisku ustawiania wersji w ekranie dodawania serwera",

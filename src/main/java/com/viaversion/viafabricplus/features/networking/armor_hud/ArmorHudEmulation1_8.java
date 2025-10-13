@@ -44,7 +44,7 @@ public final class ArmorHudEmulation1_8 {
 
     private static double previousArmorPoints = 0;
 
-    static {
+    public static void init() {
         ClientTickEvents.START_WORLD_TICK.register(world -> {
             if (!DebugSettings.INSTANCE.emulateArmorHud.isEnabled()) {
                 return;
@@ -63,10 +63,6 @@ public final class ArmorHudEmulation1_8 {
                 previousArmorPoints = 0;
             }
         });
-    }
-
-    public static void init() {
-        // Calls the static block
     }
 
     private static void sendArmorUpdate(final UserConnection connection) {

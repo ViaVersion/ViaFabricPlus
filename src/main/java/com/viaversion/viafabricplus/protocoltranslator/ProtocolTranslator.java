@@ -91,7 +91,7 @@ public final class ProtocolTranslator {
     /**
      * The native version of the client
      */
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_7;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_9;
 
     /**
      * Protocol version that is used to enable protocol auto-detect
@@ -218,8 +218,8 @@ public final class ProtocolTranslator {
         final MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.player != null) {
             final GameProfile profile = mc.player.getGameProfile();
-            info.setUsername(profile.getName());
-            info.setUuid(profile.getId());
+            info.setUsername(profile.name());
+            info.setUuid(profile.id());
         }
 
         return user;

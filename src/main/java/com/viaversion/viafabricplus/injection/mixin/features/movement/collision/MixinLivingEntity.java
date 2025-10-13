@@ -25,6 +25,7 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Optional;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -37,6 +38,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -46,11 +48,20 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     private Optional<BlockPos> climbingPos;
 
+    public MixinLivingEntity(final EntityType<?> type, final World world) {
+        super(type, world);
+    }
+
     @Shadow
     protected abstract boolean canEnterTrapdoor(final BlockPos pos, final BlockState state);
 
-    public MixinLivingEntity(final EntityType<?> type, final World world) {
-        super(type, world);
+    @Redirect(method = "applyMovementInput", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;wasInPowderSnow:Z"))
+    private boolean dontCheckLastTick(LivingEntity instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            return this.getBlockStateAtPos().isOf(Blocks.POWDER_SNOW);
+        } else {
+            return instance.wasInPowderSnow;
+        }
     }
 
     @Inject(method = "tickCramming", at = @At("HEAD"), cancellable = true)
@@ -71,7 +82,7 @@ public abstract class MixinLivingEntity extends Entity {
     private void allowGappedLadderClimb(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.b1_5tob1_5_2) && !cir.getReturnValueZ() && !this.isSpectator()) {
             final BlockPos blockPos = this.getBlockPos().up();
-            final BlockState blockState = this.getWorld().getBlockState(blockPos);
+            final BlockState blockState = this.getEntityWorld().getBlockState(blockPos);
             if (blockState.isIn(BlockTags.CLIMBABLE)) {
                 this.climbingPos = Optional.of(blockPos);
                 cir.setReturnValue(true);

@@ -45,7 +45,7 @@ public abstract class MixinEndPortalFrameBlock extends Block {
 
     @Shadow
     @Final
-    protected static VoxelShape FRAME_SHAPE;
+    private static VoxelShape FRAME_SHAPE;
 
     @Shadow
     @Final

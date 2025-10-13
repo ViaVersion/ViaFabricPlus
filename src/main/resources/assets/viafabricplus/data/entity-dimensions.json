@@ -1,0 +1,386 @@
+{
+  "wither": {
+    "1.7.6-1.7.10": {
+      "width": 0.9,
+      "height": 4.0,
+      "eyeHeight": 2.9750001,
+      "fixed": false
+    },
+    "1.8.x": {
+      "width": 0.9,
+      "height": 3.5,
+      "eyeHeight": 2.9750001,
+      "fixed": false
+    }
+  },
+  "silverfish": {
+    "1.7.6-1.7.10": {
+      "width": 0.3,
+      "height": 0.7,
+      "eyeHeight": 0.13,
+      "fixed": false
+    },
+    "1.8.x": {
+      "width": 0.4,
+      "height": 0.3,
+      "eyeHeight": 0.13,
+      "fixed": false
+    }
+  },
+  "snow_golem": {
+    "1.7.6-1.7.10": {
+      "width": 0.4,
+      "height": 1.8,
+      "eyeHeight": 1.7,
+      "fixed": false
+    },
+    "1.8.x": {
+      "width": 0.7,
+      "height": 1.9,
+      "eyeHeight": 1.7,
+      "fixed": false
+    }
+  },
+  "zombie": {
+    "1.7.6-1.7.10": {
+      "width": 0.6,
+      "height": 1.8,
+      "eyeHeight": 1.74,
+      "fixed": false
+    },
+    "1.8.x": {
+      "width": 0.6,
+      "height": 1.95,
+      "eyeHeight": 1.74,
+      "fixed": true
+    },
+    "1.9": {
+      "width": 0.6,
+      "height": 1.95,
+      "eyeHeight": 1.74,
+      "fixed": false
+    }
+  },
+  "chicken": {
+    "b1.7-b1.7.3": {
+      "width": 0.3,
+      "height": 0.4,
+      "eyeHeight": 0.644,
+      "fixed": false
+    },
+    "1.7.6-1.7.10": {
+      "width": 0.3,
+      "height": 0.7,
+      "eyeHeight": 0.644,
+      "fixed": false
+    },
+    "1.8.x": {
+      "width": 0.4,
+      "height": 0.7,
+      "eyeHeight": 0.644,
+      "fixed": false
+    }
+  },
+  "sheep": {
+    "c0.28-c0.30": {
+      "width": 1.4,
+      "height": 1.72,
+      "eyeHeight": 1.235,
+      "fixed": false
+    },
+    "a1.0.15": {
+      "width": 0.9,
+      "height": 1.3,
+      "eyeHeight": 1.235,
+      "fixed": false
+    }
+  },
+  "ocelot": {
+    "1.7.6-1.7.10": {
+      "width": 0.6,
+      "height": 0.8,
+      "eyeHeight": 0.595,
+      "fixed": false
+    },
+    "1.8.x": {
+      "width": 0.6,
+      "height": 0.7,
+      "eyeHeight": 0.595,
+      "fixed": false
+    }
+  },
+  "oak_boat": {
+    "1.8.x": {
+      "width": 1.5,
+      "height": 0.6,
+      "eyeHeight": 0.5625,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 1.375,
+      "height": 0.5625,
+      "eyeHeight": 0.5625,
+      "fixed": false
+    }
+  },
+  "creeper": {
+    "1.8.x": {
+      "width": 0.6,
+      "height": 1.8,
+      "eyeHeight": 1.445,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 0.6,
+      "height": 1.7,
+      "eyeHeight": 1.445,
+      "fixed": false
+    }
+  },
+  "iron_golem": {
+    "1.8.x": {
+      "width": 1.4,
+      "height": 2.9,
+      "eyeHeight": 2.295,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 1.4,
+      "height": 2.7,
+      "eyeHeight": 2.295,
+      "fixed": false
+    }
+  },
+  "skeleton": {
+    "1.7.6-1.7.10": {
+      "width": 0.6,
+      "height": 1.8,
+      "eyeHeight": 1.74,
+      "fixed": false
+    },
+    "1.8.x": {
+      "width": 0.6,
+      "height": 1.95,
+      "eyeHeight": 1.74,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 0.6,
+      "height": 1.99,
+      "eyeHeight": 1.74,
+      "fixed": false
+    }
+  },
+  "wither_skeleton": {
+    "1.4.6-1.4.7": {
+      "width": 0.72,
+      "height": 2.16,
+      "eyeHeight": 2.1,
+      "fixed": false
+    },
+    "1.7.6-1.7.10": {
+      "width": 0.72,
+      "height": 2.34,
+      "eyeHeight": 2.1,
+      "fixed": false
+    },
+    "1.8.x": {
+      "width": 0.72,
+      "height": 2.535,
+      "eyeHeight": 2.1,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 0.7,
+      "height": 2.4,
+      "eyeHeight": 2.1,
+      "fixed": false
+    }
+  },
+  "cow": {
+    "1.8.x": {
+      "width": 0.9,
+      "height": 1.3,
+      "eyeHeight": 1.3,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 0.9,
+      "height": 1.4,
+      "eyeHeight": 1.3,
+      "fixed": false
+    }
+  },
+  "horse": {
+    "1.8.x": {
+      "width": 1.4,
+      "height": 1.6,
+      "eyeHeight": 1.52,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 1.3964844,
+      "height": 1.6,
+      "eyeHeight": 1.52,
+      "fixed": false
+    }
+  },
+  "mooshroom": {
+    "1.8.x": {
+      "width": 0.9,
+      "height": 1.3,
+      "eyeHeight": 1.3,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 0.9,
+      "height": 1.4,
+      "eyeHeight": 1.3,
+      "fixed": false
+    }
+  },
+  "rabbit": {
+    "1.8.x": {
+      "width": 0.6,
+      "height": 0.7,
+      "eyeHeight": 0.425,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 0.4,
+      "height": 0.5,
+      "eyeHeight": 0.425,
+      "fixed": false
+    }
+  },
+  "squid": {
+    "1.8.x": {
+      "width": 0.95,
+      "height": 0.95,
+      "eyeHeight": 0.4,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 0.8,
+      "height": 0.8,
+      "eyeHeight": 0.4,
+      "fixed": false
+    }
+  },
+  "villager": {
+    "1.8.x": {
+      "width": 0.6,
+      "height": 1.8,
+      "eyeHeight": 1.62,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 0.6,
+      "height": 1.95,
+      "eyeHeight": 1.62,
+      "fixed": false
+    }
+  },
+  "wolf": {
+    "1.1": {
+      "width": 0.8,
+      "height": 0.8,
+      "eyeHeight": 0.68,
+      "fixed": false
+    },
+    "1.8.x": {
+      "width": 0.6,
+      "height": 0.8,
+      "eyeHeight": 0.68,
+      "fixed": false
+    },
+    "1.9": {
+      "width": 0.6,
+      "height": 0.85,
+      "eyeHeight": 0.68,
+      "fixed": false
+    }
+  },
+  "dragon_fireball": {
+    "1.10.x": {
+      "width": 0.3125,
+      "height": 0.3125,
+      "eyeHeight": 0.85,
+      "fixed": false
+    },
+    "1.11": {
+      "width": 1.0,
+      "height": 1.0,
+      "eyeHeight": 0.85,
+      "fixed": false
+    }
+  },
+  "leash_knot": {
+    "1.16.4-1.16.5": {
+      "width": 0.5,
+      "height": 0.5,
+      "eyeHeight": 0.0625,
+      "fixed": false
+    },
+    "1.17": {
+      "width": 0.375,
+      "height": 0.5,
+      "eyeHeight": 0.0625,
+      "fixed": false
+    }
+  },
+  "slime": {
+    "1.13.2": {
+      "width": 0.51,
+      "height": 0.51,
+      "eyeHeight": 0.325,
+      "fixed": false
+    },
+    "1.14": {
+      "width": 0.52019995,
+      "height": 0.52019995,
+      "eyeHeight": 0.325,
+      "fixed": false
+    },
+    "1.20.5-1.20.6": {
+      "width": 0.52,
+      "height": 0.52,
+      "eyeHeight": 0.325,
+      "fixed": false
+    }
+  },
+  "magma_cube": {
+    "1.13.2": {
+      "width": 0.51,
+      "height": 0.51,
+      "eyeHeight": 0.325,
+      "fixed": false
+    },
+    "1.14": {
+      "width": 0.52019995,
+      "height": 0.52019995,
+      "eyeHeight": 0.325,
+      "fixed": false
+    },
+    "1.20.5-1.20.6": {
+      "width": 0.52,
+      "height": 0.52,
+      "eyeHeight": 0.325,
+      "fixed": false
+    }
+  },
+  "arrow": {
+    "c0.28-c0.30": {
+      "width": 0.3,
+      "height": 0.5,
+      "eyeHeight": 0.13,
+      "fixed": false
+    },
+    "a1.0.15": {
+      "width": 0.5,
+      "height": 0.5,
+      "eyeHeight": 0.13,
+      "fixed": false
+    }
+  }
+}

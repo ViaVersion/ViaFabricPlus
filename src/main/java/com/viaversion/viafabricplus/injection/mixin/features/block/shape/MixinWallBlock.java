@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
+import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -112,6 +113,15 @@ public abstract class MixinWallBlock extends Block {
     private void modifyBlockState(CallbackInfoReturnable<BlockState> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             cir.setReturnValue(viaFabricPlus$oldWallPlacementLogic(cir.getReturnValue()));
+        }
+    }
+
+    @Inject(method = "shouldConnectTo", at = @At("RETURN"), cancellable = true)
+    private void shouldConnectTo1_14(BlockState state, boolean neighborIsFullSquare, Direction dir, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14)) {
+            if (!Block1_14.isExceptBlockForAttachWithPiston(state.getBlock())) {
+                cir.setReturnValue(false);
+            }
         }
     }
 

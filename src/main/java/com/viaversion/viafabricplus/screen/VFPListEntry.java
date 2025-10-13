@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.screen;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -37,7 +38,7 @@ import org.joml.Matrix3x2fStack;
  * This class is a wrapper for the {@link net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry} class.
  * Features included:
  * <ul>
- *     <li>Add wrapper function {@link #mappedRender(DrawContext, int, int, int, int, int, int, int, boolean, float)} for:
+ *     <li>Add wrapper function {@link #mappedRender(DrawContext, int, int, int, int, int, int, boolean, float)} for:
  *     <ul>
  *         <li>cross-sharing entry position/dimension between other helper functions</li>
  *         <li>Setting the entry position as start inside the {@link MatrixStack}</li>
@@ -54,12 +55,8 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
     public static final int SLOT_MARGIN = 3;
 
     private DrawContext context;
-    private int x;
-    private int y;
-    private int entryWidth;
-    private int entryHeight;
 
-    public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(DrawContext context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         // To be overridden
     }
 
@@ -71,16 +68,16 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      * Automatically plays a click sound and calls the {@link #mappedMouseClicked(double, double, int)} method
      */
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        mappedMouseClicked(mouseX, mouseY, button);
+    public boolean mouseClicked(final Click click, final boolean doubled) {
+        mappedMouseClicked(click.x(), click.y(), click.button());
         ClickableWidget.playClickSound(MinecraftClient.getInstance().getSoundManager());
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     public void renderScrollableText(final Text name, final int offset) {
         final TextRenderer font = MinecraftClient.getInstance().textRenderer;
 
-        renderScrollableText(name, entryHeight / 2 - font.fontHeight / 2, offset);
+        renderScrollableText(name, getContentHeight() / 2 - font.fontHeight / 2, offset);
     }
 
     /**
@@ -94,13 +91,13 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
         final TextRenderer font = MinecraftClient.getInstance().textRenderer;
 
         final int fontWidth = font.getWidth(text);
-        if (fontWidth > (entryWidth - offset)) {
+        if (fontWidth > (getContentWidth() - offset)) {
             final double time = (double) Util.getMeasuringTimeMs() / 1000.0;
-            final double interpolateEnd = fontWidth - (entryWidth - offset - (SCISSORS_OFFSET + SLOT_MARGIN));
+            final double interpolateEnd = fontWidth - (getContentWidth() - offset - (SCISSORS_OFFSET + SLOT_MARGIN));
 
             final double interpolatedValue = Math.sin((Math.PI / 2) * Math.cos(Math.PI * 2 * time / Math.max(interpolateEnd * 0.5, 3.0))) / 2.0 + 0.5;
 
-            context.enableScissor(0, 0, entryWidth - offset - SCISSORS_OFFSET, entryHeight);
+            context.enableScissor(0, 0, getContentWidth() - offset - SCISSORS_OFFSET, getContentHeight());
             context.drawTextWithShadow(font, text, SLOT_MARGIN - (int) MathHelper.lerp(interpolatedValue, 0.0, interpolateEnd), textY, -1);
             context.disableScissor();
         } else {
@@ -116,29 +113,24 @@ public abstract class VFPListEntry extends AlwaysSelectedEntryListWidget.Entry<V
      * @param mouseY  The current mouse Y position
      */
     public void renderTooltip(final @Nullable Text tooltip, final int mouseX, final int mouseY) {
-        if (tooltip != null && mouseX >= x && mouseX <= x + entryWidth && mouseY >= y && mouseY <= y + entryHeight) {
+        if (tooltip != null && mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight()) {
             context.drawTooltip(MinecraftClient.getInstance().textRenderer, tooltip, mouseX, mouseY);
         }
     }
 
     /**
-     * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(DrawContext, int, int, int, int, int, int, int, boolean, float)} method
+     * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(DrawContext, int, int, int, int, int, int, boolean, float)} method
      */
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        // Allows cross-sharing of global variables between util methods
-        this.context = context;
-        this.x = x;
-        this.y = y;
-        this.entryWidth = entryWidth;
-        this.entryHeight = entryHeight;
+    public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        this.context = context; // Allows cross-sharing between util methods
 
         final Matrix3x2fStack matrices = context.getMatrices();
 
         matrices.pushMatrix();
-        matrices.translate(x, y);
-        context.fill(0, 0, entryWidth - 4 /* int i = this.left + (this.width - entryWidth) / 2; int j = this.left + (this.width + entryWidth) / 2; */, entryHeight, Integer.MIN_VALUE);
-        mappedRender(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
+        matrices.translate(getContentX(), getContentY());
+        context.fill(0, 0, getContentWidth(), getContentHeight(), Integer.MIN_VALUE);
+        mappedRender(context, getContentX(), getContentY(), getContentWidth(), getContentHeight(), mouseX, mouseY, hovered, deltaTicks);
         matrices.popMatrix();
     }
 

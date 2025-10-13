@@ -25,7 +25,6 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,11 +34,7 @@ public abstract class MixinLivingEntity {
 
     @WrapWithCondition(method = "dropItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
     private boolean dontSwingHand(LivingEntity instance, Hand hand) {
-        if (instance instanceof PlayerEntity) {
-            return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2);
-        } else {
-            return true;
-        }
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2);
     }
 
 }

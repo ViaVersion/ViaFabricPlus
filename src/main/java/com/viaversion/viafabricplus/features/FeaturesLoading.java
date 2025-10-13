@@ -29,7 +29,9 @@ import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
 import com.viaversion.viafabricplus.features.entity.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.entity.attribute.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.features.font.FontCacheReload;
+import com.viaversion.viafabricplus.features.font.RenderableGlyphDiff;
 import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.features.item.filter_creative_tabs.VersionedRegistries;
 import com.viaversion.viafabricplus.features.networking.armor_hud.ArmorHudEmulation1_8;
 import com.viaversion.viafabricplus.features.networking.resource_pack_header.ResourcePackHeaderDiff;
 import com.viaversion.viafabricplus.features.recipe.Recipes1_11_2;
@@ -38,7 +40,7 @@ import net.minecraft.client.MinecraftClient;
 
 public final class FeaturesLoading {
 
-    static {
+    public static void init() {
         // Check if the pack format mappings are correct
         ResourcePackHeaderDiff.init();
 
@@ -48,6 +50,8 @@ public final class FeaturesLoading {
         // Register the footstep particle
         FootStepParticle1_12_2.init();
 
+        RenderableGlyphDiff.init();
+
         Events.LOADING_CYCLE.register(cycle -> {
             if (cycle == LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
                 // Handle clientside enchantment calculations in <= 1.20.6
@@ -56,8 +60,13 @@ public final class FeaturesLoading {
                 // Handles and updates entity dimension changes in <= 1.17
                 EntityDimensionDiff.init();
 
+                // Load the clientside recipes for <= 1.11.2
+                Recipes1_11_2.init();
+
                 // Ticks the armor hud manually in <= 1.8.x
                 ArmorHudEmulation1_8.init();
+
+                VersionedRegistries.init();
             }
         });
 
@@ -79,10 +88,6 @@ public final class FeaturesLoading {
                 MinecraftClient.getInstance().getSoundManager().reloadSounds();
             }
         }));
-    }
-
-    public static void init() {
-        // Calls the static block
     }
 
 }

@@ -27,6 +27,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import net.minecraft.GameVersion;
+import net.minecraft.resource.PackVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -39,6 +40,15 @@ public abstract class MixinServerResourcePackLoader_4 {
     @Redirect(method = "getHeaders", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;getGameVersion()Lnet/minecraft/GameVersion;"))
     private GameVersion editHeaders() {
         return ResourcePackHeaderDiff.get(ProtocolTranslator.getTargetVersion());
+    }
+
+    @Redirect(method = "getHeaders", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(Ljava/lang/Object;)Ljava/lang/String;"))
+    private String editHeaders(Object obj) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7) && obj instanceof final PackVersion packVersion) {
+            return String.valueOf(packVersion.major());
+        } else {
+            return String.valueOf(obj);
+        }
     }
 
     @Inject(method = "getHeaders", at = @At("TAIL"), cancellable = true)

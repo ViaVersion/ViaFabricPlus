@@ -22,12 +22,12 @@
 package com.viaversion.viafabricplus.features.font;
 
 import com.mojang.blaze3d.textures.GpuTexture;
-import java.util.function.Function;
-import net.minecraft.client.font.BakedGlyph;
-import net.minecraft.client.font.Glyph;
-import net.minecraft.client.font.RenderableGlyph;
+import net.minecraft.client.font.BakedGlyphImpl;
+import net.minecraft.client.font.GlyphBaker;
+import net.minecraft.client.font.GlyphMetrics;
+import net.minecraft.client.font.UploadableGlyph;
 
-public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
+public enum BuiltinEmptyGlyph1_12_2 implements GlyphMetrics {
     INSTANCE;
 
     private static final int WIDTH = 0;
@@ -38,9 +38,8 @@ public enum BuiltinEmptyGlyph1_12_2 implements Glyph {
         return WIDTH;
     }
 
-    @Override
-    public BakedGlyph bake(Function<RenderableGlyph, BakedGlyph> glyphRendererGetter) {
-        return glyphRendererGetter.apply(new RenderableGlyph() {
+    public BakedGlyphImpl bake(final GlyphBaker baker) {
+        return baker.bake(this, new UploadableGlyph() {
 
             @Override
             public int getWidth() {

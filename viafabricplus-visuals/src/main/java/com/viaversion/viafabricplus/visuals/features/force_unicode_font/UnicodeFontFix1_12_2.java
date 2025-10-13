@@ -39,7 +39,7 @@ public final class UnicodeFontFix1_12_2 {
     private static boolean enabled = false;
     private static Runnable task = null;
 
-    static {
+    public static void init() {
         ViaFabricPlus.getImpl().registerOnChangeProtocolVersionCallback((oldVersion, newVersion) -> {
             updateUnicodeFontOverride(newVersion);
         });
@@ -51,10 +51,6 @@ public final class UnicodeFontFix1_12_2 {
                 task = null;
             }
         });
-    }
-
-    public static void init() {
-        // Calls the static block
     }
 
     public static void updateUnicodeFontOverride(final ProtocolVersion version) {

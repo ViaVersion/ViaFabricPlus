@@ -42,7 +42,6 @@
   "screen.viafabricplus.classicube_mfa": "Classicube MFA",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "儲存选中嘅版本",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "在 \u00a76[調試]\u00a7r中顯示額外資訊",
   "general_settings.viafabricplus.show_classic_loading_progress": "在連接伺服器時使用舊版進度顯示",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "多人游戲界面嘅按鈕位置",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "伺服器界面嘅按鈕位置",

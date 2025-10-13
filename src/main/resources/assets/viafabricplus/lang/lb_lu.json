@@ -34,7 +34,6 @@
   "setting_group_name.viafabricplus.bedrock": "Bedrock",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Ausgewielte Protokollversion späichern",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Zousätzlech Informationen am Debug-HUD uweisen",
   "general_settings.viafabricplus.show_classic_loading_progress": "Luedfiergang fier klassesch Versiounen bäim Verbannen mam Server uweisen",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Äusriichtung vum Knäppchen an der Serverlescht",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Äusriichtung vum Knäppschen an der Server-Hinzoufügen-Fenster",

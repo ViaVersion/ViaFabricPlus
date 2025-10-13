@@ -48,7 +48,6 @@
   "screen.viafabricplus.accept_invite": "接受邀請",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "儲存選擇的版本",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "在除錯畫面中顯示更多資訊",
   "general_settings.viafabricplus.show_classic_loading_progress": "在連線畫面時顯示舊版進度",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "多人遊戲畫面按鈕方向",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "新增伺服器畫面按鈕方向",

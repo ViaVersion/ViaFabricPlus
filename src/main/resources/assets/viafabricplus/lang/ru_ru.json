@@ -49,7 +49,6 @@
   "screen.viafabricplus.accept_invite": "Принять приглашение",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Сохранять выбранную версию протокола",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Дополнительная информация на экране отладки",
   "general_settings.viafabricplus.show_classic_loading_progress": "Экран загрузки Classic при подключении",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Кнопка в меню сетевой игры",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Кнопка в меню добавления сервера",

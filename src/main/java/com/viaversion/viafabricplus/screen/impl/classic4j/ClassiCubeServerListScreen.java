@@ -42,6 +42,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
+import static com.viaversion.viafabricplus.screen.VFPListEntry.SLOT_MARGIN;
+
 public final class ClassiCubeServerListScreen extends VFPScreen {
 
     public static final ClassiCubeServerListScreen INSTANCE = new ClassiCubeServerListScreen();
@@ -69,7 +71,8 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
             return;
         }
 
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 4) * 3));
+        final int entryHeight = (textRenderer.fontHeight + 2) * 3; // title is 2
+        this.addDrawableChild(new SlotList(this.client, width, height, 2 * SLOT_MARGIN + entryHeight, -5, entryHeight));
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.logout"), button -> {
             SaveManager.INSTANCE.getAccountsSave().setClassicubeAccount(null);
@@ -140,13 +143,13 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
         }
 
         @Override
-        public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void mappedRender(DrawContext context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
             context.drawCenteredTextWithShadow(textRenderer, classiCubeServerInfo.name(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
 
             context.drawTextWithShadow(textRenderer, classiCubeServerInfo.software().replace('&', Formatting.FORMATTING_CODE_PREFIX), 1, 1, -1);
             final String playerText = classiCubeServerInfo.players() + "/" + classiCubeServerInfo.maxPlayers();
-            context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 4 /* magic value from line 132 */ - 1, 1, -1);
+            context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 1, 1, -1);
         }
     }
 

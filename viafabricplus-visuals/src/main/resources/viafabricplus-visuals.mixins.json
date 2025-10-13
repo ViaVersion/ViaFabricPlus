@@ -6,7 +6,6 @@
   "client": [
     "classic.creative_menu.MixinCreativeInventoryScreen",
     "classic.walking_animation.MixinBipedEntityModel",
-    "downloading_terrain_transitions.MixinDownloadingTerrainScreen",
     "filter_game_mode_selections.MixinGameModeSwitcherScreen",
     "filter_game_mode_selections.MixinGameModeSwitcherScreen_GameModeSelection",
     "force_unicode_font.MixinLanguageManager",
@@ -15,6 +14,7 @@
     "hud_element_changes.MixinClientPlayerInteractionManager",
     "hud_element_changes.MixinInGameHud",
     "instant_sneaking.MixinCamera",
+    "level_loading_transitions.MixinLevelLoadingScreen",
     "oof_sound.MixinPlayerEntity",
     "petrified_oak_slab_model.MixinItemRenderer",
     "player_rotations.MixinBipedEntityModel",

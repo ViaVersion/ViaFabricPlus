@@ -1,18 +1,19 @@
 # Developer API
 
-ViaFabricPlus provides events and various utility functions for other mods to interface with it. Note that including
-ViaFabricPlus in your project comes with some requirements:
+ViaFabricPlus exposes events and utility functions so other mods can integrate with it.
+If you want to include it in your project, keep in mind:
 
-- The target version is Java 17
-- Fabric loom setup (As ViaFabricPlus is a Minecraft mod and has no API-only dependency like other projects)
+- Requires **Java 17**
+- Needs a **Fabric Loom** setup (since it’s a Minecraft mod, not a standalone API library)
 
-## How to include the mod as dependency
+---
 
-If you are targetting to only use the provided API, you should include the ```viafabricplus-api``` artifact. For
-including the internals use
-```viafabricplus```. Including the internals will also provide the legacy compatibility layer.
+## Adding as a Dependency
 
-### Kotlin Gradle
+If you only need the **public API**, include the `viafabricplus-api` artifact.
+If you also want to access **internal features** (including the legacy compatibility layer), use `viafabricplus`.
+
+### Kotlin (Gradle)
 
 ```kotlin
 repositories {
@@ -24,81 +25,70 @@ repositories {
             includeGroup("com.github.Oryxel")
         }
     }
-
 }
 
 dependencies {
-    modImplementation("com.viaversion:viafabricplus-api:x.x.x") // Replace with latest version
+    modImplementation("com.viaversion:viafabricplus-api:x.x.x") // Replace with latest release
 }
 ```
 
-### Groovy Gradle
+### Groovy (Gradle)
 
 ```groovy
 repositories {
     mavenCentral()
-    maven { 
-        name = "ViaVersion"
-        url = "https://repo.viaversion.com"
-    }
-    maven {
-        name = "Lenni0451"
-        url = "https://maven.lenni0451.net/everything"
-    }
-    maven {
-        name = "OpenCollab"
-        url = "https://repo.opencollab.dev/maven-snapshots"
-    }
+    maven { name = "ViaVersion"; url = "https://repo.viaversion.com" }
+    maven { name = "Lenni0451"; url = "https://maven.lenni0451.net/everything" }
+    maven { name = "OpenCollab"; url = "https://repo.opencollab.dev/maven-snapshots" }
     maven {
         name = "Jitpack"
         url = "https://jitpack.io"
-
-        content {
-            includeGroup "com.github.Oryxel"
-        }
+        content { includeGroup "com.github.Oryxel" }
     }
 }
 
 dependencies {
-    modImplementation("com.viaversion:viafabricplus-api:x.x.x") // Get the latest version from releases
+    modImplementation("com.viaversion:viafabricplus-api:x.x.x") // Check latest version in releases
 }
 ```
 
-## Using the API
+---
 
-Get the general API using ``ViaFabricPlus.getImpl()`` which will return a ``ViaFabricPlusBase`` interface reflecting API
-functions for mods to use.
-All functions provided there are safe to use and will most likely never be removed.
+## ⚙Using the API
 
-#### Example
+Get the main API instance with:
 
 ```java
 final ViaFabricPlusBase platform = ViaFabricPlus.getImpl();
 ```
 
-## Using event callbacks
+The `ViaFabricPlusBase` interface contains all stable API functions that other mods can safely use.
 
-The API provides two event callbacks which can be used:
+---
 
-- ``LoadingCycleCallback`` fired in various loading stages of ViaFabricPlus such as config or settings loading.
-- ``ChangeProtocolVersionCallback`` fired when the user changes the target version in the screen, or if the user joins a
-  server with a different version.
+## Event Callbacks
 
-Event callbacks can be registered through the API:
+ViaFabricPlus provides two key callbacks:
+
+* **`LoadingCycleCallback`** – Fired at different stages of ViaFabricPlus loading (config, settings, files, etc.)
+* **`ChangeProtocolVersionCallback`** – Fired when the user switches to another protocol version (manually or by joining a server)
+
+### Example: Listening for version changes
 
 ```java
 final ViaFabricPlusBase platform = ViaFabricPlus.getImpl();
 
 platform.registerOnChangeProtocolVersionCallback((oldVersion, newVersion) -> {
-    // Called when the target version changes
+    // Called whenever the target protocol version changes
 });
 ```
 
-### Using the loading cycle callback
+---
 
-As your mod might load after ViaFabricPlus, you will need to register the loading cycle callback inside a
-`ViaFabricPlusLoadEntrypoint` marked as `viafabricplus`
-in your `fabric.mod.json` file. The entrypoint also acts as `INITAL_LOAD` stage.
+## Loading Cycle Callback
+
+Since your mod may load **after** ViaFabricPlus, you need to register callbacks inside a `ViaFabricPlusLoadEntrypoint` declared in your `fabric.mod.json` as `viafabricplus`.
+This entrypoint also represents the `INITIAL_LOAD` stage.
 
 ```java
 public class Example implements ViaFabricPlusLoadEntrypoint {
@@ -107,34 +97,35 @@ public class Example implements ViaFabricPlusLoadEntrypoint {
     public void onPlatformLoad(ViaFabricPlusBase platform) {
         platform.registerLoadingCycleCallback(stage -> {
             if (stage == LoadingCycleCallback.LoadingCycle.PRE_SETTINGS_LOAD) {
-                // Called before the settings are loaded
+                // Before settings are loaded
             } else if (stage == LoadingCycleCallback.LoadingCycle.POST_SETTINGS_LOAD) {
-                // Called after the settings are loaded
+                // After settings are loaded
             } else if (stage == LoadingCycleCallback.LoadingCycle.PRE_FILES_LOAD) {
-                // Called before the files are loaded
+                // Before files are loaded
             } else if (stage == LoadingCycleCallback.LoadingCycle.POST_FILES_LOAD) {
-                // Called after the files are loaded
+                // After files are loaded
             } else if (stage == LoadingCycleCallback.LoadingCycle.PRE_VIAVERSION_LOAD) {
-                // Called before ViaVersion is loaded
+                // Before ViaVersion initializes
             } else if (stage == LoadingCycleCallback.LoadingCycle.POST_VIAVERSION_LOAD) {
-                // Called after ViaVersion is loaded
+                // After ViaVersion initializes
             } else if (stage == LoadingCycleCallback.LoadingCycle.FINAL_LOAD) {
-                // Called after everything is loaded
+                // After everything is fully loaded
             } else if (stage == LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
-                // Called after the game is loaded
+                // After the game finishes loading
             }
         });
     }
 }
 ```
 
-## More extensive API
+---
 
-For any version specific functionality, ViaFabricPlus provides common API functions. ViaFabricPlus
-uses [ViaVersion](https://github.com/ViaVersion/ViaVersion)
-for protocol translation, so the ViaVersion API can be used as well.
+## Extended API
 
-### Getting the current target version
+For version-specific tasks, ViaFabricPlus provides a range of helper methods.
+Since it relies on [ViaVersion](https://github.com/ViaVersion/ViaVersion), you can also use the ViaVersion API directly.
+
+### Example: Get current protocol version
 
 ```java
 final ProtocolVersion version = ViaFabricPlus.getImpl().getTargetVersion();

@@ -10,18 +10,18 @@ accessible field net/minecraft/entity/vehicle/AbstractBoatEntity yawVelocity F
 accessible field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 accessible field net/minecraft/block/AbstractBlock velocityMultiplier F
 accessible field net/minecraft/client/gui/screen/option/ControlsListWidget$KeyBindingEntry RESET_TEXT Lnet/minecraft/text/Text;
-accessible field net/minecraft/client/font/FontStorage$GlyphPair MISSING Lnet/minecraft/client/font/FontStorage$GlyphPair;
 accessible field net/minecraft/client/gui/screen/world/WorldIcon UNKNOWN_SERVER_ID Lnet/minecraft/util/Identifier;
 accessible field net/minecraft/client/MinecraftClient fontManager Lnet/minecraft/client/font/FontManager;
 accessible field net/minecraft/client/font/FontManager fontStorages Ljava/util/Map;
 accessible field net/minecraft/client/font/FontStorage bakedGlyphCache Lnet/minecraft/client/font/GlyphContainer;
-accessible field net/minecraft/client/font/FontStorage glyphCache Lnet/minecraft/client/font/GlyphContainer;
 accessible field net/minecraft/entity/PositionInterpolator data Lnet/minecraft/entity/PositionInterpolator$Data;
 accessible field net/minecraft/entity/PositionInterpolator$Data pos Lnet/minecraft/util/math/Vec3d;
 accessible field net/minecraft/entity/PositionInterpolator$Data yaw F
 accessible field net/minecraft/entity/PositionInterpolator$Data pitch F
 accessible field net/minecraft/entity/player/PlayerInventory equipment Lnet/minecraft/entity/EntityEquipment;
 accessible field net/minecraft/client/input/Input movementVector Lnet/minecraft/util/math/Vec2f;
+accessible field net/minecraft/util/math/Direction YXZ Lcom/google/common/collect/ImmutableList;
+accessible field net/minecraft/client/font/GlyphBaker fontId Lnet/minecraft/util/Identifier;
 
 mutable field net/minecraft/entity/EntityType dimensions Lnet/minecraft/entity/EntityDimensions;
 mutable field net/minecraft/block/AbstractBlock velocityMultiplier F
@@ -33,11 +33,14 @@ accessible method net/minecraft/entity/vehicle/AbstractBoatEntity getMaxPassenge
 accessible method net/minecraft/client/gui/screen/multiplayer/ConnectScreen setStatus (Lnet/minecraft/text/Text;)V
 accessible method net/minecraft/item/BlockItem getPlacementState (Lnet/minecraft/item/ItemPlacementContext;)Lnet/minecraft/block/BlockState;
 accessible method net/minecraft/block/AbstractBlock getPickStack (Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)Lnet/minecraft/item/ItemStack;
-accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Lnet/minecraft/client/font/Glyph;Lnet/minecraft/client/font/Glyph;)V
 accessible method net/minecraft/entity/Entity setRotation (FF)V
 accessible method net/minecraft/client/gui/widget/TextFieldWidget getMaxLength ()I
 accessible method net/minecraft/block/entity/BlockEntity writeIdentifyingData (Lnet/minecraft/storage/WriteView;)V
+accessible method net/minecraft/client/render/debug/GameTestDebugRenderer$Marker <init> (ILjava/lang/String;J)V
+accessible method net/minecraft/client/font/FontStorage$GlyphPair <init> (Ljava/util/function/Supplier;Ljava/util/function/Supplier;)V
 
 extendable method net/minecraft/entity/Entity updateTrackedPositionAndAngles (Lnet/minecraft/util/math/Vec3d;FF)V
 
 accessible class net/minecraft/client/font/FontStorage$GlyphPair
+accessible class net/minecraft/entity/Entity$QueuedCollisionCheck
+accessible class net/minecraft/client/render/debug/GameTestDebugRenderer$Marker
