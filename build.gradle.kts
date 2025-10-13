@@ -70,8 +70,8 @@ includeTransitiveJijDependencies()
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.5.1-SNAPSHOT")
-        configuration("com.viaversion:viabackwards-common:5.5.1-SNAPSHOT")
+        configuration("com.viaversion:viaversion-common:5.5.1")
+        configuration("com.viaversion:viabackwards-common:5.5.1")
         configuration("com.viaversion:viaaprilfools-common:4.0.5-SNAPSHOT")
         configuration("com.viaversion:vialoader:4.0.5") {
             exclude(group = "com.google.guava", module = "guava")
