@@ -223,6 +223,7 @@
     "features.movement.sprinting_and_sneaking.MixinKeyboardInput",
     "features.movement.sprinting_and_sneaking.MixinLivingEntity",
     "features.movement.sprinting_and_sneaking.MixinPlayerEntity",
+    "features.movement.vehicle.MixinAbstractHorseEntity",
     "features.movement.vehicle.MixinClientPlayerEntity",
     "features.movement.water.MixinClientPlayerEntity",
     "features.movement.water.MixinEntity",
