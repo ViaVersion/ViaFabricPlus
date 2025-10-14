@@ -91,6 +91,7 @@
     "features.classic.world_height.MixinEntityPacketRewriter1_17",
     "features.classic.world_height.MixinWorldPacketRewriter1_16_2",
     "features.classic.world_height.MixinWorldPacketRewriter1_17",
+    "features.entity.MixinItemFrameEntity",
     "features.entity.allow_duplicated_uuid.MixinEntityIndex",
     "features.entity.attribute.MixinEntityPacketRewriter1_20_5",
     "features.entity.attribute.MixinLivingEntity",
