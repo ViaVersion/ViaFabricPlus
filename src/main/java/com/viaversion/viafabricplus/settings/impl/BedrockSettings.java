@@ -78,6 +78,7 @@ public final class BedrockSettings extends SettingGroup {
         }
     };
     public final BooleanSetting replaceDefaultPort = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.replace_default_port"), true);
+    public final BooleanSetting experimentalFeatures = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.experimental_features"), true);
 
     private final ILogger GUI_LOGGER = new Slf4jConsoleLogger() {
         @Override

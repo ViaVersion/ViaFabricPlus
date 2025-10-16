@@ -61,6 +61,7 @@
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Klicke, um das Konto für die Bedrock Edition festzulegen",
   "bedrock_settings.viafabricplus.replace_default_port": "Standard-Port in der Serverliste ersetzen",
+  "bedrock_settings.viafabricplus.experimental_features": "Experimentelle Funktionen (Fehler melden, wenn Probleme auftreten!)",
   
   "debug_settings.viafabricplus.queue_config_packets": "Konfigurationspakete in die Warteschlange stellen",
   "debug_settings.viafabricplus.disable_sequencing": "Sequenzierung deaktivieren",

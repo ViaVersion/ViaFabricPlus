@@ -21,6 +21,7 @@
     "base.integration.MixinMultiplayerServerListPinger_1",
     "base.integration.MixinServerInfo",
     "base.integration.MixinUserConnectionImpl",
+    "base.integration.MixinViaBedrockConfig",
     "base.integration.MixinViaLegacyConfig",
     "base.integration.bedrock.MixinConfirmScreen",
     "base.integration.bedrock.MixinConnectScreen_1",
