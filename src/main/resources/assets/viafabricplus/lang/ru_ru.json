@@ -62,6 +62,7 @@
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Нажмите для настройки учётной записи Bedrock Edition",
   "bedrock_settings.viafabricplus.replace_default_port": "Заменить порт по умолчанию в списке серверов",
+  "bedrock_settings.viafabricplus.experimental_features": "Экспериментальные функции (возможна нестабильность)",
 
   "debug_settings.viafabricplus.queue_config_packets": "Очередь пакетов этапа настройки",
   "debug_settings.viafabricplus.disable_sequencing": "Отключить последовательность",
