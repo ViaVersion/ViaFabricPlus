@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.screen;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import java.awt.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
@@ -29,11 +30,9 @@ import net.minecraft.client.gui.screen.NoticeScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PressableTextWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
-
-import java.awt.*;
+import org.joml.Matrix3x2fStack;
 
 /**
  * This class is a wrapper for the {@link net.minecraft.client.gui.screen.Screen} class which provides some global
@@ -102,7 +101,6 @@ public class VFPScreen extends Screen {
         this.setupSubtitle(Text.of(subtitle), ConfirmLinkScreen.opening(this, subtitle));
     }
 
-
     /**
      * Sets the subtitle and the subtitle press action
      *
@@ -119,14 +117,16 @@ public class VFPScreen extends Screen {
      * @param subtitlePressAction The press action which should be executed when the subtitle is clicked
      */
     public void setupSubtitle(@Nullable final Text subtitle, @Nullable final ButtonWidget.PressAction subtitlePressAction) {
-        this.subtitle = subtitle;
         this.subtitlePressAction = subtitlePressAction;
 
         if (subtitleWidget != null) { // Allows removing the subtitle when calling this method twice.
             remove(subtitleWidget);
             subtitleWidget = null;
         }
-        if (subtitlePressAction != null) {
+        if (subtitlePressAction == null) {
+            this.subtitle = subtitle;
+        } else {
+            this.subtitle = null;
             final int subtitleWidth = textRenderer.getWidth(subtitle);
             this.addDrawableChild(subtitleWidget = new PressableTextWidget(width / 2 - (subtitleWidth / 2), (textRenderer.fontHeight + 2) * 2 + 3, subtitleWidth, textRenderer.fontHeight + 2, subtitle, subtitlePressAction, textRenderer));
         }
@@ -184,12 +184,12 @@ public class VFPScreen extends Screen {
      * @param context The current draw context
      */
     public void renderTitle(final DrawContext context) {
-        final MatrixStack matrices = context.getMatrices();
+        final Matrix3x2fStack matrices = context.getMatrices();
 
-        matrices.push();
-        matrices.scale(2F, 2F, 2F);
+        matrices.pushMatrix();
+        matrices.scale(2F, 2F);
         context.drawCenteredTextWithShadow(textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
-        matrices.pop();
+        matrices.popMatrix();
 
         renderSubtitle(context);
     }
@@ -215,8 +215,12 @@ public class VFPScreen extends Screen {
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
     }
 
-    public Text getSubtitle() {
+    public @Nullable Text getSubtitle() {
         return subtitle;
+    }
+
+    public @Nullable PressableTextWidget getSubtitleWidget() {
+        return subtitleWidget;
     }
 
     /**

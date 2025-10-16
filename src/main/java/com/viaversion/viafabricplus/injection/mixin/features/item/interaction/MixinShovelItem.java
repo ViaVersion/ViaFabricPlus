@@ -23,13 +23,12 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.Map;
 import net.minecraft.item.ShovelItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
-
-import java.util.Map;
 
 @Mixin(ShovelItem.class)
 public abstract class MixinShovelItem {

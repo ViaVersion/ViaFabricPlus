@@ -40,7 +40,7 @@ public final class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
 
         try {
             final MinecraftClient client = MinecraftClient.getInstance();
-            client.getSessionService().joinServer(client.getSession().getUuidOrNull(), client.getSession().getAccessToken(), serverId);
+            client.getApiServices().sessionService().joinServer(client.getSession().getUuidOrNull(), client.getSession().getAccessToken(), serverId);
         } catch (Exception e) {
             connection.getChannel().attr(ProtocolTranslator.CLIENT_CONNECTION_ATTRIBUTE_KEY).get().disconnect(ChatUtil.prefixText(Text.translatable("betacraft.viafabricplus.failed_to_verify_session")));
             ViaFabricPlusImpl.INSTANCE.getLogger().error("Error occurred while calling join server to verify session", e);

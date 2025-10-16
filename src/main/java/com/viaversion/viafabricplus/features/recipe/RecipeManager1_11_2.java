@@ -24,17 +24,16 @@ package com.viaversion.viafabricplus.features.recipe;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.input.RecipeInput;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 public final class RecipeManager1_11_2 {
 

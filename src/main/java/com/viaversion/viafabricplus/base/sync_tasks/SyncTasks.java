@@ -21,14 +21,13 @@
 
 package com.viaversion.viafabricplus.base.sync_tasks;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.RegistryByteBuf;
-
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
 
 public final class SyncTasks {
 
@@ -42,12 +41,8 @@ public final class SyncTasks {
      */
     public static final String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 
-    static {
-        DataCustomPayload.init();
-    }
-
     public static void init() {
-        // Calls the static block
+        DataCustomPayload.init();
     }
 
     /**

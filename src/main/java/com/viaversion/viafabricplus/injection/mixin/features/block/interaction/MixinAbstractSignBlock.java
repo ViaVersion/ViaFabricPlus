@@ -45,7 +45,7 @@ public abstract class MixinAbstractSignBlock {
 
     @Inject(method = "onUseWithItem", at = @At("HEAD"), cancellable = true)
     private void changeInteractionCalculation(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             return;
         }
 

@@ -22,14 +22,13 @@
 package com.viaversion.viafabricplus.injection.mixin.base.access;
 
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IChunkTracker;
+import java.util.Map;
+import java.util.Set;
 import net.raphimc.viabedrock.api.chunk.BedrockChunk;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-
-import java.util.Map;
-import java.util.Set;
 
 @Mixin(value = ChunkTracker.class, remap = false)
 public abstract class MixinChunkTracker implements IChunkTracker {

@@ -25,9 +25,8 @@ import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1
 import com.viaversion.viaversion.api.data.FullMappingsBase;
 import com.viaversion.viaversion.api.data.Mappings;
 import com.viaversion.viaversion.api.data.ParticleMappings;
-import org.spongepowered.asm.mixin.Mixin;
-
 import java.util.List;
+import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ParticleMappings.class)
 public abstract class MixinParticleMappings extends FullMappingsBase {

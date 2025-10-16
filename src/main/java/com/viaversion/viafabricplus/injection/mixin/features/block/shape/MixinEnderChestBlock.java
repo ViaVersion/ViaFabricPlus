@@ -43,7 +43,7 @@ public abstract class MixinEnderChestBlock extends BlockWithEntity {
 
     @Shadow
     @Final
-    protected static VoxelShape SHAPE;
+    private static VoxelShape SHAPE;
 
     protected MixinEnderChestBlock(Settings settings) {
         super(settings);

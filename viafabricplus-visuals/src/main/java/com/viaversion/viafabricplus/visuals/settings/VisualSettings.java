@@ -27,8 +27,6 @@ import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
 import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.FontStorage;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 

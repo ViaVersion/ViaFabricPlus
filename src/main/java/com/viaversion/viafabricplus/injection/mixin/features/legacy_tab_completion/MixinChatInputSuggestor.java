@@ -22,9 +22,11 @@
 package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_completion;
 
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import java.util.List;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import org.jetbrains.annotations.Nullable;
@@ -37,8 +39,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.List;
 
 @Mixin(ChatInputSuggestor.class)
 public abstract class MixinChatInputSuggestor {
@@ -66,12 +66,12 @@ public abstract class MixinChatInputSuggestor {
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    private void handle1_12_2KeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    private void handle1_12_2KeyPressed(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
         if (this.viaFabricPlus$cancelTabComplete()) {
-            if (keyCode == GLFW.GLFW_KEY_TAB && this.window == null) {
+            if (input.key() == GLFW.GLFW_KEY_TAB && this.window == null) {
                 this.refresh();
             } else if (this.window != null) {
-                if (this.window.keyPressed(keyCode, scanCode, modifiers)) {
+                if (this.window.keyPressed(input)) {
                     cir.setReturnValue(true);
                     return;
                 }

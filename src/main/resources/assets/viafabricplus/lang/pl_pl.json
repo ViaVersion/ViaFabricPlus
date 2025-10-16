@@ -48,7 +48,6 @@
   "screen.viafabricplus.accept_invite": "Zaakceptuj zaproszenie",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Zapisz wybraną wersję protokołu",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Pokazuj dodatkowe informacje w interfejsie debugowania",
   "general_settings.viafabricplus.show_classic_loading_progress": "Pokazuj klasyczny pasek ładowania w ekranie łączenia",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Pozycja przycisku w menu trybu wieloosobowego",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Pozycja przycisku ustawiania wersji w ekranie dodawania serwera",
@@ -78,6 +77,8 @@
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "Usuń nowsze funkcje z ekranu bloku komend",
   "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Ukrywaj nowe funkcje ekranu bloku konstrukcyjnego",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "Filtruj nieistniejące znaki",
+  "debug_settings.viafabricplus.legacy_crop_outlines": "Stare kontury upraw",
+  "debug_settings.viafabricplus.legacy_pane_outlines": "Stare kontury szyb",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Korzystaj z uwierzytelniania BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Weryfikuj sesję dla serwerów w trybie online",
@@ -107,6 +108,7 @@
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "Zmień interpolację rotacji ciała",
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "Zablokuj rotację ręki w trzeciej osobie podczas blokowania",
   "visual_settings.viafabricplus.sneak_instantly": "Kucaj natychmiastowo",
+  "visual_settings.viafabricplus.potion_enchantment_glint": "Pokazuj połysk zaklęcia na miksturach",
 
   "force_version.viafabricplus.title": "Wybierz wersję na której chcesz łączyć się do serwera",
 

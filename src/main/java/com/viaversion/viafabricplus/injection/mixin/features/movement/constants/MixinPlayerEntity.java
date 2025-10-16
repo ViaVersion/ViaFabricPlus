@@ -23,30 +23,19 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.constants
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.EntityAttachmentType;
-import net.minecraft.entity.EntityAttachments;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends LivingEntity {
-
-    @Unique
-    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.changing(0.6F, 1.65F).withEyeHeight(1.54F).
-            withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, PlayerEntity.VEHICLE_ATTACHMENT_POS));
-
-    @Unique
-    private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_8 = EntityDimensions.changing(0.6F, 1.8F).withEyeHeight(1.54F).
-            withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, PlayerEntity.VEHICLE_ATTACHMENT_POS));
 
     protected MixinPlayerEntity(final EntityType<? extends LivingEntity> entityType, final World world) {
         super(entityType, world);
@@ -62,18 +51,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
                 constant = 1.0E-5F;
             }
             final Box box = getBoundingBox();
-            cir.setReturnValue(getWorld().isSpaceEmpty(this, new Box(box.minX + offsetX, box.minY - d - constant, box.minZ + offsetZ, box.maxX + offsetX, box.minY, box.maxZ + offsetZ)));
-        }
-    }
-
-    @Inject(method = "getBaseDimensions", at = @At("HEAD"), cancellable = true)
-    private void modifyDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
-        if (pose == EntityPose.CROUCHING) {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-                cir.setReturnValue(viaFabricPlus$sneaking_dimensions_v1_8);
-            } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-                cir.setReturnValue(viaFabricPlus$sneaking_dimensions_v1_13_2);
-            }
+            cir.setReturnValue(getEntityWorld().isSpaceEmpty(this, new Box(box.minX + offsetX, box.minY - d - constant, box.minZ + offsetZ, box.maxX + offsetX, box.minY, box.maxZ + offsetZ)));
         }
     }
 

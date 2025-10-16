@@ -48,7 +48,6 @@
   "screen.viafabricplus.accept_invite": "초대 수락",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "선택된 프로토콜 버전 저장",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "디버그 HUD에 추가 정보 표시",
   "general_settings.viafabricplus.show_classic_loading_progress": "접속 화면에서 옛날에 쓰이던 로딩 진행 화면을 보여주기",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "멀티플레이 화면 버튼 위치",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "서버 추가 화면 버튼 위치",

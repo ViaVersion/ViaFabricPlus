@@ -23,13 +23,12 @@ package com.viaversion.viafabricplus.screen.impl.settings;
 
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
+import java.awt.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-
-import java.awt.*;
 
 public final class VersionedBooleanListEntry extends VFPListEntry {
     private final VersionedBooleanSetting value;
@@ -50,13 +49,13 @@ public final class VersionedBooleanListEntry extends VFPListEntry {
     }
 
     @Override
-    public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(DrawContext context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         final Text text = Text.translatable("base.viafabricplus." + (this.value.isAuto() ? "auto" : this.value.isEnabled() ? "on" : "off"));
         Color color = this.value.isAuto() ? Color.ORANGE : this.value.isEnabled() ? Color.GREEN : Color.RED;
 
-        final int offset = textRenderer.getWidth(text) + 6;
+        final int offset = textRenderer.getWidth(text) + 2;
         renderScrollableText(Text.of(Formatting.GRAY + this.value.getName().getString() + " " + Formatting.RESET + this.value.getProtocolRange().toString()), offset);
         context.drawTextWithShadow(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
 

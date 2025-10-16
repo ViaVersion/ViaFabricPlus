@@ -22,6 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.srv_resolving;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import java.util.Optional;
+import javax.naming.directory.DirContext;
 import net.minecraft.client.network.RedirectResolver;
 import net.minecraft.client.network.ServerAddress;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -29,9 +31,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import javax.naming.directory.DirContext;
-import java.util.Optional;
 
 @Mixin(RedirectResolver.class)
 public interface MixinRedirectResolver {

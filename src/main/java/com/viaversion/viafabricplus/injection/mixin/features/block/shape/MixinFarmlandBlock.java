@@ -44,7 +44,7 @@ public abstract class MixinFarmlandBlock extends Block {
 
     @Shadow
     @Final
-    protected static VoxelShape SHAPE;
+    private static VoxelShape SHAPE;
 
     public MixinFarmlandBlock(Settings settings) {
         super(settings);

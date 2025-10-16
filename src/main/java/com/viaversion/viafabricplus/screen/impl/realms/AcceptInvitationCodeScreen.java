@@ -22,11 +22,10 @@
 package com.viaversion.viafabricplus.screen.impl.realms;
 
 import com.viaversion.viafabricplus.screen.VFPScreen;
+import java.util.function.Consumer;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
-
-import java.util.function.Consumer;
 
 public final class AcceptInvitationCodeScreen extends VFPScreen {
 

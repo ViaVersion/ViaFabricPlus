@@ -25,9 +25,9 @@ import com.viaversion.viafabricplus.screen.VFPListEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.joml.Matrix3x2fStack;
 
 public final class TitleEntry extends VFPListEntry {
 
@@ -43,17 +43,17 @@ public final class TitleEntry extends VFPListEntry {
     }
 
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        final MatrixStack matrices = context.getMatrices();
+    public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        final Matrix3x2fStack matrices = context.getMatrices();
 
-        matrices.push();
-        matrices.translate(x, y, 0);
-        mappedRender(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
-        matrices.pop();
+        matrices.pushMatrix();
+        matrices.translate(getX(), getY());
+        mappedRender(context, getX(), getY(), getWidth(), getHeight(), mouseX, mouseY, hovered, deltaTicks);
+        matrices.popMatrix();
     }
 
     @Override
-    public void mappedRender(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(DrawContext context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         context.drawTextWithShadow(textRenderer, this.name.copy().formatted(Formatting.BOLD), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);

@@ -26,11 +26,10 @@ import com.viaversion.viaversion.api.data.MappingDataLoader;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
-import net.minecraft.block.Block;
-import net.minecraft.registry.Registries;
-
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.block.Block;
+import net.minecraft.registry.Registries;
 
 public final class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
 
@@ -57,7 +56,11 @@ public final class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
         for (Map.Entry<String, JsonElement> blockEntry : materialsData.getAsJsonObject("blocks").entrySet()) {
             final Map<ProtocolVersion, String> blockMaterials = new HashMap<>();
             for (Map.Entry<String, JsonElement> entry : blockEntry.getValue().getAsJsonObject().entrySet()) {
-                blockMaterials.put(ProtocolVersion.getClosest(entry.getKey()), entry.getValue().getAsString());
+                final ProtocolVersion version = ProtocolVersion.getClosest(entry.getKey());
+                if (version == null) {
+                    throw new IllegalStateException("Unknown protocol version: " + entry.getKey());
+                }
+                blockMaterials.put(version, entry.getValue().getAsString());
             }
             BLOCK_MATERIALS.put(blockEntry.getKey(), blockMaterials);
         }
@@ -76,6 +79,7 @@ public final class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
         if (materials == null) {
             return null;
         }
+
         for (Map.Entry<ProtocolVersion, String> materialEntry : materials.entrySet()) {
             if (version.olderThanOrEqualTo(materialEntry.getKey())) {
                 return materialEntry.getValue();

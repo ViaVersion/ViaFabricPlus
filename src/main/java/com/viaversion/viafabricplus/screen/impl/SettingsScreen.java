@@ -30,7 +30,11 @@ import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
 import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPScreen;
-import com.viaversion.viafabricplus.screen.impl.settings.*;
+import com.viaversion.viafabricplus.screen.impl.settings.BooleanListEntry;
+import com.viaversion.viafabricplus.screen.impl.settings.ButtonListEntry;
+import com.viaversion.viafabricplus.screen.impl.settings.ModeListEntry;
+import com.viaversion.viafabricplus.screen.impl.settings.TitleEntry;
+import com.viaversion.viafabricplus.screen.impl.settings.VersionedBooleanListEntry;
 import com.viaversion.viafabricplus.settings.SettingsManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -69,7 +73,7 @@ public final class SettingsScreen extends VFPScreen {
                         case final ModeSetting modeSetting -> this.addEntry(new ModeListEntry(modeSetting));
                         case final VersionedBooleanSetting versionedBooleanSetting ->
                                 this.addEntry(new VersionedBooleanListEntry(versionedBooleanSetting));
-                        case null, default ->
+                        default ->
                             ViaFabricPlusImpl.INSTANCE.getLogger().warn("Unknown setting type: {}", setting.getClass().getName());
                     }
                 }

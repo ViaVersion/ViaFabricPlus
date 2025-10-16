@@ -48,7 +48,6 @@
   "screen.viafabricplus.accept_invite": "Accept Invite",
 
   "general_settings.viafabricplus.save_selected_protocol_version": "Save selected protocol version",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Show extra information in Debug HUD",
   "general_settings.viafabricplus.show_classic_loading_progress": "Show classic loading progress in connect screen",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Multiplayer screen button orientation",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Add server screen button orientation",
@@ -62,6 +61,7 @@
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Click to set account for Bedrock Edition",
   "bedrock_settings.viafabricplus.replace_default_port": "Replace default port in server list",
+  "bedrock_settings.viafabricplus.experimental_features": "Enable experimental features (may be unstable)",
 
   "debug_settings.viafabricplus.queue_config_packets": "Queue config packets",
   "debug_settings.viafabricplus.disable_sequencing": "Disable sequencing",

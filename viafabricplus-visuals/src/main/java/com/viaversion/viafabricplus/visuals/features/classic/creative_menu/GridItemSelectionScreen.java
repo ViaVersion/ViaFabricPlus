@@ -22,9 +22,13 @@
 package com.viaversion.viafabricplus.visuals.features.classic.creative_menu;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ClickableWidget;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -32,9 +36,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
 public final class GridItemSelectionScreen extends Screen {
@@ -83,7 +84,7 @@ public final class GridItemSelectionScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(final Click click, final boolean doubled) {
         if (selectedItem != null) {
             this.client.interactionManager.clickCreativeStack(selectedItem, client.player.getInventory().getSelectedSlot() + 36); // Beta Inventory Tracker
             this.client.player.getInventory().setSelectedStack(selectedItem);
@@ -92,16 +93,16 @@ public final class GridItemSelectionScreen extends Screen {
             ClickableWidget.playClickSound(this.client.getSoundManager());
             this.close();
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (client.options.inventoryKey.matchesKey(keyCode, scanCode)) {
+    public boolean keyPressed(final KeyInput input) {
+        if (client.options.inventoryKey.matchesKey(input)) {
             this.close();
             return true;
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(input);
     }
 
     @Override

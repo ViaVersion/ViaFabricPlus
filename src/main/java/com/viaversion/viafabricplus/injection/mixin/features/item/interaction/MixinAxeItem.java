@@ -43,11 +43,7 @@ public abstract class MixinAxeItem {
 
     @Redirect(method = "useOnBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/AxeItem;shouldCancelStripAttempt(Lnet/minecraft/item/ItemUsageContext;)Z"))
     private boolean neverCancelStripAttempt(ItemUsageContext context) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            return false;
-        } else {
-            return shouldCancelStripAttempt(context);
-        }
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5) && shouldCancelStripAttempt(context);
     }
 
     @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)

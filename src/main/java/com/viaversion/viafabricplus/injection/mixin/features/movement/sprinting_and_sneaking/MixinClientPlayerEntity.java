@@ -26,14 +26,23 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.packet.ServerboundPackets1_21_5;
+import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.Protocol1_21_5To1_21_6;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.recipebook.ClientRecipeBook;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.PlayerInputC2SPacket;
+import net.minecraft.stat.StatHandler;
 import net.minecraft.util.PlayerInput;
 import net.minecraft.util.math.Vec2f;
 import org.spongepowered.asm.mixin.Final;
@@ -62,6 +71,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     private boolean inSneakingPose;
 
+    @Unique
+    private boolean viaFabricPlus$lastSneaking;
+
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
     }
@@ -75,13 +87,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     protected abstract boolean shouldStopSprinting();
 
     @Shadow
-    protected abstract void sendSneakingPacket();
-
-    @Shadow
     protected abstract boolean canSprint();
-
-    @Shadow
-    protected abstract boolean isBlind();
 
     @Shadow
     public abstract boolean shouldSlowDown();
@@ -100,6 +106,40 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Shadow
     public abstract void init();
+
+    @Shadow
+    public abstract boolean isSneaking();
+
+    @Shadow
+    public abstract boolean isSubmergedInWater();
+
+    @Shadow
+    public abstract boolean isUsingItem();
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void initLastSneaking(MinecraftClient client, ClientWorld world, ClientPlayNetworkHandler networkHandler, StatHandler stats, ClientRecipeBook recipeBook, PlayerInput lastPlayerInput, boolean lastSprinting, CallbackInfo ci) {
+        viaFabricPlus$lastSneaking = lastPlayerInput.sneak();
+    }
+
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V", shift = At.Shift.AFTER))
+    private void sendSneakingPacket(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_21_2, ProtocolVersion.v1_21_5)) {
+            this.viaFabricPlus$sendSneakingPacket();
+        }
+    }
+
+    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
+    private void skipVVProtocol(ClientPlayNetworkHandler instance, Packet<?> packet) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof PlayerInputC2SPacket(
+            PlayerInput i
+        )) {
+            // Directly send the player input packet in order to bypass the code in the 1.21.5->1.21.6 protocol.
+            // This allows mods to directly send raw packets which will then be remapped by VV instead of us.
+            this.viaFabricPlus$sendInputPacket(i);
+        } else {
+            instance.sendPacket(packet);
+        }
+    }
 
     @Redirect(method = "tickMovementInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;applyMovementSpeedFactors(Lnet/minecraft/util/math/Vec2f;)Lnet/minecraft/util/math/Vec2f;"))
     private Vec2f moveMovementSpeedFactors(ClientPlayerEntity instance, Vec2f input) {
@@ -153,6 +193,13 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         }
     }
 
+    @Inject(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSprintingPacket()V", shift = At.Shift.AFTER))
+    private void sendSneakingAfterSprinting(CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            this.viaFabricPlus$sendSneakingPacket();
+        }
+    }
+
     @Inject(method = "tickMovement", at = @At("HEAD"))
     private void storeSprintingSneakingState(CallbackInfo ci, @Share("sneakSprint") LocalBooleanRef ref) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
@@ -185,15 +232,16 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Inject(method = "canStartSprinting", at = @At("HEAD"), cancellable = true)
     private void changeCanStartSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
         final ProtocolVersion version = ProtocolTranslator.getTargetVersion();
-        if (version.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (version.olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
             cir.setReturnValue(!this.isSprinting()
-                && this.viaFabricPlus$isWalking1_21_4()
+                && (version.olderThanOrEqualTo(ProtocolVersion.v1_21_4) ? this.viaFabricPlus$isWalking1_21_4() : this.input.hasForwardMovement())
                 && this.canSprint()
                 && !this.isUsingItem()
-                && !this.isBlind()
+                && !this.hasBlindnessEffect()
                 && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.hasVehicle()) || this.canVehicleSprint(this.getVehicle()))
-                && !(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding())
-                && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4))));
+                && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding()) || this.isSubmergedInWater())
+                && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4)))
+                && (!version.olderThanOrEqualTo(ProtocolVersion.v1_21_4) && (!this.isTouchingWater() || this.isSubmergedInWater()) || version.olderThanOrEqualTo(ProtocolVersion.v1_21_4)));
         }
     }
 
@@ -202,6 +250,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         // Not needed, but for consistency and in case a mod uses this method
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             cir.setReturnValue(!this.isOnGround() && !this.input.playerInput.sneak() && this.viaFabricPlus$shouldCancelSprinting() || !this.isTouchingWater());
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
+            cir.setReturnValue(this.hasBlindnessEffect() || this.hasVehicle() && !this.canVehicleSprint(this.getVehicle())
+                || !this.isTouchingWater() || !this.input.hasForwardMovement() && !this.isOnGround() && !this.input.playerInput.sneak() || !this.canSprint());
         }
     }
 
@@ -209,19 +260,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     private void changeStopSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             final boolean ridingCamel = getVehicle() != null && getVehicle().getType() == EntityType.CAMEL;
-            cir.setReturnValue(this.isGliding() || this.isBlind() || this.shouldSlowDown() || this.hasVehicle() && !ridingCamel || this.isUsingItem() && !this.hasVehicle() && !this.isSubmergedInWater());
-        }
-    }
-
-    @WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSneakingPacket()V"))
-    private boolean sendSneakingAfterSprinting(ClientPlayerEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_2);
-    }
-
-    @Inject(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSprintingPacket()V", shift = At.Shift.AFTER))
-    private void sendSneakingAfterSprinting(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            this.sendSneakingPacket();
+            cir.setReturnValue(this.isGliding() || this.hasBlindnessEffect() || this.shouldSlowDown() || this.hasVehicle() && !ridingCamel || this.isUsingItem() && !this.hasVehicle() && !this.isSubmergedInWater());
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
+            cir.setReturnValue(this.hasBlindnessEffect() || this.hasVehicle() && !this.canVehicleSprint(this.getVehicle()) || !this.input.hasForwardMovement() || !this.canSprint() || this.horizontalCollision && !this.collidedSoftly || this.isTouchingWater() && !this.isSubmergedInWater());
         }
     }
 
@@ -230,7 +271,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_3);
     }
 
-    @Redirect(method = "canSprint", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
+    @Redirect(method = "canSprint()Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
     private boolean dontAllowSprintingAsPassenger(ClientPlayerEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_19_1) && instance.hasVehicle();
     }
@@ -240,6 +281,37 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             this.inSneakingPose = this.isSneaking() && !this.isSleeping();
         }
+    }
+
+    @Unique
+    private void viaFabricPlus$sendSneakingPacket() {
+        final boolean sneaking = this.isSneaking();
+        if (sneaking == this.viaFabricPlus$lastSneaking) {
+            return;
+        }
+
+        final PacketWrapper sneakingPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_COMMAND, ProtocolTranslator.getPlayNetworkUserConnection());
+        sneakingPacket.write(Types.VAR_INT, getId());
+        sneakingPacket.write(Types.VAR_INT, sneaking ? 0 : 1);
+        sneakingPacket.write(Types.VAR_INT, 0); // No data
+        sneakingPacket.scheduleSendToServer(Protocol1_21_5To1_21_6.class);
+        this.viaFabricPlus$lastSneaking = sneaking;
+    }
+
+    @Unique
+    private void viaFabricPlus$sendInputPacket(final PlayerInput playerInput) {
+        byte flags = 0;
+        flags = (byte) (flags | (playerInput.forward() ? 0x1 : 0));
+        flags = (byte) (flags | (playerInput.backward() ? 0x2 : 0));
+        flags = (byte) (flags | (playerInput.left() ? 0x4 : 0));
+        flags = (byte) (flags | (playerInput.right() ? 0x8 : 0));
+        flags = (byte) (flags | (playerInput.jump() ? 0x10 : 0));
+        flags = (byte) (flags | (playerInput.sneak() ? 0x20 : 0));
+        flags = (byte) (flags | (playerInput.sprint() ? 0x40 : 0));
+
+        final PacketWrapper inputPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_INPUT, ProtocolTranslator.getPlayNetworkUserConnection());
+        inputPacket.write(Types.BYTE, flags);
+        inputPacket.scheduleSendToServer(Protocol1_21_5To1_21_6.class);
     }
 
     @Unique

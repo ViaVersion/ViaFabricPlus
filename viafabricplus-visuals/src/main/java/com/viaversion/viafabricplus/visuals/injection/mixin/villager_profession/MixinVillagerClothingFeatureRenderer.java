@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(VillagerClothingFeatureRenderer.class)
 public abstract class MixinVillagerClothingFeatureRenderer {
 
-    @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/render/entity/state/LivingEntityRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/village/VillagerData;profession()Lnet/minecraft/registry/entry/RegistryEntry;"))
+    @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;ILnet/minecraft/client/render/entity/state/LivingEntityRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/village/VillagerData;profession()Lnet/minecraft/registry/entry/RegistryEntry;"))
     private RegistryEntry<VillagerProfession> revertVillagerVisual(VillagerData instance) {
         if (VisualSettings.INSTANCE.hideVillagerProfession.getValue()) {
             return MinecraftClient.getInstance().getNetworkHandler().getRegistryManager().getEntryOrThrow(VillagerProfession.NONE);

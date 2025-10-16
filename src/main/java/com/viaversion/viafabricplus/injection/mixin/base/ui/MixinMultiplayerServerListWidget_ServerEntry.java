@@ -27,7 +27,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
@@ -36,9 +38,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Mixin(MultiplayerServerListWidget.ServerEntry.class)
 public abstract class MixinMultiplayerServerListWidget_ServerEntry {
 
@@ -46,8 +45,8 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
     @Final
     private ServerInfo server;
 
-    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;setTooltip(Lnet/minecraft/text/Text;)V"))
-    private void drawTranslatingState(MultiplayerScreen instance, Text text, Operation<Void> original) {
+    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTooltip(Lnet/minecraft/text/Text;II)V"))
+    private void drawTranslatingState(DrawContext instance, Text text, int x, int y, Operation<Void> original) {
         final List<Text> tooltips = new ArrayList<>();
         tooltips.add(text);
         if (GeneralSettings.INSTANCE.showAdvertisedServerVersion.getValue()) {
@@ -57,7 +56,7 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
                 tooltips.add(Text.translatable("base.viafabricplus.server_version", server.version.getString() + " (" + server.protocolVersion + ")"));
             }
         }
-        instance.setTooltip(Lists.transform(tooltips, Text::asOrderedText));
+        instance.drawTooltip(Lists.transform(tooltips, Text::asOrderedText), x, y);
     }
 
 }

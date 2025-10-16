@@ -21,10 +21,17 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
+import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import com.viaversion.viafabricplus.injection.access.block.shape.IHorizontalConnectingBlock;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.*;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FenceBlock;
+import net.minecraft.block.HorizontalConnectingBlock;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -34,6 +41,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FenceBlock.class)
 public abstract class MixinFenceBlock extends HorizontalConnectingBlock implements IHorizontalConnectingBlock {
@@ -55,6 +63,15 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock implemen
     private void init1_4_7Shapes(Settings settings, CallbackInfo ci) {
         this.viaFabricPlus$collision_shape_r1_4_7 = this.viaFabricPlus$createShapes1_4_7(24.0F);
         this.viaFabricPlus$outline_shape_r1_4_7 = this.viaFabricPlus$createShapes1_4_7(16.0F);
+    }
+
+    @Inject(method = "canConnect", at = @At("RETURN"), cancellable = true)
+    private void canConnect1_14(BlockState state, boolean neighborIsFullSquare, Direction dir, CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14)) {
+            if (!Block1_14.isExceptBlockForAttachWithPiston(state.getBlock())) {
+                cir.setReturnValue(false);
+            }
+        }
     }
 
     @Override

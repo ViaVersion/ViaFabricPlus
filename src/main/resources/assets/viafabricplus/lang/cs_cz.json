@@ -13,7 +13,6 @@
   "base.viafabricplus.copy_code": "Kopírovat kód",
 
   "general_settings.viafabricplus.super_secret_settings": "Zobrazit \"Super Secret Settings\"",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Zobrazit více informací v ladící obrazovce",
   "general_settings.viafabricplus.show_classic_loading_progress": "Zobrazit progres načítání mapy při připojování ke classic serveru",
   "general_settings.viafabricplus.main": "Umístění hlavního tlačítka",
   "general_settings.viafabricplus.filter_creative_tabs": "Odstranit nedostupné předměty z inventáře tvořivé hry",

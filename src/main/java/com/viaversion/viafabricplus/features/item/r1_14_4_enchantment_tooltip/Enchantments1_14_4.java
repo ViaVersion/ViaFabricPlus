@@ -22,13 +22,12 @@
 package com.viaversion.viafabricplus.features.item.r1_14_4_enchantment_tooltip;
 
 import com.viaversion.viaversion.util.Key;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.registry.RegistryKey;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.registry.RegistryKey;
 
 public final class Enchantments1_14_4 {
 

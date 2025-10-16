@@ -28,9 +28,8 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.classic.ListExtensionsCommand;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.classic.SetTimeCommand;
 import com.viaversion.vialoader.impl.viaversion.VLCommandHandler;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-
 import java.util.concurrent.CompletableFuture;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 
 public final class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
 
@@ -40,7 +39,6 @@ public final class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
         this.removeSubCommand("list");
         this.removeSubCommand("player");
         this.removeSubCommand("pps");
-        this.removeSubCommand("dump");
 
         this.registerSubCommand(new ListExtensionsCommand());
         this.registerSubCommand(new SetTimeCommand());

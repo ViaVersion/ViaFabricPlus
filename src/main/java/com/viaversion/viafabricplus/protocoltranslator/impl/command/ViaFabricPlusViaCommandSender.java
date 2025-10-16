@@ -22,11 +22,10 @@
 package com.viaversion.viafabricplus.protocoltranslator.impl.command;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
+import java.util.UUID;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
-
-import java.util.UUID;
 
 public final class ViaFabricPlusViaCommandSender implements ViaCommandSender {
 
