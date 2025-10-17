@@ -1,6 +1,5 @@
 {
   "modmenu.descriptionTranslation.viafabricplus": "マルチプレイ時にQoL修正(バグ修正や動作改善)を加え、すべてのMinecraftサーバーバージョン（リリース、ベータ、アルファ、クラシック、スナップショット、Bedrock）に接続するためのFabric MOD",
-	
   "base.viafabricplus.settings": "設定",
   "base.viafabricplus.on": "オン",
   "base.viafabricplus.off": "オフ",
@@ -31,13 +30,11 @@
   "base.viafabricplus.code": "コード",
   "base.viafabricplus.accept": "承認",
   "base.viafabricplus.refresh": "再読み込み",
-
   "setting_group_name.viafabricplus.authentication": "認証",
   "setting_group_name.viafabricplus.visual": "視覚",
   "setting_group_name.viafabricplus.debug": "開発者向け",
   "setting_group_name.viafabricplus.general": "全般",
   "setting_group_name.viafabricplus.bedrock": "統合版",
-
   "screen.viafabricplus.force_version": "強制的なバージョン",
   "screen.viafabricplus.report_issues": "問題を報告",
   "screen.viafabricplus.server_list": "サーバーリスト",
@@ -46,7 +43,6 @@
   "screen.viafabricplus.settings": "設定",
   "screen.viafabricplus.bedrock_realms": "統合版Realms",
   "screen.viafabricplus.accept_invite": "招待コードを承認",
-
   "general_settings.viafabricplus.save_selected_protocol_version": "選択したプロトコルバージョンを保存",
   "general_settings.viafabricplus.show_classic_loading_progress": "旧バージョン風の読み込み進行状況を表示",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "マルチプレイヤー画面ボタンの位置",
@@ -58,10 +54,8 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "古いバージョンでスキンとスカルを読み込む",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "アルファバージョンでインベントリ操作をエミュレート",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "スロット画面でスクロール位置を保存",
-
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "クリックして統合版のアカウントを設定",
   "bedrock_settings.viafabricplus.replace_default_port": "サーバーリストでデフォルトのポートを置換",
-
   "debug_settings.viafabricplus.queue_config_packets": "設定パケットをキューに入れる",
   "debug_settings.viafabricplus.disable_sequencing": "シーケンス処理を無効化",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "取引画面を滑らかにする",
@@ -79,12 +73,10 @@
   "debug_settings.viafabricplus.disable_server_pinging": "サーバーへのpingを無効化",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "存在しないグリフをフィルタリング",
   "debug_settings.viafabricplus.legacy_pane_outlines": "古い板ガラスのアウトライン",
-
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "BetaCraft認証を使用",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "オンラインモードサーバーのセッションを検証",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "ClassiCubeサーバーリストを使用するときに、CPEを自動的に選択",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "ClassiCubeサーバー一覧の使用時に、セッション名をClassiCubeに設定",
-
   "visual_settings.viafabricplus.change_game_menu_screen_layout": "ゲームメニュー画面レイアウトを変更",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "安全なチャット警告を無効化",
   "visual_settings.viafabricplus.hide_signature_indicator": "署名インジケータを非表示",
@@ -109,19 +101,14 @@
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "ブロック中の三人称の腕の回転を固定",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "ボディ回転補間を変更",
   "visual_settings.viafabricplus.potion_enchantment_glint": "ポーションにエンチャントの輝きを表示",
-
   "force_version.viafabricplus.title": "サーバーに接続するバージョンを選択してください",
-
   "click_to_set_bedrock_account.viafabricplus.notice": "ブラウザを開きました!\nこの画面を閉じると、処理がキャンセルされます！",
   "click_to_set_bedrock_account.viafabricplus.display": "統合版のアカウント: %s",
-  
   "change_game_menu_screen_layout.viafabricplus.authentic": "オリジナル",
   "change_game_menu_screen_layout.viafabricplus.adjusted": "改良版",
-
   "change_game_menu_screen_layout.viafabricplus.authentic.tooltip": "選択したバージョンに基づいてボタンの位置とオーバーレイを調整",
   "change_game_menu_screen_layout.viafabricplus.adjusted.tooltip": "1.18.2以下で、\"プレーヤーを報告\"を\"社交設定画面\"に置き換えます。",
   "change_game_menu_screen_layout.viafabricplus.off.tooltip": "ゲームメニュー画面は一切変更しません",
-
   "report.viafabricplus.button": "問題を報告",
   "report.viafabricplus.bug_report": "GitHubでバグを報告",
   "report.viafabricplus.feature_request": "GitHubで新機能をリクエスト",
@@ -132,31 +119,25 @@
   "report.viafabricplus.create_via_dump.failed": "ダンプの作成に失敗しました。詳細についてはログを参照してください",
   "report.viafabricplus.create_via_dump.success": "ダンプが作成され、クリップボードにコピーされました",
   "report.viafabricplus.open_logs.response": "ログフォルダが開きました!",
-
   "classicube.viafabricplus.account": "ここでアカウントを作成できます: https://www.classicube.net/",
   "classicube.viafabricplus.loading": "プロファイル情報とサーバーリストを読み込み中...",
   "classicube.viafabricplus.profile": "ClassiCubeのプロファイル:",
   "classicube.viafabricplus.warning": "この機能は、APIリクエストをClassiCube APIに送信します",
-  
   "betacraft.viafabricplus.failed_to_verify_session": "セッションの検証に失敗しました。アカウントにログインするか、設定でBetaCraft認証を無効化してください",
   "betacraft.viafabricplus.loading": "読み込み中...",
   "betacraft.viafabricplus.warning": "このボタンを押すと、APIリクエストが\"betacraft.uk/serverlist\"に送信されます",
-
   "translation.viafabricplus.packet_error": "パケットの変換中にエラーが発生しました。詳細はログを参照してください",
-
   "classic4j_library.viafabricplus.error.token": "トークンが無効です。ViaFabricPlusのバージョンが古くなっている可能性があります",
   "classic4j_library.viafabricplus.error.username": "無効なユーザー名",
   "classic4j_library.viafabricplus.error.password": "無効なパスワード",
   "classic4j_library.viafabricplus.error.verification": "ユーザーはまだメールアドレスを確認していません",
   "classic4j_library.viafabricplus.error.logincode": "多要素認証が要求されました。メールを確認してください",
-
   "minecraftauth_library.viafabricplus.xbldevicetoken": "Xbox Liveでデバイスを認証中...",
   "minecraftauth_library.viafabricplus.xblsisuauthentication": "SISUを使用してXbox Liveで認証中...",
   "minecraftauth_library.viafabricplus.mcchain": "Minecraft サービスで認証中...",
   "minecraftauth_library.viafabricplus.xblxststoken": "XSTSトークンを要求中...",
   "minecraftauth_library.viafabricplus.playfabtoken": "PlayFabで認証中...",
   "minecraftauth_library.viafabricplus.realmsxsts": "Realms XSTSトークンを要求中...",
-  
   "bedrock_realms.viafabricplus.warning": "この機能を使用するには、設定で統合版アカウントを設定する必要があります",
   "bedrock_realms.viafabricplus.availability_check": "利用状況を確認しています...",
   "bedrock_realms.viafabricplus.no_worlds": "ワールドが見つかりませんでした :(",

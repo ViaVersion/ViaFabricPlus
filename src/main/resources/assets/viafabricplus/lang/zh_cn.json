@@ -1,6 +1,5 @@
 {
   "modmenu.descriptionTranslation.viafabricplus": "一款Minecraft Fabric模组，可让您加入所有Minecraft服务器版本（Classic版、Alpha版、Beta版、正式版、愚人节特别版、基岩版）",
-
   "base.viafabricplus.settings": "设置",
   "base.viafabricplus.on": "开",
   "base.viafabricplus.off": "关",
@@ -31,13 +30,11 @@
   "base.viafabricplus.code": "代码",
   "base.viafabricplus.accept": "接受",
   "base.viafabricplus.refresh": "刷新",
-
   "setting_group_name.viafabricplus.authentication": "认证",
   "setting_group_name.viafabricplus.visual": "视觉",
   "setting_group_name.viafabricplus.debug": "调试",
   "setting_group_name.viafabricplus.general": "通用",
   "setting_group_name.viafabricplus.bedrock": "基岩版",
-
   "screen.viafabricplus.force_version": "强制使用版本",
   "screen.viafabricplus.report_issues": "报告问题",
   "screen.viafabricplus.server_list": "服务器列表",
@@ -46,7 +43,6 @@
   "screen.viafabricplus.settings": "设置",
   "screen.viafabricplus.bedrock_realms": "基岩版Realm",
   "screen.viafabricplus.accept_invite": "接受邀请",
-
   "general_settings.viafabricplus.save_selected_protocol_version": "保存所选协议版本",
   "general_settings.viafabricplus.show_classic_loading_progress": "在连接屏幕显示经典加载进度条",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "多人游戏屏幕按钮位置",
@@ -58,10 +54,8 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "加载旧版本皮肤和头颅",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "模拟Alpha版本物品栏操作",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "在槽位屏幕中保存滚动位置",
-
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "单击以设置基岩版账户",
   "bedrock_settings.viafabricplus.replace_default_port": "在服务器列表中替换默认端口",
-
   "debug_settings.viafabricplus.queue_config_packets": "排列配置数据包",
   "debug_settings.viafabricplus.disable_sequencing": "禁用排序",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "平滑交易屏幕",
@@ -79,12 +73,10 @@
   "debug_settings.viafabricplus.disable_server_pinging": "禁用服务器Ping",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "过滤不存在的字形",
   "debug_settings.viafabricplus.legacy_pane_outlines": "旧版玻璃板轮廓",
-
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用BetaCraft认证",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "验证在线模式服务器的会话",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "使用ClassiCube服务器列表时自动选择CPE",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "使用ClassiCube服务器列表时将会话名称设置为ClassiCube名称",
-
   "visual_settings.viafabricplus.change_game_menu_screen_layout": "更改游戏菜单屏幕布局",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "禁用安全聊天警告",
   "visual_settings.viafabricplus.hide_signature_indicator": "隐藏签名指示器",
@@ -109,19 +101,14 @@
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "格挡时锁定第三人称手臂旋转",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "更改身体旋转插值",
   "visual_settings.viafabricplus.potion_enchantment_glint": "在药水上显示附魔光效",
-
   "force_version.viafabricplus.title": "请选择要Ping/连接服务器的版本",
-
   "click_to_set_bedrock_account.viafabricplus.notice": "你的浏览器应该已经打开。\n关闭此屏幕将取消该过程！",
   "click_to_set_bedrock_account.viafabricplus.display": "基岩版账户：%s",
-
   "change_game_menu_screen_layout.viafabricplus.authentic": "原版",
   "change_game_menu_screen_layout.viafabricplus.adjusted": "调整",
-
   "change_game_menu_screen_layout.viafabricplus.authentic.tooltip": "根据所选版本调整按钮位置和叠加层。",
   "change_game_menu_screen_layout.viafabricplus.adjusted.tooltip": "在≤1.18.2中将“举报玩家”替换为“社交”屏幕。",
   "change_game_menu_screen_layout.viafabricplus.off.tooltip": "完全不修改游戏菜单屏幕。",
-
   "report.viafabricplus.button": "报告问题",
   "report.viafabricplus.bug_report": "在GitHub上报告漏洞",
   "report.viafabricplus.feature_request": "在GitHub上请求功能",
@@ -132,31 +119,25 @@
   "report.viafabricplus.create_via_dump.failed": "无法创建转储！请查看日志了解更多信息。",
   "report.viafabricplus.create_via_dump.success": "已创建转储并复制到剪贴板！",
   "report.viafabricplus.open_logs.response": "已打开日志文件夹！",
-
   "classicube.viafabricplus.account": "你可以在此创建账户：https://www.classicube.net/",
   "classicube.viafabricplus.loading": "正在加载个人资料信息和服务器列表…",
   "classicube.viafabricplus.profile": "ClassiCube个人资料：",
   "classicube.viafabricplus.warning": "此功能将向ClassiCube API发送API请求。",
-
   "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus无法验证你的会话！请登录账户或在ViaFabricPlus设置中禁用BetaCraft认证",
   "betacraft.viafabricplus.loading": "加载中…",
   "betacraft.viafabricplus.warning": "按下此按钮将向“betacraft.uk/serverlist”发送API请求。",
-
   "translation.viafabricplus.packet_error": "转译数据包时发生错误！请在日志中查看更多详细信息！",
-
   "classic4j_library.viafabricplus.error.token": "令牌不正确。你的ViaFabricPlus版本是否过旧？",
   "classic4j_library.viafabricplus.error.username": "用户名无效。",
   "classic4j_library.viafabricplus.error.password": "密码无效。",
   "classic4j_library.viafabricplus.error.verification": "用户尚未验证电子邮件地址。",
   "classic4j_library.viafabricplus.error.logincode": "已请求多重认证。请查看你的电子邮箱。",
-
   "minecraftauth_library.viafabricplus.xbldevicetoken": "正在使用Xbox Live进行设备认证…",
   "minecraftauth_library.viafabricplus.xblsisuauthentication": "正在通过SISU进行Xbox Live认证…",
   "minecraftauth_library.viafabricplus.mcchain": "正在使用Minecraft服务进行认证…",
   "minecraftauth_library.viafabricplus.xblxststoken": "正在请求XSTS令牌…",
   "minecraftauth_library.viafabricplus.playfabtoken": "正在使用PlayFab进行认证…",
   "minecraftauth_library.viafabricplus.realmsxsts": "正在请求Realms XSTS令牌…",
-
   "bedrock_realms.viafabricplus.warning": "此功能需要在设置中设置基岩版账户！",
   "bedrock_realms.viafabricplus.availability_check": "正在检查可用性…",
   "bedrock_realms.viafabricplus.no_worlds": "未找到任何世界 :(",
