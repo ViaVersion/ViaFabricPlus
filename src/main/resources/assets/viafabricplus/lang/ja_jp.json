@@ -56,6 +56,7 @@
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "スロット画面でスクロール位置を保存",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "クリックして統合版のアカウントを設定",
   "bedrock_settings.viafabricplus.replace_default_port": "サーバーリストでデフォルトのポートを置換",
+  "bedrock_settings.viafabricplus.experimental_features": "実験的な機能を有効にする (不安定な場合があります)",
   "debug_settings.viafabricplus.queue_config_packets": "設定パケットをキューに入れる",
   "debug_settings.viafabricplus.disable_sequencing": "シーケンス処理を無効化",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "取引画面を滑らかにする",
