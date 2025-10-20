@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.EnderChestBlock;
@@ -35,12 +36,17 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnderChestBlock.class)
 public abstract class MixinEnderChestBlock extends BlockWithEntity {
+
+    //https://bugs-legacy.mojang.com/browse/MCPE-94126
+    @Unique
+    private static final VoxelShape viaFabricPlus$shape_bedrock = Block.createColumnShape(15.15F, 0.0F, 15.15F);
 
     @Shadow
     @Final
@@ -54,12 +60,15 @@ public abstract class MixinEnderChestBlock extends BlockWithEntity {
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             cir.setReturnValue(VoxelShapes.fullCube());
+        } else if (ProtocolTranslator.getTargetVersion().equalTo(BedrockProtocolVersion.bedrockLatest)) {
+            cir.setReturnValue(viaFabricPlus$shape_bedrock);
         }
     }
 
     @Override
     public VoxelShape getCullingShape(BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)
+            || ProtocolTranslator.getTargetVersion().equalTo(BedrockProtocolVersion.bedrockLatest)) {
             return SHAPE;
         } else {
             return super.getCullingShape(state);
