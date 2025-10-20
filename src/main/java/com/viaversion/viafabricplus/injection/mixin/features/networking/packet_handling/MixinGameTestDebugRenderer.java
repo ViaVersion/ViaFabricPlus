@@ -19,26 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.packet;
+package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_handling;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.player.PlayerPosition;
-import net.minecraft.util.math.MathHelper;
+import com.viaversion.viafabricplus.injection.access.networking.packet_handling.IGameTestDebugRenderer;
+import java.util.Map;
+import net.minecraft.client.render.debug.GameTestDebugRenderer;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(PlayerPosition.class)
-public abstract class MixinPlayerPosition {
+@Mixin(GameTestDebugRenderer.class)
+public abstract class MixinGameTestDebugRenderer implements IGameTestDebugRenderer {
 
-    @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;clamp(FFF)F"))
-    private static float uncapPlayerPitchMovement(float value, float min, float max) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return value;
-        } else {
-            return MathHelper.clamp(value, min, max);
-        }
+    @Shadow
+    @Final
+    private Map<BlockPos, GameTestDebugRenderer.Marker> markers;
+
+    @Override
+    public void viaFabricPlus$addMarker(final BlockPos pos, final int color, final String message, final int duration) {
+        this.markers.put(pos, new GameTestDebugRenderer.Marker(color, message, Util.getMeasuringTimeMs() + duration));
     }
 
 }

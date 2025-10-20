@@ -22,8 +22,7 @@ Also update versions in the `dependencies` block of `build.gradle.kts`.
 ## 2. Update Core References
 
 - Update the `NATIVE_VERSION` field in `ProtocolTranslator`
-- Update protocol constants in `ViaFabricPlusProtocol`
-- Update `ItemTranslator#getClientboundItemType` if a new item type was added
+- Update protocol constants in `ViaFabricPlusProtocol` and `getClientboundItemType` if a new item type was added
 
 ---
 

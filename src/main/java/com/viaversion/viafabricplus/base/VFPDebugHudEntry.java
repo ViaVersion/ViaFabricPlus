@@ -19,21 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.base.integration;
+package com.viaversion.viafabricplus.base;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IChunkTracker;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IRakSessionCodec;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.storage.BedrockJoinGameTracker;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.gui.hud.DebugHud;
+import net.minecraft.client.gui.hud.debug.DebugHudEntry;
+import net.minecraft.client.gui.hud.debug.DebugHudLines;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.WorldChunk;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
@@ -41,28 +44,20 @@ import net.raphimc.vialegacy.protocol.release.r1_1tor1_2_1_3.storage.SeedStorage
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.storage.EntityTracker;
 import org.cloudburstmc.netty.channel.raknet.RakClientChannel;
 import org.cloudburstmc.netty.handler.codec.raknet.common.RakSessionCodec;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("DataFlowIssue")
-@Mixin(DebugHud.class)
-public abstract class MixinDebugHud {
+public final class VFPDebugHudEntry implements DebugHudEntry {
 
-    @Inject(method = "getLeftText", at = @At("RETURN"))
-    public void addViaFabricPlusInformation(CallbackInfoReturnable<List<String>> cir) {
-        if (!GeneralSettings.INSTANCE.showExtraInformationInDebugHud.getValue()) {
-            return;
-        }
+    public static final Identifier ID = Identifier.of("viafabricplus", "viafabricplus");
 
+    @Override
+    public void render(final DebugHudLines lines, @Nullable final World world, @Nullable final WorldChunk clientChunk, @Nullable final WorldChunk chunk) {
         final List<String> information = new ArrayList<>();
-        information.add("");
         information.add(ChatUtil.PREFIX + Formatting.RESET + " " + ViaFabricPlusImpl.INSTANCE.getVersion());
 
         final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
         if (connection == null) {
-            cir.getReturnValue().addAll(information);
+            lines.addLine(information.getFirst());
             return;
         }
 
@@ -93,7 +88,7 @@ public abstract class MixinDebugHud {
             final int subChunkRequests = mixinChunkTracker.viaFabricPlus$getSubChunkRequests();
             final int pendingSubChunks = mixinChunkTracker.viaFabricPlus$getPendingSubChunks();
             final int chunks = mixinChunkTracker.viaFabricPlus$getChunks();
-            cir.getReturnValue().add("Chunk Tracker: R: " + subChunkRequests + ", P: " + pendingSubChunks + ", C: " + chunks);
+            information.add("Chunk Tracker: R: " + subChunkRequests + ", P: " + pendingSubChunks + ", C: " + chunks);
         }
         if (connection.getChannel() instanceof RakClientChannel rakClientChannel) {
             final RakSessionCodec rakSessionCodec = rakClientChannel.parent().pipeline().get(RakSessionCodec.class);
@@ -101,11 +96,16 @@ public abstract class MixinDebugHud {
                 final IRakSessionCodec mixinRakSessionCodec = (IRakSessionCodec) rakSessionCodec;
                 final int transmitQueue = mixinRakSessionCodec.viaFabricPlus$getOutgoingPackets();
                 final int retransmitQueue = mixinRakSessionCodec.viaFabricPlus$SentDatagrams();
-                cir.getReturnValue().add("RTT: " + Math.round(rakSessionCodec.getRTT()) + " ms, P: " + rakSessionCodec.getPing() + " ms" + ", TQ: " + transmitQueue + ", RTQ: " + retransmitQueue);
+                information.add("RTT: " + Math.round(rakSessionCodec.getRTT()) + " ms, P: " + rakSessionCodec.getPing() + " ms" + ", TQ: " + transmitQueue + ", RTQ: " + retransmitQueue);
             }
         }
 
-        cir.getReturnValue().addAll(information);
+        lines.addLinesToSection(ID, information);
+    }
+
+    @Override
+    public boolean canShow(final boolean reducedDebugInfo) {
+        return true;
     }
 
 }

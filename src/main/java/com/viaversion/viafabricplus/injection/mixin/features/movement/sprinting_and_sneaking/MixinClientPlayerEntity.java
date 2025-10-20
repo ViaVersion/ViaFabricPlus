@@ -90,9 +90,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     protected abstract boolean canSprint();
 
     @Shadow
-    protected abstract boolean isBlind();
-
-    @Shadow
     public abstract boolean shouldSlowDown();
 
     @Shadow
@@ -133,7 +130,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
     private void skipVVProtocol(ClientPlayNetworkHandler instance, Packet<?> packet) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof PlayerInputC2SPacket(PlayerInput i)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof PlayerInputC2SPacket(
+            PlayerInput i
+        )) {
             // Directly send the player input packet in order to bypass the code in the 1.21.5->1.21.6 protocol.
             // This allows mods to directly send raw packets which will then be remapped by VV instead of us.
             this.viaFabricPlus$sendInputPacket(i);
@@ -233,15 +232,16 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Inject(method = "canStartSprinting", at = @At("HEAD"), cancellable = true)
     private void changeCanStartSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
         final ProtocolVersion version = ProtocolTranslator.getTargetVersion();
-        if (version.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (version.olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
             cir.setReturnValue(!this.isSprinting()
-                && this.viaFabricPlus$isWalking1_21_4()
+                && (version.olderThanOrEqualTo(ProtocolVersion.v1_21_4) ? this.viaFabricPlus$isWalking1_21_4() : this.input.hasForwardMovement())
                 && this.canSprint()
                 && !this.isUsingItem()
-                && !this.isBlind()
+                && !this.hasBlindnessEffect()
                 && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.hasVehicle()) || this.canVehicleSprint(this.getVehicle()))
-                && !(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding())
-                && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4))));
+                && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.isGliding()) || this.isSubmergedInWater())
+                && (!(this.shouldSlowDown() && version.equals(ProtocolVersion.v1_21_4)) || (this.isSubmergedInWater() && version.equals(ProtocolVersion.v1_21_4)))
+                && (!version.olderThanOrEqualTo(ProtocolVersion.v1_21_4) && (!this.isTouchingWater() || this.isSubmergedInWater()) || version.olderThanOrEqualTo(ProtocolVersion.v1_21_4)));
         }
     }
 
@@ -250,6 +250,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         // Not needed, but for consistency and in case a mod uses this method
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             cir.setReturnValue(!this.isOnGround() && !this.input.playerInput.sneak() && this.viaFabricPlus$shouldCancelSprinting() || !this.isTouchingWater());
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
+            cir.setReturnValue(this.hasBlindnessEffect() || this.hasVehicle() && !this.canVehicleSprint(this.getVehicle())
+                || !this.isTouchingWater() || !this.input.hasForwardMovement() && !this.isOnGround() && !this.input.playerInput.sneak() || !this.canSprint());
         }
     }
 
@@ -257,7 +260,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     private void changeStopSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             final boolean ridingCamel = getVehicle() != null && getVehicle().getType() == EntityType.CAMEL;
-            cir.setReturnValue(this.isGliding() || this.isBlind() || this.shouldSlowDown() || this.hasVehicle() && !ridingCamel || this.isUsingItem() && !this.hasVehicle() && !this.isSubmergedInWater());
+            cir.setReturnValue(this.isGliding() || this.hasBlindnessEffect() || this.shouldSlowDown() || this.hasVehicle() && !ridingCamel || this.isUsingItem() && !this.hasVehicle() && !this.isSubmergedInWater());
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
+            cir.setReturnValue(this.hasBlindnessEffect() || this.hasVehicle() && !this.canVehicleSprint(this.getVehicle()) || !this.input.hasForwardMovement() || !this.canSprint() || this.horizontalCollision && !this.collidedSoftly || this.isTouchingWater() && !this.isSubmergedInWater());
         }
     }
 
@@ -266,7 +271,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_3);
     }
 
-    @Redirect(method = "canSprint", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
+    @Redirect(method = "canSprint()Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z"))
     private boolean dontAllowSprintingAsPassenger(ClientPlayerEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_19_1) && instance.hasVehicle();
     }

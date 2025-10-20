@@ -1,6 +1,5 @@
 {
   "modmenu.descriptionTranslation.viafabricplus": "斯Fabric模組可聯綫眾礦藝伺服器版於世（完版、復測、首測、古典、快照、基石版），更得精進於戲遊",
-
   "base.viafabricplus.settings": "置設",
   "base.viafabricplus.on": "開",
   "base.viafabricplus.off": "閉",
@@ -28,22 +27,23 @@
   "base.viafabricplus.name": "名",
   "base.viafabricplus.password": "符節",
   "base.viafabricplus.login": "入簿",
-
+  "base.viafabricplus.code": "碼",
+  "base.viafabricplus.accept": "受",
+  "base.viafabricplus.refresh": "重整",
   "setting_group_name.viafabricplus.authentication": "驗",
   "setting_group_name.viafabricplus.visual": "視",
   "setting_group_name.viafabricplus.debug": "勘",
   "setting_group_name.viafabricplus.general": "常",
   "setting_group_name.viafabricplus.bedrock": "基石版",
-
   "screen.viafabricplus.force_version": "強用版",
   "screen.viafabricplus.report_issues": "報誤",
   "screen.viafabricplus.server_list": "伺服器之列",
   "screen.viafabricplus.classicube_login": "Classicube戶",
   "screen.viafabricplus.classicube_mfa": "Classicube重驗",
   "screen.viafabricplus.settings": "置設",
-
+  "screen.viafabricplus.bedrock_realms": "基石版領域",
+  "screen.viafabricplus.accept_invite": "受邀約",
   "general_settings.viafabricplus.save_selected_protocol_version": "存所擇之契版",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "示額述於勘誤HUD",
   "general_settings.viafabricplus.show_classic_loading_progress": "示古典載程於聯綫之卷",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "眾戲卷之鈕方位",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "添伺服器之鈕方位",
@@ -54,10 +54,9 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "載舊版外觀及首",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "擬首測版行囊之動作",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "存槽戶之捲覽方位",
-
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "擊以設基石版之戶簿",
   "bedrock_settings.viafabricplus.replace_default_port": "替伺服器之列預置埠",
-
+  "bedrock_settings.viafabricplus.experimental_features": "啟試行藝能（或有損害）",
   "debug_settings.viafabricplus.queue_config_packets": "佇列置囊",
   "debug_settings.viafabricplus.disable_sequencing": "禁序",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "潤商賈之戶",
@@ -68,22 +67,21 @@
   "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "勿立囊謬之隕報",
   "debug_settings.viafabricplus.ignore_fabric_sync_errors": "略Fabric協同之謬",
   "debug_settings.viafabricplus.legacy_tab_completions": "舊Tab自成",
+  "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "隱榫卯幕之新要徵",
   "debug_settings.viafabricplus.emulate_armor_hud": "擬甲胄HUD",
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "隱命令塊幕之新要徵",
   "debug_settings.viafabricplus.disable_server_pinging": "禁伺服器之測",
-  "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "隱榫卯幕之新要徵",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "濾无有之字形",
-
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "以BetaCraft驗",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "證在綫之法伺服器會話",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "使ClassiCube伺服器列之時自擇CPE",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "使ClassiCube伺服器列之時設會話名爲ClassiCube之名",
-
   "visual_settings.viafabricplus.change_game_menu_screen_layout": "更選單幕佈列",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "禁無虞信之誡",
   "visual_settings.viafabricplus.hide_signature_indicator": "隱署名刻漏",
   "visual_settings.viafabricplus.hide_download_terrain_screen_transition_effects": "隱下傳地勢之戶轉頁之效",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "替巖化柞版之紋以「未明」之紋",
+  "visual_settings.viafabricplus.always_render_crosshair": "恆繪凖",
   "visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound": "替傷之音以嗚呼聲",
   "visual_settings.viafabricplus.hide_modern_hud_elements": "隱新式HUD件",
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "替創之行囊",
@@ -95,19 +93,14 @@
   "visual_settings.viafabricplus.hide_crafting_recipe_book": "隱製之方集",
   "visual_settings.viafabricplus.force_unicode_font_for_non_ascii_languages": "非ASCII之文強用萬國碼字體",
   "visual_settings.viafabricplus.sneak_instantly": "瞬伏",
-
   "force_version.viafabricplus.title": "請擇所欲通之伺服器版",
-
   "click_to_set_bedrock_account.viafabricplus.notice": "汝之瀏覽器當既啟。\n爾旦閉此幕將罷之！",
   "click_to_set_bedrock_account.viafabricplus.display": "基石版之戶簿：%s",
-
   "change_game_menu_screen_layout.viafabricplus.authentic": "原版",
   "change_game_menu_screen_layout.viafabricplus.adjusted": "既調",
-
   "change_game_menu_screen_layout.viafabricplus.authentic.tooltip": "依所擇之版調鈕之方位及覆層。",
   "change_game_menu_screen_layout.viafabricplus.adjusted.tooltip": "於一點一八點二之前者以「交際」替「檢舉戲者」之戶。",
   "change_game_menu_screen_layout.viafabricplus.off.tooltip": "全然弗改選單幕。",
-
   "report.viafabricplus.button": "報誤",
   "report.viafabricplus.bug_report": "諫誤於GitHub",
   "report.viafabricplus.feature_request": "求藝能於GitHub",
@@ -118,27 +111,27 @@
   "report.viafabricplus.create_via_dump.failed": "立印未成！察誌以閱其詳。",
   "report.viafabricplus.create_via_dump.success": "既立印及複刻之於簿！",
   "report.viafabricplus.open_logs.response": "既啟誌之資料夾！",
-
   "classicube.viafabricplus.account": "汝可修新簿於此：https://www.classicube.net/",
   "classicube.viafabricplus.loading": "方載檔訊與伺服器之列",
   "classicube.viafabricplus.profile": "ClassiCube之檔：",
   "classicube.viafabricplus.warning": "是藝能將送API請求至ClassiCube API。",
-
   "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus無從驗汝之會話！請入一戶簿，或於ViaFabricPlus之置設禁BetaCraft驗",
   "betacraft.viafabricplus.loading": "方載",
   "betacraft.viafabricplus.warning": "押此鈕將送API請求至「betacraft.uk/serverlist」。",
-
   "translation.viafabricplus.packet_error": "有舛生於譯囊之時！察誌以閱其詳！",
-
   "classic4j_library.viafabricplus.error.token": "其令有誤。汝之ViaFabricPlus逾期乎？",
   "classic4j_library.viafabricplus.error.username": "是名無效。",
   "classic4j_library.viafabricplus.error.password": "是符節無效。",
   "classic4j_library.viafabricplus.error.verification": "使用者猶未證其電子郵驛。",
   "classic4j_library.viafabricplus.error.logincode": "既求重驗。請檢行電子郵驛。",
-
   "minecraftauth_library.viafabricplus.xbldevicetoken": "方驗設備以Xbox在綫",
   "minecraftauth_library.viafabricplus.xblsisuauthentication": "方驗Xbox在綫以SISU",
   "minecraftauth_library.viafabricplus.mcchain": "方驗礦藝服務",
   "minecraftauth_library.viafabricplus.xblxststoken": "方求XSTS之令",
-  "minecraftauth_library.viafabricplus.playfabtoken": "方驗PlayFab"
+  "minecraftauth_library.viafabricplus.playfabtoken": "方驗PlayFab",
+  "minecraftauth_library.viafabricplus.realmsxsts": "方求領域XSTS之令",
+  "bedrock_realms.viafabricplus.no_worlds": "嗟乎，生界無所獲",
+  "bedrock_realms.viafabricplus.join": "入此領域",
+  "bedrock_realms.viafabricplus.leave": "去此領域",
+  "bedrock_realms.viafabricplus.invite": "受邀約碼"
 }

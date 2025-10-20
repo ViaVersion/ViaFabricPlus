@@ -39,7 +39,7 @@ public abstract class MixinAbstractRailBlock extends Block {
 
     @Shadow
     @Final
-    protected static VoxelShape ASCENDING_SHAPE;
+    private static VoxelShape ASCENDING_SHAPE;
 
     @Unique
     private static final VoxelShape viaFabricPlus$ascending_shape_r1_10_x = VoxelShapes.fullCube();

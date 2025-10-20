@@ -1,6 +1,5 @@
 {
   "modmenu.descriptionTranslation.viafabricplus": "可連線到所有版本 Minecraft 的伺服器（正式版、Beta 版、Alpha 版、Classic 版、快照版、基岩版）的 Fabric 模組，同時提供多項遊戲體驗改善。",
-
   "base.viafabricplus.settings": "設定",
   "base.viafabricplus.on": "開啟",
   "base.viafabricplus.off": "關閉",
@@ -31,24 +30,19 @@
   "base.viafabricplus.code": "代碼",
   "base.viafabricplus.accept": "接受",
   "base.viafabricplus.refresh": "重新整理",
-
   "setting_group_name.viafabricplus.authentication": "驗證",
   "setting_group_name.viafabricplus.visual": "視覺",
   "setting_group_name.viafabricplus.debug": "除錯",
   "setting_group_name.viafabricplus.general": "一般",
   "setting_group_name.viafabricplus.bedrock": "基岩版",
-
   "screen.viafabricplus.force_version": "強制使用設定版本",
   "screen.viafabricplus.report_issues": "回報問題",
   "screen.viafabricplus.server_list": "伺服器清單",
   "screen.viafabricplus.classicube_login": "Classicube 登入",
-  "screen.viafabricplus.classicube_mfa": "Classicube MFA",
   "screen.viafabricplus.settings": "設定",
   "screen.viafabricplus.bedrock_realms": "基岩版 Realms",
   "screen.viafabricplus.accept_invite": "接受邀請",
-
   "general_settings.viafabricplus.save_selected_protocol_version": "儲存選擇的版本",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "在除錯畫面中顯示更多資訊",
   "general_settings.viafabricplus.show_classic_loading_progress": "在連線畫面時顯示舊版進度",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "多人遊戲畫面按鈕方向",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "新增伺服器畫面按鈕方向",
@@ -59,10 +53,8 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "在舊版中載入外觀和頭顱",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "模擬 Alpha 版本物品欄動作",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "儲存容器畫面捲動位置",
-
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "點選以設定基岩版帳號",
   "bedrock_settings.viafabricplus.replace_default_port": "在伺服器清單中取代預設連接埠",
-
   "debug_settings.viafabricplus.queue_config_packets": "佇列設定封包",
   "debug_settings.viafabricplus.disable_sequencing": "停用排序",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "平滑商人畫面",
@@ -78,12 +70,10 @@
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "隱藏新式指令方塊介面功能",
   "debug_settings.viafabricplus.disable_server_pinging": "停用伺服器 Ping",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "過濾不存在的字元",
-
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用 BetaCraft 驗證",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "允許 ViaLegacy 呼叫 joinServer() 來驗證 session",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "如果使用 ClassiCube，強制使用 CPE 版本",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "如果使用 ClassiCube，偽造使用者名稱為 ClassiCube 名稱",
-
   "visual_settings.viafabricplus.change_game_menu_screen_layout": "變更遊戲選單畫面設定",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "停用受保護的聊天內容警告",
   "visual_settings.viafabricplus.hide_signature_indicator": "隱藏簽章指示器",
@@ -107,19 +97,14 @@
   "visual_settings.viafabricplus.sneak_instantly": "立即潛行",
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "鎖定第三人稱格擋時的手臂旋轉",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "變更身體旋轉插值",
-
   "force_version.viafabricplus.title": "請選擇用於 Ping／連線伺服器的版本",
-
   "click_to_set_bedrock_account.viafabricplus.notice": "您的瀏覽器應該已經開啟。\n請輸入以下代碼：%s\n關閉這個畫面將取消流程！",
   "click_to_set_bedrock_account.viafabricplus.display": "基岩版帳號：%s",
-
   "change_game_menu_screen_layout.viafabricplus.authentic": "原版",
   "change_game_menu_screen_layout.viafabricplus.adjusted": "調整後",
-
   "change_game_menu_screen_layout.viafabricplus.authentic.tooltip": "根據所選版本調整按鈕位置和覆蓋層。",
   "change_game_menu_screen_layout.viafabricplus.adjusted.tooltip": "在 ≤ 1.18.2 中使用「社群互動」畫面取代「玩家檢舉」。",
   "change_game_menu_screen_layout.viafabricplus.off.tooltip": "完全不修改遊戲選單畫面。",
-
   "report.viafabricplus.button": "回報議題",
   "report.viafabricplus.bug_report": "在 GitHub 上回報錯誤",
   "report.viafabricplus.feature_request": "在 GitHub 上請求新功能",
@@ -130,31 +115,25 @@
   "report.viafabricplus.create_via_dump.failed": "建立傾印失敗！查看記錄檔以取得詳細資訊。",
   "report.viafabricplus.create_via_dump.success": "傾印已建立並複製到剪貼簿！",
   "report.viafabricplus.open_logs.response": "已開啟記錄檔資料夾！",
-
   "classicube.viafabricplus.account": "您可以在這裡建立帳號：https://www.classicube.net/",
   "classicube.viafabricplus.loading": "正在載入個人檔案資訊和伺服器清單...",
   "classicube.viafabricplus.profile": "ClassiCube 個人檔案：",
   "classicube.viafabricplus.warning": "這項功能將向 ClassiCube API 傳送 API 請求。",
-
   "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus session 驗證失敗！請登入帳號或在 ViaFabricPlus 設定中停用 BetaCraft 驗證",
   "betacraft.viafabricplus.loading": "正在載入...",
   "betacraft.viafabricplus.warning": "按下這個按鈕將向「betacraft.uk/serverlist」傳送 API 請求。",
-
   "translation.viafabricplus.packet_error": "轉譯網路封包時發生錯誤！在遊戲記錄檔中查看更多資訊！",
-
   "classic4j_library.viafabricplus.error.token": "權杖不正確。您的 ViaFabricPlus 版本是否太舊？",
   "classic4j_library.viafabricplus.error.username": "無效的使用者名稱。",
   "classic4j_library.viafabricplus.error.password": "無效的密碼。",
   "classic4j_library.viafabricplus.error.verification": "使用者尚未驗證電子郵件地址。",
   "classic4j_library.viafabricplus.error.logincode": "要求多重要素驗證。請檢查您的電子郵件。",
-
   "minecraftauth_library.viafabricplus.xbldevicetoken": "正在 Xbox Live 驗證...",
   "minecraftauth_library.viafabricplus.xblsisuauthentication": "正在使用 SISU 驗證 Xbox Live...",
   "minecraftauth_library.viafabricplus.mcchain": "正在與 Minecraft 線上伺服器驗證...",
   "minecraftauth_library.viafabricplus.xblxststoken": "正在請求 XSTS 權杖...",
   "minecraftauth_library.viafabricplus.playfabtoken": "正在驗證 PlayFab...",
   "minecraftauth_library.viafabricplus.realmsxsts": "正在請求 Realms XSTS 權杖...",
-
   "bedrock_realms.viafabricplus.warning": "此功能需要在設定中設定基岩版帳號！",
   "bedrock_realms.viafabricplus.availability_check": "正在檢查可用性...",
   "bedrock_realms.viafabricplus.no_worlds": "找不到世界 :(",

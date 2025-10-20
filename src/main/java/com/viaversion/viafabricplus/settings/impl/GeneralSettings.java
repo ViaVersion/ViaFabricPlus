@@ -24,7 +24,6 @@ package com.viaversion.viafabricplus.settings.impl;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
@@ -49,7 +48,6 @@ public final class GeneralSettings extends SettingGroup {
             Text.translatable("base.viafabricplus.off")
     );
     public final BooleanSetting saveSelectedProtocolVersion = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.save_selected_protocol_version"), true);
-    public final BooleanSetting showExtraInformationInDebugHud = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.extra_information_in_debug_hud"), true);
     public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.show_classic_loading_progress"), true);
     public final BooleanSetting showAdvertisedServerVersion = new BooleanSetting(this, Text.translatable("general_settings.viafabricplus.show_advertised_server_version"), true);
     public final ModeSetting ignorePacketTranslationErrors = new ModeSetting(this, Text.translatable("general_settings.viafabricplus.ignore_packet_translation_errors"),
@@ -66,14 +64,20 @@ public final class GeneralSettings extends SettingGroup {
         emulateInventoryActionsInAlphaVersions.setTooltip(Text.translatable("base.viafabricplus.this_will_require_a_restart"));
     }
 
-    public static ButtonWidget.Builder withOrientation(final ButtonWidget.Builder builder, final int orientationIndex, final int width, final int height) {
-        return switch (orientationIndex) {
-            case 1 -> builder.position(5, 5);
-            case 2 -> builder.position(width - 98 - 5, 5);
-            case 3 -> builder.position(5, height - 20 - 5);
-            case 4 -> builder.position(width - 98 - 5, height - 20 - 5);
-            default -> builder;
-        };
+    public static void setOrientation(final Position position, final int orientationIndex, final int width, final int height) {
+        switch (orientationIndex) {
+            case 1 -> position.setPosition(5, 5);
+            case 2 -> position.setPosition(width - 98 - 5, 5);
+            case 3 -> position.setPosition(5, height - 20 - 5);
+            case 4 -> position.setPosition(width - 98 - 5, height - 20 - 5);
+        }
+    }
+
+    @FunctionalInterface
+    public interface Position {
+
+        void setPosition(int x, int y);
+
     }
 
 }

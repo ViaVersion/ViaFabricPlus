@@ -77,7 +77,7 @@ public abstract class MixinPlayerListHud implements IPlayerListHud {
     private List<PlayerListEntry> viaFabricPlusVisuals$transpose(final List<PlayerListEntry> list) {
         // Only bother transposing if we know the list is full
         if (list.size() != viaFabricPlusVisuals$maxSlots) {
-            viaFabricPlusVisuals$hideSkins = list.stream().noneMatch(e -> e.getProfile().getProperties().containsKey("textures"));
+            viaFabricPlusVisuals$hideSkins = list.stream().noneMatch(e -> e.getProfile().properties().containsKey("textures"));
             return list;
         }
 
@@ -90,7 +90,7 @@ public abstract class MixinPlayerListHud implements IPlayerListHud {
             final int col = i / PlayerListHud.MAX_ROWS;
             final PlayerListEntry current = list.get(row * columns + col);
             result.add(current);
-            anyHasSkinData = anyHasSkinData || current.getProfile().getProperties().containsKey("textures");
+            anyHasSkinData = anyHasSkinData || current.getProfile().properties().containsKey("textures");
         }
         viaFabricPlusVisuals$hideSkins = !anyHasSkinData;
         return result;

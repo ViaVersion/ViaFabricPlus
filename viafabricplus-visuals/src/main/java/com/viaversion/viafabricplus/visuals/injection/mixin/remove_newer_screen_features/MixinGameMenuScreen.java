@@ -175,7 +175,7 @@ public abstract class MixinGameMenuScreen extends Screen {
                 if (button.getMessage().equals(STATS_TEXT)) {
                     return false;
                 } else if (button.getMessage().equals(ScreenTexts.DISCONNECT)) {
-                    viaFabricPlusVisuals$disconnectSupplier = buttonWidget -> button.onPress();
+                    viaFabricPlusVisuals$disconnectSupplier = buttonWidget -> button.onPress(null);
                     viaFabricPlusVisuals$disconnectButtonWidth = button.getWidth();
                     return false;
                 }

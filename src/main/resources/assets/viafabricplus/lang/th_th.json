@@ -8,40 +8,20 @@
   "base.viafabricplus.right_bottom": "ขวา; ล่าง",
   "base.viafabricplus.cancel": "ยกเลิก",
   "base.viafabricplus.cancel_and_reset": "ยกเลิกและรีเซ็ต",
-
-  "general_settings.viafabricplus.super_secret_settings": "แสดงสุดยอดตั่งค่า",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "แสดงมากขึ้นใน ดีบักโหมด",
   "general_settings.viafabricplus.show_classic_loading_progress": "แสดงหน้าโหลดคลาสสิค",
-  "general_settings.viafabricplus.main": "การวางแนวปุ่มหลัก",
   "general_settings.viafabricplus.filter_creative_tabs": "ลบไอเท็มที่ไม่มีใน creative tab",
-  "general_settings.viafabricplus.protocolsync": "เปลี่ยนการตั้งค่าโดยอัตโนมัติตามเวอร์ชันปัจจุบัน",
-
   "debug_settings.viafabricplus.disable_sequencing": "ปิดใช้งานการจัดลำดับ",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "ปรับหน้าจอร้านค้าให้เรียบ",
   "debug_settings.viafabricplus.execute_inputs_synchronously": "ดำเนินการอินพุตในการซิงค์",
-  "visual_settings.viafabricplus.sneak_instantly": "ย่องทันที",
-  "debug_settings.viafabricplus.replace_sneaking": "แทนที่การย่อง",
-  "debug_settings.viafabricplus.long_sneaking": "ย่องยาว",
   "debug_settings.viafabricplus.legacy_mining_speeds": "ความเร็วการขุดแบบดั้งเดิม",
-
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "ใช้ BetaCraft ยืนยันตัวตน",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "อนุญาติให้ ViaLegacy ในการเรียก joinServer() เพื่อยืนยัน",
-  "authentication_settings.viafabricplus.fail": "ตัดการเชื่อมต่อหาก joinServer() ผิดพลาด",
-  "authentication_settings.viafabricplus.bedrock": "คลิกเพื่อเชื่อมต่อบัญชี Bedrock Edition",
-
   "visual_settings.viafabricplus.disable_secure_chat_warning": "ลบคำเตือนแชท",
   "visual_settings.viafabricplus.hide_signature_indicator": "ซ่อนตัวบ่งชี้ลายเซ็น",
-  "visual_settings.viafabricplus.remove_newer_features_from_jigsaw_screen": "ลบคุณสมบัติใหม่ออกจากหน้าจอจิ๊กซอว์",
   "visual_settings.viafabricplus.replace_petrified_oak_slab": "เปลี่ยนพื้นไม้โอ๊คที่กลายเป็นหิน",
-  "visual_settings.viafabricplus.emulate_armor_hud": "เลียนแบบ Armor hud",
-  "visual_settings.viafabricplus.hide_modern_command_block_screen_features": "ลบคุณสมบัติที่ใหม่กว่าออกจากหน้าจอบล็อกคำสั่ง",
   "visual_settings.viafabricplus.replace_hurt_sound_with_oof_sound": "แทนที่เสียงเจ็บด้วยเสียง OOF",
   "visual_settings.viafabricplus.hide_modern_hud_elements": "ลบองค์ประกอบ HUD ที่ใหม่กว่า",
   "visual_settings.viafabricplus.replace_creative_inventory_with_classic_inventory": "แทนที่ creative inventory",
   "visual_settings.viafabricplus.old_walking_animation": "ท่าทางการเดินแบบเก่า",
-
-  "bedrock.viafabricplus.login": "บราวเซอร์เปิดแล้ว \nกรุณาใส่โค้ด: %s\nหากปิดหน้าเกมการดำเนินการจะถูกยกเลิก",
-  "bedrocklogin.viafabricplus.error": "พบข้อผิดพลาด ดูที่ไฟล์ latest.log เพื่อดูรายละอียดเพิ่มเติม,\nกรุณาแจ้งบัคที่  \nhttps://github.com/ViaVersion/ViaFabricPlus/issues",
-
-  "base.viafabricplus.force_version_title": "โปรดเลือกเวอร์ชันที่ต้องการเชื่อมต่อ"
+  "visual_settings.viafabricplus.sneak_instantly": "ย่องทันที"
 }

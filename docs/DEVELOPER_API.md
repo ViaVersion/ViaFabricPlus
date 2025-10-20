@@ -54,7 +54,7 @@ dependencies {
 
 ---
 
-## ⚙Using the API
+## Using the API
 
 Get the main API instance with:
 

@@ -26,8 +26,8 @@ import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
 import net.minecraft.text.Text;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.storage.ClassicProgressStorage;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,10 +35,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(DownloadingTerrainScreen.class)
-public abstract class MixinDownloadingTerrainScreen extends Screen {
+@Mixin(LevelLoadingScreen.class)
+public abstract class MixinLevelLoadingScreen extends Screen {
 
-    public MixinDownloadingTerrainScreen(Text title) {
+    public MixinLevelLoadingScreen(Text title) {
         super(title);
     }
 
@@ -59,11 +59,11 @@ public abstract class MixinDownloadingTerrainScreen extends Screen {
 
             // Draw the classic loading progress
             context.drawCenteredTextWithShadow(
-                    client.textRenderer,
-                    ChatUtil.prefixText(classicProgressStorage.status),
-                    width / 2,
-                    height / 2 - 30,
-                    -1
+                client.textRenderer,
+                ChatUtil.prefixText(classicProgressStorage.status),
+                width / 2,
+                height / 2 - 30,
+                -1
             );
         }
     }

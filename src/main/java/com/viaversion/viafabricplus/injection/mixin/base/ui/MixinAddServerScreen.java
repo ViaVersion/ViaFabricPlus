@@ -81,16 +81,15 @@ public abstract class MixinAddServerScreen extends Screen {
             viaFabricPlus$addressField = null;
         }
 
-        ButtonWidget.Builder buttonBuilder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("base.viafabricplus.set_version") : Text.of(forcedVersion.getName()), button -> {
+        final ButtonWidget.Builder buttonBuilder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("base.viafabricplus.set_version") : Text.of(forcedVersion.getName()), button -> {
             // Store current input in case the user cancels the version selection
             viaFabricPlus$nameField = serverNameField.getText();
             viaFabricPlus$addressField = addressField.getText();
 
             client.setScreen(new PerServerVersionScreen(this, mixinServerInfo::viaFabricPlus$forceVersion, mixinServerInfo::viaFabricPlus$forcedVersion));
         }).size(98, 20);
-
-        // Set the button's position according to the configured orientation and add the button to the screen
-        this.addDrawableChild(GeneralSettings.withOrientation(buttonBuilder, buttonPosition, width, height).build());
+        GeneralSettings.setOrientation(buttonBuilder::position, buttonPosition, width, height);
+        this.addDrawableChild(buttonBuilder.build());
     }
 
 }

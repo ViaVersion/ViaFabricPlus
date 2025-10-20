@@ -32,17 +32,7 @@ installed: [Gradle Installation Guide](https://gradle.org/install/).
 
 ## Updating Translation Files
 
-Translations are stored in:
-`src/main/resources/assets/viafabricplus/lang/`
-
-To add or update a language:
-
-1. Copy `en_us.json` and rename it (e.g. `de_de.json` for German).
-2. Translate all the **values** (don’t change the keys).
-3. Keep the JSON formatting intact (spacing, order, structure).
-4. Stay consistent with **Minecraft’s language files**.
-5. Consider [UN’s gender-inclusive guidelines](https://www.un.org/en/gender-inclusive-language/guidelines.shtml).
-6. Open a **pull request** with your changes.
+If you want to help translating ViaFabricPlus you can do so on [Crowdin](https://crowdin.com/project/viafabricplus).
 
 ---
 

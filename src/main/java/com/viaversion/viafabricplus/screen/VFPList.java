@@ -59,7 +59,7 @@ public class VFPList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
     }
 
     @Override
-    protected void drawSelectionHighlight(DrawContext context, int y, int entryWidth, int entryHeight, int borderColor, int fillColor) {
+    protected void drawSelectionHighlight(final DrawContext context, final VFPListEntry entry, final int color) {
         // Remove selection box
     }
 

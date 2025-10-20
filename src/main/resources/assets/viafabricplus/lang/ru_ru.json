@@ -1,7 +1,5 @@
 {
-  "modmenu.summaryTranslation.viafabricplus": "Мод для подключения к серверам любых версий.",
   "modmenu.descriptionTranslation.viafabricplus": "Мод для Fabric, предназначенный для подключения к серверам §lлюбых§r версий Minecraft (Classic, Alpha, Beta, снапшотам, релизам и даже Bedrock) с исправлениями для улучшения игрового процесса.",
-
   "base.viafabricplus.settings": "Настройки",
   "base.viafabricplus.on": "Вкл",
   "base.viafabricplus.off": "Выкл",
@@ -32,13 +30,11 @@
   "base.viafabricplus.code": "Код",
   "base.viafabricplus.accept": "Применить",
   "base.viafabricplus.refresh": "Обновить",
-
   "setting_group_name.viafabricplus.authentication": "Аутентификация",
   "setting_group_name.viafabricplus.visual": "Внешний вид",
   "setting_group_name.viafabricplus.debug": "Отладка",
   "setting_group_name.viafabricplus.general": "Основные",
   "setting_group_name.viafabricplus.bedrock": "Bedrock",
-
   "screen.viafabricplus.force_version": "Меню принудительного выбора версии сервера",
   "screen.viafabricplus.report_issues": "Меню обратной связи",
   "screen.viafabricplus.server_list": "Серверы",
@@ -47,9 +43,7 @@
   "screen.viafabricplus.settings": "Настройки",
   "screen.viafabricplus.bedrock_realms": "Bedrock Realms",
   "screen.viafabricplus.accept_invite": "Принять приглашение",
-
   "general_settings.viafabricplus.save_selected_protocol_version": "Сохранять выбранную версию протокола",
-  "general_settings.viafabricplus.extra_information_in_debug_hud": "Дополнительная информация на экране отладки",
   "general_settings.viafabricplus.show_classic_loading_progress": "Экран загрузки Classic при подключении",
   "general_settings.viafabricplus.multiplayer_screen_button_orientation": "Кнопка в меню сетевой игры",
   "general_settings.viafabricplus.add_server_screen_button_orientation": "Кнопка в меню добавления сервера",
@@ -60,10 +54,9 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Скины и головы игроков в старых версиях",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Эмулировать действия в инвентаре в alpha-версиях",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "Запоминать позицию прокрутки в настройках ViaFabricPlus",
-
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Нажмите для настройки учётной записи Bedrock Edition",
   "bedrock_settings.viafabricplus.replace_default_port": "Заменить порт по умолчанию в списке серверов",
-
+  "bedrock_settings.viafabricplus.experimental_features": "Экспериментальные функции (возможна нестабильность)",
   "debug_settings.viafabricplus.queue_config_packets": "Очередь пакетов этапа настройки",
   "debug_settings.viafabricplus.disable_sequencing": "Отключить последовательность",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Ускорить интерфейс старых жителей",
@@ -81,12 +74,10 @@
   "debug_settings.viafabricplus.disable_server_pinging": "Не проверять соединение",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "Отключать неизвестные Unicode-символы",
   "debug_settings.viafabricplus.legacy_pane_outlines": "Старые границы стеклянных панелей и прутьев",
-
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Использовать аутентификацию BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Разрешить ViaLegacy вызов joinServer() для проверки сессии",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Устанавливать версию CPE при использовании ClassiCube",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Имя пользователя ClassiCube при его использовании",
-
   "visual_settings.viafabricplus.change_game_menu_screen_layout": "Меню паузы",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "Удалять уведомления о безопасности чата",
   "visual_settings.viafabricplus.hide_signature_indicator": "Скрывать индикатор цифровой подписи в чате",
@@ -111,19 +102,14 @@
   "visual_settings.viafabricplus.lock_blocking_arm_rotation": "Неподвижная рука в позе защиты (вид от 3-го лица)",
   "visual_settings.viafabricplus.change_body_rotation_interpolation": "Старый (дёрганый) поворот тела (вид от 3-го лица)",
   "visual_settings.viafabricplus.potion_enchantment_glint": "Мерцание зелий",
-
   "force_version.viafabricplus.title": "Укажите версию для проверки связи с сервером и подключения к нему.",
-
   "click_to_set_bedrock_account.viafabricplus.notice": "Сейчас должен открыться браузер.\nЗакрытие этого экрана приведёт к отмене процесса авторизации.",
   "click_to_set_bedrock_account.viafabricplus.display": "Учётная запись Bedrock: %s",
-
   "change_game_menu_screen_layout.viafabricplus.authentic": "Аутентичное",
   "change_game_menu_screen_layout.viafabricplus.adjusted": "Адаптированное",
-
   "change_game_menu_screen_layout.viafabricplus.authentic.tooltip": "Расположение и состав кнопок соответствуют духу версии.",
   "change_game_menu_screen_layout.viafabricplus.adjusted.tooltip": "Раздел «Жалобы» заменён на «Социальные взаимодействия» в ≤ 1.18.2.",
   "change_game_menu_screen_layout.viafabricplus.off.tooltip": "Современное меню паузы. С жалобами и доносами.",
-
   "report.viafabricplus.button": "Нашли ошибку?",
   "report.viafabricplus.bug_report": "Сообщить об ошибке на GitHub",
   "report.viafabricplus.feature_request": "Предложить функцию на GitHub",
@@ -134,31 +120,25 @@
   "report.viafabricplus.create_via_dump.failed": "Не удалось создать дамп. Проверьте журнал для получения подробностей.",
   "report.viafabricplus.create_via_dump.success": "Дамп создан и скопирован в буфер обмена.",
   "report.viafabricplus.open_logs.response": "Открыта папка с журналами.",
-
   "classicube.viafabricplus.account": "Создать учётную запись можно здесь: https://www.classicube.net",
   "classicube.viafabricplus.loading": "Загрузка профиля и списка серверов...",
   "classicube.viafabricplus.profile": "Профиль ClassiCube:",
   "classicube.viafabricplus.warning": "Эта функция отправит запросы к API ClassiCube.",
-
   "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus не удалось проверить сессию. Используйте действительную учётную запись Microsoft или отключите аутентификацию BetaCraft в настройках ViaFabricPlus.",
   "betacraft.viafabricplus.loading": "Загрузка...",
   "betacraft.viafabricplus.warning": "Нажатие этой кнопки отправит запрос к API \"betacraft.uk/serverlist\".",
-
   "translation.viafabricplus.packet_error": "Во время преобразования пакета произошла ошибка. Проверьте журнал для получения подробностей.",
-
   "classic4j_library.viafabricplus.error.token": "Некорректный токен. Возможно, версия ViaFabricPlus устарела.",
   "classic4j_library.viafabricplus.error.username": "Неверное имя пользователя.",
   "classic4j_library.viafabricplus.error.password": "Неверный пароль.",
   "classic4j_library.viafabricplus.error.verification": "Пользователь ещё не подтвердил свой адрес электронной почты.",
   "classic4j_library.viafabricplus.error.logincode": "Запрошена многофакторная аутентификация. Проверьте вашу электронную почту.",
-
   "minecraftauth_library.viafabricplus.xbldevicetoken": "Аутентификация устройства в Xbox Live...",
   "minecraftauth_library.viafabricplus.xblsisuauthentication": "Аутентификация в Xbox Live через SISU...",
   "minecraftauth_library.viafabricplus.mcchain": "Аутентификация в Minecraft Services...",
   "minecraftauth_library.viafabricplus.xblxststoken": "Запрос XSTS-токена...",
   "minecraftauth_library.viafabricplus.playfabtoken": "Аутентификация в PlayFab...",
   "minecraftauth_library.viafabricplus.realmsxsts": "Запрос XSTS-токена Realms...",
-
   "bedrock_realms.viafabricplus.warning": "Эта функция требует добавления учётной записи Bedrock Edition в настройках ViaFabricPlus.",
   "bedrock_realms.viafabricplus.availability_check": "Проверка доступа...",
   "bedrock_realms.viafabricplus.no_worlds": "Миров не найдено :(",

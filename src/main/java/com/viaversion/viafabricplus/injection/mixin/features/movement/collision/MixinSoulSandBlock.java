@@ -40,7 +40,7 @@ public abstract class MixinSoulSandBlock extends Block {
     }
 
     @Override
-    protected void onEntityCollision(final BlockState state, final World world, final BlockPos pos, final Entity entity, final EntityCollisionHandler handler) {
+    protected void onEntityCollision(final BlockState state, final World world, final BlockPos pos, final Entity entity, final EntityCollisionHandler handler, final boolean bl) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             entity.setVelocity(entity.getVelocity().multiply(0.4D, 1, 0.4D));
         }

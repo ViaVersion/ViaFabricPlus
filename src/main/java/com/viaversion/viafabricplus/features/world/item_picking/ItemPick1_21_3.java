@@ -31,7 +31,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
@@ -88,7 +87,7 @@ public final class ItemPick1_21_3 {
                 return;
             }
 
-            if (creativeMode && Screen.hasControlDown() && blockState.hasBlockEntity()) {
+            if (creativeMode && client.isCtrlPressed() && blockState.hasBlockEntity()) {
                 final BlockEntity blockEntity = client.world.getBlockEntity(blockPos);
                 if (blockEntity != null) {
                     addBlockEntityNbt(itemStack, blockEntity, client.world.getRegistryManager());

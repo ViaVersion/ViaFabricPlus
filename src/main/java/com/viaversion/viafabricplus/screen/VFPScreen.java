@@ -101,7 +101,6 @@ public class VFPScreen extends Screen {
         this.setupSubtitle(Text.of(subtitle), ConfirmLinkScreen.opening(this, subtitle));
     }
 
-
     /**
      * Sets the subtitle and the subtitle press action
      *
@@ -118,14 +117,16 @@ public class VFPScreen extends Screen {
      * @param subtitlePressAction The press action which should be executed when the subtitle is clicked
      */
     public void setupSubtitle(@Nullable final Text subtitle, @Nullable final ButtonWidget.PressAction subtitlePressAction) {
-        this.subtitle = subtitle;
         this.subtitlePressAction = subtitlePressAction;
 
         if (subtitleWidget != null) { // Allows removing the subtitle when calling this method twice.
             remove(subtitleWidget);
             subtitleWidget = null;
         }
-        if (subtitlePressAction != null) {
+        if (subtitlePressAction == null) {
+            this.subtitle = subtitle;
+        } else {
+            this.subtitle = null;
             final int subtitleWidth = textRenderer.getWidth(subtitle);
             this.addDrawableChild(subtitleWidget = new PressableTextWidget(width / 2 - (subtitleWidth / 2), (textRenderer.fontHeight + 2) * 2 + 3, subtitleWidth, textRenderer.fontHeight + 2, subtitle, subtitlePressAction, textRenderer));
         }
@@ -214,8 +215,12 @@ public class VFPScreen extends Screen {
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
     }
 
-    public Text getSubtitle() {
+    public @Nullable Text getSubtitle() {
         return subtitle;
+    }
+
+    public @Nullable PressableTextWidget getSubtitleWidget() {
+        return subtitleWidget;
     }
 
     /**

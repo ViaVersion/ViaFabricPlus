@@ -37,6 +37,7 @@ import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -44,20 +45,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MultiplayerScreen.class)
 public abstract class MixinMultiplayerScreen extends Screen {
 
+    @Unique
+    private ButtonWidget viaFabricPlus$button;
+
     public MixinMultiplayerScreen(Text title) {
         super(title);
     }
 
-    @Inject(method = "init", at = @At("RETURN"))
+    @Inject(method = "refreshWidgetPositions", at = @At("RETURN"))
     private void addProtocolSelectionButton(CallbackInfo ci) {
         final int buttonPosition = GeneralSettings.INSTANCE.multiplayerScreenButtonOrientation.getIndex();
         if (buttonPosition == 0) { // Off
             return;
         }
-        ButtonWidget.Builder builder = ButtonWidget.builder(Text.of("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this)).size(98, 20);
 
-        // Set the button's position according to the configured orientation and add the button to the screen
-        this.addDrawableChild(GeneralSettings.withOrientation(builder, buttonPosition, width, height).build());
+        if (viaFabricPlus$button == null) {
+            viaFabricPlus$button = ButtonWidget
+                .builder(Text.of("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this))
+                .size(98, 20)
+                .build();
+            this.addDrawableChild(viaFabricPlus$button);
+        }
+        GeneralSettings.setOrientation(viaFabricPlus$button::setPosition, buttonPosition, width, height);
     }
 
     @WrapOperation(method = "connect(Lnet/minecraft/client/network/ServerInfo;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))

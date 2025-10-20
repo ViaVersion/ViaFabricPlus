@@ -52,7 +52,7 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
         super(client, connection, connectionState);
     }
 
-    @WrapWithCondition(method = "runClickEventCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;openConfirmCommandScreen(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/client/gui/screen/Screen;)V"))
+    @WrapWithCondition(method = "runClickEventCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;openConfirmRunCommandScreen(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/client/gui/screen/Screen;)V"))
     private boolean dontOpenConfirmationScreens(ClientPlayNetworkHandler instance, String command, String message, Screen screenAfterRun) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_5);
     }

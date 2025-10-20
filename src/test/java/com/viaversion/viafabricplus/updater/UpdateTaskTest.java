@@ -40,6 +40,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.resource.PackVersion;
 import net.minecraft.resource.ResourceType;
 import org.junit.jupiter.api.Test;
 
@@ -74,43 +75,43 @@ public final class UpdateTaskTest {
 
     private static void addMissingItems(final JsonObject items) {
         for (final Item item : Registries.ITEM) {
-            if (VersionedRegistries.containsItem(item, NATIVE_VERSION) || item == Items.AIR) {
+            if (VersionedRegistries.ITEM_DIFF.containsKey(item) || item == Items.AIR) {
                 continue;
             }
 
-            items.addProperty(Registries.ITEM.getId(item).getPath(), CURRENT_VERSION_RANGE);
+            items.addProperty(Registries.ITEM.getId(item).toString(), CURRENT_VERSION_RANGE);
         }
     }
 
     private static void addMissingEnchantments(final JsonObject enchantments) {
         RStream.of(Enchantments.class).fields().forEach(fieldWrapper -> {
             final RegistryKey registryKey = fieldWrapper.get();
-            if (VersionedRegistries.containsEnchantment(registryKey, NATIVE_VERSION)) {
+            if (VersionedRegistries.ENCHANTMENT_DIFF.containsKey(registryKey)) {
                 return;
             }
 
-            enchantments.addProperty(registryKey.getValue().getPath(), CURRENT_VERSION_RANGE);
+            enchantments.addProperty(registryKey.getValue().toString(), CURRENT_VERSION_RANGE);
         });
     }
 
     private static void addMissingPatterns(final JsonObject patterns) {
         RStream.of(BannerPatterns.class).fields().forEach(fieldWrapper -> {
             final RegistryKey registryKey = fieldWrapper.get();
-            if (VersionedRegistries.containsBannerPattern(registryKey, NATIVE_VERSION)) {
+            if (VersionedRegistries.PATTERN_DIFF.containsKey(registryKey)) {
                 return;
             }
 
-            patterns.addProperty(registryKey.getValue().getPath(), CURRENT_VERSION_RANGE);
+            patterns.addProperty(registryKey.getValue().toString(), CURRENT_VERSION_RANGE);
         });
     }
 
     private static void addMissingEffects(final JsonObject effects) {
         for (final StatusEffect effect : Registries.STATUS_EFFECT) {
-            if (VersionedRegistries.containsEffect(Registries.STATUS_EFFECT.getEntry(effect), NATIVE_VERSION)) {
+            if (VersionedRegistries.EFFECT_DIFF.containsKey(Registries.STATUS_EFFECT.getEntry(effect))) {
                 continue;
             }
 
-            effects.addProperty(Registries.STATUS_EFFECT.getId(effect).getPath(), CURRENT_VERSION_RANGE);
+            effects.addProperty(Registries.STATUS_EFFECT.getId(effect).toString(), CURRENT_VERSION_RANGE);
         }
     }
 
@@ -122,9 +123,14 @@ public final class UpdateTaskTest {
             return;
         }
 
+        final PackVersion packVersion = version.packVersion(ResourceType.CLIENT_RESOURCES);
+        final JsonObject packFormat = new JsonObject();
+        packFormat.addProperty("major", packVersion.major());
+        packFormat.addProperty("minor", packVersion.minor());
+
         final JsonObject header = new JsonObject();
         header.addProperty("version", version.protocolVersion());
-        header.addProperty("pack_format", version.packVersion(ResourceType.CLIENT_RESOURCES));
+        header.add("pack_format", packFormat);
         data.add(version.name(), header);
 
         write("resource-pack-headers.json", data);

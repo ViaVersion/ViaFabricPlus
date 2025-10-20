@@ -45,7 +45,7 @@ public final class RenderableGlyphDiff {
     private static final Int2ObjectMap<ProtocolVersion> RENDERABLE_GLYPH_DIFF_LEGACY = new Int2ObjectOpenHashMap<>();
     private static final Int2ObjectMap<ProtocolVersion> RENDERABLE_GLYPH_DIFF = new Int2ObjectOpenHashMap<>();
 
-    static {
+    public static void init() {
         final CompoundTag glyphs = ViaFabricPlusMappingDataLoader.INSTANCE.loadNBT("renderable-glyphs.nbt");
         fill(glyphs.getCompoundTag("legacy"), RENDERABLE_GLYPH_DIFF_LEGACY);
         fill(glyphs.getCompoundTag("unihex"), RENDERABLE_GLYPH_DIFF);
@@ -57,6 +57,7 @@ public final class RenderableGlyphDiff {
             if (version == null) {
                 throw new IllegalStateException("Unknown protocol version: " + entry.getKey());
             }
+
             final MixedListTag list = (MixedListTag) entry.getValue();
             for (final Tag i : list) {
                 if (i instanceof final IntTag intTag) {
