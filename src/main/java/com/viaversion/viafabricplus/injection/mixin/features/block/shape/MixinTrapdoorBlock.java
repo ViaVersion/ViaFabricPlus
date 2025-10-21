@@ -22,17 +22,19 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.EnderChestBlock;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.TrapdoorBlock;
+import net.minecraft.block.enums.BlockHalf;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,37 +42,37 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import java.util.Map;
 
-@Mixin(EnderChestBlock.class)
-public abstract class MixinEnderChestBlock extends BlockWithEntity {
+@Mixin(TrapdoorBlock.class)
+public abstract class MixinTrapdoorBlock extends HorizontalFacingBlock {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.025F, 0, 0.025F, 0.975F, 0.95F, 0.975F);
+    private static final Map<Direction, VoxelShape> viaFabricPlus$shape_bedrock = Map.of(
+        Direction.NORTH, VoxelShapes.cuboid(0, 0, 0.8175F, 1, 1, 1),
+        Direction.SOUTH, VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1825F),
+        Direction.WEST, VoxelShapes.cuboid(0.8175F, 0, 0, 1, 1, 1),
+        Direction.EAST, VoxelShapes.cuboid(0, 0, 0, 0.1825F, 1, 1),
+        Direction.UP, VoxelShapes.cuboid(0, 0.8175F, 0, 1, 1, 1),
+        Direction.DOWN, VoxelShapes.cuboid(0, 0, 0, 1, 0.1825F, 1)
+    );
 
     @Shadow
     @Final
-    private static VoxelShape SHAPE;
+    public static BooleanProperty OPEN;
 
-    protected MixinEnderChestBlock(Settings settings) {
+    protected MixinTrapdoorBlock(final Settings settings) {
         super(settings);
     }
 
-    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
-            cir.setReturnValue(VoxelShapes.fullCube());
-        } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            cir.setReturnValue(viaFabricPlus$shape_bedrock);
-        }
-    }
+    @Shadow
+    @Final
+    public static EnumProperty<BlockHalf> HALF;
 
-    @Override
-    public VoxelShape getCullingShape(BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)
-            || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return SHAPE;
-        } else {
-            return super.getCullingShape(state);
+    @Inject(method = "getOutlineShape", at = @At(value = "RETURN"), cancellable = true)
+    private void modifyCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            cir.setReturnValue(viaFabricPlus$shape_bedrock.get(state.get(OPEN) ? state.get(FACING) : (state.get(HALF) == BlockHalf.TOP ? Direction.DOWN : Direction.UP)));
         }
     }
 
