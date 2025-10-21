@@ -52,7 +52,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V", ordinal = 1, shift = At.Shift.AFTER))
     private void removeFlySlipperiness(Vec3d movementInput, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().equalTo(BedrockProtocolVersion.bedrockLatest)
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)
             && movementInput.horizontalLengthSquared() == 0) {
             this.setVelocity(Vec3d.ZERO);
         }
