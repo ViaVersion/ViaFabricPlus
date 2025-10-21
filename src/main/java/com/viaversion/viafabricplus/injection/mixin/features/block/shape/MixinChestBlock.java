@@ -52,14 +52,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntity> {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$single_chest_shape_bedrock = VoxelShapes.cuboid(0.025F, 0, 0.025F, 0.975F, 0.95F, 0.975F);
+    private static final VoxelShape viaFabricPlus$single_chest_shape_bedrock = VoxelShapes.cuboid(0.025, 0, 0.025, 0.975, 0.95, 0.975);
 
     @Unique
     private static final Map<Direction, VoxelShape> viaFabricPlus$double_chest_shapes_bedrock = Map.of(
-        Direction.NORTH, VoxelShapes.cuboid(0.025F, 0, 0, 0.975F, 0.95F, 0.975F),
-        Direction.SOUTH, VoxelShapes.cuboid(0.025F, 0, 0.025F, 0.975F, 0.95F, 1),
-        Direction.WEST, VoxelShapes.cuboid(0, 0, 0.025F, 0.975F, 0.95F, 0.975F),
-        Direction.EAST, VoxelShapes.cuboid(0.025F, 0, 0.025F, 1, 0.95F, 0.975F)
+        Direction.NORTH, VoxelShapes.cuboid(0.025, 0, 0, 0.975, 0.95, 0.975),
+        Direction.SOUTH, VoxelShapes.cuboid(0.025, 0, 0.025, 0.975, 0.95, 1),
+        Direction.WEST, VoxelShapes.cuboid(0, 0, 0.025, 0.975, 0.95, 0.975),
+        Direction.EAST, VoxelShapes.cuboid(0.025, 0, 0.025, 1, 0.95, 0.975)
     );
 
     @Shadow
@@ -97,8 +97,7 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
 
     @Override
     public VoxelShape getCullingShape(BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)
-            || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             if (state.get(ChestBlock.CHEST_TYPE) == ChestType.SINGLE) {
                 return SINGLE_SHAPE;
             } else {

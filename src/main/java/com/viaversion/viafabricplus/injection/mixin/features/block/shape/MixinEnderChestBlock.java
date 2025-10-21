@@ -45,7 +45,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinEnderChestBlock extends BlockWithEntity {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.025F, 0, 0.025F, 0.975F, 0.95F, 0.975F);
+    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.025, 0, 0.025, 0.975, 0.95, 0.975);
 
     @Shadow
     @Final
@@ -66,8 +66,7 @@ public abstract class MixinEnderChestBlock extends BlockWithEntity {
 
     @Override
     public VoxelShape getCullingShape(BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)
-            || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             return SHAPE;
         } else {
             return super.getCullingShape(state);

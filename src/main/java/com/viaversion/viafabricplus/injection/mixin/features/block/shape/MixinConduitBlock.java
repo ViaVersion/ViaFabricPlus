@@ -40,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinConduitBlock {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.25F, 0, 0.25F, 0.75f, 0.5F, 0.75f);
+    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.25, 0, 0.25, 0.75, 0.5, 0.75);
 
     @Inject(method = "getOutlineShape", at = @At(value = "RETURN"), cancellable = true)
     private void modifyCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {

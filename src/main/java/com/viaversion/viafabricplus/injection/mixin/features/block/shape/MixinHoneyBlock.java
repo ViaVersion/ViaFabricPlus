@@ -40,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinHoneyBlock {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.0625F, 0, 0.0625F, 0.9375F, 1, 0.9375F);
+    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.0625, 0, 0.0625, 0.9375, 1, 0.9375);
 
     @Inject(method = "getCollisionShape", at = @At(value = "RETURN"), cancellable = true)
     private void modifyCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {

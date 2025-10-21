@@ -59,7 +59,7 @@ public abstract class MixinEndPortalFrameBlock extends Block {
     private static final VoxelShape viaFabricPlus$frame_with_eye_shape_r1_12_2 = VoxelShapes.union(FRAME_SHAPE, viaFabricPlus$eye_shape_r1_12_2);
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_frame_bedrock = VoxelShapes.cuboid(0, 0, 0, 1, 0.8125F, 1);
+    private static final VoxelShape viaFabricPlus$shape_frame_bedrock = VoxelShapes.cuboid(0, 0, 0, 1, 0.8125, 1);
 
     public MixinEndPortalFrameBlock(Settings settings) {
         super(settings);
@@ -70,7 +70,7 @@ public abstract class MixinEndPortalFrameBlock extends Block {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(FRAME_SHAPE);
         } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            //The eye doesn't have a different shape on bedrock
+            // The eye doesn't have a different shape on bedrock
             cir.setReturnValue(viaFabricPlus$shape_frame_bedrock);
         }
     }

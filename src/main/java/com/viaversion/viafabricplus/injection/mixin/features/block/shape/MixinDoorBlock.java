@@ -48,10 +48,10 @@ public abstract class MixinDoorBlock {
 
     @Unique
     private static final Map<Direction, VoxelShape> viaFabricPlus$shape_bedrock = Map.of(
-        Direction.NORTH, VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1825F),
-        Direction.SOUTH, VoxelShapes.cuboid(0, 0, 0.8175F, 1, 1, 1),
-        Direction.WEST, VoxelShapes.cuboid(0.8175F, 0, 0, 1, 1, 1),
-        Direction.EAST, VoxelShapes.cuboid(0, 0, 0, 0.1825F, 1, 1)
+        Direction.NORTH, VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1825),
+        Direction.SOUTH, VoxelShapes.cuboid(0, 0, 0.8175, 1, 1, 1),
+        Direction.WEST, VoxelShapes.cuboid(0.8175, 0, 0, 1, 1, 1),
+        Direction.EAST, VoxelShapes.cuboid(0, 0, 0, 0.1825, 1, 1)
     );
 
     @Shadow

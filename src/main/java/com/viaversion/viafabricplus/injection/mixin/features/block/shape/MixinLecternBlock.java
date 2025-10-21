@@ -40,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinLecternBlock {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0, 0, 0, 1, 0.9F, 1);
+    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0, 0, 0, 1, 0.9, 1);
 
     @Inject(method = "getCollisionShape", at = @At("RETURN"), cancellable = true)
     private void modifyCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
