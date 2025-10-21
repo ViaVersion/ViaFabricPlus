@@ -53,8 +53,8 @@ public abstract class MixinTrapdoorBlock extends HorizontalFacingBlock {
         Direction.SOUTH, VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1825F),
         Direction.WEST, VoxelShapes.cuboid(0.8175F, 0, 0, 1, 1, 1),
         Direction.EAST, VoxelShapes.cuboid(0, 0, 0, 0.1825F, 1, 1),
-        Direction.UP, VoxelShapes.cuboid(0, 0.8175F, 0, 1, 1, 1),
-        Direction.DOWN, VoxelShapes.cuboid(0, 0, 0, 1, 0.1825F, 1)
+        Direction.DOWN, VoxelShapes.cuboid(0, 0.8175F, 0, 1, 1, 1),
+        Direction.UP, VoxelShapes.cuboid(0, 0, 0, 1, 0.1825F, 1)
     );
 
     @Shadow
