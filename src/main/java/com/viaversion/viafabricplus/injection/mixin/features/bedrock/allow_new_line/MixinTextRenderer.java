@@ -64,7 +64,7 @@ public abstract class MixinTextRenderer {
 
     @Inject(method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V", at = @At("HEAD"), cancellable = true)
     private void allowNewLines_String(String string, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             final List<OrderedText> lines = wrapLines(StringVisitable.plain(isRightToLeft() ? this.mirror(string) : string), Integer.MAX_VALUE);
             if (!lines.isEmpty()) {
                 ci.cancel();
@@ -77,7 +77,7 @@ public abstract class MixinTextRenderer {
 
     @Inject(method = "draw(Lnet/minecraft/text/Text;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V", at = @At("HEAD"), cancellable = true)
     private void allowNewLines_Text(Text text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             final List<OrderedText> lines = wrapLines(text, Integer.MAX_VALUE);
             if (!lines.isEmpty()) {
                 ci.cancel();
@@ -90,7 +90,7 @@ public abstract class MixinTextRenderer {
 
     @Inject(method = "getWidth(Lnet/minecraft/text/StringVisitable;)I", at = @At("HEAD"), cancellable = true)
     private void allowNewLines_getWidth(StringVisitable text, CallbackInfoReturnable<Integer> cir) {
-        if (MinecraftClient.getInstance().world != null && ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
+        if (MinecraftClient.getInstance().world != null && ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             int i = 0;
             for (OrderedText wrapLine : this.wrapLines(text, Integer.MAX_VALUE)) {
                 if (getWidth(wrapLine) >= i) i = getWidth(wrapLine);
