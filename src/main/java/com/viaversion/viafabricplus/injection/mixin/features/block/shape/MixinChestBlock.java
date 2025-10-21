@@ -32,6 +32,7 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.enums.ChestType;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -50,9 +51,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ChestBlock.class)
 public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntity> {
 
-    //https://bugs-legacy.mojang.com/browse/MCPE-94126
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_bedrock = Block.createColumnShape(15.15F, 0.0F, 15.15F);
+    private static final VoxelShape viaFabricPlus$single_chest_shape_bedrock = VoxelShapes.cuboid(0.025F, 0, 0.025F, 0.975F, 0.95F, 0.975F);
+
+    @Unique
+    private static final Map<Direction, VoxelShape> viaFabricPlus$double_chest_shapes_bedrock = Map.of(
+        Direction.NORTH, VoxelShapes.cuboid(0.025F, 0, 0, 0.975F, 0.95F, 0.975F),
+        Direction.SOUTH, VoxelShapes.cuboid(0.025F, 0, 0.025F, 0.975F, 0.95F, 1),
+        Direction.WEST, VoxelShapes.cuboid(0, 0, 0.025F, 0.975F, 0.95F, 0.975F),
+        Direction.EAST, VoxelShapes.cuboid(0.025F, 0, 0.025F, 1, 0.95F, 0.975F)
+    );
 
     @Shadow
     @Final
@@ -61,6 +69,15 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
     @Shadow
     @Final
     private static VoxelShape SINGLE_SHAPE;
+
+    @Shadow
+    @Final
+    public static EnumProperty<ChestType> CHEST_TYPE;
+
+    @Shadow
+    public static Direction getFacing(final BlockState state) {
+        return null;
+    }
 
     protected MixinChestBlock(Settings settings, Supplier<BlockEntityType<? extends ChestBlockEntity>> blockEntityTypeSupplier) {
         super(settings, blockEntityTypeSupplier);
@@ -71,7 +88,10 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             cir.setReturnValue(VoxelShapes.fullCube());
         } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            cir.setReturnValue(viaFabricPlus$shape_bedrock);
+            cir.setReturnValue(switch (state.get(CHEST_TYPE)) {
+                case SINGLE -> viaFabricPlus$single_chest_shape_bedrock;
+                case LEFT, RIGHT -> viaFabricPlus$double_chest_shapes_bedrock.get(getFacing(state));
+            });
         }
     }
 
