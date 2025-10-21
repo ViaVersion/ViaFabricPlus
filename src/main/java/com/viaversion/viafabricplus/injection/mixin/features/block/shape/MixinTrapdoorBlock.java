@@ -22,30 +22,21 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.block.TrapdoorBlock;
-import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.Map;
 
 @Mixin(TrapdoorBlock.class)
-public abstract class MixinTrapdoorBlock extends HorizontalFacingBlock {
+public abstract class MixinTrapdoorBlock {
 
     @Unique
     private static final Map<Direction, VoxelShape> viaFabricPlus$shape_bedrock = Map.of(
@@ -59,21 +50,14 @@ public abstract class MixinTrapdoorBlock extends HorizontalFacingBlock {
 
     @Shadow
     @Final
-    public static BooleanProperty OPEN;
+    private static Map<Direction, VoxelShape> shapeByDirection;
 
-    protected MixinTrapdoorBlock(final Settings settings) {
-        super(settings);
-    }
-
-    @Shadow
-    @Final
-    public static EnumProperty<BlockHalf> HALF;
-
-    @Inject(method = "getOutlineShape", at = @At(value = "RETURN"), cancellable = true)
-    private void modifyCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/TrapdoorBlock;shapeByDirection:Ljava/util/Map;"))
+    private Map<Direction, VoxelShape> modifyShapeByDirection() {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            cir.setReturnValue(viaFabricPlus$shape_bedrock.get(state.get(OPEN) ? state.get(FACING) : (state.get(HALF) == BlockHalf.TOP ? Direction.DOWN : Direction.UP)));
+            return viaFabricPlus$shape_bedrock;
         }
+        return shapeByDirection;
     }
 
 }

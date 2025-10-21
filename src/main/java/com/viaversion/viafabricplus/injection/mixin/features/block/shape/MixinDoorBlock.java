@@ -22,25 +22,17 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.enums.DoorHinge;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.Map;
 
 @Mixin(DoorBlock.class)
@@ -56,22 +48,13 @@ public abstract class MixinDoorBlock {
 
     @Shadow
     @Final
-    public static EnumProperty<Direction> FACING;
+    private static Map<Direction, VoxelShape> SHAPES_BY_DIRECTION;
 
-    @Shadow
-    @Final
-    public static BooleanProperty OPEN;
-
-    @Shadow
-    @Final
-    public static EnumProperty<DoorHinge> HINGE;
-
-    @Inject(method = "getOutlineShape", at = @At(value = "RETURN"), cancellable = true)
-    private void modifyCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/DoorBlock;SHAPES_BY_DIRECTION:Ljava/util/Map;"))
+    private Map<Direction, VoxelShape> redirectGetOutlineShape() {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            Direction direction = state.get(FACING);
-            Direction direction2 = (Boolean)state.get(OPEN) ? (state.get(HINGE) == DoorHinge.RIGHT ? direction.rotateYCounterclockwise() : direction.rotateYClockwise()) : direction;
-            cir.setReturnValue(viaFabricPlus$shape_bedrock.get(direction2));
+            return viaFabricPlus$shape_bedrock;
         }
+        return SHAPES_BY_DIRECTION;
     }
 }
