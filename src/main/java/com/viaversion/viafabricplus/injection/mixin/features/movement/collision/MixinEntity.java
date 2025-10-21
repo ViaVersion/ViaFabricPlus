@@ -37,12 +37,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
@@ -55,6 +57,9 @@ public abstract class MixinEntity {
     private World world;
 
     @Shadow
+    protected Vec3d movementMultiplier;
+
+    @Shadow
     public abstract Box getBoundingBox();
 
     @Shadow
@@ -65,6 +70,9 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract World getEntityWorld();
+
+    @Shadow
+    public abstract void onLanding();
 
     @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;addQueuedCollisionChecks(Lnet/minecraft/entity/Entity$QueuedCollisionCheck;)V"))
     private boolean removeExtraCollisionChecks(Entity instance, Entity.QueuedCollisionCheck queuedCollisionCheck) {
@@ -156,6 +164,16 @@ public abstract class MixinEntity {
             return a == b;
         } else {
             return MathHelper.approximatelyEquals(a, b);
+        }
+    }
+
+    @Inject(method = "slowMovement", at = @At("HEAD"), cancellable = true)
+    private void prioritySlowestMovementMultiplier(BlockState state, Vec3d multiplier, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && this.movementMultiplier != Vec3d.ZERO) {
+            ci.cancel();
+
+            this.onLanding();
+            this.movementMultiplier = new Vec3d(Math.min(this.movementMultiplier.x, multiplier.x), Math.min(this.movementMultiplier.y, multiplier.y), Math.min(this.movementMultiplier.z, multiplier.z));
         }
     }
 
