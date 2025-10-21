@@ -81,6 +81,7 @@ fun Project.configureVVDependencies(configuration: String) {
         configuration("net.raphimc:ViaBedrock:0.0.22-SNAPSHOT") {
             exclude(group = "io.jsonwebtoken")
             exclude(group = "com.mojang", module = "brigadier")
+            exclude(group = "io.netty")
         }
     }
 }
