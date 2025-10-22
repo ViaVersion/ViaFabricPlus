@@ -62,6 +62,7 @@
     "features.block.shape.MixinBedBlock",
     "features.block.shape.MixinBrewingStandBlock",
     "features.block.shape.MixinCactusBlock",
+    "features.block.shape.MixinCandleCakeBlock",
     "features.block.shape.MixinCarpetBlock",
     "features.block.shape.MixinCauldronBlock",
     "features.block.shape.MixinChestBlock",
