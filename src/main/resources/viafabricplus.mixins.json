@@ -88,6 +88,7 @@
     "features.block.shape.MixinPaneBlock",
     "features.block.shape.MixinPistonBlock",
     "features.block.shape.MixinPistonHeadBlock",
+    "features.block.shape.MixinSeaPickleBlock",
     "features.block.shape.MixinPitcherCropBlock",
     "features.block.shape.MixinSnowBlock",
     "features.block.shape.MixinSoulSandBlock",
