@@ -62,7 +62,7 @@ public abstract class MixinDoorBlock extends Block {
     }
 
     @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/DoorBlock;SHAPES_BY_DIRECTION:Ljava/util/Map;"))
-    private Map<Direction, VoxelShape> redirectGetOutlineShape() {
+    private Map<Direction, VoxelShape> changeOutlineShape() {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return viaFabricPlus$shape_bedrock;
         }

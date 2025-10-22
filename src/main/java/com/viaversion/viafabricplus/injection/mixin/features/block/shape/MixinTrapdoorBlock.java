@@ -71,7 +71,7 @@ public abstract class MixinTrapdoorBlock extends HorizontalFacingBlock {
     }
 
     @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/TrapdoorBlock;shapeByDirection:Ljava/util/Map;"))
-    private Map<Direction, VoxelShape> modifyShapeByDirection() {
+    private Map<Direction, VoxelShape> changeOutlineShape() {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return viaFabricPlus$shape_bedrock;
         }

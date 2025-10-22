@@ -71,7 +71,7 @@ public abstract class MixinLadderBlock extends Block {
     }
 
     @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/LadderBlock;SHAPES_BY_DIRECTION:Ljava/util/Map;"))
-    private Map<Direction, VoxelShape> redirectShape() {
+    private Map<Direction, VoxelShape> changeOutlineShape() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return viaFabricPlus$shapes_r1_8_x;
         } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
