@@ -227,6 +227,7 @@
     "features.movement.vehicle.MixinAbstractHorseEntity",
     "features.movement.vehicle.MixinClientPlayerEntity",
     "features.movement.water.MixinClientPlayerEntity",
+    "features.movement.water.MixinPlayerEntity",
     "features.movement.water.MixinEntity",
     "features.movement.water.MixinFlowableFluid",
     "features.movement.water.MixinItemEntity",

@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.entity.Entity;
@@ -33,6 +34,9 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.viabedrock.protocol.data.enums.bedrock.generated.PlayerAuthInputPacket_InputData;
+import net.raphimc.viabedrock.protocol.storage.EntityTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -58,6 +62,9 @@ public abstract class MixinEntity {
     @Shadow
     public abstract void setVelocity(Vec3d velocity);
 
+    @Shadow
+    public abstract boolean isSwimming();
+
     @Redirect(method = "updateSubmergedInWaterState", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeY()D"))
     private double addMagicOffset(Entity instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
@@ -72,11 +79,16 @@ public abstract class MixinEntity {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && swimming) {
             ci.cancel();
         }
+
+        final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+        if (connection != null && swimming != isSwimming() && ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            connection.get(EntityTracker.class).getClientPlayer().addAuthInputData(swimming ? PlayerAuthInputPacket_InputData.StartSwimming : PlayerAuthInputPacket_InputData.StopSwimming);
+        }
     }
 
     @Inject(method = "updateMovementInFluid", at = @At("HEAD"), cancellable = true)
     private void modifyFluidMovementBoundingBox(TagKey<Fluid> fluidTag, double d, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
+        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && !ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return;
         }
 
