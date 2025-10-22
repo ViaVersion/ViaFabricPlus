@@ -66,7 +66,8 @@ public abstract class MixinEnderChestBlock extends BlockWithEntity {
 
     @Override
     public VoxelShape getCullingShape(BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)
+            || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return SHAPE;
         } else {
             return super.getCullingShape(state);

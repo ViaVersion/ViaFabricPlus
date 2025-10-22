@@ -97,7 +97,8 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
 
     @Override
     public VoxelShape getCullingShape(BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)
+            || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             if (state.get(ChestBlock.CHEST_TYPE) == ChestType.SINGLE) {
                 return SINGLE_SHAPE;
             } else {

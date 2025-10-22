@@ -84,4 +84,13 @@ public abstract class MixinEndPortalFrameBlock extends Block {
         }
     }
 
+    @Override
+    public VoxelShape getCullingShape(BlockState state) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return FRAME_SHAPE;
+        } else {
+            return super.getCullingShape(state);
+        }
+    }
+
 }

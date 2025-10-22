@@ -22,7 +22,10 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -36,12 +39,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.Map;
 
 @Mixin(DoorBlock.class)
-public abstract class MixinDoorBlock {
+public abstract class MixinDoorBlock extends Block {
 
     @Unique
     private static final Map<Direction, VoxelShape> viaFabricPlus$shape_bedrock = Map.of(
-        Direction.NORTH, VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1825),
-        Direction.SOUTH, VoxelShapes.cuboid(0, 0, 0.8175, 1, 1, 1),
+        Direction.NORTH, VoxelShapes.cuboid(0, 0, 0.8175, 1, 1, 1),
+        Direction.SOUTH, VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1825),
         Direction.WEST, VoxelShapes.cuboid(0.8175, 0, 0, 1, 1, 1),
         Direction.EAST, VoxelShapes.cuboid(0, 0, 0, 0.1825, 1, 1)
     );
@@ -50,6 +53,14 @@ public abstract class MixinDoorBlock {
     @Final
     private static Map<Direction, VoxelShape> SHAPES_BY_DIRECTION;
 
+    @Shadow
+    @Final
+    public static EnumProperty<Direction> FACING;
+
+    public MixinDoorBlock(final Settings settings) {
+        super(settings);
+    }
+
     @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/DoorBlock;SHAPES_BY_DIRECTION:Ljava/util/Map;"))
     private Map<Direction, VoxelShape> redirectGetOutlineShape() {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
@@ -57,4 +68,14 @@ public abstract class MixinDoorBlock {
         }
         return SHAPES_BY_DIRECTION;
     }
+
+    @Override
+    public VoxelShape getCullingShape(BlockState state) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return SHAPES_BY_DIRECTION.get(state.get(FACING));
+        } else {
+            return super.getCullingShape(state);
+        }
+    }
+
 }

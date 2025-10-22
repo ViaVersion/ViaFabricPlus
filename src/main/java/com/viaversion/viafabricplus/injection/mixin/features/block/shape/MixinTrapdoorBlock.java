@@ -22,7 +22,13 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.TrapdoorBlock;
+import net.minecraft.block.enums.BlockHalf;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -36,7 +42,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.Map;
 
 @Mixin(TrapdoorBlock.class)
-public abstract class MixinTrapdoorBlock {
+public abstract class MixinTrapdoorBlock extends HorizontalFacingBlock {
 
     @Unique
     private static final Map<Direction, VoxelShape> viaFabricPlus$shape_bedrock = Map.of(
@@ -52,12 +58,33 @@ public abstract class MixinTrapdoorBlock {
     @Final
     private static Map<Direction, VoxelShape> shapeByDirection;
 
+    @Shadow
+    @Final
+    public static EnumProperty<BlockHalf> HALF;
+
+    @Shadow
+    @Final
+    public static BooleanProperty OPEN;
+
+    public MixinTrapdoorBlock(final Settings settings) {
+        super(settings);
+    }
+
     @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/TrapdoorBlock;shapeByDirection:Ljava/util/Map;"))
     private Map<Direction, VoxelShape> modifyShapeByDirection() {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return viaFabricPlus$shape_bedrock;
         }
         return shapeByDirection;
+    }
+
+    @Override
+    public VoxelShape getCullingShape(BlockState state) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return shapeByDirection.get(state.get(OPEN) ? state.get(FACING) : (state.get(HALF) == BlockHalf.TOP ? Direction.DOWN : Direction.UP));
+        } else {
+            return super.getCullingShape(state);
+        }
     }
 
 }
