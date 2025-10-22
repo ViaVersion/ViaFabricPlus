@@ -300,5 +300,8 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "mixins": [
+    "features.movement.water.MixinPlayerEntity"
+  ]
 }
