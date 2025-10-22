@@ -68,6 +68,7 @@
     "features.block.shape.MixinConduitBlock",
     "features.block.shape.MixinCropBlocks",
     "features.block.shape.MixinDoorBlock",
+    "features.block.shape.MixinDragonEggBlock",
     "features.block.shape.MixinEnderChestBlock",
     "features.block.shape.MixinEndPortalBlock",
     "features.block.shape.MixinEndPortalFrameBlock",
