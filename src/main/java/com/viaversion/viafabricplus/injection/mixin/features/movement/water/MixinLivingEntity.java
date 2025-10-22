@@ -26,12 +26,17 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,6 +57,10 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Shadow
     protected abstract float getBaseWaterMovementSpeedMultiplier();
+
+    @Shadow
+    @Nullable
+    public abstract StatusEffectInstance getStatusEffect(final RegistryEntry<StatusEffect> effect);
 
     @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
     private double dontApplyLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
@@ -93,9 +102,14 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Inject(method = "applyFluidMovingSpeed", at = @At("HEAD"), cancellable = true)
-    private void modifySwimSprintFallSpeed(double gravity, boolean movingDown, Vec3d velocity, CallbackInfoReturnable<Vec3d> ci) {
+    private void modifySwimSprintFallSpeedOrApplyLevitationVelocity(double gravity, boolean movingDown, Vec3d velocity, CallbackInfoReturnable<Vec3d> ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !this.hasNoGravity()) {
             ci.setReturnValue(new Vec3d(velocity.x, velocity.y - 0.02, velocity.z));
+        }
+
+        final StatusEffectInstance effect = this.getStatusEffect(StatusEffects.LEVITATION);
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && effect != null) {
+            ci.setReturnValue(new Vec3d(velocity.x, velocity.y + (((effect.getAmplifier() + 1) * 0.05) - velocity.y) * 0.2, velocity.z));
         }
     }
 
