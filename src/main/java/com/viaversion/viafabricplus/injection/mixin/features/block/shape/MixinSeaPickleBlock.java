@@ -26,12 +26,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SeaPickleBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -42,6 +45,26 @@ public class MixinSeaPickleBlock extends Block {
 
     @Unique
     private static final VoxelShape viaFabricPlus$shape_bedrock = Block.createColumnShape(16.0F, 0.0F, 6.0F);
+
+    @Shadow
+    @Final
+    private static  VoxelShape ONE_PICKLE_SHAPE;
+
+    @Shadow
+    @Final
+    private static  VoxelShape TWO_PICKLES_SHAPE;
+
+    @Shadow
+    @Final
+    private static  VoxelShape THREE_PICKLES_SHAPE;
+
+    @Shadow
+    @Final
+    private static  VoxelShape FOUR_PICKLES_SHAPE;
+
+    @Shadow
+    @Final
+    public static IntProperty PICKLES;
 
     public MixinSeaPickleBlock(final Settings settings) {
         super(settings);
@@ -63,4 +86,17 @@ public class MixinSeaPickleBlock extends Block {
         }
     }
 
+    @Override
+    public VoxelShape getCullingShape(BlockState state) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return switch (state.get(PICKLES)) {
+                case 2 -> TWO_PICKLES_SHAPE;
+                case 3 -> THREE_PICKLES_SHAPE;
+                case 4 -> FOUR_PICKLES_SHAPE;
+                default -> ONE_PICKLE_SHAPE;
+            };
+        } else {
+            return super.getCullingShape(state);
+        }
+    }
 }
