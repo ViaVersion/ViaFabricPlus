@@ -48,7 +48,11 @@ public abstract class MixinPlayerEntity extends MixinLivingEntity {
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/BlockPos;ofFloored(DDD)Lnet/minecraft/util/math/BlockPos;"))
     private BlockPos modifyWaterAbovePosition(double x, double y, double z) {
-        return BlockPos.ofFloored(x, y - (double)1.0F + 0.1D, z);
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return BlockPos.ofFloored(x, y - 0.9, z);
+        }
+
+        return BlockPos.ofFloored(x, y, z);
     }
 
     @WrapWithCondition(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V", ordinal = 0))

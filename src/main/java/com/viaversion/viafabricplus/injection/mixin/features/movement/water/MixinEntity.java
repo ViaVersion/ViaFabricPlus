@@ -81,11 +81,7 @@ public abstract class MixinEntity {
         }
 
         final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
-        if (connection == null) {
-            return;
-        }
-
-        if (swimming != isSwimming() && ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (connection != null && swimming != isSwimming() && ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             connection.get(EntityTracker.class).getClientPlayer().addAuthInputData(swimming ? PlayerAuthInputPacket_InputData.StartSwimming : PlayerAuthInputPacket_InputData.StopSwimming);
         }
     }

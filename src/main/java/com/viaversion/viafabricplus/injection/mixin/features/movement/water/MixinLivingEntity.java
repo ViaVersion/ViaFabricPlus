@@ -106,13 +106,14 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Inject(method = "applyFluidMovingSpeed", at = @At("HEAD"), cancellable = true)
     private void modifySwimSprintFallSpeedOrApplyLevitationVelocity(double gravity, boolean movingDown, Vec3d velocity, CallbackInfoReturnable<Vec3d> ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !this.hasNoGravity()) {
-            ci.setReturnValue(new Vec3d(velocity.x, velocity.y - 0.02, velocity.z));
-        }
-
         final StatusEffectInstance effect = this.getStatusEffect(StatusEffects.LEVITATION);
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && effect != null) {
             ci.setReturnValue(new Vec3d(velocity.x, velocity.y + (((effect.getAmplifier() + 1) * 0.05) - velocity.y) * 0.2, velocity.z));
+            return;
+        }
+
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !this.hasNoGravity()) {
+            ci.setReturnValue(new Vec3d(velocity.x, velocity.y - 0.02, velocity.z));
         }
     }
 
