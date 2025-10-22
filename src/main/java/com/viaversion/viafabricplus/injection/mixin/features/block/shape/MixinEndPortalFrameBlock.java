@@ -32,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -57,6 +58,9 @@ public abstract class MixinEndPortalFrameBlock extends Block {
     @Unique
     private static final VoxelShape viaFabricPlus$frame_with_eye_shape_r1_12_2 = VoxelShapes.union(FRAME_SHAPE, viaFabricPlus$eye_shape_r1_12_2);
 
+    @Unique
+    private static final VoxelShape viaFabricPlus$shape_frame_bedrock = VoxelShapes.cuboid(0, 0, 0, 1, 0.8125, 1);
+
     public MixinEndPortalFrameBlock(Settings settings) {
         super(settings);
     }
@@ -65,6 +69,9 @@ public abstract class MixinEndPortalFrameBlock extends Block {
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(FRAME_SHAPE);
+        } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            // The eye doesn't have a different shape on bedrock
+            cir.setReturnValue(viaFabricPlus$shape_frame_bedrock);
         }
     }
 
@@ -74,6 +81,15 @@ public abstract class MixinEndPortalFrameBlock extends Block {
             return state.get(EYE) ? viaFabricPlus$frame_with_eye_shape_r1_12_2 : FRAME_SHAPE;
         } else {
             return super.getCollisionShape(state, world, pos, context);
+        }
+    }
+
+    @Override
+    public VoxelShape getCullingShape(BlockState state) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return FRAME_SHAPE;
+        } else {
+            return super.getCullingShape(state);
         }
     }
 

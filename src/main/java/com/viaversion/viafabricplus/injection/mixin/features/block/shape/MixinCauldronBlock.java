@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -46,6 +47,15 @@ public abstract class MixinCauldronBlock extends AbstractCauldronBlock {
             VoxelShapes.fullCube(),
             Block.createCuboidShape(2.0D, 5.0D, 2.0D, 14.0D, 16.0D, 14.0D),
             BooleanBiFunction.ONLY_FIRST
+    );
+
+    @Unique
+    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.union(
+        VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 0.3125, 1.0),
+        VoxelShapes.cuboid(0.0, 0.0, 0.0, 0.125, 1.0, 1.0),
+        VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 1.0, 0.125),
+        VoxelShapes.cuboid(1.0 - 0.125, 0.0, 0.0, 1.0, 1.0, 1.0),
+        VoxelShapes.cuboid(0.0, 0.0, 1.0 - 0.125, 1.0, 1.0, 1.0)
     );
 
     public MixinCauldronBlock(Settings settings, CauldronBehavior.CauldronBehaviorMap behaviorMap) {
@@ -61,6 +71,8 @@ public abstract class MixinCauldronBlock extends AbstractCauldronBlock {
             viaFabricPlus$requireOriginalShape = false;
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return viaFabricPlus$shape_r1_12_2;
+        } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return viaFabricPlus$shape_bedrock;
         }
         return super.getOutlineShape(state, world, pos, context);
     }
