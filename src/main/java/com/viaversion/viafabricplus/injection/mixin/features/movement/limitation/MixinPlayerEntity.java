@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.limitation;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.EntityType;
@@ -50,11 +51,12 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V", ordinal = 1, shift = At.Shift.AFTER))
-    private void removeFlySlipperiness(Vec3d movementInput, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)
-            && movementInput.horizontalLengthSquared() == 0) {
-            this.setVelocity(Vec3d.ZERO);
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V", ordinal = 1))
+    private void removeFlySlipperiness(PlayerEntity instance, Vec3d vec3d, @Local(argsOnly = true) Vec3d movementInput) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && movementInput.horizontalLengthSquared() == 0) {
+            vec3d = new Vec3d(0, vec3d.y, 0);
         }
+
+        instance.setVelocity(vec3d);
     }
 }
