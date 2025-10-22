@@ -117,6 +117,9 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
     @Shadow
     public abstract boolean isUsingItem();
 
+    @Shadow
+    protected abstract boolean canSprint(final boolean allowTouchingWater);
+
     @Inject(method = "<init>", at = @At("RETURN"))
     private void initLastSneaking(MinecraftClient client, ClientWorld world, ClientPlayNetworkHandler networkHandler, StatHandler stats, ClientRecipeBook recipeBook, PlayerInput lastPlayerInput, boolean lastSprinting, CallbackInfo ci) {
         viaFabricPlus$lastSneaking = lastPlayerInput.sneak();
@@ -269,7 +272,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Redirect(method = {"shouldStopSprinting", "canStartSprinting"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;canSprint(Z)Z"))
     private boolean allowNonSwimWaterSprinting(ClientPlayerEntity instance, boolean allowTouchingWater) {
-        return allowTouchingWater || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && (instance.isSwimming() || instance.isOnGround());
+        return this.canSprint(allowTouchingWater || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && (instance.isSwimming() || instance.isOnGround()));
     }
 
     @WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSprintingPacket()V"))
