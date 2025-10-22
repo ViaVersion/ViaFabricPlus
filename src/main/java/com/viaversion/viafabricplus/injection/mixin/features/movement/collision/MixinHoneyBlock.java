@@ -46,6 +46,11 @@ public abstract class MixinHoneyBlock extends Block {
         super(settings);
     }
 
+    @Shadow
+    protected abstract boolean isSliding(BlockPos pos, Entity entity);
+    @Shadow
+    protected abstract void addCollisionEffects(World world, Entity entity);
+
     @Inject(method = {"getOldVelocityY", "getNewVelocityY"}, at = @At("HEAD"), cancellable = true)
     private static void simplifyVelocityComparisons(double d, CallbackInfoReturnable<Double> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
@@ -75,6 +80,8 @@ public abstract class MixinHoneyBlock extends Block {
                 double e = 0.4 + absoluteY * 0.2;
                 entity.setVelocity(entity.getVelocity().multiply(e, 1.0F, e));
             }
+        } else {
+            super.onSteppedOn(world, pos, state, entity);
         }
     }
 
@@ -92,10 +99,5 @@ public abstract class MixinHoneyBlock extends Block {
     public float getJumpVelocityMultiplier() {
         return ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) ? 0.6F : super.getJumpVelocityMultiplier();
     }
-
-    @Shadow
-    protected abstract boolean isSliding(BlockPos pos, Entity entity);
-    @Shadow
-    protected abstract void addCollisionEffects(World world, Entity entity);
 
 }
