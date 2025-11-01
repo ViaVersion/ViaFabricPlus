@@ -18,7 +18,7 @@ allprojects {
         maven("https://maven.terraformersmc.com/releases")
         maven("https://jitpack.io") {
             content {
-                includeGroup("com.github.Oryxel")
+                includeGroup("com.github.oryxel1")
             }
         }
 
