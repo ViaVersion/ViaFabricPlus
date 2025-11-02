@@ -223,7 +223,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             if ((!this.isTouchingWater() || this.isSubmergedInWater()) && canStartSprinting && this.client.options.sprintKey.isPressed()) {
                 this.setSprinting(true);
             }
-
             return false;
         } else {
             return this.canStartSprinting();
