@@ -48,21 +48,16 @@ public abstract class MixinHoneyBlock extends Block {
 
     @Shadow
     protected abstract boolean isSliding(BlockPos pos, Entity entity);
+
     @Shadow
     protected abstract void addCollisionEffects(World world, Entity entity);
-
-    @Inject(method = {"getOldVelocityY", "getNewVelocityY"}, at = @At("HEAD"), cancellable = true)
-    private static void simplifyVelocityComparisons(double d, CallbackInfoReturnable<Double> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            cir.setReturnValue(d);
-        }
-    }
 
     @Inject(method = "onEntityCollision", at = @At("HEAD"), cancellable = true)
     private void applyBedrockHoneyCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler, boolean bl, CallbackInfo ci) {
         if (!ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return;
         }
+
         ci.cancel();
         if (this.isSliding(pos, entity)) {
             this.addCollisionEffects(world, entity);
@@ -75,10 +70,10 @@ public abstract class MixinHoneyBlock extends Block {
     @Override
     public void onSteppedOn(final World world, final BlockPos pos, final BlockState state, final Entity entity) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            double absoluteY = Math.abs(entity.getVelocity().y);
+            final double absoluteY = Math.abs(entity.getVelocity().y);
             if (absoluteY < 0.1 && !entity.bypassesSteppingEffects()) {
-                double e = 0.4 + absoluteY * 0.2;
-                entity.setVelocity(entity.getVelocity().multiply(e, 1.0F, e));
+                final double frictionFactor = 0.4 + absoluteY * 0.2;
+                entity.setVelocity(entity.getVelocity().multiply(frictionFactor, 1.0F, frictionFactor));
             }
         } else {
             super.onSteppedOn(world, pos, state, entity);
@@ -98,6 +93,13 @@ public abstract class MixinHoneyBlock extends Block {
     @Override
     public float getJumpVelocityMultiplier() {
         return ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) ? 0.6F : super.getJumpVelocityMultiplier();
+    }
+
+    @Inject(method = {"getOldVelocityY", "getNewVelocityY"}, at = @At("HEAD"), cancellable = true)
+    private static void simplifyVelocityComparisons(double d, CallbackInfoReturnable<Double> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            cir.setReturnValue(d);
+        }
     }
 
 }

@@ -34,7 +34,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
@@ -44,6 +43,15 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         super(entityType, world);
     }
 
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V", ordinal = 1))
+    private void removeFlySlipperiness(PlayerEntity instance, Vec3d vec3d, @Local(argsOnly = true) Vec3d movementInput) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && movementInput.horizontalLengthSquared() == 0) {
+            instance.setVelocity(new Vec3d(0, vec3d.y, 0));
+        } else {
+            instance.setVelocity(vec3d);
+        }
+    }
+
     @Inject(method = "isClimbing", at = @At("HEAD"), cancellable = true)
     private void allowClimbingWhileFlying(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
@@ -51,12 +59,4 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         }
     }
 
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V", ordinal = 1))
-    private void removeFlySlipperiness(PlayerEntity instance, Vec3d vec3d, @Local(argsOnly = true) Vec3d movementInput) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && movementInput.horizontalLengthSquared() == 0) {
-            vec3d = new Vec3d(0, vec3d.y, 0);
-        }
-
-        instance.setVelocity(vec3d);
-    }
 }

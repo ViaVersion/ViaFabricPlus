@@ -70,6 +70,15 @@ public abstract class MixinEntity {
     @Shadow
     public abstract World getEntityWorld();
 
+    @Redirect(method = "slowMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;movementMultiplier:Lnet/minecraft/util/math/Vec3d;"))
+    private void prioritySlowestMovementMultiplier(Entity instance, Vec3d value) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && this.movementMultiplier != Vec3d.ZERO) {
+            this.movementMultiplier = new Vec3d(Math.min(this.movementMultiplier.x, value.x), Math.min(this.movementMultiplier.y, value.y), Math.min(this.movementMultiplier.z, value.z));
+        } else {
+            this.movementMultiplier = value;
+        }
+    }
+
     @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;addQueuedCollisionChecks(Lnet/minecraft/entity/Entity$QueuedCollisionCheck;)V"))
     private boolean removeExtraCollisionChecks(Entity instance, Entity.QueuedCollisionCheck queuedCollisionCheck) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_5);
@@ -160,15 +169,6 @@ public abstract class MixinEntity {
             return a == b;
         } else {
             return MathHelper.approximatelyEquals(a, b);
-        }
-    }
-
-    @Redirect(method = "slowMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;movementMultiplier:Lnet/minecraft/util/math/Vec3d;"))
-    private void prioritySlowestMovementMultiplier(Entity instance, Vec3d value) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && this.movementMultiplier != Vec3d.ZERO) {
-            this.movementMultiplier = new Vec3d(Math.min(this.movementMultiplier.x, value.x), Math.min(this.movementMultiplier.y, value.y), Math.min(this.movementMultiplier.z, value.z));
-        } else {
-            this.movementMultiplier = value;
         }
     }
 

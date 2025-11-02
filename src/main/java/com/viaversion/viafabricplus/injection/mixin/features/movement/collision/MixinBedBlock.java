@@ -37,10 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinBedBlock {
 
     @Inject(method = "bounceEntity", at = @At("HEAD"), cancellable = true)
-    private void cancelBounceOrBedrockBounce(Entity entity, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
-            ci.cancel();
-        }
+    private void collisionChanges(Entity entity, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             ci.cancel();
 
@@ -49,6 +46,8 @@ public abstract class MixinBedBlock {
                 double d = entity instanceof LivingEntity ? (double)1.0F : 0.8;
                 entity.setVelocity(velocity.x, Math.min(-velocity.y * 0.75F * d, 0.75F), velocity.z);
             }
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+            ci.cancel();
         }
     }
 
