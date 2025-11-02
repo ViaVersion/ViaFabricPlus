@@ -214,7 +214,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             final boolean onGround = this.hasVehicle() ? this.getVehicle().isOnGround() : this.isOnGround();
             if ((onGround || this.isSubmergedInWater()) && ref.get() && canStartSprinting) {
                 if (this.ticksLeftToDoubleTapSprint <= 0 && !this.client.options.sprintKey.isPressed()) {
-                    this.ticksLeftToDoubleTapSprint = 7;
+                    this.ticksLeftToDoubleTapSprint = this.client.options.getSprintWindow().getValue();
                 } else {
                     this.setSprinting(true);
                 }
@@ -223,6 +223,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             if ((!this.isTouchingWater() || this.isSubmergedInWater()) && canStartSprinting && this.client.options.sprintKey.isPressed()) {
                 this.setSprinting(true);
             }
+
             return false;
         } else {
             return this.canStartSprinting();
