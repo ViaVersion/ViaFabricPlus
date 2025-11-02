@@ -50,8 +50,6 @@ public abstract class MixinProtocol1_21_7To1_21_9 extends AbstractProtocol<Clien
         registerClientbound(ClientboundPackets1_21_6.CUSTOM_PAYLOAD, wrapper -> {
             final String channel = wrapper.passthrough(Types.STRING);
             if (channel.equals("minecraft:debug/game_test_add_marker")) {
-                wrapper.resetReader();
-
                 wrapper.set(Types.STRING, 0, SyncTasks.PACKET_SYNC_IDENTIFIER);
                 wrapper.write(Types.STRING, SyncTasks.executeSyncTask(buf -> {
                     final BlockPos pos = buf.readBlockPos();
@@ -63,8 +61,6 @@ public abstract class MixinProtocol1_21_7To1_21_9 extends AbstractProtocol<Clien
                     mixinTestDebugRenderer.viaFabricPlus$addMarker(pos, color, name, duration);
                 }));
             } else if (channel.equals("minecraft:debug/game_test_clear")) {
-                wrapper.resetReader();
-
                 wrapper.set(Types.STRING, 0, SyncTasks.PACKET_SYNC_IDENTIFIER);
                 wrapper.write(Types.STRING, SyncTasks.executeSyncTask(buf -> MinecraftClient.getInstance().worldRenderer.gameTestDebugRenderer.clear()));
             }
