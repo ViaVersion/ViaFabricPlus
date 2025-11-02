@@ -27,6 +27,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
@@ -56,6 +57,15 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private void allowClimbingWhileFlying(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             cir.setReturnValue(super.isClimbing());
+        }
+    }
+
+    @Redirect(method = "canChangeIntoPose", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Box;contract(D)Lnet/minecraft/util/math/Box;"))
+    private Box removeContractionOfCollisionBox(Box instance, double value) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+            return instance;
+        } else {
+            return instance.contract(value);
         }
     }
 
