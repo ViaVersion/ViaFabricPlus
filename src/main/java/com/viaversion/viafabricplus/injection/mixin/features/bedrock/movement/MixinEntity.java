@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.entity.Entity;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.enums.bedrock.generated.PlayerAuthInputPacket_InputData;
@@ -40,12 +39,8 @@ public abstract class MixinEntity {
     @Shadow
     public abstract boolean isSwimming();
 
-    @Inject(method = "setSwimming", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "setSwimming", at = @At("HEAD"))
     private void cancelSwimming(boolean swimming, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && swimming) {
-            ci.cancel();
-        }
-
         final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
         if (connection != null && swimming != isSwimming() && ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             connection.get(EntityTracker.class).getClientPlayer().addAuthInputData(swimming ? PlayerAuthInputPacket_InputData.StartSwimming : PlayerAuthInputPacket_InputData.StopSwimming);

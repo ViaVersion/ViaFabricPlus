@@ -39,6 +39,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
@@ -58,15 +59,19 @@ public abstract class MixinEntity {
     @Shadow
     public abstract void setVelocity(Vec3d velocity);
 
-    @Shadow
-    public abstract boolean isSwimming();
-
     @Redirect(method = "updateSubmergedInWaterState", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeY()D"))
     private double addMagicOffset(Entity instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             return instance.getEyeY() - 0.11111111F;
         } else {
             return instance.getEyeY();
+        }
+    }
+
+    @Inject(method = "setSwimming", at = @At("HEAD"), cancellable = true)
+    private void cancelSwimming(boolean swimming, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && swimming) {
+            ci.cancel();
         }
     }
 
