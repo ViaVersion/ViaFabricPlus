@@ -29,9 +29,9 @@ import java.nio.ByteBuffer;
  */
 
 public record KeyPairResponse1_19_0(
-        KeyPairResponse.KeyPair keyPair,
-        ByteBuffer publicKeySignatureV2,
-        ByteBuffer publicKeySignature /* removed in 1.20-rc1 */,
-        String expiresAt,
-        String refreshedAfter) {
+    KeyPairResponse.KeyPair keyPair,
+    ByteBuffer publicKeySignatureV2,
+    ByteBuffer publicKeySignature /* removed in 1.20-rc1 */,
+    String expiresAt,
+    String refreshedAfter) {
 }

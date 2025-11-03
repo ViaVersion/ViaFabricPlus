@@ -42,8 +42,8 @@ public abstract class MixinBedBlock {
             ci.cancel();
 
             Vec3d velocity = entity.getVelocity();
-            if (velocity.y < (double)0.0F) {
-                double d = entity instanceof LivingEntity ? (double)1.0F : 0.8;
+            if (velocity.y < (double) 0.0F) {
+                double d = entity instanceof LivingEntity ? (double) 1.0F : 0.8;
                 entity.setVelocity(velocity.x, Math.min(-velocity.y * 0.75F * d, 0.75F), velocity.z);
             }
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {

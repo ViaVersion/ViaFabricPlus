@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
@@ -36,7 +37,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import java.util.Map;
 
 @Mixin(DoorBlock.class)
 public abstract class MixinDoorBlock extends Block {

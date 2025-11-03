@@ -25,7 +25,6 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.block.AbstractChestBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.ShapeContext;

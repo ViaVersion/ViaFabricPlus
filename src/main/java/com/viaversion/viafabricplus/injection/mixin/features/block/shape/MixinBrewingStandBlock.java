@@ -42,8 +42,8 @@ public abstract class MixinBrewingStandBlock {
 
     @Unique
     private static final VoxelShape viaFabricPlus$shape_r1_12_2 = VoxelShapes.union(
-            Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D) /* Base */,
-            Block.createCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 14.0D, 9.0D) /* Stick */
+        Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D) /* Base */,
+        Block.createCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 14.0D, 9.0D) /* Stick */
     );
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)

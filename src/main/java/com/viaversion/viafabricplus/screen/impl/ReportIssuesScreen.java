@@ -78,7 +78,7 @@ public final class ReportIssuesScreen extends VFPScreen {
         int i = 0;
         for (Map.Entry<String, Runnable> entry : actions.entrySet()) {
             this.addDrawableChild(ButtonWidget.builder(Text.translatable(entry.getKey()), button -> entry.getValue().run()).
-                    position(this.width / 2 - 100, this.height / 2 - 25 + i * (20 + 3)).size(200, 20).build());
+                position(this.width / 2 - 100, this.height / 2 - 25 + i * (20 + 3)).size(200, 20).build());
             i++;
         }
     }

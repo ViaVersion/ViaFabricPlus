@@ -42,10 +42,10 @@ public final class SettingsManager {
         Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.PRE_SETTINGS_LOAD);
 
         addGroup(
-                GeneralSettings.INSTANCE,
-                BedrockSettings.INSTANCE,
-                AuthenticationSettings.INSTANCE,
-                DebugSettings.INSTANCE
+            GeneralSettings.INSTANCE,
+            BedrockSettings.INSTANCE,
+            AuthenticationSettings.INSTANCE,
+            DebugSettings.INSTANCE
         );
 
         Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.POST_SETTINGS_LOAD);

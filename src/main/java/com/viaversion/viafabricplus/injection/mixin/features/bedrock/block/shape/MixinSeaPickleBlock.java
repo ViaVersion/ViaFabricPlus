@@ -48,19 +48,19 @@ public class MixinSeaPickleBlock extends Block {
 
     @Shadow
     @Final
-    private static  VoxelShape ONE_PICKLE_SHAPE;
+    private static VoxelShape ONE_PICKLE_SHAPE;
 
     @Shadow
     @Final
-    private static  VoxelShape TWO_PICKLES_SHAPE;
+    private static VoxelShape TWO_PICKLES_SHAPE;
 
     @Shadow
     @Final
-    private static  VoxelShape THREE_PICKLES_SHAPE;
+    private static VoxelShape THREE_PICKLES_SHAPE;
 
     @Shadow
     @Final
-    private static  VoxelShape FOUR_PICKLES_SHAPE;
+    private static VoxelShape FOUR_PICKLES_SHAPE;
 
     @Shadow
     @Final

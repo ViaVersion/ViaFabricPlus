@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LadderBlock;
@@ -37,17 +38,16 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import java.util.Map;
 
 @Mixin(LadderBlock.class)
 public abstract class MixinLadderBlock extends Block {
 
     @Unique
     private static final Map<Direction, VoxelShape> viaFabricPlus$shapes_r1_8_x = Map.of(
-            Direction.NORTH, Block.createCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
-            Direction.SOUTH, Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
-            Direction.WEST, Block.createCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-            Direction.EAST, Block.createCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D)
+        Direction.NORTH, Block.createCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
+        Direction.SOUTH, Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
+        Direction.WEST, Block.createCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+        Direction.EAST, Block.createCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D)
     );
 
     @Unique
@@ -64,7 +64,7 @@ public abstract class MixinLadderBlock extends Block {
 
     @Shadow
     @Final
-    public static  EnumProperty<Direction> FACING;
+    public static EnumProperty<Direction> FACING;
 
     public MixinLadderBlock(final Settings settings) {
         super(settings);
