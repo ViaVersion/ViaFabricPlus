@@ -19,11 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.bedrock.block.shape;
+package com.viaversion.viafabricplus.injection.mixin.features.bedrock.block;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CactusBlock;
+import net.minecraft.block.HoneyBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -36,8 +36,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(CactusBlock.class)
-public abstract class MixinCactusBlock {
+@Mixin(HoneyBlock.class)
+public abstract class MixinHoneyBlock {
 
     @Unique
     private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.0625, 0, 0.0625, 0.9375, 1, 0.9375);
