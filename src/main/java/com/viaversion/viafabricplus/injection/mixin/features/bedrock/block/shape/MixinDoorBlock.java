@@ -19,13 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
+package com.viaversion.viafabricplus.injection.mixin.features.bedrock.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.LadderBlock;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -39,52 +38,40 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.Map;
 
-@Mixin(LadderBlock.class)
-public abstract class MixinLadderBlock extends Block {
+@Mixin(DoorBlock.class)
+public abstract class MixinDoorBlock extends Block {
 
     @Unique
-    private static final Map<Direction, VoxelShape> viaFabricPlus$shapes_r1_8_x = Map.of(
-            Direction.NORTH, Block.createCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
-            Direction.SOUTH, Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
-            Direction.WEST, Block.createCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-            Direction.EAST, Block.createCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D)
-    );
-
-    @Unique
-    private static final Map<Direction, VoxelShape> viaFabricPlus$shapes_bedrock = Map.of(
-        Direction.NORTH, VoxelShapes.cuboid(0, 0, 0.8125, 1, 1, 1),
-        Direction.SOUTH, VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1875),
-        Direction.WEST, VoxelShapes.cuboid(0.8125, 0, 0, 1, 1, 1),
-        Direction.EAST, VoxelShapes.cuboid(0, 0, 0, 0.1875, 1, 1)
+    private static final Map<Direction, VoxelShape> viaFabricPlus$shape_bedrock = Map.of(
+        Direction.NORTH, VoxelShapes.cuboid(0, 0, 0.8175, 1, 1, 1),
+        Direction.SOUTH, VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1825),
+        Direction.WEST, VoxelShapes.cuboid(0.8175, 0, 0, 1, 1, 1),
+        Direction.EAST, VoxelShapes.cuboid(0, 0, 0, 0.1825, 1, 1)
     );
 
     @Shadow
     @Final
-    public static Map<Direction, VoxelShape> SHAPES_BY_DIRECTION;
+    private static Map<Direction, VoxelShape> SHAPES_BY_DIRECTION;
 
     @Shadow
     @Final
-    public static  EnumProperty<Direction> FACING;
+    public static EnumProperty<Direction> FACING;
 
-    public MixinLadderBlock(final Settings settings) {
+    public MixinDoorBlock(final Settings settings) {
         super(settings);
     }
 
-    @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/LadderBlock;SHAPES_BY_DIRECTION:Ljava/util/Map;"))
+    @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/DoorBlock;SHAPES_BY_DIRECTION:Ljava/util/Map;"))
     private Map<Direction, VoxelShape> changeOutlineShape() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return viaFabricPlus$shapes_r1_8_x;
-        } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return viaFabricPlus$shapes_bedrock;
-        } else {
-            return SHAPES_BY_DIRECTION;
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return viaFabricPlus$shape_bedrock;
         }
+        return SHAPES_BY_DIRECTION;
     }
 
     @Override
     public VoxelShape getCullingShape(BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)
-            || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return SHAPES_BY_DIRECTION.get(state.get(FACING));
         } else {
             return super.getCullingShape(state);
