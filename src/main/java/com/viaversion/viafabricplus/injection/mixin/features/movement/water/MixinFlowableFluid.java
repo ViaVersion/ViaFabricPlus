@@ -51,10 +51,10 @@ public abstract class MixinFlowableFluid {
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             final Block block = instance.getBlock();
             if (block instanceof ShulkerBoxBlock || block instanceof LeavesBlock || block instanceof TrapdoorBlock ||
-                    block == Blocks.BEACON || block == Blocks.CAULDRON || block == Blocks.GLASS ||
-                    block == Blocks.GLOWSTONE || block == Blocks.ICE || block == Blocks.SEA_LANTERN ||
-                    block instanceof StainedGlassBlock || block == Blocks.PISTON || block == Blocks.STICKY_PISTON ||
-                    block == Blocks.PISTON_HEAD || block instanceof StairsBlock) {
+                block == Blocks.BEACON || block == Blocks.CAULDRON || block == Blocks.GLASS ||
+                block == Blocks.GLOWSTONE || block == Blocks.ICE || block == Blocks.SEA_LANTERN ||
+                block instanceof StainedGlassBlock || block == Blocks.PISTON || block == Blocks.STICKY_PISTON ||
+                block == Blocks.PISTON_HEAD || block instanceof StairsBlock) {
                 return false;
             }
         }

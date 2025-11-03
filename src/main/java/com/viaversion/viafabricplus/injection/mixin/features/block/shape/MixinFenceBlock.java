@@ -108,24 +108,24 @@ public abstract class MixinFenceBlock extends HorizontalConnectingBlock implemen
         final VoxelShape westShape = Block.createCuboidShape(0.0, (float) 0.0, h, i, height, i);
         final VoxelShape eastShape = Block.createCuboidShape(h, (float) 0.0, h, 16.0, height, i);
         final VoxelShape[] voxelShapes = new VoxelShape[]{
-                VoxelShapes.empty(),
-                Block.createCuboidShape(f, (float) 0.0, h, g, height, 16.0D),
-                Block.createCuboidShape(0.0D, (float) 0.0, f, i, height, g),
-                Block.createCuboidShape(f - 6, (float) 0.0, h, g, height, 16.0D),
-                Block.createCuboidShape(f, (float) 0.0, 0.0D, g, height, i),
+            VoxelShapes.empty(),
+            Block.createCuboidShape(f, (float) 0.0, h, g, height, 16.0D),
+            Block.createCuboidShape(0.0D, (float) 0.0, f, i, height, g),
+            Block.createCuboidShape(f - 6, (float) 0.0, h, g, height, 16.0D),
+            Block.createCuboidShape(f, (float) 0.0, 0.0D, g, height, i),
 
-                VoxelShapes.union(southShape, northShape),
-                Block.createCuboidShape(f - 6, (float) 0.0, 0.0D, g, height, i),
-                Block.createCuboidShape(f - 6, (float) 0.0, h - 5, g, height, 16.0D),
-                Block.createCuboidShape(h, (float) 0.0, f, 16.0D, height, g),
-                Block.createCuboidShape(h, (float) 0.0, f, 16.0D, height, g + 6),
+            VoxelShapes.union(southShape, northShape),
+            Block.createCuboidShape(f - 6, (float) 0.0, 0.0D, g, height, i),
+            Block.createCuboidShape(f - 6, (float) 0.0, h - 5, g, height, 16.0D),
+            Block.createCuboidShape(h, (float) 0.0, f, 16.0D, height, g),
+            Block.createCuboidShape(h, (float) 0.0, f, 16.0D, height, g + 6),
 
-                VoxelShapes.union(westShape, eastShape),
-                Block.createCuboidShape(h - 5, (float) 0.0, f, 16.0D, height, g + 6),
-                Block.createCuboidShape(f, (float) 0.0, 0.0D, g + 6, height, i),
-                Block.createCuboidShape(f, (float) 0.0, 0.0D, g + 6, height, i + 5),
-                Block.createCuboidShape(h - 5, (float) 0.0, f - 6, 16.0D, height, g),
-                Block.createCuboidShape(0, (float) 0.0, 0, 16.0D, height, 16.0D)
+            VoxelShapes.union(westShape, eastShape),
+            Block.createCuboidShape(h - 5, (float) 0.0, f, 16.0D, height, g + 6),
+            Block.createCuboidShape(f, (float) 0.0, 0.0D, g + 6, height, i),
+            Block.createCuboidShape(f, (float) 0.0, 0.0D, g + 6, height, i + 5),
+            Block.createCuboidShape(h - 5, (float) 0.0, f - 6, 16.0D, height, g),
+            Block.createCuboidShape(0, (float) 0.0, 0, 16.0D, height, 16.0D)
         };
 
         for (int j = 0; j < 16; ++j) {

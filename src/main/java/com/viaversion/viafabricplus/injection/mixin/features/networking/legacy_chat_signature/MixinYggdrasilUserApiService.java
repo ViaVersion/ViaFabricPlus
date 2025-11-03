@@ -58,10 +58,10 @@ public abstract class MixinYggdrasilUserApiService {
 
         // create the original KeyPairResponse object with the data
         final KeyPairResponse keyPairResponse = new KeyPairResponse(
-                response.keyPair(),
-                response.publicKeySignatureV2(),
-                response.expiresAt(),
-                response.refreshedAfter()
+            response.keyPair(),
+            response.publicKeySignatureV2(),
+            response.expiresAt(),
+            response.refreshedAfter()
         );
 
         if (response.publicKeySignature() != null && response.publicKeySignature().array().length != 0) {

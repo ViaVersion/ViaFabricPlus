@@ -31,6 +31,7 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.enums.ChestType;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -41,12 +42,24 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ChestBlock.class)
 public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntity> {
+
+    @Unique
+    private static final VoxelShape viaFabricPlus$single_chest_shape_bedrock = VoxelShapes.cuboid(0.025, 0, 0.025, 0.975, 0.95, 0.975);
+
+    @Unique
+    private static final Map<Direction, VoxelShape> viaFabricPlus$double_chest_shapes_bedrock = Map.of(
+        Direction.NORTH, VoxelShapes.cuboid(0.025, 0, 0, 0.975, 0.95, 0.975),
+        Direction.SOUTH, VoxelShapes.cuboid(0.025, 0, 0.025, 0.975, 0.95, 1),
+        Direction.WEST, VoxelShapes.cuboid(0, 0, 0.025, 0.975, 0.95, 0.975),
+        Direction.EAST, VoxelShapes.cuboid(0.025, 0, 0.025, 1, 0.95, 0.975)
+    );
 
     @Shadow
     @Final
@@ -56,21 +69,35 @@ public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntit
     @Final
     private static VoxelShape SINGLE_SHAPE;
 
+    @Shadow
+    @Final
+    public static EnumProperty<ChestType> CHEST_TYPE;
+
+    @Shadow
+    public static Direction getFacing(final BlockState state) {
+        return null;
+    }
+
     protected MixinChestBlock(Settings settings, Supplier<BlockEntityType<? extends ChestBlockEntity>> blockEntityTypeSupplier) {
         super(settings, blockEntityTypeSupplier);
     }
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)
-            || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
             cir.setReturnValue(VoxelShapes.fullCube());
+        } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            cir.setReturnValue(switch (state.get(CHEST_TYPE)) {
+                case SINGLE -> viaFabricPlus$single_chest_shape_bedrock;
+                case LEFT, RIGHT -> viaFabricPlus$double_chest_shapes_bedrock.get(getFacing(state));
+            });
         }
     }
 
     @Override
     public VoxelShape getCullingShape(BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)
+            || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             if (state.get(ChestBlock.CHEST_TYPE) == ChestType.SINGLE) {
                 return SINGLE_SHAPE;
             } else {

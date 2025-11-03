@@ -50,11 +50,11 @@ public final class ProtocolSelectionScreen extends VFPScreen {
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.settings"), button -> SettingsScreen.INSTANCE.open(this)).position(width - 98 - 5, 5).size(98, 20).build());
 
         final ButtonWidget serverList = this.addDrawableChild(ButtonWidget.builder(ServerListScreen.INSTANCE.getTitle(), button -> ServerListScreen.INSTANCE.open(this))
-                .position(5, height - 25).size(98, 20).build());
+            .position(5, height - 25).size(98, 20).build());
         serverList.active = MinecraftClient.getInstance().getNetworkHandler() == null;
 
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("report.viafabricplus.button"), button -> ReportIssuesScreen.INSTANCE.open(this))
-                .position(width - 98 - 5, height - 25).size(98, 20).build());
+            .position(width - 98 - 5, height - 25).size(98, 20).build());
 
         super.init();
     }

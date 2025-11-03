@@ -43,8 +43,8 @@ public final class SaveManager {
 
         // Register saves
         add(
-                settingsSave = new SettingsSave(),
-                accountsSave = new AccountsSave()
+            settingsSave = new SettingsSave(),
+            accountsSave = new AccountsSave()
         );
 
         // Load save files

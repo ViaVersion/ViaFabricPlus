@@ -39,7 +39,9 @@ public abstract class MixinGameModeSwitcherScreen {
 
     @Redirect(method = "apply(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/gui/screen/GameModeSwitcherScreen$GameModeSelection;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
     private static void wrapAsCommand(ClientPlayNetworkHandler instance, Packet<ServerPlayPacketListener> packet) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof ChangeGameModeC2SPacket(final GameMode mode)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof ChangeGameModeC2SPacket(
+            final GameMode mode
+        )) {
             SignedCommands1_21_6.sendGameMode(mode);
         } else {
             instance.sendPacket(packet);

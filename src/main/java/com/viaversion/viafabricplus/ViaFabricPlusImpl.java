@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus;
 
-import com.google.common.hash.HashCode;
 import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
 import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusLoadEntrypoint;
 import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
@@ -56,33 +55,15 @@ import java.util.concurrent.CompletableFuture;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.Bootstrap;
 import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ServerInfo;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.DyedColorComponent;
-import net.minecraft.component.type.ProvidesTrimMaterialComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.equipment.trim.ArmorTrim;
-import net.minecraft.item.equipment.trim.ArmorTrimMaterials;
-import net.minecraft.item.equipment.trim.ArmorTrimPatterns;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.registry.BuiltinRegistries;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryOps;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.screen.sync.ComponentChangesHash;
-import net.minecraft.screen.sync.ItemStackHash;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.dynamic.HashCodeOps;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -143,50 +124,9 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
             }
             loadingFuture.join();
             SaveManager.INSTANCE.postInit();
-
-            Bootstrap.initialize();
-
-            var wrapperLookup = BuiltinRegistries.createWrapperLookup();
-
-            var trimMaterial = wrapperLookup.getEntryOrThrow(ArmorTrimMaterials.QUARTZ);
-            var trimPattern = wrapperLookup.getEntryOrThrow(ArmorTrimPatterns.SENTRY);
-
-            ItemStack f = new ItemStack(Items.DIAMOND_CHESTPLATE);
-            f.set(DataComponentTypes.TRIM, new ArmorTrim(
-                trimMaterial,
-                trimPattern
-            ));
-            f.set(DataComponentTypes.PROVIDES_TRIM_MATERIAL, new ProvidesTrimMaterialComponent(
-                trimMaterial
-            ));
-
-            RegistryOps<HashCode> registryOps = wrapperLookup.getOps(HashCodeOps.INSTANCE);
-            ComponentChangesHash.ComponentHasher componentHasher = (component) -> component.encode(registryOps).getOrThrow((error) -> {
-                String var10002 = String.valueOf(component);
-                return new IllegalArgumentException("Failed to hash " + var10002 + ": " + error);
-            }).asInt();
-
-            ItemStackHash.Impl hash = (ItemStackHash.Impl) ItemStackHash.fromItemStack(f, componentHasher);
-            int trimHash = hash.components().addedComponents().get(DataComponentTypes.TRIM);
-            int providesTrimHash = hash.components().addedComponents().get(DataComponentTypes.PROVIDES_TRIM_MATERIAL);
-            logger.info("Trim Hash: {}, Provides Trim Hash: {}", trimHash, providesTrimHash);
-
-            System.out.println(getHash(DataComponentTypes.BASE_COLOR, DyeColor.BLACK));
-
         });
         Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.FINAL_LOAD);
     }
-
-public static <T> int getHash(final ComponentType<T> componentType, final T component) {
-    final ItemStack stack = new ItemStack(Items.DIAMOND_CHESTPLATE);
-    stack.set(componentType, component);
-
-    final RegistryOps<HashCode> registryOps = BuiltinRegistries.createWrapperLookup().getOps(HashCodeOps.INSTANCE);
-    final ComponentChangesHash.ComponentHasher componentHasher = c -> c.encode(registryOps).getOrThrow().asInt();
-
-    final ItemStackHash.Impl hash = (ItemStackHash.Impl) ItemStackHash.fromItemStack(stack, componentHasher);
-    return hash.components().addedComponents().get(componentType);
-}
 
     // --------------------------------------------------------------------------------------------
     // Proxy the most important/used internals to a general API point for mods
@@ -212,6 +152,11 @@ public static <T> int getHash(final ComponentType<T> componentType, final T comp
     }
 
     @Override
+    public void setTargetVersion(ProtocolVersion newVersion) {
+        ProtocolTranslator.setTargetVersion(newVersion);
+    }
+
+    @Override
     public @Nullable ProtocolVersion getTargetVersion(Channel channel) {
         return ProtocolTranslator.getTargetVersion(channel);
     }
@@ -219,11 +164,6 @@ public static <T> int getHash(final ComponentType<T> componentType, final T comp
     @Override
     public @Nullable ProtocolVersion getTargetVersion(ClientConnection connection) {
         return ((IClientConnection) connection).viaFabricPlus$getTargetVersion();
-    }
-
-    @Override
-    public void setTargetVersion(ProtocolVersion newVersion) {
-        ProtocolTranslator.setTargetVersion(newVersion);
     }
 
     @Override

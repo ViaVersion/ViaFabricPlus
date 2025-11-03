@@ -243,11 +243,11 @@ public final class ProtocolTranslator {
         try {
             final Path viaVersionConfig = path.resolve("viaversion.yml");
             Files.writeString(viaVersionConfig, """
-                    fix-infested-block-breaking: false
-                    shield-blocking: false
-                    no-delay-shield-blocking: true
-                    handle-invalid-item-count: true
-                    """, StandardOpenOption.CREATE_NEW);
+                fix-infested-block-breaking: false
+                shield-blocking: false
+                no-delay-shield-blocking: true
+                handle-invalid-item-count: true
+                """, StandardOpenOption.CREATE_NEW);
         } catch (FileAlreadyExistsException ignored) {
         } catch (Throwable e) {
             throw new RuntimeException("Failed to patch ViaVersion config", e);
@@ -256,9 +256,9 @@ public final class ProtocolTranslator {
         try {
             final Path viaLegacyConfig = path.resolve("vialegacy.yml");
             Files.writeString(viaLegacyConfig, """
-                    legacy-skull-loading: true
-                    legacy-skin-loading: true
-                    """, StandardOpenOption.CREATE_NEW);
+                legacy-skull-loading: true
+                legacy-skin-loading: true
+                """, StandardOpenOption.CREATE_NEW);
         } catch (FileAlreadyExistsException ignored) {
         } catch (Throwable e) {
             throw new RuntimeException("Failed to patch ViaLegacy config", e);
@@ -295,15 +295,15 @@ public final class ProtocolTranslator {
         return CompletableFuture.runAsync(() -> {
             // Load ViaVersion and register all platforms and their components
             ViaLoader.init(
-                    new ViaFabricPlusViaVersionPlatformImpl(path.toFile()),
-                    new ViaFabricPlusVLLoader(),
-                    new ViaFabricPlusVLInjector(),
-                    new ViaFabricPlusVLCommandHandler(),
+                new ViaFabricPlusViaVersionPlatformImpl(path.toFile()),
+                new ViaFabricPlusVLLoader(),
+                new ViaFabricPlusVLInjector(),
+                new ViaFabricPlusVLCommandHandler(),
 
-                    ViaBackwardsPlatformImpl::new,
-                    ViaFabricPlusViaLegacyPlatformImpl::new,
-                    ViaAprilFoolsPlatformImpl::new,
-                    ViaBedrockPlatformImpl::new
+                ViaBackwardsPlatformImpl::new,
+                ViaFabricPlusViaLegacyPlatformImpl::new,
+                ViaAprilFoolsPlatformImpl::new,
+                ViaBedrockPlatformImpl::new
             );
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
             changeBedrockProtocolName();

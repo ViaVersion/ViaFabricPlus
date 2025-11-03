@@ -90,22 +90,22 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock implement
         final VoxelShape southWestCornerShape = VoxelShapes.union(southShape, westShape);
 
         viaFabricPlus$shape_r1_8 = new VoxelShape[]{
-                baseShape,
-                southShape,
-                westShape,
-                southWestCornerShape,
-                northShape,
-                VoxelShapes.union(southShape, northShape),
-                VoxelShapes.union(westShape, northShape),
-                VoxelShapes.union(southWestCornerShape, northShape),
-                eastShape,
-                VoxelShapes.union(southShape, eastShape),
-                VoxelShapes.union(westShape, eastShape),
-                VoxelShapes.union(southWestCornerShape, eastShape),
-                northEastCornerShape,
-                VoxelShapes.union(southShape, northEastCornerShape),
-                VoxelShapes.union(westShape, northEastCornerShape),
-                VoxelShapes.union(southWestCornerShape, northEastCornerShape)
+            baseShape,
+            southShape,
+            westShape,
+            southWestCornerShape,
+            northShape,
+            VoxelShapes.union(southShape, northShape),
+            VoxelShapes.union(westShape, northShape),
+            VoxelShapes.union(southWestCornerShape, northShape),
+            eastShape,
+            VoxelShapes.union(southShape, eastShape),
+            VoxelShapes.union(westShape, eastShape),
+            VoxelShapes.union(southWestCornerShape, eastShape),
+            northEastCornerShape,
+            VoxelShapes.union(southShape, northEastCornerShape),
+            VoxelShapes.union(westShape, northEastCornerShape),
+            VoxelShapes.union(southWestCornerShape, northEastCornerShape)
         };
     }
 

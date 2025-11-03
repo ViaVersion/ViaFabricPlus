@@ -45,12 +45,12 @@ public final class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
         for (Map.Entry<String, JsonElement> entry : materialsData.getAsJsonObject("materials").entrySet()) {
             final JsonObject materialData = entry.getValue().getAsJsonObject();
             MATERIALS.put(entry.getKey(), new Material(
-                    materialData.get("blocksMovement").getAsBoolean(),
-                    materialData.get("burnable").getAsBoolean(),
-                    materialData.get("liquid").getAsBoolean(),
-                    materialData.get("blocksLight").getAsBoolean(),
-                    materialData.get("replaceable").getAsBoolean(),
-                    materialData.get("solid").getAsBoolean()
+                materialData.get("blocksMovement").getAsBoolean(),
+                materialData.get("burnable").getAsBoolean(),
+                materialData.get("liquid").getAsBoolean(),
+                materialData.get("blocksLight").getAsBoolean(),
+                materialData.get("replaceable").getAsBoolean(),
+                materialData.get("solid").getAsBoolean()
             ));
         }
         for (Map.Entry<String, JsonElement> blockEntry : materialsData.getAsJsonObject("blocks").entrySet()) {

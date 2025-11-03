@@ -55,11 +55,11 @@ public final class BedrockSettings extends SettingGroup {
     public static final BedrockSettings INSTANCE = new BedrockSettings();
 
     public static final AbstractStep<?, StepFullBedrockSession.FullBedrockSession> BEDROCK_DEVICE_CODE_LOGIN = MinecraftAuth.builder()
-            .withClientId(MicrosoftConstants.BEDROCK_ANDROID_TITLE_ID).withScope(MicrosoftConstants.SCOPE_TITLE_AUTH)
-            .deviceCode()
-            .withDeviceToken("Android")
-            .sisuTitleAuthentication(MicrosoftConstants.BEDROCK_XSTS_RELYING_PARTY)
-            .buildMinecraftBedrockChainStep(true, true);
+        .withClientId(MicrosoftConstants.BEDROCK_ANDROID_TITLE_ID).withScope(MicrosoftConstants.SCOPE_TITLE_AUTH)
+        .deviceCode()
+        .withDeviceToken("Android")
+        .sisuTitleAuthentication(MicrosoftConstants.BEDROCK_XSTS_RELYING_PARTY)
+        .buildMinecraftBedrockChainStep(true, true);
 
     private Thread thread;
     private final ButtonSetting clickToSetBedrockAccount = new ButtonSetting(this, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> {

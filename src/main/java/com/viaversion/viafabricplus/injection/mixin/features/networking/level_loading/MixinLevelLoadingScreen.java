@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.level_l
 import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain.ILevelLoadingScreen;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
 import net.minecraft.network.packet.c2s.common.KeepAliveC2SPacket;
@@ -58,6 +59,12 @@ public abstract class MixinLevelLoadingScreen extends Screen implements ILevelLo
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void modifyCloseCondition(CallbackInfo ci) {
+        if (MinecraftClient.getInstance() != null && MinecraftClient.getInstance().isInSingleplayer()) {
+            // When joining the singleplayer, we set the target version to the native version when the integrated server is started
+            // However this is already to late and the screen was already opened (and ticked), causing NPEs due to the network handler being null
+            return;
+        }
+
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             ci.cancel();
 

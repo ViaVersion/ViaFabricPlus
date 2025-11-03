@@ -171,9 +171,9 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
             return instance.register().syncUninterruptibly().channel().bind(new InetSocketAddress(0)).addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE, (ChannelFutureListener) f -> {
                 if (f.isSuccess()) {
                     f.channel().pipeline().replace(
-                            VLPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME,
-                            ViaFabricPlusVLLegacyPipeline.VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME,
-                            new PingEncapsulationCodec(new InetSocketAddress(inetHost, inetPort))
+                        VLPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME,
+                        ViaFabricPlusVLLegacyPipeline.VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME,
+                        new PingEncapsulationCodec(new InetSocketAddress(inetHost, inetPort))
                     );
                     f.channel().pipeline().remove(VLPipeline.VIABEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);
                     f.channel().pipeline().remove(HandlerNames.SPLITTER);
