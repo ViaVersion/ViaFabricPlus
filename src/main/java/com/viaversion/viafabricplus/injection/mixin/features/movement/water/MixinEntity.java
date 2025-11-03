@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.entity.Entity;
@@ -35,14 +34,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
-import net.raphimc.viabedrock.protocol.data.enums.bedrock.generated.PlayerAuthInputPacket_InputData;
-import net.raphimc.viabedrock.protocol.storage.EntityTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
@@ -71,18 +67,6 @@ public abstract class MixinEntity {
             return instance.getEyeY() - 0.11111111F;
         } else {
             return instance.getEyeY();
-        }
-    }
-
-    @Inject(method = "setSwimming", at = @At("HEAD"), cancellable = true)
-    private void cancelSwimming(boolean swimming, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && swimming) {
-            ci.cancel();
-        }
-
-        final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
-        if (connection != null && swimming != isSwimming() && ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            connection.get(EntityTracker.class).getClientPlayer().addAuthInputData(swimming ? PlayerAuthInputPacket_InputData.StartSwimming : PlayerAuthInputPacket_InputData.StopSwimming);
         }
     }
 

@@ -45,7 +45,6 @@ import net.minecraft.network.packet.c2s.play.PlayerInputC2SPacket;
 import net.minecraft.stat.StatHandler;
 import net.minecraft.util.PlayerInput;
 import net.minecraft.util.math.Vec2f;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -116,9 +115,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
     @Shadow
     public abstract boolean isUsingItem();
-
-    @Shadow
-    protected abstract boolean canSprint(final boolean allowTouchingWater);
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void initLastSneaking(MinecraftClient client, ClientWorld world, ClientPlayNetworkHandler networkHandler, StatHandler stats, ClientRecipeBook recipeBook, PlayerInput lastPlayerInput, boolean lastSprinting, CallbackInfo ci) {
@@ -268,11 +264,6 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
             cir.setReturnValue(this.hasBlindnessEffect() || this.hasVehicle() && !this.canVehicleSprint(this.getVehicle()) || !this.input.hasForwardMovement() || !this.canSprint() || this.horizontalCollision && !this.collidedSoftly || this.isTouchingWater() && !this.isSubmergedInWater());
         }
-    }
-
-    @Redirect(method = {"shouldStopSprinting", "canStartSprinting"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;canSprint(Z)Z"))
-    private boolean allowNonSwimWaterSprinting(ClientPlayerEntity instance, boolean allowTouchingWater) {
-        return this.canSprint(allowTouchingWater || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && (instance.isSwimming() || instance.isOnGround()));
     }
 
     @WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendSprintingPacket()V"))

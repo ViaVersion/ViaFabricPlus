@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
+package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.viaversion.viafabricplus.injection.mixin.features.movement.water.MixinLivingEntity;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
