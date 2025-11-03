@@ -19,11 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
+package com.viaversion.viafabricplus.injection.mixin.features.bedrock.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.LecternBlock;
+import net.minecraft.block.CactusBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -36,13 +36,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(LecternBlock.class)
-public abstract class MixinLecternBlock {
+@Mixin(CactusBlock.class)
+public abstract class MixinCactusBlock {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0, 0, 0, 1, 0.9, 1);
+    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.0625, 0, 0.0625, 0.9375, 1, 0.9375);
 
-    @Inject(method = "getCollisionShape", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getCollisionShape", at = @At(value = "RETURN"), cancellable = true)
     private void changeCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             cir.setReturnValue(viaFabricPlus$shape_bedrock);
