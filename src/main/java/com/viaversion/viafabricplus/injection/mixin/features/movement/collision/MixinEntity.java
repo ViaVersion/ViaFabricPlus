@@ -37,6 +37,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -55,6 +56,9 @@ public abstract class MixinEntity {
     private World world;
 
     @Shadow
+    protected Vec3d movementMultiplier;
+
+    @Shadow
     public abstract Box getBoundingBox();
 
     @Shadow
@@ -65,6 +69,15 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract World getEntityWorld();
+
+    @Redirect(method = "slowMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;movementMultiplier:Lnet/minecraft/util/math/Vec3d;"))
+    private void prioritySlowestMovementMultiplier(Entity instance, Vec3d value) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && this.movementMultiplier != Vec3d.ZERO) {
+            this.movementMultiplier = new Vec3d(Math.min(this.movementMultiplier.x, value.x), Math.min(this.movementMultiplier.y, value.y), Math.min(this.movementMultiplier.z, value.z));
+        } else {
+            this.movementMultiplier = value;
+        }
+    }
 
     @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;addQueuedCollisionChecks(Lnet/minecraft/entity/Entity$QueuedCollisionCheck;)V"))
     private boolean removeExtraCollisionChecks(Entity instance, Entity.QueuedCollisionCheck queuedCollisionCheck) {

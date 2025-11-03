@@ -45,7 +45,7 @@ public abstract class MixinConnectScreen_1 {
     private void setupBedrockAccount(CallbackInfo ci, @Local ClientConnection clientConnection) {
         final UserConnection connection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
-        if (ProtocolTranslator.getTargetVersion() == BedrockProtocolVersion.bedrockLatest) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             final StepFullBedrockSession.FullBedrockSession bedrockSession = SaveManager.INSTANCE.getAccountsSave().refreshAndGetBedrockAccount();
             if (bedrockSession != null) {
                 final StepMCChain.MCChain mcChain = bedrockSession.getMcChain();
