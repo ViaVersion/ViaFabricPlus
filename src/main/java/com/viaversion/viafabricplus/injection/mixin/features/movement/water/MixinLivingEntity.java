@@ -52,9 +52,6 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     protected abstract float getBaseWaterMovementSpeedMultiplier();
 
-    @Shadow
-    public abstract boolean isJumping();
-
     @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
     private double dontApplyLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
