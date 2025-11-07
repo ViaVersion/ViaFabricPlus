@@ -20,15 +20,18 @@ repositories {
     maven("https://repo.viaversion.com")
     maven("https://maven.lenni0451.net/everything")
     maven("https://repo.opencollab.dev/maven-snapshots")
+    maven("https://maven.terraformersmc.com/releases")
     maven("https://jitpack.io") {
         content {
-            includeGroup("com.github.Oryxel")
+            includeGroup("com.github.oryxel1")
         }
     }
 }
 
 dependencies {
-    modImplementation("com.viaversion:viafabricplus-api:x.x.x") // Replace with latest release
+    // Replace with latest release
+    modRuntimeOnly("com.viaversion:viafabricplus:x.x.x")
+    modCompileOnly("com.viaversion:viafabricplus-api:x.x.x")
 }
 ```
 
@@ -43,12 +46,14 @@ repositories {
     maven {
         name = "Jitpack"
         url = "https://jitpack.io"
-        content { includeGroup "com.github.Oryxel" }
+        content { includeGroup "com.github.oryxel1" }
     }
 }
 
 dependencies {
-    modImplementation("com.viaversion:viafabricplus-api:x.x.x") // Check latest version in releases
+    // Replace with latest release
+    modRuntimeOnly("com.viaversion:viafabricplus:x.x.x")
+    modCompileOnly("com.viaversion:viafabricplus-api:x.x.x")
 }
 ```
 
