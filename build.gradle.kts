@@ -78,7 +78,7 @@ fun Project.configureVVDependencies(configuration: String) {
             exclude(group = "org.slf4j", module = "slf4j-api")
         }
         configuration("net.raphimc:ViaLegacy:3.0.11")
-        configuration("net.raphimc:ViaBedrock:0.0.22-SNAPSHOT") {
+        configuration("net.raphimc:ViaBedrock:0.0.23-SNAPSHOT") {
             exclude(group = "io.jsonwebtoken")
             exclude(group = "com.mojang", module = "brigadier")
             exclude(group = "io.netty")
