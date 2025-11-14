@@ -63,6 +63,10 @@ public abstract class MixinPlayerEntity extends MixinLivingEntity {
 
     @Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAbilities()Lnet/minecraft/entity/player/PlayerAbilities;"))
     private void preventJumpingWhenStartedSwimming(Vec3d movementInput, CallbackInfo ci) {
+        if (!ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return;
+        }
+
         if (this.isSwimming()) {
             this.viaFabricPlus$ticksSinceSwimming++;
         } else {
