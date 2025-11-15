@@ -29,8 +29,8 @@ import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.util.Locale;
 import java.util.Objects;
+import java.util.function.Consumer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -38,13 +38,10 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.raphimc.minecraftauth.MinecraftAuth;
-import net.raphimc.minecraftauth.step.AbstractStep;
-import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
-import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
-import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCodeMsaCode;
-import net.raphimc.minecraftauth.util.MicrosoftConstants;
-import net.raphimc.minecraftauth.util.logging.ILogger;
-import net.raphimc.minecraftauth.util.logging.Slf4jConsoleLogger;
+import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
+import net.raphimc.minecraftauth.msa.model.MsaDeviceCode;
+import net.raphimc.minecraftauth.msa.service.impl.DeviceCodeMsaAuthService;
+import net.raphimc.minecraftauth.util.holder.listener.ChangeListener;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 
@@ -54,13 +51,6 @@ public final class BedrockSettings extends SettingGroup {
 
     public static final BedrockSettings INSTANCE = new BedrockSettings();
 
-    public static final AbstractStep<?, StepFullBedrockSession.FullBedrockSession> BEDROCK_DEVICE_CODE_LOGIN = MinecraftAuth.builder()
-        .withClientId(MicrosoftConstants.BEDROCK_ANDROID_TITLE_ID).withScope(MicrosoftConstants.SCOPE_TITLE_AUTH)
-        .deviceCode()
-        .withDeviceToken("Android")
-        .sisuTitleAuthentication(MicrosoftConstants.BEDROCK_XSTS_RELYING_PARTY)
-        .buildMinecraftBedrockChainStep(true, true);
-
     private Thread thread;
     private final ButtonSetting clickToSetBedrockAccount = new ButtonSetting(this, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> {
         thread = new Thread(this::openBedrockAccountLogin);
@@ -69,9 +59,9 @@ public final class BedrockSettings extends SettingGroup {
 
         @Override
         public MutableText displayValue() {
-            final StepFullBedrockSession.FullBedrockSession account = SaveManager.INSTANCE.getAccountsSave().getBedrockAccount();
-            if (account != null) {
-                return Text.translatable("click_to_set_bedrock_account.viafabricplus.display", account.getMcChain().getDisplayName());
+            final BedrockAuthManager account = SaveManager.INSTANCE.getAccountsSave().getBedrockAccount();
+            if (account != null && account.getMinecraftMultiplayerToken().hasValue()) {
+                return Text.translatable("click_to_set_bedrock_account.viafabricplus.display", account.getMinecraftMultiplayerToken().getCached().getDisplayName());
             } else {
                 return super.displayValue();
             }
@@ -79,21 +69,6 @@ public final class BedrockSettings extends SettingGroup {
     };
     public final BooleanSetting replaceDefaultPort = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.replace_default_port"), true);
     public final BooleanSetting experimentalFeatures = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.experimental_features"), true);
-
-    private final ILogger GUI_LOGGER = new Slf4jConsoleLogger() {
-        @Override
-        public void info(AbstractStep<?, ?> step, String message) {
-            super.info(step, message);
-            if (step instanceof StepMsaDeviceCodeMsaCode) {
-                return;
-            }
-            MinecraftClient.getInstance().execute(() -> {
-                if (MinecraftClient.getInstance().currentScreen instanceof ConfirmScreen confirmScreen) {
-                    ((IConfirmScreen) confirmScreen).viaFabricPlus$updateMessage(Text.translatable("minecraftauth_library.viafabricplus." + step.name.toLowerCase(Locale.ROOT)));
-                }
-            });
-        }
-    };
 
     public BedrockSettings() {
         super(Text.translatable("setting_group_name.viafabricplus.bedrock"));
@@ -105,17 +80,50 @@ public final class BedrockSettings extends SettingGroup {
         final MinecraftClient client = MinecraftClient.getInstance();
         final Screen prevScreen = client.currentScreen;
         try {
-            accountsSave.setBedrockAccount(BEDROCK_DEVICE_CODE_LOGIN.getFromInput(GUI_LOGGER, MinecraftAuth.createHttpClient(), new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
-                VFPScreen.setScreen(new ConfirmScreen(copyUrl -> {
-                    if (copyUrl) {
-                        client.keyboard.setClipboard(msaDeviceCode.getDirectVerificationUri());
-                    } else {
-                        client.setScreen(prevScreen);
-                        this.thread.interrupt();
+            final BedrockAuthManager bedrockAccount = BedrockAuthManager
+                .create(MinecraftAuth.createHttpClient(), ProtocolConstants.BEDROCK_VERSION_NAME)
+                .login(DeviceCodeMsaAuthService::new, (Consumer<MsaDeviceCode>) msaDeviceCode -> {
+                    VFPScreen.setScreen(new ConfirmScreen(copyUrl -> {
+                        if (copyUrl) {
+                            client.keyboard.setClipboard(msaDeviceCode.getDirectVerificationUri());
+                        } else {
+                            client.setScreen(prevScreen);
+                            this.thread.interrupt();
+                        }
+                    }, TITLE, Text.translatable("click_to_set_bedrock_account.viafabricplus.notice"), Text.translatable("base.viafabricplus.copy_link"), Text.translatable("base.viafabricplus.cancel")));
+                    Util.getOperatingSystem().open(msaDeviceCode.getDirectVerificationUri());
+                });
+            bedrockAccount.getChangeListeners().add(new ChangeListener() {
+                @Override
+                public <T> void onChange(final T oldValue, final T newValue) {
+                    if (newValue == bedrockAccount.getMsaToken().getCached()) {
+                        updateLoginStatusMessage("msatoken");
+                    } else if (newValue == bedrockAccount.getXblDeviceToken().getCached()) {
+                        updateLoginStatusMessage("xbldevicetoken");
+                    } else if (newValue == bedrockAccount.getXblUserToken().getCached()) {
+                        updateLoginStatusMessage("xblusertoken");
+                    } else if (newValue == bedrockAccount.getXblTitleToken().getCached()) {
+                        updateLoginStatusMessage("xbltitletoken");
+                    } else if (newValue == bedrockAccount.getBedrockXstsToken().getCached()) {
+                        updateLoginStatusMessage("bedrockxststoken");
+                    } else if (newValue == bedrockAccount.getPlayFabXstsToken().getCached()) {
+                        updateLoginStatusMessage("playfabxststoken");
+                    } else if (newValue == bedrockAccount.getRealmsXstsToken().getCached()) {
+                        updateLoginStatusMessage("realmsxststoken");
+                    } else if (newValue == bedrockAccount.getPlayFabToken().getCached()) {
+                        updateLoginStatusMessage("playfabtoken");
+                    } else if (newValue == bedrockAccount.getMinecraftSession().getCached()) {
+                        updateLoginStatusMessage("minecraftsession");
+                    } else if (newValue == bedrockAccount.getMinecraftMultiplayerToken().getCached()) {
+                        updateLoginStatusMessage("minecraftmultiplayertoken");
+                    } else if (newValue == bedrockAccount.getMinecraftCertificateChain().getCached()) {
+                        updateLoginStatusMessage("minecraftcertificatechain");
                     }
-                }, TITLE, Text.translatable("click_to_set_bedrock_account.viafabricplus.notice"), Text.translatable("base.viafabricplus.copy_link"), Text.translatable("base.viafabricplus.cancel")));
-                Util.getOperatingSystem().open(msaDeviceCode.getDirectVerificationUri());
-            })));
+                }
+            });
+            bedrockAccount.getMinecraftMultiplayerToken().refreshIfExpired();
+            bedrockAccount.getMinecraftCertificateChain().refreshIfExpired();
+            accountsSave.setBedrockAccount(bedrockAccount);
 
             VFPScreen.setScreen(prevScreen);
         } catch (Exception e) {
@@ -142,6 +150,14 @@ public final class BedrockSettings extends SettingGroup {
         } else {
             return address;
         }
+    }
+
+    private static void updateLoginStatusMessage(final String stepName) {
+        MinecraftClient.getInstance().execute(() -> {
+            if (MinecraftClient.getInstance().currentScreen instanceof ConfirmScreen confirmScreen) {
+                ((IConfirmScreen) confirmScreen).viaFabricPlus$updateMessage(Text.translatable("minecraftauth_library.viafabricplus." + stepName));
+            }
+        });
     }
 
 }

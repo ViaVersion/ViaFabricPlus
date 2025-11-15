@@ -55,9 +55,8 @@ dependencies {
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")
     modCompileOnly("com.terraformersmc:modmenu:15.0.0")
 
-    jij("net.raphimc:MinecraftAuth:4.1.2") {
+    jij("net.raphimc:MinecraftAuth:5.0.0-20251114.202639-2") {
         exclude(group = "com.google.code.gson", module = "gson")
-        exclude(group = "org.slf4j", module = "slf4j-api")
     }
     jij("net.lenni0451:Reflect:1.5.0")
     jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
@@ -79,7 +78,6 @@ fun Project.configureVVDependencies(configuration: String) {
         }
         configuration("net.raphimc:ViaLegacy:3.0.11")
         configuration("net.raphimc:ViaBedrock:0.0.23-SNAPSHOT") {
-            exclude(group = "io.jsonwebtoken")
             exclude(group = "com.mojang", module = "brigadier")
             exclude(group = "io.netty")
         }
