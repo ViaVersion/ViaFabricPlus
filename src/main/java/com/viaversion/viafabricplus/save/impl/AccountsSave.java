@@ -24,16 +24,15 @@ package com.viaversion.viafabricplus.save.impl;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.save.AbstractSave;
-import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import net.raphimc.minecraftauth.MinecraftAuth;
-import net.raphimc.minecraftauth.step.bedrock.session.StepFullBedrockSession;
-import net.raphimc.minecraftauth.step.msa.StepMsaToken;
-import net.raphimc.minecraftauth.step.xbl.session.StepInitialXblSession;
+import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
+import net.raphimc.minecraftauth.util.MinecraftAuth4To5Migrator;
+import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 
 public final class AccountsSave extends AbstractSave {
 
-    private StepFullBedrockSession.FullBedrockSession bedrockAccount;
+    private BedrockAuthManager bedrockAccount;
     private CCAccount classicubeAccount;
 
     public AccountsSave() {
@@ -43,7 +42,7 @@ public final class AccountsSave extends AbstractSave {
     @Override
     public void write(JsonObject object) {
         if (bedrockAccount != null) {
-            object.add("bedrockV2", BedrockSettings.BEDROCK_DEVICE_CODE_LOGIN.toJson(bedrockAccount));
+            object.add("bedrockV3", BedrockAuthManager.toJson(bedrockAccount));
         }
         if (classicubeAccount != null) {
             object.add("classicube", classicubeAccount.asJson());
@@ -52,15 +51,12 @@ public final class AccountsSave extends AbstractSave {
 
     @Override
     public void read(JsonObject object) {
-        handleAccount("bedrock", object, account -> {
-            // Use old login flow, then get refresh token and login via new flow
-            final StepFullBedrockSession.FullBedrockSession oldSession = MinecraftAuth.BEDROCK_DEVICE_CODE_LOGIN.fromJson(account);
-            final StepInitialXblSession.InitialXblSession xblSession = oldSession.getMcChain().getXblXsts().getInitialXblSession();
-
-            final StepMsaToken.RefreshToken refreshToken = new StepMsaToken.RefreshToken(xblSession.getMsaToken().getRefreshToken());
-            bedrockAccount = BedrockSettings.BEDROCK_DEVICE_CODE_LOGIN.getFromInput(MinecraftAuth.createHttpClient(), refreshToken);
+        handleAccount("bedrockV2", object, account -> {
+            final JsonObject newAccount = MinecraftAuth4To5Migrator.migrateBedrockSave(account);
+            bedrockAccount = BedrockAuthManager.fromJson(MinecraftAuth.createHttpClient(), ProtocolConstants.BEDROCK_VERSION_NAME, newAccount);
+            bedrockAccount.getMinecraftMultiplayerToken().refreshIfExpired();
         });
-        handleAccount("bedrockV2", object, account -> bedrockAccount = BedrockSettings.BEDROCK_DEVICE_CODE_LOGIN.fromJson(account));
+        handleAccount("bedrockV3", object, account -> bedrockAccount = BedrockAuthManager.fromJson(MinecraftAuth.createHttpClient(), ProtocolConstants.BEDROCK_VERSION_NAME, account));
         handleAccount("classicube", object, account -> classicubeAccount = CCAccount.fromJson(account));
     }
 
@@ -74,23 +70,11 @@ public final class AccountsSave extends AbstractSave {
         }
     }
 
-    public StepFullBedrockSession.FullBedrockSession refreshAndGetBedrockAccount() {
-        if (bedrockAccount == null) {
-            return null;
-        }
-        try {
-            bedrockAccount = BedrockSettings.BEDROCK_DEVICE_CODE_LOGIN.refresh(MinecraftAuth.createHttpClient(), bedrockAccount);
-        } catch (Throwable t) {
-            throw new RuntimeException("Failed to refresh Bedrock chain data. Please re-login to Bedrock!", t);
-        }
+    public BedrockAuthManager getBedrockAccount() {
         return bedrockAccount;
     }
 
-    public StepFullBedrockSession.FullBedrockSession getBedrockAccount() {
-        return bedrockAccount;
-    }
-
-    public void setBedrockAccount(StepFullBedrockSession.FullBedrockSession bedrockAccount) {
+    public void setBedrockAccount(BedrockAuthManager bedrockAccount) {
         this.bedrockAccount = bedrockAccount;
     }
 

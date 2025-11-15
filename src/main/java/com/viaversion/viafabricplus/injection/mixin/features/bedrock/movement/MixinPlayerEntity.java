@@ -51,9 +51,9 @@ public abstract class MixinPlayerEntity extends MixinLivingEntity {
     private BlockPos modifyWaterAbovePosition(double x, double y, double z) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return BlockPos.ofFloored(x, y - 0.9, z);
+        } else {
+            return BlockPos.ofFloored(x, y, z);
         }
-
-        return BlockPos.ofFloored(x, y, z);
     }
 
     @WrapWithCondition(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V", ordinal = 0))
@@ -63,6 +63,10 @@ public abstract class MixinPlayerEntity extends MixinLivingEntity {
 
     @Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAbilities()Lnet/minecraft/entity/player/PlayerAbilities;"))
     private void preventJumpingWhenStartedSwimming(Vec3d movementInput, CallbackInfo ci) {
+        if (!ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return;
+        }
+
         if (this.isSwimming()) {
             this.viaFabricPlus$ticksSinceSwimming++;
         } else {

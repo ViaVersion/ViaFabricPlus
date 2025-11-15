@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinEntity {
 
     @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
-    @Redirect(method = "lithium$CollideMovement", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0), remap = false)
+    @Redirect(method = "lithium$CollideMovement", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(D)D", ordinal = 0), remap = false, require = 0)
     private static double alwaysSortYXZ(double a) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return Double.MAX_VALUE;

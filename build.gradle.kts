@@ -55,9 +55,8 @@ dependencies {
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")
     modCompileOnly("com.terraformersmc:modmenu:15.0.0")
 
-    jij("net.raphimc:MinecraftAuth:4.1.2") {
+    jij("net.raphimc:MinecraftAuth:5.0.0-20251115.194909-3") {
         exclude(group = "com.google.code.gson", module = "gson")
-        exclude(group = "org.slf4j", module = "slf4j-api")
     }
     jij("net.lenni0451:Reflect:1.5.0")
     jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
@@ -70,16 +69,15 @@ includeTransitiveJijDependencies()
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.5.2-20251103.175711-11")
-        configuration("com.viaversion:viabackwards-common:5.5.2-20251108.094612-9")
-        configuration("com.viaversion:viaaprilfools-common:4.0.6-20251014.162313-1")
+        configuration("com.viaversion:viaversion-common:5.5.2-SNAPSHOT")
+        configuration("com.viaversion:viabackwards-common:5.5.2-SNAPSHOT")
+        configuration("com.viaversion:viaaprilfools-common:4.0.6-SNAPSHOT")
         configuration("com.viaversion:vialoader:4.0.5") {
             exclude(group = "com.google.guava", module = "guava")
             exclude(group = "org.slf4j", module = "slf4j-api")
         }
         configuration("net.raphimc:ViaLegacy:3.0.11")
-        configuration("net.raphimc:ViaBedrock:0.0.23-20251108.164116-2") {
-            exclude(group = "io.jsonwebtoken")
+        configuration("net.raphimc:ViaBedrock:0.0.23-SNAPSHOT") {
             exclude(group = "com.mojang", module = "brigadier")
             exclude(group = "io.netty")
         }

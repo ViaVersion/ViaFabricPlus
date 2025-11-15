@@ -151,12 +151,17 @@
   "classic4j_library.viafabricplus.error.verification": "User hasn't verified their email address yet.",
   "classic4j_library.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your email.",
 
-  "minecraftauth_library.viafabricplus.xbldevicetoken": "Authenticating device with Xbox Live...",
-  "minecraftauth_library.viafabricplus.xblsisuauthentication": "Authenticating with Xbox Live using SISU...",
-  "minecraftauth_library.viafabricplus.mcchain": "Authenticating with Minecraft Services...",
-  "minecraftauth_library.viafabricplus.xblxststoken": "Requesting XSTS Token...",
-  "minecraftauth_library.viafabricplus.playfabtoken": "Authenticating with PlayFab...",
-  "minecraftauth_library.viafabricplus.realmsxsts": "Requesting Realms XSTS Token...",
+  "minecraftauth_library.viafabricplus.msatoken": "Obtained Microsoft Access Token",
+  "minecraftauth_library.viafabricplus.xbldevicetoken": "Obtained Xbox Live Device Token",
+  "minecraftauth_library.viafabricplus.xblusertoken": "Obtained Xbox Live User Token",
+  "minecraftauth_library.viafabricplus.xbltitletoken": "Obtained Xbox Live Title Token",
+  "minecraftauth_library.viafabricplus.bedrockxststoken": "Obtained Bedrock XSTS Token",
+  "minecraftauth_library.viafabricplus.playfabxststoken": "Obtained PlayFab XSTS Token",
+  "minecraftauth_library.viafabricplus.realmsxststoken": "Obtained Realms XSTS Token",
+  "minecraftauth_library.viafabricplus.playfabtoken": "Obtained PlayFab Token",
+  "minecraftauth_library.viafabricplus.minecraftsession": "Obtained Minecraft Session",
+  "minecraftauth_library.viafabricplus.minecraftmultiplayertoken": "Obtained Minecraft Multiplayer Token",
+  "minecraftauth_library.viafabricplus.minecraftcertificatechain": "Obtained Minecraft Certificate Chain",
 
   "bedrock_realms.viafabricplus.warning": "This feature requires a Bedrock Edition account to be set in the settings!",
   "bedrock_realms.viafabricplus.availability_check": "Checking availability...",
@@ -167,5 +172,6 @@
   "bedrock_realms.viafabricplus.leave": "Leave realm",
   "bedrock_realms.viafabricplus.invite": "Accept invite code",
   "bedrock_realms.viafabricplus.expired": "The Realm is expired",
-  "bedrock_realms.viafabricplus.incompatible": "The Realms Minecraft version is either too old or too new"
+  "bedrock_realms.viafabricplus.incompatible": "The Realms Minecraft version is either too old or too new",
+  "bedrock_realms.viafabricplus.nethernet_unsupported": "Realms via the Nethernet is not supported yet. You can't join this realm."
 }

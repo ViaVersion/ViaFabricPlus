@@ -41,8 +41,12 @@ public abstract class MixinEntity {
 
     @Inject(method = "setSwimming", at = @At("HEAD"))
     private void cancelSwimming(boolean swimming, CallbackInfo ci) {
+        if (!ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            return;
+        }
+
         final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
-        if (connection != null && swimming != isSwimming() && ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (connection != null && swimming != isSwimming()) {
             connection.get(EntityTracker.class).getClientPlayer().addAuthInputData(swimming ? PlayerAuthInputPacket_InputData.StartSwimming : PlayerAuthInputPacket_InputData.StopSwimming);
         }
     }
