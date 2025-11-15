@@ -37,6 +37,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
+import net.raphimc.minecraftauth.extra.realms.model.RealmsJoinInformation;
 import net.raphimc.minecraftauth.extra.realms.model.RealmsServer;
 import net.raphimc.minecraftauth.extra.realms.service.impl.BedrockRealmsService;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
@@ -77,6 +78,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
             setupSubtitle(Text.translatable("bedrock_realms.viafabricplus.warning"));
             return;
         }
+
         service = new BedrockRealmsService(MinecraftAuth.createHttpClient(), ProtocolConstants.BEDROCK_VERSION_NAME, account.getRealmsXstsToken());
         service.isCompatibleAsync().thenAccept(state -> {
             if (state) {
@@ -118,9 +120,18 @@ public final class BedrockRealmsScreen extends VFPScreen {
                 setupSubtitle(Text.translatable("bedrock_realms.viafabricplus.incompatible"));
                 return;
             }
-            service.joinWorldAsync(entry.realmsServer)
-                .thenAcceptAsync(joinInformation -> ConnectionUtil.connect(joinInformation.getAddress(), BedrockProtocolVersion.bedrockLatest), client)
-                .exceptionally(throwable -> error("Failed to join realm", throwable));
+
+            try {
+                final RealmsJoinInformation server = service.joinWorld(entry.realmsServer);
+                if (server.getNetworkProtocol().equalsIgnoreCase(RealmsJoinInformation.PROTOCOL_NETHERNET)) {
+                    setupSubtitle(Text.translatable("bedrock_realms.viafabricplus.nethernet_unsupported"));
+                    return;
+                }
+
+                ConnectionUtil.connect(server.getAddress(), BedrockProtocolVersion.bedrockLatest);
+            } catch (final Throwable throwable) {
+                error("Failed to join realm", throwable);
+            }
         }).position(xPos, height - 20 - 5).size(115, 20).build());
         joinButton.active = false;
 
@@ -221,11 +232,11 @@ public final class BedrockRealmsScreen extends VFPScreen {
                 version += " - " + activeVersion;
             }
 
-            context.drawTextWithShadow(textRenderer, version, entryWidth - textRenderer.getWidth(version) - 4 - 3, 3, -1);
+            context.drawTextWithShadow(textRenderer, version, entryWidth - textRenderer.getWidth(version) - 3, 3, -1);
 
             final String motd = realmsServer.getMotd();
             if (motd != null) {
-                renderScrollableText(Text.of(motd), entryHeight - textRenderer.fontHeight - 3, 3 * 2);
+                renderScrollableText(Text.of(motd), entryHeight - textRenderer.fontHeight - 3, 0);
             }
         }
 

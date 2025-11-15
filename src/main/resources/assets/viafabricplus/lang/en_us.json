@@ -172,5 +172,6 @@
   "bedrock_realms.viafabricplus.leave": "Leave realm",
   "bedrock_realms.viafabricplus.invite": "Accept invite code",
   "bedrock_realms.viafabricplus.expired": "The Realm is expired",
-  "bedrock_realms.viafabricplus.incompatible": "The Realms Minecraft version is either too old or too new"
+  "bedrock_realms.viafabricplus.incompatible": "The Realms Minecraft version is either too old or too new",
+  "bedrock_realms.viafabricplus.nethernet_unsupported": "Realms via the Nethernet is not supported yet. You can't join this realm."
 }
