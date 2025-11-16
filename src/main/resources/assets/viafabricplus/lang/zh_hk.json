@@ -100,10 +100,5 @@
   "classic4j_library.viafabricplus.error.username": "無效嘅用戶名",
   "classic4j_library.viafabricplus.error.password": "無效嘅密碼",
   "classic4j_library.viafabricplus.error.verification": "用戶尚未驗證電子郵箱位址",
-  "classic4j_library.viafabricplus.error.logincode": "已請求身份驗證。請查看你嘅電郵！",
-  "minecraftauth_library.viafabricplus.xbldevicetoken": "正在 Xbox Live 認證...",
-  "minecraftauth_library.viafabricplus.xblsisuauthentication": "正在使用 SISU 認證 Xbox Live...",
-  "minecraftauth_library.viafabricplus.mcchain": "正在與 Minecraft 在線伺服器認證...",
-  "minecraftauth_library.viafabricplus.xblxststoken": "正在請求 XSTS Token...",
-  "minecraftauth_library.viafabricplus.playfabtoken": "正在認證 PlayFab..."
+  "classic4j_library.viafabricplus.error.logincode": "已請求身份驗證。請查看你嘅電郵！"
 }
