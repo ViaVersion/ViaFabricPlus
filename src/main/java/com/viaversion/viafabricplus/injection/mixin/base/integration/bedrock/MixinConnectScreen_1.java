@@ -27,15 +27,15 @@ import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import java.io.IOException;
 import java.security.KeyPair;
-import java.security.interfaces.ECPrivateKey;
-import java.security.interfaces.ECPublicKey;
 import java.util.UUID;
 import net.minecraft.network.ClientConnection;
 import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
 import net.raphimc.minecraftauth.bedrock.model.MinecraftCertificateChain;
+import net.raphimc.minecraftauth.bedrock.model.MinecraftMultiplayerToken;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
-import net.raphimc.viabedrock.protocol.storage.AuthChainData;
+import net.raphimc.viabedrock.protocol.storage.AuthData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -45,18 +45,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinConnectScreen_1 {
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelFuture;syncUninterruptibly()Lio/netty/channel/ChannelFuture;", remap = false, shift = At.Shift.AFTER))
-    private void setupBedrockAccount(CallbackInfo ci, @Local ClientConnection clientConnection) {
+    private void setupBedrockAccount(CallbackInfo ci, @Local ClientConnection clientConnection) throws IOException {
         final UserConnection connection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             final BedrockAuthManager bedrockSession = SaveManager.INSTANCE.getAccountsSave().getBedrockAccount();
             if (bedrockSession != null) {
+                final MinecraftMultiplayerToken multiplayerToken = bedrockSession.getMinecraftMultiplayerToken().refresh();
+                final MinecraftCertificateChain certificateChain = bedrockSession.getMinecraftCertificateChain().refresh();
                 final KeyPair sessionKeyPair = bedrockSession.getSessionKeyPair();
-                final MinecraftCertificateChain certificateChain = bedrockSession.getMinecraftCertificateChain().getUpToDate();
                 final UUID deviceId = bedrockSession.getDeviceId();
-                final String playFabId = bedrockSession.getPlayFabToken().getUpToDate().getPlayFabId();
 
-                connection.put(new AuthChainData(certificateChain.getMojangJwt(), certificateChain.getIdentityJwt(), (ECPublicKey) sessionKeyPair.getPublic(), (ECPrivateKey) sessionKeyPair.getPrivate(), deviceId, playFabId));
+                connection.put(new AuthData(certificateChain.getMojangJwt(), certificateChain.getIdentityJwt(), multiplayerToken.getToken(), sessionKeyPair, deviceId));
             } else {
                 ViaFabricPlusImpl.INSTANCE.getLogger().warn("Could not get Bedrock account. Joining online mode servers will not work!");
             }
