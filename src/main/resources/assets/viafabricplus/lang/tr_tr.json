@@ -98,10 +98,5 @@
   "classic4j_library.viafabricplus.error.username": "Geçersiz kullanıcı adı.",
   "classic4j_library.viafabricplus.error.password": "Geçersiz şifre.",
   "classic4j_library.viafabricplus.error.verification": "Kullanıcı e-posta adresini henüz doğrulamadı.",
-  "classic4j_library.viafabricplus.error.logincode": "Çok faktörlü kimlik doğrulama talep edildi. Lütfen e-postanızı kontrol edin.",
-  "minecraftauth_library.viafabricplus.xbldevicetoken": "Xbox Live ile cihazın kimliği doğrulanıyor...",
-  "minecraftauth_library.viafabricplus.xblsisuauthentication": "SISU kullanarak Xbox Live ile kimlik doğrulanıyor...",
-  "minecraftauth_library.viafabricplus.mcchain": "Minecraft Hizmetleri ile Kimlik Doğrulanıyor...",
-  "minecraftauth_library.viafabricplus.xblxststoken": "XSTS Belirteci isteniyor...",
-  "minecraftauth_library.viafabricplus.playfabtoken": "PlayFab ile kimlik doğrulanıyor..."
+  "classic4j_library.viafabricplus.error.logincode": "Çok faktörlü kimlik doğrulama talep edildi. Lütfen e-postanızı kontrol edin."
 }
