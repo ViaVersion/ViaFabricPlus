@@ -133,6 +133,17 @@
   "classic4j_library.viafabricplus.error.password": "Невірний пароль.",
   "classic4j_library.viafabricplus.error.verification": "Користувач ще не підтвердив свою електронну адресу.",
   "classic4j_library.viafabricplus.error.logincode": "Потрібна багатофакторна автентифікація. Перевірте свою електронну пошту.",
+  "minecraftauth_library.viafabricplus.msatoken": "Отримано токен доступу Microsoft",
+  "minecraftauth_library.viafabricplus.xbldevicetoken": "Отримано токен пристрою Xbox Live",
+  "minecraftauth_library.viafabricplus.xblusertoken": "Отримано токен користувача Xbox Live",
+  "minecraftauth_library.viafabricplus.xbltitletoken": "Отримано токен заголовка Xbox Live",
+  "minecraftauth_library.viafabricplus.bedrockxststoken": "Отримано токен Bedrock XSTS",
+  "minecraftauth_library.viafabricplus.playfabxststoken": "Отримано токен PlayFab XSTS",
+  "minecraftauth_library.viafabricplus.realmsxststoken": "Отримано токен Realms XSTS",
+  "minecraftauth_library.viafabricplus.playfabtoken": "Отримано токен PlayFab",
+  "minecraftauth_library.viafabricplus.minecraftsession": "Отримано сеанс Minecraft",
+  "minecraftauth_library.viafabricplus.minecraftmultiplayertoken": "Отримано токен гри в мережі Minecraft",
+  "minecraftauth_library.viafabricplus.minecraftcertificatechain": "Отримано ланцюг сертифіката Minecraft",
   "bedrock_realms.viafabricplus.warning": "Ця функція вимагає встановлення облікового запису Bedrock Edition у налаштуваннях!",
   "bedrock_realms.viafabricplus.availability_check": "Перевірка наявности…",
   "bedrock_realms.viafabricplus.no_worlds": "Світи не знайдено :(",
@@ -142,5 +153,6 @@
   "bedrock_realms.viafabricplus.leave": "Залишити область",
   "bedrock_realms.viafabricplus.invite": "Прийняти код запрошення",
   "bedrock_realms.viafabricplus.expired": "Термін дії Realm закінчився",
-  "bedrock_realms.viafabricplus.incompatible": "Версія Realms Minecraft або занадто стара, або занадто нова"
+  "bedrock_realms.viafabricplus.incompatible": "Версія Realms Minecraft або занадто стара, або занадто нова",
+  "bedrock_realms.viafabricplus.nethernet_unsupported": "Realms через Nethernet наразі не підтримуються. Ви не можете приєднатися до цього realm."
 }
