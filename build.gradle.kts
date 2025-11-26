@@ -58,7 +58,7 @@ dependencies {
     jij("net.raphimc:MinecraftAuth:5.0.0") {
         exclude(group = "com.google.code.gson", module = "gson")
     }
-    jij("net.lenni0451:Reflect:1.5.0")
+    jij("net.lenni0451:Reflect:1.6.0-SNAPSHOT")
     jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
         exclude(group = "io.netty")
     }
