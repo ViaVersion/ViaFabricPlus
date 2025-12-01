@@ -14,7 +14,6 @@ allprojects {
     repositories {
         maven("https://repo.viaversion.com")
         maven("https://maven.lenni0451.net/everything")
-        maven("https://repo.opencollab.dev/maven-snapshots")
         maven("https://maven.terraformersmc.com/releases")
         maven("https://jitpack.io") {
             content {
@@ -59,7 +58,7 @@ dependencies {
         exclude(group = "com.google.code.gson", module = "gson")
     }
     jij("net.lenni0451:Reflect:1.6.0-SNAPSHOT")
-    jij("org.cloudburstmc.netty:netty-transport-raknet:1.0.0.CR3-SNAPSHOT") {
+    jij("dev.kastle.netty:netty-transport-raknet:1.4.0") {
         exclude(group = "io.netty")
     }
     jij("de.florianmichael:Classic4J:2.2.1")
@@ -72,7 +71,7 @@ fun Project.configureVVDependencies(configuration: String) {
         configuration("com.viaversion:viaversion-common:5.5.2-SNAPSHOT")
         configuration("com.viaversion:viabackwards-common:5.5.2-SNAPSHOT")
         configuration("com.viaversion:viaaprilfools-common:4.0.6-SNAPSHOT")
-        configuration("com.viaversion:vialoader:4.0.5") {
+        configuration("com.viaversion:vialoader:4.0.6-SNAPSHOT") {
             exclude(group = "com.google.guava", module = "guava")
             exclude(group = "org.slf4j", module = "slf4j-api")
         }
