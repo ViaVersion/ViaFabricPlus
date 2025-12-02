@@ -19,7 +19,6 @@ If you also want to access **internal features** (including the legacy compatibi
 repositories {
     maven("https://repo.viaversion.com")
     maven("https://maven.lenni0451.net/everything")
-    maven("https://repo.opencollab.dev/maven-snapshots")
     maven("https://maven.terraformersmc.com/releases")
     maven("https://jitpack.io") {
         content {
@@ -42,7 +41,6 @@ repositories {
     mavenCentral()
     maven { name = "ViaVersion"; url = "https://repo.viaversion.com" }
     maven { name = "Lenni0451"; url = "https://maven.lenni0451.net/everything" }
-    maven { name = "OpenCollab"; url = "https://repo.opencollab.dev/maven-snapshots" }
     maven {
         name = "Jitpack"
         url = "https://jitpack.io"
