@@ -55,6 +55,7 @@ import net.minecraft.network.handler.HandlerNames;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.profiler.MultiValueDebugSampleLogImpl;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.viabedrock.protocol.RakNetStatusProtocol;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.cloudburstmc.netty.channel.raknet.RakChannelFactory;
 import org.jetbrains.annotations.NotNull;
@@ -171,12 +172,15 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
             return instance.register().syncUninterruptibly().channel().bind(new InetSocketAddress(0)).addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE, (ChannelFutureListener) f -> {
                 if (f.isSuccess()) {
                     f.channel().pipeline().replace(
-                        VLPipeline.VIABEDROCK_FRAME_ENCAPSULATION_HANDLER_NAME,
+                        VLPipeline.VIABEDROCK_RAKNET_MESSAGE_CODEC_NAME,
                         ViaFabricPlusVLLegacyPipeline.VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME,
                         new RakNetPingEncapsulationCodec(new InetSocketAddress(inetHost, inetPort))
                     );
-                    f.channel().pipeline().remove(VLPipeline.VIABEDROCK_PACKET_ENCAPSULATION_HANDLER_NAME);
+                    f.channel().pipeline().remove(VLPipeline.VIABEDROCK_PACKET_CODEC_NAME);
                     f.channel().pipeline().remove(HandlerNames.SPLITTER);
+
+                    UserConnection user = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
+                    user.getProtocolInfo().getPipeline().add(RakNetStatusProtocol.INSTANCE);
                 }
             });
         } else {
