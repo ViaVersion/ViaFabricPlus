@@ -23,12 +23,12 @@ package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_complet
 
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import java.util.List;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ChatInputSuggestor;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Style;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.CommandSuggestions;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Final;
@@ -40,57 +40,57 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ChatInputSuggestor.class)
+@Mixin(CommandSuggestions.class)
 public abstract class MixinChatInputSuggestor {
 
     @Shadow
-    public abstract void refresh();
+    public abstract void updateCommandInfo();
 
     @Shadow
     @Nullable
-    private ChatInputSuggestor.@Nullable SuggestionWindow window;
+    private CommandSuggestions.@Nullable SuggestionsList suggestions;
 
     @Shadow
     @Final
-    TextFieldWidget textField;
+    EditBox input;
 
     @Shadow
     @Final
-    private List<OrderedText> messages;
+    private List<FormattedCharSequence> commandUsage;
 
-    @Inject(method = "provideRenderText", at = @At(value = "HEAD"), cancellable = true)
-    private void disableTextFieldColors(String original, int firstCharacterIndex, CallbackInfoReturnable<OrderedText> cir) {
+    @Inject(method = "formatChat", at = @At(value = "HEAD"), cancellable = true)
+    private void disableTextFieldColors(String original, int firstCharacterIndex, CallbackInfoReturnable<FormattedCharSequence> cir) {
         if (this.viaFabricPlus$cancelTabComplete()) {
-            cir.setReturnValue(OrderedText.styledForwardsVisitedString(original, Style.EMPTY));
+            cir.setReturnValue(FormattedCharSequence.forward(original, Style.EMPTY));
         }
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    private void handle1_12_2KeyPressed(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
+    private void handle1_12_2KeyPressed(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
         if (this.viaFabricPlus$cancelTabComplete()) {
-            if (input.key() == GLFW.GLFW_KEY_TAB && this.window == null) {
-                this.refresh();
-            } else if (this.window != null) {
-                if (this.window.keyPressed(input)) {
+            if (input.key() == GLFW.GLFW_KEY_TAB && this.suggestions == null) {
+                this.updateCommandInfo();
+            } else if (this.suggestions != null) {
+                if (this.suggestions.keyPressed(input)) {
                     cir.setReturnValue(true);
                     return;
                 }
-                this.textField.setSuggestion(null);
-                this.window = null;
+                this.input.setSuggestion(null);
+                this.suggestions = null;
             }
         }
     }
 
     @Inject(method = "render", at = @At("HEAD"))
-    private void clearMessages(DrawContext drawContext, int mouseX, int mouseY, CallbackInfo ci) {
+    private void clearMessages(GuiGraphics drawContext, int mouseX, int mouseY, CallbackInfo ci) {
         if (this.viaFabricPlus$cancelTabComplete()) {
-            this.messages.clear();
+            this.commandUsage.clear();
         }
     }
 
     @Unique
     private boolean viaFabricPlus$cancelTabComplete() {
-        return DebugSettings.INSTANCE.legacyTabCompletions.isEnabled() && this.textField.getText().startsWith("/");
+        return DebugSettings.INSTANCE.legacyTabCompletions.isEnabled() && this.input.getValue().startsWith("/");
     }
 
 }

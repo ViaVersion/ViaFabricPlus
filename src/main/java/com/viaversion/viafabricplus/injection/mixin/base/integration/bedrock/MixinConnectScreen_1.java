@@ -30,7 +30,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.util.UUID;
-import net.minecraft.network.ClientConnection;
+import net.minecraft.network.Connection;
 import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
 import net.raphimc.minecraftauth.bedrock.model.MinecraftCertificateChain;
 import net.raphimc.minecraftauth.bedrock.model.MinecraftMultiplayerToken;
@@ -41,11 +41,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
+@Mixin(targets = "net.minecraft.client.gui.screens.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelFuture;syncUninterruptibly()Lio/netty/channel/ChannelFuture;", remap = false, shift = At.Shift.AFTER))
-    private void setupBedrockAccount(CallbackInfo ci, @Local ClientConnection clientConnection) throws IOException {
+    private void setupBedrockAccount(CallbackInfo ci, @Local Connection clientConnection) throws IOException {
         final UserConnection connection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {

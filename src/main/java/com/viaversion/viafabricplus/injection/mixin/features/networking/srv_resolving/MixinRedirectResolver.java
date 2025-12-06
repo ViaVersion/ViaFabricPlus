@@ -24,15 +24,15 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.srv_res
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import java.util.Optional;
 import javax.naming.directory.DirContext;
-import net.minecraft.client.network.RedirectResolver;
-import net.minecraft.client.network.ServerAddress;
+import net.minecraft.client.multiplayer.resolver.ServerRedirectHandler;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(RedirectResolver.class)
+@Mixin(ServerRedirectHandler.class)
 public interface MixinRedirectResolver {
 
     @Inject(method = "method_36911", at = @At("HEAD"), cancellable = true)

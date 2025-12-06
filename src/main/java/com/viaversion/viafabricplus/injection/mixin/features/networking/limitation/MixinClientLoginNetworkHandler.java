@@ -23,18 +23,18 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.limitat
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.ClientLoginNetworkHandler;
-import net.minecraft.network.ClientConnection;
+import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
+import net.minecraft.network.Connection;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ClientLoginNetworkHandler.class)
+@Mixin(ClientHandshakePacketListenerImpl.class)
 public abstract class MixinClientLoginNetworkHandler {
 
-    @Redirect(method = "onCompression", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;setCompressionThreshold(IZ)V"))
-    private void pre1_17_1CompressionBehaviour(ClientConnection instance, int compressionThreshold, boolean rejectsBadPackets) {
-        instance.setCompressionThreshold(compressionThreshold, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17));
+    @Redirect(method = "handleCompression", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;setupCompression(IZ)V"))
+    private void pre1_17_1CompressionBehaviour(Connection instance, int compressionThreshold, boolean rejectsBadPackets) {
+        instance.setupCompression(compressionThreshold, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17));
     }
 
 }

@@ -25,11 +25,11 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.ChannelConfig;
-import net.minecraft.network.handler.NetworkStateTransitions;
+import net.minecraft.network.UnconfiguredPipelineHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(NetworkStateTransitions.class)
+@Mixin(UnconfiguredPipelineHandler.class)
 public abstract class MixinNetworkStateTransitions {
 
     @WrapWithCondition(method = "method_56353", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelConfig;setAutoRead(Z)Lio/netty/channel/ChannelConfig;", remap = false))

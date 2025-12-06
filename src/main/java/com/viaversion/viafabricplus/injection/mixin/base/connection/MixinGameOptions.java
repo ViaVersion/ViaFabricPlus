@@ -22,12 +22,12 @@
 package com.viaversion.viafabricplus.injection.mixin.base.connection;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.Options;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(GameOptions.class)
+@Mixin(Options.class)
 public abstract class MixinGameOptions {
 
     @Shadow
@@ -38,7 +38,7 @@ public abstract class MixinGameOptions {
      * @reason Needed as an indicator if the client wants to ping a server or connect to a server
      */
     @Overwrite
-    public boolean shouldUseNativeTransport() {
+    public boolean useNativeTransport() {
         if (!this.useNativeTransport) {
             ViaFabricPlusImpl.INSTANCE.getLogger().error("Native transport is disabled, but enabling it anyway since we use it as an indicator if the client wants to ping a server or connect to a server.");
         }

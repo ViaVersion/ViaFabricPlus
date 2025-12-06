@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.features.item.negative_item_count;
 
 import com.viaversion.viafabricplus.util.ItemUtil;
 import com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 
 public final class NegativeItemUtil {
 
@@ -36,9 +36,9 @@ public final class NegativeItemUtil {
      * @return The actual amount of items in the stack
      */
     public static int getCount(final ItemStack stack) {
-        final NbtCompound tag = ItemUtil.getTagOrNull(stack);
+        final CompoundTag tag = ItemUtil.getTagOrNull(stack);
         if (tag != null) {
-            return tag.getInt(ItemUtil.vvNbtName(Protocol1_10To1_11.class), stack.getCount());
+            return tag.getIntOr(ItemUtil.vvNbtName(Protocol1_10To1_11.class), stack.getCount());
         } else {
             return stack.getCount();
         }

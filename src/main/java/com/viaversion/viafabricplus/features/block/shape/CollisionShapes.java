@@ -21,48 +21,48 @@
 
 package com.viaversion.viafabricplus.features.block.shape;
 
-import net.minecraft.block.AnvilBlock;
-import net.minecraft.block.BedBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BrewingStandBlock;
-import net.minecraft.block.CarpetBlock;
-import net.minecraft.block.CauldronBlock;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.CropBlock;
-import net.minecraft.block.EndPortalBlock;
-import net.minecraft.block.EndPortalFrameBlock;
-import net.minecraft.block.EnderChestBlock;
-import net.minecraft.block.FarmlandBlock;
-import net.minecraft.block.FenceBlock;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.FlowerbedBlock;
-import net.minecraft.block.HopperBlock;
-import net.minecraft.block.LadderBlock;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.LilyPadBlock;
-import net.minecraft.block.PaneBlock;
-import net.minecraft.block.PistonBlock;
-import net.minecraft.block.PistonHeadBlock;
-import net.minecraft.block.SnowBlock;
-import net.minecraft.block.WallBlock;
-import net.minecraft.registry.Registries;
+import net.minecraft.world.level.block.AnvilBlock;
+import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.BrewingStandBlock;
+import net.minecraft.world.level.block.CarpetBlock;
+import net.minecraft.world.level.block.CauldronBlock;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.EndPortalBlock;
+import net.minecraft.world.level.block.EndPortalFrameBlock;
+import net.minecraft.world.level.block.EnderChestBlock;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.FlowerBedBlock;
+import net.minecraft.world.level.block.HopperBlock;
+import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.WaterlilyBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
+import net.minecraft.world.level.block.piston.PistonHeadBlock;
+import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public final class CollisionShapes {
 
     public static void reloadBlockShapes() {
-        for (Block block : Registries.BLOCK) {
+        for (Block block : BuiltInRegistries.BLOCK) {
             if (block instanceof AnvilBlock || block instanceof BedBlock || block instanceof BrewingStandBlock
                 || block instanceof CarpetBlock || block instanceof CauldronBlock || block instanceof ChestBlock
                 || block instanceof EnderChestBlock || block instanceof EndPortalBlock || block instanceof EndPortalFrameBlock
-                || block instanceof FarmlandBlock || block instanceof FenceBlock || block instanceof FenceGateBlock
+                || block instanceof FarmBlock || block instanceof FenceBlock || block instanceof FenceGateBlock
                 || block instanceof HopperBlock || block instanceof LadderBlock || block instanceof LeavesBlock
-                || block instanceof LilyPadBlock || block instanceof PaneBlock || block instanceof PistonBlock
-                || block instanceof PistonHeadBlock || block instanceof SnowBlock || block instanceof WallBlock
-                || block instanceof CropBlock || block instanceof FlowerbedBlock
+                || block instanceof WaterlilyBlock || block instanceof IronBarsBlock || block instanceof PistonBaseBlock
+                || block instanceof PistonHeadBlock || block instanceof SnowLayerBlock || block instanceof WallBlock
+                || block instanceof CropBlock || block instanceof FlowerBedBlock
             ) {
-                for (BlockState state : block.getStateManager().getStates()) {
-                    state.initShapeCache();
+                for (BlockState state : block.getStateDefinition().getPossibleStates()) {
+                    state.initCache();
                 }
             }
         }

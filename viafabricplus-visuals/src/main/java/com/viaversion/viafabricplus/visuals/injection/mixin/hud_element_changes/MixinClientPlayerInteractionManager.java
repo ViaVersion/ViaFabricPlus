@@ -22,16 +22,16 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.hud_element_changes;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ClientPlayerInteractionManager.class)
+@Mixin(MultiPlayerGameMode.class)
 public abstract class MixinClientPlayerInteractionManager {
 
-    @Inject(method = "hasExperienceBar", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "hasExperience", at = @At("HEAD"), cancellable = true)
     private void removeExperienceBar(CallbackInfoReturnable<Boolean> cir) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             cir.setReturnValue(false);

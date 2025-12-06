@@ -24,11 +24,11 @@ package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.injection.mixin.features.movement.water.MixinLivingEntity;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,32 +37,32 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerEntity.class)
+@Mixin(Player.class)
 public abstract class MixinPlayerEntity extends MixinLivingEntity {
 
     @Unique
     private int viaFabricPlus$ticksSinceSwimming;
 
-    public MixinPlayerEntity(final EntityType<?> type, final World world) {
+    public MixinPlayerEntity(final EntityType<?> type, final Level world) {
         super(type, world);
     }
 
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/BlockPos;ofFloored(DDD)Lnet/minecraft/util/math/BlockPos;"))
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;containing(DDD)Lnet/minecraft/core/BlockPos;"))
     private BlockPos modifyWaterAbovePosition(double x, double y, double z) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return BlockPos.ofFloored(x, y - 0.9, z);
+            return BlockPos.containing(x, y - 0.9, z);
         } else {
-            return BlockPos.ofFloored(x, y, z);
+            return BlockPos.containing(x, y, z);
         }
     }
 
-    @WrapWithCondition(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V", ordinal = 0))
-    private boolean preventSwimmingMotionWhenJumping(PlayerEntity instance, Vec3d vec3d) {
+    @WrapWithCondition(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 0))
+    private boolean preventSwimmingMotionWhenJumping(Player instance, Vec3 vec3d) {
         return !ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) || !instance.isJumping();
     }
 
-    @Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAbilities()Lnet/minecraft/entity/player/PlayerAbilities;"))
-    private void preventJumpingWhenStartedSwimming(Vec3d movementInput, CallbackInfo ci) {
+    @Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getAbilities()Lnet/minecraft/world/entity/player/Abilities;"))
+    private void preventJumpingWhenStartedSwimming(Vec3 movementInput, CallbackInfo ci) {
         if (!ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return;
         }
@@ -74,20 +74,20 @@ public abstract class MixinPlayerEntity extends MixinLivingEntity {
         }
 
         if (this.viaFabricPlus$ticksSinceSwimming > 0 && this.viaFabricPlus$ticksSinceSwimming < 10 && this.isJumping()) {
-            this.setVelocity(this.getVelocity().getX(), 0, this.getVelocity().getZ());
+            this.setDeltaMovement(this.getDeltaMovement().x(), 0, this.getDeltaMovement().z());
         }
     }
 
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isSwimming()Z"))
-    private boolean preventSwimmingResurface(PlayerEntity instance) {
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSwimming()Z"))
+    private boolean preventSwimmingResurface(Player instance) {
         if (!ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) || !instance.isSwimming()) {
             return instance.isSwimming();
         }
 
-        double d = this.getRotationVector().y;
+        double d = this.getLookAngle().y;
         // TODO: The value used here (0.55) isn't entirely correct, however in most cases it should be fine.
-        if (this.getEntityWorld().getFluidState(BlockPos.ofFloored(this.getX(), this.getY() + 0.4, this.getZ())).isEmpty() && d > 0 && d < 0.55) {
-            instance.setVelocity(instance.getVelocity().getX(), 0, instance.getVelocity().getZ());
+        if (this.level().getFluidState(BlockPos.containing(this.getX(), this.getY() + 0.4, this.getZ())).isEmpty() && d > 0 && d < 0.55) {
+            instance.setDeltaMovement(instance.getDeltaMovement().x(), 0, instance.getDeltaMovement().z());
             return false;
         }
 

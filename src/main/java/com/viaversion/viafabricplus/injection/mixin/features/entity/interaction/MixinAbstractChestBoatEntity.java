@@ -23,23 +23,23 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.AbstractChestBoatEntity;
-import net.minecraft.entity.vehicle.VehicleInventory;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractChestBoat;
+import net.minecraft.world.entity.vehicle.ContainerEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(AbstractChestBoatEntity.class)
-public abstract class MixinAbstractChestBoatEntity implements VehicleInventory {
+@Mixin(AbstractChestBoat.class)
+public abstract class MixinAbstractChestBoatEntity implements ContainerEntity {
 
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
-    private void openWhenSneaking(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && player.shouldCancelInteraction()) {
-            cir.setReturnValue(this.open(player));
+    private void openWhenSneaking(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && player.isSecondaryUseActive()) {
+            cir.setReturnValue(this.interactWithContainerVehicle(player));
         }
     }
 

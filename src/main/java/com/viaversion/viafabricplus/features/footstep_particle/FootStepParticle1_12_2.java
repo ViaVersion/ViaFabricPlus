@@ -25,51 +25,51 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.client.particle.BillboardParticle;
-import net.minecraft.client.particle.BillboardParticleSubmittable;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.Camera;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
-public final class FootStepParticle1_12_2 extends BillboardParticle {
+public final class FootStepParticle1_12_2 extends SingleQuadParticle {
 
-    public static final Identifier ID = Identifier.of("viafabricplus", "footstep");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath("viafabricplus", "footstep");
     public static int RAW_ID;
 
-    private FootStepParticle1_12_2(ClientWorld clientWorld, double x, double y, double z, Sprite sprite) {
+    private FootStepParticle1_12_2(ClientLevel clientWorld, double x, double y, double z, TextureAtlasSprite sprite) {
         super(clientWorld, x, y, z, sprite);
 
-        this.scale = 0.125F;
-        this.setMaxAge(200);
+        this.quadSize = 0.125F;
+        this.setLifetime(200);
     }
 
     public static void init() {
         final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
 
-        Registry.register(Registries.PARTICLE_TYPE, ID, footStepType);
+        Registry.register(BuiltInRegistries.PARTICLE_TYPE, ID, footStepType);
         ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
 
-        RAW_ID = Registries.PARTICLE_TYPE.getRawId(footStepType);
+        RAW_ID = BuiltInRegistries.PARTICLE_TYPE.getId(footStepType);
     }
 
     @Override
-    protected RenderType getRenderType() {
-        return RenderType.PARTICLE_ATLAS_TRANSLUCENT;
+    protected @NotNull Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     @Override
-    protected void render(final BillboardParticleSubmittable submittable, final Camera camera, final Quaternionf rotation, final float tickProgress) {
-        final float strength = ((float) this.age + tickProgress) / (float) this.maxAge;
+    protected void extractRotatedQuad(final QuadParticleRenderState submittable, final Camera camera, final Quaternionf rotation, final float tickProgress) {
+        final float strength = ((float) this.z + tickProgress) / (float) this.lifetime;
         this.alpha = 2.0F - (strength * strength) * 2.0F;
         if (this.alpha > 1.0F) {
             this.alpha = 0.2F;
@@ -77,24 +77,24 @@ public final class FootStepParticle1_12_2 extends BillboardParticle {
             this.alpha *= 0.2F;
         }
 
-        super.render(submittable, camera, new Quaternionf().rotateX(-MathHelper.HALF_PI), tickProgress);
+        super.extractRotatedQuad(submittable, camera, new Quaternionf().rotateX(-Mth.HALF_PI), tickProgress);
     }
 
-    public static class Factory implements ParticleFactory<SimpleParticleType> {
+    public static class Factory implements ParticleProvider<SimpleParticleType> {
 
-        private final SpriteProvider spriteProvider;
+        private final SpriteSet spriteProvider;
 
-        public Factory(SpriteProvider spriteProvider) {
+        public Factory(SpriteSet spriteProvider) {
             this.spriteProvider = spriteProvider;
         }
 
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
+        public FootStepParticle1_12_2 createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, RandomSource random) {
             if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
                 throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
             }
 
-            final Sprite sprite = spriteProvider.getSprite(random);
+            final TextureAtlasSprite sprite = spriteProvider.get(random);
             return new FootStepParticle1_12_2(world, x, y, z, sprite);
         }
     }

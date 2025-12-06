@@ -24,11 +24,11 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.packet;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.input.Input;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.ClientInput;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,50 +36,50 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
+@Mixin(LocalPlayer.class)
+public abstract class MixinClientPlayerEntity extends AbstractClientPlayer {
 
     @Shadow
-    public Input input;
+    public ClientInput input;
 
     @Shadow
     @Final
-    protected MinecraftClient client;
+    protected Minecraft minecraft;
 
     @Shadow
-    private int ticksSinceLastPositionPacketSent;
+    private int positionReminder;
 
     @Shadow
     private boolean lastOnGround;
 
-    public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
+    public MixinClientPlayerEntity(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z", ordinal = 0))
-    private boolean sendIdlePacket(ClientPlayerEntity instance) {
+    @Redirect(method = "sendPosition", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/LocalPlayer;lastOnGround:Z", ordinal = 0))
+    private boolean sendIdlePacket(LocalPlayer instance) {
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(LegacyProtocolVersion.r1_4_2, ProtocolVersion.v1_8) || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
-            return !isOnGround();
+            return !onGround();
         } else {
             return this.lastOnGround;
         }
     }
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;ticksSinceLastPositionPacketSent:I", ordinal = 0))
-    private int moveLastPosPacketIncrement(ClientPlayerEntity instance) {
+    @Redirect(method = "sendPosition", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/LocalPlayer;positionReminder:I", ordinal = 0))
+    private int moveLastPosPacketIncrement(LocalPlayer instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return this.ticksSinceLastPositionPacketSent - 1; // Reverting original operation
+            return this.positionReminder - 1; // Reverting original operation
         } else {
-            return this.ticksSinceLastPositionPacketSent;
+            return this.positionReminder;
         }
     }
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerEntity;ticksSinceLastPositionPacketSent:I", ordinal = 2))
-    private int moveLastPosPacketIncrement2(ClientPlayerEntity instance) {
+    @Redirect(method = "sendPosition", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/LocalPlayer;positionReminder:I", ordinal = 2))
+    private int moveLastPosPacketIncrement2(LocalPlayer instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return this.ticksSinceLastPositionPacketSent++; // Return previous value, then increment
+            return this.positionReminder++; // Return previous value, then increment
         } else {
-            return this.ticksSinceLastPositionPacketSent;
+            return this.positionReminder;
         }
     }
 

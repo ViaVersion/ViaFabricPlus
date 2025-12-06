@@ -26,7 +26,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
+@Mixin(targets = "net.minecraft.client.gui.screens.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {
 
     @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Ljava/lang/Exception;getMessage()Ljava/lang/String;", remap = false))

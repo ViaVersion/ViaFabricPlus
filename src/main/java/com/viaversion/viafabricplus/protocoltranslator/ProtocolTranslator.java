@@ -65,10 +65,10 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.lenni0451.reflect.stream.RStream;
 import net.lenni0451.reflect.stream.field.FieldWrapper;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.util.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.network.Connection;
+import net.minecraft.Util;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
@@ -81,7 +81,7 @@ public final class ProtocolTranslator {
     /**
      * These attribute keys are used to track the main connections of Minecraft and ViaVersion, so that they can be used later during the connection to send packets.
      */
-    public static final AttributeKey<ClientConnection> CLIENT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-clientconnection");
+    public static final AttributeKey<Connection> CLIENT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-clientconnection");
 
     /**
      * This attribute stores the forced version for the current connection (if you set a specific version in the Edit Server screen)
@@ -131,7 +131,7 @@ public final class ProtocolTranslator {
      *
      * @param connection the Minecraft connection
      */
-    public static void injectViaPipeline(final ClientConnection connection, final Channel channel) {
+    public static void injectViaPipeline(final Connection connection, final Channel channel) {
         final IClientConnection mixinClientConnection = (IClientConnection) connection;
         final ProtocolVersion serverVersion = mixinClientConnection.viaFabricPlus$getTargetVersion();
 
@@ -215,7 +215,7 @@ public final class ProtocolTranslator {
         info.setState(State.PLAY);
         info.setProtocolVersion(clientVersion);
         info.setServerProtocolVersion(serverVersion);
-        final MinecraftClient mc = MinecraftClient.getInstance();
+        final Minecraft mc = Minecraft.getInstance();
         if (mc.player != null) {
             final GameProfile profile = mc.player.getGameProfile();
             info.setUsername(profile.name());
@@ -226,7 +226,7 @@ public final class ProtocolTranslator {
     }
 
     public static UserConnection getPlayNetworkUserConnection() {
-        final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
+        final ClientPacketListener handler = Minecraft.getInstance().getConnection();
         if (handler == null) {
             return null;
         }
@@ -308,7 +308,7 @@ public final class ProtocolTranslator {
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
             changeBedrockProtocolName();
             ViaFabricPlusProtocol.INSTANCE.initialize();
-        }, Util.getMainWorkerExecutor());
+        }, Util.backgroundExecutor());
     }
 
 }

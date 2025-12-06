@@ -22,26 +22,26 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.potion_glint;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.PotionItem;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PotionItem;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(PotionItem.class)
 public abstract class MixinPotionItem extends Item {
 
-    public MixinPotionItem(final Settings settings) {
+    public MixinPotionItem(final Properties settings) {
         super(settings);
     }
 
     @Override
-    public boolean hasGlint(final ItemStack stack) {
+    public boolean isFoil(final ItemStack stack) {
         if (VisualSettings.INSTANCE.potionEnchantmentGlint.isEnabled()) {
-            return stack.getOrDefault(DataComponentTypes.POTION_CONTENTS, PotionContentsComponent.DEFAULT).hasEffects();
+            return stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).hasEffects();
         } else {
-            return super.hasGlint(stack);
+            return super.isFoil(stack);
         }
     }
 

@@ -23,19 +23,19 @@ package com.viaversion.viafabricplus.injection.mixin.base.ui;
 
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.multiplayer.DirectConnectScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.DirectJoinServerScreen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(DirectConnectScreen.class)
+@Mixin(DirectJoinServerScreen.class)
 public abstract class MixinDirectConnectScreen extends Screen {
 
-    public MixinDirectConnectScreen(Text title) {
+    public MixinDirectConnectScreen(Component title) {
         super(title);
     }
 
@@ -46,9 +46,9 @@ public abstract class MixinDirectConnectScreen extends Screen {
             return;
         }
 
-        final ButtonWidget.Builder builder = ButtonWidget.builder(Text.of("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this)).size(98, 20);
-        GeneralSettings.setOrientation(builder::position, buttonPosition, width, height);
-        this.addDrawableChild(builder.build());
+        final Button.Builder builder = Button.builder(Component.nullToEmpty("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this)).size(98, 20);
+        GeneralSettings.setOrientation(builder::pos, buttonPosition, width, height);
+        this.addRenderableWidget(builder.build());
     }
 
 }

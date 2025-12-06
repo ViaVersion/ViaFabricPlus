@@ -28,11 +28,11 @@ import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.awt.*;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
 
 public final class ProtocolSelectionScreen extends VFPScreen {
 
@@ -46,15 +46,15 @@ public final class ProtocolSelectionScreen extends VFPScreen {
     protected void init() {
         // List and Settings
         this.setupDefaultSubtitle();
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, 30, textRenderer.fontHeight + 4));
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.settings"), button -> SettingsScreen.INSTANCE.open(this)).position(width - 98 - 5, 5).size(98, 20).build());
+        this.addRenderableWidget(new SlotList(this.minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, 30, font.lineHeight + 4));
+        this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.settings"), button -> SettingsScreen.INSTANCE.open(this)).pos(width - 98 - 5, 5).size(98, 20).build());
 
-        final ButtonWidget serverList = this.addDrawableChild(ButtonWidget.builder(ServerListScreen.INSTANCE.getTitle(), button -> ServerListScreen.INSTANCE.open(this))
-            .position(5, height - 25).size(98, 20).build());
-        serverList.active = MinecraftClient.getInstance().getNetworkHandler() == null;
+        final Button serverList = this.addRenderableWidget(Button.builder(ServerListScreen.INSTANCE.getTitle(), button -> ServerListScreen.INSTANCE.open(this))
+            .pos(5, height - 25).size(98, 20).build());
+        serverList.active = Minecraft.getInstance().getConnection() == null;
 
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("report.viafabricplus.button"), button -> ReportIssuesScreen.INSTANCE.open(this))
-            .position(width - 98 - 5, height - 25).size(98, 20).build());
+        this.addRenderableWidget(Button.builder(Component.translatable("report.viafabricplus.button"), button -> ReportIssuesScreen.INSTANCE.open(this))
+            .pos(width - 98 - 5, height - 25).size(98, 20).build());
 
         super.init();
     }
@@ -62,7 +62,7 @@ public final class ProtocolSelectionScreen extends VFPScreen {
     public static class SlotList extends VFPList {
         private static double scrollAmount;
 
-        public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
+        public SlotList(Minecraft minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             ProtocolVersionList.getProtocolsNewToOld().stream().map(ProtocolSlot::new).forEach(this::addEntry);
@@ -84,13 +84,13 @@ public final class ProtocolSelectionScreen extends VFPScreen {
         }
 
         @Override
-        public Text getNarration() {
-            return Text.of(this.protocolVersion.getName());
+        public Component getNarration() {
+            return Component.nullToEmpty(this.protocolVersion.getName());
         }
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-            if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+            if (Minecraft.getInstance().getConnection() != null) {
                 // Setting the target version while connected to a server is not allowed as this will
                 // literally break our code away.
                 return;
@@ -100,16 +100,16 @@ public final class ProtocolSelectionScreen extends VFPScreen {
         }
 
         @Override
-        public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        public void renderContent(final GuiGraphics context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             final boolean isSelected = ProtocolTranslator.getTargetVersion().equals(protocolVersion);
 
             Color color = isSelected ? Color.GREEN : Color.RED;
-            if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+            if (Minecraft.getInstance().getConnection() != null) {
                 color = color.darker();
             }
 
-            final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), getContentMiddleX(), getContentMiddleY() - textRenderer.fontHeight / 2, color.getRGB());
+            final Font textRenderer = Minecraft.getInstance().font;
+            context.drawCenteredString(textRenderer, this.protocolVersion.getName(), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, color.getRGB());
         }
     }
 

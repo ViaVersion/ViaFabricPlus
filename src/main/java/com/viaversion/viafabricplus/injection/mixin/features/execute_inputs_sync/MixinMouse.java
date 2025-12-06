@@ -25,8 +25,8 @@ import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseK
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.MouseHandler;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,19 +34,19 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(Mouse.class)
+@Mixin(MouseHandler.class)
 public abstract class MixinMouse implements IMouseKeyboard {
 
     @Shadow
     @Final
-    private MinecraftClient client;
+    private Minecraft minecraft;
 
     @Unique
     private final Queue<Runnable> viaFabricPlus$pendingScreenEvents = new ConcurrentLinkedQueue<>();
 
-    @Redirect(method = {"method_22684", "method_22685"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;execute(Ljava/lang/Runnable;)V"))
-    private void storeEvent(MinecraftClient instance, Runnable runnable) {
-        if (this.client.getNetworkHandler() != null && this.client.currentScreen != null && DebugSettings.INSTANCE.executeInputsSynchronously.isEnabled()) {
+    @Redirect(method = {"method_22684", "method_22685"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;execute(Ljava/lang/Runnable;)V"))
+    private void storeEvent(Minecraft instance, Runnable runnable) {
+        if (this.minecraft.getConnection() != null && this.minecraft.screen != null && DebugSettings.INSTANCE.executeInputsSynchronously.isEnabled()) {
             this.viaFabricPlus$pendingScreenEvents.offer(runnable);
         } else {
             instance.execute(runnable);

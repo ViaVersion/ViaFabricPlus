@@ -23,18 +23,18 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.r1_8_boat;
 
 import com.google.common.collect.ImmutableMap;
 import com.viaversion.viafabricplus.features.entity.r1_8_boat.BoatModel1_8;
-import net.minecraft.client.model.TexturedModelData;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.render.entity.model.EntityModels;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.LayerDefinitions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(EntityModels.class)
+@Mixin(LayerDefinitions.class)
 public abstract class MixinEntityModels {
 
-    @ModifyVariable(method = "getModels", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
-    private static ImmutableMap.Builder<EntityModelLayer, TexturedModelData> addBoatModel(ImmutableMap.Builder<EntityModelLayer, TexturedModelData> builder) {
+    @ModifyVariable(method = "createRoots", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
+    private static ImmutableMap.Builder<ModelLayerLocation, LayerDefinition> addBoatModel(ImmutableMap.Builder<ModelLayerLocation, LayerDefinition> builder) {
         return builder.put(BoatModel1_8.MODEL_LAYER, BoatModel1_8.getTexturedModelData());
     }
 

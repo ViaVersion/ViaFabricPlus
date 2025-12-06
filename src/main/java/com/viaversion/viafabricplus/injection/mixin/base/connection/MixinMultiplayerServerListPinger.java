@@ -27,18 +27,18 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.injection.access.base.IMultiValueDebugSampleLogImpl;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import java.net.InetSocketAddress;
-import net.minecraft.client.network.MultiplayerServerListPinger;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.util.profiler.MultiValueDebugSampleLogImpl;
+import net.minecraft.client.multiplayer.ServerStatusPinger;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.network.Connection;
+import net.minecraft.util.debugchart.LocalSampleLogger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(MultiplayerServerListPinger.class)
+@Mixin(ServerStatusPinger.class)
 public final class MixinMultiplayerServerListPinger {
 
-    @WrapOperation(method = "add", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)Lnet/minecraft/network/ClientConnection;"))
-    private ClientConnection setForcedVersion(InetSocketAddress address, boolean useEpoll, MultiValueDebugSampleLogImpl packetSizeLog, Operation<ClientConnection> original, @Local(argsOnly = true) ServerInfo serverInfo) {
+    @WrapOperation(method = "pingServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connectToServer(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/debugchart/LocalSampleLogger;)Lnet/minecraft/network/Connection;"))
+    private Connection setForcedVersion(InetSocketAddress address, boolean useEpoll, LocalSampleLogger packetSizeLog, Operation<Connection> original, @Local(argsOnly = true) ServerData serverInfo) {
         final IServerInfo mixinServerInfo = (IServerInfo) serverInfo;
 
         if (mixinServerInfo.viaFabricPlus$forcedVersion() != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
@@ -46,7 +46,7 @@ public final class MixinMultiplayerServerListPinger {
             // So we can create a dummy instance, store the forced version in it and later destroy the instance again
             // To avoid any side effects, we also support cases where a mod is also creating a PerformanceLog instance
             if (packetSizeLog == null) {
-                packetSizeLog = new MultiValueDebugSampleLogImpl(1);
+                packetSizeLog = new LocalSampleLogger(1);
             }
 
             // Attach the forced version to the PerformanceLog instance

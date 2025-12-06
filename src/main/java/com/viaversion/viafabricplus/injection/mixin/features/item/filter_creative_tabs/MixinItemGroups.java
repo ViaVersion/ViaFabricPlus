@@ -24,10 +24,10 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.filter_creati
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.resource.featuretoggle.FeatureSet;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.flag.FeatureFlagSet;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,15 +36,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ItemGroups.class)
+@Mixin(CreativeModeTabs.class)
 public abstract class MixinItemGroups {
 
     @Shadow
     @Nullable
-    private static ItemGroup.@Nullable DisplayContext displayContext;
+    private static CreativeModeTab.@Nullable ItemDisplayParameters CACHED_PARAMETERS;
 
     @Shadow
-    private static void updateEntries(ItemGroup.DisplayContext displayContext) {
+    private static void buildAllTabContents(CreativeModeTab.ItemDisplayParameters displayContext) {
     }
 
     @Unique
@@ -53,14 +53,14 @@ public abstract class MixinItemGroups {
     @Unique
     private static int viaFabricPlus$state;
 
-    @Inject(method = "updateDisplayContext", at = @At("HEAD"), cancellable = true)
-    private static void trackLastVersion(FeatureSet enabledFeatures, boolean operatorEnabled, RegistryWrapper.WrapperLookup lookup, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "tryRebuildTabContents", at = @At("HEAD"), cancellable = true)
+    private static void trackLastVersion(FeatureFlagSet enabledFeatures, boolean operatorEnabled, HolderLookup.Provider lookup, CallbackInfoReturnable<Boolean> cir) {
         if (viaFabricPlus$version != ProtocolTranslator.getTargetVersion() || viaFabricPlus$state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex()) {
             viaFabricPlus$version = ProtocolTranslator.getTargetVersion();
             viaFabricPlus$state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
 
-            displayContext = new ItemGroup.DisplayContext(enabledFeatures, operatorEnabled, lookup);
-            updateEntries(displayContext);
+            CACHED_PARAMETERS = new CreativeModeTab.ItemDisplayParameters(enabledFeatures, operatorEnabled, lookup);
+            buildAllTabContents(CACHED_PARAMETERS);
 
             cir.setReturnValue(true);
         }

@@ -23,29 +23,29 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.AbstractCowEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.AbstractCow;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(AbstractCowEntity.class)
-public abstract class MixinAbstractCowEntity extends AnimalEntity {
+@Mixin(AbstractCow.class)
+public abstract class MixinAbstractCowEntity extends Animal {
 
-    public MixinAbstractCowEntity(EntityType<? extends AnimalEntity> entityType, World world) {
+    public MixinAbstractCowEntity(EntityType<? extends Animal> entityType, Level world) {
         super(entityType, world);
     }
 
-    @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
-    private void disableMilkingInCreative(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && player.getAbilities().creativeMode) {
-            cir.setReturnValue(super.interactMob(player, hand));
+    @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
+    private void disableMilkingInCreative(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && player.getAbilities().instabuild) {
+            cir.setReturnValue(super.mobInteract(player, hand));
         }
     }
 

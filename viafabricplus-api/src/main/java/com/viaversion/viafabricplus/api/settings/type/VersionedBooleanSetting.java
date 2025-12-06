@@ -27,7 +27,7 @@ import com.viaversion.viafabricplus.api.settings.AbstractSetting;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.text.MutableText;
+import net.minecraft.network.chat.MutableComponent;
 
 public class VersionedBooleanSetting extends AbstractSetting<Integer> {
 
@@ -37,7 +37,7 @@ public class VersionedBooleanSetting extends AbstractSetting<Integer> {
 
     private final VersionRange protocolRange;
 
-    public VersionedBooleanSetting(SettingGroup parent, MutableText name, VersionRange protocolRange) {
+    public VersionedBooleanSetting(SettingGroup parent, MutableComponent name, VersionRange protocolRange) {
         super(parent, name, AUTO_INDEX);
 
         this.protocolRange = protocolRange;

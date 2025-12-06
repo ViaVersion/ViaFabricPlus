@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.instant_sneaking;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.render.Camera;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.Camera;
+import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,19 +34,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinCamera {
 
     @Shadow
-    private float cameraY;
+    private float eyeHeight;
 
     @Shadow
-    private float lastCameraY;
+    private float eyeHeightOld;
 
     @Shadow
-    private Entity focusedEntity;
+    private Entity entity;
 
-    @Inject(method = "updateEyeHeight", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
     private void sneakInstantly(CallbackInfo ci) {
-        if (this.focusedEntity != null && VisualSettings.INSTANCE.sneakInstantly.isEnabled()) {
+        if (this.entity != null && VisualSettings.INSTANCE.sneakInstantly.isEnabled()) {
             ci.cancel();
-            cameraY = lastCameraY = focusedEntity.getStandingEyeHeight();
+            eyeHeight = eyeHeightOld = entity.getEyeHeight();
         }
     }
 

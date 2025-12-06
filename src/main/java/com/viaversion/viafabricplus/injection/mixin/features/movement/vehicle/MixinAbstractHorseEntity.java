@@ -24,17 +24,17 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.vehicle;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.Animal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(AbstractHorseEntity.class)
+@Mixin(AbstractHorse.class)
 public abstract class MixinAbstractHorseEntity {
 
-    @WrapWithCondition(method = "addPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AnimalEntity;addPassenger(Lnet/minecraft/entity/Entity;)V"))
-    private boolean dontSetPassengerRotation(AnimalEntity instance, Entity entity) {
+    @WrapWithCondition(method = "addPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;addPassenger(Lnet/minecraft/world/entity/Entity;)V"))
+    private boolean dontSetPassengerRotation(Animal instance, Entity entity) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_7);
     }
 

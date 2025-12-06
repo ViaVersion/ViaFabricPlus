@@ -23,17 +23,17 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.PitcherCropBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.TallPlantBlock;
-import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.PitcherCropBlock;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -43,11 +43,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PitcherCropBlock.class)
-public abstract class MixinPitcherCropBlock extends TallPlantBlock {
+public abstract class MixinPitcherCropBlock extends DoublePlantBlock {
 
     @Shadow
     @Final
-    public static IntProperty AGE;
+    public static IntegerProperty AGE;
 
     @Shadow
     @Final
@@ -55,33 +55,33 @@ public abstract class MixinPitcherCropBlock extends TallPlantBlock {
 
     @Shadow
     @Final
-    private static VoxelShape AGE_0_SHAPE;
+    private static VoxelShape SHAPE_BULB;
 
     @Shadow
     @Final
-    private static VoxelShape LOWER_COLLISION_SHAPE;
+    private static VoxelShape SHAPE_CROP;
 
     @Unique
-    private static final VoxelShape viaFabricPlus$grown_upper_outline_shape_r1_21_4 = Block.createCuboidShape(3.0, 0.0, 3.0, 13.0, 15.0, 13.0);
+    private static final VoxelShape viaFabricPlus$grown_upper_outline_shape_r1_21_4 = Block.box(3.0, 0.0, 3.0, 13.0, 15.0, 13.0);
 
     @Unique
-    private static final VoxelShape viaFabricPlus$grown_lower_outline_shape_r1_21_4 = Block.createCuboidShape(3.0, -1.0, 3.0, 13.0, 16.0, 13.0);
+    private static final VoxelShape viaFabricPlus$grown_lower_outline_shape_r1_21_4 = Block.box(3.0, -1.0, 3.0, 13.0, 16.0, 13.0);
 
     @Unique
-    private static final VoxelShape[] viaFabricPlus$upper_outline_shapes_r1_21_4 = new VoxelShape[]{Block.createCuboidShape(3.0, 0.0, 3.0, 13.0, 11.0, 13.0), viaFabricPlus$grown_upper_outline_shape_r1_21_4};
+    private static final VoxelShape[] viaFabricPlus$upper_outline_shapes_r1_21_4 = new VoxelShape[]{Block.box(3.0, 0.0, 3.0, 13.0, 11.0, 13.0), viaFabricPlus$grown_upper_outline_shape_r1_21_4};
 
     @Unique
-    private static final VoxelShape[] viaFabricPlus$lower_outline_shapes_r1_21_4 = new VoxelShape[]{AGE_0_SHAPE, Block.createCuboidShape(3.0, -1.0, 3.0, 13.0, 14.0, 13.0), viaFabricPlus$grown_lower_outline_shape_r1_21_4, viaFabricPlus$grown_lower_outline_shape_r1_21_4, viaFabricPlus$grown_lower_outline_shape_r1_21_4};
+    private static final VoxelShape[] viaFabricPlus$lower_outline_shapes_r1_21_4 = new VoxelShape[]{SHAPE_BULB, Block.box(3.0, -1.0, 3.0, 13.0, 14.0, 13.0), viaFabricPlus$grown_lower_outline_shape_r1_21_4, viaFabricPlus$grown_lower_outline_shape_r1_21_4, viaFabricPlus$grown_lower_outline_shape_r1_21_4};
 
-    public MixinPitcherCropBlock(final Settings settings) {
+    public MixinPitcherCropBlock(final Properties settings) {
         super(settings);
     }
 
-    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
+    private void changeOutlineShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            final int age = state.get(AGE);
-            if (state.get(HALF) == DoubleBlockHalf.UPPER) {
+            final int age = state.getValue(AGE);
+            if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
                 cir.setReturnValue(viaFabricPlus$upper_outline_shapes_r1_21_4[Math.min(Math.abs(4 - (age + 1)), viaFabricPlus$upper_outline_shapes_r1_21_4.length - 1)]);
             } else {
                 cir.setReturnValue(viaFabricPlus$lower_outline_shapes_r1_21_4[age]);
@@ -90,12 +90,12 @@ public abstract class MixinPitcherCropBlock extends TallPlantBlock {
     }
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
-    private void changeBlockStatePropertyPriority(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeBlockStatePropertyPriority(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            if (state.get(AGE) == 0) {
-                cir.setReturnValue(AGE_0_SHAPE);
+            if (state.getValue(AGE) == 0) {
+                cir.setReturnValue(SHAPE_BULB);
             } else {
-                cir.setReturnValue(state.get(HALF) == DoubleBlockHalf.LOWER ? LOWER_COLLISION_SHAPE : super.getCollisionShape(state, world, pos, context));
+                cir.setReturnValue(state.getValue(HALF) == DoubleBlockHalf.LOWER ? SHAPE_CROP : super.getCollisionShape(state, world, pos, context));
             }
         }
     }

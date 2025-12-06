@@ -26,17 +26,17 @@ import com.viaversion.viafabricplus.api.settings.AbstractSetting;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import java.util.Arrays;
-import net.minecraft.text.MutableText;
+import net.minecraft.network.chat.MutableComponent;
 
-public class ModeSetting extends AbstractSetting<MutableText> {
+public class ModeSetting extends AbstractSetting<MutableComponent> {
 
-    private final MutableText[] options;
+    private final MutableComponent[] options;
 
-    public ModeSetting(SettingGroup parent, MutableText name, MutableText... options) {
+    public ModeSetting(SettingGroup parent, MutableComponent name, MutableComponent... options) {
         this(parent, name, 0, options);
     }
 
-    public ModeSetting(SettingGroup parent, MutableText name, int defaultOption, MutableText... options) {
+    public ModeSetting(SettingGroup parent, MutableComponent name, int defaultOption, MutableComponent... options) {
         super(parent, name, options[defaultOption]);
         this.options = options;
     }
@@ -49,7 +49,7 @@ public class ModeSetting extends AbstractSetting<MutableText> {
     @Override
     public void read(JsonObject object) {
         final String selected = object.get(getTranslationKey()).getAsString();
-        for (MutableText option : options) {
+        for (MutableComponent option : options) {
             if (mapTranslationKey(ChatUtil.uncoverTranslationKey(option)).equals(selected)) {
                 setValue(option);
                 break;
@@ -65,7 +65,7 @@ public class ModeSetting extends AbstractSetting<MutableText> {
         return Arrays.stream(options).toList().indexOf(getValue());
     }
 
-    public MutableText[] getOptions() {
+    public MutableComponent[] getOptions() {
         return options;
     }
 

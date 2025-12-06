@@ -36,7 +36,7 @@ import com.viaversion.viafabricplus.features.networking.armor_hud.ArmorHudEmulat
 import com.viaversion.viafabricplus.features.networking.resource_pack_header.ResourcePackHeaderDiff;
 import com.viaversion.viafabricplus.features.recipe.Recipes1_11_2;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 public final class FeaturesLoading {
 
@@ -71,7 +71,7 @@ public final class FeaturesLoading {
         });
 
         // Reloads some clientside stuff when the protocol version changes
-        Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
+        Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> {
             // Reloads all bounding boxes of the blocks that we changed
             CollisionShapes.reloadBlockShapes();
 
@@ -85,7 +85,7 @@ public final class FeaturesLoading {
 
             // Reload sound system when switching between 3D Shareware and normal versions
             if (oldVersion.equals(AprilFoolsProtocolVersion.s3d_shareware) || newVersion.equals(AprilFoolsProtocolVersion.s3d_shareware)) {
-                MinecraftClient.getInstance().getSoundManager().reloadSounds();
+                Minecraft.getInstance().getSoundManager().reload();
             }
         }));
     }

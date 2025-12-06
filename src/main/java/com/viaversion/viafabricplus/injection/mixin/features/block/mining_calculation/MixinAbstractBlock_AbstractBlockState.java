@@ -23,13 +23,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.mining_calcu
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.InfestedBlock;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.InfestedBlock;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,7 +39,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(AbstractBlock.AbstractBlockState.class)
+@Mixin(BlockBehaviour.BlockStateBase.class)
 public abstract class MixinAbstractBlock_AbstractBlockState {
 
     @Shadow
@@ -47,23 +47,23 @@ public abstract class MixinAbstractBlock_AbstractBlockState {
 
     @Shadow
     @Final
-    private boolean toolRequired;
+    private boolean requiresCorrectToolForDrops;
 
     /**
      * @author RK_01
      * @reason Change break speed for shulker blocks in < 1.14
      */
     @Overwrite
-    public boolean isToolRequired() {
+    public boolean requiresCorrectToolForDrops() {
         if (this.getBlock() instanceof ShulkerBoxBlock && ProtocolTranslator.getTargetVersion().olderThan(ProtocolVersion.v1_14)) {
             return true;
         } else {
-            return this.toolRequired;
+            return this.requiresCorrectToolForDrops;
         }
     }
 
-    @Inject(method = "getHardness", at = @At("RETURN"), cancellable = true)
-    private void changeHardness(BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
+    @Inject(method = "getDestroySpeed", at = @At("RETURN"), cancellable = true)
+    private void changeHardness(BlockGetter world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
         final Block block = this.getBlock();
 
         if (block.equals(Blocks.END_STONE_BRICKS) || block.equals(Blocks.END_STONE_BRICK_SLAB) || block.equals(Blocks.END_STONE_BRICK_STAIRS) || block.equals(Blocks.END_STONE_BRICK_WALL)) {

@@ -24,12 +24,12 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.limitatio
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,35 +37,35 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(PlayerEntity.class)
+@Mixin(Player.class)
 public abstract class MixinPlayerEntity extends LivingEntity {
 
-    protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
+    protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, Level world) {
         super(entityType, world);
     }
 
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V", ordinal = 1))
-    private void removeFlySlipperiness(PlayerEntity instance, Vec3d vec3d, @Local(argsOnly = true) Vec3d movementInput) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && movementInput.horizontalLengthSquared() == 0) {
-            instance.setVelocity(new Vec3d(0, vec3d.y, 0));
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 1))
+    private void removeFlySlipperiness(Player instance, Vec3 vec3d, @Local(argsOnly = true) Vec3 movementInput) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && movementInput.horizontalDistanceSqr() == 0) {
+            instance.setDeltaMovement(new Vec3(0, vec3d.y, 0));
         } else {
-            instance.setVelocity(vec3d);
+            instance.setDeltaMovement(vec3d);
         }
     }
 
-    @Inject(method = "isClimbing", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "onClimbable", at = @At("HEAD"), cancellable = true)
     private void allowClimbingWhileFlying(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            cir.setReturnValue(super.isClimbing());
+            cir.setReturnValue(super.onClimbable());
         }
     }
 
-    @Redirect(method = "canChangeIntoPose", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Box;contract(D)Lnet/minecraft/util/math/Box;"))
-    private Box removeContractionOfCollisionBox(Box instance, double value) {
+    @Redirect(method = "canPlayerFitWithinBlocksAndEntitiesWhen", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/AABB;deflate(D)Lnet/minecraft/world/phys/AABB;"))
+    private AABB removeContractionOfCollisionBox(AABB instance, double value) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return instance;
         } else {
-            return instance.contract(value);
+            return instance.deflate(value);
         }
     }
 

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.access.networking.packet_handling;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 public interface IGameTestDebugRenderer {
 

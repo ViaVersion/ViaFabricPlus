@@ -24,25 +24,25 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.pose;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.OtherClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.RemotePlayer;
+import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(OtherClientPlayerEntity.class)
-public abstract class MixinOtherClientPlayerEntity extends AbstractClientPlayerEntity {
+@Mixin(RemotePlayer.class)
+public abstract class MixinOtherClientPlayerEntity extends AbstractClientPlayer {
 
-    public MixinOtherClientPlayerEntity(ClientWorld world, GameProfile profile) {
+    public MixinOtherClientPlayerEntity(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
 
-    @Inject(method = "updatePose", at = @At("HEAD"))
+    @Inject(method = "updatePlayerPose", at = @At("HEAD"))
     private void onUpdatePose(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            super.updatePose();
+            super.updatePlayerPose();
         }
     }
 

@@ -48,12 +48,12 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import javax.crypto.Cipher;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.encryption.PacketDecryptor;
-import net.minecraft.network.encryption.PacketEncryptor;
-import net.minecraft.network.handler.HandlerNames;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.util.profiler.MultiValueDebugSampleLogImpl;
+import net.minecraft.network.Connection;
+import net.minecraft.network.CipherDecoder;
+import net.minecraft.network.CipherEncoder;
+import net.minecraft.network.HandlerNames;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.util.debugchart.LocalSampleLogger;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.RakNetStatusProtocol;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -68,7 +68,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ClientConnection.class)
+@Mixin(Connection.class)
 public abstract class MixinClientConnection extends SimpleChannelInboundHandler<Packet<?>> implements IClientConnection {
 
     @Shadow
@@ -89,13 +89,13 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
     @Unique
     private Cipher viaFabricPlus$decryptionCipher;
 
-    @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
+    @Inject(method = "setupCompression", at = @At("RETURN"))
     private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
         // Compression enabled and elements put into pipeline, move via handlers
         channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
     }
 
-    @Inject(method = "setupEncryption", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "setEncryptionKey", at = @At("HEAD"), cancellable = true)
     private void storeDecryptionCipher(Cipher decryptionCipher, Cipher encryptionCipher, CallbackInfo ci) {
         if (this.viaFabricPlus$serverVersion != null /* This happens when opening a lan server and people are joining */ && this.viaFabricPlus$serverVersion.olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             // Minecraft's encryption code is bad for us, we need to reorder the pipeline
@@ -112,7 +112,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
             }
 
             this.encrypted = true;
-            this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, HandlerNames.ENCRYPT, new PacketEncryptor(encryptionCipher));
+            this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, HandlerNames.ENCRYPT, new CipherEncoder(encryptionCipher));
         }
     }
 
@@ -129,22 +129,22 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         return !BedrockProtocolVersion.bedrockLatest.equals(this.viaFabricPlus$serverVersion);
     }
 
-    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;"))
-    private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, MultiValueDebugSampleLogImpl packetSizeLog, CallbackInfoReturnable<ClientConnection> cir, @Local ClientConnection clientConnection) {
+    @Inject(method = "connectToServer(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/debugchart/LocalSampleLogger;)Lnet/minecraft/network/Connection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;"))
+    private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, LocalSampleLogger packetSizeLog, CallbackInfoReturnable<Connection> cir, @Local Connection clientConnection) {
         // Set the target version stored in the PerformanceLog field to the ClientConnection instance
         if (packetSizeLog instanceof IMultiValueDebugSampleLogImpl mixinMultiValueDebugSampleLogImpl && mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion() != null) {
             ((IClientConnection) clientConnection).viaFabricPlus$setTargetVersion(mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion());
         }
     }
 
-    @WrapWithCondition(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)Lnet/minecraft/network/ClientConnection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;resetPacketSizeLog(Lnet/minecraft/util/profiler/MultiValueDebugSampleLogImpl;)V"))
-    private static boolean dontSetPerformanceLog(ClientConnection instance, MultiValueDebugSampleLogImpl packetSizeLog) {
+    @WrapWithCondition(method = "connectToServer(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/debugchart/LocalSampleLogger;)Lnet/minecraft/network/Connection;", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;setBandwidthLogger(Lnet/minecraft/util/debugchart/LocalSampleLogger;)V"))
+    private static boolean dontSetPerformanceLog(Connection instance, LocalSampleLogger packetSizeLog) {
         // We need to restore vanilla behaviour since we use the PerformanceLog as a way to store the target version
         return !(packetSizeLog instanceof IMultiValueDebugSampleLogImpl mixinMultiValueDebugSampleLogImpl) || mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion() == null;
     }
 
-    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At("HEAD"))
-    private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, ClientConnection connection, CallbackInfoReturnable<ChannelFuture> cir) {
+    @Inject(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;", at = @At("HEAD"))
+    private static void setTargetVersion(InetSocketAddress address, boolean useEpoll, Connection connection, CallbackInfoReturnable<ChannelFuture> cir) {
         ProtocolVersion targetVersion = ((IClientConnection) connection).viaFabricPlus$getTargetVersion();
         if (targetVersion == null) { // No server specific override
             targetVersion = ProtocolTranslator.getTargetVersion();
@@ -156,8 +156,8 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         ((IClientConnection) connection).viaFabricPlus$setTargetVersion(targetVersion);
     }
 
-    @WrapOperation(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;channel(Ljava/lang/Class;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false))
-    private static AbstractBootstrap<?, ?> useRakNetChannelFactory(Bootstrap instance, Class<? extends Channel> channelTypeClass, Operation<AbstractBootstrap<Bootstrap, Channel>> original, @Local(argsOnly = true) ClientConnection clientConnection) {
+    @WrapOperation(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;channel(Ljava/lang/Class;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false))
+    private static AbstractBootstrap<?, ?> useRakNetChannelFactory(Bootstrap instance, Class<? extends Channel> channelTypeClass, Operation<AbstractBootstrap<Bootstrap, Channel>> original, @Local(argsOnly = true) Connection clientConnection) {
         if (BedrockProtocolVersion.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getTargetVersion())) {
             return instance.channelFactory(channelTypeClass == EpollSocketChannel.class ? RakChannelFactory.client(EpollDatagramChannel.class) : RakChannelFactory.client(NioDatagramChannel.class));
         } else {
@@ -165,8 +165,8 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
         }
     }
 
-    @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/ClientConnection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;connect(Ljava/net/InetAddress;I)Lio/netty/channel/ChannelFuture;", remap = false))
-    private static ChannelFuture useRakNetPingHandlers(Bootstrap instance, InetAddress inetHost, int inetPort, @Local(argsOnly = true) ClientConnection clientConnection, @Local(argsOnly = true) boolean isConnecting) {
+    @Redirect(method = "connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;connect(Ljava/net/InetAddress;I)Lio/netty/channel/ChannelFuture;", remap = false))
+    private static ChannelFuture useRakNetPingHandlers(Bootstrap instance, InetAddress inetHost, int inetPort, @Local(argsOnly = true) Connection clientConnection, @Local(argsOnly = true) boolean isConnecting) {
         if (BedrockProtocolVersion.bedrockLatest.equals(((IClientConnection) clientConnection).viaFabricPlus$getTargetVersion()) && !isConnecting) {
             // Bedrock edition / RakNet has different handlers for pinging a server
             return instance.register().syncUninterruptibly().channel().bind(new InetSocketAddress(0)).addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE, (ChannelFutureListener) f -> {
@@ -196,7 +196,7 @@ public abstract class MixinClientConnection extends SimpleChannelInboundHandler<
 
         this.encrypted = true;
         // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
-        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_PREPENDER_NAME, HandlerNames.DECRYPT, new PacketDecryptor(this.viaFabricPlus$decryptionCipher));
+        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_PREPENDER_NAME, HandlerNames.DECRYPT, new CipherDecoder(this.viaFabricPlus$decryptionCipher));
     }
 
     @Override

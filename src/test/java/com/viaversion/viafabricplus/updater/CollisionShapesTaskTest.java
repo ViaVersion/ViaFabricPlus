@@ -31,11 +31,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import static com.viaversion.viafabricplus.save.AbstractSave.GSON;
 
@@ -75,23 +75,23 @@ public final class CollisionShapesTaskTest {
 //        if (shape.getBoundingBoxes().size() > 1) {
 //            System.out.println("Multiple boxes in shape: " + shape);
 //        }
-        final Box box = shape.getBoundingBox();
+        final AABB box = shape.bounds();
         System.out.println("Min: " + box.minX * 16 + ", " + box.minY * 16 + ", " + box.minZ * 16 + " Max: " + box.maxX * 16 + ", " + box.maxY * 16 + ", " + box.maxZ * 16);
     }
 
     private static StringBuilder dumpData() {
         final Set<Class<? extends Block>> skippedBlocks = new HashSet<>();
         final JsonObject data = new JsonObject();
-        for (final Block block : Registries.BLOCK) {
+        for (final Block block : BuiltInRegistries.BLOCK) {
             final JsonObject blockData = new JsonObject();
-            for (final BlockState blockStates : block.getStateManager().getStates()) {
+            for (final BlockState blockStates : block.getStateDefinition().getPossibleStates()) {
                 final JsonObject blockStateData = new JsonObject();
                 try {
                     final VoxelShape collisionShape = blockStates.getCollisionShape(null, null);
                     blockStateData.addProperty("collisionShape", collisionShape.toString());
-                    final VoxelShape outlineShape = blockStates.getOutlineShape(null, null);
+                    final VoxelShape outlineShape = blockStates.getShape(null, null);
                     blockStateData.addProperty("outlineShape", outlineShape.toString());
-                    final VoxelShape raycastShape = blockStates.getRaycastShape(null, null);
+                    final VoxelShape raycastShape = blockStates.getInteractionShape(null, null);
                     blockStateData.addProperty("raycastShape", raycastShape.toString());
                 } catch (Exception e) {
                     skippedBlocks.add(block.getClass());
@@ -100,7 +100,7 @@ public final class CollisionShapesTaskTest {
                 blockData.add(blockStates.toString(), blockStateData);
             }
 
-            data.add(Registries.BLOCK.getId(block).toString(), blockData);
+            data.add(BuiltInRegistries.BLOCK.getKey(block).toString(), blockData);
         }
 
         final JsonArray skippedBlocksData = new JsonArray();
@@ -125,9 +125,9 @@ public final class CollisionShapesTaskTest {
             }
         }
 
-        for (final Block block : Registries.BLOCK) {
-            final JsonObject firstBlock = first.getAsJsonObject(Registries.BLOCK.getId(block).toString());
-            final JsonObject secondBlock = second.getAsJsonObject(Registries.BLOCK.getId(block).toString());
+        for (final Block block : BuiltInRegistries.BLOCK) {
+            final JsonObject firstBlock = first.getAsJsonObject(BuiltInRegistries.BLOCK.getKey(block).toString());
+            final JsonObject secondBlock = second.getAsJsonObject(BuiltInRegistries.BLOCK.getKey(block).toString());
             if (firstBlock == null) {
                 // New block (or renamed), can be ignored
                 //System.out.println("The block " + Registries.BLOCK.getId(block) + " is missing in the first file.");
@@ -135,7 +135,7 @@ public final class CollisionShapesTaskTest {
             }
 
             boolean missingBlockState = false;
-            for (final BlockState blockState : block.getStateManager().getStates()) {
+            for (final BlockState blockState : block.getStateDefinition().getPossibleStates()) {
                 final JsonObject firstBlockState = firstBlock.getAsJsonObject(blockState.toString());
                 final JsonObject secondBlockState = secondBlock.getAsJsonObject(blockState.toString());
                 if (firstBlockState == null || secondBlockState == null) {
@@ -148,7 +148,7 @@ public final class CollisionShapesTaskTest {
                 final String firstCollisionShape = firstBlockState.get("collisionShape").getAsString();
                 final String secondCollisionShape = secondBlockState.get("collisionShape").getAsString();
                 if (!firstCollisionShape.equals(secondCollisionShape)) {
-                    System.out.println("Collision shape of " + blockState + " in " + Registries.BLOCK.getId(block) + " is different.");
+                    System.out.println("Collision shape of " + blockState + " in " + BuiltInRegistries.BLOCK.getKey(block) + " is different.");
                     System.out.println("First: " + firstCollisionShape);
                     System.out.println("Second: " + secondCollisionShape);
                 }
@@ -156,7 +156,7 @@ public final class CollisionShapesTaskTest {
                 final String firstOutlineShape = firstBlockState.get("outlineShape").getAsString();
                 final String secondOutlineShape = secondBlockState.get("outlineShape").getAsString();
                 if (!firstOutlineShape.equals(secondOutlineShape)) {
-                    System.out.println("Outline shape of " + blockState + " in " + Registries.BLOCK.getId(block) + " is different.");
+                    System.out.println("Outline shape of " + blockState + " in " + BuiltInRegistries.BLOCK.getKey(block) + " is different.");
                     System.out.println("First: " + firstOutlineShape);
                     System.out.println("Second: " + secondOutlineShape);
                 }
@@ -164,13 +164,13 @@ public final class CollisionShapesTaskTest {
                 final String firstRaycastShape = firstBlockState.get("raycastShape").getAsString();
                 final String secondRaycastShape = secondBlockState.get("raycastShape").getAsString();
                 if (!firstRaycastShape.equals(secondRaycastShape)) {
-                    System.out.println("Raycast shape of " + blockState + " in " + Registries.BLOCK.getId(block) + " is different.");
+                    System.out.println("Raycast shape of " + blockState + " in " + BuiltInRegistries.BLOCK.getKey(block) + " is different.");
                     System.out.println("First: " + firstRaycastShape);
                     System.out.println("Second: " + secondRaycastShape);
                 }
             }
             if (missingBlockState && !firstSkippedBlocks.contains(new JsonPrimitive(block.getClass().getSimpleName()))) {
-                System.out.println("The block " + Registries.BLOCK.getId(block) + " is missing block states in one of the files.");
+                System.out.println("The block " + BuiltInRegistries.BLOCK.getKey(block) + " is missing block states in one of the files.");
             }
         }
     }

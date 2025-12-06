@@ -23,33 +23,33 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.config_
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientCommonNetworkHandler;
-import net.minecraft.client.network.ClientConfigurationNetworkHandler;
-import net.minecraft.client.network.ClientConnectionState;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.packet.s2c.config.ReadyS2CPacket;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
+import net.minecraft.client.multiplayer.ClientConfigurationPacketListenerImpl;
+import net.minecraft.client.multiplayer.CommonListenerCookie;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.configuration.ClientboundFinishConfigurationPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientConfigurationNetworkHandler.class)
-public abstract class MixinClientConfigurationNetworkHandler extends ClientCommonNetworkHandler {
+@Mixin(ClientConfigurationPacketListenerImpl.class)
+public abstract class MixinClientConfigurationNetworkHandler extends ClientCommonPacketListenerImpl {
 
-    protected MixinClientConfigurationNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
+    protected MixinClientConfigurationNetworkHandler(Minecraft client, Connection connection, CommonListenerCookie connectionState) {
         super(client, connection, connectionState);
     }
 
-    @Inject(method = "onReady", at = @At("HEAD"))
-    private void disableAutoRead(ReadyS2CPacket packet, CallbackInfo ci) {
+    @Inject(method = "handleConfigurationFinished", at = @At("HEAD"))
+    private void disableAutoRead(ClientboundFinishConfigurationPacket packet, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             this.connection.channel.config().setAutoRead(false);
         }
     }
 
-    @Inject(method = "onReady", at = @At("RETURN"))
-    private void enableAutoRead(ReadyS2CPacket packet, CallbackInfo ci) {
+    @Inject(method = "handleConfigurationFinished", at = @At("RETURN"))
+    private void enableAutoRead(ClientboundFinishConfigurationPacket packet, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             this.connection.channel.config().setAutoRead(true);
         }

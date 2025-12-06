@@ -31,8 +31,8 @@ import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.packet.ServerboundPac
 import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.Protocol1_21_7To1_21_9;
 import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ClientboundPacket1_21_9;
 import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ServerboundPacket1_21_9;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -54,15 +54,15 @@ public abstract class MixinProtocol1_21_7To1_21_9 extends AbstractProtocol<Clien
                 wrapper.write(Types.STRING, SyncTasks.executeSyncTask(buf -> {
                     final BlockPos pos = buf.readBlockPos();
                     final int color = buf.readInt();
-                    final String name = buf.readString();
+                    final String name = buf.readUtf();
                     final int duration = buf.readInt();
 
-                    final IGameTestDebugRenderer mixinTestDebugRenderer = (IGameTestDebugRenderer) MinecraftClient.getInstance().worldRenderer.gameTestDebugRenderer;
+                    final IGameTestDebugRenderer mixinTestDebugRenderer = (IGameTestDebugRenderer) Minecraft.getInstance().levelRenderer.gameTestBlockHighlightRenderer;
                     mixinTestDebugRenderer.viaFabricPlus$addMarker(pos, color, name, duration);
                 }));
             } else if (channel.equals("minecraft:debug/game_test_clear")) {
                 wrapper.set(Types.STRING, 0, SyncTasks.PACKET_SYNC_IDENTIFIER);
-                wrapper.write(Types.STRING, SyncTasks.executeSyncTask(buf -> MinecraftClient.getInstance().worldRenderer.gameTestDebugRenderer.clear()));
+                wrapper.write(Types.STRING, SyncTasks.executeSyncTask(buf -> Minecraft.getInstance().levelRenderer.gameTestBlockHighlightRenderer.clear()));
             }
         });
     }

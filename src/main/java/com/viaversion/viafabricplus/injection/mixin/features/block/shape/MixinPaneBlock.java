@@ -25,23 +25,23 @@ import com.viaversion.viafabricplus.injection.access.block.shape.IHorizontalConn
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalConnectingBlock;
-import net.minecraft.block.PaneBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PaneBlock.class)
-public abstract class MixinPaneBlock extends HorizontalConnectingBlock implements IHorizontalConnectingBlock {
+@Mixin(IronBarsBlock.class)
+public abstract class MixinPaneBlock extends CrossCollisionBlock implements IHorizontalConnectingBlock {
 
     @Unique
     private VoxelShape[] viaFabricPlus$shape_r1_12_2;
@@ -49,45 +49,45 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock implement
     @Unique
     private VoxelShape[] viaFabricPlus$shape_r1_8;
 
-    protected MixinPaneBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Settings settings) {
+    protected MixinPaneBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Properties settings) {
         super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void initShapes1_8(Settings settings, CallbackInfo ci) {
+    private void initShapes1_8(Properties settings, CallbackInfo ci) {
         final float f = 7.0F;
         final float g = 9.0F;
         final float h = 7.0F;
         final float i = 9.0F;
 
-        final VoxelShape baseShape = Block.createCuboidShape(f, 0.0, f, g, (float) 16.0, g);
+        final VoxelShape baseShape = Block.box(f, 0.0, f, g, (float) 16.0, g);
 
         viaFabricPlus$shape_r1_12_2 = new VoxelShape[]{
             baseShape,
-            Block.createCuboidShape(h, 0.0, h, i, 16.0, 16.0), // south
-            Block.createCuboidShape(0.0, 0.0, h, i, 16.0, i), // west
-            Block.createCuboidShape(0.0, 0.0, h, i, 16.0, 16.0), // south-west corner
-            Block.createCuboidShape(h, 0.0, 0.0, i, 16.0, i), // north
-            Block.createCuboidShape(h, 0.0, 0.0, i, 16.0, 16.0), // south-north line
-            Block.createCuboidShape(0.0, 0.0, 0.0, i, 16.0, i), // west-north corner
-            Block.createCuboidShape(0.0, 0.0, 0.0, i, 16.0, 16.0), // south-west-north T
-            Block.createCuboidShape(h, 0.0, h, 16.0, 16.0, i), // east
-            Block.createCuboidShape(h, 0.0, h, 16.0, 16.0, 16.0), // south-east corner
-            Block.createCuboidShape(0.0, 0.0, h, 16.0, 16.0, i), // west-east line
-            Block.createCuboidShape(0.0, 0.0, h, 16.0, 16.0, 16.0), // south-west-east T
-            Block.createCuboidShape(h, 0.0, 0.0, 16.0, 16.0, i), // north-east corner
-            Block.createCuboidShape(h, 0.0, 0.0, 16.0, 16.0, 16.0), // south-north-east T
-            Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 16.0, i), // west-north-east T
-            VoxelShapes.fullCube() // cross
+            Block.box(h, 0.0, h, i, 16.0, 16.0), // south
+            Block.box(0.0, 0.0, h, i, 16.0, i), // west
+            Block.box(0.0, 0.0, h, i, 16.0, 16.0), // south-west corner
+            Block.box(h, 0.0, 0.0, i, 16.0, i), // north
+            Block.box(h, 0.0, 0.0, i, 16.0, 16.0), // south-north line
+            Block.box(0.0, 0.0, 0.0, i, 16.0, i), // west-north corner
+            Block.box(0.0, 0.0, 0.0, i, 16.0, 16.0), // south-west-north T
+            Block.box(h, 0.0, h, 16.0, 16.0, i), // east
+            Block.box(h, 0.0, h, 16.0, 16.0, 16.0), // south-east corner
+            Block.box(0.0, 0.0, h, 16.0, 16.0, i), // west-east line
+            Block.box(0.0, 0.0, h, 16.0, 16.0, 16.0), // south-west-east T
+            Block.box(h, 0.0, 0.0, 16.0, 16.0, i), // north-east corner
+            Block.box(h, 0.0, 0.0, 16.0, 16.0, 16.0), // south-north-east T
+            Block.box(0.0, 0.0, 0.0, 16.0, 16.0, i), // west-north-east T
+            Shapes.block() // cross
         };
 
-        final VoxelShape northShape = Block.createCuboidShape(h, (float) 0.0, 0.0, i, (float) 16.0, i - 1);
-        final VoxelShape southShape = Block.createCuboidShape(h, (float) 0.0, h + 1, i, (float) 16.0, 16.0);
-        final VoxelShape westShape = Block.createCuboidShape(0.0, (float) 0.0, h, i - 1, (float) 16.0, i);
-        final VoxelShape eastShape = Block.createCuboidShape(h + 1, (float) 0.0, h, 16.0, (float) 16.0, i);
+        final VoxelShape northShape = Block.box(h, (float) 0.0, 0.0, i, (float) 16.0, i - 1);
+        final VoxelShape southShape = Block.box(h, (float) 0.0, h + 1, i, (float) 16.0, 16.0);
+        final VoxelShape westShape = Block.box(0.0, (float) 0.0, h, i - 1, (float) 16.0, i);
+        final VoxelShape eastShape = Block.box(h + 1, (float) 0.0, h, 16.0, (float) 16.0, i);
 
-        final VoxelShape northEastCornerShape = VoxelShapes.union(northShape, eastShape);
-        final VoxelShape southWestCornerShape = VoxelShapes.union(southShape, westShape);
+        final VoxelShape northEastCornerShape = Shapes.or(northShape, eastShape);
+        final VoxelShape southWestCornerShape = Shapes.or(southShape, westShape);
 
         viaFabricPlus$shape_r1_8 = new VoxelShape[]{
             baseShape,
@@ -95,31 +95,31 @@ public abstract class MixinPaneBlock extends HorizontalConnectingBlock implement
             westShape,
             southWestCornerShape,
             northShape,
-            VoxelShapes.union(southShape, northShape),
-            VoxelShapes.union(westShape, northShape),
-            VoxelShapes.union(southWestCornerShape, northShape),
+            Shapes.or(southShape, northShape),
+            Shapes.or(westShape, northShape),
+            Shapes.or(southWestCornerShape, northShape),
             eastShape,
-            VoxelShapes.union(southShape, eastShape),
-            VoxelShapes.union(westShape, eastShape),
-            VoxelShapes.union(southWestCornerShape, eastShape),
+            Shapes.or(southShape, eastShape),
+            Shapes.or(westShape, eastShape),
+            Shapes.or(southWestCornerShape, eastShape),
             northEastCornerShape,
-            VoxelShapes.union(southShape, northEastCornerShape),
-            VoxelShapes.union(westShape, northEastCornerShape),
-            VoxelShapes.union(southWestCornerShape, northEastCornerShape)
+            Shapes.or(southShape, northEastCornerShape),
+            Shapes.or(westShape, northEastCornerShape),
+            Shapes.or(southWestCornerShape, northEastCornerShape)
         };
     }
 
     @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         if (DebugSettings.INSTANCE.legacyPaneOutlines.isEnabled()) {
             return this.viaFabricPlus$shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
         } else {
-            return super.getOutlineShape(state, world, pos, context);
+            return super.getShape(state, world, pos, context);
         }
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return this.viaFabricPlus$shape_r1_8[this.viaFabricPlus$getShapeIndex(state)];
         } else {

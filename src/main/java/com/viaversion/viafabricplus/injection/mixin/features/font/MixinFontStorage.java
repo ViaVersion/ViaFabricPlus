@@ -26,11 +26,11 @@ import com.viaversion.viafabricplus.features.font.RenderableGlyphDiff;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.BakedGlyph;
-import net.minecraft.client.font.FontStorage;
-import net.minecraft.client.font.GlyphBaker;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.font.glyphs.BakedGlyph;
+import net.minecraft.client.gui.font.FontSet;
+import net.minecraft.client.gui.font.GlyphStitcher;
+import net.minecraft.util.RandomSource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,58 +40,58 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(FontStorage.class)
+@Mixin(FontSet.class)
 public abstract class MixinFontStorage {
 
     @Shadow
     @Final
-    GlyphBaker glyphBaker;
+    GlyphStitcher stitcher;
 
     @Shadow
     @Final
-    private FontStorage.GlyphPair blankBakedGlyphPair;
+    private FontSet.SelectedGlyphs missingSelectedGlyphs;
 
     @Unique
     private BakedGlyph viaFabricPlus$blankBakedGlyph1_12_2;
 
     @Unique
-    private FontStorage.GlyphPair viaFabricPlus$blankBakedGlyphPair1_12_2;
+    private FontSet.SelectedGlyphs viaFabricPlus$blankBakedGlyphPair1_12_2;
 
     @Unique
     private boolean viaFabricPlus$obfuscatedLookup;
 
-    @Inject(method = "clear", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/BuiltinEmptyGlyph;bake(Lnet/minecraft/client/font/GlyphBaker;)Lnet/minecraft/client/font/BakedGlyphImpl;", ordinal = 0))
+    @Inject(method = "resetTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/font/glyphs/SpecialGlyphs;bake(Lnet/minecraft/client/gui/font/GlyphStitcher;)Lnet/minecraft/client/gui/font/glyphs/BakedSheetGlyph;", ordinal = 0))
     private void bakeBlankGlyph1_12_2(CallbackInfo ci) {
-        this.viaFabricPlus$blankBakedGlyph1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this.glyphBaker);
-        this.viaFabricPlus$blankBakedGlyphPair1_12_2 = new FontStorage.GlyphPair(() -> this.viaFabricPlus$blankBakedGlyph1_12_2, () -> this.viaFabricPlus$blankBakedGlyph1_12_2);
+        this.viaFabricPlus$blankBakedGlyph1_12_2 = BuiltinEmptyGlyph1_12_2.INSTANCE.bake(this.stitcher);
+        this.viaFabricPlus$blankBakedGlyphPair1_12_2 = new FontSet.SelectedGlyphs(() -> this.viaFabricPlus$blankBakedGlyph1_12_2, () -> this.viaFabricPlus$blankBakedGlyph1_12_2);
     }
 
-    @Inject(method = "getBaked", at = @At("RETURN"), cancellable = true)
-    private void filterBakedGlyph(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
+    @Inject(method = "getGlyph", at = @At("RETURN"), cancellable = true)
+    private void filterBakedGlyph(int codePoint, CallbackInfoReturnable<FontSet.SelectedGlyphs> cir) {
         if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
                 cir.setReturnValue(viaFabricPlus$blankBakedGlyphPair1_12_2);
             } else {
-                cir.setReturnValue(blankBakedGlyphPair);
+                cir.setReturnValue(missingSelectedGlyphs);
             }
         }
     }
 
-    @Inject(method = "findGlyph", at = @At("RETURN"), cancellable = true)
-    private void fixBlankGlyph1_12_2(int codePoint, CallbackInfoReturnable<FontStorage.GlyphPair> cir) {
+    @Inject(method = "computeGlyphInfo", at = @At("RETURN"), cancellable = true)
+    private void fixBlankGlyph1_12_2(int codePoint, CallbackInfoReturnable<FontSet.SelectedGlyphs> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            final FontStorage.GlyphPair glyphPair = cir.getReturnValue();
-            cir.setReturnValue(glyphPair == this.blankBakedGlyphPair ? this.viaFabricPlus$blankBakedGlyphPair1_12_2 : glyphPair);
+            final FontSet.SelectedGlyphs glyphPair = cir.getReturnValue();
+            cir.setReturnValue(glyphPair == this.missingSelectedGlyphs ? this.viaFabricPlus$blankBakedGlyphPair1_12_2 : glyphPair);
         }
     }
 
     // Ignore obfuscated texts in the character filter as obfuscated text uses *all* characters, even those not existing in the current target version.
-    @Inject(method = "getObfuscatedBakedGlyph", at = @At("HEAD"))
-    private void pauseCharacterFiltering(Random random, int width, CallbackInfoReturnable<BakedGlyph> cir) {
+    @Inject(method = "getRandomGlyph", at = @At("HEAD"))
+    private void pauseCharacterFiltering(RandomSource random, int width, CallbackInfoReturnable<BakedGlyph> cir) {
         viaFabricPlus$obfuscatedLookup = true;
     }
 
-    @Inject(method = "getBaked", at = @At("RETURN"))
+    @Inject(method = "getGlyph", at = @At("RETURN"))
     private void resumeCharacterFiltering(int codePoint, CallbackInfoReturnable<BakedGlyph> cir) {
         viaFabricPlus$obfuscatedLookup = false;
     }
@@ -99,7 +99,7 @@ public abstract class MixinFontStorage {
     @Unique
     private boolean viaFabricPlus$shouldBeInvisible(final int codePoint) {
         if (!viaFabricPlus$obfuscatedLookup && DebugSettings.INSTANCE.filterNonExistingGlyphs.getValue()) {
-            return (glyphBaker.fontId.equals(MinecraftClient.DEFAULT_FONT_ID) || glyphBaker.fontId.equals(MinecraftClient.UNICODE_FONT_ID)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
+            return (stitcher.texturePrefix.equals(Minecraft.DEFAULT_FONT) || stitcher.texturePrefix.equals(Minecraft.UNIFORM_FONT)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
         } else {
             return false;
         }

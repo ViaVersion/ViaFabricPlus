@@ -30,15 +30,16 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientCommonNetworkHandler;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.DisconnectionInfo;
-import net.minecraft.network.listener.ServerPacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.common.ResourcePackStatusC2SPacket;
-import net.minecraft.network.packet.s2c.common.CommonPingS2CPacket;
-import net.minecraft.network.packet.s2c.common.ResourcePackSendS2CPacket;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
+import net.minecraft.network.Connection;
+import net.minecraft.network.DisconnectionDetails;
+import net.minecraft.network.ServerboundPacketListener;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.common.ServerboundResourcePackPacket;
+import net.minecraft.network.protocol.common.ClientboundPingPacket;
+import net.minecraft.network.protocol.common.ClientboundResourcePackPushPacket;
+import net.minecraft.network.protocol.game.ServerPacketListener;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -49,65 +50,65 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ClientCommonNetworkHandler.class)
+@Mixin(ClientCommonPacketListenerImpl.class)
 public abstract class MixinClientCommonNetworkHandler {
 
     @Shadow
     @Final
-    protected MinecraftClient client;
+    protected Minecraft minecraft;
 
     @Shadow
-    protected abstract void send(Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry);
+    protected abstract void sendWhen(Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry);
 
     @Shadow
-    public abstract void sendPacket(Packet<?> packet);
+    public abstract void send(Packet<?> packet);
 
     @Shadow
     @Final
-    protected ClientConnection connection;
+    protected Connection connection;
 
     @Shadow
     @Nullable
-    private static URL getParsedResourcePackUrl(String url) {
+    private static URL parseResourcePackUrl(String url) {
         return null;
     }
 
-    @Inject(method = "savePacketErrorReport", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "storeDisconnectionReport", at = @At("HEAD"), cancellable = true)
     private void dontCreatePacketErrorCrashReports(CallbackInfoReturnable<Optional<Path>> cir) {
         if (DebugSettings.INSTANCE.dontCreatePacketErrorCrashReports.isEnabled()) {
             cir.setReturnValue(Optional.empty());
         }
     }
 
-    @WrapWithCondition(method = "onPacketException", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;disconnect(Lnet/minecraft/network/DisconnectionInfo;)V"))
-    private boolean dontDisconnectOnPacketException(ClientConnection instance, DisconnectionInfo disconnectionInfo) {
+    @WrapWithCondition(method = "onPacketError", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/network/DisconnectionDetails;)V"))
+    private boolean dontDisconnectOnPacketException(Connection instance, DisconnectionDetails disconnectionInfo) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_3);
     }
 
-    @Inject(method = "onResourcePackSend", at = @At("HEAD"), cancellable = true)
-    private void validateUrlInNetworkThread(ResourcePackSendS2CPacket packet, CallbackInfo ci) {
+    @Inject(method = "handleResourcePackPush", at = @At("HEAD"), cancellable = true)
+    private void validateUrlInNetworkThread(ClientboundResourcePackPushPacket packet, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
-            if (getParsedResourcePackUrl(packet.url()) == null) {
-                this.connection.send(new ResourcePackStatusC2SPacket(packet.id(), ResourcePackStatusC2SPacket.Status.INVALID_URL));
+            if (parseResourcePackUrl(packet.url()) == null) {
+                this.connection.send(new ServerboundResourcePackPacket(packet.id(), ServerboundResourcePackPacket.Action.INVALID_URL));
                 ci.cancel();
             }
         }
     }
 
-    @Redirect(method = "onKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientCommonNetworkHandler;send(Lnet/minecraft/network/packet/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
-    private void forceSendKeepAlive(ClientCommonNetworkHandler instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
+    @Redirect(method = "handleKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientCommonPacketListenerImpl;sendWhen(Lnet/minecraft/network/protocol/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
+    private void forceSendKeepAlive(ClientCommonPacketListenerImpl instance, Packet<? extends ServerPacketListener> packet, BooleanSupplier sendCondition, Duration expiry) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
-            sendPacket(packet);
+            send(packet);
         } else {
-            send(packet, sendCondition, expiry);
+            sendWhen(packet, sendCondition, expiry);
         }
     }
 
-    @Inject(method = "onPing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/network/PacketApplyBatcher;)V", shift = At.Shift.AFTER), cancellable = true)
-    private void addMissingConditions(CommonPingS2CPacket packet, CallbackInfo ci) {
+    @Inject(method = "handlePing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/protocol/PacketUtils;ensureRunningOnSameThread(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketListener;Lnet/minecraft/network/PacketProcessor;)V", shift = At.Shift.AFTER), cancellable = true)
+    private void addMissingConditions(ClientboundPingPacket packet, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
-            final short inventoryId = (short) ((packet.getParameter() >> 16) & 0xFF);
-            if (inventoryId != 0 && inventoryId != client.player.currentScreenHandler.syncId) {
+            final short inventoryId = (short) ((packet.getId() >> 16) & 0xFF);
+            if (inventoryId != 0 && inventoryId != minecraft.player.containerMenu.containerId) {
                 ci.cancel();
             }
         }

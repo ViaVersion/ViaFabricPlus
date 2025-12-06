@@ -30,29 +30,29 @@ import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(MultiplayerScreen.class)
+@Mixin(JoinMultiplayerScreen.class)
 public abstract class MixinMultiplayerScreen extends Screen {
 
     @Unique
-    private ButtonWidget viaFabricPlus$button;
+    private Button viaFabricPlus$button;
 
-    public MixinMultiplayerScreen(Text title) {
+    public MixinMultiplayerScreen(Component title) {
         super(title);
     }
 
-    @Inject(method = "refreshWidgetPositions", at = @At("RETURN"))
+    @Inject(method = "repositionElements", at = @At("RETURN"))
     private void addProtocolSelectionButton(CallbackInfo ci) {
         final int buttonPosition = GeneralSettings.INSTANCE.multiplayerScreenButtonOrientation.getIndex();
         if (buttonPosition == 0) { // Off
@@ -60,17 +60,17 @@ public abstract class MixinMultiplayerScreen extends Screen {
         }
 
         if (viaFabricPlus$button == null) {
-            viaFabricPlus$button = ButtonWidget
-                .builder(Text.of("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this))
+            viaFabricPlus$button = Button
+                .builder(Component.nullToEmpty("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this))
                 .size(98, 20)
                 .build();
-            this.addDrawableChild(viaFabricPlus$button);
+            this.addRenderableWidget(viaFabricPlus$button);
         }
         GeneralSettings.setOrientation(viaFabricPlus$button::setPosition, buttonPosition, width, height);
     }
 
-    @WrapOperation(method = "connect(Lnet/minecraft/client/network/ServerInfo;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ServerAddress;parse(Ljava/lang/String;)Lnet/minecraft/client/network/ServerAddress;"))
-    private ServerAddress replaceDefaultPort(String address, Operation<ServerAddress> original, @Local(argsOnly = true) ServerInfo entry) {
+    @WrapOperation(method = "join(Lnet/minecraft/client/multiplayer/ServerData;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/resolver/ServerAddress;parseString(Ljava/lang/String;)Lnet/minecraft/client/multiplayer/resolver/ServerAddress;"))
+    private ServerAddress replaceDefaultPort(String address, Operation<ServerAddress> original, @Local(argsOnly = true) ServerData entry) {
         final IServerInfo mixinServerInfo = (IServerInfo) entry;
 
         ProtocolVersion version;
@@ -82,8 +82,8 @@ public abstract class MixinMultiplayerScreen extends Screen {
         return original.call(BedrockSettings.replaceDefaultPort(address, version));
     }
 
-    @WrapOperation(method = "directConnect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;connect(Lnet/minecraft/client/network/ServerInfo;)V"))
-    private void storeDirectConnectionPhase(MultiplayerScreen instance, ServerInfo entry, Operation<Void> original) {
+    @WrapOperation(method = "directJoinCallback", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/multiplayer/JoinMultiplayerScreen;join(Lnet/minecraft/client/multiplayer/ServerData;)V"))
+    private void storeDirectConnectionPhase(JoinMultiplayerScreen instance, ServerData entry, Operation<Void> original) {
         ((IServerInfo) entry).viaFabricPlus$passDirectConnectScreen(true);
         original.call(instance, entry);
     }

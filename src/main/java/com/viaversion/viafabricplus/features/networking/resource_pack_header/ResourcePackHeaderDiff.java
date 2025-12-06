@@ -28,18 +28,18 @@ import com.viaversion.viaversion.libs.gson.JsonObject;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.GameVersion;
-import net.minecraft.SaveVersion;
 import net.minecraft.SharedConstants;
-import net.minecraft.resource.PackVersion;
-import net.minecraft.resource.ResourceType;
+import net.minecraft.WorldVersion;
+import net.minecraft.world.level.storage.DataVersion;
+import net.minecraft.server.packs.metadata.pack.PackFormat;
+import net.minecraft.server.packs.PackType;
 
 /**
- * This class file contains the {@link GameVersion} for each protocol version.
+ * This class file contains the {@link WorldVersion} for each protocol version.
  */
 public final class ResourcePackHeaderDiff {
 
-    private final static Map<ProtocolVersion, GameVersion> GAME_VERSION_DIFF = new HashMap<>();
+    private final static Map<ProtocolVersion, WorldVersion> GAME_VERSION_DIFF = new HashMap<>();
 
     public static void init() {
         final JsonObject diff = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("resource-pack-headers.json");
@@ -65,22 +65,22 @@ public final class ResourcePackHeaderDiff {
     }
 
     /**
-     * @param version The {@link ProtocolVersion} to get the {@link GameVersion} for.
-     * @return The {@link GameVersion} for the given {@link ProtocolVersion}.
+     * @param version The {@link ProtocolVersion} to get the {@link WorldVersion} for.
+     * @return The {@link WorldVersion} for the given {@link ProtocolVersion}.
      */
-    public static GameVersion get(final ProtocolVersion version) {
+    public static WorldVersion get(final ProtocolVersion version) {
         if (!GAME_VERSION_DIFF.containsKey(version)) {
-            return SharedConstants.getGameVersion();
+            return SharedConstants.getCurrentVersion();
         } else {
             return GAME_VERSION_DIFF.get(version);
         }
     }
 
     private static void registerVersion(final ProtocolVersion version, final int majorVersion, final int minorVersion, final String name, final String id) {
-        GAME_VERSION_DIFF.put(version, new GameVersion() {
+        GAME_VERSION_DIFF.put(version, new WorldVersion() {
 
             @Override
-            public SaveVersion dataVersion() {
+            public DataVersion dataVersion() {
                 return null;
             }
 
@@ -100,9 +100,9 @@ public final class ResourcePackHeaderDiff {
             }
 
             @Override
-            public PackVersion packVersion(final ResourceType type) {
-                if (type == ResourceType.CLIENT_RESOURCES) {
-                    return PackVersion.of(majorVersion, minorVersion);
+            public PackFormat packVersion(final PackType type) {
+                if (type == PackType.CLIENT_RESOURCES) {
+                    return PackFormat.of(majorVersion, minorVersion);
                 }
                 throw new UnsupportedOperationException();
             }

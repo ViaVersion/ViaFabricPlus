@@ -23,9 +23,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.player_
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.player.PlayerAbilities;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.c2s.play.UpdatePlayerAbilitiesC2SPacket;
+import net.minecraft.world.entity.player.Abilities;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ServerboundPlayerAbilitiesPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,23 +33,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(UpdatePlayerAbilitiesC2SPacket.class)
+@Mixin(ServerboundPlayerAbilitiesPacket.class)
 public abstract class MixinUpdatePlayerAbilitiesC2SPacket {
 
     @Unique
-    private PlayerAbilities viaFabricPlus$abilities;
+    private Abilities viaFabricPlus$abilities;
 
-    @Inject(method = "<init>(Lnet/minecraft/entity/player/PlayerAbilities;)V", at = @At("RETURN"))
-    private void capturePlayerAbilities(PlayerAbilities abilities, CallbackInfo ci) {
+    @Inject(method = "<init>(Lnet/minecraft/world/entity/player/Abilities;)V", at = @At("RETURN"))
+    private void capturePlayerAbilities(Abilities abilities, CallbackInfo ci) {
         this.viaFabricPlus$abilities = abilities;
     }
 
-    @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/PacketByteBuf;writeByte(I)Lnet/minecraft/network/PacketByteBuf;"))
-    private PacketByteBuf implementFlags(PacketByteBuf instance, int value) {
+    @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/FriendlyByteBuf;writeByte(I)Lnet/minecraft/network/FriendlyByteBuf;"))
+    private FriendlyByteBuf implementFlags(FriendlyByteBuf instance, int value) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             if (viaFabricPlus$abilities.invulnerable) value |= 1;
-            if (viaFabricPlus$abilities.allowFlying) value |= 4;
-            if (viaFabricPlus$abilities.creativeMode) value |= 8;
+            if (viaFabricPlus$abilities.mayfly) value |= 4;
+            if (viaFabricPlus$abilities.instabuild) value |= 8;
         }
 
         return instance.writeByte(value);

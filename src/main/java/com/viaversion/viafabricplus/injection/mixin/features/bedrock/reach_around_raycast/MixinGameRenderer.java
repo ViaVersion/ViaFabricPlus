@@ -23,13 +23,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.bedrock.reach_arou
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -42,21 +42,21 @@ public abstract class MixinGameRenderer {
 
     @Shadow
     @Final
-    private MinecraftClient client;
+    private Minecraft minecraft;
 
-    @ModifyExpressionValue(method = "findCrosshairTarget", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"))
+    @ModifyExpressionValue(method = "pick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;pick(Lnet/minecraft/world/entity/Entity;DDF)Lnet/minecraft/world/phys/HitResult;"))
     private HitResult bedrockReachAroundRaycast(HitResult hitResult) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            final Entity entity = this.client.getCameraEntity();
+            final Entity entity = this.minecraft.getCameraEntity();
             if (hitResult.getType() != HitResult.Type.MISS) return hitResult;
             if (!this.viaFabricPlus$canReachAround(entity)) return hitResult;
 
-            final int x = MathHelper.floor(entity.getX());
-            final int y = MathHelper.floor(entity.getY() - 0.2F);
-            final int z = MathHelper.floor(entity.getZ());
+            final int x = Mth.floor(entity.getX());
+            final int y = Mth.floor(entity.getY() - 0.2F);
+            final int z = Mth.floor(entity.getZ());
             final BlockPos floorPos = new BlockPos(x, y, z);
 
-            return new BlockHitResult(floorPos.toCenterPos(), entity.getHorizontalFacing(), floorPos, false);
+            return new BlockHitResult(floorPos.getCenter(), entity.getDirection(), floorPos, false);
         }
 
         return hitResult;
@@ -64,7 +64,7 @@ public abstract class MixinGameRenderer {
 
     @Unique
     private boolean viaFabricPlus$canReachAround(final Entity entity) {
-        return entity.isOnGround() && entity.getVehicle() == null && entity.getPitch() >= 45;
+        return entity.onGround() && entity.getVehicle() == null && entity.getXRot() >= 45;
     }
 
 }

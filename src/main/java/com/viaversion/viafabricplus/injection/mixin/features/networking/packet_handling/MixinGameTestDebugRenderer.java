@@ -23,23 +23,23 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_
 
 import com.viaversion.viafabricplus.injection.access.networking.packet_handling.IGameTestDebugRenderer;
 import java.util.Map;
-import net.minecraft.client.render.debug.GameTestDebugRenderer;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.renderer.debug.GameTestBlockHighlightRenderer;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(GameTestDebugRenderer.class)
+@Mixin(GameTestBlockHighlightRenderer.class)
 public abstract class MixinGameTestDebugRenderer implements IGameTestDebugRenderer {
 
     @Shadow
     @Final
-    private Map<BlockPos, GameTestDebugRenderer.Marker> markers;
+    private Map<BlockPos, GameTestBlockHighlightRenderer.Marker> markers;
 
     @Override
     public void viaFabricPlus$addMarker(final BlockPos pos, final int color, final String message, final int duration) {
-        this.markers.put(pos, new GameTestDebugRenderer.Marker(color, message, Util.getMeasuringTimeMs() + duration));
+        this.markers.put(pos, new GameTestBlockHighlightRenderer.Marker(color, message, Util.getMillis() + duration));
     }
 
 }

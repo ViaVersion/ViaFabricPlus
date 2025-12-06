@@ -23,34 +23,34 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(CatEntity.class)
-public abstract class MixinCatEntity extends TameableEntity {
+@Mixin(Cat.class)
+public abstract class MixinCatEntity extends TamableAnimal {
 
-    protected MixinCatEntity(EntityType<? extends TameableEntity> entityType, World world) {
+    protected MixinCatEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
     }
 
-    @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
-    private void interactMob1_20_4(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
+    private void interactMob1_20_4(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            final ItemStack itemStack = player.getStackInHand(hand);
-            if (this.isTamed() && this.isOwner(player)) {
-                cir.setReturnValue(ActionResult.SUCCESS);
+            final ItemStack itemStack = player.getItemInHand(hand);
+            if (this.isTame() && this.isOwnedBy(player)) {
+                cir.setReturnValue(InteractionResult.SUCCESS);
             } else {
-                cir.setReturnValue(!this.isBreedingItem(itemStack) || !(this.getHealth() < this.getMaxHealth()) && this.isTamed() ? ActionResult.PASS : ActionResult.SUCCESS);
+                cir.setReturnValue(!this.isFood(itemStack) || !(this.getHealth() < this.getMaxHealth()) && this.isTame() ? InteractionResult.PASS : InteractionResult.SUCCESS);
             }
         }
     }

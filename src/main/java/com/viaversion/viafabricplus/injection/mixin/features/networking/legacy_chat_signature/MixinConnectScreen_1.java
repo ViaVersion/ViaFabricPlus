@@ -33,10 +33,10 @@ import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.security.PrivateKey;
 import java.util.UUID;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.encryption.PlayerKeyPair;
-import net.minecraft.network.encryption.PlayerPublicKey;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.Connection;
+import net.minecraft.world.entity.player.ProfileKeyPair;
+import net.minecraft.world.entity.player.ProfilePublicKey;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,25 +44,25 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(targets = "net.minecraft.client.gui.screen.multiplayer.ConnectScreen$1")
+@Mixin(targets = "net.minecraft.client.gui.screens.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {
 
     @Shadow
     @Final
-    MinecraftClient field_33738;
+    Minecraft val$minecraft;
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelFuture;syncUninterruptibly()Lio/netty/channel/ChannelFuture;", remap = false, shift = At.Shift.AFTER))
-    private void setupChatSessions(CallbackInfo ci, @Local ClientConnection clientConnection) {
+    private void setupChatSessions(CallbackInfo ci, @Local Connection clientConnection) {
         final UserConnection connection = ((IClientConnection) clientConnection).viaFabricPlus$getUserConnection();
 
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_19, ProtocolVersion.v1_19_1)) {
-            final PlayerKeyPair keyPair = MinecraftClient.getInstance().getProfileKeys().fetchKeyPair().join().orElse(null);
+            final ProfileKeyPair keyPair = Minecraft.getInstance().getProfileKeyPairManager().prepareKeyPair().join().orElse(null);
             if (keyPair != null) {
-                final PlayerPublicKey.PublicKeyData publicKeyData = keyPair.publicKey().data();
+                final ProfilePublicKey.Data publicKeyData = keyPair.publicKey().data();
                 final PrivateKey privateKey = keyPair.privateKey();
                 final long expiresAt = publicKeyData.expiresAt().toEpochMilli();
                 final byte[] publicKey = publicKeyData.key().getEncoded();
-                final UUID uuid = this.field_33738.getSession().getUuidOrNull();
+                final UUID uuid = this.val$minecraft.getUser().getProfileId();
 
                 connection.put(new ChatSession1_19_1(uuid, privateKey, new ProfileKey(expiresAt, publicKey, publicKeyData.keySignature())));
                 if (ProtocolTranslator.getTargetVersion() == ProtocolVersion.v1_19) {

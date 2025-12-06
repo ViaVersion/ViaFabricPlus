@@ -35,7 +35,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.Person;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatformImpl {
 
@@ -65,7 +65,7 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
         platformDump.addProperty("impl_version", ViaFabricPlusImpl.INSTANCE.getImplVersion());
         platformDump.addProperty("native_version", ProtocolTranslator.NATIVE_VERSION.toString());
         platformDump.addProperty("target_version", ProtocolTranslator.getTargetVersion().toString());
-        platformDump.addProperty("in_world", MinecraftClient.getInstance().world != null);
+        platformDump.addProperty("in_world", Minecraft.getInstance().level != null);
 
         final Collection<ModContainer> allMods = FabricLoader.getInstance().getAllMods();
         final JsonArray mods = new JsonArray(allMods.size());

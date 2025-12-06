@@ -31,9 +31,9 @@ import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_17_1to1_18.packet.ClientboundPackets1_18;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 
 public final class BlockStateTranslator {
 
@@ -58,10 +58,10 @@ public final class BlockStateTranslator {
 
             levelEvent.read(Types.INT); // eventId
             levelEvent.read(Types.BLOCK_POSITION1_14); // position
-            return Block.getStateFromRawId(levelEvent.read(Types.INT)); // data
+            return Block.stateById(levelEvent.read(Types.INT)); // data
         } catch (Throwable t) {
             ViaFabricPlusImpl.INSTANCE.getLogger().error("Error converting ViaVersion 1.18.2 block state to native block state", t);
-            return Blocks.AIR.getDefaultState();
+            return Blocks.AIR.defaultBlockState();
         }
     }
 

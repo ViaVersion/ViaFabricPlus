@@ -36,13 +36,13 @@ import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ClientboundPacke
 import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ServerboundPackets1_14;
 import com.viaversion.viaversion.protocols.v1_13_2to1_14.rewriter.ItemPacketRewriter1_14;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.screen.GenericContainerScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextCodecs;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.inventory.ContainerScreen;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -66,16 +66,16 @@ public abstract class MixinItemPacketRewriter1_14 extends ItemRewriter<Clientbou
             ci.cancel();
 
             final String uuid = SyncTasks.executeSyncTask(data -> {
-                final MinecraftClient mc = MinecraftClient.getInstance();
+                final Minecraft mc = Minecraft.getInstance();
 
                 try {
                     final int syncId = data.readUnsignedByte();
                     final int size = data.readUnsignedByte();
-                    final Text mcTitle = TextCodecs.UNLIMITED_REGISTRY_PACKET_CODEC.decode(data);
+                    final Component mcTitle = ComponentSerialization.TRUSTED_STREAM_CODEC.decode(data);
 
-                    final GenericContainerScreenHandler screenHandler = new GenericContainerScreenHandler(null, syncId, mc.player.getInventory(), new SimpleInventory(size), MathHelper.ceil(size / 9F));
-                    mc.player.currentScreenHandler = screenHandler;
-                    mc.setScreen(new GenericContainerScreen(screenHandler, mc.player.getInventory(), mcTitle));
+                    final ChestMenu screenHandler = new ChestMenu(null, syncId, mc.player.getInventory(), new SimpleContainer(size), Mth.ceil(size / 9F));
+                    mc.player.containerMenu = screenHandler;
+                    mc.setScreen(new ContainerScreen(screenHandler, mc.player.getInventory(), mcTitle));
                 } catch (Throwable t) {
                     throw new RuntimeException("Failed to handle OpenWindow packet data", t);
                 }

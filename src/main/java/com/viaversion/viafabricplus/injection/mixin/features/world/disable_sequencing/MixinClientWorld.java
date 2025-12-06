@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.world.disable_sequ
 
 import com.viaversion.viafabricplus.features.world.disable_sequencing.PendingUpdateManager1_18_2;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
-import net.minecraft.client.network.PendingUpdateManager;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.multiplayer.prediction.BlockStatePredictionHandler;
+import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -33,18 +33,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientWorld.class)
+@Mixin(ClientLevel.class)
 public abstract class MixinClientWorld {
 
     @Mutable
     @Shadow
     @Final
-    private PendingUpdateManager pendingUpdateManager;
+    private BlockStatePredictionHandler blockStatePredictionHandler;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void removePendingUpdateManager(CallbackInfo ci) {
         if (DebugSettings.INSTANCE.disableSequencing.isEnabled()) {
-            this.pendingUpdateManager = new PendingUpdateManager1_18_2();
+            this.blockStatePredictionHandler = new PendingUpdateManager1_18_2();
         }
     }
 }

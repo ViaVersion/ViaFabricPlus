@@ -21,10 +21,10 @@
 
 package com.viaversion.viafabricplus.injection.access.base.bedrock;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public interface IConfirmScreen {
 
-    void viaFabricPlus$updateMessage(final Text message);
+    void viaFabricPlus$updateMessage(final Component message);
 
 }

@@ -24,27 +24,27 @@ package com.viaversion.viafabricplus.injection.mixin.features.interaction.contai
 import com.viaversion.viafabricplus.injection.access.interaction.container_clicking.IScreenHandler;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ScreenHandler.class)
+@Mixin(AbstractContainerMenu.class)
 public abstract class MixinScreenHandler implements IScreenHandler {
 
     @Shadow
-    private ItemStack cursorStack;
+    private ItemStack carried;
 
     @Unique
     private short viaFabricPlus$actionId = 0;
 
-    @Redirect(method = "updateSlotStacks", at = @At(value = "FIELD", target = "Lnet/minecraft/screen/ScreenHandler;cursorStack:Lnet/minecraft/item/ItemStack;"))
-    private void preventUpdate(ScreenHandler instance, ItemStack value) {
+    @Redirect(method = "initializeContents", at = @At(value = "FIELD", target = "Lnet/minecraft/world/inventory/AbstractContainerMenu;carried:Lnet/minecraft/world/item/ItemStack;"))
+    private void preventUpdate(AbstractContainerMenu instance, ItemStack value) {
         if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_17_1)) {
-            this.cursorStack = value;
+            this.carried = value;
         }
     }
 
