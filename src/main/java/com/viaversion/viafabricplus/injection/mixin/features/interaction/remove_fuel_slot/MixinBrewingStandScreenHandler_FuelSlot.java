@@ -23,21 +23,21 @@ package com.viaversion.viafabricplus.injection.mixin.features.interaction.remove
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "net.minecraft.screen.BrewingStandScreenHandler$FuelSlot")
+@Mixin(targets = "net.minecraft.world.inventory.BrewingStandMenu$FuelSlot")
 public abstract class MixinBrewingStandScreenHandler_FuelSlot extends Slot {
 
-    public MixinBrewingStandScreenHandler_FuelSlot(Inventory inventory, int index, int x, int y) {
+    public MixinBrewingStandScreenHandler_FuelSlot(Container inventory, int index, int x, int y) {
         super(inventory, index, x, y);
     }
 
-    @Inject(method = "matches(Lnet/minecraft/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "mayPlaceItem(Lnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
     private static void removeFuelSlot(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(false);
@@ -45,7 +45,7 @@ public abstract class MixinBrewingStandScreenHandler_FuelSlot extends Slot {
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isActive() {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
     }
 

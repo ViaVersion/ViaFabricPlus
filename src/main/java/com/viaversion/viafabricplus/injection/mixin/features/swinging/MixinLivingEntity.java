@@ -24,16 +24,16 @@ package com.viaversion.viafabricplus.injection.mixin.features.swinging;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.InteractionHand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
 
-    @WrapWithCondition(method = "dropItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
-    private boolean dontSwingHand(LivingEntity instance, Hand hand) {
+    @WrapWithCondition(method = "drop", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;swing(Lnet/minecraft/world/InteractionHand;)V"))
+    private boolean dontSwingHand(LivingEntity instance, InteractionHand hand) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2);
     }
 

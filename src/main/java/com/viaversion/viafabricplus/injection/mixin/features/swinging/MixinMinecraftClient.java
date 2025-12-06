@@ -24,10 +24,10 @@ package com.viaversion.viafabricplus.injection.mixin.features.swinging;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,45 +36,45 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public abstract class MixinMinecraftClient {
 
     @Shadow
     @Nullable
-    public ClientPlayerEntity player;
+    public LocalPlayer player;
 
-    @WrapWithCondition(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
-    private boolean disableSwing(ClientPlayerEntity instance, Hand hand) {
+    @WrapWithCondition(method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"))
+    private boolean disableSwing(LocalPlayer instance, InteractionHand hand) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
-    @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult$Success;swingSource()Lnet/minecraft/util/ActionResult$SwingSource;", ordinal = 0))
-    private ActionResult.SwingSource disableSwing(ActionResult.Success instance) {
+    @Redirect(method = "startUseItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/InteractionResult$Success;swingSource()Lnet/minecraft/world/InteractionResult$SwingSource;", ordinal = 0))
+    private InteractionResult.SwingSource disableSwing(InteractionResult.Success instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            return ActionResult.SwingSource.NONE;
+            return InteractionResult.SwingSource.NONE;
         } else {
             return instance.swingSource();
         }
     }
 
-    @Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult$Success;swingSource()Lnet/minecraft/util/ActionResult$SwingSource;", ordinal = 2))
-    private ActionResult.SwingSource disableSwing2(ActionResult.Success instance) {
+    @Redirect(method = "startUseItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/InteractionResult$Success;swingSource()Lnet/minecraft/world/InteractionResult$SwingSource;", ordinal = 2))
+    private InteractionResult.SwingSource disableSwing2(InteractionResult.Success instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            return ActionResult.SwingSource.NONE;
+            return InteractionResult.SwingSource.NONE;
         } else {
             return instance.swingSource();
         }
     }
 
-    @Inject(method = "doAttack", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;crosshairTarget:Lnet/minecraft/util/hit/HitResult;", ordinal = 0))
+    @Inject(method = "startAttack", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;hitResult:Lnet/minecraft/world/phys/HitResult;", ordinal = 0))
     private void fixSwingPacketOrder(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.player.swingHand(Hand.MAIN_HAND);
+            this.player.swing(InteractionHand.MAIN_HAND);
         }
     }
 
-    @WrapWithCondition(method = "doAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"))
-    private boolean fixSwingPacketOrder(ClientPlayerEntity instance, Hand hand) {
+    @WrapWithCondition(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"))
+    private boolean fixSwingPacketOrder(LocalPlayer instance, InteractionHand hand) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
     }
 

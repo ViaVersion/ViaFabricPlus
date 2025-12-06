@@ -23,15 +23,15 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import java.util.Map;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.PistonBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,34 +40,34 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(PistonBlock.class)
-public abstract class MixinPistonBlock extends FacingBlock {
+@Mixin(PistonBaseBlock.class)
+public abstract class MixinPistonBlock extends DirectionalBlock {
 
     @Shadow
     @Final
-    private static Map<Direction, VoxelShape> EXTENDED_SHAPES_BY_DIRECTION;
+    private static Map<Direction, VoxelShape> SHAPES;
 
-    protected MixinPistonBlock(Settings settings) {
+    protected MixinPistonBlock(Properties settings) {
         super(settings);
     }
 
-    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
+    private void changeOutlineShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_1)) {
-            cir.setReturnValue(VoxelShapes.fullCube());
+            cir.setReturnValue(Shapes.block());
         }
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state) {
+    public VoxelShape getOcclusionShape(BlockState state) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_1)) {
-            if (state.get(PistonBlock.EXTENDED)) {
-                return EXTENDED_SHAPES_BY_DIRECTION.get(state.get(FACING));
+            if (state.getValue(PistonBaseBlock.EXTENDED)) {
+                return SHAPES.get(state.getValue(FACING));
             } else {
-                return VoxelShapes.fullCube();
+                return Shapes.block();
             }
         } else {
-            return super.getCullingShape(state);
+            return super.getOcclusionShape(state);
         }
     }
 

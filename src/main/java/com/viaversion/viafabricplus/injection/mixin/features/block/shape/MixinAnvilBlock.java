@@ -24,16 +24,16 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 import com.viaversion.viafabricplus.injection.ViaFabricPlusMixinPlugin;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.AnvilBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.AnvilBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,37 +46,37 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinAnvilBlock extends FallingBlock {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$x_axis_shape_r1_12_2 = Block.createCuboidShape(0.0D, 0.0D, 2.0D, 16.0D, 16.0D, 14.0D);
+    private static final VoxelShape viaFabricPlus$x_axis_shape_r1_12_2 = Block.box(0.0D, 0.0D, 2.0D, 16.0D, 16.0D, 14.0D);
 
     @Unique
-    private static final VoxelShape viaFabricPlus$z_axis_shape_r1_12_2 = Block.createCuboidShape(2.0D, 0.0D, 0.0D, 14.0D, 16.0D, 16.0D);
+    private static final VoxelShape viaFabricPlus$z_axis_shape_r1_12_2 = Block.box(2.0D, 0.0D, 0.0D, 14.0D, 16.0D, 16.0D);
 
     @Shadow
     @Final
     public static EnumProperty<Direction> FACING;
 
-    public MixinAnvilBlock(Settings settings) {
+    public MixinAnvilBlock(Properties settings) {
         super(settings);
     }
 
     @Unique
     private boolean viaFabricPlus$requireOriginalShape;
 
-    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
+    private void changeOutlineShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaFabricPlusMixinPlugin.MORE_CULLING_PRESENT && viaFabricPlus$requireOriginalShape) {
             viaFabricPlus$requireOriginalShape = false;
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(state.get(FACING).getAxis() == Direction.Axis.X ? viaFabricPlus$x_axis_shape_r1_12_2 : viaFabricPlus$z_axis_shape_r1_12_2);
+            cir.setReturnValue(state.getValue(FACING).getAxis() == Direction.Axis.X ? viaFabricPlus$x_axis_shape_r1_12_2 : viaFabricPlus$z_axis_shape_r1_12_2);
         }
     }
 
     @Override
-    protected VoxelShape getCullingShape(BlockState state) {
+    protected VoxelShape getOcclusionShape(BlockState state) {
         // Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/246
         // MoreCulling is caching the culling shape and doesn't reload it, so we have to force vanilla's shape here.
         viaFabricPlus$requireOriginalShape = true;
-        return super.getCullingShape(state);
+        return super.getOcclusionShape(state);
     }
 
 }

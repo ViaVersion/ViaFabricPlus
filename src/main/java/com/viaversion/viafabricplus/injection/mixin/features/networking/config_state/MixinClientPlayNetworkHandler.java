@@ -23,33 +23,33 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.config_
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientCommonNetworkHandler;
-import net.minecraft.client.network.ClientConnectionState;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.packet.s2c.play.EnterReconfigurationS2CPacket;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
+import net.minecraft.client.multiplayer.CommonListenerCookie;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundStartConfigurationPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientPlayNetworkHandler.class)
-public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkHandler {
+@Mixin(ClientPacketListener.class)
+public abstract class MixinClientPlayNetworkHandler extends ClientCommonPacketListenerImpl {
 
-    protected MixinClientPlayNetworkHandler(MinecraftClient client, ClientConnection connection, ClientConnectionState connectionState) {
+    protected MixinClientPlayNetworkHandler(Minecraft client, Connection connection, CommonListenerCookie connectionState) {
         super(client, connection, connectionState);
     }
 
-    @Inject(method = "onEnterReconfiguration", at = @At("HEAD"))
-    private void disableAutoRead(EnterReconfigurationS2CPacket packet, CallbackInfo ci) {
+    @Inject(method = "handleConfigurationStart", at = @At("HEAD"))
+    private void disableAutoRead(ClientboundStartConfigurationPacket packet, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             this.connection.channel.config().setAutoRead(false);
         }
     }
 
-    @Inject(method = "onEnterReconfiguration", at = @At("RETURN"))
-    private void enableAutoRead(EnterReconfigurationS2CPacket packet, CallbackInfo ci) {
+    @Inject(method = "handleConfigurationStart", at = @At("RETURN"))
+    private void enableAutoRead(ClientboundStartConfigurationPacket packet, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             this.connection.channel.config().setAutoRead(true);
         }

@@ -24,34 +24,34 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 import com.viaversion.viafabricplus.features.entity.metadata_handling.WolfHealthTracker1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.EnchantmentEffectComponentTypes;
-import net.minecraft.component.type.FoodComponent;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(WolfEntity.class)
-public abstract class MixinWolfEntity extends TameableEntity implements Angerable {
+@Mixin(Wolf.class)
+public abstract class MixinWolfEntity extends TamableAnimal implements NeutralMob {
 
-    protected MixinWolfEntity(EntityType<? extends TameableEntity> entityType, World world) {
+    protected MixinWolfEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -61,44 +61,44 @@ public abstract class MixinWolfEntity extends TameableEntity implements Angerabl
     @Shadow
     protected abstract void setCollarColor(DyeColor color);
 
-    @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
-    private void fixWolfInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        final ItemStack itemStack = player.getStackInHand(hand);
+    @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
+    private void fixWolfInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
+        final ItemStack itemStack = player.getItemInHand(hand);
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             final Item item = itemStack.getItem();
-            if (this.isTamed()) {
-                final FoodComponent foodComponent = itemStack.get(DataComponentTypes.FOOD);
+            if (this.isTame()) {
+                final FoodProperties foodComponent = itemStack.get(DataComponents.FOOD);
                 if (foodComponent != null) {
-                    if (this.isBreedingItem(itemStack) && WolfHealthTracker1_14_4.getWolfHealth(this) < 20.0F) {
-                        if (!player.getAbilities().creativeMode) itemStack.decrement(1);
+                    if (this.isFood(itemStack) && WolfHealthTracker1_14_4.getWolfHealth(this) < 20.0F) {
+                        if (!player.getAbilities().instabuild) itemStack.shrink(1);
                         this.heal(foodComponent.nutrition());
-                        cir.setReturnValue(ActionResult.SUCCESS);
+                        cir.setReturnValue(InteractionResult.SUCCESS);
                         return;
                     }
                 } else if (item instanceof DyeItem dyeItem) {
-                    final DyeColor dyeColor = dyeItem.getColor();
+                    final DyeColor dyeColor = dyeItem.getDyeColor();
                     if (dyeColor != this.getCollarColor()) {
                         this.setCollarColor(dyeColor);
-                        if (!player.getAbilities().creativeMode) itemStack.decrement(1);
-                        cir.setReturnValue(ActionResult.SUCCESS);
+                        if (!player.getAbilities().instabuild) itemStack.shrink(1);
+                        cir.setReturnValue(InteractionResult.SUCCESS);
                         return;
                     }
                 }
-            } else if (item == Items.BONE && !this.hasAngerTime()) {
-                if (!player.getAbilities().creativeMode) itemStack.decrement(1);
-                cir.setReturnValue(ActionResult.SUCCESS);
+            } else if (item == Items.BONE && !this.isAngry()) {
+                if (!player.getAbilities().instabuild) itemStack.shrink(1);
+                cir.setReturnValue(InteractionResult.SUCCESS);
                 return;
             }
 
-            cir.setReturnValue(super.interactMob(player, hand));
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && this.isTamed()) {
+            cir.setReturnValue(super.mobInteract(player, hand));
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && this.isTame()) {
             // Call armor shearing manually as removed in MixinEntity
-            if (itemStack.isOf(Items.SHEARS)
-                && this.isOwner(player)
+            if (itemStack.is(Items.SHEARS)
+                && this.isOwnedBy(player)
                 && this.isWearingBodyArmor()
-                && (!EnchantmentHelper.hasAnyEnchantmentsWith(this.getBodyArmor(), EnchantmentEffectComponentTypes.PREVENT_ARMOR_CHANGE) || player.isCreative())) {
-                this.playSoundIfNotSilent(SoundEvents.ITEM_ARMOR_UNEQUIP_WOLF);
-                cir.setReturnValue(ActionResult.SUCCESS);
+                && (!EnchantmentHelper.has(this.getBodyArmorItem(), EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE) || player.isCreative())) {
+                this.playSound(SoundEvents.ARMOR_UNEQUIP_WOLF);
+                cir.setReturnValue(InteractionResult.SUCCESS);
             }
         }
     }

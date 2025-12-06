@@ -31,13 +31,13 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ServerboundPackets1_20_5;
 import com.viaversion.viaversion.protocols.v1_21to1_21_2.Protocol1_21To1_21_2;
 import com.viaversion.viaversion.protocols.v1_21to1_21_2.storage.ClientVehicleStorage;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.network.protocol.Packet;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.release.r1_5_2tor1_6_1.Protocolr1_5_2Tor1_6_1;
 import net.raphimc.vialegacy.protocol.release.r1_5_2tor1_6_1.packet.ServerboundPackets1_5_2;
@@ -50,48 +50,48 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
+@Mixin(LocalPlayer.class)
+public abstract class MixinClientPlayerEntity extends AbstractClientPlayer {
 
     @Shadow
     @Final
-    public ClientPlayNetworkHandler networkHandler;
+    public ClientPacketListener connection;
 
-    public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
+    public MixinClientPlayerEntity(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z", ordinal = 0))
-    private boolean removeVehicleRequirement(ClientPlayerEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20) && instance.hasVehicle();
+    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z", ordinal = 0))
+    private boolean removeVehicleRequirement(LocalPlayer instance) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20) && instance.isPassenger();
     }
 
     @Inject(method = "startRiding", at = @At("RETURN"))
     private void setRotationsWhenInBoat(Entity entity, boolean force, boolean emitEvent, CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValueZ() && entity instanceof BoatEntity && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
-            this.lastYaw = entity.getYaw();
-            this.setYaw(entity.getYaw());
-            this.setHeadYaw(entity.getYaw());
+        if (cir.getReturnValueZ() && entity instanceof Boat && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
+            this.yRotO = entity.getYRot();
+            this.setYRot(entity.getYRot());
+            this.setYHeadRot(entity.getYRot());
         }
     }
 
-    @Redirect(method = "tick", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 0))
-    private void modifyPositionPacket(ClientPlayNetworkHandler instance, Packet<?> packet) {
+    @Redirect(method = "tick", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V", ordinal = 0))
+    private void modifyPositionPacket(ClientPacketListener instance, Packet<?> packet) {
         if (ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_5_2)) {
-            instance.sendPacket(packet);
+            instance.send(packet);
             return;
         }
 
-        final UserConnection connection = ((IClientConnection) this.networkHandler.getConnection()).viaFabricPlus$getUserConnection();
+        final UserConnection connection = ((IClientConnection) this.connection.getConnection()).viaFabricPlus$getUserConnection();
         connection.getChannel().eventLoop().execute(() -> {
             final PacketWrapper movePlayerPosRot = PacketWrapper.create(ServerboundPackets1_5_2.MOVE_PLAYER_POS_ROT, connection);
-            movePlayerPosRot.write(Types.DOUBLE, this.getVelocity().x); // x
+            movePlayerPosRot.write(Types.DOUBLE, this.getDeltaMovement().x); // x
             movePlayerPosRot.write(Types.DOUBLE, -999.0D); // y
             movePlayerPosRot.write(Types.DOUBLE, -999.0D); // stance
-            movePlayerPosRot.write(Types.DOUBLE, this.getVelocity().z); // z
-            movePlayerPosRot.write(Types.FLOAT, this.getYaw()); // yaw
-            movePlayerPosRot.write(Types.FLOAT, this.getPitch()); // pitch
-            movePlayerPosRot.write(Types.BOOLEAN, this.isOnGround()); // onGround
+            movePlayerPosRot.write(Types.DOUBLE, this.getDeltaMovement().z); // z
+            movePlayerPosRot.write(Types.FLOAT, this.getYRot()); // yaw
+            movePlayerPosRot.write(Types.FLOAT, this.getXRot()); // pitch
+            movePlayerPosRot.write(Types.BOOLEAN, this.onGround()); // onGround
             movePlayerPosRot.sendToServer(Protocolr1_5_2Tor1_6_1.class);
 
             // Copied from the 1.21->1.21.2 protocol since it's changing the packet order, and we manually send the movement packet here

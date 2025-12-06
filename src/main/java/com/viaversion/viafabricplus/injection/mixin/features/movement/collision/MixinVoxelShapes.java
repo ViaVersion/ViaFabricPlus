@@ -23,24 +23,24 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.collision
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(VoxelShapes.class)
+@Mixin(Shapes.class)
 public abstract class MixinVoxelShapes {
 
-    @Inject(method = "calculateMaxOffset", at = @At("HEAD"), cancellable = true)
-    private static void calculateMaxOffset1_12_2(Direction.Axis axis, Box box, Iterable<VoxelShape> shapes, double maxDist, CallbackInfoReturnable<Double> cir) {
+    @Inject(method = "collide", at = @At("HEAD"), cancellable = true)
+    private static void calculateMaxOffset1_12_2(Direction.Axis axis, AABB box, Iterable<VoxelShape> shapes, double maxDist, CallbackInfoReturnable<Double> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             for (final VoxelShape shape : shapes) {
-                for (final Box shapeBox : shape.getBoundingBoxes()) {
+                for (final AABB shapeBox : shape.toAabbs()) {
                     maxDist = switch (axis) {
                         case X -> viaFabricPlus$intersectX(box, shapeBox, maxDist);
                         case Y -> viaFabricPlus$intersectY(box, shapeBox, maxDist);
@@ -53,7 +53,7 @@ public abstract class MixinVoxelShapes {
     }
 
     @Unique
-    private static double viaFabricPlus$intersectX(final Box box, final Box shapeBox, double maxDist) {
+    private static double viaFabricPlus$intersectX(final AABB box, final AABB shapeBox, double maxDist) {
         if (box.maxY <= shapeBox.minY || box.minY >= shapeBox.maxY || box.maxZ <= shapeBox.minZ || box.minZ >= shapeBox.maxZ) {
             return maxDist;
         }
@@ -71,7 +71,7 @@ public abstract class MixinVoxelShapes {
     }
 
     @Unique
-    private static double viaFabricPlus$intersectY(final Box playerBox, final Box shapeBox, double maxDist) {
+    private static double viaFabricPlus$intersectY(final AABB playerBox, final AABB shapeBox, double maxDist) {
         if (playerBox.maxX <= shapeBox.minX || playerBox.minX >= shapeBox.maxX || playerBox.maxZ <= shapeBox.minZ || playerBox.minZ >= shapeBox.maxZ) {
             return maxDist;
         }
@@ -89,7 +89,7 @@ public abstract class MixinVoxelShapes {
     }
 
     @Unique
-    private static double viaFabricPlus$intersectZ(final Box playerBox, final Box shapeBox, double maxDist) {
+    private static double viaFabricPlus$intersectZ(final AABB playerBox, final AABB shapeBox, double maxDist) {
         if (playerBox.maxX <= shapeBox.minX || playerBox.minX >= shapeBox.maxX || playerBox.maxY <= shapeBox.minY || playerBox.minY >= shapeBox.maxY) {
             return maxDist;
         }

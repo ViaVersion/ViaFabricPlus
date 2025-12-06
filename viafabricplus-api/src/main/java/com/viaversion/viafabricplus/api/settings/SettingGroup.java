@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.api.settings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 /**
  * This class represents a group of settings. It is used to group settings in the settings screen.
@@ -34,9 +34,9 @@ import net.minecraft.text.Text;
 public class SettingGroup {
 
     private final List<AbstractSetting<?>> settings = new ArrayList<>();
-    private final Text name;
+    private final Component name;
 
-    public SettingGroup(Text name) {
+    public SettingGroup(Component name) {
         this.name = name;
     }
 
@@ -65,7 +65,7 @@ public class SettingGroup {
         return null;
     }
 
-    public Text getName() {
+    public Component getName() {
         return name;
     }
 

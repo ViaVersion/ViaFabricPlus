@@ -21,18 +21,18 @@
 
 package com.viaversion.viafabricplus.features.font;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.FontStorage;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.font.FontSet;
 
 public final class FontCacheReload {
 
     public static void reload() {
-        if (MinecraftClient.getInstance() == null) {
+        if (Minecraft.getInstance() == null) {
             return;
         }
 
-        for (final FontStorage storage : MinecraftClient.getInstance().fontManager.fontStorages.values()) {
-            storage.bakedGlyphCache.clear();
+        for (final FontSet storage : Minecraft.getInstance().fontManager.fontSets.values()) {
+            storage.glyphCache.clear();
         }
     }
 

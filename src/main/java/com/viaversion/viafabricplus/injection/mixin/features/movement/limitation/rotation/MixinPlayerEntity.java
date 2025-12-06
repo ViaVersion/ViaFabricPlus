@@ -23,16 +23,16 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.limitatio
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(PlayerEntity.class)
+@Mixin(Player.class)
 public abstract class MixinPlayerEntity {
 
-    @Redirect(method = "getMaxRelativeHeadRotation", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isBlocking()Z"))
-    private boolean dontModifyHeadRotationWhenBlocking(PlayerEntity instance) {
+    @Redirect(method = "getMaxHeadRotationRelativeToBody", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isBlocking()Z"))
+    private boolean dontModifyHeadRotationWhenBlocking(Player instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_2) && instance.isBlocking();
     }
 

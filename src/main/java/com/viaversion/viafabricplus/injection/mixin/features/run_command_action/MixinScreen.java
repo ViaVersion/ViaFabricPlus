@@ -23,9 +23,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.run_command_action
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.LocalPlayer;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,10 +38,10 @@ public abstract class MixinScreen {
 
     @Shadow
     @Nullable
-    protected MinecraftClient client;
+    protected Minecraft minecraft;
 
-    @Inject(method = "handleRunCommand", at = @At("HEAD"), cancellable = true)
-    private static void changeCommandHandling(ClientPlayerEntity player, String command, Screen screenAfterRun, CallbackInfo ci) {
+    @Inject(method = "clickCommandAction", at = @At("HEAD"), cancellable = true)
+    private static void changeCommandHandling(LocalPlayer player, String command, Screen screenAfterRun, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4)) {
             return;
         }
@@ -49,7 +49,7 @@ public abstract class MixinScreen {
         if (!command.startsWith("/")) {
             ci.cancel();
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
-                player.networkHandler.sendChatMessage(command);
+                player.connection.sendChat(command);
             }
         }
     }

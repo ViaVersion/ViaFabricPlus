@@ -23,32 +23,32 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.collision
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoulSandBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCollisionHandler;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SoulSandBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(SoulSandBlock.class)
 public abstract class MixinSoulSandBlock extends Block {
 
-    public MixinSoulSandBlock(Settings settings) {
+    public MixinSoulSandBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    protected void onEntityCollision(final BlockState state, final World world, final BlockPos pos, final Entity entity, final EntityCollisionHandler handler, final boolean bl) {
+    protected void entityInside(final BlockState state, final Level world, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier handler, final boolean bl) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            entity.setVelocity(entity.getVelocity().multiply(0.4D, 1, 0.4D));
+            entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.4D, 1, 0.4D));
         }
     }
 
     @Override
-    public float getVelocityMultiplier() {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1F : super.getVelocityMultiplier();
+    public float getSpeedFactor() {
+        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1F : super.getSpeedFactor();
     }
 
 }

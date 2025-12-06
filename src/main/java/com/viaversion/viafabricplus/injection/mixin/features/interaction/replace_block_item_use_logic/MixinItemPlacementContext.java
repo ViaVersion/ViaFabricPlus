@@ -24,34 +24,34 @@ package com.viaversion.viafabricplus.injection.mixin.features.interaction.replac
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ItemPlacementContext.class)
-public abstract class MixinItemPlacementContext extends ItemUsageContext {
+@Mixin(BlockPlaceContext.class)
+public abstract class MixinItemPlacementContext extends UseOnContext {
 
-    public MixinItemPlacementContext(PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public MixinItemPlacementContext(Player player, InteractionHand hand, BlockHitResult hit) {
         super(player, hand, hit);
     }
 
-    @Inject(method = "getPlayerLookDirection", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getNearestLookingDirection", at = @At("HEAD"), cancellable = true)
     private void getPlayerLookDirection1_12_2(CallbackInfoReturnable<Direction> cir) {
-        final ItemPlacementContext self = (ItemPlacementContext) (Object) this;
-        final PlayerEntity player = self.getPlayer();
+        final BlockPlaceContext self = (BlockPlaceContext) (Object) this;
+        final Player player = self.getPlayer();
 
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            final BlockPos placementPos = self.getBlockPos();
+            final BlockPos placementPos = self.getClickedPos();
             final double blockPosCenterFactor = ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
 
             if (Math.abs(player.getX() - (placementPos.getX() + blockPosCenterFactor)) < 2 && Math.abs(player.getZ() - (placementPos.getZ() + blockPosCenterFactor)) < 2) {
@@ -68,14 +68,14 @@ public abstract class MixinItemPlacementContext extends ItemUsageContext {
                 }
             }
 
-            cir.setReturnValue(player.getHorizontalFacing());
+            cir.setReturnValue(player.getDirection());
         }
     }
 
     @Inject(method = "canPlace", at = @At("RETURN"), cancellable = true)
     private void canPlace1_12_2(CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValueZ() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(ViaFabricPlusMappingDataLoader.getBlockMaterial(this.getWorld().getBlockState(this.getBlockPos()).getBlock()).equals("decoration") && Block.getBlockFromItem(this.getStack().getItem()).equals(Blocks.ANVIL));
+            cir.setReturnValue(ViaFabricPlusMappingDataLoader.getBlockMaterial(this.getLevel().getBlockState(this.getClickedPos()).getBlock()).equals("decoration") && Block.byItem(this.getItemInHand().getItem()).equals(Blocks.ANVIL));
         }
     }
 

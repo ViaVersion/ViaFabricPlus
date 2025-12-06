@@ -31,12 +31,12 @@ import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.gui.hud.debug.DebugHudEntry;
-import net.minecraft.client.gui.hud.debug.DebugHudLines;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.client.gui.components.debug.DebugScreenEntry;
+import net.minecraft.client.gui.components.debug.DebugScreenDisplayer;
+import net.minecraft.ChatFormatting;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
@@ -46,14 +46,14 @@ import org.cloudburstmc.netty.channel.raknet.RakClientChannel;
 import org.cloudburstmc.netty.handler.codec.raknet.common.RakSessionCodec;
 import org.jetbrains.annotations.Nullable;
 
-public final class VFPDebugHudEntry implements DebugHudEntry {
+public final class VFPDebugHudEntry implements DebugScreenEntry {
 
-    public static final Identifier ID = Identifier.of("viafabricplus", "viafabricplus");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath("viafabricplus", "viafabricplus");
 
     @Override
-    public void render(final DebugHudLines lines, @Nullable final World world, @Nullable final WorldChunk clientChunk, @Nullable final WorldChunk chunk) {
+    public void display(final DebugScreenDisplayer lines, @Nullable final Level world, @Nullable final LevelChunk clientChunk, @Nullable final LevelChunk chunk) {
         final List<String> information = new ArrayList<>();
-        information.add(ChatUtil.PREFIX + Formatting.RESET + " " + ViaFabricPlusImpl.INSTANCE.getVersion());
+        information.add(ChatUtil.PREFIX + ChatFormatting.RESET + " " + ViaFabricPlusImpl.INSTANCE.getVersion());
 
         final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
         if (connection == null) {
@@ -100,11 +100,11 @@ public final class VFPDebugHudEntry implements DebugHudEntry {
             }
         }
 
-        lines.addLinesToSection(ID, information);
+        lines.addToGroup(ID, information);
     }
 
     @Override
-    public boolean canShow(final boolean reducedDebugInfo) {
+    public boolean isAllowed(final boolean reducedDebugInfo) {
         return true;
     }
 

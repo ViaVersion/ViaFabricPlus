@@ -23,28 +23,28 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(AnimalEntity.class)
+@Mixin(Animal.class)
 public abstract class MixinAnimalEntity {
 
-    @Redirect(method = "interactMob", at = @At(value = "FIELD", target = "Lnet/minecraft/util/ActionResult;SUCCESS_SERVER:Lnet/minecraft/util/ActionResult$Success;"))
-    private ActionResult.Success swingHand() {
+    @Redirect(method = "mobInteract", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;SUCCESS_SERVER:Lnet/minecraft/world/InteractionResult$Success;"))
+    private InteractionResult.Success swingHand() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else {
-            return ActionResult.SUCCESS_SERVER;
+            return InteractionResult.SUCCESS_SERVER;
         }
     }
 
-    @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isClient()Z"))
-    private boolean changeIsClientCondition(World instance) {
-        return instance.isClient() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
+    @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;isClientSide()Z"))
+    private boolean changeIsClientCondition(Level instance) {
+        return instance.isClientSide() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
 }

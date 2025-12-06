@@ -23,10 +23,10 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.Block;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,27 +34,27 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(AbstractRailBlock.class)
+@Mixin(BaseRailBlock.class)
 public abstract class MixinAbstractRailBlock extends Block {
 
     @Shadow
     @Final
-    private static VoxelShape ASCENDING_SHAPE;
+    private static VoxelShape SHAPE_SLOPE;
 
     @Unique
-    private static final VoxelShape viaFabricPlus$ascending_shape_r1_10_x = VoxelShapes.fullCube();
+    private static final VoxelShape viaFabricPlus$ascending_shape_r1_10_x = Shapes.block();
 
     @Unique
-    private static final VoxelShape viaFabricPlus$ascending_shape_r1_9_x = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.5D, 16.0D);
+    private static final VoxelShape viaFabricPlus$ascending_shape_r1_9_x = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.5D, 16.0D);
 
     @Unique
-    private static final VoxelShape viaFabricPlus$ascending_shape_r1_8_x = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D);
+    private static final VoxelShape viaFabricPlus$ascending_shape_r1_8_x = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D);
 
-    public MixinAbstractRailBlock(Settings settings) {
+    public MixinAbstractRailBlock(Properties settings) {
         super(settings);
     }
 
-    @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/AbstractRailBlock;ASCENDING_SHAPE:Lnet/minecraft/util/shape/VoxelShape;"))
+    @Redirect(method = "getShape", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/BaseRailBlock;SHAPE_SLOPE:Lnet/minecraft/world/phys/shapes/VoxelShape;"))
     private VoxelShape changeOutlineShape() {
         if (ProtocolTranslator.getTargetVersion().equalTo(ProtocolVersion.v1_10)) {
             return viaFabricPlus$ascending_shape_r1_10_x;
@@ -63,7 +63,7 @@ public abstract class MixinAbstractRailBlock extends Block {
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return viaFabricPlus$ascending_shape_r1_8_x;
         } else {
-            return ASCENDING_SHAPE;
+            return SHAPE_SLOPE;
         }
     }
 

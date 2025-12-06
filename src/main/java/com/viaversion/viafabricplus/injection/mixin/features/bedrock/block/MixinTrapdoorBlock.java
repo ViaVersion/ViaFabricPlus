@@ -23,15 +23,15 @@ package com.viaversion.viafabricplus.injection.mixin.features.bedrock.block;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import java.util.Map;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.TrapdoorBlock;
-import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,49 +40,49 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(TrapdoorBlock.class)
-public abstract class MixinTrapdoorBlock extends HorizontalFacingBlock {
+@Mixin(TrapDoorBlock.class)
+public abstract class MixinTrapdoorBlock extends HorizontalDirectionalBlock {
 
     @Unique
     private static final Map<Direction, VoxelShape> viaFabricPlus$shape_bedrock = Map.of(
-        Direction.NORTH, VoxelShapes.cuboid(0, 0, 0.8175, 1, 1, 1),
-        Direction.SOUTH, VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1825),
-        Direction.WEST, VoxelShapes.cuboid(0.8175, 0, 0, 1, 1, 1),
-        Direction.EAST, VoxelShapes.cuboid(0, 0, 0, 0.1825, 1, 1),
-        Direction.DOWN, VoxelShapes.cuboid(0, 0.8175, 0, 1, 1, 1),
-        Direction.UP, VoxelShapes.cuboid(0, 0, 0, 1, 0.1825, 1)
+        Direction.NORTH, Shapes.box(0, 0, 0.8175, 1, 1, 1),
+        Direction.SOUTH, Shapes.box(0, 0, 0, 1, 1, 0.1825),
+        Direction.WEST, Shapes.box(0.8175, 0, 0, 1, 1, 1),
+        Direction.EAST, Shapes.box(0, 0, 0, 0.1825, 1, 1),
+        Direction.DOWN, Shapes.box(0, 0.8175, 0, 1, 1, 1),
+        Direction.UP, Shapes.box(0, 0, 0, 1, 0.1825, 1)
     );
 
     @Shadow
     @Final
-    private static Map<Direction, VoxelShape> shapeByDirection;
+    private static Map<Direction, VoxelShape> SHAPES;
 
     @Shadow
     @Final
-    public static EnumProperty<BlockHalf> HALF;
+    public static EnumProperty<Half> HALF;
 
     @Shadow
     @Final
     public static BooleanProperty OPEN;
 
-    public MixinTrapdoorBlock(final Settings settings) {
+    public MixinTrapdoorBlock(final Properties settings) {
         super(settings);
     }
 
-    @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/TrapdoorBlock;shapeByDirection:Ljava/util/Map;"))
+    @Redirect(method = "getShape", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/TrapDoorBlock;SHAPES:Ljava/util/Map;"))
     private Map<Direction, VoxelShape> changeOutlineShape() {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return viaFabricPlus$shape_bedrock;
         }
-        return shapeByDirection;
+        return SHAPES;
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state) {
+    public VoxelShape getOcclusionShape(BlockState state) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return shapeByDirection.get(state.get(OPEN) ? state.get(FACING) : (state.get(HALF) == BlockHalf.TOP ? Direction.DOWN : Direction.UP));
+            return SHAPES.get(state.getValue(OPEN) ? state.getValue(FACING) : (state.getValue(HALF) == Half.TOP ? Direction.DOWN : Direction.UP));
         } else {
-            return super.getCullingShape(state);
+            return super.getOcclusionShape(state);
         }
     }
 

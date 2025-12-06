@@ -24,15 +24,15 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.tags.TagKey;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -48,18 +48,18 @@ public abstract class MixinEntity {
     @Shadow
     protected Object2DoubleMap<TagKey<Fluid>> fluidHeight;
     @Shadow
-    private World world;
+    private Level level;
 
     @Shadow
-    public abstract Box getBoundingBox();
+    public abstract AABB getBoundingBox();
 
     @Shadow
-    public abstract Vec3d getVelocity();
+    public abstract Vec3 getDeltaMovement();
 
     @Shadow
-    public abstract void setVelocity(Vec3d velocity);
+    public abstract void setDeltaMovement(Vec3 velocity);
 
-    @Redirect(method = "updateSubmergedInWaterState", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeY()D"))
+    @Redirect(method = "updateFluidOnEyes", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyeY()D"))
     private double addMagicOffset(Entity instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             return instance.getEyeY() - 0.11111111F;
@@ -75,43 +75,43 @@ public abstract class MixinEntity {
         }
     }
 
-    @Inject(method = "updateMovementInFluid", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "updateFluidHeightAndDoFluidPushing", at = @At("HEAD"), cancellable = true)
     private void modifyFluidMovementBoundingBox(TagKey<Fluid> fluidTag, double d, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && !ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return;
         }
 
-        Box box = this.getBoundingBox().expand(0, -0.4, 0).contract(0.001);
-        int minX = MathHelper.floor(box.minX);
-        int maxX = MathHelper.ceil(box.maxX);
-        int minY = MathHelper.floor(box.minY);
-        int maxY = MathHelper.ceil(box.maxY);
-        int minZ = MathHelper.floor(box.minZ);
-        int maxZ = MathHelper.ceil(box.maxZ);
+        AABB box = this.getBoundingBox().inflate(0, -0.4, 0).deflate(0.001);
+        int minX = Mth.floor(box.minX);
+        int maxX = Mth.ceil(box.maxX);
+        int minY = Mth.floor(box.minY);
+        int maxY = Mth.ceil(box.maxY);
+        int minZ = Mth.floor(box.minZ);
+        int maxZ = Mth.ceil(box.maxZ);
 
-        if (!this.world.isRegionLoaded(minX, minY, minZ, maxX, maxY, maxZ)) {
+        if (!this.level.hasChunksAt(minX, minY, minZ, maxX, maxY, maxZ)) {
             cir.setReturnValue(false);
             return;
         }
 
         double waterHeight = 0;
         boolean foundFluid = false;
-        Vec3d pushVec = Vec3d.ZERO;
+        Vec3 pushVec = Vec3.ZERO;
 
-        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
         for (int x = minX; x < maxX; x++) {
             for (int y = minY - 1; y < maxY; y++) {
                 for (int z = minZ; z < maxZ; z++) {
                     mutable.set(x, y, z);
-                    FluidState state = this.world.getFluidState(mutable);
-                    if (state.isIn(fluidTag)) {
-                        double height = y + state.getHeight(this.world, mutable);
+                    FluidState state = this.level.getFluidState(mutable);
+                    if (state.is(fluidTag)) {
+                        double height = y + state.getHeight(this.level, mutable);
                         if (height >= box.minY - 0.4)
                             waterHeight = Math.max(height - box.minY + 0.4, waterHeight);
                         if (y >= minY && maxY >= height) {
                             foundFluid = true;
-                            pushVec = pushVec.add(state.getVelocity(this.world, mutable));
+                            pushVec = pushVec.add(state.getFlow(this.level, mutable));
                         }
                     }
                 }
@@ -119,8 +119,8 @@ public abstract class MixinEntity {
         }
 
         if (pushVec.length() > 0) {
-            pushVec = pushVec.normalize().multiply(0.014);
-            this.setVelocity(this.getVelocity().add(pushVec));
+            pushVec = pushVec.normalize().scale(0.014);
+            this.setDeltaMovement(this.getDeltaMovement().add(pushVec));
         }
 
         this.fluidHeight.put(fluidTag, waterHeight);

@@ -24,11 +24,11 @@ package com.viaversion.viafabricplus.screen.impl.settings;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import java.awt.*;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 
 public final class BooleanListEntry extends VFPListEntry {
     private final BooleanSetting value;
@@ -38,7 +38,7 @@ public final class BooleanListEntry extends VFPListEntry {
     }
 
     @Override
-    public Text getNarration() {
+    public Component getNarration() {
         return this.value.getName();
     }
 
@@ -48,14 +48,14 @@ public final class BooleanListEntry extends VFPListEntry {
     }
 
     @Override
-    public void mappedRender(DrawContext context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+    public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        final Font textRenderer = Minecraft.getInstance().font;
 
-        final Text text = this.value.getValue() ? Text.translatable("base.viafabricplus.on") : Text.translatable("base.viafabricplus.off");
+        final Component text = this.value.getValue() ? Component.translatable("base.viafabricplus.on") : Component.translatable("base.viafabricplus.off");
 
-        final int offset = textRenderer.getWidth(text) + 2;
-        renderScrollableText(this.value.getName().formatted(Formatting.GRAY), offset);
-        context.drawTextWithShadow(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.fontHeight / 2, this.value.getValue() ? Color.GREEN.getRGB() : Color.RED.getRGB());
+        final int offset = textRenderer.width(text) + 2;
+        renderScrollableText(this.value.getName().withStyle(ChatFormatting.GRAY), offset);
+        context.drawString(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, this.value.getValue() ? Color.GREEN.getRGB() : Color.RED.getRGB());
 
         renderTooltip(value.getTooltip(), mouseX, mouseY);
     }

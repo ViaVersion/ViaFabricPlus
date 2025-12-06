@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.bedrock.remove_dum
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import java.util.Collection;
 import java.util.Set;
-import net.minecraft.client.network.ClientCommandSource;
+import net.minecraft.client.multiplayer.ClientSuggestionProvider;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,17 +33,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ClientCommandSource.class)
+@Mixin(ClientSuggestionProvider.class)
 public abstract class MixinClientCommandSource {
 
     @Shadow
     @Final
-    private Set<String> chatSuggestions;
+    private Set<String> customCompletionSuggestions;
 
-    @Inject(method = {"getPlayerNames", "getChatSuggestions"}, at = @At("HEAD"), cancellable = true)
+    @Inject(method = {"getOnlinePlayerNames", "getCustomTabSugggestions"}, at = @At("HEAD"), cancellable = true)
     private void returnChatSuggestions(CallbackInfoReturnable<Collection<String>> cir) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            cir.setReturnValue(this.chatSuggestions);
+            cir.setReturnValue(this.customCompletionSuggestions);
         }
     }
 

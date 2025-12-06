@@ -24,8 +24,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.registr
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,21 +33,21 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(RegistryEntryList.Named.class)
+@Mixin(HolderSet.Named.class)
 public abstract class MixinRegistryEntryList_Named {
 
     @Shadow
-    private @Nullable List<RegistryEntry> entries;
+    private @Nullable List<Holder> contents;
 
     @Shadow
-    abstract void setEntries(List<RegistryEntry> entries);
+    abstract void bind(List<Holder> entries);
 
-    @Inject(method = "getEntries", at = @At("HEAD"))
-    private void preventNullableEntries(CallbackInfoReturnable<List<RegistryEntry<?>>> cir) {
+    @Inject(method = "contents", at = @At("HEAD"))
+    private void preventNullableEntries(CallbackInfoReturnable<List<Holder<?>>> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             // Previoulsy didn't had unbounded entries
-            if (this.entries == null) {
-                this.setEntries(List.of());
+            if (this.contents == null) {
+                this.bind(List.of());
             }
         }
     }

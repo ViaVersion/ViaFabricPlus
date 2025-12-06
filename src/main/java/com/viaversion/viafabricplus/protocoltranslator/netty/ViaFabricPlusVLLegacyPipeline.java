@@ -29,7 +29,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.network.handler.HandlerNames;
+import net.minecraft.network.HandlerNames;
 
 public final class ViaFabricPlusVLLegacyPipeline extends VLLegacyPipeline {
 

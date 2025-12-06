@@ -23,13 +23,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.passive.SquidEntity;
+import net.minecraft.world.entity.animal.Squid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(SquidEntity.class)
+@Mixin(Squid.class)
 public abstract class MixinSquidEntity {
 
     @Inject(method = "canBeLeashed", at = @At("HEAD"), cancellable = true)

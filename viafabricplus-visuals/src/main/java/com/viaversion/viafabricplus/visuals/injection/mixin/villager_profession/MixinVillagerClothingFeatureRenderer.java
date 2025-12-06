@@ -22,22 +22,22 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.villager_profession;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.entity.feature.VillagerClothingFeatureRenderer;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.village.VillagerData;
-import net.minecraft.village.VillagerProfession;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.layers.VillagerProfessionLayer;
+import net.minecraft.core.Holder;
+import net.minecraft.world.entity.npc.VillagerData;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(VillagerClothingFeatureRenderer.class)
+@Mixin(VillagerProfessionLayer.class)
 public abstract class MixinVillagerClothingFeatureRenderer {
 
-    @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;ILnet/minecraft/client/render/entity/state/LivingEntityRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/village/VillagerData;profession()Lnet/minecraft/registry/entry/RegistryEntry;"))
-    private RegistryEntry<VillagerProfession> revertVillagerVisual(VillagerData instance) {
+    @Redirect(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/npc/VillagerData;profession()Lnet/minecraft/core/Holder;"))
+    private Holder<VillagerProfession> revertVillagerVisual(VillagerData instance) {
         if (VisualSettings.INSTANCE.hideVillagerProfession.getValue()) {
-            return MinecraftClient.getInstance().getNetworkHandler().getRegistryManager().getEntryOrThrow(VillagerProfession.NONE);
+            return Minecraft.getInstance().getConnection().registryAccess().getOrThrow(VillagerProfession.NONE);
         } else {
             return instance.profession();
         }

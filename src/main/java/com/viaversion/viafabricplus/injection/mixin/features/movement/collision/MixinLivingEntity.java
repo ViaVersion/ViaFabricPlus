@@ -24,15 +24,15 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.collision
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Optional;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TrapdoorBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,48 +46,48 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinLivingEntity extends Entity {
 
     @Shadow
-    private Optional<BlockPos> climbingPos;
+    private Optional<BlockPos> lastClimbablePos;
 
-    public MixinLivingEntity(final EntityType<?> type, final World world) {
+    public MixinLivingEntity(final EntityType<?> type, final Level world) {
         super(type, world);
     }
 
     @Shadow
-    protected abstract boolean canEnterTrapdoor(final BlockPos pos, final BlockState state);
+    protected abstract boolean trapdoorUsableAsLadder(final BlockPos pos, final BlockState state);
 
-    @Redirect(method = "applyMovementInput", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;wasInPowderSnow:Z"))
+    @Redirect(method = "handleRelativeFrictionAndCalculateMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;wasInPowderSnow:Z"))
     private boolean dontCheckLastTick(LivingEntity instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return this.getBlockStateAtPos().isOf(Blocks.POWDER_SNOW);
+            return this.getInBlockState().is(Blocks.POWDER_SNOW);
         } else {
             return instance.wasInPowderSnow;
         }
     }
 
-    @Inject(method = "tickCramming", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "pushEntities", at = @At("HEAD"), cancellable = true)
     private void preventEntityPush(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
         }
     }
 
-    @Inject(method = "canEnterTrapdoor", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "trapdoorUsableAsLadder", at = @At("HEAD"), cancellable = true)
     private void disableCrawling(CallbackInfoReturnable<Boolean> ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.setReturnValue(false);
         }
     }
 
-    @Inject(method = "isClimbing", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "onClimbable", at = @At("RETURN"), cancellable = true)
     private void allowGappedLadderClimb(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.b1_5tob1_5_2) && !cir.getReturnValueZ() && !this.isSpectator()) {
-            final BlockPos blockPos = this.getBlockPos().up();
-            final BlockState blockState = this.getEntityWorld().getBlockState(blockPos);
-            if (blockState.isIn(BlockTags.CLIMBABLE)) {
-                this.climbingPos = Optional.of(blockPos);
+            final BlockPos blockPos = this.blockPosition().above();
+            final BlockState blockState = this.level().getBlockState(blockPos);
+            if (blockState.is(BlockTags.CLIMBABLE)) {
+                this.lastClimbablePos = Optional.of(blockPos);
                 cir.setReturnValue(true);
-            } else if (blockState.getBlock() instanceof TrapdoorBlock && this.canEnterTrapdoor(blockPos, blockState)) {
-                this.climbingPos = Optional.of(blockPos);
+            } else if (blockState.getBlock() instanceof TrapDoorBlock && this.trapdoorUsableAsLadder(blockPos, blockState)) {
+                this.lastClimbablePos = Optional.of(blockPos);
                 cir.setReturnValue(true);
             }
         }

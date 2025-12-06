@@ -31,12 +31,12 @@ import de.florianmichael.classic4j.model.betacraft.BCServerInfo;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
 import java.util.List;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ConfirmLinkScreen;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ConfirmLinkScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 
 import static com.viaversion.viafabricplus.screen.VFPListEntry.SLOT_MARGIN;
 
@@ -58,7 +58,7 @@ public final class BetaCraftScreen extends VFPScreen {
             createView();
             return;
         }
-        setupSubtitle(Text.translatable("betacraft.viafabricplus.loading"));
+        setupSubtitle(Component.translatable("betacraft.viafabricplus.loading"));
         BetaCraftHandler.requestServerList(serverList -> {
             BetaCraftScreen.SERVER_LIST = serverList;
             createView();
@@ -66,10 +66,10 @@ public final class BetaCraftScreen extends VFPScreen {
     }
 
     private void createView() {
-        this.setupSubtitle(Text.of(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.opening(this, BETA_CRAFT_SERVER_LIST_URL));
+        this.setupSubtitle(Component.nullToEmpty(BETA_CRAFT_SERVER_LIST_URL), ConfirmLinkScreen.confirmLink(this, BETA_CRAFT_SERVER_LIST_URL));
 
-        final int entryHeight = (textRenderer.fontHeight + 2) * 3; // title is 2
-        this.addDrawableChild(new SlotList(this.client, width, height, 2 * SLOT_MARGIN + entryHeight, -5, entryHeight));
+        final int entryHeight = (font.lineHeight + 2) * 3; // title is 2
+        this.addRenderableWidget(new SlotList(this.minecraft, width, height, 2 * SLOT_MARGIN + entryHeight, -5, entryHeight));
 
         this.addRefreshButton(() -> SERVER_LIST = null);
     }
@@ -82,7 +82,7 @@ public final class BetaCraftScreen extends VFPScreen {
     public static class SlotList extends VFPList {
         private static double scrollAmount;
 
-        public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
+        public SlotList(Minecraft minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
             if (SERVER_LIST == null) {
                 return;
@@ -93,7 +93,7 @@ public final class BetaCraftScreen extends VFPScreen {
                 if (servers.isEmpty()) {
                     continue;
                 }
-                addEntry(new TitleEntry(Text.of(value.name())));
+                addEntry(new TitleEntry(Component.nullToEmpty(value.name())));
                 for (BCServerInfo server : servers) {
                     addEntry(new ServerSlot(server));
                 }
@@ -121,8 +121,8 @@ public final class BetaCraftScreen extends VFPScreen {
         }
 
         @Override
-        public Text getNarration() {
-            return Text.of(server.name());
+        public Component getNarration() {
+            return Component.nullToEmpty(server.name());
         }
 
         @Override
@@ -132,15 +132,15 @@ public final class BetaCraftScreen extends VFPScreen {
         }
 
         @Override
-        public void mappedRender(DrawContext context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, server.name() + Formatting.DARK_GRAY + " [" + server.gameVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+        public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            final Font textRenderer = Minecraft.getInstance().font;
+            context.drawCenteredString(textRenderer, server.name() + ChatFormatting.DARK_GRAY + " [" + server.gameVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
 
             if (server.onlineMode()) {
-                context.drawTextWithShadow(textRenderer, Text.translatable("base.viafabricplus.online_mode").formatted(Formatting.GREEN), 1, 1, -1);
+                context.drawString(textRenderer, Component.translatable("base.viafabricplus.online_mode").withStyle(ChatFormatting.GREEN), 1, 1, -1);
             }
             final String playerText = server.playerCount() + "/" + server.playerLimit();
-            context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 1, 1, -1);
+            context.drawString(textRenderer, playerText, entryWidth - textRenderer.width(playerText) - 1, 1, -1);
         }
     }
 

@@ -24,19 +24,19 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import java.util.Map;
 import java.util.function.Supplier;
-import net.minecraft.block.AbstractChestBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.block.enums.ChestType;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.AbstractChestBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
@@ -51,60 +51,60 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinChestBlock extends AbstractChestBlock<ChestBlockEntity> {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$single_chest_shape_bedrock = VoxelShapes.cuboid(0.025, 0, 0.025, 0.975, 0.95, 0.975);
+    private static final VoxelShape viaFabricPlus$single_chest_shape_bedrock = Shapes.box(0.025, 0, 0.025, 0.975, 0.95, 0.975);
 
     @Unique
     private static final Map<Direction, VoxelShape> viaFabricPlus$double_chest_shapes_bedrock = Map.of(
-        Direction.NORTH, VoxelShapes.cuboid(0.025, 0, 0, 0.975, 0.95, 0.975),
-        Direction.SOUTH, VoxelShapes.cuboid(0.025, 0, 0.025, 0.975, 0.95, 1),
-        Direction.WEST, VoxelShapes.cuboid(0, 0, 0.025, 0.975, 0.95, 0.975),
-        Direction.EAST, VoxelShapes.cuboid(0.025, 0, 0.025, 1, 0.95, 0.975)
+        Direction.NORTH, Shapes.box(0.025, 0, 0, 0.975, 0.95, 0.975),
+        Direction.SOUTH, Shapes.box(0.025, 0, 0.025, 0.975, 0.95, 1),
+        Direction.WEST, Shapes.box(0, 0, 0.025, 0.975, 0.95, 0.975),
+        Direction.EAST, Shapes.box(0.025, 0, 0.025, 1, 0.95, 0.975)
     );
 
     @Shadow
     @Final
-    private static Map<Direction, VoxelShape> DOUBLE_SHAPES_BY_DIRECTION;
+    private static Map<Direction, VoxelShape> HALF_SHAPES;
 
     @Shadow
     @Final
-    private static VoxelShape SINGLE_SHAPE;
+    private static VoxelShape SHAPE;
 
     @Shadow
     @Final
-    public static EnumProperty<ChestType> CHEST_TYPE;
+    public static EnumProperty<ChestType> TYPE;
 
     @Shadow
-    public static Direction getFacing(final BlockState state) {
+    public static Direction getConnectedDirection(final BlockState state) {
         return null;
     }
 
-    protected MixinChestBlock(Settings settings, Supplier<BlockEntityType<? extends ChestBlockEntity>> blockEntityTypeSupplier) {
+    protected MixinChestBlock(Properties settings, Supplier<BlockEntityType<? extends ChestBlockEntity>> blockEntityTypeSupplier) {
         super(settings, blockEntityTypeSupplier);
     }
 
-    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
+    private void changeOutlineShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
-            cir.setReturnValue(VoxelShapes.fullCube());
+            cir.setReturnValue(Shapes.block());
         } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            cir.setReturnValue(switch (state.get(CHEST_TYPE)) {
+            cir.setReturnValue(switch (state.getValue(TYPE)) {
                 case SINGLE -> viaFabricPlus$single_chest_shape_bedrock;
-                case LEFT, RIGHT -> viaFabricPlus$double_chest_shapes_bedrock.get(getFacing(state));
+                case LEFT, RIGHT -> viaFabricPlus$double_chest_shapes_bedrock.get(getConnectedDirection(state));
             });
         }
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state) {
+    public VoxelShape getOcclusionShape(BlockState state) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)
             || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            if (state.get(ChestBlock.CHEST_TYPE) == ChestType.SINGLE) {
-                return SINGLE_SHAPE;
+            if (state.getValue(ChestBlock.TYPE) == ChestType.SINGLE) {
+                return SHAPE;
             } else {
-                return DOUBLE_SHAPES_BY_DIRECTION.get(ChestBlock.getFacing(state));
+                return HALF_SHAPES.get(ChestBlock.getConnectedDirection(state));
             }
         } else {
-            return super.getCullingShape(state);
+            return super.getOcclusionShape(state);
         }
     }
 

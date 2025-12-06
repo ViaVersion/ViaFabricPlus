@@ -24,12 +24,12 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_
 import com.viaversion.viafabricplus.features.networking.remove_signed_commands.SignedCommands1_21_6;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.gui.screen.GameModeSwitcherScreen;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.listener.ServerPlayPacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.play.ChangeGameModeC2SPacket;
-import net.minecraft.world.GameMode;
+import net.minecraft.client.gui.screens.debug.GameModeSwitcherScreen;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.network.protocol.game.ServerGamePacketListener;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ServerboundChangeGameModePacket;
+import net.minecraft.world.level.GameType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -37,14 +37,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(GameModeSwitcherScreen.class)
 public abstract class MixinGameModeSwitcherScreen {
 
-    @Redirect(method = "apply(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/gui/screen/GameModeSwitcherScreen$GameModeSelection;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
-    private static void wrapAsCommand(ClientPlayNetworkHandler instance, Packet<ServerPlayPacketListener> packet) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof ChangeGameModeC2SPacket(
-            final GameMode mode
-        )) {
+    @Redirect(method = "switchToHoveredGameMode(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/screens/debug/GameModeSwitcherScreen$GameModeIcon;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V"))
+    private static void wrapAsCommand(ClientPacketListener instance, Packet<ServerGamePacketListener> packet) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof ServerboundChangeGameModePacket(final GameType mode)) {
             SignedCommands1_21_6.sendGameMode(mode);
         } else {
-            instance.sendPacket(packet);
+            instance.send(packet);
         }
     }
 

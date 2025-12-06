@@ -24,39 +24,39 @@ package com.viaversion.viafabricplus.injection.mixin.features.remove_newer_scree
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.entity.JigsawBlockEntity;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.JigsawBlockScreen;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.gui.widget.CyclingButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.text.Text;
+import net.minecraft.world.level.block.entity.JigsawBlockEntity;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.JigsawBlockEditScreen;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(JigsawBlockScreen.class)
+@Mixin(JigsawBlockEditScreen.class)
 public abstract class MixinJigsawBlockScreen extends Screen {
 
     @Shadow
-    private TextFieldWidget nameField;
+    private EditBox nameEdit;
 
     @Shadow
-    private CyclingButtonWidget<JigsawBlockEntity.Joint> jointRotationButton;
+    private CycleButton<JigsawBlockEntity.JointType> jointButton;
 
     @Shadow
-    private TextFieldWidget targetField;
+    private EditBox targetEdit;
 
     @Shadow
-    private TextFieldWidget selectionPriorityField;
+    private EditBox selectionPriorityEdit;
 
     @Shadow
-    private TextFieldWidget placementPriorityField;
+    private EditBox placementPriorityEdit;
 
-    public MixinJigsawBlockScreen(Text title) {
+    public MixinJigsawBlockScreen(Component title) {
         super(title);
     }
 
@@ -67,23 +67,23 @@ public abstract class MixinJigsawBlockScreen extends Screen {
         }
 
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
-            selectionPriorityField.active = false;
-            placementPriorityField.active = false;
+            selectionPriorityEdit.active = false;
+            placementPriorityEdit.active = false;
         }
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
-            nameField.active = false;
-            jointRotationButton.active = false;
-            int index = children().indexOf(jointRotationButton);
-            ((ClickableWidget) children().get(index + 1)).active = false; // levels slider
-            ((ClickableWidget) children().get(index + 2)).active = false; // keep jigsaws toggle
-            ((ClickableWidget) children().get(index + 3)).active = false; // generate button
+            nameEdit.active = false;
+            jointButton.active = false;
+            int index = children().indexOf(jointButton);
+            ((AbstractWidget) children().get(index + 1)).active = false; // levels slider
+            ((AbstractWidget) children().get(index + 2)).active = false; // keep jigsaws toggle
+            ((AbstractWidget) children().get(index + 3)).active = false; // generate button
         }
     }
 
     @Inject(method = "render", at = @At("HEAD"))
-    private void copyText(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void copyText(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (DebugSettings.INSTANCE.hideModernJigsawScreenFeatures.getValue() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
-            nameField.setText(targetField.getText());
+            nameEdit.setValue(targetEdit.getValue());
         }
     }
 

@@ -25,11 +25,11 @@ import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import java.util.List;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.alpha.a1_2_3_5_1_2_6tob1_0_1_1_1.provider.AlphaInventoryProvider;
 
@@ -61,30 +61,30 @@ public final class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryPro
 
     @Override
     public Item[] getMainInventoryItems(UserConnection connection) {
-        final PlayerEntity player = MinecraftClient.getInstance().player;
+        final Player player = Minecraft.getInstance().player;
         if (player == null) {
             return new Item[37];
         } else {
-            return convertItems(player.getInventory().getMainStacks());
+            return convertItems(player.getInventory().getNonEquipmentItems());
         }
     }
 
     @Override
     public Item[] getCraftingInventoryItems(UserConnection connection) {
-        final PlayerEntity player = MinecraftClient.getInstance().player;
+        final Player player = Minecraft.getInstance().player;
         if (player == null) {
             return new Item[4];
         } else {
-            return convertItems(player.playerScreenHandler.getCraftingInput().getHeldStacks());
+            return convertItems(player.inventoryMenu.getCraftSlots().getItems());
         }
     }
 
     @Override
     public Item[] getArmorInventoryItems(UserConnection connection) {
-        final PlayerEntity player = MinecraftClient.getInstance().player;
+        final Player player = Minecraft.getInstance().player;
         final Item[] items = new Item[4];
         if (player != null) {
-            final PlayerInventory inventory = player.getInventory();
+            final Inventory inventory = player.getInventory();
             items[0] = convertItem(inventory.equipment.get(EquipmentSlot.FEET));
             items[1] = convertItem(inventory.equipment.get(EquipmentSlot.LEGS));
             items[2] = convertItem(inventory.equipment.get(EquipmentSlot.CHEST));
@@ -96,18 +96,18 @@ public final class ViaFabricPlusAlphaInventoryProvider extends AlphaInventoryPro
 
     @Override
     public Item[] getContainerItems(UserConnection connection) {
-        final PlayerEntity player = MinecraftClient.getInstance().player;
+        final Player player = Minecraft.getInstance().player;
         if (player == null) {
             return new Item[37];
         } else {
-            return convertItems(player.currentScreenHandler.getStacks());
+            return convertItems(player.containerMenu.getItems());
         }
     }
 
     @Override
     public void addToInventory(UserConnection connection, Item item) {
-        final PlayerEntity player = MinecraftClient.getInstance().player;
-        player.getInventory().insertStack(ItemTranslator.viaToMc(item, LegacyProtocolVersion.b1_8tob1_8_1));
+        final Player player = Minecraft.getInstance().player;
+        player.getInventory().add(ItemTranslator.viaToMc(item, LegacyProtocolVersion.b1_8tob1_8_1));
     }
 
 }

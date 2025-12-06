@@ -24,11 +24,11 @@ package com.viaversion.viafabricplus.api.settings.type;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.api.settings.AbstractSetting;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
-import net.minecraft.text.MutableText;
+import net.minecraft.network.chat.MutableComponent;
 
 public class BooleanSetting extends AbstractSetting<Boolean> {
 
-    public BooleanSetting(SettingGroup parent, MutableText name, Boolean defaultValue) {
+    public BooleanSetting(SettingGroup parent, MutableComponent name, Boolean defaultValue) {
         super(parent, name, defaultValue);
     }
 

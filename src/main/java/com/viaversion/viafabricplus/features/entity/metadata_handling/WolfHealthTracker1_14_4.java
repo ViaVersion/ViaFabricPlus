@@ -25,7 +25,7 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.StorableObject;
 import it.unimi.dsi.fastutil.ints.Int2FloatMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 
 public final class WolfHealthTracker1_14_4 implements StorableObject {
 

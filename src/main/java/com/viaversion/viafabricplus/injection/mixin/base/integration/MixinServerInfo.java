@@ -25,8 +25,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.save.impl.SettingsSave;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.nbt.CompoundTag;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -35,7 +35,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ServerInfo.class)
+@Mixin(ServerData.class)
 public abstract class MixinServerInfo implements IServerInfo {
 
     @Shadow
@@ -50,25 +50,25 @@ public abstract class MixinServerInfo implements IServerInfo {
     @Unique
     private ProtocolVersion viaFabricPlus$translatingVersion;
 
-    @Inject(method = "toNbt", at = @At("TAIL"))
-    private void saveForcedVersion(CallbackInfoReturnable<NbtCompound> cir, @Local NbtCompound nbtCompound) {
+    @Inject(method = "write", at = @At("TAIL"))
+    private void saveForcedVersion(CallbackInfoReturnable<CompoundTag> cir, @Local CompoundTag nbtCompound) {
         if (viaFabricPlus$forcedVersion != null) {
             nbtCompound.putString("viafabricplus_forcedversion", viaFabricPlus$forcedVersion.getName());
         }
     }
 
-    @Inject(method = "fromNbt", at = @At("TAIL"))
-    private static void loadForcedVersion(NbtCompound root, CallbackInfoReturnable<ServerInfo> cir, @Local ServerInfo serverInfo) {
+    @Inject(method = "read", at = @At("TAIL"))
+    private static void loadForcedVersion(CompoundTag root, CallbackInfoReturnable<ServerData> cir, @Local ServerData serverInfo) {
         if (root.contains("viafabricplus_forcedversion")) {
-            final ProtocolVersion version = SettingsSave.protocolVersionByName(root.getString("viafabricplus_forcedversion", null));
+            final ProtocolVersion version = SettingsSave.protocolVersionByName(root.getStringOr("viafabricplus_forcedversion", null));
             if (version != null) {
                 ((IServerInfo) serverInfo).viaFabricPlus$forceVersion(version);
             }
         }
     }
 
-    @Inject(method = "copyFrom", at = @At("RETURN"))
-    private void syncForcedVersion(ServerInfo serverInfo, CallbackInfo ci) {
+    @Inject(method = "copyNameIconFrom", at = @At("RETURN"))
+    private void syncForcedVersion(ServerData serverInfo, CallbackInfo ci) {
         viaFabricPlus$forceVersion(((IServerInfo) serverInfo).viaFabricPlus$forcedVersion());
     }
 

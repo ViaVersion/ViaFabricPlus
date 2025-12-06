@@ -23,13 +23,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.Leashable;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Leashable;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,24 +43,24 @@ public abstract class MixinEntity {
     public abstract boolean isAlive();
 
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
-    private void removeLeashActions(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+    private void removeLeashActions(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         // Removes shearing of equipment & snipping all leashes + condition changes
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
-            final ItemStack itemStack = player.getStackInHand(hand);
+            final ItemStack itemStack = player.getItemInHand(hand);
             if (this.isAlive() && this instanceof final Leashable leashable) {
                 if (leashable.getLeashHolder() != player) {
-                    if (itemStack.isOf(Items.LEAD) && leashable.canBeLeashedTo(player)) {
-                        itemStack.decrement(1);
-                        cir.setReturnValue(ActionResult.SUCCESS);
+                    if (itemStack.is(Items.LEAD) && leashable.canHaveALeashAttachedTo(player)) {
+                        itemStack.shrink(1);
+                        cir.setReturnValue(InteractionResult.SUCCESS);
                         return;
                     }
                 } else {
-                    cir.setReturnValue(ActionResult.SUCCESS.noIncrementStat());
+                    cir.setReturnValue(InteractionResult.SUCCESS.withoutItem());
                     return;
                 }
             }
 
-            cir.setReturnValue(ActionResult.PASS);
+            cir.setReturnValue(InteractionResult.PASS);
         }
     }
 

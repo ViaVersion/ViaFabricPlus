@@ -25,16 +25,16 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 public final class SyncTasks {
 
     /**
      * Contains all tasks that are waiting for a packet to be received, this system can be used to sync ViaVersion tasks with the correct thread
      */
-    private static final Map<String, Consumer<RegistryByteBuf>> PENDING_EXECUTION_TASKS = new ConcurrentHashMap<>();
+    private static final Map<String, Consumer<RegistryFriendlyByteBuf>> PENDING_EXECUTION_TASKS = new ConcurrentHashMap<>();
 
     /**
      * This identifier is an internal identifier used to identify packets that are sent by ViaFabricPlus
@@ -51,7 +51,7 @@ public final class SyncTasks {
      * @param task The task to execute
      * @return The uuid of the task
      */
-    public static String executeSyncTask(final Consumer<RegistryByteBuf> task) {
+    public static String executeSyncTask(final Consumer<RegistryFriendlyByteBuf> task) {
         final String uuid = UUID.randomUUID().toString();
         PENDING_EXECUTION_TASKS.put(uuid, task);
         return uuid;
@@ -62,13 +62,13 @@ public final class SyncTasks {
      *
      * @param buf The packet buffer
      */
-    public static void handleSyncTask(final PacketByteBuf buf) {
-        final String uuid = buf.readString();
+    public static void handleSyncTask(final FriendlyByteBuf buf) {
+        final String uuid = buf.readUtf();
 
         if (PENDING_EXECUTION_TASKS.containsKey(uuid)) {
-            MinecraftClient.getInstance().execute(() -> { // Execute the task on the main thread
-                final Consumer<RegistryByteBuf> task = PENDING_EXECUTION_TASKS.remove(uuid);
-                task.accept(new RegistryByteBuf(buf, MinecraftClient.getInstance().getNetworkHandler().getRegistryManager()));
+            Minecraft.getInstance().execute(() -> { // Execute the task on the main thread
+                final Consumer<RegistryFriendlyByteBuf> task = PENDING_EXECUTION_TASKS.remove(uuid);
+                task.accept(new RegistryFriendlyByteBuf(buf, Minecraft.getInstance().getConnection().registryAccess()));
             });
         }
     }

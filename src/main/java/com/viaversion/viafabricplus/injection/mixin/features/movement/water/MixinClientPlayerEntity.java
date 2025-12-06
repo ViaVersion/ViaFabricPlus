@@ -26,10 +26,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.input.Input;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.player.ClientInput;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,18 +37,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
+@Mixin(LocalPlayer.class)
+public abstract class MixinClientPlayerEntity extends AbstractClientPlayer {
 
     @Shadow
-    public Input input;
+    public ClientInput input;
 
-    public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
+    public MixinClientPlayerEntity(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
 
-    @WrapOperation(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z"))
-    private boolean easierUnderwaterSprinting(Input instance, Operation<Boolean> original) {
+    @WrapOperation(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/ClientInput;hasForwardImpulse()Z"))
+    private boolean easierUnderwaterSprinting(ClientInput instance, Operation<Boolean> original) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return this.viaFabricPlus$isWalking1_21_4();
         } else {
@@ -56,22 +56,22 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         }
     }
 
-    @Redirect(method = "tickMovement",
-        slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;hasForwardMovement()Z")),
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSwimming()Z", ordinal = 0))
-    private boolean dontAllowSneakingWhileSwimming(ClientPlayerEntity instance) {
+    @Redirect(method = "aiStep",
+        slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/ClientInput;hasForwardImpulse()Z")),
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSwimming()Z", ordinal = 0))
+    private boolean dontAllowSneakingWhileSwimming(LocalPlayer instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && instance.isSwimming();
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isTouchingWater()Z"))
-    private boolean disableWaterRelatedMovement(ClientPlayerEntity self) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && self.isTouchingWater();
+    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z"))
+    private boolean disableWaterRelatedMovement(LocalPlayer self) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && self.isInWater();
     }
 
     @Unique
     private boolean viaFabricPlus$isWalking1_21_4() {
-        final boolean submergedInWater = ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && isSubmergedInWater();
-        return submergedInWater ? this.input.hasForwardMovement() : this.input.movementVector.y >= 0.8;
+        final boolean submergedInWater = ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && isUnderWater();
+        return submergedInWater ? this.input.hasForwardImpulse() : this.input.moveVector.y >= 0.8;
     }
 
 }

@@ -22,22 +22,22 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.player.LocalPlayer;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ClientPlayerEntity.class)
+@Mixin(LocalPlayer.class)
 public abstract class MixinClientPlayerEntity {
 
     @Shadow
-    protected abstract boolean canSprint(final boolean allowTouchingWater);
+    protected abstract boolean isSprintingPossible(final boolean allowTouchingWater);
 
-    @Redirect(method = {"shouldStopSprinting", "canStartSprinting"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;canSprint(Z)Z"))
-    private boolean allowNonSwimWaterSprinting(ClientPlayerEntity instance, boolean allowTouchingWater) {
-        return this.canSprint(allowTouchingWater || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && (instance.isSwimming() || instance.isOnGround()));
+    @Redirect(method = {"shouldStopRunSprinting", "canStartSprinting"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSprintingPossible(Z)Z"))
+    private boolean allowNonSwimWaterSprinting(LocalPlayer instance, boolean allowTouchingWater) {
+        return this.isSprintingPossible(allowTouchingWater || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && (instance.isSwimming() || instance.onGround()));
     }
 
 }

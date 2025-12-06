@@ -23,19 +23,19 @@ package com.viaversion.viafabricplus.injection.mixin.features.interaction.contai
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.MerchantScreenHandler;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.village.MerchantInventory;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOfferList;
-import net.minecraft.village.TradedItem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.multiplayer.MultiPlayerGameMode;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.MerchantMenu;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.MerchantContainer;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.item.trading.ItemCost;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,60 +46,60 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MerchantScreenHandler.class)
-public abstract class MixinMerchantScreenHandler extends ScreenHandler {
+@Mixin(MerchantMenu.class)
+public abstract class MixinMerchantScreenHandler extends AbstractContainerMenu {
 
     @Shadow
     @Final
-    private MerchantInventory merchantInventory;
+    private MerchantContainer tradeContainer;
 
     @Shadow
-    public abstract TradeOfferList getRecipes();
+    public abstract MerchantOffers getOffers();
 
-    protected MixinMerchantScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId) {
+    protected MixinMerchantScreenHandler(@Nullable MenuType<?> type, int syncId) {
         super(type, syncId);
     }
 
-    @Inject(method = "switchTo", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tryMoveItems", at = @At("HEAD"), cancellable = true)
     private void onSwitchTo(int recipeId, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             ci.cancel();
 
-            if (recipeId >= this.getRecipes().size()) {
+            if (recipeId >= this.getOffers().size()) {
                 return;
             }
 
-            final ClientPlayerInteractionManager interactionManager = MinecraftClient.getInstance().interactionManager;
-            final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+            final MultiPlayerGameMode interactionManager = Minecraft.getInstance().gameMode;
+            final LocalPlayer player = Minecraft.getInstance().player;
 
             // move 1st input slot to inventory
-            if (!this.merchantInventory.getStack(0).isEmpty()) {
-                final int count = this.merchantInventory.getStack(0).getCount();
-                interactionManager.clickSlot(syncId, 0, 0, SlotActionType.QUICK_MOVE, player);
-                if (count == this.merchantInventory.getStack(0).getCount()) {
+            if (!this.tradeContainer.getItem(0).isEmpty()) {
+                final int count = this.tradeContainer.getItem(0).getCount();
+                interactionManager.handleInventoryMouseClick(containerId, 0, 0, ClickType.QUICK_MOVE, player);
+                if (count == this.tradeContainer.getItem(0).getCount()) {
                     return;
                 }
             }
 
             // move 2nd input slot to inventory
-            if (!this.merchantInventory.getStack(1).isEmpty()) {
-                final int count = this.merchantInventory.getStack(1).getCount();
-                interactionManager.clickSlot(syncId, 1, 0, SlotActionType.QUICK_MOVE, player);
-                if (count == this.merchantInventory.getStack(1).getCount()) {
+            if (!this.tradeContainer.getItem(1).isEmpty()) {
+                final int count = this.tradeContainer.getItem(1).getCount();
+                interactionManager.handleInventoryMouseClick(containerId, 1, 0, ClickType.QUICK_MOVE, player);
+                if (count == this.tradeContainer.getItem(1).getCount()) {
                     return;
                 }
             }
 
             // refill the slots
-            if (this.merchantInventory.getStack(0).isEmpty() && this.merchantInventory.getStack(1).isEmpty()) {
-                final TradeOffer tradeOffer = this.getRecipes().get(recipeId);
-                this.viaFabricPlus$autofill(interactionManager, player, 0, tradeOffer.getFirstBuyItem());
-                tradeOffer.getSecondBuyItem().ifPresent(item -> this.viaFabricPlus$autofill(interactionManager, player, 1, item));
+            if (this.tradeContainer.getItem(0).isEmpty() && this.tradeContainer.getItem(1).isEmpty()) {
+                final MerchantOffer tradeOffer = this.getOffers().get(recipeId);
+                this.viaFabricPlus$autofill(interactionManager, player, 0, tradeOffer.getItemCostA());
+                tradeOffer.getItemCostB().ifPresent(item -> this.viaFabricPlus$autofill(interactionManager, player, 1, item));
             }
         }
     }
 
-    @Inject(method = "canInsertIntoSlot", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "canTakeItemForPickAll", at = @At("HEAD"), cancellable = true)
     private void modifyCanInsertIntoSlot(ItemStack stack, Slot slot, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             cir.setReturnValue(true);
@@ -107,13 +107,13 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
     }
 
     @Unique
-    private void viaFabricPlus$autofill(ClientPlayerInteractionManager interactionManager, ClientPlayerEntity player, int inputSlot, TradedItem stackNeeded) {
+    private void viaFabricPlus$autofill(MultiPlayerGameMode interactionManager, LocalPlayer player, int inputSlot, ItemCost stackNeeded) {
         int slot;
         for (slot = 3; slot < 39; slot++) {
-            final ItemStack itemStack = this.slots.get(slot).getStack();
-            if (!itemStack.isEmpty() && stackNeeded.matches(itemStack)) {
-                final ItemStack itemStack2 = this.merchantInventory.getStack(inputSlot);
-                if (itemStack2.isEmpty() || ItemStack.areItemsAndComponentsEqual(itemStack, itemStack2)) {
+            final ItemStack itemStack = this.slots.get(slot).getItem();
+            if (!itemStack.isEmpty() && stackNeeded.test(itemStack)) {
+                final ItemStack itemStack2 = this.tradeContainer.getItem(inputSlot);
+                if (itemStack2.isEmpty() || ItemStack.isSameItemSameComponents(itemStack, itemStack2)) {
                     break;
                 }
             }
@@ -122,11 +122,11 @@ public abstract class MixinMerchantScreenHandler extends ScreenHandler {
             return;
         }
 
-        final boolean wasHoldingItem = !player.currentScreenHandler.getCursorStack().isEmpty();
-        interactionManager.clickSlot(syncId, slot, 0, SlotActionType.PICKUP, player);
-        interactionManager.clickSlot(syncId, slot, 0, SlotActionType.PICKUP_ALL, player);
-        interactionManager.clickSlot(syncId, inputSlot, 0, SlotActionType.PICKUP, player);
-        if (wasHoldingItem) interactionManager.clickSlot(syncId, slot, 0, SlotActionType.PICKUP, player);
+        final boolean wasHoldingItem = !player.containerMenu.getCarried().isEmpty();
+        interactionManager.handleInventoryMouseClick(containerId, slot, 0, ClickType.PICKUP, player);
+        interactionManager.handleInventoryMouseClick(containerId, slot, 0, ClickType.PICKUP_ALL, player);
+        interactionManager.handleInventoryMouseClick(containerId, inputSlot, 0, ClickType.PICKUP, player);
+        if (wasHoldingItem) interactionManager.handleInventoryMouseClick(containerId, slot, 0, ClickType.PICKUP, player);
     }
 
 }

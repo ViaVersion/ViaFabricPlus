@@ -24,23 +24,23 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.component.type.ConsumableComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.item.component.Consumable;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ConsumableComponent.class)
+@Mixin(Consumable.class)
 public abstract class MixinConsumableComponent {
 
-    @Redirect(method = "consume", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult$Success;withNewHandStack(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/util/ActionResult$Success;"))
-    private ActionResult.Success dontExchangeStack(ActionResult.Success instance, ItemStack newHandStack, @Local(argsOnly = true) ItemStack stack) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5) && stack.isOf(Items.MILK_BUCKET)) {
-            return instance.withNewHandStack(stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack);
+    @Redirect(method = "startConsuming", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/InteractionResult$Success;heldItemTransformedTo(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/InteractionResult$Success;"))
+    private InteractionResult.Success dontExchangeStack(InteractionResult.Success instance, ItemStack newHandStack, @Local(argsOnly = true) ItemStack stack) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5) && stack.is(Items.MILK_BUCKET)) {
+            return instance.heldItemTransformedTo(stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack);
         } else {
-            return instance.withNewHandStack(newHandStack);
+            return instance.heldItemTransformedTo(newHandStack);
         }
     }
 

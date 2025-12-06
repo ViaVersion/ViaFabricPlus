@@ -30,18 +30,18 @@ import com.viaversion.viaversion.libs.gson.JsonObject;
 import java.io.FileWriter;
 import java.io.IOException;
 import net.lenni0451.reflect.stream.RStream;
-import net.minecraft.Bootstrap;
-import net.minecraft.GameVersion;
 import net.minecraft.SharedConstants;
-import net.minecraft.block.entity.BannerPatterns;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.resource.PackVersion;
-import net.minecraft.resource.ResourceType;
+import net.minecraft.server.Bootstrap;
+import net.minecraft.WorldVersion;
+import net.minecraft.world.level.block.entity.BannerPatterns;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.packs.metadata.pack.PackFormat;
+import net.minecraft.server.packs.PackType;
 import org.junit.jupiter.api.Test;
 
 import static com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator.NATIVE_VERSION;
@@ -53,8 +53,8 @@ public final class UpdateTaskTest {
 
     @Test
     public void update() {
-        SharedConstants.createGameVersion();
-        Bootstrap.initialize();
+        SharedConstants.tryDetectVersion();
+        Bootstrap.bootStrap();
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new UnsupportedOperationException("Please update ProtocolTranslator.NATIVE_VERSION to the current protocol version.");
         }
@@ -74,56 +74,56 @@ public final class UpdateTaskTest {
     }
 
     private static void addMissingItems(final JsonObject items) {
-        for (final Item item : Registries.ITEM) {
+        for (final Item item : BuiltInRegistries.ITEM) {
             if (VersionedRegistries.ITEM_DIFF.containsKey(item) || item == Items.AIR) {
                 continue;
             }
 
-            items.addProperty(Registries.ITEM.getId(item).toString(), CURRENT_VERSION_RANGE);
+            items.addProperty(BuiltInRegistries.ITEM.getKey(item).toString(), CURRENT_VERSION_RANGE);
         }
     }
 
     private static void addMissingEnchantments(final JsonObject enchantments) {
         RStream.of(Enchantments.class).fields().forEach(fieldWrapper -> {
-            final RegistryKey registryKey = fieldWrapper.get();
+            final ResourceKey registryKey = fieldWrapper.get();
             if (VersionedRegistries.ENCHANTMENT_DIFF.containsKey(registryKey)) {
                 return;
             }
 
-            enchantments.addProperty(registryKey.getValue().toString(), CURRENT_VERSION_RANGE);
+            enchantments.addProperty(registryKey.location().toString(), CURRENT_VERSION_RANGE);
         });
     }
 
     private static void addMissingPatterns(final JsonObject patterns) {
         RStream.of(BannerPatterns.class).fields().forEach(fieldWrapper -> {
-            final RegistryKey registryKey = fieldWrapper.get();
+            final ResourceKey registryKey = fieldWrapper.get();
             if (VersionedRegistries.PATTERN_DIFF.containsKey(registryKey)) {
                 return;
             }
 
-            patterns.addProperty(registryKey.getValue().toString(), CURRENT_VERSION_RANGE);
+            patterns.addProperty(registryKey.location().toString(), CURRENT_VERSION_RANGE);
         });
     }
 
     private static void addMissingEffects(final JsonObject effects) {
-        for (final StatusEffect effect : Registries.STATUS_EFFECT) {
-            if (VersionedRegistries.EFFECT_DIFF.containsKey(Registries.STATUS_EFFECT.getEntry(effect))) {
+        for (final MobEffect effect : BuiltInRegistries.MOB_EFFECT) {
+            if (VersionedRegistries.EFFECT_DIFF.containsKey(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect))) {
                 continue;
             }
 
-            effects.addProperty(Registries.STATUS_EFFECT.getId(effect).toString(), CURRENT_VERSION_RANGE);
+            effects.addProperty(BuiltInRegistries.MOB_EFFECT.getKey(effect).toString(), CURRENT_VERSION_RANGE);
         }
     }
 
     private static void updateResourcePacks() {
         final JsonObject data = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("resource-pack-headers.json");
 
-        final GameVersion version = SharedConstants.getGameVersion();
-        if (data.has(version.name())) {
+        final WorldVersion version = SharedConstants.getCurrentVersion();
+        if (data == null || data.has(version.name())) {
             return;
         }
 
-        final PackVersion packVersion = version.packVersion(ResourceType.CLIENT_RESOURCES);
+        final PackFormat packVersion = version.packVersion(PackType.CLIENT_RESOURCES);
         final JsonObject packFormat = new JsonObject();
         packFormat.addProperty("major", packVersion.major());
         packFormat.addProperty("minor", packVersion.minor());

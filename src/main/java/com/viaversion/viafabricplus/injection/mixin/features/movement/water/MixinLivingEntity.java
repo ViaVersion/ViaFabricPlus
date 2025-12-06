@@ -23,14 +23,14 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -45,17 +45,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity {
 
-    public MixinLivingEntity(EntityType<?> type, World world) {
+    public MixinLivingEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 
     @Shadow
-    protected abstract float getBaseWaterMovementSpeedMultiplier();
+    protected abstract float getWaterSlowDown();
 
     @Shadow
     public abstract boolean isJumping();
 
-    @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
+    @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidHeight(Lnet/minecraft/tags/TagKey;)D"))
     private double dontApplyLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return Double.MAX_VALUE;
@@ -65,23 +65,23 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Redirect(method = "travelInFluid",
-        slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/entity/effect/StatusEffects;DOLPHINS_GRACE:Lnet/minecraft/registry/entry/RegistryEntry;")),
-        at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;horizontalCollision:Z", ordinal = 0))
+        slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/world/effect/MobEffects;DOLPHINS_GRACE:Lnet/minecraft/core/Holder;")),
+        at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;horizontalCollision:Z", ordinal = 0))
     private boolean disableClimbing(LivingEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && instance.horizontalCollision;
     }
 
-    @ModifyVariable(method = "applyFluidMovingSpeed", ordinal = 0, at = @At("HEAD"), argsOnly = true)
+    @ModifyVariable(method = "getFluidFallingAdjustedMovement", ordinal = 0, at = @At("HEAD"), argsOnly = true)
     private boolean modifyMovingDown(boolean movingDown) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && movingDown;
     }
 
-    @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSprinting()Z", ordinal = 0))
+    @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSprinting()Z", ordinal = 0))
     private boolean modifySwimSprintSpeed(LivingEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && instance.isSprinting();
     }
 
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getFluidHeight(Lnet/minecraft/registry/tag/TagKey;)D"))
+    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidHeight(Lnet/minecraft/tags/TagKey;)D"))
     private double redirectFluidHeight(LivingEntity instance, TagKey<Fluid> tagKey) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && tagKey == FluidTags.WATER) {
             if (instance.getFluidHeight(tagKey) > 0) return 1;
@@ -89,17 +89,17 @@ public abstract class MixinLivingEntity extends Entity {
         return instance.getFluidHeight(tagKey);
     }
 
-    @Inject(method = "applyFluidMovingSpeed", at = @At("HEAD"), cancellable = true)
-    private void modifySwimSprintFallSpeed(double gravity, boolean movingDown, Vec3d velocity, CallbackInfoReturnable<Vec3d> ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !this.hasNoGravity()) {
-            ci.setReturnValue(new Vec3d(velocity.x, velocity.y - 0.02, velocity.z));
+    @Inject(method = "getFluidFallingAdjustedMovement", at = @At("HEAD"), cancellable = true)
+    private void modifySwimSprintFallSpeed(double gravity, boolean movingDown, Vec3 velocity, CallbackInfoReturnable<Vec3> ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !this.isNoGravity()) {
+            ci.setReturnValue(new Vec3(velocity.x, velocity.y - 0.02, velocity.z));
         }
     }
 
     @ModifyConstant(method = "travelInFluid", constant = @Constant(floatValue = 0.9F))
     private float modifySwimFriction(float constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return this.getBaseWaterMovementSpeedMultiplier();
+            return this.getWaterSlowDown();
         } else {
             return constant;
         }

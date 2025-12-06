@@ -23,13 +23,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CarpetBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.CarpetBlock;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -37,14 +37,14 @@ import org.spongepowered.asm.mixin.Unique;
 public abstract class MixinCarpetBlock extends Block {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_r1_7_10 = Block.createCuboidShape(0.0D, -0.00001D /* 0.0D */, 0.0D, 16.0D, 0.0D, 16.0D);
+    private static final VoxelShape viaFabricPlus$shape_r1_7_10 = Block.box(0.0D, -0.00001D /* 0.0D */, 0.0D, 16.0D, 0.0D, 16.0D);
 
-    public MixinCarpetBlock(Settings settings) {
+    public MixinCarpetBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             return viaFabricPlus$shape_r1_7_10;
         } else {

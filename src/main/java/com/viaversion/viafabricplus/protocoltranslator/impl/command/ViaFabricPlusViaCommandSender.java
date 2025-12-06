@@ -24,14 +24,14 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.command;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import java.util.UUID;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.command.CommandSource;
-import net.minecraft.text.Text;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.Component;
 
 public final class ViaFabricPlusViaCommandSender implements ViaCommandSender {
 
-    private final CommandSource source;
+    private final SharedSuggestionProvider source;
 
-    public ViaFabricPlusViaCommandSender(final CommandSource source) {
+    public ViaFabricPlusViaCommandSender(final SharedSuggestionProvider source) {
         this.source = source;
     }
 
@@ -42,12 +42,12 @@ public final class ViaFabricPlusViaCommandSender implements ViaCommandSender {
 
     @Override
     public void sendMessage(String s) {
-        ((FabricClientCommandSource) source).sendFeedback(Text.of(s.replace("/viaversion", "/viafabricplus"))); // ViaVersion doesn't support changing the root command name, so we have to do it ourselves
+        ((FabricClientCommandSource) source).sendFeedback(Component.nullToEmpty(s.replace("/viaversion", "/viafabricplus"))); // ViaVersion doesn't support changing the root command name, so we have to do it ourselves
     }
 
     @Override
     public UUID getUUID() {
-        return ((FabricClientCommandSource) source).getPlayer().getUuid();
+        return ((FabricClientCommandSource) source).getPlayer().getUUID();
     }
 
     @Override

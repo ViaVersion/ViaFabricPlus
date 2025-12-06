@@ -24,9 +24,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.riding_offs
 import com.viaversion.viafabricplus.features.entity.riding_offset.EntityRidingOffsetsPre1_20_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,23 +36,23 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinEntity {
 
     @Shadow
-    protected abstract Vec3d getPassengerAttachmentPos(Entity passenger, EntityDimensions dimensions, float scaleFactor);
+    protected abstract Vec3 getPassengerAttachmentPoint(Entity passenger, EntityDimensions dimensions, float scaleFactor);
 
-    @Redirect(method = "updatePassengerPosition(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity$PositionUpdater;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getVehicleAttachmentPos(Lnet/minecraft/entity/Entity;)Lnet/minecraft/util/math/Vec3d;"))
-    private Vec3d use1_20_1RidingOffset(Entity instance, Entity vehicle) {
+    @Redirect(method = "positionRider(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/Entity$MoveFunction;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getVehicleAttachmentPoint(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/phys/Vec3;"))
+    private Vec3 use1_20_1RidingOffset(Entity instance, Entity vehicle) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-            return new Vec3d(0, -EntityRidingOffsetsPre1_20_2.getHeightOffset(instance), 0);
+            return new Vec3(0, -EntityRidingOffsetsPre1_20_2.getHeightOffset(instance), 0);
         } else {
-            return instance.getVehicleAttachmentPos(vehicle);
+            return instance.getVehicleAttachmentPoint(vehicle);
         }
     }
 
-    @Redirect(method = "getPassengerRidingPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerAttachmentPos(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/EntityDimensions;F)Lnet/minecraft/util/math/Vec3d;"))
-    private Vec3d getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
+    @Redirect(method = "getPassengerRidingPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getPassengerAttachmentPoint(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/EntityDimensions;F)Lnet/minecraft/world/phys/Vec3;"))
+    private Vec3 getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-            return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger).rotateY(-instance.getYaw() * (float) (Math.PI / 180));
+            return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger).yRot(-instance.getYRot() * (float) (Math.PI / 180));
         } else {
-            return getPassengerAttachmentPos(passenger, dimensions, scaleFactor);
+            return getPassengerAttachmentPoint(passenger, dimensions, scaleFactor);
         }
     }
 

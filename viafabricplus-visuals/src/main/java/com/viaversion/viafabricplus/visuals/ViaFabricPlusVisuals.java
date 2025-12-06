@@ -27,7 +27,7 @@ import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.visuals.features.classic.creative_menu.GridItemSelectionScreen;
 import com.viaversion.viafabricplus.visuals.features.force_unicode_font.UnicodeFontFix1_12_2;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 public class ViaFabricPlusVisuals implements ViaFabricPlusLoadEntrypoint {
@@ -44,7 +44,7 @@ public class ViaFabricPlusVisuals implements ViaFabricPlusLoadEntrypoint {
             }
         });
 
-        platform.registerOnChangeProtocolVersionCallback((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> {
+        platform.registerOnChangeProtocolVersionCallback((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> {
             if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
                 GridItemSelectionScreen.INSTANCE.itemGrid = null;
             }

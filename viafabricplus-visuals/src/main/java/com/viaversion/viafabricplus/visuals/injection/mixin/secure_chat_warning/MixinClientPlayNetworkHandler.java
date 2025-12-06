@@ -22,21 +22,21 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.secure_chat_warning;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ClientPlayNetworkHandler.class)
+@Mixin(ClientPacketListener.class)
 public abstract class MixinClientPlayNetworkHandler {
 
     @Shadow
-    protected abstract boolean isSecureChatEnforced();
+    protected abstract boolean enforcesSecureChat();
 
-    @Redirect(method = "onGameJoin", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;isSecureChatEnforced()Z"))
-    private boolean removeSecureChatWarning(ClientPlayNetworkHandler instance) {
-        return isSecureChatEnforced() || VisualSettings.INSTANCE.disableSecureChatWarning.isEnabled();
+    @Redirect(method = "handleLogin", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;enforcesSecureChat()Z"))
+    private boolean removeSecureChatWarning(ClientPacketListener instance) {
+        return enforcesSecureChat() || VisualSettings.INSTANCE.disableSecureChatWarning.isEnabled();
     }
 
 }

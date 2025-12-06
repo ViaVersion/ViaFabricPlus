@@ -28,23 +28,23 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.input.RecipeInput;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.world.World;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 public final class RecipeManager1_11_2 {
 
-    private final Multimap<RecipeType<?>, RecipeEntry<?>> recipesByType;
-    private final Map<RegistryKey<Recipe<?>>, RecipeEntry<?>> recipesById;
+    private final Multimap<RecipeType<?>, RecipeHolder<?>> recipesByType;
+    private final Map<ResourceKey<Recipe<?>>, RecipeHolder<?>> recipesById;
 
-    public RecipeManager1_11_2(final Iterable<RecipeEntry<?>> recipes) {
-        final ImmutableMultimap.Builder<RecipeType<?>, RecipeEntry<?>> recipesByTypeBuilder = ImmutableMultimap.builder();
-        final ImmutableMap.Builder<RegistryKey<Recipe<?>>, RecipeEntry<?>> recipesByIdBuilder = ImmutableMap.builder();
+    public RecipeManager1_11_2(final Iterable<RecipeHolder<?>> recipes) {
+        final ImmutableMultimap.Builder<RecipeType<?>, RecipeHolder<?>> recipesByTypeBuilder = ImmutableMultimap.builder();
+        final ImmutableMap.Builder<ResourceKey<Recipe<?>>, RecipeHolder<?>> recipesByIdBuilder = ImmutableMap.builder();
 
-        for (RecipeEntry<?> recipeEntry : recipes) {
+        for (RecipeHolder<?> recipeEntry : recipes) {
             final RecipeType<?> recipeType = recipeEntry.value().getType();
             recipesByTypeBuilder.put(recipeType, recipeEntry);
             recipesByIdBuilder.put(recipeEntry.id(), recipeEntry);
@@ -54,23 +54,23 @@ public final class RecipeManager1_11_2 {
         this.recipesById = recipesByIdBuilder.build();
     }
 
-    public <I extends RecipeInput, T extends Recipe<I>> Optional<RecipeEntry<T>> getFirstMatch(final RecipeType<T> type, final I input, final World world) {
+    public <I extends RecipeInput, T extends Recipe<I>> Optional<RecipeHolder<T>> getFirstMatch(final RecipeType<T> type, final I input, final Level world) {
         if (input.isEmpty()) {
             return Optional.empty();
         } else {
-            return this.recipesByType.get(type).stream().map(e -> (RecipeEntry<T>) e).filter(recipe -> recipe.value().matches(input, world)).findFirst();
+            return this.recipesByType.get(type).stream().map(e -> (RecipeHolder<T>) e).filter(recipe -> recipe.value().matches(input, world)).findFirst();
         }
     }
 
-    public Optional<RecipeEntry<?>> get(final RegistryKey<Recipe<?>> id) {
+    public Optional<RecipeHolder<?>> get(final ResourceKey<Recipe<?>> id) {
         return Optional.ofNullable(this.recipesById.get(id));
     }
 
-    public Collection<RecipeEntry<?>> values() {
+    public Collection<RecipeHolder<?>> values() {
         return this.recipesById.values();
     }
 
-    public Stream<RegistryKey<Recipe<?>>> keys() {
+    public Stream<ResourceKey<Recipe<?>>> keys() {
         return this.recipesById.keySet().stream();
     }
 

@@ -30,9 +30,9 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.network.packet.c2s.handshake.ConnectionIntent;
-import net.minecraft.util.Formatting;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import net.minecraft.network.protocol.handshake.ClientIntent;
+import net.minecraft.ChatFormatting;
 
 import static com.viaversion.viafabricplus.save.AbstractSave.GSON;
 
@@ -52,13 +52,13 @@ public final class ProtocolVersionDetector {
      */
     public static ProtocolVersion get(final ServerAddress serverAddress, final InetSocketAddress socketAddress, final ProtocolVersion clientVersion) throws Exception {
         try (
-            final Socket socket = new Socket(serverAddress.getAddress(), serverAddress.getPort());
+                final Socket socket = new Socket(serverAddress.getHost(), serverAddress.getPort());
 
-            final DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            final DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+                final DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                final DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
 
-            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            final DataOutputStream handshakePacket = new DataOutputStream(byteArrayOutputStream)
+                final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                final DataOutputStream handshakePacket = new DataOutputStream(byteArrayOutputStream)
         ) {
             socket.setTcpNoDelay(true);
             socket.setSoTimeout(TIMEOUT);
@@ -68,13 +68,13 @@ public final class ProtocolVersionDetector {
 
             writeVarInt(handshakePacket, clientVersion.getOriginalVersion());
             if (clientVersion.olderThanOrEqualTo(ProtocolVersion.v1_17)) {
-                writeString(handshakePacket, serverAddress.getAddress());
+                writeString(handshakePacket, serverAddress.getHost());
                 handshakePacket.writeShort(serverAddress.getPort());
             } else {
                 writeString(handshakePacket, socketAddress.getHostString());
                 handshakePacket.writeShort(socketAddress.getPort());
             }
-            writeVarInt(handshakePacket, ConnectionIntent.STATUS.getId());
+            writeVarInt(handshakePacket, ClientIntent.STATUS.id());
 
             writeVarInt(dataOutputStream, byteArrayOutputStream.size());
             dataOutputStream.write(byteArrayOutputStream.toByteArray());
@@ -126,7 +126,7 @@ public final class ProtocolVersionDetector {
                 }
             }
 
-            throw new RuntimeException("Unable to detect the server version\nServer sent an invalid protocol id: " + serverAddress + " (" + name + Formatting.RESET + ")");
+            throw new RuntimeException("Unable to detect the server version\nServer sent an invalid protocol id: " + serverAddress + " (" + name + ChatFormatting.RESET + ")");
         }
     }
 

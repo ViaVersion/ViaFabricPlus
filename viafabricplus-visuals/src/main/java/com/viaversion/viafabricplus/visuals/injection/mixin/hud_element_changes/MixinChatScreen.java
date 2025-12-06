@@ -22,9 +22,9 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.hud_element_changes;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.gui.hud.ChatHud;
-import net.minecraft.client.gui.hud.MessageIndicator;
-import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.components.ChatComponent;
+import net.minecraft.client.GuiMessageTag;
+import net.minecraft.client.gui.screens.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -32,12 +32,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = ChatScreen.class)
 public abstract class MixinChatScreen {
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;getIndicatorAt(DD)Lnet/minecraft/client/gui/hud/MessageIndicator;"))
-    private MessageIndicator removeIndicator(ChatHud instance, double mouseX, double mouseY) {
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/ChatComponent;getMessageTagAt(DD)Lnet/minecraft/client/GuiMessageTag;"))
+    private GuiMessageTag removeIndicator(ChatComponent instance, double mouseX, double mouseY) {
         if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
             return null;
         } else {
-            return instance.getIndicatorAt(mouseX, mouseY);
+            return instance.getMessageTagAt(mouseX, mouseY);
         }
     }
 

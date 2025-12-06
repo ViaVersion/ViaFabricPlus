@@ -29,9 +29,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.PlayerListHud;
-import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.PlayerTabOverlay;
+import net.minecraft.client.multiplayer.PlayerInfo;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,15 +40,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(PlayerListHud.class)
+@Mixin(PlayerTabOverlay.class)
 public abstract class MixinPlayerListHud implements IPlayerListHud {
 
     @Shadow
     @Final
-    private MinecraftClient client;
+    private Minecraft minecraft;
 
     @Unique
-    private static final Comparator<PlayerListEntry> viaFabricPlusVisuals$FIFO_COMPARATOR = Comparator.comparingInt(e -> ((IPlayerListEntry) e).viaFabricPlusVisuals$getIndex());
+    private static final Comparator<PlayerInfo> viaFabricPlusVisuals$FIFO_COMPARATOR = Comparator.comparingInt(e -> ((IPlayerListEntry) e).viaFabricPlusVisuals$getIndex());
 
     @Unique
     private int viaFabricPlusVisuals$maxSlots;
@@ -56,10 +56,10 @@ public abstract class MixinPlayerListHud implements IPlayerListHud {
     @Unique
     private boolean viaFabricPlusVisuals$hideSkins = true;
 
-    @Inject(method = "collectPlayerEntries", at = @At("HEAD"), cancellable = true)
-    private void collectPlayerEntries(CallbackInfoReturnable<List<PlayerListEntry>> result) {
+    @Inject(method = "getPlayerInfos", at = @At("HEAD"), cancellable = true)
+    private void collectPlayerEntries(CallbackInfoReturnable<List<PlayerInfo>> result) {
         if (VisualSettings.INSTANCE.enableLegacyTablist.isEnabled()) {
-            result.setReturnValue(this.client.player.networkHandler.getListedPlayerListEntries().stream()
+            result.setReturnValue(this.minecraft.player.connection.getListedOnlinePlayers().stream()
                     .sorted(viaFabricPlusVisuals$FIFO_COMPARATOR)
                     .limit(viaFabricPlusVisuals$maxSlots)
                     .collect(Collectors.collectingAndThen(Collectors.toList(), this::viaFabricPlusVisuals$transpose)));
@@ -68,27 +68,27 @@ public abstract class MixinPlayerListHud implements IPlayerListHud {
         }
     }
 
-    @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;isEncrypted()Z"))
+    @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;isEncrypted()Z"))
     private boolean hideSkins(boolean original) {
         return original && !viaFabricPlusVisuals$hideSkins;
     }
 
     @Unique
-    private List<PlayerListEntry> viaFabricPlusVisuals$transpose(final List<PlayerListEntry> list) {
+    private List<PlayerInfo> viaFabricPlusVisuals$transpose(final List<PlayerInfo> list) {
         // Only bother transposing if we know the list is full
         if (list.size() != viaFabricPlusVisuals$maxSlots) {
             viaFabricPlusVisuals$hideSkins = list.stream().noneMatch(e -> e.getProfile().properties().containsKey("textures"));
             return list;
         }
 
-        final List<PlayerListEntry> result = new ArrayList<>(list.size());
+        final List<PlayerInfo> result = new ArrayList<>(list.size());
 
-        final int columns = viaFabricPlusVisuals$maxSlots / PlayerListHud.MAX_ROWS;
+        final int columns = viaFabricPlusVisuals$maxSlots / PlayerTabOverlay.MAX_ROWS_PER_COL;
         boolean anyHasSkinData = false;
         for (int i = 0; i < viaFabricPlusVisuals$maxSlots; i++) {
-            final int row = i % PlayerListHud.MAX_ROWS;
-            final int col = i / PlayerListHud.MAX_ROWS;
-            final PlayerListEntry current = list.get(row * columns + col);
+            final int row = i % PlayerTabOverlay.MAX_ROWS_PER_COL;
+            final int col = i / PlayerTabOverlay.MAX_ROWS_PER_COL;
+            final PlayerInfo current = list.get(row * columns + col);
             result.add(current);
             anyHasSkinData = anyHasSkinData || current.getProfile().properties().containsKey("textures");
         }
@@ -98,7 +98,7 @@ public abstract class MixinPlayerListHud implements IPlayerListHud {
 
     @Override
     public void viaFabricPlusVisuals$setMaxPlayers(int maxPlayers) {
-        this.viaFabricPlusVisuals$maxSlots = Math.min(200, Math.max(20, ((maxPlayers + PlayerListHud.MAX_ROWS - 1) / PlayerListHud.MAX_ROWS) * PlayerListHud.MAX_ROWS));
+        this.viaFabricPlusVisuals$maxSlots = Math.min(200, Math.max(20, ((maxPlayers + PlayerTabOverlay.MAX_ROWS_PER_COL - 1) / PlayerTabOverlay.MAX_ROWS_PER_COL) * PlayerTabOverlay.MAX_ROWS_PER_COL));
     }
 
 }

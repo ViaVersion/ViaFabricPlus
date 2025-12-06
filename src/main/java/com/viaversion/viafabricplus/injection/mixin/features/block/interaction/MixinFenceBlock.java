@@ -23,34 +23,34 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FenceBlock;
-import net.minecraft.block.HorizontalConnectingBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(FenceBlock.class)
-public abstract class MixinFenceBlock extends HorizontalConnectingBlock {
+public abstract class MixinFenceBlock extends CrossCollisionBlock {
 
-    protected MixinFenceBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Settings settings) {
+    protected MixinFenceBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Properties settings) {
         super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
     }
 
     @Override
-    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return stack.isOf(Items.LEAD) ? ActionResult.SUCCESS : ActionResult.PASS;
+            return stack.is(Items.LEAD) ? InteractionResult.SUCCESS : InteractionResult.PASS;
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else {
-            return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+            return super.useItemOn(stack, state, world, pos, player, hand, hit);
         }
     }
 

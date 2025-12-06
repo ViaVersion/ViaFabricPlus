@@ -23,32 +23,32 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.riding_offs
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.entity.passive.CamelEntity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.camel.Camel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(CamelEntity.class)
-public abstract class MixinCamelEntity extends AbstractHorseEntity {
+@Mixin(Camel.class)
+public abstract class MixinCamelEntity extends AbstractHorse {
 
-    public MixinCamelEntity(EntityType<? extends AbstractHorseEntity> entityType, World world) {
+    public MixinCamelEntity(EntityType<? extends AbstractHorse> entityType, Level world) {
         super(entityType, world);
     }
 
     @Override
-    public void onPassengerLookAround(Entity passenger) {
+    public void onPassengerTurned(Entity passenger) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && this.getControllingPassenger() != passenger) {
             this.viaFabricPlus$clampPassengerYaw1_20_1(passenger);
         }
     }
 
     @Override
-    protected void updatePassengerPosition(Entity passenger, PositionUpdater positionUpdater) {
-        super.updatePassengerPosition(passenger, positionUpdater);
+    protected void positionRider(Entity passenger, MoveFunction positionUpdater) {
+        super.positionRider(passenger, positionUpdater);
 
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
             this.viaFabricPlus$clampPassengerYaw1_20_1(passenger);
@@ -57,16 +57,16 @@ public abstract class MixinCamelEntity extends AbstractHorseEntity {
 
     @Unique
     private void viaFabricPlus$clampPassengerYaw1_20_1(final Entity passenger) {
-        passenger.setBodyYaw(this.getYaw());
-        final float passengerYaw = passenger.getYaw();
+        passenger.setYBodyRot(this.getYRot());
+        final float passengerYaw = passenger.getYRot();
 
-        final float deltaDegrees = MathHelper.wrapDegrees(passengerYaw - this.getYaw());
-        final float clampedDelta = MathHelper.clamp(deltaDegrees, -160.0F, 160.0F);
-        passenger.lastYaw += clampedDelta - deltaDegrees;
+        final float deltaDegrees = Mth.wrapDegrees(passengerYaw - this.getYRot());
+        final float clampedDelta = Mth.clamp(deltaDegrees, -160.0F, 160.0F);
+        passenger.yRotO += clampedDelta - deltaDegrees;
 
         final float newYaw = passengerYaw + clampedDelta - deltaDegrees;
-        passenger.setYaw(newYaw);
-        passenger.setHeadYaw(newYaw);
+        passenger.setYRot(newYaw);
+        passenger.setYHeadRot(newYaw);
     }
 
 }

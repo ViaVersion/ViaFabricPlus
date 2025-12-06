@@ -23,19 +23,19 @@ package com.viaversion.viafabricplus.screen;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import java.awt.*;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ConfirmLinkScreen;
-import net.minecraft.client.gui.screen.NoticeScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.PressableTextWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ConfirmLinkScreen;
+import net.minecraft.client.gui.screens.AlertScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.PlainTextButton;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2fStack;
 
 /**
- * This class is a wrapper for the {@link net.minecraft.client.gui.screen.Screen} class which provides some global
+ * This class is a wrapper for the {@link net.minecraft.client.gui.screens.Screen} class which provides some global
  * functions and features used in all screens which are added by ViaFabricPlus.
  * <p>
  * Features:
@@ -44,14 +44,14 @@ import org.joml.Matrix3x2fStack;
  *     <ul>
  *         <li>{@link #setupDefaultSubtitle()}</li>
  *         <li>{@link #setupUrlSubtitle(String)}</li>
- *         <li>{@link #setupSubtitle(Text)}</li>
- *         <li>{@link #setupSubtitle(Text, ButtonWidget.PressAction)}</li>
+ *         <li>{@link #setupSubtitle(Component)}</li>
+ *         <li>{@link #setupSubtitle(Component, Button.OnPress)}</li>
  *     </ul>
  *     </li>
  *     <li>Automatically adds a back button when set inside the constructor</li>
  *     <li>Helper functions:
  *     <ul>
- *         <li>{@link #showErrorScreen(Text, Throwable, Screen)}</li>
+ *         <li>{@link #showErrorScreen(Component, Throwable, Screen)}</li>
  *     </ul>
  *     </li>
  * </ul>
@@ -69,16 +69,16 @@ public class VFPScreen extends Screen {
     private final boolean backButton;
     public Screen prevScreen;
 
-    private Text subtitle;
-    private ButtonWidget.PressAction subtitlePressAction;
+    private Component subtitle;
+    private Button.OnPress subtitlePressAction;
 
-    private PressableTextWidget subtitleWidget;
+    private PlainTextButton subtitleWidget;
 
     public VFPScreen(final String title, final boolean backButton) {
-        this(Text.of(title), backButton);
+        this(Component.nullToEmpty(title), backButton);
     }
 
-    public VFPScreen(final Text title, final boolean backButton) {
+    public VFPScreen(final Component title, final boolean backButton) {
         super(title);
         this.backButton = backButton;
     }
@@ -98,7 +98,7 @@ public class VFPScreen extends Screen {
      * @param subtitle The subtitle which should be rendered
      */
     public void setupUrlSubtitle(final String subtitle) {
-        this.setupSubtitle(Text.of(subtitle), ConfirmLinkScreen.opening(this, subtitle));
+        this.setupSubtitle(Component.nullToEmpty(subtitle), ConfirmLinkScreen.confirmLink(this, subtitle));
     }
 
     /**
@@ -106,7 +106,7 @@ public class VFPScreen extends Screen {
      *
      * @param subtitle The subtitle which should be rendered
      */
-    public void setupSubtitle(@Nullable final Text subtitle) {
+    public void setupSubtitle(@Nullable final Component subtitle) {
         this.setupSubtitle(subtitle, null);
     }
 
@@ -116,19 +116,19 @@ public class VFPScreen extends Screen {
      * @param subtitle            The subtitle which should be rendered
      * @param subtitlePressAction The press action which should be executed when the subtitle is clicked
      */
-    public void setupSubtitle(@Nullable final Text subtitle, @Nullable final ButtonWidget.PressAction subtitlePressAction) {
+    public void setupSubtitle(@Nullable final Component subtitle, @Nullable final Button.OnPress subtitlePressAction) {
         this.subtitlePressAction = subtitlePressAction;
 
         if (subtitleWidget != null) { // Allows removing the subtitle when calling this method twice.
-            remove(subtitleWidget);
+            removeWidget(subtitleWidget);
             subtitleWidget = null;
         }
         if (subtitlePressAction == null) {
             this.subtitle = subtitle;
         } else {
             this.subtitle = null;
-            final int subtitleWidth = textRenderer.getWidth(subtitle);
-            this.addDrawableChild(subtitleWidget = new PressableTextWidget(width / 2 - (subtitleWidth / 2), (textRenderer.fontHeight + 2) * 2 + 3, subtitleWidth, textRenderer.fontHeight + 2, subtitle, subtitlePressAction, textRenderer));
+            final int subtitleWidth = font.width(subtitle);
+            this.addRenderableWidget(subtitleWidget = new PlainTextButton(width / 2 - (subtitleWidth / 2), (font.lineHeight + 2) * 2 + 3, subtitleWidth, font.lineHeight + 2, subtitle, subtitlePressAction, font));
         }
     }
 
@@ -143,7 +143,7 @@ public class VFPScreen extends Screen {
     }
 
     public static void setScreen(final Screen screen) {
-        final MinecraftClient client = MinecraftClient.getInstance();
+        final Minecraft client = Minecraft.getInstance();
 
         client.execute(() -> client.setScreen(screen));
     }
@@ -151,30 +151,30 @@ public class VFPScreen extends Screen {
     @Override
     protected void init() {
         if (backButton) {
-            this.addDrawableChild(ButtonWidget.builder(Text.of("<-"), button -> this.close()).position(5, 5).size(20, 20).build());
+            this.addRenderableWidget(Button.builder(Component.nullToEmpty("<-"), button -> this.onClose()).pos(5, 5).size(20, 20).build());
         }
     }
 
     public void addRefreshButton(final Runnable click) {
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.refresh"), button -> {
+        this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.refresh"), button -> {
             click.run();
-            client.setScreen(this);
-        }).position(width - 60 - 5, 5).size(60, 20).build());
+            minecraft.setScreen(this);
+        }).pos(width - 60 - 5, 5).size(60, 20).build());
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
         this.renderTitle(context);
     }
 
     @Override
-    public void close() {
+    public void onClose() {
         if (prevScreen instanceof VFPScreen vfpScreen) {
             vfpScreen.open(vfpScreen.prevScreen); // Support recursive opening
         } else {
-            MinecraftClient.getInstance().setScreen(prevScreen);
+            Minecraft.getInstance().setScreen(prevScreen);
         }
     }
 
@@ -183,12 +183,12 @@ public class VFPScreen extends Screen {
      *
      * @param context The current draw context
      */
-    public void renderTitle(final DrawContext context) {
-        final Matrix3x2fStack matrices = context.getMatrices();
+    public void renderTitle(final GuiGraphics context) {
+        final Matrix3x2fStack matrices = context.pose();
 
         matrices.pushMatrix();
         matrices.scale(2F, 2F);
-        context.drawCenteredTextWithShadow(textRenderer, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
+        context.drawCenteredString(font, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.popMatrix();
 
         renderSubtitle(context);
@@ -199,10 +199,10 @@ public class VFPScreen extends Screen {
      *
      * @param context The current draw context
      */
-    public void renderSubtitle(final DrawContext context) {
+    public void renderSubtitle(final GuiGraphics context) {
         if (subtitle != null && subtitlePressAction == null) {
-            final int startY = (textRenderer.fontHeight + 2) * 2 + 3;
-            context.drawCenteredTextWithShadow(textRenderer, subtitle, width / 2, subtitleCentered() ? this.height / 2 - startY : startY, -1);
+            final int startY = (font.lineHeight + 2) * 2 + 3;
+            context.drawCenteredString(font, subtitle, width / 2, subtitleCentered() ? this.height / 2 - startY : startY, -1);
         }
     }
 
@@ -211,15 +211,15 @@ public class VFPScreen extends Screen {
         return false;
     }
 
-    public void renderScreenTitle(final DrawContext context) {
-        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 70, 16777215);
+    public void renderScreenTitle(final GuiGraphics context) {
+        context.drawCenteredString(this.font, this.title, this.width / 2, 70, 16777215);
     }
 
-    public @Nullable Text getSubtitle() {
+    public @Nullable Component getSubtitle() {
         return subtitle;
     }
 
-    public @Nullable PressableTextWidget getSubtitleWidget() {
+    public @Nullable PlainTextButton getSubtitleWidget() {
         return subtitleWidget;
     }
 
@@ -230,11 +230,11 @@ public class VFPScreen extends Screen {
      * @param throwable The throwable which should be thrown
      * @param next      The screen which should be opened after the error screen is closed
      */
-    public static void showErrorScreen(final Text title, final Throwable throwable, final Screen next) {
+    public static void showErrorScreen(final Component title, final Throwable throwable, final Screen next) {
         ViaFabricPlusImpl.INSTANCE.getLogger().error("Something went wrong!", throwable);
 
-        final MinecraftClient client = MinecraftClient.getInstance();
-        client.execute(() -> client.setScreen(new NoticeScreen(() -> client.setScreen(next), title, Text.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Text.translatable("base.viafabricplus.cancel"), false)));
+        final Minecraft client = Minecraft.getInstance();
+        client.execute(() -> client.setScreen(new AlertScreen(() -> client.setScreen(next), title, Component.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Component.translatable("base.viafabricplus.cancel"), false)));
     }
 
 }

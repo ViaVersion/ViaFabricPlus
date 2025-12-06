@@ -24,22 +24,20 @@ package com.viaversion.viafabricplus.injection.mixin.features.world.duplicated_s
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.ButtonBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ButtonBlock.class)
 public abstract class MixinButtonBlock {
 
-    @WrapWithCondition(
-        method = "playClickSound",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldAccess;playSound(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;)V"))
-    private boolean disableClickSounds(WorldAccess instance, Entity source, BlockPos pos, SoundEvent sound, SoundCategory category) {
+    @WrapWithCondition(method = "playSound", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/LevelAccessor;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;)V"))
+    private boolean disableClickSounds(LevelAccessor instance, Entity source, BlockPos pos, SoundEvent sound, SoundSource category) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8); // Sent by the server in older versions
     }
 

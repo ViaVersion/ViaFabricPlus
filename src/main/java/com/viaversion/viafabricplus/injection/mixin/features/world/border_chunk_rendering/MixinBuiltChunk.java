@@ -23,16 +23,16 @@ package com.viaversion.viafabricplus.injection.mixin.features.world.border_chunk
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.render.chunk.ChunkBuilder;
+import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ChunkBuilder.BuiltChunk.class)
+@Mixin(SectionRenderDispatcher.RenderSection.class)
 public abstract class MixinBuiltChunk {
 
-    @Inject(method = "shouldBuild", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "hasAllNeighbors", at = @At("HEAD"), cancellable = true)
     private void modifyRenderCondition(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(true);

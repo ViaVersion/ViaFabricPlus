@@ -24,8 +24,8 @@ package com.viaversion.viafabricplus.api.settings;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import java.util.function.Supplier;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
 
 /**
  * This class is the base for all settings. It contains the name, the default value and the current value.
@@ -35,14 +35,14 @@ import net.minecraft.text.Text;
  */
 public abstract class AbstractSetting<T> {
 
-    private final MutableText name;
+    private final MutableComponent name;
     private final T defaultValue;
 
     private T value;
 
-    private Supplier<Text> tooltip;
+    private Supplier<Component> tooltip;
 
-    public AbstractSetting(final SettingGroup parent, final MutableText name, final T defaultValue) {
+    public AbstractSetting(final SettingGroup parent, final MutableComponent name, final T defaultValue) {
         this.name = name;
         this.defaultValue = defaultValue;
 
@@ -58,7 +58,7 @@ public abstract class AbstractSetting<T> {
     public void onValueChanged() {
     }
 
-    public MutableText getName() {
+    public MutableComponent getName() {
         return name;
     }
 
@@ -92,7 +92,7 @@ public abstract class AbstractSetting<T> {
         onValueChanged();
     }
 
-    public Text getTooltip() {
+    public Component getTooltip() {
         if (tooltip == null) {
             return null;
         } else {
@@ -100,11 +100,11 @@ public abstract class AbstractSetting<T> {
         }
     }
 
-    public void setTooltip(Text tooltip) {
+    public void setTooltip(Component tooltip) {
         this.tooltip = () -> tooltip;
     }
 
-    public void setTooltip(Supplier<Text> tooltip) {
+    public void setTooltip(Supplier<Component> tooltip) {
         this.tooltip = tooltip;
     }
 

@@ -34,12 +34,12 @@ import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.model.classicube.server.CCServerInfo;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 import static com.viaversion.viafabricplus.screen.VFPListEntry.SLOT_MARGIN;
@@ -67,24 +67,24 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
                 ViaFabricPlusImpl.INSTANCE.getLogger().error("Error while loading ClassiCube servers!", throwable);
                 showErrorScreen(INSTANCE.getTitle(), throwable, prevScreen);
             });
-            setupSubtitle(Text.translatable("betacraft.viafabricplus.loading"));
+            setupSubtitle(Component.translatable("betacraft.viafabricplus.loading"));
             return;
         }
 
-        final int entryHeight = (textRenderer.fontHeight + 2) * 3; // title is 2
-        this.addDrawableChild(new SlotList(this.client, width, height, 2 * SLOT_MARGIN + entryHeight, -5, entryHeight));
+        final int entryHeight = (font.lineHeight + 2) * 3; // title is 2
+        this.addRenderableWidget(new SlotList(this.minecraft, width, height, 2 * SLOT_MARGIN + entryHeight, -5, entryHeight));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.logout"), button -> {
+        this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.logout"), button -> {
             SaveManager.INSTANCE.getAccountsSave().setClassicubeAccount(null);
             SERVER_LIST = null;
-            close();
-        }).position(width - 60 - 5, 5).size(60, 20).build());
+            onClose();
+        }).pos(width - 60 - 5, 5).size(60, 20).build());
 
         super.init();
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
         if (SERVER_LIST == null) {
@@ -92,8 +92,8 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
         }
 
         final CCAccount account = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount();
-        context.drawTextWithShadow(textRenderer, Text.translatable("classicube.viafabricplus.profile"), 32, 6, -1);
-        context.drawTextWithShadow(textRenderer, Text.of(account.username()), 32, 16, -1);
+        context.drawString(font, Component.translatable("classicube.viafabricplus.profile"), 32, 6, -1);
+        context.drawString(font, Component.nullToEmpty(account.username()), 32, 16, -1);
     }
 
     @Override
@@ -104,7 +104,7 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
     public static class SlotList extends VFPList {
         private static double scrollAmount;
 
-        public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
+        public SlotList(Minecraft minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             SERVER_LIST.forEach(serverInfo -> this.addEntry(new ServerSlot(serverInfo)));
@@ -130,8 +130,8 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
         }
 
         @Override
-        public Text getNarration() {
-            return Text.of(classiCubeServerInfo.name());
+        public Component getNarration() {
+            return Component.nullToEmpty(classiCubeServerInfo.name());
         }
 
         @Override
@@ -143,13 +143,13 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
         }
 
         @Override
-        public void mappedRender(DrawContext context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, classiCubeServerInfo.name(), entryWidth / 2, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+        public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            final Font textRenderer = Minecraft.getInstance().font;
+            context.drawCenteredString(textRenderer, classiCubeServerInfo.name(), entryWidth / 2, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
 
-            context.drawTextWithShadow(textRenderer, classiCubeServerInfo.software().replace('&', Formatting.FORMATTING_CODE_PREFIX), 1, 1, -1);
+            context.drawString(textRenderer, classiCubeServerInfo.software().replace('&', ChatFormatting.PREFIX_CODE), 1, 1, -1);
             final String playerText = classiCubeServerInfo.players() + "/" + classiCubeServerInfo.maxPlayers();
-            context.drawTextWithShadow(textRenderer, playerText, entryWidth - textRenderer.getWidth(playerText) - 1, 1, -1);
+            context.drawString(textRenderer, playerText, entryWidth - textRenderer.width(playerText) - 1, 1, -1);
         }
     }
 

@@ -26,17 +26,17 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.Level;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -50,74 +50,74 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinEntity {
 
     @Shadow
-    private Vec3d pos;
+    private Vec3 position;
 
     @Shadow
-    private World world;
+    private Level level;
 
     @Shadow
-    protected Vec3d movementMultiplier;
+    protected Vec3 stuckSpeedMultiplier;
 
     @Shadow
-    public abstract Box getBoundingBox();
+    public abstract AABB getBoundingBox();
 
     @Shadow
-    public abstract boolean isOnGround();
+    public abstract boolean onGround();
 
     @Shadow
-    public abstract float getStepHeight();
+    public abstract float maxUpStep();
 
     @Shadow
-    public abstract World getEntityWorld();
+    public abstract Level level();
 
-    @Redirect(method = "slowMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;movementMultiplier:Lnet/minecraft/util/math/Vec3d;"))
-    private void prioritySlowestMovementMultiplier(Entity instance, Vec3d value) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && this.movementMultiplier != Vec3d.ZERO) {
-            this.movementMultiplier = new Vec3d(Math.min(this.movementMultiplier.x, value.x), Math.min(this.movementMultiplier.y, value.y), Math.min(this.movementMultiplier.z, value.z));
+    @Redirect(method = "makeStuckInBlock", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;stuckSpeedMultiplier:Lnet/minecraft/world/phys/Vec3;"))
+    private void prioritySlowestMovementMultiplier(Entity instance, Vec3 value) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && this.stuckSpeedMultiplier != Vec3.ZERO) {
+            this.stuckSpeedMultiplier = new Vec3(Math.min(this.stuckSpeedMultiplier.x, value.x), Math.min(this.stuckSpeedMultiplier.y, value.y), Math.min(this.stuckSpeedMultiplier.z, value.z));
         } else {
-            this.movementMultiplier = value;
+            this.stuckSpeedMultiplier = value;
         }
     }
 
-    @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;addQueuedCollisionChecks(Lnet/minecraft/entity/Entity$QueuedCollisionCheck;)V"))
-    private boolean removeExtraCollisionChecks(Entity instance, Entity.QueuedCollisionCheck queuedCollisionCheck) {
+    @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;addMovementThisTick(Lnet/minecraft/world/entity/Entity$Movement;)V"))
+    private boolean removeExtraCollisionChecks(Entity instance, Entity.Movement queuedCollisionCheck) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_5);
     }
 
-    @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;lengthSquared()D", ordinal = 1), slice = @Slice(
-        from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;")
+    @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;lengthSqr()D", ordinal = 1), slice = @Slice(
+        from = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;collide(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;")
     ))
-    private double allowSmallValues(Vec3d instance) {
+    private double allowSmallValues(Vec3 instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return Double.MAX_VALUE;
         } else {
-            return instance.lengthSquared();
+            return instance.lengthSqr();
         }
     }
 
-    @Inject(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"), cancellable = true)
-    private void use1_20_6StepCollisionCalculation(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
+    @Inject(method = "collide(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
+    private void use1_20_6StepCollisionCalculation(Vec3 movement, CallbackInfoReturnable<Vec3> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             final Entity thiz = (Entity) (Object) this;
-            final Box box = this.getBoundingBox();
-            final List<VoxelShape> collisions = this.getEntityWorld().getEntityCollisions(thiz, box.stretch(movement));
-            Vec3d adjustedMovement = movement.lengthSquared() == 0D ? movement : Entity.adjustMovementForCollisions(thiz, movement, box, this.getEntityWorld(), collisions);
+            final AABB box = this.getBoundingBox();
+            final List<VoxelShape> collisions = this.level().getEntityCollisions(thiz, box.expandTowards(movement));
+            Vec3 adjustedMovement = movement.lengthSqr() == 0D ? movement : Entity.collideBoundingBox(thiz, movement, box, this.level(), collisions);
             final boolean changedX = movement.x != adjustedMovement.x;
             final boolean changedY = movement.y != adjustedMovement.y;
             final boolean changedZ = movement.z != adjustedMovement.z;
-            final boolean mayTouchGround = this.isOnGround() || changedY && movement.y < 0D;
-            if (this.getStepHeight() > 0F && mayTouchGround && (changedX || changedZ)) {
-                Vec3d vec3d2 = Entity.adjustMovementForCollisions(thiz, new Vec3d(movement.x, this.getStepHeight(), movement.z), box, this.getEntityWorld(), collisions);
-                Vec3d vec3d3 = Entity.adjustMovementForCollisions(thiz, new Vec3d(0D, this.getStepHeight(), 0D), box.stretch(movement.x, 0D, movement.z), this.getEntityWorld(), collisions);
-                if (vec3d3.y < this.getStepHeight()) {
-                    Vec3d vec3d4 = Entity.adjustMovementForCollisions(thiz, new Vec3d(movement.x, 0D, movement.z), box.offset(vec3d3), this.getEntityWorld(), collisions).add(vec3d3);
-                    if (vec3d4.horizontalLengthSquared() > vec3d2.horizontalLengthSquared()) {
+            final boolean mayTouchGround = this.onGround() || changedY && movement.y < 0D;
+            if (this.maxUpStep() > 0F && mayTouchGround && (changedX || changedZ)) {
+                Vec3 vec3d2 = Entity.collideBoundingBox(thiz, new Vec3(movement.x, this.maxUpStep(), movement.z), box, this.level(), collisions);
+                Vec3 vec3d3 = Entity.collideBoundingBox(thiz, new Vec3(0D, this.maxUpStep(), 0D), box.expandTowards(movement.x, 0D, movement.z), this.level(), collisions);
+                if (vec3d3.y < this.maxUpStep()) {
+                    Vec3 vec3d4 = Entity.collideBoundingBox(thiz, new Vec3(movement.x, 0D, movement.z), box.move(vec3d3), this.level(), collisions).add(vec3d3);
+                    if (vec3d4.horizontalDistanceSqr() > vec3d2.horizontalDistanceSqr()) {
                         vec3d2 = vec3d4;
                     }
                 }
 
-                if (vec3d2.horizontalLengthSquared() > adjustedMovement.horizontalLengthSquared()) {
-                    adjustedMovement = vec3d2.add(Entity.adjustMovementForCollisions(thiz, new Vec3d(0D, -vec3d2.y + (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2) ? 0 : movement.y), 0D), box.offset(vec3d2), this.getEntityWorld(), collisions));
+                if (vec3d2.horizontalDistanceSqr() > adjustedMovement.horizontalDistanceSqr()) {
+                    adjustedMovement = vec3d2.add(Entity.collideBoundingBox(thiz, new Vec3(0D, -vec3d2.y + (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2) ? 0 : movement.y), 0D), box.move(vec3d2), this.level(), collisions));
                 }
             }
 
@@ -125,17 +125,17 @@ public abstract class MixinEntity {
         }
     }
 
-    @Inject(method = "getPosWithYOffset", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getOnPos(F)Lnet/minecraft/core/BlockPos;", at = @At("HEAD"), cancellable = true)
     private void modifyPosWithYOffset(float offset, CallbackInfoReturnable<BlockPos> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
-            int i = MathHelper.floor(this.pos.x);
-            int j = MathHelper.floor(this.pos.y - (double) (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
-            int k = MathHelper.floor(this.pos.z);
+            int i = Mth.floor(this.position.x);
+            int j = Mth.floor(this.position.y - (double) (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
+            int k = Mth.floor(this.position.z);
             BlockPos blockPos = new BlockPos(i, j, k);
-            if (this.world.getBlockState(blockPos).isAir()) {
-                BlockPos downPos = blockPos.down();
-                BlockState blockState = this.world.getBlockState(downPos);
-                if (blockState.isIn(BlockTags.FENCES) || blockState.isIn(BlockTags.WALLS) || blockState.getBlock() instanceof FenceGateBlock) {
+            if (this.level.getBlockState(blockPos).isAir()) {
+                BlockPos downPos = blockPos.below();
+                BlockState blockState = this.level.getBlockState(downPos);
+                if (blockState.is(BlockTags.FENCES) || blockState.is(BlockTags.WALLS) || blockState.getBlock() instanceof FenceGateBlock) {
                     cir.setReturnValue(downPos);
                     return;
                 }
@@ -145,30 +145,30 @@ public abstract class MixinEntity {
         }
     }
 
-    @Inject(method = "getVelocityAffectingPos", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getBlockPosBelowThatAffectsMyMovement", at = @At("HEAD"), cancellable = true)
     private void modifyVelocityAffectingPos(CallbackInfoReturnable<BlockPos> cir) {
         final ProtocolVersion target = ProtocolTranslator.getTargetVersion();
 
         if (target.olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
-            cir.setReturnValue(BlockPos.ofFloored(pos.x, getBoundingBox().minY - (target.olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1 : 0.5000001), pos.z));
+            cir.setReturnValue(BlockPos.containing(position.x, getBoundingBox().minY - (target.olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1 : 0.5000001), position.z));
         }
     }
 
-    @Redirect(method = {"adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;", "checkBlockCollisions"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Direction;method_73163(Lnet/minecraft/util/math/Vec3d;)Lcom/google/common/collect/ImmutableList;"))
-    private static ImmutableList<Direction.Axis> alwaysSortYXZ(Vec3d movement) {
+    @Redirect(method = {"collideWithShapes(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;Ljava/util/List;)Lnet/minecraft/world/phys/Vec3;", "checkInsideBlocks"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/core/Direction;axisStepOrder(Lnet/minecraft/world/phys/Vec3;)Lcom/google/common/collect/ImmutableList;"))
+    private static ImmutableList<Direction.Axis> alwaysSortYXZ(Vec3 movement) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return Direction.YXZ;
+            return Direction.YXZ_AXIS_ORDER;
         } else {
-            return Direction.method_73163(movement);
+            return Direction.axisStepOrder(movement);
         }
     }
 
-    @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;approximatelyEquals(DD)Z"))
+    @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;equal(DD)Z"))
     private static boolean horizontalExactCollisionEqualness(double a, double b) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return a == b;
         } else {
-            return MathHelper.approximatelyEquals(a, b);
+            return Mth.equal(a, b);
         }
     }
 

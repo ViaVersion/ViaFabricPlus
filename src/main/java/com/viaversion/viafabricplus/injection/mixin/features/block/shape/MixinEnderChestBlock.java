@@ -22,14 +22,14 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.EnderChestBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.EnderChestBlock;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
@@ -41,35 +41,35 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnderChestBlock.class)
-public abstract class MixinEnderChestBlock extends BlockWithEntity {
+public abstract class MixinEnderChestBlock extends BaseEntityBlock {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.025, 0, 0.025, 0.975, 0.95, 0.975);
+    private static final VoxelShape viaFabricPlus$shape_bedrock = Shapes.box(0.025, 0, 0.025, 0.975, 0.95, 0.975);
 
     @Shadow
     @Final
     private static VoxelShape SHAPE;
 
-    protected MixinEnderChestBlock(Settings settings) {
+    protected MixinEnderChestBlock(Properties settings) {
         super(settings);
     }
 
-    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
+    private void changeOutlineShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
-            cir.setReturnValue(VoxelShapes.fullCube());
+            cir.setReturnValue(Shapes.block());
         } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             cir.setReturnValue(viaFabricPlus$shape_bedrock);
         }
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state) {
+    public VoxelShape getOcclusionShape(BlockState state) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_2)
             || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return SHAPE;
         } else {
-            return super.getCullingShape(state);
+            return super.getOcclusionShape(state);
         }
     }
 

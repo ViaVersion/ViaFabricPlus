@@ -23,9 +23,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,19 +37,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinAxeItem {
 
     @Shadow
-    private static boolean shouldCancelStripAttempt(ItemUsageContext context) {
+    private static boolean playerHasBlockingItemUseIntent(UseOnContext context) {
         return false;
     }
 
-    @Redirect(method = "useOnBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/AxeItem;shouldCancelStripAttempt(Lnet/minecraft/item/ItemUsageContext;)Z"))
-    private boolean neverCancelStripAttempt(ItemUsageContext context) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5) && shouldCancelStripAttempt(context);
+    @Redirect(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/AxeItem;playerHasBlockingItemUseIntent(Lnet/minecraft/world/item/context/UseOnContext;)Z"))
+    private boolean neverCancelStripAttempt(UseOnContext context) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5) && playerHasBlockingItemUseIntent(context);
     }
 
-    @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
-    private void disableUse(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(method = "useOn", at = @At("HEAD"), cancellable = true)
+    private void disableUse(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(ActionResult.PASS);
+            cir.setReturnValue(InteractionResult.PASS);
         }
     }
 

@@ -34,9 +34,9 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_12to1_12_1.packet.ClientboundPackets1_12_1;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 public final class ItemTranslator {
 
@@ -44,9 +44,9 @@ public final class ItemTranslator {
         final UserConnection connection = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, targetVersion);
 
         try {
-            final RegistryByteBuf buf = new RegistryByteBuf(Unpooled.buffer(), MinecraftClient.getInstance().getNetworkHandler().getRegistryManager());
+            final RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), Minecraft.getInstance().getConnection().registryAccess());
             buf.writeShort(0); // slot
-            ItemStack.LENGTH_PREPENDED_OPTIONAL_PACKET_CODEC.encode(buf, stack); // item
+            ItemStack.OPTIONAL_UNTRUSTED_STREAM_CODEC.encode(buf, stack); // item
 
             final PacketWrapper setCreativeModeSlot = PacketWrapper.create(ViaFabricPlusProtocol.INSTANCE.getSetCreativeModeSlot(), buf, connection);
             connection.getProtocolInfo().getPipeline().transform(Direction.SERVERBOUND, State.PLAY, setCreativeModeSlot);
@@ -75,14 +75,14 @@ public final class ItemTranslator {
 
             containerSetSlot.resetReader();
             containerSetSlot.user().getProtocolInfo().getPipeline().transform(Direction.CLIENTBOUND, State.PLAY, containerSetSlot);
-            final RegistryByteBuf buf = new RegistryByteBuf(Unpooled.buffer(), MinecraftClient.getInstance().getNetworkHandler().getRegistryManager());
+            final RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), Minecraft.getInstance().getConnection().registryAccess());
             containerSetSlot.setPacketType(null);
             containerSetSlot.writeToBuffer(buf);
 
             buf.readUnsignedByte(); // sync id
             buf.readVarInt(); // revision
             buf.readShort(); // slot
-            return ItemStack.OPTIONAL_PACKET_CODEC.decode(buf);
+            return ItemStack.OPTIONAL_STREAM_CODEC.decode(buf);
         } catch (Throwable t) {
             ViaFabricPlusImpl.INSTANCE.getLogger().error("Error converting ViaVersion {} item to native item stack", sourceVersion, t);
             return ItemStack.EMPTY;

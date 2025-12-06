@@ -21,17 +21,17 @@
 
 package com.viaversion.viafabricplus.features.interaction.replace_block_placement_logic;
 
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.InteractionResult;
 
 public final class ActionResultException1_12_2 extends RuntimeException {
 
-    private final ActionResult actionResult;
+    private final InteractionResult actionResult;
 
-    public ActionResultException1_12_2(final ActionResult actionResult) {
+    public ActionResultException1_12_2(final InteractionResult actionResult) {
         this.actionResult = actionResult;
     }
 
-    public ActionResult getActionResult() {
+    public InteractionResult getActionResult() {
         return this.actionResult;
     }
 

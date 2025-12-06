@@ -24,13 +24,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.remove_newer_scree
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.enums.StructureBlockMode;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.StructureBlockScreen;
-import net.minecraft.client.gui.widget.CyclingButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.text.Text;
+import net.minecraft.world.level.block.state.properties.StructureMode;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.StructureBlockEditScreen;
+import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,29 +38,29 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(StructureBlockScreen.class)
+@Mixin(StructureBlockEditScreen.class)
 public abstract class MixinStructureBlockScreen {
 
     @Shadow
-    private CyclingButtonWidget<Boolean> strictButton;
+    private CycleButton<Boolean> strictButton;
 
     @Shadow
     @Final
-    private static Text STRICT_TEXT;
+    private static Component STRICT_LABEL;
 
     @Shadow
-    private TextFieldWidget inputName;
+    private EditBox nameEdit;
 
-    @Inject(method = "updateWidgets", at = @At("RETURN"))
-    private void hideStrictButton(StructureBlockMode mode, CallbackInfo ci) {
+    @Inject(method = "updateMode", at = @At("RETURN"))
+    private void hideStrictButton(StructureMode mode, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             strictButton.visible = false;
         }
     }
 
-    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)V"))
-    private boolean hideStrictText(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int color) {
-        if (text == STRICT_TEXT) {
+    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
+    private boolean hideStrictText(GuiGraphics instance, Font textRenderer, Component text, int x, int y, int color) {
+        if (text == STRICT_LABEL) {
             return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4);
         } else {
             return true;
@@ -70,7 +70,7 @@ public abstract class MixinStructureBlockScreen {
     @Inject(method = "init", at = @At("TAIL"))
     private void changeInputNameMaxLength(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
-            this.inputName.setMaxLength(64);
+            this.nameEdit.setMaxLength(64);
         }
     }
 

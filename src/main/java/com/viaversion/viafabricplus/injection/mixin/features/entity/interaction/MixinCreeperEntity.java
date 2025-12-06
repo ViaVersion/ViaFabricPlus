@@ -23,22 +23,22 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(CreeperEntity.class)
+@Mixin(Creeper.class)
 public abstract class MixinCreeperEntity {
 
-    @Redirect(method = "interactMob", at = @At(value = "FIELD", target = "Lnet/minecraft/sound/SoundEvents;ITEM_FIRECHARGE_USE:Lnet/minecraft/sound/SoundEvent;"))
+    @Redirect(method = "mobInteract", at = @At(value = "FIELD", target = "Lnet/minecraft/sounds/SoundEvents;FIRECHARGE_USE:Lnet/minecraft/sounds/SoundEvent;"))
     private SoundEvent changeSound() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
-            return SoundEvents.ITEM_FLINTANDSTEEL_USE;
+            return SoundEvents.FLINTANDSTEEL_USE;
         } else {
-            return SoundEvents.ITEM_FIRECHARGE_USE;
+            return SoundEvents.FIRECHARGE_USE;
         }
     }
 

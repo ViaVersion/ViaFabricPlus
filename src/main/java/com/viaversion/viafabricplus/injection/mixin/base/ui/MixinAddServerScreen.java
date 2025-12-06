@@ -25,12 +25,12 @@ import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
 import com.viaversion.viafabricplus.screen.impl.PerServerVersionScreen;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.multiplayer.AddServerScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.ManageServerScreen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,18 +39,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(AddServerScreen.class)
+@Mixin(ManageServerScreen.class)
 public abstract class MixinAddServerScreen extends Screen {
 
     @Shadow
     @Final
-    private ServerInfo server;
+    private ServerData serverData;
 
     @Shadow
-    private TextFieldWidget serverNameField;
+    private EditBox nameEdit;
 
     @Shadow
-    private TextFieldWidget addressField;
+    private EditBox ipEdit;
 
     @Unique
     private String viaFabricPlus$nameField;
@@ -58,7 +58,7 @@ public abstract class MixinAddServerScreen extends Screen {
     @Unique
     private String viaFabricPlus$addressField;
 
-    public MixinAddServerScreen(Text title) {
+    public MixinAddServerScreen(Component title) {
         super(title);
     }
 
@@ -69,27 +69,27 @@ public abstract class MixinAddServerScreen extends Screen {
             return;
         }
 
-        final IServerInfo mixinServerInfo = (IServerInfo) server;
+        final IServerInfo mixinServerInfo = (IServerInfo) serverData;
         final ProtocolVersion forcedVersion = mixinServerInfo.viaFabricPlus$forcedVersion();
 
         // Restore input if the user cancels the version selection screen (or if the user is editing an existing server)
         if (viaFabricPlus$nameField != null && viaFabricPlus$addressField != null) {
-            this.serverNameField.setText(viaFabricPlus$nameField);
-            this.addressField.setText(viaFabricPlus$addressField);
+            this.nameEdit.setValue(viaFabricPlus$nameField);
+            this.ipEdit.setValue(viaFabricPlus$addressField);
 
             viaFabricPlus$nameField = null;
             viaFabricPlus$addressField = null;
         }
 
-        final ButtonWidget.Builder buttonBuilder = ButtonWidget.builder(forcedVersion == null ? Text.translatable("base.viafabricplus.set_version") : Text.of(forcedVersion.getName()), button -> {
+        final Button.Builder buttonBuilder = Button.builder(forcedVersion == null ? Component.translatable("base.viafabricplus.set_version") : Component.nullToEmpty(forcedVersion.getName()), button -> {
             // Store current input in case the user cancels the version selection
-            viaFabricPlus$nameField = serverNameField.getText();
-            viaFabricPlus$addressField = addressField.getText();
+            viaFabricPlus$nameField = nameEdit.getValue();
+            viaFabricPlus$addressField = ipEdit.getValue();
 
-            client.setScreen(new PerServerVersionScreen(this, mixinServerInfo::viaFabricPlus$forceVersion, mixinServerInfo::viaFabricPlus$forcedVersion));
+            minecraft.setScreen(new PerServerVersionScreen(this, mixinServerInfo::viaFabricPlus$forceVersion, mixinServerInfo::viaFabricPlus$forcedVersion));
         }).size(98, 20);
-        GeneralSettings.setOrientation(buttonBuilder::position, buttonPosition, width, height);
-        this.addDrawableChild(buttonBuilder.build());
+        GeneralSettings.setOrientation(buttonBuilder::pos, buttonPosition, width, height);
+        this.addRenderableWidget(buttonBuilder.build());
     }
 
 }

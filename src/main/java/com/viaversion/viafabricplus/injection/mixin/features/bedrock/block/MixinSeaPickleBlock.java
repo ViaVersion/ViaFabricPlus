@@ -22,15 +22,15 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.block;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SeaPickleBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SeaPickleBlock;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -44,59 +44,59 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinSeaPickleBlock extends Block {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_bedrock = Block.createColumnShape(16.0F, 0.0F, 6.0F);
+    private static final VoxelShape viaFabricPlus$shape_bedrock = Block.column(16.0F, 0.0F, 6.0F);
 
     @Shadow
     @Final
-    private static VoxelShape ONE_PICKLE_SHAPE;
+    private static VoxelShape SHAPE_ONE;
 
     @Shadow
     @Final
-    private static VoxelShape TWO_PICKLES_SHAPE;
+    private static VoxelShape SHAPE_TWO;
 
     @Shadow
     @Final
-    private static VoxelShape THREE_PICKLES_SHAPE;
+    private static VoxelShape SHAPE_THREE;
 
     @Shadow
     @Final
-    private static VoxelShape FOUR_PICKLES_SHAPE;
+    private static VoxelShape SHAPE_FOUR;
 
     @Shadow
     @Final
-    public static IntProperty PICKLES;
+    public static IntegerProperty PICKLES;
 
-    public MixinSeaPickleBlock(final Settings settings) {
+    public MixinSeaPickleBlock(final Properties settings) {
         super(settings);
     }
 
-    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
+    private void changeOutlineShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             cir.setReturnValue(viaFabricPlus$shape_bedrock);
         }
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return VoxelShapes.empty();
+            return Shapes.empty();
         } else {
             return super.getCollisionShape(state, world, pos, context);
         }
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state) {
+    public VoxelShape getOcclusionShape(BlockState state) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return switch (state.get(PICKLES)) {
-                case 2 -> TWO_PICKLES_SHAPE;
-                case 3 -> THREE_PICKLES_SHAPE;
-                case 4 -> FOUR_PICKLES_SHAPE;
-                default -> ONE_PICKLE_SHAPE;
+            return switch (state.getValue(PICKLES)) {
+                case 2 -> SHAPE_TWO;
+                case 3 -> SHAPE_THREE;
+                case 4 -> SHAPE_FOUR;
+                default -> SHAPE_ONE;
             };
         } else {
-            return super.getCullingShape(state);
+            return super.getOcclusionShape(state);
         }
     }
 }

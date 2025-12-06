@@ -23,23 +23,23 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.collision
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.AbstractBoatEntity;
-import net.minecraft.util.math.Box;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.AbstractBoat;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(AbstractBoatEntity.class)
+@Mixin(AbstractBoat.class)
 public abstract class MixinAbstractBoatEntity {
 
-    @Redirect(method = "updateVelocity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;isSpaceEmpty(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Box;)Z"))
-    private boolean alwaysUpdatePosition(World instance, Entity entity, Box box) {
+    @Redirect(method = "floatBoat", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;noCollision(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Z"))
+    private boolean alwaysUpdatePosition(Level instance, Entity entity, AABB box) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             return true;
         } else {
-            return instance.isSpaceEmpty(entity, box);
+            return instance.noCollision(entity, box);
         }
     }
 

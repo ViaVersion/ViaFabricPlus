@@ -23,17 +23,17 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.decoration.ItemFrameEntity;
+import net.minecraft.world.entity.decoration.ItemFrame;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ItemFrameEntity.class)
+@Mixin(ItemFrame.class)
 public abstract class MixinItemFrameEntity {
 
-    @Redirect(method = "calculateBoundingBox", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/decoration/ItemFrameEntity;containsMap()Z"))
-    private boolean changeBoundingBox(ItemFrameEntity instance) {
-        return instance.containsMap() && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_7);
+    @Redirect(method = "calculateBoundingBox", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/decoration/ItemFrame;hasFramedMap()Z"))
+    private boolean changeBoundingBox(ItemFrame instance) {
+        return instance.hasFramedMap() && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_7);
     }
 
 }

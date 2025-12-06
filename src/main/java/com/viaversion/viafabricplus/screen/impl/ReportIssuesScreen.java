@@ -28,9 +28,9 @@ import java.io.File;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Util;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+import net.minecraft.Util;
 import org.jetbrains.annotations.Nullable;
 
 public final class ReportIssuesScreen extends VFPScreen {
@@ -42,31 +42,31 @@ public final class ReportIssuesScreen extends VFPScreen {
     private long delay = -1;
 
     public ReportIssuesScreen() {
-        super(Text.translatable("screen.viafabricplus.report_issues"), true);
+        super(Component.translatable("screen.viafabricplus.report_issues"), true);
 
         if (!actions.isEmpty()) {
             return;
         }
         actions.put("report.viafabricplus.bug_report", () -> {
-            Util.getOperatingSystem().open(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml"));
-            this.setupSubtitle(Text.translatable("report.viafabricplus.bug_report.response"));
+            Util.getPlatform().openUri(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml"));
+            this.setupSubtitle(Component.translatable("report.viafabricplus.bug_report.response"));
         });
         actions.put("report.viafabricplus.feature_request", () -> {
-            Util.getOperatingSystem().open(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml"));
-            this.setupSubtitle(Text.translatable("report.viafabricplus.feature_request.response"));
+            Util.getPlatform().openUri(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml"));
+            this.setupSubtitle(Component.translatable("report.viafabricplus.feature_request.response"));
         });
-        actions.put("report.viafabricplus.create_via_dump", () -> DumpUtil.postDump(client.getSession().getUuidOrNull()).whenComplete((s, throwable) -> {
+        actions.put("report.viafabricplus.create_via_dump", () -> DumpUtil.postDump(minecraft.getUser().getProfileId()).whenComplete((s, throwable) -> {
             if (throwable != null) {
-                this.setupSubtitle(Text.translatable("report.viafabricplus.create_via_dump.failed"));
+                this.setupSubtitle(Component.translatable("report.viafabricplus.create_via_dump.failed"));
                 ViaFabricPlusImpl.INSTANCE.getLogger().error("Failed to create a dump", throwable);
                 return;
             }
-            this.setupSubtitle(Text.translatable("report.viafabricplus.create_via_dump.success"));
-            client.keyboard.setClipboard(s);
+            this.setupSubtitle(Component.translatable("report.viafabricplus.create_via_dump.success"));
+            minecraft.keyboardHandler.setClipboard(s);
         }));
         actions.put("report.viafabricplus.open_logs", () -> {
-            Util.getOperatingSystem().open(new File(client.runDirectory, "logs") /* there is no constant for this in the game */);
-            this.setupSubtitle(Text.translatable("report.viafabricplus.open_logs.response"));
+            Util.getPlatform().openFile(new File(minecraft.gameDirectory, "logs") /* there is no constant for this in the game */);
+            this.setupSubtitle(Component.translatable("report.viafabricplus.open_logs.response"));
         });
     }
 
@@ -77,14 +77,14 @@ public final class ReportIssuesScreen extends VFPScreen {
 
         int i = 0;
         for (Map.Entry<String, Runnable> entry : actions.entrySet()) {
-            this.addDrawableChild(ButtonWidget.builder(Text.translatable(entry.getKey()), button -> entry.getValue().run()).
-                position(this.width / 2 - 100, this.height / 2 - 25 + i * (20 + 3)).size(200, 20).build());
+            this.addRenderableWidget(Button.builder(Component.translatable(entry.getKey()), button -> entry.getValue().run()).
+                    pos(this.width / 2 - 100, this.height / 2 - 25 + i * (20 + 3)).size(200, 20).build());
             i++;
         }
     }
 
     @Override
-    public void setupSubtitle(@Nullable Text subtitle) {
+    public void setupSubtitle(@Nullable Component subtitle) {
         super.setupSubtitle(subtitle);
 
         this.delay = System.currentTimeMillis();

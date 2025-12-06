@@ -23,24 +23,24 @@ package com.viaversion.viafabricplus.injection.mixin.features.interaction.contai
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.AbstractCraftingScreenHandler;
-import net.minecraft.screen.CraftingScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.AbstractCraftingMenu;
+import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.inventory.MenuType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(CraftingScreenHandler.class)
-public abstract class MixinCraftingScreenHandler extends AbstractCraftingScreenHandler {
+@Mixin(CraftingMenu.class)
+public abstract class MixinCraftingScreenHandler extends AbstractCraftingMenu {
 
-    public MixinCraftingScreenHandler(ScreenHandlerType<?> type, int syncId, int width, int height) {
+    public MixinCraftingScreenHandler(MenuType<?> type, int syncId, int width, int height) {
         super(type, syncId, width, height);
     }
 
-    @Redirect(method = "quickMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/CraftingScreenHandler;insertItem(Lnet/minecraft/item/ItemStack;IIZ)Z", ordinal = 1))
-    private boolean noShiftClickMoveIntoCraftingTable(CraftingScreenHandler instance, ItemStack itemStack, int startIndex, int endIndex, boolean fromLast) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && this.insertItem(itemStack, startIndex, endIndex, fromLast);
+    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/CraftingMenu;moveItemStackTo(Lnet/minecraft/world/item/ItemStack;IIZ)Z", ordinal = 1))
+    private boolean noShiftClickMoveIntoCraftingTable(CraftingMenu instance, ItemStack itemStack, int startIndex, int endIndex, boolean fromLast) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && this.moveItemStackTo(itemStack, startIndex, endIndex, fromLast);
     }
 
 }

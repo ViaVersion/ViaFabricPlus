@@ -22,15 +22,15 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.r1_7_item_tilt;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.item.HeldItemRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.ItemInHandRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.InteractionHand;
+import com.mojang.math.Axis;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -38,49 +38,49 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(HeldItemRenderer.class)
+@Mixin(ItemInHandRenderer.class)
 public abstract class MixinHeldItemRenderer {
 
     @Shadow
-    protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
+    protected abstract void applyItemArmAttackTransform(PoseStack matrices, HumanoidArm arm, float swingProgress);
 
-    @Inject(method = "renderFirstPersonItem",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 2, shift = At.Shift.AFTER))
-    private void applyFoodSwingOffset(AbstractClientPlayerEntity player, float tickProgress, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light, CallbackInfo ci) {
+    @Inject(method = "renderArmWithItem",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;applyItemArmTransform(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/HumanoidArm;F)V", ordinal = 2, shift = At.Shift.AFTER))
+    private void applyFoodSwingOffset(AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci) {
         viaFabricPlusVisuals$applySwingOffset(player, hand, swingProgress, matrices);
     }
 
-    @Inject(method = "renderFirstPersonItem",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 3, shift = At.Shift.AFTER))
-    private void applyBlockingSwingOffset(AbstractClientPlayerEntity player, float tickProgress, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light, CallbackInfo ci) {
+    @Inject(method = "renderArmWithItem",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;applyItemArmTransform(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/HumanoidArm;F)V", ordinal = 3, shift = At.Shift.AFTER))
+    private void applyBlockingSwingOffset(AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci) {
         viaFabricPlusVisuals$applySwingOffset(player, hand, swingProgress, matrices);
     }
 
-    @Inject(method = "renderFirstPersonItem",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V", ordinal = 4, shift = At.Shift.AFTER))
-    private void applyBowSwingOffset(AbstractClientPlayerEntity player, float tickProgress, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light, CallbackInfo ci) {
+    @Inject(method = "renderArmWithItem",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;applyItemArmTransform(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/HumanoidArm;F)V", ordinal = 4, shift = At.Shift.AFTER))
+    private void applyBowSwingOffset(AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci) {
         viaFabricPlusVisuals$applySwingOffset(player, hand, swingProgress, matrices);
     }
 
-    @Inject(method = "renderFirstPersonItem",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemDisplayContext;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;I)V", ordinal = 1))
-    private void slightlyTiltItemPosition(AbstractClientPlayerEntity player, float tickProgress, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light, CallbackInfo ci) {
+    @Inject(method = "renderArmWithItem",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;I)V", ordinal = 1))
+    private void slightlyTiltItemPosition(AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.tiltItemPositions.isEnabled() && !(item.getItem() instanceof BlockItem)) {
-            final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
-            final int direction = arm == Arm.RIGHT ? 1 : -1;
+            final HumanoidArm arm = hand == InteractionHand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
+            final int direction = arm == HumanoidArm.RIGHT ? 1 : -1;
 
             final float scale = 0.7585F / 0.86F;
             matrices.scale(scale, scale, scale);
             matrices.translate(direction * -0.084F, 0.059F, 0.08F);
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(direction * 5.0F));
+            matrices.mulPose(Axis.YP.rotationDegrees(direction * 5.0F));
         }
     }
 
     @Unique
-    private void viaFabricPlusVisuals$applySwingOffset(AbstractClientPlayerEntity player, Hand hand, float swingProgress, MatrixStack matrices) {
+    private void viaFabricPlusVisuals$applySwingOffset(AbstractClientPlayer player, InteractionHand hand, float swingProgress, PoseStack matrices) {
         if (VisualSettings.INSTANCE.swingHandOnItemUse.isEnabled()) {
-            final Arm arm = hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
-            applySwingOffset(matrices, arm, swingProgress);
+            final HumanoidArm arm = hand == InteractionHand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
+            applyItemArmAttackTransform(matrices, arm, swingProgress);
         }
     }
 

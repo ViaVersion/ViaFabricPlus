@@ -23,11 +23,11 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.component.type.EquippableComponent;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,28 +37,28 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(EquippableComponent.class)
+@Mixin(Equippable.class)
 public abstract class MixinEquippableComponent {
 
     @Shadow
     @Final
     private EquipmentSlot slot;
 
-    @Redirect(method = "equip", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isCreative()Z"))
-    private boolean removeCreativeCondition(PlayerEntity instance) {
+    @Redirect(method = "swapWithEquipmentSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isCreative()Z"))
+    private boolean removeCreativeCondition(Player instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20) && instance.isCreative();
     }
 
-    @Inject(method = "equip", at = @At("HEAD"), cancellable = true)
-    private void cancelArmorSwap(ItemStack stack, PlayerEntity player, CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(method = "swapWithEquipmentSlot", at = @At("HEAD"), cancellable = true)
+    private void cancelArmorSwap(ItemStack stack, Player player, CallbackInfoReturnable<InteractionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
-            final ItemStack targetItem = player.getEquippedStack(this.slot);
+            final ItemStack targetItem = player.getItemBySlot(this.slot);
             if (!targetItem.isEmpty()) {
-                cir.setReturnValue(ActionResult.FAIL);
+                cir.setReturnValue(InteractionResult.FAIL);
             }
         }
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            cir.setReturnValue(ActionResult.FAIL);
+            cir.setReturnValue(InteractionResult.FAIL);
         }
     }
 

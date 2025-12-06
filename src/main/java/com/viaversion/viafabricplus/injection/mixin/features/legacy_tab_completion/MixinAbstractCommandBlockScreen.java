@@ -23,19 +23,19 @@ package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_complet
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.gui.screen.ChatInputSuggestor;
-import net.minecraft.client.gui.screen.ingame.AbstractCommandBlockScreen;
+import net.minecraft.client.gui.components.CommandSuggestions;
+import net.minecraft.client.gui.screens.inventory.AbstractCommandBlockEditScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(AbstractCommandBlockScreen.class)
+@Mixin(AbstractCommandBlockEditScreen.class)
 public abstract class MixinAbstractCommandBlockScreen {
 
-    @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;refresh()V"))
-    private void cancelAutoComplete(ChatInputSuggestor instance) {
+    @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/CommandSuggestions;updateCommandInfo()V"))
+    private void cancelAutoComplete(CommandSuggestions instance) {
         if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_13)) {
-            instance.refresh();
+            instance.updateCommandInfo();
         }
     }
 

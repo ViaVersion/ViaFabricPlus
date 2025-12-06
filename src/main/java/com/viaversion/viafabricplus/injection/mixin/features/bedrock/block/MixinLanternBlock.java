@@ -22,15 +22,15 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.block;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LanternBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -44,10 +44,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinLanternBlock extends Block {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_bedrock = VoxelShapes.cuboid(0.3125, 0, 0.3125, 0.6875, 0.5, 0.6875);
+    private static final VoxelShape viaFabricPlus$shape_bedrock = Shapes.box(0.3125, 0, 0.3125, 0.6875, 0.5, 0.6875);
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_hanging_bedrock = VoxelShapes.cuboid(0.3125, 0.125, 0.3125, 0.6875, 0.625, 0.6875);
+    private static final VoxelShape viaFabricPlus$shape_hanging_bedrock = Shapes.box(0.3125, 0.125, 0.3125, 0.6875, 0.625, 0.6875);
 
     @Shadow
     @Final
@@ -55,29 +55,29 @@ public abstract class MixinLanternBlock extends Block {
 
     @Shadow
     @Final
-    private static VoxelShape STANDING_SHAPE;
+    private static VoxelShape SHAPE_STANDING;
 
     @Shadow
     @Final
-    private static VoxelShape HANGING_SHAPE;
+    private static VoxelShape SHAPE_HANGING;
 
-    public MixinLanternBlock(final Settings settings) {
+    public MixinLanternBlock(final Properties settings) {
         super(settings);
     }
 
-    @Inject(method = "getOutlineShape", at = @At("RETURN"), cancellable = true)
-    private void modifyCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Inject(method = "getShape", at = @At("RETURN"), cancellable = true)
+    private void modifyCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            cir.setReturnValue(state.get(HANGING) ? viaFabricPlus$shape_hanging_bedrock : viaFabricPlus$shape_bedrock);
+            cir.setReturnValue(state.getValue(HANGING) ? viaFabricPlus$shape_hanging_bedrock : viaFabricPlus$shape_bedrock);
         }
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state) {
+    public VoxelShape getOcclusionShape(BlockState state) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return state.get(HANGING) ? HANGING_SHAPE : STANDING_SHAPE;
+            return state.getValue(HANGING) ? SHAPE_HANGING : SHAPE_STANDING;
         } else {
-            return super.getCullingShape(state);
+            return super.getOcclusionShape(state);
         }
     }
 

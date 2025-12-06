@@ -23,45 +23,45 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.AbstractCowEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.MooshroomEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.AbstractCow;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.MushroomCow;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MooshroomEntity.class)
-public abstract class MixinMooshroomEntity extends AnimalEntity {
+@Mixin(MushroomCow.class)
+public abstract class MixinMooshroomEntity extends Animal {
 
-    protected MixinMooshroomEntity(EntityType<? extends AnimalEntity> entityType, World world) {
+    protected MixinMooshroomEntity(EntityType<? extends Animal> entityType, Level world) {
         super(entityType, world);
     }
 
-    @Inject(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/MooshroomEntity;getStewEffectFrom(Lnet/minecraft/item/ItemStack;)Ljava/util/Optional;"), cancellable = true)
-    private void checkForItemTags(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;getEffectsFromItemStack(Lnet/minecraft/world/item/ItemStack;)Ljava/util/Optional;"), cancellable = true)
+    private void checkForItemTags(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            final ItemStack itemStack = player.getStackInHand(hand);
-            if (!itemStack.isIn(ItemTags.SMALL_FLOWERS)) {
-                cir.setReturnValue(super.interactMob(player, hand));
+            final ItemStack itemStack = player.getItemInHand(hand);
+            if (!itemStack.is(ItemTags.SMALL_FLOWERS)) {
+                cir.setReturnValue(super.mobInteract(player, hand));
             }
         }
     }
 
-    @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AbstractCowEntity;interactMob(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;", ordinal = 0))
-    private ActionResult directPass(AbstractCowEntity instance, PlayerEntity player, Hand hand) {
+    @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/AbstractCow;mobInteract(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;", ordinal = 0))
+    private InteractionResult directPass(AbstractCow instance, Player player, InteractionHand hand) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         } else {
-            return super.interactMob(player, hand);
+            return super.mobInteract(player, hand);
         }
     }
 

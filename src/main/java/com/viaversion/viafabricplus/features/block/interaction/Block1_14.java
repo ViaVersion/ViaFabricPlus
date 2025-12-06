@@ -21,19 +21,19 @@
 
 package com.viaversion.viafabricplus.features.block.interaction;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.block.StainedGlassBlock;
-import net.minecraft.block.TrapdoorBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.level.block.StainedGlassBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 
 public final class Block1_14 {
 
     public static boolean isExceptBlockForAttachWithPiston(final Block block) {
         return block instanceof ShulkerBoxBlock
             || block instanceof LeavesBlock
-            || block instanceof TrapdoorBlock
+            || block instanceof TrapDoorBlock
             || block instanceof StainedGlassBlock
             || block == Blocks.BEACON
             || block == Blocks.CAULDRON

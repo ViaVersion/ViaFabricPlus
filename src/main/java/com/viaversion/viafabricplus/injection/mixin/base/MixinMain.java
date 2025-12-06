@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Main.class)
 public abstract class MixinMain {
 
-    @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;startTimerHack()V"))
+    @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/Util;startTimerHackThread()V"))
     private static void bootstrap(CallbackInfo ci) {
         ViaFabricPlusImpl.INSTANCE.init();
     }

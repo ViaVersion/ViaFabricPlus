@@ -26,16 +26,16 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.features.mouse_sensitivity.MouseSensitivity1_13_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.Mouse;
-import net.minecraft.client.option.SimpleOption;
+import net.minecraft.client.MouseHandler;
+import net.minecraft.client.OptionInstance;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(Mouse.class)
+@Mixin(MouseHandler.class)
 public abstract class MixinMouse {
 
-    @WrapOperation(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/SimpleOption;getValue()Ljava/lang/Object;", ordinal = 0))
-    private Object adjustMouseSensitivity1_13_2(SimpleOption<Double> instance, Operation<Double> original) {
+    @WrapOperation(method = "turnPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/OptionInstance;get()Ljava/lang/Object;", ordinal = 0))
+    private Object adjustMouseSensitivity1_13_2(OptionInstance<Double> instance, Operation<Double> original) {
         final Double value = original.call(instance);
 
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {

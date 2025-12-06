@@ -23,15 +23,15 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.EndPortalFrameBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.EndPortalFrameBlock;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,29 +46,29 @@ public abstract class MixinEndPortalFrameBlock extends Block {
 
     @Shadow
     @Final
-    private static VoxelShape FRAME_SHAPE;
+    private static VoxelShape SHAPE_EMPTY;
 
     @Shadow
     @Final
-    public static BooleanProperty EYE;
+    public static BooleanProperty HAS_EYE;
 
     @Unique
-    private static final VoxelShape viaFabricPlus$eye_shape_r1_12_2 = Block.createCuboidShape(5.0D, 13.0D, 5.0D, 11.0D, 16.0D, 11.0D);
+    private static final VoxelShape viaFabricPlus$eye_shape_r1_12_2 = Block.box(5.0D, 13.0D, 5.0D, 11.0D, 16.0D, 11.0D);
 
     @Unique
-    private static final VoxelShape viaFabricPlus$frame_with_eye_shape_r1_12_2 = VoxelShapes.union(FRAME_SHAPE, viaFabricPlus$eye_shape_r1_12_2);
+    private static final VoxelShape viaFabricPlus$frame_with_eye_shape_r1_12_2 = Shapes.or(SHAPE_EMPTY, viaFabricPlus$eye_shape_r1_12_2);
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_frame_bedrock = VoxelShapes.cuboid(0, 0, 0, 1, 0.8125, 1);
+    private static final VoxelShape viaFabricPlus$shape_frame_bedrock = Shapes.box(0, 0, 0, 1, 0.8125, 1);
 
-    public MixinEndPortalFrameBlock(Settings settings) {
+    public MixinEndPortalFrameBlock(Properties settings) {
         super(settings);
     }
 
-    @Inject(method = "getOutlineShape", at = @At(value = "HEAD"), cancellable = true)
-    private void changeOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    @Inject(method = "getShape", at = @At(value = "HEAD"), cancellable = true)
+    private void changeOutlineShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(FRAME_SHAPE);
+            cir.setReturnValue(SHAPE_EMPTY);
         } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             // The eye doesn't have a different shape on bedrock
             cir.setReturnValue(viaFabricPlus$shape_frame_bedrock);
@@ -76,20 +76,20 @@ public abstract class MixinEndPortalFrameBlock extends Block {
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return state.get(EYE) ? viaFabricPlus$frame_with_eye_shape_r1_12_2 : FRAME_SHAPE;
+            return state.getValue(HAS_EYE) ? viaFabricPlus$frame_with_eye_shape_r1_12_2 : SHAPE_EMPTY;
         } else {
             return super.getCollisionShape(state, world, pos, context);
         }
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state) {
+    public VoxelShape getOcclusionShape(BlockState state) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return FRAME_SHAPE;
+            return SHAPE_EMPTY;
         } else {
-            return super.getCullingShape(state);
+            return super.getOcclusionShape(state);
         }
     }
 

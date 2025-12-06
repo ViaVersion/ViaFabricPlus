@@ -36,21 +36,21 @@ import com.viaversion.viafabricplus.screen.impl.settings.ModeListEntry;
 import com.viaversion.viafabricplus.screen.impl.settings.TitleEntry;
 import com.viaversion.viafabricplus.screen.impl.settings.VersionedBooleanListEntry;
 import com.viaversion.viafabricplus.settings.SettingsManager;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 
 public final class SettingsScreen extends VFPScreen {
 
     public static final SettingsScreen INSTANCE = new SettingsScreen();
 
     public SettingsScreen() {
-        super(Text.translatable("screen.viafabricplus.settings"), true);
+        super(Component.translatable("screen.viafabricplus.settings"), true);
     }
 
     @Override
     protected void init() {
         this.setupDefaultSubtitle();
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, (textRenderer.fontHeight + 2) * 2));
+        this.addRenderableWidget(new SlotList(this.minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, -5, (font.lineHeight + 2) * 2));
 
         super.init();
     }
@@ -58,7 +58,7 @@ public final class SettingsScreen extends VFPScreen {
     public static class SlotList extends VFPList {
         private static double scrollAmount;
 
-        public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
+        public SlotList(Minecraft minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             for (SettingGroup group : SettingsManager.INSTANCE.getGroups()) {

@@ -21,12 +21,12 @@
 
 package com.viaversion.viafabricplus.features.recipe;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BannerPattern;
-import net.minecraft.block.entity.BannerPatterns;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.world.level.block.entity.BannerPatterns;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceKey;
 
 public enum BannerPattern_1_13_2 {
 
@@ -43,7 +43,7 @@ public enum BannerPattern_1_13_2 {
     STRIPE_MIDDLE(BannerPatterns.STRIPE_MIDDLE, "   ", "###", "   "),
     STRIPE_DOWNRIGHT(BannerPatterns.STRIPE_DOWNRIGHT, "#  ", " # ", "  #"),
     STRIPE_DOWNLEFT(BannerPatterns.STRIPE_DOWNLEFT, "  #", " # ", "#  "),
-    STRIPE_SMALL(BannerPatterns.SMALL_STRIPES, "# #", "# #", "   "),
+    STRIPE_SMALL(BannerPatterns.STRIPE_SMALL, "# #", "# #", "   "),
     CROSS(BannerPatterns.CROSS, "# #", " # ", "# #"),
     STRAIGHT_CROSS(BannerPatterns.STRAIGHT_CROSS, " # ", "###", " # "),
     TRIANGLE_BOTTOM(BannerPatterns.TRIANGLE_BOTTOM, "   ", " # ", "# #"),
@@ -51,15 +51,15 @@ public enum BannerPattern_1_13_2 {
     TRIANGLES_BOTTOM(BannerPatterns.TRIANGLES_BOTTOM, "   ", "# #", " # "),
     TRIANGLES_TOP(BannerPatterns.TRIANGLES_TOP, " # ", "# #", "   "),
     DIAGONAL_LEFT(BannerPatterns.DIAGONAL_LEFT, "## ", "#  ", "   "),
-    DIAGONAL_RIGHT(BannerPatterns.DIAGONAL_RIGHT, "   ", "  #", " ##"),
-    DIAGONAL_LEFT_MIRROR(BannerPatterns.DIAGONAL_UP_LEFT, "   ", "#  ", "## "),
-    DIAGONAL_RIGHT_MIRROR(BannerPatterns.DIAGONAL_UP_RIGHT, " ##", "  #", "   "),
-    CIRCLE_MIDDLE(BannerPatterns.CIRCLE, "   ", " # ", "   "),
-    RHOMBUS_MIDDLE(BannerPatterns.RHOMBUS, " # ", "# #", " # "),
+    DIAGONAL_RIGHT(BannerPatterns.DIAGONAL_RIGHT_MIRROR, "   ", "  #", " ##"),
+    DIAGONAL_LEFT_MIRROR(BannerPatterns.DIAGONAL_LEFT_MIRROR, "   ", "#  ", "## "),
+    DIAGONAL_RIGHT_MIRROR(BannerPatterns.DIAGONAL_RIGHT, " ##", "  #", "   "),
+    CIRCLE_MIDDLE(BannerPatterns.CIRCLE_MIDDLE, "   ", " # ", "   "),
+    RHOMBUS_MIDDLE(BannerPatterns.RHOMBUS_MIDDLE, " # ", "# #", " # "),
     HALF_VERTICAL(BannerPatterns.HALF_VERTICAL, "## ", "## ", "## "),
     HALF_HORIZONTAL(BannerPatterns.HALF_HORIZONTAL, "###", "###", "   "),
-    HALF_VERTICAL_MIRROR(BannerPatterns.HALF_VERTICAL_RIGHT, " ##", " ##", " ##"),
-    HALF_HORIZONTAL_MIRROR(BannerPatterns.HALF_HORIZONTAL_BOTTOM, "   ", "###", "###"),
+    HALF_VERTICAL_MIRROR(BannerPatterns.HALF_VERTICAL_MIRROR, " ##", " ##", " ##"),
+    HALF_HORIZONTAL_MIRROR(BannerPatterns.HALF_HORIZONTAL_MIRROR, "   ", "###", "###"),
     BORDER(BannerPatterns.BORDER, "###", "# #", "###"),
     CURLY_BORDER(BannerPatterns.CURLY_BORDER, new ItemStack(Blocks.VINE)),
     GRADIENT(BannerPatterns.GRADIENT, "# #", " # ", " # "),
@@ -71,29 +71,29 @@ public enum BannerPattern_1_13_2 {
     FLOWER(BannerPatterns.FLOWER, new ItemStack(Blocks.OXEYE_DAISY)),
     MOJANG(BannerPatterns.MOJANG, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));
 
-    private final RegistryKey<BannerPattern> pattern;
+    private final ResourceKey<BannerPattern> pattern;
     private final String[] recipePattern;
     private ItemStack baseStack;
 
-    BannerPattern_1_13_2(final RegistryKey<BannerPattern> pattern) {
+    BannerPattern_1_13_2(final ResourceKey<BannerPattern> pattern) {
         this.recipePattern = new String[3];
         this.baseStack = ItemStack.EMPTY;
         this.pattern = pattern;
     }
 
-    BannerPattern_1_13_2(final RegistryKey<BannerPattern> pattern, final ItemStack baseStack) {
+    BannerPattern_1_13_2(final ResourceKey<BannerPattern> pattern, final ItemStack baseStack) {
         this(pattern);
         this.baseStack = baseStack;
     }
 
-    BannerPattern_1_13_2(final RegistryKey<BannerPattern> pattern, final String recipe1, final String recipe2, final String recipe3) {
+    BannerPattern_1_13_2(final ResourceKey<BannerPattern> pattern, final String recipe1, final String recipe2, final String recipe3) {
         this(pattern);
         this.recipePattern[0] = recipe1;
         this.recipePattern[1] = recipe2;
         this.recipePattern[2] = recipe3;
     }
 
-    public RegistryKey<BannerPattern> getKey() {
+    public ResourceKey<BannerPattern> getKey() {
         return this.pattern;
     }
 

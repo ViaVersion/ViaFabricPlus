@@ -24,13 +24,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 import com.viaversion.viafabricplus.injection.access.block.shape.IHorizontalConnectingBlock;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalConnectingBlock;
-import net.minecraft.util.math.Direction;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.core.Direction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(HorizontalConnectingBlock.class)
+@Mixin(CrossCollisionBlock.class)
 public abstract class MixinHorizontalConnectingBlock implements IHorizontalConnectingBlock {
 
     @Unique
@@ -40,17 +40,17 @@ public abstract class MixinHorizontalConnectingBlock implements IHorizontalConne
     public int viaFabricPlus$getShapeIndex(final BlockState blockState) {
         return viaFabricPlus$SHAPE_INDEX_CACHE.computeIfAbsent(blockState, statex -> {
             int index = 0;
-            if (blockState.get(HorizontalConnectingBlock.NORTH)) {
-                index |= 1 << Direction.NORTH.getHorizontalQuarterTurns();
+            if (blockState.getValue(CrossCollisionBlock.NORTH)) {
+                index |= 1 << Direction.NORTH.get2DDataValue();
             }
-            if (blockState.get(HorizontalConnectingBlock.EAST)) {
-                index |= 1 << Direction.EAST.getHorizontalQuarterTurns();
+            if (blockState.getValue(CrossCollisionBlock.EAST)) {
+                index |= 1 << Direction.EAST.get2DDataValue();
             }
-            if (blockState.get(HorizontalConnectingBlock.SOUTH)) {
-                index |= 1 << Direction.SOUTH.getHorizontalQuarterTurns();
+            if (blockState.getValue(CrossCollisionBlock.SOUTH)) {
+                index |= 1 << Direction.SOUTH.get2DDataValue();
             }
-            if (blockState.get(HorizontalConnectingBlock.WEST)) {
-                index |= 1 << Direction.WEST.getHorizontalQuarterTurns();
+            if (blockState.getValue(CrossCollisionBlock.WEST)) {
+                index |= 1 << Direction.WEST.get2DDataValue();
             }
 
             return index;

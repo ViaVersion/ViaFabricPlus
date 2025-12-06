@@ -25,17 +25,17 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.injection.access.world.always_tick_entities.IEntity;
 import java.util.List;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EntityList;
-import net.minecraft.world.MutableWorldProperties;
-import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.Holder;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.entity.EntityTickList;
+import net.minecraft.world.level.storage.WritableLevelData;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.DimensionType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,28 +44,28 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientWorld.class)
-public abstract class MixinClientWorld extends World {
+@Mixin(ClientLevel.class)
+public abstract class MixinClientWorld extends Level {
 
     @Shadow
     @Final
-    EntityList entityList;
+    EntityTickList tickingEntities;
 
-    protected MixinClientWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, DynamicRegistryManager registryManager, RegistryEntry<DimensionType> dimensionEntry, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates) {
+    protected MixinClientWorld(WritableLevelData properties, ResourceKey<Level> registryRef, RegistryAccess registryManager, Holder<DimensionType> dimensionEntry, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates) {
         super(properties, registryRef, registryManager, dimensionEntry, isClient, debugWorld, seed, maxChainedNeighborUpdates);
     }
 
     @Shadow
     protected abstract void tickPassenger(final Entity entity, final Entity passenger);
 
-    @Inject(method = "tickEntity", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tickNonPassenger", at = @At("HEAD"), cancellable = true)
     private void alwaysTickEntities(Entity entity, CallbackInfo ci) {
         final IEntity mixinEntity = (IEntity) entity;
         if (!mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick() && !entity.isSpectator()) {
-            entity.resetPosition();
+            entity.setOldPosAndRot();
             this.viaFabricPlus$checkChunk(entity);
             if (mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
-                for (Entity entity2 : entity.getPassengerList()) {
+                for (Entity entity2 : entity.getPassengers()) {
                     this.tickPassenger(entity, entity2);
                 }
             }
@@ -79,11 +79,11 @@ public abstract class MixinClientWorld extends World {
         if (!mixinPassenger.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
             if (passenger.isRemoved() || passenger.getVehicle() != entity) {
                 passenger.stopRiding();
-            } else if (passenger instanceof PlayerEntity || this.entityList.has(passenger)) {
-                passenger.resetPosition();
+            } else if (passenger instanceof Player || this.tickingEntities.contains(passenger)) {
+                passenger.setOldPosAndRot();
                 this.viaFabricPlus$checkChunk(passenger);
                 if (mixinPassenger.viaFabricPlus$isInLoadedChunkAndShouldTick()) {
-                    for (Entity entity2 : passenger.getPassengerList()) {
+                    for (Entity entity2 : passenger.getPassengers()) {
                         this.tickPassenger(passenger, entity2);
                     }
                 }
@@ -92,7 +92,7 @@ public abstract class MixinClientWorld extends World {
         }
     }
 
-    @WrapOperation(method = "tickEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPassengerList()Ljava/util/List;"))
+    @WrapOperation(method = "tickNonPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getPassengers()Ljava/util/List;"))
     private List<Entity> alwaysTickEntities(Entity instance, Operation<List<Entity>> original) {
         this.viaFabricPlus$checkChunk(instance);
         final IEntity mixinEntity = (IEntity) instance;
@@ -106,9 +106,9 @@ public abstract class MixinClientWorld extends World {
     @Unique
     private void viaFabricPlus$checkChunk(Entity entity) {
         final IEntity mixinEntity = (IEntity) entity;
-        final int chunkX = MathHelper.floor(entity.getX() / 16.0D);
-        final int chunkZ = MathHelper.floor(entity.getZ() / 16.0D);
-        if (!mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick() || entity.getChunkPos().x != chunkX || entity.getChunkPos().z != chunkZ) {
+        final int chunkX = Mth.floor(entity.getX() / 16.0D);
+        final int chunkZ = Mth.floor(entity.getZ() / 16.0D);
+        if (!mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick() || entity.chunkPosition().x != chunkX || entity.chunkPosition().z != chunkZ) {
             if (!(this.getChunk(chunkX, chunkZ).isEmpty())) {
                 mixinEntity.viaFabricPlus$setInLoadedChunkAndShouldTick(true);
             }

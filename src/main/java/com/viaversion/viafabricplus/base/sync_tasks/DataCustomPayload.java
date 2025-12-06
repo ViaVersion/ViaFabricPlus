@@ -23,22 +23,22 @@ package com.viaversion.viafabricplus.base.sync_tasks;
 
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
-public record DataCustomPayload(PacketByteBuf buf) implements CustomPayload {
+public record DataCustomPayload(FriendlyByteBuf buf) implements CustomPacketPayload {
 
-    public static final CustomPayload.Id<DataCustomPayload> ID = new CustomPayload.Id<>(Identifier.of(SyncTasks.PACKET_SYNC_IDENTIFIER));
+    public static final CustomPacketPayload.Type<DataCustomPayload> ID = new CustomPacketPayload.Type<>(ResourceLocation.parse(SyncTasks.PACKET_SYNC_IDENTIFIER));
 
     public static void init() {
-        PayloadTypeRegistry.playS2C().register(DataCustomPayload.ID, CustomPayload.codecOf((value, buf) -> {
+        PayloadTypeRegistry.playS2C().register(DataCustomPayload.ID, CustomPacketPayload.codec((value, buf) -> {
             throw new UnsupportedOperationException("DataCustomPayload is a read-only packet");
-        }, buf -> new DataCustomPayload(new PacketByteBuf(Unpooled.copiedBuffer(buf.readSlice(buf.readableBytes()))))));
+        }, buf -> new DataCustomPayload(new FriendlyByteBuf(Unpooled.copiedBuffer(buf.readSlice(buf.readableBytes()))))));
     }
 
     @Override
-    public Id<? extends CustomPayload> getId() {
+    public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 

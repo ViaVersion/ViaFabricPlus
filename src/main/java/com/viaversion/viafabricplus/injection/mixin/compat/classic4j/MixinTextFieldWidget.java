@@ -22,9 +22,9 @@
 package com.viaversion.viafabricplus.injection.mixin.compat.classic4j;
 
 import com.viaversion.viafabricplus.injection.access.base.ITextFieldWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.input.CharInput;
-import net.minecraft.util.StringHelper;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.util.StringUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,23 +34,23 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * ClassicCube allows to use forbidden characters which the game doesn't allow in passwords, so we have to bypass this check
  * in order to allow the user to enter their password.
  */
-@Mixin(TextFieldWidget.class)
+@Mixin(EditBox.class)
 public abstract class MixinTextFieldWidget implements ITextFieldWidget {
 
     @Unique
     private boolean viaFabricPlus$forbiddenCharactersUnlocked = false;
 
-    @Redirect(method = "charTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/CharInput;isValidChar()Z"))
-    private boolean allowForbiddenCharacters(CharInput instance) {
-        return this.viaFabricPlus$forbiddenCharactersUnlocked || instance.isValidChar();
+    @Redirect(method = "charTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/CharacterEvent;isAllowedChatCharacter()Z"))
+    private boolean allowForbiddenCharacters(CharacterEvent instance) {
+        return this.viaFabricPlus$forbiddenCharactersUnlocked || instance.isAllowedChatCharacter();
     }
 
-    @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/StringHelper;stripInvalidChars(Ljava/lang/String;)Ljava/lang/String;"))
+    @Redirect(method = "insertText", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/StringUtil;filterText(Ljava/lang/String;)Ljava/lang/String;"))
     private String allowForbiddenCharacters(String string) {
         if (this.viaFabricPlus$forbiddenCharactersUnlocked) {
             return string;
         } else {
-            return StringHelper.stripInvalidChars(string);
+            return StringUtil.filterText(string);
         }
     }
 

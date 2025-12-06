@@ -29,16 +29,16 @@ import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.screen.GameMenuScreen;
-import net.minecraft.client.gui.screen.OpenToLanScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.multiplayer.SocialInteractionsScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.GridWidget;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.client.gui.screens.ShareToLanScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.social.SocialInteractionsScreen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.LayoutElement;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -48,101 +48,101 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(GameMenuScreen.class)
+@Mixin(PauseScreen.class)
 public abstract class MixinGameMenuScreen extends Screen {
 
     @Shadow
-    protected abstract ButtonWidget createButton(Text text, Supplier<Screen> screenSupplier);
+    protected abstract Button openScreenButton(Component text, Supplier<Screen> screenSupplier);
 
     @Shadow
     @Final
-    private static Text PLAYER_REPORTING_TEXT;
+    private static Component PLAYER_REPORTING;
 
     @Shadow
     @Final
-    private static Text SHARE_TO_LAN_TEXT;
+    private static Component SHARE_TO_LAN;
 
     @Shadow
     @Final
-    private static Text OPTIONS_TEXT;
+    private static Component OPTIONS;
 
     @Shadow
     @Final
-    private static Text RETURN_TO_GAME_TEXT;
+    private static Component RETURN_TO_GAME;
 
     @Shadow
     @Final
-    private static Text ADVANCEMENTS_TEXT;
+    private static Component ADVANCEMENTS;
 
     @Shadow
     @Final
-    private static Text STATS_TEXT;
+    private static Component STATS;
 
     @Shadow
     @Final
-    private static int NORMAL_BUTTON_WIDTH;
+    private static int BUTTON_WIDTH_HALF;
 
     @Unique
     private int viaFabricPlusVisuals$disconnectButtonWidth;
 
     @Unique
-    private ButtonWidget.PressAction viaFabricPlusVisuals$disconnectSupplier;
+    private Button.OnPress viaFabricPlusVisuals$disconnectSupplier;
 
-    protected MixinGameMenuScreen(Text title) {
+    protected MixinGameMenuScreen(Component title) {
         super(title);
     }
 
-    @WrapOperation(method = "initWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/GameMenuScreen;createButton(Lnet/minecraft/text/Text;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/widget/ButtonWidget;"), require = 0)
-    private ButtonWidget replaceButtons(GameMenuScreen instance, Text text, Supplier<Screen> screenSupplier, Operation<ButtonWidget> original) {
+    @WrapOperation(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/PauseScreen;openScreenButton(Lnet/minecraft/network/chat/Component;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/components/Button;"), require = 0)
+    private Button replaceButtons(PauseScreen instance, Component text, Supplier<Screen> screenSupplier, Operation<Button> original) {
         if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() == 0) {
             // Player reporting -> share to lan
-            if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19) && text.equals(PLAYER_REPORTING_TEXT)) {
-                final ButtonWidget button = ButtonWidget.builder(SHARE_TO_LAN_TEXT, buttonWidget -> new OpenToLanScreen(instance)).width(NORMAL_BUTTON_WIDTH).build();
+            if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19) && text.equals(PLAYER_REPORTING)) {
+                final Button button = Button.builder(SHARE_TO_LAN, buttonWidget -> new ShareToLanScreen(instance)).width(BUTTON_WIDTH_HALF).build();
                 button.active = false;
                 return button;
             }
             // Advancements -> disconnect
-            if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1) && text.equals(ADVANCEMENTS_TEXT)) {
-                return ButtonWidget.builder(ScreenTexts.DISCONNECT, viaFabricPlusVisuals$disconnectSupplier).width(viaFabricPlusVisuals$disconnectButtonWidth).build();
+            if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1) && text.equals(ADVANCEMENTS)) {
+                return Button.builder(CommonComponents.GUI_DISCONNECT, viaFabricPlusVisuals$disconnectSupplier).width(viaFabricPlusVisuals$disconnectButtonWidth).build();
             }
         } else if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() == 1) {
             // Player reporting -> Social interactions
-            if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19) && text.equals(PLAYER_REPORTING_TEXT)) {
-                return createButton(SocialInteractionsScreen.TITLE, () -> new SocialInteractionsScreen(instance));
+            if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19) && text.equals(PLAYER_REPORTING)) {
+                return openScreenButton(SocialInteractionsScreen.TITLE, () -> new SocialInteractionsScreen(instance));
             }
         }
         return original.call(instance, text, screenSupplier);
     }
 
-    @WrapWithCondition(method = "initWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/GameMenuScreen;addFeedbackAndBugsButtons(Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/client/gui/widget/GridWidget$Adder;)V"), require = 0)
-    private boolean removeFeedbackAndBugsButtons(Screen parentScreen, GridWidget.Adder gridAdder) {
+    @WrapWithCondition(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/PauseScreen;addFeedbackButtons(Lnet/minecraft/client/gui/screens/Screen;Lnet/minecraft/client/gui/layouts/GridLayout$RowHelper;)V"), require = 0)
+    private boolean removeFeedbackAndBugsButtons(Screen parentScreen, GridLayout.RowHelper gridAdder) {
         return VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() != 0 || ViaFabricPlus.getImpl().getTargetVersion().newerThan(ProtocolVersion.v1_13_2);
     }
 
-    @Inject(method = "initWidgets", at = @At("RETURN"))
+    @Inject(method = "createPauseMenu", at = @At("RETURN"))
     private void moveButtonPositions(CallbackInfo ci) {
         if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() != 0) {
             return;
         }
         // Manually adjust positions in older versions since the grid system doesn't work for these layouts
-        final Consumer<ButtonWidget> moveDown = buttonWidget -> buttonWidget.setY(buttonWidget.getY() + ButtonWidget.DEFAULT_HEIGHT);
+        final Consumer<Button> moveDown = buttonWidget -> buttonWidget.setY(buttonWidget.getY() + Button.DEFAULT_HEIGHT);
 
         // Move all buttons below feebdack/bug down since they are removed
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            viaFabricPlusVisuals$applyTo(OPTIONS_TEXT, moveDown);
-            viaFabricPlusVisuals$applyTo(SHARE_TO_LAN_TEXT, moveDown);
-            viaFabricPlusVisuals$applyTo(ScreenTexts.DISCONNECT, moveDown);
+            viaFabricPlusVisuals$applyTo(OPTIONS, moveDown);
+            viaFabricPlusVisuals$applyTo(SHARE_TO_LAN, moveDown);
+            viaFabricPlusVisuals$applyTo(CommonComponents.GUI_DISCONNECT, moveDown);
         }
 
         // Tracked for dimensions in case some mod changes them
-        final ButtonWidget returnToGame = viaFabricPlusVisuals$getButton(RETURN_TO_GAME_TEXT);
+        final Button returnToGame = viaFabricPlusVisuals$getButton(RETURN_TO_GAME);
         if (returnToGame == null) {
             return;
         }
 
         // Make options button wider since lan is removed
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
-            viaFabricPlusVisuals$applyTo(OPTIONS_TEXT, buttonWidget -> {
+            viaFabricPlusVisuals$applyTo(OPTIONS, buttonWidget -> {
                 buttonWidget.setX(returnToGame.getX());
                 buttonWidget.setWidth(returnToGame.getWidth());
             });
@@ -150,31 +150,31 @@ public abstract class MixinGameMenuScreen extends Screen {
 
         // Make space between return to game and options, put disconnect button below options
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1)) {
-            viaFabricPlusVisuals$applyTo(OPTIONS_TEXT, moveDown);
-            viaFabricPlusVisuals$applyTo(ScreenTexts.DISCONNECT, buttonWidget -> {
+            viaFabricPlusVisuals$applyTo(OPTIONS, moveDown);
+            viaFabricPlusVisuals$applyTo(CommonComponents.GUI_DISCONNECT, buttonWidget -> {
                 // Magical offset which would be calculated by the grid system, nothing we can do about it
-                buttonWidget.setY(returnToGame.getY() + ButtonWidget.DEFAULT_HEIGHT + 3);
+                buttonWidget.setY(returnToGame.getY() + Button.DEFAULT_HEIGHT + 3);
             });
         }
     }
 
-    @WrapWithCondition(method = "initWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/Widget;)Lnet/minecraft/client/gui/widget/Widget;"), require = 0)
-    private boolean removeButtons(GridWidget.Adder instance, Widget widget) {
+    @WrapWithCondition(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/layouts/GridLayout$RowHelper;addChild(Lnet/minecraft/client/gui/layouts/LayoutElement;)Lnet/minecraft/client/gui/layouts/LayoutElement;"), require = 0)
+    private boolean removeButtons(GridLayout.RowHelper instance, LayoutElement widget) {
         if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() != 0) {
             return true;
         }
         // Mods could add other widgets as well
-        if (widget instanceof ButtonWidget button) {
+        if (widget instanceof Button button) {
             // Remove buttons and track their width/press action for later, mods might be injecting into them
             if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
-                if (button.getMessage().equals(SHARE_TO_LAN_TEXT)) {
+                if (button.getMessage().equals(SHARE_TO_LAN)) {
                     return false;
                 }
             }
             if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1)) {
-                if (button.getMessage().equals(STATS_TEXT)) {
+                if (button.getMessage().equals(STATS)) {
                     return false;
-                } else if (button.getMessage().equals(ScreenTexts.DISCONNECT)) {
+                } else if (button.getMessage().equals(CommonComponents.GUI_DISCONNECT)) {
                     viaFabricPlusVisuals$disconnectSupplier = buttonWidget -> button.onPress(null);
                     viaFabricPlusVisuals$disconnectButtonWidth = button.getWidth();
                     return false;
@@ -185,17 +185,17 @@ public abstract class MixinGameMenuScreen extends Screen {
     }
 
     @Unique
-    private void viaFabricPlusVisuals$applyTo(final Text text, final Consumer<ButtonWidget> action) {
-        final ButtonWidget button = viaFabricPlusVisuals$getButton(text);
+    private void viaFabricPlusVisuals$applyTo(final Component text, final Consumer<Button> action) {
+        final Button button = viaFabricPlusVisuals$getButton(text);
         if (button != null) {
             action.accept(button);
         }
     }
 
     @Unique
-    private ButtonWidget viaFabricPlusVisuals$getButton(final Text text) {
-        for (Element child : children()) {
-            if (child instanceof ButtonWidget buttonWidget) {
+    private Button viaFabricPlusVisuals$getButton(final Component text) {
+        for (GuiEventListener child : children()) {
+            if (child instanceof Button buttonWidget) {
                 if (buttonWidget.getMessage().equals(text)) {
                     return buttonWidget;
                 }

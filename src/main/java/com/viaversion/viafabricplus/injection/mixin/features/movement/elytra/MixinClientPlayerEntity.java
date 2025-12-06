@@ -25,20 +25,20 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
+@Mixin(LocalPlayer.class)
+public abstract class MixinClientPlayerEntity extends AbstractClientPlayer {
 
-    public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
+    public MixinClientPlayerEntity(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
 
-    @ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isClimbing()Z"))
+    @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;onClimbable()Z"))
     private boolean allowElytraWhenClimbing(boolean original) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_1) && original;
     }

@@ -28,13 +28,13 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.option.Perspective;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.CameraType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -45,26 +45,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-@Mixin(InGameHud.class)
+@Mixin(Gui.class)
 public abstract class MixinInGameHud {
 
     @Unique
     private static final int viaFabricPlusVisuals$ARMOR_ICON_WIDTH = 8;
 
-    @Inject(method = "playBurstSound", at = @At("HEAD"), cancellable = true)
-    private void disableBubblePopSound(int bubble, PlayerEntity player, int burstBubbles, CallbackInfo ci) {
+    @Inject(method = "playAirBubblePoppedSound", at = @At("HEAD"), cancellable = true)
+    private void disableBubblePopSound(int bubble, Player player, int burstBubbles, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeBubblePopSound.getValue()) {
             ci.cancel();
         }
     }
 
-    @WrapWithCondition(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIII)V", ordinal = 2))
-    private boolean disableEmptyBubbles(DrawContext instance, RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height) {
+    @WrapWithCondition(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIII)V", ordinal = 2))
+    private boolean disableEmptyBubbles(GuiGraphics instance, RenderPipeline pipeline, ResourceLocation sprite, int x, int y, int width, int height) {
         return !VisualSettings.INSTANCE.hideEmptyBubbleIcons.getValue();
     }
 
-    @WrapOperation(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/Perspective;isFirstPerson()Z"))
-    private boolean alwaysRenderCrosshair(Perspective instance, Operation<Boolean> original) {
+    @WrapOperation(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/CameraType;isFirstPerson()Z"))
+    private boolean alwaysRenderCrosshair(CameraType instance, Operation<Boolean> original) {
         if (VisualSettings.INSTANCE.alwaysRenderCrosshair.isEnabled()) {
             return true;
         } else {
@@ -72,28 +72,28 @@ public abstract class MixinInGameHud {
         }
     }
 
-    @Inject(method = "shouldShowJumpBar", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "willPrioritizeJumpInfo", at = @At("HEAD"), cancellable = true)
     private void removeMountJumpBar(CallbackInfoReturnable<Boolean> cir) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             cir.setReturnValue(false);
         }
     }
 
-    @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderVehicleHealth", at = @At("HEAD"), cancellable = true)
     private void removeMountJumpBar(CallbackInfo ci) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             ci.cancel();
         }
     }
 
-    @Inject(method = "getHeartCount", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getVehicleMaxHearts", at = @At("HEAD"), cancellable = true)
     private void removeHungerBar(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             cir.setReturnValue(1);
         }
     }
 
-    @ModifyExpressionValue(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;getScaledWindowHeight()I"), require = 0)
+    @ModifyExpressionValue(method = "renderPlayerHealth", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;guiHeight()I"), require = 0)
     private int moveHealthDown(int value) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             return value + 6; // Magical offset
@@ -102,27 +102,26 @@ public abstract class MixinInGameHud {
         }
     }
 
-    @ModifyArgs(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIII)V"), require = 0)
+    @ModifyArgs(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIII)V"), require = 0)
     private static void moveArmorPositions(Args args, @Local(ordinal = 3, argsOnly = true) int x, @Local(ordinal = 6) int n) {
         if (!VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             return;
         }
 
-        final MinecraftClient client = MinecraftClient.getInstance();
+        final Minecraft client = Minecraft.getInstance();
 
         final int armorWidth = 10 * viaFabricPlusVisuals$ARMOR_ICON_WIDTH;
         final int offset = n * viaFabricPlusVisuals$ARMOR_ICON_WIDTH;
 
-        args.set(2, client.getWindow().getScaledWidth() - x - armorWidth + offset - 1);
-        args.set(3, (int) args.get(3) + client.textRenderer.fontHeight + 1);
+        args.set(2, client.getWindow().getGuiScaledWidth() - x - armorWidth + offset - 1);
+        args.set(3, (int) args.get(3) + client.font.lineHeight + 1);
     }
 
-    @ModifyArg(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIII)V"),
-            index = 2, require = 0)
+    @ModifyArg(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIII)V"), index = 2, require = 0)
     private int moveAirBubbles(int value) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
-            final MinecraftClient client = MinecraftClient.getInstance();
-            return client.getWindow().getScaledWidth() - value - client.textRenderer.fontHeight;
+            final Minecraft client = Minecraft.getInstance();
+            return client.getWindow().getGuiScaledWidth() - value - client.font.lineHeight;
         } else {
             return value;
         }

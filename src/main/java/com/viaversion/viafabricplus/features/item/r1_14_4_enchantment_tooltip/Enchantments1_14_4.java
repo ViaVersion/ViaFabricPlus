@@ -25,13 +25,13 @@ import com.viaversion.viaversion.util.Key;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.resources.ResourceKey;
 
 public final class Enchantments1_14_4 {
 
-    private static final Map<String, RegistryKey<Enchantment>> ENCHANTMENT_REGISTRY = new HashMap<>();
+    private static final Map<String, ResourceKey<Enchantment>> ENCHANTMENT_REGISTRY = new HashMap<>();
 
     static {
         ENCHANTMENT_REGISTRY.put("protection", Enchantments.PROTECTION);
@@ -73,7 +73,7 @@ public final class Enchantments1_14_4 {
         ENCHANTMENT_REGISTRY.put("vanishing_curse", Enchantments.VANISHING_CURSE);
     }
 
-    public static Optional<RegistryKey<Enchantment>> getOrEmpty(final String identifier) {
+    public static Optional<ResourceKey<Enchantment>> getOrEmpty(final String identifier) {
         return Optional.ofNullable(ENCHANTMENT_REGISTRY.get(Key.stripMinecraftNamespace(identifier)));
     }
 

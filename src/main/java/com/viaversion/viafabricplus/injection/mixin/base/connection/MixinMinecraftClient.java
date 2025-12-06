@@ -23,21 +23,21 @@ package com.viaversion.viafabricplus.injection.mixin.base.connection;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.resource.ResourcePackManager;
-import net.minecraft.server.SaveLoader;
-import net.minecraft.world.level.storage.LevelStorage;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.Connection;
+import net.minecraft.server.packs.repository.PackRepository;
+import net.minecraft.server.WorldStem;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public final class MixinMinecraftClient {
 
-    @Inject(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;connect(Ljava/lang/String;ILnet/minecraft/network/listener/ClientLoginPacketListener;)V"))
-    private void disableProtocolTranslator(LevelStorage.Session session, ResourcePackManager dataPackManager, SaveLoader saveLoader, boolean newWorld, CallbackInfo ci, @Local ClientConnection clientConnection) {
+    @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;initiateServerboundPlayConnection(Ljava/lang/String;ILnet/minecraft/network/protocol/login/ClientLoginPacketListener;)V"))
+    private void disableProtocolTranslator(LevelStorageSource.LevelStorageAccess session, PackRepository dataPackManager, WorldStem saveLoader, boolean newWorld, CallbackInfo ci, @Local Connection clientConnection) {
         ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION, true);
         ProtocolTranslator.injectPreviousVersionReset(clientConnection.channel);
     }
