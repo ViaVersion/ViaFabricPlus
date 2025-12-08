@@ -22,26 +22,26 @@
 package com.viaversion.viafabricplus.injection.mixin.base.integration.bedrock;
 
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IConfirmScreen;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.screen.ConfirmScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.MultilineTextWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.ConfirmScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.MultiLineTextWidget;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ConfirmScreen.class)
 public abstract class MixinConfirmScreen extends Screen implements IConfirmScreen {
 
-    public MixinConfirmScreen(final Text title) {
+    public MixinConfirmScreen(final Component title) {
         super(title);
     }
 
     @Override
-    public void viaFabricPlus$updateMessage(Text message) {
-        for (final Element element : children()) {
-            if (element instanceof final MultilineTextWidget textWidget) {
+    public void viaFabricPlus$updateMessage(Component message) {
+        for (final GuiEventListener element : children()) {
+            if (element instanceof final MultiLineTextWidget textWidget) {
                 textWidget.setMessage(message);
-                refreshWidgetPositions();
+                repositionElements();
             }
         }
     }

@@ -22,12 +22,12 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.core.Holder;
+import net.minecraft.world.phys.Vec3;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,18 +41,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinLivingEntity {
 
     @Shadow
-    public abstract @Nullable StatusEffectInstance getStatusEffect(final RegistryEntry<StatusEffect> effect);
+    public abstract @Nullable MobEffectInstance getEffect(final Holder<MobEffect> effect);
 
-    @Redirect(method = "applyFluidMovingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSprinting()Z"))
+    @Redirect(method = "getFluidFallingAdjustedMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSprinting()Z"))
     private boolean changeFluidGravityCondition(LivingEntity instance) {
         return instance.isSprinting() && !ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) || instance.isSwimming();
     }
 
-    @Inject(method = "applyFluidMovingSpeed", at = @At("HEAD"), cancellable = true)
-    private void applyLevitationVelocity(double gravity, boolean movingDown, Vec3d velocity, CallbackInfoReturnable<Vec3d> ci) {
-        final StatusEffectInstance effect = this.getStatusEffect(StatusEffects.LEVITATION);
+    @Inject(method = "getFluidFallingAdjustedMovement", at = @At("HEAD"), cancellable = true)
+    private void applyLevitationVelocity(double gravity, boolean movingDown, Vec3 velocity, CallbackInfoReturnable<Vec3> ci) {
+        final MobEffectInstance effect = this.getEffect(MobEffects.LEVITATION);
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && effect != null) {
-            ci.setReturnValue(new Vec3d(velocity.x, velocity.y + (((effect.getAmplifier() + 1) * 0.05) - velocity.y) * 0.2, velocity.z));
+            ci.setReturnValue(new Vec3(velocity.x, velocity.y + (((effect.getAmplifier() + 1) * 0.05) - velocity.y) * 0.2, velocity.z));
         }
     }
 

@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.jump;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,9 +39,9 @@ public abstract class MixinLivingEntity {
     protected boolean jumping;
 
     @Shadow
-    private int jumpingCooldown;
+    private int noJumpDelay;
 
-    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
+    @Redirect(method = "jumpFromGround", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
     private double dontLimitJumpVelocity(double a, double b) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return a;
@@ -50,15 +50,15 @@ public abstract class MixinLivingEntity {
         }
     }
 
-    @Redirect(method = "applyMovementInput", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;jumping:Z"))
+    @Redirect(method = "handleRelativeFrictionAndCalculateMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;jumping:Z"))
     private boolean disableJumpOnLadder(LivingEntity self) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && jumping;
     }
 
-    @Inject(method = "tickMovement", at = @At("HEAD"))
+    @Inject(method = "aiStep", at = @At("HEAD"))
     private void removeJumpDelay(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_0_0tor1_0_1)) {
-            this.jumpingCooldown = 0;
+            this.noJumpDelay = 0;
         }
     }
 

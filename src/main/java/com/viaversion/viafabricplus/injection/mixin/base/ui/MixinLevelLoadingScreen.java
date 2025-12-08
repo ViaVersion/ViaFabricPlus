@@ -25,10 +25,10 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.LevelLoadingScreen;
+import net.minecraft.network.chat.Component;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.storage.ClassicProgressStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,12 +38,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LevelLoadingScreen.class)
 public abstract class MixinLevelLoadingScreen extends Screen {
 
-    public MixinLevelLoadingScreen(Text title) {
+    public MixinLevelLoadingScreen(Component title) {
         super(title);
     }
 
     @Inject(method = "render", at = @At("RETURN"))
-    private void renderClassicProgress(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void renderClassicProgress(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (GeneralSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) {
             // Check if ViaVersion is translating
             final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
@@ -58,8 +58,8 @@ public abstract class MixinLevelLoadingScreen extends Screen {
             }
 
             // Draw the classic loading progress
-            context.drawCenteredTextWithShadow(
-                client.textRenderer,
+            context.drawCenteredString(
+                minecraft.font,
                 ChatUtil.prefixText(classicProgressStorage.status),
                 width / 2,
                 height / 2 - 30,

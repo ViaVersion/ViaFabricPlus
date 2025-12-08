@@ -23,44 +23,44 @@ package com.viaversion.viafabricplus.features.entity.riding_offset;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.mob.AbstractPiglinEntity;
-import net.minecraft.entity.mob.AbstractSkeletonEntity;
-import net.minecraft.entity.mob.EndermiteEntity;
-import net.minecraft.entity.mob.HoglinEntity;
-import net.minecraft.entity.mob.PatrolEntity;
-import net.minecraft.entity.mob.PhantomEntity;
-import net.minecraft.entity.mob.PiglinEntity;
-import net.minecraft.entity.mob.RavagerEntity;
-import net.minecraft.entity.mob.ShulkerEntity;
-import net.minecraft.entity.mob.SilverfishEntity;
-import net.minecraft.entity.mob.SkeletonHorseEntity;
-import net.minecraft.entity.mob.SpiderEntity;
-import net.minecraft.entity.mob.VexEntity;
-import net.minecraft.entity.mob.ZoglinEntity;
-import net.minecraft.entity.mob.ZombieEntity;
-import net.minecraft.entity.mob.ZombifiedPiglinEntity;
-import net.minecraft.entity.passive.AbstractDonkeyEntity;
-import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.entity.passive.AllayEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.CamelEntity;
-import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.entity.passive.LlamaEntity;
-import net.minecraft.entity.passive.SnifferEntity;
-import net.minecraft.entity.passive.StriderEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.AbstractBoatEntity;
-import net.minecraft.entity.vehicle.AbstractChestBoatEntity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.Endermite;
+import net.minecraft.world.entity.monster.hoglin.Hoglin;
+import net.minecraft.world.entity.monster.PatrollingMonster;
+import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.monster.piglin.Piglin;
+import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.monster.Shulker;
+import net.minecraft.world.entity.monster.Silverfish;
+import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.Vex;
+import net.minecraft.world.entity.monster.Zoglin;
+import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.ZombifiedPiglin;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.allay.Allay;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.camel.Camel;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.horse.Llama;
+import net.minecraft.world.entity.animal.sniffer.Sniffer;
+import net.minecraft.world.entity.monster.Strider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractBoat;
+import net.minecraft.world.entity.vehicle.AbstractChestBoat;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Minecraft 1.20.2 changed the calculation of the mounted height offset for all entities, this class contains the old
@@ -75,18 +75,18 @@ public final class EntityRidingOffsetsPre1_20_2 {
      * @param passenger The passenger of the entity.
      * @return The mounted height offset.
      */
-    public static Vec3d getMountedHeightOffset(final Entity entity, final Entity passenger) {
-        double yOffset = entity.getHeight() * 0.75F;
+    public static Vec3 getMountedHeightOffset(final Entity entity, final Entity passenger) {
+        double yOffset = entity.getBbHeight() * 0.75F;
 
-        if (entity instanceof AbstractBoatEntity abstractBoatEntity) {
-            if (!abstractBoatEntity.hasPassenger(passenger)) return Vec3d.ZERO;
+        if (entity instanceof AbstractBoat abstractBoatEntity) {
+            if (!abstractBoatEntity.hasPassenger(passenger)) return Vec3.ZERO;
 
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 yOffset = -0.3F;
-                final double xOffset = MathHelper.cos(abstractBoatEntity.getYaw() * MathHelper.PI / 180F);
-                final double zOffset = MathHelper.sin(abstractBoatEntity.getYaw() * MathHelper.PI / 180F);
+                final double xOffset = Mth.cos(abstractBoatEntity.getYRot() * Mth.PI / 180F);
+                final double zOffset = Mth.sin(abstractBoatEntity.getYRot() * Mth.PI / 180F);
 
-                return new Vec3d(0.4F * xOffset, yOffset, 0.4F * zOffset);
+                return new Vec3(0.4F * xOffset, yOffset, 0.4F * zOffset);
             } else {
                 if (abstractBoatEntity.isRemoved()) {
                     yOffset = 0.01F;
@@ -94,77 +94,77 @@ public final class EntityRidingOffsetsPre1_20_2 {
                     yOffset = abstractBoatEntity.getType() == EntityType.BAMBOO_RAFT || abstractBoatEntity.getType() == EntityType.BAMBOO_CHEST_RAFT ? 0.25F : -0.1F;
                 }
 
-                double xOffset = abstractBoatEntity instanceof AbstractChestBoatEntity ? 0.15F : 0F;
-                if (abstractBoatEntity.getPassengerList().size() > 1) {
-                    final int idx = abstractBoatEntity.getPassengerList().indexOf(passenger);
+                double xOffset = abstractBoatEntity instanceof AbstractChestBoat ? 0.15F : 0F;
+                if (abstractBoatEntity.getPassengers().size() > 1) {
+                    final int idx = abstractBoatEntity.getPassengers().indexOf(passenger);
                     if (idx == 0) {
                         xOffset = 0.2F;
                     } else {
                         xOffset = -0.6F;
                     }
 
-                    if (passenger instanceof AnimalEntity) xOffset += 0.2F;
+                    if (passenger instanceof Animal) xOffset += 0.2F;
                 }
 
-                return new Vec3d(xOffset, yOffset, 0F).rotateY(-(float) (Math.PI / 2));
+                return new Vec3(xOffset, yOffset, 0F).yRot(-(float) (Math.PI / 2));
             }
-        } else if (entity instanceof CamelEntity camelEntity) {
-            if (!camelEntity.hasPassenger(passenger)) return Vec3d.ZERO;
+        } else if (entity instanceof Camel camelEntity) {
+            if (!camelEntity.hasPassenger(passenger)) return Vec3.ZERO;
 
-            final boolean firstPassenger = camelEntity.getPassengerList().indexOf(passenger) == 0;
-            yOffset = camelEntity.getDimensions(camelEntity.isSitting() ? EntityPose.SITTING : EntityPose.STANDING).height() - (camelEntity.isBaby() ? 0.35F : 0.6F);
+            final boolean firstPassenger = camelEntity.getPassengers().indexOf(passenger) == 0;
+            yOffset = camelEntity.getDimensions(camelEntity.isCamelSitting() ? Pose.SITTING : Pose.STANDING).height() - (camelEntity.isBaby() ? 0.35F : 0.6F);
             if (camelEntity.isRemoved()) {
                 yOffset = 0.01F;
             } else {
-                yOffset = camelEntity.getPassengerAttachmentY(firstPassenger, 0F, EntityDimensions.fixed(0F, (float) ((0.375F * camelEntity.getScaleFactor()) + yOffset)), camelEntity.getScaleFactor());
+                yOffset = camelEntity.getBodyAnchorAnimationYOffset(firstPassenger, 0F, EntityDimensions.fixed(0F, (float) ((0.375F * camelEntity.getAgeScale()) + yOffset)), camelEntity.getAgeScale());
             }
 
             double zOffset = 0.5F;
-            if (camelEntity.getPassengerList().size() > 1) {
+            if (camelEntity.getPassengers().size() > 1) {
                 if (!firstPassenger) zOffset = -0.7F;
-                if (passenger instanceof AnimalEntity) zOffset += 0.2F;
+                if (passenger instanceof Animal) zOffset += 0.2F;
             }
 
-            return new Vec3d(0, yOffset, zOffset);
-        } else if (entity instanceof ChickenEntity chickenEntity) {
-            return new Vec3d(0, chickenEntity.getBodyY(0.5D) - chickenEntity.getY(), -0.1F);
-        } else if (entity instanceof EnderDragonEntity enderDragonEntity) {
-            yOffset = enderDragonEntity.body.getHeight();
-        } else if (entity instanceof HoglinEntity hoglinEntity) {
-            yOffset = hoglinEntity.getHeight() - (hoglinEntity.isBaby() ? 0.2F : 0.15F);
-        } else if (entity instanceof LlamaEntity) {
-            return new Vec3d(0, entity.getHeight() * 0.6F, -0.3F);
-        } else if (entity instanceof PhantomEntity) {
-            yOffset = entity.getStandingEyeHeight();
-        } else if (entity instanceof PiglinEntity) {
-            yOffset = entity.getHeight() * 0.92F;
-        } else if (entity instanceof RavagerEntity) {
+            return new Vec3(0, yOffset, zOffset);
+        } else if (entity instanceof Chicken chickenEntity) {
+            return new Vec3(0, chickenEntity.getY(0.5D) - chickenEntity.getY(), -0.1F);
+        } else if (entity instanceof EnderDragon enderDragonEntity) {
+            yOffset = enderDragonEntity.body.getBbHeight();
+        } else if (entity instanceof Hoglin hoglinEntity) {
+            yOffset = hoglinEntity.getBbHeight() - (hoglinEntity.isBaby() ? 0.2F : 0.15F);
+        } else if (entity instanceof Llama) {
+            return new Vec3(0, entity.getBbHeight() * 0.6F, -0.3F);
+        } else if (entity instanceof Phantom) {
+            yOffset = entity.getEyeHeight();
+        } else if (entity instanceof Piglin) {
+            yOffset = entity.getBbHeight() * 0.92F;
+        } else if (entity instanceof Ravager) {
             yOffset = 2.1F;
-        } else if (entity instanceof SkeletonHorseEntity) {
+        } else if (entity instanceof SkeletonHorse) {
             yOffset -= 0.1875F;
-        } else if (entity instanceof SnifferEntity) {
+        } else if (entity instanceof Sniffer) {
             yOffset = 1.8F;
-        } else if (entity instanceof SpiderEntity) {
-            yOffset = entity.getHeight() * 0.5F;
-        } else if (entity instanceof StriderEntity striderEntity) {
-            final float speed = Math.min(0.25F, striderEntity.limbAnimator.getSpeed());
-            final float animationProgress = striderEntity.limbAnimator.getAnimationProgress();
-            yOffset = striderEntity.getHeight() - 0.19F + (0.12F * MathHelper.cos(animationProgress * 1.5F) * 2F * speed);
-        } else if (entity instanceof ZoglinEntity zoglinEntity) {
-            yOffset = zoglinEntity.getHeight() - (zoglinEntity.isBaby() ? 0.2F : 0.15F);
-        } else if (entity instanceof AbstractDonkeyEntity) {
+        } else if (entity instanceof Spider) {
+            yOffset = entity.getBbHeight() * 0.5F;
+        } else if (entity instanceof Strider striderEntity) {
+            final float speed = Math.min(0.25F, striderEntity.walkAnimation.speed());
+            final float animationProgress = striderEntity.walkAnimation.position();
+            yOffset = striderEntity.getBbHeight() - 0.19F + (0.12F * Mth.cos(animationProgress * 1.5F) * 2F * speed);
+        } else if (entity instanceof Zoglin zoglinEntity) {
+            yOffset = zoglinEntity.getBbHeight() - (zoglinEntity.isBaby() ? 0.2F : 0.15F);
+        } else if (entity instanceof AbstractChestedHorse) {
             yOffset -= 0.25F;
-        } else if (entity instanceof AbstractMinecartEntity) {
+        } else if (entity instanceof AbstractMinecart) {
             yOffset = 0F;
         }
 
-        if (entity instanceof AbstractHorseEntity abstractHorseEntity) {
-            if (abstractHorseEntity.lastAngryAnimationProgress > 0.0F) {
-                return new Vec3d(0, yOffset + 0.15F * abstractHorseEntity.lastAngryAnimationProgress, -0.7F * abstractHorseEntity.lastAngryAnimationProgress);
+        if (entity instanceof AbstractHorse abstractHorseEntity) {
+            if (abstractHorseEntity.standAnimO > 0.0F) {
+                return new Vec3(0, yOffset + 0.15F * abstractHorseEntity.standAnimO, -0.7F * abstractHorseEntity.standAnimO);
             }
         }
 
-        return new Vec3d(0, yOffset, 0);
+        return new Vec3(0, yOffset, 0);
     }
 
     /**
@@ -174,34 +174,34 @@ public final class EntityRidingOffsetsPre1_20_2 {
      * @return The height offset.
      */
     public static double getHeightOffset(final Entity entity) {
-        if (entity instanceof AllayEntity || entity instanceof VexEntity) {
+        if (entity instanceof Allay || entity instanceof Vex) {
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
                 return 0D;
             } else {
                 return 0.4D;
             }
-        } else if (entity instanceof ArmorStandEntity armorStandEntity) {
+        } else if (entity instanceof ArmorStand armorStandEntity) {
             return armorStandEntity.isMarker() ? 0D : 0.1D;
-        } else if (entity instanceof EndermiteEntity) {
+        } else if (entity instanceof Endermite) {
             return 0.1D;
-        } else if (entity instanceof ShulkerEntity shulkerEntity) {
+        } else if (entity instanceof Shulker shulkerEntity) {
             final EntityType<?> vehicleType = shulkerEntity.getVehicle().getType();
-            return !(shulkerEntity.getVehicle() instanceof BoatEntity) && vehicleType != EntityType.MINECART ? 0D : 0.1875D - getMountedHeightOffset(shulkerEntity.getVehicle(), null).y;
-        } else if (entity instanceof SilverfishEntity) {
+            return !(shulkerEntity.getVehicle() instanceof Boat) && vehicleType != EntityType.MINECART ? 0D : 0.1875D - getMountedHeightOffset(shulkerEntity.getVehicle(), null).y;
+        } else if (entity instanceof Silverfish) {
             return 0.1D;
-        } else if (entity instanceof ZombifiedPiglinEntity zombifiedPiglinEntity) {
+        } else if (entity instanceof ZombifiedPiglin zombifiedPiglinEntity) {
             return zombifiedPiglinEntity.isBaby() ? -0.05D : -0.45D;
-        } else if (entity instanceof ZombieEntity zombieEntity) {
+        } else if (entity instanceof Zombie zombieEntity) {
             return zombieEntity.isBaby() ? 0D : -0.45D;
-        } else if (entity instanceof AnimalEntity) {
+        } else if (entity instanceof Animal) {
             return 0.14D;
-        } else if (entity instanceof PatrolEntity) {
+        } else if (entity instanceof PatrollingMonster) {
             return -0.45D;
-        } else if (entity instanceof PlayerEntity) {
+        } else if (entity instanceof Player) {
             return -0.35D;
-        } else if (entity instanceof AbstractPiglinEntity abstractPiglinEntity) {
+        } else if (entity instanceof AbstractPiglin abstractPiglinEntity) {
             return abstractPiglinEntity.isBaby() ? -0.05D : -0.45D;
-        } else if (entity instanceof AbstractSkeletonEntity) {
+        } else if (entity instanceof AbstractSkeleton) {
             return -0.6D;
         }
 

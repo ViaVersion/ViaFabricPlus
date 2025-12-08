@@ -24,16 +24,16 @@ package com.viaversion.viafabricplus.api.settings.type;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.api.settings.AbstractSetting;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
-import net.minecraft.text.MutableText;
+import net.minecraft.network.chat.MutableComponent;
 
 public class ButtonSetting extends AbstractSetting<Runnable> {
 
-    public ButtonSetting(SettingGroup parent, MutableText name, Runnable onClick) {
+    public ButtonSetting(SettingGroup parent, MutableComponent name, Runnable onClick) {
         super(parent, name, onClick);
     }
 
 
-    public MutableText displayValue() {
+    public MutableComponent displayValue() {
         return getName();
     }
 

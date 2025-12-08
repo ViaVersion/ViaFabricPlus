@@ -21,33 +21,33 @@
 
 package com.viaversion.viafabricplus.features.world.disable_sequencing;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.network.PendingUpdateManager;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.multiplayer.prediction.BlockStatePredictionHandler;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 
 /**
- * No-op implementation of {@link PendingUpdateManager} for 1.18.2 and lower since those versions don't have the
- * {@link PendingUpdateManager} class.
+ * No-op implementation of {@link BlockStatePredictionHandler} for 1.18.2 and lower since those versions don't have the
+ * {@link BlockStatePredictionHandler} class.
  */
-public final class PendingUpdateManager1_18_2 extends PendingUpdateManager {
+public final class PendingUpdateManager1_18_2 extends BlockStatePredictionHandler {
 
     @Override
-    public void addPendingUpdate(BlockPos pos, BlockState state, ClientPlayerEntity player) {
+    public void retainKnownServerState(BlockPos pos, BlockState state, LocalPlayer player) {
     }
 
     @Override
-    public boolean hasPendingUpdate(BlockPos pos, BlockState state) {
+    public boolean updateKnownServerState(BlockPos pos, BlockState state) {
         return false;
     }
 
     @Override
-    public void processPendingUpdates(int maxProcessableSequence, ClientWorld world) {
+    public void endPredictionsUpTo(int maxProcessableSequence, ClientLevel world) {
     }
 
     @Override
-    public PendingUpdateManager incrementSequence() {
+    public BlockStatePredictionHandler startPredicting() {
         return this;
     }
 
@@ -56,12 +56,12 @@ public final class PendingUpdateManager1_18_2 extends PendingUpdateManager {
     }
 
     @Override
-    public int getSequence() {
+    public int currentSequence() {
         return 0;
     }
 
     @Override
-    public boolean hasPendingSequence() {
+    public boolean isPredicting() {
         return false;
     }
 

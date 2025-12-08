@@ -24,39 +24,39 @@ package com.viaversion.viafabricplus.injection.mixin.base.ui;
 import com.google.common.collect.Lists;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
+import com.viaversion.viafabricplus.injection.access.base.IServerData;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.multiplayer.ServerSelectionList;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(MultiplayerServerListWidget.ServerEntry.class)
+@Mixin(ServerSelectionList.OnlineServerEntry.class)
 public abstract class MixinMultiplayerServerListWidget_ServerEntry {
 
     @Shadow
     @Final
-    private ServerInfo server;
+    private ServerData serverData;
 
-    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTooltip(Lnet/minecraft/text/Text;II)V"))
-    private void drawTranslatingState(DrawContext instance, Text text, int x, int y, Operation<Void> original) {
-        final List<Text> tooltips = new ArrayList<>();
+    @WrapOperation(method = "renderContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/network/chat/Component;II)V"))
+    private void drawTranslatingState(GuiGraphics instance, Component text, int x, int y, Operation<Void> original) {
+        final List<Component> tooltips = new ArrayList<>();
         tooltips.add(text);
         if (GeneralSettings.INSTANCE.showAdvertisedServerVersion.getValue()) {
-            final ProtocolVersion version = ((IServerInfo) server).viaFabricPlus$translatingVersion();
+            final ProtocolVersion version = ((IServerData) serverData).viaFabricPlus$translatingVersion();
             if (version != null) {
-                tooltips.add(Text.translatable("base.viafabricplus.via_translates_to", version.getName() + " (" + version.getOriginalVersion() + ")"));
-                tooltips.add(Text.translatable("base.viafabricplus.server_version", server.version.getString() + " (" + server.protocolVersion + ")"));
+                tooltips.add(Component.translatable("base.viafabricplus.via_translates_to", version.getName() + " (" + version.getOriginalVersion() + ")"));
+                tooltips.add(Component.translatable("base.viafabricplus.server_version", serverData.version.getString() + " (" + serverData.protocol + ")"));
             }
         }
-        instance.drawTooltip(Lists.transform(tooltips, Text::asOrderedText), x, y);
+        instance.setTooltipForNextFrame(Lists.transform(tooltips, Component::getVisualOrderText), x, y);
     }
 
 }

@@ -32,10 +32,10 @@ import com.viaversion.viaversion.protocols.v1_8to1_9.data.ArmorTypes1_8;
 import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ClientboundPackets1_9;
 import java.util.UUID;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public final class ArmorHudEmulation1_8 {
 
@@ -50,7 +50,7 @@ public final class ArmorHudEmulation1_8 {
                 return;
             }
 
-            if (MinecraftClient.getInstance().player != null) {
+            if (Minecraft.getInstance().player != null) {
                 final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
                 if (connection != null) {
                     try {
@@ -69,12 +69,12 @@ public final class ArmorHudEmulation1_8 {
         // Calculate the armor points.
         int armor = 0;
         for (final EquipmentSlot slot : ARMOR_SLOTS) {
-            final ItemStack stack = MinecraftClient.getInstance().player.getInventory().equipment.get(slot);
+            final ItemStack stack = Minecraft.getInstance().player.getInventory().equipment.get(slot);
             if (stack.isEmpty()) {
                 continue;
             }
 
-            final String identifier = Registries.ITEM.getId(stack.getItem()).toString();
+            final String identifier = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
             armor += ArmorTypes1_8.findByType(identifier).getArmorPoints();
         }
 
@@ -85,7 +85,7 @@ public final class ArmorHudEmulation1_8 {
         previousArmorPoints = armor;
 
         final PacketWrapper updateAttributes = PacketWrapper.create(ClientboundPackets1_9.UPDATE_ATTRIBUTES, connection);
-        updateAttributes.write(Types.VAR_INT, MinecraftClient.getInstance().player.getId());
+        updateAttributes.write(Types.VAR_INT, Minecraft.getInstance().player.getId());
         updateAttributes.write(Types.INT, 1);
         updateAttributes.write(Types.STRING, "generic.armor");
         updateAttributes.write(Types.DOUBLE, 0.0D);

@@ -27,8 +27,8 @@ import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.vialoader.netty.ViaDecoder;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 
 public final class ViaFabricPlusViaDecoder extends ViaDecoder {
 
@@ -50,7 +50,7 @@ public final class ViaFabricPlusViaDecoder extends ViaDecoder {
                 ViaFabricPlusImpl.INSTANCE.getLogger().error("Error occurred while decoding packet in ViaFabricPlus decoder", t);
                 if (mode == 1) {
                     // Mode 1: Send a message to the player that an error occurred and log the error
-                    ChatUtil.sendPrefixedMessage(Text.translatable("translation.viafabricplus.packet_error").formatted(Formatting.RED));
+                    ChatUtil.sendPrefixedMessage(Component.translatable("translation.viafabricplus.packet_error").withStyle(ChatFormatting.RED));
                 }
             }
         }

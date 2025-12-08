@@ -23,9 +23,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_complet
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
-import net.minecraft.client.gui.screen.ChatInputSuggestor;
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.components.CommandSuggestions;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.gui.components.EditBox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -38,30 +38,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinChatScreen {
 
     @Shadow
-    protected TextFieldWidget chatField;
+    protected EditBox input;
 
     @Shadow
-    protected String originalChatText;
+    protected String initial;
 
     @Shadow
-    ChatInputSuggestor chatInputSuggestor;
+    CommandSuggestions commandSuggestions;
 
-    @WrapWithCondition(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;setText(Ljava/lang/String;)V"))
-    public boolean moveSetTextDown(TextFieldWidget instance, String text) {
+    @WrapWithCondition(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/EditBox;setValue(Ljava/lang/String;)V"))
+    public boolean moveSetTextDown(EditBox instance, String text) {
         return !DebugSettings.INSTANCE.legacyTabCompletions.isEnabled();
     }
 
     @Inject(method = "init", at = @At("RETURN"))
     private void moveSetTextDown(CallbackInfo ci) {
         if (DebugSettings.INSTANCE.legacyTabCompletions.isEnabled()) {
-            this.chatField.setText(this.originalChatText);
-            this.chatInputSuggestor.refresh();
+            this.input.setValue(this.initial);
+            this.commandSuggestions.updateCommandInfo();
         }
     }
 
-    @ModifyArg(method = "onChatFieldUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;setWindowActive(Z)V"), index = 0)
+    @ModifyArg(method = "onEdited", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/CommandSuggestions;setAllowSuggestions(Z)V"), index = 0)
     private boolean fixCommandKey(boolean windowActive) {
-        final String instance = this.chatField.getText();
+        final String instance = this.input.getValue();
         if (this.viaFabricPlus$keepTabComplete()) {
             return true;
         } else {
@@ -69,14 +69,14 @@ public abstract class MixinChatScreen {
         }
     }
 
-    @WrapWithCondition(method = "onChatFieldUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatInputSuggestor;refresh()V"))
-    private boolean disableAutoTabComplete(ChatInputSuggestor instance) {
+    @WrapWithCondition(method = "onEdited", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/CommandSuggestions;updateCommandInfo()V"))
+    private boolean disableAutoTabComplete(CommandSuggestions instance) {
         return this.viaFabricPlus$keepTabComplete();
     }
 
     @Unique
     private boolean viaFabricPlus$keepTabComplete() {
-        return !DebugSettings.INSTANCE.legacyTabCompletions.isEnabled() || !this.chatField.getText().startsWith("/");
+        return !DebugSettings.INSTANCE.legacyTabCompletions.isEnabled() || !this.input.getValue().startsWith("/");
     }
 
 }

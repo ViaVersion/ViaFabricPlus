@@ -10,7 +10,6 @@ If you're unsure about anything, feel free to ask in the [ViaVersion Discord](ht
 Update all upstream versions in `gradle.properties`. The main ones are:
 
 - `minecraft_version`
-- `yarn_mappings_version`
 - `fabric_loader_version`
 - `fabric_api_version`
 - `supported_minecraft_versions` (if needed)
@@ -51,9 +50,9 @@ Set `updating_minecraft = false`.
 Check if all mixins in the `injection` package still apply correctly.
 Critical ones include:
 
-- `MixinClientWorld#tickEntity`
-- `MixinClientWorld#tickPassenger`
-- `MixinPlayer#getBlockBreakingSpeed`
+- `MixinClientLevel#tickEntity`
+- `MixinClientLevel#tickPassenger`
+- `MixinPlayer#changeSpeedCalculation`
 
 ---
 

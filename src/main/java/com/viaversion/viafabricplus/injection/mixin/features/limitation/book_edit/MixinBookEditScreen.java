@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.limitation.book_ed
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.gui.screen.ingame.BookEditScreen;
+import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
@@ -40,7 +40,7 @@ public abstract class MixinBookEditScreen {
         }
     }
 
-    @ModifyConstant(method = "appendNewPage", constant = @Constant(intValue = 100))
+    @ModifyConstant(method = "appendPageToBook", constant = @Constant(intValue = 100))
     private int modifyPageCount(int constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return 50;

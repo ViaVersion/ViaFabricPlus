@@ -22,29 +22,29 @@
 package com.viaversion.viafabricplus.screen.impl.settings;
 
 import com.viaversion.viafabricplus.screen.VFPListEntry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 import org.joml.Matrix3x2fStack;
 
 public final class TitleEntry extends VFPListEntry {
 
-    private final Text name;
+    private final Component name;
 
-    public TitleEntry(Text name) {
+    public TitleEntry(Component name) {
         this.name = name;
     }
 
     @Override
-    public Text getNarration() {
+    public Component getNarration() {
         return this.name;
     }
 
     @Override
-    public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
-        final Matrix3x2fStack matrices = context.getMatrices();
+    public void renderContent(final GuiGraphics context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        final Matrix3x2fStack matrices = context.pose();
 
         matrices.pushMatrix();
         matrices.translate(getX(), getY());
@@ -53,10 +53,10 @@ public final class TitleEntry extends VFPListEntry {
     }
 
     @Override
-    public void mappedRender(DrawContext context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+    public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        final Font textRenderer = Minecraft.getInstance().font;
 
-        context.drawTextWithShadow(textRenderer, this.name.copy().formatted(Formatting.BOLD), 3, entryHeight / 2 - textRenderer.fontHeight / 2, -1);
+        context.drawString(textRenderer, this.name.copy().withStyle(ChatFormatting.BOLD), 3, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
     }
 
 }

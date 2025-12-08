@@ -26,9 +26,9 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.minecraft.client.gui.screen.GameModeSwitcherScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.debug.GameModeSwitcherScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,43 +46,43 @@ public abstract class MixinGameModeSwitcherScreen extends Screen {
     @Mutable
     @Shadow
     @Final
-    private static int UI_WIDTH;
+    private static int ALL_SLOTS_WIDTH;
 
     @Unique
-    private GameModeSwitcherScreen.GameModeSelection[] viaFabricPlusVisuals$unwrappedGameModes;
+    private GameModeSwitcherScreen.GameModeIcon[] viaFabricPlusVisuals$unwrappedGameModes;
 
-    public MixinGameModeSwitcherScreen(Text title) {
+    public MixinGameModeSwitcherScreen(Component title) {
         super(title);
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void fixUIWidth(CallbackInfo ci) {
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-            final List<GameModeSwitcherScreen.GameModeSelection> selections = new ArrayList<>(Arrays.stream(GameModeSwitcherScreen.GameModeSelection.values()).toList());
+            final List<GameModeSwitcherScreen.GameModeIcon> selections = new ArrayList<>(Arrays.stream(GameModeSwitcherScreen.GameModeIcon.values()).toList());
 
-            selections.remove(GameModeSwitcherScreen.GameModeSelection.SPECTATOR);
+            selections.remove(GameModeSwitcherScreen.GameModeIcon.SPECTATOR);
             if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
-                selections.remove(GameModeSwitcherScreen.GameModeSelection.ADVENTURE);
+                selections.remove(GameModeSwitcherScreen.GameModeIcon.ADVENTURE);
             }
 
-            viaFabricPlusVisuals$unwrappedGameModes = selections.toArray(GameModeSwitcherScreen.GameModeSelection[]::new);
-            UI_WIDTH = viaFabricPlusVisuals$unwrappedGameModes.length * 31 - 5;
+            viaFabricPlusVisuals$unwrappedGameModes = selections.toArray(GameModeSwitcherScreen.GameModeIcon[]::new);
+            ALL_SLOTS_WIDTH = viaFabricPlusVisuals$unwrappedGameModes.length * 31 - 5;
         }
     }
 
-    @Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/GameModeSwitcherScreen$GameModeSelection;VALUES:[Lnet/minecraft/client/gui/screen/GameModeSwitcherScreen$GameModeSelection;"))
-    private GameModeSwitcherScreen.GameModeSelection[] removeNewerGameModes() {
+    @Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screens/debug/GameModeSwitcherScreen$GameModeIcon;VALUES:[Lnet/minecraft/client/gui/screens/debug/GameModeSwitcherScreen$GameModeIcon;"))
+    private GameModeSwitcherScreen.GameModeIcon[] removeNewerGameModes() {
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             return viaFabricPlusVisuals$unwrappedGameModes;
         } else {
-            return GameModeSwitcherScreen.GameModeSelection.values();
+            return GameModeSwitcherScreen.GameModeIcon.values();
         }
     }
 
     @Inject(method = "init", at = @At("HEAD"))
     private void disableInClassic(CallbackInfo ci) {
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) { // survival mode was added in a1.0.15
-            this.close();
+            this.onClose();
         }
     }
 

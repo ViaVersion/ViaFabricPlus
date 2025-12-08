@@ -24,18 +24,18 @@ package com.viaversion.viafabricplus.visuals.features.classic.creative_menu;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.resource.featuretoggle.FeatureFlags;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 
 @SuppressWarnings("DataFlowIssue")
 public final class GridItemSelectionScreen extends Screen {
@@ -51,7 +51,7 @@ public final class GridItemSelectionScreen extends Screen {
     public ItemStack selectedItem = null;
 
     public GridItemSelectionScreen() {
-        super(Text.of("Classic item selection"));
+        super(Component.nullToEmpty("Classic item selection"));
     }
 
     @Override
@@ -61,8 +61,8 @@ public final class GridItemSelectionScreen extends Screen {
         }
         final List<Item> allowedItems = new ArrayList<>();
         // Calculate all visible items
-        for (Item item : Registries.ITEM) {
-            if (item == Items.AIR || !item.getRequiredFeatures().contains(FeatureFlags.VANILLA)) {
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (item == Items.AIR || !item.requiredFeatures().contains(FeatureFlags.VANILLA)) {
                 continue;
             }
             if (ViaFabricPlus.getImpl().itemExistsInConnection(item)) {
@@ -70,7 +70,7 @@ public final class GridItemSelectionScreen extends Screen {
             }
         }
 
-        itemGrid = new Item[MathHelper.ceil(allowedItems.size() / (double) MAX_ROW_DIVIDER)][MAX_ROW_DIVIDER];
+        itemGrid = new Item[Mth.ceil(allowedItems.size() / (double) MAX_ROW_DIVIDER)][MAX_ROW_DIVIDER];
         int x = 0;
         int y = 0;
         for (Item allowedItem : allowedItems) {
@@ -84,29 +84,29 @@ public final class GridItemSelectionScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(final Click click, final boolean doubled) {
+    public boolean mouseClicked(final MouseButtonEvent click, final boolean doubled) {
         if (selectedItem != null) {
-            this.client.interactionManager.clickCreativeStack(selectedItem, client.player.getInventory().getSelectedSlot() + 36); // Beta Inventory Tracker
-            this.client.player.getInventory().setSelectedStack(selectedItem);
-            this.client.player.playerScreenHandler.sendContentUpdates();
+            this.minecraft.gameMode.handleCreativeModeItemAdd(selectedItem, minecraft.player.getInventory().getSelectedSlot() + 36); // Beta Inventory Tracker
+            this.minecraft.player.getInventory().setSelectedItem(selectedItem);
+            this.minecraft.player.inventoryMenu.broadcastChanges();
 
-            ClickableWidget.playClickSound(this.client.getSoundManager());
-            this.close();
+            AbstractWidget.playButtonClickSound(this.minecraft.getSoundManager());
+            this.onClose();
         }
         return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean keyPressed(final KeyInput input) {
-        if (client.options.inventoryKey.matchesKey(input)) {
-            this.close();
+    public boolean keyPressed(final KeyEvent input) {
+        if (minecraft.options.keyInventory.matches(input)) {
+            this.onClose();
             return true;
         }
         return super.keyPressed(input);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         final int halfWidth = this.width / 2;
         final int halfHeight = this.height / 2;
 
@@ -117,7 +117,7 @@ public final class GridItemSelectionScreen extends Screen {
         final int renderY = halfHeight - boxHeight / 2;
 
         context.fill(renderX, renderY, renderX + boxWidth, renderY + boxHeight, Integer.MIN_VALUE);
-        context.drawCenteredTextWithShadow(textRenderer, "Select block", renderX + boxWidth / 2, renderY + SIDE_OFFSET, -1);
+        context.drawCenteredString(font, "Select block", renderX + boxWidth / 2, renderY + SIDE_OFFSET, -1);
         selectedItem = null;
 
         int y = SIDE_OFFSET + SIDE_OFFSET;
@@ -128,9 +128,9 @@ public final class GridItemSelectionScreen extends Screen {
 
                 if (mouseX > renderX + x && mouseY > renderY + y && mouseX < renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC && mouseY < renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC) {
                     context.fill(renderX + x, renderY + y, renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC, renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC, Integer.MAX_VALUE);
-                    selectedItem = item.getDefaultStack();
+                    selectedItem = item.getDefaultInstance();
                 }
-                context.drawItem(item.getDefaultStack(), renderX + x + ITEM_XY_BOX_DIMENSION_MODERN / 4, renderY + y + ITEM_XY_BOX_DIMENSION_MODERN / 4);
+                context.renderItem(item.getDefaultInstance(), renderX + x + ITEM_XY_BOX_DIMENSION_MODERN / 4, renderY + y + ITEM_XY_BOX_DIMENSION_MODERN / 4);
                 x += ITEM_XY_BOX_DIMENSION_CLASSIC;
             }
             y += ITEM_XY_BOX_DIMENSION_CLASSIC;

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.features.item.filter_creative_tabs;
 
-import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
+import com.viaversion.viafabricplus.injection.access.base.IConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import com.viaversion.vialoader.util.VersionRange;
@@ -30,25 +30,25 @@ import com.viaversion.viaversion.libs.gson.JsonObject;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import java.util.Objects;
-import net.minecraft.block.entity.BannerPattern;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BannerPatternsComponent;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.level.block.entity.BannerPatternLayers;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 
@@ -57,23 +57,23 @@ import static net.raphimc.vialegacy.api.LegacyProtocolVersion.c0_30cpe;
 
 public final class VersionedRegistries {
 
-    public static final Reference2ObjectMap<RegistryKey<Enchantment>, VersionRange> ENCHANTMENT_DIFF = new Reference2ObjectOpenHashMap<>();
-    public static final Reference2ObjectMap<RegistryKey<BannerPattern>, VersionRange> PATTERN_DIFF = new Reference2ObjectOpenHashMap<>();
-    public static final Reference2ObjectMap<RegistryEntry<StatusEffect>, VersionRange> EFFECT_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final Reference2ObjectMap<ResourceKey<Enchantment>, VersionRange> ENCHANTMENT_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final Reference2ObjectMap<ResourceKey<BannerPattern>, VersionRange> PATTERN_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final Reference2ObjectMap<Holder<MobEffect>, VersionRange> EFFECT_DIFF = new Reference2ObjectOpenHashMap<>();
     public static final Reference2ObjectMap<Item, VersionRange> ITEM_DIFF = new Reference2ObjectOpenHashMap<>();
 
     public static void init() {
         final JsonObject data = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("versioned-registries.json");
-        fillKeys(data.getAsJsonObject("enchantments"), RegistryKeys.ENCHANTMENT, ENCHANTMENT_DIFF);
-        fillKeys(data.getAsJsonObject("banner_patterns"), RegistryKeys.BANNER_PATTERN, PATTERN_DIFF);
-        fillEntries(data.getAsJsonObject("effects"), Registries.STATUS_EFFECT, EFFECT_DIFF);
+        fillKeys(data.getAsJsonObject("enchantments"), Registries.ENCHANTMENT, ENCHANTMENT_DIFF);
+        fillKeys(data.getAsJsonObject("banner_patterns"), Registries.BANNER_PATTERN, PATTERN_DIFF);
+        fillEntries(data.getAsJsonObject("effects"), BuiltInRegistries.MOB_EFFECT, EFFECT_DIFF);
         fillItems(data.getAsJsonObject("items"));
     }
 
-    private static void fillKeys(final JsonObject object, final RegistryKey registryKey, final Reference2ObjectMap map) {
+    private static void fillKeys(final JsonObject object, final ResourceKey registryKey, final Reference2ObjectMap map) {
         for (final String element : object.keySet()) {
             final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
-            final RegistryKey<?> key = RegistryKey.of(registryKey, Identifier.of(element));
+            final ResourceKey<?> key = ResourceKey.create(registryKey, ResourceLocation.parse(element));
             map.put(key, versions);
         }
     }
@@ -81,7 +81,7 @@ public final class VersionedRegistries {
     private static void fillEntries(final JsonObject object, final Registry<?> registry, final Reference2ObjectMap map) {
         for (final String element : object.keySet()) {
             final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
-            final RegistryEntry entry = registry.getEntry(Identifier.of(element)).orElseThrow();
+            final Holder entry = registry.get(ResourceLocation.parse(element)).orElseThrow();
             map.put(entry, versions);
         }
     }
@@ -89,7 +89,7 @@ public final class VersionedRegistries {
     private static void fillItems(final JsonObject object) {
         for (final String element : object.keySet()) {
             final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
-            final Item item = Registries.ITEM.getOptionalValue(Identifier.of(element)).orElse(null);
+            final Item item = BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(element)).orElse(null);
             if (item == null) {
                 throw new IllegalStateException("Unknown item: " + element);
             }
@@ -100,12 +100,12 @@ public final class VersionedRegistries {
 
     public static boolean keepItem(final Item item) {
         if (ProtocolTranslator.getTargetVersion().equals(c0_30cpe)) {
-            final ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
+            final ClientPacketListener handler = Minecraft.getInstance().getConnection();
             if (handler == null) {
                 // Don't drop any items if the connection is not established yet
                 return true;
             }
-            final ExtensionProtocolMetadataStorage extensionProtocol = ((IClientConnection) handler.getConnection()).viaFabricPlus$getUserConnection().get(ExtensionProtocolMetadataStorage.class);
+            final ExtensionProtocolMetadataStorage extensionProtocol = ((IConnection) handler.getConnection()).viaFabricPlus$getUserConnection().get(ExtensionProtocolMetadataStorage.class);
             if (extensionProtocol == null) { // Should never happen
                 return false;
             }
@@ -122,27 +122,27 @@ public final class VersionedRegistries {
             return false;
         }
 
-        if (filterEnchantments(DataComponentTypes.ENCHANTMENTS, stack)) {
+        if (filterEnchantments(DataComponents.ENCHANTMENTS, stack)) {
             return false;
         }
 
-        if (filterEnchantments(DataComponentTypes.STORED_ENCHANTMENTS, stack)) {
+        if (filterEnchantments(DataComponents.STORED_ENCHANTMENTS, stack)) {
             return false;
         }
 
-        final BannerPatternsComponent bannerPatterns = stack.get(DataComponentTypes.BANNER_PATTERNS);
+        final BannerPatternLayers bannerPatterns = stack.get(DataComponents.BANNER_PATTERNS);
         if (bannerPatterns != null) {
-            for (final BannerPatternsComponent.Layer layer : bannerPatterns.layers()) {
-                if (!layer.pattern().getKey().map(key -> containsBannerPattern(key, ProtocolTranslator.getTargetVersion())).orElse(true)) {
+            for (final BannerPatternLayers.Layer layer : bannerPatterns.layers()) {
+                if (!layer.pattern().unwrapKey().map(key -> containsBannerPattern(key, ProtocolTranslator.getTargetVersion())).orElse(true)) {
                     return false;
                 }
             }
         }
 
-        final PotionContentsComponent potionContents = stack.get(DataComponentTypes.POTION_CONTENTS);
+        final PotionContents potionContents = stack.get(DataComponents.POTION_CONTENTS);
         if (potionContents != null) {
-            for (final StatusEffectInstance effectInstance : Objects.requireNonNull(potionContents).getEffects()) {
-                if (!containsEffect(effectInstance.getEffectType(), ProtocolTranslator.getTargetVersion())) {
+            for (final MobEffectInstance effectInstance : Objects.requireNonNull(potionContents).getAllEffects()) {
+                if (!containsEffect(effectInstance.getEffect(), ProtocolTranslator.getTargetVersion())) {
                     return false;
                 }
             }
@@ -150,11 +150,11 @@ public final class VersionedRegistries {
         return true;
     }
 
-    private static boolean filterEnchantments(final ComponentType<ItemEnchantmentsComponent> componentType, final ItemStack stack) {
-        final ItemEnchantmentsComponent enchantments = stack.get(componentType);
+    private static boolean filterEnchantments(final DataComponentType<ItemEnchantments> componentType, final ItemStack stack) {
+        final ItemEnchantments enchantments = stack.get(componentType);
         if (enchantments != null) {
-            for (final RegistryEntry<Enchantment> enchantment : enchantments.getEnchantments()) {
-                if (!enchantment.getKey().map(key -> containsEnchantment(key, ProtocolTranslator.getTargetVersion())).orElse(true)) {
+            for (final Holder<Enchantment> enchantment : enchantments.keySet()) {
+                if (!enchantment.unwrapKey().map(key -> containsEnchantment(key, ProtocolTranslator.getTargetVersion())).orElse(true)) {
                     return true;
                 }
             }
@@ -162,15 +162,15 @@ public final class VersionedRegistries {
         return false;
     }
 
-    public static boolean containsEnchantment(final RegistryKey<Enchantment> enchantment, final ProtocolVersion version) {
+    public static boolean containsEnchantment(final ResourceKey<Enchantment> enchantment, final ProtocolVersion version) {
         return !ENCHANTMENT_DIFF.containsKey(enchantment) || ENCHANTMENT_DIFF.get(enchantment).contains(version);
     }
 
-    public static boolean containsBannerPattern(final RegistryKey<BannerPattern> bannerPattern, final ProtocolVersion version) {
+    public static boolean containsBannerPattern(final ResourceKey<BannerPattern> bannerPattern, final ProtocolVersion version) {
         return !PATTERN_DIFF.containsKey(bannerPattern) || PATTERN_DIFF.get(bannerPattern).contains(version);
     }
 
-    public static boolean containsEffect(final RegistryEntry<StatusEffect> effect, final ProtocolVersion version) {
+    public static boolean containsEffect(final Holder<MobEffect> effect, final ProtocolVersion version) {
         return !EFFECT_DIFF.containsKey(effect) || EFFECT_DIFF.get(effect).contains(version);
     }
 

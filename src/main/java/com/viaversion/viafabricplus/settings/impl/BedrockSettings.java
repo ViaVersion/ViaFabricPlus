@@ -31,12 +31,12 @@ import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Objects;
 import java.util.function.Consumer;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ConfirmScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ConfirmScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.Util;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
 import net.raphimc.minecraftauth.msa.model.MsaDeviceCode;
@@ -47,51 +47,51 @@ import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 
 public final class BedrockSettings extends SettingGroup {
 
-    private static final Text TITLE = Text.of("Microsoft Bedrock login");
+    private static final Component TITLE = Component.nullToEmpty("Microsoft Bedrock login");
 
     public static final BedrockSettings INSTANCE = new BedrockSettings();
 
     private Thread thread;
-    private final ButtonSetting clickToSetBedrockAccount = new ButtonSetting(this, Text.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> {
+    private final ButtonSetting clickToSetBedrockAccount = new ButtonSetting(this, Component.translatable("bedrock_settings.viafabricplus.click_to_set_bedrock_account"), () -> {
         thread = new Thread(this::openBedrockAccountLogin);
         thread.start();
     }) {
 
         @Override
-        public MutableText displayValue() {
+        public MutableComponent displayValue() {
             final BedrockAuthManager account = SaveManager.INSTANCE.getAccountsSave().getBedrockAccount();
             if (account != null && account.getMinecraftMultiplayerToken().hasValue()) {
-                return Text.translatable("click_to_set_bedrock_account.viafabricplus.display", account.getMinecraftMultiplayerToken().getCached().getDisplayName());
+                return Component.translatable("click_to_set_bedrock_account.viafabricplus.display", account.getMinecraftMultiplayerToken().getCached().getDisplayName());
             } else {
                 return super.displayValue();
             }
         }
     };
-    public final BooleanSetting replaceDefaultPort = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.replace_default_port"), true);
-    public final BooleanSetting experimentalFeatures = new BooleanSetting(this, Text.translatable("bedrock_settings.viafabricplus.experimental_features"), true);
+    public final BooleanSetting replaceDefaultPort = new BooleanSetting(this, Component.translatable("bedrock_settings.viafabricplus.replace_default_port"), true);
+    public final BooleanSetting experimentalFeatures = new BooleanSetting(this, Component.translatable("bedrock_settings.viafabricplus.experimental_features"), true);
 
     public BedrockSettings() {
-        super(Text.translatable("setting_group_name.viafabricplus.bedrock"));
+        super(Component.translatable("setting_group_name.viafabricplus.bedrock"));
     }
 
     private void openBedrockAccountLogin() {
         final AccountsSave accountsSave = SaveManager.INSTANCE.getAccountsSave();
 
-        final MinecraftClient client = MinecraftClient.getInstance();
-        final Screen prevScreen = client.currentScreen;
+        final Minecraft client = Minecraft.getInstance();
+        final Screen prevScreen = client.screen;
         try {
             final BedrockAuthManager bedrockAccount = BedrockAuthManager
                 .create(MinecraftAuth.createHttpClient(), ProtocolConstants.BEDROCK_VERSION_NAME)
                 .login(DeviceCodeMsaAuthService::new, (Consumer<MsaDeviceCode>) msaDeviceCode -> {
                     VFPScreen.setScreen(new ConfirmScreen(copyUrl -> {
                         if (copyUrl) {
-                            client.keyboard.setClipboard(msaDeviceCode.getDirectVerificationUri());
+                            client.keyboardHandler.setClipboard(msaDeviceCode.getDirectVerificationUri());
                         } else {
                             client.setScreen(prevScreen);
                             this.thread.interrupt();
                         }
-                    }, TITLE, Text.translatable("click_to_set_bedrock_account.viafabricplus.notice"), Text.translatable("base.viafabricplus.copy_link"), Text.translatable("base.viafabricplus.cancel")));
-                    Util.getOperatingSystem().open(msaDeviceCode.getDirectVerificationUri());
+                    }, TITLE, Component.translatable("click_to_set_bedrock_account.viafabricplus.notice"), Component.translatable("base.viafabricplus.copy_link"), Component.translatable("base.viafabricplus.cancel")));
+                    Util.getPlatform().openUri(msaDeviceCode.getDirectVerificationUri());
                 });
             bedrockAccount.getChangeListeners().add(new ChangeListener() {
                 @Override
@@ -153,9 +153,9 @@ public final class BedrockSettings extends SettingGroup {
     }
 
     private static void updateLoginStatusMessage(final String stepName) {
-        MinecraftClient.getInstance().execute(() -> {
-            if (MinecraftClient.getInstance().currentScreen instanceof ConfirmScreen confirmScreen) {
-                ((IConfirmScreen) confirmScreen).viaFabricPlus$updateMessage(Text.translatable("minecraftauth_library.viafabricplus." + stepName));
+        Minecraft.getInstance().execute(() -> {
+            if (Minecraft.getInstance().screen instanceof ConfirmScreen confirmScreen) {
+                ((IConfirmScreen) confirmScreen).viaFabricPlus$updateMessage(Component.translatable("minecraftauth_library.viafabricplus." + stepName));
             }
         });
     }

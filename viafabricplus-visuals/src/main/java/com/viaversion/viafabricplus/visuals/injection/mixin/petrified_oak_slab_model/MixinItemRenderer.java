@@ -22,25 +22,25 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.petrified_oak_slab_model;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.item.ItemModelManager;
-import net.minecraft.component.ComponentType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ItemModelManager.class)
+@Mixin(ItemModelResolver.class)
 public abstract class MixinItemRenderer {
 
     @Unique
-    private static final Identifier viaFabricPlusVisuals$missingIdentifier = Identifier.of(String.valueOf(System.currentTimeMillis()));
+    private static final ResourceLocation viaFabricPlusVisuals$missingIdentifier = ResourceLocation.parse(String.valueOf(System.currentTimeMillis()));
 
-    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;get(Lnet/minecraft/component/ComponentType;)Ljava/lang/Object;"))
-    private Object removeModel(ItemStack instance, ComponentType<?> componentType) {
-        if (VisualSettings.INSTANCE.replacePetrifiedOakSlab.isEnabled() && instance.isOf(Items.PETRIFIED_OAK_SLAB)) {
+    @Redirect(method = "appendItemLayers", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;get(Lnet/minecraft/core/component/DataComponentType;)Ljava/lang/Object;"))
+    private Object removeModel(ItemStack instance, DataComponentType<?> componentType) {
+        if (VisualSettings.INSTANCE.replacePetrifiedOakSlab.isEnabled() && instance.is(Items.PETRIFIED_OAK_SLAB)) {
             return viaFabricPlusVisuals$missingIdentifier;
         } else {
             return instance.get(componentType);

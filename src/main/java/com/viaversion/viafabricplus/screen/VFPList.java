@@ -24,12 +24,12 @@ package com.viaversion.viafabricplus.screen;
 import com.viaversion.viafabricplus.screen.impl.PerServerVersionScreen;
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ObjectSelectionList;
 
 /**
- * Wrapper class for {@link AlwaysSelectedEntryListWidget} including the following features:
+ * Wrapper class for {@link ObjectSelectionList} including the following features:
  * <ul>
  *     <li>Changing the constructor arguments to be more readable and customizable</li>
  *     <li>Adds {@link #initScrollY(double)} to save the scroll state after closing the screen, requires static tracking by the implementation</li>
@@ -39,27 +39,27 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
  * @see ProtocolSelectionScreen
  * @see PerServerVersionScreen
  */
-public class VFPList extends AlwaysSelectedEntryListWidget<VFPListEntry> {
+public class VFPList extends ObjectSelectionList<VFPListEntry> {
 
-    public VFPList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
+    public VFPList(Minecraft minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
         super(minecraftClient, width, height - top - bottom, top, entryHeight);
     }
 
     public void initScrollY(final double scrollY) {
         // Needs calling last in init to have data loaded before setting scroll amount
         if (GeneralSettings.INSTANCE.saveScrollPositionInSlotScreens.getValue()) {
-            this.setScrollY(scrollY);
+            this.setScrollAmount(scrollY);
         }
     }
 
     @Override
-    public void setScrollY(double scrollY) {
-        super.setScrollY(scrollY);
-        updateSlotAmount(getScrollY()); // Ensure value is clamped
+    public void setScrollAmount(double scrollY) {
+        super.setScrollAmount(scrollY);
+        updateSlotAmount(scrollAmount()); // Ensure value is clamped
     }
 
     @Override
-    protected void drawSelectionHighlight(final DrawContext context, final VFPListEntry entry, final int color) {
+    protected void renderSelection(final GuiGraphics context, final VFPListEntry entry, final int color) {
         // Remove selection box
     }
 

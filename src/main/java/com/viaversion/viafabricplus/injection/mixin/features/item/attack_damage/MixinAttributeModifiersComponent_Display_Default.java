@@ -24,30 +24,30 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.attack_damage
 import com.viaversion.viafabricplus.injection.access.item.attack_damage.IDisplayDefault;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.Holder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(AttributeModifiersComponent.Display.Default.class)
+@Mixin(ItemAttributeModifiers.Display.Default.class)
 public abstract class MixinAttributeModifiersComponent_Display_Default implements IDisplayDefault {
 
     @Unique
-    private ItemEnchantmentsComponent viaFabricPlus$itemEnchantments;
+    private ItemEnchantments viaFabricPlus$itemEnchantments;
 
-    @Redirect(method = "addTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeBaseValue(Lnet/minecraft/registry/entry/RegistryEntry;)D", ordinal = 0))
-    private double fixAttackDamageCalculation(PlayerEntity instance, RegistryEntry<EntityAttribute> registryEntry) {
+    @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getAttributeBaseValue(Lnet/minecraft/core/Holder;)D", ordinal = 0))
+    private double fixAttackDamageCalculation(Player instance, Holder<Attribute> registryEntry) {
         double value = 0.0;
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            for (RegistryEntry<Enchantment> enchantment : viaFabricPlus$itemEnchantments.getEnchantments()) {
-                if (enchantment.matchesKey(Enchantments.SHARPNESS)) {
+            for (Holder<Enchantment> enchantment : viaFabricPlus$itemEnchantments.keySet()) {
+                if (enchantment.is(Enchantments.SHARPNESS)) {
                     final int level = viaFabricPlus$itemEnchantments.getLevel(enchantment);
                     if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                         value = level * 1.25F;
@@ -67,7 +67,7 @@ public abstract class MixinAttributeModifiersComponent_Display_Default implement
     }
 
     @Override
-    public void viaFabricPlus$setItemEnchantments(final ItemEnchantmentsComponent itemEnchantments) {
+    public void viaFabricPlus$setItemEnchantments(final ItemEnchantments itemEnchantments) {
         viaFabricPlus$itemEnchantments = itemEnchantments;
     }
 

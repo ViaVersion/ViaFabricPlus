@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
@@ -42,6 +43,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
+        MixinEnvironment.getCurrentEnvironment().audit();
         final FabricLoader loader = FabricLoader.getInstance();
         IPNEXT_PRESENT = loader.isModLoaded("inventoryprofilesnext");
         MORE_CULLING_PRESENT = loader.isModLoaded("moreculling");
@@ -64,7 +66,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
             case MIXINS_PACKAGE + "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor" -> IPNEXT_PRESENT;
             case MIXINS_PACKAGE + "compat.lithium.MixinEntity" -> LITHIUM_PRESENT && !MOONRISE_PRESENT;
             case MIXINS_PACKAGE + "features.item.attack_damage.MixinItemStack" -> !LEGENDARYTOOLTIPS_PRESENT;
-            case MIXINS_PACKAGE + "features.item.negative_item_count.MixinDrawContext" -> !LEGACY_PRESENT;
+            case MIXINS_PACKAGE + "features.item.negative_item_count.MixinGuiGraphics" -> !LEGACY_PRESENT;
             default -> true;
         };
     }

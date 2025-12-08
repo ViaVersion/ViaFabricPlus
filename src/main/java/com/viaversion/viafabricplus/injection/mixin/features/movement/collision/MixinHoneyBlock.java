@@ -23,14 +23,14 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.collision
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HoneyBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCollisionHandler;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.HoneyBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,60 +42,60 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(HoneyBlock.class)
 public abstract class MixinHoneyBlock extends Block {
 
-    public MixinHoneyBlock(final Settings settings) {
+    public MixinHoneyBlock(final Properties settings) {
         super(settings);
     }
 
     @Shadow
-    protected abstract boolean isSliding(BlockPos pos, Entity entity);
+    protected abstract boolean isSlidingDown(BlockPos pos, Entity entity);
 
     @Shadow
-    protected abstract void addCollisionEffects(World world, Entity entity);
+    protected abstract void maybeDoSlideEffects(Level world, Entity entity);
 
-    @Inject(method = "onEntityCollision", at = @At("HEAD"), cancellable = true)
-    private void applyBedrockHoneyCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler, boolean bl, CallbackInfo ci) {
+    @Inject(method = "entityInside", at = @At("HEAD"), cancellable = true)
+    private void applyBedrockHoneyCollision(BlockState state, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier handler, boolean bl, CallbackInfo ci) {
         if (!ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return;
         }
 
         ci.cancel();
-        if (this.isSliding(pos, entity)) {
-            this.addCollisionEffects(world, entity);
+        if (this.isSlidingDown(pos, entity)) {
+            this.maybeDoSlideEffects(world, entity);
         }
 
-        final Vec3d velocity = entity.getVelocity();
-        entity.setVelocity(new Vec3d(velocity.x * 0.4F, Math.max(-0.12F, velocity.y), velocity.z * 0.4F));
+        final Vec3 velocity = entity.getDeltaMovement();
+        entity.setDeltaMovement(new Vec3(velocity.x * 0.4F, Math.max(-0.12F, velocity.y), velocity.z * 0.4F));
     }
 
     @Override
-    public void onSteppedOn(final World world, final BlockPos pos, final BlockState state, final Entity entity) {
+    public void stepOn(final Level world, final BlockPos pos, final BlockState state, final Entity entity) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            final double absoluteY = Math.abs(entity.getVelocity().y);
-            if (absoluteY < 0.1 && !entity.bypassesSteppingEffects()) {
+            final double absoluteY = Math.abs(entity.getDeltaMovement().y);
+            if (absoluteY < 0.1 && !entity.isSteppingCarefully()) {
                 final double frictionFactor = 0.4 + absoluteY * 0.2;
-                entity.setVelocity(entity.getVelocity().multiply(frictionFactor, 1.0F, frictionFactor));
+                entity.setDeltaMovement(entity.getDeltaMovement().multiply(frictionFactor, 1.0F, frictionFactor));
             }
         } else {
-            super.onSteppedOn(world, pos, state, entity);
+            super.stepOn(world, pos, state, entity);
         }
     }
 
     @Override
-    public float getSlipperiness() {
-        return ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) ? 0.8F : super.getSlipperiness();
+    public float getFriction() {
+        return ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) ? 0.8F : super.getFriction();
     }
 
     @Override
-    public float getVelocityMultiplier() {
-        return ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) ? 1F : super.getVelocityMultiplier();
+    public float getSpeedFactor() {
+        return ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) ? 1F : super.getSpeedFactor();
     }
 
     @Override
-    public float getJumpVelocityMultiplier() {
-        return ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) ? 0.6F : super.getJumpVelocityMultiplier();
+    public float getJumpFactor() {
+        return ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) ? 0.6F : super.getJumpFactor();
     }
 
-    @Inject(method = {"getOldVelocityY", "getNewVelocityY"}, at = @At("HEAD"), cancellable = true)
+    @Inject(method = {"getOldDeltaY", "getNewDeltaY"}, at = @At("HEAD"), cancellable = true)
     private static void simplifyVelocityComparisons(double d, CallbackInfoReturnable<Double> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             cir.setReturnValue(d);

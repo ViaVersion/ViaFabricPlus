@@ -8,7 +8,7 @@ plugins {
 allprojects {
 
     setupProject()
-    setupFabric(yarnMapped())
+    setupFabric()
     setupViaPublishing()
 
     repositories {

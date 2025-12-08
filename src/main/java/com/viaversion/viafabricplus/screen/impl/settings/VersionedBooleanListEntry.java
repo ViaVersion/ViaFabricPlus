@@ -24,11 +24,11 @@ package com.viaversion.viafabricplus.screen.impl.settings;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import java.awt.*;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 
 public final class VersionedBooleanListEntry extends VFPListEntry {
     private final VersionedBooleanSetting value;
@@ -38,7 +38,7 @@ public final class VersionedBooleanListEntry extends VFPListEntry {
     }
 
     @Override
-    public Text getNarration() {
+    public Component getNarration() {
         return this.value.getName();
     }
 
@@ -49,15 +49,15 @@ public final class VersionedBooleanListEntry extends VFPListEntry {
     }
 
     @Override
-    public void mappedRender(DrawContext context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+    public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        final Font textRenderer = Minecraft.getInstance().font;
 
-        final Text text = Text.translatable("base.viafabricplus." + (this.value.isAuto() ? "auto" : this.value.isEnabled() ? "on" : "off"));
+        final Component text = Component.translatable("base.viafabricplus." + (this.value.isAuto() ? "auto" : this.value.isEnabled() ? "on" : "off"));
         Color color = this.value.isAuto() ? Color.ORANGE : this.value.isEnabled() ? Color.GREEN : Color.RED;
 
-        final int offset = textRenderer.getWidth(text) + 2;
-        renderScrollableText(Text.of(Formatting.GRAY + this.value.getName().getString() + " " + Formatting.RESET + this.value.getProtocolRange().toString()), offset);
-        context.drawTextWithShadow(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.fontHeight / 2, color.getRGB());
+        final int offset = textRenderer.width(text) + 2;
+        renderScrollableText(Component.nullToEmpty(ChatFormatting.GRAY + this.value.getName().getString() + " " + ChatFormatting.RESET + this.value.getProtocolRange().toString()), offset);
+        context.drawString(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, color.getRGB());
 
         renderTooltip(value.getTooltip(), mouseX, mouseY);
     }

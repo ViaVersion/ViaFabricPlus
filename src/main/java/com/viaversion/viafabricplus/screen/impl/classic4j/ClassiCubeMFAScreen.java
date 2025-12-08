@@ -26,37 +26,37 @@ import com.viaversion.viafabricplus.screen.VFPScreen;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
 
 public final class ClassiCubeMFAScreen extends VFPScreen {
 
     public static final ClassiCubeMFAScreen INSTANCE = new ClassiCubeMFAScreen();
 
     public ClassiCubeMFAScreen() {
-        super(Text.translatable("screen.viafabricplus.classicube_mfa"), true);
+        super(Component.translatable("screen.viafabricplus.classicube_mfa"), true);
     }
 
-    private TextFieldWidget mfaField;
+    private EditBox mfaField;
 
     @Override
     protected void init() {
         super.init();
         if (this.getSubtitle() == null) {
-            this.setupSubtitle(Text.translatable("classic4j_library.viafabricplus.error.logincode"));
+            this.setupSubtitle(Component.translatable("classic4j_library.viafabricplus.error.logincode"));
         }
 
-        this.addDrawableChild(mfaField = new TextFieldWidget(textRenderer, width / 2 - 150, 70 + 10, 300, 20, Text.empty()));
+        this.addRenderableWidget(mfaField = new EditBox(font, width / 2 - 150, 70 + 10, 300, 20, Component.empty()));
 
-        mfaField.setPlaceholder(Text.of("MFA"));
+        mfaField.setHint(Component.nullToEmpty("MFA"));
 
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("base.viafabricplus.login"), button -> {
-            this.setupSubtitle(Text.translatable("classicube.viafabricplus.loading"));
+        this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.login"), button -> {
+            this.setupSubtitle(Component.translatable("classicube.viafabricplus.loading"));
             final CCAccount account = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount();
 
-            ClassiCubeHandler.requestAuthentication(account, mfaField.getText(), new LoginProcessHandler() {
+            ClassiCubeHandler.requestAuthentication(account, mfaField.getValue(), new LoginProcessHandler() {
                 @Override
                 public void handleMfa(CCAccount account) {
                     // Not implemented in this case
@@ -69,21 +69,21 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
 
                 @Override
                 public void handleException(Throwable throwable) {
-                    setupSubtitle(Text.of(throwable.getMessage()));
+                    setupSubtitle(Component.nullToEmpty(throwable.getMessage()));
                 }
             });
-        }).position(width / 2 - 75, mfaField.getY() + (20 * 4) + 5).size(150, 20).build());
+        }).pos(width / 2 - 75, mfaField.getY() + (20 * 4) + 5).size(150, 20).build());
     }
 
     @Override
-    public void close() {
+    public void onClose() {
         // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
         SaveManager.INSTANCE.getAccountsSave().setClassicubeAccount(null);
-        super.close();
+        super.onClose();
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         this.renderScreenTitle(context);
     }
