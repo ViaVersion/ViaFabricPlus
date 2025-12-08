@@ -31,15 +31,15 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
 import java.nio.file.Path;
 import java.util.List;
-import net.minecraft.block.entity.BannerPattern;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.Connection;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.Holder;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -103,7 +103,7 @@ public interface ViaFabricPlusBase {
      * @param connection the connection
      * @return the target version
      */
-    ProtocolVersion getTargetVersion(final ClientConnection connection);
+    ProtocolVersion getTargetVersion(final Connection connection);
 
     /**
      * Sets the target version
@@ -119,12 +119,12 @@ public interface ViaFabricPlusBase {
     @Nullable UserConnection getPlayNetworkUserConnection();
 
     /**
-     * Get the UserConnection for the given connection {@link ClientConnection}.
+     * Get the UserConnection for the given connection {@link Connection}.
      *
      * @param connection the connection
      * @return the UserConnection
      */
-    @Nullable UserConnection getUserConnection(final ClientConnection connection);
+    @Nullable UserConnection getUserConnection(final Connection connection);
 
     /**
      * Gets the per-server protocol version for the given server.
@@ -132,7 +132,7 @@ public interface ViaFabricPlusBase {
      * @param serverInfo the server info
      * @return the server version
      */
-    @Nullable ProtocolVersion getServerVersion(final ServerInfo serverInfo);
+    @Nullable ProtocolVersion getServerVersion(final ServerData serverInfo);
 
     /**
      * Register a callback for when the user changes the target version in the screen, or if the user joins a server with a different version.
@@ -215,39 +215,39 @@ public interface ViaFabricPlusBase {
      * @param version The version to check for
      * @return true if the item exists in the given version, false otherwise, this will also check for CPE items (CustomBlocks V1 extension)
      */
-    boolean itemExists(final net.minecraft.item.Item item, final ProtocolVersion version);
+    boolean itemExists(final net.minecraft.world.item.Item item, final ProtocolVersion version);
 
     /**
      * @param enchantment The enchantment to check
      * @param version     The version to check for
      * @return true if the enchantment exists in the given version, false otherwise
      */
-    boolean enchantmentExists(final RegistryKey<Enchantment> enchantment, final ProtocolVersion version);
+    boolean enchantmentExists(final ResourceKey<Enchantment> enchantment, final ProtocolVersion version);
 
     /**
      * @param effect  The status effect to check
      * @param version The version to check for
      * @return true if the status effect exists in the given version, false otherwise
      */
-    boolean effectExists(final RegistryEntry<StatusEffect> effect, final ProtocolVersion version);
+    boolean effectExists(final Holder<MobEffect> effect, final ProtocolVersion version);
 
     /**
      * @param pattern The banner pattern to check
      * @param version The version to check for
      * @return true if the banner pattern exists in the given version, false otherwise
      */
-    boolean bannerPatternExists(final RegistryKey<BannerPattern> pattern, final ProtocolVersion version);
+    boolean bannerPatternExists(final ResourceKey<BannerPattern> pattern, final ProtocolVersion version);
 
     /**
-     * Similar to {@link #itemExists(net.minecraft.item.Item, ProtocolVersion)}, but takes in the current connection details (e.g. classic protocol extensions being loaded)
+     * Similar to {@link #itemExists(net.minecraft.world.item.Item, ProtocolVersion)}, but takes in the current connection details (e.g. classic protocol extensions being loaded)
      *
      * @param item The item to check
      * @return true if the item exists in the current connection, false otherwise
      */
-    boolean itemExistsInConnection(final net.minecraft.item.Item item);
+    boolean itemExistsInConnection(final net.minecraft.world.item.Item item);
 
     /**
-     * Same as {@link #itemExists(net.minecraft.item.Item, ProtocolVersion)}, but for item stacks. This also compares against certain data components like enchantments or banner patterns.
+     * Same as {@link #itemExists(net.minecraft.world.item.Item, ProtocolVersion)}, but for item stacks. This also compares against certain data components like enchantments or banner patterns.
      *
      * @param stack The item stack to check
      * @return true if the item stack exists in the given version, false otherwise

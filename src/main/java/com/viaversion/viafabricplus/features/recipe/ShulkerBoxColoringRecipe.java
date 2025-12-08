@@ -21,35 +21,35 @@
 
 package com.viaversion.viafabricplus.features.recipe;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.item.DyeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.level.Level;
 
-public final class ShulkerBoxColoringRecipe extends SpecialCraftingRecipe {
+public final class ShulkerBoxColoringRecipe extends CustomRecipe {
 
-    public static final RecipeSerializer<ShulkerBoxColoringRecipe> SERIALIZER = new SpecialRecipeSerializer<>(ShulkerBoxColoringRecipe::new);
+    public static final RecipeSerializer<ShulkerBoxColoringRecipe> SERIALIZER = new Serializer<>(ShulkerBoxColoringRecipe::new);
 
-    public ShulkerBoxColoringRecipe(CraftingRecipeCategory craftingRecipeCategory) {
+    public ShulkerBoxColoringRecipe(CraftingBookCategory craftingRecipeCategory) {
         super(craftingRecipeCategory);
     }
 
-    public boolean matches(CraftingRecipeInput input, World world) {
+    public boolean matches(CraftingInput input, Level world) {
         int i = 0;
         int j = 0;
 
         for (int k = 0; k < input.size(); k++) {
-            ItemStack stack = input.getStackInSlot(k);
+            ItemStack stack = input.getItem(k);
             if (!stack.isEmpty()) {
-                if (Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock) {
+                if (Block.byItem(stack.getItem()) instanceof ShulkerBoxBlock) {
                     i++;
                 } else {
                     if (!(stack.getItem() instanceof DyeItem)) {
@@ -68,15 +68,15 @@ public final class ShulkerBoxColoringRecipe extends SpecialCraftingRecipe {
         return i == 1 && j == 1;
     }
 
-    public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup wrapperLookup) {
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider wrapperLookup) {
         ItemStack result = ItemStack.EMPTY;
         DyeItem dyeItem = (DyeItem) Items.WHITE_DYE;
 
         for (int i = 0; i < input.size(); i++) {
-            ItemStack stack = input.getStackInSlot(i);
+            ItemStack stack = input.getItem(i);
             if (!stack.isEmpty()) {
                 Item item = stack.getItem();
-                if (Block.getBlockFromItem(item) instanceof ShulkerBoxBlock) {
+                if (Block.byItem(item) instanceof ShulkerBoxBlock) {
                     result = stack;
                 } else if (item instanceof DyeItem) {
                     dyeItem = (DyeItem) item;
@@ -84,7 +84,7 @@ public final class ShulkerBoxColoringRecipe extends SpecialCraftingRecipe {
             }
         }
 
-        return result.copyComponentsToNewStack(ShulkerBoxBlock.get(dyeItem.getColor()), 1);
+        return result.transmuteCopy(ShulkerBoxBlock.getBlockByColor(dyeItem.getDyeColor()), 1);
     }
 
     @Override

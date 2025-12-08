@@ -24,13 +24,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Map;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LadderBlock;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -44,50 +44,50 @@ public abstract class MixinLadderBlock extends Block {
 
     @Unique
     private static final Map<Direction, VoxelShape> viaFabricPlus$shapes_r1_8_x = Map.of(
-        Direction.NORTH, Block.createCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
-        Direction.SOUTH, Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
-        Direction.WEST, Block.createCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-        Direction.EAST, Block.createCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D)
+        Direction.NORTH, Block.box(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
+        Direction.SOUTH, Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
+        Direction.WEST, Block.box(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+        Direction.EAST, Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D)
     );
 
     @Unique
     private static final Map<Direction, VoxelShape> viaFabricPlus$shapes_bedrock = Map.of(
-        Direction.NORTH, VoxelShapes.cuboid(0, 0, 0.8125, 1, 1, 1),
-        Direction.SOUTH, VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1875),
-        Direction.WEST, VoxelShapes.cuboid(0.8125, 0, 0, 1, 1, 1),
-        Direction.EAST, VoxelShapes.cuboid(0, 0, 0, 0.1875, 1, 1)
+        Direction.NORTH, Shapes.box(0, 0, 0.8125, 1, 1, 1),
+        Direction.SOUTH, Shapes.box(0, 0, 0, 1, 1, 0.1875),
+        Direction.WEST, Shapes.box(0.8125, 0, 0, 1, 1, 1),
+        Direction.EAST, Shapes.box(0, 0, 0, 0.1875, 1, 1)
     );
 
     @Shadow
     @Final
-    public static Map<Direction, VoxelShape> SHAPES_BY_DIRECTION;
+    public static Map<Direction, VoxelShape> SHAPES;
 
     @Shadow
     @Final
     public static EnumProperty<Direction> FACING;
 
-    public MixinLadderBlock(final Settings settings) {
+    public MixinLadderBlock(final Properties settings) {
         super(settings);
     }
 
-    @Redirect(method = "getOutlineShape", at = @At(value = "FIELD", target = "Lnet/minecraft/block/LadderBlock;SHAPES_BY_DIRECTION:Ljava/util/Map;"))
+    @Redirect(method = "getShape", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/LadderBlock;SHAPES:Ljava/util/Map;"))
     private Map<Direction, VoxelShape> changeOutlineShape() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return viaFabricPlus$shapes_r1_8_x;
         } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return viaFabricPlus$shapes_bedrock;
         } else {
-            return SHAPES_BY_DIRECTION;
+            return SHAPES;
         }
     }
 
     @Override
-    public VoxelShape getCullingShape(BlockState state) {
+    public VoxelShape getOcclusionShape(BlockState state) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)
             || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return SHAPES_BY_DIRECTION.get(state.get(FACING));
+            return SHAPES.get(state.getValue(FACING));
         } else {
-            return super.getCullingShape(state);
+            return super.getOcclusionShape(state);
         }
     }
 

@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.enums.bedrock.generated.PlayerAuthInputPacket_InputData;
 import net.raphimc.viabedrock.protocol.storage.EntityTracker;

@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.world.always_tick_
 
 import com.viaversion.viafabricplus.injection.access.world.always_tick_entities.IEntity;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 

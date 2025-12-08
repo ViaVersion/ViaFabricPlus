@@ -24,13 +24,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.level_l
 import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain.ILevelLoadingScreen;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
-import net.minecraft.network.packet.c2s.common.KeepAliveC2SPacket;
-import net.minecraft.text.Text;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.LevelLoadingScreen;
+import net.minecraft.network.protocol.common.ServerboundKeepAlivePacket;
+import net.minecraft.network.chat.Component;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,14 +52,14 @@ public abstract class MixinLevelLoadingScreen extends Screen implements ILevelLo
     @Unique
     private boolean viaFabricPlus$closeOnNextTick = false;
 
-    public MixinLevelLoadingScreen(Text title) {
+    public MixinLevelLoadingScreen(Component title) {
         super(title);
-        this.viaFabricPlus$loadStartTime = Util.getMeasuringTimeMs();
+        this.viaFabricPlus$loadStartTime = Util.getMillis();
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void modifyCloseCondition(CallbackInfo ci) {
-        if (MinecraftClient.getInstance() != null && MinecraftClient.getInstance().isInSingleplayer()) {
+        if (Minecraft.getInstance() != null && Minecraft.getInstance().isLocalServer()) {
             // When joining the singleplayer, we set the target version to the native version when the integrated server is started
             // However this is already to late and the screen was already opened (and ticked), causing NPEs due to the network handler being null
             return;
@@ -70,26 +70,26 @@ public abstract class MixinLevelLoadingScreen extends Screen implements ILevelLo
 
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
                 if (this.viaFabricPlus$ready) {
-                    this.close();
+                    this.onClose();
                 }
 
                 if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
                     this.viaFabricPlus$tickCounter++;
                     if (this.viaFabricPlus$tickCounter % 20 == 0) {
-                        this.client.getNetworkHandler().sendPacket(new KeepAliveC2SPacket(0));
+                        this.minecraft.getConnection().send(new ServerboundKeepAlivePacket(0));
                     }
                 }
             } else {
                 if (System.currentTimeMillis() > this.viaFabricPlus$loadStartTime + 30000L) {
-                    this.close();
+                    this.onClose();
                 } else {
                     if (this.viaFabricPlus$closeOnNextTick) {
-                        if (this.client.player == null) return;
+                        if (this.minecraft.player == null) return;
 
-                        final BlockPos blockPos = this.client.player.getBlockPos();
-                        final boolean isOutOfHeightLimit = this.client.world != null && this.client.world.isOutOfHeightLimit(blockPos.getY());
-                        if (isOutOfHeightLimit || this.client.worldRenderer.isRenderingReady(blockPos) || this.client.player.isSpectator() || !this.client.player.isAlive()) {
-                            this.close();
+                        final BlockPos blockPos = this.minecraft.player.blockPosition();
+                        final boolean isOutOfHeightLimit = this.minecraft.level != null && this.minecraft.level.isOutsideBuildHeight(blockPos.getY());
+                        if (isOutOfHeightLimit || this.minecraft.levelRenderer.isSectionCompiled(blockPos) || this.minecraft.player.isSpectator() || !this.minecraft.player.isAlive()) {
+                            this.onClose();
                         }
                     } else {
                         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {

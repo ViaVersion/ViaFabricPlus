@@ -22,12 +22,12 @@
 package com.viaversion.viafabricplus.features.font;
 
 import com.mojang.blaze3d.textures.GpuTexture;
-import net.minecraft.client.font.BakedGlyphImpl;
-import net.minecraft.client.font.GlyphBaker;
-import net.minecraft.client.font.GlyphMetrics;
-import net.minecraft.client.font.UploadableGlyph;
+import net.minecraft.client.gui.font.glyphs.BakedSheetGlyph;
+import net.minecraft.client.gui.font.GlyphStitcher;
+import com.mojang.blaze3d.font.GlyphInfo;
+import com.mojang.blaze3d.font.GlyphBitmap;
 
-public enum BuiltinEmptyGlyph1_12_2 implements GlyphMetrics {
+public enum BuiltinEmptyGlyph1_12_2 implements GlyphInfo {
     INSTANCE;
 
     private static final int WIDTH = 0;
@@ -38,16 +38,16 @@ public enum BuiltinEmptyGlyph1_12_2 implements GlyphMetrics {
         return WIDTH;
     }
 
-    public BakedGlyphImpl bake(final GlyphBaker baker) {
-        return baker.bake(this, new UploadableGlyph() {
+    public BakedSheetGlyph bake(final GlyphStitcher baker) {
+        return baker.stitch(this, new GlyphBitmap() {
 
             @Override
-            public int getWidth() {
+            public int getPixelWidth() {
                 return WIDTH;
             }
 
             @Override
-            public int getHeight() {
+            public int getPixelHeight() {
                 return HEIGHT;
             }
 
@@ -61,7 +61,7 @@ public enum BuiltinEmptyGlyph1_12_2 implements GlyphMetrics {
             }
 
             @Override
-            public boolean hasColor() {
+            public boolean isColored() {
                 return true;
             }
         });

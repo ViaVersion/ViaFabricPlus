@@ -21,45 +21,45 @@
 
 package com.viaversion.viafabricplus.features.entity.r1_8_boat;
 
-import net.minecraft.client.model.ModelData;
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.model.ModelPartBuilder;
-import net.minecraft.client.model.ModelPartData;
-import net.minecraft.client.model.ModelTransform;
-import net.minecraft.client.model.TexturedModelData;
-import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.render.entity.state.BoatEntityRenderState;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.entity.state.BoatRenderState;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Model for boats in 1.8 and lower.
  */
-public final class BoatModel1_8 extends EntityModel<BoatEntityRenderState> {
+public final class BoatModel1_8 extends EntityModel<BoatRenderState> {
 
-    public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(Identifier.of("viafabricplus", "boat1_8"), "main");
+    public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("viafabricplus", "boat1_8"), "main");
 
     public BoatModel1_8(ModelPart root) {
         super(root);
     }
 
-    public static TexturedModelData getTexturedModelData() {
-        ModelData modelData = new ModelData();
-        ModelPartData root = modelData.getRoot();
+    public static LayerDefinition getTexturedModelData() {
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition root = modelData.getRoot();
         final float width = 24;
         final float wallHeight = 6;
         final float baseWidth = 20;
         final float pivotY = 4;
-        root.addChild("bottom", ModelPartBuilder.create().uv(0, 8).cuboid(-width / 2, -baseWidth / 2 + 2, -3, width, baseWidth - 4, 4), ModelTransform.of(0, pivotY, 0, (float) Math.PI / 2, 0, 0));
-        root.addChild("back", ModelPartBuilder.create().uv(0, 0).cuboid(-width / 2 + 2, -wallHeight - 1, -1, width - 4, wallHeight, 2), ModelTransform.of(-width / 2 + 1, pivotY, 0, 0, (float) Math.PI * 1.5f, 0));
-        root.addChild("front", ModelPartBuilder.create().uv(0, 0).cuboid(-width / 2 + 2, -wallHeight - 1, -1, width - 4, wallHeight, 2), ModelTransform.of(width / 2 - 1, pivotY, 0, 0, (float) Math.PI / 2, 0));
-        root.addChild("right", ModelPartBuilder.create().uv(0, 0).cuboid(-width / 2 + 2, -wallHeight - 1, -1, width - 4, wallHeight, 2), ModelTransform.of(0, pivotY, -baseWidth / 2 + 1, 0, (float) Math.PI, 0));
-        root.addChild("left", ModelPartBuilder.create().uv(0, 0).cuboid(-width / 2 + 2, -wallHeight - 1, -1, width - 4, wallHeight, 2), ModelTransform.origin(0, pivotY, baseWidth / 2 - 1));
-        return TexturedModelData.of(modelData, 64, 32);
+        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 8).addBox(-width / 2, -baseWidth / 2 + 2, -3, width, baseWidth - 4, 4), PartPose.offsetAndRotation(0, pivotY, 0, (float) Math.PI / 2, 0, 0));
+        root.addOrReplaceChild("back", CubeListBuilder.create().texOffs(0, 0).addBox(-width / 2 + 2, -wallHeight - 1, -1, width - 4, wallHeight, 2), PartPose.offsetAndRotation(-width / 2 + 1, pivotY, 0, 0, (float) Math.PI * 1.5f, 0));
+        root.addOrReplaceChild("front", CubeListBuilder.create().texOffs(0, 0).addBox(-width / 2 + 2, -wallHeight - 1, -1, width - 4, wallHeight, 2), PartPose.offsetAndRotation(width / 2 - 1, pivotY, 0, 0, (float) Math.PI / 2, 0));
+        root.addOrReplaceChild("right", CubeListBuilder.create().texOffs(0, 0).addBox(-width / 2 + 2, -wallHeight - 1, -1, width - 4, wallHeight, 2), PartPose.offsetAndRotation(0, pivotY, -baseWidth / 2 + 1, 0, (float) Math.PI, 0));
+        root.addOrReplaceChild("left", CubeListBuilder.create().texOffs(0, 0).addBox(-width / 2 + 2, -wallHeight - 1, -1, width - 4, wallHeight, 2), PartPose.offset(0, pivotY, baseWidth / 2 - 1));
+        return LayerDefinition.create(modelData, 64, 32);
     }
 
     @Override
-    public void setAngles(BoatEntityRenderState state) {
+    public void setupAnim(BoatRenderState state) {
     }
 
 }

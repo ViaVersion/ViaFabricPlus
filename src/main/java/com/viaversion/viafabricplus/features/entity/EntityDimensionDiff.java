@@ -27,11 +27,11 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Data dump for entity dimension changes between versions.
@@ -46,7 +46,7 @@ public final class EntityDimensionDiff {
     public static void init() {
         final JsonObject dimensionDiff = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("entity-dimensions.json");
         for (final String entity : dimensionDiff.keySet()) {
-            final EntityType<?> entityType = Registries.ENTITY_TYPE.getOptionalValue(Identifier.of(entity)).orElse(null);
+            final EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.parse(entity)).orElse(null);
             if (entityType == null) {
                 throw new IllegalStateException("Unknown entity: " + entity);
             }
@@ -70,7 +70,7 @@ public final class EntityDimensionDiff {
             ENTITY_DIMENSIONS.put(entityType, dimensionMap);
         }
 
-        Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> MinecraftClient.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
+        Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
             for (Map.Entry<ProtocolVersion, EntityDimensions> entry : dimensionMap.entrySet()) {
                 final ProtocolVersion version = entry.getKey();
                 final EntityDimensions dimensions = entry.getValue();

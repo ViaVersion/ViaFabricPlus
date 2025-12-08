@@ -22,12 +22,12 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.legacy_chat_signature;
 
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
-import com.viaversion.viafabricplus.injection.access.networking.legacy_chat_signature.ILegacyKeySignatureStorage;
+import com.viaversion.viafabricplus.injection.access.networking.legacy_chat_signature.IProfilePublicKey_Data;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(value = KeyPairResponse.class, remap = false)
-public abstract class MixinKeyPairResponse implements ILegacyKeySignatureStorage {
+public abstract class MixinKeyPairResponse implements IProfilePublicKey_Data {
 
     @Unique
     private byte[] viaFabricPlus$legacyKeySignature;

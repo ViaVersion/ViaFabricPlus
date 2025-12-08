@@ -23,19 +23,19 @@ package com.viaversion.viafabricplus.visuals.injection.mixin.strike_through_offs
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Font;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Mixin(TextRenderer.Drawer.class)
+@Mixin(Font.PreparedTextBuilder.class)
 public abstract class MixinTextRenderer_Drawer {
 
     @Unique
     private static final float viaFabricPlusVisuals$offset = 0.5F; // Magical offset to revert the changes done in 1.13 pre6->1.13 pre7
 
-    @ModifyArg(method = "accept(ILnet/minecraft/text/Style;Lnet/minecraft/client/font/BakedGlyph;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/EffectGlyph;create(FFFFFIIF)Lnet/minecraft/client/font/TextDrawable;"), index = 1)
+    @ModifyArg(method = "accept(ILnet/minecraft/network/chat/Style;Lnet/minecraft/client/gui/font/glyphs/BakedGlyph;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/font/glyphs/EffectGlyph;createEffect(FFFFFIIF)Lnet/minecraft/client/gui/font/TextRenderable;"), index = 1)
     private float fixStrikethroughMinY(float value) {
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return value - viaFabricPlusVisuals$offset;
@@ -44,7 +44,7 @@ public abstract class MixinTextRenderer_Drawer {
         }
     }
 
-    @ModifyArg(method = "accept(ILnet/minecraft/text/Style;Lnet/minecraft/client/font/BakedGlyph;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/EffectGlyph;create(FFFFFIIF)Lnet/minecraft/client/font/TextDrawable;"), index = 3)
+    @ModifyArg(method = "accept(ILnet/minecraft/network/chat/Style;Lnet/minecraft/client/gui/font/glyphs/BakedGlyph;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/font/glyphs/EffectGlyph;createEffect(FFFFFIIF)Lnet/minecraft/client/gui/font/TextRenderable;"), index = 3)
     private float fixStrikethroughMaxY(float value) {
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return value - viaFabricPlusVisuals$offset;

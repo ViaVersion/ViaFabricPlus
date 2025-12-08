@@ -23,10 +23,10 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowerPotBlock;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.InteractionResult;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,12 +39,12 @@ public abstract class MixinFlowerPotBlock {
 
     @Shadow
     @Final
-    private Block content;
+    private Block potted;
 
-    @Inject(method = "onUse", at = @At(value = "FIELD", target = "Lnet/minecraft/block/FlowerPotBlock;content:Lnet/minecraft/block/Block;", ordinal = 0), cancellable = true)
-    private void alwaysConsume(CallbackInfoReturnable<ActionResult> ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10) && content != Blocks.AIR) {
-            ci.setReturnValue(ActionResult.CONSUME);
+    @Inject(method = "useWithoutItem", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/FlowerPotBlock;potted:Lnet/minecraft/world/level/block/Block;", ordinal = 0), cancellable = true)
+    private void alwaysConsume(CallbackInfoReturnable<InteractionResult> ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10) && potted != Blocks.AIR) {
+            ci.setReturnValue(InteractionResult.CONSUME);
         }
     }
 

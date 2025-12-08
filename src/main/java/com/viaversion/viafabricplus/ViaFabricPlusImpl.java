@@ -32,8 +32,8 @@ import com.viaversion.viafabricplus.features.FeaturesLoading;
 import com.viaversion.viafabricplus.features.item.filter_creative_tabs.VersionedRegistries;
 import com.viaversion.viafabricplus.features.item.negative_item_count.NegativeItemUtil;
 import com.viaversion.viafabricplus.features.limitation.max_chat_length.MaxChatLength;
-import com.viaversion.viafabricplus.injection.access.base.IClientConnection;
-import com.viaversion.viafabricplus.injection.access.base.IServerInfo;
+import com.viaversion.viafabricplus.injection.access.base.IConnection;
+import com.viaversion.viafabricplus.injection.access.base.IServerData;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
 import com.viaversion.viafabricplus.save.SaveManager;
@@ -55,15 +55,15 @@ import java.util.concurrent.CompletableFuture;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.block.entity.BannerPattern;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.Connection;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.Holder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -162,8 +162,8 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public @Nullable ProtocolVersion getTargetVersion(ClientConnection connection) {
-        return ((IClientConnection) connection).viaFabricPlus$getTargetVersion();
+    public @Nullable ProtocolVersion getTargetVersion(Connection connection) {
+        return ((IConnection) connection).viaFabricPlus$getTargetVersion();
     }
 
     @Override
@@ -177,13 +177,13 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public @Nullable UserConnection getUserConnection(ClientConnection connection) {
-        return ((IClientConnection) connection).viaFabricPlus$getUserConnection();
+    public @Nullable UserConnection getUserConnection(Connection connection) {
+        return ((IConnection) connection).viaFabricPlus$getUserConnection();
     }
 
     @Override
-    public @Nullable ProtocolVersion getServerVersion(ServerInfo serverInfo) {
-        return ((IServerInfo) serverInfo).viaFabricPlus$forcedVersion();
+    public @Nullable ProtocolVersion getServerVersion(ServerData serverInfo) {
+        return ((IServerData) serverInfo).viaFabricPlus$forcedVersion();
     }
 
     @Override
@@ -242,27 +242,27 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     }
 
     @Override
-    public boolean itemExists(net.minecraft.item.Item item, ProtocolVersion version) {
+    public boolean itemExists(net.minecraft.world.item.Item item, ProtocolVersion version) {
         return VersionedRegistries.containsItem(item, version);
     }
 
     @Override
-    public boolean enchantmentExists(RegistryKey<Enchantment> enchantment, ProtocolVersion version) {
+    public boolean enchantmentExists(ResourceKey<Enchantment> enchantment, ProtocolVersion version) {
         return VersionedRegistries.containsEnchantment(enchantment, version);
     }
 
     @Override
-    public boolean effectExists(RegistryEntry<StatusEffect> effect, ProtocolVersion version) {
+    public boolean effectExists(Holder<MobEffect> effect, ProtocolVersion version) {
         return VersionedRegistries.containsEffect(effect, version);
     }
 
     @Override
-    public boolean bannerPatternExists(RegistryKey<BannerPattern> pattern, ProtocolVersion version) {
+    public boolean bannerPatternExists(ResourceKey<BannerPattern> pattern, ProtocolVersion version) {
         return VersionedRegistries.containsBannerPattern(pattern, version);
     }
 
     @Override
-    public boolean itemExistsInConnection(net.minecraft.item.Item item) {
+    public boolean itemExistsInConnection(net.minecraft.world.item.Item item) {
         return VersionedRegistries.keepItem(item);
     }
 

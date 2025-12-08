@@ -26,7 +26,7 @@ import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.networking.legacy_chat_signature.KeyPairResponse1_19_0;
-import com.viaversion.viafabricplus.injection.access.networking.legacy_chat_signature.ILegacyKeySignatureStorage;
+import com.viaversion.viafabricplus.injection.access.networking.legacy_chat_signature.IProfilePublicKey_Data;
 import java.net.URL;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -65,7 +65,7 @@ public abstract class MixinYggdrasilUserApiService {
         );
 
         if (response.publicKeySignature() != null && response.publicKeySignature().array().length != 0) {
-            ((ILegacyKeySignatureStorage) (Object) keyPairResponse).viafabricplus$setLegacyPublicKeySignature(response.publicKeySignature().array());
+            ((IProfilePublicKey_Data) (Object) keyPairResponse).viafabricplus$setLegacyPublicKeySignature(response.publicKeySignature().array());
         } else {
             ViaFabricPlusImpl.INSTANCE.getLogger().error("Could not get legacy public key signature. 1.19.0 with secure-profiles enabled will not work!");
         }

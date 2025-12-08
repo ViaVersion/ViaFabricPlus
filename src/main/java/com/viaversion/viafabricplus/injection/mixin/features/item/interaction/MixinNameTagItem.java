@@ -23,13 +23,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.CreakingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.NameTagItem;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.creaking.Creaking;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.NameTagItem;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,10 +38,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(NameTagItem.class)
 public abstract class MixinNameTagItem {
 
-    @Inject(method = "useOnEntity", at = @At("HEAD"), cancellable = true)
-    private void dontAllowNameTagsOnCreaking(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4) && entity instanceof CreakingEntity) {
-            cir.setReturnValue(ActionResult.PASS);
+    @Inject(method = "interactLivingEntity", at = @At("HEAD"), cancellable = true)
+    private void dontAllowNameTagsOnCreaking(ItemStack stack, Player user, LivingEntity entity, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4) && entity instanceof Creaking) {
+            cir.setReturnValue(InteractionResult.PASS);
         }
     }
 

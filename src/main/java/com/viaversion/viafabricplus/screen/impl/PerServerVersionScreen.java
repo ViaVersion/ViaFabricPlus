@@ -29,13 +29,13 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.awt.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 
 public final class PerServerVersionScreen extends VFPScreen {
 
@@ -43,25 +43,25 @@ public final class PerServerVersionScreen extends VFPScreen {
     private final Supplier<ProtocolVersion> selectionSupplier;
 
     public PerServerVersionScreen(final Screen prevScreen, final Consumer<ProtocolVersion> selectionConsumer, final Supplier<ProtocolVersion> selectionSupplier) {
-        super(Text.translatable("screen.viafabricplus.force_version"), false);
+        super(Component.translatable("screen.viafabricplus.force_version"), false);
 
         this.prevScreen = prevScreen;
         this.selectionConsumer = selectionConsumer;
         this.selectionSupplier = selectionSupplier;
 
-        this.setupSubtitle(Text.translatable("force_version.viafabricplus.title"));
+        this.setupSubtitle(Component.translatable("force_version.viafabricplus.title"));
     }
 
     @Override
     protected void init() {
         super.init();
 
-        this.addDrawableChild(new SlotList(this.client, width, height, 3 + 3 /* start offset */ + (textRenderer.fontHeight + 2) * 3 /* title is 2 */, -5, textRenderer.fontHeight + 4));
+        this.addRenderableWidget(new SlotList(this.minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, -5, font.lineHeight + 4));
     }
 
     public final class SlotList extends VFPList {
 
-        public SlotList(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
+        public SlotList(Minecraft minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             this.addEntry(new ResetSlot());
@@ -73,15 +73,15 @@ public final class PerServerVersionScreen extends VFPScreen {
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-            close();
+            onClose();
         }
     }
 
     public final class ResetSlot extends SharedSlot {
 
         @Override
-        public Text getNarration() {
-            return Text.translatable("base.viafabricplus.cancel_and_reset");
+        public Component getNarration() {
+            return Component.translatable("base.viafabricplus.cancel_and_reset");
         }
 
         @Override
@@ -90,9 +90,9 @@ public final class PerServerVersionScreen extends VFPScreen {
         }
 
         @Override
-        public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
-            final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, ((MutableText) getNarration()).formatted(Formatting.GOLD), getContentMiddleX(), getContentMiddleY() - textRenderer.fontHeight / 2, -1);
+        public void renderContent(final GuiGraphics context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+            final Font textRenderer = Minecraft.getInstance().font;
+            context.drawCenteredString(textRenderer, ((MutableComponent) getNarration()).withStyle(ChatFormatting.GOLD), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, -1);
         }
     }
 
@@ -105,8 +105,8 @@ public final class PerServerVersionScreen extends VFPScreen {
         }
 
         @Override
-        public Text getNarration() {
-            return Text.of(this.protocolVersion.getName());
+        public Component getNarration() {
+            return Component.nullToEmpty(this.protocolVersion.getName());
         }
 
         @Override
@@ -115,11 +115,11 @@ public final class PerServerVersionScreen extends VFPScreen {
         }
 
         @Override
-        public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        public void renderContent(final GuiGraphics context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             final boolean isSelected = protocolVersion.equals(selectionSupplier.get());
 
-            final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            context.drawCenteredTextWithShadow(textRenderer, this.protocolVersion.getName(), getContentMiddleX(), getContentMiddleY() - textRenderer.fontHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
+            final Font textRenderer = Minecraft.getInstance().font;
+            context.drawCenteredString(textRenderer, this.protocolVersion.getName(), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
         }
     }
 
