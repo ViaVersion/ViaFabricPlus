@@ -193,5 +193,12 @@
       "major": 69,
       "minor": 0
     }
+  },
+  "1.21.11": {
+    "version": 774,
+    "pack_format": {
+      "major": 75,
+      "minor": 0
+    }
   }
 }
