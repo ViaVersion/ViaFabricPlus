@@ -19,24 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.keep_player_loaded;
+package com.viaversion.viafabricplus.injection.mixin.base.connection;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.entity.player.Player;
+import com.viaversion.viafabricplus.injection.access.base.IEventLoopGroupHolder;
+import net.minecraft.server.network.EventLoopGroupHolder;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(Player.class)
-public abstract class MixinPlayer {
+@Mixin(EventLoopGroupHolder.class)
+public class MixinEventLoopGroupHolder implements IEventLoopGroupHolder {
 
-    @Inject(method = "hasClientLoaded", at = @At("HEAD"), cancellable = true)
-    private void alwaysLoadPlayer(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            cir.setReturnValue(true);
-        }
+    @Unique
+    private boolean viaFabricPlus$connecting = false;
+
+    @Override
+    public boolean viaFabricPlus$isConnecting() {
+        return viaFabricPlus$connecting;
+    }
+
+    @Override
+    public void viaFabricPlus$setConnecting(final boolean connecting) {
+        this.viaFabricPlus$connecting = connecting;
     }
 
 }

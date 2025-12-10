@@ -55,7 +55,7 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     public abstract boolean isJumping();
 
-    @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidHeight(Lnet/minecraft/tags/TagKey;)D"))
+    @Redirect(method = "travelInLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidHeight(Lnet/minecraft/tags/TagKey;)D"))
     private double dontApplyLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return Double.MAX_VALUE;
@@ -64,7 +64,7 @@ public abstract class MixinLivingEntity extends Entity {
         }
     }
 
-    @Redirect(method = "travelInFluid",
+    @Redirect(method = "travelInWater",
         slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/world/effect/MobEffects;DOLPHINS_GRACE:Lnet/minecraft/core/Holder;")),
         at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;horizontalCollision:Z", ordinal = 0))
     private boolean disableClimbing(LivingEntity instance) {
@@ -76,7 +76,7 @@ public abstract class MixinLivingEntity extends Entity {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && movingDown;
     }
 
-    @Redirect(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSprinting()Z", ordinal = 0))
+    @Redirect(method = "travelInWater", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSprinting()Z", ordinal = 0))
     private boolean modifySwimSprintSpeed(LivingEntity instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && instance.isSprinting();
     }
@@ -96,7 +96,7 @@ public abstract class MixinLivingEntity extends Entity {
         }
     }
 
-    @ModifyConstant(method = "travelInFluid", constant = @Constant(floatValue = 0.9F))
+    @ModifyConstant(method = "travelInWater", constant = @Constant(floatValue = 0.9F))
     private float modifySwimFriction(float constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return this.getWaterSlowDown();

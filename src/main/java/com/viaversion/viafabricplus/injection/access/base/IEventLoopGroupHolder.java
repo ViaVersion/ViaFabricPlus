@@ -19,30 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.base.connection;
+package com.viaversion.viafabricplus.injection.access.base;
 
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import net.minecraft.client.Options;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+public interface IEventLoopGroupHolder {
 
-@Mixin(Options.class)
-public abstract class MixinOptions {
+    boolean viaFabricPlus$isConnecting();
 
-    @Shadow
-    public boolean useNativeTransport;
-
-    /**
-     * @author RK_01
-     * @reason Needed as an indicator if the client wants to ping a server or connect to a server
-     */
-    @Overwrite
-    public boolean useNativeTransport() {
-        if (!this.useNativeTransport) {
-            ViaFabricPlusImpl.INSTANCE.getLogger().error("Native transport is disabled, but enabling it anyway since we use it as an indicator if the client wants to ping a server or connect to a server.");
-        }
-        return true;
-    }
+    void viaFabricPlus$setConnecting(boolean connecting);
 
 }

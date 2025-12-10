@@ -30,6 +30,7 @@ import java.net.InetSocketAddress;
 import net.minecraft.client.multiplayer.ServerStatusPinger;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.Connection;
+import net.minecraft.server.network.EventLoopGroupHolder;
 import net.minecraft.util.debugchart.LocalSampleLogger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,24 +38,24 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ServerStatusPinger.class)
 public final class MixinServerStatusPinger {
 
-    @WrapOperation(method = "pingServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connectToServer(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/debugchart/LocalSampleLogger;)Lnet/minecraft/network/Connection;"))
-    private Connection setForcedVersion(InetSocketAddress address, boolean useEpoll, LocalSampleLogger packetSizeLog, Operation<Connection> original, @Local(argsOnly = true) ServerData serverInfo) {
+    @WrapOperation(method = "pingServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connectToServer(Ljava/net/InetSocketAddress;Lnet/minecraft/server/network/EventLoopGroupHolder;Lnet/minecraft/util/debugchart/LocalSampleLogger;)Lnet/minecraft/network/Connection;"))
+    private Connection setForcedVersion(InetSocketAddress inetSocketAddress, EventLoopGroupHolder eventLoopGroupHolder, LocalSampleLogger localSampleLogger, Operation<Connection> original, @Local(argsOnly = true) ServerData serverInfo) {
         final IServerData mixinServerInfo = (IServerData) serverInfo;
 
         if (mixinServerInfo.viaFabricPlus$forcedVersion() != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
             // We use the PerformanceLog field to store the forced version since it's always null when pinging a server
             // So we can create a dummy instance, store the forced version in it and later destroy the instance again
             // To avoid any side effects, we also support cases where a mod is also creating a PerformanceLog instance
-            if (packetSizeLog == null) {
-                packetSizeLog = new LocalSampleLogger(1);
+            if (localSampleLogger == null) {
+                localSampleLogger = new LocalSampleLogger(1);
             }
 
             // Attach the forced version to the PerformanceLog instance
-            ((ILocalSampleLogger) packetSizeLog).viaFabricPlus$setForcedVersion(mixinServerInfo.viaFabricPlus$forcedVersion());
+            ((ILocalSampleLogger) localSampleLogger).viaFabricPlus$setForcedVersion(mixinServerInfo.viaFabricPlus$forcedVersion());
             mixinServerInfo.viaFabricPlus$passDirectConnectScreen(false);
         }
 
-        return original.call(address, useEpoll, packetSizeLog);
+        return original.call(inetSocketAddress, eventLoopGroupHolder, localSampleLogger);
     }
 
 }

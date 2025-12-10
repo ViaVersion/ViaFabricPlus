@@ -22,12 +22,15 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.disable_server_pinging;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.viaversion.viafabricplus.injection.access.base.IServerData;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -48,7 +51,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ServerSelectionList.OnlineServerEntry.class)
-public abstract class MixinMultiplayerServerListWidget_ServerEntry {
+public abstract class MixinMultiplayerServerListWidget_OnlineServerEntry {
 
     @Shadow
     @Final
@@ -62,8 +65,8 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
     @Unique
     private boolean viaFabricPlus$disableServerPinging = false;
 
-    @WrapWithCondition(method = "renderContent", at = @At(value = "INVOKE", target = "Ljava/util/concurrent/ThreadPoolExecutor;submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;"))
-    private boolean disableServerPinging(ThreadPoolExecutor instance, Runnable runnable) {
+    @WrapOperation(method = "renderContent", at = @At(value = "INVOKE", target = "Ljava/util/concurrent/ThreadPoolExecutor;submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;"))
+    private Future<?> disableServerPinging(ThreadPoolExecutor instance, Runnable runnable, Operation<Future<?>> original) {
         ProtocolVersion version = ((IServerData) serverData).viaFabricPlus$forcedVersion();
         if (version == null) {
             version = ProtocolTranslator.getTargetVersion();
@@ -72,8 +75,9 @@ public abstract class MixinMultiplayerServerListWidget_ServerEntry {
         viaFabricPlus$disableServerPinging = DebugSettings.INSTANCE.disableServerPinging.isEnabled(version);
         if (viaFabricPlus$disableServerPinging) {
             this.serverData.version = Component.nullToEmpty(version.getName()); // Show target version
+            return null;
         }
-        return !viaFabricPlus$disableServerPinging;
+        return original.call(instance, runnable);
     }
 
     @Redirect(method = "renderContent", at = @At(value = "FIELD", target = "Lnet/minecraft/client/multiplayer/ServerData$State;INCOMPATIBLE:Lnet/minecraft/client/multiplayer/ServerData$State;"))
