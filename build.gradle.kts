@@ -21,7 +21,7 @@ allprojects {
             }
         }
 
-        //mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
+        mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
     }
 
 }
@@ -68,8 +68,8 @@ includeTransitiveJijDependencies()
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.5.2-SNAPSHOT")
-        configuration("com.viaversion:viabackwards-common:5.5.2-SNAPSHOT")
+        configuration("com.viaversion:viaversion-common:5.6.0-mc1.21.11-SNAPSHOT")
+        configuration("com.viaversion:viabackwards-common:5.6.0-mc1.21.11-SNAPSHOT")
         configuration("com.viaversion:viaaprilfools-common:4.0.6-SNAPSHOT")
         configuration("com.viaversion:vialoader:4.0.6-SNAPSHOT") {
             exclude(group = "com.google.guava", module = "guava")
