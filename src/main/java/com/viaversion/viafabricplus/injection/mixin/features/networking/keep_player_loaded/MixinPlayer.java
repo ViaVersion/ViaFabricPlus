@@ -31,12 +31,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
 public abstract class MixinPlayer {
-
-    @Inject(method = "hasClientLoaded", at = @At("HEAD"), cancellable = true)
-    private void alwaysLoadPlayer(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            cir.setReturnValue(true);
-        }
-    }
+// FIXME
+//    @Inject(method = "hasClientLoaded", at = @At("HEAD"), cancellable = true)
+//    private void alwaysLoadPlayer(CallbackInfoReturnable<Boolean> cir) {
+//        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+//            cir.setReturnValue(true);
+//        }
+//    }
 
 }
