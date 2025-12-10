@@ -32,13 +32,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = ChatScreen.class)
 public abstract class MixinChatScreen {
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/ChatComponent;getMessageTagAt(DD)Lnet/minecraft/client/GuiMessageTag;"))
-    private GuiMessageTag removeIndicator(ChatComponent instance, double mouseX, double mouseY) {
-        if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
-            return null;
-        } else {
-            return instance.getMessageTagAt(mouseX, mouseY);
-        }
-    }
+//    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/ChatComponent;getMessageTagAt(DD)Lnet/minecraft/client/GuiMessageTag;"))
+//    private GuiMessageTag removeIndicator(ChatComponent instance, double mouseX, double mouseY) {
+//        if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
+//            return null;
+//        } else {
+//            return instance.getMessageTagAt(mouseX, mouseY);
+//        }
+//    } TODO 1.21.11
 
 }

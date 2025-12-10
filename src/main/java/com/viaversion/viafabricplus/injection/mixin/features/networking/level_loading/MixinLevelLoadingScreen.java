@@ -29,8 +29,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.network.protocol.common.ServerboundKeepAlivePacket;
 import net.minecraft.network.chat.Component;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -88,7 +88,7 @@ public abstract class MixinLevelLoadingScreen extends Screen implements ILevelLo
 
                         final BlockPos blockPos = this.minecraft.player.blockPosition();
                         final boolean isOutOfHeightLimit = this.minecraft.level != null && this.minecraft.level.isOutsideBuildHeight(blockPos.getY());
-                        if (isOutOfHeightLimit || this.minecraft.levelRenderer.isSectionCompiled(blockPos) || this.minecraft.player.isSpectator() || !this.minecraft.player.isAlive()) {
+                        if (isOutOfHeightLimit || this.minecraft.levelRenderer.isSectionCompiledAndVisible(blockPos) || this.minecraft.player.isSpectator() || !this.minecraft.player.isAlive()) {
                             this.onClose();
                         }
                     } else {

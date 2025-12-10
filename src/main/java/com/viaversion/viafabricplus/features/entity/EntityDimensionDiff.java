@@ -31,7 +31,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Data dump for entity dimension changes between versions.
@@ -46,7 +46,7 @@ public final class EntityDimensionDiff {
     public static void init() {
         final JsonObject dimensionDiff = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("entity-dimensions.json");
         for (final String entity : dimensionDiff.keySet()) {
-            final EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.parse(entity)).orElse(null);
+            final EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getOptional(Identifier.parse(entity)).orElse(null);
             if (entityType == null) {
                 throw new IllegalStateException("Unknown entity: " + entity);
             }

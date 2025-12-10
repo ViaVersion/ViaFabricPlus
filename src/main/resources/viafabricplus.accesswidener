@@ -17,6 +17,10 @@ accessible field net/minecraft/world/entity/InterpolationHandler$InterpolationDa
 accessible field net/minecraft/world/entity/player/Inventory equipment Lnet/minecraft/world/entity/EntityEquipment;
 accessible field net/minecraft/client/player/ClientInput moveVector Lnet/minecraft/world/phys/Vec2;
 accessible field net/minecraft/core/Direction YXZ_AXIS_ORDER Lcom/google/common/collect/ImmutableList;
+accessible field net/minecraft/client/gui/font/GlyphStitcher texturePrefix Lnet/minecraft/resources/Identifier;
+accessible field net/minecraft/client/gui/screens/FaviconTexture MISSING_LOCATION Lnet/minecraft/resources/Identifier;
+accessible field net/minecraft/world/entity/boss/enderdragon/EnderDragon body Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;
+accessible field net/minecraft/world/entity/animal/equine/AbstractHorse standAnimO F
 
 mutable field net/minecraft/world/entity/EntityType dimensions Lnet/minecraft/world/entity/EntityDimensions;
 mutable field net/minecraft/world/level/block/state/BlockBehaviour speedFactor F
