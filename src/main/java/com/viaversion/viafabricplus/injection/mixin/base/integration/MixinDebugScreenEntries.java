@@ -28,7 +28,7 @@ import net.minecraft.client.gui.components.debug.DebugScreenEntries;
 import net.minecraft.client.gui.components.debug.DebugScreenEntry;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryStatus;
 import net.minecraft.client.gui.components.debug.DebugScreenProfile;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -43,21 +43,21 @@ public abstract class MixinDebugScreenEntries {
     @Mutable
     @Shadow
     @Final
-    public static Map<DebugScreenProfile, Map<ResourceLocation, DebugScreenEntryStatus>> PROFILES;
+    public static Map<DebugScreenProfile, Map<Identifier, DebugScreenEntryStatus>> PROFILES;
 
     @Shadow
-    private static ResourceLocation register(final ResourceLocation id, final DebugScreenEntry entry) {
+    private static Identifier register(final Identifier id, final DebugScreenEntry entry) {
         return null;
     }
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void addViaFabricPlusEntry(CallbackInfo ci) {
-        final ResourceLocation id = register(VFPDebugHudEntry.ID, new VFPDebugHudEntry());
-        final Map<DebugScreenProfile, Map<ResourceLocation, DebugScreenEntryStatus>> profiles = new HashMap<>();
-        for (Map.Entry<DebugScreenProfile, Map<ResourceLocation, DebugScreenEntryStatus>> entry : PROFILES.entrySet()) {
-            final Map<ResourceLocation, DebugScreenEntryStatus> entries = new HashMap<>(entry.getValue());
+        final Identifier id = register(VFPDebugHudEntry.ID, new VFPDebugHudEntry());
+        final Map<DebugScreenProfile, Map<Identifier, DebugScreenEntryStatus>> profiles = new HashMap<>();
+        for (Map.Entry<DebugScreenProfile, Map<Identifier, DebugScreenEntryStatus>> entry : PROFILES.entrySet()) {
+            final Map<Identifier, DebugScreenEntryStatus> entries = new HashMap<>(entry.getValue());
             if (entry.getKey() == DebugScreenProfile.DEFAULT) {
-                entries.put(id, DebugScreenEntryStatus.IN_F3);
+                entries.put(id, DebugScreenEntryStatus.IN_OVERLAY);
             }
             profiles.put(entry.getKey(), entries);
         }

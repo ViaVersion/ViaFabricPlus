@@ -4,13 +4,13 @@ accessible field net/minecraft/network/Connection channel Lio/netty/channel/Chan
 accessible field net/minecraft/client/multiplayer/resolver/ServerNameResolver redirectHandler Lnet/minecraft/client/multiplayer/resolver/ServerRedirectHandler;
 accessible field net/minecraft/client/gui/screens/PauseScreen disconnectButton Lnet/minecraft/client/gui/components/Button;
 accessible field net/minecraft/network/Connection bandwidthDebugMonitor Lnet/minecraft/network/BandwidthDebugMonitor;
-accessible field net/minecraft/world/entity/boss/enderdragon/EnderDragon body Lnet/minecraft/world/entity/boss/EnderDragonPart;
-accessible field net/minecraft/world/entity/animal/horse/AbstractHorse standAnimO F
-accessible field net/minecraft/world/entity/vehicle/AbstractBoat deltaRotation F
+accessible field net/minecraft/world/entity/boss/enderdragon/EnderDragon body Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;
+accessible field net/minecraft/world/entity/animal/equine/AbstractHorse standAnimO F
+accessible field net/minecraft/world/entity/vehicle/boat/AbstractBoat deltaRotation F
 accessible field net/minecraft/world/entity/EntityType dimensions Lnet/minecraft/world/entity/EntityDimensions;
 accessible field net/minecraft/world/level/block/state/BlockBehaviour speedFactor F
 accessible field net/minecraft/client/gui/screens/options/controls/KeyBindsList$KeyEntry RESET_BUTTON_TITLE Lnet/minecraft/network/chat/Component;
-accessible field net/minecraft/client/gui/screens/FaviconTexture MISSING_LOCATION Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/client/gui/screens/FaviconTexture MISSING_LOCATION Lnet/minecraft/resources/Identifier;
 accessible field net/minecraft/client/Minecraft fontManager Lnet/minecraft/client/gui/font/FontManager;
 accessible field net/minecraft/client/gui/font/FontManager fontSets Ljava/util/Map;
 accessible field net/minecraft/client/gui/font/FontSet glyphCache Lnet/minecraft/client/gui/font/CodepointMap;
@@ -21,7 +21,7 @@ accessible field net/minecraft/world/entity/InterpolationHandler$InterpolationDa
 accessible field net/minecraft/world/entity/player/Inventory equipment Lnet/minecraft/world/entity/EntityEquipment;
 accessible field net/minecraft/client/player/ClientInput moveVector Lnet/minecraft/world/phys/Vec2;
 accessible field net/minecraft/core/Direction YXZ_AXIS_ORDER Lcom/google/common/collect/ImmutableList;
-accessible field net/minecraft/client/gui/font/GlyphStitcher texturePrefix Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/client/gui/font/GlyphStitcher texturePrefix Lnet/minecraft/resources/Identifier;
 
 mutable field net/minecraft/world/entity/EntityType dimensions Lnet/minecraft/world/entity/EntityDimensions;
 mutable field net/minecraft/world/level/block/state/BlockBehaviour speedFactor F
@@ -29,7 +29,7 @@ mutable field net/minecraft/client/player/ClientInput moveVector Lnet/minecraft/
 
 accessible method net/minecraft/world/inventory/ChestMenu <init> (Lnet/minecraft/world/inventory/MenuType;ILnet/minecraft/world/entity/player/Inventory;I)V
 accessible method net/minecraft/world/entity/animal/camel/Camel getBodyAnchorAnimationYOffset (ZFLnet/minecraft/world/entity/EntityDimensions;F)D
-accessible method net/minecraft/world/entity/vehicle/AbstractBoat getMaxPassengers ()I
+accessible method net/minecraft/world/entity/vehicle/boat/AbstractBoat getMaxPassengers ()I
 accessible method net/minecraft/client/gui/screens/ConnectScreen updateStatus (Lnet/minecraft/network/chat/Component;)V
 accessible method net/minecraft/world/item/BlockItem getPlacementState (Lnet/minecraft/world/item/context/BlockPlaceContext;)Lnet/minecraft/world/level/block/state/BlockState;
 accessible method net/minecraft/world/level/block/state/BlockBehaviour getCloneItemStack (Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Lnet/minecraft/world/item/ItemStack;

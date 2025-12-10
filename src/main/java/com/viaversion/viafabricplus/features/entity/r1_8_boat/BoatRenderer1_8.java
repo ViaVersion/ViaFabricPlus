@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.features.entity.r1_8_boat;
 
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.AbstractBoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -30,7 +30,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.state.BoatRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import com.mojang.math.Axis;
 
@@ -39,7 +39,7 @@ import com.mojang.math.Axis;
  */
 public final class BoatRenderer1_8 extends AbstractBoatRenderer {
 
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("viafabricplus", "textures/boat1_8.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("viafabricplus", "textures/boat1_8.png");
     private final BoatModel1_8 model;
 
     public BoatRenderer1_8(EntityRendererProvider.Context ctx) {
