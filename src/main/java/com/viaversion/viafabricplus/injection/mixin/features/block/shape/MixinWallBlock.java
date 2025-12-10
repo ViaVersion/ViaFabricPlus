@@ -109,7 +109,7 @@ public abstract class MixinWallBlock extends Block {
         }
     }
 
-    @Inject(method = "updateShape", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "updateShape(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/world/level/ScheduledTickAccess;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/util/RandomSource;)Lnet/minecraft/world/level/block/state/BlockState;", at = @At("RETURN"), cancellable = true)
     private void modifyBlockState(CallbackInfoReturnable<BlockState> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             cir.setReturnValue(viaFabricPlus$oldWallPlacementLogic(cir.getReturnValue()));

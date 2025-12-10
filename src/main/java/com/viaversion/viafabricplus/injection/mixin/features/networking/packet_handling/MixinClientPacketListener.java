@@ -227,7 +227,6 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
         }
     }
 
-    @SuppressWarnings({"InvalidInjectorMethodSignature"})
     @ModifyConstant(method = "handleSetEntityPassengersPacket", constant = @Constant(classValue = AbstractBoat.class))
     private boolean dontChangeYawWhenMountingBoats(Object entity, Class<?> boatClass) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
