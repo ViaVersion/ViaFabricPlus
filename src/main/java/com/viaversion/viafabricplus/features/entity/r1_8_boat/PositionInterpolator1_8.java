@@ -25,7 +25,7 @@ import com.viaversion.viafabricplus.injection.access.entity.r1_8_boat.IAbstractB
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.InterpolationHandler;
-import net.minecraft.world.entity.vehicle.AbstractBoat;
+import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.phys.Vec3;
 
 public class PositionInterpolator1_8 extends InterpolationHandler {

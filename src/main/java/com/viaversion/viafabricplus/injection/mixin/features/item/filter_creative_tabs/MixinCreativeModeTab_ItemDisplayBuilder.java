@@ -32,7 +32,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.flag.FeatureFlagSet;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -52,7 +52,7 @@ public abstract class MixinCreativeModeTab_ItemDisplayBuilder {
 
         if (index == 2 /* Off */ || Minecraft.getInstance().isLocalServer()) {
             return originalValue;
-        } else if (index == 1 /* Vanilla only */ && !BuiltInRegistries.CREATIVE_MODE_TAB.getKey(this.tab).getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
+        } else if (index == 1 /* Vanilla only */ && !BuiltInRegistries.CREATIVE_MODE_TAB.getKey(this.tab).getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
             return originalValue;
         } else {
             return VersionedRegistries.keepItem(stack) && originalValue;

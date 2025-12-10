@@ -90,7 +90,7 @@ public final class UpdateTaskTest {
                 return;
             }
 
-            enchantments.addProperty(registryKey.location().toString(), CURRENT_VERSION_RANGE);
+            enchantments.addProperty(registryKey.identifier().toString(), CURRENT_VERSION_RANGE);
         });
     }
 
@@ -101,7 +101,7 @@ public final class UpdateTaskTest {
                 return;
             }
 
-            patterns.addProperty(registryKey.location().toString(), CURRENT_VERSION_RANGE);
+            patterns.addProperty(registryKey.identifier().toString(), CURRENT_VERSION_RANGE);
         });
     }
 

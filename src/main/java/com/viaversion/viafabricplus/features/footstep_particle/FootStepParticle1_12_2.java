@@ -36,14 +36,14 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import org.joml.Quaternionf;
 
 public final class FootStepParticle1_12_2 extends SingleQuadParticle {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath("viafabricplus", "footstep");
+    public static final Identifier ID = Identifier.fromNamespaceAndPath("viafabricplus", "footstep");
     public static int RAW_ID;
 
     private FootStepParticle1_12_2(ClientLevel clientWorld, double x, double y, double z, TextureAtlasSprite sprite) {
