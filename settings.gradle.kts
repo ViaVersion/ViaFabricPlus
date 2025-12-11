@@ -6,8 +6,8 @@ pluginManagement {
     }
 
     plugins {
-        id("fabric-loom") version "1.13-SNAPSHOT"
-        id("de.florianmichael.baseproject.BaseProject") version "1.2.8"
+        id("net.fabricmc.fabric-loom-remap") version "1.14-SNAPSHOT"
+        id("de.florianmichael.baseproject.BaseProject") version "1.3.0"
     }
 }
 

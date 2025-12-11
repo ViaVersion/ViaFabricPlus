@@ -1,14 +1,14 @@
 import de.florianmichael.baseproject.*
 
 plugins {
-    id("fabric-loom")
+    id("net.fabricmc.fabric-loom-remap")
     id("de.florianmichael.baseproject.BaseProject")
 }
 
 allprojects {
 
     setupProject()
-    setupFabric()
+    setupFabricRemap()
     setupViaPublishing()
 
     repositories {
