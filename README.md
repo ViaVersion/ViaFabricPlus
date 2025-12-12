@@ -38,7 +38,7 @@ entity interactions, graphics, and more. In short, it recreates the classic Mine
 
 ### Supported Server versions
 
-- Release (1.0.0 - 1.21.10)
+- Release (1.0.0 - 1.21.11)
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))

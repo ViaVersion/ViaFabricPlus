@@ -21,7 +21,7 @@ allprojects {
             }
         }
 
-        mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
+        //mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
     }
 
 }
