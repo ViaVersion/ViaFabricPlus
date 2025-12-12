@@ -27,7 +27,7 @@
     "remove_newer_screen_features.MixinPauseScreen",
     "remove_newer_screen_features.MixinScreen",
     "secure_chat_warning.MixinClientPacketListener",
-    "strike_through_offset.MixinTextRenderer_Drawer",
+    "strike_through_offset.MixinFont_PreparedTextBuilder",
     "villager_profession.MixinVillagerProfessionLayer"
   ],
   "injectors": {

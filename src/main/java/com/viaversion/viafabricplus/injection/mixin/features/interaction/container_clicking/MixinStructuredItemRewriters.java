@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = {BlockItemPacketRewriter1_21_5.class, StructuredItemRewriter.class}, remap = false)
-public abstract class MixinStructuredItemRewriter {
+public abstract class MixinStructuredItemRewriters {
 
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/data/entity/EntityTracker;canInstaBuild()Z"))
     private boolean dontCancelPackets(EntityTracker entityTracker) {
