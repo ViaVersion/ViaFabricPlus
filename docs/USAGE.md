@@ -2,13 +2,13 @@
 
 ## Getting Started
 
-When you open the **Multiplayer** screen, you’ll notice a new **ViaFabricPlus button** in the top right corner.
-Clicking it opens the mod’s main menu, where you can:
+When you open the **Multiplayer** screen, you'll notice a new **ViaFabricPlus button** in the top right corner.
+Clicking it opens the mod's main menu, where you can:
 
 - Adjust general settings
 - Choose which protocol version to use
 
-You can also move this button’s position via:
+You can also move this button's position via:
 **Settings → General → Multiplayer screen button orientation**
 
 ![](preview/multiplayer.png)
@@ -16,7 +16,7 @@ You can also move this button’s position via:
 
 ### Per-Server Version Selection
 
-On the **Add/Edit Server** screen, you’ll see a ViaFabricPlus button.
+On the **Add/Edit Server** screen, you'll see a ViaFabricPlus button.
 Here you can pick a specific version just for that server:
 
 - When you **ping** or **join**, ViaFabricPlus will automatically use the chosen version.
@@ -47,7 +47,7 @@ For most players, only these tabs matter:
 - **Authentication**
 - **Visual**
 
-⚠️ The **Debug** tab is for developers only – don’t touch it unless you know what you’re doing.
+⚠️ The **Debug** tab is for developers only – don't touch it unless you know what you're doing.
 
 ![](preview/settings_selection.png)
 
@@ -70,7 +70,7 @@ Configs are stored in the `config` folder and may include:
 - `viaaprilfools.yml` – April Fools versions
 
 On first launch, all files are created with safe default values.
-If you’re not sure what a setting does, **don’t change it**.
+If you're not sure what a setting does, **don't change it**.
 
 ---
 
@@ -96,7 +96,7 @@ To log into a Bedrock account:
 
 ### Bedrock Realms
 
-If you have a Bedrock account linked, you’ll see your **Bedrock Realms** listed in the **Server Lists** menu (bottom
+If you have a Bedrock account linked, you'll see your **Bedrock Realms** listed in the **Server Lists** menu (bottom
 left of the main GUI).
 
 ![](preview/bedrock_realms.png)
@@ -114,7 +114,7 @@ ViaFabricPlus integrates with **ClassiCube** and **BetaCraft** server lists, acc
 
 ### ClassiCube
 
-To join ClassiCube servers, you’ll need a ClassiCube account (sign up at [classicube.net](https://www.classicube.net/)).
+To join ClassiCube servers, you'll need a ClassiCube account (sign up at [classicube.net](https://www.classicube.net/)).
 
 - If MultiFactor authentication is required, ViaFabricPlus will open a dedicated login window.
 

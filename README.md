@@ -15,10 +15,10 @@
 **ViaFabricPlus** is a Minecraft mod for [Fabric](https://fabricmc.net/) that builds on
 the [ViaVersion plugin](https://github.com/ViaVersion/ViaVersion).
 It lets you connect to servers from almost every Minecraft version while fixing issues that the original project
-couldn’t.
+couldn't.
 
 These fixes make older servers feel much closer to how they originally played, with improvements to movement, block and
-entity interactions, graphics, and more. In short, it recreates the classic Minecraft experience on today’s client.
+entity interactions, graphics, and more. In short, it recreates the classic Minecraft experience on today's client.
 
 ## Important to know
 
