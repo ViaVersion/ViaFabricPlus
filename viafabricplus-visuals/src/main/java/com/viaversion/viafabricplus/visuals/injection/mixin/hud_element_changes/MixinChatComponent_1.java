@@ -21,24 +21,22 @@
 
 package com.viaversion.viafabricplus.visuals.injection.mixin.hud_element_changes;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.GuiMessageTag;
-import net.minecraft.client.gui.screens.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = ChatScreen.class)
-public abstract class MixinChatScreen {
+@Mixin(targets = "net.minecraft.client.gui.components.ChatComponent$1")
+public abstract class MixinChatComponent_1 {
 
-//    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/ChatComponent;getMessageTagAt(DD)Lnet/minecraft/client/GuiMessageTag;"))
-//    private GuiMessageTag removeIndicator(ChatComponent instance, double mouseX, double mouseY) {
-//        if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
-//            return null;
-//        } else {
-//            return instance.getMessageTagAt(mouseX, mouseY);
-//        }
-//    } TODO 1.21.11
+    @ModifyExpressionValue(method = "accept", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/GuiMessage$Line;tag()Lnet/minecraft/client/GuiMessageTag;"))
+    private GuiMessageTag removeIndicator(GuiMessageTag original) {
+        if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
+            return null;
+        } else {
+            return original;
+        }
+    }
 
 }

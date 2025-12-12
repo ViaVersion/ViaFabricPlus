@@ -10,7 +10,7 @@
     "filter_game_mode_selections.MixinGameModeSwitcherScreen_GameModeIcon",
     "force_unicode_font.MixinLanguageManager",
     "hud_element_changes.MixinChatComponent",
-    "hud_element_changes.MixinChatScreen",
+    "hud_element_changes.MixinChatComponent_1",
     "hud_element_changes.MixinMultiPlayerGameMode",
     "hud_element_changes.MixinGui",
     "instant_sneaking.MixinCamera",
