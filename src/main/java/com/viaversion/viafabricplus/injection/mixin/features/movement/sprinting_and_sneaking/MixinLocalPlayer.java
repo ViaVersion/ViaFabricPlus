@@ -121,10 +121,8 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     @Inject(method = "isSprintingPossible", at = @At("HEAD"), cancellable = true)
     private void isSprintingPossible1_21_10(boolean bl, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
-            cir.setReturnValue(!this.isMobilityRestricted()
-                && this.viaFabricPlus$hasEnoughFoodToSprint1_21_10()
-                && (!this.isPassenger() || this.vehicleCanSprint(this.getVehicle()))
-                && (bl || !this.isInShallowWater()));
+            cir.setReturnValue(!this.isMobilityRestricted() && this.viaFabricPlus$hasEnoughFoodToSprint1_21_10()
+                && (!this.isPassenger() || this.vehicleCanSprint(this.getVehicle())) && (bl || !this.isInShallowWater()));
         }
     }
 
