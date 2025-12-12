@@ -209,6 +209,7 @@
     "features.movement.collision.MixinAbstractBoat",
     "features.movement.collision.MixinBedBlock",
     "features.movement.collision.MixinLocalPlayer",
+    "features.movement.collision.MixinPlayer",
     "features.movement.collision.MixinEntity",
     "features.movement.collision.MixinHoneyBlock",
     "features.movement.collision.MixinLivingEntity",
