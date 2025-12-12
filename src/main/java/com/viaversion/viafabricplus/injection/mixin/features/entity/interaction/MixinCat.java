@@ -24,8 +24,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.animal.feline.Cat;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.InteractionResult;

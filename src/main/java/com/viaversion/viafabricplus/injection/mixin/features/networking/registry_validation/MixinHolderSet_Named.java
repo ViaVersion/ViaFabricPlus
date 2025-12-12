@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HolderSet.Named.class)
-public abstract class MixinRegistryEntryList_Named {
+public abstract class MixinHolderSet_Named {
 
     @Shadow
     private @Nullable List<Holder> contents;

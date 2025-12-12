@@ -30,14 +30,14 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.state.BoatRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Model for boats in 1.8 and lower.
  */
 public final class BoatModel1_8 extends EntityModel<BoatRenderState> {
 
-    public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("viafabricplus", "boat1_8"), "main");
+    public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath("viafabricplus", "boat1_8"), "main");
 
     public BoatModel1_8(ModelPart root) {
         super(root);

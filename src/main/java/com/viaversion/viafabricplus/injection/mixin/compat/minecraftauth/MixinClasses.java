@@ -22,21 +22,20 @@
 package com.viaversion.viafabricplus.injection.mixin.compat.minecraftauth;
 
 import io.jsonwebtoken.lang.Classes;
+import io.jsonwebtoken.lang.UnknownClassException;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.Overwrite;
 
-/*
- * JsonWebToken is used by MinecraftAuth, and since it's using Java services, it's not working with the fabric loader,
- * So we have to change all services usages by using the normal Java API
- */
 @Mixin(value = Classes.class, remap = false)
 public abstract class MixinClasses {
 
-    @Inject(method = "forName", at = @At("HEAD"), cancellable = true)
-    private static void removeServicesSupport(String fqcn, CallbackInfoReturnable<Class<Object>> cir) throws ClassNotFoundException {
-        cir.setReturnValue((Class<Object>) Class.forName(fqcn));
+    /**
+     * @author FlorianMichael/EnZaXD
+     * @reason Use normal Class.forName instead of JsonWebToken's service loading mechanism
+     */
+    @Overwrite
+    public static <T> Class<T> forName(String fqcn) throws UnknownClassException, ClassNotFoundException {
+        return (Class<T>) Class.forName(fqcn);
     }
 
 }

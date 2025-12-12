@@ -30,10 +30,8 @@ import com.viaversion.viafabricplus.injection.access.networking.legacy_chat_sign
 import java.net.URL;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = YggdrasilUserApiService.class, remap = false)
 public abstract class MixinYggdrasilUserApiService {
@@ -46,14 +44,17 @@ public abstract class MixinYggdrasilUserApiService {
     @Final
     private URL routeKeyPair;
 
-    @Inject(method = "getKeyPair", at = @At("HEAD"), cancellable = true)
-    private void storeLegacyPublicKeySignature(CallbackInfoReturnable<KeyPairResponse> cir) {
+    /**
+     * @author FlorianMichael/EnZaXD
+     * @reason Fetch the legacy public key signature for 1.19.0 clients.
+     */
+    @Overwrite
+    public KeyPairResponse getKeyPair() {
         final KeyPairResponse1_19_0 response = minecraftClient.post(routeKeyPair, KeyPairResponse1_19_0.class);
 
         // the response can't be null for us since we are constructing a new object with it.
         if (response == null) {
-            cir.setReturnValue(null);
-            return;
+            return null;
         }
 
         // create the original KeyPairResponse object with the data
@@ -70,7 +71,7 @@ public abstract class MixinYggdrasilUserApiService {
             ViaFabricPlusImpl.INSTANCE.getLogger().error("Could not get legacy public key signature. 1.19.0 with secure-profiles enabled will not work!");
         }
 
-        cir.setReturnValue(keyPairResponse);
+        return keyPairResponse;
     }
 
 }

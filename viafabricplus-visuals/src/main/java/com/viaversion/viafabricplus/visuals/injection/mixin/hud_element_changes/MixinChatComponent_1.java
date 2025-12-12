@@ -19,30 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.base.connection;
+package com.viaversion.viafabricplus.visuals.injection.mixin.hud_element_changes;
 
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import net.minecraft.client.Options;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import net.minecraft.client.GuiMessageTag;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(Options.class)
-public abstract class MixinOptions {
+@Mixin(targets = "net.minecraft.client.gui.components.ChatComponent$1")
+public abstract class MixinChatComponent_1 {
 
-    @Shadow
-    public boolean useNativeTransport;
-
-    /**
-     * @author RK_01
-     * @reason Needed as an indicator if the client wants to ping a server or connect to a server
-     */
-    @Overwrite
-    public boolean useNativeTransport() {
-        if (!this.useNativeTransport) {
-            ViaFabricPlusImpl.INSTANCE.getLogger().error("Native transport is disabled, but enabling it anyway since we use it as an indicator if the client wants to ping a server or connect to a server.");
+    @ModifyExpressionValue(method = "accept", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/GuiMessage$Line;tag()Lnet/minecraft/client/GuiMessageTag;"))
+    private GuiMessageTag removeIndicator(GuiMessageTag original) {
+        if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
+            return null;
+        } else {
+            return original;
         }
-        return true;
     }
 
 }

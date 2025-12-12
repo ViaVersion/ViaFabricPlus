@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.collision
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.AbstractBoat;
+import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;

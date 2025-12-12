@@ -30,7 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 
 public final class ReportIssuesScreen extends VFPScreen {

@@ -48,7 +48,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 
@@ -73,7 +73,7 @@ public final class VersionedRegistries {
     private static void fillKeys(final JsonObject object, final ResourceKey registryKey, final Reference2ObjectMap map) {
         for (final String element : object.keySet()) {
             final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
-            final ResourceKey<?> key = ResourceKey.create(registryKey, ResourceLocation.parse(element));
+            final ResourceKey<?> key = ResourceKey.create(registryKey, Identifier.parse(element));
             map.put(key, versions);
         }
     }
@@ -81,7 +81,7 @@ public final class VersionedRegistries {
     private static void fillEntries(final JsonObject object, final Registry<?> registry, final Reference2ObjectMap map) {
         for (final String element : object.keySet()) {
             final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
-            final Holder entry = registry.get(ResourceLocation.parse(element)).orElseThrow();
+            final Holder entry = registry.get(Identifier.parse(element)).orElseThrow();
             map.put(entry, versions);
         }
     }
@@ -89,7 +89,7 @@ public final class VersionedRegistries {
     private static void fillItems(final JsonObject object) {
         for (final String element : object.keySet()) {
             final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
-            final Item item = BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(element)).orElse(null);
+            final Item item = BuiltInRegistries.ITEM.getOptional(Identifier.parse(element)).orElse(null);
             if (item == null) {
                 throw new IllegalStateException("Unknown item: " + element);
             }

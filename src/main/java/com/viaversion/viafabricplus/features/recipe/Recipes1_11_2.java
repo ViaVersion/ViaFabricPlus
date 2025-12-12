@@ -66,7 +66,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Tuple;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
@@ -107,7 +107,7 @@ public final class Recipes1_11_2 {
             for (int i = 0; i < LEGACY_RECIPES.size(); i++) {
                 final Tuple<LegacyRecipe, VersionRange> legacyRecipe = LEGACY_RECIPES.get(i);
                 if (legacyRecipe.getB().contains(ProtocolTranslator.getTargetVersion())) {
-                    final ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, ResourceLocation.fromNamespaceAndPath("viafabricplus", "recipe/" + i));
+                    final ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("viafabricplus", "recipe/" + i));
                     switch (legacyRecipe.getA()) {
                         case LegacyShapedRecipe legacyShapedRecipe -> {
                             final Map<Character, Ingredient> ingredients = new HashMap<>();
@@ -177,7 +177,7 @@ public final class Recipes1_11_2 {
                 specialRecipes.add(new BookCloningRecipe(CraftingBookCategory.MISC));
             }
             for (CraftingRecipe specialRecipe : specialRecipes) {
-                final ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, ResourceLocation.fromNamespaceAndPath("viafabricplus", "recipe/special_" + specialRecipe.getClass().getSimpleName().replace("Recipe", "").toLowerCase(Locale.ROOT)));
+                final ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("viafabricplus", "recipe/special_" + specialRecipe.getClass().getSimpleName().replace("Recipe", "").toLowerCase(Locale.ROOT)));
                 recipes.add(new RecipeHolder<>(key, specialRecipe));
             }
 
@@ -214,7 +214,7 @@ public final class Recipes1_11_2 {
         network.handleContainerSetSlot(new ClientboundContainerSetSlotPacket(syncId, screenHandler.getStateId(), 0, result));
     }
 
-    private static Item getItemById(final ResourceLocation id) {
+    private static Item getItemById(final Identifier id) {
         final Item item = BuiltInRegistries.ITEM.getOptional(id).orElse(null);
         if (item == null) {
             throw new IllegalStateException("Unknown item: " + id.toString());
@@ -229,7 +229,7 @@ public final class Recipes1_11_2 {
     private record RecipeItemStack(Item item, int count) {
 
         private static RecipeItemStack fromJson(final JsonObject obj) {
-            final ResourceLocation id = ResourceLocation.parse(obj.get("id").getAsString());
+            final Identifier id = Identifier.parse(obj.get("id").getAsString());
             final int count = obj.has("count") ? obj.get("count").getAsInt() : 1;
             return new RecipeItemStack(getItemById(id), count);
         }
@@ -255,7 +255,7 @@ public final class Recipes1_11_2 {
                 final char key = entry.getKey().charAt(0);
                 final List<Item> items = new ArrayList<>();
                 for (JsonElement itemId : entry.getValue().getAsJsonArray()) {
-                    items.add(getItemById(ResourceLocation.parse(itemId.getAsString())));
+                    items.add(getItemById(Identifier.parse(itemId.getAsString())));
                 }
                 legend.put(key, items);
             }
@@ -274,7 +274,7 @@ public final class Recipes1_11_2 {
             for (JsonElement element : obj.getAsJsonArray("ingredients")) {
                 final List<Item> items = new ArrayList<>();
                 for (JsonElement itemId : element.getAsJsonArray()) {
-                    items.add(getItemById(ResourceLocation.parse(itemId.getAsString())));
+                    items.add(getItemById(Identifier.parse(itemId.getAsString())));
                 }
                 ingredients.add(items);
             }
@@ -291,7 +291,7 @@ public final class Recipes1_11_2 {
             final RecipeItemStack result = RecipeItemStack.fromJson(obj.getAsJsonObject("result"));
             final List<Item> input = new ArrayList<>();
             for (JsonElement element : obj.getAsJsonArray("input")) {
-                input.add(getItemById(ResourceLocation.parse(element.getAsString())));
+                input.add(getItemById(Identifier.parse(element.getAsString())));
             }
             final float experience = obj.get("experience").getAsFloat();
             return new LegacySmeltingRecipe(group, result, input, experience);

@@ -47,7 +47,7 @@
   ],
   "accessWidener": "viafabricplus-visuals.accesswidener",
   "depends": {
-    "viafabricplus": ">=4.2.1"
+    "viafabricplus": ">=4.3.6"
   },
   "custom": {
     "modmenu": {

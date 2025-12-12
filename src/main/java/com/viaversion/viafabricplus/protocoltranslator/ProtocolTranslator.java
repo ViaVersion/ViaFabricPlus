@@ -68,7 +68,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.Connection;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
@@ -91,7 +91,7 @@ public final class ProtocolTranslator {
     /**
      * The native version of the client
      */
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_9;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_11;
 
     /**
      * Protocol version that is used to enable protocol auto-detect

@@ -41,7 +41,8 @@
     "minecraft:vanishing_curse": ">= 1.11",
     "minecraft:binding_curse": ">= 1.11",
     "minecraft:depth_strider": ">= 1.8.x",
-    "minecraft:multishot": ">= 1.14"
+    "minecraft:multishot": ">= 1.14",
+    "minecraft:lunge": ">= 1.21.11"
   },
   "effects": {
     "minecraft:darkness": ">= 1.19",
@@ -82,7 +83,8 @@
     "minecraft:mining_fatigue": ">= b1.8-b1.8.1",
     "minecraft:trial_omen": ">= 1.20.5-1.20.6",
     "minecraft:wither": ">= 1.4.2",
-    "minecraft:weakness": ">= b1.8-b1.8.1"
+    "minecraft:weakness": ">= b1.8-b1.8.1",
+    "minecraft:breath_of_the_nautilus": ">= 1.21.11"
   },
   "banner_patterns": {
     "minecraft:diagonal_left": ">= 1.8.x",
@@ -1616,6 +1618,23 @@
     "minecraft:waxed_copper_golem_statue": ">= 1.21.9-1.21.10",
     "minecraft:waxed_exposed_copper_golem_statue": ">= 1.21.9-1.21.10",
     "minecraft:waxed_weathered_copper_golem_statue": ">= 1.21.9-1.21.10",
-    "minecraft:waxed_oxidized_copper_golem_statue": ">= 1.21.9-1.21.10"
+    "minecraft:waxed_oxidized_copper_golem_statue": ">= 1.21.9-1.21.10",
+    "minecraft:nautilus_spawn_egg": ">= 1.21.11",
+    "minecraft:camel_husk_spawn_egg": ">= 1.21.11",
+    "minecraft:parched_spawn_egg": ">= 1.21.11",
+    "minecraft:zombie_nautilus_spawn_egg": ">= 1.21.11",
+    "minecraft:netherite_horse_armor": ">= 1.21.11",
+    "minecraft:wooden_spear": ">= 1.21.11",
+    "minecraft:stone_spear": ">= 1.21.11",
+    "minecraft:copper_spear": ">= 1.21.11",
+    "minecraft:iron_spear": ">= 1.21.11",
+    "minecraft:golden_spear": ">= 1.21.11",
+    "minecraft:diamond_spear": ">= 1.21.11",
+    "minecraft:netherite_spear": ">= 1.21.11",
+    "minecraft:iron_nautilus_armor": ">= 1.21.11",
+    "minecraft:golden_nautilus_armor": ">= 1.21.11",
+    "minecraft:diamond_nautilus_armor": ">= 1.21.11",
+    "minecraft:netherite_nautilus_armor": ">= 1.21.11",
+    "minecraft:copper_nautilus_armor": ">= 1.21.11"
   }
 }

@@ -24,8 +24,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_
 import com.viaversion.viafabricplus.injection.access.networking.packet_handling.IGameTestBlockHighlightRenderer;
 import java.util.Map;
 import net.minecraft.client.renderer.debug.GameTestBlockHighlightRenderer;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

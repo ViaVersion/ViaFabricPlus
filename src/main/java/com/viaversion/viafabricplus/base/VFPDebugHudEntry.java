@@ -34,7 +34,7 @@ import java.util.List;
 import net.minecraft.client.gui.components.debug.DebugScreenEntry;
 import net.minecraft.client.gui.components.debug.DebugScreenDisplayer;
 import net.minecraft.ChatFormatting;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
@@ -48,7 +48,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class VFPDebugHudEntry implements DebugScreenEntry {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath("viafabricplus", "viafabricplus");
+    public static final Identifier ID = Identifier.fromNamespaceAndPath("viafabricplus", "viafabricplus");
 
     @Override
     public void display(final DebugScreenDisplayer lines, @Nullable final Level world, @Nullable final LevelChunk clientChunk, @Nullable final LevelChunk chunk) {

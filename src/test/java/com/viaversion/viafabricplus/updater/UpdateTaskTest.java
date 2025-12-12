@@ -64,6 +64,8 @@ public final class UpdateTaskTest {
     }
 
     private static void updateVersionedRegistries() {
+        VersionedRegistries.init(); // Make sure they are loaded before editing
+
         final JsonObject data = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("versioned-registries.json");
         addMissingItems(data.getAsJsonObject("items"));
         addMissingEnchantments(data.getAsJsonObject("enchantments"));
@@ -90,7 +92,7 @@ public final class UpdateTaskTest {
                 return;
             }
 
-            enchantments.addProperty(registryKey.location().toString(), CURRENT_VERSION_RANGE);
+            enchantments.addProperty(registryKey.identifier().toString(), CURRENT_VERSION_RANGE);
         });
     }
 
@@ -101,7 +103,7 @@ public final class UpdateTaskTest {
                 return;
             }
 
-            patterns.addProperty(registryKey.location().toString(), CURRENT_VERSION_RANGE);
+            patterns.addProperty(registryKey.identifier().toString(), CURRENT_VERSION_RANGE);
         });
     }
 

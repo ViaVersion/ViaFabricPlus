@@ -41,7 +41,7 @@ If you want to help translating ViaFabricPlus you can do so on [Crowdin](https:/
 1. Create a branch (e.g. `feature/fix-xyz` or `fix/fix-xyz`).
 2. Implement and test your changes thoroughly.
 3. Write clean, readable code (descriptive names, no clutter).
-4. Follow [Google’s Java Code Style](https://google.github.io/styleguide/javaguide.html).
+4. Follow [Google's Java Code Style](https://google.github.io/styleguide/javaguide.html).
 5. If you modify the API:
     - Update documentation in `docs/`
     - Add Javadocs to your code
@@ -52,7 +52,7 @@ If you want to help translating ViaFabricPlus you can do so on [Crowdin](https:/
 
 ## Adding Protocol Fixes
 
-Protocol fixes are the **heart of ViaFabricPlus**. They’re what make this project unique, so it’s important to add only
+Protocol fixes are the **heart of ViaFabricPlus**. They're what make this project unique, so it's important to add only
 relevant and correct changes.
 
 Guidelines for fixes:

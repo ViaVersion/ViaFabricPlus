@@ -19,26 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.visuals.injection.mixin.hud_element_changes;
+package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
-import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.gui.components.ChatComponent;
-import net.minecraft.client.GuiMessageTag;
-import net.minecraft.client.gui.screens.ChatScreen;
+import com.viaversion.viaversion.api.data.entity.EntityTracker;
+import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.rewriter.BlockItemPacketRewriter1_21_5;
+import com.viaversion.viaversion.rewriter.StructuredItemRewriter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = ChatScreen.class)
-public abstract class MixinChatScreen {
+@Mixin(value = {BlockItemPacketRewriter1_21_5.class, StructuredItemRewriter.class}, remap = false)
+public abstract class MixinStructuredItemRewriters {
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/ChatComponent;getMessageTagAt(DD)Lnet/minecraft/client/GuiMessageTag;"))
-    private GuiMessageTag removeIndicator(ChatComponent instance, double mouseX, double mouseY) {
-        if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
-            return null;
-        } else {
-            return instance.getMessageTagAt(mouseX, mouseY);
-        }
+    @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/data/entity/EntityTracker;canInstaBuild()Z"))
+    private boolean dontCancelPackets(EntityTracker entityTracker) {
+        return true;
     }
 
 }

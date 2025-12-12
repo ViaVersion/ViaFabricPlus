@@ -19,21 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
+package com.viaversion.viafabricplus.injection.mixin.features.networking.keep_player_loaded;
 
-import com.viaversion.viaversion.api.data.entity.EntityTracker;
-import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.rewriter.BlockItemPacketRewriter1_21_5;
-import com.viaversion.viaversion.rewriter.StructuredItemRewriter;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = {BlockItemPacketRewriter1_21_5.class, StructuredItemRewriter.class}, remap = false)
-public abstract class MixinStructuredItemRewriter {
+@Mixin(ClientPacketListener.class)
+public abstract class MixinClientPacketListener {
 
-    @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/data/entity/EntityTracker;canInstaBuild()Z"))
-    private boolean dontCancelPackets(EntityTracker entityTracker) {
-        return true;
+    @Inject(method = "hasClientLoaded", at = @At("HEAD"), cancellable = true)
+    private void alwaysLoadPlayer(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+            cir.setReturnValue(true);
+        }
     }
 
 }

@@ -19,24 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_legacy_pinger;
+package com.viaversion.viafabricplus.injection.access.base;
 
-import java.net.InetSocketAddress;
-import net.minecraft.client.multiplayer.ServerStatusPinger;
-import net.minecraft.client.multiplayer.resolver.ServerAddress;
-import net.minecraft.client.multiplayer.ServerData;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+public interface IEventLoopGroupHolder {
 
-@Mixin(ServerStatusPinger.class)
-public abstract class MixinServerStatusPinger {
+    boolean viaFabricPlus$isConnecting();
 
-    /**
-     * @author RK_01
-     * @reason Remove legacy ping which didn't even work
-     */
-    @Overwrite
-    public void pingLegacyServer(InetSocketAddress socketAddress, ServerAddress address, ServerData serverInfo) {
-    }
+    void viaFabricPlus$setConnecting(boolean connecting);
 
 }

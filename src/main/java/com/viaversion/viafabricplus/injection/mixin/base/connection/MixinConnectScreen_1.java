@@ -23,8 +23,11 @@ package com.viaversion.viafabricplus.injection.mixin.base.connection;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.viaversion.viafabricplus.injection.access.base.IEventLoopGroupHolder;
+import net.minecraft.server.network.EventLoopGroupHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(targets = "net.minecraft.client.gui.screens.ConnectScreen$1")
 public abstract class MixinConnectScreen_1 {
@@ -33,6 +36,13 @@ public abstract class MixinConnectScreen_1 {
     private String handleNullExceptionMessage(Exception instance, Operation<String> original) {
         // Vanilla doesn't have these cases, but we do because of RakNet and other modifications to the Netty pipeline
         return instance.getMessage() == null ? "" : original.call(instance);
+    }
+
+    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/EventLoopGroupHolder;remote(Z)Lnet/minecraft/server/network/EventLoopGroupHolder;"))
+    private EventLoopGroupHolder markAsConnecting(boolean bl) {
+        final EventLoopGroupHolder holder = EventLoopGroupHolder.remote(bl);
+        ((IEventLoopGroupHolder) holder).viaFabricPlus$setConnecting(true);
+        return holder;
     }
 
 }

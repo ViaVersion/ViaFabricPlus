@@ -4,7 +4,7 @@ ViaFabricPlus exposes events and utility functions so other mods can integrate w
 If you want to include it in your project, keep in mind:
 
 - Requires **Java 17**
-- Needs a **Fabric Loom** setup (since it’s a Minecraft mod, not a standalone API library)
+- Needs a **Fabric Loom** setup (since it's a Minecraft mod, not a standalone API library)
 
 ---
 

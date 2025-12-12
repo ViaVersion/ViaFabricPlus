@@ -29,14 +29,14 @@ import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.screens.PauseScreen;
-import net.minecraft.client.gui.screens.ShareToLanScreen;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.social.SocialInteractionsScreen;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.LayoutElement;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.ShareToLanScreen;
+import net.minecraft.client.gui.screens.social.SocialInteractionsScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -52,32 +52,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinPauseScreen extends Screen {
 
     @Shadow
-    protected abstract Button openScreenButton(Component text, Supplier<Screen> screenSupplier);
-
-    @Shadow
     @Final
     private static Component PLAYER_REPORTING;
-
     @Shadow
     @Final
     private static Component SHARE_TO_LAN;
-
     @Shadow
     @Final
     private static Component OPTIONS;
-
     @Shadow
     @Final
     private static Component RETURN_TO_GAME;
-
     @Shadow
     @Final
     private static Component ADVANCEMENTS;
-
     @Shadow
     @Final
     private static Component STATS;
-
     @Shadow
     @Final
     private static int BUTTON_WIDTH_HALF;
@@ -91,6 +82,9 @@ public abstract class MixinPauseScreen extends Screen {
     protected MixinPauseScreen(Component title) {
         super(title);
     }
+
+    @Shadow
+    protected abstract Button openScreenButton(Component text, Supplier<Screen> screenSupplier);
 
     @WrapOperation(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/PauseScreen;openScreenButton(Lnet/minecraft/network/chat/Component;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/components/Button;"), require = 0)
     private Button replaceButtons(PauseScreen instance, Component text, Supplier<Screen> screenSupplier, Operation<Button> original) {
@@ -158,30 +152,28 @@ public abstract class MixinPauseScreen extends Screen {
         }
     }
 
-    @WrapWithCondition(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/layouts/GridLayout$RowHelper;addChild(Lnet/minecraft/client/gui/layouts/LayoutElement;)Lnet/minecraft/client/gui/layouts/LayoutElement;"), require = 0)
-    private boolean removeButtons(GridLayout.RowHelper instance, LayoutElement widget) {
-        if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() != 0) {
-            return true;
-        }
+    @WrapOperation(method = "createPauseMenu", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/layouts/GridLayout$RowHelper;addChild(Lnet/minecraft/client/gui/layouts/LayoutElement;)Lnet/minecraft/client/gui/layouts/LayoutElement;"), require = 0)
+    private <T extends LayoutElement> T removeButtons(GridLayout.RowHelper instance, T layoutElement, Operation<T> original) {
         // Mods could add other widgets as well
-        if (widget instanceof Button button) {
+        if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() == 0 && layoutElement instanceof Button button) {
             // Remove buttons and track their width/press action for later, mods might be injecting into them
             if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
                 if (button.getMessage().equals(SHARE_TO_LAN)) {
-                    return false;
+                    return null;
                 }
             }
             if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1)) {
                 if (button.getMessage().equals(STATS)) {
-                    return false;
+                    return null;
                 } else if (button.getMessage().equals(CommonComponents.GUI_DISCONNECT)) {
                     viaFabricPlusVisuals$disconnectSupplier = buttonWidget -> button.onPress(null);
                     viaFabricPlusVisuals$disconnectButtonWidth = button.getWidth();
-                    return false;
+                    return null;
                 }
             }
         }
-        return true;
+
+        return original.call(instance, layoutElement);
     }
 
     @Unique

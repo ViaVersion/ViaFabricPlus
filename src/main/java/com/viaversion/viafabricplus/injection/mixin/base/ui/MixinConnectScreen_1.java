@@ -41,6 +41,7 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.User;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.network.EventLoopGroupHolder;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -97,9 +98,9 @@ public abstract class MixinConnectScreen_1 {
         return address;
     }
 
-    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;"))
-    private ChannelFuture resetProtocolVersionAfterDisconnect(InetSocketAddress address, boolean useEpoll, Connection connection, Operation<ChannelFuture> original) {
-        final ChannelFuture future = original.call(address, useEpoll, connection);
+    @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connect(Ljava/net/InetSocketAddress;Lnet/minecraft/server/network/EventLoopGroupHolder;Lnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;"))
+    private ChannelFuture resetProtocolVersionAfterDisconnect(InetSocketAddress inetSocketAddress, EventLoopGroupHolder eventLoopGroupHolder, Connection connection, Operation<ChannelFuture> original) {
+        final ChannelFuture future = original.call(inetSocketAddress, eventLoopGroupHolder, connection);
         ProtocolTranslator.injectPreviousVersionReset(future.channel());
         return future;
     }

@@ -112,14 +112,14 @@ See [Contributing Guidelines](../CONTRIBUTING.md#Adding-Protocol-Fixes) for deta
 Check the ViaVersion/upstream protocol implementation.
 
 - Report upstream issues when needed
-- If an issue can’t be fixed upstream without excessive work, add a client-side workaround in ViaFabricPlus
+- If an issue can't be fixed upstream without excessive work, add a client-side workaround in ViaFabricPlus
 
 ---
 
 ## 9. Final Steps
 
 1. Run the game and verify **all GUIs and visuals**.
-2. Clean up your code and ensure it’s readable.
+2. Clean up your code and ensure it's readable.
 
     * Client-side fixes are sorted by protocol version, newest at the top.
 3. Open a pull request and wait for review.
@@ -149,7 +149,7 @@ Check the ViaVersion/upstream protocol implementation.
 3. Commit with message:
 
    ```
-   <version> Release
+   ViaFabricPlus <version>
    ```
 
 ## Versioning Scheme
@@ -163,10 +163,10 @@ After releasing:
 - Switch back to `-SNAPSHOT` version
 - Unpin `configureVVDependencies`
 
-If the next commit would be merging someone else’s PR, make a commit like:
+Make a version bump commit:
 
 ```
-Bump version to <version>
+Start <release version> cycle
 ```
 
 ---
@@ -174,7 +174,7 @@ Bump version to <version>
 # Git Branches
 
 - `main` → all new changes are merged here
-- After the last release for a version, a branch is created with that version name (e.g. `1.21.5`)
+- After the last release for a version, a branch is created with that version name (e.g. `ver/1.21.5`)
 
 See [ViaFabricPlus-archive](https://github.com/FlorianMichael/ViaFabricPlus-archive) for older branches.
 
