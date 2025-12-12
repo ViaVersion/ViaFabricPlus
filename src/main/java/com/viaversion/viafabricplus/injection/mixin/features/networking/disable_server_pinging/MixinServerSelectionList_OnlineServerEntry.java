@@ -51,7 +51,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ServerSelectionList.OnlineServerEntry.class)
-public abstract class MixinMultiplayerServerListWidget_OnlineServerEntry {
+public abstract class MixinServerSelectionList_OnlineServerEntry {
 
     @Shadow
     @Final

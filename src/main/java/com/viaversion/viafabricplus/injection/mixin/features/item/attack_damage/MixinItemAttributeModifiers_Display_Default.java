@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ItemAttributeModifiers.Display.Default.class)
-public abstract class MixinAttributeModifiersComponent_Display_Default implements IDisplayDefault {
+public abstract class MixinItemAttributeModifiers_Display_Default implements IDisplayDefault {
 
     @Unique
     private ItemEnchantments viaFabricPlus$itemEnchantments;

@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(Font.PreparedTextBuilder.class)
-public abstract class MixinTextRenderer_Drawer {
+public abstract class MixinFont_PreparedTextBuilder {
 
     @Unique
     private static final float viaFabricPlusVisuals$offset = 0.5F; // Magical offset to revert the changes done in 1.13 pre6->1.13 pre7
