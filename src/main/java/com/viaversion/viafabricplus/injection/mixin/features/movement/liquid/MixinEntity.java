@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.liquid;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -47,6 +48,7 @@ public abstract class MixinEntity {
 
     @Shadow
     protected Object2DoubleMap<TagKey<Fluid>> fluidHeight;
+
     @Shadow
     private Level level;
 
@@ -125,6 +127,14 @@ public abstract class MixinEntity {
 
         this.fluidHeight.put(fluidTag, waterHeight);
         cir.setReturnValue(foundFluid);
+    }
+
+    @Inject(method = "isInLava", at = @At("RETURN"), cancellable = true)
+    private void replaceLavaCheck1_13_2(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            final AABB aabb = this.getBoundingBox().deflate(0.1F, 0.4F, 0.1F);
+            cir.setReturnValue(this.level.getBlockStatesIfLoaded(aabb).anyMatch(key -> key.getFluidState().is(FluidTags.LAVA)));
+        }
     }
 
 }

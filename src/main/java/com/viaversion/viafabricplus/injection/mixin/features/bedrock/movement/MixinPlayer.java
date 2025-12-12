@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.injection.mixin.features.movement.water.MixinLivingEntity;
+import com.viaversion.viafabricplus.injection.mixin.features.movement.liquid.MixinLivingEntity;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;

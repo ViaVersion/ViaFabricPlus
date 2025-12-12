@@ -19,23 +19,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.water;
+package com.viaversion.viafabricplus.injection.mixin.features.movement.liquid;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ItemEntity.class)
-public abstract class MixinItemEntity {
+@Mixin(SkeletonHorse.class)
+public abstract class MixinSkeletonHorse extends AbstractHorse {
 
-    @Inject(method = "setUnderwaterMovement", at = @At("HEAD"), cancellable = true)
-    private void dontApplyWaterBuoyancy(CallbackInfo ci) {
+    protected MixinSkeletonHorse(EntityType<? extends AbstractHorse> entityType, Level world) {
+        super(entityType, world);
+    }
+
+    @Inject(method = "getWaterSlowDown", at = @At("HEAD"), cancellable = true)
+    private void modifyBaseWaterMovementSpeedMultiplier(CallbackInfoReturnable<Float> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            ci.cancel();
+            cir.setReturnValue(super.getWaterSlowDown());
         }
     }
 
