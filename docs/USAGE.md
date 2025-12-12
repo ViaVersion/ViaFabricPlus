@@ -105,8 +105,7 @@ left of the main GUI).
 
 ## ClassiCube & BetaCraft
 
-ViaFabricPlus integrates with **ClassiCube** and **BetaCraft** server lists, accessible from the main GUI via the *
-*Server Lists** button.
+ViaFabricPlus integrates with **ClassiCube** and **BetaCraft** server lists, accessible from the main GUI via the **Server Lists** button.
 
 ### BetaCraft
 
