@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EventLoopGroupHolder.class)
-public class MixinEventLoopGroupHolder implements IEventLoopGroupHolder {
+public abstract class MixinEventLoopGroupHolder implements IEventLoopGroupHolder {
 
     @Unique
     private boolean viaFabricPlus$connecting = false;
