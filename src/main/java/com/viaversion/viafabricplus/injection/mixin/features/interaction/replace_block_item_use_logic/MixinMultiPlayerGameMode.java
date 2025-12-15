@@ -252,7 +252,7 @@ public abstract class MixinMultiPlayerGameMode {
 
     @WrapWithCondition(method = "stopDestroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V"))
     private boolean preventPacketWhenNotMining1_7(ClientPacketListener instance, Packet<?> packet) {
-        return !ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) || this.isDestroying;
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) || this.isDestroying;
     }
 
     @Unique
