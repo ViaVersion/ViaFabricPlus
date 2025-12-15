@@ -208,6 +208,7 @@
     "features.mouse_sensitivity.MixinMouseSettingsScreen",
     "features.movement.collision.MixinAbstractBoat",
     "features.movement.collision.MixinBedBlock",
+    "features.movement.collision.MixinBlockGetter",
     "features.movement.collision.MixinEntity",
     "features.movement.collision.MixinHoneyBlock",
     "features.movement.collision.MixinLivingEntity",
