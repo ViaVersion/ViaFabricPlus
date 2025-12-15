@@ -249,7 +249,6 @@
     "features.movement.liquid.MixinSkeletonHorse",
     "features.networking.config_state.MixinClientConfigurationPacketListenerImpl",
     "features.networking.config_state.MixinClientPacketListener",
-    "features.networking.config_state.MixinConfigurationState",
     "features.networking.config_state.MixinProtocol1_20To1_20_2",
     "features.networking.config_state.MixinProtocolSwapHandler",
     "features.networking.config_state.MixinUnconfiguredPipelineHandler",

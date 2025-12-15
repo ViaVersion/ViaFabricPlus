@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(value = ViaBedrockConfig.class, remap = false)
-public class MixinViaBedrockConfig {
+public abstract class MixinViaBedrockConfig {
 
     /**
      * @author FlorianMichael/EnZaXD
