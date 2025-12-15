@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.visuals.injection.mixin.r1_7_item_tilt;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.InteractionHand;
 import com.mojang.math.Axis;
+import net.minecraft.world.item.ItemUseAnimation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -51,15 +53,11 @@ public abstract class MixinItemInHandRenderer {
     }
 
     @Inject(method = "renderArmWithItem",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;applyItemArmTransform(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/HumanoidArm;F)V", ordinal = 3, shift = At.Shift.AFTER))
-    private void applyBlockingSwingOffset(AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci) {
-        viaFabricPlusVisuals$applySwingOffset(player, hand, swingProgress, matrices);
-    }
-
-    @Inject(method = "renderArmWithItem",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;applyItemArmTransform(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/HumanoidArm;F)V", ordinal = 4, shift = At.Shift.AFTER))
-    private void applyBowSwingOffset(AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci) {
-        viaFabricPlusVisuals$applySwingOffset(player, hand, swingProgress, matrices);
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;applyItemArmTransform(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/HumanoidArm;F)V", ordinal = 1, shift = At.Shift.AFTER))
+    private void applyBowAndBlockingSwingOffset(AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci, @Local ItemUseAnimation itemUseAnimation) {
+        if (itemUseAnimation == ItemUseAnimation.BOW || itemUseAnimation == ItemUseAnimation.BLOCK) {
+            viaFabricPlusVisuals$applySwingOffset(player, hand, swingProgress, matrices);
+        }
     }
 
     @Inject(method = "renderArmWithItem",
