@@ -79,6 +79,9 @@ public abstract class MixinPauseScreen extends Screen {
     @Unique
     private Button.OnPress viaFabricPlusVisuals$disconnectSupplier;
 
+    @Unique
+    private Button viaFabricPlusVisuals$openToLanButton;
+
     protected MixinPauseScreen(Component title) {
         super(title);
     }
@@ -91,9 +94,9 @@ public abstract class MixinPauseScreen extends Screen {
         if (VisualSettings.INSTANCE.changeGameMenuScreenLayout.getIndex() == 0) {
             // Player reporting -> share to lan
             if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19) && text.equals(PLAYER_REPORTING)) {
-                final Button button = Button.builder(SHARE_TO_LAN, buttonWidget -> new ShareToLanScreen(instance)).width(BUTTON_WIDTH_HALF).build();
-                button.active = false;
-                return button;
+                viaFabricPlusVisuals$openToLanButton = Button.builder(SHARE_TO_LAN, buttonWidget -> new ShareToLanScreen(instance)).width(BUTTON_WIDTH_HALF).build();
+                viaFabricPlusVisuals$openToLanButton.active = false;
+                return viaFabricPlusVisuals$openToLanButton;
             }
             // Advancements -> disconnect
             if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1) && text.equals(ADVANCEMENTS)) {
@@ -124,7 +127,7 @@ public abstract class MixinPauseScreen extends Screen {
         // Move all buttons below feebdack/bug down since they are removed
         if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             viaFabricPlusVisuals$applyTo(OPTIONS, moveDown);
-            viaFabricPlusVisuals$applyTo(SHARE_TO_LAN, moveDown);
+            moveDown.accept(viaFabricPlusVisuals$openToLanButton);
             viaFabricPlusVisuals$applyTo(CommonComponents.GUI_DISCONNECT, moveDown);
         }
 
