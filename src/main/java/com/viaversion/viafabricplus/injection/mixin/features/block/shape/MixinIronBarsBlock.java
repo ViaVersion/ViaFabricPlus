@@ -39,6 +39,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(IronBarsBlock.class)
 public abstract class MixinIronBarsBlock extends CrossCollisionBlock implements ICrossCollisionBlock {
@@ -51,6 +52,13 @@ public abstract class MixinIronBarsBlock extends CrossCollisionBlock implements 
 
     protected MixinIronBarsBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Properties settings) {
         super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
+    }
+
+    @Inject(method = "getVisualShape", at = @At("HEAD"), cancellable = true)
+    private void useCollisionVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext, CallbackInfoReturnable<VoxelShape> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+            cir.setReturnValue(this.getCollisionShape(blockState, blockGetter, blockPos, collisionContext));
+        }
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
