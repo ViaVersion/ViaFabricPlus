@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.replace_block_item_use_logic;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.features.interaction.replace_block_placement_logic.ActionResultException1_12_2;
@@ -115,25 +114,15 @@ public abstract class MixinMultiPlayerGameMode {
         }
     }
 
-    @Inject(method = "useItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;ensureHasSentCarriedItem()V", shift = At.Shift.AFTER))
-    private void sendItemUseBeforePrediction(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
+    @WrapWithCondition(method = "useItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;startPrediction(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/multiplayer/prediction/PredictiveAction;)V"))
+    private boolean fixPacketOrder(MultiPlayerGameMode instance, ClientLevel clientLevel, PredictiveAction predictiveAction, Player player, InteractionHand interactionHand) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
             this.connection.send(new ServerboundUseItemPacket(interactionHand, 0, player.getYRot(), player.getXRot()));
-        }
-    }
-
-    @ModifyExpressionValue(method = "method_41929", at = @At(value = "NEW", target = "(Lnet/minecraft/world/InteractionHand;IFF)Lnet/minecraft/network/protocol/game/ServerboundUseItemPacket;"))
-    private ServerboundUseItemPacket moveSendItemUseHandling(ServerboundUseItemPacket original) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
-            return null;
+            predictiveAction.predict(0);
+            return false;
         } else {
-            return original;
+            return true;
         }
-    }
-
-    @WrapWithCondition(method = "startPrediction", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V"))
-    private boolean preventNullPacket(ClientPacketListener instance, Packet<?> packet) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_18_2) || packet != null;
     }
 
     @Redirect(method = {"method_41936", "method_41935"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;destroyBlock(Lnet/minecraft/core/BlockPos;)Z"))
