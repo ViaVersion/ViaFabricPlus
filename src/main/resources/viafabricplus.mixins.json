@@ -217,6 +217,7 @@
     "features.movement.collision.MixinSoulSandBlock",
     "features.movement.constants.MixinAvatar",
     "features.movement.constants.MixinAvatarRenderer",
+    "features.movement.constants.MixinBlockGetter",
     "features.movement.constants.MixinEntity",
     "features.movement.constants.MixinLivingEntity",
     "features.movement.constants.MixinLocalPlayer",
