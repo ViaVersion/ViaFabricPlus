@@ -21,12 +21,14 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.replace_block_item_use_logic;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.features.interaction.replace_block_placement_logic.ActionResultException1_12_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusHandItemProvider;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Objects;
+import net.minecraft.network.protocol.game.ServerboundUseItemPacket;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -109,6 +111,17 @@ public abstract class MixinMultiPlayerGameMode {
     private void changeCalculation(CallbackInfoReturnable<Integer> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue((int) (this.destroyProgress * 10.0F) - 1);
+        }
+    }
+
+    @WrapWithCondition(method = "useItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;startPrediction(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/multiplayer/prediction/PredictiveAction;)V"))
+    private boolean fixPacketOrder(MultiPlayerGameMode instance, ClientLevel clientLevel, PredictiveAction predictiveAction, Player player, InteractionHand interactionHand) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
+            this.connection.send(new ServerboundUseItemPacket(interactionHand, 0, player.getYRot(), player.getXRot()));
+            predictiveAction.predict(0);
+            return false;
+        } else {
+            return true;
         }
     }
 
