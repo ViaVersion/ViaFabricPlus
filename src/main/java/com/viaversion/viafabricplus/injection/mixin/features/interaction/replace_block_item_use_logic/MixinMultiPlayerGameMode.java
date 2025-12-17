@@ -54,6 +54,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.mutable.MutableObject;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -90,6 +91,9 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Shadow
     private GameType localPlayerMode;
+
+    @Shadow
+    private boolean isDestroying;
 
     @Redirect(method = "performUseItemOn", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;CONSUME:Lnet/minecraft/world/InteractionResult$Success;"))
     private InteractionResult.Success changeSpectatorAction() {
@@ -251,6 +255,16 @@ public abstract class MixinMultiPlayerGameMode {
             this.startPrediction(world, packetCreator);
         } catch (ActionResultException1_12_2 ignored) {
         }
+    }
+
+    @Redirect(method = "stopDestroyBlock", at = @At(value = "FIELD", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;isDestroying:Z", opcode = Opcodes.GETFIELD))
+    private boolean fixMiningReset1_7(MultiPlayerGameMode instance) {
+        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) || instance.isDestroying();
+    }
+
+    @WrapWithCondition(method = "stopDestroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V"))
+    private boolean preventPacketWhenNotMining1_7(ClientPacketListener instance, Packet<?> packet) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) || this.isDestroying;
     }
 
     @Unique
