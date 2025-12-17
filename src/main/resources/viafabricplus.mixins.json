@@ -97,6 +97,7 @@
     "features.block.shape.MixinPitcherCropBlock",
     "features.block.shape.MixinSnowLayerBlock",
     "features.block.shape.MixinSoulSandBlock",
+    "features.block.shape.MixinTransparentBlock",
     "features.block.shape.MixinWallBlock",
     "features.block.shape.MixinWaterlilyBlock",
     "features.classic.cpe_extension.MixinClassicProtocolExtension",
