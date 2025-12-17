@@ -70,6 +70,14 @@ public abstract class MixinEntity {
         }
     }
 
+    @Inject(method = "isInLava", at = @At("RETURN"), cancellable = true)
+    private void replaceLavaCheck1_13_2(CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            final AABB aabb = this.getBoundingBox().deflate(0.1F, 0.4F, 0.1F);
+            cir.setReturnValue(this.level.getBlockStatesIfLoaded(aabb).anyMatch(key -> key.getFluidState().is(FluidTags.LAVA)));
+        }
+    }
+
     @Inject(method = "setSwimming", at = @At("HEAD"), cancellable = true)
     private void cancelSwimming(boolean swimming, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && swimming) {
@@ -127,14 +135,6 @@ public abstract class MixinEntity {
 
         this.fluidHeight.put(fluidTag, waterHeight);
         cir.setReturnValue(foundFluid);
-    }
-
-    @Inject(method = "isInLava", at = @At("RETURN"), cancellable = true)
-    private void replaceLavaCheck1_13_2(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            final AABB aabb = this.getBoundingBox().deflate(0.1F, 0.4F, 0.1F);
-            cir.setReturnValue(this.level.getBlockStatesIfLoaded(aabb).anyMatch(key -> key.getFluidState().is(FluidTags.LAVA)));
-        }
     }
 
 }
