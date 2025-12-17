@@ -213,6 +213,7 @@
     "features.movement.collision.MixinHoneyBlock",
     "features.movement.collision.MixinLivingEntity",
     "features.movement.collision.MixinLocalPlayer",
+    "features.movement.collision.MixinPlayer",
     "features.movement.collision.MixinShapes",
     "features.movement.collision.MixinSoulSandBlock",
     "features.movement.constants.MixinAvatar",
