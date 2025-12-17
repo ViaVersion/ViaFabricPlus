@@ -47,7 +47,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICrossCollisionBlock {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$shape_b1_8_1 = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 24.0D, 16.0D);
+    private final VoxelShape[] viaFabricPlus$outline_shape_r1_12_2 = new VoxelShape[]{
+        Shapes.box(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D),
+        Shapes.box(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D),
+        Shapes.box(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D),
+        Shapes.box(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D),
+        Shapes.box(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),
+        Shapes.box(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),
+        Shapes.box(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),
+        Shapes.box(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),
+        Shapes.box(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D),
+        Shapes.box(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D),
+        Shapes.box(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D),
+        Shapes.box(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D),
+        Shapes.box(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),
+        Shapes.box(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
+        Shapes.box(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),
+        Shapes.box(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)
+    };
+
+    @Unique
+    private final VoxelShape viaFabricPlus$shape_b1_8_1 = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 24.0D, 16.0D);
 
     @Unique
     private VoxelShape[] viaFabricPlus$collision_shape_r1_4_7;
@@ -80,6 +100,8 @@ public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICr
             return Shapes.block();
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             return this.viaFabricPlus$outline_shape_r1_4_7[this.viaFabricPlus$getShapeIndex(state)];
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return this.viaFabricPlus$outline_shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getShape(state, world, pos, context);
         }
