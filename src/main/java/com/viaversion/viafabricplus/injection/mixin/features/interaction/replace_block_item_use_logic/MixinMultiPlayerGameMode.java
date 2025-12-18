@@ -267,6 +267,11 @@ public abstract class MixinMultiPlayerGameMode {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) || this.isDestroying;
     }
 
+    @WrapWithCondition(method = "stopDestroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;resetAttackStrengthTicker()V"))
+    private boolean preventAttackResetWhenNotMining1_7(LocalPlayer instance) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) || this.isDestroying;
+    }
+
     @Unique
     private boolean viaFabricPlus$extinguishFire(BlockPos blockPos, final Direction direction) {
         blockPos = blockPos.relative(direction);
