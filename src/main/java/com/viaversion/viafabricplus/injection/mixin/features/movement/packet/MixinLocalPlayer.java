@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.packet;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -30,6 +31,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -47,39 +49,27 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     protected Minecraft minecraft;
 
     @Shadow
-    private int positionReminder;
-
-    @Shadow
     private boolean lastOnGround;
 
     public MixinLocalPlayer(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
 
-    @Redirect(method = "sendPosition", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/LocalPlayer;lastOnGround:Z", ordinal = 0))
+    @ModifyExpressionValue(method = "sendPosition", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/LocalPlayer;positionReminder:I", ordinal = 2))
+    private int moveLastPosPacketIncrement(int original) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            return original - 1; // Reverting original operation
+        } else {
+            return original;
+        }
+    }
+
+    @Redirect(method = "sendPosition", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/LocalPlayer;lastOnGround:Z", ordinal = 0, opcode = Opcodes.GETFIELD))
     private boolean sendIdlePacket(LocalPlayer instance) {
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(LegacyProtocolVersion.r1_4_2, ProtocolVersion.v1_8) || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
             return !onGround();
         } else {
             return this.lastOnGround;
-        }
-    }
-
-    @Redirect(method = "sendPosition", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/LocalPlayer;positionReminder:I", ordinal = 0))
-    private int moveLastPosPacketIncrement(LocalPlayer instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return this.positionReminder - 1; // Reverting original operation
-        } else {
-            return this.positionReminder;
-        }
-    }
-
-    @Redirect(method = "sendPosition", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/LocalPlayer;positionReminder:I", ordinal = 2))
-    private int moveLastPosPacketIncrement2(LocalPlayer instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return this.positionReminder++; // Return previous value, then increment
-        } else {
-            return this.positionReminder;
         }
     }
 
