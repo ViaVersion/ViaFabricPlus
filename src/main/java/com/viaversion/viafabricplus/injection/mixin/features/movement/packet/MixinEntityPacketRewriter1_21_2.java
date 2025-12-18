@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = EntityPacketRewriter1_21_2.class, remap = false)
-public class MixinEntityPacketRewriter1_21_2 {
+public abstract class MixinEntityPacketRewriter1_21_2 {
 
     @Redirect(method = "lambda$registerPackets$14", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;cancel()V"))
     private void dontCancelIdlePacket(PacketWrapper instance) {

@@ -32,12 +32,14 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(AbstractContainerScreen.class)
 public abstract class MixinAbstractContainerScreen {
+
     @Redirect(method = "checkHotbarKeyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;matches(Lnet/minecraft/client/input/KeyEvent;)Z", ordinal = 1))
-    private boolean disableInventoryHotkeying(KeyMapping instance, KeyEvent keyEvent) {
+    private boolean disableHotbarKeys(KeyMapping instance, KeyEvent keyEvent) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2)) {
             return false;
         } else {
             return instance.matches(keyEvent);
         }
     }
+
 }
