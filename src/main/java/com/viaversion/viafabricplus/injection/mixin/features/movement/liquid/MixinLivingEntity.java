@@ -83,10 +83,11 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidHeight(Lnet/minecraft/tags/TagKey;)D"))
     private double redirectFluidHeight(LivingEntity instance, TagKey<Fluid> tagKey) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && tagKey == FluidTags.WATER) {
-            if (instance.getFluidHeight(tagKey) > 0) return 1;
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && tagKey == FluidTags.WATER && this.isInWater()) {
+            return 1;
+        } else {
+            return instance.getFluidHeight(tagKey);
         }
-        return instance.getFluidHeight(tagKey);
     }
 
     @Inject(method = "getFluidFallingAdjustedMovement", at = @At("HEAD"), cancellable = true)
