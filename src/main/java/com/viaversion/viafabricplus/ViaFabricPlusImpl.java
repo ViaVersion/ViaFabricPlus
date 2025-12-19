@@ -117,12 +117,14 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
         // Init ViaVersion protocol translator platform
         loadingFuture = ProtocolTranslator.init(path);
 
-        // Initialize stuff after minecraft is loaded
+        // Initialize stuff after Minecraft is loaded
         Events.LOADING_CYCLE.register(cycle -> {
             if (cycle != LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
                 return;
             }
             loadingFuture.join();
+
+            FeaturesLoading.postInit();
             SaveManager.INSTANCE.postInit();
         });
         Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.FINAL_LOAD);

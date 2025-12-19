@@ -52,24 +52,6 @@ public final class FeaturesLoading {
 
         RenderableGlyphDiff.init();
 
-        Events.LOADING_CYCLE.register(cycle -> {
-            if (cycle == LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
-                // Handle clientside enchantment calculations in <= 1.20.6
-                EnchantmentAttributesEmulation1_20_6.init();
-
-                // Handles and updates entity dimension changes in <= 1.17
-                EntityDimensionDiff.init();
-
-                // Load the clientside recipes for <= 1.11.2
-                Recipes1_11_2.init();
-
-                // Ticks the armor hud manually in <= 1.8.x
-                ArmorHudEmulation1_8.init();
-
-                VersionedRegistries.init();
-            }
-        });
-
         // Reloads some clientside stuff when the protocol version changes
         Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> {
             // Reloads all bounding boxes of the blocks that we changed
@@ -88,6 +70,23 @@ public final class FeaturesLoading {
                 Minecraft.getInstance().getSoundManager().reload();
             }
         }));
+    }
+
+    // Make sure this is called *after* ViaVersion has been initialized
+    public static void postInit() {
+        // Handle clientside enchantment calculations in <= 1.20.6
+        EnchantmentAttributesEmulation1_20_6.init();
+
+        // Handles and updates entity dimension changes in <= 1.17
+        EntityDimensionDiff.init();
+
+        // Load the clientside recipes for <= 1.11.2
+        Recipes1_11_2.init();
+
+        // Ticks the armor hud manually in <= 1.8.x
+        ArmorHudEmulation1_8.init();
+
+        VersionedRegistries.init();
     }
 
 }
