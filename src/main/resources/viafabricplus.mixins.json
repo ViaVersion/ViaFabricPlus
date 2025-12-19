@@ -240,6 +240,7 @@
     "features.movement.liquid.MixinLivingEntity",
     "features.movement.liquid.MixinLocalPlayer",
     "features.movement.liquid.MixinSkeletonHorse",
+    "features.movement.packet.MixinEntityPacketRewriter1_21_2",
     "features.movement.packet.MixinLocalPlayer",
     "features.movement.packet.MixinPositionMoveRotation",
     "features.movement.slowdown.MixinEnderEyeItem",
@@ -310,13 +311,15 @@
     "features.world.duplicated_sounds.MixinButtonBlock",
     "features.world.duplicated_sounds.MixinItems",
     "features.world.item_picking.MixinMinecraft",
-    "features.world.remove_server_view_distance.MixinOptions",
-    "features.movement.packet.MixinEntityPacketRewriter1_21_2"
+    "features.world.remove_server_view_distance.MixinOptions"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "mixins": [
+    "features.block.shape.MixinRedStoneWireBlock"
+  ]
 }
