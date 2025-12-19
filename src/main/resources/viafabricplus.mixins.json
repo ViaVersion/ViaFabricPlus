@@ -67,6 +67,7 @@
     "features.block.interaction.MixinFlowerPotBlock",
     "features.block.interaction.MixinIronBarsBlock",
     "features.block.interaction.MixinNoteBlock",
+    "features.block.interaction.MixinRedStoneWireBlock",
     "features.block.interaction.MixinSignBlock",
     "features.block.mining_calculation.MixinBlockBehaviour",
     "features.block.mining_calculation.MixinBlockBehaviour_BlockStateBase",
@@ -95,6 +96,7 @@
     "features.block.shape.MixinPistonBaseBlock",
     "features.block.shape.MixinPistonHeadBlock",
     "features.block.shape.MixinPitcherCropBlock",
+    "features.block.shape.MixinRedStoneWireBlock",
     "features.block.shape.MixinSnowLayerBlock",
     "features.block.shape.MixinSoulSandBlock",
     "features.block.shape.MixinTransparentBlock",
@@ -318,8 +320,5 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  },
-  "mixins": [
-    "features.block.shape.MixinRedStoneWireBlock"
-  ]
+  }
 }
