@@ -139,7 +139,10 @@ public final class BetaCraftScreen extends VFPScreen {
             if (server.onlineMode()) {
                 context.drawString(textRenderer, Component.translatable("base.viafabricplus.online_mode").withStyle(ChatFormatting.GREEN), 1, 1, -1);
             }
+            final String serverIP = server.socket();
             final String playerText = server.playerCount() + "/" + server.playerLimit();
+
+            context.drawString(textRenderer, Component.literal(serverIP).withStyle(ChatFormatting.DARK_GRAY), entryWidth - textRenderer.width(serverIP) - 1, entryHeight - textRenderer.lineHeight - 1, -1);
             context.drawString(textRenderer, playerText, entryWidth - textRenderer.width(playerText) - 1, 1, -1);
         }
     }
