@@ -152,6 +152,7 @@
     "features.interaction.MixinLivingEntity",
     "features.interaction.MixinPlayer",
     "features.interaction.container_clicking.MixinAbstractContainerMenu",
+    "features.interaction.container_clicking.MixinAbstractContainerScreen",
     "features.interaction.container_clicking.MixinAbstractFurnaceMenu",
     "features.interaction.container_clicking.MixinBlockItemPacketRewriter1_21_5",
     "features.interaction.container_clicking.MixinCraftingMenu",

@@ -19,19 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.packet;
+package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import com.viaversion.viaversion.protocols.v1_21to1_21_2.rewriter.EntityPacketRewriter1_21_2;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.KeyEvent;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = EntityPacketRewriter1_21_2.class, remap = false)
-public abstract class MixinEntityPacketRewriter1_21_2 {
+@Mixin(AbstractContainerScreen.class)
+public abstract class MixinAbstractContainerScreen {
 
-    @Redirect(method = "lambda$registerPackets$14", at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/api/protocol/packet/PacketWrapper;cancel()V"))
-    private void dontCancelIdlePacket(PacketWrapper instance) {
+    @Redirect(method = "checkHotbarKeyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;matches(Lnet/minecraft/client/input/KeyEvent;)Z", ordinal = 1))
+    private boolean disableHotbarKeys(KeyMapping instance, KeyEvent keyEvent) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2)) {
+            return false;
+        } else {
+            return instance.matches(keyEvent);
+        }
     }
 
 }
