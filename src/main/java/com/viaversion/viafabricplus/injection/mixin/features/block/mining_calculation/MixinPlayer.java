@@ -25,6 +25,10 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,6 +40,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.Level;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -56,6 +61,33 @@ public abstract class MixinPlayer extends LivingEntity {
 
     protected MixinPlayer(EntityType<? extends LivingEntity> entityType, Level world) {
         super(entityType, world);
+    }
+
+    @Redirect(method = "getDestroySpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getAttributeValue(Lnet/minecraft/core/Holder;)D", ordinal = 0))
+    private double use1_20_6Efficiency(Player instance, Holder<@NotNull Attribute> holder) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            final int efficiencyLevel = EnchantmentHelper.getEnchantmentLevel(this.level().registryAccess().getOrThrow(Enchantments.EFFICIENCY), this);
+            if (efficiencyLevel > 0 && !this.getMainHandItem().isEmpty()) {
+                return efficiencyLevel * efficiencyLevel + 1;
+            }
+
+            return 0.0F;
+        } else {
+            return instance.getAttributeValue(holder);
+        }
+    }
+
+    @Redirect(method = "getDestroySpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/attributes/AttributeInstance;getValue()D"))
+    private double use1_20_6SubmergedMiningSpeed(AttributeInstance instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+            if (EnchantmentHelper.getEnchantmentLevel(this.level().registryAccess().getOrThrow(Enchantments.AQUA_AFFINITY), this) <= 0) {
+                return 0.2F;
+            }
+
+            return 1.0F;
+        } else {
+            return instance.getValue();
+        }
     }
 
     @Redirect(method = "getDestroySpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;hasEffect(Lnet/minecraft/core/Holder;)Z"))
