@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.features;
 
 import com.viaversion.viaaprilfools.api.AprilFoolsProtocolVersion;
-import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.features.block.shape.CollisionShapes;
 import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
@@ -40,53 +39,35 @@ import net.minecraft.client.Minecraft;
 
 public final class FeaturesLoading {
 
+    // Initialize various data classes required for feature mixins
     public static void init() {
-        // Check if the pack format mappings are correct
         ResourcePackHeaderDiff.init();
-
-        // Register additional CPE features
+        RenderableGlyphDiff.init();
+        FootStepParticle1_12_2.init();
         CPEAdditions.init();
 
-        // Register the footstep particle
-        FootStepParticle1_12_2.init();
-
-        RenderableGlyphDiff.init();
-
-        // Reloads some clientside stuff when the protocol version changes
         Events.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> {
-            // Reloads all bounding boxes of the blocks that we changed
             CollisionShapes.reloadBlockShapes();
 
-            // Clears the font cache to replace the empty glyph
-            FontCacheReload.reload();
-
-            // Reloads the clientside recipes
-            if (newVersion.olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
-                Recipes1_11_2.reset();
-            }
-
-            // Reload sound system when switching between 3D Shareware and normal versions
             if (oldVersion.equals(AprilFoolsProtocolVersion.s3d_shareware) || newVersion.equals(AprilFoolsProtocolVersion.s3d_shareware)) {
                 Minecraft.getInstance().getSoundManager().reload();
+            }
+
+            FontCacheReload.reload();
+
+            if (newVersion.olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+                Recipes1_11_2.reset();
             }
         }));
     }
 
     // Make sure this is called *after* ViaVersion has been initialized
     public static void postInit() {
-        // Handle clientside enchantment calculations in <= 1.20.6
-        EnchantmentAttributesEmulation1_20_6.init();
-
-        // Handles and updates entity dimension changes in <= 1.17
-        EntityDimensionDiff.init();
-
-        // Load the clientside recipes for <= 1.11.2
-        Recipes1_11_2.init();
-
-        // Ticks the armor hud manually in <= 1.8.x
-        ArmorHudEmulation1_8.init();
-
         VersionedRegistries.init();
+        EntityDimensionDiff.init();
+        EnchantmentAttributesEmulation1_20_6.init();
+        Recipes1_11_2.init();
+        ArmorHudEmulation1_8.init();
     }
 
 }

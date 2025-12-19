@@ -48,7 +48,7 @@ public final class EnchantmentAttributesEmulation1_20_6 {
             // Update generic attributes for all entities
             for (Entity entity : world.entitiesForRendering()) {
                 if (entity.isLocalInstanceAuthoritative() && entity instanceof LivingEntity livingEntity) {
-                    setAttribute(livingEntity, Attributes.WATER_MOVEMENT_EFFICIENCY, getEquipmentLevel(Enchantments.DEPTH_STRIDER, livingEntity) / 3F);
+                    setAttribute(livingEntity, Attributes.WATER_MOVEMENT_EFFICIENCY, getEquipmentLevel(Enchantments.DEPTH_STRIDER, livingEntity) / 3D);
                     setGenericMovementEfficiencyAttribute(livingEntity);
                 }
             }
@@ -60,9 +60,9 @@ public final class EnchantmentAttributesEmulation1_20_6 {
                 }
 
                 final int efficiencyLevel = getEquipmentLevel(Enchantments.EFFICIENCY, player);
-                setAttribute(player, Attributes.MINING_EFFICIENCY, efficiencyLevel > 0 ? efficiencyLevel * efficiencyLevel + 1 : 0);
-                setAttribute(player, Attributes.SNEAKING_SPEED, 0.3F + getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15F);
-                setAttribute(player, Attributes.SUBMERGED_MINING_SPEED, getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2F : 1F);
+                setAttribute(player, Attributes.MINING_EFFICIENCY, efficiencyLevel > 0 ? efficiencyLevel * efficiencyLevel + 1D : 0D);
+                setAttribute(player, Attributes.SNEAKING_SPEED, 0.3D + getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15D);
+                setAttribute(player, Attributes.SUBMERGED_MINING_SPEED, getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2D : 1D);
             }
         });
     }
@@ -80,7 +80,7 @@ public final class EnchantmentAttributesEmulation1_20_6 {
         return EnchantmentHelper.getEnchantmentLevel(livingEntity.level().registryAccess().getOrThrow(enchantment), livingEntity);
     }
 
-    private static void setAttribute(final LivingEntity entity, final Holder<Attribute> attribute, final float value) {
+    private static void setAttribute(final LivingEntity entity, final Holder<Attribute> attribute, final double value) {
         final AttributeInstance attributeInstance = entity.getAttribute(attribute);
         attributeInstance.removeModifiers(); // Minecraft is applying attribute modifiers in some situations, remove them before we set the base value
         attributeInstance.setBaseValue(value);
