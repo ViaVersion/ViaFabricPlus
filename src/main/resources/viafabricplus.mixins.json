@@ -69,6 +69,7 @@
     "features.block.interaction.MixinNoteBlock",
     "features.block.interaction.MixinRedStoneWireBlock",
     "features.block.interaction.MixinSignBlock",
+    "features.block.interaction.MixinSimpleWaterloggedBlock",
     "features.block.mining_calculation.MixinBlockBehaviour",
     "features.block.mining_calculation.MixinBlockBehaviour_BlockStateBase",
     "features.block.mining_calculation.MixinPlayer",
