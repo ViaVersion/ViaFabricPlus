@@ -85,4 +85,5 @@ public abstract class MixinAbstractCauldronBlock extends Block {
         viaFabricPlus$requireOriginalShape = true;
         return super.getOcclusionShape(state);
     }
+
 }
