@@ -26,6 +26,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.tags.TagKey;
@@ -62,11 +63,20 @@ public abstract class MixinEntity {
     public abstract void setDeltaMovement(Vec3 velocity);
 
     @Redirect(method = "updateFluidOnEyes", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyeY()D"))
-    private double addMagicOffset(Entity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+    private double subtractMagicOffset(Entity instance) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_16, ProtocolVersion.v1_20_3)) {
             return instance.getEyeY() - 0.11111111F;
         } else {
             return instance.getEyeY();
+        }
+    }
+
+    @Redirect(method = "updateFluidOnEyes", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
+    private float addMagicOffset(FluidState instance, BlockGetter blockGetter, BlockPos blockPos) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+            return instance.getHeight(blockGetter, blockPos) + 0.11111111F;
+        } else {
+            return instance.getHeight(blockGetter, blockPos);
         }
     }
 
