@@ -78,6 +78,7 @@ fun Project.configureVVDependencies(configuration: String) {
         configuration("net.raphimc:ViaLegacy:3.0.11")
         configuration("net.raphimc:ViaBedrock:0.0.25-SNAPSHOT") {
             exclude(group = "com.mojang", module = "brigadier")
+            exclude(group = "at.yawk.lz4", module = "lz4-java")
             exclude(group = "io.netty")
         }
     }
