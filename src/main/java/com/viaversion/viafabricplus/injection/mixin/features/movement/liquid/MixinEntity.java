@@ -80,7 +80,7 @@ public abstract class MixinEntity {
     private float addMagicOffset1_15(FluidState instance, BlockGetter blockGetter, BlockPos blockPos) {
         float height = instance.getHeight(blockGetter, blockPos);
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
-            height -= viaFabricPlus$magicHeightOffset;
+            height += viaFabricPlus$magicHeightOffset;
         }
 
         return height;
