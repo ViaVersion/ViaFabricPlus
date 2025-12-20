@@ -38,7 +38,6 @@ import net.minecraft.world.level.Level;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -63,27 +62,22 @@ public abstract class MixinEntity {
     @Shadow
     public abstract void setDeltaMovement(Vec3 velocity);
 
-    @Unique
-    private static final float viaFabricPlus$magicHeightOffset = 0.11111111F;
-
     @Redirect(method = "updateFluidOnEyes", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyeY()D"))
     private double addMagicOffset1_16(Entity instance) {
-        double eyeY = instance.getEyeY();
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_16, ProtocolVersion.v1_20_3)) {
-            eyeY -= viaFabricPlus$magicHeightOffset;
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+            return instance.getEyeY() - 0.11111111F;
+        } else {
+            return instance.getEyeY();
         }
-
-        return eyeY;
     }
 
     @Redirect(method = "updateFluidOnEyes", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
     private float addMagicOffset1_15(FluidState instance, BlockGetter blockGetter, BlockPos blockPos) {
-        float height = instance.getHeight(blockGetter, blockPos);
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
-            height += viaFabricPlus$magicHeightOffset;
+            return instance.getHeight(blockGetter, blockPos) + 0.11111111F;
+        } else {
+            return instance.getHeight(blockGetter, blockPos);
         }
-
-        return height;
     }
 
     @Inject(method = "isInLava", at = @At("RETURN"), cancellable = true)
