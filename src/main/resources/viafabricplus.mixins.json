@@ -121,6 +121,7 @@
     "features.entity.interaction.MixinArmadillo",
     "features.entity.interaction.MixinAxolotl",
     "features.entity.interaction.MixinBee",
+    "features.entity.interaction.MixinCamel",
     "features.entity.interaction.MixinCat",
     "features.entity.interaction.MixinCreeper",
     "features.entity.interaction.MixinEntity",
