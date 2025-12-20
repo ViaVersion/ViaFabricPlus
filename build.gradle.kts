@@ -76,7 +76,7 @@ fun Project.configureVVDependencies(configuration: String) {
             exclude(group = "org.slf4j", module = "slf4j-api")
         }
         configuration("net.raphimc:ViaLegacy:3.0.11")
-        configuration("net.raphimc:ViaBedrock:0.0.24-SNAPSHOT") {
+        configuration("net.raphimc:ViaBedrock:0.0.25-SNAPSHOT") {
             exclude(group = "com.mojang", module = "brigadier")
             exclude(group = "io.netty")
         }
