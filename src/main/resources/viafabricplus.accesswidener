@@ -21,6 +21,7 @@ accessible field net/minecraft/client/gui/font/GlyphStitcher texturePrefix Lnet/
 accessible field net/minecraft/client/gui/screens/FaviconTexture MISSING_LOCATION Lnet/minecraft/resources/Identifier;
 accessible field net/minecraft/world/entity/boss/enderdragon/EnderDragon body Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;
 accessible field net/minecraft/world/entity/animal/equine/AbstractHorse standAnimO F
+accessible field net/minecraft/network/Connection pendingActions Ljava/util/Queue;
 
 mutable field net/minecraft/world/entity/EntityType dimensions Lnet/minecraft/world/entity/EntityDimensions;
 mutable field net/minecraft/world/level/block/state/BlockBehaviour speedFactor F

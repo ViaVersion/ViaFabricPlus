@@ -39,7 +39,11 @@ public abstract class MixinMinecraft {
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;initiateServerboundPlayConnection(Ljava/lang/String;ILnet/minecraft/network/protocol/login/ClientLoginPacketListener;)V"))
     private void disableProtocolTranslator(LevelStorageSource.LevelStorageAccess session, PackRepository dataPackManager, WorldStem saveLoader, boolean newWorld, CallbackInfo ci, @Local Connection clientConnection) {
         ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION, true);
-        ProtocolTranslator.injectPreviousVersionReset(clientConnection.channel);
+        if (clientConnection.isConnected()) {
+            ProtocolTranslator.injectPreviousVersionReset(clientConnection.channel);
+        } else {
+            clientConnection.pendingActions.add(connection -> ProtocolTranslator.injectPreviousVersionReset(connection.channel));
+        }
     }
 
 }
