@@ -63,7 +63,7 @@ public abstract class MixinEntity {
     public abstract void setDeltaMovement(Vec3 velocity);
 
     @Redirect(method = "updateFluidOnEyes", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyeY()D"))
-    private double addMagicOffset1_16(Entity instance) {
+    private double addMagicOffset(Entity instance) {
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_16, ProtocolVersion.v1_20_3)) {
             return instance.getEyeY() - 0.11111111F;
         } else {
@@ -72,7 +72,7 @@ public abstract class MixinEntity {
     }
 
     @Redirect(method = "updateFluidOnEyes", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
-    private float addMagicOffset1_15(FluidState instance, BlockGetter blockGetter, BlockPos blockPos) {
+    private float subtractMagicOffset(FluidState instance, BlockGetter blockGetter, BlockPos blockPos) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return instance.getHeight(blockGetter, blockPos) + 0.11111111F;
         } else {
