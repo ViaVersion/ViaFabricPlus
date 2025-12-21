@@ -35,6 +35,7 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
         UNSUPPORTED.add("team-colour-fix");
         UNSUPPORTED.add("cancel-swing-in-inventory");
         UNSUPPORTED.add("cancel-block-sounds");
+        UNSUPPORTED.add("use-1_8-hitbox-margin");
     }
 
     @Override
@@ -59,6 +60,11 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
 
     @Override
     public boolean cancelBlockSounds() {
+        return false;
+    }
+
+    @Override
+    public boolean use1_8HitboxMargin() {
         return false;
     }
 
