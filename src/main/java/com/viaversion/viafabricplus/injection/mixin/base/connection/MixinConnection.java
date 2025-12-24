@@ -141,7 +141,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
 
     @WrapWithCondition(method = "connectToServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;setBandwidthLogger(Lnet/minecraft/util/debugchart/LocalSampleLogger;)V"))
     private static boolean dontSetPerformanceLog(Connection instance, LocalSampleLogger packetSizeLog) {
-        // We need to restore vanilla behaviour since we use the PerformanceLog as a way to store the target version
+        // We need to restore vanilla behavior since we use the PerformanceLog as a way to store the target version
         return !(packetSizeLog instanceof ILocalSampleLogger mixinMultiValueDebugSampleLogImpl) || mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion() == null;
     }
 
