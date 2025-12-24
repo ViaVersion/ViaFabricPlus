@@ -41,20 +41,19 @@ public abstract class MixinBlockBehaviour {
 
     // Bedrock random offset parameters for bamboo (uses BlockRandomOffsetDefaults::XZ)
     @Unique
-    private static final float viafabricplus$OFFSET_MIN = -0.25f; // -4/16
+    private static final float viaFabricPlus$OFFSET_MIN = -0.25f; // -4/16
     @Unique
-    private static final float viafabricplus$OFFSET_MAX = 0.25f;  // 4/16
+    private static final float viaFabricPlus$OFFSET_MAX = 0.25f;  // 4/16
     @Unique
-    private static final int viafabricplus$STEPS = 16; // Quantization steps
+    private static final int viaFabricPlus$STEPS = 16; // Quantization steps
 
     @Shadow
     BlockBehaviour.OffsetFunction offsetFunction;
 
     @Inject(method = "offsetType", at = @At(value = "RETURN"))
     private void fixBedrockOffset(BlockBehaviour.OffsetType offsetType, CallbackInfoReturnable<BlockBehaviour.Properties> cir) {
-        if (ProtocolTranslator.getTargetVersion().equalTo(BedrockProtocolVersion.bedrockLatest)) {
-            if (offsetType == BlockBehaviour.OffsetType.NONE) return; // No offset, no change needed
-            this.offsetFunction = (state, pos) -> viafabricplus$randomlyModifyPosition(pos, offsetType);
+        if (ProtocolTranslator.getTargetVersion().equalTo(BedrockProtocolVersion.bedrockLatest) && offsetType != BlockBehaviour.OffsetType.NONE) {
+            this.offsetFunction = (state, pos) -> viaFabricPlus$randomlyModifyPosition(pos, offsetType);
         }
     }
 
@@ -63,7 +62,7 @@ public abstract class MixinBlockBehaviour {
      * Only uses X and Z coordinates (Y is NOT used)
      */
     @Unique
-    private static long viafabricplus$positionHash(int x, int z) {
+    private static long viaFabricPlus$positionHash(int x, int z) {
         // Step 1: Initial hash from X and Z
         long v1 = (116129781L * z) ^ ((0x2FC20F00000001L * Integer.toUnsignedLong(x)) >> 32);
         // Step 2: LCG-style mixing
@@ -77,7 +76,7 @@ public abstract class MixinBlockBehaviour {
      * Bedrock: (random >>> 40) * 2^-24
      */
     @Unique
-    private static float viafabricplus$randomToFloat(long random) {
+    private static float viaFabricPlus$randomToFloat(long random) {
         return (random >>> 40) * 5.9604645e-8f;
     }
 
@@ -85,7 +84,7 @@ public abstract class MixinBlockBehaviour {
      * Calculate offset value with quantization to discrete steps (Bedrock algorithm)
      */
     @Unique
-    private static float viafabricplus$calculateOffsetValue(float min, float max, int steps, float random) {
+    private static float viaFabricPlus$calculateOffsetValue(float min, float max, int steps, float random) {
         if (min >= max) {
             return min;
         }
@@ -105,16 +104,16 @@ public abstract class MixinBlockBehaviour {
      * Calculate random offset for a given position
      */
     @Unique
-    private static Vec3 viafabricplus$randomlyModifyPosition(BlockPos pos, BlockBehaviour.OffsetType type) {
+    private static Vec3 viaFabricPlus$randomlyModifyPosition(BlockPos pos, BlockBehaviour.OffsetType type) {
         // Use Bedrock's custom position hash
-        long seed = viafabricplus$positionHash(pos.getX(), pos.getZ());
+        long seed = viaFabricPlus$positionHash(pos.getX(), pos.getZ());
         // Use Minecraft's SplitMix64 (mixStafford13) to generate PRNG state
         long s0 = RandomSupport.mixStafford13(seed);
         long s1 = RandomSupport.mixStafford13(seed + RandomSupport.GOLDEN_RATIO_64);
         // Use Minecraft's Xoroshiro128PlusPlus
         Xoroshiro128PlusPlus prng = new Xoroshiro128PlusPlus(s0, s1);
         // Generate X offset with quantization
-        float offsetX = viafabricplus$calculateOffsetValue(viafabricplus$OFFSET_MIN, viafabricplus$OFFSET_MAX, viafabricplus$STEPS, viafabricplus$randomToFloat(prng.nextLong()));
+        float offsetX = viaFabricPlus$calculateOffsetValue(viaFabricPlus$OFFSET_MIN, viaFabricPlus$OFFSET_MAX, viaFabricPlus$STEPS, viaFabricPlus$randomToFloat(prng.nextLong()));
 
         float offsetY = switch (type) {
             case XZ -> {
@@ -126,14 +125,14 @@ public abstract class MixinBlockBehaviour {
             }
             case XYZ -> {
                 // Generate Y offset with quantization
-                yield viafabricplus$calculateOffsetValue(-0.2f, 0, viafabricplus$STEPS, viafabricplus$randomToFloat(prng.nextLong()));
+                yield viaFabricPlus$calculateOffsetValue(-0.2f, 0, viaFabricPlus$STEPS, viaFabricPlus$randomToFloat(prng.nextLong()));
             }
             case NONE -> 0;
         };
 
 
         // Generate Z offset with quantization
-        float offsetZ = viafabricplus$calculateOffsetValue(viafabricplus$OFFSET_MIN, viafabricplus$OFFSET_MAX, viafabricplus$STEPS, viafabricplus$randomToFloat(prng.nextLong()));
+        float offsetZ = viaFabricPlus$calculateOffsetValue(viaFabricPlus$OFFSET_MIN, viaFabricPlus$OFFSET_MAX, viaFabricPlus$STEPS, viaFabricPlus$randomToFloat(prng.nextLong()));
 
         return new Vec3(offsetX, offsetY, offsetZ);
     }
