@@ -128,7 +128,7 @@ public abstract class MixinBlockBehaviour {
             }
             case XYZ -> {
                 // Generate Y offset with quantization
-                yield calculateOffsetValue(OFFSET_MIN, OFFSET_MAX, STEPS, randomToFloat(prng.nextLong()));
+                yield calculateOffsetValue(-0.2f, 0, STEPS, randomToFloat(prng.nextLong()));
             }
             case NONE -> 0;
         };
