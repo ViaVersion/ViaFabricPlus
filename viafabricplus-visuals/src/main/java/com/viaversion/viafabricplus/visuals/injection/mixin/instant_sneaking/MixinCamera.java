@@ -42,10 +42,9 @@ public abstract class MixinCamera {
     @Shadow
     private Entity entity;
 
-    @Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/attribute/EnvironmentAttributeProbe;tick(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/phys/Vec3;)V", shift = At.Shift.BEFORE))
     private void sneakInstantly(CallbackInfo ci) {
-        if (this.entity != null && VisualSettings.INSTANCE.sneakInstantly.isEnabled()) {
-            ci.cancel();
+        if (VisualSettings.INSTANCE.sneakInstantly.isEnabled()) {
             eyeHeight = eyeHeightOld = entity.getEyeHeight();
         }
     }
