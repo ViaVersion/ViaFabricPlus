@@ -68,6 +68,7 @@
     "features.block.interaction.MixinIronBarsBlock",
     "features.block.interaction.MixinNoteBlock",
     "features.block.interaction.MixinRedStoneWireBlock",
+    "features.block.interaction.MixinRespawnAnchorBlock",
     "features.block.interaction.MixinSignBlock",
     "features.block.interaction.MixinSimpleWaterloggedBlock",
     "features.block.mining_calculation.MixinBlockBehaviour",
@@ -316,7 +317,7 @@
     "features.world.duplicated_sounds.MixinItems",
     "features.world.item_picking.MixinMinecraft",
     "features.world.remove_server_view_distance.MixinOptions",
-    "features.block.interaction.MixinRespawnAnchorBlock"
+    "features.block.interaction.MixinShelfBlock"
   ],
   "injectors": {
     "defaultRequire": 1
