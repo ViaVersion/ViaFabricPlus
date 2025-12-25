@@ -45,6 +45,8 @@
     "compat.minecraftauth.MixinDefaultJwtParserBuilder",
     "features.april_fools_8bit_sound.MixinSoundBuffer",
     "features.bedrock.allow_new_line.MixinFont",
+    "features.bedrock.block.MixinBambooStalkBlock",
+    "features.bedrock.block.MixinBlockBehaviour_Properties",
     "features.bedrock.block.MixinCactusBlock",
     "features.bedrock.block.MixinCandleCakeBlock",
     "features.bedrock.block.MixinConduitBlock",
@@ -68,6 +70,7 @@
     "features.block.interaction.MixinIronBarsBlock",
     "features.block.interaction.MixinNoteBlock",
     "features.block.interaction.MixinRedStoneWireBlock",
+    "features.block.interaction.MixinRespawnAnchorBlock",
     "features.block.interaction.MixinSignBlock",
     "features.block.interaction.MixinSimpleWaterloggedBlock",
     "features.block.mining_calculation.MixinBlockBehaviour",
@@ -315,7 +318,8 @@
     "features.world.duplicated_sounds.MixinButtonBlock",
     "features.world.duplicated_sounds.MixinItems",
     "features.world.item_picking.MixinMinecraft",
-    "features.world.remove_server_view_distance.MixinOptions"
+    "features.world.remove_server_view_distance.MixinOptions",
+    "features.block.interaction.MixinShelfBlock"
   ],
   "injectors": {
     "defaultRequire": 1
