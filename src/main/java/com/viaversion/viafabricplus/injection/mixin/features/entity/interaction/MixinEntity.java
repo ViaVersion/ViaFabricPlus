@@ -30,10 +30,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionHand;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
@@ -41,6 +43,15 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract boolean isAlive();
+
+    @Redirect(method = "interact", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;CONSUME:Lnet/minecraft/world/InteractionResult$Success;", opcode = Opcodes.GETSTATIC))
+    private InteractionResult.Success swingHand() {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
+            return InteractionResult.SUCCESS;
+        } else {
+            return InteractionResult.CONSUME;
+        }
+    }
 
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
     private void removeLeashActions(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
