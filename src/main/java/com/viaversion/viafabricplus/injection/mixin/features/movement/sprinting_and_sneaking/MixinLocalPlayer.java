@@ -102,9 +102,6 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     protected abstract Vec2 modifyInput(final Vec2 input);
 
     @Shadow
-    public abstract void resetPos();
-
-    @Shadow
     public abstract boolean isShiftKeyDown();
 
     @Shadow
@@ -121,7 +118,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     @Inject(method = "isSprintingPossible", at = @At("HEAD"), cancellable = true)
     private void isSprintingPossible1_21_10(boolean bl, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
-            cir.setReturnValue(!this.isMobilityRestricted() && this.viaFabricPlus$hasEnoughFoodToSprint1_21_10()
+            cir.setReturnValue(!this.isMobilityRestricted() && this.viaFabricPlus$hasEnoughFoodToSprint1_19_1()
                 && (!this.isPassenger() || this.vehicleCanSprint(this.getVehicle())) && (bl || !this.isInShallowWater()));
         }
     }
@@ -240,7 +237,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
         if (version.olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
             cir.setReturnValue(!this.isSprinting()
                 && (version.olderThanOrEqualTo(ProtocolVersion.v1_21_4) ? this.viaFabricPlus$isWalking1_21_4() : this.input.hasForwardImpulse())
-                && this.viaFabricPlus$hasEnoughFoodToSprint1_21_10()
+                && this.viaFabricPlus$hasEnoughFoodToSprint1_19_1()
                 && !this.isUsingItem()
                 && !this.isMobilityRestricted()
                 && (!(version.newerThan(ProtocolVersion.v1_19_3) && this.isPassenger()) || this.vehicleCanSprint(this.getVehicle()))
@@ -257,7 +254,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
             cir.setReturnValue(!this.onGround() && !this.input.keyPresses.shift() && this.viaFabricPlus$shouldCancelSprinting() || !this.isInWater());
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
             cir.setReturnValue(this.isMobilityRestricted() || this.isPassenger() && !this.vehicleCanSprint(this.getVehicle())
-                || !this.isInWater() || !this.input.hasForwardImpulse() && !this.onGround() && !this.input.keyPresses.shift() || !this.viaFabricPlus$hasEnoughFoodToSprint1_21_10());
+                || !this.isInWater() || !this.input.hasForwardImpulse() && !this.onGround() && !this.input.keyPresses.shift() || !this.viaFabricPlus$hasEnoughFoodToSprint1_19_1());
         }
     }
 
@@ -267,7 +264,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
             final boolean ridingCamel = getVehicle() != null && getVehicle().getType() == EntityType.CAMEL;
             cir.setReturnValue(this.isFallFlying() || this.isMobilityRestricted() || this.isMovingSlowly() || this.isPassenger() && !ridingCamel || this.isUsingItem() && !this.isPassenger() && !this.isUnderWater());
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
-            cir.setReturnValue(this.isMobilityRestricted() || this.isPassenger() && !this.vehicleCanSprint(this.getVehicle()) || !this.input.hasForwardImpulse() || !this.viaFabricPlus$hasEnoughFoodToSprint1_21_10() || this.horizontalCollision && !this.minorHorizontalCollision || this.isInWater() && !this.isUnderWater());
+            cir.setReturnValue(this.isMobilityRestricted() || this.isPassenger() && !this.vehicleCanSprint(this.getVehicle()) || !this.input.hasForwardImpulse() || !this.viaFabricPlus$hasEnoughFoodToSprint1_19_1() || this.horizontalCollision && !this.minorHorizontalCollision || this.isInWater() && !this.isUnderWater());
         }
     }
 
@@ -317,15 +314,15 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     @Unique
     private boolean viaFabricPlus$shouldCancelSprinting() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
-            return !(this.input.moveVector.y >= 0.8F) || !this.viaFabricPlus$hasEnoughFoodToSprint1_21_10(); // Disables sprint sneaking
+            return !(this.input.moveVector.y >= 0.8F) || !this.viaFabricPlus$hasEnoughFoodToSprint1_19_1(); // Disables sprint sneaking
         } else {
-            return !this.input.hasForwardImpulse() || !this.viaFabricPlus$hasEnoughFoodToSprint1_21_10();
+            return !this.input.hasForwardImpulse() || !this.viaFabricPlus$hasEnoughFoodToSprint1_19_1();
         }
     }
 
     @Unique
-    private boolean viaFabricPlus$hasEnoughFoodToSprint1_21_10() {
-        return (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_19_1) && this.isPassenger()) || this.getFoodData().getFoodLevel() > 6.0F || this.getAbilities().mayfly;
+    private boolean viaFabricPlus$hasEnoughFoodToSprint1_19_1() {
+        return (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_19_1) && this.isPassenger()) || this.hasEnoughFoodToDoExhaustiveManoeuvres();
     }
 
     @Unique
