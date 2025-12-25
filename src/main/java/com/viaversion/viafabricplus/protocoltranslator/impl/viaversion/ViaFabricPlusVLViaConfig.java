@@ -33,6 +33,7 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
         UNSUPPORTED.add("simulate-pt");
         UNSUPPORTED.add("fix-1_21-placement-rotation");
         UNSUPPORTED.add("team-colour-fix");
+        UNSUPPORTED.add("serverside-blockconnections");
         UNSUPPORTED.add("cancel-swing-in-inventory");
         UNSUPPORTED.add("cancel-block-sounds");
         UNSUPPORTED.add("use-1_8-hitbox-margin");
@@ -40,6 +41,11 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
 
     @Override
     public boolean isSimulatePlayerTick() {
+        return false;
+    }
+
+    @Override
+    public boolean isServersideBlockConnections() {
         return false;
     }
 
