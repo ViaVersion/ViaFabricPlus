@@ -43,3 +43,8 @@ extendable method net/minecraft/world/entity/Entity moveOrInterpolateTo (Lnet/mi
 accessible class net/minecraft/client/gui/font/FontSet$SelectedGlyphs
 accessible class net/minecraft/world/entity/Entity$Movement
 accessible class net/minecraft/client/renderer/debug/GameTestBlockHighlightRenderer$Marker
+
+accessible method net/minecraft/world/level/block/WallBlock connectsTo (Lnet/minecraft/world/level/block/state/BlockState;ZLnet/minecraft/core/Direction;)Z
+accessible method net/minecraft/world/level/block/FireBlock canBurn (Lnet/minecraft/world/level/block/state/BlockState;)Z
+accessible method net/minecraft/world/level/block/RedStoneWireBlock getConnectingSide (Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)Lnet/minecraft/world/level/block/state/properties/RedstoneSide;
+accessible method net/minecraft/world/level/block/StairBlock getStairsShape (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/properties/StairsShape;
