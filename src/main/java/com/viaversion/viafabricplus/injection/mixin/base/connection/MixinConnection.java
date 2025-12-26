@@ -25,6 +25,7 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.viaversion.viafabricplus.injection.access.base.IConnection;
 import com.viaversion.viafabricplus.injection.access.base.IEventLoopGroupHolder;
 import com.viaversion.viafabricplus.injection.access.base.ILocalSampleLogger;
@@ -45,13 +46,16 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.epoll.EpollDatagramChannel;
 import io.netty.channel.epoll.EpollSocketChannel;
+import io.netty.channel.kqueue.KQueueSocketChannel;
+import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import javax.crypto.Cipher;
-import net.minecraft.network.Connection;
 import net.minecraft.network.CipherDecoder;
 import net.minecraft.network.CipherEncoder;
+import net.minecraft.network.Connection;
 import net.minecraft.network.HandlerNames;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.network.EventLoopGroupHolder;
@@ -146,7 +150,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
     }
 
     @Inject(method = "connect", at = @At("HEAD"))
-    private static void setTargetVersion(InetSocketAddress inetSocketAddress, EventLoopGroupHolder eventLoopGroupHolder, Connection connection, CallbackInfoReturnable<ChannelFuture> cir) {
+    private static void setTargetVersion(InetSocketAddress inetSocketAddress, EventLoopGroupHolder eventLoopGroupHolder, Connection connection, CallbackInfoReturnable<ChannelFuture> cir, @Local(argsOnly = true) LocalRef<EventLoopGroupHolder> eventLoopGroupHolderRef) {
         ProtocolVersion targetVersion = ((IConnection) connection).viaFabricPlus$getTargetVersion();
         if (targetVersion == null) { // No server specific override
             targetVersion = ProtocolTranslator.getTargetVersion();
@@ -154,14 +158,26 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
         if (targetVersion == ProtocolTranslator.AUTO_DETECT_PROTOCOL) { // Auto-detect enabled (when pinging always use native version). Auto-detect is resolved in ConnectScreen mixin
             targetVersion = ProtocolTranslator.NATIVE_VERSION;
         }
-
         ((IConnection) connection).viaFabricPlus$setTargetVersion(targetVersion);
+
+        if (BedrockProtocolVersion.bedrockLatest.equals(targetVersion) && eventLoopGroupHolder.channelCls() == KQueueSocketChannel.class) { // RakNet does not support KQueue, switch to NIO
+            final EventLoopGroupHolder newEventLoopGroupHolder = EventLoopGroupHolder.remote(false);
+            ((IEventLoopGroupHolder) newEventLoopGroupHolder).viaFabricPlus$setConnecting(((IEventLoopGroupHolder) eventLoopGroupHolder).viaFabricPlus$isConnecting());
+            eventLoopGroupHolderRef.set(newEventLoopGroupHolder);
+        }
     }
 
     @WrapOperation(method = "connect", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;channel(Ljava/lang/Class;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false))
     private static AbstractBootstrap<?, ?> useRakNetChannelFactory(Bootstrap instance, Class<? extends Channel> channelTypeClass, Operation<AbstractBootstrap<Bootstrap, Channel>> original, @Local(argsOnly = true) Connection clientConnection) {
         if (BedrockProtocolVersion.bedrockLatest.equals(((IConnection) clientConnection).viaFabricPlus$getTargetVersion())) {
-            return instance.channelFactory(channelTypeClass == EpollSocketChannel.class ? RakChannelFactory.client(EpollDatagramChannel.class) : RakChannelFactory.client(NioDatagramChannel.class));
+            if (channelTypeClass == NioSocketChannel.class) {
+                channelTypeClass = NioDatagramChannel.class;
+            } else if (channelTypeClass == EpollSocketChannel.class) {
+                channelTypeClass = EpollDatagramChannel.class;
+            } else {
+                throw new IllegalStateException("Unsupported channel type for RakNet: " + channelTypeClass);
+            }
+            return instance.channelFactory(RakChannelFactory.client((Class<? extends DatagramChannel>) channelTypeClass));
         } else {
             return original.call(instance, channelTypeClass);
         }
