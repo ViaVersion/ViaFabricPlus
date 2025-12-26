@@ -1,14 +1,14 @@
 import de.florianmichael.baseproject.*
 
 plugins {
-    id("net.fabricmc.fabric-loom-remap")
+    id("net.fabricmc.fabric-loom")
     id("de.florianmichael.baseproject.BaseProject")
 }
 
 allprojects {
 
     setupProject()
-    setupFabricRemap()
+    setupFabric()
     setupViaPublishing()
 
     repositories {
@@ -44,20 +44,22 @@ project.property("updating_minecraft").toString().toBoolean().let {
     }
 }
 
-val jij = configureJij()
+val jij = configureApiJij()
+
 configureVVDependencies("jij")
 
 includeFabricApiModules("fabric-resource-loader-v1", "fabric-resource-loader-v0", "fabric-networking-api-v1", "fabric-command-api-v2", "fabric-lifecycle-events-v1", "fabric-particles-v1", "fabric-registry-sync-v0")
-includeFabricSubmodule("viafabricplus-api")
-includeFabricSubmodule("viafabricplus-visuals")
 
 dependencies {
+    jij(project(":viafabricplus-api"))
+    jij(project(":viafabricplus-visuals"))
+
     jij("net.lenni0451:Reflect:1.6.1")
     jij("de.florianmichael:Classic4J:2.2.1")
     configureBedrockDependencies()
 
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")
-    modCompileOnly("com.terraformersmc:modmenu:15.0.0")
+    //compileOnly("com.terraformersmc:modmenu:15.0.0") // TODO Can't have right now as they don't publish unobfuscated builds
 }
 
 includeTransitiveJijDependencies()

@@ -62,7 +62,7 @@ public abstract class MixinConnectScreen_1 {
 
     @Shadow
     @Final
-    ConnectScreen field_2416;
+    ConnectScreen this$0;
 
     @Unique
     private boolean viaFabricPlus$useClassiCubeAccount;
@@ -84,7 +84,7 @@ public abstract class MixinConnectScreen_1 {
                 targetVersion = ProtocolVersion.getProtocol(this.val$server.protocol);
             }
             if (!serverPinged || !targetVersion.isKnown()) {
-                this.field_2416.updateStatus(Component.translatable("base.viafabricplus.detecting_server_version"));
+                this.this$0.updateStatus(Component.translatable("base.viafabricplus.detecting_server_version"));
                 try {
                     targetVersion = ProtocolVersionDetector.get(this.val$hostAndPort, address, ProtocolTranslator.NATIVE_VERSION);
                 } catch (final ConnectException ignored) {
