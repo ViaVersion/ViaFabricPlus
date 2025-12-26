@@ -19,21 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.base;
-
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
-import com.terraformersmc.modmenu.api.ModMenuApi;
-import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
-
-/**
- * Implementation of the ModMenu integration allowing users to open the protocol selection screen from the mod menu.
- */
-public final class ModMenuScreenFactory implements ModMenuApi {
-
-    @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        //noinspection Convert2MethodRef
-        return screen -> ProtocolSelectionScreen.INSTANCE.get(screen);
-    }
-
-}
+// TODO see build.gradle.kts
+//package com.viaversion.viafabricplus.base;
+//
+//import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+//import com.terraformersmc.modmenu.api.ModMenuApi;
+//import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
+//
+///**
+// * Implementation of the ModMenu integration allowing users to open the protocol selection screen from the mod menu.
+// */
+//public final class ModMenuScreenFactory implements ModMenuApi {
+//
+//    @Override
+//    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+//        //noinspection Convert2MethodRef
+//        return screen -> ProtocolSelectionScreen.INSTANCE.get(screen);
+//    }
+//
+//}
