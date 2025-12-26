@@ -129,7 +129,7 @@ public abstract class MixinMultiPlayerGameMode {
         }
     }
 
-    @Redirect(method = {"method_41936", "method_41935"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;destroyBlock(Lnet/minecraft/core/BlockPos;)Z"))
+    @Redirect(method = {"lambda$startDestroyBlock$0", "lambda$continueDestroyBlock$2"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;destroyBlock(Lnet/minecraft/core/BlockPos;)Z"))
     private boolean checkFireBlock(MultiPlayerGameMode instance, BlockPos pos, @Local(argsOnly = true) Direction direction) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return !this.viaFabricPlus$extinguishFire(pos, direction) && instance.destroyBlock(pos);
@@ -198,7 +198,7 @@ public abstract class MixinMultiPlayerGameMode {
         }
     }
 
-    @Redirect(method = "method_41929", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;use(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;"))
+    @Redirect(method = "lambda$useItem$6", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;use(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;"))
     private InteractionResult eitherSuccessOrPass(ItemStack instance, Level world, Player user, InteractionHand hand, @Local ItemStack itemStack) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             final int count = instance.getCount();
@@ -224,7 +224,7 @@ public abstract class MixinMultiPlayerGameMode {
         }
     }
 
-    @Inject(method = "method_41929", at = @At("HEAD"))
+    @Inject(method = "lambda$useItem$6", at = @At("HEAD"))
     private void trackLastUsedItem(InteractionHand hand, Player playerEntity, MutableObject<InteractionResult> mutableObject, int sequence, CallbackInfoReturnable<Packet<?>> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ViaFabricPlusHandItemProvider.lastUsedItem = playerEntity.getItemInHand(hand).copy();
@@ -236,7 +236,7 @@ public abstract class MixinMultiPlayerGameMode {
      * @reason Block place fix
      */
     @Overwrite
-    private Packet<?> method_41933(MutableObject<InteractionResult> mutableObject, LocalPlayer clientPlayerEntity, InteractionHand hand, BlockHitResult blockHitResult, int sequence) {
+    private Packet<?> lambda$useItemOn$4(MutableObject<InteractionResult> mutableObject, LocalPlayer clientPlayerEntity, InteractionHand hand, BlockHitResult blockHitResult, int sequence) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ViaFabricPlusHandItemProvider.lastUsedItem = clientPlayerEntity.getItemInHand(hand).copy();
         }

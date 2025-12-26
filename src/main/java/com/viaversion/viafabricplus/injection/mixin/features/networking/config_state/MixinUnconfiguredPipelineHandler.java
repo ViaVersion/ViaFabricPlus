@@ -33,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(UnconfiguredPipelineHandler.class)
 public abstract class MixinUnconfiguredPipelineHandler {
 
-    @WrapOperation(method = "method_56353", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelConfig;setAutoRead(Z)Lio/netty/channel/ChannelConfig;", remap = false))
+    @WrapOperation(method = "lambda$setupInboundHandler$0", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelConfig;setAutoRead(Z)Lio/netty/channel/ChannelConfig;", remap = false))
     private static ChannelConfig dontChangeAutoRead(ChannelConfig instance, boolean b, Operation<ChannelConfig> original) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             return null;

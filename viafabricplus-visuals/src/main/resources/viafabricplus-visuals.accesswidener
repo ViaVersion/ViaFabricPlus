@@ -1,4 +1,4 @@
-accessWidener v1 named
+accessWidener v1 official
 
 accessible field net/minecraft/client/resources/language/ClientLanguage storage Ljava/util/Map;
 accessible field net/minecraft/client/gui/screens/social/SocialInteractionsScreen TITLE Lnet/minecraft/network/chat/Component;

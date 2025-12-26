@@ -44,7 +44,7 @@ public abstract class MixinMouseHandler implements IMouseKeyboardHandlers {
     @Unique
     private final Queue<Runnable> viaFabricPlus$pendingScreenEvents = new ConcurrentLinkedQueue<>();
 
-    @Redirect(method = {"method_22684", "method_22685"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;execute(Ljava/lang/Runnable;)V"))
+    @Redirect(method = {"lambda$setup$5", "lambda$setup$7"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;execute(Ljava/lang/Runnable;)V"))
     private void storeEvent(Minecraft instance, Runnable runnable) {
         if (this.minecraft.getConnection() != null && this.minecraft.screen != null && DebugSettings.INSTANCE.executeInputsSynchronously.isEnabled()) {
             this.viaFabricPlus$pendingScreenEvents.offer(runnable);
