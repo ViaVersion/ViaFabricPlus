@@ -68,7 +68,7 @@ includeTransitiveJijDependencies()
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.6.1-SNAPSHOT")
+        configuration("com.viaversion:viaversion-common:5.7.0-SNAPSHOT")
         configuration("com.viaversion:viabackwards-common:5.6.1-SNAPSHOT")
         configuration("com.viaversion:viaaprilfools-common:4.0.6")
         configuration("com.viaversion:vialoader:4.0.6") {
