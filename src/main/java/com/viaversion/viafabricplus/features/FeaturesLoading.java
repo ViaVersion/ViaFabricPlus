@@ -36,6 +36,7 @@ import com.viaversion.viafabricplus.features.networking.resource_pack_header.Res
 import com.viaversion.viafabricplus.features.recipe.Recipes1_11_2;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 
 public final class FeaturesLoading {
 
@@ -58,6 +59,8 @@ public final class FeaturesLoading {
             if (newVersion.olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
                 Recipes1_11_2.reset();
             }
+
+            EnvironmentAttributes.RESPAWN_ANCHOR_WORKS.isSyncable = newVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_9);
         }));
     }
 
