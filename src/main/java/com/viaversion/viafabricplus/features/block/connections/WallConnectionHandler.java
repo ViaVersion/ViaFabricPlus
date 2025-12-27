@@ -41,8 +41,9 @@ public final class WallConnectionHandler implements IBlockConnectionHandler {
         final boolean south = connectsTo(levelReader, blockPos.south(), Direction.SOUTH);
         final boolean west = connectsTo(levelReader, blockPos.west(), Direction.WEST);
         final boolean east = connectsTo(levelReader, blockPos.east(), Direction.EAST);
+        final boolean up = !(south && !west && north && !east || !south && west && !north && east) || !levelReader.getBlockState(blockPos.above()).isAir();
         return blockState
-            .setValue(WallBlock.UP, hasUp(levelReader, blockPos, north, south, west, east))
+            .setValue(WallBlock.UP, up)
             .setValue(WallBlock.NORTH, getWallSide(north))
             .setValue(WallBlock.SOUTH, getWallSide(south))
             .setValue(WallBlock.WEST, getWallSide(west))
@@ -67,24 +68,6 @@ public final class WallConnectionHandler implements IBlockConnectionHandler {
             || block == Blocks.PUMPKIN
             || block == Blocks.CARVED_PUMPKIN
             || block == Blocks.JACK_O_LANTERN;
-    }
-
-    // TODO: Fine-tune and make perfect/1:1
-    private boolean hasUp(final LevelReader levelReader, final BlockPos blockPos, final boolean north, final boolean south, final boolean west, final boolean east) {
-        final BlockState aboveState = levelReader.getBlockState(blockPos.above());
-
-        int sides = 0;
-        if (north) sides++;
-        if (south) sides++;
-        if (west) sides++;
-        if (east) sides++;
-
-        final boolean isLShape = (north && east && !south && !west)
-            || (north && west && !south && !east)
-            || (south && east && !north && !west)
-            || (south && west && !north && !east);
-
-        return aboveState.isFaceSturdy(levelReader, blockPos.above(), Direction.DOWN) || isLShape || sides == 0 || sides == 1 || sides == 4;
     }
 
     private WallSide getWallSide(final boolean value) {
