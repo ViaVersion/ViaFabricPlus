@@ -21,11 +21,13 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
+import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -50,6 +52,15 @@ public final class FenceConnectionHandler implements IBlockConnectionHandler {
             return neighbor.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
         }
 
-        return !neighbor.isAir() && (block instanceof FenceBlock || block instanceof FenceGateBlock || neighbor.isSolidRender());
+        return !neighbor.isAir() && !isExceptionForConnection(block) && (block instanceof FenceBlock || block instanceof FenceGateBlock || neighbor.isSolidRender());
+    }
+
+    private boolean isExceptionForConnection(Block block) {
+        return Block1_14.isExceptBlockForAttachWithPiston(block)
+            || block == Blocks.BARRIER
+            || block == Blocks.MELON
+            || block == Blocks.PUMPKIN
+            || block == Blocks.CARVED_PUMPKIN
+            || block == Blocks.JACK_O_LANTERN;
     }
 }

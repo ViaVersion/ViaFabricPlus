@@ -21,11 +21,13 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
+import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,10 +54,18 @@ public final class WallConnectionHandler implements IBlockConnectionHandler {
 
         final Block block = neighbor.getBlock();
         if (block instanceof StairBlock) {
-            return neighbor.getValue(StairBlock.FACING) == direction.getOpposite();  // Only connect to the backside of stairs
+            return neighbor.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
         }
 
-        return !neighbor.isAir() && (block instanceof WallBlock || neighbor.isSolidRender());
+        return !neighbor.isAir() && !isExceptionForConnection(block) && (block instanceof WallBlock || neighbor.isSolidRender());
+    }
+
+    private boolean isExceptionForConnection(Block block) {
+        return Block1_14.isExceptBlockForAttachWithPiston(block)
+            || block == Blocks.BARRIER
+            || block == Blocks.PUMPKIN
+            || block == Blocks.CARVED_PUMPKIN
+            || block == Blocks.JACK_O_LANTERN;
     }
 
     // TODO: Fine-tune and make perfect/1:1
