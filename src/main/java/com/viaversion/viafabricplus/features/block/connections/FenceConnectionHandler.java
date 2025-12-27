@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -52,7 +53,7 @@ public final class FenceConnectionHandler implements IBlockConnectionHandler {
             return neighbor.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
         }
 
-        return !neighbor.isAir() && !isExceptionForConnection(block) && (block instanceof FenceBlock || block instanceof FenceGateBlock || neighbor.isSolidRender());
+        return !neighbor.isAir() && !isExceptionForConnection(block) && (block instanceof FenceBlock || block instanceof FenceGateBlock || block instanceof SlimeBlock || neighbor.isSolidRender());
     }
 
     private boolean isExceptionForConnection(Block block) {

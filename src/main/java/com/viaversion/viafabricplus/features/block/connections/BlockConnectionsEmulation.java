@@ -30,6 +30,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.ChorusPlantBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FireBlock;
@@ -57,6 +58,7 @@ public final class BlockConnectionsEmulation {
         connectionHandlers.put(WallBlock.class, new WallConnectionHandler());
         connectionHandlers.put(DoorBlock.class, new DoorConnectionHandler());
         connectionHandlers.put(ChestBlock.class, new DoubleChestConnectionHandler());
+        connectionHandlers.put(ChorusPlantBlock.class, new ChorusPlantConnectionHandler());
     }
 
     public static void updateChunkConnections(final LevelReader levelReader, final ChunkAccess chunkAccess) {
