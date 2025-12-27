@@ -27,6 +27,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
@@ -52,15 +53,15 @@ public final class WallConnectionHandler implements IBlockConnectionHandler {
 
     // TODO: Fine-tune and make perfect/1:1
     private boolean connectsTo(final BlockGetter blockGetter, final BlockPos blockPos, final Direction direction) {
-        final BlockState neighbor = blockGetter.getBlockState(blockPos);
+        final BlockState neighborState = blockGetter.getBlockState(blockPos);
 
-        final Block block = neighbor.getBlock();
+        final Block block = neighborState.getBlock();
         if (block instanceof StairBlock) {
             // TODO: Sometimes isn't right
-            return neighbor.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
+            return neighborState.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
         }
 
-        return !neighbor.isAir() && !isExceptionForConnection(block) && (block instanceof WallBlock || block instanceof SlimeBlock || neighbor.isSolidRender());
+        return !neighborState.isAir() && !isExceptionForConnection(block) && (block instanceof WallBlock || block instanceof FenceGateBlock || block instanceof SlimeBlock || neighborState.isSolidRender());
     }
 
     private boolean isExceptionForConnection(Block block) {

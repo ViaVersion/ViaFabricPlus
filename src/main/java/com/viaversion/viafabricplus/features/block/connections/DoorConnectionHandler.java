@@ -34,7 +34,7 @@ public final class DoorConnectionHandler implements IBlockConnectionHandler {
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         final DoorBlock doorBlock = (DoorBlock) blockState.getBlock();
 
-        // TODO: Fix
+        // TODO: Fix on place (works fine/normal when joining or updating the block)
         BlockState newState = blockState;
         if (blockState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
             final BlockState halfState = blockGetter.getBlockState(blockPos.above());

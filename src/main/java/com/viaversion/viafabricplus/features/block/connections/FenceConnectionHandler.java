@@ -46,15 +46,15 @@ public final class FenceConnectionHandler implements IBlockConnectionHandler {
 
     // TODO: Fine-tune and make perfect/1:1
     private boolean connectsTo(final BlockGetter blockGetter, final BlockPos blockPos, final Direction direction) {
-        final BlockState neighbor = blockGetter.getBlockState(blockPos);
+        final BlockState neighborState = blockGetter.getBlockState(blockPos);
 
-        final Block block = neighbor.getBlock();
+        final Block block = neighborState.getBlock();
         if (block instanceof StairBlock) {
             // TODO: Sometimes isn't right
-            return neighbor.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
+            return neighborState.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
         }
 
-        return !neighbor.isAir() && !isExceptionForConnection(block) && (block instanceof FenceBlock || block instanceof FenceGateBlock || block instanceof SlimeBlock || neighbor.isSolidRender());
+        return !neighborState.isAir() && !isExceptionForConnection(block) && (block instanceof FenceBlock || block instanceof FenceGateBlock || block instanceof SlimeBlock || neighborState.isSolidRender());
     }
 
     private boolean isExceptionForConnection(Block block) {
