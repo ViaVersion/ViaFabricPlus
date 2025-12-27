@@ -22,10 +22,12 @@ accessible field net/minecraft/client/gui/screens/FaviconTexture MISSING_LOCATIO
 accessible field net/minecraft/world/entity/boss/enderdragon/EnderDragon body Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;
 accessible field net/minecraft/world/entity/animal/equine/AbstractHorse standAnimO F
 accessible field net/minecraft/network/Connection pendingActions Ljava/util/Queue;
+accessible field net/minecraft/world/attribute/EnvironmentAttribute isSyncable Z
 
 mutable field net/minecraft/world/entity/EntityType dimensions Lnet/minecraft/world/entity/EntityDimensions;
 mutable field net/minecraft/world/level/block/state/BlockBehaviour speedFactor F
 mutable field net/minecraft/client/player/ClientInput moveVector Lnet/minecraft/world/phys/Vec2;
+mutable field net/minecraft/world/attribute/EnvironmentAttribute isSyncable Z
 
 accessible method net/minecraft/world/inventory/ChestMenu <init> (Lnet/minecraft/world/inventory/MenuType;ILnet/minecraft/world/entity/player/Inventory;I)V
 accessible method net/minecraft/world/entity/animal/camel/Camel getBodyAnchorAnimationYOffset (ZFLnet/minecraft/world/entity/EntityDimensions;F)D
