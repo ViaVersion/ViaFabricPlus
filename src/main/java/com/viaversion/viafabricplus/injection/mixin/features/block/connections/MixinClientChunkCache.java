@@ -22,30 +22,42 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.connections;
 
 import com.viaversion.viafabricplus.features.block.connections.BlockConnectionsEmulation1_12_2;
-import java.util.Map;
-import java.util.function.Consumer;
-import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.levelgen.Heightmap;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.network.protocol.game.ClientboundLightUpdatePacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientChunkCache.class)
+@Mixin(ClientPacketListener.class)
 public abstract class MixinClientChunkCache {
 
     @Shadow
-    @Final
-    ClientLevel level;
+    private ClientLevel level;
 
-    @Inject(method = "replaceWithPacketData", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;onChunkLoaded(Lnet/minecraft/world/level/ChunkPos;)V", shift = At.Shift.AFTER))
-    private void updateBlockConnections(int chunkX, int chunkZ, FriendlyByteBuf friendlyByteBuf, Map<Heightmap.Types, long[]> map, Consumer<ClientboundLevelChunkPacketData.BlockEntityTagOutput> consumer, CallbackInfoReturnable<LevelChunk> cir) {
+    @Inject(method = "updateLevelChunk", at = @At("TAIL"))
+    private void updateBlockConnections(int chunkX, int chunkZ, ClientboundLevelChunkPacketData clientboundLevelChunkPacketData, CallbackInfo ci) {
+        BlockConnectionsEmulation1_12_2.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
+    }
+
+    @Inject(method = "handleBlockUpdate", at = @At("TAIL"))
+    private void updateBlockConnections(ClientboundBlockUpdatePacket clientboundBlockUpdatePacket, CallbackInfo ci) {
+        final BlockPos blockPos = clientboundBlockUpdatePacket.getPos();
+        final int chunkX = SectionPos.blockToSectionCoord(blockPos.getX());
+        final int chunkZ = SectionPos.blockToSectionCoord(blockPos.getZ());
+        BlockConnectionsEmulation1_12_2.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
+    }
+
+    @Inject(method = "handleLightUpdatePacket", at = @At("TAIL"))
+    private void updateBlockConnections(ClientboundLightUpdatePacket clientboundLightUpdatePacket, CallbackInfo ci) {
+        final int chunkX = clientboundLightUpdatePacket.getX();
+        final int chunkZ = clientboundLightUpdatePacket.getZ();
         BlockConnectionsEmulation1_12_2.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
     }
 

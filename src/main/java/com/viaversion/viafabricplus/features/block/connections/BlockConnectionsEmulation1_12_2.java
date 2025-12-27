@@ -23,15 +23,43 @@ package com.viaversion.viafabricplus.features.block.connections;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.SnowyDirtBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
 public final class BlockConnectionsEmulation1_12_2 {
 
-    public static void updateChunkConnections(final BlockGetter blockGetter, final ChunkAccess chunkAccess) {
+    private static final Map<Class<? extends Block>, IBlockConnectionHandler> connectionHandlers = new HashMap<>();
+    private static final Map<Class<? extends Block>, IBlockConnectionHandler> lookupCache = new HashMap<>();
+
+    public static void init() {
+        connectionHandlers.put(SnowyDirtBlock.class, new SnowyGrassConnectionHandler());
+        connectionHandlers.put(FireBlock.class, new FireConnectionHandler());
+        connectionHandlers.put(StairBlock.class, new StairsConnectionHandler());
+        connectionHandlers.put(IronBarsBlock.class, new BarsConnectionHandler());
+        connectionHandlers.put(RedStoneWireBlock.class, new RedStoneConnectionHandler());
+        connectionHandlers.put(FenceBlock.class, new FenceConnectionHandler());
+        connectionHandlers.put(WallBlock.class, new WallConnectionHandler());
+        connectionHandlers.put(DoorBlock.class, new DoorConnectionHandler());
+        connectionHandlers.put(ChestBlock.class, new ChestConnectionHandler());
+    }
+
+    public static void updateChunkConnections(final LevelReader levelReader, final ChunkAccess chunkAccess) {
         if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) return;
         final ChunkPos chunkPos = chunkAccess.getPos();
         final BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
@@ -39,17 +67,31 @@ public final class BlockConnectionsEmulation1_12_2 {
             for (int y = 0; y < 256; ++y) {
                 for (int z = 0; z < 16; ++z) {
                     blockPos.set(chunkPos.getBlockX(x), y, chunkPos.getBlockZ(z));
+
                     final BlockState blockState = chunkAccess.getBlockState(blockPos);
                     if (blockState.isAir()) continue;
-                    chunkAccess.setBlockState(blockPos, connect(blockState, blockGetter, blockPos));
+
+                    final IBlockConnectionHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
+                    if (connectionHandler == null) continue;
+
+                    final BlockState newState = connectionHandler.connect(blockState, levelReader, blockPos);
+                    if (newState != blockState) {
+                        chunkAccess.setBlockState(blockPos, newState, 18);
+                    }
                 }
             }
         }
     }
 
-    // Following code adapted and sourced from 1.12.2 (Feather Mappings)
-    private static BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
-        return blockState; // TODO
-    }
+    private static IBlockConnectionHandler getConnectionHandler(Class<? extends Block> blockClass) {
+        return lookupCache.computeIfAbsent(blockClass, clazz -> {
+            for (final Map.Entry<Class<? extends Block>, IBlockConnectionHandler> entry : connectionHandlers.entrySet()) {
+                if (entry.getKey().isAssignableFrom(clazz)) {
+                    return entry.getValue();
+                }
+            }
 
+            return null;
+        });
+    }
 }
