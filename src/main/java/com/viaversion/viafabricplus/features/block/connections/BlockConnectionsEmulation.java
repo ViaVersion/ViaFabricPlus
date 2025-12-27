@@ -26,6 +26,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -80,6 +81,14 @@ public final class BlockConnectionsEmulation {
                 }
             }
         }
+    }
+
+    public static void updateChunkConnections(final LevelReader levelReader, final int chunkX, final int chunkZ) {
+        updateChunkConnections(levelReader, levelReader.getChunk(chunkX, chunkZ));
+    }
+
+    public static void updateChunkConnections(final LevelReader levelReader, final BlockPos blockPos) {
+        updateChunkConnections(levelReader, SectionPos.blockToSectionCoord(blockPos.getX()), SectionPos.blockToSectionCoord(blockPos.getZ()));
     }
 
     public static BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {

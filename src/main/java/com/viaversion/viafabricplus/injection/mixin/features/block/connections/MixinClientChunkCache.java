@@ -24,8 +24,6 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.connections;
 import com.viaversion.viafabricplus.features.block.connections.BlockConnectionsEmulation;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
 import net.minecraft.network.protocol.game.ClientboundLightUpdatePacket;
@@ -43,22 +41,17 @@ public abstract class MixinClientChunkCache {
 
     @Inject(method = "updateLevelChunk", at = @At("TAIL"))
     private void updateBlockConnections(int chunkX, int chunkZ, ClientboundLevelChunkPacketData clientboundLevelChunkPacketData, CallbackInfo ci) {
-        BlockConnectionsEmulation.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
+        BlockConnectionsEmulation.updateChunkConnections(this.level, chunkX, chunkZ);
     }
 
     @Inject(method = "handleBlockUpdate", at = @At("TAIL"))
     private void updateBlockConnections(ClientboundBlockUpdatePacket clientboundBlockUpdatePacket, CallbackInfo ci) {
-        final BlockPos blockPos = clientboundBlockUpdatePacket.getPos();
-        final int chunkX = SectionPos.blockToSectionCoord(blockPos.getX());
-        final int chunkZ = SectionPos.blockToSectionCoord(blockPos.getZ());
-        BlockConnectionsEmulation.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
+        BlockConnectionsEmulation.updateChunkConnections(this.level, clientboundBlockUpdatePacket.getPos());
     }
 
     @Inject(method = "handleLightUpdatePacket", at = @At("TAIL"))
     private void updateBlockConnections(ClientboundLightUpdatePacket clientboundLightUpdatePacket, CallbackInfo ci) {
-        final int chunkX = clientboundLightUpdatePacket.getX();
-        final int chunkZ = clientboundLightUpdatePacket.getZ();
-        BlockConnectionsEmulation.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
+        BlockConnectionsEmulation.updateChunkConnections(this.level, clientboundLightUpdatePacket.getX(), clientboundLightUpdatePacket.getZ());
     }
 
 }
