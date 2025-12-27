@@ -23,11 +23,27 @@ package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
+// Code sourced and adapted from 1.12.2 (Feather)
 public final class ChorusPlantConnectionHandler implements IBlockConnectionHandler {
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
-        return blockState; // TODO
+        final Block block = blockState.getBlock();
+        final Block belowBlock = levelReader.getBlockState(blockPos.below()).getBlock();
+        final Block aboveBlock = levelReader.getBlockState(blockPos.above()).getBlock();
+        final Block northBlock = levelReader.getBlockState(blockPos.north()).getBlock();
+        final Block eastBlock = levelReader.getBlockState(blockPos.east()).getBlock();
+        final Block southBlock = levelReader.getBlockState(blockPos.south()).getBlock();
+        final Block westBlock = levelReader.getBlockState(blockPos.west()).getBlock();
+        return blockState.setValue(PipeBlock.DOWN, belowBlock == block || belowBlock == Blocks.CHORUS_FLOWER || belowBlock == Blocks.END_STONE)
+            .setValue(PipeBlock.UP, aboveBlock == block || aboveBlock == Blocks.CHORUS_FLOWER)
+            .setValue(PipeBlock.NORTH, northBlock == block || northBlock == Blocks.CHORUS_FLOWER)
+            .setValue(PipeBlock.EAST, eastBlock == block || eastBlock == Blocks.CHORUS_FLOWER)
+            .setValue(PipeBlock.SOUTH, southBlock == block || southBlock == Blocks.CHORUS_FLOWER)
+            .setValue(PipeBlock.WEST, westBlock == block || westBlock == Blocks.CHORUS_FLOWER);
     }
 }
