@@ -24,42 +24,30 @@ package com.viaversion.viafabricplus.features.block.connections;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class BarsConnectionHandler implements IBlockConnectionHandler {
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
-        return blockState.setValue(IronBarsBlock.NORTH, this.connectsTo(levelReader.getBlockState(blockPos.north()), blockPos.north(), Direction.SOUTH))
-            .setValue(IronBarsBlock.SOUTH, this.connectsTo(levelReader.getBlockState(blockPos.south()), blockPos.south(), Direction.NORTH))
-            .setValue(IronBarsBlock.WEST, this.connectsTo(levelReader.getBlockState(blockPos.west()), blockPos.west(), Direction.EAST))
-            .setValue(IronBarsBlock.EAST, this.connectsTo(levelReader.getBlockState(blockPos.east()), blockPos.east(), Direction.WEST));
-    }
+        final IronBarsBlock ironBarsBlock = (IronBarsBlock) blockState.getBlock();
 
-    private boolean connectsTo(final BlockState blockState, final BlockPos blockPos, final Direction direction) {
-        final Block block = blockState.getBlock();
-        // TODO: Figure out modern code
-        return !connectsTo(block) && blockState.isSolidRender() /*|| faceShape == FaceShape.MIDDLE_POLE_THIN*/;
-    }
+        final BlockPos northPos = blockPos.north();
+        final BlockState northState = levelReader.getBlockState(northPos);
 
-    private boolean connectsTo(Block block) {
-        return block instanceof ShulkerBoxBlock
-            || block instanceof LeavesBlock
-            || block == Blocks.BEACON
-            || block == Blocks.CAULDRON
-            || block == Blocks.GLOWSTONE
-            || block == Blocks.ICE
-            || block == Blocks.SEA_LANTERN
-            || block == Blocks.PISTON
-            || block == Blocks.STICKY_PISTON
-            || block == Blocks.PISTON_HEAD
-            || block == Blocks.MELON
-            || block == Blocks.PUMPKIN
-            || block == Blocks.CARVED_PUMPKIN
-            || block == Blocks.BARRIER;
+        final BlockPos southPos = blockPos.south();
+        final BlockState southState = levelReader.getBlockState(southPos);
+
+        final BlockPos westPos = blockPos.west();
+        final BlockState westState = levelReader.getBlockState(westPos);
+
+        final BlockPos eastPos = blockPos.east();
+        final BlockState eastState = levelReader.getBlockState(eastPos);
+
+        return ironBarsBlock.defaultBlockState()
+            .setValue(IronBarsBlock.NORTH, ironBarsBlock.attachsTo(northState, northState.isFaceSturdy(levelReader, northPos, Direction.SOUTH)))
+            .setValue(IronBarsBlock.SOUTH, ironBarsBlock.attachsTo(southState, southState.isFaceSturdy(levelReader, southPos, Direction.NORTH)))
+            .setValue(IronBarsBlock.WEST, ironBarsBlock.attachsTo(westState, westState.isFaceSturdy(levelReader, westPos, Direction.EAST)))
+            .setValue(IronBarsBlock.EAST, ironBarsBlock.attachsTo(eastState, eastState.isFaceSturdy(levelReader, eastPos, Direction.WEST)));
     }
 }
