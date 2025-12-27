@@ -42,7 +42,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 
-public final class BlockConnectionsEmulation1_12_2 {
+public final class BlockConnectionsEmulation {
 
     private static final Map<Class<? extends Block>, IBlockConnectionHandler> connectionHandlers = new HashMap<>();
     private static final Map<Class<? extends Block>, IBlockConnectionHandler> lookupCache = new HashMap<>();

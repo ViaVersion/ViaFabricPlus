@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.connections;
 
-import com.viaversion.viafabricplus.features.block.connections.BlockConnectionsEmulation1_12_2;
+import com.viaversion.viafabricplus.features.block.connections.BlockConnectionsEmulation;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
@@ -43,7 +43,7 @@ public abstract class MixinClientChunkCache {
 
     @Inject(method = "updateLevelChunk", at = @At("TAIL"))
     private void updateBlockConnections(int chunkX, int chunkZ, ClientboundLevelChunkPacketData clientboundLevelChunkPacketData, CallbackInfo ci) {
-        BlockConnectionsEmulation1_12_2.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
+        BlockConnectionsEmulation.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
     }
 
     @Inject(method = "handleBlockUpdate", at = @At("TAIL"))
@@ -51,14 +51,14 @@ public abstract class MixinClientChunkCache {
         final BlockPos blockPos = clientboundBlockUpdatePacket.getPos();
         final int chunkX = SectionPos.blockToSectionCoord(blockPos.getX());
         final int chunkZ = SectionPos.blockToSectionCoord(blockPos.getZ());
-        BlockConnectionsEmulation1_12_2.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
+        BlockConnectionsEmulation.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
     }
 
     @Inject(method = "handleLightUpdatePacket", at = @At("TAIL"))
     private void updateBlockConnections(ClientboundLightUpdatePacket clientboundLightUpdatePacket, CallbackInfo ci) {
         final int chunkX = clientboundLightUpdatePacket.getX();
         final int chunkZ = clientboundLightUpdatePacket.getZ();
-        BlockConnectionsEmulation1_12_2.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
+        BlockConnectionsEmulation.updateChunkConnections(this.level, this.level.getChunk(chunkX, chunkZ));
     }
 
 }
