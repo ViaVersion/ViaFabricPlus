@@ -26,7 +26,6 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
@@ -76,21 +75,17 @@ public final class BlockConnectionsEmulation {
 
     public static void updateChunkConnections(final LevelReader levelReader, final int chunkX, final int chunkZ) {
         if (!isApplicable() || !levelReader.hasChunk(chunkX, chunkZ)) return;
-
         final ChunkAccess chunkAccess = levelReader.getChunk(chunkX, chunkZ);
-
-        final ChunkPos chunkPos = chunkAccess.getPos();
         final BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         for (int x = -1; x <= 16; ++x) {
             final boolean insideX = x >= 0 && x < 16;
             for (int sectionY = chunkAccess.getMinSectionY(); sectionY < chunkAccess.getMaxSectionY(); sectionY++) {
                 final LevelChunkSection section = chunkAccess.getSection(sectionY);
                 if (section.hasOnlyAir()) continue;
-
                 final int baseY = SectionPos.sectionToBlockCoord(sectionY);
                 for (int y = baseY; y < baseY + 16; y++) {
                     for (int z = -1; z <= 16; ++z) {
-                        blockPos.set(chunkPos.getMinBlockX() + x, y, chunkPos.getMinBlockZ() + z);
+                        blockPos.set(SectionPos.sectionToBlockCoord(chunkX) + x, y, SectionPos.sectionToBlockCoord(chunkZ) + z);
                         if (!levelReader.hasChunk(SectionPos.blockToSectionCoord(blockPos.getX()), SectionPos.blockToSectionCoord(blockPos.getZ()))) {
                             continue;
                         }
@@ -108,7 +103,6 @@ public final class BlockConnectionsEmulation {
                     }
                 }
             }
-
         }
     }
 

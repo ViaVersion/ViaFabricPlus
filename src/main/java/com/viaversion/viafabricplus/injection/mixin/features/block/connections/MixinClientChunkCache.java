@@ -28,7 +28,6 @@ import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockEventPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
-import net.minecraft.network.protocol.game.ClientboundLightUpdatePacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -59,11 +58,6 @@ public abstract class MixinClientChunkCache {
     @Inject(method = "handleBlockDestruction", at = @At("TAIL"))
     private void updateBlockConnections(ClientboundBlockDestructionPacket clientboundBlockDestructionPacket, CallbackInfo ci) {
         BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, clientboundBlockDestructionPacket.getPos());
-    }
-
-    @Inject(method = "handleLightUpdatePacket", at = @At("TAIL"))
-    private void updateBlockConnections(ClientboundLightUpdatePacket clientboundLightUpdatePacket, CallbackInfo ci) {
-        BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, clientboundLightUpdatePacket.getX(), clientboundLightUpdatePacket.getZ());
     }
 
 }

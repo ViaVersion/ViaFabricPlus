@@ -45,12 +45,10 @@ public final class DoubleChestConnectionHandler implements IBlockConnectionHandl
         for (final Direction direction : Direction.Plane.HORIZONTAL) {
             final BlockState neighborState = blockGetter.getBlockState(blockPos.relative(direction));
             if (neighborState.is(blockState.getBlock()) && neighborState.getValue(ChestBlock.FACING).equals(facing)) {
-                if (direction == facing.getCounterClockWise()) {
-                    return ChestType.RIGHT;
-                }
-
                 if (direction == facing.getClockWise()) {
                     return ChestType.LEFT;
+                } else if (direction == facing.getCounterClockWise()) {
+                    return ChestType.RIGHT;
                 }
             }
         }
