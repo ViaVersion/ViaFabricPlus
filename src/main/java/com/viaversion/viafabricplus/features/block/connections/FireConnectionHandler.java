@@ -36,13 +36,13 @@ public final class FireConnectionHandler implements IBlockConnectionHandler {
         // TODO: Double check is `isSolidRender` is the same as `isFullBlock`
         final boolean canBurn = !blockGetter.getBlockState(blockPos.below()).isSolidRender() && !((FireBlock) Blocks.FIRE).canBurn(blockGetter.getBlockState(blockPos.below()));
         if (canBurn) {
-            return fireBlock.defaultBlockState().setValue(FireBlock.NORTH, fireBlock.canBurn(blockGetter.getBlockState(blockPos.north())))
+            return blockState.setValue(FireBlock.NORTH, fireBlock.canBurn(blockGetter.getBlockState(blockPos.north())))
                 .setValue(FireBlock.EAST, fireBlock.canBurn(blockGetter.getBlockState(blockPos.east())))
                 .setValue(FireBlock.SOUTH, fireBlock.canBurn(blockGetter.getBlockState(blockPos.south())))
                 .setValue(FireBlock.WEST, fireBlock.canBurn(blockGetter.getBlockState(blockPos.west())))
                 .setValue(FireBlock.UP, fireBlock.canBurn(blockGetter.getBlockState(blockPos.above())));
         }
 
-        return fireBlock.defaultBlockState();
+        return blockState;
     }
 }

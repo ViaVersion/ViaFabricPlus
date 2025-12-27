@@ -44,7 +44,7 @@ public final class BarsConnectionHandler implements IBlockConnectionHandler {
         final BlockPos eastPos = blockPos.east();
         final BlockState eastState = blockGetter.getBlockState(eastPos);
 
-        return ironBarsBlock.defaultBlockState()
+        return blockState
             .setValue(IronBarsBlock.NORTH, ironBarsBlock.attachsTo(northState, northState.isFaceSturdy(blockGetter, northPos, Direction.SOUTH)))
             .setValue(IronBarsBlock.SOUTH, ironBarsBlock.attachsTo(southState, southState.isFaceSturdy(blockGetter, southPos, Direction.NORTH)))
             .setValue(IronBarsBlock.WEST, ironBarsBlock.attachsTo(westState, westState.isFaceSturdy(blockGetter, westPos, Direction.EAST)))

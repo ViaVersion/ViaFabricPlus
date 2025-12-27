@@ -23,11 +23,9 @@ package com.viaversion.viafabricplus.features.block.connections;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.util.HashMap;
-import java.util.Map;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -43,13 +41,19 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * TODO/FIX:
+ *  inaccuracies if any (bedrock most likely)
+ */
 public final class BlockConnectionsEmulation {
 
-    private static final Map<Class<? extends Block>, IBlockConnectionHandler> connectionHandlers = new HashMap<>();
-    private static final Map<Class<? extends Block>, IBlockConnectionHandler> lookupCache = new HashMap<>();
+    private static final int UPDATE_FLAGS = 18;
+    private static final Object2ObjectOpenHashMap<Class<? extends Block>, IBlockConnectionHandler> connectionHandlers = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectOpenHashMap<Class<? extends Block>, IBlockConnectionHandler> lookupCache = new Object2ObjectOpenHashMap<>();
 
     public static void init() {
         connectionHandlers.put(SnowyDirtBlock.class, new SnowyGrassConnectionHandler());
@@ -68,56 +72,66 @@ public final class BlockConnectionsEmulation {
         return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest);
     }
 
-    public static void updateChunkConnections(final LevelReader levelReader, final ChunkAccess chunkAccess) {
-        if (!isApplicable()) return;
+    public static void updateChunkConnections(final LevelReader levelReader, final int chunkX, final int chunkZ) {
+        if (!isApplicable() || !levelReader.hasChunk(chunkX, chunkZ)) return;
 
-        final int minY = chunkAccess.getMinY();
-        final int maxY = chunkAccess.getMaxY();
-        if (chunkAccess.isYSpaceEmpty(minY, maxY)) return;
+        final ChunkAccess chunkAccess = levelReader.getChunk(chunkX, chunkZ);
 
         final ChunkPos chunkPos = chunkAccess.getPos();
         final BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
-        for (int x = 0; x < 16; ++x) {
-            for (int y = minY; y < maxY; ++y) {
-                for (int z = 0; z < 16; ++z) {
-                    blockPos.set(chunkPos.getBlockX(x), y, chunkPos.getBlockZ(z));
+        for (int x = -1; x <= 16; ++x) {
+            final boolean insideX = x >= 0 && x < 16;
+            for (int sectionY = chunkAccess.getMinSectionY(); sectionY < chunkAccess.getMaxSectionY(); sectionY++) {
+                final LevelChunkSection section = chunkAccess.getSection(sectionY);
+                if (section.hasOnlyAir()) continue;
 
-                    final BlockState blockState = chunkAccess.getBlockState(blockPos);
-                    if (blockState.isAir()) continue;
+                final int baseY = SectionPos.sectionToBlockCoord(sectionY);
+                for (int y = baseY; y < baseY + 16; y++) {
+                    for (int z = -1; z <= 16; ++z) {
+                        blockPos.set(chunkPos.getMinBlockX() + x, y, chunkPos.getMinBlockZ() + z);
+                        if (!levelReader.hasChunk(SectionPos.blockToSectionCoord(blockPos.getX()), SectionPos.blockToSectionCoord(blockPos.getZ()))) {
+                            continue;
+                        }
 
-                    final BlockState newState = connect(blockState, levelReader, blockPos);
-                    if (newState != null) {
-                        chunkAccess.setBlockState(blockPos, newState, 18);
+                        final BlockState blockState = levelReader.getBlockState(blockPos);
+                        if (blockState.isAir()) continue;
+
+                        final IBlockConnectionHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
+                        if (connectionHandler == null) continue;
+
+                        final BlockState newState = connectionHandler.connect(blockState, levelReader, blockPos);
+                        if (newState != blockState && insideX && z >= 0 && z < 16) {
+                            chunkAccess.setBlockState(blockPos, newState, UPDATE_FLAGS);
+                        }
                     }
                 }
             }
+
         }
     }
 
-    public static void updateChunkConnections(final LevelReader levelReader, final int chunkX, final int chunkZ) {
-        updateChunkConnections(levelReader, levelReader.getChunk(chunkX, chunkZ));
+    public static void updateChunkNeighborConnections(final LevelReader levelReader, final int chunkX, final int chunkZ) {
+        updateChunkConnections(levelReader, chunkX, chunkZ);
+        updateChunkConnections(levelReader, chunkX + 1, chunkZ);
+        updateChunkConnections(levelReader, chunkX - 1, chunkZ);
+        updateChunkConnections(levelReader, chunkX, chunkZ + 1);
+        updateChunkConnections(levelReader, chunkX, chunkZ - 1);
     }
 
-    public static void updateChunkConnections(final LevelReader levelReader, final BlockPos blockPos) {
-        updateChunkConnections(levelReader, SectionPos.blockToSectionCoord(blockPos.getX()), SectionPos.blockToSectionCoord(blockPos.getZ()));
-    }
-
-    public static @Nullable BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
-        if (!isApplicable()) return null;
-
-        final IBlockConnectionHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
-        if (connectionHandler == null) return null;
-
-        final BlockState newState = connectionHandler.connect(blockState, blockGetter, blockPos);
-        return newState != blockState ? newState : null;
+    public static void updateChunkNeighborConnections(final LevelReader levelReader, final BlockPos blockPos) {
+        updateChunkNeighborConnections(levelReader, SectionPos.blockToSectionCoord(blockPos.getX()), SectionPos.blockToSectionCoord(blockPos.getZ()));
     }
 
     private static @Nullable IBlockConnectionHandler getConnectionHandler(final Class<? extends Block> blockClass) {
         return lookupCache.computeIfAbsent(blockClass, clazz -> {
-            for (final Map.Entry<Class<? extends Block>, IBlockConnectionHandler> entry : connectionHandlers.entrySet()) {
-                if (entry.getKey().isAssignableFrom(clazz)) {
-                    return entry.getValue();
+            Class<?> current = (Class<?>) clazz;
+            while (current != Block.class && current != null) {
+                final IBlockConnectionHandler handler = connectionHandlers.get(current);
+                if (handler != null) {
+                    return handler;
                 }
+
+                current = current.getSuperclass();
             }
 
             return null;

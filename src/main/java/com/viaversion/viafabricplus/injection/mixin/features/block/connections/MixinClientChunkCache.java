@@ -41,17 +41,17 @@ public abstract class MixinClientChunkCache {
 
     @Inject(method = "updateLevelChunk", at = @At("TAIL"))
     private void updateBlockConnections(int chunkX, int chunkZ, ClientboundLevelChunkPacketData clientboundLevelChunkPacketData, CallbackInfo ci) {
-        BlockConnectionsEmulation.updateChunkConnections(this.level, chunkX, chunkZ);
+        BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, chunkX, chunkZ);
     }
 
     @Inject(method = "handleBlockUpdate", at = @At("TAIL"))
     private void updateBlockConnections(ClientboundBlockUpdatePacket clientboundBlockUpdatePacket, CallbackInfo ci) {
-        BlockConnectionsEmulation.updateChunkConnections(this.level, clientboundBlockUpdatePacket.getPos());
+        BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, clientboundBlockUpdatePacket.getPos());
     }
 
     @Inject(method = "handleLightUpdatePacket", at = @At("TAIL"))
     private void updateBlockConnections(ClientboundLightUpdatePacket clientboundLightUpdatePacket, CallbackInfo ci) {
-        BlockConnectionsEmulation.updateChunkConnections(this.level, clientboundLightUpdatePacket.getX(), clientboundLightUpdatePacket.getZ());
+        BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, clientboundLightUpdatePacket.getX(), clientboundLightUpdatePacket.getZ());
     }
 
 }
