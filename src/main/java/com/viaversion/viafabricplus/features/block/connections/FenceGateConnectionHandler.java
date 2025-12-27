@@ -22,14 +22,28 @@
 package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
+// Code sourced and adapted from 1.12.2 (Feather)
 public final class FenceGateConnectionHandler implements IBlockConnectionHandler {
 
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
-        return blockState; // TODO (Wall | gate | wall)
+        final Direction.Axis axis = blockState.getValue(FenceGateBlock.FACING).getAxis();
+        final BlockState westState = blockGetter.getBlockState(blockPos.west());
+        final BlockState eastState = blockGetter.getBlockState(blockPos.east());
+        final BlockState northState = blockGetter.getBlockState(blockPos.north());
+        final BlockState southState = blockGetter.getBlockState(blockPos.south());
+        if (axis == Direction.Axis.Z && (westState.is(Blocks.COBBLESTONE_WALL) || eastState.is(Blocks.COBBLESTONE_WALL))
+            || axis == Direction.Axis.X && (northState.is(Blocks.COBBLESTONE_WALL) || southState.is(Blocks.COBBLESTONE_WALL))) {
+            return blockState.setValue(FenceGateBlock.IN_WALL, true);
+        } else {
+            return blockState;
+        }
     }
 
 }
