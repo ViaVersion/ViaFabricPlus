@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.PipeBlock;
@@ -56,17 +57,17 @@ public final class BlockConnectionsEmulation {
     private static final Object2ObjectOpenHashMap<Class<? extends Block>, IBlockConnectionHandler> lookupCache = new Object2ObjectOpenHashMap<>();
 
     public static void init() {
-        connectionHandlers.put(SnowyDirtBlock.class, new SnowyGrassConnectionHandler());
-        connectionHandlers.put(FireBlock.class, new FireConnectionHandler());
-        connectionHandlers.put(StairBlock.class, new StairsConnectionHandler());
         connectionHandlers.put(IronBarsBlock.class, new BarsConnectionHandler());
-        connectionHandlers.put(RedStoneWireBlock.class, new RedStoneConnectionHandler());
-        connectionHandlers.put(FenceBlock.class, new FenceConnectionHandler());
-        connectionHandlers.put(WallBlock.class, new WallConnectionHandler());
         connectionHandlers.put(DoorBlock.class, new DoorConnectionHandler());
         connectionHandlers.put(ChestBlock.class, new DoubleChestConnectionHandler());
+        connectionHandlers.put(FenceBlock.class, new FenceConnectionHandler());
+        connectionHandlers.put(FenceGateBlock.class, new FenceGateConnectionHandler());
+        connectionHandlers.put(FireBlock.class, new FireConnectionHandler());
         connectionHandlers.put(PipeBlock.class, new PipeConnectionHandler());
-        // TODO: FenceGateBlock (WALL | fence gate | WALL)
+        connectionHandlers.put(RedStoneWireBlock.class, new RedStoneConnectionHandler());
+        connectionHandlers.put(SnowyDirtBlock.class, new SnowyGrassConnectionHandler());
+        connectionHandlers.put(StairBlock.class, new StairsConnectionHandler());
+        connectionHandlers.put(WallBlock.class, new WallConnectionHandler());
     }
 
     public static boolean isApplicable() {
@@ -75,6 +76,7 @@ public final class BlockConnectionsEmulation {
 
     public static void updateChunkConnections(final LevelReader levelReader, final int chunkX, final int chunkZ) {
         if (!isApplicable() || !levelReader.hasChunk(chunkX, chunkZ)) return;
+
         final ChunkAccess chunkAccess = levelReader.getChunk(chunkX, chunkZ);
         final BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         for (int x = -1; x <= 16; ++x) {
@@ -82,6 +84,7 @@ public final class BlockConnectionsEmulation {
             for (int sectionY = chunkAccess.getMinSectionY(); sectionY < chunkAccess.getMaxSectionY(); sectionY++) {
                 final LevelChunkSection section = chunkAccess.getSection(sectionY);
                 if (section.hasOnlyAir()) continue;
+
                 final int baseY = SectionPos.sectionToBlockCoord(sectionY);
                 for (int y = baseY; y < baseY + 16; y++) {
                     for (int z = -1; z <= 16; ++z) {
