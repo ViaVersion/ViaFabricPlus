@@ -22,12 +22,34 @@
 package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class WallConnectionHandler implements IBlockConnectionHandler {
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
-        return blockState; // TODO
+        final WallBlock wallBlock = (WallBlock) blockState.getBlock();
+
+        final BlockPos northPos = blockPos.north();
+        final BlockState northState = levelReader.getBlockState(northPos);
+        boolean connectsSouth = wallBlock.connectsTo(northState, northState.isFaceSturdy(levelReader, northPos, Direction.SOUTH), Direction.SOUTH);
+
+        final BlockPos eastPos = blockPos.east();
+        final BlockState eastState = levelReader.getBlockState(eastPos);
+        boolean connectsWest = wallBlock.connectsTo(eastState, eastState.isFaceSturdy(levelReader, eastPos, Direction.WEST), Direction.WEST);
+
+        final BlockPos southPos = blockPos.south();
+        final BlockState southState = levelReader.getBlockState(southPos);
+        boolean connectsNorth = wallBlock.connectsTo(southState, southState.isFaceSturdy(levelReader, southPos, Direction.NORTH), Direction.NORTH);
+
+        final BlockPos westPos = blockPos.west();
+        final BlockState westState = levelReader.getBlockState(westPos);
+        boolean connectsEast = wallBlock.connectsTo(westState, westState.isFaceSturdy(levelReader, westPos, Direction.EAST), Direction.EAST);
+
+        final BlockPos abovePos = blockPos.above();
+        final BlockState aboveState = levelReader.getBlockState(abovePos);
+        return wallBlock.updateShape(levelReader, wallBlock.defaultBlockState(), abovePos, aboveState, connectsSouth, connectsWest, connectsNorth, connectsEast);
     }
 }

@@ -83,7 +83,7 @@ public final class BlockConnectionsEmulation1_12_2 {
         }
     }
 
-    private static IBlockConnectionHandler getConnectionHandler(Class<? extends Block> blockClass) {
+    private static IBlockConnectionHandler getConnectionHandler(final Class<? extends Block> blockClass) {
         return lookupCache.computeIfAbsent(blockClass, clazz -> {
             for (final Map.Entry<Class<? extends Block>, IBlockConnectionHandler> entry : connectionHandlers.entrySet()) {
                 if (entry.getKey().isAssignableFrom(clazz)) {

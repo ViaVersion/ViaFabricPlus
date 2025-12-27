@@ -30,19 +30,24 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class BarsConnectionHandler implements IBlockConnectionHandler {
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
-        final IronBarsBlock block = (IronBarsBlock) blockState.getBlock();
+        final IronBarsBlock ironBarsBlock = (IronBarsBlock) blockState.getBlock();
+
         final BlockPos northPos = blockPos.north();
-        final BlockPos southPos = blockPos.south();
-        final BlockPos westPos = blockPos.west();
-        final BlockPos eastPos = blockPos.east();
         final BlockState northState = levelReader.getBlockState(northPos);
+
+        final BlockPos southPos = blockPos.south();
         final BlockState southState = levelReader.getBlockState(southPos);
+
+        final BlockPos westPos = blockPos.west();
         final BlockState westState = levelReader.getBlockState(westPos);
+
+        final BlockPos eastPos = blockPos.east();
         final BlockState eastState = levelReader.getBlockState(eastPos);
-        return block.defaultBlockState()
-            .setValue(IronBarsBlock.NORTH, block.attachsTo(northState, northState.isFaceSturdy(levelReader, northPos, Direction.SOUTH)))
-            .setValue(IronBarsBlock.SOUTH, block.attachsTo(southState, southState.isFaceSturdy(levelReader, southPos, Direction.NORTH)))
-            .setValue(IronBarsBlock.WEST, block.attachsTo(westState, westState.isFaceSturdy(levelReader, westPos, Direction.EAST)))
-            .setValue(IronBarsBlock.EAST, block.attachsTo(eastState, eastState.isFaceSturdy(levelReader, eastPos, Direction.WEST)));
+
+        return ironBarsBlock.defaultBlockState()
+            .setValue(IronBarsBlock.NORTH, ironBarsBlock.attachsTo(northState, northState.isFaceSturdy(levelReader, northPos, Direction.SOUTH)))
+            .setValue(IronBarsBlock.SOUTH, ironBarsBlock.attachsTo(southState, southState.isFaceSturdy(levelReader, southPos, Direction.NORTH)))
+            .setValue(IronBarsBlock.WEST, ironBarsBlock.attachsTo(westState, westState.isFaceSturdy(levelReader, westPos, Direction.EAST)))
+            .setValue(IronBarsBlock.EAST, ironBarsBlock.attachsTo(eastState, eastState.isFaceSturdy(levelReader, eastPos, Direction.WEST)));
     }
 }
