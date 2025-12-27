@@ -71,12 +71,14 @@ public final class BlockConnectionsEmulation {
     public static void updateChunkConnections(final LevelReader levelReader, final ChunkAccess chunkAccess) {
         if (!isApplicable()) return;
 
-        final ChunkPos chunkPos = chunkAccess.getPos();
-        if (chunkAccess.isYSpaceEmpty(0, 256)) return;
+        final int minY = chunkAccess.getMinY();
+        final int maxY = chunkAccess.getMaxY();
+        if (chunkAccess.isYSpaceEmpty(minY, maxY)) return;
 
+        final ChunkPos chunkPos = chunkAccess.getPos();
         final BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         for (int x = 0; x < 16; ++x) {
-            for (int y = 0; y < 256; ++y) {
+            for (int y = minY; y < maxY; ++y) {
                 for (int z = 0; z < 16; ++z) {
                     blockPos.set(chunkPos.getBlockX(x), y, chunkPos.getBlockZ(z));
 
