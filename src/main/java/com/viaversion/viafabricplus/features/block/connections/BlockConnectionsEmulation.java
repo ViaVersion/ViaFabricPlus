@@ -30,11 +30,11 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.ChorusPlantBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -47,6 +47,7 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * TODO/FIX:
+ *  visual artifacts (collision/hitbox is correct, but visually the connection is wrong)
  *  inaccuracies if any (bedrock most likely)
  */
 public final class BlockConnectionsEmulation {
@@ -65,7 +66,7 @@ public final class BlockConnectionsEmulation {
         connectionHandlers.put(WallBlock.class, new WallConnectionHandler());
         connectionHandlers.put(DoorBlock.class, new DoorConnectionHandler());
         connectionHandlers.put(ChestBlock.class, new DoubleChestConnectionHandler());
-        connectionHandlers.put(ChorusPlantBlock.class, new ChorusPlantConnectionHandler());
+        connectionHandlers.put(PipeBlock.class, new PipeConnectionHandler());
     }
 
     public static boolean isApplicable() {
@@ -137,4 +138,5 @@ public final class BlockConnectionsEmulation {
             return null;
         });
     }
+
 }

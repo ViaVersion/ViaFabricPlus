@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class BarsConnectionHandler implements IBlockConnectionHandler {
+
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         final IronBarsBlock ironBarsBlock = (IronBarsBlock) blockState.getBlock();
@@ -50,4 +51,5 @@ public final class BarsConnectionHandler implements IBlockConnectionHandler {
             .setValue(IronBarsBlock.WEST, ironBarsBlock.attachsTo(westState, westState.isFaceSturdy(blockGetter, westPos, Direction.EAST)))
             .setValue(IronBarsBlock.EAST, ironBarsBlock.attachsTo(eastState, eastState.isFaceSturdy(blockGetter, eastPos, Direction.WEST)));
     }
+
 }

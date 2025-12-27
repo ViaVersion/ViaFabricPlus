@@ -24,6 +24,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.connections;
 import com.viaversion.viafabricplus.features.block.connections.BlockConnectionsEmulation;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEventPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
 import net.minecraft.network.protocol.game.ClientboundLightUpdatePacket;
@@ -47,6 +49,16 @@ public abstract class MixinClientChunkCache {
     @Inject(method = "handleBlockUpdate", at = @At("TAIL"))
     private void updateBlockConnections(ClientboundBlockUpdatePacket clientboundBlockUpdatePacket, CallbackInfo ci) {
         BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, clientboundBlockUpdatePacket.getPos());
+    }
+
+    @Inject(method = "handleBlockEvent", at = @At("TAIL"))
+    private void updateBlockConnections(ClientboundBlockEventPacket clientboundBlockEventPacket, CallbackInfo ci) {
+        BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, clientboundBlockEventPacket.getPos());
+    }
+
+    @Inject(method = "handleBlockDestruction", at = @At("TAIL"))
+    private void updateBlockConnections(ClientboundBlockDestructionPacket clientboundBlockDestructionPacket, CallbackInfo ci) {
+        BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, clientboundBlockDestructionPacket.getPos());
     }
 
     @Inject(method = "handleLightUpdatePacket", at = @At("TAIL"))

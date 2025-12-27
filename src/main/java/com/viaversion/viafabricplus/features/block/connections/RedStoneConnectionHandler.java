@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class RedStoneConnectionHandler implements IBlockConnectionHandler {
+
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         final RedStoneWireBlock redStoneWireBlock = (RedStoneWireBlock) blockState.getBlock();
@@ -36,4 +37,5 @@ public final class RedStoneConnectionHandler implements IBlockConnectionHandler 
             .setValue(RedStoneWireBlock.NORTH, redStoneWireBlock.getConnectingSide(blockGetter, blockPos, Direction.NORTH))
             .setValue(RedStoneWireBlock.SOUTH, redStoneWireBlock.getConnectingSide(blockGetter, blockPos, Direction.SOUTH));
     }
+
 }

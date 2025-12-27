@@ -28,8 +28,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 // Code sourced and adapted from 1.12.2 (Feather)
 public final class StairsConnectionHandler implements IBlockConnectionHandler {
+
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         return blockState.setValue(StairBlock.SHAPE, StairBlock.getStairsShape(blockState, blockGetter, blockPos));
     }
+
 }

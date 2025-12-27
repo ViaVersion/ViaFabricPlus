@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 // Code sourced and adapted from 1.12.2 (Feather)
 public final class DoorConnectionHandler implements IBlockConnectionHandler {
+
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         final DoorBlock doorBlock = (DoorBlock) blockState.getBlock();
@@ -53,4 +54,5 @@ public final class DoorConnectionHandler implements IBlockConnectionHandler {
 
         return newState;
     }
+
 }

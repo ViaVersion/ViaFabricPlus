@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WallSide;
 
 public final class WallConnectionHandler implements IBlockConnectionHandler {
+
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         final boolean north = connectsTo(blockGetter, blockPos.north(), Direction.NORTH);
@@ -55,6 +56,7 @@ public final class WallConnectionHandler implements IBlockConnectionHandler {
 
         final Block block = neighbor.getBlock();
         if (block instanceof StairBlock) {
+            // TODO: Sometimes isn't right
             return neighbor.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
         }
 
@@ -72,4 +74,5 @@ public final class WallConnectionHandler implements IBlockConnectionHandler {
     private WallSide getWallSide(final boolean value) {
         return value ? WallSide.LOW : WallSide.NONE;
     }
+
 }

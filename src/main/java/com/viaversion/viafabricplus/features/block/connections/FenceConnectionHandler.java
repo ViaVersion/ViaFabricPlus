@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class FenceConnectionHandler implements IBlockConnectionHandler {
+
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         return blockState
@@ -49,6 +50,7 @@ public final class FenceConnectionHandler implements IBlockConnectionHandler {
 
         final Block block = neighbor.getBlock();
         if (block instanceof StairBlock) {
+            // TODO: Sometimes isn't right
             return neighbor.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
         }
 
@@ -63,4 +65,5 @@ public final class FenceConnectionHandler implements IBlockConnectionHandler {
             || block == Blocks.CARVED_PUMPKIN
             || block == Blocks.JACK_O_LANTERN;
     }
+
 }

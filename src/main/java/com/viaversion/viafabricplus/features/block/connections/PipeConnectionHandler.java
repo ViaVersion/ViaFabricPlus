@@ -29,21 +29,23 @@ import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 // Code sourced and adapted from 1.12.2 (Feather)
-public final class ChorusPlantConnectionHandler implements IBlockConnectionHandler {
+public final class PipeConnectionHandler implements IBlockConnectionHandler {
+
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         final Block block = blockState.getBlock();
-        final Block belowBlock = blockGetter.getBlockState(blockPos.below()).getBlock();
-        final Block aboveBlock = blockGetter.getBlockState(blockPos.above()).getBlock();
-        final Block northBlock = blockGetter.getBlockState(blockPos.north()).getBlock();
-        final Block eastBlock = blockGetter.getBlockState(blockPos.east()).getBlock();
-        final Block southBlock = blockGetter.getBlockState(blockPos.south()).getBlock();
-        final Block westBlock = blockGetter.getBlockState(blockPos.west()).getBlock();
-        return blockState.setValue(PipeBlock.DOWN, belowBlock == block || belowBlock == Blocks.CHORUS_FLOWER || belowBlock == Blocks.END_STONE)
-            .setValue(PipeBlock.UP, aboveBlock == block || aboveBlock == Blocks.CHORUS_FLOWER)
-            .setValue(PipeBlock.NORTH, northBlock == block || northBlock == Blocks.CHORUS_FLOWER)
-            .setValue(PipeBlock.EAST, eastBlock == block || eastBlock == Blocks.CHORUS_FLOWER)
-            .setValue(PipeBlock.SOUTH, southBlock == block || southBlock == Blocks.CHORUS_FLOWER)
-            .setValue(PipeBlock.WEST, westBlock == block || westBlock == Blocks.CHORUS_FLOWER);
+        final BlockState belowState = blockGetter.getBlockState(blockPos.below());
+        final BlockState aboveState = blockGetter.getBlockState(blockPos.above());
+        final BlockState northState = blockGetter.getBlockState(blockPos.north());
+        final BlockState eastState = blockGetter.getBlockState(blockPos.east());
+        final BlockState southState = blockGetter.getBlockState(blockPos.south());
+        final BlockState westState = blockGetter.getBlockState(blockPos.west());
+        return blockState.setValue(PipeBlock.DOWN, belowState.is(block) || belowState.is(Blocks.CHORUS_FLOWER) || belowState.is(Blocks.END_STONE))
+            .setValue(PipeBlock.UP, aboveState.is(block) || aboveState.is(Blocks.CHORUS_FLOWER))
+            .setValue(PipeBlock.NORTH, northState.is(block) || northState.is(Blocks.CHORUS_FLOWER))
+            .setValue(PipeBlock.EAST, eastState.is(block) || eastState.is(Blocks.CHORUS_FLOWER))
+            .setValue(PipeBlock.SOUTH, southState.is(block) || southState.is(Blocks.CHORUS_FLOWER))
+            .setValue(PipeBlock.WEST, westState.is(block) || westState.is(Blocks.CHORUS_FLOWER));
     }
+
 }
