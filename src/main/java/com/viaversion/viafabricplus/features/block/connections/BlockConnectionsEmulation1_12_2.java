@@ -26,7 +26,6 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -71,16 +70,21 @@ public final class BlockConnectionsEmulation1_12_2 {
                     final BlockState blockState = chunkAccess.getBlockState(blockPos);
                     if (blockState.isAir()) continue;
 
-                    final IBlockConnectionHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
-                    if (connectionHandler == null) continue;
-
-                    final BlockState newState = connectionHandler.connect(blockState, levelReader, blockPos);
-                    if (newState != blockState) {
+                    final BlockState newState = connect(blockState, levelReader, blockPos);
+                    if (newState != null) {
                         chunkAccess.setBlockState(blockPos, newState, 18);
                     }
                 }
             }
         }
+    }
+
+    public static BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
+        final IBlockConnectionHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
+        if (connectionHandler == null) return null;
+
+        final BlockState newState = connectionHandler.connect(blockState, levelReader, blockPos);
+        return newState != blockState ? newState : null;
     }
 
     private static IBlockConnectionHandler getConnectionHandler(final Class<? extends Block> blockClass) {
