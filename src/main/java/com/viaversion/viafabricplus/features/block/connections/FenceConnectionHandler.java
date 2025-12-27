@@ -25,6 +25,7 @@ import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -36,10 +37,10 @@ public final class FenceConnectionHandler implements IBlockConnectionHandler {
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         final FenceBlock fenceBlock = (FenceBlock) blockState.getBlock();
-        final boolean connectsSouth = shouldConnectTo(fenceBlock, levelReader, blockPos.north(), Direction.SOUTH);
-        final boolean connectsWest = shouldConnectTo(fenceBlock, levelReader, blockPos.east(), Direction.WEST);
-        final boolean connectsNorth = shouldConnectTo(fenceBlock, levelReader, blockPos.south(), Direction.NORTH);
-        final boolean connectsEast = shouldConnectTo(fenceBlock, levelReader, blockPos.west(), Direction.EAST);
+        final boolean connectsSouth = connectsTo(fenceBlock, levelReader, blockPos.north(), Direction.SOUTH);
+        final boolean connectsWest = connectsTo(fenceBlock, levelReader, blockPos.east(), Direction.WEST);
+        final boolean connectsNorth = connectsTo(fenceBlock, levelReader, blockPos.south(), Direction.NORTH);
+        final boolean connectsEast = connectsTo(fenceBlock, levelReader, blockPos.west(), Direction.EAST);
         return fenceBlock.defaultBlockState()
             .setValue(FenceBlock.NORTH, connectsSouth)
             .setValue(FenceBlock.EAST, connectsWest)
@@ -47,14 +48,15 @@ public final class FenceConnectionHandler implements IBlockConnectionHandler {
             .setValue(FenceBlock.WEST, connectsEast);
     }
 
-    private boolean shouldConnectTo(final FenceBlock fenceBlock, final LevelReader levelReader, final BlockPos blockPos, final Direction direction) {
-        final BlockState blockState = levelReader.getBlockState(blockPos);
+    private boolean connectsTo(final FenceBlock fenceBlock, final BlockGetter blockGetter, final BlockPos blockPos, final Direction direction) {
+        final BlockState blockState = blockGetter.getBlockState(blockPos);
         final Block block = blockState.getBlock();
-        final boolean same = /*middlePole && */ (fenceBlock.isSameFence(blockState) || blockState.is(BlockTags.FENCE_GATES));
-        return !shouldConnectTo(block) && blockState.isSolidRender() || same;
+        // TODO: Figure out modern code
+        final boolean same = /*faceShape == FaceShape.MIDDLE_POLE && */ (fenceBlock.isSameFence(blockState) || blockState.is(BlockTags.FENCE_GATES));
+        return !connectsTo(block) && blockState.isSolidRender() || same;
     }
 
-    private boolean shouldConnectTo(final Block block) {
+    private boolean connectsTo(final Block block) {
         return Block1_14.isExceptBlockForAttachWithPiston(block)
             || block == Blocks.BARRIER
             || block == Blocks.MELON

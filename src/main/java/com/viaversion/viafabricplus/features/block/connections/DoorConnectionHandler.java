@@ -31,16 +31,15 @@ public final class DoorConnectionHandler implements IBlockConnectionHandler {
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         final DoorBlock doorBlock = (DoorBlock) blockState.getBlock();
-        if (blockState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
-            final BlockState halfState = levelReader.getBlockState(blockPos.above());
-            if (halfState.getBlock() == doorBlock) {
+
+        final boolean lowerHalf = blockState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER;
+        final BlockState halfState = levelReader.getBlockState(lowerHalf ? blockPos.above() : blockPos.below());
+        if (halfState.getBlock() == doorBlock) {
+            if (lowerHalf) {
                 return blockState
                     .setValue(DoorBlock.HINGE, halfState.getValue(DoorBlock.HINGE))
                     .setValue(DoorBlock.POWERED, halfState.getValue(DoorBlock.POWERED));
-            }
-        } else {
-            final BlockState halfState = levelReader.getBlockState(blockPos.below());
-            if (halfState.getBlock() == doorBlock) {
+            } else {
                 return blockState
                     .setValue(DoorBlock.FACING, halfState.getValue(DoorBlock.FACING))
                     .setValue(DoorBlock.OPEN, halfState.getValue(DoorBlock.OPEN));

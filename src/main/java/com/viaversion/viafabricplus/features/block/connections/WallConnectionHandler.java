@@ -21,35 +21,52 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
+import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.WallSide;
 
 public final class WallConnectionHandler implements IBlockConnectionHandler {
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         final WallBlock wallBlock = (WallBlock) blockState.getBlock();
+        final boolean connectsSouth = this.connectsTo(levelReader, blockPos.north(), Direction.SOUTH);
+        final boolean connectsWest = this.connectsTo(levelReader, blockPos.east(), Direction.WEST);
+        final boolean connectsNorth = this.connectsTo(levelReader, blockPos.south(), Direction.NORTH);
+        final boolean connectsEast = this.connectsTo(levelReader, blockPos.west(), Direction.EAST);
+        final boolean down = connectsSouth && !connectsWest && connectsNorth && !connectsEast || !connectsSouth && connectsWest && !connectsNorth && connectsEast;
+        return wallBlock.defaultBlockState()
+            .setValue(WallBlock.UP, !down || !levelReader.getBlockState(blockPos.above()).isAir())
+            .setValue(WallBlock.NORTH, getWallSide(connectsSouth))
+            .setValue(WallBlock.EAST, getWallSide(connectsWest))
+            .setValue(WallBlock.SOUTH, getWallSide(connectsNorth))
+            .setValue(WallBlock.WEST, getWallSide(connectsEast));
+    }
 
-        final BlockPos northPos = blockPos.north();
-        final BlockState northState = levelReader.getBlockState(northPos);
-        boolean connectsSouth = wallBlock.connectsTo(northState, northState.isFaceSturdy(levelReader, northPos, Direction.SOUTH), Direction.SOUTH);
+    private boolean connectsTo(final BlockGetter blockGetter, final BlockPos blockPos, final Direction direction) {
+        final BlockState blockState = blockGetter.getBlockState(blockPos);
+        final Block block = blockState.getBlock();
+        // TODO: Figure out modern code
+        final boolean same = /*faceShape == FaceShape.MIDDLE_POLE_THICK || faceShape == FaceShape.MIDDLE_POLE &&*/ blockState.is(BlockTags.FENCE_GATES);
+        return !isExceptionForConnection(block) && blockState.isSolidRender() || same;
+    }
 
-        final BlockPos eastPos = blockPos.east();
-        final BlockState eastState = levelReader.getBlockState(eastPos);
-        boolean connectsWest = wallBlock.connectsTo(eastState, eastState.isFaceSturdy(levelReader, eastPos, Direction.WEST), Direction.WEST);
+    private boolean isExceptionForConnection(Block block) {
+        return Block1_14.isExceptBlockForAttachWithPiston(block)
+            || block == Blocks.BARRIER
+            || block == Blocks.MELON
+            || block == Blocks.PUMPKIN
+            || block == Blocks.CARVED_PUMPKIN;
+    }
 
-        final BlockPos southPos = blockPos.south();
-        final BlockState southState = levelReader.getBlockState(southPos);
-        boolean connectsNorth = wallBlock.connectsTo(southState, southState.isFaceSturdy(levelReader, southPos, Direction.NORTH), Direction.NORTH);
-
-        final BlockPos westPos = blockPos.west();
-        final BlockState westState = levelReader.getBlockState(westPos);
-        boolean connectsEast = wallBlock.connectsTo(westState, westState.isFaceSturdy(levelReader, westPos, Direction.EAST), Direction.EAST);
-
-        final BlockPos abovePos = blockPos.above();
-        final BlockState aboveState = levelReader.getBlockState(abovePos);
-        return wallBlock.updateShape(levelReader, wallBlock.defaultBlockState(), abovePos, aboveState, connectsSouth, connectsWest, connectsNorth, connectsEast);
+    private WallSide getWallSide(final boolean value) {
+        return value ? WallSide.LOW : WallSide.NONE; // TODO: Incorrect/fix
     }
 }
