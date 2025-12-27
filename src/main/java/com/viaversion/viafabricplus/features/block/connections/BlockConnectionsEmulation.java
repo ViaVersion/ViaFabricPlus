@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -69,7 +70,10 @@ public final class BlockConnectionsEmulation {
 
     public static void updateChunkConnections(final LevelReader levelReader, final ChunkAccess chunkAccess) {
         if (!isApplicable()) return;
+
         final ChunkPos chunkPos = chunkAccess.getPos();
+        if (chunkAccess.isYSpaceEmpty(0, 256)) return;
+
         final BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         for (int x = 0; x < 16; ++x) {
             for (int y = 0; y < 256; ++y) {
@@ -96,13 +100,13 @@ public final class BlockConnectionsEmulation {
         updateChunkConnections(levelReader, SectionPos.blockToSectionCoord(blockPos.getX()), SectionPos.blockToSectionCoord(blockPos.getZ()));
     }
 
-    public static @Nullable BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
+    public static @Nullable BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         if (!isApplicable()) return null;
 
         final IBlockConnectionHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
         if (connectionHandler == null) return null;
 
-        final BlockState newState = connectionHandler.connect(blockState, levelReader, blockPos);
+        final BlockState newState = connectionHandler.connect(blockState, blockGetter, blockPos);
         return newState != blockState ? newState : null;
     }
 
