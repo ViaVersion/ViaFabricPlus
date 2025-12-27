@@ -22,12 +22,32 @@
 package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class FenceConnectionHandler implements IBlockConnectionHandler {
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
-        return blockState; // TODO
+        final FenceBlock fenceBlock = (FenceBlock) blockState.getBlock();
+
+        final BlockPos northPos = blockPos.north();
+        final BlockState northState = levelReader.getBlockState(northPos);
+
+        final BlockPos eastPos = blockPos.east();
+        final BlockState eastState = levelReader.getBlockState(eastPos);
+
+        final BlockPos southPos = blockPos.south();
+        final BlockState southState = levelReader.getBlockState(southPos);
+
+        final BlockPos westPos = blockPos.west();
+        final BlockState westState = levelReader.getBlockState(westPos);
+
+        return fenceBlock.defaultBlockState()
+            .setValue(FenceBlock.NORTH, fenceBlock.connectsTo(northState, northState.isFaceSturdy(levelReader, northPos, Direction.SOUTH), Direction.SOUTH))
+            .setValue(FenceBlock.EAST, fenceBlock.connectsTo(eastState, eastState.isFaceSturdy(levelReader, eastPos, Direction.WEST), Direction.WEST))
+            .setValue(FenceBlock.SOUTH, fenceBlock.connectsTo(southState, southState.isFaceSturdy(levelReader, southPos, Direction.NORTH), Direction.NORTH))
+            .setValue(FenceBlock.WEST, fenceBlock.connectsTo(westState, westState.isFaceSturdy(levelReader, westPos, Direction.EAST), Direction.EAST));
     }
 }
