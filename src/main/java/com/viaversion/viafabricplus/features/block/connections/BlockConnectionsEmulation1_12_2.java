@@ -40,6 +40,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 
 public final class BlockConnectionsEmulation1_12_2 {
 
@@ -55,11 +56,11 @@ public final class BlockConnectionsEmulation1_12_2 {
         connectionHandlers.put(FenceBlock.class, new FenceConnectionHandler());
         connectionHandlers.put(WallBlock.class, new WallConnectionHandler());
         connectionHandlers.put(DoorBlock.class, new DoorConnectionHandler());
-        connectionHandlers.put(ChestBlock.class, new ChestConnectionHandler());
+        connectionHandlers.put(ChestBlock.class, new DoubleChestConnectionHandler());
     }
 
     public static void updateChunkConnections(final LevelReader levelReader, final ChunkAccess chunkAccess) {
-        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) return;
+        if (!isApplicable()) return;
         final ChunkPos chunkPos = chunkAccess.getPos();
         final BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         for (int x = 0; x < 16; ++x) {
@@ -80,6 +81,8 @@ public final class BlockConnectionsEmulation1_12_2 {
     }
 
     public static BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
+        if (!isApplicable()) return null;
+
         final IBlockConnectionHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
         if (connectionHandler == null) return null;
 
@@ -97,5 +100,9 @@ public final class BlockConnectionsEmulation1_12_2 {
 
             return null;
         });
+    }
+
+    private static boolean isApplicable() {
+        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest);
     }
 }

@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public final class ChestConnectionHandler implements IBlockConnectionHandler {
+public final class DoubleChestConnectionHandler implements IBlockConnectionHandler {
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         if (blockState.is(Blocks.ENDER_CHEST)) return blockState; // Ignore Ender-chests
