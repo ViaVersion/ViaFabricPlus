@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,17 +30,17 @@ import net.minecraft.world.level.block.state.BlockState;
 // Code sourced and adapted from 1.12.2 (Feather)
 public final class FireConnectionHandler implements IBlockConnectionHandler {
     @Override
-    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
+    public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         final FireBlock fireBlock = (FireBlock) blockState.getBlock();
 
         // TODO: Double check is `isSolidRender` is the same as `isFullBlock`
-        final boolean canBurn = !levelReader.getBlockState(blockPos.below()).isSolidRender() && !((FireBlock) Blocks.FIRE).canBurn(levelReader.getBlockState(blockPos.below()));
+        final boolean canBurn = !blockGetter.getBlockState(blockPos.below()).isSolidRender() && !((FireBlock) Blocks.FIRE).canBurn(blockGetter.getBlockState(blockPos.below()));
         if (canBurn) {
-            return fireBlock.defaultBlockState().setValue(FireBlock.NORTH, fireBlock.canBurn(levelReader.getBlockState(blockPos.north())))
-                .setValue(FireBlock.EAST, fireBlock.canBurn(levelReader.getBlockState(blockPos.east())))
-                .setValue(FireBlock.SOUTH, fireBlock.canBurn(levelReader.getBlockState(blockPos.south())))
-                .setValue(FireBlock.WEST, fireBlock.canBurn(levelReader.getBlockState(blockPos.west())))
-                .setValue(FireBlock.UP, fireBlock.canBurn(levelReader.getBlockState(blockPos.above())));
+            return fireBlock.defaultBlockState().setValue(FireBlock.NORTH, fireBlock.canBurn(blockGetter.getBlockState(blockPos.north())))
+                .setValue(FireBlock.EAST, fireBlock.canBurn(blockGetter.getBlockState(blockPos.east())))
+                .setValue(FireBlock.SOUTH, fireBlock.canBurn(blockGetter.getBlockState(blockPos.south())))
+                .setValue(FireBlock.WEST, fireBlock.canBurn(blockGetter.getBlockState(blockPos.west())))
+                .setValue(FireBlock.UP, fireBlock.canBurn(blockGetter.getBlockState(blockPos.above())));
         }
 
         return fireBlock.defaultBlockState();

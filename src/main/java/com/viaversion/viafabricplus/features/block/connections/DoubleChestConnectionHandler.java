@@ -22,14 +22,14 @@
 package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class DoubleChestConnectionHandler implements IBlockConnectionHandler {
     @Override
-    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
+    public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         if (blockState.is(Blocks.ENDER_CHEST)) return blockState; // Ignore Ender-chests
 
         final ChestBlock chestBlock = (ChestBlock) blockState.getBlock();

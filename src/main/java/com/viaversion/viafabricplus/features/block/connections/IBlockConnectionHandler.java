@@ -22,9 +22,9 @@
 package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface IBlockConnectionHandler {
-    BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos);
+    BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos);
 }

@@ -23,15 +23,15 @@ package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 // Code sourced and adapted from 1.12.2 (Feather)
 public final class SnowyGrassConnectionHandler implements IBlockConnectionHandler {
     @Override
-    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
-        final BlockState aboveState = levelReader.getBlockState(blockPos.above());
+    public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
+        final BlockState aboveState = blockGetter.getBlockState(blockPos.above());
         return blockState.setValue(SnowyDirtBlock.SNOWY, aboveState.is(BlockTags.SNOW));
     }
 }

@@ -25,7 +25,6 @@ import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlimeBlock;
@@ -36,12 +35,12 @@ import net.minecraft.world.level.block.state.properties.WallSide;
 
 public final class WallConnectionHandler implements IBlockConnectionHandler {
     @Override
-    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
-        final boolean north = connectsTo(levelReader, blockPos.north(), Direction.NORTH);
-        final boolean south = connectsTo(levelReader, blockPos.south(), Direction.SOUTH);
-        final boolean west = connectsTo(levelReader, blockPos.west(), Direction.WEST);
-        final boolean east = connectsTo(levelReader, blockPos.east(), Direction.EAST);
-        final boolean up = !(south && !west && north && !east || !south && west && !north && east) || !levelReader.getBlockState(blockPos.above()).isAir();
+    public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
+        final boolean north = connectsTo(blockGetter, blockPos.north(), Direction.NORTH);
+        final boolean south = connectsTo(blockGetter, blockPos.south(), Direction.SOUTH);
+        final boolean west = connectsTo(blockGetter, blockPos.west(), Direction.WEST);
+        final boolean east = connectsTo(blockGetter, blockPos.east(), Direction.EAST);
+        final boolean up = !(south && !west && north && !east || !south && west && !north && east) || !blockGetter.getBlockState(blockPos.above()).isAir();
         return blockState
             .setValue(WallBlock.UP, up)
             .setValue(WallBlock.NORTH, getWallSide(north))

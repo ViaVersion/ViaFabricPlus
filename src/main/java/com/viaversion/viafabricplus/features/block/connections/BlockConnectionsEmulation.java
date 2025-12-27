@@ -43,6 +43,7 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import org.jspecify.annotations.Nullable;
 
 public final class BlockConnectionsEmulation {
 
@@ -60,6 +61,10 @@ public final class BlockConnectionsEmulation {
         connectionHandlers.put(DoorBlock.class, new DoorConnectionHandler());
         connectionHandlers.put(ChestBlock.class, new DoubleChestConnectionHandler());
         connectionHandlers.put(ChorusPlantBlock.class, new ChorusPlantConnectionHandler());
+    }
+
+    public static boolean isApplicable() {
+        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest);
     }
 
     public static void updateChunkConnections(final LevelReader levelReader, final ChunkAccess chunkAccess) {
@@ -91,7 +96,7 @@ public final class BlockConnectionsEmulation {
         updateChunkConnections(levelReader, SectionPos.blockToSectionCoord(blockPos.getX()), SectionPos.blockToSectionCoord(blockPos.getZ()));
     }
 
-    public static BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
+    public static @Nullable BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         if (!isApplicable()) return null;
 
         final IBlockConnectionHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
@@ -101,7 +106,7 @@ public final class BlockConnectionsEmulation {
         return newState != blockState ? newState : null;
     }
 
-    private static IBlockConnectionHandler getConnectionHandler(final Class<? extends Block> blockClass) {
+    private static @Nullable IBlockConnectionHandler getConnectionHandler(final Class<? extends Block> blockClass) {
         return lookupCache.computeIfAbsent(blockClass, clazz -> {
             for (final Map.Entry<Class<? extends Block>, IBlockConnectionHandler> entry : connectionHandlers.entrySet()) {
                 if (entry.getKey().isAssignableFrom(clazz)) {
@@ -111,9 +116,5 @@ public final class BlockConnectionsEmulation {
 
             return null;
         });
-    }
-
-    private static boolean isApplicable() {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest);
     }
 }
