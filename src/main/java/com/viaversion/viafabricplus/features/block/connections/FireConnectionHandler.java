@@ -32,6 +32,7 @@ public final class FireConnectionHandler implements IBlockConnectionHandler {
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         final FireBlock fireBlock = (FireBlock) blockState.getBlock();
 
+        // TODO: Double check is `isSolidRender` is the same as `isFullBlock`
         final boolean canBurn = !levelReader.getBlockState(blockPos.below()).isSolidRender() && !((FireBlock) Blocks.FIRE).canBurn(levelReader.getBlockState(blockPos.below()));
         if (canBurn) {
             return fireBlock.defaultBlockState().setValue(FireBlock.NORTH, fireBlock.canBurn(levelReader.getBlockState(blockPos.north())))

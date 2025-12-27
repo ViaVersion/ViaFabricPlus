@@ -21,14 +21,12 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
-import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WallSide;
@@ -36,37 +34,49 @@ import net.minecraft.world.level.block.state.properties.WallSide;
 public final class WallConnectionHandler implements IBlockConnectionHandler {
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
-        final WallBlock wallBlock = (WallBlock) blockState.getBlock();
-        final boolean connectsSouth = this.connectsTo(levelReader, blockPos.north(), Direction.SOUTH);
-        final boolean connectsWest = this.connectsTo(levelReader, blockPos.east(), Direction.WEST);
-        final boolean connectsNorth = this.connectsTo(levelReader, blockPos.south(), Direction.NORTH);
-        final boolean connectsEast = this.connectsTo(levelReader, blockPos.west(), Direction.EAST);
-        final boolean down = connectsSouth && !connectsWest && connectsNorth && !connectsEast || !connectsSouth && connectsWest && !connectsNorth && connectsEast;
-        return wallBlock.defaultBlockState()
-            .setValue(WallBlock.UP, !down || !levelReader.getBlockState(blockPos.above()).isAir())
-            .setValue(WallBlock.NORTH, getWallSide(connectsSouth))
-            .setValue(WallBlock.EAST, getWallSide(connectsWest))
-            .setValue(WallBlock.SOUTH, getWallSide(connectsNorth))
-            .setValue(WallBlock.WEST, getWallSide(connectsEast));
+        final boolean north = connectsTo(levelReader, blockPos.north(), Direction.NORTH);
+        final boolean south = connectsTo(levelReader, blockPos.south(), Direction.SOUTH);
+        final boolean west = connectsTo(levelReader, blockPos.west(), Direction.WEST);
+        final boolean east = connectsTo(levelReader, blockPos.east(), Direction.EAST);
+        return blockState
+            .setValue(WallBlock.UP, hasUp(levelReader, blockPos, north, south, west, east))
+            .setValue(WallBlock.NORTH, getWallSide(north))
+            .setValue(WallBlock.SOUTH, getWallSide(south))
+            .setValue(WallBlock.WEST, getWallSide(west))
+            .setValue(WallBlock.EAST, getWallSide(east));
     }
 
+    // TODO: Fine-tune and make perfect/1:1
     private boolean connectsTo(final BlockGetter blockGetter, final BlockPos blockPos, final Direction direction) {
-        final BlockState blockState = blockGetter.getBlockState(blockPos);
-        final Block block = blockState.getBlock();
-        // TODO: Figure out modern code
-        final boolean same = /*faceShape == FaceShape.MIDDLE_POLE_THICK || faceShape == FaceShape.MIDDLE_POLE &&*/ blockState.is(BlockTags.FENCE_GATES);
-        return !isExceptionForConnection(block) && blockState.isSolidRender() || same;
+        final BlockState neighbor = blockGetter.getBlockState(blockPos);
+
+        final Block block = neighbor.getBlock();
+        if (block instanceof StairBlock) {
+            return neighbor.getValue(StairBlock.FACING) == direction.getOpposite();  // Only connect to the backside of stairs
+        }
+
+        return !neighbor.isAir() && (block instanceof WallBlock || neighbor.isSolidRender());
     }
 
-    private boolean isExceptionForConnection(Block block) {
-        return Block1_14.isExceptBlockForAttachWithPiston(block)
-            || block == Blocks.BARRIER
-            || block == Blocks.MELON
-            || block == Blocks.PUMPKIN
-            || block == Blocks.CARVED_PUMPKIN;
+    // TODO: Fine-tune and make perfect/1:1
+    private boolean hasUp(final LevelReader levelReader, final BlockPos blockPos, final boolean north, final boolean south, final boolean west, final boolean east) {
+        final BlockState aboveState = levelReader.getBlockState(blockPos.above());
+
+        int sides = 0;
+        if (north) sides++;
+        if (south) sides++;
+        if (west) sides++;
+        if (east) sides++;
+
+        final boolean isLShape = (north && east && !south && !west)
+            || (north && west && !south && !east)
+            || (south && east && !north && !west)
+            || (south && west && !north && !east);
+
+        return aboveState.isFaceSturdy(levelReader, blockPos.above(), Direction.DOWN) || isLShape || sides == 0 || sides == 1 || sides == 4;
     }
 
     private WallSide getWallSide(final boolean value) {
-        return value ? WallSide.LOW : WallSide.NONE; // TODO: Incorrect/fix
+        return value ? WallSide.LOW : WallSide.NONE;
     }
 }
