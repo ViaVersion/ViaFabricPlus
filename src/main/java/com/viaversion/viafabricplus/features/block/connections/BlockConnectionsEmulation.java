@@ -67,6 +67,7 @@ public final class BlockConnectionsEmulation {
         connectionHandlers.put(DoorBlock.class, new DoorConnectionHandler());
         connectionHandlers.put(ChestBlock.class, new DoubleChestConnectionHandler());
         connectionHandlers.put(PipeBlock.class, new PipeConnectionHandler());
+        // TODO: FenceGateBlock (WALL | fence gate | WALL)
     }
 
     public static boolean isApplicable() {
