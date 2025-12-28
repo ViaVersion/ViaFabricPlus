@@ -21,22 +21,16 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
-import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RepeaterBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public interface IBlockConnectionHandler {
-    BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos);
+public final class RedStoneRepeaterConnectionHandler implements IBlockConnectionHandler {
 
-    default boolean isExceptionForConnection(final BlockState blockState) {
-        return blockState.isAir()
-            || Block1_14.isExceptBlockForAttachWithPiston(blockState.getBlock())
-            || blockState.is(Blocks.MELON)
-            || blockState.is(Blocks.PUMPKIN)
-            || blockState.is(Blocks.CARVED_PUMPKIN)
-            || blockState.is(Blocks.JACK_O_LANTERN)
-            || blockState.is(Blocks.BARRIER);
+    @Override
+    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
+        return blockState.setValue(RepeaterBlock.LOCKED, ((RepeaterBlock) blockState.getBlock()).isLocked(levelReader, blockPos, blockState));
     }
+
 }

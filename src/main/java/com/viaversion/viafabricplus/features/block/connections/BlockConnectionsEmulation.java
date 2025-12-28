@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.RepeaterBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
@@ -65,6 +66,7 @@ public final class BlockConnectionsEmulation {
         connectionHandlers.put(IronBarsBlock.class, new PaneConnectionHandler());
         connectionHandlers.put(PipeBlock.class, new PipeConnectionHandler());
         connectionHandlers.put(RedStoneWireBlock.class, new RedStoneConnectionHandler());
+        connectionHandlers.put(RepeaterBlock.class, new RedStoneRepeaterConnectionHandler());
         connectionHandlers.put(SnowyDirtBlock.class, new SnowyGrassConnectionHandler());
         connectionHandlers.put(StairBlock.class, new StairsConnectionHandler());
         connectionHandlers.put(WallBlock.class, new WallConnectionHandler());

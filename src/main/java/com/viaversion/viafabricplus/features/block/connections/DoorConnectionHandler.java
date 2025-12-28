@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -32,9 +32,9 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 public final class DoorConnectionHandler implements IBlockConnectionHandler {
 
     @Override
-    public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
+    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         final boolean lowerHalf = blockState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER;
-        final BlockState halfState = blockGetter.getBlockState(lowerHalf ? blockPos.above() : blockPos.below());
+        final BlockState halfState = levelReader.getBlockState(lowerHalf ? blockPos.above() : blockPos.below());
         if (!halfState.is(blockState.getBlock())) return blockState; // Not the same type of door, ignore
 
         if (lowerHalf) {

@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus.features.block.connections;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,9 +33,9 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 public final class DoubleChestConnectionHandler implements IBlockConnectionHandler {
 
     @Override
-    public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
+    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         if (!blockState.is(Blocks.ENDER_CHEST)) { // Ignore Ender-chests
-            return blockState.setValue(ChestBlock.TYPE, getChestType(blockState, blockGetter, blockPos));
+            return blockState.setValue(ChestBlock.TYPE, getChestType(blockState, levelReader, blockPos));
         } else {
             return blockState;
         }

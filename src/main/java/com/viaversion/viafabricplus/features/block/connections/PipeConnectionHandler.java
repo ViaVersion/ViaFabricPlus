@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
@@ -32,14 +32,14 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class PipeConnectionHandler implements IBlockConnectionHandler {
 
     @Override
-    public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
+    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         final Block block = blockState.getBlock();
-        final BlockState belowState = blockGetter.getBlockState(blockPos.below());
-        final BlockState aboveState = blockGetter.getBlockState(blockPos.above());
-        final BlockState northState = blockGetter.getBlockState(blockPos.north());
-        final BlockState eastState = blockGetter.getBlockState(blockPos.east());
-        final BlockState southState = blockGetter.getBlockState(blockPos.south());
-        final BlockState westState = blockGetter.getBlockState(blockPos.west());
+        final BlockState belowState = levelReader.getBlockState(blockPos.below());
+        final BlockState aboveState = levelReader.getBlockState(blockPos.above());
+        final BlockState northState = levelReader.getBlockState(blockPos.north());
+        final BlockState eastState = levelReader.getBlockState(blockPos.east());
+        final BlockState southState = levelReader.getBlockState(blockPos.south());
+        final BlockState westState = levelReader.getBlockState(blockPos.west());
         return blockState.setValue(PipeBlock.DOWN, belowState.is(block) || belowState.is(Blocks.CHORUS_FLOWER) || belowState.is(Blocks.END_STONE))
             .setValue(PipeBlock.UP, aboveState.is(block) || aboveState.is(Blocks.CHORUS_FLOWER))
             .setValue(PipeBlock.NORTH, northState.is(block) || northState.is(Blocks.CHORUS_FLOWER))

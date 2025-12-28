@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus.features.block.connections;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
@@ -34,12 +35,12 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class FenceConnectionHandler implements IBlockConnectionHandler {
 
     @Override
-    public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
+    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         return blockState
-            .setValue(FenceBlock.NORTH, connectsTo(blockGetter, blockPos.north(), Direction.NORTH))
-            .setValue(FenceBlock.SOUTH, connectsTo(blockGetter, blockPos.south(), Direction.SOUTH))
-            .setValue(FenceBlock.WEST, connectsTo(blockGetter, blockPos.west(), Direction.WEST))
-            .setValue(FenceBlock.EAST, connectsTo(blockGetter, blockPos.east(), Direction.EAST));
+            .setValue(FenceBlock.NORTH, connectsTo(levelReader, blockPos.north(), Direction.NORTH))
+            .setValue(FenceBlock.SOUTH, connectsTo(levelReader, blockPos.south(), Direction.SOUTH))
+            .setValue(FenceBlock.WEST, connectsTo(levelReader, blockPos.west(), Direction.WEST))
+            .setValue(FenceBlock.EAST, connectsTo(levelReader, blockPos.east(), Direction.EAST));
     }
 
     // TODO: Fine-tune and make perfect/1:1

@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,12 +32,12 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class FenceGateConnectionHandler implements IBlockConnectionHandler {
 
     @Override
-    public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
+    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         final Direction.Axis axis = blockState.getValue(FenceGateBlock.FACING).getAxis();
-        final BlockState westState = blockGetter.getBlockState(blockPos.west());
-        final BlockState eastState = blockGetter.getBlockState(blockPos.east());
-        final BlockState northState = blockGetter.getBlockState(blockPos.north());
-        final BlockState southState = blockGetter.getBlockState(blockPos.south());
+        final BlockState westState = levelReader.getBlockState(blockPos.west());
+        final BlockState eastState = levelReader.getBlockState(blockPos.east());
+        final BlockState northState = levelReader.getBlockState(blockPos.north());
+        final BlockState southState = levelReader.getBlockState(blockPos.south());
         if (axis == Direction.Axis.Z && (westState.is(Blocks.COBBLESTONE_WALL) || eastState.is(Blocks.COBBLESTONE_WALL))
             || axis == Direction.Axis.X && (northState.is(Blocks.COBBLESTONE_WALL) || southState.is(Blocks.COBBLESTONE_WALL))) {
             return blockState.setValue(FenceGateBlock.IN_WALL, true);
