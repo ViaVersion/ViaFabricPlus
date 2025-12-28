@@ -21,8 +21,6 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -42,7 +40,6 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -70,7 +67,7 @@ public final class BlockConnectionsEmulation {
     }
 
     public static boolean isApplicable() {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest);
+        return true; // ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest);
     }
 
     public static void updateChunkConnections(final LevelReader levelReader, final int chunkX, final int chunkZ) {
@@ -78,13 +75,13 @@ public final class BlockConnectionsEmulation {
 
         final ChunkAccess chunkAccess = levelReader.getChunk(chunkX, chunkZ);
         final BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
-        for (int x = -1; x <= 16; ++x) {
-            final boolean insideX = x >= 0 && x < 16;
-            for (int sectionY = chunkAccess.getMinSectionY(); sectionY < chunkAccess.getMaxSectionY(); sectionY++) {
-                final LevelChunkSection section = chunkAccess.getSection(chunkAccess.getSectionIndexFromSectionY(sectionY));
-                if (section.hasOnlyAir()) continue;
+        for (int sectionY = chunkAccess.getMinSectionY(); sectionY < chunkAccess.getMaxSectionY(); sectionY++) {
+            final LevelChunkSection section = chunkAccess.getSection(chunkAccess.getSectionIndexFromSectionY(sectionY));
+            if (section.hasOnlyAir()) continue;
 
-                final int baseY = SectionPos.sectionToBlockCoord(sectionY);
+            final int baseY = SectionPos.sectionToBlockCoord(sectionY);
+            for (int x = -1; x <= 16; ++x) {
+                final boolean insideX = x >= 0 && x < 16;
                 for (int y = baseY; y < baseY + 16; y++) {
                     for (int z = -1; z <= 16; ++z) {
                         blockPos.set(SectionPos.sectionToBlockCoord(chunkX) + x, y, SectionPos.sectionToBlockCoord(chunkZ) + z);
