@@ -33,11 +33,9 @@ public final class DoorConnectionHandler implements IBlockConnectionHandler {
 
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
-        final DoorBlock doorBlock = (DoorBlock) blockState.getBlock();
-
         final boolean lowerHalf = blockState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER;
         final BlockState halfState = blockGetter.getBlockState(lowerHalf ? blockPos.above() : blockPos.below());
-        if (!halfState.is(doorBlock)) return blockState; // Not the same type of door, ignore
+        if (!halfState.is(blockState.getBlock())) return blockState; // Not the same type of door, ignore
 
         if (lowerHalf) {
             return blockState
