@@ -22,24 +22,34 @@
 package com.viaversion.viafabricplus.features.block.connections;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public final class CrossCollisionConnectionHandler implements IBlockConnectionHandler {
+public final class PaneConnectionHandler implements IBlockConnectionHandler {
 
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         return blockState
-            .setValue(CrossCollisionBlock.NORTH, connectsTo(blockGetter, blockPos.north()))
-            .setValue(CrossCollisionBlock.SOUTH, connectsTo(blockGetter, blockPos.south()))
-            .setValue(CrossCollisionBlock.WEST, connectsTo(blockGetter, blockPos.west()))
-            .setValue(CrossCollisionBlock.EAST, connectsTo(blockGetter, blockPos.east()));
+            .setValue(IronBarsBlock.NORTH, connectsTo(blockGetter, blockPos.north(), Direction.NORTH))
+            .setValue(IronBarsBlock.SOUTH, connectsTo(blockGetter, blockPos.south(), Direction.SOUTH))
+            .setValue(IronBarsBlock.WEST, connectsTo(blockGetter, blockPos.west(), Direction.WEST))
+            .setValue(IronBarsBlock.EAST, connectsTo(blockGetter, blockPos.east(), Direction.EAST));
     }
 
-    private boolean connectsTo(final BlockGetter blockGetter, final BlockPos blockPos) {
+    private boolean connectsTo(final BlockGetter blockGetter, final BlockPos blockPos, final Direction direction) {
         final BlockState neighborState = blockGetter.getBlockState(blockPos);
-        return !isExceptionForConnection(neighborState) && (neighborState.getBlock() instanceof CrossCollisionBlock || neighborState.isSolidRender());
+
+        final Block block = neighborState.getBlock();
+        if (block instanceof StairBlock) {
+            // TODO: Sometimes isn't right
+            return neighborState.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
+        }
+
+        return !isExceptionForConnection(neighborState) && (neighborState.getBlock() instanceof IronBarsBlock || neighborState.isSolidRender());
     }
 
 }

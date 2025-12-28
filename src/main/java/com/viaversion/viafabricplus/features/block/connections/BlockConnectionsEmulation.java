@@ -29,11 +29,11 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
@@ -56,12 +56,13 @@ public final class BlockConnectionsEmulation {
     private static final Object2ObjectOpenHashMap<Class<? extends Block>, IBlockConnectionHandler> lookupCache = new Object2ObjectOpenHashMap<>();
 
     public static void init() {
-        connectionHandlers.put(CrossCollisionBlock.class, new CrossCollisionConnectionHandler());
+        // TODO: Fences, Iron Bars, Glass Panes can all totally extend each other, just gotta figure out the small diffs to abstract it right
         connectionHandlers.put(DoorBlock.class, new DoorConnectionHandler());
         connectionHandlers.put(ChestBlock.class, new DoubleChestConnectionHandler());
         connectionHandlers.put(FenceBlock.class, new FenceConnectionHandler());
         connectionHandlers.put(FenceGateBlock.class, new FenceGateConnectionHandler());
         connectionHandlers.put(FireBlock.class, new FireConnectionHandler());
+        connectionHandlers.put(IronBarsBlock.class, new PaneConnectionHandler());
         connectionHandlers.put(PipeBlock.class, new PipeConnectionHandler());
         connectionHandlers.put(RedStoneWireBlock.class, new RedStoneConnectionHandler());
         connectionHandlers.put(SnowyDirtBlock.class, new SnowyGrassConnectionHandler());
