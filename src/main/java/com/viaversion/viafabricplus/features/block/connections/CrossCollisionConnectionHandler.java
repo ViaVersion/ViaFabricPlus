@@ -49,6 +49,8 @@ public final class CrossCollisionConnectionHandler implements IBlockConnectionHa
         boolean bl = true;
         if (crossCollisionBlock instanceof IronBarsBlock ironBarsBlock) {
             bl = ironBarsBlock.attachsTo(neighborState, neighborState.isFaceSturdy(blockGetter, blockPos, direction));
+        } else {
+            System.out.println("Hello! A pane-type-block tried to connect to something but we don't know what type of pane this is (" + crossCollisionBlock.getClass().getSimpleName() + ")! If you see this, please report it on the ViaFabricPlus GitHub!");
         }
 
         return !isExceptionForConnection(neighborState) && bl;
