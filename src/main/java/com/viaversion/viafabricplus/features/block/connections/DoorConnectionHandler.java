@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
+// TODO: Fix on place (works fine/normal when joining or updating the block)
 // Code sourced and adapted from 1.12.2 (Feather)
 public final class DoorConnectionHandler implements IBlockConnectionHandler {
 
@@ -34,25 +35,19 @@ public final class DoorConnectionHandler implements IBlockConnectionHandler {
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
         final DoorBlock doorBlock = (DoorBlock) blockState.getBlock();
 
-        // TODO: Fix on place (works fine/normal when joining or updating the block)
-        BlockState newState = blockState;
-        if (blockState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
-            final BlockState halfState = blockGetter.getBlockState(blockPos.above());
-            if (halfState.is(doorBlock)) {
-                newState = blockState
-                    .setValue(DoorBlock.HINGE, halfState.getValue(DoorBlock.HINGE))
-                    .setValue(DoorBlock.POWERED, halfState.getValue(DoorBlock.POWERED));
-            }
-        } else {
-            final BlockState halfState = blockGetter.getBlockState(blockPos.below());
-            if (halfState.is(doorBlock)) {
-                newState = blockState
-                    .setValue(DoorBlock.FACING, halfState.getValue(DoorBlock.FACING))
-                    .setValue(DoorBlock.OPEN, halfState.getValue(DoorBlock.OPEN));
-            }
-        }
+        final boolean lowerHalf = blockState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER;
+        final BlockState halfState = blockGetter.getBlockState(lowerHalf ? blockPos.above() : blockPos.below());
+        if (!halfState.is(doorBlock)) return blockState; // Not the same type of door, ignore
 
-        return newState;
+        if (lowerHalf) {
+            return blockState
+                .setValue(DoorBlock.HINGE, halfState.getValue(DoorBlock.HINGE))
+                .setValue(DoorBlock.POWERED, halfState.getValue(DoorBlock.POWERED));
+        } else {
+            return blockState
+                .setValue(DoorBlock.FACING, halfState.getValue(DoorBlock.FACING))
+                .setValue(DoorBlock.OPEN, halfState.getValue(DoorBlock.OPEN));
+        }
     }
 
 }
