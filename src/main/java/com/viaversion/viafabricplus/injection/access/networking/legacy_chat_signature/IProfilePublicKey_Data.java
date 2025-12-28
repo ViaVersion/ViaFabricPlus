@@ -1,9 +1,9 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/ViaVersion/ViaFabricPlus
- * Copyright (C) 2021-2025 the original authors
- *                         - FlorianMichael/EnZaXD <florian.michael07@gmail.com>
+ * Copyright (C) 2021-2026 the original authors
+ *                         - FlorianMichael/EnZaXD <git@florianmichael.de>
  *                         - RK_01/RaphiMC
- * Copyright (C) 2023-2025 ViaVersion and contributors
+ * Copyright (C) 2023-2026 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
