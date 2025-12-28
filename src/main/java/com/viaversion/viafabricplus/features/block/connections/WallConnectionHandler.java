@@ -64,7 +64,7 @@ public final class WallConnectionHandler implements IBlockConnectionHandler {
         return !neighborState.isAir() && !isExceptionForConnection(block) && (block instanceof WallBlock || block instanceof FenceGateBlock || block instanceof SlimeBlock || neighborState.isSolidRender());
     }
 
-    private boolean isExceptionForConnection(Block block) {
+    private boolean isExceptionForConnection(final Block block) {
         return Block1_14.isExceptBlockForAttachWithPiston(block)
             || block == Blocks.BARRIER
             || block == Blocks.PUMPKIN

@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-// TODO: Fix on place (works fine/normal when joining or updating the block)
+// TODO: Fix on place/powered (works fine/normal when joining or updating the block)
 // Code sourced and adapted from 1.12.2 (Feather)
 public final class DoorConnectionHandler implements IBlockConnectionHandler {
 

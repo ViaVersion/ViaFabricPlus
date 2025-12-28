@@ -27,43 +27,41 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.SlimeBlock;
-import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public final class FenceConnectionHandler implements IBlockConnectionHandler {
+public final class CrossCollisionConnectionHandler implements IBlockConnectionHandler {
 
     @Override
     public BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos) {
+        final CrossCollisionBlock crossCollisionBlock = (CrossCollisionBlock) blockState.getBlock();
         return blockState
-            .setValue(FenceBlock.NORTH, connectsTo(blockGetter, blockPos.north(), Direction.NORTH))
-            .setValue(FenceBlock.SOUTH, connectsTo(blockGetter, blockPos.south(), Direction.SOUTH))
-            .setValue(FenceBlock.WEST, connectsTo(blockGetter, blockPos.west(), Direction.WEST))
-            .setValue(FenceBlock.EAST, connectsTo(blockGetter, blockPos.east(), Direction.EAST));
+            .setValue(CrossCollisionBlock.NORTH, connectsTo(crossCollisionBlock, blockGetter, blockPos.north(), Direction.NORTH))
+            .setValue(CrossCollisionBlock.SOUTH, connectsTo(crossCollisionBlock, blockGetter, blockPos.south(), Direction.SOUTH))
+            .setValue(CrossCollisionBlock.WEST, connectsTo(crossCollisionBlock, blockGetter, blockPos.west(), Direction.WEST))
+            .setValue(CrossCollisionBlock.EAST, connectsTo(crossCollisionBlock, blockGetter, blockPos.east(), Direction.EAST));
     }
 
     // TODO: Fine-tune and make perfect/1:1
-    private boolean connectsTo(final BlockGetter blockGetter, final BlockPos blockPos, final Direction direction) {
+    private boolean connectsTo(final CrossCollisionBlock crossCollisionBlock, final BlockGetter blockGetter, final BlockPos blockPos, final Direction direction) {
         final BlockState neighborState = blockGetter.getBlockState(blockPos);
 
-        final Block block = neighborState.getBlock();
-        if (block instanceof StairBlock) {
-            // TODO: Sometimes isn't right
-            return neighborState.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
+        boolean bl = true;
+        if (crossCollisionBlock instanceof IronBarsBlock ironBarsBlock) {
+            bl = ironBarsBlock.attachsTo(neighborState, neighborState.isFaceSturdy(blockGetter, blockPos, direction));
         }
 
-        return !neighborState.isAir() && !isExceptionForConnection(block) && (block instanceof FenceBlock || block instanceof FenceGateBlock || block instanceof SlimeBlock || neighborState.isSolidRender());
+        return !isExceptionForConnection(neighborState.getBlock()) && bl;
     }
 
     private boolean isExceptionForConnection(final Block block) {
         return Block1_14.isExceptBlockForAttachWithPiston(block)
-            || block == Blocks.BARRIER
             || block == Blocks.MELON
             || block == Blocks.PUMPKIN
             || block == Blocks.CARVED_PUMPKIN
-            || block == Blocks.JACK_O_LANTERN;
+            || block == Blocks.JACK_O_LANTERN
+            || block == Blocks.BARRIER;
     }
 
 }
