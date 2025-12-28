@@ -21,10 +21,22 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
+import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface IBlockConnectionHandler {
     BlockState connect(final BlockState blockState, final BlockGetter blockGetter, final BlockPos blockPos);
+
+    default boolean isExceptionForConnection(final BlockState blockState) {
+        return blockState.isAir()
+            || Block1_14.isExceptBlockForAttachWithPiston(blockState.getBlock())
+            || blockState.is(Blocks.MELON)
+            || blockState.is(Blocks.PUMPKIN)
+            || blockState.is(Blocks.CARVED_PUMPKIN)
+            || blockState.is(Blocks.JACK_O_LANTERN)
+            || blockState.is(Blocks.BARRIER);
+    }
 }

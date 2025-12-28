@@ -21,12 +21,10 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
-import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -62,16 +60,6 @@ public final class WallConnectionHandler implements IBlockConnectionHandler {
         }
 
         return !isExceptionForConnection(neighborState) && (block instanceof WallBlock || block instanceof FenceGateBlock || block instanceof SlimeBlock || neighborState.isSolidRender());
-    }
-
-    private boolean isExceptionForConnection(final BlockState blockState) {
-        return blockState.isAir()
-            || Block1_14.isExceptBlockForAttachWithPiston(blockState.getBlock())
-            || blockState.is(Blocks.MELON)
-            || blockState.is(Blocks.PUMPKIN)
-            || blockState.is(Blocks.CARVED_PUMPKIN)
-            || blockState.is(Blocks.JACK_O_LANTERN)
-            || blockState.is(Blocks.BARRIER);
     }
 
     private WallSide getWallSide(final boolean value) {
