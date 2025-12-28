@@ -48,7 +48,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * TODO/FIX:
  *  visual artifacts (collision/hitbox is correct, but visually the connection is wrong)
- *  inaccuracies if any (bedrock most likely)
  */
 public final class BlockConnectionsEmulation {
 
@@ -82,7 +81,7 @@ public final class BlockConnectionsEmulation {
         for (int x = -1; x <= 16; ++x) {
             final boolean insideX = x >= 0 && x < 16;
             for (int sectionY = chunkAccess.getMinSectionY(); sectionY < chunkAccess.getMaxSectionY(); sectionY++) {
-                final LevelChunkSection section = chunkAccess.getSection(sectionY);
+                final LevelChunkSection section = chunkAccess.getSection(chunkAccess.getSectionIndexFromSectionY(sectionY));
                 if (section.hasOnlyAir()) continue;
 
                 final int baseY = SectionPos.sectionToBlockCoord(sectionY);
