@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.connections;
 
-import com.viaversion.viafabricplus.features.block.connections.BlockConnectionsEmulation;
+import com.viaversion.viafabricplus.features.block.connections.BlockConnectionsEmulation1_12_2;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
@@ -42,22 +42,22 @@ public abstract class MixinClientChunkCache {
 
     @Inject(method = "updateLevelChunk", at = @At("TAIL"))
     private void updateBlockConnections(int chunkX, int chunkZ, ClientboundLevelChunkPacketData clientboundLevelChunkPacketData, CallbackInfo ci) {
-        BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, chunkX, chunkZ);
+        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, chunkX, chunkZ);
     }
 
     @Inject(method = "handleBlockUpdate", at = @At("TAIL"))
     private void updateBlockConnections(ClientboundBlockUpdatePacket clientboundBlockUpdatePacket, CallbackInfo ci) {
-        BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, clientboundBlockUpdatePacket.getPos());
+        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, clientboundBlockUpdatePacket.getPos());
     }
 
     @Inject(method = "handleBlockEvent", at = @At("TAIL"))
     private void updateBlockConnections(ClientboundBlockEventPacket clientboundBlockEventPacket, CallbackInfo ci) {
-        BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, clientboundBlockEventPacket.getPos());
+        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, clientboundBlockEventPacket.getPos());
     }
 
     @Inject(method = "handleBlockDestruction", at = @At("TAIL"))
     private void updateBlockConnections(ClientboundBlockDestructionPacket clientboundBlockDestructionPacket, CallbackInfo ci) {
-        BlockConnectionsEmulation.updateChunkNeighborConnections(this.level, clientboundBlockDestructionPacket.getPos());
+        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, clientboundBlockDestructionPacket.getPos());
     }
 
 }

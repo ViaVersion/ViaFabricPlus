@@ -21,17 +21,22 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
+import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-// Code sourced and adapted from 1.12.2 (Feather)
-public final class StairsConnectionHandler implements IBlockConnectionHandler {
+public interface IBlockStateHandler {
+    BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos);
 
-    @Override
-    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
-        return blockState.setValue(StairBlock.SHAPE, StairBlock.getStairsShape(blockState, levelReader, blockPos));
+    default boolean isExceptionForConnection(final BlockState blockState) {
+        return blockState.isAir()
+            || Block1_14.isExceptBlockForAttachWithPiston(blockState.getBlock())
+            || blockState.is(Blocks.MELON)
+            || blockState.is(Blocks.PUMPKIN)
+            || blockState.is(Blocks.CARVED_PUMPKIN)
+            || blockState.is(Blocks.JACK_O_LANTERN)
+            || blockState.is(Blocks.BARRIER);
     }
-
 }

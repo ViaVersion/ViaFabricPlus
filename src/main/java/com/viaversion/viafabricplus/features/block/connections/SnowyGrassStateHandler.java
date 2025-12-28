@@ -21,22 +21,18 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
-import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public interface IBlockConnectionHandler {
-    BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos);
+// Code sourced and adapted from 1.12.2 (Feather)
+public final class SnowyGrassStateHandler implements IBlockStateHandler {
 
-    default boolean isExceptionForConnection(final BlockState blockState) {
-        return blockState.isAir()
-            || Block1_14.isExceptBlockForAttachWithPiston(blockState.getBlock())
-            || blockState.is(Blocks.MELON)
-            || blockState.is(Blocks.PUMPKIN)
-            || blockState.is(Blocks.CARVED_PUMPKIN)
-            || blockState.is(Blocks.JACK_O_LANTERN)
-            || blockState.is(Blocks.BARRIER);
+    @Override
+    public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
+        return blockState.setValue(SnowyDirtBlock.SNOWY, levelReader.getBlockState(blockPos.above()).is(BlockTags.SNOW));
     }
+
 }

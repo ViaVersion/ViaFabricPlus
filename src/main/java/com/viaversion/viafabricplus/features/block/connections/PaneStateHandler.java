@@ -26,24 +26,21 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.SlimeBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public final class FenceConnectionHandler implements IBlockConnectionHandler {
+public final class PaneStateHandler implements IBlockStateHandler {
 
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {
         return blockState
-            .setValue(FenceBlock.NORTH, connectsTo(levelReader, blockPos.north(), Direction.NORTH))
-            .setValue(FenceBlock.SOUTH, connectsTo(levelReader, blockPos.south(), Direction.SOUTH))
-            .setValue(FenceBlock.WEST, connectsTo(levelReader, blockPos.west(), Direction.WEST))
-            .setValue(FenceBlock.EAST, connectsTo(levelReader, blockPos.east(), Direction.EAST));
+            .setValue(IronBarsBlock.NORTH, connectsTo(levelReader, blockPos.north(), Direction.NORTH))
+            .setValue(IronBarsBlock.SOUTH, connectsTo(levelReader, blockPos.south(), Direction.SOUTH))
+            .setValue(IronBarsBlock.WEST, connectsTo(levelReader, blockPos.west(), Direction.WEST))
+            .setValue(IronBarsBlock.EAST, connectsTo(levelReader, blockPos.east(), Direction.EAST));
     }
 
-    // TODO: Fine-tune and make perfect/1:1
     private boolean connectsTo(final BlockGetter blockGetter, final BlockPos blockPos, final Direction direction) {
         final BlockState neighborState = blockGetter.getBlockState(blockPos);
 
@@ -53,7 +50,7 @@ public final class FenceConnectionHandler implements IBlockConnectionHandler {
             return neighborState.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
         }
 
-        return !isExceptionForConnection(neighborState) && (block instanceof FenceBlock || block instanceof FenceGateBlock || block instanceof SlimeBlock || neighborState.isSolidRender());
+        return !isExceptionForConnection(neighborState) && (neighborState.getBlock() instanceof IronBarsBlock || neighborState.isSolidRender());
     }
 
 }

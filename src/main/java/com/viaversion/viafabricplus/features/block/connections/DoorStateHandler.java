@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 // TODO: Fix on place/powered (works fine/normal when joining or updating the block)
 // Code sourced and adapted from 1.12.2 (Feather)
-public final class DoorConnectionHandler implements IBlockConnectionHandler {
+public final class DoorStateHandler implements IBlockStateHandler {
 
     @Override
     public BlockState connect(final BlockState blockState, final LevelReader levelReader, final BlockPos blockPos) {

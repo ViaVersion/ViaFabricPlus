@@ -50,26 +50,26 @@ import org.jspecify.annotations.Nullable;
  * TODO/FIX:
  *  visual artifacts (collision/hitbox is correct, but visually the connection is wrong)
  */
-public final class BlockConnectionsEmulation {
+public final class BlockConnectionsEmulation1_12_2 {
 
     private static final int UPDATE_FLAGS = 18;
-    private static final Object2ObjectOpenHashMap<Class<? extends Block>, IBlockConnectionHandler> connectionHandlers = new Object2ObjectOpenHashMap<>();
-    private static final Object2ObjectOpenHashMap<Class<? extends Block>, IBlockConnectionHandler> lookupCache = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectOpenHashMap<Class<? extends Block>, IBlockStateHandler> connectionHandlers = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectOpenHashMap<Class<? extends Block>, IBlockStateHandler> lookupCache = new Object2ObjectOpenHashMap<>();
 
     public static void init() {
         // TODO: Fences, Iron Bars, Glass Panes can all totally extend each other, just gotta figure out the small diffs to abstract it right
-        connectionHandlers.put(DoorBlock.class, new DoorConnectionHandler());
-        connectionHandlers.put(ChestBlock.class, new DoubleChestConnectionHandler());
-        connectionHandlers.put(FenceBlock.class, new FenceConnectionHandler());
-        connectionHandlers.put(FenceGateBlock.class, new FenceGateConnectionHandler());
-        connectionHandlers.put(FireBlock.class, new FireConnectionHandler());
-        connectionHandlers.put(IronBarsBlock.class, new PaneConnectionHandler());
-        connectionHandlers.put(PipeBlock.class, new PipeConnectionHandler());
-        connectionHandlers.put(RedStoneWireBlock.class, new RedStoneConnectionHandler());
-        connectionHandlers.put(RepeaterBlock.class, new RedStoneRepeaterConnectionHandler());
-        connectionHandlers.put(SnowyDirtBlock.class, new SnowyGrassConnectionHandler());
-        connectionHandlers.put(StairBlock.class, new StairsConnectionHandler());
-        connectionHandlers.put(WallBlock.class, new WallConnectionHandler());
+        connectionHandlers.put(DoorBlock.class, new DoorStateHandler());
+        connectionHandlers.put(ChestBlock.class, new DoubleChestStateHandler());
+        connectionHandlers.put(FenceBlock.class, new FenceStateHandler());
+        connectionHandlers.put(FenceGateBlock.class, new FenceGateStateHandler());
+        connectionHandlers.put(FireBlock.class, new FireStateHandler());
+        connectionHandlers.put(IronBarsBlock.class, new PaneStateHandler());
+        connectionHandlers.put(PipeBlock.class, new PipeStateHandler());
+        connectionHandlers.put(RedStoneWireBlock.class, new RedStoneStateHandler());
+        connectionHandlers.put(RepeaterBlock.class, new RedStoneRepeaterStateHandler());
+        connectionHandlers.put(SnowyDirtBlock.class, new SnowyGrassStateHandler());
+        connectionHandlers.put(StairBlock.class, new StairsStateHandler());
+        connectionHandlers.put(WallBlock.class, new WallStateHandler());
     }
 
     public static boolean isApplicable() {
@@ -98,7 +98,7 @@ public final class BlockConnectionsEmulation {
                         final BlockState blockState = levelReader.getBlockState(blockPos);
                         if (blockState.isAir()) continue;
 
-                        final IBlockConnectionHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
+                        final IBlockStateHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
                         if (connectionHandler == null) continue;
 
                         final BlockState newState = connectionHandler.connect(blockState, levelReader, blockPos);
@@ -123,11 +123,11 @@ public final class BlockConnectionsEmulation {
         updateChunkNeighborConnections(levelReader, SectionPos.blockToSectionCoord(blockPos.getX()), SectionPos.blockToSectionCoord(blockPos.getZ()));
     }
 
-    private static @Nullable IBlockConnectionHandler getConnectionHandler(final Class<? extends Block> blockClass) {
+    private static @Nullable IBlockStateHandler getConnectionHandler(final Class<? extends Block> blockClass) {
         return lookupCache.computeIfAbsent(blockClass, clazz -> {
             Class<?> current = (Class<?>) clazz;
             while (current != Block.class && current != null) {
-                final IBlockConnectionHandler handler = connectionHandlers.get(current);
+                final IBlockStateHandler handler = connectionHandlers.get(current);
                 if (handler != null) {
                     return handler;
                 }
