@@ -60,11 +60,11 @@ public final class FenceConnectionHandler implements IBlockConnectionHandler {
     private boolean isExceptionForConnection(final BlockState blockState) {
         return blockState.isAir()
             || Block1_14.isExceptBlockForAttachWithPiston(blockState.getBlock())
-            || blockState.is(Blocks.BARRIER)
             || blockState.is(Blocks.MELON)
             || blockState.is(Blocks.PUMPKIN)
             || blockState.is(Blocks.CARVED_PUMPKIN)
-            || blockState.is(Blocks.JACK_O_LANTERN);
+            || blockState.is(Blocks.JACK_O_LANTERN)
+            || blockState.is(Blocks.BARRIER);
     }
 
 }
