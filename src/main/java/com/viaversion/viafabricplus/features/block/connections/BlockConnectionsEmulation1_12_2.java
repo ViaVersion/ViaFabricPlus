@@ -60,13 +60,13 @@ public final class BlockConnectionsEmulation1_12_2 {
         // TODO: Fences, Iron Bars, Glass Panes can all totally extend each other, just gotta figure out the small diffs to abstract it right
         connectionHandlers.put(DoorBlock.class, new DoorStateHandler());
         connectionHandlers.put(ChestBlock.class, new DoubleChestStateHandler());
-        connectionHandlers.put(FenceBlock.class, new FenceStateHandler());
         connectionHandlers.put(FenceGateBlock.class, new FenceGateStateHandler());
+        connectionHandlers.put(FenceBlock.class, new FenceStateHandler());
         connectionHandlers.put(FireBlock.class, new FireStateHandler());
         connectionHandlers.put(IronBarsBlock.class, new PaneStateHandler());
         connectionHandlers.put(PipeBlock.class, new PipeStateHandler());
-        connectionHandlers.put(RedStoneWireBlock.class, new RedStoneStateHandler());
         connectionHandlers.put(RepeaterBlock.class, new RedStoneRepeaterStateHandler());
+        connectionHandlers.put(RedStoneWireBlock.class, new RedStoneStateHandler());
         connectionHandlers.put(SnowyDirtBlock.class, new SnowyGrassStateHandler());
         connectionHandlers.put(StairBlock.class, new StairsStateHandler());
         connectionHandlers.put(WallBlock.class, new WallStateHandler());
