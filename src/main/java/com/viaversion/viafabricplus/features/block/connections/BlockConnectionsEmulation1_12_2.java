@@ -26,6 +26,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
@@ -37,6 +38,7 @@ import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.RepeaterBlock;
+import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
@@ -57,13 +59,12 @@ public final class BlockConnectionsEmulation1_12_2 {
     private static final Object2ObjectOpenHashMap<Class<? extends Block>, IBlockStateHandler> lookupCache = new Object2ObjectOpenHashMap<>();
 
     public static void init() {
-        // TODO: Fences, Iron Bars, Glass Panes can all totally extend each other, just gotta figure out the small diffs to abstract it right
         connectionHandlers.put(DoorBlock.class, new DoorStateHandler());
         connectionHandlers.put(ChestBlock.class, new DoubleChestStateHandler());
         connectionHandlers.put(FenceGateBlock.class, new FenceGateStateHandler());
-        connectionHandlers.put(FenceBlock.class, new FenceStateHandler());
+        connectionHandlers.put(FenceBlock.class, new CrossCollisionStateHandler(state -> state.is(BlockTags.FENCES) || state.is(BlockTags.FENCE_GATES) || state.getBlock() instanceof SlimeBlock));
         connectionHandlers.put(FireBlock.class, new FireStateHandler());
-        connectionHandlers.put(IronBarsBlock.class, new PaneStateHandler());
+        connectionHandlers.put(IronBarsBlock.class, new CrossCollisionStateHandler(state -> state.getBlock() instanceof IronBarsBlock));
         connectionHandlers.put(PipeBlock.class, new PipeStateHandler());
         connectionHandlers.put(RepeaterBlock.class, new RedStoneRepeaterStateHandler());
         connectionHandlers.put(RedStoneWireBlock.class, new RedStoneStateHandler());
