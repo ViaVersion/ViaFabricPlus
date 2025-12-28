@@ -28,7 +28,7 @@ allprojects {
 
 subprojects {
 
-    configureVVDependencies("compileOnlyApi")
+    configureVVDependencies("api")
 
 }
 
