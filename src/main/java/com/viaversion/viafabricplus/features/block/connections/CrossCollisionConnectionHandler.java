@@ -25,7 +25,6 @@ import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
@@ -52,16 +51,17 @@ public final class CrossCollisionConnectionHandler implements IBlockConnectionHa
             bl = ironBarsBlock.attachsTo(neighborState, neighborState.isFaceSturdy(blockGetter, blockPos, direction));
         }
 
-        return !isExceptionForConnection(neighborState.getBlock()) && bl;
+        return !isExceptionForConnection(neighborState) && bl;
     }
 
-    private boolean isExceptionForConnection(final Block block) {
-        return Block1_14.isExceptBlockForAttachWithPiston(block)
-            || block == Blocks.MELON
-            || block == Blocks.PUMPKIN
-            || block == Blocks.CARVED_PUMPKIN
-            || block == Blocks.JACK_O_LANTERN
-            || block == Blocks.BARRIER;
+    private boolean isExceptionForConnection(final BlockState blockState) {
+        return blockState.isAir()
+            || Block1_14.isExceptBlockForAttachWithPiston(blockState.getBlock())
+            || blockState.is(Blocks.MELON)
+            || blockState.is(Blocks.PUMPKIN)
+            || blockState.is(Blocks.CARVED_PUMPKIN)
+            || blockState.is(Blocks.JACK_O_LANTERN)
+            || blockState.is(Blocks.BARRIER);
     }
 
 }

@@ -54,16 +54,17 @@ public final class FenceConnectionHandler implements IBlockConnectionHandler {
             return neighborState.getValue(StairBlock.FACING) == direction.getOpposite(); // Only connect to the backside of stairs
         }
 
-        return !neighborState.isAir() && !isExceptionForConnection(block) && (block instanceof FenceBlock || block instanceof FenceGateBlock || block instanceof SlimeBlock || neighborState.isSolidRender());
+        return !isExceptionForConnection(neighborState) && (block instanceof FenceBlock || block instanceof FenceGateBlock || block instanceof SlimeBlock || neighborState.isSolidRender());
     }
 
-    private boolean isExceptionForConnection(final Block block) {
-        return Block1_14.isExceptBlockForAttachWithPiston(block)
-            || block == Blocks.BARRIER
-            || block == Blocks.MELON
-            || block == Blocks.PUMPKIN
-            || block == Blocks.CARVED_PUMPKIN
-            || block == Blocks.JACK_O_LANTERN;
+    private boolean isExceptionForConnection(final BlockState blockState) {
+        return blockState.isAir()
+            || Block1_14.isExceptBlockForAttachWithPiston(blockState.getBlock())
+            || blockState.is(Blocks.BARRIER)
+            || blockState.is(Blocks.MELON)
+            || blockState.is(Blocks.PUMPKIN)
+            || blockState.is(Blocks.CARVED_PUMPKIN)
+            || blockState.is(Blocks.JACK_O_LANTERN);
     }
 
 }
