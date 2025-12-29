@@ -50,7 +50,13 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * TODO/FIX:
- *  visual artifacts (collision/hitbox is correct, but visually the connection is wrong)
+ * - visual artifacts (collision/hitbox is correct, but visually the connection is wrong)
+ * - door block place issue (doors are fine when joining/after updating)
+ * - when stairs are facing a certain way, sometimes fences wont connect to them for some reason
+ * - possible inaccuracies missed
+ * Nitpicks:
+ * - wish it was as instant visually like in <=1.12.2, there is a noticable delay before blocks connect when placed (not on join)
+ *   - Probably due to the update logic being handled in packet-related stuff instead of something native
  */
 public final class BlockConnectionsEmulation1_12_2 {
 
