@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.vialoader.impl.viaversion.VLViaConfig;
 import java.io.File;
 import java.util.logging.Logger;
@@ -33,7 +34,6 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
         UNSUPPORTED.add("simulate-pt");
         UNSUPPORTED.add("fix-1_21-placement-rotation");
         UNSUPPORTED.add("team-colour-fix");
-        UNSUPPORTED.add("serverside-blockconnections");
         UNSUPPORTED.add("cancel-swing-in-inventory");
         UNSUPPORTED.add("cancel-block-sounds");
         UNSUPPORTED.add("use-1_8-hitbox-margin");
@@ -46,7 +46,11 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
 
     @Override
     public boolean isServersideBlockConnections() {
-        return false;
+        if (GeneralSettings.INSTANCE.experimentalBlockConnections.getValue()) {
+            return false;
+        } else {
+            return super.isServersideBlockConnections();
+        }
     }
 
     @Override
