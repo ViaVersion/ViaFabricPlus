@@ -58,6 +58,7 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Load skins and skulls in legacy versions",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Emulate inventory actions in alpha versions",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "Save scroll position in slot screens",
+  "general_settings.viafabricplus.experimental_block_connections": "Experimental block connections",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Click to set account for Bedrock Edition",
   "bedrock_settings.viafabricplus.replace_default_port": "Replace default port in server list",

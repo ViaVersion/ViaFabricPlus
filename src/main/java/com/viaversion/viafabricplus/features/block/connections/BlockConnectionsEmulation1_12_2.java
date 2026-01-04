@@ -21,8 +21,7 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -45,7 +44,6 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -79,18 +77,18 @@ public final class BlockConnectionsEmulation1_12_2 {
         connectionHandlers.put(WallBlock.class, new WallStateHandler());
     }
 
-    public static boolean isApplicable() {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest);
-    }
-
     public static void updateChunkConnections(final LevelReader levelReader, final int chunkX, final int chunkZ) {
-        if (!isApplicable() || !levelReader.hasChunk(chunkX, chunkZ)) return;
+        if (!GeneralSettings.INSTANCE.experimentalBlockConnections.getValue() || !levelReader.hasChunk(chunkX, chunkZ)) {
+            return;
+        }
 
         final ChunkAccess chunkAccess = levelReader.getChunk(chunkX, chunkZ);
         final BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         for (int sectionY = chunkAccess.getMinSectionY(); sectionY < chunkAccess.getMaxSectionY(); sectionY++) {
             final LevelChunkSection section = chunkAccess.getSection(chunkAccess.getSectionIndexFromSectionY(sectionY));
-            if (section.hasOnlyAir()) continue;
+            if (section.hasOnlyAir()) {
+                continue;
+            }
 
             final int baseY = SectionPos.sectionToBlockCoord(sectionY);
             for (int x = -1; x <= 16; ++x) {
@@ -103,10 +101,14 @@ public final class BlockConnectionsEmulation1_12_2 {
                         }
 
                         final BlockState blockState = levelReader.getBlockState(blockPos);
-                        if (blockState.isAir()) continue;
+                        if (blockState.isAir()) {
+                            continue;
+                        }
 
                         final IBlockStateHandler connectionHandler = getConnectionHandler(blockState.getBlock().getClass());
-                        if (connectionHandler == null) continue;
+                        if (connectionHandler == null) {
+                            continue;
+                        }
 
                         final BlockState newState = connectionHandler.connect(blockState, levelReader, blockPos);
                         if (newState != blockState && insideX && z >= 0 && z < 16) {
