@@ -24,12 +24,8 @@ package com.viaversion.viafabricplus.settings.impl;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
-import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
-import com.viaversion.vialoader.util.VersionRange;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.minecraft.network.chat.MutableComponent;
 
 public final class GeneralSettings extends SettingGroup {
 
