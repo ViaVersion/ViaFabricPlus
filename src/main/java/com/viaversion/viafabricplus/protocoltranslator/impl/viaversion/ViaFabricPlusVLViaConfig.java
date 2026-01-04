@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.vialoader.impl.viaversion.VLViaConfig;
 import java.io.File;
 import java.util.logging.Logger;
@@ -41,6 +42,15 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
     @Override
     public boolean isSimulatePlayerTick() {
         return false;
+    }
+
+    @Override
+    public boolean isServersideBlockConnections() {
+        if (GeneralSettings.INSTANCE.experimentalBlockConnections.getValue()) {
+            return false;
+        } else {
+            return super.isServersideBlockConnections();
+        }
     }
 
     @Override

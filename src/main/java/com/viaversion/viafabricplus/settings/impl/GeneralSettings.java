@@ -24,8 +24,8 @@ package com.viaversion.viafabricplus.settings.impl;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 public final class GeneralSettings extends SettingGroup {
 
@@ -58,6 +58,7 @@ public final class GeneralSettings extends SettingGroup {
     public final BooleanSetting loadSkinsAndSkullsInLegacyVersions = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions"), true);
     public final BooleanSetting emulateInventoryActionsInAlphaVersions = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions"), true);
     public final BooleanSetting saveScrollPositionInSlotScreens = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.save_scroll_position_in_slot_screens"), true);
+    public final BooleanSetting experimentalBlockConnections = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.experimental_block_connections"), false);
 
     public GeneralSettings() {
         super(Component.translatable("setting_group_name.viafabricplus.general"));

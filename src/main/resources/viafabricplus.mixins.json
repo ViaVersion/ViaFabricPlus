@@ -63,6 +63,7 @@
     "features.bedrock.movement.MixinPlayer",
     "features.bedrock.reach_around_raycast.MixinGameRenderer",
     "features.bedrock.remove_dummy_player_suggestions.MixinClientSuggestionProvider",
+    "features.block.connections.MixinClientChunkCache",
     "features.block.interaction.MixinCanPlaceAt1_14",
     "features.block.interaction.MixinDecoratedPotBlock",
     "features.block.interaction.MixinFenceBlock",
@@ -71,6 +72,7 @@
     "features.block.interaction.MixinNoteBlock",
     "features.block.interaction.MixinRedStoneWireBlock",
     "features.block.interaction.MixinRespawnAnchorBlock",
+    "features.block.interaction.MixinShelfBlock",
     "features.block.interaction.MixinSignBlock",
     "features.block.interaction.MixinSimpleWaterloggedBlock",
     "features.block.mining_calculation.MixinBlockBehaviour",
@@ -318,8 +320,7 @@
     "features.world.duplicated_sounds.MixinButtonBlock",
     "features.world.duplicated_sounds.MixinItems",
     "features.world.item_picking.MixinMinecraft",
-    "features.world.remove_server_view_distance.MixinOptions",
-    "features.block.interaction.MixinShelfBlock"
+    "features.world.remove_server_view_distance.MixinOptions"
   ],
   "injectors": {
     "defaultRequire": 1
