@@ -53,7 +53,7 @@ import org.jspecify.annotations.Nullable;
  * - when stairs are facing a certain way, sometimes fences wont connect to them for some reason (CORNER STAIRS?)
  * - possible inaccuracies missed
  * Nitpicks:
- * - wish it was as instant visually like in <=1.12.2, there is a noticeable delay before blocks connect when placed (not on join)
+ * - wish it was as instant visually like in older or equal 1.12.2, there is a noticeable delay before blocks connect when placed (not on join)
  *   - Probably due to the update logic being handled in packet-related stuff instead of something native
  */
 public final class BlockConnectionsEmulation1_12_2 {
