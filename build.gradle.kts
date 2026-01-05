@@ -54,7 +54,7 @@ dependencies {
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")
     modCompileOnly("com.terraformersmc:modmenu:15.0.0")
 
-    jij("net.raphimc:MinecraftAuth:5.0.0") {
+    jij("net.raphimc:MinecraftAuth:5.0.1-SNAPSHOT") {
         exclude(group = "com.google.code.gson", module = "gson")
     }
     jij("net.lenni0451:Reflect:1.6.1")
