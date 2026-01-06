@@ -133,6 +133,17 @@
   "classic4j_library.viafabricplus.error.password": "비밀번호가 올바르지 않습니다.",
   "classic4j_library.viafabricplus.error.verification": "이 유저는 아직 이메일 인증을 하지 않았습니다.",
   "classic4j_library.viafabricplus.error.logincode": "다단계 인증이 필요합니다. 이메일을 확인해주세요.",
+  "minecraftauth_library.viafabricplus.msatoken": "Microsoft 액세스 토큰 가져옴",
+  "minecraftauth_library.viafabricplus.xbldevicetoken": "Xbox Live 디바이스 토큰 가져옴",
+  "minecraftauth_library.viafabricplus.xblusertoken": "Xbox Live 유저 토큰 가져옴",
+  "minecraftauth_library.viafabricplus.xbltitletoken": "Xbox Live 타이틀 토큰 가져옴",
+  "minecraftauth_library.viafabricplus.bedrockxststoken": "베드락 XSTS 토큰 가져옴",
+  "minecraftauth_library.viafabricplus.playfabxststoken": "PlayFab XSTS 토큰 가져옴",
+  "minecraftauth_library.viafabricplus.realmsxststoken": "Realms XSTS 토큰 가져옴",
+  "minecraftauth_library.viafabricplus.playfabtoken": "PlayFab 토큰 가져옴",
+  "minecraftauth_library.viafabricplus.minecraftsession": "Minecraft 세션 가져옴",
+  "minecraftauth_library.viafabricplus.minecraftmultiplayertoken": "Minecraft 멀티플레이어 토큰 가져옴",
+  "minecraftauth_library.viafabricplus.minecraftcertificatechain": "Minecraft 인증서 체인 가져옴",
   "bedrock_realms.viafabricplus.warning": "이 기능은 베드락 에디션 계정을 설정해야 사용하실 수 있습니다!",
   "bedrock_realms.viafabricplus.availability_check": "사용 가능한지 확인 중...",
   "bedrock_realms.viafabricplus.no_worlds": "월드를 찾지 못했어요... ㅠ~ㅠ",
@@ -142,5 +153,6 @@
   "bedrock_realms.viafabricplus.leave": "Realms 나가기",
   "bedrock_realms.viafabricplus.invite": "초대 코드 수락",
   "bedrock_realms.viafabricplus.expired": "Realms 만료됨",
-  "bedrock_realms.viafabricplus.incompatible": "Realms 버전이 이 버전과 호환되지 않습니다."
+  "bedrock_realms.viafabricplus.incompatible": "Realms 버전이 이 버전과 호환되지 않습니다.",
+  "bedrock_realms.viafabricplus.nethernet_unsupported": "Nethernet을 통한 Realms는 아직 지원되지 않습니다. 이 Realms에 참여할 수 없습니다."
 }
