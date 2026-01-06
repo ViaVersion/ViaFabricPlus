@@ -54,6 +54,7 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Завантажувати скіни та черепи на старих версіях",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Симулювати дії інветаря на альфа версіях",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "Зберегти позицію прокрутки на екранах слотів",
+  "general_settings.viafabricplus.experimental_block_connections": "Експериментальні з’єднання блоків",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Натисніть, щоб встановити обліковий запис для Bedrock",
   "bedrock_settings.viafabricplus.replace_default_port": "Замінити усталений порт у списку серверів",
   "bedrock_settings.viafabricplus.experimental_features": "Увімкнути експериментальні функції (можливо нестабільно)",
