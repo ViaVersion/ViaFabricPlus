@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.protocol;
 
+import com.google.common.collect.Lists;
 import com.viaversion.viafabricplus.features.entity.metadata_handling.WolfHealthTracker1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.storage.BedrockJoinGameTracker;
@@ -41,6 +42,9 @@ import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ServerboundCon
 import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ServerboundPacket1_21_9;
 import com.viaversion.viaversion.protocols.v1_21_9to1_21_11.packet.ClientboundPacket1_21_11;
 import com.viaversion.viaversion.protocols.v1_21_9to1_21_11.packet.ClientboundPackets1_21_11;
+import com.viaversion.viaversion.util.Key;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.beta.b1_8_0_1tor1_0_0_1.types.Typesb1_8_0_1;
@@ -56,6 +60,25 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
 
     public ViaFabricPlusProtocol() {
         super(ClientboundPacket1_21_11.class, ClientboundPacket1_21_11.class, ServerboundPacket1_21_9.class, ServerboundPacket1_21_9.class);
+    }
+
+    @Override
+    protected void registerPackets() {
+        this.registerServerbound(ServerboundConfigurationPackets1_21_9.CUSTOM_PAYLOAD, wrapper -> {
+            if (wrapper.user().getProtocolInfo().serverProtocolVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_5)) {
+                final String channel = Key.namespaced(wrapper.passthrough(Types.STRING));
+                if (channel.equals("minecraft:register") || channel.equals("minecraft:unregister")) {
+                    final List<String> channels = Lists.newArrayList(new String(wrapper.passthrough(Types.SERVERBOUND_CUSTOM_PAYLOAD_DATA), StandardCharsets.UTF_8).split("\0"));
+                    if (channels.remove("fabric:extended_block_state_particle_effect_sync")) {
+                        if (!channels.isEmpty()) {
+                            wrapper.set(Types.SERVERBOUND_CUSTOM_PAYLOAD_DATA, 0, String.join("\0", channels).getBytes(StandardCharsets.UTF_8));
+                        } else {
+                            wrapper.cancel();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
