@@ -28,6 +28,7 @@ import com.viaversion.viafabricplus.injection.access.base.bedrock.IConfirmScreen
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.screen.impl.SettingsScreen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -130,8 +131,11 @@ public final class BedrockSettings extends SettingGroup {
             if (e instanceof InterruptedException) {
                 return;
             }
+
             this.thread.interrupt();
-            VFPScreen.showErrorScreen(TITLE, e, prevScreen);
+            if (client.screen instanceof SettingsScreen) { // The user might have already left the screen and joined a server
+                VFPScreen.showErrorScreen(TITLE, e, prevScreen);
+            }
         }
     }
 
