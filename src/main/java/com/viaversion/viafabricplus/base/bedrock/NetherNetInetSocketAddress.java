@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.base.bedrock;
 import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
 import java.net.InetSocketAddress;
 
-public class NetherNetInetSocketAddress extends InetSocketAddress {
+public final class NetherNetInetSocketAddress extends InetSocketAddress {
 
     private final NetherNetAddress netherNetAddress;
 

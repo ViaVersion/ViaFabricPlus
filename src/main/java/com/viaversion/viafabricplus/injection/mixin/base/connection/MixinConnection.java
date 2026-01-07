@@ -176,7 +176,8 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
     private static AbstractBootstrap<?, ?> useRakNetChannelFactory(Bootstrap instance, Class<? extends Channel> channelTypeClass, Operation<AbstractBootstrap<Bootstrap, Channel>> original, @Local(argsOnly = true) InetSocketAddress address, @Local(argsOnly = true) Connection clientConnection) {
         if (BedrockProtocolVersion.bedrockLatest.equals(((IConnection) clientConnection).viaFabricPlus$getTargetVersion())) {
             if (address instanceof NetherNetInetSocketAddress) {
-                return instance.channelFactory(NetherNetChannelFactory.client(new PeerConnectionFactory(), new NetherNetXboxSignaling(SaveManager.INSTANCE.getAccountsSave().getBedrockAccount().getMinecraftSession().getUpToDateUnchecked().getAuthorizationHeader())));
+                final String authorizationHeader = SaveManager.INSTANCE.getAccountsSave().getBedrockAccount().getMinecraftSession().getUpToDateUnchecked().getAuthorizationHeader();
+                return instance.channelFactory(NetherNetChannelFactory.client(new PeerConnectionFactory(), new NetherNetXboxSignaling(authorizationHeader)));
             } else { // RakNet
                 if (channelTypeClass == NioSocketChannel.class) {
                     channelTypeClass = NioDatagramChannel.class;
