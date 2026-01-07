@@ -19,10 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.base.connection;
+package com.viaversion.viafabricplus.injection.mixin.base.connection.bedrock;
 
 import com.viaversion.viafabricplus.base.bedrock.NetherNetInetSocketAddress;
-import com.viaversion.viafabricplus.injection.access.base.IServerAddress;
+import com.viaversion.viafabricplus.injection.access.base.bedrock.IServerAddress;
 import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
 import java.net.InetSocketAddress;
 import java.util.Optional;

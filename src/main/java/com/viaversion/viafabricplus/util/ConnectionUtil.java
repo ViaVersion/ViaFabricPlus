@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.util;
 
-import com.viaversion.viafabricplus.injection.access.base.IServerAddress;
+import com.viaversion.viafabricplus.injection.access.base.bedrock.IServerAddress;
 import com.viaversion.viafabricplus.injection.access.base.IServerData;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
