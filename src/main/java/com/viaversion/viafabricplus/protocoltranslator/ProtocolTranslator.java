@@ -49,6 +49,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.VersionType;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
+import dev.kastle.netty.channel.nethernet.config.NetherChannelOption;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.util.AttributeKey;
@@ -140,6 +141,7 @@ public final class ProtocolTranslator {
             channel.attr(ProtocolTranslator.TARGET_VERSION_ATTRIBUTE_KEY).set(serverVersion);
 
             if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
+                // RakNet config
                 channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, ProtocolConstants.BEDROCK_RAKNET_PROTOCOL_VERSION);
                 channel.config().setOption(RakChannelOption.RAK_COMPATIBILITY_MODE, true);
                 channel.config().setOption(RakChannelOption.RAK_CLIENT_INTERNAL_ADDRESSES, 20);
@@ -147,6 +149,9 @@ public final class ProtocolTranslator {
                 channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, channel.config().getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS).longValue());
                 channel.config().setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
                 channel.config().setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());
+
+                // NetherNet config
+                channel.config().setOption(NetherChannelOption.NETHER_CLIENT_HANDSHAKE_TIMEOUT_MS, channel.config().getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS));
             }
 
             final UserConnection user = new UserConnectionImpl(channel, true);
