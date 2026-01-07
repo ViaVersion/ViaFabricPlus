@@ -27,6 +27,7 @@ import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
+import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
 import java.awt.*;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -123,12 +124,13 @@ public final class BedrockRealmsScreen extends VFPScreen {
 
             try {
                 final RealmsJoinInformation server = service.joinWorld(entry.realmsServer);
-                if (server.getNetworkProtocol().equalsIgnoreCase(RealmsJoinInformation.PROTOCOL_NETHERNET)) {
-                    setupSubtitle(Component.translatable("bedrock_realms.viafabricplus.nethernet_unsupported"));
-                    return;
+                if (server.getNetworkProtocol().equalsIgnoreCase(RealmsJoinInformation.PROTOCOL_DEFAULT)) {
+                    ConnectionUtil.connect(server.getAddress(), BedrockProtocolVersion.bedrockLatest);
+                } else if (server.getNetworkProtocol().equalsIgnoreCase(RealmsJoinInformation.PROTOCOL_NETHERNET)) {
+                    ConnectionUtil.connectNetherNet(new NetherNetAddress(server.getAddress()));
+                } else {
+                    setupSubtitle(Component.translatable("bedrock_realms.viafabricplus.unsupported_protocol", server.getNetworkProtocol()));
                 }
-
-                ConnectionUtil.connect(server.getAddress(), BedrockProtocolVersion.bedrockLatest);
             } catch (final Throwable throwable) {
                 error("Failed to join realm", throwable);
             }

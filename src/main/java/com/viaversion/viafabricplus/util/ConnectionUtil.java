@@ -21,12 +21,15 @@
 
 package com.viaversion.viafabricplus.util;
 
+import com.viaversion.viafabricplus.injection.access.base.IServerAddress;
 import com.viaversion.viafabricplus.injection.access.base.IServerData;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ConnectScreen;
-import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 
 public final class ConnectionUtil {
 
@@ -45,6 +48,16 @@ public final class ConnectionUtil {
         if (version != null) {
             ((IServerData) entry).viaFabricPlus$forceVersion(version);
         }
+        ConnectScreen.startConnecting(Minecraft.getInstance().screen, Minecraft.getInstance(), serverAddress, entry, false, null);
+    }
+
+    public static void connectNetherNet(final NetherNetAddress address) {
+        final ServerAddress serverAddress = ServerAddress.parseString(address.getNetworkId() + ".nethernet.viafabricplus.localhost");
+        ((IServerAddress) (Object) serverAddress).viaFabricPlus$setNetherNetAddress(address);
+
+        final ServerData entry = new ServerData("Bedrock Realm " + address.getNetworkId(), serverAddress.getHost(), ServerData.Type.OTHER);
+        ((IServerData) entry).viaFabricPlus$forceVersion(BedrockProtocolVersion.bedrockLatest);
+
         ConnectScreen.startConnecting(Minecraft.getInstance().screen, Minecraft.getInstance(), serverAddress, entry, false, null);
     }
 

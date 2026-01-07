@@ -52,10 +52,12 @@ public final class ViaFabricPlusNettyPipelineProvider extends NettyPipelineProvi
             throw new IllegalStateException("Encryption already enabled");
         }
 
-        try {
-            channel.pipeline().addAfter(VLPipeline.VIABEDROCK_RAKNET_MESSAGE_CODEC_NAME, ViaFabricPlusVLLegacyPipeline.VIABEDROCK_ENCRYPTION_HANDLER_NAME, new AesEncryptionCodec(key));
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
+        if (channel.pipeline().get(VLPipeline.VIABEDROCK_RAKNET_MESSAGE_CODEC_NAME) != null) { // Only enable encryption for RakNet connections
+            try {
+                channel.pipeline().addAfter(VLPipeline.VIABEDROCK_RAKNET_MESSAGE_CODEC_NAME, ViaFabricPlusVLLegacyPipeline.VIABEDROCK_ENCRYPTION_HANDLER_NAME, new AesEncryptionCodec(key));
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
