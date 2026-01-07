@@ -17,12 +17,14 @@ If you also want to access **internal features** (including the legacy compatibi
 
 ```kotlin
 repositories {
+    // https://github.com/ViaVersion/ViaFabricPlus/blob/main/docs/DEVELOPER_API.md
     maven("https://repo.viaversion.com")
     maven("https://maven.lenni0451.net/everything")
     maven("https://maven.terraformersmc.com/releases")
     maven("https://jitpack.io") {
         content {
             includeGroup("com.github.oryxel1")
+            includeGroup("dev.kastle.NetworkCompatible")
         }
     }
 }
