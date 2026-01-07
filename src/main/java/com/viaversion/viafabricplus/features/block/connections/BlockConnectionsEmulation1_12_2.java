@@ -21,7 +21,9 @@
 
 package com.viaversion.viafabricplus.features.block.connections;
 
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -44,6 +46,7 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -78,7 +81,7 @@ public final class BlockConnectionsEmulation1_12_2 {
     }
 
     public static void updateChunkConnections(final LevelReader levelReader, final int chunkX, final int chunkZ) {
-        if (!GeneralSettings.INSTANCE.experimentalBlockConnections.getValue() || !levelReader.hasChunk(chunkX, chunkZ)) {
+        if (!isApplicable() || !levelReader.hasChunk(chunkX, chunkZ)) {
             return;
         }
 
@@ -146,6 +149,14 @@ public final class BlockConnectionsEmulation1_12_2 {
 
             return null;
         });
+    }
+
+    private static boolean isApplicable() {
+        if (GeneralSettings.INSTANCE.experimentalBlockConnections.getValue()) {
+            return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest);
+        } else {
+            return false;
+        }
     }
 
 }
