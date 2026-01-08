@@ -153,6 +153,5 @@
   "bedrock_realms.viafabricplus.leave": "Realms 나가기",
   "bedrock_realms.viafabricplus.invite": "초대 코드 수락",
   "bedrock_realms.viafabricplus.expired": "Realms 만료됨",
-  "bedrock_realms.viafabricplus.incompatible": "Realms 버전이 이 버전과 호환되지 않습니다.",
-  "bedrock_realms.viafabricplus.nethernet_unsupported": "Nethernet을 통한 Realms는 아직 지원되지 않습니다. 이 Realms에 참여할 수 없습니다."
+  "bedrock_realms.viafabricplus.incompatible": "Realms 버전이 이 버전과 호환되지 않습니다."
 }

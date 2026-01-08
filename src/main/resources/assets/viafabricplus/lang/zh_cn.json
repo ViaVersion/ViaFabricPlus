@@ -153,6 +153,5 @@
   "bedrock_realms.viafabricplus.leave": "离开Realm",
   "bedrock_realms.viafabricplus.invite": "接受邀请码",
   "bedrock_realms.viafabricplus.expired": "Realm已过期",
-  "bedrock_realms.viafabricplus.incompatible": "Realm的Minecraft版本太旧或太新",
-  "bedrock_realms.viafabricplus.nethernet_unsupported": "尚不支持通过Nethernet连接Realms。无法加入此Realm。"
+  "bedrock_realms.viafabricplus.incompatible": "Realm的Minecraft版本太旧或太新"
 }
