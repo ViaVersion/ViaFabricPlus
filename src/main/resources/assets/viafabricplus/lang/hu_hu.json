@@ -153,6 +153,5 @@
   "bedrock_realms.viafabricplus.leave": "Kilépés a Realm-ből",
   "bedrock_realms.viafabricplus.invite": "Meghívási kód elfogadása",
   "bedrock_realms.viafabricplus.expired": "A Realm lejárt",
-  "bedrock_realms.viafabricplus.incompatible": "A Realms Minecraft verziója túl régi vagy túl új",
-  "bedrock_realms.viafabricplus.nethernet_unsupported": "Realms a Nethernet segítségével még nem támogatott. Nem tudsz csatlakozni ehhez a realm-hez."
+  "bedrock_realms.viafabricplus.incompatible": "A Realms Minecraft verziója túl régi vagy túl új"
 }
