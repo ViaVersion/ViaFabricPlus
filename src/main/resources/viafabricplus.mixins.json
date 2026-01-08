@@ -59,6 +59,7 @@
     "features.bedrock.block.MixinLecternBlock",
     "features.bedrock.block.MixinSeaPickleBlock",
     "features.bedrock.block.MixinTrapDoorBlock",
+    "features.bedrock.inventory.MixinInventoryScreen",
     "features.bedrock.movement.MixinEntity",
     "features.bedrock.movement.MixinLivingEntity",
     "features.bedrock.movement.MixinLocalPlayer",
