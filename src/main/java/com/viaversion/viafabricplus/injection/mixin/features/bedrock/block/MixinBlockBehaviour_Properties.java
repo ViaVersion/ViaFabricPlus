@@ -53,7 +53,7 @@ public abstract class MixinBlockBehaviour_Properties {
 
     @Inject(method = "offsetType", at = @At(value = "RETURN"))
     private void fixBlockOffsets(BlockBehaviour.OffsetType offsetType, CallbackInfoReturnable<BlockBehaviour.Properties> cir) {
-        if (ProtocolTranslator.getTargetVersion().equalTo(BedrockProtocolVersion.bedrockLatest) && offsetType != BlockBehaviour.OffsetType.NONE) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && offsetType != BlockBehaviour.OffsetType.NONE) {
             this.offsetFunction = (state, pos) -> viaFabricPlus$randomlyModifyPosition(pos, offsetType);
         }
     }
