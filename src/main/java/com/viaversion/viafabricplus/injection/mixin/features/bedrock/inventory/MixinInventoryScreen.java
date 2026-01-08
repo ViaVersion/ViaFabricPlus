@@ -39,17 +39,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InventoryScreen.class)
-public class MixinInventoryScreen {
+public abstract class MixinInventoryScreen {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void sendBedrockPacket(CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().equalTo(BedrockProtocolVersion.bedrockLatest)) {
             final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
-            final EntityTracker entityTracker = connection.get(EntityTracker.class);
 
             final PacketWrapper interact = PacketWrapper.create(ServerboundBedrockPackets.INTERACT, connection);
             interact.write(Types.UNSIGNED_BYTE, (short) InteractPacket_Action.OpenInventory.getValue()); // action
-            interact.write(BedrockTypes.UNSIGNED_VAR_LONG, entityTracker.getClientPlayer().runtimeId()); // target entity runtime id
+            interact.write(BedrockTypes.UNSIGNED_VAR_LONG, connection.get(EntityTracker.class).getClientPlayer().runtimeId()); // target entity runtime id
             interact.write(BedrockTypes.OPTIONAL_POSITION_3F, null); // position
             interact.sendToServer(BedrockProtocol.class);
         }
