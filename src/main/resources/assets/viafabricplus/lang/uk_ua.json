@@ -154,5 +154,6 @@
   "bedrock_realms.viafabricplus.leave": "Залишити область",
   "bedrock_realms.viafabricplus.invite": "Прийняти код запрошення",
   "bedrock_realms.viafabricplus.expired": "Термін дії Realm закінчився",
-  "bedrock_realms.viafabricplus.incompatible": "Версія Realms Minecraft або занадто стара, або занадто нова"
+  "bedrock_realms.viafabricplus.incompatible": "Версія Realms Minecraft або занадто стара, або занадто нова",
+  "bedrock_realms.viafabricplus.unsupported_protocol": "Служба Realms через протокол %s не підтримується. Ви не можете приєднатися до цього реалму."
 }
