@@ -54,6 +54,7 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "加载旧版本皮肤和头颅",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "模拟Alpha版本物品栏操作",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "在槽位屏幕中保存滚动位置",
+  "general_settings.viafabricplus.experimental_block_connections": "实验性方块连接",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "单击以设置基岩版账户",
   "bedrock_settings.viafabricplus.replace_default_port": "在服务器列表中替换默认端口",
   "bedrock_settings.viafabricplus.experimental_features": "启用实验性功能（可能不稳定）",
@@ -153,5 +154,6 @@
   "bedrock_realms.viafabricplus.leave": "离开Realm",
   "bedrock_realms.viafabricplus.invite": "接受邀请码",
   "bedrock_realms.viafabricplus.expired": "Realm已过期",
-  "bedrock_realms.viafabricplus.incompatible": "Realm的Minecraft版本太旧或太新"
+  "bedrock_realms.viafabricplus.incompatible": "Realm的Minecraft版本太旧或太新",
+  "bedrock_realms.viafabricplus.unsupported_protocol": "不支持通过%s协议加入Realm。你不能加入这个Realm。"
 }
