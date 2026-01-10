@@ -24,7 +24,6 @@ repositories {
     maven("https://jitpack.io") {
         content {
             includeGroup("com.github.oryxel1")
-            includeGroup("dev.kastle.NetworkCompatible")
         }
     }
 }

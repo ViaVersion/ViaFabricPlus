@@ -152,6 +152,7 @@ public final class ProtocolTranslator {
 
                 // NetherNet config
                 channel.config().setOption(NetherChannelOption.NETHER_CLIENT_HANDSHAKE_TIMEOUT_MS, channel.config().getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS));
+                channel.config().setOption(NetherChannelOption.NETHER_CLIENT_MAX_HANDSHAKE_ATTEMPTS, 1);
             }
 
             final UserConnection user = new UserConnectionImpl(channel, true);
