@@ -21,16 +21,13 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.limitation;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -42,15 +39,6 @@ public abstract class MixinPlayer extends LivingEntity {
 
     protected MixinPlayer(EntityType<? extends LivingEntity> entityType, Level world) {
         super(entityType, world);
-    }
-
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 1))
-    private void removeFlySlipperiness(Player instance, Vec3 vec3d, @Local(argsOnly = true) Vec3 movementInput) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && movementInput.horizontalDistanceSqr() == 0) {
-            instance.setDeltaMovement(new Vec3(0, vec3d.y, 0));
-        } else {
-            instance.setDeltaMovement(vec3d);
-        }
     }
 
     @Inject(method = "onClimbable", at = @At("HEAD"), cancellable = true)

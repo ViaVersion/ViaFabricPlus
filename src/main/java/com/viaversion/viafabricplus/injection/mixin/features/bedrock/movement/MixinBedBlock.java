@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
+package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.phys.Vec3;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,8 +37,14 @@ public abstract class MixinBedBlock {
 
     @Inject(method = "bounceUp", at = @At("HEAD"), cancellable = true)
     private void collisionChanges(Entity entity, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             ci.cancel();
+
+            Vec3 velocity = entity.getDeltaMovement();
+            if (velocity.y < (double) 0.0F) {
+                double d = entity instanceof LivingEntity ? (double) 1.0F : 0.8;
+                entity.setDeltaMovement(velocity.x, Math.min(-velocity.y * 0.75F * d, 0.75F), velocity.z);
+            }
         }
     }
 

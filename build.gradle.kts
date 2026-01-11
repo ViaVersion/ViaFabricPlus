@@ -37,9 +37,9 @@ base {
     archivesName.set("ViaFabricPlus") // Override the set name as it's lowercase for publishing
 }
 
-project.property("updating_minecraft").toString().toBoolean().apply {
-    configureTestTasks(this)
-    if (this) {
+project.property("updating_minecraft").toString().toBoolean().let {
+    configureTestTasks(it)
+    if (it) {
         increaseVisibleBuildErrors()
     }
 }
@@ -52,26 +52,32 @@ includeFabricSubmodule("viafabricplus-api")
 includeFabricSubmodule("viafabricplus-visuals")
 
 dependencies {
+    jij("net.lenni0451:Reflect:1.6.1")
+    jij("de.florianmichael:Classic4J:2.2.1")
+    configureBedrockDependencies()
+
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")
     modCompileOnly("com.terraformersmc:modmenu:15.0.0")
-
-    jij("net.raphimc:MinecraftAuth:5.0.1-SNAPSHOT") {
-        exclude(group = "com.google.code.gson", module = "gson")
-    }
-    jij("net.lenni0451:Reflect:1.6.1")
-    jij("dev.kastle.netty:netty-transport-raknet:1.4.0") {
-        exclude(group = "io.netty")
-    }
-    jij("dev.kastle.netty:netty-transport-nethernet:1.6.0") {
-        exclude(group = "io.netty")
-    }
-    arrayOf("windows-x86_64", "windows-aarch64", "linux-x86_64", "linux-aarch64", "macos-aarch64").forEach {
-        jij("dev.kastle.webrtc:webrtc-java:1.0.3:$it")
-    }
-    jij("de.florianmichael:Classic4J:2.2.1")
 }
 
 includeTransitiveJijDependencies()
+
+fun configureBedrockDependencies() {
+    dependencies {
+        jij("net.raphimc:MinecraftAuth:5.0.1-SNAPSHOT") {
+            exclude(group = "com.google.code.gson", module = "gson")
+        }
+        jij("dev.kastle.netty:netty-transport-raknet:1.4.0") {
+            exclude(group = "io.netty")
+        }
+        jij("dev.kastle.netty:netty-transport-nethernet:1.6.0") {
+            exclude(group = "io.netty")
+        }
+        arrayOf("windows-x86_64", "windows-aarch64", "linux-x86_64", "linux-aarch64", "macos-aarch64").forEach {
+            jij("dev.kastle.webrtc:webrtc-java:1.0.3:$it")
+        }
+    }
+}
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {

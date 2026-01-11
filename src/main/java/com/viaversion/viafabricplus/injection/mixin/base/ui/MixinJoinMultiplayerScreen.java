@@ -21,20 +21,11 @@
 
 package com.viaversion.viafabricplus.injection.mixin.base.ui;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.injection.access.base.IServerData;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
-import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.multiplayer.resolver.ServerAddress;
-import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -67,25 +58,6 @@ public abstract class MixinJoinMultiplayerScreen extends Screen {
             this.addRenderableWidget(viaFabricPlus$button);
         }
         GeneralSettings.setOrientation(viaFabricPlus$button::setPosition, buttonPosition, width, height);
-    }
-
-    @WrapOperation(method = "join(Lnet/minecraft/client/multiplayer/ServerData;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/resolver/ServerAddress;parseString(Ljava/lang/String;)Lnet/minecraft/client/multiplayer/resolver/ServerAddress;"))
-    private ServerAddress replaceDefaultPort(String address, Operation<ServerAddress> original, @Local(argsOnly = true) ServerData entry) {
-        final IServerData mixinServerInfo = (IServerData) entry;
-
-        ProtocolVersion version;
-        if (mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
-            version = ProtocolTranslator.getTargetVersion();
-        } else {
-            version = mixinServerInfo.viaFabricPlus$forcedVersion();
-        }
-        return original.call(BedrockSettings.replaceDefaultPort(address, version));
-    }
-
-    @WrapOperation(method = "directJoinCallback", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/multiplayer/JoinMultiplayerScreen;join(Lnet/minecraft/client/multiplayer/ServerData;)V"))
-    private void storeDirectConnectionPhase(JoinMultiplayerScreen instance, ServerData entry, Operation<Void> original) {
-        ((IServerData) entry).viaFabricPlus$passDirectConnectScreen(true);
-        original.call(instance, entry);
     }
 
 }

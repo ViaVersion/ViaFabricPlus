@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.injection.mixin.features.movement.liquid.MixinLivingEntity;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.world.entity.EntityType;
@@ -92,6 +93,15 @@ public abstract class MixinPlayer extends MixinLivingEntity {
         }
 
         return true;
+    }
+
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 1))
+    private void removeFlySlipperiness(Player instance, Vec3 vec3d, @Local(argsOnly = true) Vec3 movementInput) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && movementInput.horizontalDistanceSqr() == 0) {
+            instance.setDeltaMovement(new Vec3(0, vec3d.y, 0));
+        } else {
+            instance.setDeltaMovement(vec3d);
+        }
     }
 
 }

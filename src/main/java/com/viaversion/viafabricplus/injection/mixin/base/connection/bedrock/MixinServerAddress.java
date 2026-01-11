@@ -19,14 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.access.base;
+package com.viaversion.viafabricplus.injection.mixin.base.connection.bedrock;
 
+import com.viaversion.viafabricplus.injection.access.base.bedrock.IServerAddress;
 import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 
-public interface IServerAddress {
+@Mixin(ServerAddress.class)
+public abstract class MixinServerAddress implements IServerAddress {
 
-    NetherNetAddress viaFabricPlus$getNetherNetAddress();
+    @Unique
+    private NetherNetAddress viaFabricPlus$netherNetAddress;
 
-    void viaFabricPlus$setNetherNetAddress(final NetherNetAddress address);
+    @Override
+    public NetherNetAddress viaFabricPlus$getNetherNetAddress() {
+        return this.viaFabricPlus$netherNetAddress;
+    }
+
+    @Override
+    public void viaFabricPlus$setNetherNetAddress(final NetherNetAddress address) {
+        this.viaFabricPlus$netherNetAddress = address;
+    }
 
 }

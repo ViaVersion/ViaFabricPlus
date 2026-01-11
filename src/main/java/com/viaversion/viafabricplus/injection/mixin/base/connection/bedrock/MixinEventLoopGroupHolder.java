@@ -19,28 +19,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.base.connection;
+package com.viaversion.viafabricplus.injection.mixin.base.connection.bedrock;
 
-import com.viaversion.viafabricplus.injection.access.base.IServerAddress;
-import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
-import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import com.viaversion.viafabricplus.injection.access.base.bedrock.IEventLoopGroupHolder;
+import net.minecraft.server.network.EventLoopGroupHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ServerAddress.class)
-public abstract class MixinServerAddress implements IServerAddress {
+@Mixin(EventLoopGroupHolder.class)
+public abstract class MixinEventLoopGroupHolder implements IEventLoopGroupHolder {
 
     @Unique
-    private NetherNetAddress viaFabricPlus$netherNetAddress;
+    private boolean viaFabricPlus$connecting = false;
 
-    @Override
-    public NetherNetAddress viaFabricPlus$getNetherNetAddress() {
-        return this.viaFabricPlus$netherNetAddress;
+    @Inject(method = "remote", at = @At("RETURN"))
+    private static void resetConnectingFlag(CallbackInfoReturnable<EventLoopGroupHolder> cir) {
+        ((IEventLoopGroupHolder) cir.getReturnValue()).viaFabricPlus$setConnecting(false);
     }
 
     @Override
-    public void viaFabricPlus$setNetherNetAddress(final NetherNetAddress address) {
-        this.viaFabricPlus$netherNetAddress = address;
+    public boolean viaFabricPlus$isConnecting() {
+        return viaFabricPlus$connecting;
+    }
+
+    @Override
+    public void viaFabricPlus$setConnecting(final boolean connecting) {
+        this.viaFabricPlus$connecting = connecting;
     }
 
 }

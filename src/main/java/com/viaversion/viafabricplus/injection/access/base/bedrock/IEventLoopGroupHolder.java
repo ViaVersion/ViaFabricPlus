@@ -19,25 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
+package com.viaversion.viafabricplus.injection.access.base.bedrock;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.block.BedBlock;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+public interface IEventLoopGroupHolder {
 
-@Mixin(BedBlock.class)
-public abstract class MixinBedBlock {
+    boolean viaFabricPlus$isConnecting();
 
-    @Inject(method = "bounceUp", at = @At("HEAD"), cancellable = true)
-    private void collisionChanges(Entity entity, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
-            ci.cancel();
-        }
-    }
+    void viaFabricPlus$setConnecting(boolean connecting);
 
 }

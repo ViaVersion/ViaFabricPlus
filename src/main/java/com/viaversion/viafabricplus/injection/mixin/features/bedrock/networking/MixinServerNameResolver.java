@@ -19,35 +19,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.base.connection;
+package com.viaversion.viafabricplus.injection.mixin.features.bedrock.networking;
 
-import com.viaversion.viafabricplus.injection.access.base.IEventLoopGroupHolder;
-import net.minecraft.server.network.EventLoopGroupHolder;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import java.util.Optional;
+import net.minecraft.client.multiplayer.resolver.ResolvedServerAddress;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import net.minecraft.client.multiplayer.resolver.ServerAddressResolver;
+import net.minecraft.client.multiplayer.resolver.ServerNameResolver;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(EventLoopGroupHolder.class)
-public abstract class MixinEventLoopGroupHolder implements IEventLoopGroupHolder {
+@Mixin(ServerNameResolver.class)
+public abstract class MixinServerNameResolver {
 
-    @Unique
-    private boolean viaFabricPlus$connecting = false;
+    @Shadow
+    @Final
+    private ServerAddressResolver resolver;
 
-    @Inject(method = "remote", at = @At("RETURN"))
-    private static void resetConnectingFlag(CallbackInfoReturnable<EventLoopGroupHolder> cir) {
-        ((IEventLoopGroupHolder) cir.getReturnValue()).viaFabricPlus$setConnecting(false);
-    }
-
-    @Override
-    public boolean viaFabricPlus$isConnecting() {
-        return viaFabricPlus$connecting;
-    }
-
-    @Override
-    public void viaFabricPlus$setConnecting(final boolean connecting) {
-        this.viaFabricPlus$connecting = connecting;
+    @Inject(method = "resolveAddress", at = @At("HEAD"), cancellable = true)
+    private void oldResolveBehaviour(ServerAddress address, CallbackInfoReturnable<Optional<ResolvedServerAddress>> cir) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            cir.setReturnValue(this.resolver.resolve(address));
+        }
     }
 
 }

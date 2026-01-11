@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.enums.bedrock.generated.PlayerAuthInputPacket_InputData;
 import net.raphimc.viabedrock.protocol.storage.EntityTracker;
@@ -31,6 +32,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Entity.class)
@@ -38,6 +40,9 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract boolean isSwimming();
+
+    @Shadow
+    protected Vec3 stuckSpeedMultiplier;
 
     @Inject(method = "setSwimming", at = @At("HEAD"))
     private void cancelSwimming(boolean swimming, CallbackInfo ci) {
@@ -48,6 +53,15 @@ public abstract class MixinEntity {
         final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
         if (connection != null && swimming != isSwimming()) {
             connection.get(EntityTracker.class).getClientPlayer().addAuthInputData(swimming ? PlayerAuthInputPacket_InputData.StartSwimming : PlayerAuthInputPacket_InputData.StopSwimming);
+        }
+    }
+
+    @Redirect(method = "makeStuckInBlock", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;stuckSpeedMultiplier:Lnet/minecraft/world/phys/Vec3;"))
+    private void prioritySlowestMovementMultiplier(Entity instance, Vec3 value) {
+        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && this.stuckSpeedMultiplier != Vec3.ZERO) {
+            this.stuckSpeedMultiplier = new Vec3(Math.min(this.stuckSpeedMultiplier.x, value.x), Math.min(this.stuckSpeedMultiplier.y, value.y), Math.min(this.stuckSpeedMultiplier.z, value.z));
+        } else {
+            this.stuckSpeedMultiplier = value;
         }
     }
 

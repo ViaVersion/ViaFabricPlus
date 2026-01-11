@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.access.base;
+package com.viaversion.viafabricplus.injection.access.base.bedrock;
 
-public interface IEventLoopGroupHolder {
+import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
 
-    boolean viaFabricPlus$isConnecting();
+public interface IServerAddress {
 
-    void viaFabricPlus$setConnecting(boolean connecting);
+    NetherNetAddress viaFabricPlus$getNetherNetAddress();
+
+    void viaFabricPlus$setNetherNetAddress(final NetherNetAddress address);
 
 }
