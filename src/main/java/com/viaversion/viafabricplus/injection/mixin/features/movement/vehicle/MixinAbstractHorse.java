@@ -33,8 +33,8 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(AbstractHorse.class)
 public abstract class MixinAbstractHorse {
 
-    @WrapWithCondition(method = "addPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;addPassenger(Lnet/minecraft/world/entity/Entity;)V"))
-    private boolean dontSetPassengerRotation(Animal instance, Entity entity) {
+    @WrapWithCondition(method = "addPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;absSnapRotationTo(FF)V"))
+    private boolean dontSetPassengerRotation(Entity instance, float yRot, float xRot) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_7);
     }
 
