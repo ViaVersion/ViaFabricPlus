@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Set;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
-import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
@@ -43,7 +42,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        MixinEnvironment.getCurrentEnvironment().audit();
+        //org.spongepowered.asm.mixin.MixinEnvironment.getCurrentEnvironment().audit(); // Uncomment during Minecraft updates
         final FabricLoader loader = FabricLoader.getInstance();
         IPNEXT_PRESENT = loader.isModLoaded("inventoryprofilesnext");
         MORE_CULLING_PRESENT = loader.isModLoaded("moreculling");
