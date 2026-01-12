@@ -64,6 +64,8 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
 
     @Override
     protected void registerPackets() {
+        // Fixes an issue where the Fabric Particle API causes disconnects when both the client and server have the mod installed and both are 1.21.5+.
+        // See https://github.com/ViaVersion/ViaFabric/issues/428
         this.registerServerbound(ServerboundConfigurationPackets1_21_9.CUSTOM_PAYLOAD, wrapper -> {
             if (wrapper.user().getProtocolInfo().serverProtocolVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_5)) {
                 final String channel = Key.namespaced(wrapper.passthrough(Types.STRING));
