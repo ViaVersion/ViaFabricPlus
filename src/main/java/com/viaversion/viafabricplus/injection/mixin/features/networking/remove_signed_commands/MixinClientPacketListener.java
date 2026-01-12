@@ -21,19 +21,17 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_signed_commands;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.time.Instant;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
-import net.minecraft.client.multiplayer.CommonListenerCookie;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.network.Connection;
+import net.minecraft.client.multiplayer.CommonListenerCookie;
 import net.minecraft.commands.arguments.ArgumentSignatures;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.LastSeenMessagesTracker;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ServerboundChatCommandSignedPacket;
@@ -50,11 +48,6 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     protected MixinClientPacketListener(Minecraft client, Connection connection, CommonListenerCookie connectionState) {
         super(client, connection, connectionState);
-    }
-
-    @WrapWithCondition(method = "sendUnattendedCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;openCommandSendConfirmationWindow(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/client/gui/screens/Screen;)V"))
-    private boolean dontOpenConfirmationScreens(ClientPacketListener instance, String command, String message, Screen screenAfterRun) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_5);
     }
 
     @Redirect(method = "sendCommand", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))

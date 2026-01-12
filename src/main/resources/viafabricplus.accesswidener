@@ -49,3 +49,4 @@ accessible method net/minecraft/world/level/block/RedStoneWireBlock getConnectin
 accessible class net/minecraft/client/gui/font/FontSet$SelectedGlyphs
 accessible class net/minecraft/world/entity/Entity$Movement
 accessible class net/minecraft/client/renderer/debug/GameTestBlockHighlightRenderer$Marker
+accessible class net/minecraft/client/multiplayer/ClientPacketListener$CommandCheckResult

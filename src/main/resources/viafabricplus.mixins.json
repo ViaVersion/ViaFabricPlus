@@ -312,6 +312,7 @@
     "features.remove_newer_screen_features.MixinJigsawBlockEditScreen",
     "features.remove_newer_screen_features.MixinStructureBlockEditScreen",
     "features.remove_newer_screen_features.MixinStructureBlockEditScreen_1",
+    "features.run_command_action.MixinClientPacketListener",
     "features.run_command_action.MixinScreen",
     "features.scoreboard.MixinComponentUtil",
     "features.scoreboard.MixinPlayerTeam",
