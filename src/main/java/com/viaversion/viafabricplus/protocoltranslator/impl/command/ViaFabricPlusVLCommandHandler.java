@@ -42,6 +42,7 @@ public final class ViaFabricPlusVLCommandHandler extends VLCommandHandler {
 
         this.registerSubCommand(new ListExtensionsCommand());
         this.registerSubCommand(new SetTimeCommand());
+        this.registerSubCommand(new SettingsCommand());
     }
 
     public int execute(final CommandContext<FabricClientCommandSource> ctx) {
