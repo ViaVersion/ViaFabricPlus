@@ -27,9 +27,19 @@ import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import net.minecraft.network.chat.MutableComponent;
 
 public class BooleanSetting extends AbstractSetting<Boolean> {
+    interface Callback {
+        boolean allowed();
+    }
+
+    private Callback callback;
 
     public BooleanSetting(SettingGroup parent, MutableComponent name, Boolean defaultValue) {
         super(parent, name, defaultValue);
+    }
+
+    public BooleanSetting(SettingGroup parent, MutableComponent name, Callback callback) {
+        super(parent, name, false);
+        this.callback = callback;
     }
 
     @Override
@@ -42,4 +52,8 @@ public class BooleanSetting extends AbstractSetting<Boolean> {
         setValue(object.get(getTranslationKey()).getAsBoolean());
     }
 
+    @Override
+    public Boolean getValue() {
+        return super.getValue() || this.callback.allowed();
+    }
 }

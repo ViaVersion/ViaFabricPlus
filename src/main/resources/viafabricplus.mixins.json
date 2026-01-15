@@ -335,5 +335,14 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "mixins": [
+    "features.movement.constants.infinity.MixinChunkPos",
+    "features.movement.constants.infinity.MixinEntity",
+    "features.movement.constants.infinity.MixinEntitySectionStorage",
+    "features.movement.constants.infinity.MixinLevel",
+    "features.movement.constants.infinity.MixinLevelReader",
+    "features.movement.constants.infinity.MixinPlayer",
+    "features.movement.constants.infinity.MixinWorldBorder"
+  ]
 }
