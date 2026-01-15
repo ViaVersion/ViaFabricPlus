@@ -27,7 +27,7 @@ import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import net.minecraft.network.chat.MutableComponent;
 
 public class BooleanSetting extends AbstractSetting<Boolean> {
-    interface Callback {
+    public interface Callback {
         boolean allowed();
     }
 
