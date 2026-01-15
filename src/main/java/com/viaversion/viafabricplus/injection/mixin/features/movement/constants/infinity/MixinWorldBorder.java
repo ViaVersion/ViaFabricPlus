@@ -97,6 +97,22 @@ public abstract class MixinWorldBorder {
         }
     }
 
+    @WrapMethod(method = "setCenter")
+    private void setCenter(final double x, final double z, final Operation<Void> original) {
+        if (!GeneralSettings.INSTANCE.experimentalFarlandsDistance.getValue()) {
+            original.call(x, z);
+        }
+    }
+
+    @WrapMethod(method = "getSize")
+    private double replaceSize(final Operation<Double> original) {
+        if (GeneralSettings.INSTANCE.experimentalFarlandsDistance.getValue()) {
+            return Double.MAX_VALUE;
+        } else {
+            return original.call();
+        }
+    }
+
     @WrapMethod(method = "setSize")
     private void setSize(final double size, final Operation<Void> original) {
         if (!GeneralSettings.INSTANCE.experimentalFarlandsDistance.getValue()) {
