@@ -31,7 +31,7 @@ public class BooleanSetting extends AbstractSetting<Boolean> {
         boolean allowed();
     }
 
-    private Callback callback;
+    private Callback callback = null;
 
     public BooleanSetting(SettingGroup parent, MutableComponent name, Boolean defaultValue) {
         super(parent, name, defaultValue);
@@ -54,6 +54,6 @@ public class BooleanSetting extends AbstractSetting<Boolean> {
 
     @Override
     public Boolean getValue() {
-        return super.getValue() || this.callback.allowed();
+        return super.getValue() || (this.callback != null && this.callback.allowed());
     }
 }
