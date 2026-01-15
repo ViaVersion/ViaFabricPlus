@@ -54,6 +54,10 @@ public class BooleanSetting extends AbstractSetting<Boolean> {
 
     @Override
     public Boolean getValue() {
-        return super.getValue() || (this.callback != null && this.callback.allowed());
+        if (!super.getValue()) {
+            return false;
+        } else {
+            return this.callback != null && this.callback.allowed();
+        }
     }
 }

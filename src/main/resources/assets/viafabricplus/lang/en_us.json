@@ -59,6 +59,7 @@
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Emulate inventory actions in alpha versions",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "Save scroll position in slot screens",
   "general_settings.viafabricplus.experimental_block_connections": "Experimental block connections",
+  "general_settings.viafabricplus.experimental_farlands_distance": "Experimental farlands distance",
 
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Click to set account for Bedrock Edition",
   "bedrock_settings.viafabricplus.replace_default_port": "Replace default port in server list",
