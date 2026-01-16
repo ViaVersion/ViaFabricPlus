@@ -78,7 +78,9 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
             final String name = biomeTag.getString("name");
             for (final BetaBiomeColorMapping mapping : viaFabricPlus$betaMappings) {
                 if (mapping.id().equals(name)) {
-
+                    biomeTag.putFloat("temperature", mapping.temperature());
+                    biomeTag.putFloat("downfall", mapping.downfall());
+                    // TODO: sky color/fog color/water color
                 }
             }
         }
