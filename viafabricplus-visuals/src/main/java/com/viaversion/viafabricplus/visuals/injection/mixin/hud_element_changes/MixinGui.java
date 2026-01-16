@@ -25,6 +25,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.client.Minecraft;
@@ -34,9 +35,7 @@ import net.minecraft.client.CameraType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,14 +47,6 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(Gui.class)
 public abstract class MixinGui {
-
-    @Shadow
-    @Final
-    private static Identifier ARMOR_FULL_SPRITE;
-
-    @Shadow
-    @Final
-    private static Identifier ARMOR_EMPTY_SPRITE;
 
     @Unique
     private static final int viaFabricPlusVisuals$ARMOR_ICON_WIDTH = 8;
@@ -105,35 +96,29 @@ public abstract class MixinGui {
     @ModifyExpressionValue(method = "renderPlayerHealth", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;guiHeight()I"), require = 0)
     private int moveHealthDown(int value) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
-            return value + 7; // Magical offset
+            return value + 6; // Magical offset
         } else {
             return value;
         }
     }
 
-    @ModifyArg(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), index = 1)
-    private static Identifier flipArmorTexture(Identifier identifier) {
-        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
-            if (identifier.equals(ARMOR_FULL_SPRITE)) {
-                return ARMOR_EMPTY_SPRITE;
-            } else if (identifier.equals(ARMOR_EMPTY_SPRITE)) {
-                return ARMOR_FULL_SPRITE;
-            }
-        }
-
-        return identifier;
-    }
-
     @ModifyArgs(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), require = 0)
-    private static void moveArmorPositions(Args args) {
-        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
-            final int width = 10 * viaFabricPlusVisuals$ARMOR_ICON_WIDTH;
-            args.set(2, (int) args.get(2) + width + 21);
-            args.set(3, (int) args.get(3) + 10);
+    private static void moveArmorPositions(Args args, @Local(ordinal = 3, argsOnly = true) int x, @Local(ordinal = 6) int n) {
+        if (!VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
+            return;
         }
+
+        final Minecraft client = Minecraft.getInstance();
+
+        final int armorWidth = 10 * viaFabricPlusVisuals$ARMOR_ICON_WIDTH;
+        final int offset = n * viaFabricPlusVisuals$ARMOR_ICON_WIDTH;
+
+        args.set(2, client.getWindow().getGuiScaledWidth() - x - armorWidth + offset - 1);
+        args.set(3, (int) args.get(3) + client.font.lineHeight + 1);
     }
 
-    @ModifyArg(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), index = 2, require = 0)
+    @ModifyArg(method = "renderAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"),
+            index = 2, require = 0)
     private int moveAirBubbles(int value) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             final Minecraft client = Minecraft.getInstance();
