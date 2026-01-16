@@ -78,4 +78,8 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
         return false;
     }
 
+    @Override
+    public boolean isChunkBorderFix() {
+        return true;
+    }
 }
