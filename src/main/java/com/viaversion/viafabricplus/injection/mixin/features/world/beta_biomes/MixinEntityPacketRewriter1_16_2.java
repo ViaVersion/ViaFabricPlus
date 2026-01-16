@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.beta_biomes;
 
 import com.viaversion.nbt.tag.CompoundTag;
+import com.viaversion.nbt.tag.ListTag;
 import com.viaversion.viafabricplus.features.world.beta_biomes.BetaBiomeMapping;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.type.Types;
@@ -74,7 +75,8 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
         }
 
         final CompoundTag biomesTag = Objects.requireNonNull(compoundTag.getCompoundTag("minecraft:worldgen/biome"));
-        for (final CompoundTag biomeTag : Objects.requireNonNull(biomesTag.getListTag("value", CompoundTag.class))) {
+        final ListTag<CompoundTag> biomes = Objects.requireNonNull(biomesTag.getListTag("value", CompoundTag.class));
+        for (final CompoundTag biomeTag : biomes) {
             final String name = Objects.requireNonNull(biomeTag.getString("name"));
             for (final BetaBiomeMapping mapping : viaFabricPlus$betaMappings) {
                 if (mapping.id().equals(Identifier.parse(name))) {
@@ -85,6 +87,7 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
             }
         }
 
+        biomesTag.put("value", biomes);
         return compoundTag;
     }
 
