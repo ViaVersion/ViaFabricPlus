@@ -21,26 +21,21 @@
 
 package com.viaversion.viafabricplus.features.world.beta_biomes;
 
-import net.minecraft.resources.Identifier;
-
 public record BetaBiomeMapping(
-    Identifier id,
     int baseColor,
     int mutatedColor,
     float temperature,
     float downfall
 ) {
-
-    public BetaBiomeMapping(Identifier id, int baseColor, int mutatedColor) {
-        this(id, baseColor, mutatedColor, 0.5F, 0.5F);
+    public BetaBiomeMapping(int baseColor, int mutatedColor) {
+        this(baseColor, mutatedColor, 0.5F, 0.5F);
     }
 
-    public BetaBiomeMapping(Identifier id, int baseColor) {
-        this(id, baseColor, baseColor);
+    public BetaBiomeMapping(int baseColor) {
+        this(baseColor, baseColor);
     }
 
     public boolean hasMutatedColor() {
         return this.baseColor != this.mutatedColor;
     }
-
 }

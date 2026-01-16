@@ -30,8 +30,10 @@ import com.viaversion.viaversion.protocols.v1_15_2to1_16.packet.ClientboundPacke
 import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.Protocol1_16_1To1_16_2;
 import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.rewriter.EntityPacketRewriter1_16_2;
 import com.viaversion.viaversion.rewriter.EntityRewriter;
+import com.viaversion.viaversion.util.Key;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import net.minecraft.resources.Identifier;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -43,19 +45,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<ClientboundPackets1_16, Protocol1_16_1To1_16_2> {
 
     @Unique
-    private static final BetaBiomeMapping[] viaFabricPlus$betaMappings = new BetaBiomeMapping[]{
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("jungle"), 588342, 2094168), // Rainforest
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("swamp"), 522674, 9154376), // Swampland
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("forest"), 353825, 5159473), // Forest
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("savanna"), 14278691), // Savanna
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("modified_jungle_edge"), 10595616), // Shrubland
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("taiga"), 3060051, 8107825), // Taiga
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("desert"), 16421912), // Desert
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("plains"), 16767248), // Plains
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("ice_spikes"), 5762041, 12899129), // Tundra
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("nether_wastes"), 16711680), // Hell
-        new BetaBiomeMapping(Identifier.withDefaultNamespace("the_end"), 8421631), // The End
-    };
+    private static final Map<String, BetaBiomeMapping> viaFabricPlus$betaMappings = new HashMap<>();
+
+    static {
+        viaFabricPlus$betaMappings.put("jungle", new BetaBiomeMapping(588342, 2094168)); // Rainforest
+        viaFabricPlus$betaMappings.put("swamp", new BetaBiomeMapping(522674, 9154376)); // Swampland
+        viaFabricPlus$betaMappings.put("forest", new BetaBiomeMapping(353825, 5159473)); // Forest
+        viaFabricPlus$betaMappings.put("savanna", new BetaBiomeMapping(14278691)); // Savanna
+        viaFabricPlus$betaMappings.put("modified_jungle_edge", new BetaBiomeMapping(10595616)); // Shrubland
+        viaFabricPlus$betaMappings.put("taiga", new BetaBiomeMapping(3060051, 8107825)); // Taiga
+        viaFabricPlus$betaMappings.put("desert", new BetaBiomeMapping(16421912)); // Desert
+        viaFabricPlus$betaMappings.put("plains", new BetaBiomeMapping(16767248)); // Plains
+        viaFabricPlus$betaMappings.put("ice_spikes", new BetaBiomeMapping(5762041, 12899129)); // Tundra
+        viaFabricPlus$betaMappings.put("nether_wastes", new BetaBiomeMapping(16711680)); // Hell
+        viaFabricPlus$betaMappings.put("the_end", new BetaBiomeMapping(8421631)); // The End
+    }
 
     protected MixinEntityPacketRewriter1_16_2(final Protocol1_16_1To1_16_2 protocol) {
         super(protocol);
@@ -64,31 +68,32 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
     @Inject(method = "registerPackets", at = @At("TAIL"))
     private void rewriteBetaBiomes(final CallbackInfo ci) {
         protocol.appendClientbound(ClientboundPackets1_16.LOGIN, wrapper -> {
-            wrapper.set(Types.NAMED_COMPOUND_TAG, 0, viaFabricPlus$rewriteBiomes(wrapper.get(Types.NAMED_COMPOUND_TAG, 0)));
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
+                viaFabricPlus$rewriteBiomes(wrapper.get(Types.NAMED_COMPOUND_TAG, 0));
+            }
         });
     }
 
     @Unique
-    private CompoundTag viaFabricPlus$rewriteBiomes(final CompoundTag compoundTag) {
-        if (ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.b1_7tob1_7_3)) {
-            return compoundTag; // No need to rewrite
-        }
-
+    private void viaFabricPlus$rewriteBiomes(final CompoundTag compoundTag) {
         final CompoundTag biomesTag = Objects.requireNonNull(compoundTag.getCompoundTag("minecraft:worldgen/biome"));
         final ListTag<CompoundTag> biomes = Objects.requireNonNull(biomesTag.getListTag("value", CompoundTag.class));
         for (final CompoundTag biomeTag : biomes) {
-            final String name = Objects.requireNonNull(biomeTag.getString("name"));
-            for (final BetaBiomeMapping mapping : viaFabricPlus$betaMappings) {
-                if (mapping.id().equals(Identifier.parse(name))) {
-                    biomeTag.putFloat("temperature", mapping.temperature());
-                    biomeTag.putFloat("downfall", mapping.downfall());
-                    // TODO: sky color/fog color/water color
-                }
+            final BetaBiomeMapping mapping = viaFabricPlus$betaMappings.get(Key.stripMinecraftNamespace(Objects.requireNonNull(biomeTag.getString("name"))));
+            if (mapping != null) {
+                viaFabricPlus$modifyBiome(mapping, Objects.requireNonNull(biomeTag.getCompoundTag("element")));
             }
         }
-
-        biomesTag.put("value", biomes);
-        return compoundTag;
     }
 
+    @Unique
+    private void viaFabricPlus$modifyBiome(final BetaBiomeMapping mapping, final CompoundTag compoundTag) {
+        // TODO: sky color/fog color/water color
+        compoundTag.putFloat("temperature", mapping.temperature());
+        compoundTag.putFloat("downfall", mapping.downfall());
+
+        final CompoundTag effectsTag = Objects.requireNonNull(compoundTag.getCompoundTag("effects"));
+        effectsTag.putInt("grass_color", mapping.baseColor());
+        effectsTag.putInt("foliage_color", mapping.mutatedColor());
+    }
 }
