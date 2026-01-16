@@ -17,13 +17,4 @@ public abstract class MixinEntity {
             return original.call(value, min, max);
         }
     }
-
-    @WrapOperation(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;clamp(DDD)D"))
-    private double dontClampLoadPos(final double value, final double min, final double max, final Operation<Double> original) {
-        if (GeneralSettings.INSTANCE.experimentalFarlandsDistance.getValue()) {
-            return value;
-        } else {
-            return original.call(value, min, max);
-        }
-    }
 }

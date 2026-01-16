@@ -15,7 +15,7 @@ public abstract class MixinEntitySectionStorage {
     @WrapMethod(method = "forEachAccessibleNonEmptySection")
     private <T extends EntityAccess> void noopRendering(final AABB aABB, final AbortableIterationConsumer<EntitySection<T>> abortableIterationConsumer, final Operation<Void> original) {
         if (!GeneralSettings.INSTANCE.experimentalFarlandsDistance.getValue()) {
-            original.call(aABB, abortableIterationConsumer);
+            original.call(aABB, abortableIterationConsumer); // Prevent rendering crash
         }
     }
 }
