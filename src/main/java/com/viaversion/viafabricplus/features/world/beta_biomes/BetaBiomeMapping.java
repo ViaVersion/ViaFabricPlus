@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.features.world.beta_biomes;
 
 import net.minecraft.resources.Identifier;
 
-public record BetaBiomeColorMapping(
+public record BetaBiomeMapping(
     Identifier id,
     int baseColor,
     int mutatedColor,
@@ -31,11 +31,11 @@ public record BetaBiomeColorMapping(
     float downfall
 ) {
 
-    public BetaBiomeColorMapping(Identifier id, int baseColor, int mutatedColor) {
+    public BetaBiomeMapping(Identifier id, int baseColor, int mutatedColor) {
         this(id, baseColor, mutatedColor, 0.5F, 0.5F);
     }
 
-    public BetaBiomeColorMapping(Identifier id, int baseColor) {
+    public BetaBiomeMapping(Identifier id, int baseColor) {
         this(id, baseColor, baseColor);
     }
 

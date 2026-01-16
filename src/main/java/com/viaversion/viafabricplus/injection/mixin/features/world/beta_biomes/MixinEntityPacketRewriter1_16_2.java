@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.beta_biomes;
 
 import com.viaversion.nbt.tag.CompoundTag;
-import com.viaversion.viafabricplus.features.world.beta_biomes.BetaBiomeColorMapping;
+import com.viaversion.viafabricplus.features.world.beta_biomes.BetaBiomeMapping;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_15_2to1_16.packet.ClientboundPackets1_16;
@@ -42,18 +42,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<ClientboundPackets1_16, Protocol1_16_1To1_16_2> {
 
     @Unique
-    private static final BetaBiomeColorMapping[] viaFabricPlus$betaMappings = new BetaBiomeColorMapping[]{
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("jungle"), 588342, 2094168), // Rainforest
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("swamp"), 522674, 9154376), // Swampland
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("forest"), 353825, 5159473), // Forest
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("savanna"), 14278691), // Savanna
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("modified_jungle_edge"), 10595616), // Shrubland
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("taiga"), 3060051, 8107825), // Taiga
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("desert"), 16421912), // Desert
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("plains"), 16767248), // Plains
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("ice_spikes"), 5762041, 12899129), // Tundra
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("nether_wastes"), 16711680), // Hell
-        new BetaBiomeColorMapping(Identifier.withDefaultNamespace("the_end"), 8421631), // The End
+    private static final BetaBiomeMapping[] viaFabricPlus$betaMappings = new BetaBiomeMapping[]{
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("jungle"), 588342, 2094168), // Rainforest
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("swamp"), 522674, 9154376), // Swampland
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("forest"), 353825, 5159473), // Forest
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("savanna"), 14278691), // Savanna
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("modified_jungle_edge"), 10595616), // Shrubland
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("taiga"), 3060051, 8107825), // Taiga
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("desert"), 16421912), // Desert
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("plains"), 16767248), // Plains
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("ice_spikes"), 5762041, 12899129), // Tundra
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("nether_wastes"), 16711680), // Hell
+        new BetaBiomeMapping(Identifier.withDefaultNamespace("the_end"), 8421631), // The End
     };
 
     protected MixinEntityPacketRewriter1_16_2(final Protocol1_16_1To1_16_2 protocol) {
@@ -76,7 +76,7 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
         final CompoundTag biomesTag = Objects.requireNonNull(compoundTag.getCompoundTag("minecraft:worldgen/biome"));
         for (final CompoundTag biomeTag : Objects.requireNonNull(biomesTag.getListTag("value", CompoundTag.class))) {
             final String name = biomeTag.getString("name");
-            for (final BetaBiomeColorMapping mapping : viaFabricPlus$betaMappings) {
+            for (final BetaBiomeMapping mapping : viaFabricPlus$betaMappings) {
                 if (mapping.id().equals(name)) {
                     biomeTag.putFloat("temperature", mapping.temperature());
                     biomeTag.putFloat("downfall", mapping.downfall());
