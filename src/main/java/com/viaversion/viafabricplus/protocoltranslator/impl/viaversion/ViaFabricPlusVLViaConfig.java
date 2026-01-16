@@ -77,9 +77,4 @@ public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
     public boolean use1_8HitboxMargin() {
         return false;
     }
-
-    @Override
-    public boolean isChunkBorderFix() {
-        return true;
-    }
 }

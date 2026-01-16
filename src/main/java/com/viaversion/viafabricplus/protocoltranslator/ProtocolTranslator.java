@@ -253,6 +253,7 @@ public final class ProtocolTranslator {
                 shield-blocking: false
                 no-delay-shield-blocking: true
                 handle-invalid-item-count: true
+                chunk-border-fix: true
                 """, StandardOpenOption.CREATE_NEW);
         } catch (FileAlreadyExistsException ignored) {
         } catch (Throwable e) {
