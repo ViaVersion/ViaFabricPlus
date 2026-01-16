@@ -75,9 +75,9 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
 
         final CompoundTag biomesTag = Objects.requireNonNull(compoundTag.getCompoundTag("minecraft:worldgen/biome"));
         for (final CompoundTag biomeTag : Objects.requireNonNull(biomesTag.getListTag("value", CompoundTag.class))) {
-            final String name = biomeTag.getString("name");
+            final String name = Objects.requireNonNull(biomeTag.getString("name"));
             for (final BetaBiomeMapping mapping : viaFabricPlus$betaMappings) {
-                if (mapping.id().equals(name)) {
+                if (mapping.id().equals(Identifier.parse(name))) {
                     biomeTag.putFloat("temperature", mapping.temperature());
                     biomeTag.putFloat("downfall", mapping.downfall());
                     // TODO: sky color/fog color/water color
