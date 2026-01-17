@@ -31,12 +31,11 @@ import java.util.concurrent.CompletableFuture;
 import com.viaversion.viaversion.commands.ViaCommandHandler;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 
-public final class ViaFabricPlusViaCommandHandler extends ViaCommandHandler {
+public final class ViaFabricPlusCommandHandler extends ViaCommandHandler {
 
-    public ViaFabricPlusViaCommandHandler() {
-        super();
+    public ViaFabricPlusCommandHandler() {
+        super(false);
 
-        this.removeSubCommand("dontbugme");
         this.removeSubCommand("list");
         this.removeSubCommand("player");
         this.removeSubCommand("pps");

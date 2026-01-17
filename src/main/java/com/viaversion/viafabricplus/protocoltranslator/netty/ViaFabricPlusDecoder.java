@@ -30,9 +30,9 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 
-public final class ViaFabricPlusViaDecoder extends ViaDecodeHandler {
+public final class ViaFabricPlusDecoder extends ViaDecodeHandler {
 
-    public ViaFabricPlusViaDecoder(UserConnection connection) {
+    public ViaFabricPlusDecoder(UserConnection connection) {
         super(connection);
     }
 

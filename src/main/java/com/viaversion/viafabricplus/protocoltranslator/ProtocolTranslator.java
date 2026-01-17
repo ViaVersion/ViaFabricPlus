@@ -29,19 +29,18 @@ import com.viaversion.viaaprilfools.ViaAprilFoolsPlatformImpl;
 import com.viaversion.viabackwards.ViaBackwardsPlatformImpl;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.injection.access.base.IConnection;
-import com.viaversion.viafabricplus.protocoltranslator.impl.command.ViaFabricPlusViaCommandHandler;
+import com.viaversion.viafabricplus.protocoltranslator.impl.command.ViaFabricPlusCommandHandler;
 import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
 import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaVersionPlatformImpl;
-import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusViaLoader;
+import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusLoader;
 import com.viaversion.viafabricplus.protocoltranslator.netty.NoReadFlowControlHandler;
-import com.viaversion.viafabricplus.protocoltranslator.netty.ViaFabricPlusViaDecoder;
+import com.viaversion.viafabricplus.protocoltranslator.netty.ViaFabricPlusDecoder;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
 import com.viaversion.viafabricplus.protocoltranslator.util.NoPacketSendChannel;
 import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.platform.ViaInjector;
 import com.viaversion.viaversion.api.protocol.ProtocolPathEntry;
 import com.viaversion.viaversion.api.protocol.ProtocolPipeline;
 import com.viaversion.viaversion.api.protocol.packet.State;
@@ -50,6 +49,7 @@ import com.viaversion.viaversion.api.protocol.version.VersionType;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.platform.NoopInjector;
 import com.viaversion.viaversion.platform.ViaChannelInitializer;
+import com.viaversion.viaversion.platform.ViaDecodeHandler;
 import com.viaversion.viaversion.platform.ViaEncodeHandler;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import dev.kastle.netty.channel.nethernet.config.NetherChannelOption;
@@ -184,10 +184,9 @@ public final class ProtocolTranslator {
 
         final ChannelPipeline pipeline = channel.pipeline();
 
-        final ViaInjector injector = Via.getManager().getInjector();
         // ViaVersion
-        pipeline.addBefore(HandlerNames.INBOUND_CONFIG, injector.getDecoderName(), new ViaFabricPlusViaDecoder(user));
-        pipeline.addBefore(HandlerNames.ENCODER, injector.getEncoderName(), new ViaEncodeHandler(user));
+        pipeline.addBefore(HandlerNames.INBOUND_CONFIG, ViaDecodeHandler.NAME, new ViaFabricPlusDecoder(user));
+        pipeline.addBefore(HandlerNames.ENCODER, ViaEncodeHandler.NAME, new ViaEncodeHandler(user));
 
         if (serverVersion.olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             // ViaLegacy
@@ -199,10 +198,10 @@ public final class ProtocolTranslator {
             pipeline.addBefore(HandlerNames.SPLITTER, MessageCodec.NAME, new MessageCodec());
             pipeline.replace(HandlerNames.SPLITTER, HandlerNames.SPLITTER, new BatchLengthCodec());
             pipeline.remove(HandlerNames.PREPENDER);
-            pipeline.addBefore(injector.getDecoderName(), PacketCodec.NAME, new PacketCodec());
+            pipeline.addBefore(ViaDecodeHandler.NAME, PacketCodec.NAME, new PacketCodec());
         }
 
-        pipeline.addAfter(injector.getDecoderName(), ProtocolTranslator.VIA_FLOW_CONTROL, new NoReadFlowControlHandler());
+        pipeline.addAfter(ViaDecodeHandler.NAME, ProtocolTranslator.VIA_FLOW_CONTROL, new NoReadFlowControlHandler());
         user.getProtocolInfo().getPipeline().add(ViaFabricPlusProtocol.INSTANCE);
     }
 
@@ -212,18 +211,15 @@ public final class ProtocolTranslator {
             return;
         }
 
-        final ViaInjector injector = Via.getManager().getInjector();
-        final String decoder = injector.getDecoderName();
-        final String encoder = injector.getEncoderName();
-        if (decoderIndex > pipeline.names().indexOf(decoder)) {
-            final ChannelHandler decoderHandler = pipeline.get(decoder);
-            final ChannelHandler encoderHandler = pipeline.get(encoder);
+        if (decoderIndex > pipeline.names().indexOf(ViaDecodeHandler.NAME)) {
+            final ChannelHandler decoderHandler = pipeline.get(ViaDecodeHandler.NAME);
+            final ChannelHandler encoderHandler = pipeline.get(ViaEncodeHandler.NAME);
 
             pipeline.remove(decoderHandler);
             pipeline.remove(encoderHandler);
 
-            pipeline.addAfter(HandlerNames.DECOMPRESS, decoder, decoderHandler);
-            pipeline.addAfter(HandlerNames.COMPRESS, encoder, encoderHandler);
+            pipeline.addAfter(HandlerNames.DECOMPRESS, ViaDecodeHandler.NAME, decoderHandler);
+            pipeline.addAfter(HandlerNames.COMPRESS, ViaEncodeHandler.NAME, encoderHandler);
         }
     }
 
@@ -357,7 +353,7 @@ public final class ProtocolTranslator {
 
         // Register command callback for /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            final ViaFabricPlusViaCommandHandler commandHandler = (ViaFabricPlusViaCommandHandler) Via.getManager().getCommandHandler();
+            final ViaFabricPlusCommandHandler commandHandler = (ViaFabricPlusCommandHandler) Via.getManager().getCommandHandler();
             final RequiredArgumentBuilder<FabricClientCommandSource, String> executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
 
             dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viafabricplus").then(executor).executes(commandHandler::execute));
@@ -368,8 +364,8 @@ public final class ProtocolTranslator {
             ViaManagerImpl.initAndLoad(
                 new ViaFabricPlusViaVersionPlatformImpl(path.toFile()),
                 new NoopInjector(),
-                new ViaFabricPlusViaCommandHandler(),
-                new ViaFabricPlusViaLoader(),
+                new ViaFabricPlusCommandHandler(),
+                new ViaFabricPlusLoader(),
                 () -> {
                     new ViaBackwardsPlatformImpl();
                     new ViaFabricPlusViaLegacyPlatformImpl();

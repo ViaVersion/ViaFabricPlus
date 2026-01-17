@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.platform;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusViaConfig;
+import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusConfig;
 import com.viaversion.viafabricplus.protocoltranslator.util.JLoggerToSLF4J;
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import com.viaversion.viaversion.libs.gson.JsonArray;
@@ -68,7 +68,7 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends UserConnectionVia
 
     @Override
     protected AbstractViaConfig createConfig() {
-        return new ViaFabricPlusViaConfig(new File(getDataFolder(), "viaversion.yml"), this.getLogger());
+        return new ViaFabricPlusConfig(new File(getDataFolder(), "viaversion.yml"), this.getLogger());
     }
 
     @Override

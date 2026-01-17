@@ -27,16 +27,15 @@ import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
-public final class ViaFabricPlusViaConfig extends AbstractViaConfig {
+public final class ViaFabricPlusConfig extends AbstractViaConfig {
 
-    public ViaFabricPlusViaConfig(File configFile, Logger logger) {
+    public ViaFabricPlusConfig(File configFile, Logger logger) {
         super(configFile, logger);
     }
 
     @Override
     public List<String> getUnsupportedOptions() {
         final List<String> unsupported = super.getUnsupportedOptions();
-        unsupported.add("check-for-updates");
         unsupported.add("simulate-pt");
         unsupported.add("fix-1_21-placement-rotation");
         unsupported.add("team-colour-fix");

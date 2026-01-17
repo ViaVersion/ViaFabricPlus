@@ -27,7 +27,7 @@ import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
 import com.viaversion.viaversion.api.connection.UserConnection;
 
-public interface VFPViaSubCommand extends ViaSubCommand {
+public interface VFPSubCommand extends ViaSubCommand {
 
     /**
      * Automatically prefix all messages

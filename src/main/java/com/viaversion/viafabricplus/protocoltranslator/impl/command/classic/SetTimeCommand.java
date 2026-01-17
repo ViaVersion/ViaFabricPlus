@@ -21,13 +21,13 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.command.classic;
 
-import com.viaversion.viafabricplus.protocoltranslator.impl.command.VFPViaSubCommand;
+import com.viaversion.viafabricplus.protocoltranslator.impl.command.VFPSubCommand;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import net.minecraft.ChatFormatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.alpha.a1_0_16_2toa1_0_17_1_0_17_4.storage.TimeLockStorage;
 
-public final class SetTimeCommand implements VFPViaSubCommand {
+public final class SetTimeCommand implements VFPSubCommand {
 
     @Override
     public String name() {
