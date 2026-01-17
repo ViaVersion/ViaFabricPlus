@@ -28,6 +28,7 @@ import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.InteractionResult;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -44,4 +45,12 @@ public abstract class MixinConsumable {
         }
     }
 
+    @Redirect(method = "startConsuming", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/component/Consumable;consumeTicks()I"))
+    private int instantFoodEating(final Consumable instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
+            return 0;
+        } else {
+            return instance.consumeTicks();
+        }
+    }
 }
