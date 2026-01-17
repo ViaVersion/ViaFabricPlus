@@ -27,11 +27,11 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 
-public final class ViaFabricPlusViaCommandSender implements ViaCommandSender {
+public final class ViaFabricPlusCommandSender implements ViaCommandSender {
 
     private final SharedSuggestionProvider source;
 
-    public ViaFabricPlusViaCommandSender(final SharedSuggestionProvider source) {
+    public ViaFabricPlusCommandSender(final SharedSuggestionProvider source) {
         this.source = source;
     }
 

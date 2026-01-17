@@ -25,8 +25,8 @@ import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.api.settings.AbstractSetting;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
-import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import net.minecraft.network.chat.MutableComponent;
 
 public class VersionedBooleanSetting extends AbstractSetting<Integer> {
@@ -35,9 +35,9 @@ public class VersionedBooleanSetting extends AbstractSetting<Integer> {
     public static final int DISABLED_INDEX = 1;
     public static final int ENABLED_INDEX = 0;
 
-    private final VersionRange protocolRange;
+    private final ProtocolVersionRange protocolRange;
 
-    public VersionedBooleanSetting(SettingGroup parent, MutableComponent name, VersionRange protocolRange) {
+    public VersionedBooleanSetting(SettingGroup parent, MutableComponent name, ProtocolVersionRange protocolRange) {
         super(parent, name, AUTO_INDEX);
 
         this.protocolRange = protocolRange;
@@ -71,7 +71,7 @@ public class VersionedBooleanSetting extends AbstractSetting<Integer> {
         }
     }
 
-    public VersionRange getProtocolRange() {
+    public ProtocolVersionRange getProtocolRange() {
         return protocolRange;
     }
 

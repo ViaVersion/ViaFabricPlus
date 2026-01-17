@@ -23,24 +23,37 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.platform;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusVLViaConfig;
-import com.viaversion.vialoader.impl.platform.ViaVersionPlatformImpl;
+import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusViaConfig;
+import com.viaversion.viafabricplus.protocoltranslator.util.JLoggerToSLF4J;
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map;
+import java.util.logging.Logger;
+import com.viaversion.viaversion.platform.UserConnectionViaVersionPlatform;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.Person;
 import net.minecraft.client.Minecraft;
+import org.slf4j.LoggerFactory;
 
-public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatformImpl {
+public final class ViaFabricPlusViaVersionPlatformImpl extends UserConnectionViaVersionPlatform {
 
-    public ViaFabricPlusViaVersionPlatformImpl(File rootFolder) { // Only required to not throw an exception, not used
-        super(rootFolder);
+    public ViaFabricPlusViaVersionPlatformImpl(File dataFolder) {
+        super(dataFolder);
+    }
+
+    @Override
+    public Logger createLogger(final String name) {
+        return new JLoggerToSLF4J(LoggerFactory.getLogger(name));
+    }
+
+    @Override
+    public boolean isProxy() {
+        return true;
     }
 
     @Override
@@ -55,8 +68,7 @@ public final class ViaFabricPlusViaVersionPlatformImpl extends ViaVersionPlatfor
 
     @Override
     protected AbstractViaConfig createConfig() {
-        // Use config overload and change directory to root folder
-        return new ViaFabricPlusVLViaConfig(new File(getDataFolder(), "viaversion.yml"), this.getLogger());
+        return new ViaFabricPlusViaConfig(new File(getDataFolder(), "viaversion.yml"), this.getLogger());
     }
 
     @Override

@@ -83,11 +83,7 @@ fun Project.configureVVDependencies(configuration: String) {
     dependencies {
         configuration("com.viaversion:viaversion-common:5.7.1-SNAPSHOT")
         configuration("com.viaversion:viabackwards-common:5.7.1-SNAPSHOT")
-        configuration("com.viaversion:viaaprilfools-common:4.0.7")
-        configuration("com.viaversion:vialoader:4.0.6") {
-            exclude(group = "com.google.guava", module = "guava")
-            exclude(group = "org.slf4j", module = "slf4j-api")
-        }
+        configuration("com.viaversion:viaaprilfools-common:4.0.8-SNAPSHOT")
         configuration("net.raphimc:ViaLegacy:3.0.13-SNAPSHOT")
         configuration("net.raphimc:ViaBedrock:0.0.25-SNAPSHOT") {
             exclude(group = "com.mojang", module = "brigadier")

@@ -27,8 +27,6 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.viaversion.viafabricplus.injection.access.base.IConnection;
 import com.viaversion.viafabricplus.injection.access.base.ILocalSampleLogger;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.vialoader.netty.CompressionReorderEvent;
-import com.viaversion.vialoader.netty.VLLegacyPipeline;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
@@ -45,6 +43,8 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.network.EventLoopGroupHolder;
 import net.minecraft.util.debugchart.LocalSampleLogger;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialegacy.netty.PreNettyLengthPrepender;
+import net.raphimc.vialegacy.netty.PreNettyLengthRemover;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -78,7 +78,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
     @Inject(method = "setupCompression", at = @At("RETURN"))
     private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
         // Compression enabled and elements put into pipeline, move via handlers
-        channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
+        ProtocolTranslator.reorderPipeline(channel.pipeline());
     }
 
     @Inject(method = "setEncryptionKey", at = @At("HEAD"), cancellable = true)
@@ -98,7 +98,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
             }
 
             this.encrypted = true;
-            this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, HandlerNames.ENCRYPT, new CipherEncoder(encryptionCipher));
+            this.channel.pipeline().addBefore(PreNettyLengthRemover.NAME, HandlerNames.ENCRYPT, new CipherEncoder(encryptionCipher));
         }
     }
 
@@ -136,7 +136,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
 
         this.encrypted = true;
         // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
-        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_PREPENDER_NAME, HandlerNames.DECRYPT, new CipherDecoder(this.viaFabricPlus$decryptionCipher));
+        this.channel.pipeline().addBefore(PreNettyLengthPrepender.NAME, HandlerNames.DECRYPT, new CipherDecoder(this.viaFabricPlus$decryptionCipher));
     }
 
     @Override
