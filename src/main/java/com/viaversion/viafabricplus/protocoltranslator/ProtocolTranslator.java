@@ -89,18 +89,15 @@ import net.raphimc.vialegacy.netty.PreNettyLengthPrepender;
 import net.raphimc.vialegacy.netty.PreNettyLengthRemover;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
-/**
- * This class represents the whole Protocol Translator, here all important variables are stored
- */
 public final class ProtocolTranslator {
 
     /**
-     * These attribute keys are used to track the main connections of Minecraft and ViaVersion, so that they can be used later during the connection to send packets.
+     * Internal state tracking for the game client connection, used in various Via providers
      */
     public static final AttributeKey<Connection> CLIENT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-clientconnection");
 
     /**
-     * This attribute stores the forced version for the current connection (if you set a specific version in the Edit Server screen)
+     * Stores the target version ViaVersion is translating to. This will be always set, even if the {@link #NATIVE_VERSION} is set.
      */
     public static final AttributeKey<ProtocolVersion> TARGET_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-targetversion");
 
@@ -155,9 +152,6 @@ public final class ProtocolTranslator {
     public static void injectViaPipeline(final Connection connection, final Channel channel) {
         final IConnection mixinClientConnection = (IConnection) connection;
         final ProtocolVersion serverVersion = mixinClientConnection.viaFabricPlus$getTargetVersion();
-        if (serverVersion == NATIVE_VERSION) {
-            return;
-        }
 
         channel.attr(ProtocolTranslator.CLIENT_CONNECTION_ATTRIBUTE_KEY).set(connection);
         channel.attr(ProtocolTranslator.TARGET_VERSION_ATTRIBUTE_KEY).set(serverVersion);
@@ -227,9 +221,10 @@ public final class ProtocolTranslator {
     }
 
     public static ProtocolVersion getTargetVersion(final Channel channel) {
-        if (channel == null || !channel.hasAttr(TARGET_VERSION_ATTRIBUTE_KEY)) {
-            throw new IllegalStateException("Target version attribute not set");
+        if (!channel.hasAttr(TARGET_VERSION_ATTRIBUTE_KEY)) {
+            throw new IllegalStateException("ViaFabricPlus has not injected into that channel yet!");
         }
+
         return channel.attr(TARGET_VERSION_ATTRIBUTE_KEY).get();
     }
 
