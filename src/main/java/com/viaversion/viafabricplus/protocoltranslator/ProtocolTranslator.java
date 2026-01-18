@@ -36,6 +36,7 @@ import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabric
 import com.viaversion.viafabricplus.protocoltranslator.netty.NoReadFlowControlHandler;
 import com.viaversion.viafabricplus.protocoltranslator.netty.ViaFabricPlusDecoder;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
+import com.viaversion.viafabricplus.protocoltranslator.util.ConfigPatcher;
 import com.viaversion.viafabricplus.protocoltranslator.util.NoPacketSendChannel;
 import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
@@ -60,10 +61,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.flow.FlowControlHandler;
 import io.netty.util.AttributeKey;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -300,38 +299,6 @@ public final class ProtocolTranslator {
         return ((IConnection) handler.getConnection()).viaFabricPlus$getUserConnection();
     }
 
-    /**
-     * Apply recommended config options to the ViaVersion config files
-     *
-     * @param path The path where the ViaVersion config files is located
-     */
-    private static void patchConfigs(final Path path) {
-        try {
-            final Path viaVersionConfig = path.resolve("viaversion.yml");
-            Files.writeString(viaVersionConfig, """
-                fix-infested-block-breaking: false
-                shield-blocking: false
-                no-delay-shield-blocking: true
-                handle-invalid-item-count: true
-                chunk-border-fix: true
-                """, StandardOpenOption.CREATE_NEW);
-        } catch (FileAlreadyExistsException ignored) {
-        } catch (Throwable e) {
-            throw new RuntimeException("Failed to patch ViaVersion config", e);
-        }
-
-        try {
-            final Path viaLegacyConfig = path.resolve("vialegacy.yml");
-            Files.writeString(viaLegacyConfig, """
-                legacy-skull-loading: true
-                legacy-skin-loading: true
-                """, StandardOpenOption.CREATE_NEW);
-        } catch (FileAlreadyExistsException ignored) {
-        } catch (Throwable e) {
-            throw new RuntimeException("Failed to patch ViaLegacy config", e);
-        }
-    }
-
     private static void changeBedrockProtocolName() {
         final ProtocolVersion bedrockLatest = RStream.of(BedrockProtocolVersion.class).fields().by("bedrockLatest").get();
 
@@ -349,7 +316,12 @@ public final class ProtocolTranslator {
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new IllegalStateException("Native version is not the same as the current version");
         }
-        patchConfigs(path);
+
+        try {
+            ConfigPatcher.patch(path.resolve("viaversion.yml"));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to patch ViaVersion config", e);
+        }
 
         // Register command callback for /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
