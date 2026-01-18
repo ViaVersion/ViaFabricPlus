@@ -52,25 +52,25 @@ public abstract class MixinAbstractContainerScreen extends Screen {
 
     @Redirect(method = {"mouseClicked", "mouseReleased"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/MouseButtonEvent;hasShiftDown()Z"))
     private boolean disableShiftClickItems(final MouseButtonEvent instance) {
-        return instance.hasShiftDown() && ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_5_2);
+        return instance.hasShiftDown() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_6_1);
     }
 
     // TODO: Item is supposed to go in slot on click not where mouse is released
     @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
-    private void disableItemDragging(final MouseButtonEvent mouseButtonEvent, final double d, final double e, final CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            cir.setReturnValue(super.mouseDragged(mouseButtonEvent, d, e));
+    private void disableItemDragging(final MouseButtonEvent mouseButtonEvent, final double mouseX, final double mouseY, final CallbackInfoReturnable<Boolean> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_5_2)) {
+            cir.setReturnValue(super.mouseDragged(mouseButtonEvent, mouseX, mouseY));
         }
     }
 
     @WrapWithCondition(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;slotClicked(Lnet/minecraft/world/inventory/Slot;IILnet/minecraft/world/inventory/ClickType;)V", ordinal = 0))
     private boolean disableItemCloning(final AbstractContainerScreen<?> instance, final Slot slot, final int slotIndex, final int count, final ClickType clickType) {
-        return ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_3_1tor1_3_2);
+        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
     }
 
     @Redirect(method = "checkHotbarKeyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;matches(Lnet/minecraft/client/input/KeyEvent;)Z", ordinal = 1))
-    private boolean disableHotbarKeys(KeyMapping instance, KeyEvent keyEvent) {
-        return instance.matches(keyEvent) && ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_3_1tor1_3_2);
+    private boolean disableHotbarKeys(final KeyMapping instance, final KeyEvent keyEvent) {
+        return instance.matches(keyEvent) && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
     }
 
 }
