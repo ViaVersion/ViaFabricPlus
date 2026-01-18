@@ -30,9 +30,9 @@ import com.viaversion.viabackwards.ViaBackwardsPlatformImpl;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.injection.access.base.IConnection;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.ViaFabricPlusCommandHandler;
-import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
-import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaVersionPlatformImpl;
-import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusLoader;
+import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaLegacyPlatform;
+import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaVersionPlatform;
+import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusPlatformLoader;
 import com.viaversion.viafabricplus.protocoltranslator.netty.NoReadFlowControlHandler;
 import com.viaversion.viafabricplus.protocoltranslator.netty.ViaFabricPlusDecoder;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
@@ -362,13 +362,13 @@ public final class ProtocolTranslator {
         return CompletableFuture.runAsync(() -> {
             // Load ViaVersion and register all platforms and their components
             ViaManagerImpl.initAndLoad(
-                new ViaFabricPlusViaVersionPlatformImpl(path.toFile()),
+                new ViaFabricPlusViaVersionPlatform(path.toFile()),
                 new NoopInjector(),
                 new ViaFabricPlusCommandHandler(),
-                new ViaFabricPlusLoader(),
+                new ViaFabricPlusPlatformLoader(),
                 () -> {
                     new ViaBackwardsPlatformImpl();
-                    new ViaFabricPlusViaLegacyPlatformImpl();
+                    new ViaFabricPlusViaLegacyPlatform();
                     new ViaAprilFoolsPlatformImpl();
                     new ViaBedrockPlatformImpl();
                 }

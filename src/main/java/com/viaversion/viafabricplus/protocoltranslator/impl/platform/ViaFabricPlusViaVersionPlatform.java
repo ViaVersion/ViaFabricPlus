@@ -40,9 +40,9 @@ import net.fabricmc.loader.api.metadata.Person;
 import net.minecraft.client.Minecraft;
 import org.slf4j.LoggerFactory;
 
-public final class ViaFabricPlusViaVersionPlatformImpl extends UserConnectionViaVersionPlatform {
+public final class ViaFabricPlusViaVersionPlatform extends UserConnectionViaVersionPlatform {
 
-    public ViaFabricPlusViaVersionPlatformImpl(File dataFolder) {
+    public ViaFabricPlusViaVersionPlatform(File dataFolder) {
         super(dataFolder);
     }
 

@@ -56,7 +56,7 @@ import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.provider.OldAut
 import net.raphimc.vialegacy.protocol.release.r1_6_4tor1_7_2_5.provider.EncryptionProvider;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
-public final class ViaFabricPlusLoader implements ViaPlatformLoader {
+public final class ViaFabricPlusPlatformLoader implements ViaPlatformLoader {
 
     @Override
     public void load() {
