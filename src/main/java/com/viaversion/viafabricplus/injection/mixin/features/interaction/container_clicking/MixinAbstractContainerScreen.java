@@ -58,7 +58,7 @@ public abstract class MixinAbstractContainerScreen extends Screen {
     // TODO: Item is supposed to go in slot on click not where mouse is released
     @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
     private void disableItemDragging(final MouseButtonEvent mouseButtonEvent, final double mouseX, final double mouseY, final CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_5_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_5tor1_5_1)) {
             cir.setReturnValue(super.mouseDragged(mouseButtonEvent, mouseX, mouseY));
         }
     }
