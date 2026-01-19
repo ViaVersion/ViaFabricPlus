@@ -48,17 +48,17 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
     private static final Map<String, BetaBiomeMapping> viaFabricPlus$betaMappings = new HashMap<>();
 
     static {
-        viaFabricPlus$betaMappings.put("jungle", new BetaBiomeMapping()); // Rainforest
-        viaFabricPlus$betaMappings.put("swamp", new BetaBiomeMapping()); // Swampland
-        viaFabricPlus$betaMappings.put("forest", new BetaBiomeMapping()); // Forest
-        viaFabricPlus$betaMappings.put("savanna", new BetaBiomeMapping()); // Savanna
-        viaFabricPlus$betaMappings.put("modified_jungle_edge", new BetaBiomeMapping()); // Shrubland
-        viaFabricPlus$betaMappings.put("taiga", new BetaBiomeMapping()); // Taiga
-        viaFabricPlus$betaMappings.put("desert", new BetaBiomeMapping()); // Desert
-        viaFabricPlus$betaMappings.put("plains", new BetaBiomeMapping()); // Plains
-        viaFabricPlus$betaMappings.put("ice_spikes", new BetaBiomeMapping()); // Tundra
-        viaFabricPlus$betaMappings.put("nether_wastes", new BetaBiomeMapping()); // Hell
-        viaFabricPlus$betaMappings.put("the_end", new BetaBiomeMapping()); // The End
+        viaFabricPlus$betaMappings.put("jungle", new BetaBiomeMapping(0.0F, 0.0F /* TODO */)); // Rainforest
+        viaFabricPlus$betaMappings.put("swamp", new BetaBiomeMapping(0.8F, 0.9F)); // Swampland
+        viaFabricPlus$betaMappings.put("forest", new BetaBiomeMapping(0.7F, 0.8F)); // Forest
+        viaFabricPlus$betaMappings.put("savanna", new BetaBiomeMapping(0.0F, 0.0F /* TODO */)); // Savanna
+        viaFabricPlus$betaMappings.put("modified_jungle_edge", new BetaBiomeMapping(0.0F, 0.0F /* TODO */)); // Shrubland
+        viaFabricPlus$betaMappings.put("taiga", new BetaBiomeMapping(0.3F, 0.8F)); // Taiga
+        viaFabricPlus$betaMappings.put("desert", new BetaBiomeMapping(2.0F, 0.0F)); // Desert
+        viaFabricPlus$betaMappings.put("plains", new BetaBiomeMapping(0.8F, 0.4F)); // Plains
+        viaFabricPlus$betaMappings.put("ice_spikes", new BetaBiomeMapping(0.0F, 0.0F /* TODO */)); // Tundra
+        viaFabricPlus$betaMappings.put("nether_wastes", BetaBiomeMapping.DEFAULT); // Hell
+        viaFabricPlus$betaMappings.put("the_end", BetaBiomeMapping.DEFAULT); // The End
     }
 
     protected MixinEntityPacketRewriter1_16_2(final Protocol1_16_1To1_16_2 protocol) {
@@ -68,7 +68,7 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
     @Inject(method = "registerPackets", at = @At("TAIL"))
     private void rewriteBetaBiomes(final CallbackInfo ci) {
         protocol.appendClientbound(ClientboundPackets1_16.LOGIN, wrapper -> {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
                 viaFabricPlus$rewriteBiomes(wrapper.get(Types.NAMED_COMPOUND_TAG, 0));
             }
         });

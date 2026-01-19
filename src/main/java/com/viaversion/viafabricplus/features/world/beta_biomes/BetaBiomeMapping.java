@@ -22,7 +22,5 @@
 package com.viaversion.viafabricplus.features.world.beta_biomes;
 
 public record BetaBiomeMapping(float temperature, float downfall) {
-    public BetaBiomeMapping() {
-        this(0.5F, 0.5F);
-    }
+    public static final BetaBiomeMapping DEFAULT = new BetaBiomeMapping(0.5F, 0.5F);
 }
