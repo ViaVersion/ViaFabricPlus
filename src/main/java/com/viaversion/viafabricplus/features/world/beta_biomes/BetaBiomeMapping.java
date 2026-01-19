@@ -21,21 +21,8 @@
 
 package com.viaversion.viafabricplus.features.world.beta_biomes;
 
-public record BetaBiomeMapping(
-    int baseColor,
-    int mutatedColor,
-    float temperature,
-    float downfall
-) {
-    public BetaBiomeMapping(int baseColor, int mutatedColor) {
-        this(baseColor, mutatedColor, 0.5F, 0.5F);
-    }
-
-    public BetaBiomeMapping(int baseColor) {
-        this(baseColor, baseColor);
-    }
-
-    public boolean hasMutatedColor() {
-        return this.baseColor != this.mutatedColor;
+public record BetaBiomeMapping(float temperature, float downfall) {
+    public BetaBiomeMapping() {
+        this(0.5F, 0.5F);
     }
 }

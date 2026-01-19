@@ -275,12 +275,14 @@ public abstract class MixinMultiPlayerGameMode {
     @Unique
     private boolean viaFabricPlus$extinguishFire(BlockPos blockPos, final Direction direction) {
         blockPos = blockPos.relative(direction);
-        if (this.minecraft.level.getBlockState(blockPos).getBlock() == Blocks.FIRE) {
+
+        final boolean isFire = this.minecraft.level.getBlockState(blockPos).getBlock() == Blocks.FIRE;
+        if (isFire) {
             this.minecraft.level.levelEvent(this.minecraft.player, 1009, blockPos, 0);
             this.minecraft.level.removeBlock(blockPos, false);
-            return true;
         }
-        return false;
+
+        return isFire;
     }
 
 }

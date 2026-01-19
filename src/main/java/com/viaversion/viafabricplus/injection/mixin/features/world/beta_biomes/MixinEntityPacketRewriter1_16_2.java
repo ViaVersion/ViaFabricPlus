@@ -48,17 +48,17 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
     private static final Map<String, BetaBiomeMapping> viaFabricPlus$betaMappings = new HashMap<>();
 
     static {
-        viaFabricPlus$betaMappings.put("jungle", new BetaBiomeMapping(588342, 2094168)); // Rainforest
-        viaFabricPlus$betaMappings.put("swamp", new BetaBiomeMapping(522674, 9154376)); // Swampland
-        viaFabricPlus$betaMappings.put("forest", new BetaBiomeMapping(353825, 5159473)); // Forest
-        viaFabricPlus$betaMappings.put("savanna", new BetaBiomeMapping(14278691)); // Savanna
-        viaFabricPlus$betaMappings.put("modified_jungle_edge", new BetaBiomeMapping(10595616)); // Shrubland
-        viaFabricPlus$betaMappings.put("taiga", new BetaBiomeMapping(3060051, 8107825)); // Taiga
-        viaFabricPlus$betaMappings.put("desert", new BetaBiomeMapping(16421912)); // Desert
-        viaFabricPlus$betaMappings.put("plains", new BetaBiomeMapping(16767248)); // Plains
-        viaFabricPlus$betaMappings.put("ice_spikes", new BetaBiomeMapping(5762041, 12899129)); // Tundra
-        viaFabricPlus$betaMappings.put("nether_wastes", new BetaBiomeMapping(16711680)); // Hell
-        viaFabricPlus$betaMappings.put("the_end", new BetaBiomeMapping(8421631)); // The End
+        viaFabricPlus$betaMappings.put("jungle", new BetaBiomeMapping()); // Rainforest
+        viaFabricPlus$betaMappings.put("swamp", new BetaBiomeMapping()); // Swampland
+        viaFabricPlus$betaMappings.put("forest", new BetaBiomeMapping()); // Forest
+        viaFabricPlus$betaMappings.put("savanna", new BetaBiomeMapping()); // Savanna
+        viaFabricPlus$betaMappings.put("modified_jungle_edge", new BetaBiomeMapping()); // Shrubland
+        viaFabricPlus$betaMappings.put("taiga", new BetaBiomeMapping()); // Taiga
+        viaFabricPlus$betaMappings.put("desert", new BetaBiomeMapping()); // Desert
+        viaFabricPlus$betaMappings.put("plains", new BetaBiomeMapping()); // Plains
+        viaFabricPlus$betaMappings.put("ice_spikes", new BetaBiomeMapping()); // Tundra
+        viaFabricPlus$betaMappings.put("nether_wastes", new BetaBiomeMapping()); // Hell
+        viaFabricPlus$betaMappings.put("the_end", new BetaBiomeMapping()); // The End
     }
 
     protected MixinEntityPacketRewriter1_16_2(final Protocol1_16_1To1_16_2 protocol) {
@@ -80,20 +80,13 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
         final ListTag<CompoundTag> biomes = Objects.requireNonNull(biomesTag.getListTag("value", CompoundTag.class));
         for (final CompoundTag biomeTag : biomes) {
             final BetaBiomeMapping mapping = viaFabricPlus$betaMappings.get(Key.stripMinecraftNamespace(Objects.requireNonNull(biomeTag.getString("name"))));
-            if (mapping != null) {
-                viaFabricPlus$modifyBiome(mapping, Objects.requireNonNull(biomeTag.getCompoundTag("element")));
+            if (mapping == null) continue;
+
+            final CompoundTag elementTag = biomeTag.getCompoundTag("element");
+            if (elementTag != null) {
+                elementTag.putFloat("temperature", mapping.temperature());
+                elementTag.putFloat("downfall", mapping.downfall());
             }
         }
-    }
-
-    @Unique
-    private void viaFabricPlus$modifyBiome(final BetaBiomeMapping mapping, final CompoundTag compoundTag) {
-        // TODO: sky color/fog color/water color
-        compoundTag.putFloat("temperature", mapping.temperature());
-        compoundTag.putFloat("downfall", mapping.downfall());
-
-        final CompoundTag effectsTag = Objects.requireNonNull(compoundTag.getCompoundTag("effects"));
-        effectsTag.putInt("grass_color", mapping.baseColor());
-        effectsTag.putInt("foliage_color", mapping.mutatedColor());
     }
 }
