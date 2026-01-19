@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
+import com.viaversion.viaversion.util.ConfigSection;
 import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
@@ -31,6 +32,29 @@ public final class ViaFabricPlusConfig extends AbstractViaConfig {
 
     public ViaFabricPlusConfig(File configFile, Logger logger) {
         super(configFile, logger);
+    }
+
+    @Override
+    protected boolean updateConfig() {
+        boolean modified = false;
+
+        final ConfigSection existingConfig = originalRootSection();
+        if (existingConfig == null) {
+            // Defaults since 2.9.9, the directory was different back then so when upgrading the file won't be present anyway
+            set("fix-infested-block-breaking", false);
+            set("shield-blocking", false);
+            set("no-delay-shield-blocking", true);
+            set("handle-invalid-item-count", true);
+            set("chunk-border-fix", true);
+            modified = true;
+        }
+
+        // 4.4.3 additions
+        if (modified || !existingConfig.contains("send-player-details")) {
+            set("send-player-details", false);
+            modified = true;
+        }
+        return super.updateConfig() || modified;
     }
 
     @Override

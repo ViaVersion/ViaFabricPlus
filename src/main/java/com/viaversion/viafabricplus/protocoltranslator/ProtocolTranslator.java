@@ -36,7 +36,6 @@ import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabric
 import com.viaversion.viafabricplus.protocoltranslator.netty.NoReadFlowControlHandler;
 import com.viaversion.viafabricplus.protocoltranslator.netty.ViaFabricPlusDecoder;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
-import com.viaversion.viafabricplus.protocoltranslator.util.ConfigPatcher;
 import com.viaversion.viafabricplus.protocoltranslator.util.NoPacketSendChannel;
 import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
@@ -61,7 +60,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.flow.FlowControlHandler;
 import io.netty.util.AttributeKey;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
@@ -310,12 +308,6 @@ public final class ProtocolTranslator {
     public static CompletableFuture<Void> init(final Path path) {
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new IllegalStateException("Native version is not the same as the current version");
-        }
-
-        try {
-            ConfigPatcher.patch(path.resolve("viaversion.yml"));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to patch ViaVersion config", e);
         }
 
         // Register command callback for /viafabricplus
