@@ -48,15 +48,15 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
     private static final Map<String, BetaBiomeMapping> viaFabricPlus$betaMappings = new HashMap<>();
 
     static {
-        viaFabricPlus$betaMappings.put("jungle", new BetaBiomeMapping(1.0, 0.8)); // Rainforest
+        viaFabricPlus$betaMappings.put("jungle", new BetaBiomeMapping(1.0, 0.9)); // Rainforest
         viaFabricPlus$betaMappings.put("swamp", new BetaBiomeMapping(0.7, 0.7)); // Swampland
-        viaFabricPlus$betaMappings.put("forest", new BetaBiomeMapping(0.9, 0.6)); // Forest
-        viaFabricPlus$betaMappings.put("savanna", new BetaBiomeMapping(0.8, 0.5)); // Savanna
-        viaFabricPlus$betaMappings.put("modified_jungle_edge", new BetaBiomeMapping(0.9, 0.5)); // Shrubland
-        viaFabricPlus$betaMappings.put("taiga", new BetaBiomeMapping(0.4, 0.5)); // Taiga
+        viaFabricPlus$betaMappings.put("forest", new BetaBiomeMapping(1.0, 0.6)); // Forest
+        viaFabricPlus$betaMappings.put("savanna", new BetaBiomeMapping(0.8, 0.6)); // Savanna
+        viaFabricPlus$betaMappings.put("modified_jungle_edge", new BetaBiomeMapping(0.9, 0.7)); // Shrubland
+        viaFabricPlus$betaMappings.put("taiga", new BetaBiomeMapping(0.4, 0.2)); // Taiga
         viaFabricPlus$betaMappings.put("desert", new BetaBiomeMapping(1.0, 0.4)); // Desert
-        viaFabricPlus$betaMappings.put("plains", new BetaBiomeMapping(1.0, 0.6)); // Plains
-        viaFabricPlus$betaMappings.put("ice_spikes", new BetaBiomeMapping(0.3, 0.5)); // Tundra
+        viaFabricPlus$betaMappings.put("plains", new BetaBiomeMapping(1.0, 0.5)); // Plains
+        viaFabricPlus$betaMappings.put("ice_spikes", new BetaBiomeMapping(0.3, 0.4)); // Tundra
         viaFabricPlus$betaMappings.put("nether_wastes", BetaBiomeMapping.DEFAULT); // Hell
         viaFabricPlus$betaMappings.put("the_end", BetaBiomeMapping.DEFAULT); // The End
     }
