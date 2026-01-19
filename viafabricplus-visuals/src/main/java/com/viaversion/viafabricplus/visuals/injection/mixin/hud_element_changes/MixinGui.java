@@ -34,9 +34,7 @@ import net.minecraft.client.CameraType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,14 +46,6 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(Gui.class)
 public abstract class MixinGui {
-
-    @Shadow
-    @Final
-    private static Identifier ARMOR_FULL_SPRITE;
-
-    @Shadow
-    @Final
-    private static Identifier ARMOR_EMPTY_SPRITE;
 
     @Unique
     private static final int viaFabricPlusVisuals$ARMOR_ICON_WIDTH = 8;
@@ -109,19 +99,6 @@ public abstract class MixinGui {
         } else {
             return value;
         }
-    }
-
-    @ModifyArg(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), index = 1)
-    private static Identifier flipArmorTexture(Identifier identifier) {
-        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
-            if (identifier.equals(ARMOR_FULL_SPRITE)) {
-                return ARMOR_EMPTY_SPRITE;
-            } else if (identifier.equals(ARMOR_EMPTY_SPRITE)) {
-                return ARMOR_FULL_SPRITE;
-            }
-        }
-
-        return identifier;
     }
 
     @ModifyArgs(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), require = 0)
