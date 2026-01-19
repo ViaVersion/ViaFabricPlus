@@ -24,7 +24,6 @@ package com.viaversion.viafabricplus.screen.impl;
 import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
-import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.awt.*;
 import java.util.function.Consumer;
@@ -65,7 +64,7 @@ public final class PerServerVersionScreen extends VFPScreen {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
             this.addEntry(new ResetSlot());
-            ProtocolVersionList.getProtocolsNewToOld().stream().map(ProtocolSlot::new).forEach(this::addEntry);
+            ProtocolVersion.getReversedProtocols().stream().map(ProtocolSlot::new).forEach(this::addEntry);
         }
     }
 

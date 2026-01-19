@@ -38,9 +38,9 @@ import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusPlayerAbilitiesProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusPlayerLookTargetProvider;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
-import com.viaversion.vialoader.impl.viaversion.VLLoader;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.minecraft.signature.SignableCommandArgumentsProvider;
+import com.viaversion.viaversion.api.platform.ViaPlatformLoader;
 import com.viaversion.viaversion.api.platform.providers.ViaProviders;
 import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.PlayerLookTargetProvider;
@@ -56,12 +56,10 @@ import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.provider.OldAut
 import net.raphimc.vialegacy.protocol.release.r1_6_4tor1_7_2_5.provider.EncryptionProvider;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
-public final class ViaFabricPlusVLLoader extends VLLoader {
+public final class ViaFabricPlusPlatformLoader implements ViaPlatformLoader {
 
     @Override
     public void load() {
-        super.load();
-
         final ViaProviders providers = Via.getManager().getProviders();
 
         providers.use(VersionProvider.class, new ViaFabricPlusBaseVersionProvider());
@@ -85,6 +83,10 @@ public final class ViaFabricPlusVLLoader extends VLLoader {
         providers.use(NettyPipelineProvider.class, new ViaFabricPlusNettyPipelineProvider());
 
         Events.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.POST_VIAVERSION_LOAD);
+    }
+
+    @Override
+    public void unload() {
     }
 
 }

@@ -25,20 +25,20 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.viaversion.viaaprilfools.ViaAprilFoolsPlatformImpl;
+import com.viaversion.viabackwards.ViaBackwardsPlatformImpl;
 import com.viaversion.viafabricplus.base.Events;
 import com.viaversion.viafabricplus.injection.access.base.IConnection;
-import com.viaversion.viafabricplus.protocoltranslator.impl.command.ViaFabricPlusVLCommandHandler;
-import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaLegacyPlatformImpl;
-import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaVersionPlatformImpl;
-import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusVLInjector;
-import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusVLLoader;
-import com.viaversion.viafabricplus.protocoltranslator.netty.ViaFabricPlusVLLegacyPipeline;
+import com.viaversion.viafabricplus.protocoltranslator.impl.command.ViaFabricPlusCommandHandler;
+import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaLegacyPlatform;
+import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaVersionPlatform;
+import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusPlatformLoader;
+import com.viaversion.viafabricplus.protocoltranslator.netty.NoReadFlowControlHandler;
+import com.viaversion.viafabricplus.protocoltranslator.netty.ViaFabricPlusDecoder;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
+import com.viaversion.viafabricplus.protocoltranslator.util.ConfigPatcher;
 import com.viaversion.viafabricplus.protocoltranslator.util.NoPacketSendChannel;
-import com.viaversion.vialoader.ViaLoader;
-import com.viaversion.vialoader.impl.platform.ViaAprilFoolsPlatformImpl;
-import com.viaversion.vialoader.impl.platform.ViaBackwardsPlatformImpl;
-import com.viaversion.vialoader.impl.platform.ViaBedrockPlatformImpl;
+import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -48,15 +48,21 @@ import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.VersionType;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
+import com.viaversion.viaversion.platform.NoopInjector;
+import com.viaversion.viaversion.platform.ViaChannelInitializer;
+import com.viaversion.viaversion.platform.ViaDecodeHandler;
+import com.viaversion.viaversion.platform.ViaEncodeHandler;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import dev.kastle.netty.channel.nethernet.config.NetherChannelOption;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelConfig;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.handler.flow.FlowControlHandler;
 import io.netty.util.AttributeKey;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -69,23 +75,29 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.Connection;
+import net.minecraft.network.HandlerNames;
 import net.minecraft.util.Util;
+import net.raphimc.viabedrock.ViaBedrockPlatformImpl;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.viabedrock.netty.BatchLengthCodec;
+import net.raphimc.viabedrock.netty.DisconnectHandler;
+import net.raphimc.viabedrock.netty.PacketCodec;
+import net.raphimc.viabedrock.netty.raknet.MessageCodec;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialegacy.netty.PreNettyLengthPrepender;
+import net.raphimc.vialegacy.netty.PreNettyLengthRemover;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
-/**
- * This class represents the whole Protocol Translator, here all important variables are stored
- */
 public final class ProtocolTranslator {
 
     /**
-     * These attribute keys are used to track the main connections of Minecraft and ViaVersion, so that they can be used later during the connection to send packets.
+     * Internal state tracking for the game client connection, used in various Via providers
      */
     public static final AttributeKey<Connection> CLIENT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-clientconnection");
 
     /**
-     * This attribute stores the forced version for the current connection (if you set a specific version in the Edit Server screen)
+     * Stores the target version ViaVersion is translating to. This will be always set, even if the {@link #NATIVE_VERSION} is set.
      */
     public static final AttributeKey<ProtocolVersion> TARGET_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-targetversion");
 
@@ -93,6 +105,11 @@ public final class ProtocolTranslator {
      * The native version of the client
      */
     public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v1_21_11;
+
+    /**
+     * Name of the {@link FlowControlHandler} added to the pipeline
+     */
+    public static final String VIA_FLOW_CONTROL = "via-flow-control";
 
     /**
      * Protocol version that is used to enable protocol auto-detect
@@ -136,30 +153,66 @@ public final class ProtocolTranslator {
         final IConnection mixinClientConnection = (IConnection) connection;
         final ProtocolVersion serverVersion = mixinClientConnection.viaFabricPlus$getTargetVersion();
 
-        if (serverVersion != ProtocolTranslator.NATIVE_VERSION) {
-            channel.attr(ProtocolTranslator.CLIENT_CONNECTION_ATTRIBUTE_KEY).set(connection);
-            channel.attr(ProtocolTranslator.TARGET_VERSION_ATTRIBUTE_KEY).set(serverVersion);
+        channel.attr(ProtocolTranslator.CLIENT_CONNECTION_ATTRIBUTE_KEY).set(connection);
+        channel.attr(ProtocolTranslator.TARGET_VERSION_ATTRIBUTE_KEY).set(serverVersion);
 
-            if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
-                // RakNet config
-                channel.config().setOption(RakChannelOption.RAK_PROTOCOL_VERSION, ProtocolConstants.BEDROCK_RAKNET_PROTOCOL_VERSION);
-                channel.config().setOption(RakChannelOption.RAK_COMPATIBILITY_MODE, true);
-                channel.config().setOption(RakChannelOption.RAK_CLIENT_INTERNAL_ADDRESSES, 20);
-                channel.config().setOption(RakChannelOption.RAK_TIME_BETWEEN_SEND_CONNECTION_ATTEMPTS_MS, 500);
-                channel.config().setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, channel.config().getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS).longValue());
-                channel.config().setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
-                channel.config().setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());
+        if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
+            final ChannelConfig config = channel.config();
+            // RakNet config
+            config.setOption(RakChannelOption.RAK_PROTOCOL_VERSION, ProtocolConstants.BEDROCK_RAKNET_PROTOCOL_VERSION);
+            config.setOption(RakChannelOption.RAK_COMPATIBILITY_MODE, true);
+            config.setOption(RakChannelOption.RAK_CLIENT_INTERNAL_ADDRESSES, 20);
+            config.setOption(RakChannelOption.RAK_TIME_BETWEEN_SEND_CONNECTION_ATTEMPTS_MS, 500);
+            config.setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, config.getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS).longValue());
+            config.setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
+            config.setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());
 
-                // NetherNet config
-                channel.config().setOption(NetherChannelOption.NETHER_CLIENT_HANDSHAKE_TIMEOUT_MS, channel.config().getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS));
-                channel.config().setOption(NetherChannelOption.NETHER_CLIENT_MAX_HANDSHAKE_ATTEMPTS, 1);
-            }
+            // NetherNet config
+            config.setOption(NetherChannelOption.NETHER_CLIENT_HANDSHAKE_TIMEOUT_MS, config.getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS));
+            config.setOption(NetherChannelOption.NETHER_CLIENT_MAX_HANDSHAKE_ATTEMPTS, 1);
+        }
 
-            final UserConnection user = new UserConnectionImpl(channel, true);
-            new ProtocolPipelineImpl(user);
-            mixinClientConnection.viaFabricPlus$setUserConnection(user);
+        final UserConnection user = ViaChannelInitializer.createUserConnection(channel, true);
+        mixinClientConnection.viaFabricPlus$setUserConnection(user);
 
-            channel.pipeline().addLast(new ViaFabricPlusVLLegacyPipeline(user, serverVersion));
+        final ChannelPipeline pipeline = channel.pipeline();
+
+        // ViaVersion
+        pipeline.addBefore(HandlerNames.INBOUND_CONFIG, ViaDecodeHandler.NAME, new ViaFabricPlusDecoder(user));
+        pipeline.addBefore(HandlerNames.ENCODER, ViaEncodeHandler.NAME, new ViaEncodeHandler(user));
+
+        if (serverVersion.olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+            // ViaLegacy
+            pipeline.addBefore(HandlerNames.SPLITTER, PreNettyLengthPrepender.NAME, new PreNettyLengthPrepender(user));
+            pipeline.addBefore(HandlerNames.PREPENDER, PreNettyLengthRemover.NAME, new PreNettyLengthRemover(user));
+        } else if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
+            // ViaBedrock
+            pipeline.addBefore(HandlerNames.SPLITTER, DisconnectHandler.NAME, new DisconnectHandler());
+            pipeline.addBefore(HandlerNames.SPLITTER, MessageCodec.NAME, new MessageCodec());
+            pipeline.replace(HandlerNames.SPLITTER, HandlerNames.SPLITTER, new BatchLengthCodec());
+            pipeline.remove(HandlerNames.PREPENDER);
+            pipeline.addBefore(ViaDecodeHandler.NAME, PacketCodec.NAME, new PacketCodec());
+        }
+
+        pipeline.addAfter(ViaDecodeHandler.NAME, ProtocolTranslator.VIA_FLOW_CONTROL, new NoReadFlowControlHandler());
+        user.getProtocolInfo().getPipeline().add(ViaFabricPlusProtocol.INSTANCE);
+    }
+
+    public static void reorderPipeline(final ChannelPipeline pipeline) {
+        final int decoderIndex = pipeline.names().indexOf(HandlerNames.DECOMPRESS);
+        if (decoderIndex == -1) {
+            return;
+        }
+
+        if (decoderIndex > pipeline.names().indexOf(ViaDecodeHandler.NAME)) {
+            final ChannelHandler decoderHandler = pipeline.get(ViaDecodeHandler.NAME);
+            final ChannelHandler encoderHandler = pipeline.get(ViaEncodeHandler.NAME);
+
+            pipeline.remove(decoderHandler);
+            pipeline.remove(encoderHandler);
+
+            pipeline.addAfter(HandlerNames.DECOMPRESS, ViaDecodeHandler.NAME, decoderHandler);
+            pipeline.addAfter(HandlerNames.COMPRESS, ViaEncodeHandler.NAME, encoderHandler);
         }
     }
 
@@ -168,9 +221,10 @@ public final class ProtocolTranslator {
     }
 
     public static ProtocolVersion getTargetVersion(final Channel channel) {
-        if (channel == null || !channel.hasAttr(TARGET_VERSION_ATTRIBUTE_KEY)) {
-            throw new IllegalStateException("Target version attribute not set");
+        if (!channel.hasAttr(TARGET_VERSION_ATTRIBUTE_KEY)) {
+            throw new IllegalStateException("ViaFabricPlus has not injected into that channel yet!");
         }
+
         return channel.attr(TARGET_VERSION_ATTRIBUTE_KEY).get();
     }
 
@@ -240,37 +294,6 @@ public final class ProtocolTranslator {
         return ((IConnection) handler.getConnection()).viaFabricPlus$getUserConnection();
     }
 
-    /**
-     * Apply recommended config options to the ViaVersion config files
-     *
-     * @param path The path where the ViaVersion config files is located
-     */
-    private static void patchConfigs(final Path path) {
-        try {
-            final Path viaVersionConfig = path.resolve("viaversion.yml");
-            Files.writeString(viaVersionConfig, """
-                fix-infested-block-breaking: false
-                shield-blocking: false
-                no-delay-shield-blocking: true
-                handle-invalid-item-count: true
-                """, StandardOpenOption.CREATE_NEW);
-        } catch (FileAlreadyExistsException ignored) {
-        } catch (Throwable e) {
-            throw new RuntimeException("Failed to patch ViaVersion config", e);
-        }
-
-        try {
-            final Path viaLegacyConfig = path.resolve("vialegacy.yml");
-            Files.writeString(viaLegacyConfig, """
-                legacy-skull-loading: true
-                legacy-skin-loading: true
-                """, StandardOpenOption.CREATE_NEW);
-        } catch (FileAlreadyExistsException ignored) {
-        } catch (Throwable e) {
-            throw new RuntimeException("Failed to patch ViaLegacy config", e);
-        }
-    }
-
     private static void changeBedrockProtocolName() {
         final ProtocolVersion bedrockLatest = RStream.of(BedrockProtocolVersion.class).fields().by("bedrockLatest").get();
 
@@ -288,11 +311,16 @@ public final class ProtocolTranslator {
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new IllegalStateException("Native version is not the same as the current version");
         }
-        patchConfigs(path);
+
+        try {
+            ConfigPatcher.patch(path.resolve("viaversion.yml"));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to patch ViaVersion config", e);
+        }
 
         // Register command callback for /viafabricplus
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            final ViaFabricPlusVLCommandHandler commandHandler = (ViaFabricPlusVLCommandHandler) Via.getManager().getCommandHandler();
+            final ViaFabricPlusCommandHandler commandHandler = (ViaFabricPlusCommandHandler) Via.getManager().getCommandHandler();
             final RequiredArgumentBuilder<FabricClientCommandSource, String> executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
 
             dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viafabricplus").then(executor).executes(commandHandler::execute));
@@ -300,16 +328,17 @@ public final class ProtocolTranslator {
 
         return CompletableFuture.runAsync(() -> {
             // Load ViaVersion and register all platforms and their components
-            ViaLoader.init(
-                new ViaFabricPlusViaVersionPlatformImpl(path.toFile()),
-                new ViaFabricPlusVLLoader(),
-                new ViaFabricPlusVLInjector(),
-                new ViaFabricPlusVLCommandHandler(),
-
-                ViaBackwardsPlatformImpl::new,
-                ViaFabricPlusViaLegacyPlatformImpl::new,
-                ViaAprilFoolsPlatformImpl::new,
-                ViaBedrockPlatformImpl::new
+            ViaManagerImpl.initAndLoad(
+                new ViaFabricPlusViaVersionPlatform(path.toFile()),
+                new NoopInjector(),
+                new ViaFabricPlusCommandHandler(),
+                new ViaFabricPlusPlatformLoader(),
+                () -> {
+                    new ViaBackwardsPlatformImpl();
+                    new ViaFabricPlusViaLegacyPlatform();
+                    new ViaAprilFoolsPlatformImpl();
+                    new ViaBedrockPlatformImpl();
+                }
             );
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
             changeBedrockProtocolName();

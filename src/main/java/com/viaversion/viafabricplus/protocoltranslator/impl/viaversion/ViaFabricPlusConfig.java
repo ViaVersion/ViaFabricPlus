@@ -22,21 +22,32 @@
 package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
-import com.viaversion.vialoader.impl.viaversion.VLViaConfig;
+import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import java.io.File;
+import java.util.List;
 import java.util.logging.Logger;
 
-public final class ViaFabricPlusVLViaConfig extends VLViaConfig {
+public final class ViaFabricPlusConfig extends AbstractViaConfig {
 
-    public ViaFabricPlusVLViaConfig(File configFile, Logger logger) {
+    public ViaFabricPlusConfig(File configFile, Logger logger) {
         super(configFile, logger);
+    }
 
-        UNSUPPORTED.add("simulate-pt");
-        UNSUPPORTED.add("fix-1_21-placement-rotation");
-        UNSUPPORTED.add("team-colour-fix");
-        UNSUPPORTED.add("cancel-swing-in-inventory");
-        UNSUPPORTED.add("cancel-block-sounds");
-        UNSUPPORTED.add("use-1_8-hitbox-margin");
+    @Override
+    public List<String> getUnsupportedOptions() {
+        final List<String> unsupported = super.getUnsupportedOptions();
+        unsupported.add("simulate-pt");
+        unsupported.add("fix-1_21-placement-rotation");
+        unsupported.add("team-colour-fix");
+        unsupported.add("cancel-swing-in-inventory");
+        unsupported.add("cancel-block-sounds");
+        unsupported.add("use-1_8-hitbox-margin");
+        return unsupported;
+    }
+
+    @Override
+    public boolean isCheckForUpdates() {
+        return false;
     }
 
     @Override

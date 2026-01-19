@@ -21,23 +21,38 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.command;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
-import com.viaversion.viaversion.api.command.ViaSubCommand;
-import com.viaversion.viaversion.api.connection.UserConnection;
+import java.util.UUID;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.Component;
 
-public interface VFPViaSubCommand extends ViaSubCommand {
+public final class ViaFabricPlusCommandSender implements ViaCommandSender {
 
-    /**
-     * Automatically prefix all messages
-     */
-    default void sendMessage(final ViaCommandSender sender, final String message) {
-        ViaSubCommand.super.sendMessage(sender, ChatUtil.PREFIX + " " + message);
+    private final SharedSuggestionProvider source;
+
+    public ViaFabricPlusCommandSender(final SharedSuggestionProvider source) {
+        this.source = source;
     }
 
-    default UserConnection getUser() {
-        return ProtocolTranslator.getPlayNetworkUserConnection();
+    @Override
+    public boolean hasPermission(String s) {
+        return true;
+    }
+
+    @Override
+    public void sendMessage(String s) {
+        ((FabricClientCommandSource) source).sendFeedback(Component.nullToEmpty(s.replace("/viaversion", "/viafabricplus"))); // ViaVersion doesn't support changing the root command name, so we have to do it ourselves
+    }
+
+    @Override
+    public UUID getUUID() {
+        return ((FabricClientCommandSource) source).getPlayer().getUUID();
+    }
+
+    @Override
+    public String getName() {
+        return ((FabricClientCommandSource) source).getPlayer().getName().getString();
     }
 
 }

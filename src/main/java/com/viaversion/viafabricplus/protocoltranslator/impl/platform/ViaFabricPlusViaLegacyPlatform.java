@@ -19,21 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
+package com.viaversion.viafabricplus.protocoltranslator.impl.platform;
 
-import com.viaversion.vialoader.impl.viaversion.VLInjector;
-import com.viaversion.vialoader.netty.VLLegacyPipeline;
+import com.viaversion.viaversion.api.Via;
+import net.raphimc.vialegacy.ViaLegacyPlatformImpl;
 
-public final class ViaFabricPlusVLInjector extends VLInjector {
-
-    @Override
-    public String getEncoderName() {
-        return VLLegacyPipeline.VIA_ENCODER_NAME;
-    }
+public final class ViaFabricPlusViaLegacyPlatform extends ViaLegacyPlatformImpl {
 
     @Override
-    public String getDecoderName() {
-        return VLLegacyPipeline.VIA_DECODER_NAME;
+    public String getCpeAppName() {
+        return Via.getPlatform().getPlatformName() + " " + Via.getPlatform().getPlatformVersion();
     }
 
 }

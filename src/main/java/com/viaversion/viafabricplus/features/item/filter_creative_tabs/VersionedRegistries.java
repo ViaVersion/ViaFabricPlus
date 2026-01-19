@@ -24,8 +24,8 @@ package com.viaversion.viafabricplus.features.item.filter_creative_tabs;
 import com.viaversion.viafabricplus.injection.access.base.IConnection;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
-import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
@@ -57,10 +57,10 @@ import static net.raphimc.vialegacy.api.LegacyProtocolVersion.c0_30cpe;
 
 public final class VersionedRegistries {
 
-    public static final Reference2ObjectMap<ResourceKey<Enchantment>, VersionRange> ENCHANTMENT_DIFF = new Reference2ObjectOpenHashMap<>();
-    public static final Reference2ObjectMap<ResourceKey<BannerPattern>, VersionRange> PATTERN_DIFF = new Reference2ObjectOpenHashMap<>();
-    public static final Reference2ObjectMap<Holder<MobEffect>, VersionRange> EFFECT_DIFF = new Reference2ObjectOpenHashMap<>();
-    public static final Reference2ObjectMap<Item, VersionRange> ITEM_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final Reference2ObjectMap<ResourceKey<Enchantment>, ProtocolVersionRange> ENCHANTMENT_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final Reference2ObjectMap<ResourceKey<BannerPattern>, ProtocolVersionRange> PATTERN_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final Reference2ObjectMap<Holder<MobEffect>, ProtocolVersionRange> EFFECT_DIFF = new Reference2ObjectOpenHashMap<>();
+    public static final Reference2ObjectMap<Item, ProtocolVersionRange> ITEM_DIFF = new Reference2ObjectOpenHashMap<>();
 
     public static void init() {
         final JsonObject data = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("versioned-registries.json");
@@ -72,7 +72,7 @@ public final class VersionedRegistries {
 
     private static void fillKeys(final JsonObject object, final ResourceKey registryKey, final Reference2ObjectMap map) {
         for (final String element : object.keySet()) {
-            final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
+            final ProtocolVersionRange versions = ProtocolVersionRange.fromString(object.get(element).getAsString());
             final ResourceKey<?> key = ResourceKey.create(registryKey, Identifier.parse(element));
             map.put(key, versions);
         }
@@ -80,7 +80,7 @@ public final class VersionedRegistries {
 
     private static void fillEntries(final JsonObject object, final Registry<?> registry, final Reference2ObjectMap map) {
         for (final String element : object.keySet()) {
-            final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
+            final ProtocolVersionRange versions = ProtocolVersionRange.fromString(object.get(element).getAsString());
             final Holder entry = registry.get(Identifier.parse(element)).orElseThrow();
             map.put(entry, versions);
         }
@@ -88,7 +88,7 @@ public final class VersionedRegistries {
 
     private static void fillItems(final JsonObject object) {
         for (final String element : object.keySet()) {
-            final VersionRange versions = VersionRange.fromString(object.get(element).getAsString());
+            final ProtocolVersionRange versions = ProtocolVersionRange.fromString(object.get(element).getAsString());
             final Item item = BuiltInRegistries.ITEM.getOptional(Identifier.parse(element)).orElse(null);
             if (item == null) {
                 throw new IllegalStateException("Unknown item: " + element);

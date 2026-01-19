@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.command;
 import com.viaversion.viafabricplus.screen.impl.SettingsScreen;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 
-public final class SettingsCommand implements VFPViaSubCommand {
+public final class SettingsCommand implements VFPSubCommand {
 
     @Override
     public String name() {

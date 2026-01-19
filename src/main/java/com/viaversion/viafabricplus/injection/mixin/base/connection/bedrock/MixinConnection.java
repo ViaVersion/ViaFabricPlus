@@ -29,10 +29,8 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.viaversion.viafabricplus.base.bedrock.NetherNetInetSocketAddress;
 import com.viaversion.viafabricplus.injection.access.base.IConnection;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IEventLoopGroupHolder;
-import com.viaversion.viafabricplus.protocoltranslator.netty.ViaFabricPlusVLLegacyPipeline;
+import com.viaversion.viafabricplus.protocoltranslator.netty.RakNetPingEncapsulationCodec;
 import com.viaversion.viafabricplus.save.SaveManager;
-import com.viaversion.vialoader.netty.VLPipeline;
-import com.viaversion.vialoader.netty.viabedrock.RakNetPingEncapsulationCodec;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import dev.kastle.netty.channel.nethernet.NetherNetChannelFactory;
@@ -56,6 +54,8 @@ import net.minecraft.network.HandlerNames;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.network.EventLoopGroupHolder;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import net.raphimc.viabedrock.netty.PacketCodec;
+import net.raphimc.viabedrock.netty.raknet.MessageCodec;
 import net.raphimc.viabedrock.protocol.RakNetStatusProtocol;
 import org.cloudburstmc.netty.channel.raknet.RakChannelFactory;
 import org.spongepowered.asm.mixin.Mixin;
@@ -119,7 +119,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
             if (address instanceof NetherNetInetSocketAddress netherNetAddress) {
                 return instance.connect(netherNetAddress.getNetherNetAddress()).addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE, (ChannelFutureListener) f -> {
                     if (f.isSuccess()) {
-                        f.channel().pipeline().remove(VLPipeline.VIABEDROCK_RAKNET_MESSAGE_CODEC_NAME);
+                        f.channel().pipeline().remove(MessageCodec.NAME);
                     }
                 });
             } else if (!((IEventLoopGroupHolder) eventLoopGroupHolder).viaFabricPlus$isConnecting()) {
@@ -127,11 +127,11 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
                 return instance.register().syncUninterruptibly().channel().bind(new InetSocketAddress(0)).addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE, (ChannelFutureListener) f -> {
                     if (f.isSuccess()) {
                         f.channel().pipeline().replace(
-                            VLPipeline.VIABEDROCK_RAKNET_MESSAGE_CODEC_NAME,
-                            ViaFabricPlusVLLegacyPipeline.VIABEDROCK_PING_ENCAPSULATION_HANDLER_NAME,
+                            MessageCodec.NAME,
+                            RakNetPingEncapsulationCodec.NAME,
                             new RakNetPingEncapsulationCodec(new InetSocketAddress(inetHost, inetPort))
                         );
-                        f.channel().pipeline().remove(VLPipeline.VIABEDROCK_PACKET_CODEC_NAME);
+                        f.channel().pipeline().remove(PacketCodec.NAME);
                         f.channel().pipeline().remove(HandlerNames.SPLITTER);
 
                         UserConnection user = ((IConnection) clientConnection).viaFabricPlus$getUserConnection();

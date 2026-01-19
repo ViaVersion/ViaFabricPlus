@@ -24,15 +24,15 @@ package com.viaversion.viafabricplus.protocoltranslator.netty;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
-import com.viaversion.vialoader.netty.ViaDecoder;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.platform.ViaDecodeHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 
-public final class ViaFabricPlusViaDecoder extends ViaDecoder {
+public final class ViaFabricPlusDecoder extends ViaDecodeHandler {
 
-    public ViaFabricPlusViaDecoder(UserConnection connection) {
+    public ViaFabricPlusDecoder(UserConnection connection) {
         super(connection);
     }
 

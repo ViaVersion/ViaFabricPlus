@@ -22,13 +22,13 @@
 package com.viaversion.viafabricplus.protocoltranslator.impl.command.classic;
 
 import com.viaversion.viafabricplus.injection.access.base.IExtensionProtocolMetadataStorage;
-import com.viaversion.viafabricplus.protocoltranslator.impl.command.VFPViaSubCommand;
+import com.viaversion.viafabricplus.protocoltranslator.impl.command.VFPSubCommand;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import net.minecraft.ChatFormatting;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 
-public final class ListExtensionsCommand implements VFPViaSubCommand {
+public final class ListExtensionsCommand implements VFPSubCommand {
 
     @Override
     public String name() {

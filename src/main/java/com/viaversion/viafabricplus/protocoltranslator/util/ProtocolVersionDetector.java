@@ -21,7 +21,6 @@
 package com.viaversion.viafabricplus.protocoltranslator.util;
 
 import com.google.gson.JsonObject;
-import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -118,7 +117,7 @@ public final class ProtocolVersionDetector {
 
             // Fallback with the name
             final String name = version.get("name").getAsString();
-            for (final ProtocolVersion protocol : ProtocolVersionList.getProtocolsNewToOld()) {
+            for (final ProtocolVersion protocol : ProtocolVersion.getReversedProtocols()) {
                 for (final String includedVersion : protocol.getIncludedVersions()) {
                     if (name.contains(includedVersion)) {
                         return protocol;

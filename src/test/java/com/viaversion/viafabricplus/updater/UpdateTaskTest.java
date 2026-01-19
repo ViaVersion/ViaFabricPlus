@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.updater;
 
 import com.viaversion.viafabricplus.features.item.filter_creative_tabs.VersionedRegistries;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
-import com.viaversion.vialoader.util.VersionRange;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import com.viaversion.viaversion.libs.gson.Gson;
 import com.viaversion.viaversion.libs.gson.GsonBuilder;
 import com.viaversion.viaversion.libs.gson.JsonObject;
@@ -49,7 +49,7 @@ import static com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator
 public final class UpdateTaskTest {
 
     private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-    private static final String CURRENT_VERSION_RANGE = VersionRange.andNewer(NATIVE_VERSION).toString();
+    private static final String CURRENT_VERSION_RANGE = ProtocolVersionRange.andNewer(NATIVE_VERSION).toString();
 
     @Test
     public void update() {

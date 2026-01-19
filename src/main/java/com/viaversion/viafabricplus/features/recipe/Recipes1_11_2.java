@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.features.recipe;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
-import com.viaversion.vialoader.util.VersionRange;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
@@ -75,7 +75,7 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
  */
 public final class Recipes1_11_2 {
 
-    private static final List<Tuple<LegacyRecipe, VersionRange>> LEGACY_RECIPES = new ArrayList<>();
+    private static final List<Tuple<LegacyRecipe, ProtocolVersionRange>> LEGACY_RECIPES = new ArrayList<>();
     private static RecipeManager1_11_2 RECIPE_MANAGER;
 
     public static void init() {
@@ -86,7 +86,7 @@ public final class Recipes1_11_2 {
         final JsonArray recipes = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("recipes-1.11.2.json").getAsJsonArray("");
         for (JsonElement recipeElement : recipes) {
             final String type = recipeElement.getAsJsonObject().get("type").getAsString();
-            final VersionRange versionRange = VersionRange.fromString(recipeElement.getAsJsonObject().get("version").getAsString());
+            final ProtocolVersionRange versionRange = ProtocolVersionRange.fromString(recipeElement.getAsJsonObject().get("version").getAsString());
             switch (type) {
                 case "shaped" ->
                     LEGACY_RECIPES.add(new Tuple<>(LegacyShapedRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
@@ -105,7 +105,7 @@ public final class Recipes1_11_2 {
 
             // Regular recipes
             for (int i = 0; i < LEGACY_RECIPES.size(); i++) {
-                final Tuple<LegacyRecipe, VersionRange> legacyRecipe = LEGACY_RECIPES.get(i);
+                final Tuple<LegacyRecipe, ProtocolVersionRange> legacyRecipe = LEGACY_RECIPES.get(i);
                 if (legacyRecipe.getB().contains(ProtocolTranslator.getTargetVersion())) {
                     final ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("viafabricplus", "recipe/" + i));
                     switch (legacyRecipe.getA()) {

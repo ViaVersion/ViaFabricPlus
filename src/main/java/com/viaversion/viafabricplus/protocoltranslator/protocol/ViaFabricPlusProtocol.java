@@ -28,6 +28,7 @@ import com.viaversion.viafabricplus.protocoltranslator.protocol.storage.BedrockJ
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
+import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.packet.provider.PacketTypesProvider;
@@ -95,6 +96,14 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
         } else if (serverVersion.olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             connection.put(new WolfHealthTracker1_14_4());
         }
+    }
+
+    public ClientboundPacketType getClientboundCustomPayloadPacketType() {
+        return packetTypesProvider.unmappedClientboundType(State.CONFIGURATION, "CUSTOM_PAYLOAD");
+    }
+
+    public ServerboundPacketType getCustomPayloadPacketType() {
+        return packetTypesProvider.unmappedServerboundType(State.CONFIGURATION, "CUSTOM_PAYLOAD");
     }
 
     public ServerboundPacketType getSetCreativeModeSlot() {

@@ -322,7 +322,6 @@
     "features.swinging.MixinMinecraft",
     "features.world.always_tick_entities.MixinClientLevel",
     "features.world.always_tick_entities.MixinEntity",
-    "features.world.beta_biomes.MixinEntityPacketRewriter1_16_2",
     "features.world.border_chunk_rendering.MixinBuiltChunk",
     "features.world.disable_sequencing.MixinClientLevel",
     "features.world.duplicated_sounds.MixinBlockItem",

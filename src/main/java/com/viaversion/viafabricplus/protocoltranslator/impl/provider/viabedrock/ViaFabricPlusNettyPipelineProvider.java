@@ -21,14 +21,14 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.provider.viabedrock;
 
-import com.viaversion.viafabricplus.protocoltranslator.netty.ViaFabricPlusVLLegacyPipeline;
-import com.viaversion.vialoader.netty.VLPipeline;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import io.netty.channel.Channel;
 import javax.crypto.SecretKey;
+import net.minecraft.network.HandlerNames;
 import net.raphimc.viabedrock.api.io.compression.ProtocolCompression;
 import net.raphimc.viabedrock.netty.CompressionCodec;
 import net.raphimc.viabedrock.netty.raknet.AesEncryptionCodec;
+import net.raphimc.viabedrock.netty.raknet.MessageCodec;
 import net.raphimc.viabedrock.protocol.provider.NettyPipelineProvider;
 
 public final class ViaFabricPlusNettyPipelineProvider extends NettyPipelineProvider {
@@ -37,24 +37,24 @@ public final class ViaFabricPlusNettyPipelineProvider extends NettyPipelineProvi
     public void enableCompression(UserConnection user, ProtocolCompression protocolCompression) {
         final Channel channel = user.getChannel();
 
-        if (channel.pipeline().names().contains(ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME)) {
+        if (channel.pipeline().names().contains(HandlerNames.COMPRESS)) {
             throw new IllegalStateException("Compression already enabled");
         }
 
-        channel.pipeline().addBefore("splitter", ViaFabricPlusVLLegacyPipeline.VIABEDROCK_COMPRESSION_HANDLER_NAME, new CompressionCodec(protocolCompression));
+        channel.pipeline().addBefore(HandlerNames.SPLITTER, HandlerNames.COMPRESS, new CompressionCodec(protocolCompression));
     }
 
     @Override
     public void enableEncryption(UserConnection user, SecretKey key) {
         final Channel channel = user.getChannel();
 
-        if (channel.pipeline().names().contains(ViaFabricPlusVLLegacyPipeline.VIABEDROCK_ENCRYPTION_HANDLER_NAME)) {
+        if (channel.pipeline().names().contains(HandlerNames.ENCRYPT)) {
             throw new IllegalStateException("Encryption already enabled");
         }
 
-        if (channel.pipeline().get(VLPipeline.VIABEDROCK_RAKNET_MESSAGE_CODEC_NAME) != null) { // Only enable encryption for RakNet connections
+        if (channel.pipeline().get(MessageCodec.NAME) != null) { // Only enable encryption for RakNet connections
             try {
-                channel.pipeline().addAfter(VLPipeline.VIABEDROCK_RAKNET_MESSAGE_CODEC_NAME, ViaFabricPlusVLLegacyPipeline.VIABEDROCK_ENCRYPTION_HANDLER_NAME, new AesEncryptionCodec(key));
+                channel.pipeline().addAfter(MessageCodec.NAME, HandlerNames.ENCRYPT, new AesEncryptionCodec(key));
             } catch (Throwable e) {
                 throw new RuntimeException(e);
             }
