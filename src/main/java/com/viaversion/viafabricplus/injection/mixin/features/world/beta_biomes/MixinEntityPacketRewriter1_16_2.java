@@ -48,15 +48,15 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
     private static final Map<String, BetaBiomeMapping> viaFabricPlus$betaMappings = new HashMap<>();
 
     static {
-        viaFabricPlus$betaMappings.put("jungle", new BetaBiomeMapping(0.0F, 0.0F /* TODO */)); // Rainforest
-        viaFabricPlus$betaMappings.put("swamp", new BetaBiomeMapping(0.8F, 0.9F)); // Swampland
-        viaFabricPlus$betaMappings.put("forest", new BetaBiomeMapping(0.7F, 0.8F)); // Forest
-        viaFabricPlus$betaMappings.put("savanna", new BetaBiomeMapping(0.0F, 0.0F /* TODO */)); // Savanna
-        viaFabricPlus$betaMappings.put("modified_jungle_edge", new BetaBiomeMapping(0.0F, 0.0F /* TODO */)); // Shrubland
-        viaFabricPlus$betaMappings.put("taiga", new BetaBiomeMapping(0.3F, 0.8F)); // Taiga
-        viaFabricPlus$betaMappings.put("desert", new BetaBiomeMapping(2.0F, 0.0F)); // Desert
-        viaFabricPlus$betaMappings.put("plains", new BetaBiomeMapping(0.8F, 0.4F)); // Plains
-        viaFabricPlus$betaMappings.put("ice_spikes", new BetaBiomeMapping(0.0F, 0.0F /* TODO */)); // Tundra
+        viaFabricPlus$betaMappings.put("jungle", new BetaBiomeMapping(1.0, 0.8)); // Rainforest
+        viaFabricPlus$betaMappings.put("swamp", new BetaBiomeMapping(0.7, 0.7)); // Swampland
+        viaFabricPlus$betaMappings.put("forest", new BetaBiomeMapping(0.9, 0.6)); // Forest
+        viaFabricPlus$betaMappings.put("savanna", new BetaBiomeMapping(0.8, 0.5)); // Savanna
+        viaFabricPlus$betaMappings.put("modified_jungle_edge", new BetaBiomeMapping(0.9, 0.5)); // Shrubland
+        viaFabricPlus$betaMappings.put("taiga", new BetaBiomeMapping(0.4, 0.5)); // Taiga
+        viaFabricPlus$betaMappings.put("desert", new BetaBiomeMapping(1.0, 0.4)); // Desert
+        viaFabricPlus$betaMappings.put("plains", new BetaBiomeMapping(1.0, 0.6)); // Plains
+        viaFabricPlus$betaMappings.put("ice_spikes", new BetaBiomeMapping(0.3, 0.5)); // Tundra
         viaFabricPlus$betaMappings.put("nether_wastes", BetaBiomeMapping.DEFAULT); // Hell
         viaFabricPlus$betaMappings.put("the_end", BetaBiomeMapping.DEFAULT); // The End
     }
@@ -67,25 +67,23 @@ public abstract class MixinEntityPacketRewriter1_16_2 extends EntityRewriter<Cli
 
     @Inject(method = "registerPackets", at = @At("TAIL"))
     private void rewriteBetaBiomes(final CallbackInfo ci) {
-        protocol.appendClientbound(ClientboundPackets1_16.LOGIN, wrapper -> {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
-                viaFabricPlus$rewriteBiomes(wrapper.get(Types.NAMED_COMPOUND_TAG, 0));
-            }
-        });
+        protocol.appendClientbound(ClientboundPackets1_16.LOGIN, wrapper -> viaFabricPlus$rewriteBiomes(wrapper.get(Types.NAMED_COMPOUND_TAG, 0)));
     }
 
     @Unique
     private void viaFabricPlus$rewriteBiomes(final CompoundTag compoundTag) {
+        if (ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.b1_7tob1_7_3)) {
+            return;
+        }
+
         final CompoundTag biomesTag = Objects.requireNonNull(compoundTag.getCompoundTag("minecraft:worldgen/biome"));
         final ListTag<CompoundTag> biomes = Objects.requireNonNull(biomesTag.getListTag("value", CompoundTag.class));
         for (final CompoundTag biomeTag : biomes) {
             final BetaBiomeMapping mapping = viaFabricPlus$betaMappings.get(Key.stripMinecraftNamespace(Objects.requireNonNull(biomeTag.getString("name"))));
-            if (mapping == null) continue;
-
-            final CompoundTag elementTag = biomeTag.getCompoundTag("element");
-            if (elementTag != null) {
-                elementTag.putFloat("temperature", mapping.temperature());
-                elementTag.putFloat("downfall", mapping.downfall());
+            if (mapping != null) {
+                final CompoundTag elementTag = Objects.requireNonNull(biomeTag.getCompoundTag("element"));
+                elementTag.putFloat("temperature", (float) mapping.temperature());
+                elementTag.putFloat("downfall", (float) mapping.downfall());
             }
         }
     }
