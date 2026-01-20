@@ -25,10 +25,11 @@ import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.exception.CancelCodecException;
 import com.viaversion.viaversion.platform.ViaDecodeHandler;
 import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 public final class ViaFabricPlusDecoder extends ViaDecodeHandler {
 
@@ -37,23 +38,21 @@ public final class ViaFabricPlusDecoder extends ViaDecodeHandler {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        final int mode = GeneralSettings.INSTANCE.ignorePacketTranslationErrors.getIndex();
-        if (mode == 0) {
-            // Mode 0: Just pass the exception to the next handler
-            super.channelRead(ctx, msg);
-        } else {
-            try {
-                super.channelRead(ctx, msg);
-            } catch (Throwable t) {
-                // Mode 2: Just log the error
-                ViaFabricPlusImpl.INSTANCE.getLogger().error("Error occurred while decoding packet in ViaFabricPlus decoder", t);
-                if (mode == 1) {
-                    // Mode 1: Send a message to the player that an error occurred and log the error
-                    ChatUtil.sendPrefixedMessage(Component.translatable("translation.viafabricplus.packet_error").withStyle(ChatFormatting.RED));
-                }
-            }
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
+        if (cause instanceof CancelCodecException) {
+            return;
         }
+
+        final int mode = GeneralSettings.INSTANCE.ignorePacketTranslationErrors.getIndex();
+        if (mode > 0) {
+            ViaFabricPlusImpl.INSTANCE.getLogger().error("Error occurred while decoding packet in ViaFabricPlus decoder", cause);
+            if (mode == 1) {
+                ChatUtil.sendPrefixedMessage(Component.translatable("translation.viafabricplus.packet_error").withStyle(ChatFormatting.RED));
+            }
+            return;
+        }
+
+        super.exceptionCaught(ctx, cause);
     }
 
 }
