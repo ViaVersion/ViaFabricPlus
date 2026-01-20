@@ -99,11 +99,11 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
     }
 
     public ClientboundPacketType getClientboundCustomPayloadPacketType() {
-        return packetTypesProvider.unmappedClientboundType(State.CONFIGURATION, "CUSTOM_PAYLOAD");
+        return packetTypesProvider.unmappedClientboundType(State.PLAY, "CUSTOM_PAYLOAD");
     }
 
     public ServerboundPacketType getCustomPayloadPacketType() {
-        return packetTypesProvider.unmappedServerboundType(State.CONFIGURATION, "CUSTOM_PAYLOAD");
+        return packetTypesProvider.unmappedServerboundType(State.PLAY, "CUSTOM_PAYLOAD");
     }
 
     public ServerboundPacketType getSetCreativeModeSlot() {

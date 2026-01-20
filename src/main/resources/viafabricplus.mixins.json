@@ -19,7 +19,7 @@
     "base.connection.bedrock.MixinEventLoopGroupHolder",
     "base.connection.bedrock.MixinServerAddress",
     "base.connection.bedrock.MixinServerNameResolver",
-    "base.integration.MixinClientHandshakePacketListenerImpl",
+    "base.integration.MixinClientPacketListener",
     "base.integration.MixinConnection",
     "base.integration.MixinConnectScreen_1",
     "base.integration.MixinDebugScreenEntries",
