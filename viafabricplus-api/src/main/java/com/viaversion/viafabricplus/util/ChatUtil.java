@@ -21,10 +21,10 @@
 
 package com.viaversion.viafabricplus.util;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.ChatFormatting;
 
 /**
  * This class contains methods to send messages to the player with the ViaFabricPlus prefix
@@ -60,7 +60,11 @@ public final class ChatUtil {
      * @param message The message to send
      */
     public static void sendPrefixedMessage(final Component message) {
-        Minecraft.getInstance().gui.getChat().addMessage(prefixText(message));
+        if (Minecraft.getInstance().isSameThread()) {
+            Minecraft.getInstance().gui.getChat().addMessage(prefixText(message));
+        } else {
+            Minecraft.getInstance().execute(() -> sendPrefixedMessage(message));
+        }
     }
 
     /**

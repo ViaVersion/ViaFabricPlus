@@ -38,21 +38,24 @@ public final class ViaFabricPlusDecoder extends ViaDecodeHandler {
     }
 
     @Override
-    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
-        if (cause instanceof CancelCodecException) {
-            return;
-        }
-
-        final int mode = GeneralSettings.INSTANCE.ignorePacketTranslationErrors.getIndex();
-        if (mode > 0) {
-            ViaFabricPlusImpl.INSTANCE.getLogger().error("Error occurred while decoding packet in ViaFabricPlus decoder", cause);
-            if (mode == 1) {
-                ChatUtil.sendPrefixedMessage(Component.translatable("translation.viafabricplus.packet_error").withStyle(ChatFormatting.RED));
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        try {
+            super.channelRead(ctx, msg);
+        } catch (Throwable e) {
+            if (e instanceof CancelCodecException) {
+                return;
             }
-            return;
-        }
 
-        super.exceptionCaught(ctx, cause);
+            final int mode = GeneralSettings.INSTANCE.ignorePacketTranslationErrors.getIndex();
+            if (mode > 0) {
+                ViaFabricPlusImpl.INSTANCE.getLogger().error("Error occurred while decoding packet in ViaFabricPlus decoder", e);
+                if (mode == 1) {
+                    ChatUtil.sendPrefixedMessage(Component.translatable("translation.viafabricplus.packet_error").withStyle(ChatFormatting.RED));
+                }
+            } else {
+                throw e;
+            }
+        }
     }
 
 }
