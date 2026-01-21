@@ -54,6 +54,7 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "레거시 버전에서 스킨과 머리 로드",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "알파 버전에서 인벤토리 기능 추가",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "슬롯 화면에서 스크롤 지점 기억하기",
+  "general_settings.viafabricplus.experimental_block_connections": "실험적 블록 연결",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "베드락 에디션 계정 가져오기",
   "bedrock_settings.viafabricplus.replace_default_port": "서버 리스트의 기본 포트를 바꾸기",
   "bedrock_settings.viafabricplus.experimental_features": "실험적 기능 켜기 (불안정할 수 있음)",
@@ -153,5 +154,6 @@
   "bedrock_realms.viafabricplus.leave": "Realms 나가기",
   "bedrock_realms.viafabricplus.invite": "초대 코드 수락",
   "bedrock_realms.viafabricplus.expired": "Realms 만료됨",
-  "bedrock_realms.viafabricplus.incompatible": "Realms 버전이 이 버전과 호환되지 않습니다."
+  "bedrock_realms.viafabricplus.incompatible": "Realms 버전이 이 버전과 호환되지 않습니다.",
+  "bedrock_realms.viafabricplus.unsupported_protocol": "%s 프로토콜을 통한 Realms는 지원되지 않습니다. 이 Realms에 참여할 수 없습니다."
 }
