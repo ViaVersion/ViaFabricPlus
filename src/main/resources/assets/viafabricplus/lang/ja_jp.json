@@ -154,5 +154,6 @@
   "bedrock_realms.viafabricplus.leave": "Realmから退出",
   "bedrock_realms.viafabricplus.invite": "招待コードを承認",
   "bedrock_realms.viafabricplus.expired": "Realmの有効期限が切れました",
-  "bedrock_realms.viafabricplus.incompatible": "Realmsのバージョンが古い、または新しすぎる可能性があります"
+  "bedrock_realms.viafabricplus.incompatible": "Realmsのバージョンが古い、または新しすぎる可能性があります",
+  "bedrock_realms.viafabricplus.unsupported_protocol": "%s プロトコル経由の Realms はサポートされていません。このレルムに参加することはできません"
 }
