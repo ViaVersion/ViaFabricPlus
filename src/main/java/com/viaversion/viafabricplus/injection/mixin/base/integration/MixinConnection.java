@@ -22,18 +22,21 @@
 package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import io.netty.channel.ChannelHandlerContext;
 import java.net.ConnectException;
 import java.net.SocketException;
+import io.netty.channel.SimpleChannelInboundHandler;
 import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Connection.class)
-public abstract class MixinConnection {
+public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet<?>> {
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"))
     private void printNetworkingErrors(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {
@@ -44,6 +47,20 @@ public abstract class MixinConnection {
             }
             ViaFabricPlusImpl.INSTANCE.getLogger().error("An exception occurred while handling a packet", ex);
         }
+    }
+
+    @Override
+    public void userEventTriggered(final ChannelHandlerContext ctx, final Object evt) throws Exception {
+        // Krypton mixins are badly implemented and override parts of the network pipeline. They rejected
+        // to make the mixins mod compatible and instead added this bad API which mods now have to use for no reason.
+        if (evt.getClass().getName().equals("me.steinborn.krypton.mod.shared.misc.KryptonPipelineEvent")) {
+            if (evt.toString().equals("COMPRESSION_ENABLED")) {
+                ProtocolTranslator.reorderPipeline(ctx.pipeline());
+                ViaFabricPlusImpl.INSTANCE.getLogger().warn("ViaFabricPlus has detected that the Krypton mod is installed. Please note that Krypton is mostly snake oil on the client side, and it is not recommended to use it.");
+                return;
+            }
+        }
+        super.userEventTriggered(ctx, evt);
     }
 
 }
