@@ -189,7 +189,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;shouldStopRunSprinting()Z"))
     private boolean changeStopSprintingConditions(LocalPlayer instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return this.viaFabricPlus$shouldCancelSprinting() || this.horizontalCollision && !this.minorHorizontalCollision || this.isInWater() && !this.isUnderWater();
+            return this.viaFabricPlus$shouldCancelSprinting() || this.horizontalCollision && !this.minorHorizontalCollision || !this.viaFabricPlus$canWaterSprint();
         } else {
             return this.shouldStopRunSprinting();
         }
@@ -222,7 +222,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
                 }
             }
 
-            if ((!this.isInWater() || this.isUnderWater()) && canStartSprinting && this.minecraft.options.keySprint.isDown()) {
+            if ((this.viaFabricPlus$canWaterSprint()) && canStartSprinting && this.minecraft.options.keySprint.isDown()) {
                 this.setSprinting(true);
             }
             return false;
@@ -329,6 +329,11 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     private boolean viaFabricPlus$isWalking1_21_4() {
         final boolean submergedInWater = ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && isUnderWater();
         return submergedInWater ? this.input.hasForwardImpulse() : this.input.moveVector.y >= 0.8;
+    }
+
+    @Unique
+    private boolean viaFabricPlus$canWaterSprint() {
+        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || (!this.isInWater() || this.isUnderWater());
     }
 
 }
