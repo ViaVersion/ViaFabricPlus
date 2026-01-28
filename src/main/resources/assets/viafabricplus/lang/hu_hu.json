@@ -54,6 +54,7 @@
   "general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions": "Skinek és fejek betöltése elavult verziókban",
   "general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions": "Felszerelési műveletek emulálása alpha verziókban",
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "Görgetési pozíció mentése a slot képernyőkön",
+  "general_settings.viafabricplus.experimental_block_connections": "Kísérleti blokk csatlakozások",
   "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Kattints egy Bedrock Edition fiók beállításához",
   "bedrock_settings.viafabricplus.replace_default_port": "Alapértelmezett port kicserélése a szerverlistában",
   "bedrock_settings.viafabricplus.experimental_features": "Kísérleti beállítások bekapcsolása (lehet, instabil)",
@@ -153,5 +154,6 @@
   "bedrock_realms.viafabricplus.leave": "Kilépés a Realm-ből",
   "bedrock_realms.viafabricplus.invite": "Meghívási kód elfogadása",
   "bedrock_realms.viafabricplus.expired": "A Realm lejárt",
-  "bedrock_realms.viafabricplus.incompatible": "A Realms Minecraft verziója túl régi vagy túl új"
+  "bedrock_realms.viafabricplus.incompatible": "A Realms Minecraft verziója túl régi vagy túl új",
+  "bedrock_realms.viafabricplus.unsupported_protocol": "Realms a %s protokoll segítségével nem támogatott. Nem tudsz csatlakozni ehhez a realm-hez."
 }
