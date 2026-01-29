@@ -29,6 +29,7 @@ import com.viaversion.viafabricplus.injection.access.base.ILocalSampleLogger;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -78,7 +79,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
     @Inject(method = "setupCompression", at = @At("RETURN"))
     private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
         // Compression enabled and elements put into pipeline, move via handlers
-        ProtocolTranslator.reorderPipeline(channel.pipeline());
+        ViaChannelInitializer.reorderPipeline(channel.pipeline(), HandlerNames.ENCODER, HandlerNames.DECODER);
     }
 
     @Inject(method = "setEncryptionKey", at = @At("HEAD"), cancellable = true)

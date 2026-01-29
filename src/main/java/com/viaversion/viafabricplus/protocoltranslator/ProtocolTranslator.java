@@ -55,7 +55,6 @@ import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import dev.kastle.netty.channel.nethernet.config.NetherChannelOption;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelConfig;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.flow.FlowControlHandler;
@@ -194,24 +193,6 @@ public final class ProtocolTranslator {
 
         pipeline.addAfter(ViaDecodeHandler.NAME, ProtocolTranslator.VIA_FLOW_CONTROL, new NoReadFlowControlHandler());
         user.getProtocolInfo().getPipeline().add(ViaFabricPlusProtocol.INSTANCE);
-    }
-
-    public static void reorderPipeline(final ChannelPipeline pipeline) {
-        final int decoderIndex = pipeline.names().indexOf(HandlerNames.DECOMPRESS);
-        if (decoderIndex == -1) {
-            return;
-        }
-
-        if (decoderIndex > pipeline.names().indexOf(ViaDecodeHandler.NAME)) {
-            final ChannelHandler decoderHandler = pipeline.get(ViaDecodeHandler.NAME);
-            final ChannelHandler encoderHandler = pipeline.get(ViaEncodeHandler.NAME);
-
-            pipeline.remove(decoderHandler);
-            pipeline.remove(encoderHandler);
-
-            pipeline.addAfter(HandlerNames.DECOMPRESS, ViaDecodeHandler.NAME, decoderHandler);
-            pipeline.addAfter(HandlerNames.COMPRESS, ViaEncodeHandler.NAME, encoderHandler);
-        }
     }
 
     public static ProtocolVersion getTargetVersion() {

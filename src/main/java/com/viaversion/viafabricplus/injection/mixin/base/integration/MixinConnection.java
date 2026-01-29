@@ -22,13 +22,14 @@
 package com.viaversion.viafabricplus.injection.mixin.base.integration;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import io.netty.channel.ChannelHandlerContext;
 import java.net.ConnectException;
 import java.net.SocketException;
 import io.netty.channel.SimpleChannelInboundHandler;
 import net.minecraft.network.Connection;
+import net.minecraft.network.HandlerNames;
 import net.minecraft.network.protocol.Packet;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -55,7 +56,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
         // to make the mixins mod compatible and instead added this bad API which mods now have to use for no reason.
         if (evt.getClass().getName().equals("me.steinborn.krypton.mod.shared.misc.KryptonPipelineEvent")) {
             if (evt.toString().equals("COMPRESSION_ENABLED")) {
-                ProtocolTranslator.reorderPipeline(ctx.pipeline());
+                ViaChannelInitializer.reorderPipeline(ctx.pipeline(), HandlerNames.ENCODER, HandlerNames.DECODER);
                 ViaFabricPlusImpl.INSTANCE.getLogger().warn("ViaFabricPlus has detected that the Krypton mod is installed. Please note that Krypton is mostly snake oil on the client side, and it is not recommended to use it.");
                 return;
             }
