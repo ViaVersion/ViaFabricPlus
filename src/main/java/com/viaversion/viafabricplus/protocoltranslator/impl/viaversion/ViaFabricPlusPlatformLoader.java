@@ -33,6 +33,7 @@ import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.V
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusAckSequenceProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusBaseVersionProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusCommandArgumentsProvider;
+import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusCompressionProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusHandItemProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusPickItemProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusPlayerAbilitiesProvider;
@@ -47,6 +48,7 @@ import com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.PlayerLookTarg
 import com.viaversion.viaversion.protocols.v1_15_2to1_16.provider.PlayerAbilitiesProvider;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.provider.AckSequenceProvider;
 import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.provider.PickItemProvider;
+import com.viaversion.viaversion.protocols.v1_8to1_9.provider.CompressionProvider;
 import com.viaversion.viaversion.protocols.v1_8to1_9.provider.HandItemProvider;
 import net.raphimc.viabedrock.protocol.provider.NettyPipelineProvider;
 import net.raphimc.vialegacy.protocol.alpha.a1_2_3_5_1_2_6tob1_0_1_1_1.provider.AlphaInventoryProvider;
@@ -63,13 +65,13 @@ public final class ViaFabricPlusPlatformLoader implements ViaPlatformLoader {
         final ViaProviders providers = Via.getManager().getProviders();
 
         providers.use(VersionProvider.class, new ViaFabricPlusBaseVersionProvider());
-
         providers.use(HandItemProvider.class, new ViaFabricPlusHandItemProvider());
         providers.use(PlayerLookTargetProvider.class, new ViaFabricPlusPlayerLookTargetProvider());
         providers.use(PlayerAbilitiesProvider.class, new ViaFabricPlusPlayerAbilitiesProvider());
         providers.use(SignableCommandArgumentsProvider.class, new ViaFabricPlusCommandArgumentsProvider());
         providers.use(AckSequenceProvider.class, new ViaFabricPlusAckSequenceProvider());
         providers.use(PickItemProvider.class, new ViaFabricPlusPickItemProvider());
+        providers.use(CompressionProvider.class, new ViaFabricPlusCompressionProvider());
 
         providers.use(OldAuthProvider.class, new ViaFabricPlusOldAuthProvider());
         providers.use(ClassicWorldHeightProvider.class, new ViaFabricPlusClassicWorldHeightProvider());
