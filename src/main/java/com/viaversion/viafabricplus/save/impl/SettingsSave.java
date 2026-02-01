@@ -42,6 +42,12 @@ public final class SettingsSave extends AbstractSave {
 
     @Override
     public void write(JsonObject object) {
+        writeSettings(object);
+
+        object.addProperty("selected-protocol-version", ProtocolTranslator.getTargetVersion().getName());
+    }
+
+    public void writeSettings(final JsonObject object) {
         for (SettingGroup group : SettingsManager.INSTANCE.getGroups()) {
             final JsonObject groupObject = new JsonObject();
             for (AbstractSetting<?> setting : group.getSettings()) {
@@ -50,8 +56,6 @@ public final class SettingsSave extends AbstractSave {
 
             object.add(AbstractSetting.mapTranslationKey(ChatUtil.uncoverTranslationKey(group.getName())), groupObject);
         }
-
-        object.addProperty("selected-protocol-version", ProtocolTranslator.getTargetVersion().getName());
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusConfig;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
 import com.viaversion.viafabricplus.protocoltranslator.util.JLoggerToSLF4J;
+import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Types;
@@ -37,6 +38,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Logger;
+import com.viaversion.viaversion.util.GsonUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -120,6 +122,10 @@ public final class ViaFabricPlusViaVersionPlatform extends UserConnectionViaVers
         }
 
         platformDump.add("mods", mods);
+
+        final com.google.gson.JsonObject settings = new com.google.gson.JsonObject();
+        SaveManager.INSTANCE.getSettingsSave().writeSettings(settings);
+        platformDump.add("settings", GsonUtil.getGson().fromJson(settings.toString(), JsonObject.class));
 
         return platformDump;
     }
