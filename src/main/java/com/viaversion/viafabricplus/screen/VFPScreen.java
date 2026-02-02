@@ -25,11 +25,11 @@ import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import java.awt.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.ConfirmLinkScreen;
-import net.minecraft.client.gui.screens.AlertScreen;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.PlainTextButton;
+import net.minecraft.client.gui.screens.AlertScreen;
+import net.minecraft.client.gui.screens.ConfirmLinkScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2fStack;
@@ -140,6 +140,17 @@ public class VFPScreen extends Screen {
     public void open(final Screen prevScreen) {
         this.prevScreen = prevScreen;
         setScreen(this);
+    }
+
+    /**
+     * Returns this screen instance after setting the previous screen.
+     *
+     * @param prevScreen The screen to return to when this screen is closed
+     * @return This screen instance
+     */
+    public Screen get(final Screen prevScreen) {
+        this.prevScreen = prevScreen;
+        return this;
     }
 
     public static void setScreen(final Screen screen) {

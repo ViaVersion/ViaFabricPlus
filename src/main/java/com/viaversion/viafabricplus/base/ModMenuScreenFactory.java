@@ -32,11 +32,7 @@ public final class ModMenuScreenFactory implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return parent -> {
-            // Sadly, we can't use the open() function here because mod menu needs the screen to be returned
-            ProtocolSelectionScreen.INSTANCE.prevScreen = parent;
-            return ProtocolSelectionScreen.INSTANCE;
-        };
+        return ProtocolSelectionScreen.INSTANCE::get;
     }
 
 }
