@@ -24,8 +24,8 @@ package com.viaversion.viafabricplus.api.settings;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import java.util.function.Supplier;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 /**
  * This class is the base for all settings. It contains the name, the default value and the current value.
@@ -41,6 +41,9 @@ public abstract class AbstractSetting<T> {
     private T value;
 
     private Supplier<Component> tooltip;
+
+    private boolean locked;
+    private T lockedValue;
 
     public AbstractSetting(final SettingGroup parent, final MutableComponent name, final T defaultValue) {
         this.name = name;
@@ -84,10 +87,17 @@ public abstract class AbstractSetting<T> {
     }
 
     public T getValue() {
+        return locked ? lockedValue : value;
+    }
+
+    public T getCurrentValue() {
         return value;
     }
 
     public void setValue(T value) {
+        if (locked && lockedValue == null) {
+            this.lockedValue = value;
+        }
         this.value = value;
         onValueChanged();
     }
@@ -106,6 +116,14 @@ public abstract class AbstractSetting<T> {
 
     public void setTooltip(Supplier<Component> tooltip) {
         this.tooltip = tooltip;
+    }
+
+    /**
+     * Locks the setting so any change to the first value loaded will only be applied after restarting the game.
+     */
+    public void lockValue() {
+        this.locked = true;
+        setTooltip(Component.translatable("base.viafabricplus.this_will_require_a_restart"));
     }
 
 }

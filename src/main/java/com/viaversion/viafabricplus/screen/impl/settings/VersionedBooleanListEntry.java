@@ -44,16 +44,18 @@ public final class VersionedBooleanListEntry extends VFPListEntry {
 
     @Override
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-        this.value.setValue(this.value.getValue() + 1);
-        if (this.value.getValue() % 3 == 0) this.value.setValue(0);
+        this.value.setValue(this.value.getCurrentValue() + 1);
+        if (this.value.getCurrentValue() % 3 == 0) this.value.setValue(0);
     }
 
     @Override
     public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final Font textRenderer = Minecraft.getInstance().font;
 
-        final Component text = Component.translatable("base.viafabricplus." + (this.value.isAuto() ? "auto" : this.value.isEnabled() ? "on" : "off"));
-        Color color = this.value.isAuto() ? Color.ORANGE : this.value.isEnabled() ? Color.GREEN : Color.RED;
+        final boolean isAuto = this.value.getCurrentValue() == VersionedBooleanSetting.AUTO_INDEX;
+        final boolean isEnabled = this.value.isEnabled(this.value.getCurrentValue());
+        final Component text = Component.translatable("base.viafabricplus." + (isAuto ? "auto" : isEnabled ? "on" : "off"));
+        Color color = isAuto ? Color.ORANGE : isEnabled ? Color.GREEN : Color.RED;
 
         final int offset = textRenderer.width(text) + 2;
         renderScrollableText(Component.nullToEmpty(ChatFormatting.GRAY + this.value.getName().getString() + " " + ChatFormatting.RESET + this.value.getProtocolRange().toString()), offset);

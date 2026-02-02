@@ -28,6 +28,7 @@ import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import net.minecraft.network.chat.MutableComponent;
+import org.jetbrains.annotations.ApiStatus;
 
 public class VersionedBooleanSetting extends AbstractSetting<Integer> {
 
@@ -45,7 +46,7 @@ public class VersionedBooleanSetting extends AbstractSetting<Integer> {
 
     @Override
     public void write(JsonObject object) {
-        object.addProperty(getTranslationKey(), getValue() == AUTO_INDEX ? "auto" : getValue() == ENABLED_INDEX ? "enabled" : "disabled");
+        object.addProperty(getTranslationKey(), getCurrentValue() == AUTO_INDEX ? "auto" : getCurrentValue() == ENABLED_INDEX ? "enabled" : "disabled");
     }
 
     @Override
@@ -68,6 +69,18 @@ public class VersionedBooleanSetting extends AbstractSetting<Integer> {
             return protocolRange.contains(version);
         } else {
             return getValue() == ENABLED_INDEX;
+        }
+    }
+
+    public boolean isEnabled(final Integer value) {
+        return isEnabled(value, ViaFabricPlus.getImpl().getTargetVersion());
+    }
+
+    public boolean isEnabled(final Integer value, final ProtocolVersion version) {
+        if (value == AUTO_INDEX) {
+            return protocolRange.contains(version);
+        } else {
+            return value == ENABLED_INDEX;
         }
     }
 

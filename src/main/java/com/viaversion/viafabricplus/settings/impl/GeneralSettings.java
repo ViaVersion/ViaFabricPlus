@@ -62,8 +62,8 @@ public final class GeneralSettings extends SettingGroup {
 
     public GeneralSettings() {
         super(Component.translatable("setting_group_name.viafabricplus.general"));
-        emulateInventoryActionsInAlphaVersions.setTooltip(Component.translatable("base.viafabricplus.this_will_require_a_restart"));
-        experimentalBlockConnections.setTooltip(Component.translatable("base.viafabricplus.this_will_require_a_restart"));
+        emulateInventoryActionsInAlphaVersions.lockValue();
+        experimentalBlockConnections.lockValue();
     }
 
     public static void setOrientation(final Position position, final int orientationIndex, final int width, final int height) {

@@ -34,7 +34,7 @@ public class BooleanSetting extends AbstractSetting<Boolean> {
 
     @Override
     public void write(JsonObject object) {
-        object.addProperty(getTranslationKey(), getValue());
+        object.addProperty(getTranslationKey(), getCurrentValue());
     }
 
     @Override

@@ -44,7 +44,7 @@ public final class ModeListEntry extends VFPListEntry {
 
     @Override
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-        final int currentIndex = Arrays.stream(this.value.getOptions()).toList().indexOf(this.value.getValue()) + 1;
+        final int currentIndex = Arrays.stream(this.value.getOptions()).toList().indexOf(this.value.getCurrentValue()) + 1;
         this.value.setValue(currentIndex > this.value.getOptions().length - 1 ? 0 : currentIndex);
     }
 
@@ -52,9 +52,9 @@ public final class ModeListEntry extends VFPListEntry {
     public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final Font textRenderer = Minecraft.getInstance().font;
 
-        final int offset = textRenderer.width(this.value.getValue()) + 2;
+        final int offset = textRenderer.width(this.value.getCurrentValue()) + 2;
         renderScrollableText(this.value.getName().withStyle(ChatFormatting.GRAY), offset);
-        context.drawString(textRenderer, this.value.getValue(), entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
+        context.drawString(textRenderer, this.value.getCurrentValue(), entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
 
         renderTooltip(value.getTooltip(), mouseX, mouseY);
     }

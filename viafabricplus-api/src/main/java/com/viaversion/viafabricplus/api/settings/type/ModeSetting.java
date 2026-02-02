@@ -43,7 +43,7 @@ public class ModeSetting extends AbstractSetting<MutableComponent> {
 
     @Override
     public void write(JsonObject object) {
-        object.addProperty(getTranslationKey(), mapTranslationKey(ChatUtil.uncoverTranslationKey(getValue())));
+        object.addProperty(getTranslationKey(), mapTranslationKey(ChatUtil.uncoverTranslationKey(getCurrentValue())));
     }
 
     @Override
