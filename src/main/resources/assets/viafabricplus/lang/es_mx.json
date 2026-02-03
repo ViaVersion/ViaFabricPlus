@@ -21,7 +21,6 @@
   "base.viafabricplus.kick": "Expulsar",
   "base.viafabricplus.cancel_and_notify": "Cancelar y notificar",
   "base.viafabricplus.detecting_server_version": "Detectando versión del servidor...",
-  "base.viafabricplus.this_will_require_a_restart": "¡Esto va a requerir un reinicio!",
   "base.viafabricplus.none": "Ninguno",
   "setting_group_name.viafabricplus.authentication": "Autenticación",
   "setting_group_name.viafabricplus.debug": "depuración",
