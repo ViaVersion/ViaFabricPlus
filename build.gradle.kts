@@ -1,8 +1,8 @@
-import de.florianmichael.baseproject.*
+import de.florianreuth.baseproject.*
 
 plugins {
     id("net.fabricmc.fabric-loom-remap")
-    id("de.florianmichael.baseproject.BaseProject")
+    id("de.florianreuth.baseproject")
 }
 
 allprojects {
@@ -53,7 +53,7 @@ includeFabricSubmodule("viafabricplus-visuals")
 
 dependencies {
     jij("net.lenni0451:Reflect:1.6.1")
-    jij("de.florianmichael:Classic4J:2.2.1")
+    jij("de.florianreuth:classic4j:2.3.0")
     configureBedrockDependencies()
 
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")

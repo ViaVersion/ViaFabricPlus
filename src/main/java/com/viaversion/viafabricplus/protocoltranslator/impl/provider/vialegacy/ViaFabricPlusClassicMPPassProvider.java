@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/ViaVersion/ViaFabricPlus
  * Copyright (C) 2021-2026 the original authors
- *                         - FlorianMichael/EnZaXD <git@florianmichael.de>
+ *                         - Florian Reuth <git@florianreuth.de>
  *                         - RK_01/RaphiMC
  * Copyright (C) 2023-2026 ViaVersion and contributors
  *
@@ -25,7 +25,7 @@ import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.classic4j.BetaCraftHandler;
+import de.florianreuth.classic4j.BetaCraftHandler;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.provider.OldAuthProvider;
 

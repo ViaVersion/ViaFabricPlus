@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/ViaVersion/ViaFabricPlus
  * Copyright (C) 2021-2026 the original authors
- *                         - FlorianMichael/EnZaXD <git@florianmichael.de>
+ *                         - Florian Reuth <git@florianreuth.de>
  *                         - RK_01/RaphiMC
  * Copyright (C) 2023-2026 ViaVersion and contributors
  *
@@ -26,9 +26,9 @@ import com.viaversion.viafabricplus.injection.access.base.IEditBox;
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.save.impl.AccountsSave;
 import com.viaversion.viafabricplus.screen.VFPScreen;
-import de.florianmichael.classic4j.ClassiCubeHandler;
-import de.florianmichael.classic4j.api.LoginProcessHandler;
-import de.florianmichael.classic4j.model.classicube.account.CCAccount;
+import de.florianreuth.classic4j.ClassiCubeHandler;
+import de.florianreuth.classic4j.api.LoginProcessHandler;
+import de.florianreuth.classic4j.model.classicube.account.CCAccount;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.components.Button;

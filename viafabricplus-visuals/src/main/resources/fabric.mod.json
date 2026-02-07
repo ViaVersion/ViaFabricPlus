@@ -6,10 +6,10 @@
   "description": "${description}",
   "authors": [
     {
-      "name": "FlorianMichael/EnZaXD",
+      "name": "Florian Reuth (EnZaXD)",
       "contact": {
-        "email": "git@florianmichael.de",
-        "homepage": "https://github.com/FlorianMichael"
+        "email": "git@florianreuth.de",
+        "homepage": "https://github.com/florianreuth"
       }
     },
     {
@@ -30,10 +30,10 @@
     }
   ],
   "contact": {
-    "homepage": "https://florianmichael.de/",
+    "homepage": "https://florianreuth.de/",
     "sources": "https://github.com/ViaVersion/ViaFabricPlus",
     "issues": "https://github.com/ViaVersion/ViaFabricPlus/issues",
-    "email": "contact@florianmichael.de"
+    "email": "florian@florianreuth.de"
   },
   "license": "GPL-v3",
   "environment": "client",

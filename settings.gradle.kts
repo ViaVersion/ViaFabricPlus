@@ -2,12 +2,13 @@ pluginManagement {
     repositories {
         mavenCentral()
         gradlePluginPortal()
+        maven("https://maven.florianreuth.de/releases")
         maven("https://maven.fabricmc.net/")
     }
 
     plugins {
         id("net.fabricmc.fabric-loom-remap") version "1.15-SNAPSHOT"
-        id("de.florianmichael.baseproject.BaseProject") version "1.4.2"
+        id("de.florianreuth.baseproject") version "2.0.0"
     }
 }
 

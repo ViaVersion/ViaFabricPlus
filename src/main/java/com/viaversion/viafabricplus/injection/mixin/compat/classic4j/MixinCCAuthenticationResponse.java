@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/ViaVersion/ViaFabricPlus
  * Copyright (C) 2021-2026 the original authors
- *                         - FlorianMichael/EnZaXD <git@florianmichael.de>
+ *                         - Florian Reuth <git@florianreuth.de>
  *                         - RK_01/RaphiMC
  * Copyright (C) 2023-2026 ViaVersion and contributors
  *
@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.compat.classic4j;
 
-import de.florianmichael.classic4j.model.classicube.CCAuthenticationResponse;
-import de.florianmichael.classic4j.model.classicube.CCError;
+import de.florianreuth.classic4j.model.classicube.CCAuthenticationResponse;
+import de.florianreuth.classic4j.model.classicube.CCError;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

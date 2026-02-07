@@ -1,4 +1,4 @@
-import de.florianmichael.baseproject.loadFabricApiModules
+import de.florianreuth.baseproject.loadFabricApiModules
 
 dependencies {
     loadFabricApiModules("fabric-lifecycle-events-v1")

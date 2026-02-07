@@ -1,7 +1,7 @@
 /*
  * This file is part of ViaFabricPlus - https://github.com/ViaVersion/ViaFabricPlus
  * Copyright (C) 2021-2026 the original authors
- *                         - FlorianMichael/EnZaXD <git@florianmichael.de>
+ *                         - Florian Reuth <git@florianreuth.de>
  *                         - RK_01/RaphiMC
  * Copyright (C) 2023-2026 ViaVersion and contributors
  *
@@ -26,10 +26,10 @@ import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viafabricplus.screen.impl.settings.TitleEntry;
 import com.viaversion.viafabricplus.util.ConnectionUtil;
-import de.florianmichael.classic4j.BetaCraftHandler;
-import de.florianmichael.classic4j.model.betacraft.BCServerInfo;
-import de.florianmichael.classic4j.model.betacraft.BCServerList;
-import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
+import de.florianreuth.classic4j.BetaCraftHandler;
+import de.florianreuth.classic4j.model.betacraft.BCServerInfo;
+import de.florianreuth.classic4j.model.betacraft.BCServerList;
+import de.florianreuth.classic4j.model.betacraft.BCVersionCategory;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
