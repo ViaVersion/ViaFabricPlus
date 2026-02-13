@@ -32,7 +32,8 @@ public final class ModMenuScreenFactory implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return ProtocolSelectionScreen.INSTANCE::get;
+        //noinspection Convert2MethodRef
+        return screen -> ProtocolSelectionScreen.INSTANCE.get(screen);
     }
 
 }
