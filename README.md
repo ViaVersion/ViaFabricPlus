@@ -44,7 +44,7 @@ entity interactions, graphics, and more. In short, it recreates the classic Mine
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
 - April Fools (3D Shareware, 20w14infinite, 25w14craftmine)
 - Combat Snapshots (Combat Test 8c)
-- Bedrock Edition 1.21.130 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
+- Bedrock Edition 1.26.0 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
 
 ## For Developers & Contributors
 
