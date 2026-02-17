@@ -87,7 +87,16 @@ public abstract class AbstractSetting<T> {
     }
 
     public T getValue() {
-        return (locked && lockedValue != null) ? lockedValue : value;
+        if (!locked) {
+            return value;
+        }
+
+        if (lockedValue == null) {
+            // This happens if the configuration file didn't exist on first startup
+            // and no value was read.
+            lockedValue = defaultValue;
+        }
+        return lockedValue;
     }
 
     public T getCurrentValue() {
