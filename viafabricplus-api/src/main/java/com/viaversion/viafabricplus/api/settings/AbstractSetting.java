@@ -87,7 +87,7 @@ public abstract class AbstractSetting<T> {
     }
 
     public T getValue() {
-        return locked ? lockedValue : value;
+        return (locked && lockedValue != null) ? lockedValue : value;
     }
 
     public T getCurrentValue() {
