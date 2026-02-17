@@ -25,15 +25,14 @@ import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IChunkTracker;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IRakSessionCodec;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.protocoltranslator.protocol.storage.BedrockJoinGameTracker;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.gui.components.debug.DebugScreenEntry;
-import net.minecraft.client.gui.components.debug.DebugScreenDisplayer;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.components.debug.DebugScreenDisplayer;
+import net.minecraft.client.gui.components.debug.DebugScreenEntry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -74,13 +73,6 @@ public final class VFPDebugHudEntry implements DebugScreenEntry {
         final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = connection.get(ExtensionProtocolMetadataStorage.class);
         if (extensionProtocolMetadataStorage != null) {
             information.add("CPE extensions: " + extensionProtocolMetadataStorage.getExtensionCount());
-        }
-        final BedrockJoinGameTracker joinGameDataTracker = connection.get(BedrockJoinGameTracker.class);
-        if (joinGameDataTracker != null) {
-            information.add("Bedrock Level: " + joinGameDataTracker.getLevelId() + ", Enchantment Seed: " + joinGameDataTracker.getEnchantmentSeed());
-        }
-        if (joinGameDataTracker != null) {
-            information.add("World Seed: " + joinGameDataTracker.getSeed());
         }
         final ChunkTracker chunkTracker = connection.get(ChunkTracker.class);
         if (chunkTracker != null) {

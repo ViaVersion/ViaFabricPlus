@@ -31,7 +31,6 @@
     "base.integration.MixinViaLegacyConfig",
     "base.integration.bedrock.MixinConfirmScreen",
     "base.integration.bedrock.MixinConnectScreen_1",
-    "base.integration.bedrock.MixinJoinPackets",
     "base.integration.bedrock.MixinServerStatusPinger",
     "base.integration.event.MixinMinecraft",
     "base.integration.sync_tasks.MixinClientCommonPacketListenerImpl",
