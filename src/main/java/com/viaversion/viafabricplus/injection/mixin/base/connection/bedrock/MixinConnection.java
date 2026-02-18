@@ -27,6 +27,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.viaversion.viafabricplus.base.bedrock.NetherNetInetSocketAddress;
+import com.viaversion.viafabricplus.base.bedrock.NetherNetJsonRpcAddress;
 import com.viaversion.viafabricplus.injection.access.base.IConnection;
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IEventLoopGroupHolder;
 import com.viaversion.viafabricplus.protocoltranslator.netty.RakNetPingEncapsulationCodec;
@@ -34,6 +35,7 @@ import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import dev.kastle.netty.channel.nethernet.NetherNetChannelFactory;
+import dev.kastle.netty.channel.nethernet.signaling.NetherNetXboxRpcSignaling;
 import dev.kastle.netty.channel.nethernet.signaling.NetherNetXboxSignaling;
 import dev.kastle.webrtc.PeerConnectionFactory;
 import io.netty.bootstrap.AbstractBootstrap;
@@ -49,6 +51,8 @@ import io.netty.channel.kqueue.KQueueSocketChannel;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import net.minecraft.network.Connection;
 import net.minecraft.network.HandlerNames;
 import net.minecraft.network.protocol.Packet;
@@ -61,10 +65,7 @@ import org.cloudburstmc.netty.channel.raknet.RakChannelFactory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 
 @Mixin(value = Connection.class, priority = 1001) // Apply after connection/MixinConnection
 public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet<?>> {
@@ -95,9 +96,13 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
     @WrapOperation(method = "connect", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;channel(Ljava/lang/Class;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false))
     private static AbstractBootstrap<?, ?> useRakNetChannelFactory(Bootstrap instance, Class<? extends Channel> channelTypeClass, Operation<AbstractBootstrap<Bootstrap, Channel>> original, @Local(argsOnly = true) InetSocketAddress address, @Local(argsOnly = true) Connection clientConnection) {
         if (BedrockProtocolVersion.bedrockLatest.equals(((IConnection) clientConnection).viaFabricPlus$getTargetVersion())) {
-            if (address instanceof NetherNetInetSocketAddress) {
+            if (address instanceof NetherNetInetSocketAddress netherNetAddress) {
                 final String authorizationHeader = SaveManager.INSTANCE.getAccountsSave().getBedrockAccount().getMinecraftSession().getUpToDateUnchecked().getAuthorizationHeader();
-                return instance.channelFactory(NetherNetChannelFactory.client(new PeerConnectionFactory(), new NetherNetXboxSignaling(authorizationHeader)));
+                if (netherNetAddress.getNetherNetAddress() instanceof NetherNetJsonRpcAddress) {
+                    return instance.channelFactory(NetherNetChannelFactory.client(new PeerConnectionFactory(), new NetherNetXboxRpcSignaling(authorizationHeader)));
+                } else {
+                    return instance.channelFactory(NetherNetChannelFactory.client(new PeerConnectionFactory(), new NetherNetXboxSignaling(authorizationHeader)));
+                }
             } else { // RakNet
                 if (channelTypeClass == NioSocketChannel.class) {
                     channelTypeClass = NioDatagramChannel.class;

@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.screen.impl.realms;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.base.bedrock.NetherNetJsonRpcAddress;
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
@@ -128,6 +129,8 @@ public final class BedrockRealmsScreen extends VFPScreen {
                     ConnectionUtil.connect(server.getAddress(), BedrockProtocolVersion.bedrockLatest);
                 } else if (server.getNetworkProtocol().equalsIgnoreCase(RealmsJoinInformation.PROTOCOL_NETHERNET)) {
                     ConnectionUtil.connectNetherNet(new NetherNetAddress(server.getAddress()));
+                } else if (server.getNetworkProtocol().equalsIgnoreCase(RealmsJoinInformation.PROTOCOL_NETHERNET_JSONRPC)) {
+                    ConnectionUtil.connectNetherNet(new NetherNetJsonRpcAddress(server.getAddress()));
                 } else {
                     setupSubtitle(Component.translatable("bedrock_realms.viafabricplus.unsupported_protocol", server.getNetworkProtocol()));
                 }

@@ -64,13 +64,13 @@ includeTransitiveJijDependencies()
 
 fun configureBedrockDependencies() {
     dependencies {
-        jij("net.raphimc:MinecraftAuth:5.0.1-20251223.202750-3") {
+        jij("net.raphimc:MinecraftAuth:5.0.1-20260217.194827-4") {
             exclude(group = "com.google.code.gson", module = "gson")
         }
-        jij("dev.kastle.netty:netty-transport-raknet:1.4.0") {
+        jij("dev.kastle.netty:netty-transport-raknet:1.7.0") {
             exclude(group = "io.netty")
         }
-        jij("dev.kastle.netty:netty-transport-nethernet:1.6.0") {
+        jij("dev.kastle.netty:netty-transport-nethernet:1.7.0") {
             exclude(group = "io.netty")
         }
         arrayOf("windows-x86_64", "windows-aarch64", "linux-x86_64", "linux-aarch64", "macos-aarch64").forEach {
