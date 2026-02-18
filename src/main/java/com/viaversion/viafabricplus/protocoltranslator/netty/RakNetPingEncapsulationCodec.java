@@ -23,14 +23,13 @@ package com.viaversion.viafabricplus.protocoltranslator.netty;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
+import java.net.InetSocketAddress;
+import java.util.List;
 import org.cloudburstmc.netty.channel.raknet.RakConstants;
 import org.cloudburstmc.netty.channel.raknet.RakPing;
 import org.cloudburstmc.netty.channel.raknet.RakPong;
 
-import java.net.InetSocketAddress;
-import java.util.List;
-
-public class RakNetPingEncapsulationCodec extends MessageToMessageCodec<RakPong, ByteBuf> {
+public final class RakNetPingEncapsulationCodec extends MessageToMessageCodec<RakPong, ByteBuf> {
 
     public static final String NAME = "viabedrock-ping-encapsulation";
 

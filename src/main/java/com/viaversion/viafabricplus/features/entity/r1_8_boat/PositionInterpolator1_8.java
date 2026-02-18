@@ -28,7 +28,7 @@ import net.minecraft.world.entity.InterpolationHandler;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.phys.Vec3;
 
-public class PositionInterpolator1_8 extends InterpolationHandler {
+public final class PositionInterpolator1_8 extends InterpolationHandler {
 
     private final AbstractBoat boatEntity;
 

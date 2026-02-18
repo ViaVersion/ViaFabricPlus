@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.base.bedrock;
 
 import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
 
-public class NetherNetJsonRpcAddress extends NetherNetAddress {
+public final class NetherNetJsonRpcAddress extends NetherNetAddress {
 
     public NetherNetJsonRpcAddress(final String networkId) {
         super(networkId);
