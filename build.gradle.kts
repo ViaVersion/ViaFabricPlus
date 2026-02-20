@@ -52,7 +52,7 @@ includeFabricSubmodule("viafabricplus-api")
 includeFabricSubmodule("viafabricplus-visuals")
 
 dependencies {
-    jij("net.lenni0451:Reflect:1.6.1")
+    jij("net.lenni0451:Reflect:1.6.2")
     jij("de.florianreuth:classic4j:2.3.0")
     configureBedrockDependencies()
 
