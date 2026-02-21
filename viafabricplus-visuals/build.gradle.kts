@@ -6,5 +6,5 @@ plugins {
 
 dependencies {
     loadFabricApiModules("fabric-lifecycle-events-v1")
-    compileOnly(project(":viafabricplus-api"))
+    compileOnly(projects.viafabricplusApi)
 }

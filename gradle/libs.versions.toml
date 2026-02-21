@@ -1,0 +1,39 @@
+[versions]
+viaversion = "5.7.2-SNAPSHOT"
+viabackwards = "5.7.2-SNAPSHOT"
+viaaprilfools = "4.0.8"
+vialegacy = "3.0.13"
+viabedrock = "0.0.26-SNAPSHOT"
+
+reflect = "1.6.2"
+classic4j = "2.3.0"
+minecraftauth = "5.0.1-SNAPSHOT"
+
+netty-raknet = "1.7.0"
+netty-nethernet = "1.7.0"
+
+webrtc = "1.0.3"
+modmenu = "16.0.0"
+
+[libraries]
+reflect = { module = "net.lenni0451:Reflect", version.ref = "reflect" }
+classic4j = { module = "de.florianreuth:classic4j", version.ref = "classic4j" }
+
+viaversion-common = { module = "com.viaversion:viaversion-common", version.ref = "viaversion" }
+viabackwards-common = { module = "com.viaversion:viabackwards-common", version.ref = "viabackwards" }
+viaaprilfools-common = { module = "com.viaversion:viaaprilfools-common", version.ref = "viaaprilfools" }
+vialegacy = { module = "net.raphimc:ViaLegacy", version.ref = "vialegacy" }
+viabedrock = { module = "net.raphimc:ViaBedrock", version.ref = "viabedrock" }
+
+minecraftauth = { module = "net.raphimc:MinecraftAuth", version.ref = "minecraftauth" }
+
+netty-raknet = { module = "dev.kastle.netty:netty-transport-raknet", version.ref = "netty-raknet" }
+netty-nethernet = { module = "dev.kastle.netty:netty-transport-nethernet", version.ref = "netty-nethernet" }
+
+webrtc-windows-x64 = { module = "dev.kastle.webrtc:webrtc-java", version = "1.0.3:windows-x86_64" }
+webrtc-windows-arm64 = { module = "dev.kastle.webrtc:webrtc-java", version = "1.0.3:windows-aarch64" }
+webrtc-linux-x64 = { module = "dev.kastle.webrtc:webrtc-java", version = "1.0.3:linux-x86_64" }
+webrtc-linux-arm64 = { module = "dev.kastle.webrtc:webrtc-java", version = "1.0.3:linux-aarch64" }
+webrtc-macos-arm64 = { module = "dev.kastle.webrtc:webrtc-java", version = "1.0.3:macos-aarch64" }
+
+modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }

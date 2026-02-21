@@ -1,3 +1,22 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+dependencyResolutionManagement {
+    repositories {
+        // Keep them in sync with docs/DEVELOPER_API.md
+        maven("https://repo.viaversion.com")
+        maven("https://maven.lenni0451.net/everything")
+        maven("https://maven.terraformersmc.com/releases")
+        maven("https://jitpack.io") {
+            content {
+                includeGroup("com.github.oryxel1")
+            }
+        }
+        mavenCentral()
+
+        //mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
+    }
+}
+
 pluginManagement {
     repositories {
         mavenCentral()
