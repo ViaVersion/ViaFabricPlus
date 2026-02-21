@@ -33,10 +33,6 @@ subprojects {
 
 }
 
-base {
-    archivesName.set("ViaFabricPlus") // Override the set name as it's lowercase for publishing
-}
-
 project.property("updating_minecraft").toString().toBoolean().let {
     configureTestTasks(it)
     if (it) {
