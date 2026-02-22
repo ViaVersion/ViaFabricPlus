@@ -46,7 +46,7 @@ public abstract class MixinBlockItemPacketRewriter1_21_5 extends StructuredItemR
         // Don't allow mods to directly send window interactions which would skip our clientside fix in MixinClientPlayerInteractionManager
         // Use ClientPlayerInteractionManager#clickSlot instead
         protocol.registerServerbound(ServerboundPackets1_21_5.CONTAINER_CLICK, ServerboundPackets1_21_4.CONTAINER_CLICK, wrapper -> {
-            NotificationUtil.warnIncompatibilityPacket("1.21.5", "CONTAINER_CLICK", "ClientPlayerInteractionManager#clickSlot", "MultiPlayerGameMode#handleInventoryMouseClick");
+            NotificationUtil.warnIncompatibilityPacket("1.21.5", "CONTAINER_CLICK", "MultiPlayerGameMode#handleInventoryMouseClick");
             wrapper.cancel();
         }, true);
     }
