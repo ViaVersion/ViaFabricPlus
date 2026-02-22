@@ -52,7 +52,7 @@ public abstract class MixinProtocol1_21_5To1_21_6 extends AbstractProtocol<Clien
             if (wrapper.user().getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
                 // In VFP, unsigned commands are not allowed to be sent in VV protocols as we implemented signing on a client level
                 // where we can't reach and fixup signatures in all cases.
-                NotificationUtil.warnIncompatibilityPacket("1.21.6", "CHANGE_GAME_MODE", null, null);
+                NotificationUtil.warnIncompatibilityPacket("1.21.6", "CHANGE_GAME_MODE", null);
                 wrapper.cancel();
                 return;
             }
