@@ -30,12 +30,12 @@ public final class ViaFabricPlusPickItemProvider extends PickItemProvider {
 
     @Override
     public void pickItemFromBlock(UserConnection connection, BlockPosition blockPosition, boolean includeData) {
-        NotificationUtil.warnIncompatibilityPacket("1.21.4", "PICK_ITEM_FROM_BLOCK", "MinecraftClient#doItemPick", "Minecraft#pickBlock");
+        NotificationUtil.warnIncompatibilityPacket("1.21.4", "PICK_ITEM_FROM_BLOCK", "Minecraft#pickBlock");
     }
 
     @Override
     public void pickItemFromEntity(UserConnection connection, int entityId, boolean includeData) {
-        NotificationUtil.warnIncompatibilityPacket("1.21.4", "PICK_ITEM_FROM_ENTITY", "MinecraftClient#doItemPick", "Minecraft#pickBlock");
+        NotificationUtil.warnIncompatibilityPacket("1.21.4", "PICK_ITEM_FROM_ENTITY", "Minecraft#pickBlock");
     }
 
 }
