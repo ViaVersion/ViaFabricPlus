@@ -7,6 +7,7 @@
   "client": [
     "base.MixinMain",
     "base.access.MixinChunkTracker",
+    "base.access.MixinExtensionProtocolMetadataStorage",
     "base.access.MixinLocalSampleLogger",
     "base.access.MixinRakSessionCodec",
     "base.connection.MixinClientHandshakePacketListenerImpl",
