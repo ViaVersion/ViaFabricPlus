@@ -41,7 +41,7 @@ public abstract class MixinTextComponentSerializer {
     public abstract Gson getGson();
 
     /**
-     * @author FlorianMichael/EnZaXD
+     * @author Florian Reuth (EnZaXD)
      * @reason Fix legacy text component deserialization
      */
     @Overwrite

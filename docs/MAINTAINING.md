@@ -136,7 +136,7 @@ Check the ViaVersion/upstream protocol implementation.
 
 # Build Files
 
-- Common build logic comes from the [BaseProject Gradle convention plugin](https://github.com/FlorianMichael/BaseProject).
+- Common build logic comes from the [BaseProject Gradle convention plugin](https://github.com/florianreuth/BaseProject).
 - The root project includes all submodules (including optional ones like `viafabricplus-visuals`).
 - Be careful not to introduce unintended dependencies on optional submodules.
 
@@ -176,7 +176,7 @@ Start <release version> cycle
 - `main` → all new changes are merged here
 - After the last release for a version, a branch is created with that version name (e.g. `ver/1.21.5`)
 
-See [ViaFabricPlus-archive](https://github.com/FlorianMichael/ViaFabricPlus-archive) for older branches.
+See [ViaFabricPlus-archive](https://github.com/florianreuth/ViaFabricPlus-archive) for older branches.
 
 ---
 

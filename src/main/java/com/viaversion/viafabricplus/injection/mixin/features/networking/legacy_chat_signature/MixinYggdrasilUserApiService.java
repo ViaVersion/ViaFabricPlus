@@ -45,7 +45,7 @@ public abstract class MixinYggdrasilUserApiService {
     private URL routeKeyPair;
 
     /**
-     * @author FlorianMichael/EnZaXD
+     * @author Florian Reuth (EnZaXD)
      * @reason Fetch the legacy public key signature for 1.19.0 clients.
      */
     @Overwrite

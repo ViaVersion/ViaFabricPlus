@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 public abstract class MixinViaBedrockConfig {
 
     /**
-     * @author FlorianMichael/EnZaXD
+     * @author Florian Reuth (EnZaXD)
      * @reason Move setting into the settings GUI, changes default to true
      */
     @Overwrite

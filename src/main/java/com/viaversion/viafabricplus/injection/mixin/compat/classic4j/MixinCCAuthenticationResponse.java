@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinCCAuthenticationResponse {
 
     // Classic4J doesn't support translations, so we have to map them manually
-    @Redirect(method = "getErrorDisplay", at = @At(value = "FIELD", target = "Lde/florianmichael/classic4j/model/classicube/CCError;description:Ljava/lang/String;"))
+    @Redirect(method = "getErrorDisplay", at = @At(value = "FIELD", target = "Lde/florianreuth/classic4j/model/classicube/CCError;description:Ljava/lang/String;"))
     private String mapTranslations(CCError instance) {
         return switch (instance) {
             case TOKEN -> Component.translatable("classic4j_library.viafabricplus.error.token").getString();

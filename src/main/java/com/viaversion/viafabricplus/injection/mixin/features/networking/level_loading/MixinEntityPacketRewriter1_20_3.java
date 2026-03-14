@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 public abstract class MixinEntityPacketRewriter1_20_3 {
 
     /**
-     * @author FlorianMichael/EnZaXD
+     * @author Florian Reuth (EnZaXD)
      * @reason Handled in MixinClientPlayNetworkHandler
      */
     @Overwrite

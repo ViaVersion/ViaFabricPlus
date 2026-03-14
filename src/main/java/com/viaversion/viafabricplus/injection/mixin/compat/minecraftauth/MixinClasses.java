@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 public abstract class MixinClasses {
 
     /**
-     * @author FlorianMichael/EnZaXD
+     * @author Florian Reuth (EnZaXD)
      * @reason Use normal Class.forName instead of JsonWebToken's service loading mechanism
      */
     @Overwrite
