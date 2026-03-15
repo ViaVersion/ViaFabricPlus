@@ -105,7 +105,7 @@ public final class ViaFabricPlusConfig extends AbstractViaConfig {
 
     @Override
     public boolean cancelBlockSounds() {
-        if (DebugSettings.INSTANCE.clientsidePlaceSounds.isEnabled()) {
+        if (DebugSettings.INSTANCE.serversidePlaceSounds.isEnabled()) {
             return false;
         } else {
             return super.cancelBlockSounds();

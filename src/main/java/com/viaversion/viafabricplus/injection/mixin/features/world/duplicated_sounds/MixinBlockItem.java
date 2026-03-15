@@ -39,7 +39,7 @@ public abstract class MixinBlockItem {
         method = "place(Lnet/minecraft/world/item/context/BlockPlaceContext;)Lnet/minecraft/world/InteractionResult;",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
     private boolean disableBlockPlaceSounds(Level instance, Entity source, BlockPos pos, SoundEvent sound, SoundSource category, float volume, float pitch) {
-        return !DebugSettings.INSTANCE.clientsidePlaceSounds.isEnabled(); // Sent by the server in older versions
+        return !DebugSettings.INSTANCE.serversidePlaceSounds.isEnabled(); // Sent by the server in older versions
     }
 
 }
