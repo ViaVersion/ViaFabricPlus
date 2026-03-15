@@ -22,13 +22,12 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.duplicated_sounds;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,7 +39,7 @@ public abstract class MixinBlockItem {
         method = "place(Lnet/minecraft/world/item/context/BlockPlaceContext;)Lnet/minecraft/world/InteractionResult;",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
     private boolean disableBlockPlaceSounds(Level instance, Entity source, BlockPos pos, SoundEvent sound, SoundSource category, float volume, float pitch) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8); // Sent by the server in older versions
+        return !DebugSettings.INSTANCE.clientsidePlaceSounds.isEnabled(); // Sent by the server in older versions
     }
 
 }

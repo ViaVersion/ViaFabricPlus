@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import com.viaversion.viaversion.util.ConfigSection;
@@ -64,7 +65,6 @@ public final class ViaFabricPlusConfig extends AbstractViaConfig {
         unsupported.add("fix-1_21-placement-rotation");
         unsupported.add("team-colour-fix");
         unsupported.add("cancel-swing-in-inventory");
-        unsupported.add("cancel-block-sounds");
         unsupported.add("use-1_8-hitbox-margin");
         return unsupported;
     }
@@ -105,7 +105,11 @@ public final class ViaFabricPlusConfig extends AbstractViaConfig {
 
     @Override
     public boolean cancelBlockSounds() {
-        return false;
+        if (DebugSettings.INSTANCE.clientsidePlaceSounds.isEnabled()) {
+            return false;
+        } else {
+            return super.cancelBlockSounds();
+        }
     }
 
     @Override
