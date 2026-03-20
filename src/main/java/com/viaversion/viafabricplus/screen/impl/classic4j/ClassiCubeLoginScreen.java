@@ -29,10 +29,10 @@ import com.viaversion.viafabricplus.screen.VFPScreen;
 import de.florianreuth.classic4j.ClassiCubeHandler;
 import de.florianreuth.classic4j.api.LoginProcessHandler;
 import de.florianreuth.classic4j.model.classicube.account.CCAccount;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.ConfirmLinkScreen;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.network.chat.Component;
 
 public final class ClassiCubeLoginScreen extends VFPScreen {
@@ -105,9 +105,9 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-        this.renderScreenTitle(context);
+    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
+        this.renderScreenTitle(graphics);
     }
 
 }

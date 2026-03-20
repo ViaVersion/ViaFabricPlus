@@ -24,18 +24,18 @@ package com.viaversion.viafabricplus.injection.mixin.features.interaction.contai
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.inventory.MerchantMenu;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MerchantContainer;
+import net.minecraft.world.inventory.MerchantMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
-import net.minecraft.world.item.trading.ItemCost;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -75,7 +75,7 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
             // move 1st input slot to inventory
             if (!this.tradeContainer.getItem(0).isEmpty()) {
                 final int count = this.tradeContainer.getItem(0).getCount();
-                interactionManager.handleInventoryMouseClick(containerId, 0, 0, ClickType.QUICK_MOVE, player);
+                interactionManager.handleContainerInput(containerId, 0, 0, ContainerInput.QUICK_MOVE, player);
                 if (count == this.tradeContainer.getItem(0).getCount()) {
                     return;
                 }
@@ -84,7 +84,7 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
             // move 2nd input slot to inventory
             if (!this.tradeContainer.getItem(1).isEmpty()) {
                 final int count = this.tradeContainer.getItem(1).getCount();
-                interactionManager.handleInventoryMouseClick(containerId, 1, 0, ClickType.QUICK_MOVE, player);
+                interactionManager.handleContainerInput(containerId, 1, 0, ContainerInput.QUICK_MOVE, player);
                 if (count == this.tradeContainer.getItem(1).getCount()) {
                     return;
                 }
@@ -123,10 +123,12 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
         }
 
         final boolean wasHoldingItem = !player.containerMenu.getCarried().isEmpty();
-        interactionManager.handleInventoryMouseClick(containerId, slot, 0, ClickType.PICKUP, player);
-        interactionManager.handleInventoryMouseClick(containerId, slot, 0, ClickType.PICKUP_ALL, player);
-        interactionManager.handleInventoryMouseClick(containerId, inputSlot, 0, ClickType.PICKUP, player);
-        if (wasHoldingItem) interactionManager.handleInventoryMouseClick(containerId, slot, 0, ClickType.PICKUP, player);
+        interactionManager.handleContainerInput(containerId, slot, 0, ContainerInput.PICKUP, player);
+        interactionManager.handleContainerInput(containerId, slot, 0, ContainerInput.PICKUP_ALL, player);
+        interactionManager.handleContainerInput(containerId, inputSlot, 0, ContainerInput.PICKUP, player);
+        if (wasHoldingItem) {
+            interactionManager.handleContainerInput(containerId, slot, 0, ContainerInput.PICKUP, player);
+        }
     }
 
 }

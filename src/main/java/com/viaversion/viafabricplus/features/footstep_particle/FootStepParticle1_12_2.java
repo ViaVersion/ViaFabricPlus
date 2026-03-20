@@ -23,14 +23,14 @@ package com.viaversion.viafabricplus.features.footstep_particle;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.client.particle.SingleQuadParticle;
-import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.Camera;
+import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -57,7 +57,7 @@ public final class FootStepParticle1_12_2 extends SingleQuadParticle {
         final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
 
         Registry.register(BuiltInRegistries.PARTICLE_TYPE, ID, footStepType);
-        ParticleFactoryRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
+        ParticleProviderRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
 
         RAW_ID = BuiltInRegistries.PARTICLE_TYPE.getId(footStepType);
     }

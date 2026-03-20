@@ -33,7 +33,7 @@ import java.awt.*;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Util;
@@ -215,7 +215,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
         }
 
         @Override
-        public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final Font textRenderer = Minecraft.getInstance().font;
 
             String name = "";
@@ -229,7 +229,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
             }
             name += " (" + realmsServer.getState() + ")";
 
-            context.drawString(textRenderer, name, 3, 3, slotList.getFocused() == this ? Color.ORANGE.getRGB() : -1);
+            context.text(textRenderer, name, 3, 3, slotList.getFocused() == this ? Color.ORANGE.getRGB() : -1);
 
             String version = realmsServer.getWorldType();
             final String activeVersion = realmsServer.getActiveVersion();
@@ -237,7 +237,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
                 version += " - " + activeVersion;
             }
 
-            context.drawString(textRenderer, version, entryWidth - textRenderer.width(version) - 3, 3, -1);
+            context.text(textRenderer, version, entryWidth - textRenderer.width(version) - 3, 3, -1);
 
             final String motd = realmsServer.getMotd();
             if (motd != null) {

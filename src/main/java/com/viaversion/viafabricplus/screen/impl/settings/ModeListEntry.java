@@ -24,11 +24,11 @@ package com.viaversion.viafabricplus.screen.impl.settings;
 import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import java.util.Arrays;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
 
 public final class ModeListEntry extends VFPListEntry {
     private final ModeSetting value;
@@ -49,12 +49,12 @@ public final class ModeListEntry extends VFPListEntry {
     }
 
     @Override
-    public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final Font textRenderer = Minecraft.getInstance().font;
 
         final int offset = textRenderer.width(this.value.getCurrentValue()) + 2;
         renderScrollableText(this.value.getName().withStyle(ChatFormatting.GRAY), offset);
-        context.drawString(textRenderer, this.value.getCurrentValue(), entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
+        context.text(textRenderer, this.value.getCurrentValue(), entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
 
         renderTooltip(value.getTooltip(), mouseX, mouseY);
     }
