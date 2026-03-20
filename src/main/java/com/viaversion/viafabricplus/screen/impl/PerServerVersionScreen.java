@@ -28,13 +28,13 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.awt.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
 
 public final class PerServerVersionScreen extends VFPScreen {
 
@@ -89,9 +89,9 @@ public final class PerServerVersionScreen extends VFPScreen {
         }
 
         @Override
-        public void renderContent(final GuiGraphics context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        public void extractContent(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             final Font textRenderer = Minecraft.getInstance().font;
-            context.drawCenteredString(textRenderer, ((MutableComponent) getNarration()).withStyle(ChatFormatting.GOLD), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, -1);
+            context.centeredText(textRenderer, ((MutableComponent) getNarration()).withStyle(ChatFormatting.GOLD), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, -1);
         }
     }
 
@@ -114,11 +114,11 @@ public final class PerServerVersionScreen extends VFPScreen {
         }
 
         @Override
-        public void renderContent(final GuiGraphics context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        public void extractContent(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             final boolean isSelected = protocolVersion.equals(selectionSupplier.get());
 
             final Font textRenderer = Minecraft.getInstance().font;
-            context.drawCenteredString(textRenderer, this.protocolVersion.getName(), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
+            context.centeredText(textRenderer, this.protocolVersion.getName(), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
         }
     }
 

@@ -61,7 +61,7 @@ public final class ChatUtil {
      */
     public static void sendPrefixedMessage(final Component message) {
         if (Minecraft.getInstance().isSameThread()) {
-            Minecraft.getInstance().gui.getChat().addMessage(prefixText(message));
+            Minecraft.getInstance().gui.getChat().addClientSystemMessage(prefixText(message));
         } else {
             Minecraft.getInstance().execute(() -> sendPrefixedMessage(message));
         }

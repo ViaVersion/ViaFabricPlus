@@ -24,8 +24,8 @@ package com.viaversion.viafabricplus.visuals.features.classic.creative_menu;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.input.KeyEvent;
@@ -106,7 +106,8 @@ public final class GridItemSelectionScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(context, mouseX, mouseY, delta);
         final int halfWidth = this.width / 2;
         final int halfHeight = this.height / 2;
 
@@ -117,7 +118,7 @@ public final class GridItemSelectionScreen extends Screen {
         final int renderY = halfHeight - boxHeight / 2;
 
         context.fill(renderX, renderY, renderX + boxWidth, renderY + boxHeight, Integer.MIN_VALUE);
-        context.drawCenteredString(font, "Select block", renderX + boxWidth / 2, renderY + SIDE_OFFSET, -1);
+        context.centeredText(font, "Select block", renderX + boxWidth / 2, renderY + SIDE_OFFSET, -1);
         selectedItem = null;
 
         int y = SIDE_OFFSET + SIDE_OFFSET;
@@ -130,7 +131,7 @@ public final class GridItemSelectionScreen extends Screen {
                     context.fill(renderX + x, renderY + y, renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC, renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC, Integer.MAX_VALUE);
                     selectedItem = item.getDefaultInstance();
                 }
-                context.renderItem(item.getDefaultInstance(), renderX + x + ITEM_XY_BOX_DIMENSION_MODERN / 4, renderY + y + ITEM_XY_BOX_DIMENSION_MODERN / 4);
+                context.item(item.getDefaultInstance(), renderX + x + ITEM_XY_BOX_DIMENSION_MODERN / 4, renderY + y + ITEM_XY_BOX_DIMENSION_MODERN / 4);
                 x += ITEM_XY_BOX_DIMENSION_CLASSIC;
             }
             y += ITEM_XY_BOX_DIMENSION_CLASSIC;

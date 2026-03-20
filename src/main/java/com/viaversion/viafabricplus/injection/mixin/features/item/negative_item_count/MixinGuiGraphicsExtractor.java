@@ -22,22 +22,22 @@
 package com.viaversion.viafabricplus.injection.mixin.features.item.negative_item_count;
 
 import com.viaversion.viafabricplus.features.item.negative_item_count.NegativeItemUtil;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(GuiGraphics.class)
-public abstract class MixinGuiGraphics {
+@Mixin(GuiGraphicsExtractor.class)
+public abstract class MixinGuiGraphicsExtractor {
 
-    @Redirect(method = "renderItemCount", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getCount()I"))
+    @Redirect(method = "itemCount", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getCount()I"))
     private int handleNegativeItemCount(ItemStack instance) {
         return NegativeItemUtil.getCount(instance);
     }
 
-    @Redirect(method = "renderItemCount", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))
+    @Redirect(method = "itemCount", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))
     private String makeTextRed(int count) {
         if (count <= 0) {
             return ChatFormatting.RED.toString() + count;

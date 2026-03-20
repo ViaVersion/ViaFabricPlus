@@ -40,7 +40,7 @@ import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.RepeaterBlock;
 import net.minecraft.world.level.block.SlimeBlock;
-import net.minecraft.world.level.block.SnowyDirtBlock;
+import net.minecraft.world.level.block.SnowyBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -75,7 +75,7 @@ public final class BlockConnectionsEmulation1_12_2 {
         connectionHandlers.put(PipeBlock.class, new PipeStateHandler());
         connectionHandlers.put(RepeaterBlock.class, new RedStoneRepeaterStateHandler());
         connectionHandlers.put(RedStoneWireBlock.class, new RedStoneStateHandler());
-        connectionHandlers.put(SnowyDirtBlock.class, new SnowyGrassStateHandler());
+        connectionHandlers.put(SnowyBlock.class, new SnowyGrassStateHandler());
         connectionHandlers.put(StairBlock.class, new StairsStateHandler());
         connectionHandlers.put(WallBlock.class, new WallStateHandler());
     }

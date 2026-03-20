@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.screen;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import java.awt.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.PlainTextButton;
 import net.minecraft.client.gui.screens.AlertScreen;
@@ -174,10 +174,10 @@ public class VFPScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
 
-        this.renderTitle(context);
+        this.renderTitle(graphics);
     }
 
     @Override
@@ -194,12 +194,12 @@ public class VFPScreen extends Screen {
      *
      * @param context The current draw context
      */
-    public void renderTitle(final GuiGraphics context) {
+    public void renderTitle(final GuiGraphicsExtractor context) {
         final Matrix3x2fStack matrices = context.pose();
 
         matrices.pushMatrix();
         matrices.scale(2F, 2F);
-        context.drawCenteredString(font, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
+        context.centeredText(font, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.popMatrix();
 
         renderSubtitle(context);
@@ -210,10 +210,10 @@ public class VFPScreen extends Screen {
      *
      * @param context The current draw context
      */
-    public void renderSubtitle(final GuiGraphics context) {
+    public void renderSubtitle(final GuiGraphicsExtractor context) {
         if (subtitle != null && subtitlePressAction == null) {
             final int startY = (font.lineHeight + 2) * 2 + 3;
-            context.drawCenteredString(font, subtitle, width / 2, subtitleCentered() ? this.height / 2 - startY : startY, -1);
+            context.centeredText(font, subtitle, width / 2, subtitleCentered() ? this.height / 2 - startY : startY, -1);
         }
     }
 
@@ -222,8 +222,8 @@ public class VFPScreen extends Screen {
         return false;
     }
 
-    public void renderScreenTitle(final GuiGraphics context) {
-        context.drawCenteredString(this.font, this.title, this.width / 2, 70, 16777215);
+    public void renderScreenTitle(final GuiGraphicsExtractor context) {
+        context.centeredText(this.font, this.title, this.width / 2, 70, 16777215);
     }
 
     public @Nullable Component getSubtitle() {

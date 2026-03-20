@@ -29,7 +29,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.awt.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -99,7 +99,7 @@ public final class ProtocolSelectionScreen extends VFPScreen {
         }
 
         @Override
-        public void renderContent(final GuiGraphics context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        public void extractContent(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             final boolean isSelected = ProtocolTranslator.getTargetVersion().equals(protocolVersion);
 
             Color color = isSelected ? Color.GREEN : Color.RED;
@@ -108,7 +108,7 @@ public final class ProtocolSelectionScreen extends VFPScreen {
             }
 
             final Font textRenderer = Minecraft.getInstance().font;
-            context.drawCenteredString(textRenderer, this.protocolVersion.getName(), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, color.getRGB());
+            graphics.centeredText(textRenderer, this.protocolVersion.getName(), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, color.getRGB());
         }
     }
 

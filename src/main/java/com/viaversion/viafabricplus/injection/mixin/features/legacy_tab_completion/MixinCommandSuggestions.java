@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_complet
 
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import java.util.List;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.CommandSuggestions;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
@@ -52,7 +52,7 @@ public abstract class MixinCommandSuggestions {
 
     @Shadow
     @Final
-    EditBox input;
+    private EditBox input;
 
     @Shadow
     @Final
@@ -81,8 +81,8 @@ public abstract class MixinCommandSuggestions {
         }
     }
 
-    @Inject(method = "render", at = @At("HEAD"))
-    private void clearMessages(GuiGraphics drawContext, int mouseX, int mouseY, CallbackInfo ci) {
+    @Inject(method = "extractRenderState", at = @At("HEAD"))
+    private void clearMessages(GuiGraphicsExtractor graphics, int mouseX, int mouseY, CallbackInfo ci) {
         if (this.viaFabricPlus$cancelTabComplete()) {
             this.commandUsage.clear();
         }

@@ -22,11 +22,11 @@
 package com.viaversion.viafabricplus.screen.impl.settings;
 
 import com.viaversion.viafabricplus.screen.VFPListEntry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
 import org.joml.Matrix3x2fStack;
 
 public final class TitleEntry extends VFPListEntry {
@@ -43,7 +43,7 @@ public final class TitleEntry extends VFPListEntry {
     }
 
     @Override
-    public void renderContent(final GuiGraphics context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+    public void extractContent(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
         final Matrix3x2fStack matrices = context.pose();
 
         matrices.pushMatrix();
@@ -53,10 +53,10 @@ public final class TitleEntry extends VFPListEntry {
     }
 
     @Override
-    public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final Font textRenderer = Minecraft.getInstance().font;
 
-        context.drawString(textRenderer, this.name.copy().withStyle(ChatFormatting.BOLD), 3, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
+        context.text(textRenderer, this.name.copy().withStyle(ChatFormatting.BOLD), 3, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
     }
 
 }
