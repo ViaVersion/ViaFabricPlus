@@ -33,7 +33,7 @@ import de.florianreuth.classic4j.model.betacraft.BCVersionCategory;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
@@ -132,18 +132,18 @@ public final class BetaCraftScreen extends VFPScreen {
         }
 
         @Override
-        public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final Font textRenderer = Minecraft.getInstance().font;
-            context.drawCenteredString(textRenderer, server.name() + ChatFormatting.DARK_GRAY + " [" + server.gameVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
+            context.centeredText(textRenderer, server.name() + ChatFormatting.DARK_GRAY + " [" + server.gameVersion() + "]", entryWidth / 2, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
 
             if (server.onlineMode()) {
-                context.drawString(textRenderer, Component.translatable("base.viafabricplus.online_mode").withStyle(ChatFormatting.GREEN), 1, 1, -1);
+                context.text(textRenderer, Component.translatable("base.viafabricplus.online_mode").withStyle(ChatFormatting.GREEN), 1, 1, -1);
             }
             final String serverIP = server.socket();
             final String playerText = server.playerCount() + "/" + server.playerLimit();
 
-            context.drawString(textRenderer, Component.literal(serverIP).withStyle(ChatFormatting.DARK_GRAY), entryWidth - textRenderer.width(serverIP) - 1, entryHeight - textRenderer.lineHeight - 1, -1);
-            context.drawString(textRenderer, playerText, entryWidth - textRenderer.width(playerText) - 1, 1, -1);
+            context.text(textRenderer, Component.literal(serverIP).withStyle(ChatFormatting.DARK_GRAY), entryWidth - textRenderer.width(serverIP) - 1, entryHeight - textRenderer.lineHeight - 1, -1);
+            context.text(textRenderer, playerText, entryWidth - textRenderer.width(playerText) - 1, 1, -1);
         }
     }
 

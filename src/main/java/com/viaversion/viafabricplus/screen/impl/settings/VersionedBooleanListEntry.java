@@ -24,11 +24,11 @@ package com.viaversion.viafabricplus.screen.impl.settings;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import java.awt.*;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
 
 public final class VersionedBooleanListEntry extends VFPListEntry {
     private final VersionedBooleanSetting value;
@@ -49,7 +49,7 @@ public final class VersionedBooleanListEntry extends VFPListEntry {
     }
 
     @Override
-    public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final Font textRenderer = Minecraft.getInstance().font;
 
         final boolean isAuto = this.value.getCurrentValue() == VersionedBooleanSetting.AUTO_INDEX;
@@ -59,7 +59,7 @@ public final class VersionedBooleanListEntry extends VFPListEntry {
 
         final int offset = textRenderer.width(text) + 2;
         renderScrollableText(Component.nullToEmpty(ChatFormatting.GRAY + this.value.getName().getString() + " " + ChatFormatting.RESET + this.value.getProtocolRange().toString()), offset);
-        context.drawString(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, color.getRGB());
+        context.text(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, color.getRGB());
 
         renderTooltip(value.getTooltip(), mouseX, mouseY);
     }

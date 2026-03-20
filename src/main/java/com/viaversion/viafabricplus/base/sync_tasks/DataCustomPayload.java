@@ -32,7 +32,7 @@ public record DataCustomPayload(FriendlyByteBuf buf) implements CustomPacketPayl
     public static final CustomPacketPayload.Type<DataCustomPayload> ID = new CustomPacketPayload.Type<>(Identifier.parse(SyncTasks.PACKET_SYNC_IDENTIFIER));
 
     public static void init() {
-        PayloadTypeRegistry.playS2C().register(DataCustomPayload.ID, CustomPacketPayload.codec((value, buf) -> {
+        PayloadTypeRegistry.clientboundConfiguration().register(DataCustomPayload.ID, CustomPacketPayload.codec((value, buf) -> {
             throw new UnsupportedOperationException("DataCustomPayload is a read-only packet");
         }, buf -> new DataCustomPayload(new FriendlyByteBuf(Unpooled.copiedBuffer(buf.readSlice(buf.readableBytes()))))));
     }

@@ -29,7 +29,7 @@ import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.multiplayer.ServerSelectionList;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
@@ -45,10 +45,10 @@ public abstract class MixinServerSelectionList_OnlineServerEntry {
     @Final
     private ServerData serverData;
 
-    @WrapOperation(method = "renderContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/network/chat/Component;II)V"))
-    private void drawTranslatingState(GuiGraphics instance, Component text, int x, int y, Operation<Void> original) {
+    @WrapOperation(method = "extractContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setTooltipForNextFrame(Lnet/minecraft/network/chat/Component;II)V"))
+    private void drawTranslatingState(GuiGraphicsExtractor instance, Component component, int x, int y, Operation<Void> original) {
         final List<Component> tooltips = new ArrayList<>();
-        tooltips.add(text);
+        tooltips.add(component);
         if (GeneralSettings.INSTANCE.showAdvertisedServerVersion.getValue()) {
             final ProtocolVersion version = ((IServerData) serverData).viaFabricPlus$translatingVersion();
             if (version != null) {
