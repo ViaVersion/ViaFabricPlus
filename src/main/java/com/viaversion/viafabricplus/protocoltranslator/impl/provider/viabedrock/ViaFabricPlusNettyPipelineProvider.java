@@ -25,29 +25,27 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import io.netty.channel.Channel;
 import javax.crypto.SecretKey;
 import net.minecraft.network.HandlerNames;
-import net.raphimc.viabedrock.api.io.compression.ProtocolCompression;
 import net.raphimc.viabedrock.netty.CompressionCodec;
 import net.raphimc.viabedrock.netty.raknet.AesEncryptionCodec;
 import net.raphimc.viabedrock.netty.raknet.MessageCodec;
+import net.raphimc.viabedrock.protocol.data.enums.bedrock.generated.PacketCompressionAlgorithm;
 import net.raphimc.viabedrock.protocol.provider.NettyPipelineProvider;
 
 public final class ViaFabricPlusNettyPipelineProvider extends NettyPipelineProvider {
 
     @Override
-    public void enableCompression(UserConnection user, ProtocolCompression protocolCompression) {
+    public void enableCompression(UserConnection user, PacketCompressionAlgorithm preferredCompressionAlgorithm, int threshold) {
         final Channel channel = user.getChannel();
-
-        if (channel.pipeline().names().contains(HandlerNames.COMPRESS)) {
-            throw new IllegalStateException("Compression already enabled");
+        if (!channel.pipeline().names().contains(HandlerNames.COMPRESS)) {
+            channel.pipeline().addBefore(HandlerNames.SPLITTER, HandlerNames.COMPRESS, new CompressionCodec(preferredCompressionAlgorithm, threshold));
+        } else {
+            channel.pipeline().replace(HandlerNames.COMPRESS, HandlerNames.COMPRESS, new CompressionCodec(preferredCompressionAlgorithm, threshold));
         }
-
-        channel.pipeline().addBefore(HandlerNames.SPLITTER, HandlerNames.COMPRESS, new CompressionCodec(protocolCompression));
     }
 
     @Override
     public void enableEncryption(UserConnection user, SecretKey key) {
         final Channel channel = user.getChannel();
-
         if (channel.pipeline().names().contains(HandlerNames.ENCRYPT)) {
             throw new IllegalStateException("Encryption already enabled");
         }
