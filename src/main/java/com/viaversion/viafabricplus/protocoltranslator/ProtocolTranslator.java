@@ -277,7 +277,7 @@ public final class ProtocolTranslator {
         final ProtocolVersion bedrockLatest = RStream.of(BedrockProtocolVersion.class).fields().by("bedrockLatest").get();
 
         final FieldWrapper name = RStream.of(bedrockLatest).withSuper().fields().by("name");
-        name.set(name.get() + " (Work in progress)");
+        name.set(name.get() + " (Alpha)");
     }
 
     /**
