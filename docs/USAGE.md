@@ -87,7 +87,7 @@ It shows useful connection and protocol info while playing.
 
 ViaFabricPlus also lets you connect to **Bedrock servers** – but keep in mind:
 
-- Support is still **beta**
+- Support is still **alpha**
 - Many features are incomplete or may not work correctly
 
 To log into a Bedrock account:
