@@ -27,22 +27,24 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.Connection;
 import net.minecraft.server.WorldStem;
 import net.minecraft.server.packs.repository.PackRepository;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import java.util.Optional;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
 
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;initiateServerboundPlayConnection(Ljava/lang/String;ILnet/minecraft/network/protocol/login/ClientLoginPacketListener;)V"))
-    private void disableProtocolTranslator(LevelStorageSource.LevelStorageAccess session, PackRepository dataPackManager, WorldStem saveLoader, boolean newWorld, CallbackInfo ci, @Local Connection clientConnection) {
+    private void disableProtocolTranslator(LevelStorageSource.LevelStorageAccess levelSourceAccess, PackRepository packRepository, WorldStem worldStem, Optional<GameRules> gameRules, boolean newWorld, CallbackInfo ci, @Local(name = "connection") Connection connection) {
         ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION, true);
-        if (clientConnection.isConnected()) {
-            ProtocolTranslator.injectPreviousVersionReset(clientConnection.channel);
+        if (connection.isConnected()) {
+            ProtocolTranslator.injectPreviousVersionReset(connection.channel);
         } else {
-            clientConnection.pendingActions.add(connection -> ProtocolTranslator.injectPreviousVersionReset(connection.channel));
+            connection.pendingActions.add(c -> ProtocolTranslator.injectPreviousVersionReset(c.channel));
         }
     }
 

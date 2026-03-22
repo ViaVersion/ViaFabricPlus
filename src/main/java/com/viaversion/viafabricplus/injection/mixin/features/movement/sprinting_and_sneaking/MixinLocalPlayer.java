@@ -35,6 +35,7 @@ import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.multiplayer.chat.ChatAbilities;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
@@ -111,8 +112,8 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     public abstract boolean isUsingItem();
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void initLastSneaking(Minecraft client, ClientLevel world, ClientPacketListener networkHandler, StatsCounter stats, ClientRecipeBook recipeBook, Input lastPlayerInput, boolean lastSprinting, CallbackInfo ci) {
-        viaFabricPlus$lastSneaking = lastPlayerInput.shift();
+    private void initLastSneaking(Minecraft minecraft, ClientLevel level, ClientPacketListener connection, StatsCounter stats, ClientRecipeBook recipeBook, Input lastSentInput, boolean wasSprinting, ChatAbilities chatAbilities, CallbackInfo ci) {
+        viaFabricPlus$lastSneaking = lastSentInput.shift();
     }
 
     @Inject(method = "isSprintingPossible", at = @At("HEAD"), cancellable = true)
