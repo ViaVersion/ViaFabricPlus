@@ -200,5 +200,12 @@
       "major": 75,
       "minor": 0
     }
+  },
+  "26.1": {
+    "version": 775,
+    "pack_format": {
+      "major": 84,
+      "minor": 0
+    }
   }
 }
