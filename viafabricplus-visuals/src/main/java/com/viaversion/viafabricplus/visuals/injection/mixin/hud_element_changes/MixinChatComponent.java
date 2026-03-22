@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.visuals.injection.mixin.hud_element_changes
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.client.gui.components.ChatComponent;
-import net.minecraft.client.GuiMessageTag;
+import net.minecraft.client.multiplayer.chat.GuiMessageTag;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(ChatComponent.class)
 public abstract class MixinChatComponent {
 
-    @ModifyVariable(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    @ModifyVariable(method = "addMessage", at = @At("HEAD"), argsOnly = true)
     private GuiMessageTag removeIndicator(GuiMessageTag instance) {
         return VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled() ? null : instance;
     }

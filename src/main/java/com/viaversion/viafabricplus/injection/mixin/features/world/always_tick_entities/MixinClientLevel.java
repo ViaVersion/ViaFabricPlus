@@ -108,7 +108,7 @@ public abstract class MixinClientLevel extends Level {
         final IEntity mixinEntity = (IEntity) entity;
         final int chunkX = Mth.floor(entity.getX() / 16.0D);
         final int chunkZ = Mth.floor(entity.getZ() / 16.0D);
-        if (!mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick() || entity.chunkPosition().x != chunkX || entity.chunkPosition().z != chunkZ) {
+        if (!mixinEntity.viaFabricPlus$isInLoadedChunkAndShouldTick() || entity.chunkPosition().x() != chunkX || entity.chunkPosition().z() != chunkZ) {
             if (!(this.getChunk(chunkX, chunkZ).isEmpty())) {
                 mixinEntity.viaFabricPlus$setInLoadedChunkAndShouldTick(true);
             }

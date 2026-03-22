@@ -29,7 +29,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.jspecify.annotations.NonNull;
@@ -63,8 +63,8 @@ public abstract class MixinAbstractContainerScreen extends Screen {
         }
     }
 
-    @WrapWithCondition(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;slotClicked(Lnet/minecraft/world/inventory/Slot;IILnet/minecraft/world/inventory/ClickType;)V", ordinal = 0))
-    private boolean disableItemCloning(final AbstractContainerScreen<?> instance, final Slot slot, final int slotIndex, final int count, final ClickType clickType) {
+    @WrapWithCondition(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;slotClicked(Lnet/minecraft/world/inventory/Slot;IILnet/minecraft/world/inventory/ContainerInput;)V", ordinal = 0))
+    private boolean disableItemCloning(AbstractContainerScreen<?> instance, Slot slot, int slotId, int buttonNum, ContainerInput containerInput) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
     }
 

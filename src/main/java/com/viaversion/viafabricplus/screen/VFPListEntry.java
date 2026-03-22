@@ -21,13 +21,13 @@
 
 package com.viaversion.viafabricplus.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
@@ -38,7 +38,7 @@ import org.joml.Matrix3x2fStack;
  * This class is a wrapper for the {@link net.minecraft.client.gui.components.ObjectSelectionList.Entry} class.
  * Features included:
  * <ul>
- *     <li>Add wrapper function {@link #mappedRender(GuiGraphics, int, int, int, int, int, int, boolean, float)} for:
+ *     <li>Add wrapper function {@link #mappedRender(GuiGraphicsExtractor, int, int, int, int, int, int, boolean, float)} for:
  *     <ul>
  *         <li>cross-sharing entry position/dimension between other helper functions</li>
  *         <li>Setting the entry position as start inside the {@link PoseStack}</li>
@@ -54,9 +54,9 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
     protected static final int SCISSORS_OFFSET = 4;
     public static final int SLOT_MARGIN = 3;
 
-    private GuiGraphics context;
+    private GuiGraphicsExtractor context;
 
-    public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         // To be overridden
     }
 
@@ -98,10 +98,10 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
             final double interpolatedValue = Math.sin((Math.PI / 2) * Math.cos(Math.PI * 2 * time / Math.max(interpolateEnd * 0.5, 3.0))) / 2.0 + 0.5;
 
             context.enableScissor(0, 0, getContentWidth() - offset - SCISSORS_OFFSET, getContentHeight());
-            context.drawString(font, text, SLOT_MARGIN - (int) Mth.lerp(interpolatedValue, 0.0, interpolateEnd), textY, -1);
+            context.text(font, text, SLOT_MARGIN - (int) Mth.lerp(interpolatedValue, 0.0, interpolateEnd), textY, -1);
             context.disableScissor();
         } else {
-            context.drawString(font, text, SLOT_MARGIN, textY, -1);
+            context.text(font, text, SLOT_MARGIN, textY, -1);
         }
     }
 
@@ -119,11 +119,11 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
     }
 
     /**
-     * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(GuiGraphics, int, int, int, int, int, int, boolean, float)} method
+     * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(GuiGraphicsExtractor, int, int, int, int, int, int, boolean, float)} method
      */
     @Override
-    public void renderContent(final GuiGraphics context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
-        this.context = context; // Allows cross-sharing between util methods
+    public void extractContent(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        this.context = graphics; // Allows cross-sharing between util methods
 
         final Matrix3x2fStack matrices = context.pose();
 
@@ -133,5 +133,4 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
         mappedRender(context, getContentX(), getContentY(), getContentWidth(), getContentHeight(), mouseX, mouseY, hovered, deltaTicks);
         matrices.popMatrix();
     }
-
 }

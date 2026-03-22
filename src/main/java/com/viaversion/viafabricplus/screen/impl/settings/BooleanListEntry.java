@@ -24,11 +24,11 @@ package com.viaversion.viafabricplus.screen.impl.settings;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import java.awt.*;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
 
 public final class BooleanListEntry extends VFPListEntry {
     private final BooleanSetting value;
@@ -48,14 +48,14 @@ public final class BooleanListEntry extends VFPListEntry {
     }
 
     @Override
-    public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final Font textRenderer = Minecraft.getInstance().font;
 
         final Component text = this.value.getCurrentValue() ? Component.translatable("base.viafabricplus.on") : Component.translatable("base.viafabricplus.off");
 
         final int offset = textRenderer.width(text) + 2;
         renderScrollableText(this.value.getName().withStyle(ChatFormatting.GRAY), offset);
-        context.drawString(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, this.value.getCurrentValue() ? Color.GREEN.getRGB() : Color.RED.getRGB());
+        context.text(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, this.value.getCurrentValue() ? Color.GREEN.getRGB() : Color.RED.getRGB());
 
         renderTooltip(value.getTooltip(), mouseX, mouseY);
     }

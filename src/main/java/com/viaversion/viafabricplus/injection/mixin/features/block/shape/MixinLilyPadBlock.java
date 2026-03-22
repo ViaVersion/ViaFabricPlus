@@ -23,59 +23,29 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.FarmBlock;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.level.BlockGetter;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LilyPadBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(FarmBlock.class)
-public abstract class MixinFarmBlock extends Block {
+@Mixin(LilyPadBlock.class)
+public abstract class MixinLilyPadBlock {
 
-    @Shadow
-    @Final
-    private static VoxelShape SHAPE;
-
-    public MixinFarmBlock(Properties settings) {
-        super(settings);
-    }
+    @Unique
+    private static final VoxelShape viaFabricPlus$shape_r1_8_x = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 0.25D, 16.0D);
 
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (Minecraft.getInstance() != null && Minecraft.getInstance().isLocalServer()) {
-            // When joining the singleplayer, we set the target version to the native version when the integrated server is started
-            // However this is already to late for blocks since the world and entities have already been loaded, causing block collisions
-            // to make issues as described via https://github.com/ViaVersion/ViaFabricPlus/issues/436. A proper fix would be to
-            // move version setting to earlier stage but /shrug
-            return;
-        }
-
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
-            cir.setReturnValue(Shapes.block());
-        }
-    }
-
-    @Override
-    public VoxelShape getOcclusionShape(BlockState state) {
-        if (Minecraft.getInstance() != null && Minecraft.getInstance().isLocalServer()) {
-            // See above for explanation
-            return super.getOcclusionShape(state);
-        }
-
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
-            return SHAPE;
-        } else {
-            return super.getOcclusionShape(state);
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            cir.setReturnValue(viaFabricPlus$shape_r1_8_x);
         }
     }
 

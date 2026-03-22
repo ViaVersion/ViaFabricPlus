@@ -50,7 +50,7 @@ public abstract class MixinProtocol1_20_3To1_20_5 extends AbstractProtocol<Clien
 
         // Don't allow mods to directly send packets - Use ClientPlayNetworkHandler#sendChatCommand instead
         registerServerbound(ServerboundPackets1_20_5.CHAT_COMMAND, ServerboundPackets1_20_3.CHAT_COMMAND, wrapper -> {
-            NotificationUtil.warnIncompatibilityPacket("1.20.5", "CHAT_COMMAND", "ClientPlayNetworkHandler#sendChatCommand", "ClientPacketListener#sendCommand");
+            NotificationUtil.warnIncompatibilityPacket("1.20.5", "CHAT_COMMAND", "ClientPacketListener#sendCommand");
             wrapper.cancel();
         }, true);
     }

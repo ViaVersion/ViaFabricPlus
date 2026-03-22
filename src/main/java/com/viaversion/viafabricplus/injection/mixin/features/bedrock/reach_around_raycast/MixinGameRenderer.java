@@ -44,23 +44,24 @@ public abstract class MixinGameRenderer {
     @Final
     private Minecraft minecraft;
 
-    @ModifyExpressionValue(method = "pick(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;raycastHitResult(FLnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/phys/HitResult;"))
-    private HitResult bedrockReachAroundRaycast(HitResult hitResult) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            final Entity entity = this.minecraft.getCameraEntity();
-            if (hitResult.getType() != HitResult.Type.MISS) return hitResult;
-            if (!this.viaFabricPlus$canReachAround(entity)) return hitResult;
-
-            final int x = Mth.floor(entity.getX());
-            final int y = Mth.floor(entity.getY() - 0.2F);
-            final int z = Mth.floor(entity.getZ());
-            final BlockPos floorPos = new BlockPos(x, y, z);
-
-            return new BlockHitResult(floorPos.getCenter(), entity.getDirection(), floorPos, false);
-        }
-
-        return hitResult;
-    }
+    // TODO 26.1
+//    @ModifyExpressionValue(method = "pick(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;raycastHitResult(FLnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/phys/HitResult;"))
+//    private HitResult bedrockReachAroundRaycast(HitResult hitResult) {
+//        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+//            final Entity entity = this.minecraft.getCameraEntity();
+//            if (hitResult.getType() != HitResult.Type.MISS) return hitResult;
+//            if (!this.viaFabricPlus$canReachAround(entity)) return hitResult;
+//
+//            final int x = Mth.floor(entity.getX());
+//            final int y = Mth.floor(entity.getY() - 0.2F);
+//            final int z = Mth.floor(entity.getZ());
+//            final BlockPos floorPos = new BlockPos(x, y, z);
+//
+//            return new BlockHitResult(floorPos.getCenter(), entity.getDirection(), floorPos, false);
+//        }
+//
+//        return hitResult;
+//    }
 
     @Unique
     private boolean viaFabricPlus$canReachAround(final Entity entity) {

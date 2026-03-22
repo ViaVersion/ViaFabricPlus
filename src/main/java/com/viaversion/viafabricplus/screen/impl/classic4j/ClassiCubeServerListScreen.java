@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
@@ -84,16 +84,16 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
 
         if (SERVER_LIST == null) {
             return;
         }
 
         final CCAccount account = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount();
-        context.drawString(font, Component.translatable("classicube.viafabricplus.profile"), 32, 6, -1);
-        context.drawString(font, Component.nullToEmpty(account.username()), 32, 16, -1);
+        graphics.text(font, Component.translatable("classicube.viafabricplus.profile"), 32, 6, -1);
+        graphics.text(font, Component.nullToEmpty(account.username()), 32, 16, -1);
     }
 
     @Override
@@ -143,13 +143,13 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
         }
 
         @Override
-        public void mappedRender(GuiGraphics context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             final Font textRenderer = Minecraft.getInstance().font;
-            context.drawCenteredString(textRenderer, classiCubeServerInfo.name(), entryWidth / 2, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
+            context.centeredText(textRenderer, classiCubeServerInfo.name(), entryWidth / 2, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
 
-            context.drawString(textRenderer, classiCubeServerInfo.software().replace('&', ChatFormatting.PREFIX_CODE), 1, 1, -1);
+            context.text(textRenderer, classiCubeServerInfo.software().replace('&', ChatFormatting.PREFIX_CODE), 1, 1, -1);
             final String playerText = classiCubeServerInfo.players() + "/" + classiCubeServerInfo.maxPlayers();
-            context.drawString(textRenderer, playerText, entryWidth - textRenderer.width(playerText) - 1, 1, -1);
+            context.text(textRenderer, playerText, entryWidth - textRenderer.width(playerText) - 1, 1, -1);
         }
     }
 

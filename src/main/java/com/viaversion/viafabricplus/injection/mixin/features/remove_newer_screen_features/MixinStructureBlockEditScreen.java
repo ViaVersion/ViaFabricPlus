@@ -24,9 +24,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.remove_newer_scree
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.StructureBlockEditScreen;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.EditBox;
@@ -58,9 +58,9 @@ public abstract class MixinStructureBlockEditScreen {
         }
     }
 
-    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
-    private boolean hideStrictText(GuiGraphics instance, Font textRenderer, Component text, int x, int y, int color) {
-        if (text == STRICT_LABEL) {
+    @WrapWithCondition(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
+    private boolean hideStrictText(GuiGraphicsExtractor instance, Font font, Component str, int x, int y, int color) {
+        if (str == STRICT_LABEL) {
             return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4);
         } else {
             return true;

@@ -40,7 +40,7 @@ import net.minecraft.tags.BlockTags;
 public final class EnchantmentAttributesEmulation1_20_6 {
 
     public static void init() {
-        ClientTickEvents.START_WORLD_TICK.register(world -> {
+        ClientTickEvents.START_LEVEL_TICK.register(world -> {
             if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5)) {
                 return;
             }

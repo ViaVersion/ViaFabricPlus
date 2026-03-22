@@ -1,7 +1,7 @@
 import de.florianreuth.baseproject.loadFabricApiModules
 
 plugins {
-    id("net.fabricmc.fabric-loom-remap")
+    id("net.fabricmc.fabric-loom")
 }
 
 dependencies {

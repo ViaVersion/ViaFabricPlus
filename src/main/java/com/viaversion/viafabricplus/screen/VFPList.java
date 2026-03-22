@@ -25,7 +25,7 @@ import com.viaversion.viafabricplus.screen.impl.PerServerVersionScreen;
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 
 /**
@@ -59,7 +59,7 @@ public class VFPList extends ObjectSelectionList<VFPListEntry> {
     }
 
     @Override
-    protected void renderSelection(final GuiGraphics context, final VFPListEntry entry, final int color) {
+    protected void extractSelection(final GuiGraphicsExtractor graphics, final VFPListEntry entry, final int outlineColor) {
         // Remove selection box
     }
 

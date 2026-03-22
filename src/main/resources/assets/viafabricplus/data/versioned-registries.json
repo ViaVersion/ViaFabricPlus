@@ -1635,6 +1635,7 @@
     "minecraft:golden_nautilus_armor": ">= 1.21.11",
     "minecraft:diamond_nautilus_armor": ">= 1.21.11",
     "minecraft:netherite_nautilus_armor": ">= 1.21.11",
-    "minecraft:copper_nautilus_armor": ">= 1.21.11"
+    "minecraft:copper_nautilus_armor": ">= 1.21.11",
+    "minecraft:golden_dandelion": ">= 26.1"
   }
 }

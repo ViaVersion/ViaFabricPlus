@@ -38,12 +38,12 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.HashedStack;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ServerboundContainerClickPacket;
-import net.minecraft.world.inventory.ClickType;
-import net.minecraft.network.HashedStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.item.ItemStack;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -68,13 +68,13 @@ public abstract class MixinMultiPlayerGameMode {
     @Unique
     private List<ItemStack> viaFabricPlus$oldItems;
 
-    @ModifyVariable(method = "handleInventoryMouseClick", at = @At(value = "STORE"), ordinal = 0)
+    @ModifyVariable(method = "handleContainerInput", at = @At(value = "STORE"), ordinal = 0)
     private List<ItemStack> captureOldItems(List<ItemStack> oldItems) {
         viaFabricPlus$oldCursorStack = minecraft.player.containerMenu.getCarried().copy();
         return this.viaFabricPlus$oldItems = oldItems;
     }
 
-    @WrapWithCondition(method = "handleInventoryMouseClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V"))
+    @WrapWithCondition(method = "handleContainerInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V"))
     private boolean handleWindowClick(ClientPacketListener instance, Packet<?> packet) {
         final ServerboundContainerClickPacket clickSlotPacket = (ServerboundContainerClickPacket) packet;
 
@@ -91,14 +91,14 @@ public abstract class MixinMultiPlayerGameMode {
         return true;
     }
 
-    @Inject(method = "handleInventoryMouseClick", at = @At("HEAD"), cancellable = true)
-    private void removeClickActions(int syncId, int slotId, int button, ClickType actionType, Player player, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !actionType.equals(ClickType.PICKUP)) {
+    @Inject(method = "handleContainerInput", at = @At("HEAD"), cancellable = true)
+    private void removeClickActions(int syncId, int slotId, int button, ContainerInput actionType, Player player, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !actionType.equals(ContainerInput.PICKUP)) {
             ci.cancel();
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !actionType.equals(ClickType.PICKUP) && !actionType.equals(ClickType.QUICK_MOVE) && !actionType.equals(ClickType.SWAP) && !actionType.equals(ClickType.CLONE)) {
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !actionType.equals(ContainerInput.PICKUP) && !actionType.equals(ContainerInput.QUICK_MOVE) && !actionType.equals(ContainerInput.SWAP) && !actionType.equals(ContainerInput.CLONE)) {
             ci.cancel();
         }
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && actionType == ClickType.SWAP && button == 40) { // Pressing 'F' in inventory
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && actionType == ContainerInput.SWAP && button == 40) { // Pressing 'F' in inventory
             ci.cancel();
         }
     }
@@ -110,7 +110,7 @@ public abstract class MixinMultiPlayerGameMode {
         containerClick.write(Types.VAR_INT, packet.stateId());
         containerClick.write(Types.SHORT, packet.slotNum());
         containerClick.write(Types.BYTE, packet.buttonNum());
-        containerClick.write(Types.VAR_INT, packet.clickType().id());
+        containerClick.write(Types.VAR_INT, packet.containerInput().id());
 
         final Int2ObjectMap<HashedStack> modifiedStacks = packet.changedSlots();
         containerClick.write(Types.VAR_INT, modifiedStacks.size());
@@ -128,7 +128,7 @@ public abstract class MixinMultiPlayerGameMode {
     @Unique
     private void viaFabricPlus$clickSlot1_16_5(final ServerboundContainerClickPacket packet) {
         ItemStack slotItemBeforeModification;
-        if (this.viaFabricPlus$shouldBeEmpty(packet.clickType(), packet.slotNum())) {
+        if (this.viaFabricPlus$shouldBeEmpty(packet.containerInput(), packet.slotNum())) {
             slotItemBeforeModification = ItemStack.EMPTY;
         } else if (packet.slotNum() < 0 || packet.slotNum() >= viaFabricPlus$oldItems.size()) {
             slotItemBeforeModification = viaFabricPlus$oldCursorStack;
@@ -141,7 +141,7 @@ public abstract class MixinMultiPlayerGameMode {
         containerClick.write(Types.SHORT, packet.slotNum());
         containerClick.write(Types.BYTE, packet.buttonNum());
         containerClick.write(Types.SHORT, ((IAbstractContainerMenu) minecraft.player.containerMenu).viaFabricPlus$incrementAndGetActionId());
-        containerClick.write(Types.VAR_INT, packet.clickType().ordinal());
+        containerClick.write(Types.VAR_INT, packet.containerInput().ordinal());
         containerClick.write(Types.ITEM1_13_2, ItemTranslator.mcToVia(slotItemBeforeModification, ProtocolVersion.v1_16_4));
         containerClick.scheduleSendToServer(Protocol1_16_4To1_17.class);
 
@@ -150,19 +150,19 @@ public abstract class MixinMultiPlayerGameMode {
     }
 
     @Unique
-    private boolean viaFabricPlus$shouldBeEmpty(final ClickType type, final int slot) {
+    private boolean viaFabricPlus$shouldBeEmpty(final ContainerInput type, final int slot) {
         // quick craft always uses empty stack for verification
-        if (type == ClickType.QUICK_CRAFT) return true;
+        if (type == ContainerInput.QUICK_CRAFT) return true;
 
         // Special case: throw always uses empty stack for verification
-        if (type == ClickType.THROW) return true;
+        if (type == ContainerInput.THROW) return true;
 
         // quick move always uses empty stack for verification since 1.12
-        if (type == ClickType.QUICK_MOVE && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_11_1))
+        if (type == ContainerInput.QUICK_MOVE && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_11_1))
             return true;
 
         // pickup with slot -999 (outside window) to throw items always uses empty stack for verification
-        return type == ClickType.PICKUP && slot == -999;
+        return type == ContainerInput.PICKUP && slot == -999;
     }
 
 }
