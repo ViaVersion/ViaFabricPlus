@@ -46,12 +46,12 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     public abstract boolean hasEffect(Holder<MobEffect> effect);
 
-    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Ljava/lang/Object;equals(Ljava/lang/Object;)Z"))
-    private boolean useEuclideanDistanceCalculation(Object instance, Object o) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4) && instance instanceof EntityType<?>) {
+    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;is(Ljava/lang/Object;)Z"))
+    private boolean useEuclideanDistanceCalculation(LivingEntity instance, Object o) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return false;
         } else {
-            return instance.equals(o);
+            return instance.is((Entity) o);
         }
     }
 

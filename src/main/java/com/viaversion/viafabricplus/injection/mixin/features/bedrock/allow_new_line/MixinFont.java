@@ -59,34 +59,35 @@ public abstract class MixinFont {
     @Shadow
     public abstract boolean isBidirectional();
 
-    @Shadow
-    public abstract void drawInBatch(final FormattedCharSequence text, final float x, final float y, final int color, final boolean shadow, final Matrix4f matrix, final MultiBufferSource vertexConsumers, final Font.DisplayMode layerType, final int backgroundColor, final int light);
-
-    @Inject(method = "drawInBatch(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/gui/Font$DisplayMode;II)V", at = @At("HEAD"), cancellable = true)
-    private void allowNewLines_String(String string, float x, float y, int color, boolean shadow, Matrix4f matrix, MultiBufferSource vertexConsumers, Font.DisplayMode layerType, int backgroundColor, int light, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            final List<FormattedCharSequence> lines = split(FormattedText.of(isBidirectional() ? this.bidirectionalShaping(string) : string), Integer.MAX_VALUE);
-            if (!lines.isEmpty()) {
-                ci.cancel();
-                for (int i = 0, size = lines.size(); i < size; i++) {
-                    this.drawInBatch(lines.get(i), x, y - (size * (lineHeight + 2)) + (i * (lineHeight + 2)), color, shadow, new Matrix4f(matrix), vertexConsumers, layerType, backgroundColor, light);
-                }
-            }
-        }
-    }
-
-    @Inject(method = "drawInBatch(Lnet/minecraft/network/chat/Component;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/gui/Font$DisplayMode;II)V", at = @At("HEAD"), cancellable = true)
-    private void allowNewLines_Text(Component text, float x, float y, int color, boolean shadow, Matrix4f matrix, MultiBufferSource vertexConsumers, Font.DisplayMode layerType, int backgroundColor, int light, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            final List<FormattedCharSequence> lines = split(text, Integer.MAX_VALUE);
-            if (!lines.isEmpty()) {
-                ci.cancel();
-                for (int i = 0, size = lines.size(); i < size; i++) {
-                    this.drawInBatch(lines.get(i), x, y - (lines.size() * (lineHeight + 2)) + (i * (lineHeight + 2)), color, shadow, new Matrix4f(matrix), vertexConsumers, layerType, backgroundColor, light);
-                }
-            }
-        }
-    }
+    // TODO 26.1
+//    @Shadow
+//    public abstract void drawInBatch(final FormattedCharSequence text, final float x, final float y, final int color, final boolean shadow, final Matrix4f matrix, final MultiBufferSource vertexConsumers, final Font.DisplayMode layerType, final int backgroundColor, final int light);
+//
+//    @Inject(method = "drawInBatch(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/gui/Font$DisplayMode;II)V", at = @At("HEAD"), cancellable = true)
+//    private void allowNewLines_String(String string, float x, float y, int color, boolean shadow, Matrix4f matrix, MultiBufferSource vertexConsumers, Font.DisplayMode layerType, int backgroundColor, int light, CallbackInfo ci) {
+//        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+//            final List<FormattedCharSequence> lines = split(FormattedText.of(isBidirectional() ? this.bidirectionalShaping(string) : string), Integer.MAX_VALUE);
+//            if (!lines.isEmpty()) {
+//                ci.cancel();
+//                for (int i = 0, size = lines.size(); i < size; i++) {
+//                    this.drawInBatch(lines.get(i), x, y - (size * (lineHeight + 2)) + (i * (lineHeight + 2)), color, shadow, new Matrix4f(matrix), vertexConsumers, layerType, backgroundColor, light);
+//                }
+//            }
+//        }
+//    }
+//
+//    @Inject(method = "drawInBatch(Lnet/minecraft/network/chat/Component;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/gui/Font$DisplayMode;II)V", at = @At("HEAD"), cancellable = true)
+//    private void allowNewLines_Text(Component text, float x, float y, int color, boolean shadow, Matrix4f matrix, MultiBufferSource vertexConsumers, Font.DisplayMode layerType, int backgroundColor, int light, CallbackInfo ci) {
+//        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+//            final List<FormattedCharSequence> lines = split(text, Integer.MAX_VALUE);
+//            if (!lines.isEmpty()) {
+//                ci.cancel();
+//                for (int i = 0, size = lines.size(); i < size; i++) {
+//                    this.drawInBatch(lines.get(i), x, y - (lines.size() * (lineHeight + 2)) + (i * (lineHeight + 2)), color, shadow, new Matrix4f(matrix), vertexConsumers, layerType, backgroundColor, light);
+//                }
+//            }
+//        }
+//    }
 
     @Inject(method = "width(Lnet/minecraft/network/chat/FormattedText;)I", at = @At("HEAD"), cancellable = true)
     private void allowNewLines_getWidth(FormattedText text, CallbackInfoReturnable<Integer> cir) {
