@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(ChatComponent.class)
 public abstract class MixinChatComponent {
 
-    @ModifyVariable(method = "addMessage", at = @At("HEAD"), ordinal = 3, argsOnly = true)
+    @ModifyVariable(method = "addMessage", at = @At("HEAD"), argsOnly = true)
     private GuiMessageTag removeIndicator(GuiMessageTag instance) {
         return VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled() ? null : instance;
     }

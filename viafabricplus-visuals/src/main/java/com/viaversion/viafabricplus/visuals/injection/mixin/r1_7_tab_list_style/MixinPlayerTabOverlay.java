@@ -68,7 +68,7 @@ public abstract class MixinPlayerTabOverlay implements IPlayerTabOverlay {
         }
     }
 
-    @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;isEncrypted()Z"))
+    @ModifyExpressionValue(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;isEncrypted()Z"))
     private boolean hideSkins(boolean original) {
         return original && !viaFabricPlusVisuals$hideSkins;
     }
