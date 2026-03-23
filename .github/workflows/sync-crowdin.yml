@@ -17,7 +17,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Crowdin Sync
-        uses: crowdin/github-action@8818ff65bfc4322384f983ea37e3926948c11745 # 2.15.0
+        uses: crowdin/github-action@ce33ce793a5cbc401d9cd748716e03fc90c001f1 # 2.15.2
         with:
           config: .github/crowdin.yml
           upload_sources: true
