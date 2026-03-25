@@ -55,7 +55,7 @@ dependencies {
     configureBedrockDependencies()
 
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")
-    compileOnly("com.terraformersmc:modmenu:18.0.0-alpha.6")
+    compileOnly("com.terraformersmc:modmenu:18.0.0-alpha.8")
 }
 
 includeTransitiveJijDependencies()
