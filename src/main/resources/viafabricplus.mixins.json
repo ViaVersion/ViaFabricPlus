@@ -70,7 +70,7 @@
     "features.bedrock.movement.MixinLocalPlayer",
     "features.bedrock.movement.MixinPlayer",
     "features.bedrock.networking.MixinServerNameResolver",
-    "features.bedrock.reach_around_raycast.MixinGameRenderer",
+    "features.bedrock.reach_around_raycast.MixinMinecraft",
     "features.bedrock.remove_dummy_player_suggestions.MixinClientSuggestionProvider",
     "features.block.connections.MixinClientChunkCache",
     "features.block.interaction.MixinCanPlaceAt1_14",
