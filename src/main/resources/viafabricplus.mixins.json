@@ -251,6 +251,7 @@
     "features.movement.limitation.rotation.MixinEntity",
     "features.movement.limitation.rotation.MixinPlayer",
     "features.movement.liquid.MixinEntity",
+    "features.movement.liquid.MixinEntityFluidInteraction",
     "features.movement.liquid.MixinFlowingFluid",
     "features.movement.liquid.MixinItemEntity",
     "features.movement.liquid.MixinLiquidBlock",
