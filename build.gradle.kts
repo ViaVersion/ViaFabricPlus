@@ -53,7 +53,7 @@ dependencies {
     configureBedrockDependencies()
 
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")
-    modCompileOnly("com.terraformersmc:modmenu:16.0.0")
+    modCompileOnly("com.terraformersmc:modmenu:17.0.0")
 }
 
 includeTransitiveJijDependencies()
@@ -77,8 +77,8 @@ fun configureBedrockDependencies() {
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.8.0")
-        configuration("com.viaversion:viabackwards-common:5.8.0")
+        configuration("com.viaversion:viaversion-common:5.8.1-SNAPSHOT")
+        configuration("com.viaversion:viabackwards-common:5.8.1-SNAPSHOT")
         configuration("com.viaversion:viaaprilfools-common:4.1.0")
         configuration("net.raphimc:ViaLegacy:3.0.14")
         configuration("net.raphimc:ViaBedrock:0.0.26-20260327.164936-8") {
