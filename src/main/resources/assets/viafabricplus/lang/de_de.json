@@ -132,6 +132,7 @@
   "classic4j_library.viafabricplus.error.password": "Ungültiges Passwort.",
   "classic4j_library.viafabricplus.error.verification": "Der Benutzer hat seine E-Mail-Adresse noch nicht verifiziert.",
   "classic4j_library.viafabricplus.error.logincode": "Multi-Faktor-Authentifizierung angefordert. Bitte überprüfe deine E-Mail.",
+  "minecraftauth_library.viafabricplus.playfabxststoken": "Erhaltenes PlayFab XSTS Token",
   "bedrock_realms.viafabricplus.warning": "Für diese Funktion muss in den Einstellungen ein Bedrock-Edition-Konto eingerichtet werden!",
   "bedrock_realms.viafabricplus.availability_check": "Überprüfe Verfügbarkeit...",
   "bedrock_realms.viafabricplus.no_worlds": "Keine Welten gefunden :(",

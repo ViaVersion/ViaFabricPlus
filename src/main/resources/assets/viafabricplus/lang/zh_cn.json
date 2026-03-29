@@ -75,6 +75,7 @@
   "debug_settings.viafabricplus.disable_server_pinging": "禁用服务器Ping",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "过滤不存在的字形",
   "debug_settings.viafabricplus.legacy_pane_outlines": "旧版玻璃板轮廓",
+  "debug_settings.viafabricplus.serverside_place_sounds": "服务端方块/物品放置音效",
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用BetaCraft认证",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "验证在线模式服务器的会话",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "使用ClassiCube服务器列表时自动选择CPE",
