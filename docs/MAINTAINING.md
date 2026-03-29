@@ -22,6 +22,14 @@ Also update versions in the `dependencies` block of `build.gradle.kts`.
 
 - Update the `NATIVE_VERSION` field in `ProtocolTranslator`
 - Update protocol constants in `ViaFabricPlusProtocol` and `getClientboundItemType` if a new item type was added
+- If this starts a new active branch, replace `ver/<old-version>` with `ver/<new-version>` in:
+  - GitHub repository settings (default branch, branch protection/rulesets)
+  - `.github/workflows/sync-crowdin.yml`
+  - `.github/workflows/build.yml` (if branch filters are added later)
+  - `CONTRIBUTING.md`
+  - `README.md`
+  - `docs/DEVELOPER_API.md`
+  - `.github/ISSUE_TEMPLATE/config.yml`
 
 ---
 
@@ -173,8 +181,9 @@ Start <release version> cycle
 
 # Git Branches
 
-- `main` → all new changes are merged here
-- After the last release for a version, a branch is created with that version name (e.g. `ver/1.21.5`)
+- `ver/<version>` → all new changes are merged into the branch of the currently active Minecraft version
+- Keep one branch per Minecraft version (e.g. `ver/1.21.5`)
+
 
 See [ViaFabricPlus-archive](https://github.com/florianreuth/ViaFabricPlus-archive) for older branches.
 

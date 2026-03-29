@@ -24,7 +24,8 @@ jobs:
           download_translations: true
           localization_branch_name: l10n_crowdin_translations
           create_pull_request: true
-          pull_request_base_branch_name: main
+          # Keep translation PRs aligned with the active version branch.
+          pull_request_base_branch_name: ${{ github.ref_name }}
           pull_request_title: "New Crowdin Translations"
           pull_request_body: "New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)"
           commit_message: "Update translations from Crowdin"

@@ -38,15 +38,17 @@ If you want to help translating ViaFabricPlus you can do so on [Crowdin](https:/
 
 ## Adding a New Feature or Fixing a Bug
 
-1. Create a branch (e.g. `feature/fix-xyz` or `fix/fix-xyz`).
-2. Implement and test your changes thoroughly.
-3. Write clean, readable code (descriptive names, no clutter).
-4. Follow [Google's Java Code Style](https://google.github.io/styleguide/javaguide.html).
-5. If you modify the API:
+1. Start from the current active `ver/<version>` branch.
+2. Create a branch (e.g. `feature/fix-xyz` or `fix/fix-xyz`).
+3. Open your pull request against that same `ver/<version>` branch.
+4. Implement and test your changes thoroughly.
+5. Write clean, readable code (descriptive names, no clutter).
+6. Follow [Google's Java Code Style](https://google.github.io/styleguide/javaguide.html).
+7. If you modify the API:
     - Update documentation in `docs/`
     - Add Javadocs to your code
     - Avoid breaking backwards compatibility unless absolutely necessary
-6. Open a pull request and wait for review.
+8. Open a pull request and wait for review.
 
 ---
 
