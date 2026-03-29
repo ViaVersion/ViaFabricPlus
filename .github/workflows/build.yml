@@ -28,3 +28,4 @@ jobs:
         with:
           name: Artifacts
           path: build/libs/
+          if-no-files-found: error
