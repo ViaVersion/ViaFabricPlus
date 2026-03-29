@@ -46,4 +46,5 @@ public abstract class MixinMouseSettingsScreen extends OptionsSubScreen {
             graphics.setTooltipForNextFrame(font, Component.nullToEmpty("<=1.13.2 Sensitivity: " + MouseSensitivity1_13_2.get1_13SliderValue(this.options.sensitivity().get().floatValue()).valueInt() + "%"), mouseX, mouseY);
         }
     }
+
 }
