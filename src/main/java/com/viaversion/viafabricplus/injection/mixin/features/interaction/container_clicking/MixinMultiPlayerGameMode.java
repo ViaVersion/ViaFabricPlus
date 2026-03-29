@@ -68,7 +68,7 @@ public abstract class MixinMultiPlayerGameMode {
     @Unique
     private List<ItemStack> viaFabricPlus$oldItems;
 
-    @ModifyVariable(method = "handleContainerInput", at = @At(value = "STORE"), ordinal = 0)
+    @ModifyVariable(method = "handleContainerInput", at = @At(value = "STORE"), name = "itemsBeforeClick")
     private List<ItemStack> captureOldItems(List<ItemStack> oldItems) {
         viaFabricPlus$oldCursorStack = minecraft.player.containerMenu.getCarried().copy();
         return this.viaFabricPlus$oldItems = oldItems;
