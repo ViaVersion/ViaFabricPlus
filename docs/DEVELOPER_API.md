@@ -30,8 +30,14 @@ repositories {
 
 dependencies {
     // Replace with latest release
+
+    // For versions < 26.1 (Obfuscated)
     modRuntimeOnly("com.viaversion:viafabricplus:x.x.x")
     modCompileOnly("com.viaversion:viafabricplus-api:x.x.x")
+
+    // For versions >= 26.1 (Unobfuscated)
+    runtimeOnly("com.viaversion:viafabricplus:x.x.x")
+    compileOnly("com.viaversion:viafabricplus-api:x.x.x")
 }
 ```
 
@@ -51,8 +57,14 @@ repositories {
 
 dependencies {
     // Replace with latest release
+
+    // For versions < 26.1 (Obfuscated)
     modRuntimeOnly("com.viaversion:viafabricplus:x.x.x")
     modCompileOnly("com.viaversion:viafabricplus-api:x.x.x")
+
+    // For versions >= 26.1 (Unobfuscated)
+    runtimeOnly("com.viaversion:viafabricplus:x.x.x")
+    compileOnly("com.viaversion:viafabricplus-api:x.x.x")
 }
 ```
 
