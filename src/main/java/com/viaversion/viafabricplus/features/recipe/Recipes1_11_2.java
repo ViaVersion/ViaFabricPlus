@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.features.recipe;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonElement;
@@ -31,41 +30,35 @@ import com.viaversion.viaversion.libs.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
-import net.minecraft.world.item.crafting.BannerDuplicateRecipe;
-import net.minecraft.world.item.crafting.BookCloningRecipe;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.FireworkRocketRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.MapExtendingRecipe;
-import net.minecraft.world.item.crafting.ShapedRecipePattern;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.RepairItemRecipe;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
-import net.minecraft.world.item.crafting.ShieldDecorationRecipe;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.Tuple;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.level.ItemLike;
 
 /**
  * Recipe data dump for all versions below 1.12.
@@ -85,12 +78,9 @@ public final class Recipes1_11_2 {
             final String type = recipeElement.getAsJsonObject().get("type").getAsString();
             final ProtocolVersionRange versionRange = ProtocolVersionRange.fromString(recipeElement.getAsJsonObject().get("version").getAsString());
             switch (type) {
-                case "shaped" ->
-                    LEGACY_RECIPES.add(new Tuple<>(LegacyShapedRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
-                case "shapeless" ->
-                    LEGACY_RECIPES.add(new Tuple<>(LegacyShapelessRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
-                case "smelting" ->
-                    LEGACY_RECIPES.add(new Tuple<>(LegacySmeltingRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "shaped" -> LEGACY_RECIPES.add(new Tuple<>(LegacyShapedRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "shapeless" -> LEGACY_RECIPES.add(new Tuple<>(LegacyShapelessRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "smelting" -> LEGACY_RECIPES.add(new Tuple<>(LegacySmeltingRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
                 default -> throw new IllegalArgumentException("Unknown recipe type: " + type);
             }
         }
@@ -98,59 +88,63 @@ public final class Recipes1_11_2 {
 
     public static RecipeManager1_11_2 getRecipeManager() {
         if (RECIPE_MANAGER == null) {
+            final List<RecipeHolder<?>> recipes = new ArrayList<>();
+
+            // Regular recipes
+            for (int i = 0; i < LEGACY_RECIPES.size(); i++) {
+                final Tuple<LegacyRecipe, ProtocolVersionRange> legacyRecipe = LEGACY_RECIPES.get(i);
+                if (legacyRecipe.getB().contains(ProtocolTranslator.getTargetVersion())) {
+                    final ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("viafabricplus", "recipe/" + i));
+                    switch (legacyRecipe.getA()) {
+                        case LegacyShapedRecipe legacyShapedRecipe -> {
+                            final Map<Character, Ingredient> ingredients = new HashMap<>();
+                            for (Map.Entry<Character, List<Item>> entry : legacyShapedRecipe.legend.entrySet()) {
+                                final ItemLike[] items = new ItemLike[entry.getValue().size()];
+                                for (int j = 0; j < entry.getValue().size(); j++) {
+                                    items[j] = entry.getValue().get(j);
+                                }
+                                ingredients.put(entry.getKey(), Ingredient.of(items));
+                            }
+                            final ItemStackTemplate output = legacyShapedRecipe.result.toItemStack();
+                            final Recipe.CommonInfo commonInfo = new Recipe.CommonInfo(false);
+                            final CraftingRecipe.CraftingBookInfo craftingBookInfo = new CraftingRecipe.CraftingBookInfo(CraftingBookCategory.MISC, legacyShapedRecipe.group);
+                            final CraftingRecipe recipe = new ShapedRecipe(commonInfo, craftingBookInfo, ShapedRecipePattern.of(ingredients, legacyShapedRecipe.pattern), output);
+                            recipes.add(new RecipeHolder<>(key, recipe));
+                        }
+                        case LegacyShapelessRecipe legacyShapelessRecipe -> {
+                            final ItemStackTemplate output = legacyShapelessRecipe.result.toItemStack();
+                            final List<Ingredient> ingredients = new ArrayList<>();
+                            for (List<Item> ingredientIds : legacyShapelessRecipe.ingredients) {
+                                final ItemLike[] items = new ItemLike[ingredientIds.size()];
+                                for (int j = 0; j < ingredientIds.size(); j++) {
+                                    items[j] = ingredientIds.get(j);
+                                }
+                                ingredients.add(Ingredient.of(items));
+                            }
+                            final Recipe.CommonInfo commonInfo = new Recipe.CommonInfo(false);
+                            final CraftingRecipe.CraftingBookInfo craftingBookInfo = new CraftingRecipe.CraftingBookInfo(CraftingBookCategory.MISC, legacyShapelessRecipe.group);
+                            final CraftingRecipe recipe = new ShapelessRecipe(commonInfo, craftingBookInfo, output, ingredients);
+                            recipes.add(new RecipeHolder<>(key, recipe));
+                        }
+                        case LegacySmeltingRecipe legacySmeltingRecipe -> {
+                            final ItemStackTemplate output = legacySmeltingRecipe.result.toItemStack();
+                            final ItemLike[] inputItems = new ItemLike[legacySmeltingRecipe.input.size()];
+                            for (int j = 0; j < legacySmeltingRecipe.input.size(); j++) {
+                                inputItems[j] = legacySmeltingRecipe.input.get(j);
+                            }
+                            final Ingredient input = Ingredient.of(inputItems);
+                            final Recipe.CommonInfo commonInfo = new Recipe.CommonInfo(false);
+                            final AbstractCookingRecipe.CookingBookInfo cookingBookInfo = new AbstractCookingRecipe.CookingBookInfo(CookingBookCategory.MISC, "");
+                            final SmeltingRecipe recipe = new SmeltingRecipe(commonInfo, cookingBookInfo, input, output, legacySmeltingRecipe.experience, 200);
+                            recipes.add(new RecipeHolder<>(key, recipe));
+                        }
+                        default -> throw new IllegalStateException("Unknown legacy recipe type: " + legacyRecipe.getA().getClass());
+                    }
+                }
+            }
+
             // TODO 26.1
-        }
-//            final List<RecipeHolder<?>> recipes = new ArrayList<>();
-//
-//            // Regular recipes
-//            for (int i = 0; i < LEGACY_RECIPES.size(); i++) {
-//                final Tuple<LegacyRecipe, ProtocolVersionRange> legacyRecipe = LEGACY_RECIPES.get(i);
-//                if (legacyRecipe.getB().contains(ProtocolTranslator.getTargetVersion())) {
-//                    final ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("viafabricplus", "recipe/" + i));
-//                    switch (legacyRecipe.getA()) {
-//                        case LegacyShapedRecipe legacyShapedRecipe -> {
-//                            final Map<Character, Ingredient> ingredients = new HashMap<>();
-//                            for (Map.Entry<Character, List<Item>> entry : legacyShapedRecipe.legend.entrySet()) {
-//                                final ItemLike[] items = new ItemLike[entry.getValue().size()];
-//                                for (int j = 0; j < entry.getValue().size(); j++) {
-//                                    items[j] = entry.getValue().get(j);
-//                                }
-//                                ingredients.put(entry.getKey(), Ingredient.of(items));
-//                            }
-//                            final ItemStack output = legacyShapedRecipe.result.toItemStack();
-//                            final CraftingRecipe recipe = new ShapedRecipe(legacyShapedRecipe.group, CraftingBookCategory.MISC, ShapedRecipePattern.of(ingredients, legacyShapedRecipe.pattern), output, false);
-//                            recipes.add(new RecipeHolder<>(key, recipe));
-//                        }
-//                        case LegacyShapelessRecipe legacyShapelessRecipe -> {
-//                            final ItemStack output = legacyShapelessRecipe.result.toItemStack();
-//                            final List<Ingredient> ingredients = new ArrayList<>();
-//                            for (List<Item> ingredientIds : legacyShapelessRecipe.ingredients) {
-//                                final ItemLike[] items = new ItemLike[ingredientIds.size()];
-//                                for (int j = 0; j < ingredientIds.size(); j++) {
-//                                    items[j] = ingredientIds.get(j);
-//                                }
-//                                ingredients.add(Ingredient.of(items));
-//                            }
-//                            final CraftingRecipe recipe = new ShapelessRecipe(legacyShapelessRecipe.group, CraftingBookCategory.MISC, output, ingredients);
-//                            recipes.add(new RecipeHolder<>(key, recipe));
-//                        }
-//                        case LegacySmeltingRecipe legacySmeltingRecipe -> {
-//                            final ItemStack output = legacySmeltingRecipe.result.toItemStack();
-//                            final ItemLike[] inputItems = new ItemLike[legacySmeltingRecipe.input.size()];
-//                            for (int j = 0; j < legacySmeltingRecipe.input.size(); j++) {
-//                                inputItems[j] = legacySmeltingRecipe.input.get(j);
-//                            }
-//                            final Ingredient input = Ingredient.of(inputItems);
-//                            final SmeltingRecipe recipe = new SmeltingRecipe("", CookingBookCategory.MISC, input, output, legacySmeltingRecipe.experience, 200);
-//                            recipes.add(new RecipeHolder<>(key, recipe));
-//                        }
-//                        default ->
-//                            throw new IllegalStateException("Unknown legacy recipe type: " + legacyRecipe.getA().getClass());
-//                    }
-//                }
-//            }
-//
-//            // Special recipes
+            // Special recipes
 //            final List<CraftingRecipe> specialRecipes = new ArrayList<>();
 //            if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
 //                specialRecipes.add(new ArmorDyeRecipe(CraftingBookCategory.MISC));
@@ -179,9 +173,9 @@ public final class Recipes1_11_2 {
 //                final ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("viafabricplus", "recipe/special_" + specialRecipe.getClass().getSimpleName().replace("Recipe", "").toLowerCase(Locale.ROOT)));
 //                recipes.add(new RecipeHolder<>(key, specialRecipe));
 //            }
-//
-//            RECIPE_MANAGER = new RecipeManager1_11_2(recipes);
-//        }
+
+            RECIPE_MANAGER = new RecipeManager1_11_2(recipes);
+        }
 
         return RECIPE_MANAGER;
     }
@@ -200,18 +194,17 @@ public final class Recipes1_11_2 {
      * @param inventory     The inventory of the screen handler
      */
     public static void setCraftingResultSlot(final int syncId, final AbstractContainerMenu screenHandler, final CraftingContainer inventory) {
-        // TODO 26.1
-//        final ClientPacketListener network = Minecraft.getInstance().getConnection();
-//        final ClientLevel world = Minecraft.getInstance().level;
-//        final CraftingInput input = inventory.asCraftInput();
-//
-//        final ItemStack result = getRecipeManager()
-//            .getFirstMatch(RecipeType.CRAFTING, input, world) // Get the first matching recipe
-//            .map(recipe -> recipe.value().assemble(input, network.registryAccess())) // Craft the recipe to get the result
-//            .orElse(ItemStack.EMPTY); // If there is no recipe, set the result to air
-//
-//        // Update the result slot
-//        network.handleContainerSetSlot(new ClientboundContainerSetSlotPacket(syncId, screenHandler.getStateId(), 0, result));
+        final ClientPacketListener network = Minecraft.getInstance().getConnection();
+        final ClientLevel world = Minecraft.getInstance().level;
+        final CraftingInput input = inventory.asCraftInput();
+
+        final ItemStack result = getRecipeManager()
+            .getFirstMatch(RecipeType.CRAFTING, input, world) // Get the first matching recipe
+            .map(recipe -> recipe.value().assemble(input)) // Craft the recipe to get the result
+            .orElse(ItemStack.EMPTY); // If there is no recipe, set the result to air
+
+        // Update the result slot
+        network.handleContainerSetSlot(new ClientboundContainerSetSlotPacket(syncId, screenHandler.getStateId(), 0, result));
     }
 
     private static Item getItemById(final Identifier id) {
@@ -234,8 +227,8 @@ public final class Recipes1_11_2 {
             return new RecipeItemStack(getItemById(id), count);
         }
 
-        private ItemStack toItemStack() {
-            return new ItemStack(this.item, this.count);
+        private ItemStackTemplate toItemStack() {
+            return new ItemStackTemplate(this.item, this.count);
         }
 
     }
