@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.server_pinging;
 
 import com.viaversion.viafabricplus.injection.access.base.IServerData;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Final;
@@ -45,7 +45,7 @@ public abstract class MixinServerStatusPinger_1 {
 
     @Redirect(method = "handleStatusResponse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ServerStatusPinger$1;sanitizeDescription(Lnet/minecraft/network/chat/Component;)Lnet/minecraft/network/chat/Component;"))
     private Component removeSanitizeDescription(Component component) {
-        if (((IServerData) val$data).viaFabricPlus$translatingVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
+        if (DebugSettings.INSTANCE.removeServerDescriptionSanitize.isEnabled(((IServerData) val$data).viaFabricPlus$translatingVersion())) {
             return component;
         } else {
             return sanitizeDescription(component);

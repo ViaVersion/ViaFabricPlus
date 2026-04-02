@@ -45,6 +45,9 @@ public final class DebugSettings extends SettingGroup {
         }
     };
 
+    // 26.1 -> 1.21.11
+    public final VersionedBooleanSetting removeServerDescriptionSanitize = new VersionedBooleanSetting(this, Component.translatable("debug_settings.viafabricplus.remove_server_description_sanitize"), ProtocolVersionRange.andOlder(ProtocolVersion.v1_21_11));
+
     // 1.20.5 -> 1.20.4
     public final VersionedBooleanSetting dontCreatePacketErrorCrashReports = new VersionedBooleanSetting(this, Component.translatable("debug_settings.viafabricplus.dont_create_packet_error_crash_reports"), ProtocolVersionRange.andOlder(ProtocolVersion.v1_20_3));
 
