@@ -62,7 +62,7 @@ includeTransitiveJijDependencies()
 
 fun configureBedrockDependencies() {
     dependencies {
-        jij("net.raphimc:MinecraftAuth:5.0.1-SNAPSHOT") {
+        jij("net.raphimc:MinecraftAuth:5.0.1-20260217.194827-4") {
             exclude(group = "com.google.code.gson", module = "gson")
         }
         jij("dev.kastle.netty:netty-transport-raknet:1.7.0") {
@@ -79,11 +79,11 @@ fun configureBedrockDependencies() {
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.9.0-SNAPSHOT")
-        configuration("com.viaversion:viabackwards-common:5.9.0-SNAPSHOT")
-        configuration("com.viaversion:viaaprilfools-common:4.2.0-SNAPSHOT")
+        configuration("com.viaversion:viaversion-common:5.9.0-20260402.141911-21")
+        configuration("com.viaversion:viabackwards-common:5.9.0-20260402.131711-8")
+        configuration("com.viaversion:viaaprilfools-common:4.2.0-20260402.183812-7")
         configuration("net.raphimc:ViaLegacy:3.0.14")
-        configuration("net.raphimc:ViaBedrock:0.0.27-SNAPSHOT") {
+        configuration("net.raphimc:ViaBedrock:0.0.27-20260402.214449-5") {
             exclude(group = "com.mojang", module = "brigadier")
             exclude(group = "at.yawk.lz4", module = "lz4-java")
             exclude(group = "io.netty")
