@@ -98,6 +98,11 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
         }
     }
 
+    @Override
+    protected void applySharedRegistrations() {
+        // Not for us
+    }
+
     public ClientboundPacketType getClientboundCustomPayloadPacketType() {
         return packetTypesProvider.unmappedClientboundType(State.PLAY, "CUSTOM_PAYLOAD");
     }
