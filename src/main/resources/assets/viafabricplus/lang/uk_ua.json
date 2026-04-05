@@ -76,6 +76,7 @@
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "Фільтрувати гліфи, що не існують",
   "debug_settings.viafabricplus.legacy_pane_outlines": "Контури застарілої панелі",
   "debug_settings.viafabricplus.serverside_place_sounds": "Звук розміщення блока/предмета на стороні сервера",
+  "debug_settings.viafabricplus.remove_server_description_sanitize": "Видалити санітизований опису сервера",
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Використовувати аутентифікацію BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Підтверджувати сесію для ліцензійних серверів",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Автоматично вибирати CPE коли використовуємо ClassiCube список серверів.",
