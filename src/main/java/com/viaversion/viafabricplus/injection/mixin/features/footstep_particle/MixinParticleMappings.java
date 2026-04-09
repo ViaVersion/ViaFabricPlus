@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.footstep_particle;
 
 import com.viaversion.viafabricplus.features.footstep_particle.FootStepParticle1_12_2;
 import com.viaversion.viaversion.api.data.FullMappingsBase;
+import com.viaversion.viaversion.api.data.MappingDataLoader;
 import com.viaversion.viaversion.api.data.Mappings;
 import com.viaversion.viaversion.api.data.ParticleMappings;
 import java.util.List;
@@ -31,8 +32,8 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(ParticleMappings.class)
 public abstract class MixinParticleMappings extends FullMappingsBase {
 
-    public MixinParticleMappings(List<String> unmappedIdentifiers, List<String> mappedIdentifiers, Mappings mappings) {
-        super(unmappedIdentifiers, mappedIdentifiers, mappings);
+    public MixinParticleMappings(final MappingDataLoader.IdentifiersPair identifiersPair, final Mappings mappings) {
+        super(identifiersPair, mappings);
     }
 
     @Override

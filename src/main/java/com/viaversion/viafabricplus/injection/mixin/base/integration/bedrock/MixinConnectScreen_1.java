@@ -52,11 +52,10 @@ public abstract class MixinConnectScreen_1 {
             final BedrockAuthManager bedrockSession = SaveManager.INSTANCE.getAccountsSave().getBedrockAccount();
             if (bedrockSession != null) {
                 final MinecraftMultiplayerToken multiplayerToken = bedrockSession.getMinecraftMultiplayerToken().refresh();
-                final MinecraftCertificateChain certificateChain = bedrockSession.getMinecraftCertificateChain().refresh();
                 final KeyPair sessionKeyPair = bedrockSession.getSessionKeyPair();
                 final UUID deviceId = bedrockSession.getDeviceId();
 
-                connection.put(new AuthData(certificateChain.getMojangJwt(), certificateChain.getIdentityJwt(), multiplayerToken.getToken(), sessionKeyPair, deviceId));
+                connection.put(new AuthData(multiplayerToken.getToken(), sessionKeyPair, deviceId));
             } else {
                 ViaFabricPlusImpl.INSTANCE.getLogger().warn("Could not get Bedrock account. Joining online mode servers will not work!");
             }
