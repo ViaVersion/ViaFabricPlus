@@ -69,10 +69,10 @@ public abstract class MixinEntity {
     @Redirect(method = "getFluidInteractionBox", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/AABB;deflate(D)Lnet/minecraft/world/phys/AABB;"))
     private AABB inflate(AABB instance, double amount) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return instance.inflate(0, -0.4, 0).deflate(amount);
-        } else {
-            return instance;
+            instance = instance.inflate(0, -0.4, 0);
         }
+
+        return instance.deflate(amount);
     }
 
     @Inject(method = "setSwimming", at = @At("HEAD"), cancellable = true)
