@@ -23,6 +23,7 @@ accessible field net/minecraft/world/entity/boss/enderdragon/EnderDragon body Ln
 accessible field net/minecraft/world/entity/animal/equine/AbstractHorse standAnimO F
 accessible field net/minecraft/network/Connection pendingActions Ljava/util/Queue;
 accessible field net/minecraft/world/attribute/EnvironmentAttribute isSyncable Z
+accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker height D
 
 mutable field net/minecraft/world/entity/EntityType dimensions Lnet/minecraft/world/entity/EntityDimensions;
 mutable field net/minecraft/world/level/block/state/BlockBehaviour speedFactor F
@@ -50,3 +51,4 @@ accessible class net/minecraft/client/gui/font/FontSet$SelectedGlyphs
 accessible class net/minecraft/world/entity/Entity$Movement
 accessible class net/minecraft/client/renderer/debug/GameTestBlockHighlightRenderer$Marker
 accessible class net/minecraft/client/multiplayer/ClientPacketListener$CommandCheckResult
+accessible class net/minecraft/world/entity/EntityFluidInteraction$Tracker

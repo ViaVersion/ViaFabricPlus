@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.liquid;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityFluidInteraction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
+import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -53,57 +56,17 @@ public abstract class MixinEntityFluidInteraction {
         }
     }
 
-    // TODO 26.1
-//    @Inject(method = "updateFluidHeightAndDoFluidPushing", at = @At("HEAD"), cancellable = true)
-//    private void modifyFluidMovementBoundingBox(TagKey<Fluid> fluidTag, double d, CallbackInfoReturnable<Boolean> cir) {
-//        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && !ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-//            return;
-//        }
-//
-//        AABB box = this.getBoundingBox().inflate(0, -0.4, 0).deflate(0.001);
-//        int minX = Mth.floor(box.minX);
-//        int maxX = Mth.ceil(box.maxX);
-//        int minY = Mth.floor(box.minY);
-//        int maxY = Mth.ceil(box.maxY);
-//        int minZ = Mth.floor(box.minZ);
-//        int maxZ = Mth.ceil(box.maxZ);
-//
-//        if (!this.level.hasChunksAt(minX, minY, minZ, maxX, maxY, maxZ)) {
-//            cir.setReturnValue(false);
-//            return;
-//        }
-//
-//        double waterHeight = 0;
-//        boolean foundFluid = false;
-//        Vec3 pushVec = Vec3.ZERO;
-//
-//        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-//
-//        for (int x = minX; x < maxX; x++) {
-//            for (int y = minY - 1; y < maxY; y++) {
-//                for (int z = minZ; z < maxZ; z++) {
-//                    mutable.set(x, y, z);
-//                    FluidState state = this.level.getFluidState(mutable);
-//                    if (state.is(fluidTag)) {
-//                        double height = y + state.getHeight(this.level, mutable);
-//                        if (height >= box.minY - 0.4)
-//                            waterHeight = Math.max(height - box.minY + 0.4, waterHeight);
-//                        if (y >= minY && maxY >= height) {
-//                            foundFluid = true;
-//                            pushVec = pushVec.add(state.getFlow(this.level, mutable));
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        if (pushVec.length() > 0) {
-//            pushVec = pushVec.normalize().scale(0.014);
-//            this.setDeltaMovement(this.getDeltaMovement().add(pushVec));
-//        }
-//
-//        this.fluidHeight.put(fluidTag, waterHeight);
-//        cir.setReturnValue(foundFluid);
-//    }
+    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D", ordinal = 0))
+    private double modifyFluidHeight(double a, double b, @Local(name = "tracker") EntityFluidInteraction.Tracker tracker, @Local(name = "box") AABB box, @Local(name = "fluidTop") double fluidTop) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+            if (fluidTop >= box.minY - 0.4) {
+                return Math.max(fluidTop - box.minY + 0.4, tracker.height);
+            } else {
+                return tracker.height;
+            }
+        } else {
+            return Math.max(a, b);
+        }
+    }
 
 }
