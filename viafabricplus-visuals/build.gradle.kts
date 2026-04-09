@@ -1,10 +1,10 @@
-import de.florianreuth.baseproject.loadFabricApiModules
+import de.florianreuth.baseproject.fabricApiVersion
 
 plugins {
     id("net.fabricmc.fabric-loom")
 }
 
 dependencies {
-    loadFabricApiModules("fabric-lifecycle-events-v1")
+    compileOnly(fabricApi.module("fabric-lifecycle-events-v1", fabricApiVersion))
     compileOnly(project(":viafabricplus-api"))
 }

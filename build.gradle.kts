@@ -44,11 +44,18 @@ val jij = configureApiJij()
 
 configureVVDependencies("jij")
 
-includeFabricApiModules("fabric-resource-loader-v1", "fabric-resource-loader-v0", "fabric-networking-api-v1", "fabric-command-api-v2", "fabric-lifecycle-events-v1", "fabric-particles-v1", "fabric-registry-sync-v0")
-
 dependencies {
     jij(project(":viafabricplus-api"))
     jij(project(":viafabricplus-visuals"))
+
+    jij(fabricApi.module("fabric-api-base", fabricApiVersion))
+    jij(fabricApi.module("fabric-resource-loader-v1", fabricApiVersion))
+    jij(fabricApi.module("fabric-resource-loader-v0", fabricApiVersion))
+    jij(fabricApi.module("fabric-networking-api-v1", fabricApiVersion))
+    jij(fabricApi.module("fabric-command-api-v2", fabricApiVersion))
+    jij(fabricApi.module("fabric-lifecycle-events-v1", fabricApiVersion))
+    jij(fabricApi.module("fabric-particles-v1", fabricApiVersion))
+    jij(fabricApi.module("fabric-registry-sync-v0", fabricApiVersion))
 
     jij("net.lenni0451:Reflect:1.6.2")
     jij("de.florianreuth:classic4j:2.3.0")
@@ -62,7 +69,7 @@ includeTransitiveJijDependencies()
 
 fun configureBedrockDependencies() {
     dependencies {
-        jij("net.raphimc:MinecraftAuth:5.0.1-20260217.194827-4") {
+        jij("net.raphimc:MinecraftAuth:5.0.1-SNAPSHOT") {
             exclude(group = "com.google.code.gson", module = "gson")
         }
         jij("dev.kastle.netty:netty-transport-raknet:1.7.0") {
@@ -79,11 +86,11 @@ fun configureBedrockDependencies() {
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.9.0-20260409.113912-28")
-        configuration("com.viaversion:viabackwards-common:5.9.0-20260408.100214-12")
-        configuration("com.viaversion:viaaprilfools-common:4.2.0-20260402.183812-7")
+        configuration("com.viaversion:viaversion-common:5.9.0-SNAPSHOT")
+        configuration("com.viaversion:viabackwards-common:5.9.0-SNAPSHOT")
+        configuration("com.viaversion:viaaprilfools-common:4.2.0-SNAPSHOT")
         configuration("net.raphimc:ViaLegacy:3.0.14")
-        configuration("net.raphimc:ViaBedrock:0.0.27-20260402.214449-5") {
+        configuration("net.raphimc:ViaBedrock:0.0.27-SNAPSHOT") {
             exclude(group = "com.mojang", module = "brigadier")
             exclude(group = "at.yawk.lz4", module = "lz4-java")
             exclude(group = "io.netty")
