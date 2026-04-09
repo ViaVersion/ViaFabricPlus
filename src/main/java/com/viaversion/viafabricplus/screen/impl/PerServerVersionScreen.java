@@ -42,7 +42,7 @@ public final class PerServerVersionScreen extends VFPScreen {
     private final Supplier<ProtocolVersion> selectionSupplier;
 
     public PerServerVersionScreen(final Screen prevScreen, final Consumer<ProtocolVersion> selectionConsumer, final Supplier<ProtocolVersion> selectionSupplier) {
-        super(Component.translatable("screen.viafabricplus.force_version"), false);
+        super(Component.translatable("screen.viafabricplus.force_version"), true);
 
         this.prevScreen = prevScreen;
         this.selectionConsumer = selectionConsumer;
