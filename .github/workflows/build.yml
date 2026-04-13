@@ -12,7 +12,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # 5.0.2
+        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # 6.1.0
         with:
           cache-disabled: true
       - name: Set up JDK 25
