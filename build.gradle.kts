@@ -77,11 +77,11 @@ fun configureBedrockDependencies() {
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.9.0-SNAPSHOT")
-        configuration("com.viaversion:viabackwards-common:5.9.0-SNAPSHOT")
-        configuration("com.viaversion:viaaprilfools-common:4.2.0-SNAPSHOT")
-        configuration("net.raphimc:ViaLegacy:3.0.14")
-        configuration("net.raphimc:ViaBedrock:0.0.27-SNAPSHOT") {
+        configuration("com.viaversion:viaversion-common:5.9.0")
+        configuration("com.viaversion:viabackwards-common:5.9.0")
+        configuration("com.viaversion:viaaprilfools-common:4.2.0")
+        configuration("net.raphimc:ViaLegacy:3.0.15")
+        configuration("net.raphimc:ViaBedrock:0.0.27-20260409.182428-6") {
             exclude(group = "com.mojang", module = "brigadier")
             exclude(group = "at.yawk.lz4", module = "lz4-java")
             exclude(group = "io.netty")
