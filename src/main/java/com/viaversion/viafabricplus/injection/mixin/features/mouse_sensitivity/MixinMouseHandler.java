@@ -26,14 +26,15 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.features.mouse_sensitivity.MouseSensitivity1_13_2;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.OptionInstance;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(MouseHandler.class)
 public abstract class MixinMouseHandler {
-
     @WrapOperation(method = "turnPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/OptionInstance;get()Ljava/lang/Object;", ordinal = 0))
     private Object adjustMouseSensitivity1_13_2(OptionInstance<Double> instance, Operation<Double> original) {
         final Double value = original.call(instance);
@@ -44,5 +45,11 @@ public abstract class MixinMouseHandler {
             return value;
         }
     }
+    @ModifyVariable(method = "turnPlayer", at = @At("STORE"), ordinal = 3)
+    private double adjustSensitivity1_8(double sens) {
+        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_9)) return sens;
+        final var ss = Minecraft.getInstance().options.sensitivity().get().floatValue() * 0.6F + 0.2F;
 
+        return ss * ss * ss * 8.0F;
+    }
 }
