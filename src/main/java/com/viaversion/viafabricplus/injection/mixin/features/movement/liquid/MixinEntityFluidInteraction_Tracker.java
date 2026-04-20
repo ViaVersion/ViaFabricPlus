@@ -35,6 +35,15 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(EntityFluidInteraction.Tracker.class)
 public abstract class MixinEntityFluidInteraction_Tracker {
 
+    @Redirect(method = "applyCurrentTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;lengthSqr()D"))
+    private double useLengthInstead(Vec3 instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
+            return instance.length();
+        } else {
+            return instance.lengthSqr();
+        }
+    }
+
     @ModifyConstant(method = "applyCurrentTo", constant = @Constant(doubleValue = (double) 1.0E-5F))
     private double changeThreshold(double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {

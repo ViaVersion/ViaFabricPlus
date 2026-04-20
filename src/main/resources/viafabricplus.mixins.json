@@ -339,5 +339,8 @@
   },
   "overwrites": {
     "requireAnnotations": true
+  },
+  "mixinextras": {
+    "minVersion": "0.5.3"
   }
 }

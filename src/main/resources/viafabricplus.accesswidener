@@ -23,7 +23,6 @@ accessible field net/minecraft/world/entity/boss/enderdragon/EnderDragon body Ln
 accessible field net/minecraft/world/entity/animal/equine/AbstractHorse standAnimO F
 accessible field net/minecraft/network/Connection pendingActions Ljava/util/Queue;
 accessible field net/minecraft/world/attribute/EnvironmentAttribute isSyncable Z
-accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker height D
 
 mutable field net/minecraft/world/entity/EntityType dimensions Lnet/minecraft/world/entity/EntityDimensions;
 mutable field net/minecraft/world/level/block/state/BlockBehaviour speedFactor F
