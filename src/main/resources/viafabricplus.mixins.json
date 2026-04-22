@@ -196,6 +196,7 @@
     "features.item.filter_creative_tabs.MixinCreativeModeTabs",
     "features.item.interaction.MixinAxeItem",
     "features.item.interaction.MixinBlockItem",
+    "features.item.interaction.MixinBoneMealItem",
     "features.item.interaction.MixinBowItem",
     "features.item.interaction.MixinBrushItem",
     "features.item.interaction.MixinBucketItem",
