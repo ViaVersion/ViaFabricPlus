@@ -25,26 +25,20 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
-import net.minecraft.world.item.context.UseOnContext;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Coerce;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(BoneMealItem.class)
 public abstract class MixinBoneMealItem {
 
-    @Inject(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;levelEvent(ILnet/minecraft/core/BlockPos;I)V", ordinal = 0), cancellable = true)
-    private void serverUseSuccessResult(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
+    @Redirect(method = "useOn", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;PASS:Lnet/minecraft/world/InteractionResult$Pass;", ordinal = 0))
+    private @Coerce Object swingHand() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
-            cir.setReturnValue(InteractionResult.SUCCESS);
-        }
-    }
-
-    @Inject(method = "useOn", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;PASS:Lnet/minecraft/world/InteractionResult$Pass;", ordinal = 0, shift = At.Shift.BEFORE), cancellable = true)
-    private void clientUseSuccessResult(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
-            cir.setReturnValue(InteractionResult.SUCCESS);
+            return InteractionResult.SUCCESS;
+        } else {
+            return InteractionResult.PASS;
         }
     }
 
