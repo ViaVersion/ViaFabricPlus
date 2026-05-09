@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.base.access;
 
 import com.viaversion.viafabricplus.injection.access.base.bedrock.IChunkTracker;
-import java.util.Map;
+import com.viaversion.viaversion.libs.fastutil.longs.Long2ObjectMap;
 import java.util.Set;
 import net.raphimc.viabedrock.api.chunk.BedrockChunk;
 import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
@@ -43,7 +43,7 @@ public abstract class MixinChunkTracker implements IChunkTracker {
 
     @Shadow
     @Final
-    private Map<Long, BedrockChunk> chunks;
+    private Long2ObjectMap<BedrockChunk> chunks;
 
     @Override
     public int viaFabricPlus$getSubChunkRequests() {
