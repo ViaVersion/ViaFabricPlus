@@ -71,6 +71,10 @@ public final class Enchantments1_14_4 {
         ENCHANTMENT_REGISTRY.put("piercing", Enchantments.PIERCING);
         ENCHANTMENT_REGISTRY.put("mending", Enchantments.MENDING);
         ENCHANTMENT_REGISTRY.put("vanishing_curse", Enchantments.VANISHING_CURSE);
+        // Minecraft 1.21 Mace enchantments
+        ENCHANTMENT_REGISTRY.put("density", Enchantments.DENSITY);
+        ENCHANTMENT_REGISTRY.put("breach", Enchantments.BREACH);
+        ENCHANTMENT_REGISTRY.put("wind_burst", Enchantments.WIND_BURST);
     }
 
     public static Optional<ResourceKey<Enchantment>> getOrEmpty(final String identifier) {
