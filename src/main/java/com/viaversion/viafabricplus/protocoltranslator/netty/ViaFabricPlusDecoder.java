@@ -27,6 +27,8 @@ import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.exception.CancelCodecException;
 import com.viaversion.viaversion.platform.ViaDecodeHandler;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -52,6 +54,13 @@ public final class ViaFabricPlusDecoder extends ViaDecodeHandler {
                 if (mode == 1) {
                     ChatUtil.sendPrefixedMessage(Component.translatable("translation.viafabricplus.packet_error").withStyle(ChatFormatting.RED));
                 }
+
+                // Release the message buffer if it hasn't been released yet, then fire an empty buffer
+                // to keep the pipeline alive and prevent the connection from being terminated
+                if (msg instanceof ByteBuf) {
+                    ((ByteBuf) msg).release();
+                }
+                ctx.fireChannelRead(Unpooled.EMPTY_BUFFER);
             } else {
                 throw e;
             }
