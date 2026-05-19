@@ -23,13 +23,18 @@ package com.viaversion.viafabricplus.injection.mixin.core.integration;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.DecoderException;
 import java.net.ConnectException;
 import java.net.SocketException;
 import io.netty.channel.SimpleChannelInboundHandler;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.Connection;
 import net.minecraft.network.HandlerNames;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,7 +44,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Connection.class)
 public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet<?>> {
 
-    @Inject(method = "exceptionCaught", at = @At("HEAD"))
+    @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     private void printNetworkingErrors(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {
         if (DebugSettings.INSTANCE.printNetworkingErrorsToLogs.getValue()) {
             if (ex instanceof SocketException || ex instanceof ConnectException) {
@@ -47,6 +52,24 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
                 return;
             }
             ViaFabricPlusImpl.INSTANCE.getLogger().error("An exception occurred while handling a packet", ex);
+        }
+
+        // When ignorePacketTranslationErrors is enabled, swallow DecoderExceptions
+        // to prevent the client from being disconnected. The exception originates from
+        // ByteToMessageDecoder which catches it internally and fires exceptionCaught
+        // on the pipeline — it never reaches ViaFabricPlusDecoder's catch block.
+        if (ex instanceof DecoderException) {
+            final int mode = GeneralSettings.INSTANCE.ignorePacketTranslationErrors.getIndex();
+            if (mode > 0) {
+                ViaFabricPlusImpl.INSTANCE.getLogger().error("ViaFabricPlus ignored a packet translation error", ex);
+                if (mode == 1) {
+                    ChatUtil.sendPrefixedMessage(
+                            Component.translatable("translation.viafabricplus.packet_error")
+                                    .withStyle(ChatFormatting.RED)
+                    );
+                }
+                ci.cancel();
+            }
         }
     }
 
