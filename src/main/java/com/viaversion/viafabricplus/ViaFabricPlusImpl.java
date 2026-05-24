@@ -26,6 +26,8 @@ import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusLoadEntrypoint;
 import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
+import com.viaversion.viafabricplus.injection.access.registry.IMappedRegistry;
+import com.viaversion.viafabricplus.util.BlockLoaderUtil;
 import com.viaversion.viafabricplus.util.network.SyncTasks;
 import com.viaversion.viafabricplus.features.FeaturesLoading;
 import com.viaversion.viafabricplus.features.item.filter_creative_tabs.VersionedRegistries;
@@ -44,18 +46,27 @@ import com.viaversion.viafabricplus.util.ClassLoaderPriorityUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.util.Pair;
 import io.netty.channel.Channel;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.client.Minecraft;
+import net.minecraft.commands.Commands;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ServerData;
@@ -65,6 +76,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.Connection;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Holder;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -126,6 +138,28 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
             }
         });
         LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.FINAL_LOAD);
+
+        // Don't mind this for now! It's just for testing.
+        CommandRegistrationCallback.EVENT.register((dispatcher,registryAccess, environment) -> {
+            dispatcher.register(Commands.literal("loadblocks").executes(context -> {
+                try {
+                    ((IMappedRegistry)BuiltInRegistries.BLOCK).viaFabricPlus$unfreeze();
+                    ResourceKey<Block> blockResourceKey = BlockLoaderUtil.key("small_treasure_pile");
+                    Block block = new Block(BlockBehaviour.Properties.of().setId(blockResourceKey));
+                    BlockLoaderUtil.register(List.of(new Pair<>(blockResourceKey, block)));
+                    ((IMappedRegistry)BuiltInRegistries.BLOCK).viaFabricPlus$refreeze();
+
+                    BlockLoaderUtil.loadModels(Map.of(block.defaultBlockState(), new String(ViaFabricPlus.class.getResourceAsStream("/assets/viafabricplus/test/small_treasure_pile.geometry.json").readAllBytes())));
+                } catch (Exception e) {
+                    context.getSource().sendSuccess(() -> Component.literal("Failed, something happened? Please check console."), false);
+                    e.printStackTrace();
+                    return 1;
+                }
+
+                context.getSource().sendSuccess(() -> Component.literal("Loaded block!"), false);
+                return 1;
+            }));
+        });
     }
 
     // --------------------------------------------------------------------------------------------

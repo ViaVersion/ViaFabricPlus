@@ -51,3 +51,8 @@ accessible class net/minecraft/world/entity/Entity$Movement
 accessible class net/minecraft/client/renderer/debug/GameTestBlockHighlightRenderer$Marker
 accessible class net/minecraft/client/multiplayer/ClientPacketListener$CommandCheckResult
 accessible class net/minecraft/world/entity/EntityFluidInteraction$Tracker
+
+accessible class net/minecraft/client/resources/model/ModelBakery$InternerImpl
+accessible class net/minecraft/client/resources/model/ModelBakery$ModelBakerImpl
+
+accessible method net/minecraft/client/resources/model/ModelBakery$InternerImpl <init> ()V
