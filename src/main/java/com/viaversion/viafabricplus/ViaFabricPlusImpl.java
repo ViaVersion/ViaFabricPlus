@@ -144,7 +144,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
             dispatcher.register(Commands.literal("loadblocks").executes(context -> {
                 try {
                     ((IMappedRegistry)BuiltInRegistries.BLOCK).viaFabricPlus$unfreeze();
-                    ResourceKey<Block> blockResourceKey = BlockLoaderUtil.key("small_treasure_pile");
+                    ResourceKey<Block> blockResourceKey = BlockLoaderUtil.key("viafabricplus:small_treasure_pile");
                     Block block = new Block(BlockBehaviour.Properties.of().setId(blockResourceKey));
                     BlockLoaderUtil.register(List.of(new Pair<>(blockResourceKey, block)));
                     ((IMappedRegistry)BuiltInRegistries.BLOCK).viaFabricPlus$refreeze();

@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.util;
 
 import com.viaversion.viafabricplus.injection.access.registry.IHolderReference;
-import com.viaversion.viafabricplus.injection.access.registry.IMappedRegistry;
 import com.viaversion.viaversion.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.dispatch.SingleVariant;
@@ -33,6 +32,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.raphimc.viabedrock.protocol.storage.ResourcePackStorage;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,6 +40,9 @@ import java.util.List;
 import java.util.Map;
 
 public class BlockLoaderUtil {
+    public static ResourcePackStorage STORAGE;
+
+    public static Map<String, BlockState> ID_TO_STATE = new HashMap<>();
     private static Map<BlockState, String> STATE_TO_MODEL;
     private static Map<BlockState, SingleVariant> QUEUED_MODEL;
 
@@ -88,7 +91,7 @@ public class BlockLoaderUtil {
         }
     }
 
-    public static ResourceKey<Block> key(String name) {
-        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("viafabricplus", name));
+    public static ResourceKey<Block> key(String identifier) {
+        return ResourceKey.create(Registries.BLOCK, Identifier.parse(identifier));
     }
 }

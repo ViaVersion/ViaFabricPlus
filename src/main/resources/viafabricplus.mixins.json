@@ -75,6 +75,8 @@
     "features.bedrock.movement.MixinLocalPlayer",
     "features.bedrock.movement.MixinPlayer",
     "features.bedrock.networking.MixinServerNameResolver",
+    "features.bedrock.raphi.MixinBlockStateRewriter",
+    "features.bedrock.raphi.MixinModelDefinitions",
     "features.bedrock.reach_around_raycast.MixinMinecraft",
     "features.block.connections.MixinClientChunkCache",
     "features.block.interaction.MixinCanPlaceAt1_14",
@@ -361,5 +363,9 @@
   },
   "mixinextras": {
     "minVersion": "0.5.3"
-  }
+  },
+  "mixins": [
+    "features.bedrock.raphi.MixinResourcePackRewriter",
+    "features.bedrock.raphi.MixinResourcePackStorage"
+  ]
 }

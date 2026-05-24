@@ -46,6 +46,6 @@ public class CustomBlock extends Block {
 
     @Override
     protected @NotNull VoxelShape getCollisionShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext context) {
-        return collisionShape;
+        return this.collisionShape;
     }
 }
