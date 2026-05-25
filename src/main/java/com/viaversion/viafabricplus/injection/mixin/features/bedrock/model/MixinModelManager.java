@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.model;
 
-import com.viaversion.viafabricplus.util.BlockLoaderUtil;
+import com.viaversion.viafabricplus.features.block.bedrock.dynamic.DynamicBlockCache;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,13 +34,8 @@ import java.util.Map;
 
 @Mixin(ModelManager.class)
 public class MixinModelManager {
-	@Inject(at = @At(value = "HEAD"), method = "createBlockStateToModelDispatch", cancellable = true)
-	private static void render(Map<BlockState, BlockStateModel> bakedModels, BlockStateModel missingModel, CallbackInfoReturnable<Map<BlockState, BlockStateModel>> cir) {
-        if (BlockLoaderUtil.queuedModels() == null) {
-            return;
-        }
-
-        bakedModels.putAll(BlockLoaderUtil.queuedModels());
-        BlockLoaderUtil.invalidateQueuedModels();
+	@Inject(at = @At(value = "HEAD"), method = "createBlockStateToModelDispatch")
+	private static void mapDynamicBlockToBakedModels(Map<BlockState, BlockStateModel> bakedModels, BlockStateModel missingModel, CallbackInfoReturnable<Map<BlockState, BlockStateModel>> cir) {
+        DynamicBlockCache.mapBlockStateToBakedModel(bakedModels);
 	}
 }

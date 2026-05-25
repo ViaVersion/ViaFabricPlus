@@ -26,8 +26,8 @@ import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusLoadEntrypoint;
 import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
+import com.viaversion.viafabricplus.features.block.bedrock.dynamic.DynamicBlockCache;
 import com.viaversion.viafabricplus.injection.access.registry.IMappedRegistry;
-import com.viaversion.viafabricplus.util.BlockLoaderUtil;
 import com.viaversion.viafabricplus.util.network.SyncTasks;
 import com.viaversion.viafabricplus.features.FeaturesLoading;
 import com.viaversion.viafabricplus.features.item.filter_creative_tabs.VersionedRegistries;
@@ -61,12 +61,10 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ServerData;
@@ -144,12 +142,12 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
             dispatcher.register(Commands.literal("loadblocks").executes(context -> {
                 try {
                     ((IMappedRegistry)BuiltInRegistries.BLOCK).viaFabricPlus$unfreeze();
-                    ResourceKey<Block> blockResourceKey = BlockLoaderUtil.key("viafabricplus:small_treasure_pile");
+                    ResourceKey<Block> blockResourceKey = DynamicBlockCache.key("viafabricplus:small_treasure_pile");
                     Block block = new Block(BlockBehaviour.Properties.of().setId(blockResourceKey));
-                    BlockLoaderUtil.register(List.of(new Pair<>(blockResourceKey, block)));
+                    DynamicBlockCache.register(List.of(new Pair<>(blockResourceKey, block)));
                     ((IMappedRegistry)BuiltInRegistries.BLOCK).viaFabricPlus$refreeze();
 
-                    BlockLoaderUtil.loadModels(Map.of(block.defaultBlockState(), new String(ViaFabricPlus.class.getResourceAsStream("/assets/viafabricplus/test/small_treasure_pile.geometry.json").readAllBytes())));
+                    DynamicBlockCache.requestBakeModelsAndLoad(Map.of(block.defaultBlockState(), new String(ViaFabricPlus.class.getResourceAsStream("/assets/viafabricplus/test/small_treasure_pile.geometry.json").readAllBytes())));
                 } catch (Exception e) {
                     context.getSource().sendSuccess(() -> Component.literal("Failed, something happened? Please check console."), false);
                     e.printStackTrace();

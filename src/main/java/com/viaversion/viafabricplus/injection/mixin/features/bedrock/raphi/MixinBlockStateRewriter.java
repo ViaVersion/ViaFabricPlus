@@ -25,12 +25,12 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.NumberTag;
 import com.viaversion.nbt.tag.Tag;
+import com.viaversion.viafabricplus.features.block.bedrock.dynamic.DynamicBlockCache;
+import com.viaversion.viafabricplus.features.block.bedrock.dynamic.block.CustomBlock;
 import com.viaversion.viafabricplus.injection.access.raphi.IModelDefinitions;
 import com.viaversion.viafabricplus.injection.access.raphi.IResourcePackStorage;
 import com.viaversion.viafabricplus.injection.access.registry.IMappedRegistry;
-import com.viaversion.viafabricplus.util.BlockLoaderUtil;
 import com.viaversion.viafabricplus.util.RandomBullshitGoUtil;
-import com.viaversion.viafabricplus.util.block.CustomBlock;
 import com.viaversion.viaversion.libs.fastutil.ints.Int2IntMap;
 import com.viaversion.viaversion.util.Pair;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -118,7 +118,7 @@ public class MixinBlockStateRewriter {
             final VoxelShape selection = RandomBullshitGoUtil.tagToVoxelShape(state.blockStateTag().get("minecraft:selection_box"));
 
             registeredBlocks.add(state.namespacedIdentifier());
-            ResourceKey<Block> blockResourceKey = BlockLoaderUtil.key(state.namespacedIdentifier());
+            ResourceKey<@NotNull Block> blockResourceKey = DynamicBlockCache.key(state.namespacedIdentifier());
 
             BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().setId(blockResourceKey);
             properties.noOcclusion();
@@ -140,7 +140,7 @@ public class MixinBlockStateRewriter {
             Block block = new CustomBlock(properties, collision, selection);
             blocks.add(new Pair<>(blockResourceKey, block));
 
-            BlockLoaderUtil.ID_TO_STATE.put(state.namespacedIdentifier(), block.defaultBlockState());
+            DynamicBlockCache.putKeyToState(state.namespacedIdentifier(), block.defaultBlockState());
 
             if (RandomBullshitGoUtil.STORAGE == null) {
                 continue;
@@ -201,11 +201,11 @@ public class MixinBlockStateRewriter {
             String javaModelJson = model.toJavaItemModel(textureMap, RotationType.POST_1_21_11).compile().toString();
             models.put(block.defaultBlockState(), javaModelJson);
         }
-        BlockLoaderUtil.register(blocks);
+        DynamicBlockCache.register(blocks);
 
         ((IMappedRegistry) BuiltInRegistries.BLOCK).viaFabricPlus$refreeze();
 
-        BlockLoaderUtil.loadModels(models);
+        DynamicBlockCache.requestBakeModelsAndLoad(models);
     }
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/logging/Logger;log(Ljava/util/logging/Level;Ljava/lang/String;)V"))
@@ -214,13 +214,13 @@ public class MixinBlockStateRewriter {
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE",
         target = "Lcom/viaversion/viaversion/libs/fastutil/ints/Int2IntMap;put(II)I", ordinal = 1))
-    public int overrideCustomBlocks(Int2IntMap instance, int i, int i1, @Local BedrockBlockState bedrockBlockState) {
-        BlockState state = BlockLoaderUtil.ID_TO_STATE.get(bedrockBlockState.namespacedIdentifier());
+    public int overrideCustomBlocks(Int2IntMap instance, int i, int i1, @Local BedrockBlockState state) {
+        Integer id = DynamicBlockCache.blockKeyToId(state.namespacedIdentifier());
 
-        if (state == null) {
+        if (id == null) {
             instance.put(i, i1);
         } else {
-            instance.put(i, Block.getId(state));
+            instance.put(i, (int) id);
         }
         return i;
     }

@@ -19,25 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.util.block;
+package com.viaversion.viafabricplus.features.block.bedrock.dynamic.baker;
 
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ResolvedModel;
 import net.minecraft.client.resources.model.sprite.MaterialBaker;
 import net.minecraft.resources.Identifier;
+import org.jetbrains.annotations.NotNull;
 
-public class DummyModelBaker implements ModelBaker {
-    private final MaterialBaker materials;
-    private final ModelBaker.Interner interner;
-
-    public DummyModelBaker(final MaterialBaker materials, final Interner interner) {
-        this.materials = materials;
-        this.interner = interner;
-    }
-
+@SuppressWarnings("ALL")
+public record DummyModelBaker(MaterialBaker materials, Interner interner) implements ModelBaker {
     @Override
-    public ResolvedModel getModel(final Identifier location) {
+    public ResolvedModel getModel(final @NotNull Identifier location) {
         return null;
     }
 
@@ -48,13 +42,5 @@ public class DummyModelBaker implements ModelBaker {
     @Override
     public <T> T compute(final SharedOperationKey<T> key) {
         return null;
-    }
-
-    public MaterialBaker materials() {
-        return this.materials;
-    }
-
-    public ModelBaker.Interner interner() {
-        return this.interner;
     }
 }

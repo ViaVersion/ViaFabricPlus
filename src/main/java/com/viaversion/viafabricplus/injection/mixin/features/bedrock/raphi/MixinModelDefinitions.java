@@ -51,7 +51,7 @@ public class MixinModelDefinitions implements IModelDefinitions {
 
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     public void addVanillaModels(ResourcePackStorage resourcePackStorage, CallbackInfo ci) throws IOException {
-        this.viaFabricPlus$blockModels.put("minecraft:geometry.full_block", BedrockGeometryModel.fromJson(new String(ViaFabricPlus.class.getResourceAsStream("/assets/viafabricplus/bedrock/full_block.json").readAllBytes())).getFirst());
+        this.viaFabricPlus$blockModels.put("minecraft:geometry.full_block", BedrockGeometryModel.fromJson(new String(ViaFabricPlus.class.getResourceAsStream("/assets/viafabricplus/bedrock/geometry.full_block.json").readAllBytes())).getFirst());
     }
 
     @Override

@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.core.connection;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.viaversion.viafabricplus.features.block.bedrock.dynamic.DynamicBlockCache;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.util.BlockLoaderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.Connection;
@@ -41,8 +41,8 @@ import java.util.Optional;
 public abstract class MixinMinecraft {
 
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;ZZ)V", at = @At("HEAD"))
-    private void unloadAllCustomBlocksOnLeave(Screen screen, boolean keepResourcePacks, boolean stopSound, CallbackInfo ci) {
-        BlockLoaderUtil.unregisterAll();
+    private void unloadAllDynamicBlocksOnLeave(Screen screen, boolean keepResourcePacks, boolean stopSound, CallbackInfo ci) {
+        DynamicBlockCache.clear();
     }
 
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;initiateServerboundPlayConnection(Ljava/lang/String;ILnet/minecraft/network/protocol/login/ClientLoginPacketListener;)V"))

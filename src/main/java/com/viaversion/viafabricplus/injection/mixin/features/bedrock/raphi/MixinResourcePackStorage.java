@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.raphi;
 
 import com.viaversion.viafabricplus.injection.access.raphi.IResourcePackStorage;
-import com.viaversion.viafabricplus.util.BlockLoaderUtil;
 import com.viaversion.viafabricplus.util.RandomBullshitGoUtil;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
