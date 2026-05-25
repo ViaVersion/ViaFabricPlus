@@ -77,7 +77,7 @@ fun configureBedrockDependencies() {
             exclude(group = "com.viaversion")
         }
 
-        jij("net.raphimc:MinecraftAuth:5.0.1-20260507.085226-5") {
+        jij("net.raphimc:MinecraftAuth:5.0.1-SNAPSHOT") {
             exclude(group = "com.google.code.gson", module = "gson")
         }
         jij("dev.kastle.netty:netty-transport-raknet:1.7.0") {
@@ -94,8 +94,8 @@ fun configureBedrockDependencies() {
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.9.2-20260523.200017-6")
-        configuration("com.viaversion:viabackwards-common:5.9.2-20260519.082214-2")
+        configuration("com.viaversion:viaversion-common:5.9.2-SNAPSHOT")
+        configuration("com.viaversion:viabackwards-common:5.9.2-SNAPSHOT")
         configuration("com.viaversion:viaaprilfools-common:4.2.1")
         configuration("net.raphimc:ViaLegacy:3.0.16")
         configuration("net.raphimc:ViaBedrock:0.0.28-SNAPSHOT") {
