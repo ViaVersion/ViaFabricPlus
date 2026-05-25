@@ -83,6 +83,10 @@ public class MixinBlockStateRewriter {
             if (components.contains("minecraft:geometry")) {
                 instance.put("minecraft:geometry", components.getCompoundTag("minecraft:geometry"));
             }
+
+            if (components.contains("minecraft:material_instances")) {
+                instance.put("minecraft:material_instances", components.getCompoundTag("minecraft:material_instances"));
+            }
         }
     }
 
@@ -123,10 +127,39 @@ public class MixinBlockStateRewriter {
 
             String path = ((IResourcePackStorage)storage).viaFabricPlus$textures(state.namespacedIdentifier());
             if (path == null) {
-                path = state.namespacedIdentifier();
-            }
-            path = path.replace(":", "/");
+                path = "textures/blocks/" + state.namespacedIdentifier().replace(":", "/");; // TODO: Properly fix model with multiple texture faces to avoid this hack (that only works for hive lol).
+//                System.out.println(path);
 
+                if (state.blockStateTag().contains("minecraft:material_instances")) {
+                    CompoundTag materialInstance = state.blockStateTag().getCompoundTag("minecraft:material_instances");
+
+                    // This is basically Direction for each face, with "*" is for all faces.
+                    if (materialInstance.contains("materials")) {
+                        CompoundTag materials = materialInstance.getCompoundTag("materials");
+
+                        if (materials.contains("*")) {
+                            CompoundTag all = materials.getCompoundTag("*");
+
+                            if (all.contains("texture")) {
+                                String result = ((IResourcePackStorage)storage).viaFabricPlus$texturesPathFromId(all.getString("texture"));
+                                if (result != null) {
+                                    path = result;
+                                } else {
+//                                    System.out.println("nah null, was trying to pull: " + all.getString("texture"));
+                                }
+                            }
+                        } else {
+//                            System.out.println("nope: " + materials);
+                        }
+                    }
+                }
+
+                if (path == null) {
+                    continue;
+                }
+            }
+
+            System.out.println("target: " + "viabedrock:block/" + path);
             String javaModelJson = model.toJavaItemModel("viabedrock:block/" + path, RotationType.POST_1_21_11).compile().toString();
             models.put(block.defaultBlockState(), javaModelJson);
         }

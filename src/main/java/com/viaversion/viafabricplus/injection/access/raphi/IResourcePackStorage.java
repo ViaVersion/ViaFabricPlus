@@ -21,6 +21,10 @@
 
 package com.viaversion.viafabricplus.injection.access.raphi;
 
+import java.util.Set;
+
 public interface IResourcePackStorage {
     String viaFabricPlus$textures(String string);
+    String viaFabricPlus$texturesPathFromId(String string);
+    Set<String> viaFabricPlus$texturesToLoad();
 }
