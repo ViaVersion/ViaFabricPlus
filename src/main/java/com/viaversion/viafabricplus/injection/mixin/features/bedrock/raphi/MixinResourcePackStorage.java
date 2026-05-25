@@ -26,6 +26,7 @@ import com.viaversion.viafabricplus.injection.access.raphi.IResourcePackStorage;
 import com.viaversion.viafabricplus.util.BlockLoaderUtil;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
+import com.viaversion.viaversion.libs.gson.JsonPrimitive;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
 import net.raphimc.viabedrock.api.resourcepack.ResourcePack;
@@ -60,11 +61,15 @@ public class MixinResourcePackStorage implements IResourcePackStorage {
 
             for (String key : object.keySet()) {
                 final JsonElement element = object.get(key);
-                if (!element.isJsonPrimitive()) {
-                    continue; // TODO: Support for this.
+                if (!element.isJsonObject()) {
+                    continue;
+                }
+                final JsonObject jsonObject = element.getAsJsonObject();
+                if (!(jsonObject.get("textures") instanceof JsonPrimitive primitive)) {
+                    continue;
                 }
 
-                ID_TO_TEXTURE.put(key, element.getAsString());
+                ID_TO_TEXTURE.put(key, primitive.getAsString());
             }
         }
     }
