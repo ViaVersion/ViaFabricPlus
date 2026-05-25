@@ -136,28 +136,6 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
             }
         });
         LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.FINAL_LOAD);
-
-        // Don't mind this for now! It's just for testing.
-        CommandRegistrationCallback.EVENT.register((dispatcher,registryAccess, environment) -> {
-            dispatcher.register(Commands.literal("loadblocks").executes(context -> {
-                try {
-                    ((IMappedRegistry)BuiltInRegistries.BLOCK).viaFabricPlus$unfreeze();
-                    ResourceKey<Block> blockResourceKey = DynamicBlockCache.key("viafabricplus:small_treasure_pile");
-                    Block block = new Block(BlockBehaviour.Properties.of().setId(blockResourceKey));
-                    DynamicBlockCache.register(List.of(new Pair<>(blockResourceKey, block)));
-                    ((IMappedRegistry)BuiltInRegistries.BLOCK).viaFabricPlus$refreeze();
-
-                    DynamicBlockCache.requestBakeModelsAndLoad(Map.of(block.defaultBlockState(), new String(ViaFabricPlus.class.getResourceAsStream("/assets/viafabricplus/test/small_treasure_pile.geometry.json").readAllBytes())));
-                } catch (Exception e) {
-                    context.getSource().sendSuccess(() -> Component.literal("Failed, something happened? Please check console."), false);
-                    e.printStackTrace();
-                    return 1;
-                }
-
-                context.getSource().sendSuccess(() -> Component.literal("Loaded block!"), false);
-                return 1;
-            }));
-        });
     }
 
     // --------------------------------------------------------------------------------------------
