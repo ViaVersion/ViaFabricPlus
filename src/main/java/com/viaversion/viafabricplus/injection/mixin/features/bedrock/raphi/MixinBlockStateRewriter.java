@@ -23,6 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.bedrock.raphi;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.nbt.tag.CompoundTag;
+import com.viaversion.nbt.tag.NumberTag;
+import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viafabricplus.injection.access.raphi.IModelDefinitions;
 import com.viaversion.viafabricplus.injection.access.raphi.IResourcePackStorage;
 import com.viaversion.viafabricplus.injection.access.registry.IMappedRegistry;
@@ -86,6 +88,10 @@ public class MixinBlockStateRewriter {
                 instance.put("minecraft:geometry", components.getCompoundTag("minecraft:geometry"));
             }
 
+            if (components.contains("minecraft:destructible_by_mining")) {
+                instance.put("minecraft:destructible_by_mining", components.get("minecraft:destructible_by_mining"));
+            }
+
             if (components.contains("minecraft:material_instances")) {
                 instance.put("minecraft:material_instances", components.getCompoundTag("minecraft:material_instances"));
             }
@@ -109,7 +115,18 @@ public class MixinBlockStateRewriter {
 
             registeredBlocks.add(state.namespacedIdentifier());
             ResourceKey<Block> blockResourceKey = BlockLoaderUtil.key(state.namespacedIdentifier());
-            Block block = new CustomBlock(BlockBehaviour.Properties.of().setId(blockResourceKey), collision, selection);
+
+            BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().setId(blockResourceKey);
+            if (state.blockStateTag().contains("minecraft:destructible_by_mining")) {
+                Tag tag = state.blockStateTag().get("minecraft:destructible_by_mining");
+                if (tag instanceof NumberTag nt) {
+                    properties.destroyTime(nt.asBoolean() ? 0 : -1);
+                } else if (tag instanceof CompoundTag ct && ct.contains("value")) {
+                    properties.destroyTime(ct.getFloat("value"));
+                }
+            }
+
+            Block block = new CustomBlock(properties, collision, selection);
             blocks.add(new Pair<>(blockResourceKey, block));
 
             BlockLoaderUtil.ID_TO_STATE.put(state.namespacedIdentifier(), block.defaultBlockState());
