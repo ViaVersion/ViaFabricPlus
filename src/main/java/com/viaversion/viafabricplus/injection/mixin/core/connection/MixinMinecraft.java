@@ -23,7 +23,9 @@ package com.viaversion.viafabricplus.injection.mixin.core.connection;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.util.BlockLoaderUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.Connection;
 import net.minecraft.server.WorldStem;
 import net.minecraft.server.packs.repository.PackRepository;
@@ -37,6 +39,11 @@ import java.util.Optional;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
+
+    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;ZZ)V", at = @At("HEAD"))
+    private void unloadAllCustomBlocksOnLeave(Screen screen, boolean keepResourcePacks, boolean stopSound, CallbackInfo ci) {
+        BlockLoaderUtil.unregisterAll();
+    }
 
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;initiateServerboundPlayConnection(Ljava/lang/String;ILnet/minecraft/network/protocol/login/ClientLoginPacketListener;)V"))
     private void disableProtocolTranslator(LevelStorageSource.LevelStorageAccess levelSourceAccess, PackRepository packRepository, WorldStem worldStem, Optional<GameRules> gameRules, boolean newWorld, CallbackInfo ci, @Local(name = "connection") Connection connection) {

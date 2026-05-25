@@ -54,6 +54,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Mixin(BlockStateRewriter.class)
 public class MixinBlockStateRewriter {
@@ -133,6 +135,10 @@ public class MixinBlockStateRewriter {
         ((IMappedRegistry) BuiltInRegistries.BLOCK).viaFabricPlus$refreeze();
 
         BlockLoaderUtil.loadModels(models);
+    }
+
+    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/logging/Logger;log(Ljava/util/logging/Level;Ljava/lang/String;)V"))
+    private void cancelMissingBlockLog(Logger instance, Level level, String msg) {
     }
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE",

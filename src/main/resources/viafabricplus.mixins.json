@@ -20,6 +20,7 @@
     "core.access.MixinLocalSampleLogger",
     "core.access.MixinMappedRegistry",
     "core.access.MixinRakSessionCodec",
+    "core.access.MixinIdMapper",
     "core.connection.MixinClientHandshakePacketListenerImpl",
     "core.connection.MixinConnection",
     "core.connection.MixinConnection_1",
@@ -51,6 +52,8 @@
     "core.integration.event.MixinMinecraft",
     "core.integration.sync_tasks.MixinClientCommonPacketListenerImpl",
     "features.april_fools_8bit_sound.MixinSoundBuffer",
+    "features.bedrock.raphi.MixinResourcePackRewriter",
+    "features.bedrock.raphi.MixinResourcePackStorage",
     "features.bedrock.allow_new_line.MixinFont",
     "features.bedrock.block.MixinBambooStalkBlock",
     "features.bedrock.block.MixinBlockBehaviour_Properties",
@@ -363,9 +366,5 @@
   },
   "mixinextras": {
     "minVersion": "0.5.3"
-  },
-  "mixins": [
-    "features.bedrock.raphi.MixinResourcePackRewriter",
-    "features.bedrock.raphi.MixinResourcePackStorage"
-  ]
+  }
 }

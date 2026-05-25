@@ -22,6 +22,8 @@
 package com.viaversion.viafabricplus.util;
 
 import com.viaversion.viafabricplus.injection.access.registry.IHolderReference;
+import com.viaversion.viafabricplus.injection.access.registry.IIdMapper;
+import com.viaversion.viafabricplus.injection.access.registry.IMappedRegistry;
 import com.viaversion.viaversion.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.dispatch.SingleVariant;
@@ -34,6 +36,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.raphimc.viabedrock.protocol.storage.ResourcePackStorage;
 import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +48,7 @@ public class BlockLoaderUtil {
     public static Map<String, BlockState> ID_TO_STATE = new HashMap<>();
     private static Map<BlockState, String> STATE_TO_MODEL;
     private static Map<BlockState, SingleVariant> QUEUED_MODEL;
+    private static List<Block> BLOCK_TO_UNREGISTER = new ArrayList<>();
 
     public static Map<BlockState, String> modelsToResolve() {
         return STATE_TO_MODEL == null ? null : Collections.unmodifiableMap(STATE_TO_MODEL);
@@ -76,6 +80,18 @@ public class BlockLoaderUtil {
         Minecraft.getInstance().reloadResourcePacks();
     }
 
+    public static void unregisterAll() {
+        for (Block block : BLOCK_TO_UNREGISTER) {
+            ((IMappedRegistry)BuiltInRegistries.BLOCK).viaFabricPlus$unregister(block.builtInRegistryHolder().key());
+
+            for (BlockState state : block.getStateDefinition().getPossibleStates()) {
+                ((IIdMapper)Block.BLOCK_STATE_REGISTRY).viaFabricPlus$unregisterState(state);
+            }
+        }
+
+        BLOCK_TO_UNREGISTER.clear();
+    }
+
     public static void register(List<Pair<ResourceKey<@NotNull Block>, Block>> blocks) {
         for (Pair<ResourceKey<@NotNull Block>, Block> pair : blocks) {
             Registry.register(BuiltInRegistries.BLOCK, pair.key(), pair.value());
@@ -88,6 +104,8 @@ public class BlockLoaderUtil {
 
             // This fixes crashes with tags because of how we're registering blocks.
             ((IHolderReference)pair.value().builtInRegistryHolder()).viaFabricPlus$resolveTags();
+
+            BLOCK_TO_UNREGISTER.add(pair.value());
         }
     }
 
