@@ -22,8 +22,15 @@
 package com.viaversion.viafabricplus.util;
 
 import com.viaversion.nbt.tag.CompoundTag;
+import com.viaversion.nbt.tag.FloatTag;
+import com.viaversion.nbt.tag.ListTag;
+import com.viaversion.nbt.tag.NumberTag;
+import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viafabricplus.injection.access.raphi.IResourcePackStorage;
 import com.viaversion.viaversion.libs.gson.JsonObject;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.raphimc.viabedrock.protocol.storage.ResourcePackStorage;
 import org.cube.converter.util.element.Direction;
 import java.util.Map;
@@ -52,5 +59,55 @@ public class RandomBullshitGoUtil {
         } else {
             map.put(direction, "empty");
         }
+    }
+
+    public static VoxelShape tagToVoxelShape(Tag boxTag) {
+        if (boxTag == null) {
+            return Shapes.block(); // This is correct yes.
+        }
+
+        if (boxTag instanceof NumberTag tag) {
+            return tag.asBoolean() ? Shapes.block() : Shapes.empty();
+        }
+        if (!(boxTag instanceof CompoundTag box)) {
+            return Shapes.empty();
+        }
+
+        if (!box.getBoolean("enabled")) {
+            return Shapes.empty();
+        }
+
+        if (box.contains("boxes")) {
+            VoxelShape finalShape = Shapes.empty();
+            for (CompoundTag tag : box.getListTag("boxes", CompoundTag.class)) {
+                finalShape = Shapes.join(finalShape, newBoxToComponent(tag), BooleanOp.OR);
+            }
+
+            return finalShape;
+        }
+
+        return box.contains("origin") && box.contains("size") ? oldBoxToComponent(box) : Shapes.empty();
+    }
+
+    private static VoxelShape newBoxToComponent(CompoundTag box) {
+        float minX = box.getFloat("minX") / 16.0F;
+        float minY = box.getFloat("minY") / 16.0F;
+        float minZ = box.getFloat("minZ") / 16.0F;
+        float maxX = box.getFloat("maxX") / 16.0F;
+        float maxY = box.getFloat("maxY") / 16.0F;
+        float maxZ = box.getFloat("maxZ") / 16.0F;
+        return Shapes.box(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    private static VoxelShape oldBoxToComponent(CompoundTag box) {
+        ListTag<FloatTag> origin = (ListTag<FloatTag>) box.getNumberListTag("origin");
+        ListTag<FloatTag> size = (ListTag<FloatTag>) box.getNumberListTag("size");
+        float minX = (origin.get(0).getValue() + 8.0F) / 16.0F;
+        float minY = origin.get(1).getValue() / 16.0F;
+        float minZ = (origin.get(2).getValue() + 8.0F) / 16.0F;
+        float maxX = minX + size.get(0).getValue() / 16.0F;
+        float maxY = minY + size.get(1).getValue() / 16.0F;
+        float maxZ = minZ + size.get(2).getValue() / 16.0F;
+        return Shapes.box(minX, minY, minZ, maxX, maxY, maxZ);
     }
 }

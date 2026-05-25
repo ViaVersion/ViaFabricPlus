@@ -28,6 +28,7 @@ import com.viaversion.viafabricplus.injection.access.raphi.IResourcePackStorage;
 import com.viaversion.viafabricplus.injection.access.registry.IMappedRegistry;
 import com.viaversion.viafabricplus.util.BlockLoaderUtil;
 import com.viaversion.viafabricplus.util.RandomBullshitGoUtil;
+import com.viaversion.viafabricplus.util.block.CustomBlock;
 import com.viaversion.viaversion.libs.fastutil.ints.Int2IntMap;
 import com.viaversion.viaversion.util.Pair;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,6 +36,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.raphimc.viabedrock.api.model.BedrockBlockState;
 import net.raphimc.viabedrock.protocol.model.BlockProperties;
 import net.raphimc.viabedrock.protocol.rewriter.BlockStateRewriter;
@@ -101,9 +103,13 @@ public class MixinBlockStateRewriter {
             if (registeredBlocks.contains(state.namespacedIdentifier())) {
                 continue;
             }
+
+            final VoxelShape collision = RandomBullshitGoUtil.tagToVoxelShape(state.blockStateTag().get("minecraft:collision_box"));
+            final VoxelShape selection = RandomBullshitGoUtil.tagToVoxelShape(state.blockStateTag().get("minecraft:selection_box"));
+
             registeredBlocks.add(state.namespacedIdentifier());
             ResourceKey<Block> blockResourceKey = BlockLoaderUtil.key(state.namespacedIdentifier());
-            Block block = new Block(BlockBehaviour.Properties.of().setId(blockResourceKey));
+            Block block = new CustomBlock(BlockBehaviour.Properties.of().setId(blockResourceKey), collision, selection);
             blocks.add(new Pair<>(blockResourceKey, block));
 
             BlockLoaderUtil.ID_TO_STATE.put(state.namespacedIdentifier(), block.defaultBlockState());
