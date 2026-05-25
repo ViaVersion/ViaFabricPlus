@@ -21,10 +21,12 @@
 
 package com.viaversion.viafabricplus.injection.access.raphi;
 
+import org.cube.converter.util.element.Direction;
+import java.util.Map;
 import java.util.Set;
 
 public interface IResourcePackStorage {
-    String viaFabricPlus$textures(String string);
+    Map<Direction, String> viaFabricPlus$textures(String string);
     String viaFabricPlus$texturesPathFromId(String string);
     Set<String> viaFabricPlus$texturesToLoad();
 }

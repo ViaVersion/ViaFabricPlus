@@ -73,6 +73,10 @@ includeTransitiveJijDependencies()
 
 fun configureBedrockDependencies() {
     dependencies {
+        jij("com.github.oryxel1:CubeConverter:3ca13d8841") {
+            exclude(group = "com.viaversion")
+        }
+
         jij("net.raphimc:MinecraftAuth:5.0.1-20260507.085226-5") {
             exclude(group = "com.google.code.gson", module = "gson")
         }
@@ -95,6 +99,7 @@ fun Project.configureVVDependencies(configuration: String) {
         configuration("com.viaversion:viaaprilfools-common:4.2.1")
         configuration("net.raphimc:ViaLegacy:3.0.16")
         configuration("net.raphimc:ViaBedrock:0.0.28-SNAPSHOT") {
+            exclude(group = "com.github.oryxel1")
             exclude(group = "com.mojang", module = "brigadier")
             exclude(group = "at.yawk.lz4", module = "lz4-java")
             exclude(group = "io.netty")

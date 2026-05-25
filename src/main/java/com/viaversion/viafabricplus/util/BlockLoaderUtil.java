@@ -43,8 +43,6 @@ import java.util.List;
 import java.util.Map;
 
 public class BlockLoaderUtil {
-    public static ResourcePackStorage STORAGE;
-
     public static Map<String, BlockState> ID_TO_STATE = new HashMap<>();
     private static Map<BlockState, String> STATE_TO_MODEL;
     private static Map<BlockState, SingleVariant> QUEUED_MODEL;

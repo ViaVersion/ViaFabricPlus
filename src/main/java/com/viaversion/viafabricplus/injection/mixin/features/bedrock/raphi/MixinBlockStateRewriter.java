@@ -26,9 +26,8 @@ import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viafabricplus.injection.access.raphi.IModelDefinitions;
 import com.viaversion.viafabricplus.injection.access.raphi.IResourcePackStorage;
 import com.viaversion.viafabricplus.injection.access.registry.IMappedRegistry;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.util.BlockLoaderUtil;
-import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viafabricplus.util.RandomBullshitGoUtil;
 import com.viaversion.viaversion.libs.fastutil.ints.Int2IntMap;
 import com.viaversion.viaversion.util.Pair;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -42,6 +41,7 @@ import net.raphimc.viabedrock.protocol.rewriter.BlockStateRewriter;
 import net.raphimc.viabedrock.protocol.storage.ResourcePackStorage;
 import org.cube.converter.converter.enums.RotationType;
 import org.cube.converter.model.impl.bedrock.BedrockGeometryModel;
+import org.cube.converter.util.element.Direction;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -108,11 +108,11 @@ public class MixinBlockStateRewriter {
 
             BlockLoaderUtil.ID_TO_STATE.put(state.namespacedIdentifier(), block.defaultBlockState());
 
-            if (BlockLoaderUtil.STORAGE == null) {
+            if (RandomBullshitGoUtil.STORAGE == null) {
                 continue;
             }
 
-            final ResourcePackStorage storage = BlockLoaderUtil.STORAGE;
+            final ResourcePackStorage storage = RandomBullshitGoUtil.STORAGE;
             BedrockGeometryModel model;
             if (state.blockStateTag().contains("minecraft:geometry")) {
                 String identifier = state.blockStateTag().getCompoundTag("minecraft:geometry").getString("identifier");
@@ -125,42 +125,46 @@ public class MixinBlockStateRewriter {
                 continue;
             }
 
-            String path = ((IResourcePackStorage)storage).viaFabricPlus$textures(state.namespacedIdentifier());
-            if (path == null) {
-                path = "textures/blocks/" + state.namespacedIdentifier().replace(":", "/");; // TODO: Properly fix model with multiple texture faces to avoid this hack (that only works for hive lol).
-//                System.out.println(path);
+            Map<Direction, String> textureMap = ((IResourcePackStorage)storage).viaFabricPlus$textures(state.namespacedIdentifier());
+            if (textureMap.isEmpty() && state.blockStateTag().contains("minecraft:material_instances")) {
+                CompoundTag materialInstance = state.blockStateTag().getCompoundTag("minecraft:material_instances");
 
-                if (state.blockStateTag().contains("minecraft:material_instances")) {
-                    CompoundTag materialInstance = state.blockStateTag().getCompoundTag("minecraft:material_instances");
-
-                    // This is basically Direction for each face, with "*" is for all faces.
-                    if (materialInstance.contains("materials")) {
-                        CompoundTag materials = materialInstance.getCompoundTag("materials");
-
-                        if (materials.contains("*")) {
-                            CompoundTag all = materials.getCompoundTag("*");
-
-                            if (all.contains("texture")) {
-                                String result = ((IResourcePackStorage)storage).viaFabricPlus$texturesPathFromId(all.getString("texture"));
-                                if (result != null) {
-                                    path = result;
-                                } else {
-//                                    System.out.println("nah null, was trying to pull: " + all.getString("texture"));
-                                }
-                            }
-                        } else {
-//                            System.out.println("nope: " + materials);
-                        }
-                    }
+                CompoundTag materials = materialInstance.getCompoundTag("materials");
+                if (materials == null) {
+                    continue;
                 }
 
-                if (path == null) {
-                    continue;
+                if (materials.contains("*")) {
+                    CompoundTag all = materials.getCompoundTag("*");
+
+                    if (!all.contains("texture")) {
+                        continue;
+                    }
+
+                    String result = ((IResourcePackStorage)storage).viaFabricPlus$texturesPathFromId(all.getString("texture"));
+                    if (result != null) {
+                        final Map<Direction, String> map = new HashMap<>();
+
+                        for (Direction direction : Direction.values()) {
+                            map.put(direction, result);
+                        }
+
+                        if (!map.isEmpty()) {
+                            textureMap = map;
+                        }
+                    }
+                } else {
+                    final Map<Direction, String> map = new HashMap<>();
+                    for (Direction direction : Direction.values()) {
+                        RandomBullshitGoUtil.putIfExist(direction, materials, map);
+                    }
+                    if (!map.isEmpty()) {
+                        textureMap = map;
+                    }
                 }
             }
 
-            System.out.println("target: " + "viabedrock:block/" + path);
-            String javaModelJson = model.toJavaItemModel("viabedrock:block/" + path, RotationType.POST_1_21_11).compile().toString();
+            String javaModelJson = model.toJavaItemModel(textureMap, RotationType.POST_1_21_11).compile().toString();
             models.put(block.defaultBlockState(), javaModelJson);
         }
         BlockLoaderUtil.register(blocks);

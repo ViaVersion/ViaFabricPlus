@@ -21,14 +21,15 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.raphi;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import com.viaversion.viafabricplus.injection.access.raphi.IResourcePackStorage;
 import com.viaversion.viafabricplus.util.BlockLoaderUtil;
+import com.viaversion.viafabricplus.util.RandomBullshitGoUtil;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viaversion.libs.gson.JsonPrimitive;
 import net.raphimc.viabedrock.api.resourcepack.ResourcePack;
 import net.raphimc.viabedrock.protocol.storage.ResourcePackStorage;
+import org.cube.converter.util.element.Direction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,7 +44,7 @@ import java.util.Set;
 @Mixin(value = ResourcePackStorage.class, remap = false)
 public class MixinResourcePackStorage implements IResourcePackStorage {
     @Unique
-    private final Map<String, String> ID_TO_TEXTURE_ID = new HashMap<>();
+    private final Map<String, Map<Direction, String>> ID_TO_TEXTURE_MAP = new HashMap<>();
 
     @Unique
     private final Map<String, String> ID_TO_TEXTURE_PATH = new HashMap<>();
@@ -52,7 +53,7 @@ public class MixinResourcePackStorage implements IResourcePackStorage {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     public void cacheTextures(List<ResourcePack> resourcePacksTopToBottom, CallbackInfo ci) {
-        BlockLoaderUtil.STORAGE = (ResourcePackStorage)((Object)this);
+        RandomBullshitGoUtil.STORAGE = (ResourcePackStorage)((Object)this);
 
         for (ResourcePack pack : resourcePacksTopToBottom) {
             if (!pack.content().contains("blocks.json")) {
@@ -67,11 +68,22 @@ public class MixinResourcePackStorage implements IResourcePackStorage {
                     continue;
                 }
                 final JsonObject jsonObject = element.getAsJsonObject();
-                if (!(jsonObject.get("textures") instanceof JsonPrimitive primitive)) {
-                    continue;
-                }
+                final JsonElement textures = jsonObject.get("textures");
+                if (textures instanceof JsonPrimitive primitive) {
+                    final Map<Direction, String> map = new HashMap<>();
 
-                ID_TO_TEXTURE_ID.put(key, primitive.getAsString());
+                    for (Direction direction : Direction.values()) {
+                        map.put(direction, primitive.getAsString());
+                    }
+                    ID_TO_TEXTURE_MAP.put(key, map);
+                } else if (textures instanceof JsonObject texturesObject) {
+                    final Map<Direction, String> map = new HashMap<>();
+
+                    for (Direction direction : Direction.values()) {
+                        RandomBullshitGoUtil.putIfExist(direction, texturesObject, map);
+                    }
+                    ID_TO_TEXTURE_MAP.put(key, map);
+                }
             }
         }
 
@@ -103,15 +115,22 @@ public class MixinResourcePackStorage implements IResourcePackStorage {
     }
 
     @Override
-    public String viaFabricPlus$textures(final String string) {
-        String textureId = ID_TO_TEXTURE_ID.get(string);
-        String result = ID_TO_TEXTURE_PATH.get(textureId);
-        return result == null ? textureId : result;
+    public Map<Direction, String> viaFabricPlus$textures(final String string) {
+        if (!ID_TO_TEXTURE_MAP.containsKey(string)) {
+            return Map.of();
+        }
+
+        final Map<Direction, String> map = new HashMap<>();
+        for (Map.Entry<Direction, String> entry : ID_TO_TEXTURE_MAP.get(string).entrySet()) {
+            String path = ID_TO_TEXTURE_PATH.get(entry.getValue());
+            map.put(entry.getKey(), "viabedrock:block/" + (path == null ? entry.getValue() : path));
+        }
+        return map;
     }
 
     @Override
     public String viaFabricPlus$texturesPathFromId(final String string) {
-        return ID_TO_TEXTURE_PATH.get(string);
+        return "viabedrock:block/" +  ID_TO_TEXTURE_PATH.get(string);
     }
 
     @Override
