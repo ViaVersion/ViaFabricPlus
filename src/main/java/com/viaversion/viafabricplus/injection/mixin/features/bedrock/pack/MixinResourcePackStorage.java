@@ -19,10 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.bedrock.raphi;
+package com.viaversion.viafabricplus.injection.mixin.features.bedrock.pack;
 
-import com.viaversion.viafabricplus.injection.access.raphi.IResourcePackStorage;
-import com.viaversion.viafabricplus.util.RandomBullshitGoUtil;
+import com.viaversion.viafabricplus.features.block.bedrock.dynamic.DynamicBlockCache;
+import com.viaversion.viafabricplus.injection.access.bedrock.pack.IResourcePackStorage;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viaversion.libs.gson.JsonPrimitive;
@@ -48,11 +48,12 @@ public class MixinResourcePackStorage implements IResourcePackStorage {
     @Unique
     private final Map<String, String> ID_TO_TEXTURE_PATH = new HashMap<>();
 
+    @Unique
     private final Set<String> TEXTURES_TO_LOAD = new HashSet<>();
 
     @Inject(method = "<init>", at = @At("TAIL"))
     public void cacheTextures(List<ResourcePack> resourcePacksTopToBottom, CallbackInfo ci) {
-        RandomBullshitGoUtil.STORAGE = (ResourcePackStorage)((Object)this);
+        DynamicBlockCache.STORAGE_INSTANCE = (ResourcePackStorage)((Object)this);
 
         for (ResourcePack pack : resourcePacksTopToBottom) {
             if (!pack.content().contains("blocks.json")) {
@@ -79,7 +80,12 @@ public class MixinResourcePackStorage implements IResourcePackStorage {
                     final Map<Direction, String> map = new HashMap<>();
 
                     for (Direction direction : Direction.values()) {
-                        RandomBullshitGoUtil.putIfExist(direction, texturesObject, map);
+                        String name = direction.name().toLowerCase();
+                        if (texturesObject.has(name)) {
+                            map.put(direction, texturesObject.getAsJsonPrimitive(name).getAsString());
+                        } else {
+                            map.put(direction, "empty");
+                        }
                     }
                     ID_TO_TEXTURE_MAP.put(key, map);
                 }
@@ -116,7 +122,7 @@ public class MixinResourcePackStorage implements IResourcePackStorage {
     @Override
     public Map<Direction, String> viaFabricPlus$textures(final String string) {
         if (!ID_TO_TEXTURE_MAP.containsKey(string)) {
-            return Map.of();
+            return null;
         }
 
         final Map<Direction, String> map = new HashMap<>();

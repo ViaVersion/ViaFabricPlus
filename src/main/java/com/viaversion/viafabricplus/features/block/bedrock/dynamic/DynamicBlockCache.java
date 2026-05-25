@@ -43,6 +43,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.raphimc.viabedrock.protocol.storage.ResourcePackStorage;
 import org.jetbrains.annotations.NotNull;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -54,6 +55,9 @@ import java.util.Map;
  * This class data needed to load/unload blocks dynamically, include the actual blocks and models.
  */
 public class DynamicBlockCache {
+    // UserConnection can't be grabbed until you reach play state, so this is a bit of a hack to get ResourcePackStorage before that.
+    public static ResourcePackStorage STORAGE_INSTANCE;
+
 
     /**
      * General block translation related part.
@@ -64,7 +68,7 @@ public class DynamicBlockCache {
 
     // Helps to map the custom blocks to the one we register in ViaBedrock.
     private static final Map<String, BlockState> KEY_TO_STATE = new HashMap<>();
-    public static Integer blockKeyToId(String key)  {
+    public static int blockKeyToId(String key)  {
         return Block.getId(KEY_TO_STATE.get(key));
     }
     public static void putKeyToState(String key, BlockState state)  {

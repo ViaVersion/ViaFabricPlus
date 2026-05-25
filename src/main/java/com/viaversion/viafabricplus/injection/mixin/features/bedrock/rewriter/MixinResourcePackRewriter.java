@@ -19,10 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.bedrock.raphi;
+package com.viaversion.viafabricplus.injection.mixin.features.bedrock.rewriter;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.injection.access.raphi.IResourcePackStorage;
+import com.viaversion.viafabricplus.injection.access.bedrock.pack.IResourcePackStorage;
 import net.raphimc.viabedrock.api.resourcepack.ResourcePack;
 import net.raphimc.viabedrock.api.resourcepack.content.Content;
 import net.raphimc.viabedrock.protocol.rewriter.ResourcePackRewriter;

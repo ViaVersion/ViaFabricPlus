@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.access.raphi;
+package com.viaversion.viafabricplus.injection.access.bedrock.pack;
 
 import org.cube.converter.util.element.Direction;
 import java.util.Map;

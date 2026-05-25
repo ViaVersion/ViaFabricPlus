@@ -19,11 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.bedrock.raphi;
+package com.viaversion.viafabricplus.injection.mixin.features.bedrock.pack;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.injection.access.raphi.IModelDefinitions;
+import com.viaversion.viafabricplus.injection.access.bedrock.pack.IModelDefinitions;
 import net.raphimc.viabedrock.api.resourcepack.definition.ModelDefinitions;
 import net.raphimc.viabedrock.protocol.storage.ResourcePackStorage;
 import org.cube.converter.model.impl.bedrock.BedrockGeometryModel;
@@ -33,7 +33,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,10 +56,5 @@ public class MixinModelDefinitions implements IModelDefinitions {
     @Override
     public BedrockGeometryModel viaFabricPlus$getBlockModel(final String name) {
         return this.viaFabricPlus$blockModels.get(name);
-    }
-
-    @Override
-    public Map<String, BedrockGeometryModel> viaFabricPlus$blockModels() {
-        return Collections.unmodifiableMap(this.viaFabricPlus$blockModels);
     }
 }

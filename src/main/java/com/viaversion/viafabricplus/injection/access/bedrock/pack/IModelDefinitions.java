@@ -19,15 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.access.raphi;
+package com.viaversion.viafabricplus.injection.access.bedrock.pack;
 
 import org.cube.converter.model.impl.bedrock.BedrockGeometryModel;
-import java.util.Collections;
-import java.util.Map;
 
 public interface IModelDefinitions {
     BedrockGeometryModel viaFabricPlus$getBlockModel(final String name);
-
-    Map<String, BedrockGeometryModel> viaFabricPlus$blockModels();
 
 }
