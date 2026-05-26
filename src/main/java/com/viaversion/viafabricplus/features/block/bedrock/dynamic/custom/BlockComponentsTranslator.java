@@ -21,6 +21,8 @@
 
 package com.viaversion.viafabricplus.features.block.bedrock.dynamic.custom;
 
+import com.mojang.math.OctahedralGroup;
+import com.seedfinding.mcnoise.utils.MathHelper;
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.FloatTag;
 import com.viaversion.nbt.tag.ListTag;
@@ -29,6 +31,7 @@ import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viafabricplus.features.block.bedrock.dynamic.DynamicBlockCache;
 import com.viaversion.viafabricplus.injection.access.bedrock.pack.IModelDefinitions;
 import com.viaversion.viafabricplus.injection.access.bedrock.pack.IResourcePackStorage;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -131,14 +134,97 @@ public class BlockComponentsTranslator {
             final CompoundTag tag = components.getCompoundTag("minecraft:transformation");
 
             final Position3V pivot = new Position3V(0, 8, 0);
-            Position3V translation = new Position3V(tag.getFloat("tx"), tag.getFloat("ty"), tag.getFloat("tz"));
-            Position3V rotation = new Position3V(tag.getFloat("rx"), tag.getFloat("ry"), tag.getFloat("rz"));
-            Position3V scale = new Position3V(tag.getFloat("sx"), tag.getFloat("sy"), tag.getFloat("sz"));
+            Position3V translation = new Position3V(tag.getFloat("TX"), tag.getFloat("TY"), tag.getFloat("TZ"));
+            Position3V scale = new Position3V(tag.getFloat("SX"), tag.getFloat("SY"), tag.getFloat("SZ"));
+            Position3V rotation = new Position3V(tag.getFloat("RX"), tag.getFloat("RY"), tag.getFloat("RZ"));
+            rotation.scale(90);
 
             builder.transformation(new DynamicBlockCache.Transformation(translation, rotation, pivot, scale));
+
+            VoxelShape collision = builder.collision, selection = builder.selection;
+            switch ((int) Mth.wrapDegrees(rotation.getX())) {
+                case -90 -> {
+                    collision = Shapes.rotate(collision, OctahedralGroup.ROT_90_X_NEG);
+                    selection = Shapes.rotate(selection, OctahedralGroup.ROT_90_X_NEG);
+                }
+                case 90 -> {
+                    collision = Shapes.rotate(collision, OctahedralGroup.ROT_90_X_POS);
+                    selection = Shapes.rotate(selection, OctahedralGroup.ROT_90_X_POS);
+                }
+                case -180 -> {
+                    collision = Shapes.rotate(collision, OctahedralGroup.BLOCK_ROT_X_180);
+                    selection = Shapes.rotate(selection, OctahedralGroup.BLOCK_ROT_X_180);
+                }
+            }
+            switch ((int) Mth.wrapDegrees(rotation.getY())) {
+                case -90 -> {
+                    collision = Shapes.rotate(collision, OctahedralGroup.ROT_90_Y_NEG);
+                    selection = Shapes.rotate(selection, OctahedralGroup.ROT_90_Y_NEG);
+                }
+                case 90 -> {
+                    collision = Shapes.rotate(collision, OctahedralGroup.ROT_90_Y_POS);
+                    selection = Shapes.rotate(selection, OctahedralGroup.ROT_90_Y_POS);
+                }
+                case -180 -> {
+                    collision = Shapes.rotate(collision, OctahedralGroup.BLOCK_ROT_Y_180);
+                    selection = Shapes.rotate(selection, OctahedralGroup.BLOCK_ROT_Y_180);
+                }
+            }
+            switch ((int) Mth.wrapDegrees(rotation.getZ())) {
+                case -90 -> {
+                    collision = Shapes.rotate(collision, OctahedralGroup.ROT_90_Y_NEG);
+                    selection = Shapes.rotate(selection, OctahedralGroup.ROT_90_Y_NEG);
+                }
+                case 90 -> {
+                    collision = Shapes.rotate(collision, OctahedralGroup.ROT_90_Y_POS);
+                    selection = Shapes.rotate(selection, OctahedralGroup.ROT_90_Y_POS);
+                }
+                case -180 -> {
+                    collision = Shapes.rotate(collision, OctahedralGroup.BLOCK_ROT_Y_180);
+                    selection = Shapes.rotate(selection, OctahedralGroup.BLOCK_ROT_Y_180);
+                }
+            }
+
+            builder.collision(collision);
+            builder.selection(selection);
         }
 
         return builder.build();
+    }
+
+    // Add more data into block state tag so we can read it later.
+    public static void pullComponents(CompoundTag instance, CompoundTag components) {
+        if (components.contains("minecraft:collision_box")) {
+            instance.put("minecraft:collision_box", components.get("minecraft:collision_box"));
+        }
+
+        if (components.contains("minecraft:selection_box")) {
+            instance.put("minecraft:selection_box", components.get("minecraft:selection_box"));
+        }
+
+        if (components.contains("minecraft:geometry")) {
+            instance.put("minecraft:geometry", components.get("minecraft:geometry"));
+        }
+
+        if (components.contains("minecraft:destructible_by_mining")) {
+            instance.put("minecraft:destructible_by_mining", components.get("minecraft:destructible_by_mining"));
+        }
+
+        if (components.contains("minecraft:friction")) {
+            instance.put("minecraft:friction", components.get("minecraft:friction"));
+        }
+
+        if (components.contains("minecraft:material_instances")) {
+            instance.put("minecraft:material_instances", components.get("minecraft:material_instances"));
+        }
+
+        if (components.contains("minecraft:transformation")) {
+            instance.put("minecraft:transformation", components.get("minecraft:transformation"));
+        }
+
+        if (components.contains("minecraft:light_emission")) {
+            instance.put("minecraft:light_emission", components.get("minecraft:light_emission"));
+        }
     }
 
     private static void putIfExist(final Direction direction, CompoundTag tag, final Map<Direction, String> map) {

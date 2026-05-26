@@ -23,9 +23,12 @@ package com.viaversion.viafabricplus.injection.mixin.features.bedrock.rewriter;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.nbt.tag.CompoundTag;
+import com.viaversion.nbt.tag.ListTag;
+import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viafabricplus.features.block.bedrock.dynamic.DynamicBlockCache;
 import com.viaversion.viafabricplus.features.block.bedrock.dynamic.block.CustomBlock;
 import com.viaversion.viafabricplus.features.block.bedrock.dynamic.custom.BlockComponentsTranslator;
+import com.viaversion.viafabricplus.features.block.bedrock.dynamic.mocha.MochaUtil;
 import com.viaversion.viafabricplus.injection.access.registry.IMappedRegistry;
 import com.viaversion.viaversion.libs.fastutil.ints.Int2IntMap;
 import com.viaversion.viaversion.util.Pair;
@@ -35,15 +38,17 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.raphimc.viabedrock.api.model.BedrockBlockState;
+import net.raphimc.viabedrock.api.util.MoLangEngine;
 import net.raphimc.viabedrock.protocol.model.BlockProperties;
 import net.raphimc.viabedrock.protocol.rewriter.BlockStateRewriter;
-import org.cube.converter.converter.enums.RotationType;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import team.unnamed.mocha.runtime.Scope;
+import team.unnamed.mocha.runtime.value.Value;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,49 +59,59 @@ import java.util.logging.Logger;
 @Mixin(BlockStateRewriter.class)
 public class MixinBlockStateRewriter {
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/viaversion/nbt/tag/CompoundTag;putInt(Ljava/lang/String;I)V"))
-    public void pullMoreComponents(CompoundTag instance, String tagName, int value, @Local Map.Entry<String, CompoundTag> blockProperty) {
+    public void pullMoreComponentsAndTranslateStates(CompoundTag instance, String tagName, int value, @Local Map.Entry<String, CompoundTag> blockProperty) {
         instance.putInt(tagName, value);
         final CompoundTag tag = blockProperty.getValue();
 
-        // Add more data into block state tag so we can read it later.
         final CompoundTag components = tag.getCompoundTag("components");
         if (components != null) {
-            if (components.contains("minecraft:collision_box")) {
-                instance.put("minecraft:collision_box", components.get("minecraft:collision_box"));
+            BlockComponentsTranslator.pullComponents(instance, components);
+        }
+
+        final CompoundTag states = instance.getCompoundTag("states");
+        final ListTag<CompoundTag> permutations = tag.getListTag("permutations", CompoundTag.class);
+        if (states == null || permutations == null) {
+            return;
+        }
+
+        final Scope scope = MochaUtil.BASE_SCOPE.copy();
+        final MochaUtil.CustomMutableObjectBind query = new MochaUtil.CustomMutableObjectBind();
+
+        final MochaUtil.CustomMutableObjectBind.StringFunction function = (name) -> {
+            Tag stateTag = states.get(name);
+            if (stateTag == null) {
+                return Value.of(false);
+            }
+            return Value.of(stateTag.getValue());
+        };
+        query.setStringFunction("block_state", function);
+        query.setStringFunction("block_property", function);
+
+        query.block();
+        scope.set("query", query);
+        scope.set("q", query);
+        scope.readOnly();
+
+        for (CompoundTag permutation : permutations) {
+            if (!permutation.contains("condition") || !permutation.contains("components")) {
+                continue;
             }
 
-            if (components.contains("minecraft:selection_box")) {
-                instance.put("minecraft:selection_box", components.get("minecraft:selection_box"));
-            }
+            try {
+                final Value conditionResult = MoLangEngine.eval(scope, permutation.getString("condition"));
+                if (!conditionResult.getAsBoolean()) {
+                    continue;
+                }
 
-            if (components.contains("minecraft:geometry")) {
-                instance.put("minecraft:geometry", components.get("minecraft:geometry"));
-            }
-
-            if (components.contains("minecraft:destructible_by_mining")) {
-                instance.put("minecraft:destructible_by_mining", components.get("minecraft:destructible_by_mining"));
-            }
-
-            if (components.contains("minecraft:friction")) {
-                instance.put("minecraft:friction", components.get("minecraft:friction"));
-            }
-
-            if (components.contains("minecraft:material_instances")) {
-                instance.put("minecraft:material_instances", components.get("minecraft:material_instances"));
-            }
-
-            if (components.contains("minecraft:transformation")) {
-                instance.put("minecraft:transformation", components.get("minecraft:transformation"));
-            }
-
-            if (components.contains("minecraft:light_emission")) {
-                instance.put("minecraft:light_emission", components.get("minecraft:light_emission"));
+                BlockComponentsTranslator.pullComponents(instance, permutation.getCompoundTag("components"));
+            } catch (Exception ignored) {
             }
         }
     }
 
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/List;addAll(Ljava/util/Collection;)Z"))
-    public void registerCustomBlocks(BlockProperties[] blockProperties, boolean hashedRuntimeBlockIds, CallbackInfo ci, @Local(ordinal = 1) List<BedrockBlockState> states) {
+    public void registerCustomBlocks(BlockProperties[] blockProperties,
+                                     boolean hashedRuntimeBlockIds, CallbackInfo ci, @Local(ordinal = 1) List<BedrockBlockState> states) {
         final List<Pair<ResourceKey<@NotNull Block>, Block>> blocks = new ArrayList<>();
         final Map<BlockState, DynamicBlockCache.ModelToBeBake> models = new HashMap<>();
 
