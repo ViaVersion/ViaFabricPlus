@@ -36,7 +36,6 @@ import net.minecraft.core.Direction;
 import org.cube.converter.model.element.Cube;
 import org.cube.converter.model.element.Parent;
 import org.cube.converter.model.impl.bedrock.BedrockGeometryModel;
-import org.cube.converter.util.element.Position2V;
 import org.cube.converter.util.element.Position3V;
 import org.cube.converter.util.math.MathUtil;
 import org.cube.converter.util.math.Pair;
@@ -78,7 +77,7 @@ public class BlockModelBaker {
                 }
             }
 
-            rotations.add(new Pair<>(transformation.rotation(), transformation.pivot()));
+            rotations.add(new Pair<>(transformation.rotation().multiply(-1, -1, 1), transformation.pivot()));
 
             Collections.reverse(rotations);
 
@@ -112,6 +111,7 @@ public class BlockModelBaker {
 
                 for (Map.Entry<org.cube.converter.util.element.Direction, Float[]> entry : cube.getUvMap().getUvMap().entrySet()) {
                     Direction facing = Direction.values()[entry.getKey().ordinal()];
+                    Float[] uv = entry.getValue();
                     boolean var10000;
                     switch (facing.getAxis()) {
                         case X -> var10000 = drawX;
@@ -120,10 +120,19 @@ public class BlockModelBaker {
                         default -> throw new MatchException(null, null);
                     }
 
+                    if (uv != null) {
+                        for (int i = 0; i < uv.length; i++) {
+                            uv[i] = MathUtil.clamp(uv[i] * 16 / (i % 2 == 0 ? model.getTextureSize().getX() : model.getTextureSize().getY()), 0, 16);
+                        }
+                    }
+
                     boolean shouldDrawFace = var10000;
                     if (shouldDrawFace) {
+                        final List<Pair<Position3V, Position3V>> allRotations = new ArrayList<>(rotations);
+                        allRotations.add(new Pair<>(cube.getRotation(), cube.getPivot()));
+
                         Material.Baked material = modelBaker.materials().resolveSlot(textures, facing.name(), () -> "");
-                        BakedQuad quad = bakeQuad(modelBaker, rotations, cube, material, facing, true, lightEmission, model.getTextureSize());
+                        BakedQuad quad = bakeQuad(modelBaker, from, to, material, facing, lightEmission, uv, allRotations);
                         builder.addUnculledFace(quad);
                     }
                 }
@@ -134,43 +143,33 @@ public class BlockModelBaker {
     }
 
     public static BakedQuad bakeQuad(final ModelBaker modelBaker,
-                                     List<Pair<Position3V, Position3V>> otherRotations,
-                                     final Cube cube, final Material.Baked material, final Direction facing,
-                                     final boolean shade, final int lightEmission, Position2V textureSize) {
-        final Vector3fc from = toVector3fc(cube.getPosition()), to = toVector3fc(cube.getPosition().add(cube.getSize()));
-
-        final Float[] uvValues = cube.getUvMap().getUvMap().get(org.cube.converter.util.element.Direction.values()[facing.ordinal()]);
-
-        final CuboidFace.UVs uvs;
-        if (uvValues == null) {
+                                     final Vector3fc from, final Vector3fc to,
+                                     final Material.Baked material,
+                                     final Direction facing,
+                                     final int lightEmission, Float[] uv, List<Pair<Position3V, Position3V>> rotations) {
+        CuboidFace.UVs uvs;
+        if (uv == null) {
             uvs = FaceBakery.defaultFaceUV(from, to, facing);
         } else {
-            for (int i = 0; i < uvValues.length; i++) {
-                uvValues[i] = MathUtil.clamp(uvValues[i] * 16 / (i % 2 == 0 ? textureSize.getX() : textureSize.getY()), 0, 16);
-            }
-            
-            uvs = new CuboidFace.UVs(uvValues[0], uvValues[1], uvValues[2], uvValues[3]);
+            uvs = new CuboidFace.UVs(uv[0], uv[1], uv[2], uv[3]);
         }
 
         Transparency transparency = FaceBakery.computeMaterialTransparency(material, uvs);
         ModelBaker.Interner interner = modelBaker.interner();
-        BakedQuad.MaterialInfo materialInfo = interner.materialInfo(BakedQuad.MaterialInfo.of(material, transparency, -1, shade, lightEmission));
-        return bakeQuad(interner, uvs, cube, materialInfo, facing, otherRotations);
+        BakedQuad.MaterialInfo materialInfo = interner.materialInfo(BakedQuad.MaterialInfo.of(material, transparency, -1, true, lightEmission));
+        return bakeQuad(interner, from, to, uvs, materialInfo, facing, rotations);
     }
 
-    public static BakedQuad bakeQuad(final ModelBaker.Interner interner, CuboidFace.UVs uvs, final Cube cube,
-                                     final BakedQuad.MaterialInfo materialInfo,
-                                     final Direction facing, List<Pair<Position3V, Position3V>> otherRotations) {
-        final Vector3fc from = toVector3fc(cube.getPosition()), to = toVector3fc(cube.getPosition().add(cube.getSize()));
-        final List<Pair<Position3V, Position3V>> rotations = new ArrayList<>(otherRotations);
-        rotations.add(new Pair<>(cube.getRotation(), cube.getPivot()));
-
+    private static BakedQuad bakeQuad(final ModelBaker.Interner interner, final Vector3fc from,
+                                      final Vector3fc to, final CuboidFace.UVs uvs,
+                                      final BakedQuad.MaterialInfo materialInfo, final Direction facing,
+                                      List<Pair<Position3V, Position3V>> rotations) {
         Vector3fc[] vertexPositions = new Vector3fc[4];
         long[] vertexPackedUvs = new long[4];
         FaceInfo faceInfo = FaceInfo.fromFacing(facing);
 
         for(int i = 0; i < 4; ++i) {
-            bakeVertex(i, faceInfo, uvs, from, to, materialInfo, rotations, vertexPositions, vertexPackedUvs, interner);
+            bakeVertex(i, faceInfo, uvs, from, to, materialInfo, vertexPositions, vertexPackedUvs, interner, rotations);
         }
 
         Direction finalDirection = FaceBakery.calculateFacing(vertexPositions);
@@ -178,16 +177,16 @@ public class BlockModelBaker {
             FaceBakery.recalculateWinding(vertexPositions, vertexPackedUvs, finalDirection);
         }
 
-        return new BakedQuad(vertexPositions[0], vertexPositions[1], vertexPositions[2], vertexPositions[3], vertexPackedUvs[0], vertexPackedUvs[1], vertexPackedUvs[2], vertexPackedUvs[3], Objects.requireNonNullElse(finalDirection, Direction.UP), materialInfo);
+        return new BakedQuad(vertexPositions[0], vertexPositions[1], vertexPositions[2], vertexPositions[3], vertexPackedUvs[0], vertexPackedUvs[1], vertexPackedUvs[2], vertexPackedUvs[3], (Direction)Objects.requireNonNullElse(finalDirection, Direction.UP), materialInfo);
     }
 
     private static void bakeVertex(final int index, final FaceInfo faceInfo,
-                                   final CuboidFace.UVs uvs, final Vector3fc from,
-                                   final Vector3fc to, final BakedQuad.MaterialInfo materialInfo, final List<Pair<Position3V, Position3V>> rotations,
-                                   final Vector3fc[] positionOutput, final long[] uvOutput, final ModelBaker.Interner interner) {
+                                   final CuboidFace.UVs uvs, final Vector3fc from, final Vector3fc to,
+                                   final BakedQuad.MaterialInfo materialInfo,
+                                   final Vector3fc[] positionOutput, final long[] uvOutput, final ModelBaker.Interner interner,
+                                   List<Pair<Position3V, Position3V>> rotations) {
         FaceInfo.VertexInfo vertexInfo = faceInfo.getVertexInfo(index);
         Vector3f vertex = vertexInfo.select(from, to).div(16.0F);
-
         for (Pair<Position3V, Position3V> rotation : rotations) {
             FaceBakery.rotateVertexBy(vertex,
                 toVector3fc(rotation.right().multiply(-1, 1, 1).withJavaOffset().multiply(0.0625f, 0.0625f, 0.0625f)),
@@ -199,7 +198,7 @@ public class BlockModelBaker {
         float rawV = CuboidFace.getV(uvs, Quadrant.R0, index);
 
         positionOutput[index] = interner.vector(vertex);
-        uvOutput[index] = UVPair.pack(materialInfo.sprite().getU(rawV), materialInfo.sprite().getV(rawU));
+        uvOutput[index] = UVPair.pack(materialInfo.sprite().getU(rawU), materialInfo.sprite().getV(rawV));
     }
 
     private static Vector3fc toVector3fc(Position3V position3V) {

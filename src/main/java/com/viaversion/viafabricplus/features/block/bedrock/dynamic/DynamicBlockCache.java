@@ -115,9 +115,12 @@ public class DynamicBlockCache {
             final ModelToBeBake model = entry.getValue();
 
             TextureSlots.Resolver resolver = new TextureSlots.Resolver();
+
+            final TextureSlots.Data.Builder builder = new TextureSlots.Data.Builder();
             for (Direction direction : Direction.values()) {
-                resolver.addFirst(new TextureSlots.Data.Builder().addTexture(direction.name(), new Material(Identifier.parse(model.textures().get(direction)))).build());
+                builder.addTexture(direction.name(), new Material(Identifier.parse(model.textures().get(direction))));
             }
+            resolver.addFirst(builder.build());
 
             final QuadCollection quadCollection = BlockModelBaker.bake(baker, model.model(), resolver.resolve(() -> ""), model.lightEmission(), model.transformation());
 
