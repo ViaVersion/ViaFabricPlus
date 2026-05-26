@@ -127,22 +127,18 @@ public class BlockComponentsTranslator {
             }
         }
 
-        // https://wiki.bedrock.dev/blocks/block-components#transformation, TODO: for now scale_pivot is ignored cuz im not sure how it should be implemented.
         if (components.contains("minecraft:transformation")) {
             final CompoundTag tag = components.getCompoundTag("minecraft:transformation");
-            Position3V translation = readTransformTag(tag.getListTag("translation", FloatTag.class), builder.transformation.translation());
-            Position3V rotation = readTransformTag(tag.getListTag("rotation", FloatTag.class), builder.transformation.rotation());
-            Position3V pivot = readTransformTag(tag.getListTag("rotation_pivot", FloatTag.class), builder.transformation.pivot());
-            Position3V scale = readTransformTag(tag.getListTag("scale", FloatTag.class), builder.transformation.scale());
+
+            final Position3V pivot = new Position3V(0, 8, 0);
+            Position3V translation = new Position3V(tag.getFloat("tx"), tag.getFloat("ty"), tag.getFloat("tz"));
+            Position3V rotation = new Position3V(tag.getFloat("rx"), tag.getFloat("ry"), tag.getFloat("rz"));
+            Position3V scale = new Position3V(tag.getFloat("sx"), tag.getFloat("sy"), tag.getFloat("sz"));
 
             builder.transformation(new DynamicBlockCache.Transformation(translation, rotation, pivot, scale));
         }
 
         return builder.build();
-    }
-
-    private static Position3V readTransformTag(ListTag<FloatTag> tag, Position3V defaultValue) {
-        return tag == null ? defaultValue : new Position3V(tag.get(0).asFloat(), tag.get(1).asFloat(), tag.get(2).asFloat());
     }
 
     private static void putIfExist(final Direction direction, CompoundTag tag, final Map<Direction, String> map) {
