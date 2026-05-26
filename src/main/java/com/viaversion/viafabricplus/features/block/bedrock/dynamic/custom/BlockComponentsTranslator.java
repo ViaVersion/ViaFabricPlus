@@ -29,7 +29,6 @@ import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viafabricplus.features.block.bedrock.dynamic.DynamicBlockCache;
 import com.viaversion.viafabricplus.injection.access.bedrock.pack.IModelDefinitions;
 import com.viaversion.viafabricplus.injection.access.bedrock.pack.IResourcePackStorage;
-import lombok.Builder;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -187,7 +186,9 @@ public class BlockComponentsTranslator {
         return Shapes.box(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
-    public record Result(VoxelShape collision, VoxelShape selection, float friction, float destroyTime, Map<Direction, String> textures, BedrockGeometryModel model) {
+    public record Result(VoxelShape collision,
+                         VoxelShape selection, float friction, float destroyTime,
+                         Map<Direction, String> textures, BedrockGeometryModel model) {
         public Result.Builder toBuilder() {
             final Result.Builder builder = new Builder();
             builder.collision(collision);

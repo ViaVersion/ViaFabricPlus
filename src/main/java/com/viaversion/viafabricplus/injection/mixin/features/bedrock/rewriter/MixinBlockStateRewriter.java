@@ -90,7 +90,7 @@ public class MixinBlockStateRewriter {
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/List;addAll(Ljava/util/Collection;)Z"))
     public void registerCustomBlocks(BlockProperties[] blockProperties, boolean hashedRuntimeBlockIds, CallbackInfo ci, @Local(ordinal = 1) List<BedrockBlockState> states) {
         final List<Pair<ResourceKey<@NotNull Block>, Block>> blocks = new ArrayList<>();
-        final Map<BlockState, String> models = new HashMap<>();
+        final Map<BlockState, DynamicBlockCache.ModelToBeBake> models = new HashMap<>();
 
         // We have to "un-freeze" the registry in order to register new blocks.
         ((IMappedRegistry) BuiltInRegistries.BLOCK).viaFabricPlus$unfreeze();
@@ -115,8 +115,7 @@ public class MixinBlockStateRewriter {
                 continue;
             }
 
-            String javaModelJson = result.model().toJavaItemModel(result.textures(), RotationType.POST_1_21_11).compile().toString();
-            models.put(block.defaultBlockState(), javaModelJson);
+            models.put(block.defaultBlockState(), new DynamicBlockCache.ModelToBeBake(result.model(), result.textures()));
         }
 
         DynamicBlockCache.register(blocks);

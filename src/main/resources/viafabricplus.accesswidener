@@ -56,3 +56,10 @@ accessible class net/minecraft/client/resources/model/ModelBakery$InternerImpl
 accessible class net/minecraft/client/resources/model/ModelBakery$ModelBakerImpl
 
 accessible method net/minecraft/client/resources/model/ModelBakery$InternerImpl <init> ()V
+accessible method net/minecraft/client/renderer/block/dispatch/BlockModelRotation <init> (Lcom/mojang/math/OctahedralGroup;)V
+
+accessible method net/minecraft/client/resources/model/cuboid/FaceBakery calculateFacing ([Lorg/joml/Vector3fc;)Lnet/minecraft/core/Direction;
+accessible method net/minecraft/client/resources/model/cuboid/FaceBakery rotateVertexBy (Lorg/joml/Vector3f;Lorg/joml/Vector3fc;Lorg/joml/Matrix4fc;)V
+accessible method net/minecraft/client/resources/model/cuboid/FaceBakery defaultFaceUV (Lorg/joml/Vector3fc;Lorg/joml/Vector3fc;Lnet/minecraft/core/Direction;)Lnet/minecraft/client/resources/model/cuboid/CuboidFace$UVs;
+accessible method net/minecraft/client/resources/model/cuboid/FaceBakery recalculateWinding ([Lorg/joml/Vector3fc;[JLnet/minecraft/core/Direction;)V
+accessible method net/minecraft/client/resources/model/cuboid/FaceBakery computeMaterialTransparency (Lnet/minecraft/client/resources/model/sprite/Material$Baked;Lnet/minecraft/client/resources/model/cuboid/CuboidFace$UVs;)Lcom/mojang/blaze3d/platform/Transparency;

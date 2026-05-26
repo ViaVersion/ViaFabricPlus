@@ -21,17 +21,16 @@
 
 package com.viaversion.viafabricplus.features.block.bedrock.dynamic;
 
+import com.viaversion.viafabricplus.features.block.bedrock.dynamic.model.BlockModelBaker;
 import com.viaversion.viafabricplus.injection.access.registry.IHolderReference;
 import com.viaversion.viafabricplus.injection.access.registry.IIdMapper;
 import com.viaversion.viafabricplus.injection.access.registry.IMappedRegistry;
 import com.viaversion.viaversion.util.Pair;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.SingleVariant;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.SimpleModelWrapper;
-import net.minecraft.client.resources.model.cuboid.CuboidModel;
 import net.minecraft.client.resources.model.geometry.QuadCollection;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.resources.model.sprite.TextureSlots;
@@ -44,6 +43,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.raphimc.viabedrock.protocol.storage.ResourcePackStorage;
+import org.cube.converter.model.impl.bedrock.BedrockGeometryModel;
+import org.cube.converter.util.element.Direction;
 import org.jetbrains.annotations.NotNull;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -80,9 +81,11 @@ public class DynamicBlockCache {
      */
 
     // A map of models that we need to bake for block states so it can be used later.
-    private static Map<BlockState, String> MODELS_TO_BAKE;
+    private static Map<BlockState, ModelToBeBake> MODELS_TO_BAKE;
+    public record ModelToBeBake(BedrockGeometryModel model, Map<Direction, String> textures) {
+    }
 
-    public static void requestBakeModelsAndLoad(Map<BlockState, String> states) {
+    public static void requestBakeModelsAndLoad(Map<BlockState, ModelToBeBake> states) {
         MODELS_TO_BAKE = states;
 
         // Manually reload texture packs to trigger block model bake/set.
@@ -106,18 +109,18 @@ public class DynamicBlockCache {
             return;
         }
 
-        for (Map.Entry<BlockState, String> entry : MODELS_TO_BAKE.entrySet()) {
-            final String model = entry.getValue();
-
-            CuboidModel cuboidModel = CuboidModel.fromStream(new StringReader(model));
+        for (Map.Entry<BlockState, ModelToBeBake> entry : MODELS_TO_BAKE.entrySet()) {
             TextureSlots.Resolver resolver = new TextureSlots.Resolver();
-            resolver.addFirst(cuboidModel.textureSlots());
+            for (Direction direction : Direction.values()) {
+                resolver.addFirst(new TextureSlots.Data.Builder().addTexture(direction.name(), new Material(
+                    Identifier.parse(entry.getValue().textures().get(direction)))).build());
+            }
 
-            QuadCollection quadCollection = cuboidModel.geometry().bake(resolver.resolve(() -> ""), baker, BlockModelRotation.IDENTITY, () -> "");
+            final QuadCollection quadCollection = BlockModelBaker.bake(baker, entry.getValue().model(), resolver.resolve(() -> ""));
 
             // This is only ever used for block particles, we can translate it but for now just set it to STONE.
             final Material.Baked baked = Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(Blocks.STONE.defaultBlockState());
-            STATES_TO_MODEL.put(entry.getKey(), new SingleVariant(new SimpleModelWrapper(quadCollection, Boolean.TRUE.equals(cuboidModel.ambientOcclusion()), baked)));
+            STATES_TO_MODEL.put(entry.getKey(), new SingleVariant(new SimpleModelWrapper(quadCollection, false, baked)));
         }
 
         MODELS_TO_BAKE = null;
