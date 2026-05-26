@@ -77,8 +77,6 @@ public class BlockModelBaker {
                 }
             }
 
-            rotations.add(new Pair<>(transformation.rotation().multiply(-1, -1, 1), transformation.pivot()));
-
             Collections.reverse(rotations);
 
             for (Cube cube : parent.getCubes().values()) {
@@ -130,6 +128,7 @@ public class BlockModelBaker {
                     if (shouldDrawFace) {
                         final List<Pair<Position3V, Position3V>> allRotations = new ArrayList<>(rotations);
                         allRotations.add(new Pair<>(cube.getRotation(), cube.getPivot()));
+                        allRotations.add(new Pair<>(transformation.rotation().multiply(-1, -1, 1), new Position3V(0, 8, 0)));
 
                         Material.Baked material = modelBaker.materials().resolveSlot(textures, facing.name(), () -> "");
                         BakedQuad quad = bakeQuad(modelBaker, from, to, material, facing, lightEmission, uv, allRotations);

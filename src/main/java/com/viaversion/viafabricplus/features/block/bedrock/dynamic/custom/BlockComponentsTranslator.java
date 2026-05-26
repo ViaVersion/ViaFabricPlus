@@ -133,13 +133,12 @@ public class BlockComponentsTranslator {
         if (components.contains("minecraft:transformation")) {
             final CompoundTag tag = components.getCompoundTag("minecraft:transformation");
 
-            final Position3V pivot = new Position3V(0, 8, 0);
             Position3V translation = new Position3V(tag.getFloat("TX"), tag.getFloat("TY"), tag.getFloat("TZ"));
             Position3V scale = new Position3V(tag.getFloat("SX"), tag.getFloat("SY"), tag.getFloat("SZ"));
             Position3V rotation = new Position3V(tag.getFloat("RX"), tag.getFloat("RY"), tag.getFloat("RZ"));
             rotation.scale(90);
 
-            builder.transformation(new DynamicBlockCache.Transformation(translation, rotation, pivot, scale));
+            builder.transformation(new DynamicBlockCache.Transformation(translation, rotation, scale));
 
             VoxelShape collision = builder.collision, selection = builder.selection;
             switch ((int) Mth.wrapDegrees(rotation.getX())) {
@@ -320,7 +319,7 @@ public class BlockComponentsTranslator {
             private float friction, destroyTime;
 
             private int lightEmission;
-            private DynamicBlockCache.Transformation transformation = new DynamicBlockCache.Transformation(Position3V.zero(), Position3V.zero(), Position3V.zero(), new Position3V(1, 1, 1));
+            private DynamicBlockCache.Transformation transformation = new DynamicBlockCache.Transformation(Position3V.zero(), Position3V.zero(), new Position3V(1, 1, 1));
 
             private Map<Direction, String> textures;
             private BedrockGeometryModel model;

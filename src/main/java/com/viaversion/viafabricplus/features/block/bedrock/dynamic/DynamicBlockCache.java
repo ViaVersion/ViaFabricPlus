@@ -84,7 +84,7 @@ public class DynamicBlockCache {
     private static Map<BlockState, ModelToBeBake> MODELS_TO_BAKE;
     public record ModelToBeBake(BedrockGeometryModel model, Map<Direction, String> textures, int lightEmission, Transformation transformation) {
     }
-    public record Transformation(Position3V translation, Position3V rotation, Position3V pivot, Position3V scale) {
+    public record Transformation(Position3V translation, Position3V rotation, Position3V scale) {
     }
 
     public static void requestBakeModelsAndLoad(Map<BlockState, ModelToBeBake> states) {
