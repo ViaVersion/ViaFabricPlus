@@ -45,8 +45,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.raphimc.viabedrock.protocol.storage.ResourcePackStorage;
 import org.cube.converter.model.impl.bedrock.BedrockGeometryModel;
 import org.cube.converter.util.element.Direction;
+import org.cube.converter.util.element.Position3V;
 import org.jetbrains.annotations.NotNull;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +82,9 @@ public class DynamicBlockCache {
 
     // A map of models that we need to bake for block states so it can be used later.
     private static Map<BlockState, ModelToBeBake> MODELS_TO_BAKE;
-    public record ModelToBeBake(BedrockGeometryModel model, Map<Direction, String> textures) {
+    public record ModelToBeBake(BedrockGeometryModel model, Map<Direction, String> textures, int lightEmission, Transformation transformation) {
+    }
+    public record Transformation(Position3V translation, Position3V rotation, Position3V pivot, Position3V scale) {
     }
 
     public static void requestBakeModelsAndLoad(Map<BlockState, ModelToBeBake> states) {
@@ -110,13 +112,14 @@ public class DynamicBlockCache {
         }
 
         for (Map.Entry<BlockState, ModelToBeBake> entry : MODELS_TO_BAKE.entrySet()) {
+            final ModelToBeBake model = entry.getValue();
+
             TextureSlots.Resolver resolver = new TextureSlots.Resolver();
             for (Direction direction : Direction.values()) {
-                resolver.addFirst(new TextureSlots.Data.Builder().addTexture(direction.name(), new Material(
-                    Identifier.parse(entry.getValue().textures().get(direction)))).build());
+                resolver.addFirst(new TextureSlots.Data.Builder().addTexture(direction.name(), new Material(Identifier.parse(model.textures().get(direction)))).build());
             }
 
-            final QuadCollection quadCollection = BlockModelBaker.bake(baker, entry.getValue().model(), resolver.resolve(() -> ""));
+            final QuadCollection quadCollection = BlockModelBaker.bake(baker, model.model(), resolver.resolve(() -> ""), model.lightEmission(), model.transformation());
 
             // This is only ever used for block particles, we can translate it but for now just set it to STONE.
             final Material.Baked baked = Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(Blocks.STONE.defaultBlockState());

@@ -34,6 +34,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.cube.converter.model.impl.bedrock.BedrockGeometryModel;
 import org.cube.converter.util.element.Direction;
+import org.cube.converter.util.element.Position3V;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +65,22 @@ public class BlockComponentsTranslator {
                 builder.destroyTime(numberTag.asBoolean() ? 0 : -1);
             } else if (tag instanceof CompoundTag compoundTag && compoundTag.contains("value")) {
                 builder.destroyTime(compoundTag.getFloat("value"));
+            }
+        }
+
+        if (components.contains("minecraft:destructible_by_mining")) {
+            Tag tag = components.get("minecraft:destructible_by_mining");
+            if (tag instanceof NumberTag numberTag) {
+                builder.destroyTime(numberTag.asBoolean() ? 0 : -1);
+            } else if (tag instanceof CompoundTag compoundTag && compoundTag.contains("value")) {
+                builder.destroyTime(compoundTag.getFloat("value"));
+            }
+        }
+
+        if (components.contains("minecraft:light_emission")) {
+            Tag tag = components.get("minecraft:light_emission");
+            if (tag instanceof CompoundTag lightTag && lightTag.contains("emission")) {
+                builder.lightEmission(lightTag.getByte("emission"));
             }
         }
 
@@ -110,7 +127,22 @@ public class BlockComponentsTranslator {
             }
         }
 
+        // https://wiki.bedrock.dev/blocks/block-components#transformation, TODO: for now scale_pivot is ignored cuz im not sure how it should be implemented.
+        if (components.contains("minecraft:transformation")) {
+            final CompoundTag tag = components.getCompoundTag("minecraft:transformation");
+            Position3V translation = readTransformTag(tag.getListTag("translation", FloatTag.class), builder.transformation.translation());
+            Position3V rotation = readTransformTag(tag.getListTag("rotation", FloatTag.class), builder.transformation.rotation());
+            Position3V pivot = readTransformTag(tag.getListTag("rotation_pivot", FloatTag.class), builder.transformation.pivot());
+            Position3V scale = readTransformTag(tag.getListTag("scale", FloatTag.class), builder.transformation.scale());
+
+            builder.transformation(new DynamicBlockCache.Transformation(translation, rotation, pivot, scale));
+        }
+
         return builder.build();
+    }
+
+    private static Position3V readTransformTag(ListTag<FloatTag> tag, Position3V defaultValue) {
+        return tag == null ? defaultValue : new Position3V(tag.get(0).asFloat(), tag.get(1).asFloat(), tag.get(2).asFloat());
     }
 
     private static void putIfExist(final Direction direction, CompoundTag tag, final Map<Direction, String> map) {
@@ -188,6 +220,7 @@ public class BlockComponentsTranslator {
 
     public record Result(VoxelShape collision,
                          VoxelShape selection, float friction, float destroyTime,
+                         int lightEmission, DynamicBlockCache.Transformation transformation,
                          Map<Direction, String> textures, BedrockGeometryModel model) {
         public Result.Builder toBuilder() {
             final Result.Builder builder = new Builder();
@@ -203,6 +236,9 @@ public class BlockComponentsTranslator {
         public static class Builder {
             private VoxelShape collision, selection;
             private float friction, destroyTime;
+
+            private int lightEmission;
+            private DynamicBlockCache.Transformation transformation = new DynamicBlockCache.Transformation(Position3V.zero(), Position3V.zero(), Position3V.zero(), new Position3V(1, 1, 1));
 
             private Map<Direction, String> textures;
             private BedrockGeometryModel model;
@@ -231,8 +267,16 @@ public class BlockComponentsTranslator {
                 this.model = model;
             }
 
+            public void lightEmission(int lightEmission) {
+                this.lightEmission = lightEmission;
+            }
+
+            public void transformation(DynamicBlockCache.Transformation transformation) {
+                this.transformation = transformation;
+            }
+
             public Result build() {
-                return new Result(collision, selection, friction, destroyTime, textures, model);
+                return new Result(collision, selection, friction, destroyTime, lightEmission, transformation, textures, model);
             }
         }
     }

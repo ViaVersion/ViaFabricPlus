@@ -62,15 +62,15 @@ public class MixinBlockStateRewriter {
         final CompoundTag components = tag.getCompoundTag("components");
         if (components != null) {
             if (components.contains("minecraft:collision_box")) {
-                instance.put("minecraft:collision_box", components.getCompoundTag("minecraft:collision_box"));
+                instance.put("minecraft:collision_box", components.get("minecraft:collision_box"));
             }
 
             if (components.contains("minecraft:selection_box")) {
-                instance.put("minecraft:selection_box", components.getCompoundTag("minecraft:selection_box"));
+                instance.put("minecraft:selection_box", components.get("minecraft:selection_box"));
             }
 
             if (components.contains("minecraft:geometry")) {
-                instance.put("minecraft:geometry", components.getCompoundTag("minecraft:geometry"));
+                instance.put("minecraft:geometry", components.get("minecraft:geometry"));
             }
 
             if (components.contains("minecraft:destructible_by_mining")) {
@@ -82,7 +82,15 @@ public class MixinBlockStateRewriter {
             }
 
             if (components.contains("minecraft:material_instances")) {
-                instance.put("minecraft:material_instances", components.getCompoundTag("minecraft:material_instances"));
+                instance.put("minecraft:material_instances", components.get("minecraft:material_instances"));
+            }
+
+            if (components.contains("minecraft:transformation")) {
+                instance.put("minecraft:transformation", components.get("minecraft:transformation"));
+            }
+
+            if (components.contains("minecraft:light_emission")) {
+                instance.put("minecraft:light_emission", components.get("minecraft:light_emission"));
             }
         }
     }
@@ -115,7 +123,7 @@ public class MixinBlockStateRewriter {
                 continue;
             }
 
-            models.put(block.defaultBlockState(), new DynamicBlockCache.ModelToBeBake(result.model(), result.textures()));
+            models.put(block.defaultBlockState(), new DynamicBlockCache.ModelToBeBake(result.model(), result.textures(), result.lightEmission(), result.transformation()));
         }
 
         DynamicBlockCache.register(blocks);

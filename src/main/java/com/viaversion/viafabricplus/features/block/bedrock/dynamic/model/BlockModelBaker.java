@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.features.block.bedrock.dynamic.model;
 
 import com.mojang.blaze3d.platform.Transparency;
 import com.mojang.math.Quadrant;
+import com.viaversion.viafabricplus.features.block.bedrock.dynamic.DynamicBlockCache;
 import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.client.renderer.FaceInfo;
 import net.minecraft.client.resources.model.ModelBaker;
@@ -54,7 +55,7 @@ import net.minecraft.client.resources.model.cuboid.FaceBakery;
  * Mostly methods copied from net.minecraft.client.resources.model.cuboid.FaceBakery but improved for ours use case.
  */
 public class BlockModelBaker {
-    public static QuadCollection bake(final ModelBaker modelBaker, final BedrockGeometryModel model, final TextureSlots textures) {
+    public static QuadCollection bake(final ModelBaker modelBaker, final BedrockGeometryModel model, final TextureSlots textures, int lightEmission, DynamicBlockCache.Transformation transformation) {
         QuadCollection.Builder builder = new QuadCollection.Builder();
 
         for (final Parent parent : model.getParents()) {
@@ -77,6 +78,8 @@ public class BlockModelBaker {
                 }
             }
 
+            rotations.add(new Pair<>(transformation.rotation(), transformation.pivot()));
+
             Collections.reverse(rotations);
 
             for (Cube cube : parent.getCubes().values()) {
@@ -84,6 +87,7 @@ public class BlockModelBaker {
 
                 cube.inflate();
                 cube.getPosition().set(cube.getPosition().asJavaPosition(cube.getSize()));
+                cube.getPosition().set(cube.getPosition().add(transformation.translation().multiply(16, 16, 16)));
 
                 final Vector3fc from = toVector3fc(cube.getPosition()), to = toVector3fc(cube.getPosition().add(cube.getSize()));
 
@@ -119,7 +123,7 @@ public class BlockModelBaker {
                     boolean shouldDrawFace = var10000;
                     if (shouldDrawFace) {
                         Material.Baked material = modelBaker.materials().resolveSlot(textures, facing.name(), () -> "");
-                        BakedQuad quad = bakeQuad(modelBaker, rotations, cube, material, facing, true, 0, model.getTextureSize());
+                        BakedQuad quad = bakeQuad(modelBaker, rotations, cube, material, facing, true, lightEmission, model.getTextureSize());
                         builder.addUnculledFace(quad);
                     }
                 }
