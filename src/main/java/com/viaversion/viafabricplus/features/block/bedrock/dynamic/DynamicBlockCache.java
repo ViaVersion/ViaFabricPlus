@@ -97,7 +97,8 @@ public class DynamicBlockCache {
     public static void mapBlockStateToBakedModel(Map<BlockState, BlockStateModel> models) {
         models.putAll(STATES_TO_MODEL);
 
-        STATES_TO_MODEL.clear();
+        // Only clears this only leave, otherwise models will be breaking every time you load a texture pack or F3 + T
+        // STATES_TO_MODEL.clear();
     }
 
     public static void bakeModels(ModelBaker baker) {
