@@ -77,23 +77,25 @@ public class BlockComponentsTranslator {
         if (materialInstance != null) {
             CompoundTag materials = materialInstance.getCompoundTag("materials");
 
-            // Each faces can have different texture, so the server either send "*" to set everything to 1 texture or map it differently.
+            // Each faces can have different texture, so we have to map them like this (https://wiki.bedrock.dev/blocks/block-visuals-intro#material-instances)
             if (materials != null) {
-                CompoundTag everything = materials.getCompoundTag("*");
-                if (everything != null) {
-                    if (everything.contains("texture")) {
-                        final String textureId = ((IResourcePackStorage)DynamicBlockCache.STORAGE_INSTANCE).viaFabricPlus$texturesPathFromId(everything.getString("texture"));
+                textures = new HashMap<>();
+                if (materials.contains("*")) {
+                    CompoundTag tag = materials.getCompoundTag("*");
+                    if (tag == null) {
+                        tag = materials.getCompoundTag(materials.getString("*"));
+                    }
 
-                        textures = new HashMap<>();
+                    if (tag != null) {
+                        final String textureId = ((IResourcePackStorage)DynamicBlockCache.STORAGE_INSTANCE).viaFabricPlus$texturesPathFromId(tag.getString("texture"));
                         for (Direction direction : Direction.values()) {
                             textures.put(direction, textureId);
                         }
                     }
-                } else {
-                    textures = new HashMap<>();
-                    for (Direction direction : Direction.values()) {
-                        putIfExist(direction, materials, textures);
-                    }
+                }
+
+                for (Direction direction : Direction.values()) {
+                    putIfExist(direction, materials, textures);
                 }
             }
         }
@@ -112,17 +114,22 @@ public class BlockComponentsTranslator {
         return builder.build();
     }
 
-    private static void putIfExist(final Direction direction, final CompoundTag tag, final Map<Direction, String> map) {
+    private static void putIfExist(final Direction direction, CompoundTag tag, final Map<Direction, String> map) {
         final String name = direction.name().toLowerCase();
         if (tag.contains(name)) {
+            CompoundTag compoundTag = tag.getCompoundTag(name);
             try {
-                String result = ((IResourcePackStorage)DynamicBlockCache.STORAGE_INSTANCE).viaFabricPlus$texturesPathFromId(tag.getCompoundTag(name).getString("texture"));
+                if (compoundTag == null) {
+                    compoundTag = tag.getCompoundTag(tag.getString(name));
+                }
+
+                String result = ((IResourcePackStorage)DynamicBlockCache.STORAGE_INSTANCE).viaFabricPlus$texturesPathFromId(compoundTag.getString("texture"));
                 map.put(direction, result);
-            } catch (Exception ignored) {
-                map.put(direction, "empty");
+            } catch (Exception ignored){
+                map.putIfAbsent(direction, "empty");
             }
         } else {
-            map.put(direction, "empty");
+            map.putIfAbsent(direction, "empty");
         }
     }
 
