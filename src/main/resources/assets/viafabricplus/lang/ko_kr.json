@@ -75,6 +75,8 @@
   "debug_settings.viafabricplus.disable_server_pinging": "서버 핑 비활성화",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "존재하지 않는 글자 제거",
   "debug_settings.viafabricplus.legacy_pane_outlines": "레거시 창 테두리",
+  "debug_settings.viafabricplus.serverside_place_sounds": "서버 측 블록/아이템 설치 소리",
+  "debug_settings.viafabricplus.remove_server_description_sanitize": "서버 설명 필터링 제거",
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "BetaCraft 인증 사용",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "온라인 모드 서버에 대한 세션 검증",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "ClassiCube 서버 리스트를 사용 중일 때 자동으로 CPE 선택",
