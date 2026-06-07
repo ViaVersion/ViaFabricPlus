@@ -37,5 +37,6 @@
   "classic4j_library.viafabricplus.error.username": "Väärä käyttäjänimi.",
   "classic4j_library.viafabricplus.error.password": "Väärä salasana.",
   "classic4j_library.viafabricplus.error.verification": "Käyttäjä ei ole vielä vahvistanut sähköpostiaan.",
-  "classic4j_library.viafabricplus.error.logincode": "Monivaiheinen todennus pyydetty. Katso sähköpostiisi."
+  "classic4j_library.viafabricplus.error.logincode": "Monivaiheinen todennus pyydetty. Katso sähköpostiisi.",
+  "minecraftauth_library.viafabricplus.xblusertoken": "Saatu Xbox Live -käyttäjätunnus"
 }
