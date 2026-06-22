@@ -79,6 +79,7 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
         ITEM_TYPES.put(ProtocolVersion.v1_21_9, new ItemTypes(VersionedTypes.V1_21_9.item, VersionedTypes.V1_21_9.lengthPrefixedItem));
         ITEM_TYPES.put(ProtocolVersion.v1_21_11, new ItemTypes(VersionedTypes.V1_21_11.item, VersionedTypes.V1_21_11.lengthPrefixedItem));
         ITEM_TYPES.put(ProtocolVersion.v26_1, new ItemTypes(VersionedTypes.V26_1.item, VersionedTypes.V26_1.lengthPrefixedItem));
+        ITEM_TYPES.put(ProtocolVersion.v26_2, new ItemTypes(VersionedTypes.V26_2.item, VersionedTypes.V26_2.lengthPrefixedItem));
 
         if (!ITEM_TYPES.containsKey(ProtocolTranslator.NATIVE_VERSION)) {
             throw new IllegalStateException("Missing item type for native version");
@@ -115,7 +116,8 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
     public void init(UserConnection connection) {
         super.init(connection);
 
-        if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        final ProtocolVersion serverVersion = ProtocolTranslator.getTargetVersion(connection.getChannel()); // UserConnection#getProtocolInfo is not initialized yet
+        if (serverVersion.olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             connection.put(new WolfHealthTracker1_14_4());
         }
     }
