@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection;
 
+import com.viaversion.viafabricplus.features.movement.constants.LithiumWorkaround;
 import com.viaversion.viafabricplus.features.movement.elytra.FabricAPIWorkaround;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +53,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
         LEGACY_PRESENT = loader.isModLoaded("legacy");
 
         FabricAPIWorkaround.init();
+        LithiumWorkaround.init();
     }
 
     @Override

@@ -239,6 +239,7 @@
     "features.movement.constants.MixinEntity",
     "features.movement.constants.MixinLivingEntity",
     "features.movement.constants.MixinLocalPlayer",
+    "features.movement.constants.MixinMth",
     "features.movement.constants.MixinPlayer",
     "features.movement.elytra.MixinFireworkRocketItem",
     "features.movement.elytra.MixinLivingEntity",
