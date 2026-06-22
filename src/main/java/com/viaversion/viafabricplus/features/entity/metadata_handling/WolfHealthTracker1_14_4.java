@@ -36,7 +36,7 @@ public final class WolfHealthTracker1_14_4 implements StorableObject {
         if (tracker != null) {
             return tracker.getWolfHealth(entity.getId(), entity.getHealth());
         } else {
-            // Mods might get the wolf health before our tracker is set, so returning back to the original value as well.
+            // Mods might get the wolf health before our tracker is set, so returning back to the original value.
             return entity.getHealth();
         }
     }
