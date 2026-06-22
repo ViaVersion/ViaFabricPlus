@@ -22,11 +22,11 @@
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.core.Holder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +45,7 @@ public abstract class MixinLivingEntity {
 
     @Redirect(method = "getFluidFallingAdjustedMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSprinting()Z"))
     private boolean changeFluidGravityCondition(LivingEntity instance) {
-        return instance.isSprinting() && !ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) || instance.isSwimming();
+        return ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) ? instance.isSwimming() : instance.isSprinting();
     }
 
     @Inject(method = "getFluidFallingAdjustedMovement", at = @At("HEAD"), cancellable = true)
