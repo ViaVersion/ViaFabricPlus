@@ -48,6 +48,7 @@ import org.cube.converter.util.element.Direction;
 import org.cube.converter.util.element.Position3V;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +83,7 @@ public class DynamicBlockCache {
 
     // A map of models that we need to bake for block states so it can be used later.
     private static Map<BlockState, ModelToBeBake> MODELS_TO_BAKE;
-    public record ModelToBeBake(BedrockGeometryModel model, Map<Direction, String> textures, int lightEmission, Transformation transformation) {
+    public record ModelToBeBake(BedrockGeometryModel model, EnumMap<Direction, String> textures, int lightEmission, Transformation transformation) {
     }
     public record Transformation(Position3V translation, Position3V rotation, Position3V scale) {
     }

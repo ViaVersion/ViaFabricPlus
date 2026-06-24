@@ -34,6 +34,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,7 +44,7 @@ import java.util.Set;
 @Mixin(value = ResourcePackStorage.class, remap = false)
 public class MixinResourcePackStorage implements IResourcePackStorage {
     @Unique
-    private final Map<String, Map<Direction, String>> ID_TO_TEXTURE_MAP = new HashMap<>();
+    private final Map<String, EnumMap<Direction, String>> ID_TO_TEXTURE_MAP = new HashMap<>();
 
     @Unique
     private final Map<String, String> ID_TO_TEXTURE_PATH = new HashMap<>();
@@ -70,14 +71,14 @@ public class MixinResourcePackStorage implements IResourcePackStorage {
                 final JsonObject jsonObject = element.getAsJsonObject();
                 final JsonElement textures = jsonObject.get("textures");
                 if (textures instanceof JsonPrimitive primitive) {
-                    final Map<Direction, String> map = new HashMap<>();
+                    final EnumMap<Direction, String> map = new EnumMap<>(Direction.class);
 
                     for (Direction direction : Direction.values()) {
                         map.put(direction, primitive.getAsString());
                     }
                     ID_TO_TEXTURE_MAP.put(key, map);
                 } else if (textures instanceof JsonObject texturesObject) {
-                    final Map<Direction, String> map = new HashMap<>();
+                    final EnumMap<Direction, String> map = new EnumMap<>(Direction.class);
 
                     for (Direction direction : Direction.values()) {
                         String name = direction.name().toLowerCase();
@@ -120,12 +121,12 @@ public class MixinResourcePackStorage implements IResourcePackStorage {
     }
 
     @Override
-    public Map<Direction, String> viaFabricPlus$textures(final String string) {
+    public EnumMap<Direction, String> viaFabricPlus$textures(final String string) {
         if (!ID_TO_TEXTURE_MAP.containsKey(string)) {
             return null;
         }
 
-        final Map<Direction, String> map = new HashMap<>();
+        final EnumMap<Direction, String> map = new EnumMap<>(Direction.class);
         for (Map.Entry<Direction, String> entry : ID_TO_TEXTURE_MAP.get(string).entrySet()) {
             String path = ID_TO_TEXTURE_PATH.get(entry.getValue());
             map.put(entry.getKey(), "viabedrock:block/" + (path == null ? entry.getValue() : path));

@@ -22,11 +22,11 @@
 package com.viaversion.viafabricplus.injection.access.bedrock.pack;
 
 import org.cube.converter.util.element.Direction;
-import java.util.Map;
+import java.util.EnumMap;
 import java.util.Set;
 
 public interface IResourcePackStorage {
-    Map<Direction, String> viaFabricPlus$textures(String string);
+    EnumMap<Direction, String> viaFabricPlus$textures(String string);
     String viaFabricPlus$texturesPathFromId(String string);
     Set<String> viaFabricPlus$texturesToLoad();
 }

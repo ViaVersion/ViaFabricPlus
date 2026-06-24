@@ -38,8 +38,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.cube.converter.model.impl.bedrock.BedrockGeometryModel;
 import org.cube.converter.util.element.Direction;
 import org.cube.converter.util.element.Position3V;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
 
 /**
  * Responsible for translating bedrock block components to java Block.
@@ -88,7 +87,7 @@ public class BlockComponentsTranslator {
         }
 
         // There's 2 way for a block to define its texture, first is through blocks.json in the texture pack which is what we're pulling here.
-        Map<Direction, String> textures = ((IResourcePackStorage) DynamicBlockCache.STORAGE_INSTANCE).viaFabricPlus$textures(identifier);
+        EnumMap<Direction, String> textures = ((IResourcePackStorage) DynamicBlockCache.STORAGE_INSTANCE).viaFabricPlus$textures(identifier);
 
         // Second is by sending the client a component called minecraft:material_instances with the texture path.
         // From debugging, it seems like minecraft:material_instances has to be priority over blocks.json if they overlap each other.
@@ -98,7 +97,7 @@ public class BlockComponentsTranslator {
 
             // Each faces can have different texture, so we have to map them like this (https://wiki.bedrock.dev/blocks/block-visuals-intro#material-instances)
             if (materials != null) {
-                textures = new HashMap<>();
+                textures = new EnumMap<>(Direction.class);
                 if (materials.contains("*")) {
                     CompoundTag tag = materials.getCompoundTag("*");
                     if (tag == null) {
@@ -226,7 +225,7 @@ public class BlockComponentsTranslator {
         }
     }
 
-    private static void putIfExist(final Direction direction, CompoundTag tag, final Map<Direction, String> map) {
+    private static void putIfExist(final Direction direction, CompoundTag tag, final EnumMap<Direction, String> map) {
         final String name = direction.name().toLowerCase();
         if (tag.contains(name)) {
             CompoundTag compoundTag = tag.getCompoundTag(name);
@@ -302,7 +301,7 @@ public class BlockComponentsTranslator {
     public record Result(VoxelShape collision,
                          VoxelShape selection, float friction, float destroyTime,
                          int lightEmission, DynamicBlockCache.Transformation transformation,
-                         Map<Direction, String> textures, BedrockGeometryModel model) {
+                         EnumMap<Direction, String> textures, BedrockGeometryModel model) {
         public Result.Builder toBuilder() {
             final Result.Builder builder = new Builder();
             builder.collision(collision);
@@ -321,7 +320,7 @@ public class BlockComponentsTranslator {
             private int lightEmission;
             private DynamicBlockCache.Transformation transformation = new DynamicBlockCache.Transformation(Position3V.zero(), Position3V.zero(), new Position3V(1, 1, 1));
 
-            private Map<Direction, String> textures;
+            private EnumMap<Direction, String> textures;
             private BedrockGeometryModel model;
 
             public void collision(VoxelShape collision) {
@@ -340,7 +339,7 @@ public class BlockComponentsTranslator {
                 this.destroyTime = destroyTime;
             }
 
-            public void textures(Map<Direction, String> textures) {
+            public void textures(EnumMap<Direction, String> textures) {
                 this.textures = textures;
             }
 
