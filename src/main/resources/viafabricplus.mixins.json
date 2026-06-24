@@ -72,7 +72,6 @@
     "features.bedrock.inventory.MixinInventoryScreen",
     "features.bedrock.model.MixinModelBakery",
     "features.bedrock.model.MixinModelManager",
-    "features.bedrock.movement.MixinBedBlock",
     "features.bedrock.movement.MixinEntity",
     "features.bedrock.movement.MixinHoneyBlock",
     "features.bedrock.movement.MixinLivingEntity",
