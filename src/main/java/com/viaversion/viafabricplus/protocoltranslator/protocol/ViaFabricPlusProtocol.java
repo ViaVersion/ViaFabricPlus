@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.protocoltranslator.protocol;
 
 import com.google.common.collect.Lists;
 import com.viaversion.viafabricplus.features.entity.metadata.WolfHealthTracker1_14_4;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
@@ -44,6 +45,9 @@ import com.viaversion.viaversion.protocols.v1_21_7to1_21_9.packet.ServerboundCon
 import com.viaversion.viaversion.util.Key;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.beta.b1_8_0_1tor1_0_0_1.types.Typesb1_8_0_1;
 import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.types.Types1_2_4;
@@ -55,6 +59,32 @@ import static com.viaversion.viaversion.util.ProtocolUtil.packetTypeMap;
 public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPacket26_1, ClientboundPacket26_1, ServerboundPacket26_1, ServerboundPacket26_1> {
 
     public static final ViaFabricPlusProtocol INSTANCE = new ViaFabricPlusProtocol();
+
+    private static final NavigableMap<ProtocolVersion, ItemTypes> ITEM_TYPES = new TreeMap<>();
+
+    static {
+        ITEM_TYPES.put(LegacyProtocolVersion.b1_8tob1_8_1, new ItemTypes(Types1_4_2.NBTLESS_ITEM, Typesb1_8_0_1.CREATIVE_ITEM));
+        ITEM_TYPES.put(LegacyProtocolVersion.r1_2_4tor1_2_5, ItemTypes.same(Types1_2_4.NBT_ITEM));
+        ITEM_TYPES.put(ProtocolVersion.v1_7_6, ItemTypes.same(Types1_7_6.ITEM));
+        ITEM_TYPES.put(ProtocolVersion.v1_12_2, ItemTypes.same(Types.ITEM1_8));
+        ITEM_TYPES.put(ProtocolVersion.v1_13_1, ItemTypes.same(Types.ITEM1_13));
+        ITEM_TYPES.put(ProtocolVersion.v1_20, ItemTypes.same(Types.ITEM1_13_2));
+        ITEM_TYPES.put(ProtocolVersion.v1_20_3, ItemTypes.same(Types.ITEM1_20_2));
+        ITEM_TYPES.put(ProtocolVersion.v1_20_5, ItemTypes.same(VersionedTypes.V1_20_5.item));
+        ITEM_TYPES.put(ProtocolVersion.v1_21, ItemTypes.same(VersionedTypes.V1_21.item));
+        ITEM_TYPES.put(ProtocolVersion.v1_21_2, ItemTypes.same(VersionedTypes.V1_21_2.item));
+        ITEM_TYPES.put(ProtocolVersion.v1_21_4, ItemTypes.same(VersionedTypes.V1_21_4.item));
+        ITEM_TYPES.put(ProtocolVersion.v1_21_5, new ItemTypes(VersionedTypes.V1_21_5.item, VersionedTypes.V1_21_5.lengthPrefixedItem));
+        ITEM_TYPES.put(ProtocolVersion.v1_21_7, new ItemTypes(VersionedTypes.V1_21_6.item, VersionedTypes.V1_21_6.lengthPrefixedItem));
+        ITEM_TYPES.put(ProtocolVersion.v1_21_9, new ItemTypes(VersionedTypes.V1_21_9.item, VersionedTypes.V1_21_9.lengthPrefixedItem));
+        ITEM_TYPES.put(ProtocolVersion.v1_21_11, new ItemTypes(VersionedTypes.V1_21_11.item, VersionedTypes.V1_21_11.lengthPrefixedItem));
+        ITEM_TYPES.put(ProtocolVersion.v26_1, new ItemTypes(VersionedTypes.V26_1.item, VersionedTypes.V26_1.lengthPrefixedItem));
+        ITEM_TYPES.put(ProtocolVersion.v26_2, new ItemTypes(VersionedTypes.V26_2.item, VersionedTypes.V26_2.lengthPrefixedItem));
+
+        if (!ITEM_TYPES.containsKey(ProtocolTranslator.NATIVE_VERSION)) {
+            throw new IllegalStateException("Missing item type for native version");
+        }
+    }
 
     public ViaFabricPlusProtocol() {
         super(ClientboundPacket26_1.class, ClientboundPacket26_1.class, ServerboundPacket26_1.class, ServerboundPacket26_1.class);
@@ -86,7 +116,8 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
     public void init(UserConnection connection) {
         super.init(connection);
 
-        if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        final ProtocolVersion serverVersion = ProtocolTranslator.getTargetVersion(connection.getChannel()); // UserConnection#getProtocolInfo is not initialized yet
+        if (serverVersion.olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             connection.put(new WolfHealthTracker1_14_4());
         }
     }
@@ -108,64 +139,14 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
         return packetTypesProvider.unmappedServerboundType(State.PLAY, "SET_CREATIVE_MODE_SLOT");
     }
 
-    /**
-     * Gets the ViaVersion item type for the target version in the serverbound direction (creative inventory action packet)
-     *
-     * @param targetVersion The target version
-     * @return The ViaVersion item type
-     */
     public Type<Item> getServerboundItemType(final ProtocolVersion targetVersion) {
-        if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
-            return Typesb1_8_0_1.CREATIVE_ITEM;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return getClientboundItemType(targetVersion);
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
-            return VersionedTypes.V1_21_5.lengthPrefixedItem;
-        } else {
-            return VersionedTypes.V1_21_6.lengthPrefixedItem;
-        }
+        final Map.Entry<ProtocolVersion, ItemTypes> entry = ITEM_TYPES.ceilingEntry(targetVersion);
+        return entry.getValue().serverbound();
     }
 
-    /**
-     * Gets the ViaVersion item type for the target version in the clientbound direction
-     *
-     * @param targetVersion The target version
-     * @return The ViaVersion item type
-     */
     public Type<Item> getClientboundItemType(final ProtocolVersion targetVersion) {
-        if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
-            return Types1_4_2.NBTLESS_ITEM;
-        } else if (targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
-            return Types1_2_4.NBT_ITEM;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
-            return Types1_7_6.ITEM;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return Types.ITEM1_8;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_13_1)) {
-            return Types.ITEM1_13;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20)) {
-            return Types.ITEM1_13_2;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            return Types.ITEM1_20_2;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            return VersionedTypes.V1_20_5.item;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return VersionedTypes.V1_21.item;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
-            return VersionedTypes.V1_21_2.item;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return VersionedTypes.V1_21_4.item;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
-            return VersionedTypes.V1_21_5.item;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
-            return VersionedTypes.V1_21_6.item;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
-            return VersionedTypes.V1_21_9.item;
-        } else if (targetVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
-            return VersionedTypes.V1_21_11.item;
-        } else {
-            return VersionedTypes.V26_1.item;
-        }
+        final Map.Entry<ProtocolVersion, ItemTypes> entry = ITEM_TYPES.ceilingEntry(targetVersion);
+        return entry.getValue().clientbound();
     }
 
     @Override
@@ -176,6 +157,14 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
             packetTypeMap(mappedServerboundPacketType, ServerboundPackets26_1.class, ServerboundConfigurationPackets1_21_9.class),
             packetTypeMap(unmappedServerboundPacketType, ServerboundPackets26_1.class, ServerboundConfigurationPackets1_21_9.class)
         );
+    }
+
+    private record ItemTypes(Type<Item> clientbound, Type<Item> serverbound) {
+
+        static ItemTypes same(final Type<Item> type) {
+            return new ItemTypes(type, type);
+        }
+
     }
 
 }
