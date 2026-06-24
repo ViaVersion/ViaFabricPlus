@@ -21,6 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.bedrock.rewriter;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.ListTag;
@@ -157,5 +159,15 @@ public class MixinBlockStateRewriter {
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/logging/Logger;log(Ljava/util/logging/Level;Ljava/lang/String;)V"))
     private void cancelMissingBlockLog(Logger instance, Level level, String msg) {
+    }
+
+    @WrapMethod(method = "waterlog", remap = false)
+    private int waterlog(int javaBlockStateId, Operation<Integer> original) {
+        // TODO: Water-logged custom blocks are not supported yet!
+        try {
+            return original.call(javaBlockStateId);
+        } catch (Exception ignored) {
+            return -1;
+        }
     }
 }
