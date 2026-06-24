@@ -35,11 +35,11 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinAbstractHorse {
 
     @Shadow
-    protected abstract boolean handleEating(Player player, ItemStack item);
+    protected abstract boolean handleEating(Player player, ItemStack itemStack);
 
     @Redirect(method = "fedFood", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/equine/AbstractHorse;handleEating(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/ItemStack;)Z"))
-    private boolean decrementFoodItemClientside(AbstractHorse instance, Player player, ItemStack item) {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2) || this.handleEating(player, item);
+    private boolean decrementFoodItemClientside(AbstractHorse instance, Player player, ItemStack itemStack) {
+        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2) || this.handleEating(player, itemStack);
     }
 
 }

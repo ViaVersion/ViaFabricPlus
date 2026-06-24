@@ -27,9 +27,9 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.font.glyphs.BakedGlyph;
 import net.minecraft.client.gui.font.FontSet;
 import net.minecraft.client.gui.font.GlyphStitcher;
+import net.minecraft.client.gui.font.glyphs.BakedGlyph;
 import net.minecraft.util.RandomSource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,7 +45,7 @@ public abstract class MixinFontSet {
 
     @Shadow
     @Final
-    GlyphStitcher stitcher;
+    private GlyphStitcher stitcher;
 
     @Shadow
     @Final
@@ -67,8 +67,8 @@ public abstract class MixinFontSet {
     }
 
     @Inject(method = "getGlyph", at = @At("RETURN"), cancellable = true)
-    private void filterBakedGlyph(int codePoint, CallbackInfoReturnable<FontSet.SelectedGlyphs> cir) {
-        if (this.viaFabricPlus$shouldBeInvisible(codePoint)) {
+    private void filterBakedGlyph(int codepoint, CallbackInfoReturnable<FontSet.SelectedGlyphs> cir) {
+        if (this.viaFabricPlus$shouldBeInvisible(codepoint)) {
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
                 cir.setReturnValue(viaFabricPlus$blankBakedGlyphPair1_12_2);
             } else {
@@ -78,7 +78,7 @@ public abstract class MixinFontSet {
     }
 
     @Inject(method = "computeGlyphInfo", at = @At("RETURN"), cancellable = true)
-    private void fixBlankGlyph1_12_2(int codePoint, CallbackInfoReturnable<FontSet.SelectedGlyphs> cir) {
+    private void fixBlankGlyph1_12_2(int codepoint, CallbackInfoReturnable<FontSet.SelectedGlyphs> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             final FontSet.SelectedGlyphs glyphPair = cir.getReturnValue();
             cir.setReturnValue(glyphPair == this.missingSelectedGlyphs ? this.viaFabricPlus$blankBakedGlyphPair1_12_2 : glyphPair);
@@ -92,14 +92,14 @@ public abstract class MixinFontSet {
     }
 
     @Inject(method = "getGlyph", at = @At("RETURN"))
-    private void resumeCharacterFiltering(int codePoint, CallbackInfoReturnable<BakedGlyph> cir) {
+    private void resumeCharacterFiltering(int codepoint, CallbackInfoReturnable<BakedGlyph> cir) {
         viaFabricPlus$obfuscatedLookup = false;
     }
 
     @Unique
     private boolean viaFabricPlus$shouldBeInvisible(final int codePoint) {
         if (!viaFabricPlus$obfuscatedLookup && DebugSettings.INSTANCE.filterNonExistingGlyphs.getValue()) {
-            return (stitcher.texturePrefix.equals(Minecraft.DEFAULT_FONT) || stitcher.texturePrefix.equals(Minecraft.UNIFORM_FONT)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
+            return (stitcher.texturePrefix.equals(Minecraft.DEFAULT_FONT)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
         } else {
             return false;
         }

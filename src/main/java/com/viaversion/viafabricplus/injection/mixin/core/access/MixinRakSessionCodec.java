@@ -30,7 +30,7 @@ import org.cloudburstmc.netty.util.FastBinaryMinHeap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(value = RakSessionCodec.class, remap = false)
+@Mixin(RakSessionCodec.class)
 public abstract class MixinRakSessionCodec implements IRakSessionCodec {
 
     @Shadow

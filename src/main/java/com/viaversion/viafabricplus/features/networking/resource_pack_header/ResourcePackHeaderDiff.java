@@ -28,11 +28,11 @@ import com.viaversion.viaversion.libs.gson.JsonObject;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.WorldVersion;
-import net.minecraft.world.level.storage.DataVersion;
 import net.minecraft.SharedConstants;
-import net.minecraft.server.packs.metadata.pack.PackFormat;
+import net.minecraft.WorldVersion;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.pack.PackFormat;
+import net.minecraft.world.level.storage.DataVersion;
 
 /**
  * This class file contains the {@link WorldVersion} for each protocol version.

@@ -38,7 +38,7 @@ public abstract class MixinButtonBlock {
     @WrapWithCondition(
         method = "playSound",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/LevelAccessor;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;)V"))
-    private boolean disableClickSounds(LevelAccessor instance, Entity source, BlockPos pos, SoundEvent sound, SoundSource category) {
+    private boolean disableClickSounds(LevelAccessor instance, Entity except, BlockPos pos, SoundEvent soundEvent, SoundSource source) {
         return !DebugSettings.INSTANCE.serversidePlaceSounds.isEnabled(); // Sent by the server in older versions
     }
 

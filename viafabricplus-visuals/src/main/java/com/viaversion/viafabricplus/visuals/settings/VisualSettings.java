@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.visuals.settings;
 
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
-import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
@@ -34,11 +33,6 @@ public final class VisualSettings extends SettingGroup {
 
     public static final VisualSettings INSTANCE = new VisualSettings();
 
-    public final ModeSetting changeGameMenuScreenLayout = new ModeSetting(this, Component.translatable("visual_settings.viafabricplus.change_game_menu_screen_layout"),
-            Component.translatable("change_game_menu_screen_layout.viafabricplus.authentic"),
-            Component.translatable("change_game_menu_screen_layout.viafabricplus.adjusted"),
-            Component.translatable("base.viafabricplus.off")
-    );
     public final BooleanSetting removeBubblePopSound = new BooleanSetting(this, Component.translatable("visual_settings.viafabricplus.remove_bubble_pop_sound"), false);
     public final BooleanSetting hideEmptyBubbleIcons = new BooleanSetting(this, Component.translatable("visual_settings.viafabricplus.hide_empty_bubble_icons"), false);
     public final BooleanSetting hideVillagerProfession = new BooleanSetting(this, Component.translatable("visual_settings.viafabricplus.hide_villager_profession"), false);
@@ -89,12 +83,6 @@ public final class VisualSettings extends SettingGroup {
 
     public VisualSettings() {
         super(Component.translatable("setting_group_name.viafabricplus.visual"));
-        changeGameMenuScreenLayout.setTooltip(() -> switch (changeGameMenuScreenLayout.getIndex()) {
-            case 0 -> Component.translatable("change_game_menu_screen_layout.viafabricplus.authentic.tooltip");
-            case 1 -> Component.translatable("change_game_menu_screen_layout.viafabricplus.adjusted.tooltip");
-            default -> Component.translatable("change_game_menu_screen_layout.viafabricplus.off.tooltip");
-        });
-        changeGameMenuScreenLayout.setValue(1);
 
         hideDownloadTerrainScreenTransitionEffects.setValue(VersionedBooleanSetting.DISABLED_INDEX);
         forceUnicodeFontForNonAsciiLanguages.setValue(VersionedBooleanSetting.DISABLED_INDEX);

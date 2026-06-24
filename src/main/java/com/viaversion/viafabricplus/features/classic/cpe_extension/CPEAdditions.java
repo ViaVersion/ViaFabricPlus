@@ -52,7 +52,7 @@ public final class CPEAdditions {
         EXTENDED_CLASSIC_ITEMS.add(Items.SANDSTONE);
         EXTENDED_CLASSIC_ITEMS.add(Items.SNOW);
         EXTENDED_CLASSIC_ITEMS.add(Items.TORCH);
-        EXTENDED_CLASSIC_ITEMS.add(Items.BROWN_WOOL);
+        EXTENDED_CLASSIC_ITEMS.add(Items.WOOL.brown());
         EXTENDED_CLASSIC_ITEMS.add(Items.ICE);
         EXTENDED_CLASSIC_ITEMS.add(Items.CHISELED_QUARTZ_BLOCK);
         EXTENDED_CLASSIC_ITEMS.add(Items.NETHER_QUARTZ_ORE);

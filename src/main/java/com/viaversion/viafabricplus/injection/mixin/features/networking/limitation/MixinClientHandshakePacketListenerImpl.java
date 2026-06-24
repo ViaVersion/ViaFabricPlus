@@ -33,8 +33,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinClientHandshakePacketListenerImpl {
 
     @Redirect(method = "handleCompression", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;setupCompression(IZ)V"))
-    private void pre1_17_1CompressionBehaviour(Connection instance, int compressionThreshold, boolean rejectsBadPackets) {
-        instance.setupCompression(compressionThreshold, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17));
+    private void pre1_17_1CompressionBehaviour(Connection instance, int threshold, boolean validateDecompressed) {
+        instance.setupCompression(threshold, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17));
     }
 
 }

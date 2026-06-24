@@ -29,9 +29,9 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.network.protocol.handshake.ClientIntent;
-import net.minecraft.ChatFormatting;
 
 import static com.viaversion.viafabricplus.save.AbstractSave.GSON;
 

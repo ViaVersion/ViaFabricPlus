@@ -22,11 +22,11 @@
 package com.viaversion.viafabricplus.screen.impl.realms;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.util.bedrock.NetherNetJsonRpcAddress;
 import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.screen.VFPList;
 import com.viaversion.viafabricplus.screen.VFPListEntry;
 import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.util.bedrock.NetherNetJsonRpcAddress;
 import com.viaversion.viafabricplus.util.network.ConnectionUtil;
 import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
 import java.awt.*;
@@ -45,6 +45,7 @@ import net.raphimc.minecraftauth.extra.realms.service.impl.BedrockRealmsService;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import org.apache.logging.log4j.Level;
+import org.jspecify.annotations.NonNull;
 
 public final class BedrockRealmsScreen extends VFPScreen {
 
@@ -113,7 +114,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
         final int slotWidth = 360 - 4;
 
         int xPos = width / 2 - slotWidth / 2;
-        this.addRenderableWidget(joinButton = Button.builder(Component.translatable("bedrock_realms.viafabricplus.join"), button -> {
+        this.addRenderableWidget(joinButton = Button.builder(Component.translatable("bedrock_realms.viafabricplus.join"), _ -> {
             final SlotEntry entry = (SlotEntry) slotList.getFocused();
             if (entry.realmsServer.isExpired()) {
                 setupSubtitle(Component.translatable("bedrock_realms.viafabricplus.expired"));
@@ -141,9 +142,9 @@ public final class BedrockRealmsScreen extends VFPScreen {
         joinButton.active = false;
 
         xPos += 115 + 5;
-        this.addRenderableWidget(leaveButton = Button.builder(Component.translatable("bedrock_realms.viafabricplus.leave"), button -> {
+        this.addRenderableWidget(leaveButton = Button.builder(Component.translatable("bedrock_realms.viafabricplus.leave"), _ -> {
             final SlotEntry entry = (SlotEntry) slotList.getFocused();
-            service.leaveInvitedRealmAsync(entry.realmsServer).thenAccept(unused -> {
+            service.leaveInvitedRealmAsync(entry.realmsServer).thenAccept(_ -> {
                 this.realmsServers.remove(entry.realmsServer);
                 INSTANCE.open(prevScreen);
             }).exceptionally(throwable -> error("Failed to leave realm", throwable));
@@ -151,7 +152,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
         leaveButton.active = false;
 
         xPos += 115 + 5;
-        this.addRenderableWidget(Button.builder(Component.translatable("bedrock_realms.viafabricplus.invite"), button -> {
+        this.addRenderableWidget(Button.builder(Component.translatable("bedrock_realms.viafabricplus.invite"), _ -> {
             final AcceptInvitationCodeScreen screen = new AcceptInvitationCodeScreen(code -> service.acceptInviteAsync(code).thenAccept(world -> {
                 this.realmsServers.add(world);
                 INSTANCE.open(this);
@@ -210,7 +211,7 @@ public final class BedrockRealmsScreen extends VFPScreen {
         }
 
         @Override
-        public Component getNarration() {
+        public @NonNull Component getNarration() {
             return Component.nullToEmpty(realmsServer.getName());
         }
 

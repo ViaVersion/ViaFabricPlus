@@ -37,7 +37,7 @@ public abstract class MixinClientPacketListener {
     @Inject(method = "handleLogin", at = @At("RETURN"))
     private void initPlayerListFix(ClientboundLoginPacket packet, CallbackInfo ci) {
         LegacyTabList.globalTablistIndex = 0;
-        ((IPlayerTabOverlay) Minecraft.getInstance().gui.getTabList()).viaFabricPlusVisuals$setMaxPlayers(packet.maxPlayers());
+        ((IPlayerTabOverlay) Minecraft.getInstance().gui.hud.getTabList()).viaFabricPlusVisuals$setMaxPlayers(packet.maxPlayers());
     }
 
 }

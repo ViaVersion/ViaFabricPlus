@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.features.item.negative_item_count;
 
 import com.viaversion.viafabricplus.util.ItemUtil;
 import com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 
 public final class NegativeItemUtil {
 

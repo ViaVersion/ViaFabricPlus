@@ -23,20 +23,25 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.collision
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BedBlock.class)
-public abstract class MixinBedBlock {
+public abstract class MixinBedBlock extends HorizontalDirectionalBlock {
 
-    @Inject(method = "bounceUp", at = @At("HEAD"), cancellable = true)
-    private void collisionChanges(Entity entity, CallbackInfo ci) {
+    protected MixinBedBlock(final Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public float getBounceRestitution() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
-            ci.cancel();
+            return 0F;
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+            return 0.66F;
+        } else {
+            return super.getBounceRestitution();
         }
     }
 

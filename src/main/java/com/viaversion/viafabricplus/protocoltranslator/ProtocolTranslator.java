@@ -94,14 +94,14 @@ public final class ProtocolTranslator {
     public static final AttributeKey<Connection> CLIENT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-clientconnection");
 
     /**
-     * Stores the target version ViaVersion is translating to. This will be always set, even if the {@link #NATIVE_VERSION} is set.
+     * Stores the target version ViaVersion is translating to. This will always be set, even if the {@link #NATIVE_VERSION} is set.
      */
     public static final AttributeKey<ProtocolVersion> TARGET_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-targetversion");
 
     /**
      * The native version of the client
      */
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v26_1;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v26_2;
 
     /**
      * Name of the {@link FlowControlHandler} added to the pipeline

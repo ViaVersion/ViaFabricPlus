@@ -25,9 +25,9 @@ import com.viaversion.viaversion.util.Key;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.resources.ResourceKey;
 
 public final class Enchantments1_14_4 {
 

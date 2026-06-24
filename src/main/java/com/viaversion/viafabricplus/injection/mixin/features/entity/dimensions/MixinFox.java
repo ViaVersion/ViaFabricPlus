@@ -25,6 +25,7 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.fox.Fox;
@@ -39,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinFox extends Animal {
 
     @Unique
-    private static final EntityDimensions viaFabricPlus$baby_dimensions_r1_21_11 = EntityType.FOX.getDimensions().scale(0.5F).withEyeHeight(0.2975F);
+    private static final EntityDimensions viaFabricPlus$baby_dimensions_r1_21_11 = EntityTypes.FOX.getDimensions().scale(0.5F).withEyeHeight(0.2975F);
 
     public MixinFox(final EntityType<? extends Animal> type, final Level level) {
         super(type, level);

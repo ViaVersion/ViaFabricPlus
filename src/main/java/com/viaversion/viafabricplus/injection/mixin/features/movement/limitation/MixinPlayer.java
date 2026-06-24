@@ -49,11 +49,11 @@ public abstract class MixinPlayer extends LivingEntity {
     }
 
     @Redirect(method = "canPlayerFitWithinBlocksAndEntitiesWhen", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/AABB;deflate(D)Lnet/minecraft/world/phys/AABB;"))
-    private AABB removeContractionOfCollisionBox(AABB instance, double value) {
+    private AABB removeContractionOfCollisionBox(AABB instance, double amount) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return instance;
         } else {
-            return instance.deflate(value);
+            return instance.deflate(amount);
         }
     }
 

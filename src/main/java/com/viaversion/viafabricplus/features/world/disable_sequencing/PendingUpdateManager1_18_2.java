@@ -21,11 +21,11 @@
 
 package com.viaversion.viafabricplus.features.world.disable_sequencing;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.multiplayer.prediction.BlockStatePredictionHandler;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.prediction.BlockStatePredictionHandler;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * No-op implementation of {@link BlockStatePredictionHandler} for 1.18.2 and lower since those versions don't have the

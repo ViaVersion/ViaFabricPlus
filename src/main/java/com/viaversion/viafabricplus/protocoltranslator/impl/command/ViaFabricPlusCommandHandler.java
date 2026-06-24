@@ -27,8 +27,8 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.classic.ListExtensionsCommand;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.classic.SetTimeCommand;
-import java.util.concurrent.CompletableFuture;
 import com.viaversion.viaversion.commands.ViaCommandHandler;
+import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 
 public final class ViaFabricPlusCommandHandler extends ViaCommandHandler {

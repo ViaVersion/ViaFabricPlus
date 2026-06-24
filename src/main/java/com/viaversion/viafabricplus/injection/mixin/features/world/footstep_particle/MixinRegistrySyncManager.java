@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class MixinRegistrySyncManager {
 
     @WrapOperation(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/Registry;getKey(Ljava/lang/Object;)Lnet/minecraft/resources/Identifier;"), require = 0)
-    private static Identifier skipFootStepParticle(Registry instance, Object t, Operation<Identifier> original) {
+    private static Identifier skipFootStepParticle(Registry<?> instance, Object t, Operation<Identifier> original) {
         final Identifier id = original.call(instance, t);
         if (id == FootStepParticle1_12_2.ID) {
             return null;

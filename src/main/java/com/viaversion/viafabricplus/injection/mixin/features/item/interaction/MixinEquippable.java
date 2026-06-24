@@ -23,11 +23,11 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.equipment.Equippable;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -50,7 +50,7 @@ public abstract class MixinEquippable {
     }
 
     @Inject(method = "swapWithEquipmentSlot", at = @At("HEAD"), cancellable = true)
-    private void cancelArmorSwap(ItemStack stack, Player player, CallbackInfoReturnable<InteractionResult> cir) {
+    private void cancelArmorSwap(ItemStack inHand, Player player, CallbackInfoReturnable<InteractionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             final ItemStack targetItem = player.getItemBySlot(this.slot);
             if (!targetItem.isEmpty()) {

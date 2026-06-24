@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(value = ExtensionProtocolMetadataStorage.class, remap = false)
+@Mixin(ExtensionProtocolMetadataStorage.class)
 public abstract class MixinExtensionProtocolMetadataStorage implements IExtensionProtocolMetadataStorage {
 
     @Shadow

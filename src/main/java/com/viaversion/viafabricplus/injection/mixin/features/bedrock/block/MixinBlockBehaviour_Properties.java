@@ -49,7 +49,7 @@ public abstract class MixinBlockBehaviour_Properties {
     private static final int viaFabricPlus$STEPS = 16; // Quantization steps
 
     @Shadow
-    BlockBehaviour.OffsetFunction offsetFunction;
+    private BlockBehaviour.OffsetFunction offsetFunction;
 
     @Inject(method = "offsetType", at = @At(value = "RETURN"))
     private void fixBlockOffsets(BlockBehaviour.OffsetType offsetType, CallbackInfoReturnable<BlockBehaviour.Properties> cir) {

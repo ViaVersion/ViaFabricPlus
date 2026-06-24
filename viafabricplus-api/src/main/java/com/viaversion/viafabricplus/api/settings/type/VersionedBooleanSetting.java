@@ -28,7 +28,6 @@ import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import net.minecraft.network.chat.MutableComponent;
-import org.jetbrains.annotations.ApiStatus;
 
 public class VersionedBooleanSetting extends AbstractSetting<Integer> {
 

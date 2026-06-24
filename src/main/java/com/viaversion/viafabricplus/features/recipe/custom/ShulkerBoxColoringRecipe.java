@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 public final class ShulkerBoxColoringRecipe extends CustomRecipe {
 
@@ -71,7 +70,7 @@ public final class ShulkerBoxColoringRecipe extends CustomRecipe {
 
     public @NonNull ItemStack assemble(CraftingInput input) {
         ItemStack result = ItemStack.EMPTY;
-        ItemStack dyeStack = Items.WHITE_DYE.getDefaultInstance();
+        ItemStack dyeStack = Items.DYE.white().getDefaultInstance();
 
         for (int i = 0; i < input.size(); i++) {
             ItemStack stack = input.getItem(i);
@@ -85,37 +84,13 @@ public final class ShulkerBoxColoringRecipe extends CustomRecipe {
             }
         }
 
-        return result.transmuteCopy(getBlockByColor(dyeStack.get(DataComponents.DYE)), 1);
+        final DyeColor dye = dyeStack.get(DataComponents.DYE);
+        return result.transmuteCopy(dye == null ? Blocks.SHULKER_BOX : Blocks.DYED_SHULKER_BOX.pick(dye), 1);
     }
 
     @Override
     public @NonNull RecipeSerializer<ShulkerBoxColoringRecipe> getSerializer() {
         return SERIALIZER;
-    }
-
-    private static Block getBlockByColor(@Nullable DyeColor color) {
-        if (color == null) {
-            return Blocks.SHULKER_BOX;
-        } else {
-            return switch (color) {
-                case WHITE -> Blocks.WHITE_SHULKER_BOX;
-                case ORANGE -> Blocks.ORANGE_SHULKER_BOX;
-                case MAGENTA -> Blocks.MAGENTA_SHULKER_BOX;
-                case LIGHT_BLUE -> Blocks.LIGHT_BLUE_SHULKER_BOX;
-                case YELLOW -> Blocks.YELLOW_SHULKER_BOX;
-                case LIME -> Blocks.LIME_SHULKER_BOX;
-                case PINK -> Blocks.PINK_SHULKER_BOX;
-                case GRAY -> Blocks.GRAY_SHULKER_BOX;
-                case LIGHT_GRAY -> Blocks.LIGHT_GRAY_SHULKER_BOX;
-                case CYAN -> Blocks.CYAN_SHULKER_BOX;
-                case BLUE -> Blocks.BLUE_SHULKER_BOX;
-                case BROWN -> Blocks.BROWN_SHULKER_BOX;
-                case GREEN -> Blocks.GREEN_SHULKER_BOX;
-                case RED -> Blocks.RED_SHULKER_BOX;
-                case BLACK -> Blocks.BLACK_SHULKER_BOX;
-                case PURPLE -> Blocks.PURPLE_SHULKER_BOX;
-            };
-        }
     }
 
 }

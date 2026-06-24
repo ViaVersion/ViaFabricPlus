@@ -41,7 +41,7 @@ public abstract class MixinCraftingMenu extends AbstractCraftingMenu {
     }
 
     @Inject(method = "slotsChanged", at = @At("HEAD"))
-    private void clientSideCrafting(Container inventory, CallbackInfo ci) {
+    private void clientSideCrafting(Container container, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             Recipes1_11_2.setCraftingResultSlot(containerId, this, this.craftSlots);
         }

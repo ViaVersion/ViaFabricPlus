@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.injection.mixin.core.connection;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.viaversion.viafabricplus.injection.access.core.IConnection;
 import com.viaversion.viafabricplus.injection.access.core.ILocalSampleLogger;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -62,10 +61,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
     public Channel channel;
 
     @Shadow
-    private boolean encrypted;
-
-    @Shadow
-    public abstract void channelActive(@NotNull ChannelHandlerContext context) throws Exception;
+    public abstract void channelActive(@NotNull ChannelHandlerContext ctx) throws Exception;
 
     @Unique
     private UserConnection viaFabricPlus$userConnection;
@@ -77,53 +73,52 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
     private Cipher viaFabricPlus$decryptionCipher;
 
     @Inject(method = "setupCompression", at = @At("RETURN"))
-    private void reorderCompression(int compressionThreshold, boolean rejectBad, CallbackInfo ci) {
-        // Compression enabled and elements put into pipeline, move via handlers
+    private void reorderCompression(int threshold, boolean validateDecompressed, CallbackInfo ci) {
+        // Compression enabled, and elements put into pipeline, move via handlers
         ViaChannelInitializer.reorderPipeline(channel.pipeline(), HandlerNames.COMPRESS, HandlerNames.DECOMPRESS);
     }
 
     @Inject(method = "setEncryptionKey", at = @At("HEAD"), cancellable = true)
-    private void storeDecryptionCipher(Cipher decryptionCipher, Cipher encryptionCipher, CallbackInfo ci) {
+    private void storeDecryptionCipher(Cipher decryptCipher, Cipher encryptCipher, CallbackInfo ci) {
         if (this.viaFabricPlus$serverVersion != null /* This happens when opening a lan server and people are joining */ && this.viaFabricPlus$serverVersion.olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             // Minecraft's encryption code is bad for us, we need to reorder the pipeline
             ci.cancel();
 
-            // Minecraft 1.6.4 supports split encryption/decryption which means the server can only enable one side of the encryption
+            // Minecraft 1.6.4 supports split encryption/ decryption, which means the server can only enable one side of the encryption
             // So we only enable the encryption side and later enable the decryption side if the 1.7 -> 1.6 protocol
             // tells us to do, therefore, we need to store the cipher instance.
-            this.viaFabricPlus$decryptionCipher = decryptionCipher;
+            this.viaFabricPlus$decryptionCipher = decryptCipher;
 
             // Enabling the encryption side
-            if (encryptionCipher == null) {
+            if (encryptCipher == null) {
                 throw new IllegalStateException("Encryption cipher is null");
             }
 
-            this.encrypted = true;
-            this.channel.pipeline().addBefore(PreNettyLengthRemover.NAME, HandlerNames.ENCRYPT, new CipherEncoder(encryptionCipher));
+            this.channel.pipeline().addBefore(PreNettyLengthRemover.NAME, HandlerNames.ENCRYPT, new CipherEncoder(encryptCipher));
         }
     }
 
     @Inject(method = "connectToServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connect(Ljava/net/InetSocketAddress;Lnet/minecraft/server/network/EventLoopGroupHolder;Lnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;"))
-    private static void setTargetVersion(InetSocketAddress inetSocketAddress, EventLoopGroupHolder eventLoopGroupHolder, LocalSampleLogger localSampleLogger, CallbackInfoReturnable<Connection> cir, @Local Connection clientConnection) {
+    private static void setTargetVersion(InetSocketAddress address, EventLoopGroupHolder eventLoopGroupHolder, LocalSampleLogger bandwidthLogger, CallbackInfoReturnable<Connection> cir, @Local(name = "connection") Connection connection) {
         // Set the target version stored in the PerformanceLog field to the ClientConnection instance
-        if (localSampleLogger instanceof ILocalSampleLogger mixinMultiValueDebugSampleLogImpl && mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion() != null) {
-            ((IConnection) clientConnection).viaFabricPlus$setTargetVersion(mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion());
+        if (bandwidthLogger instanceof ILocalSampleLogger mixinMultiValueDebugSampleLogImpl && mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion() != null) {
+            ((IConnection) connection).viaFabricPlus$setTargetVersion(mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion());
         }
     }
 
     @WrapWithCondition(method = "connectToServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;setBandwidthLogger(Lnet/minecraft/util/debugchart/LocalSampleLogger;)V"))
-    private static boolean dontSetPerformanceLog(Connection instance, LocalSampleLogger packetSizeLog) {
+    private static boolean dontSetPerformanceLog(Connection instance, LocalSampleLogger bandwidthLogger) {
         // We need to restore vanilla behavior since we use the PerformanceLog as a way to store the target version
-        return !(packetSizeLog instanceof ILocalSampleLogger mixinMultiValueDebugSampleLogImpl) || mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion() == null;
+        return !(bandwidthLogger instanceof ILocalSampleLogger mixinMultiValueDebugSampleLogImpl) || mixinMultiValueDebugSampleLogImpl.viaFabricPlus$getForcedVersion() == null;
     }
 
     @Inject(method = "connect", at = @At("HEAD"))
-    private static void setTargetVersion(InetSocketAddress inetSocketAddress, EventLoopGroupHolder eventLoopGroupHolder, Connection connection, CallbackInfoReturnable<ChannelFuture> cir, @Local(argsOnly = true) LocalRef<EventLoopGroupHolder> eventLoopGroupHolderRef) {
+    private static void setTargetVersion(InetSocketAddress address, EventLoopGroupHolder eventLoopGroupHolder, Connection connection, CallbackInfoReturnable<ChannelFuture> cir) {
         ProtocolVersion targetVersion = ((IConnection) connection).viaFabricPlus$getTargetVersion();
-        if (targetVersion == null) { // No server specific override
+        if (targetVersion == null) { // No server-specific override
             targetVersion = ProtocolTranslator.getTargetVersion();
         }
-        if (targetVersion == ProtocolTranslator.AUTO_DETECT_PROTOCOL) { // Auto-detect enabled (when pinging always use native version). Auto-detect is resolved in ConnectScreen mixin
+        if (targetVersion == ProtocolTranslator.AUTO_DETECT_PROTOCOL) { // Auto-detect enabled (when pinging always use a native version). Auto-detect is resolved in ConnectScreen mixin
             targetVersion = ProtocolTranslator.NATIVE_VERSION;
         }
         ((IConnection) connection).viaFabricPlus$setTargetVersion(targetVersion);
@@ -135,7 +130,6 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
             throw new IllegalStateException("Decryption cipher is null");
         }
 
-        this.encrypted = true;
         // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
         this.channel.pipeline().addBefore(PreNettyLengthPrepender.NAME, HandlerNames.DECRYPT, new CipherDecoder(this.viaFabricPlus$decryptionCipher));
     }

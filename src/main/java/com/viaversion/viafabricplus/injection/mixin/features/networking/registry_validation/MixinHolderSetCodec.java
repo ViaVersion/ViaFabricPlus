@@ -37,10 +37,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinHolderSetCodec {
 
     @Inject(method = "lookupTag", at = @At("RETURN"), cancellable = true)
-    private static void workaroundValidation(HolderGetter registry, TagKey tag, CallbackInfoReturnable<DataResult<HolderSet>> cir) {
+    private static void workaroundValidation(HolderGetter<?> registry, TagKey<?> key, CallbackInfoReturnable<DataResult<HolderSet<?>>> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            // The client now throws if the server refernces tags which weren't previously send via protocol,
-            // instead of implementing verification on protocol level we just skip the error and return an empty registry list
+            // The client now throws if the server references tags, which weren't previously sent via protocol,
+            // instead of implementing verification on protocol level, we just skip the error and return an empty registry list
             if (cir.getReturnValue().isError()) {
                 cir.setReturnValue(DataResult.success(HolderSet.empty()));
             }

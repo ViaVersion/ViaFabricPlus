@@ -34,8 +34,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinComponentUtil {
 
     @Redirect(method = {"legacyToJson", "legacyToJsonString(Ljava/lang/String;Z)Ljava/lang/String;"}, at = @At(value = "INVOKE", target = "Lcom/viaversion/viaversion/libs/mcstructs/text/stringformat/StringFormat;fromString(Ljava/lang/String;Lcom/viaversion/viaversion/libs/mcstructs/text/stringformat/handling/ColorHandling;Lcom/viaversion/viaversion/libs/mcstructs/text/stringformat/handling/DeserializerUnknownHandling;)Lcom/viaversion/viaversion/libs/mcstructs/text/TextComponent;"))
-    private static TextComponent dontSkipEmptySections(StringFormat instance, String resolved, ColorHandling colorHandling, DeserializerUnknownHandling unknownHandling) {
-        return instance.fromString(resolved, colorHandling, unknownHandling, false);
+    private static TextComponent dontSkipEmptySections(StringFormat instance, String s, ColorHandling colorHandling, DeserializerUnknownHandling unknownHandling) {
+        return instance.fromString(s, colorHandling, unknownHandling, false);
     }
 
 }

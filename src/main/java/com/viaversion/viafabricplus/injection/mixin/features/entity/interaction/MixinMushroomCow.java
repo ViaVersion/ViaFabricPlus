@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -55,7 +55,7 @@ public abstract class MixinMushroomCow extends Animal {
     private void checkForItemTags(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             final ItemStack itemStack = player.getItemInHand(hand);
-            if (!itemStack.is(ItemTags.SMALL_FLOWERS)) {
+            if (!itemStack.is(BlockItemTags.SMALL_FLOWERS.item())) {
                 cir.setReturnValue(super.mobInteract(player, hand));
             }
         }

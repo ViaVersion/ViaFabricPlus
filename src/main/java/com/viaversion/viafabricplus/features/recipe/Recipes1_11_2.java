@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.features.recipe;
 
+import com.mojang.datafixers.util.Pair;
 import com.viaversion.viafabricplus.features.recipe.custom.AddBannerPatternRecipe;
 import com.viaversion.viafabricplus.features.recipe.custom.ShulkerBoxColoringRecipe;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
@@ -47,7 +48,6 @@ import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
@@ -84,7 +84,7 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
  */
 public final class Recipes1_11_2 {
 
-    private static final List<Tuple<LegacyRecipe, ProtocolVersionRange>> LEGACY_RECIPES = new ArrayList<>();
+    private static final List<Pair<LegacyRecipe, ProtocolVersionRange>> LEGACY_RECIPES = new ArrayList<>();
     private static RecipeManager1_11_2 RECIPE_MANAGER;
 
     public static void init() {
@@ -97,9 +97,9 @@ public final class Recipes1_11_2 {
             final String type = recipeElement.getAsJsonObject().get("type").getAsString();
             final ProtocolVersionRange versionRange = ProtocolVersionRange.fromString(recipeElement.getAsJsonObject().get("version").getAsString());
             switch (type) {
-                case "shaped" -> LEGACY_RECIPES.add(new Tuple<>(LegacyShapedRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
-                case "shapeless" -> LEGACY_RECIPES.add(new Tuple<>(LegacyShapelessRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
-                case "smelting" -> LEGACY_RECIPES.add(new Tuple<>(LegacySmeltingRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "shaped" -> LEGACY_RECIPES.add(new Pair<>(LegacyShapedRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "shapeless" -> LEGACY_RECIPES.add(new Pair<>(LegacyShapelessRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "smelting" -> LEGACY_RECIPES.add(new Pair<>(LegacySmeltingRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
                 default -> throw new IllegalArgumentException("Unknown recipe type: " + type);
             }
         }
@@ -111,10 +111,10 @@ public final class Recipes1_11_2 {
 
             // Regular recipes
             for (int i = 0; i < LEGACY_RECIPES.size(); i++) {
-                final Tuple<LegacyRecipe, ProtocolVersionRange> legacyRecipe = LEGACY_RECIPES.get(i);
-                if (legacyRecipe.getB().contains(ProtocolTranslator.getTargetVersion())) {
+                final Pair<LegacyRecipe, ProtocolVersionRange> legacyRecipe = LEGACY_RECIPES.get(i);
+                if (legacyRecipe.getSecond().contains(ProtocolTranslator.getTargetVersion())) {
                     final ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("viafabricplus", "recipe/" + i));
-                    switch (legacyRecipe.getA()) {
+                    switch (legacyRecipe.getFirst()) {
                         case LegacyShapedRecipe legacyShapedRecipe -> {
                             final Map<Character, Ingredient> ingredients = new HashMap<>();
                             for (Map.Entry<Character, List<Item>> entry : legacyShapedRecipe.legend.entrySet()) {
@@ -157,7 +157,7 @@ public final class Recipes1_11_2 {
                             final SmeltingRecipe recipe = new SmeltingRecipe(commonInfo, cookingBookInfo, input, output, legacySmeltingRecipe.experience, 200);
                             recipes.add(new RecipeHolder<>(key, recipe));
                         }
-                        default -> throw new IllegalStateException("Unknown legacy recipe type: " + legacyRecipe.getA().getClass());
+                        default -> throw new IllegalStateException("Unknown legacy recipe type: " + legacyRecipe.getFirst().getClass());
                     }
                 }
             }
@@ -185,22 +185,7 @@ public final class Recipes1_11_2 {
             }
             if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_8)) {
                 specialRecipes.add(new RepairItemRecipe());
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.WHITE_BANNER), new ItemStackTemplate(Items.WHITE_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.ORANGE_BANNER), new ItemStackTemplate(Items.ORANGE_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.MAGENTA_BANNER), new ItemStackTemplate(Items.MAGENTA_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.LIGHT_BLUE_BANNER), new ItemStackTemplate(Items.LIGHT_BLUE_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.YELLOW_BANNER), new ItemStackTemplate(Items.YELLOW_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.LIME_BANNER), new ItemStackTemplate(Items.LIME_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.PINK_BANNER), new ItemStackTemplate(Items.PINK_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.GRAY_BANNER), new ItemStackTemplate(Items.GRAY_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.LIGHT_GRAY_BANNER), new ItemStackTemplate(Items.LIGHT_GRAY_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.CYAN_BANNER), new ItemStackTemplate(Items.CYAN_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.PURPLE_BANNER), new ItemStackTemplate(Items.PURPLE_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.BLUE_BANNER), new ItemStackTemplate(Items.BLUE_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.BROWN_BANNER), new ItemStackTemplate(Items.BROWN_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.GREEN_BANNER), new ItemStackTemplate(Items.GREEN_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.RED_BANNER), new ItemStackTemplate(Items.RED_BANNER)));
-                specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(Items.BLACK_BANNER), new ItemStackTemplate(Items.BLACK_BANNER)));
+                Items.BANNER.forEach(item -> specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(item), new ItemStackTemplate(item))));
                 specialRecipes.add(new AddBannerPatternRecipe());
             }
             if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_7_2)) {
@@ -232,7 +217,7 @@ public final class Recipes1_11_2 {
 
     /**
      * Sets the result slot of a crafting screen handler to the correct item stack. In Minecraft versions up to 1.11.2 the result slot
-     * is not updated when the input slots change, so we need to update it manually, Spigot and Paper re-syncs the slot,
+     * is not updated when the input slots change, so we need to update it manually, Spigot and Paper re-sync the slot,
      * so we don't notice this bug on servers that use Spigot or Paper
      *
      * @param syncId        The sync id of the screen handler

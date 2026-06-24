@@ -33,11 +33,11 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinLocalPlayer {
 
     @Redirect(method = "sendPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;square(D)D"))
-    private double changeMagnitude(double n) {
+    private double changeMagnitude(double x) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
             return 9.0E-4D;
         } else {
-            return Mth.square(n);
+            return Mth.square(x);
         }
     }
 

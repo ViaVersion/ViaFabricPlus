@@ -44,7 +44,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinAbstractContainerScreen extends Screen {
 
     @Shadow
-    public abstract boolean mouseClicked(final @NonNull MouseButtonEvent mouseButtonEvent, final boolean bl);
+    public abstract boolean mouseClicked(final @NonNull MouseButtonEvent event, final boolean doubleClick);
 
     protected MixinAbstractContainerScreen(final Component component) {
         super(component);
@@ -57,9 +57,9 @@ public abstract class MixinAbstractContainerScreen extends Screen {
 
     // TODO: Item is supposed to go in slot on click not where mouse is released
     @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
-    private void disableItemDragging(final MouseButtonEvent mouseButtonEvent, final double mouseX, final double mouseY, final CallbackInfoReturnable<Boolean> cir) {
+    private void disableItemDragging(final MouseButtonEvent event, final double dx, final double dy, final CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_5tor1_5_1)) {
-            cir.setReturnValue(super.mouseDragged(mouseButtonEvent, mouseX, mouseY));
+            cir.setReturnValue(super.mouseDragged(event, dx, dy));
         }
     }
 
@@ -69,8 +69,8 @@ public abstract class MixinAbstractContainerScreen extends Screen {
     }
 
     @Redirect(method = "checkHotbarKeyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;matches(Lnet/minecraft/client/input/KeyEvent;)Z", ordinal = 1))
-    private boolean disableHotbarKeys(final KeyMapping instance, final KeyEvent keyEvent) {
-        return instance.matches(keyEvent) && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
+    private boolean disableHotbarKeys(final KeyMapping instance, final KeyEvent event) {
+        return instance.matches(event) && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
     }
 
 }

@@ -30,6 +30,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.NonNull;
 
 public final class ClassiCubeMFAScreen extends VFPScreen {
 
@@ -83,7 +84,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
     }
 
     @Override
-    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractRenderState(final @NonNull GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
         this.renderScreenTitle(graphics);
     }

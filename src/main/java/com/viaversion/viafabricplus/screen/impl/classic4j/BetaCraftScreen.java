@@ -31,12 +31,13 @@ import de.florianreuth.classic4j.model.betacraft.BCServerInfo;
 import de.florianreuth.classic4j.model.betacraft.BCServerList;
 import de.florianreuth.classic4j.model.betacraft.BCVersionCategory;
 import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
+import org.jspecify.annotations.NonNull;
 
 import static com.viaversion.viafabricplus.screen.VFPListEntry.SLOT_MARGIN;
 
@@ -121,7 +122,7 @@ public final class BetaCraftScreen extends VFPScreen {
         }
 
         @Override
-        public Component getNarration() {
+        public @NonNull Component getNarration() {
             return Component.nullToEmpty(server.name());
         }
 

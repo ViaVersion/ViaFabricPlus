@@ -40,7 +40,7 @@ public abstract class MixinPlayer {
     private Abilities abilities;
 
     @Inject(method = "canEat", at = @At("HEAD"), cancellable = true)
-    private void preventEatingFoodInCreative(boolean ignoreHunger, CallbackInfoReturnable<Boolean> cir) {
+    private void preventEatingFoodInCreative(boolean canAlwaysEat, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && this.abilities.invulnerable) {
             cir.setReturnValue(false);
         }

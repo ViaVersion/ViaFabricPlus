@@ -27,10 +27,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -44,14 +44,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-@Mixin(Gui.class)
-public abstract class MixinGui {
+@Mixin(Hud.class)
+public abstract class MixinHud {
 
     @Unique
     private static final int viaFabricPlusVisuals$ARMOR_ICON_WIDTH = 8;
 
     @Inject(method = "playAirBubblePoppedSound", at = @At("HEAD"), cancellable = true)
-    private void disableBubblePopSound(int bubble, Player player, int burstBubbles, CallbackInfo ci) {
+    private void disableBubblePopSound(int bubble, Player player, int emptyAirBubbles, CallbackInfo ci) {
         if (VisualSettings.INSTANCE.removeBubblePopSound.getValue()) {
             ci.cancel();
         }
@@ -86,7 +86,7 @@ public abstract class MixinGui {
     }
 
     @Inject(method = "getVehicleMaxHearts", at = @At("HEAD"), cancellable = true)
-    private void removeHungerBar(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
+    private void removeHungerBar(LivingEntity vehicle, CallbackInfoReturnable<Integer> cir) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             cir.setReturnValue(1);
         }

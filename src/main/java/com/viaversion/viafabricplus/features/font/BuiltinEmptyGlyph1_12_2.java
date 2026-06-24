@@ -21,11 +21,11 @@
 
 package com.viaversion.viafabricplus.features.font;
 
-import com.mojang.blaze3d.textures.GpuTexture;
-import net.minecraft.client.gui.font.glyphs.BakedSheetGlyph;
-import net.minecraft.client.gui.font.GlyphStitcher;
-import com.mojang.blaze3d.font.GlyphInfo;
 import com.mojang.blaze3d.font.GlyphBitmap;
+import com.mojang.blaze3d.font.GlyphInfo;
+import com.mojang.blaze3d.textures.GpuTexture;
+import net.minecraft.client.gui.font.GlyphStitcher;
+import net.minecraft.client.gui.font.glyphs.BakedSheetGlyph;
 
 public enum BuiltinEmptyGlyph1_12_2 implements GlyphInfo {
     INSTANCE;

@@ -132,19 +132,19 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
     // Older servers don't have these components, so we can use them to emulate old item behaviour without the need
     // of modifying tons of code in the game.
     @Inject(method = "appendItemDataFixComponents", at = @At("RETURN"))
-    private void appendItemDataFixComponents(UserConnection user, Item item, CallbackInfo ci) {
+    private void appendItemDataFixComponents(UserConnection connection, Item item, CallbackInfo ci) {
         final StructuredDataContainer data = item.dataContainer();
         final String identifier = this.protocol.getMappingData().getFullItemMappings().identifier(item.identifier());
 
         // Fix durability tooltip displaying wrong
-        if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+        if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             if (this.viaFabricPlus$armorMaxDamage_b1_8_1.containsKey(identifier)) {
                 data.set(StructuredDataKey.MAX_DAMAGE, this.viaFabricPlus$armorMaxDamage_b1_8_1.get(identifier));
             }
         }
 
         // Fix item desyncs
-        if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
+        if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             if (this.viaFabricPlus$foodItems_b1_7_3.contains(identifier)) {
                 data.set(StructuredDataKey.MAX_STACK_SIZE, 1);
                 data.setEmpty(StructuredDataKey.FOOD1_20_5);
@@ -153,7 +153,7 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
 
         // Tool data changes include mining speeds as well as suitable blocks and damage values
         for (Map.Entry<ProtocolVersion, Map<String, ToolProperties>> entry : this.viaFabricPlus$toolDataChanges.entrySet()) {
-            if (user.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(entry.getKey())) {
+            if (connection.getProtocolInfo().serverProtocolVersion().olderThanOrEqualTo(entry.getKey())) {
                 final ToolProperties toolProperties = entry.getValue().get(identifier);
                 if (toolProperties != null) {
                     data.set(StructuredDataKey.TOOL1_20_5, toolProperties);

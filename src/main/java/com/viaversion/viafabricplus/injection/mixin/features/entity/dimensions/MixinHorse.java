@@ -27,6 +27,7 @@ import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.entity.EntityAttachments;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.equine.Horse;
@@ -41,9 +42,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinHorse extends AbstractHorse {
 
     @Unique
-    private static final EntityDimensions viaFabricPlus$baby_dimensions_r1_21_11 = EntityType.HORSE
+    private static final EntityDimensions viaFabricPlus$baby_dimensions_r1_21_11 = EntityTypes.HORSE
         .getDimensions()
-        .withAttachments(EntityAttachments.builder().attach(EntityAttachment.PASSENGER, 0.0F, EntityType.HORSE.getHeight() + 0.125F, 0.0F))
+        .withAttachments(EntityAttachments.builder().attach(EntityAttachment.PASSENGER, 0.0F, EntityTypes.HORSE.getHeight() + 0.125F, 0.0F))
         .scale(0.5F);
 
     public MixinHorse(final EntityType<? extends AbstractHorse> type, final Level level) {

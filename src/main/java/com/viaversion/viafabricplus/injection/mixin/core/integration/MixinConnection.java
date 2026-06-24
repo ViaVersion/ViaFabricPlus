@@ -25,9 +25,9 @@ import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import java.net.ConnectException;
 import java.net.SocketException;
-import io.netty.channel.SimpleChannelInboundHandler;
 import net.minecraft.network.Connection;
 import net.minecraft.network.HandlerNames;
 import net.minecraft.network.protocol.Packet;
@@ -40,13 +40,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet<?>> {
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"))
-    private void printNetworkingErrors(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {
+    private void printNetworkingErrors(ChannelHandlerContext ctx, Throwable cause, CallbackInfo ci) {
         if (DebugSettings.INSTANCE.printNetworkingErrorsToLogs.getValue()) {
-            if (ex instanceof SocketException || ex instanceof ConnectException) {
+            if (cause instanceof SocketException || cause instanceof ConnectException) {
                 // Thrown when server is not reachable
                 return;
             }
-            ViaFabricPlusImpl.INSTANCE.getLogger().error("An exception occurred while handling a packet", ex);
+            ViaFabricPlusImpl.INSTANCE.getLogger().error("An exception occurred while handling a packet", cause);
         }
     }
 

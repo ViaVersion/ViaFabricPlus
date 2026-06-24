@@ -37,17 +37,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinLivingEntity {
 
     @Redirect(method = "updatingUsingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isSameItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"))
-    private boolean replaceItemStackEqualsCheck(ItemStack left, ItemStack right) {
+    private boolean replaceItemStackEqualsCheck(ItemStack a, ItemStack b) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
-            return left == right;
+            return a == b;
         } else {
-            return ItemStack.isSameItem(left, right);
+            return ItemStack.isSameItem(a, b);
         }
     }
 
     @Inject(method = "getEquipmentSlotForItem", at = @At("HEAD"), cancellable = true)
-    private void removeShieldSlotPreference(ItemStack stack, CallbackInfoReturnable<EquipmentSlot> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3) && stack.is(Items.SHIELD)) {
+    private void removeShieldSlotPreference(ItemStack itemStack, CallbackInfoReturnable<EquipmentSlot> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3) && itemStack.is(Items.SHIELD)) {
             cir.setReturnValue(EquipmentSlot.MAINHAND);
         }
     }

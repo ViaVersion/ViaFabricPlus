@@ -24,9 +24,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 import com.viaversion.viafabricplus.injection.access.block.shape.ICrossCollisionBlock;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -38,7 +38,7 @@ public abstract class MixinCrossCollisionBlock implements ICrossCollisionBlock {
 
     @Override
     public int viaFabricPlus$getShapeIndex(final BlockState blockState) {
-        return viaFabricPlus$SHAPE_INDEX_CACHE.computeIfAbsent(blockState, statex -> {
+        return viaFabricPlus$SHAPE_INDEX_CACHE.computeIfAbsent(blockState, _ -> {
             int index = 0;
             if (blockState.getValue(CrossCollisionBlock.NORTH)) {
                 index |= 1 << Direction.NORTH.get2DDataValue();

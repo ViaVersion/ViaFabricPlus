@@ -26,8 +26,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -42,7 +42,7 @@ public abstract class MixinPlayer extends LivingEntity {
     }
 
     @Inject(method = "canFallAtLeast", at = @At("HEAD"), cancellable = true)
-    private void changeOffsetsForSneakingCollisionDetection(double offsetX, double offsetZ, double d, CallbackInfoReturnable<Boolean> cir) {
+    private void changeOffsetsForSneakingCollisionDetection(double deltaX, double deltaZ, double minHeight, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             final double constant;
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
@@ -51,7 +51,7 @@ public abstract class MixinPlayer extends LivingEntity {
                 constant = 1.0E-5F;
             }
             final AABB box = getBoundingBox();
-            cir.setReturnValue(level().noCollision(this, new AABB(box.minX + offsetX, box.minY - d - constant, box.minZ + offsetZ, box.maxX + offsetX, box.minY, box.maxZ + offsetZ)));
+            cir.setReturnValue(level().noCollision(this, new AABB(box.minX + deltaX, box.minY - minHeight - constant, box.minZ + deltaZ, box.maxX + deltaX, box.minY, box.maxZ + deltaZ)));
         }
     }
 

@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.large_container;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.util.network.SyncTasks;
 import com.viaversion.viafabricplus.protocoltranslator.translator.TextComponentTranslator;
+import com.viaversion.viafabricplus.util.network.SyncTasks;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
@@ -38,11 +38,11 @@ import com.viaversion.viaversion.protocols.v1_13_2to1_14.rewriter.ItemPacketRewr
 import com.viaversion.viaversion.rewriter.ItemRewriter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.util.Mth;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.inventory.ChestMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -75,7 +75,7 @@ public abstract class MixinItemPacketRewriter1_14 extends ItemRewriter<Clientbou
 
                     final ChestMenu screenHandler = new ChestMenu(null, syncId, mc.player.getInventory(), new SimpleContainer(size), Mth.ceil(size / 9F));
                     mc.player.containerMenu = screenHandler;
-                    mc.setScreen(new ContainerScreen(screenHandler, mc.player.getInventory(), mcTitle));
+                    mc.gui.setScreen(new ContainerScreen(screenHandler, mc.player.getInventory(), mcTitle));
                 } catch (Throwable t) {
                     throw new RuntimeException("Failed to handle OpenWindow packet data", t);
                 }

@@ -51,25 +51,25 @@ public abstract class MixinServerData implements IServerData {
     private ProtocolVersion viaFabricPlus$translatingVersion;
 
     @Inject(method = "write", at = @At("TAIL"))
-    private void saveForcedVersion(CallbackInfoReturnable<CompoundTag> cir, @Local CompoundTag nbtCompound) {
+    private void saveForcedVersion(CallbackInfoReturnable<CompoundTag> cir, @Local(name = "tag") CompoundTag tag) {
         if (viaFabricPlus$forcedVersion != null) {
-            nbtCompound.putString("viafabricplus_forcedversion", viaFabricPlus$forcedVersion.getName());
+            tag.putString("viafabricplus_forcedversion", viaFabricPlus$forcedVersion.getName());
         }
     }
 
     @Inject(method = "read", at = @At("TAIL"))
-    private static void loadForcedVersion(CompoundTag root, CallbackInfoReturnable<ServerData> cir, @Local ServerData serverInfo) {
-        if (root.contains("viafabricplus_forcedversion")) {
-            final ProtocolVersion version = SettingsSave.protocolVersionByName(root.getStringOr("viafabricplus_forcedversion", null));
+    private static void loadForcedVersion(CompoundTag tag, CallbackInfoReturnable<ServerData> cir, @Local(name = "server") ServerData server) {
+        if (tag.contains("viafabricplus_forcedversion")) {
+            final ProtocolVersion version = SettingsSave.protocolVersionByName(tag.getStringOr("viafabricplus_forcedversion", null));
             if (version != null) {
-                ((IServerData) serverInfo).viaFabricPlus$forceVersion(version);
+                ((IServerData) server).viaFabricPlus$forceVersion(version);
             }
         }
     }
 
     @Inject(method = "copyNameIconFrom", at = @At("RETURN"))
-    private void syncForcedVersion(ServerData serverInfo, CallbackInfo ci) {
-        viaFabricPlus$forceVersion(((IServerData) serverInfo).viaFabricPlus$forcedVersion());
+    private void syncForcedVersion(ServerData other, CallbackInfo ci) {
+        viaFabricPlus$forceVersion(((IServerData) other).viaFabricPlus$forcedVersion());
     }
 
     @Override

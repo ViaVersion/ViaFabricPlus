@@ -69,9 +69,9 @@ public abstract class MixinMultiPlayerGameMode {
     private List<ItemStack> viaFabricPlus$oldItems;
 
     @ModifyVariable(method = "handleContainerInput", at = @At(value = "STORE"), name = "itemsBeforeClick")
-    private List<ItemStack> captureOldItems(List<ItemStack> oldItems) {
+    private List<ItemStack> captureOldItems(List<ItemStack> itemsBeforeClick) {
         viaFabricPlus$oldCursorStack = minecraft.player.containerMenu.getCarried().copy();
-        return this.viaFabricPlus$oldItems = oldItems;
+        return this.viaFabricPlus$oldItems = itemsBeforeClick;
     }
 
     @WrapWithCondition(method = "handleContainerInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V"))
@@ -92,13 +92,13 @@ public abstract class MixinMultiPlayerGameMode {
     }
 
     @Inject(method = "handleContainerInput", at = @At("HEAD"), cancellable = true)
-    private void removeClickActions(int syncId, int slotId, int button, ContainerInput actionType, Player player, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !actionType.equals(ContainerInput.PICKUP)) {
+    private void removeClickActions(int containerId, int slotNum, int buttonNum, ContainerInput containerInput, Player player, CallbackInfo ci) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !containerInput.equals(ContainerInput.PICKUP)) {
             ci.cancel();
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !actionType.equals(ContainerInput.PICKUP) && !actionType.equals(ContainerInput.QUICK_MOVE) && !actionType.equals(ContainerInput.SWAP) && !actionType.equals(ContainerInput.CLONE)) {
+        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !containerInput.equals(ContainerInput.PICKUP) && !containerInput.equals(ContainerInput.QUICK_MOVE) && !containerInput.equals(ContainerInput.SWAP) && !containerInput.equals(ContainerInput.CLONE)) {
             ci.cancel();
         }
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && actionType == ContainerInput.SWAP && button == 40) { // Pressing 'F' in inventory
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && containerInput == ContainerInput.SWAP && buttonNum == 40) { // Pressing 'F' in inventory
             ci.cancel();
         }
     }

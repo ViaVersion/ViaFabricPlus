@@ -33,11 +33,11 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinLocalPlayer {
 
     @Shadow
-    protected abstract boolean isSprintingPossible(final boolean allowTouchingWater);
+    protected abstract boolean isSprintingPossible(final boolean allowedInShallowWater);
 
     @Redirect(method = {"shouldStopRunSprinting", "canStartSprinting"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSprintingPossible(Z)Z"))
-    private boolean allowNonSwimWaterSprinting(LocalPlayer instance, boolean allowTouchingWater) {
-        return this.isSprintingPossible(allowTouchingWater || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && (instance.isSwimming() || instance.onGround()));
+    private boolean allowNonSwimWaterSprinting(LocalPlayer instance, boolean allowedInShallowWater) {
+        return this.isSprintingPossible(allowedInShallowWater || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest) && (instance.isSwimming() || instance.onGround()));
     }
 
 }

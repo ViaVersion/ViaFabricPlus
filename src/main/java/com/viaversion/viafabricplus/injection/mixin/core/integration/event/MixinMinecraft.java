@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinMinecraft {
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void callPostGameLoadEvent(GameConfig args, CallbackInfo ci) {
+    private void callPostGameLoadEvent(GameConfig gameConfig, CallbackInfo ci) {
         ViaFabricPlusImpl.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD);
     }
 

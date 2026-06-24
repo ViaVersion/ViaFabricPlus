@@ -22,9 +22,9 @@
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes;
 
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
-import net.minecraft.world.level.block.entity.CommandBlockEntity;
-import net.minecraft.client.gui.screens.inventory.CommandBlockEditScreen;
 import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.screens.inventory.CommandBlockEditScreen;
+import net.minecraft.world.level.block.entity.CommandBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

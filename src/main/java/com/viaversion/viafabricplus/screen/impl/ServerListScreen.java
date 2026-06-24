@@ -27,8 +27,8 @@ import com.viaversion.viafabricplus.screen.impl.classic4j.BetaCraftScreen;
 import com.viaversion.viafabricplus.screen.impl.classic4j.ClassiCubeLoginScreen;
 import com.viaversion.viafabricplus.screen.impl.classic4j.ClassiCubeServerListScreen;
 import com.viaversion.viafabricplus.screen.impl.realms.BedrockRealmsScreen;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 
 public final class ServerListScreen extends VFPScreen {
@@ -47,7 +47,7 @@ public final class ServerListScreen extends VFPScreen {
         // ClassiCube
         final boolean loggedIn = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount() != null;
 
-        final Button.Builder classiCubeBuilder = Button.builder(ClassiCubeServerListScreen.INSTANCE.getTitle(), button -> {
+        final Button.Builder classiCubeBuilder = Button.builder(ClassiCubeServerListScreen.INSTANCE.getTitle(), _ -> {
             if (!loggedIn) {
                 ClassiCubeLoginScreen.INSTANCE.open(this);
                 return;
@@ -59,7 +59,7 @@ public final class ServerListScreen extends VFPScreen {
         }
         this.addRenderableWidget(classiCubeBuilder.build());
 
-        final Button.Builder betaCraftBuilder = Button.builder(BetaCraftScreen.INSTANCE.getTitle(), button -> {
+        final Button.Builder betaCraftBuilder = Button.builder(BetaCraftScreen.INSTANCE.getTitle(), _ -> {
             BetaCraftScreen.INSTANCE.open(this);
         }).pos(this.width / 2 - 100, this.height / 2 - 25 + 20 + 3).size(200, 20);
         if (BetaCraftScreen.SERVER_LIST == null) {
@@ -67,7 +67,7 @@ public final class ServerListScreen extends VFPScreen {
         }
         this.addRenderableWidget(betaCraftBuilder.build());
 
-        final Button.Builder bedrockRealmsBuilder = Button.builder(BedrockRealmsScreen.INSTANCE.getTitle(), button -> {
+        final Button.Builder bedrockRealmsBuilder = Button.builder(BedrockRealmsScreen.INSTANCE.getTitle(), _ -> {
             BedrockRealmsScreen.INSTANCE.open(this);
         }).pos(this.width / 2 - 100, this.height / 2 - 25 + 40 + 6).size(200, 20);
         final boolean missingAccount = SaveManager.INSTANCE.getAccountsSave().getBedrockAccount() == null; // Only check for presence, later validate

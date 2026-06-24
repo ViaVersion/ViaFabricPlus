@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,7 +52,7 @@ public abstract class MixinFarmlandBlock extends Block {
     }
 
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
-    private void changeOutlineShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
+    private void changeOutlineShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (Minecraft.getInstance() != null && Minecraft.getInstance().isLocalServer()) {
             // When joining the singleplayer, we set the target version to the native version when the integrated server is started
             // However this is already to late for blocks since the world and entities have already been loaded, causing block collisions
@@ -66,7 +67,7 @@ public abstract class MixinFarmlandBlock extends Block {
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state) {
+    public @NonNull VoxelShape getOcclusionShape(@NonNull BlockState state) {
         if (Minecraft.getInstance() != null && Minecraft.getInstance().isLocalServer()) {
             // See above for explanation
             return super.getOcclusionShape(state);

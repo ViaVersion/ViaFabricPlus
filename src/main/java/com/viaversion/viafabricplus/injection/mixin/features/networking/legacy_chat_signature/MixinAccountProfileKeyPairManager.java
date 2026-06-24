@@ -34,8 +34,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinAccountProfileKeyPairManager {
 
     @Inject(method = "parsePublicKey", at = @At("RETURN"))
-    private static void trackLegacyKey(KeyPairResponse keyPairResponse, CallbackInfoReturnable<ProfilePublicKey.Data> cir) {
-        ((IProfilePublicKey_Data) (Object) cir.getReturnValue()).viafabricplus$setLegacyPublicKeySignature(((IProfilePublicKey_Data) (Object) keyPairResponse).viafabricplus$getLegacyPublicKeySignature());
+    private static void trackLegacyKey(KeyPairResponse response, CallbackInfoReturnable<ProfilePublicKey.Data> cir) {
+        ((IProfilePublicKey_Data) (Object) cir.getReturnValue()).viafabricplus$setLegacyPublicKeySignature(((IProfilePublicKey_Data) (Object) response).viafabricplus$getLegacyPublicKeySignature());
     }
 
 }

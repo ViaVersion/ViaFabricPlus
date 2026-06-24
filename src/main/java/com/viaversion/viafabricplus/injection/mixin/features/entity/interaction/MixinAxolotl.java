@@ -35,11 +35,11 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinAxolotl {
 
     @Redirect(method = "usePlayerItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemUtils;createFilledResult(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;"))
-    private ItemStack dontExchangeStack(ItemStack inputStack, Player player, ItemStack outputStack) {
+    private ItemStack dontExchangeStack(ItemStack itemStack, Player player, ItemStack newItemStack) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
-            return outputStack;
+            return newItemStack;
         } else {
-            return ItemUtils.createFilledResult(inputStack, player, outputStack);
+            return ItemUtils.createFilledResult(itemStack, player, newItemStack);
         }
     }
 

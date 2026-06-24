@@ -25,15 +25,16 @@ import com.viaversion.viafabricplus.injection.access.block.shape.ICrossCollision
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -55,14 +56,14 @@ public abstract class MixinIronBarsBlock extends CrossCollisionBlock implements 
     }
 
     @Inject(method = "getVisualShape", at = @At("HEAD"), cancellable = true)
-    private void useCollisionVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext, CallbackInfoReturnable<VoxelShape> cir) {
+    private void useCollisionVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
-            cir.setReturnValue(this.getCollisionShape(blockState, blockGetter, blockPos, collisionContext));
+            cir.setReturnValue(this.getCollisionShape(state, level, pos, context));
         }
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void initShapes1_8(Properties settings, CallbackInfo ci) {
+    private void initShapes1_8(Properties properties, CallbackInfo ci) {
         final float f = 7.0F;
         final float g = 9.0F;
         final float h = 7.0F;
@@ -118,7 +119,7 @@ public abstract class MixinIronBarsBlock extends CrossCollisionBlock implements 
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NonNull VoxelShape getShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
         if (DebugSettings.INSTANCE.legacyPaneOutlines.isEnabled()) {
             return this.viaFabricPlus$shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
         } else {
@@ -127,7 +128,7 @@ public abstract class MixinIronBarsBlock extends CrossCollisionBlock implements 
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NonNull VoxelShape getCollisionShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return this.viaFabricPlus$shape_r1_8[this.viaFabricPlus$getShapeIndex(state)];
         } else {

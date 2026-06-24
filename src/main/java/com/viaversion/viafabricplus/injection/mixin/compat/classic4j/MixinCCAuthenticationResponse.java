@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.compat.classic4j;
 import de.florianreuth.classic4j.model.classicube.CCAuthenticationResponse;
 import de.florianreuth.classic4j.model.classicube.CCError;
 import net.minecraft.network.chat.Component;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -32,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinCCAuthenticationResponse {
 
     // Classic4J doesn't support translations, so we have to map them manually
-    @Redirect(method = "getErrorDisplay", at = @At(value = "FIELD", target = "Lde/florianreuth/classic4j/model/classicube/CCError;description:Ljava/lang/String;"))
+    @Redirect(method = "getErrorDisplay", at = @At(value = "FIELD", target = "Lde/florianreuth/classic4j/model/classicube/CCError;description:Ljava/lang/String;", opcode = Opcodes.GETFIELD))
     private String mapTranslations(CCError instance) {
         return switch (instance) {
             case TOKEN -> Component.translatable("classic4j_library.viafabricplus.error.token").getString();

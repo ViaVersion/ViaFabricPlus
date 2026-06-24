@@ -45,7 +45,7 @@ public abstract class MixinHolderSet_Named {
     @Inject(method = "contents", at = @At("HEAD"))
     private void preventNullableEntries(CallbackInfoReturnable<List<Holder<?>>> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            // Previoulsy didn't had unbounded entries
+            // Previously didn't had unbounded entries
             if (this.contents == null) {
                 this.bind(List.of());
             }

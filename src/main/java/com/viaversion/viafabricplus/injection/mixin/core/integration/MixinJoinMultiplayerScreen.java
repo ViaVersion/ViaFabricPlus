@@ -44,8 +44,8 @@ public abstract class MixinJoinMultiplayerScreen extends Screen {
     }
 
     @WrapOperation(method = "join(Lnet/minecraft/client/multiplayer/ServerData;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/resolver/ServerAddress;parseString(Ljava/lang/String;)Lnet/minecraft/client/multiplayer/resolver/ServerAddress;"))
-    private ServerAddress replaceDefaultPort(String address, Operation<ServerAddress> original, @Local(argsOnly = true) ServerData entry) {
-        final IServerData mixinServerInfo = (IServerData) entry;
+    private ServerAddress replaceDefaultPort(String input, Operation<ServerAddress> original, @Local(argsOnly = true) ServerData data) {
+        final IServerData mixinServerInfo = (IServerData) data;
 
         ProtocolVersion version;
         if (mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
@@ -53,13 +53,13 @@ public abstract class MixinJoinMultiplayerScreen extends Screen {
         } else {
             version = mixinServerInfo.viaFabricPlus$forcedVersion();
         }
-        return original.call(BedrockSettings.replaceDefaultPort(address, version));
+        return original.call(BedrockSettings.replaceDefaultPort(input, version));
     }
 
     @WrapOperation(method = "directJoinCallback", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/multiplayer/JoinMultiplayerScreen;join(Lnet/minecraft/client/multiplayer/ServerData;)V"))
-    private void storeDirectConnectionPhase(JoinMultiplayerScreen instance, ServerData entry, Operation<Void> original) {
-        ((IServerData) entry).viaFabricPlus$passDirectConnectScreen(true);
-        original.call(instance, entry);
+    private void storeDirectConnectionPhase(JoinMultiplayerScreen instance, ServerData data, Operation<Void> original) {
+        ((IServerData) data).viaFabricPlus$passDirectConnectScreen(true);
+        original.call(instance, data);
     }
 
 }

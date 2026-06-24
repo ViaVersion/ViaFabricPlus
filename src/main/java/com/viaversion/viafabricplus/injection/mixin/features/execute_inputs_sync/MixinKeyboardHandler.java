@@ -46,7 +46,7 @@ public abstract class MixinKeyboardHandler implements IMouseKeyboardHandlers {
 
     @Redirect(method = {"lambda$setup$0", "lambda$setup$2"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;execute(Ljava/lang/Runnable;)V"))
     private void storeEvent(Minecraft instance, Runnable runnable) {
-        if (this.minecraft.getConnection() != null && this.minecraft.screen != null && DebugSettings.INSTANCE.executeInputsSynchronously.isEnabled()) {
+        if (this.minecraft.getConnection() != null && this.minecraft.gui.screen() != null && DebugSettings.INSTANCE.executeInputsSynchronously.isEnabled()) {
             this.viaFabricPlus$pendingScreenEvents.offer(runnable);
         } else {
             instance.execute(runnable);

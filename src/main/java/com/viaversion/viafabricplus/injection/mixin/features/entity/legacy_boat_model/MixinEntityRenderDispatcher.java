@@ -45,14 +45,14 @@ public abstract class MixinEntityRenderDispatcher {
     private BoatRenderer1_8 viaFabricPlus$boatRenderer;
 
     @Inject(method = "onResourceManagerReload", at = @At("TAIL"))
-    private void createBoatRenderer1_8(ResourceManager manager, CallbackInfo ci, @Local EntityRendererProvider.Context context) {
+    private void createBoatRenderer1_8(ResourceManager resourceManager, CallbackInfo ci, @Local(name = "context") EntityRendererProvider.Context context) {
         viaFabricPlus$boatRenderer = new BoatRenderer1_8(context);
     }
 
     @SuppressWarnings("unchecked")
     @Inject(method = "getRenderer(Lnet/minecraft/client/renderer/entity/state/EntityRenderState;)Lnet/minecraft/client/renderer/entity/EntityRenderer;", at = @At("HEAD"), cancellable = true)
-    private <S extends EntityRenderState> void useBoatRenderer1_8(S state, CallbackInfoReturnable<EntityRenderer<?, ? super S>> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && state instanceof BoatRenderState) {
+    private <S extends EntityRenderState> void useBoatRenderer1_8(S entityRenderState, CallbackInfoReturnable<EntityRenderer<?, ? super S>> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && entityRenderState instanceof BoatRenderState) {
             cir.setReturnValue((EntityRenderer<?, ? super S>) viaFabricPlus$boatRenderer);
         }
     }

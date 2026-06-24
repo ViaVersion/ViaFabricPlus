@@ -25,25 +25,26 @@ import com.viaversion.viafabricplus.features.entity.legacy_boat_model.PositionIn
 import com.viaversion.viafabricplus.injection.access.entity.legacy_boat_model.IAbstractBoat;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
-import net.minecraft.world.entity.vehicle.boat.Boat;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.InterpolationHandler;
-import net.minecraft.world.entity.vehicle.VehicleEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.InterpolationHandler;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.vehicle.VehicleEntity;
+import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
+import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -93,7 +94,7 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
     }
 
     @Override
-    public void lerpMotion(final Vec3 clientVelocity) {
+    public void lerpMotion(final @NonNull Vec3 clientVelocity) {
         super.lerpMotion(clientVelocity);
 
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
@@ -265,10 +266,10 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
     }
 
     @Inject(method = "checkFallDamage", at = @At("HEAD"), cancellable = true)
-    private void fall1_8(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition, CallbackInfo ci) {
+    private void fall1_8(double ya, boolean onGround, BlockState onState, BlockPos pos, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             ci.cancel();
-            super.checkFallDamage(heightDifference, onGround, state, landedPosition);
+            super.checkFallDamage(ya, onGround, onState, pos);
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             this.status = Boat.Status.ON_LAND;
         }

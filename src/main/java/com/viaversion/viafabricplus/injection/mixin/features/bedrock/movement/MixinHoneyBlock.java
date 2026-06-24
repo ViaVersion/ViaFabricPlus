@@ -23,15 +23,16 @@ package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.HoneyBlock;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HoneyBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -50,17 +51,17 @@ public abstract class MixinHoneyBlock extends Block {
     protected abstract boolean isSlidingDown(BlockPos pos, Entity entity);
 
     @Shadow
-    protected abstract void maybeDoSlideEffects(Level world, Entity entity);
+    protected abstract void maybeDoSlideEffects(Level level, Entity entity);
 
     @Inject(method = "entityInside", at = @At("HEAD"), cancellable = true)
-    private void applyBedrockHoneyCollision(BlockState state, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier handler, boolean bl, CallbackInfo ci) {
+    private void applyBedrockHoneyCollision(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise, CallbackInfo ci) {
         if (!ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return;
         }
 
         ci.cancel();
         if (this.isSlidingDown(pos, entity)) {
-            this.maybeDoSlideEffects(world, entity);
+            this.maybeDoSlideEffects(level, entity);
         }
 
         final Vec3 velocity = entity.getDeltaMovement();
@@ -68,7 +69,7 @@ public abstract class MixinHoneyBlock extends Block {
     }
 
     @Override
-    public void stepOn(final Level world, final BlockPos pos, final BlockState state, final Entity entity) {
+    public void stepOn(final @NonNull Level world, final @NonNull BlockPos pos, final @NonNull BlockState state, final @NonNull Entity entity) {
         if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             final double absoluteY = Math.abs(entity.getDeltaMovement().y);
             if (absoluteY < 0.1 && !entity.isSteppingCarefully()) {
@@ -96,9 +97,9 @@ public abstract class MixinHoneyBlock extends Block {
     }
 
     @Inject(method = {"getOldDeltaY", "getNewDeltaY"}, at = @At("HEAD"), cancellable = true)
-    private static void simplifyVelocityComparisons(double d, CallbackInfoReturnable<Double> cir) {
+    private static void simplifyVelocityComparisons(double deltaY, CallbackInfoReturnable<Double> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            cir.setReturnValue(d);
+            cir.setReturnValue(deltaY);
         }
     }
 

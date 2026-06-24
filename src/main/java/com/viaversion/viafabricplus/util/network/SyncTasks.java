@@ -58,7 +58,7 @@ public final class SyncTasks {
     }
 
     /**
-     * Handles a sync task that was sent from the networking thread
+     * Handles a sync task sent from the networking thread
      *
      * @param buf The packet buffer
      */

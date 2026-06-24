@@ -25,11 +25,11 @@ import com.viaversion.viafabricplus.injection.access.networking.downloading_terr
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
-import net.minecraft.network.protocol.common.ServerboundKeepAlivePacket;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.ServerboundKeepAlivePacket;
 import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -60,8 +60,8 @@ public abstract class MixinLevelLoadingScreen extends Screen implements ILevelLo
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void modifyCloseCondition(CallbackInfo ci) {
         if (Minecraft.getInstance() != null && Minecraft.getInstance().isLocalServer()) {
-            // When joining the singleplayer, we set the target version to the native version when the integrated server is started
-            // However this is already to late and the screen was already opened (and ticked), causing NPEs due to the network handler being null
+            // When joining the singleplayer, we set the target version to the native version when the integrated server is started,
+            // However, this is already too late, and the screen was already opened (and ticked), causing NPEs due to the network handler being null
             return;
         }
 

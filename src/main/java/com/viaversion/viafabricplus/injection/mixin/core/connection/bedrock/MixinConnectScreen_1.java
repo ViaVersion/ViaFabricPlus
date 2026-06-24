@@ -39,8 +39,8 @@ public abstract class MixinConnectScreen_1 {
     }
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/EventLoopGroupHolder;remote(Z)Lnet/minecraft/server/network/EventLoopGroupHolder;"))
-    private EventLoopGroupHolder markAsConnecting(boolean bl) {
-        final EventLoopGroupHolder holder = EventLoopGroupHolder.remote(bl);
+    private EventLoopGroupHolder markAsConnecting(boolean allowNativeTransport) {
+        final EventLoopGroupHolder holder = EventLoopGroupHolder.remote(allowNativeTransport);
         ((IEventLoopGroupHolder) holder).viaFabricPlus$setConnecting(true);
         return holder;
     }

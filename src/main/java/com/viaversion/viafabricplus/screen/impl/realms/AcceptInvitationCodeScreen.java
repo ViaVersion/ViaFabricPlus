@@ -47,7 +47,7 @@ public final class AcceptInvitationCodeScreen extends VFPScreen {
 
         this.addRenderableWidget(codeField);
 
-        this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.accept"), button -> {
+        this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.accept"), _ -> {
             this.serviceHandler.accept(codeField.getValue());
             onClose();
         }).pos(this.width / 2 - Button.DEFAULT_WIDTH / 2, this.height / 2 + 20).build());

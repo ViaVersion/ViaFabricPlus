@@ -21,14 +21,15 @@
 
 package com.viaversion.viafabricplus.injection.mixin.core.connection.bedrock;
 
-import com.viaversion.viafabricplus.util.bedrock.NetherNetInetSocketAddress;
 import com.viaversion.viafabricplus.injection.access.core.bedrock.IServerAddress;
+import com.viaversion.viafabricplus.util.bedrock.NetherNetInetSocketAddress;
 import dev.kastle.netty.channel.nethernet.config.NetherNetAddress;
 import java.net.InetSocketAddress;
 import java.util.Optional;
 import net.minecraft.client.multiplayer.resolver.ResolvedServerAddress;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.multiplayer.resolver.ServerNameResolver;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,17 +39,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinServerNameResolver {
 
     @Inject(method = "resolveAddress", at = @At("HEAD"), cancellable = true)
-    private void returnNetherNetAddressEarly(ServerAddress serverAddress, CallbackInfoReturnable<Optional<ResolvedServerAddress>> cir) {
-        if ((Object) serverAddress instanceof IServerAddress mixinServerAddress && mixinServerAddress.viaFabricPlus$getNetherNetAddress() != null) {
+    private void returnNetherNetAddressEarly(ServerAddress address, CallbackInfoReturnable<Optional<ResolvedServerAddress>> cir) {
+        if ((Object) address instanceof IServerAddress mixinServerAddress && mixinServerAddress.viaFabricPlus$getNetherNetAddress() != null) {
             final NetherNetAddress netherNetAddress = mixinServerAddress.viaFabricPlus$getNetherNetAddress();
             cir.setReturnValue(Optional.of(new ResolvedServerAddress() {
                 @Override
-                public String getHostName() {
+                public @NonNull String getHostName() {
                     return netherNetAddress.getNetworkId();
                 }
 
                 @Override
-                public String getHostIp() {
+                public @NonNull String getHostIp() {
                     return netherNetAddress.getNetworkId();
                 }
 
@@ -58,7 +59,7 @@ public abstract class MixinServerNameResolver {
                 }
 
                 @Override
-                public InetSocketAddress asInetSocketAddress() {
+                public @NonNull InetSocketAddress asInetSocketAddress() {
                     return new NetherNetInetSocketAddress(netherNetAddress);
                 }
             }));

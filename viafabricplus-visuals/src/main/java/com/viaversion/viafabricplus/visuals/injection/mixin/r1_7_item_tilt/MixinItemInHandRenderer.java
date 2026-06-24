@@ -22,16 +22,16 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.r1_7_item_tilt;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.ItemInHandRenderer;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.InteractionHand;
-import com.mojang.math.Axis;
 import net.minecraft.world.item.ItemUseAnimation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,41 +44,41 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinItemInHandRenderer {
 
     @Shadow
-    protected abstract void applyItemArmAttackTransform(PoseStack matrices, HumanoidArm arm, float swingProgress);
+    protected abstract void applyItemArmAttackTransform(PoseStack poseStack, HumanoidArm arm, float attackValue);
 
-    @Inject(method = "renderArmWithItem",
+    @Inject(method = "submitArmWithItem",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;applyItemArmTransform(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/HumanoidArm;F)V", ordinal = 2, shift = At.Shift.AFTER))
-    private void applyFoodSwingOffset(AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci) {
-        viaFabricPlusVisuals$applySwingOffset(player, hand, swingProgress, matrices);
+    private void applyFoodSwingOffset(AbstractClientPlayer player, float frameInterp, float xRot, InteractionHand hand, float attack, ItemStack itemStack, float inverseArmHeight, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, CallbackInfo ci) {
+        viaFabricPlusVisuals$applySwingOffset(player, hand, frameInterp, poseStack);
     }
 
-    @Inject(method = "renderArmWithItem",
+    @Inject(method = "submitArmWithItem",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;applyItemArmTransform(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/HumanoidArm;F)V", ordinal = 1, shift = At.Shift.AFTER))
-    private void applyBowAndBlockingSwingOffset(AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci, @Local ItemUseAnimation itemUseAnimation) {
-        if (itemUseAnimation == ItemUseAnimation.BOW || itemUseAnimation == ItemUseAnimation.BLOCK) {
-            viaFabricPlusVisuals$applySwingOffset(player, hand, swingProgress, matrices);
+    private void applyBowAndBlockingSwingOffset(AbstractClientPlayer player, float frameInterp, float xRot, InteractionHand hand, float attack, ItemStack itemStack, float inverseArmHeight, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, CallbackInfo ci, @Local(name = "useAnimation") ItemUseAnimation useAnimation) {
+        if (useAnimation == ItemUseAnimation.BOW || useAnimation == ItemUseAnimation.BLOCK) {
+            viaFabricPlusVisuals$applySwingOffset(player, hand, attack, poseStack);
         }
     }
 
-    @Inject(method = "renderArmWithItem",
+    @Inject(method = "submitArmWithItem",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;I)V", ordinal = 1))
-    private void slightlyTiltItemPosition(AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.tiltItemPositions.isEnabled() && !(item.getItem() instanceof BlockItem)) {
+    private void slightlyTiltItemPosition(AbstractClientPlayer player, float frameInterp, float xRot, InteractionHand hand, float attack, ItemStack itemStack, float inverseArmHeight, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, CallbackInfo ci) {
+        if (VisualSettings.INSTANCE.tiltItemPositions.isEnabled() && !(itemStack.getItem() instanceof BlockItem)) {
             final HumanoidArm arm = hand == InteractionHand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
             final int direction = arm == HumanoidArm.RIGHT ? 1 : -1;
 
             final float scale = 0.7585F / 0.86F;
-            matrices.scale(scale, scale, scale);
-            matrices.translate(direction * -0.084F, 0.059F, 0.08F);
-            matrices.mulPose(Axis.YP.rotationDegrees(direction * 5.0F));
+            poseStack.scale(scale, scale, scale);
+            poseStack.translate(direction * -0.084F, 0.059F, 0.08F);
+            poseStack.mulPose(Axis.YP.rotationDegrees(direction * 5.0F));
         }
     }
 
     @Unique
-    private void viaFabricPlusVisuals$applySwingOffset(AbstractClientPlayer player, InteractionHand hand, float swingProgress, PoseStack matrices) {
+    private void viaFabricPlusVisuals$applySwingOffset(AbstractClientPlayer player, InteractionHand hand, float attack, PoseStack poseStack) {
         if (VisualSettings.INSTANCE.swingHandOnItemUse.isEnabled()) {
             final HumanoidArm arm = hand == InteractionHand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite();
-            applyItemArmAttackTransform(matrices, arm, swingProgress);
+            applyItemArmAttackTransform(poseStack, arm, attack);
         }
     }
 

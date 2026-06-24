@@ -21,15 +21,7 @@ Also update versions in the `dependencies` block of `build.gradle.kts`.
 ## 2. Update Core References
 
 - Update the `NATIVE_VERSION` field in `ProtocolTranslator`
-- Update protocol constants in `ViaFabricPlusProtocol` and `getClientboundItemType` if a new item type was added
-- If this starts a new active branch, replace `ver/<old-version>` with `ver/<new-version>` in:
-  - GitHub repository settings (default branch, branch protection/rulesets)
-  - `.github/workflows/sync-crowdin.yml`
-  - `.github/workflows/build.yml` (if branch filters are added later)
-  - `CONTRIBUTING.md`
-  - `README.md`
-  - `docs/DEVELOPER_API.md`
-  - `.github/ISSUE_TEMPLATE/config.yml`
+- Update protocol constants in `ViaFabricPlusProtocol`
 
 ---
 
@@ -44,7 +36,7 @@ Also update versions in the `dependencies` block of `build.gradle.kts`.
 
 Set `updating_minecraft = true`.
 
-Run `gradle test` to automatically update various data jsons in the assets.
+Run `gradle test` to automatically update various data JSONs in the assets.
 
 Manually check the following files:
 - `entity-dimensions.json`
@@ -154,7 +146,7 @@ Check the ViaVersion/upstream protocol implementation.
 
 1. Set `project_version` in `gradle.properties` to the new release version.
 2. Pin version IDs of `configureVVDependencies` in `build.gradle.kts`.
-3. Commit with message:
+3. Commit with the message:
 
    ```
    ViaFabricPlus <version>
@@ -186,11 +178,3 @@ Start <release version> cycle
 
 
 See [ViaFabricPlus-archive](https://github.com/florianreuth/ViaFabricPlus-archive) for older branches.
-
----
-
-# Backports
-
-- Releases for older versions are **backports**.
-- Their version string should end with `-BACKPORT`.
-- Backports are pushed to the branch matching their Minecraft version.

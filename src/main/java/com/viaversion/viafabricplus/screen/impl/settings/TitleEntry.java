@@ -28,6 +28,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.NonNull;
 
 public final class TitleEntry extends VFPListEntry {
 
@@ -38,12 +39,12 @@ public final class TitleEntry extends VFPListEntry {
     }
 
     @Override
-    public Component getNarration() {
+    public @NonNull Component getNarration() {
         return this.name;
     }
 
     @Override
-    public void extractContent(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+    public void extractContent(final @NonNull GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
         final Matrix3x2fStack matrices = context.pose();
 
         matrices.pushMatrix();

@@ -28,8 +28,8 @@ import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.Block;
 
 public final class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
 

@@ -39,10 +39,10 @@ public abstract class MixinCamelHusk extends Camel {
         super(type, level);
     }
 
-    @Inject(method = "isBaby", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "canBeABaby", at = @At("HEAD"), cancellable = true)
     private void babyVariant(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
-            cir.setReturnValue(super.isBaby());
+            cir.setReturnValue(true);
         }
     }
 

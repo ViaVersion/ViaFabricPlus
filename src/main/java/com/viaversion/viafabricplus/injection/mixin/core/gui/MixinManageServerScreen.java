@@ -25,10 +25,10 @@ import com.viaversion.viafabricplus.injection.access.core.IServerData;
 import com.viaversion.viafabricplus.screen.impl.PerServerVersionScreen;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.ManageServerScreen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.ManageServerScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Final;
@@ -81,12 +81,12 @@ public abstract class MixinManageServerScreen extends Screen {
             viaFabricPlus$addressField = null;
         }
 
-        final Button.Builder buttonBuilder = Button.builder(forcedVersion == null ? Component.translatable("base.viafabricplus.set_version") : Component.nullToEmpty(forcedVersion.getName()), button -> {
+        final Button.Builder buttonBuilder = Button.builder(forcedVersion == null ? Component.translatable("base.viafabricplus.set_version") : Component.nullToEmpty(forcedVersion.getName()), _ -> {
             // Store current input in case the user cancels the version selection
             viaFabricPlus$nameField = nameEdit.getValue();
             viaFabricPlus$addressField = ipEdit.getValue();
 
-            minecraft.setScreen(new PerServerVersionScreen(this, mixinServerInfo::viaFabricPlus$forceVersion, mixinServerInfo::viaFabricPlus$forcedVersion));
+            minecraft.gui.setScreen(new PerServerVersionScreen(this, mixinServerInfo::viaFabricPlus$forceVersion, mixinServerInfo::viaFabricPlus$forcedVersion));
         }).size(98, 20);
         GeneralSettings.setOrientation(buttonBuilder::pos, buttonPosition, width, height);
         this.addRenderableWidget(buttonBuilder.build());

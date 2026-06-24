@@ -31,15 +31,15 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
 import java.nio.file.Path;
 import java.util.List;
-import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Holder;
 import net.minecraft.network.Connection;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.Holder;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -55,7 +55,7 @@ public interface ViaFabricPlusBase {
     }
 
     /**
-     * The version of the mod, this is the version that is displayed in the mod list (e.g. 4.0.0)
+     * The version of the mod, this is the version that is displayed in the mod list (e.g., 4.0.0)
      *
      * @return the version of the mod
      */
@@ -90,7 +90,7 @@ public interface ViaFabricPlusBase {
     void setTargetVersion(final ProtocolVersion newVersion);
 
     /**
-     * Gets the target version from the channel attribute, can be used in early stages of the connection
+     * Gets the target version from the channel attribute, can be used in the early stages of the connection
      *
      * @param channel the channel
      * @return the target version
@@ -98,7 +98,7 @@ public interface ViaFabricPlusBase {
     ProtocolVersion getTargetVersion(final Channel channel);
 
     /**
-     * Gets the target version from the connection, can be used in early stages of the connection
+     * Gets the target version from the connection, can be used in the early stages of the connection
      *
      * @param connection the connection
      * @return the target version
@@ -114,7 +114,7 @@ public interface ViaFabricPlusBase {
     void setTargetVersion(final ProtocolVersion newVersion, final boolean revertOnDisconnect);
 
     /**
-     * @return the current UserConnection of the connection to the server, if the player isn't connected to a server it will return null
+     * @return the current UserConnection of the connection to the server, if the player isn't connected to a server, it will return null
      */
     @Nullable UserConnection getPlayNetworkUserConnection();
 
@@ -196,7 +196,7 @@ public interface ViaFabricPlusBase {
      * Converts a Minecraft item stack {@link ItemStack} to a ViaVersion item {@link Item}
      *
      * @param stack         The Minecraft item stack to convert {@link ItemStack}
-     * @param targetVersion The target version to convert to (e.g. v1.13) {@link ProtocolVersion}
+     * @param targetVersion The target version to convert to (e.g., v1.13) {@link ProtocolVersion}
      * @return The ViaVersion item for the target version {@link Item}
      */
     @Nullable Item translateItem(final ItemStack stack, final ProtocolVersion targetVersion);
@@ -205,7 +205,7 @@ public interface ViaFabricPlusBase {
      * Converts a ViaVersion item {@link Item} to a Minecraft item stack {@link ItemStack}
      *
      * @param item          The ViaVersion item to convert {@link Item}
-     * @param sourceVersion The source version of the item (e.g. b1.8) {@link ProtocolVersion}
+     * @param sourceVersion The source version of the item (e.g., b1.8) {@link ProtocolVersion}
      * @return The Minecraft item stack for the source version {@link ItemStack}
      */
     @Nullable ItemStack translateItem(final Item item, final ProtocolVersion sourceVersion);
@@ -213,7 +213,7 @@ public interface ViaFabricPlusBase {
     /**
      * @param item    The item to check
      * @param version The version to check for
-     * @return true if the item exists in the given version, false otherwise, this will also check for CPE items (CustomBlocks V1 extension)
+     * @return true if the item exists in the given version, false otherwise; this will also check for CPE items (CustomBlocks V1 extension)
      */
     boolean itemExists(final net.minecraft.world.item.Item item, final ProtocolVersion version);
 
@@ -239,7 +239,7 @@ public interface ViaFabricPlusBase {
     boolean bannerPatternExists(final ResourceKey<BannerPattern> pattern, final ProtocolVersion version);
 
     /**
-     * Similar to {@link #itemExists(net.minecraft.world.item.Item, ProtocolVersion)}, but takes in the current connection details (e.g. classic protocol extensions being loaded)
+     * Similar to {@link #itemExists(net.minecraft.world.item.Item, ProtocolVersion)}, but takes in the current connection details (e.g., classic protocol extensions being loaded)
      *
      * @param item The item to check
      * @return true if the item exists in the current connection, false otherwise
@@ -258,7 +258,7 @@ public interface ViaFabricPlusBase {
      * Similar to {@link ItemStack#getCount()}, but also handles negative item counts in pre 1.11 versions
      *
      * @param stack The item stack to get the count of
-     * @return the count of the item stack, can be negative in pre 1.11 versions
+     * @return the count of the item stack can be negative in pre 1.11 versions
      */
     int getStackCount(final ItemStack stack);
 

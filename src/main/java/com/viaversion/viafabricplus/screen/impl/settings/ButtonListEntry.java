@@ -27,6 +27,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.NonNull;
 
 public final class ButtonListEntry extends VFPListEntry {
 
@@ -37,7 +38,7 @@ public final class ButtonListEntry extends VFPListEntry {
     }
 
     @Override
-    public Component getNarration() {
+    public @NonNull Component getNarration() {
         return this.value.displayValue();
     }
 

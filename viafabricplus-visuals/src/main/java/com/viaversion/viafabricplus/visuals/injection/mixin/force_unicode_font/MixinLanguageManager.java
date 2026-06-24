@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinLanguageManager {
 
     @Inject(method = "onResourceManagerReload", at = @At("RETURN"))
-    private void updateUnicodeFontOverride(ResourceManager manager, CallbackInfo ci) {
+    private void updateUnicodeFontOverride(ResourceManager resourceManager, CallbackInfo ci) {
         UnicodeFontFix1_12_2.updateUnicodeFontOverride(ViaFabricPlus.getImpl().getTargetVersion());
     }
 

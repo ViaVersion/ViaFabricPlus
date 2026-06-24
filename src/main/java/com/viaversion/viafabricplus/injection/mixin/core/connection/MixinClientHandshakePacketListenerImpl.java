@@ -43,11 +43,11 @@ public abstract class MixinClientHandshakePacketListenerImpl {
     private Connection connection;
 
     @Inject(method = "authenticateServer", at = @At("HEAD"), cancellable = true)
-    private void onlyVerifySessionInOnlineMode(String serverId, CallbackInfoReturnable<Component> cir) {
+    private void onlyVerifySessionInOnlineMode(String digest, CallbackInfoReturnable<Component> cir) {
         final IConnection mixinClientConnection = (IConnection) connection;
         if (mixinClientConnection.viaFabricPlus$getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             // We are in the 1.7 -> 1.6 protocol, so we need to skip the joinServer call
-            // if the server is in offline mode, due the packet changes <-> networking changes
+            // if the server is in offline mode, due to the packet changes <-> networking changes
             // Minecraft's networking code is bad for us.
             if (!mixinClientConnection.viaFabricPlus$getUserConnection().get(ProtocolMetadataStorage.class).authenticate) {
                 cir.setReturnValue(null);

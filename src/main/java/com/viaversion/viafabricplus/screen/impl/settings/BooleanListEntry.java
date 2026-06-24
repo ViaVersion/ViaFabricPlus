@@ -29,6 +29,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.NonNull;
 
 public final class BooleanListEntry extends VFPListEntry {
     private final BooleanSetting value;
@@ -38,7 +39,7 @@ public final class BooleanListEntry extends VFPListEntry {
     }
 
     @Override
-    public Component getNarration() {
+    public @NonNull Component getNarration() {
         return this.value.getName();
     }
 

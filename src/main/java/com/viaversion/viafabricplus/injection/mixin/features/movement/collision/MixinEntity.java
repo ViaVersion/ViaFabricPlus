@@ -67,7 +67,7 @@ public abstract class MixinEntity {
     public abstract Level level();
 
     @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;addMovementThisTick(Lnet/minecraft/world/entity/Entity$Movement;)V"))
-    private boolean removeExtraCollisionChecks(Entity instance, Entity.Movement queuedCollisionCheck) {
+    private boolean removeExtraCollisionChecks(Entity instance, Entity.Movement movement) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_5);
     }
 

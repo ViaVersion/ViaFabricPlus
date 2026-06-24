@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinLocalPlayer {
 
     @Inject(method = "isHorizontalCollisionMinor", at = @At("HEAD"), cancellable = true)
-    private void neverCollideSoftly(Vec3 adjustedMovement, CallbackInfoReturnable<Boolean> cir) {
+    private void neverCollideSoftly(Vec3 movement, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             cir.setReturnValue(false);
         }

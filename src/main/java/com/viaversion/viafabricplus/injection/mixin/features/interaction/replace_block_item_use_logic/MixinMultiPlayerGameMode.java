@@ -28,31 +28,31 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusHandItemProvider;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Objects;
-import net.minecraft.network.protocol.game.ServerboundUseItemPacket;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.multiplayer.prediction.PredictiveAction;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket;
-import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
+import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket;
+import net.minecraft.network.protocol.game.ServerboundUseItemPacket;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
@@ -74,7 +74,7 @@ public abstract class MixinMultiPlayerGameMode {
     private Minecraft minecraft;
 
     @Shadow
-    protected abstract InteractionResult performUseItemOn(LocalPlayer player, InteractionHand hand, BlockHitResult hitResult);
+    protected abstract InteractionResult performUseItemOn(LocalPlayer player, InteractionHand hand, BlockHitResult blockHit);
 
     @Shadow
     @Final
@@ -87,7 +87,7 @@ public abstract class MixinMultiPlayerGameMode {
     private float destroyProgress;
 
     @Shadow
-    protected abstract void startPrediction(ClientLevel world, PredictiveAction packetCreator);
+    protected abstract void startPrediction(ClientLevel level, PredictiveAction predictiveAction);
 
     @Shadow
     private GameType localPlayerMode;
@@ -95,7 +95,7 @@ public abstract class MixinMultiPlayerGameMode {
     @Shadow
     private boolean isDestroying;
 
-    @Redirect(method = "performUseItemOn", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;CONSUME:Lnet/minecraft/world/InteractionResult$Success;"))
+    @Redirect(method = "performUseItemOn", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;CONSUME:Lnet/minecraft/world/InteractionResult$Success;", opcode = Opcodes.GETSTATIC))
     private InteractionResult.Success changeSpectatorAction() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return InteractionResult.SUCCESS;
@@ -119,9 +119,9 @@ public abstract class MixinMultiPlayerGameMode {
     }
 
     @WrapWithCondition(method = "useItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;startPrediction(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/multiplayer/prediction/PredictiveAction;)V"))
-    private boolean fixPacketOrder(MultiPlayerGameMode instance, ClientLevel clientLevel, PredictiveAction predictiveAction, Player player, InteractionHand interactionHand) {
+    private boolean fixPacketOrder(MultiPlayerGameMode instance, ClientLevel level, PredictiveAction predictiveAction, Player player, InteractionHand hand) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
-            this.connection.send(new ServerboundUseItemPacket(interactionHand, 0, player.getYRot(), player.getXRot()));
+            this.connection.send(new ServerboundUseItemPacket(hand, 0, player.getYRot(), player.getXRot()));
             predictiveAction.predict(0);
             return false;
         } else {
@@ -146,15 +146,15 @@ public abstract class MixinMultiPlayerGameMode {
     }
 
     @Inject(method = "performUseItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z", ordinal = 2))
-    private void interactBlock1_12_2(LocalPlayer player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
+    private void interactBlock1_12_2(LocalPlayer player, InteractionHand hand, BlockHitResult blockHit, CallbackInfoReturnable<InteractionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             final ItemStack itemStack = player.getItemInHand(hand);
-            BlockHitResult checkHitResult = hitResult;
+            BlockHitResult checkHitResult = blockHit;
             if (itemStack.getItem() instanceof BlockItem) {
-                final BlockState clickedBlock = this.minecraft.level.getBlockState(hitResult.getBlockPos());
+                final BlockState clickedBlock = this.minecraft.level.getBlockState(blockHit.getBlockPos());
                 if (clickedBlock.getBlock().equals(Blocks.SNOW)) {
                     if (clickedBlock.getValue(SnowLayerBlock.LAYERS) == 1) {
-                        checkHitResult = hitResult.withDirection(Direction.UP);
+                        checkHitResult = blockHit.withDirection(Direction.UP);
                     }
                 }
                 final UseOnContext itemUsageContext = new UseOnContext(player, hand, checkHitResult);
@@ -164,7 +164,7 @@ public abstract class MixinMultiPlayerGameMode {
                 }
             }
 
-            this.connection.send(new ServerboundUseItemOnPacket(hand, hitResult, 0));
+            this.connection.send(new ServerboundUseItemOnPacket(hand, blockHit, 0));
             if (itemStack.isEmpty()) {
                 throw new ActionResultException1_12_2(InteractionResult.PASS);
             }
@@ -192,26 +192,26 @@ public abstract class MixinMultiPlayerGameMode {
     }
 
     @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
-    private void cancelOffHandBlockPlace(LocalPlayer player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
+    private void cancelOffHandBlockPlace(LocalPlayer player, InteractionHand hand, BlockHitResult blockHit, CallbackInfoReturnable<InteractionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && !InteractionHand.MAIN_HAND.equals(hand)) {
             cir.setReturnValue(InteractionResult.PASS);
         }
     }
 
     @Redirect(method = "lambda$useItem$0", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;use(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;"))
-    private InteractionResult eitherSuccessOrPass(ItemStack instance, Level world, Player user, InteractionHand hand, @Local(name = "itemStack") ItemStack itemStack) {
+    private InteractionResult eitherSuccessOrPass(ItemStack instance, Level level, Player player, InteractionHand hand, @Local(name = "itemStack") ItemStack itemStack) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             final int count = instance.getCount();
 
-            final InteractionResult actionResult = instance.use(world, user, hand);
+            final InteractionResult actionResult = instance.use(level, player, hand);
             final ItemStack output;
             if (actionResult instanceof InteractionResult.Success success) {
-                output = Objects.requireNonNullElseGet(success.heldItemTransformedTo(), () -> user.getItemInHand(hand));
+                output = Objects.requireNonNullElseGet(success.heldItemTransformedTo(), () -> player.getItemInHand(hand));
             } else {
-                output = user.getItemInHand(hand);
+                output = player.getItemInHand(hand);
             }
 
-            // In <= 1.8, ActionResult weren't a thing and interactItem simply returned either true or false
+            // In <= 1.8, ActionResult weren't a thing, and interactItem simply returned either true or false
             // depending on if the input and output item are equal or not
             final boolean accepted = !output.isEmpty() && (output != itemStack || output.getCount() != count);
             if (actionResult.consumesAction() == accepted) {
@@ -220,14 +220,14 @@ public abstract class MixinMultiPlayerGameMode {
                 return accepted ? InteractionResult.SUCCESS.heldItemTransformedTo(output) : InteractionResult.PASS;
             }
         } else {
-            return instance.use(world, user, hand);
+            return instance.use(level, player, hand);
         }
     }
 
     @Inject(method = "lambda$useItem$0", at = @At("HEAD"))
-    private void trackLastUsedItem(InteractionHand hand, Player playerEntity, MutableObject<InteractionResult> mutableObject, int sequence, CallbackInfoReturnable<Packet<?>> cir) {
+    private void trackLastUsedItem(InteractionHand hand, Player player, MutableObject<InteractionResult> interactionResult, int sequence, CallbackInfoReturnable<Packet<?>> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            ViaFabricPlusHandItemProvider.lastUsedItem = playerEntity.getItemInHand(hand).copy();
+            ViaFabricPlusHandItemProvider.lastUsedItem = player.getItemInHand(hand).copy();
         }
     }
 
@@ -250,9 +250,9 @@ public abstract class MixinMultiPlayerGameMode {
     }
 
     @Redirect(method = "useItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;startPrediction(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/multiplayer/prediction/PredictiveAction;)V"))
-    private void catchPacketCancelException(MultiPlayerGameMode instance, ClientLevel world, PredictiveAction packetCreator) {
+    private void catchPacketCancelException(MultiPlayerGameMode instance, ClientLevel level, PredictiveAction predictiveAction) {
         try {
-            this.startPrediction(world, packetCreator);
+            this.startPrediction(level, predictiveAction);
         } catch (ActionResultException1_12_2 ignored) {
         }
     }

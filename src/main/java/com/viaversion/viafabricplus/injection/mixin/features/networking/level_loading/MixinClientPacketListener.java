@@ -26,8 +26,8 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
-import net.minecraft.client.multiplayer.CommonListenerCookie;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.multiplayer.CommonListenerCookie;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.network.protocol.game.ClientboundSetDefaultSpawnPositionPacket;
@@ -45,14 +45,14 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @Inject(method = "handleSetSpawn", at = @At("RETURN"))
     private void moveDownloadingTerrainClosing(ClientboundSetDefaultSpawnPositionPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_18_2, ProtocolVersion.v1_20_2) && this.minecraft.screen instanceof ILevelLoadingScreen mixinDownloadingTerrainScreen) {
+        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_18_2, ProtocolVersion.v1_20_2) && this.minecraft.gui.screen() instanceof ILevelLoadingScreen mixinDownloadingTerrainScreen) {
             mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
         }
     }
 
     @Inject(method = "handleMovePlayer", at = @At("RETURN"))
     private void closeDownloadingTerrain(ClientboundPlayerPositionPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18) && this.minecraft.screen instanceof ILevelLoadingScreen mixinDownloadingTerrainScreen) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18) && this.minecraft.gui.screen() instanceof ILevelLoadingScreen mixinDownloadingTerrainScreen) {
             mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
         }
     }

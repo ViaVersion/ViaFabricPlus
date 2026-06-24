@@ -33,6 +33,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.NonNull;
 
 /**
  * This class is a wrapper for the {@link net.minecraft.client.gui.components.ObjectSelectionList.Entry} class.
@@ -83,7 +84,7 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
     /**
      * Automatically scrolls the text if it is too long to be displayed in the slot. The text will be scrolled from right to left
      *
-     * @param text   The text which should be displayed
+     * @param text   The text that should be displayed
      * @param textY  The Y position of the text
      * @param offset The offset of the text from the left side of the slot, this is used to calculate the width of the text, which should be scrolled
      */
@@ -108,7 +109,7 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
     /**
      * Draws a tooltip if the mouse is hovering over the slot
      *
-     * @param tooltip The tooltip which should be displayed
+     * @param tooltip The tooltip that should be displayed
      * @param mouseX  The current mouse X position
      * @param mouseY  The current mouse Y position
      */
@@ -122,7 +123,7 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
      * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(GuiGraphicsExtractor, int, int, int, int, int, int, boolean, float)} method
      */
     @Override
-    public void extractContent(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+    public void extractContent(final @NonNull GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
         this.context = graphics; // Allows cross-sharing between util methods
 
         final Matrix3x2fStack matrices = context.pose();

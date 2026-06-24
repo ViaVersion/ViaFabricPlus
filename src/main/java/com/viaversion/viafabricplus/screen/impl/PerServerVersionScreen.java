@@ -35,6 +35,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.jspecify.annotations.NonNull;
 
 public final class PerServerVersionScreen extends VFPScreen {
 
@@ -89,7 +90,7 @@ public final class PerServerVersionScreen extends VFPScreen {
         }
 
         @Override
-        public void extractContent(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        public void extractContent(final @NonNull GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             final Font textRenderer = Minecraft.getInstance().font;
             context.centeredText(textRenderer, ((MutableComponent) getNarration()).withStyle(ChatFormatting.GOLD), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, -1);
         }
@@ -114,7 +115,7 @@ public final class PerServerVersionScreen extends VFPScreen {
         }
 
         @Override
-        public void extractContent(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        public void extractContent(final @NonNull GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             final boolean isSelected = protocolVersion.equals(selectionSupplier.get());
 
             final Font textRenderer = Minecraft.getInstance().font;

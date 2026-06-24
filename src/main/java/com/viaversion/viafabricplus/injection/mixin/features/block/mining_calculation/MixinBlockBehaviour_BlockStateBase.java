@@ -23,13 +23,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.block.mining_calcu
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.InfestedBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -63,7 +63,7 @@ public abstract class MixinBlockBehaviour_BlockStateBase {
     }
 
     @Inject(method = "getDestroySpeed", at = @At("RETURN"), cancellable = true)
-    private void changeHardness(BlockGetter world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
+    private void changeHardness(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> cir) {
         final Block block = this.getBlock();
 
         if (block.equals(Blocks.END_STONE_BRICKS) || block.equals(Blocks.END_STONE_BRICK_SLAB) || block.equals(Blocks.END_STONE_BRICK_STAIRS) || block.equals(Blocks.END_STONE_BRICK_WALL)) {

@@ -41,23 +41,23 @@ public abstract class MixinClientChunkCache {
     private ClientLevel level;
 
     @Inject(method = "updateLevelChunk", at = @At("TAIL"))
-    private void updateBlockConnections(int chunkX, int chunkZ, ClientboundLevelChunkPacketData clientboundLevelChunkPacketData, CallbackInfo ci) {
-        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, chunkX, chunkZ);
+    private void updateBlockConnections(int x, int z, ClientboundLevelChunkPacketData chunkData, CallbackInfo ci) {
+        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, x, z);
     }
 
     @Inject(method = "handleBlockUpdate", at = @At("TAIL"))
-    private void updateBlockConnections(ClientboundBlockUpdatePacket clientboundBlockUpdatePacket, CallbackInfo ci) {
-        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, clientboundBlockUpdatePacket.getPos());
+    private void updateBlockConnections(ClientboundBlockUpdatePacket packet, CallbackInfo ci) {
+        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, packet.getPos());
     }
 
     @Inject(method = "handleBlockEvent", at = @At("TAIL"))
-    private void updateBlockConnections(ClientboundBlockEventPacket clientboundBlockEventPacket, CallbackInfo ci) {
-        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, clientboundBlockEventPacket.getPos());
+    private void updateBlockConnections(ClientboundBlockEventPacket packet, CallbackInfo ci) {
+        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, packet.getPos());
     }
 
     @Inject(method = "handleBlockDestruction", at = @At("TAIL"))
-    private void updateBlockConnections(ClientboundBlockDestructionPacket clientboundBlockDestructionPacket, CallbackInfo ci) {
-        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, clientboundBlockDestructionPacket.getPos());
+    private void updateBlockConnections(ClientboundBlockDestructionPacket packet, CallbackInfo ci) {
+        BlockConnectionsEmulation1_12_2.updateChunkNeighborConnections(this.level, packet.getPos());
     }
 
 }

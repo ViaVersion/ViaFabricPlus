@@ -61,11 +61,11 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
     }
 
     @Inject(method = "tryMoveItems", at = @At("HEAD"), cancellable = true)
-    private void onSwitchTo(int recipeId, CallbackInfo ci) {
+    private void onSwitchTo(int newTradeIndex, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             ci.cancel();
 
-            if (recipeId >= this.getOffers().size()) {
+            if (newTradeIndex >= this.getOffers().size()) {
                 return;
             }
 
@@ -92,7 +92,7 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
 
             // refill the slots
             if (this.tradeContainer.getItem(0).isEmpty() && this.tradeContainer.getItem(1).isEmpty()) {
-                final MerchantOffer tradeOffer = this.getOffers().get(recipeId);
+                final MerchantOffer tradeOffer = this.getOffers().get(newTradeIndex);
                 this.viaFabricPlus$autofill(interactionManager, player, 0, tradeOffer.getItemCostA());
                 tradeOffer.getItemCostB().ifPresent(item -> this.viaFabricPlus$autofill(interactionManager, player, 1, item));
             }
@@ -100,7 +100,7 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
     }
 
     @Inject(method = "canTakeItemForPickAll", at = @At("HEAD"), cancellable = true)
-    private void modifyCanInsertIntoSlot(ItemStack stack, Slot slot, CallbackInfoReturnable<Boolean> cir) {
+    private void modifyCanInsertIntoSlot(ItemStack carried, Slot target, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             cir.setReturnValue(true);
         }

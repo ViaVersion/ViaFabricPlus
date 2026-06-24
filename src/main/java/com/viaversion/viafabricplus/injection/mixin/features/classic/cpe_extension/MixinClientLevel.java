@@ -19,32 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.bedrock.movement;
+package com.viaversion.viafabricplus.injection.mixin.features.classic.cpe_extension;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.block.BedBlock;
-import net.minecraft.world.phys.Vec3;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
+import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(BedBlock.class)
-public abstract class MixinBedBlock {
+@Mixin(ClientLevel.class)
+public abstract class MixinClientLevel {
 
-    @Inject(method = "bounceUp", at = @At("HEAD"), cancellable = true)
-    private void collisionChanges(Entity entity, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            ci.cancel();
-
-            Vec3 velocity = entity.getDeltaMovement();
-            if (velocity.y < (double) 0.0F) {
-                double d = entity instanceof LivingEntity ? (double) 1.0F : 0.8;
-                entity.setDeltaMovement(velocity.x, Math.min(-velocity.y * 0.75F * d, 0.75F), velocity.z);
-            }
+    @Inject(method = "getPrecipitationAt", at = @At(value = "HEAD"), cancellable = true)
+    private void forceSnow(BlockPos pos, CallbackInfoReturnable<Biome.Precipitation> cir) {
+        if (CPEAdditions.isSnowing()) {
+            cir.setReturnValue(Biome.Precipitation.SNOW);
         }
     }
 

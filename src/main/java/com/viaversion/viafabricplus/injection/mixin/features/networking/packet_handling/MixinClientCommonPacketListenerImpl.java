@@ -36,9 +36,9 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.ServerboundPacketListener;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.common.ServerboundResourcePackPacket;
 import net.minecraft.network.protocol.common.ClientboundPingPacket;
 import net.minecraft.network.protocol.common.ClientboundResourcePackPushPacket;
+import net.minecraft.network.protocol.common.ServerboundResourcePackPacket;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -68,7 +68,7 @@ public abstract class MixinClientCommonPacketListenerImpl {
 
     @Shadow
     @Nullable
-    private static URL parseResourcePackUrl(String url) {
+    private static URL parseResourcePackUrl(String urlString) {
         return null;
     }
 
@@ -80,7 +80,7 @@ public abstract class MixinClientCommonPacketListenerImpl {
     }
 
     @WrapWithCondition(method = "onPacketError", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/network/DisconnectionDetails;)V"))
-    private boolean dontDisconnectOnPacketException(Connection instance, DisconnectionDetails disconnectionInfo) {
+    private boolean dontDisconnectOnPacketException(Connection instance, DisconnectionDetails details) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_3);
     }
 

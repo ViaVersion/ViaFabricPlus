@@ -38,11 +38,11 @@ public abstract class MixinGuiGraphicsExtractor {
     }
 
     @Redirect(method = "itemCount", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))
-    private String makeTextRed(int count) {
-        if (count <= 0) {
-            return ChatFormatting.RED.toString() + count;
+    private String makeTextRed(int i) {
+        if (i <= 0) {
+            return ChatFormatting.RED.toString() + i;
         } else {
-            return String.valueOf(count);
+            return String.valueOf(i);
         }
     }
 

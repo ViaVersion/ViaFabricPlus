@@ -25,8 +25,8 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.PlayerLookTargetProvider;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
 
 public final class ViaFabricPlusPlayerLookTargetProvider extends PlayerLookTargetProvider {
 

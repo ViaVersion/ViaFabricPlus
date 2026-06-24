@@ -22,10 +22,10 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.player_rotations;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -57,11 +57,11 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;abs(F)F"))
-    private float alwaysRotateWhenWalkingBackwards(float value) {
+    private float alwaysRotateWhenWalkingBackwards(float v) {
         if (VisualSettings.INSTANCE.sidewaysBackwardsRunning.isEnabled()) {
             return 0F;
         } else {
-            return Mth.abs(value);
+            return Mth.abs(v);
         }
     }
 

@@ -21,11 +21,11 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.april_fools_8bit_sound;
 
+import com.mojang.blaze3d.audio.SoundBuffer;
 import com.viaversion.viaaprilfools.api.AprilFoolsProtocolVersion;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import java.nio.ByteBuffer;
 import javax.sound.sampled.AudioFormat;
-import com.mojang.blaze3d.audio.SoundBuffer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,9 +42,9 @@ public abstract class MixinSoundBuffer {
     private AudioFormat format;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void modifyBuffer(ByteBuffer sample, AudioFormat format, CallbackInfo ci) {
+    private void modifyBuffer(ByteBuffer data, AudioFormat format, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().equals(AprilFoolsProtocolVersion.s3d_shareware)) {
-            this.viaFabricPlus$apply8BitSound(sample);
+            this.viaFabricPlus$apply8BitSound(data);
         }
     }
 

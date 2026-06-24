@@ -79,7 +79,7 @@ public final class BedrockSettings extends SettingGroup {
         final AccountsSave accountsSave = SaveManager.INSTANCE.getAccountsSave();
 
         final Minecraft client = Minecraft.getInstance();
-        final Screen prevScreen = client.screen;
+        final Screen prevScreen = client.gui.screen();
         try {
             final BedrockAuthManager bedrockAccount = BedrockAuthManager
                 .create(MinecraftAuth.createHttpClient(), ProtocolConstants.BEDROCK_VERSION_NAME)
@@ -88,7 +88,7 @@ public final class BedrockSettings extends SettingGroup {
                         if (copyUrl) {
                             client.keyboardHandler.setClipboard(msaDeviceCode.getDirectVerificationUri());
                         } else {
-                            client.setScreen(prevScreen);
+                            client.gui.setScreen(prevScreen);
                             this.thread.interrupt();
                         }
                     }, TITLE, Component.translatable("click_to_set_bedrock_account.viafabricplus.notice"), Component.translatable("base.viafabricplus.copy_link"), Component.translatable("base.viafabricplus.cancel")));
@@ -133,7 +133,7 @@ public final class BedrockSettings extends SettingGroup {
             }
 
             this.thread.interrupt();
-            if (client.screen instanceof SettingsScreen) { // The user might have already left the screen and joined a server
+            if (client.gui.screen() instanceof SettingsScreen) { // The user might have already left the screen and joined a server
                 VFPScreen.showErrorScreen(TITLE, e, prevScreen);
             }
         }
@@ -158,7 +158,7 @@ public final class BedrockSettings extends SettingGroup {
 
     private static void updateLoginStatusMessage(final String stepName) {
         Minecraft.getInstance().execute(() -> {
-            if (Minecraft.getInstance().screen instanceof ConfirmScreen confirmScreen) {
+            if (Minecraft.getInstance().gui.screen() instanceof ConfirmScreen confirmScreen) {
                 ((IConfirmScreen) confirmScreen).viaFabricPlus$updateMessage(Component.translatable("minecraftauth_library.viafabricplus." + stepName));
             }
         });

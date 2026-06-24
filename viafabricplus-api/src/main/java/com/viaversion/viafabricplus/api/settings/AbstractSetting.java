@@ -28,8 +28,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 /**
- * This class is the base for all settings. It contains the name, the default value and the current value.
- * Developer's should always use the implementations of this class, and not this class itself.
+ * This class is the base for all settings. It contains the name, the default value, and the current value.
+ * Developers should always use the implementations of this class and not this class itself.
  *
  * @param <T> The type of the setting.
  */

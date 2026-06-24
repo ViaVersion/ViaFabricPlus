@@ -35,10 +35,10 @@ import io.netty.channel.ChannelFuture;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.util.Optional;
-import net.minecraft.client.gui.screens.ConnectScreen;
-import net.minecraft.client.multiplayer.resolver.ServerAddress;
-import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.User;
+import net.minecraft.client.gui.screens.ConnectScreen;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.network.EventLoopGroupHolder;
@@ -99,8 +99,8 @@ public abstract class MixinConnectScreen_1 {
     }
 
     @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connect(Ljava/net/InetSocketAddress;Lnet/minecraft/server/network/EventLoopGroupHolder;Lnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;"))
-    private ChannelFuture resetProtocolVersionAfterDisconnect(InetSocketAddress inetSocketAddress, EventLoopGroupHolder eventLoopGroupHolder, Connection connection, Operation<ChannelFuture> original) {
-        final ChannelFuture future = original.call(inetSocketAddress, eventLoopGroupHolder, connection);
+    private ChannelFuture resetProtocolVersionAfterDisconnect(InetSocketAddress address, EventLoopGroupHolder eventLoopGroupHolder, Connection connection, Operation<ChannelFuture> original) {
+        final ChannelFuture future = original.call(address, eventLoopGroupHolder, connection);
         ProtocolTranslator.injectPreviousVersionReset(future.channel());
         return future;
     }

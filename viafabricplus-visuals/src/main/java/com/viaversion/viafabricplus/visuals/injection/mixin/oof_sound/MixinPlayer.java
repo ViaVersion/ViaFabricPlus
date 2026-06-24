@@ -23,9 +23,9 @@ package com.viaversion.viafabricplus.visuals.injection.mixin.oof_sound;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.sounds.SoundEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

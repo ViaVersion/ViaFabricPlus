@@ -33,6 +33,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.NonNull;
 
 /**
  * This class is a wrapper for the {@link net.minecraft.client.gui.screens.Screen} class which provides some global
@@ -104,7 +105,7 @@ public class VFPScreen extends Screen {
     /**
      * Sets the subtitle and the subtitle press action
      *
-     * @param subtitle The subtitle which should be rendered
+     * @param subtitle The subtitle that should be rendered
      */
     public void setupSubtitle(@Nullable final Component subtitle) {
         this.setupSubtitle(subtitle, null);
@@ -113,8 +114,8 @@ public class VFPScreen extends Screen {
     /**
      * Sets the subtitle and the subtitle press action
      *
-     * @param subtitle            The subtitle which should be rendered
-     * @param subtitlePressAction The press action which should be executed when the subtitle is clicked
+     * @param subtitle            The subtitle that should be rendered
+     * @param subtitlePressAction The press action that should be executed when the subtitle is clicked
      */
     public void setupSubtitle(@Nullable final Component subtitle, @Nullable final Button.OnPress subtitlePressAction) {
         this.subtitlePressAction = subtitlePressAction;
@@ -127,6 +128,7 @@ public class VFPScreen extends Screen {
             this.subtitle = subtitle;
         } else {
             this.subtitle = null;
+            assert subtitle != null;
             final int subtitleWidth = font.width(subtitle);
             this.addRenderableWidget(subtitleWidget = new PlainTextButton(width / 2 - (subtitleWidth / 2), (font.lineHeight + 2) * 2 + 3, subtitleWidth, font.lineHeight + 2, subtitle, subtitlePressAction, font));
         }
@@ -156,7 +158,7 @@ public class VFPScreen extends Screen {
     public static void setScreen(final Screen screen) {
         final Minecraft client = Minecraft.getInstance();
 
-        client.execute(() -> client.setScreen(screen));
+        client.execute(() -> client.gui.setScreen(screen));
     }
 
     @Override
@@ -169,12 +171,12 @@ public class VFPScreen extends Screen {
     public void addRefreshButton(final Runnable click) {
         this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.refresh"), button -> {
             click.run();
-            minecraft.setScreen(this);
+            minecraft.gui.setScreen(this);
         }).pos(width - 60 - 5, 5).size(60, 20).build());
     }
 
     @Override
-    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractRenderState(final @NonNull GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
 
         this.renderTitle(graphics);
@@ -185,7 +187,7 @@ public class VFPScreen extends Screen {
         if (prevScreen instanceof VFPScreen vfpScreen) {
             vfpScreen.open(vfpScreen.prevScreen); // Support recursive opening
         } else {
-            Minecraft.getInstance().setScreen(prevScreen);
+            Minecraft.getInstance().gui.setScreen(prevScreen);
         }
     }
 
@@ -238,14 +240,14 @@ public class VFPScreen extends Screen {
      * Opens an error screen with a specific title and throws the given throwable
      *
      * @param title     The title of the error screen
-     * @param throwable The throwable which should be thrown
-     * @param next      The screen which should be opened after the error screen is closed
+     * @param throwable The throwable that should be thrown
+     * @param next      The screen that should be opened after the error screen is closed
      */
     public static void showErrorScreen(final Component title, final Throwable throwable, final Screen next) {
         ViaFabricPlusImpl.INSTANCE.getLogger().error("Something went wrong!", throwable);
 
         final Minecraft client = Minecraft.getInstance();
-        client.execute(() -> client.setScreen(new AlertScreen(() -> client.setScreen(next), title, Component.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Component.translatable("base.viafabricplus.cancel"), false)));
+        client.execute(() -> client.gui.setScreen(new AlertScreen(() -> client.gui.setScreen(next), title, Component.translatable("base.viafabricplus.something_went_wrong").append("\n" + throwable.getMessage()), Component.translatable("base.viafabricplus.cancel"), false)));
     }
 
 }

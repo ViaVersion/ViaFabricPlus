@@ -22,10 +22,10 @@
 package com.viaversion.viafabricplus.injection.mixin.core.integration.bedrock;
 
 import com.viaversion.viafabricplus.injection.access.core.bedrock.IConfirmScreen;
+import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 

@@ -23,10 +23,10 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.collision
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.core.Direction;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,14 +37,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinShapes {
 
     @Inject(method = "collide", at = @At("HEAD"), cancellable = true)
-    private static void calculateMaxOffset1_12_2(Direction.Axis axis, AABB box, Iterable<VoxelShape> shapes, double maxDist, CallbackInfoReturnable<Double> cir) {
+    private static void calculateMaxOffset1_12_2(Direction.Axis axis, AABB moving, Iterable<VoxelShape> shapes, double maxDist, CallbackInfoReturnable<Double> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             for (final VoxelShape shape : shapes) {
                 for (final AABB shapeBox : shape.toAabbs()) {
                     maxDist = switch (axis) {
-                        case X -> viaFabricPlus$intersectX(box, shapeBox, maxDist);
-                        case Y -> viaFabricPlus$intersectY(box, shapeBox, maxDist);
-                        case Z -> viaFabricPlus$intersectZ(box, shapeBox, maxDist);
+                        case X -> viaFabricPlus$intersectX(moving, shapeBox, maxDist);
+                        case Y -> viaFabricPlus$intersectY(moving, shapeBox, maxDist);
+                        case Z -> viaFabricPlus$intersectZ(moving, shapeBox, maxDist);
                     };
                 }
             }

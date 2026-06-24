@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.visuals.injection.mixin.level_loading_trans
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,7 +35,7 @@ public abstract class MixinLevelLoadingScreen {
     @Shadow
     private LevelLoadingScreen.Reason reason;
 
-    @Redirect(method = "extractBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screens/LevelLoadingScreen;reason:Lnet/minecraft/client/gui/screens/LevelLoadingScreen$Reason;"))
+    @Redirect(method = "extractBackground", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screens/LevelLoadingScreen;reason:Lnet/minecraft/client/gui/screens/LevelLoadingScreen$Reason;", opcode = Opcodes.GETFIELD))
     private LevelLoadingScreen.Reason hideDownloadTerrainScreenTransitionEffects(LevelLoadingScreen levelLoadingScreen) {
         if (VisualSettings.INSTANCE.hideDownloadTerrainScreenTransitionEffects.isEnabled()) {
             return LevelLoadingScreen.Reason.OTHER;

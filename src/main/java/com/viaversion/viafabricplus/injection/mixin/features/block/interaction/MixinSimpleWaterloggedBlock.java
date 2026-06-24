@@ -40,14 +40,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public interface MixinSimpleWaterloggedBlock {
 
     @Inject(method = "canPlaceLiquid", at = @At("RETURN"), cancellable = true)
-    private void preventLiquidPlacement1_12_2(LivingEntity livingEntity, BlockGetter blockGetter, BlockPos blockPos, BlockState blockState, Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
+    private void preventLiquidPlacement1_12_2(LivingEntity user, BlockGetter level, BlockPos pos, BlockState state, Fluid type, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(false);
         }
     }
 
     @Inject(method = "placeLiquid", at = @At("HEAD"), cancellable = true)
-    private void preventLiquidPlacement1_12_2(LevelAccessor levelAccessor, BlockPos blockPos, BlockState blockState, FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
+    private void preventLiquidPlacement1_12_2(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(false);
         }

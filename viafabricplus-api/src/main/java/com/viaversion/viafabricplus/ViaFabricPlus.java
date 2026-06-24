@@ -40,7 +40,7 @@ public final class ViaFabricPlus {
     }
 
     /**
-     * @return the ViaFabricPlusBase implementation which is set by the internals
+     * @return the ViaFabricPlusBase implementation that is set by the internals
      */
     public static ViaFabricPlusBase getImpl() {
         if (impl == null) {

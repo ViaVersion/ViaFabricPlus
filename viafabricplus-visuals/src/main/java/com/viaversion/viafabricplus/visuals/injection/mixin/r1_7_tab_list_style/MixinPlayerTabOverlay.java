@@ -68,7 +68,7 @@ public abstract class MixinPlayerTabOverlay implements IPlayerTabOverlay {
         }
     }
 
-    @ModifyExpressionValue(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;isEncrypted()Z"))
+    @ModifyExpressionValue(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;onlineMode()Z"))
     private boolean hideSkins(boolean original) {
         return original && !viaFabricPlusVisuals$hideSkins;
     }
@@ -98,7 +98,7 @@ public abstract class MixinPlayerTabOverlay implements IPlayerTabOverlay {
 
     @Override
     public void viaFabricPlusVisuals$setMaxPlayers(int maxPlayers) {
-        this.viaFabricPlusVisuals$maxSlots = Math.min(200, Math.max(20, ((maxPlayers + PlayerTabOverlay.MAX_ROWS_PER_COL - 1) / PlayerTabOverlay.MAX_ROWS_PER_COL) * PlayerTabOverlay.MAX_ROWS_PER_COL));
+        this.viaFabricPlusVisuals$maxSlots = Math.clamp(((maxPlayers + PlayerTabOverlay.MAX_ROWS_PER_COL - 1) / PlayerTabOverlay.MAX_ROWS_PER_COL) * PlayerTabOverlay.MAX_ROWS_PER_COL, 20, 200);
     }
 
 }

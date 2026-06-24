@@ -43,7 +43,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ServerboundPlayerInputPacket;
 import net.minecraft.stats.StatsCounter;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.phys.Vec2;
 import org.spongepowered.asm.mixin.Final;
@@ -117,10 +117,10 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     }
 
     @Inject(method = "isSprintingPossible", at = @At("HEAD"), cancellable = true)
-    private void isSprintingPossible1_21_10(boolean bl, CallbackInfoReturnable<Boolean> cir) {
+    private void isSprintingPossible1_21_10(boolean allowedInShallowWater, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
             cir.setReturnValue(!this.isMobilityRestricted() && this.viaFabricPlus$hasEnoughFoodToSprint1_19_1()
-                && (!this.isPassenger() || this.vehicleCanSprint(this.getVehicle())) && (bl || !this.isInShallowWater()));
+                && (!this.isPassenger() || this.vehicleCanSprint(this.getVehicle())) && (allowedInShallowWater || !this.isInShallowWater()));
         }
     }
 
@@ -136,7 +136,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof ServerboundPlayerInputPacket(
             Input i
         )) {
-            // Directly send the player input packet in order to bypass the code in the 1.21.5->1.21.6 protocol.
+            // Directly send the player input packet to bypass the code in the 1.21.5->1.21.6 protocol.
             // This allows mods to directly send raw packets which will then be remapped by VV instead of us.
             this.viaFabricPlus$sendInputPacket(i);
         } else {
@@ -163,11 +163,11 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     }
 
     @Redirect(method = "modifyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec2;scale(F)Lnet/minecraft/world/phys/Vec2;", ordinal = 0))
-    private Vec2 moveMovementSpeedFactors(Vec2 instance, float value) {
+    private Vec2 moveMovementSpeedFactors(Vec2 instance, float s) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return instance;
         } else {
-            return instance.scale(value);
+            return instance.scale(s);
         }
     }
 
@@ -262,7 +262,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     @Inject(method = "shouldStopRunSprinting", at = @At("HEAD"), cancellable = true)
     private void changeStopSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            final boolean ridingCamel = getVehicle() != null && getVehicle().getType() == EntityType.CAMEL;
+            final boolean ridingCamel = getVehicle() != null && getVehicle().getType() == EntityTypes.CAMEL;
             cir.setReturnValue(this.isFallFlying() || this.isMobilityRestricted() || this.isMovingSlowly() || this.isPassenger() && !ridingCamel || this.isUsingItem() && !this.isPassenger() && !this.isUnderWater());
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
             cir.setReturnValue(this.isMobilityRestricted() || this.isPassenger() && !this.vehicleCanSprint(this.getVehicle()) || !this.input.hasForwardImpulse() || !this.viaFabricPlus$hasEnoughFoodToSprint1_19_1() || this.horizontalCollision && !this.minorHorizontalCollision || this.isInWater() && !this.isUnderWater());

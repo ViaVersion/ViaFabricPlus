@@ -43,7 +43,7 @@ public abstract class MixinScreen {
     protected Minecraft minecraft;
 
     @Inject(method = "clickCommandAction", at = @At("HEAD"), cancellable = true)
-    private static void changeCommandHandling(LocalPlayer player, String command, Screen screenAfterRun, CallbackInfo ci) {
+    private static void changeCommandHandling(LocalPlayer player, String command, Screen screenAfterCommand, CallbackInfo ci) {
         if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4)) {
             return;
         }

@@ -27,8 +27,8 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.CommandSuggestions;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.network.chat.Style;
+import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Final;
@@ -59,19 +59,19 @@ public abstract class MixinCommandSuggestions {
     private List<FormattedCharSequence> commandUsage;
 
     @Inject(method = "formatChat", at = @At(value = "HEAD"), cancellable = true)
-    private void disableTextFieldColors(String original, int firstCharacterIndex, CallbackInfoReturnable<FormattedCharSequence> cir) {
+    private void disableTextFieldColors(String text, int offset, CallbackInfoReturnable<FormattedCharSequence> cir) {
         if (this.viaFabricPlus$cancelTabComplete()) {
-            cir.setReturnValue(FormattedCharSequence.forward(original, Style.EMPTY));
+            cir.setReturnValue(FormattedCharSequence.forward(text, Style.EMPTY));
         }
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    private void handle1_12_2KeyPressed(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
+    private void handle1_12_2KeyPressed(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
         if (this.viaFabricPlus$cancelTabComplete()) {
-            if (input.key() == GLFW.GLFW_KEY_TAB && this.suggestions == null) {
+            if (event.key() == GLFW.GLFW_KEY_TAB && this.suggestions == null) {
                 this.updateCommandInfo();
             } else if (this.suggestions != null) {
-                if (this.suggestions.keyPressed(input)) {
+                if (this.suggestions.keyPressed(event)) {
                     cir.setReturnValue(true);
                     return;
                 }

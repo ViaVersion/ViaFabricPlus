@@ -48,11 +48,11 @@ public abstract class MixinEntity {
     }
 
     @Redirect(method = "getPassengerRidingPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getPassengerAttachmentPoint(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/EntityDimensions;F)Lnet/minecraft/world/phys/Vec3;"))
-    private Vec3 getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scaleFactor) {
+    private Vec3 getPassengerRidingPos1_20_1(Entity instance, Entity passenger, EntityDimensions dimensions, float scale) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
             return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, passenger).yRot(-instance.getYRot() * (float) (Math.PI / 180));
         } else {
-            return getPassengerAttachmentPoint(passenger, dimensions, scaleFactor);
+            return getPassengerAttachmentPoint(passenger, dimensions, scale);
         }
     }
 

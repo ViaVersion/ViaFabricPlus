@@ -23,10 +23,10 @@ package com.viaversion.viafabricplus.visuals.injection.mixin.potion_glint;
 
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.alchemy.PotionContents;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(PotionItem.class)

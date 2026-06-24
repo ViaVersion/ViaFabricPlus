@@ -36,7 +36,7 @@ public abstract class MixinCreativeModeInventoryScreen {
     @Inject(method = "init", at = @At("RETURN"))
     private void replaceCreativeMenu(CallbackInfo ci) {
         if (VisualSettings.INSTANCE.replaceCreativeInventory.isEnabled()) {
-            Minecraft.getInstance().setScreen(GridItemSelectionScreen.INSTANCE);
+            Minecraft.getInstance().gui.setScreen(GridItemSelectionScreen.INSTANCE);
         }
     }
 

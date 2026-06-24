@@ -27,6 +27,7 @@ import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ObjectSelectionList;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Wrapper class for {@link ObjectSelectionList} including the following features:
@@ -59,7 +60,7 @@ public class VFPList extends ObjectSelectionList<VFPListEntry> {
     }
 
     @Override
-    protected void extractSelection(final GuiGraphicsExtractor graphics, final VFPListEntry entry, final int outlineColor) {
+    protected void extractSelection(final @NonNull GuiGraphicsExtractor graphics, final @NonNull VFPListEntry entry, final int outlineColor) {
         // Remove selection box
     }
 

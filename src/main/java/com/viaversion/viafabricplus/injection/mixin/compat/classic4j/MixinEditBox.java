@@ -31,8 +31,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
- * ClassicCube allows to use forbidden characters which the game doesn't allow in passwords, so we have to bypass this check
- * in order to allow the user to enter their password.
+ * ClassicCube allows using forbidden characters which the game doesn't allow in passwords, so we have to bypass this check
+ * to allow the user to enter their password.
  */
 @Mixin(EditBox.class)
 public abstract class MixinEditBox implements IEditBox {
@@ -46,11 +46,11 @@ public abstract class MixinEditBox implements IEditBox {
     }
 
     @Redirect(method = "insertText", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/StringUtil;filterText(Ljava/lang/String;)Ljava/lang/String;"))
-    private String allowForbiddenCharacters(String string) {
+    private String allowForbiddenCharacters(String input) {
         if (this.viaFabricPlus$forbiddenCharactersUnlocked) {
-            return string;
+            return input;
         } else {
-            return StringUtil.filterText(string);
+            return StringUtil.filterText(input);
         }
     }
 

@@ -39,8 +39,8 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class MixinServerStatusPinger {
 
     @WrapOperation(method = "pingServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connectToServer(Ljava/net/InetSocketAddress;Lnet/minecraft/server/network/EventLoopGroupHolder;Lnet/minecraft/util/debugchart/LocalSampleLogger;)Lnet/minecraft/network/Connection;"))
-    private Connection setForcedVersion(InetSocketAddress inetSocketAddress, EventLoopGroupHolder eventLoopGroupHolder, LocalSampleLogger localSampleLogger, Operation<Connection> original, @Local(argsOnly = true) ServerData serverInfo) {
-        final IServerData mixinServerInfo = (IServerData) serverInfo;
+    private Connection setForcedVersion(InetSocketAddress address, EventLoopGroupHolder eventLoopGroupHolder, LocalSampleLogger localSampleLogger, Operation<Connection> original, @Local(argsOnly = true) ServerData data) {
+        final IServerData mixinServerInfo = (IServerData) data;
 
         if (mixinServerInfo.viaFabricPlus$forcedVersion() != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
             // We use the PerformanceLog field to store the forced version since it's always null when pinging a server
@@ -55,7 +55,7 @@ public abstract class MixinServerStatusPinger {
             mixinServerInfo.viaFabricPlus$passDirectConnectScreen(false);
         }
 
-        return original.call(inetSocketAddress, eventLoopGroupHolder, localSampleLogger);
+        return original.call(address, eventLoopGroupHolder, localSampleLogger);
     }
 
 }

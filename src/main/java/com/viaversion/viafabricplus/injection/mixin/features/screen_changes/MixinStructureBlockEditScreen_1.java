@@ -40,9 +40,9 @@ public abstract class MixinStructureBlockEditScreen_1 extends EditBox {
     }
 
     @Inject(method = "charTyped", at = @At("HEAD"), cancellable = true)
-    private void removeValidation(CharacterEvent input, CallbackInfoReturnable<Boolean> cir) {
+    private void removeValidation(CharacterEvent event, CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(super.charTyped(input));
+            cir.setReturnValue(super.charTyped(event));
         }
     }
 
