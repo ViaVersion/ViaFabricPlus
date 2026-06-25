@@ -172,4 +172,14 @@ public abstract class MixinEntity {
         return instance.with(axis, value);
     }
 
+    @Redirect(method = "restituteMovementAfterCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEffectiveGravity()D", ordinal = 0))
+    private double fixGravityCheck(Entity instance) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+            return 0;
+        }
+
+        return instance.getEffectiveGravity();
+    }
+
+
 }
