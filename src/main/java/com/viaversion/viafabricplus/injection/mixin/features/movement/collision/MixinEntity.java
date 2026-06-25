@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.collision
 
 import com.google.common.collect.ImmutableList;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
@@ -65,6 +66,9 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract Level level();
+
+    @Shadow
+    public abstract Vec3 getDeltaMovement();
 
     @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;addMovementThisTick(Lnet/minecraft/world/entity/Entity$Movement;)V"))
     private boolean removeExtraCollisionChecks(Entity instance, Entity.Movement movement) {
@@ -157,6 +161,15 @@ public abstract class MixinEntity {
         } else {
             return Mth.equal(a, b);
         }
+    }
+
+    @Redirect(method = "restituteMovementAfterCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;with(Lnet/minecraft/core/Direction$Axis;D)Lnet/minecraft/world/phys/Vec3;", ordinal = 2))
+    private Vec3 fixRestitution(Vec3 instance, Direction.Axis axis, double value, @Local(name = "restitution") double restitution) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+            return instance.with(axis, -this.getDeltaMovement().y * restitution);
+        }
+
+        return instance.with(axis, value);
     }
 
 }
