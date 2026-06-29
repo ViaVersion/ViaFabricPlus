@@ -22,7 +22,11 @@
 package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
 
 import com.google.common.collect.ImmutableList;
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
@@ -36,7 +40,9 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -65,6 +71,39 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract Level level();
+
+    @Shadow
+    public abstract Vec3 getDeltaMovement();
+
+    @Shadow
+    public boolean verticalCollision;
+
+    @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;horizontalCollision:Z", ordinal = 2, opcode = Opcodes.GETFIELD))
+    private boolean removeVerticalCheck(Entity instance) {
+        return instance.horizontalCollision || (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1) && this.verticalCollision);
+    }
+
+    @Redirect(method = "restituteMovementAfterCollisions", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;verticalCollisionBelow:Z", opcode = Opcodes.GETFIELD))
+    private boolean fixBelowCollisionCheck(Entity instance) {
+        return instance.verticalCollisionBelow || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1);
+    }
+
+    @Definition(id = "y", field = "Lnet/minecraft/world/phys/Vec3;y:D")
+    @Definition(id = "currentMovement", local = @Local(type = Vec3.class, name = "currentMovement"))
+    @Expression("-currentMovement.y < ?")
+    @ModifyExpressionValue(method = "restituteMovementAfterCollisions", at = @At("MIXINEXTRAS:EXPRESSION"))
+    private boolean fixGravityCheck(boolean original, @Local(name = "currentMovement") Vec3 currentMovement) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+            return !(currentMovement.y < 0.0);
+        } else {
+            return original;
+        }
+    }
+
+    @Redirect(method = "restituteMovementAfterCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;with(Lnet/minecraft/core/Direction$Axis;D)Lnet/minecraft/world/phys/Vec3;", ordinal = 2))
+    private Vec3 fixRestitution(Vec3 instance, Direction.Axis axis, double value, @Local(name = "restitution") double restitution) {
+        return instance.with(axis, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1) ? -this.getDeltaMovement().y * restitution : value);
+    }
 
     @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;addMovementThisTick(Lnet/minecraft/world/entity/Entity$Movement;)V"))
     private boolean removeExtraCollisionChecks(Entity instance, Entity.Movement movement) {
@@ -138,6 +177,48 @@ public abstract class MixinEntity {
 
         if (target.olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue(BlockPos.containing(position.x, getBoundingBox().minY - (target.olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1 : 0.5000001), position.z));
+        }
+    }
+
+    @Inject(method = "collideWithShapes", at = @At("HEAD"), cancellable = true)
+    private static void use1_20_6CollideShapes(final Vec3 vec3, final AABB boundingBox, final List<VoxelShape> list, final CallbackInfoReturnable<Vec3> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            if (list.isEmpty()) {
+                cir.setReturnValue(vec3);
+                return;
+            }
+
+            AABB aabb = boundingBox;
+            double d = vec3.x;
+            double d2 = vec3.y;
+            double d3 = vec3.z;
+            if (d2 != 0.0) {
+                d2 = Shapes.collide(Direction.Axis.Y, aabb, list, d2);
+                if (d2 != 0.0) {
+                    aabb = aabb.move(0.0, d2, 0.0);
+                }
+            }
+
+            boolean z = Math.abs(d) < Math.abs(d3);
+            if (z && d3 != 0.0) {
+                d3 = Shapes.collide(Direction.Axis.Z, aabb, list, d3);
+                if (d3 != 0.0) {
+                    aabb = aabb.move(0.0, 0.0, d3);
+                }
+            }
+
+            if (d != 0.0) {
+                d = Shapes.collide(Direction.Axis.X, aabb, list, d);
+                if (!z && d != 0.0) {
+                    aabb = aabb.move(d, 0.0, 0.0);
+                }
+            }
+
+            if (!z && d3 != 0.0) {
+                d3 = Shapes.collide(Direction.Axis.Z, aabb, list, d3);
+            }
+
+            cir.setReturnValue(new Vec3(d, d2, d3));
         }
     }
 
