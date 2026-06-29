@@ -40,7 +40,6 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -177,48 +176,6 @@ public abstract class MixinEntity {
 
         if (target.olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue(BlockPos.containing(position.x, getBoundingBox().minY - (target.olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1 : 0.5000001), position.z));
-        }
-    }
-
-    @Inject(method = "collideWithShapes", at = @At("HEAD"), cancellable = true)
-    private static void use1_20_6CollideShapes(final Vec3 vec3, final AABB boundingBox, final List<VoxelShape> list, final CallbackInfoReturnable<Vec3> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            if (list.isEmpty()) {
-                cir.setReturnValue(vec3);
-                return;
-            }
-
-            AABB aabb = boundingBox;
-            double d = vec3.x;
-            double d2 = vec3.y;
-            double d3 = vec3.z;
-            if (d2 != 0.0) {
-                d2 = Shapes.collide(Direction.Axis.Y, aabb, list, d2);
-                if (d2 != 0.0) {
-                    aabb = aabb.move(0.0, d2, 0.0);
-                }
-            }
-
-            boolean z = Math.abs(d) < Math.abs(d3);
-            if (z && d3 != 0.0) {
-                d3 = Shapes.collide(Direction.Axis.Z, aabb, list, d3);
-                if (d3 != 0.0) {
-                    aabb = aabb.move(0.0, 0.0, d3);
-                }
-            }
-
-            if (d != 0.0) {
-                d = Shapes.collide(Direction.Axis.X, aabb, list, d);
-                if (!z && d != 0.0) {
-                    aabb = aabb.move(d, 0.0, 0.0);
-                }
-            }
-
-            if (!z && d3 != 0.0) {
-                d3 = Shapes.collide(Direction.Axis.Z, aabb, list, d3);
-            }
-
-            cir.setReturnValue(new Vec3(d, d2, d3));
         }
     }
 
