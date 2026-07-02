@@ -370,6 +370,7 @@
     "features.world.footstep_particle.MixinParticleMappings",
     "features.world.footstep_particle.MixinRegistrySyncManager",
     "features.world.item_picking.MixinMinecraft",
+    "features.world.particle_distance.MixinClientLevel",
     "features.world.remove_server_view_distance.MixinOptions"
   ],
   "injectors": {
