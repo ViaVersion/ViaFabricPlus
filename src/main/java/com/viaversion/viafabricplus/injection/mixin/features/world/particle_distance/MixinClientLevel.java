@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 public abstract class MixinClientLevel {
 
     @ModifyConstant(method = "doAddParticle", constant = @Constant(doubleValue = 1024.0))
-    private double modifyParticleViewDistance(double constant) {
+    private double lowerParticleRenderDistance(double constant) {
         if (DebugSettings.INSTANCE.lowerParticleRenderDistance.isEnabled()) {
             return 256.0;
         } else {
