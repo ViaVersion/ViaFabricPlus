@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.world.particle_distance;
+package com.viaversion.viafabricplus.injection.mixin.features.world.entity_distance;
 
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -32,7 +33,7 @@ public abstract class MixinClientLevel {
 
     @ModifyConstant(method = "doAddParticle", constant = @Constant(doubleValue = 1024.0))
     private double lowerParticleRenderDistance(double constant) {
-        if (DebugSettings.INSTANCE.lowerParticleRenderDistance.isEnabled()) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 256.0;
         } else {
             return constant;

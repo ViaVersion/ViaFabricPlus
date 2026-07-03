@@ -83,7 +83,6 @@
   "debug_settings.viafabricplus.legacy_pane_outlines": "Legacy pane outlines",
   "debug_settings.viafabricplus.serverside_place_sounds": "Serverside block/item place sounds",
   "debug_settings.viafabricplus.remove_server_description_sanitize": "Remove server description sanitize",
-  "debug_settings.viafabricplus.lower_particle_render_distance": "Lower particle render distance",
 
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "Use BetaCraft authentication",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Verify session for online mode servers",
