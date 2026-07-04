@@ -365,14 +365,14 @@
     "features.world.duplicated_sounds.MixinBlockItem",
     "features.world.duplicated_sounds.MixinButtonBlock",
     "features.world.duplicated_sounds.MixinItems",
+    "features.world.entity_distance.MixinClientLevel",
+    "features.world.entity_distance.MixinLevelExtractor",
+    "features.world.entity_distance.MixinRemotePlayer",
     "features.world.footstep_particle.MixinMappingDataBase",
     "features.world.footstep_particle.MixinParticleIdMappings1_13",
     "features.world.footstep_particle.MixinParticleMappings",
     "features.world.footstep_particle.MixinRegistrySyncManager",
     "features.world.item_picking.MixinMinecraft",
-    "features.world.entity_distance.MixinClientLevel",
-    "features.world.entity_distance.MixinLevelExtractor",
-    "features.world.entity_distance.MixinRemotePlayer",
     "features.world.remove_server_view_distance.MixinOptions"
   ],
   "injectors": {
