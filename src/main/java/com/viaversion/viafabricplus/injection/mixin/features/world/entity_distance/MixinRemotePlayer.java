@@ -40,7 +40,7 @@ public abstract class MixinRemotePlayer extends AbstractClientPlayer {
     }
 
     @Inject(method = "shouldRenderAtSqrDistance", at = @At("HEAD"), cancellable = true)
-    private void useSuperDistance(final double distance, final CallbackInfoReturnable<Boolean> cir) {
+    private void revert10thMultiplication(final double distance, final CallbackInfoReturnable<Boolean> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(super.shouldRenderAtSqrDistance(distance));
         }
