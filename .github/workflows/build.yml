@@ -2,10 +2,10 @@ name: Build
 on: [pull_request, push, workflow_dispatch]
 permissions:
   contents: read
-
 jobs:
   build:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
     steps:
       - name: Checkout Repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # 7.0.0
@@ -15,17 +15,18 @@ jobs:
         uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # 6.2.0
         with:
           cache-disabled: true
-      - name: Set up JDK 25
+          cache-provider: basic
+      - name: Set up Java
         uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # 5.4.0
         with:
           distribution: 'temurin'
           java-version: 25
           check-latest: true
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
       - name: Upload Artifacts to GitHub
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # 7.0.1
         with:
           name: Artifacts
           path: build/libs/
-          if-no-files-found: "error"
+          if-no-files-found: error
