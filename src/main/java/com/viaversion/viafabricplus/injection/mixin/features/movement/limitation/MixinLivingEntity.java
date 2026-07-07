@@ -34,6 +34,8 @@ import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(LivingEntity.class)
@@ -45,6 +47,15 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Shadow
     public abstract boolean hasEffect(Holder<MobEffect> effect);
+
+    @ModifyConstant(method = "getFrictionInfluencedSpeed", constant = @Constant(doubleValue = 0.6))
+    private double allowFrictionLessThan(final double constant) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+            return Double.MIN_VALUE;
+        } else {
+            return constant;
+        }
+    }
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;is(Ljava/lang/Object;)Z"))
     private boolean useEuclideanDistanceCalculation(LivingEntity instance, Object o) {
