@@ -44,6 +44,11 @@ public abstract class MixinCamel extends AbstractHorse {
         super(entityType, world);
     }
 
+    @Redirect(method = "getBodyAnchorAnimationYOffset", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/camel/Camel;isBaby()Z"))
+    private boolean removeBabySitOffset(Camel instance) {
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v26_1) && instance.isBaby();
+    }
+
     @Redirect(method = "getDefaultDimensions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/camel/Camel;isBaby()Z"))
     private boolean dontChangeScale(Camel instance) {
         return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v26_1) && instance.isBaby();
