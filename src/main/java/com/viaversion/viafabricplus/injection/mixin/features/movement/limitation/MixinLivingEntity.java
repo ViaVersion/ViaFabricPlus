@@ -49,7 +49,7 @@ public abstract class MixinLivingEntity extends Entity {
     public abstract boolean hasEffect(Holder<MobEffect> effect);
 
     @ModifyConstant(method = "getFrictionInfluencedSpeed", constant = @Constant(doubleValue = 0.6))
-    private double allowFrictionLessThan(final double constant) {
+    private double allowFrictionLessThan(double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
             return Double.MIN_VALUE;
         } else {
