@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.dimensions;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.util.Mth;
@@ -33,7 +34,9 @@ import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -42,6 +45,15 @@ public abstract class MixinCamel extends AbstractHorse {
 
     public MixinCamel(EntityType<? extends AbstractHorse> entityType, Level world) {
         super(entityType, world);
+    }
+
+    @ModifyConstant(method = "getBodyAnchorAnimationYOffset", constant = @Constant(doubleValue = 0.375D))
+    private double scaleSitOffset(double constant, @Local(name = "scale", argsOnly = true) float scale) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+            return constant * scale;
+        } else {
+            return constant;
+        }
     }
 
     @Redirect(method = "getBodyAnchorAnimationYOffset", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/camel/Camel;isBaby()Z"))
