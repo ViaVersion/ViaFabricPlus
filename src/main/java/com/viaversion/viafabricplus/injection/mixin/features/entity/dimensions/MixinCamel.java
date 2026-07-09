@@ -47,8 +47,8 @@ public abstract class MixinCamel extends AbstractHorse {
         super(entityType, world);
     }
 
-    @ModifyConstant(method = "getBodyAnchorAnimationYOffset", constant = @Constant(doubleValue = 0.375D))
-    private double scaleSitOffset(double constant, @Local(name = "scale", argsOnly = true) float scale) {
+    @ModifyConstant(method = "getBodyAnchorAnimationYOffset", constant = @Constant(doubleValue = 0.375))
+    private double scaleSitOffset(double constant, @Local(ordinal = 1, argsOnly = true) float scale) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
             return constant * scale;
         } else {
