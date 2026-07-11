@@ -14,7 +14,7 @@
   "base.viafabricplus.online_mode": "Online Mode",
   "base.viafabricplus.copy_link": "Copy link",
   "base.viafabricplus.something_went_wrong": "Something went wrong! Please try again later",
-  "base.viafabricplus.via_translates_to": "Via translates to: %s",
+  "base.viafabricplus.target_version": "Target version: %s",
   "base.viafabricplus.server_version": "Server version: %s",
   "base.viafabricplus.auto": "Auto",
   "base.viafabricplus.set_version": "Set version",

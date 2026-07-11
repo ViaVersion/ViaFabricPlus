@@ -26,7 +26,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.injection.access.base.IServerData;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphics;
@@ -50,11 +49,8 @@ public abstract class MixinServerSelectionList_OnlineServerEntry {
         final List<Component> tooltips = new ArrayList<>();
         tooltips.add(text);
         if (GeneralSettings.INSTANCE.showAdvertisedServerVersion.getValue()) {
-            final ProtocolVersion version = ((IServerData) serverData).viaFabricPlus$translatingVersion();
-            if (version != null) {
-                tooltips.add(Component.translatable("base.viafabricplus.via_translates_to", version.getName() + " (" + version.getOriginalVersion() + ")"));
+                tooltips.add(Component.translatable("base.viafabricplus.target_version", ((IServerData) serverData).viaFabricPlus$translatingVersion()));
                 tooltips.add(Component.translatable("base.viafabricplus.server_version", serverData.version.getString() + " (" + serverData.protocol + ")"));
-            }
         }
         instance.setTooltipForNextFrame(Lists.transform(tooltips, Component::getVisualOrderText), x, y);
     }
