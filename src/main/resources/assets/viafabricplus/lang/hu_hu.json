@@ -13,6 +13,7 @@
   "base.viafabricplus.online_mode": "Online Mód",
   "base.viafabricplus.copy_link": "Link másolása",
   "base.viafabricplus.something_went_wrong": "Valami elromlott! Kérlek próbáld meg később",
+  "base.viafabricplus.target_version": "Célverzió: %s",
   "base.viafabricplus.server_version": "Szerververzió: %s",
   "base.viafabricplus.auto": "Auto",
   "base.viafabricplus.set_version": "Verzió beállítása erre a szerverre",
