@@ -13,6 +13,7 @@
   "base.viafabricplus.online_mode": "オンラインモード",
   "base.viafabricplus.copy_link": "リンクをコピー",
   "base.viafabricplus.something_went_wrong": "何らかの問題が発生しました！後でもう一度試してください",
+  "base.viafabricplus.target_version": "対象のバージョン: %s",
   "base.viafabricplus.server_version": "サーバーバージョン: %s",
   "base.viafabricplus.auto": "自動",
   "base.viafabricplus.set_version": "バージョンを設定",
