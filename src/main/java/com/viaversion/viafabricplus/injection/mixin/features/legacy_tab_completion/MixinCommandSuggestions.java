@@ -30,7 +30,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -68,7 +68,7 @@ public abstract class MixinCommandSuggestions {
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     private void handle1_12_2KeyPressed(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
         if (this.viaFabricPlus$cancelTabComplete()) {
-            if (event.key() == GLFW.GLFW_KEY_TAB && this.suggestions == null) {
+            if (event.key() == InputConstants.KEY_TAB && this.suggestions == null) {
                 this.updateCommandInfo();
             } else if (this.suggestions != null) {
                 if (this.suggestions.keyPressed(event)) {

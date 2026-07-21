@@ -24,13 +24,17 @@ package com.viaversion.viafabricplus.features.entity.legacy_boat_model;
 import com.viaversion.viafabricplus.injection.access.entity.legacy_boat_model.IAbstractBoat;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.core.PositionAndRotation;
 import net.minecraft.world.entity.InterpolationHandler;
+import net.minecraft.world.entity.PositionPath;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.phys.Vec3;
 
 public final class PositionInterpolator1_8 extends InterpolationHandler {
 
     private final AbstractBoat boatEntity;
+    private final PositionAndRotation.Mutable interpolationData = new PositionAndRotation.Mutable();
+    private boolean interpolating;
 
     public PositionInterpolator1_8(final AbstractBoat entity) {
         super(entity);
@@ -38,17 +42,25 @@ public final class PositionInterpolator1_8 extends InterpolationHandler {
     }
 
     @Override
-    public void interpolateTo(final Vec3 pos, final float yaw, final float pitch) {
+    protected PositionAndRotation.Mutable interpolationData() {
+        return this.interpolationData;
+    }
+
+    @Override
+    protected void startInterpolating(final PositionPath path, final float speed, final float ticks) {
+        final Vec3 pos = path.endPosition();
         final IAbstractBoat mixinBoatEntity = (IAbstractBoat) this.boatEntity;
-        if (/*interpolate &&*/ boatEntity.isVehicle() && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6)) {
+
+        if (boatEntity.isVehicle() && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6)) {
             boatEntity.xo = pos.x;
             boatEntity.yo = pos.y;
             boatEntity.zo = pos.z;
             mixinBoatEntity.viaFabricPlus$setBoatInterpolationSteps(0);
             boatEntity.setPos(pos);
-            boatEntity.setRot(yaw, pitch);
+            boatEntity.setRot(boatEntity.getYRot(), boatEntity.getXRot());
             boatEntity.setDeltaMovement(Vec3.ZERO);
             mixinBoatEntity.viaFabricPlus$setBoatVelocity(Vec3.ZERO);
+            this.interpolating = false;
         } else {
             if (!boatEntity.isVehicle()) {
                 mixinBoatEntity.viaFabricPlus$setBoatInterpolationSteps(8);
@@ -59,15 +71,28 @@ public final class PositionInterpolator1_8 extends InterpolationHandler {
                 mixinBoatEntity.viaFabricPlus$setBoatInterpolationSteps(3);
             }
 
-            this.interpolationData.position = pos;
-            this.interpolationData.yRot = yaw;
-            this.interpolationData.xRot = pitch;
+            this.interpolationData.set(pos, boatEntity.getYRot(), boatEntity.getXRot());
+            this.interpolating = true;
             boatEntity.setDeltaMovement(mixinBoatEntity.viaFabricPlus$getBoatVelocity());
         }
     }
 
     @Override
-    public void interpolate() {
+    protected void doInterpolate() {
+    }
+
+    @Override
+    public boolean hasActiveInterpolation() {
+        return this.interpolating;
+    }
+
+    @Override
+    public void cancel() {
+        this.interpolating = false;
+    }
+
+    public PositionAndRotation.Mutable getInterpolationData() {
+        return this.interpolationData;
     }
 
 }

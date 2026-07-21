@@ -15,7 +15,6 @@ allprojects {
         // Keep them in sync with docs/DEVELOPER_API.md
         maven("https://repo.viaversion.com")
         maven("https://maven.lenni0451.net/everything")
-        maven("https://maven.terraformersmc.com/releases")
         maven("https://jitpack.io") {
             content {
                 includeGroup("com.github.oryxel1")
@@ -30,6 +29,13 @@ allprojects {
 subprojects {
 
     configureVVDependencies("api")
+
+    // JIJed into the root mod; standalone run configs lack viafabricplus and fail resolution
+    afterEvaluate {
+        tasks.matching { it.name.startsWith("run") }.configureEach {
+            enabled = false
+        }
+    }
 
 }
 
@@ -66,7 +72,7 @@ dependencies {
     configureBedrockDependencies()
 
     testImplementation("net.fabricmc:fabric-loader-junit:${property("fabric_loader_version")}")
-    compileOnly("com.terraformersmc:modmenu:20.0.0-beta.2")
+    compileOnly(files("libs/modmenu-20.0.1.jar"))
 }
 
 includeTransitiveJijDependencies()
@@ -90,10 +96,10 @@ fun configureBedrockDependencies() {
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.10.1-SNAPSHOT")
-        configuration("com.viaversion:viabackwards-common:5.10.1-SNAPSHOT")
-        configuration("com.viaversion:viaaprilfools-common:4.2.1")
-        configuration("net.raphimc:ViaLegacy:3.0.16")
+        configuration("com.viaversion:viaversion-common:5.11.1-SNAPSHOT")
+        configuration("com.viaversion:viabackwards-common:5.11.1-SNAPSHOT")
+        configuration("com.viaversion:viaaprilfools-common:4.2.2")
+        configuration("net.raphimc:ViaLegacy:3.0.17-SNAPSHOT")
         configuration("net.raphimc:ViaBedrock:0.0.29-SNAPSHOT") {
             exclude(group = "com.mojang", module = "brigadier")
             exclude(group = "at.yawk.lz4", module = "lz4-java")

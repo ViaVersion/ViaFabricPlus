@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.features.font;
 
 import com.mojang.blaze3d.font.GlyphBitmap;
 import com.mojang.blaze3d.font.GlyphInfo;
-import com.mojang.blaze3d.textures.GpuTexture;
+import com.mojang.renderpearl.api.textures.GpuTexture;
 import net.minecraft.client.gui.font.GlyphStitcher;
 import net.minecraft.client.gui.font.glyphs.BakedSheetGlyph;
 import org.jspecify.annotations.NonNull;

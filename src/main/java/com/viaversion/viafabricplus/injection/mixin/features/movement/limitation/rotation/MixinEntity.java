@@ -50,7 +50,7 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "calculateViewVector(FF)Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
-    private void revertCalculation(float xRot, float yRot, CallbackInfoReturnable<Vec3> cir) {
+    private static void revertCalculation(float xRot, float yRot, CallbackInfoReturnable<Vec3> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(Vec3.directionFromRotation(xRot, yRot));
         }

@@ -22,13 +22,12 @@
 package com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy;
 
 import com.mojang.authlib.GameProfileRepository;
-import com.mojang.authlib.HttpAuthenticationService;
-import com.mojang.authlib.minecraft.MinecraftSessionService;
+import com.mojang.authlib.minecraft.SessionService;
 import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.yggdrasil.ProfileNotFoundException;
-import com.mojang.authlib.yggdrasil.ProfileResult;
-import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import com.mojang.authlib.yggdrasil.response.NameAndId;
+import com.mojang.authlib.services.MinecraftServicesDiscoveryService;
+import com.mojang.authlib.services.ProfileNotFoundException;
+import com.mojang.authlib.services.ProfileResult;
+import com.mojang.authlib.services.response.NameAndId;
 import com.viaversion.viaversion.api.minecraft.GameProfile;
 import java.net.Proxy;
 import java.util.Map;
@@ -38,8 +37,8 @@ import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfi
 
 public final class ViaFabricPlusGameProfileFetcher extends GameProfileFetcher {
 
-    private static final HttpAuthenticationService AUTHENTICATION_SERVICE = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
-    private static final MinecraftSessionService SESSION_SERVICE = AUTHENTICATION_SERVICE.createMinecraftSessionService();
+    private static final MinecraftServicesDiscoveryService AUTHENTICATION_SERVICE = MinecraftServicesDiscoveryService.create(Proxy.NO_PROXY);
+    private static final SessionService SESSION_SERVICE = AUTHENTICATION_SERVICE.createMinecraftSessionService();
     private static final GameProfileRepository GAME_PROFILE_REPOSITORY = AUTHENTICATION_SERVICE.createProfileRepository();
 
     @Override

@@ -101,7 +101,7 @@ public final class ProtocolTranslator {
     /**
      * The native version of the client
      */
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v26_2;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.register(SharedConstants.getProtocolVersion(), "26.3-snapshot-4");
 
     /**
      * Name of the {@link FlowControlHandler} added to the pipeline

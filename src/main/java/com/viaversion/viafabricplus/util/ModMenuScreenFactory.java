@@ -25,9 +25,6 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 
-/**
- * Implementation of the ModMenu integration allowing users to open the protocol selection screen from the mod menu.
- */
 public final class ModMenuScreenFactory implements ModMenuApi {
 
     @Override

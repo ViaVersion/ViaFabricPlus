@@ -75,6 +75,9 @@ public abstract class MixinEntity {
     public abstract Vec3 getDeltaMovement();
 
     @Shadow
+    protected abstract double getEffectiveGravity();
+
+    @Shadow
     public boolean verticalCollision;
 
     @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;horizontalCollision:Z", ordinal = 2, opcode = Opcodes.GETFIELD))
@@ -87,21 +90,17 @@ public abstract class MixinEntity {
         return instance.verticalCollisionBelow || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1);
     }
 
-    @Definition(id = "y", field = "Lnet/minecraft/world/phys/Vec3;y:D")
-    @Definition(id = "currentMovement", local = @Local(type = Vec3.class, name = "currentMovement"))
-    @Expression("-currentMovement.y < ?")
-    @ModifyExpressionValue(method = "restituteMovementAfterCollisions", at = @At("MIXINEXTRAS:EXPRESSION"))
-    private boolean fixGravityCheck(boolean original, @Local(name = "currentMovement") Vec3 currentMovement) {
+    @Redirect(method = "restituteMovementAfterCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEffectiveGravity()D"))
+    private double fixGravityCheck(Entity instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
-            return !(currentMovement.y < 0.0);
-        } else {
-            return original;
+            return -1.0;
         }
+        return this.getEffectiveGravity();
     }
 
     @Redirect(method = "restituteMovementAfterCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;with(Lnet/minecraft/core/Direction$Axis;D)Lnet/minecraft/world/phys/Vec3;", ordinal = 2))
-    private Vec3 fixRestitution(Vec3 instance, Direction.Axis axis, double value, @Local(name = "restitution") double restitution) {
-        return instance.with(axis, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1) ? -this.getDeltaMovement().y * restitution : value);
+    private Vec3 fixRestitution(Vec3 instance, Direction.Axis axis, double value, @Local(type = double.class, ordinal = 0) double bounciness) {
+        return instance.with(axis, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1) ? -this.getDeltaMovement().y * bounciness : value);
     }
 
     @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;addMovementThisTick(Lnet/minecraft/world/entity/Entity$Movement;)V"))

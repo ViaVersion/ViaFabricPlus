@@ -25,7 +25,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -57,7 +57,7 @@ public abstract class MixinHud {
         }
     }
 
-    @WrapWithCondition(method = "extractAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V", ordinal = 2))
+    @WrapWithCondition(method = "extractAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V", ordinal = 2))
     private boolean disableEmptyBubbles(GuiGraphicsExtractor instance, RenderPipeline renderPipeline, Identifier location, int x, int y, int width, int height) {
         return !VisualSettings.INSTANCE.hideEmptyBubbleIcons.getValue();
     }
@@ -101,7 +101,7 @@ public abstract class MixinHud {
         }
     }
 
-    @ModifyArgs(method = "extractArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), require = 0)
+    @ModifyArgs(method = "extractArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), require = 0)
     private static void moveArmorPositions(Args args) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             final int width = 10 * viaFabricPlusVisuals$ARMOR_ICON_WIDTH;
@@ -110,7 +110,7 @@ public abstract class MixinHud {
         }
     }
 
-    @ModifyArg(method = "extractAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), index = 2, require = 0)
+    @ModifyArg(method = "extractAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), index = 2, require = 0)
     private int moveAirBubbles(int value) {
         if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
             final Minecraft client = Minecraft.getInstance();

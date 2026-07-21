@@ -64,7 +64,7 @@ public final class BoatRenderer1_8 extends AbstractBoatRenderer {
 
         matrices.scale(-1, -1, 1);
         model.setupAnim(state);
-        submitNodeCollector.submitModel(model(), state, matrices, this.texture, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+        submitNodeCollector.submitModel(model(), state, matrices, this.texture, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
 
         matrices.popPose();
     }

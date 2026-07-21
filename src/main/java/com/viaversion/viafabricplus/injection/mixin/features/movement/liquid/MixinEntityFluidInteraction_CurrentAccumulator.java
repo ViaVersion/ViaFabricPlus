@@ -32,10 +32,10 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(EntityFluidInteraction.Tracker.class)
-public abstract class MixinEntityFluidInteraction_Tracker {
+@Mixin(EntityFluidInteraction.CurrentAccumulator.class)
+public abstract class MixinEntityFluidInteraction_CurrentAccumulator {
 
-    @Redirect(method = "applyCurrentTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;lengthSqr()D"))
+    @Redirect(method = "applyTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;lengthSqr()D"))
     private double useLengthInstead(Vec3 instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
             return instance.length();
@@ -44,7 +44,7 @@ public abstract class MixinEntityFluidInteraction_Tracker {
         }
     }
 
-    @ModifyConstant(method = "applyCurrentTo", constant = @Constant(doubleValue = (double) 1.0E-5F))
+    @ModifyConstant(method = "applyTo", constant = @Constant(doubleValue = (double) 1.0E-5F))
     private double changeThreshold(double constant) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
             return 0;
@@ -53,7 +53,7 @@ public abstract class MixinEntityFluidInteraction_Tracker {
         }
     }
 
-    @Redirect(method = "applyCurrentTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;", ordinal = 0))
+    @Redirect(method = "applyTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;", ordinal = 0))
     private Vec3 normalizeInsteadScale(Vec3 instance, double scale) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return instance.normalize();
@@ -62,7 +62,7 @@ public abstract class MixinEntityFluidInteraction_Tracker {
         }
     }
 
-    @Redirect(method = "applyCurrentTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;length()D"))
+    @Redirect(method = "applyTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;length()D"))
     private double dontScaleSmallValues(Vec3 instance) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return Double.MAX_VALUE;

@@ -10,10 +10,6 @@ accessible field net/minecraft/client/gui/screens/options/controls/KeyBindsList$
 accessible field net/minecraft/client/Minecraft fontManager Lnet/minecraft/client/gui/font/FontManager;
 accessible field net/minecraft/client/gui/font/FontManager fontSets Ljava/util/Map;
 accessible field net/minecraft/client/gui/font/FontSet glyphCache Lnet/minecraft/client/gui/font/CodepointMap;
-accessible field net/minecraft/world/entity/InterpolationHandler interpolationData Lnet/minecraft/world/entity/InterpolationHandler$InterpolationData;
-accessible field net/minecraft/world/entity/InterpolationHandler$InterpolationData position Lnet/minecraft/world/phys/Vec3;
-accessible field net/minecraft/world/entity/InterpolationHandler$InterpolationData yRot F
-accessible field net/minecraft/world/entity/InterpolationHandler$InterpolationData xRot F
 accessible field net/minecraft/world/entity/player/Inventory equipment Lnet/minecraft/world/entity/EntityEquipment;
 accessible field net/minecraft/client/player/ClientInput moveVector Lnet/minecraft/world/phys/Vec2;
 accessible field net/minecraft/core/Direction YXZ_AXIS_ORDER Lcom/google/common/collect/ImmutableList;
@@ -51,3 +47,4 @@ accessible class net/minecraft/world/entity/Entity$Movement
 accessible class net/minecraft/client/renderer/debug/GameTestBlockHighlightRenderer$Marker
 accessible class net/minecraft/client/multiplayer/ClientPacketListener$CommandCheckResult
 accessible class net/minecraft/world/entity/EntityFluidInteraction$Tracker
+accessible class net/minecraft/world/entity/EntityFluidInteraction$CurrentAccumulator

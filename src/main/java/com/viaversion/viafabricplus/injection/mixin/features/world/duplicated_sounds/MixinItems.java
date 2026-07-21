@@ -28,12 +28,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.FlintAndSteelItem;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin({FlintAndSteelItem.class, HoeItem.class})
+@Mixin(FlintAndSteelItem.class)
 public abstract class MixinItems {
 
     @WrapWithCondition(method = "useOn", at = @At(value = "INVOKE",

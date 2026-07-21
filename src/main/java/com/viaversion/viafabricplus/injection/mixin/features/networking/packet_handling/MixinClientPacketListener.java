@@ -51,6 +51,7 @@ import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
 import net.minecraft.network.protocol.game.VecDeltaCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LinearInterpolationHandler;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
@@ -59,6 +60,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignTextSlot;
 import net.minecraft.world.phys.Vec3;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.jetbrains.annotations.Nullable;
@@ -142,11 +144,11 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
     @Redirect(method = "handleOpenSignEditor", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false))
     private void openEmptySignEditor(Logger instance, String format, Object arg1, Object arg2, @Local(argsOnly = true) ClientboundOpenSignEditorPacket packet) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            final BlockPos pos = packet.getPos();
+            final BlockPos pos = packet.pos();
 
             final SignBlockEntity emptySignBlockEntity = new SignBlockEntity(pos, this.level.getBlockState(pos));
             emptySignBlockEntity.setLevel(this.level);
-            this.minecraft.player.openTextEdit(emptySignBlockEntity, packet.isFrontText());
+            this.minecraft.player.openTextEdit(emptySignBlockEntity, packet.slot());
         } else {
             instance.warn(format, arg1, arg2);
         }
@@ -247,8 +249,8 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
     @Redirect(method = "setValuesFromPositionPacket", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;moveOrInterpolateTo(Lnet/minecraft/world/phys/Vec3;FF)V"))
     private static void cancelSmallChanges(Entity instance, Vec3 position, float yRot, float xRot) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) && Math.abs(instance.getX() - position.x) < 0.03125 && Math.abs(instance.getY() - position.y) < 0.015625 && Math.abs(instance.getZ() - position.z) < 0.03125) {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && instance.getInterpolation() != null) {
-                instance.getInterpolation().setInterpolationLength(0);
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && instance.getInterpolation() instanceof LinearInterpolationHandler linearInterpolation) {
+                linearInterpolation.setInterpolationLength(0);
             }
             instance.moveOrInterpolateTo(instance.position(), yRot, xRot);
         } else {

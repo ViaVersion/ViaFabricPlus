@@ -26,6 +26,7 @@ import com.viaversion.viafabricplus.injection.access.entity.legacy_boat_model.IA
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.PositionAndRotation;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -63,7 +64,7 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
     public abstract InterpolationHandler getInterpolation();
 
     @Unique
-    private final InterpolationHandler viaFabricPlus$positionInterpolator = new PositionInterpolator1_8((AbstractBoat) (Object) this);
+    private final PositionInterpolator1_8 viaFabricPlus$positionInterpolator = new PositionInterpolator1_8((AbstractBoat) (Object) this);
 
     @Unique
     private double viaFabricPlus$speedMultiplier = 0.07D;
@@ -150,12 +151,12 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
 
             if (this.level().isClientSide() && !this.isVehicle()) {
                 if (this.viaFabricPlus$boatInterpolationSteps > 0) {
-                    final InterpolationHandler.InterpolationData data = viaFabricPlus$positionInterpolator.interpolationData;
-                    final double newX = this.getX() + (data.position.x - this.getX()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newY = this.getY() + (data.position.y - this.getY()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newZ = this.getZ() + (data.position.z - this.getZ()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newYaw = this.getYRot() + Mth.wrapDegrees(data.yRot - this.getYRot()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newPitch = this.getXRot() + (data.xRot - this.getXRot()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final PositionAndRotation.Mutable data = viaFabricPlus$positionInterpolator.getInterpolationData();
+                    final double newX = this.getX() + (data.position().x - this.getX()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newY = this.getY() + (data.position().y - this.getY()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newZ = this.getZ() + (data.position().z - this.getZ()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newYaw = this.getYRot() + Mth.wrapDegrees(data.yRot() - this.getYRot()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newPitch = this.getXRot() + (data.xRot() - this.getXRot()) / this.viaFabricPlus$boatInterpolationSteps;
                     this.viaFabricPlus$boatInterpolationSteps--;
                     this.setPos(newX, newY, newZ);
                     this.setRot((float) newYaw, (float) newPitch);
