@@ -90,9 +90,9 @@ fun configureBedrockDependencies() {
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
-        configuration("com.viaversion:viaversion-common:5.10.1-SNAPSHOT")
-        configuration("com.viaversion:viabackwards-common:5.10.1-SNAPSHOT")
-        configuration("com.viaversion:viaaprilfools-common:4.2.1")
+        configuration("com.viaversion:viaversion-common:5.11.1-SNAPSHOT")
+        configuration("com.viaversion:viabackwards-common:5.11.1-SNAPSHOT")
+        configuration("com.viaversion:viaaprilfools-common:4.2.2")
         configuration("net.raphimc:ViaLegacy:3.0.16")
         configuration("net.raphimc:ViaBedrock:0.0.29-SNAPSHOT") {
             exclude(group = "com.mojang", module = "brigadier")
