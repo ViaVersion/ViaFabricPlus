@@ -1,4 +1,4 @@
-package io.github.sprainedspark89.c0._30ify.client.mixin;
+package com.viaversion.viafabricplus.visuals.injection.mixin.classic.walking_animation;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
