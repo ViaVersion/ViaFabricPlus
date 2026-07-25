@@ -55,6 +55,15 @@ entity interactions, graphics, and more. In short, it recreates the classic Mine
 - [Contribution guide & dev setup](CONTRIBUTING.md)
 - [API docs & integration examples](docs/DEVELOPER_API.md)
 
+## Supported Versions for ViaFabricPlus
+
+|**Version**|**Feature Updates**|**Bug Fixes**|
+|-|-|-|
+|Minecraft 26.2|Yes|Yes|
+|Minecraft 26.1.x|No|No|
+|Minecraft 1.21.11|No|Yes|
+|Minecraft 1.21.10 *(and older)*|No|No|
+
 ## Credits
 
 Huge thanks to all our [contributors](https://github.com/ViaVersion/ViaFabricPlus/graphs/contributors) who made this
