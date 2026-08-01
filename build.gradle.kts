@@ -61,7 +61,7 @@ dependencies {
     jij(fabricApi.module("fabric-particles-v1", fabricApiVersion))
     jij(fabricApi.module("fabric-registry-sync-v0", fabricApiVersion))
 
-    jij("net.lenni0451:Reflect:1.6.3")
+    jij("net.lenni0451:Reflect:1.6.4")
     jij("de.florianreuth:classic4j:2.3.0")
     configureBedrockDependencies()
 
