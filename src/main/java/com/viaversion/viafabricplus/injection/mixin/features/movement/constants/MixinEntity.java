@@ -23,7 +23,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.constants
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -45,12 +47,36 @@ public abstract class MixinEntity {
         }
     }
 
-    @ModifyConstant(method = "getInputVector", constant = @Constant(doubleValue = 1E-7))
-    private static double fixVelocityEpsilon(double epsilon) {
+    @Inject(method = "getInputVector", at = @At("RETURN"), cancellable = true)
+    private static void fixInputVector(Vec3 input, float speed, float yRot, CallbackInfoReturnable<Vec3> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return 1E-4;
-        } else {
-            return epsilon;
+            float x = (float) input.x;
+            float z = (float) input.z;
+
+            float length = x * x + z * z;
+
+            if (length < 1.0E-4F) {
+                cir.setReturnValue(Vec3.ZERO);
+            }
+
+            length = Mth.sqrt(length);
+            if (length < 1.0F) {
+                length = 1.0F;
+            }
+
+            final float scale = speed / length;
+
+            x *= scale;
+            z *= scale;
+
+            final float sin = Mth.sin(yRot * (float) (Math.PI / 180.0));
+            final float cos = Mth.cos(yRot * (float) (Math.PI / 180.0));
+
+            cir.setReturnValue(new Vec3(
+                x * cos - z * sin,
+                input.y,
+                z * cos + x * sin
+            ));
         }
     }
 
