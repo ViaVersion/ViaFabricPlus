@@ -47,7 +47,7 @@ public abstract class MixinEntity {
         }
     }
 
-    @Inject(method = "getInputVector", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getInputVector", at = @At("HEAD"), cancellable = true)
     private static void fixInputVector(Vec3 input, float speed, float yRot, CallbackInfoReturnable<Vec3> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             float x = (float) input.x;
@@ -59,10 +59,7 @@ public abstract class MixinEntity {
                 cir.setReturnValue(Vec3.ZERO);
             }
 
-            length = Mth.sqrt(length);
-            if (length < 1.0F) {
-                length = 1.0F;
-            }
+            length = Math.max(Mth.sqrt(length), 1.0F);
 
             final float scale = speed / length;
 

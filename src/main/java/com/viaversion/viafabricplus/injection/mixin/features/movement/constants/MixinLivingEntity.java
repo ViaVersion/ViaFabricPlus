@@ -24,36 +24,14 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.constants
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = LivingEntity.class, priority = 999 /* Workaround for https://github.com/ViaVersion/ViaFabricPlus/issues/684 */)
-public abstract class MixinLivingEntity extends Entity {
-
-    @Shadow
-    public abstract float getSpeed();
-
-    @Shadow
-    protected abstract float getFlyingSpeed();
-
-    @Shadow
-    protected abstract float getJumpPower();
-
-    public MixinLivingEntity(final EntityType<?> type, final Level level) {
-        super(type, level);
-    }
+public abstract class MixinLivingEntity {
 
     @ModifyExpressionValue(method = "tickEffects", at = @At(value = "CONSTANT", args = "intValue=4"))
     private int changeParticleDensity(int original) {
@@ -70,15 +48,6 @@ public abstract class MixinLivingEntity extends Entity {
             return 0.005D;
         } else {
             return constant;
-        }
-    }
-
-    @Inject(method = "getFrictionInfluencedSpeed", at = @At("RETURN"), cancellable = true)
-    private void modifyFrictionInfluencedSpeed(float blockFriction, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            float drag = this.onGround() ? blockFriction * 0.91F : 0.91F;
-            float accel = 0.16277136F / (drag * drag * drag);
-            cir.setReturnValue(this.onGround() ? this.getSpeed() * accel : this.getFlyingSpeed());
         }
     }
 

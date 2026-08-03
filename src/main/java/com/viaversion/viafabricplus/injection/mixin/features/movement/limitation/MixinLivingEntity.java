@@ -35,8 +35,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity {
@@ -44,6 +46,12 @@ public abstract class MixinLivingEntity extends Entity {
     public MixinLivingEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
+
+    @Shadow
+    public abstract float getSpeed();
+
+    @Shadow
+    protected abstract float getFlyingSpeed();
 
     @Shadow
     public abstract boolean hasEffect(Holder<MobEffect> effect);
@@ -54,6 +62,15 @@ public abstract class MixinLivingEntity extends Entity {
             return Double.MIN_VALUE;
         } else {
             return constant;
+        }
+    }
+
+    @Inject(method = "getFrictionInfluencedSpeed", at = @At("HEAD"), cancellable = true)
+    private void modifyFrictionInfluencedSpeed(float blockFriction, CallbackInfoReturnable<Float> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            float drag = this.onGround() ? blockFriction * 0.91F : 0.91F;
+            float accel = 0.16277136F / (drag * drag * drag);
+            cir.setReturnValue(this.onGround() ? this.getSpeed() * accel : this.getFlyingSpeed());
         }
     }
 
