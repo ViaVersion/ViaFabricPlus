@@ -69,9 +69,9 @@ public abstract class MixinLivingEntity extends Entity {
     @Redirect(method = "travelInAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;hasChunkAt(Lnet/minecraft/core/BlockPos;)Z"))
     private boolean modifyLoadedCheck(Level instance, BlockPos blockPos) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return this.level().hasChunkAt(blockPos) && instance.getChunkSource().hasChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
+            return instance.hasChunkAt(blockPos) && instance.getChunkSource().hasChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
         } else {
-            return this.level().hasChunkAt(blockPos);
+            return instance.hasChunkAt(blockPos);
         }
     }
 
