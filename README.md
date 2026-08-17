@@ -38,6 +38,15 @@ entity interactions, graphics, and more. In short, it recreates the classic Mine
 - Found a bug? Please report it on the [issue tracker](https://github.com/ViaVersion/ViaFabricPlus/issues)
 - Got questions? Join the [ViaVersion Discord](https://discord.gg/viaversion)
 
+### Supported Client versions
+
+| **Version**                     | **Feature Updates** | **Bug Fixes** |
+|---------------------------------|---------------------|---------------|
+| Minecraft 26.2                  | Yes                 | Yes           |
+| Minecraft 26.1.x                | No                  | Yes           |
+| Minecraft 1.21.11               | No                  | Yes           |
+| Minecraft 1.21.10 *(and older)* | No                  | No            |
+
 ### Supported Server versions
 
 - Release (1.0.0–latest supported release*)
@@ -54,15 +63,6 @@ entity interactions, graphics, and more. In short, it recreates the classic Mine
 
 - [Contribution guide & dev setup](CONTRIBUTING.md)
 - [API docs & integration examples](docs/DEVELOPER_API.md)
-
-## Supported Versions for ViaFabricPlus
-
-|**Version**|**Feature Updates**|**Bug Fixes**|
-|-|-|-|
-|Minecraft 26.2|Yes|Yes|
-|Minecraft 26.1.x|No|No|
-|Minecraft 1.21.11|No|Yes|
-|Minecraft 1.21.10 *(and older)*|No|No|
 
 ## Credits
 
