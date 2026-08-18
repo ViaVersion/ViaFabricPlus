@@ -25,6 +25,7 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -65,12 +66,12 @@ public abstract class MixinLivingEntity extends Entity {
         }
     }
 
-    @Inject(method = "getFrictionInfluencedSpeed", at = @At("HEAD"), cancellable = true)
-    private void modifyFrictionInfluencedSpeed(float blockFriction, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            float drag = this.onGround() ? blockFriction * 0.91F : 0.91F;
-            float accel = 0.16277136F / (drag * drag * drag);
-            cir.setReturnValue(this.onGround() ? this.getSpeed() * accel : this.getFlyingSpeed());
+    @Redirect(method = "computeModifiedFriction", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
+    private static float dontClampFriction(float value, float min, float max) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+            return value;
+        } else {
+            return Mth.clamp(value, min, max);
         }
     }
 
@@ -83,12 +84,21 @@ public abstract class MixinLivingEntity extends Entity {
         }
     }
 
+    @Inject(method = "getFrictionInfluencedSpeed", at = @At("HEAD"), cancellable = true)
+    private void modifyFrictionInfluencedSpeed(float blockFriction, CallbackInfoReturnable<Float> cir) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            float drag = this.onGround() ? blockFriction * 0.91F : 0.91F;
+            float accel = 0.16277136F / (drag * drag * drag);
+            cir.setReturnValue(this.onGround() ? this.getSpeed() * accel : this.getFlyingSpeed());
+        }
+    }
+
     @Redirect(method = "travelInAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;hasChunkAt(Lnet/minecraft/core/BlockPos;)Z"))
     private boolean modifyLoadedCheck(Level instance, BlockPos blockPos) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return this.level().hasChunkAt(blockPos) && instance.getChunkSource().hasChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
+            return instance.hasChunkAt(blockPos) && instance.getChunkSource().hasChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
         } else {
-            return this.level().hasChunkAt(blockPos);
+            return instance.hasChunkAt(blockPos);
         }
     }
 

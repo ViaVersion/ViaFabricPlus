@@ -32,7 +32,7 @@ installed: [Gradle Installation Guide](https://gradle.org/install/).
 
 ## Updating Translation Files
 
-If you want to help translating ViaFabricPlus you can do so on [Crowdin](https://crowdin.com/project/viafabricplus).
+If you want to help translate ViaFabricPlus, you can do so on [Crowdin](https://crowdin.com/project/viafabricplus).
 
 ---
 
@@ -62,7 +62,7 @@ Guidelines for fixes:
 - Only add fixes that **affect gameplay or server communication**
 - Avoid purely **visual-only tweaks**
 - If unsure, ask in the [ViaVersion Discord](https://discord.gg/viaversion)
-- Most useful fixes usually involve **movement or networking**
+- The most useful fixes usually involve **movement or networking**
 
 Proof is required:
 
