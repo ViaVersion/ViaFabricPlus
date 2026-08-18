@@ -25,6 +25,7 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -54,6 +55,15 @@ public abstract class MixinLivingEntity extends Entity {
             return Double.MIN_VALUE;
         } else {
             return constant;
+        }
+    }
+
+    @Redirect(method = "computeModifiedFriction", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
+    private static float dontClampFriction(float value, float min, float max) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+            return value;
+        } else {
+            return Mth.clamp(value, min, max);
         }
     }
 
