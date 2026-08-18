@@ -48,13 +48,12 @@ public abstract class MixinEntity {
     }
 
     @Inject(method = "getInputVector", at = @At("HEAD"), cancellable = true)
-    private static void fixInputVector(Vec3 input, float speed, float yRot, CallbackInfoReturnable<Vec3> cir) {
+    private static void getInputVector1_13_2(Vec3 input, float speed, float yRot, CallbackInfoReturnable<Vec3> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             float x = (float) input.x;
             float z = (float) input.z;
 
             float length = x * x + z * z;
-
             if (length < 1.0E-4F) {
                 cir.setReturnValue(Vec3.ZERO);
             }
@@ -69,11 +68,7 @@ public abstract class MixinEntity {
             final float sin = Mth.sin(yRot * (float) (Math.PI / 180.0));
             final float cos = Mth.cos(yRot * (float) (Math.PI / 180.0));
 
-            cir.setReturnValue(new Vec3(
-                x * cos - z * sin,
-                input.y,
-                z * cos + x * sin
-            ));
+            cir.setReturnValue(new Vec3(x * cos - z * sin, input.y, z * cos + x * sin));
         }
     }
 
