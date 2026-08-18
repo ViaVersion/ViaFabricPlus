@@ -6,6 +6,7 @@
   "client": [
     "classic.creative_menu.MixinCreativeModeInventoryScreen",
     "classic.walking_animation.MixinHumanoidModel",
+    "classic.walking_animation.MixinLivingEntityRenderer",
     "filter_game_mode_selections.MixinGameModeSwitcherScreen",
     "filter_game_mode_selections.MixinGameModeSwitcherScreen_GameModeIcon",
     "force_unicode_font.MixinLanguageManager",
