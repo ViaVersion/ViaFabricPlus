@@ -60,7 +60,7 @@ public abstract class MixinLevelLoadingScreen extends Screen {
             // Draw the classic loading progress
             graphics.centeredText(
                 minecraft.font,
-                ChatUtil.prefixText(classicProgressStorage.status),
+                ChatUtil.prefixText(classicProgressStorage.getStatus()),
                 width / 2,
                 height / 2 - 30,
                 -1

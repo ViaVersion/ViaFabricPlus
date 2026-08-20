@@ -92,8 +92,8 @@ fun Project.configureVVDependencies(configuration: String) {
     dependencies {
         configuration("com.viaversion:viaversion-common:5.12.0-SNAPSHOT")
         configuration("com.viaversion:viabackwards-common:5.12.0-SNAPSHOT")
-        configuration("com.viaversion:viaaprilfools-common:4.2.2")
-        configuration("net.raphimc:ViaLegacy:3.0.16")
+        configuration("com.viaversion:viaaprilfools-common:4.2.3-SNAPSHOT")
+        configuration("net.raphimc:ViaLegacy:3.1.0-SNAPSHOT")
         configuration("net.raphimc:ViaBedrock:0.0.29-SNAPSHOT") {
             exclude(group = "com.mojang", module = "brigadier")
             exclude(group = "at.yawk.lz4", module = "lz4-java")
