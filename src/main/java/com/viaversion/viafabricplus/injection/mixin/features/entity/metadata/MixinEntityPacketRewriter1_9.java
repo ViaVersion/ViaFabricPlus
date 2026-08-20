@@ -35,7 +35,7 @@ public abstract class MixinEntityPacketRewriter1_9 {
 
     @Inject(method = "handleEntityData", at = @At(value = "FIELD", target = "Lcom/viaversion/viaversion/api/minecraft/entities/EntityTypes1_9$EntityType;PLAYER:Lcom/viaversion/viaversion/api/minecraft/entities/EntityTypes1_9$EntityType;", ordinal = 0), cancellable = true)
     private void preventMetadataForClientPlayer(EntityDataHandlerEvent event, EntityData metadata, CallbackInfo ci) {
-        if (event.user().getEntityTracker(Protocol1_8To1_9.class).clientEntityId() == event.entityId()) {
+        if (event.user().storables(Protocol1_8To1_9.class).entityTracker().clientEntityId() == event.entityId()) {
             ci.cancel();
         }
     }
