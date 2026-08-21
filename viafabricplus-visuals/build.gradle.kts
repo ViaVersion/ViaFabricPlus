@@ -1,4 +1,4 @@
-import de.florianreuth.baseproject.fabricApiVersion
+import de.florianreuth.baseproject.integration.fabricApiVersion
 
 plugins {
     id("net.fabricmc.fabric-loom")
