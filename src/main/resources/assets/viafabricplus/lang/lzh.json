@@ -70,7 +70,7 @@
   "debug_settings.viafabricplus.hide_modern_command_block_screen_features": "隱命令塊幕之新要徵",
   "debug_settings.viafabricplus.disable_server_pinging": "禁伺服器之測",
   "debug_settings.viafabricplus.filter_non_existing_glyphs": "濾无有之字形",
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "以BetaCraft驗",
+  "authentication_settings.viafabricplus.beta_craft_authentication": "以BetaCraft驗",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "證在綫之法伺服器會話",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "使ClassiCube伺服器列之時自擇CPE",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "使ClassiCube伺服器列之時設會話名爲ClassiCube之名",

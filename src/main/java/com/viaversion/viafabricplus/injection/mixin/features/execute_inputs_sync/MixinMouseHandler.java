@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.execute_inputs_sync;
 
 import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseKeyboardHandlers;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import net.minecraft.client.Minecraft;
@@ -46,7 +47,7 @@ public abstract class MixinMouseHandler implements IMouseKeyboardHandlers {
 
     @Redirect(method = {"lambda$setup$1", "lambda$setup$2"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;execute(Ljava/lang/Runnable;)V"))
     private void storeEvent(Minecraft instance, Runnable runnable) {
-        if (this.minecraft.getConnection() != null && this.minecraft.gui.screen() != null && DebugSettings.INSTANCE.executeInputsSynchronously.isEnabled()) {
+        if (this.minecraft.getConnection() != null && this.minecraft.gui.screen() != null && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             this.viaFabricPlus$pendingScreenEvents.offer(runnable);
         } else {
             instance.execute(runnable);

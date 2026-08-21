@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.visuals.injection.mixin.hud_element_changes;
 
-import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.multiplayer.chat.GuiMessageTag;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +34,7 @@ public abstract class MixinChatComponent {
 
     @ModifyVariable(method = "addMessage", at = @At("HEAD"), argsOnly = true)
     private GuiMessageTag removeIndicator(GuiMessageTag tag) {
-        return VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled() ? null : tag;
+        return ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2) ? null : tag;
     }
 
 }

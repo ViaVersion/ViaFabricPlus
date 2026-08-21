@@ -137,10 +137,9 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
 
         @Override
         public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-            final boolean selectCPE = AuthenticationSettings.INSTANCE.automaticallySelectCPEInClassiCubeServerList.getValue();
             ViaFabricPlusClassicMPPassProvider.classicubeMPPass = classiCubeServerInfo.mpPass();
 
-            ConnectionUtil.connect(classiCubeServerInfo.name(), classiCubeServerInfo.ip() + ":" + classiCubeServerInfo.port(), selectCPE ? LegacyProtocolVersion.c0_30cpe : null);
+            ConnectionUtil.connect(classiCubeServerInfo.name(), classiCubeServerInfo.ip() + ":" + classiCubeServerInfo.port(), LegacyProtocolVersion.c0_30cpe);
         }
 
         @Override

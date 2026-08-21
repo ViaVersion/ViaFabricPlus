@@ -28,7 +28,6 @@ import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
 import com.viaversion.viafabricplus.save.SaveManager;
-import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianreuth.classic4j.model.classicube.account.CCAccount;
 import io.netty.channel.ChannelFuture;
@@ -93,7 +92,7 @@ public abstract class MixinConnectScreen_1 {
             }
         }
         ProtocolTranslator.setTargetVersion(targetVersion, true);
-        this.viaFabricPlus$useClassiCubeAccount = AuthenticationSettings.INSTANCE.setSessionNameToClassiCubeNameInServerList.getValue() && ViaFabricPlusClassicMPPassProvider.classicubeMPPass != null;
+        this.viaFabricPlus$useClassiCubeAccount = ViaFabricPlusClassicMPPassProvider.classicubeMPPass != null;
 
         return address;
     }

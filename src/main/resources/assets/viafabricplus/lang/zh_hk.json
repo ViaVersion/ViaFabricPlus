@@ -56,7 +56,7 @@
   "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "唔創建網路封包錯誤導致的崩潰",
   "debug_settings.viafabricplus.ignore_fabric_sync_errors": "忽略 Fabric 注冊表嘅同步錯誤",
   "debug_settings.viafabricplus.legacy_tab_completions": "舊嘅 tab 補全",
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用 BetaCraft 身份驗證",
+  "authentication_settings.viafabricplus.beta_craft_authentication": "使用 BetaCraft 身份驗證",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "允許 ViaLegacy 調用 joinServer() 來驗證會話",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "如果使用 ClassicCube MP Pass，則強制 CPE 版本",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "如果使用 ClassiCube ，則顯示為 ClassiCube 名稱",

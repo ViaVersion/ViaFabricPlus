@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.visuals.injection.mixin.screen_changes;
 
-import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Renderable;
@@ -51,9 +52,9 @@ public abstract class MixinScreen {
         if (widget instanceof ImageButton button && button.sprites == RecipeBookComponent.RECIPE_BUTTON_SPRITES) {
             final boolean furnace = ((Screen) (Object) this) instanceof FurnaceScreen;
 
-            if (VisualSettings.INSTANCE.hideFurnaceRecipeBook.isEnabled() && furnace) {
+            if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && furnace) {
                 cir.setReturnValue(widget);
-            } else if (VisualSettings.INSTANCE.hideCraftingRecipeBook.isEnabled() && !furnace) {
+            } else if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1) && !furnace) {
                 cir.setReturnValue(widget);
             }
         }

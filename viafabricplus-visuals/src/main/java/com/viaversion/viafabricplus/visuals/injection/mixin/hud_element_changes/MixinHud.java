@@ -22,18 +22,10 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.hud_element_changes;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Hud;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -49,27 +41,6 @@ public abstract class MixinHud {
 
     @Unique
     private static final int viaFabricPlusVisuals$ARMOR_ICON_WIDTH = 8;
-
-    @Inject(method = "playAirBubblePoppedSound", at = @At("HEAD"), cancellable = true)
-    private void disableBubblePopSound(int bubble, Player player, int emptyAirBubbles, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.removeBubblePopSound.getValue()) {
-            ci.cancel();
-        }
-    }
-
-    @WrapWithCondition(method = "extractAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V", ordinal = 2))
-    private boolean disableEmptyBubbles(GuiGraphicsExtractor instance, RenderPipeline renderPipeline, Identifier location, int x, int y, int width, int height) {
-        return !VisualSettings.INSTANCE.hideEmptyBubbleIcons.getValue();
-    }
-
-    @WrapOperation(method = "extractCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/CameraType;isFirstPerson()Z"))
-    private boolean alwaysRenderCrosshair(CameraType instance, Operation<Boolean> original) {
-        if (VisualSettings.INSTANCE.alwaysRenderCrosshair.isEnabled()) {
-            return true;
-        } else {
-            return original.call(instance);
-        }
-    }
 
     @Inject(method = "willPrioritizeJumpInfo", at = @At("HEAD"), cancellable = true)
     private void removeMountJumpBar(CallbackInfoReturnable<Boolean> cir) {

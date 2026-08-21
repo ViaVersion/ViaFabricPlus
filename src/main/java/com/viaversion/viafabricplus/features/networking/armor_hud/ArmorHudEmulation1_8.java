@@ -23,9 +23,9 @@ package com.viaversion.viafabricplus.features.networking.armor_hud;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_8to1_9.Protocol1_8To1_9;
 import com.viaversion.viaversion.protocols.v1_8to1_9.data.ArmorTypes1_8;
@@ -45,22 +45,20 @@ public final class ArmorHudEmulation1_8 {
     private static double previousArmorPoints = 0;
 
     public static void init() {
-        ClientTickEvents.START_LEVEL_TICK.register(world -> {
-            if (!DebugSettings.INSTANCE.emulateArmorHud.isEnabled()) {
-                return;
-            }
-
-            if (Minecraft.getInstance().player != null) {
-                final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
-                if (connection != null) {
-                    try {
-                        sendArmorUpdate(connection);
-                    } catch (Throwable t) {
-                        ViaFabricPlusImpl.INSTANCE.getLogger().error("Error sending armor update", t);
+        ClientTickEvents.START_LEVEL_TICK.register(_ -> {
+            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+                if (Minecraft.getInstance().player != null) {
+                    final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+                    if (connection != null) {
+                        try {
+                            sendArmorUpdate(connection);
+                        } catch (Throwable t) {
+                            ViaFabricPlusImpl.INSTANCE.getLogger().error("Error sending armor update", t);
+                        }
                     }
+                } else {
+                    previousArmorPoints = 0;
                 }
-            } else {
-                previousArmorPoints = 0;
             }
         });
     }

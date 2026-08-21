@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_completion;
 
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.CommandSuggestions;
@@ -90,7 +91,7 @@ public abstract class MixinCommandSuggestions {
 
     @Unique
     private boolean viaFabricPlus$cancelTabComplete() {
-        return DebugSettings.INSTANCE.legacyTabCompletions.isEnabled() && this.input.getValue().startsWith("/");
+        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && this.input.getValue().startsWith("/");
     }
 
 }

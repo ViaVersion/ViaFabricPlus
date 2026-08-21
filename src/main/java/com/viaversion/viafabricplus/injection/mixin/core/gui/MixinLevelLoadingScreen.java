@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.core.gui;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -44,28 +43,26 @@ public abstract class MixinLevelLoadingScreen extends Screen {
 
     @Inject(method = "extractRenderState", at = @At("RETURN"))
     private void renderClassicProgress(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a, CallbackInfo ci) {
-        if (GeneralSettings.INSTANCE.showClassicLoadingProgressInConnectScreen.getValue()) {
-            // Check if ViaVersion is translating
-            final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
-            if (connection == null) {
-                return;
-            }
-
-            // Check if the client is connecting to a classic server
-            final ClassicProgressStorage classicProgressStorage = connection.get(ClassicProgressStorage.class);
-            if (classicProgressStorage == null) {
-                return;
-            }
-
-            // Draw the classic loading progress
-            graphics.centeredText(
-                minecraft.font,
-                ChatUtil.prefixText(classicProgressStorage.getStatus()),
-                width / 2,
-                height / 2 - 30,
-                -1
-            );
+        // Check if ViaVersion is translating
+        final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+        if (connection == null) {
+            return;
         }
+
+        // Check if the client is connecting to a classic server
+        final ClassicProgressStorage classicProgressStorage = connection.get(ClassicProgressStorage.class);
+        if (classicProgressStorage == null) {
+            return;
+        }
+
+        // Draw the classic loading progress
+        graphics.centeredText(
+            minecraft.font,
+            ChatUtil.prefixText(classicProgressStorage.getStatus()),
+            width / 2,
+            height / 2 - 30,
+            -1
+        );
     }
 
 }

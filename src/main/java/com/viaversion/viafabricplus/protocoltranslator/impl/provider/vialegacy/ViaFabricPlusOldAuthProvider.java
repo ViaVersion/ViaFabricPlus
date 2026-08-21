@@ -34,10 +34,6 @@ public final class ViaFabricPlusOldAuthProvider extends OldAuthProvider {
 
     @Override
     public void sendAuthRequest(UserConnection connection, String serverId) {
-        if (!AuthenticationSettings.INSTANCE.verifySessionForOnlineModeServers.getValue()) {
-            return;
-        }
-
         try {
             final Minecraft client = Minecraft.getInstance();
             client.services().sessionService().joinServer(client.getUser().getProfileId(), client.getUser().getAccessToken(), serverId);

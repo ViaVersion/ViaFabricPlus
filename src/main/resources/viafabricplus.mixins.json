@@ -37,7 +37,6 @@
     "core.integration.event.MixinMinecraft",
     "core.integration.sync_tasks.MixinClientCommonPacketListenerImpl",
     "features.april_fools_8bit_sound.MixinSoundBuffer",
-    "features.block.connections.MixinClientChunkCache",
     "features.block.interaction.MixinCanPlaceAt1_14",
     "features.block.interaction.MixinDecoratedPotBlock",
     "features.block.interaction.MixinFenceBlock",

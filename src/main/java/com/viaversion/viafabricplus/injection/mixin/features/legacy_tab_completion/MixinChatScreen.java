@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_completion;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.components.CommandSuggestions;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ChatScreen;
@@ -48,12 +49,12 @@ public abstract class MixinChatScreen {
 
     @WrapWithCondition(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/EditBox;setValue(Ljava/lang/String;)V"))
     public boolean moveSetTextDown(EditBox instance, String value) {
-        return !DebugSettings.INSTANCE.legacyTabCompletions.isEnabled();
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2);
     }
 
     @Inject(method = "init", at = @At("RETURN"))
     private void moveSetTextDown(CallbackInfo ci) {
-        if (DebugSettings.INSTANCE.legacyTabCompletions.isEnabled()) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             this.input.setValue(this.initial);
             this.commandSuggestions.updateCommandInfo();
         }
@@ -76,7 +77,7 @@ public abstract class MixinChatScreen {
 
     @Unique
     private boolean viaFabricPlus$keepTabComplete() {
-        return !DebugSettings.INSTANCE.legacyTabCompletions.isEnabled() || !this.input.getValue().startsWith("/");
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) || !this.input.getValue().startsWith("/");
     }
 
 }
