@@ -32,7 +32,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -59,9 +58,6 @@ public abstract class MixinEndPortalFrameBlock extends Block {
     @Unique
     private static final VoxelShape viaFabricPlus$frame_with_eye_shape_r1_12_2 = Shapes.or(SHAPE_EMPTY, viaFabricPlus$eye_shape_r1_12_2);
 
-    @Unique
-    private static final VoxelShape viaFabricPlus$shape_frame_bedrock = Shapes.box(0, 0, 0, 1, 0.8125, 1);
-
     public MixinEndPortalFrameBlock(Properties settings) {
         super(settings);
     }
@@ -70,9 +66,6 @@ public abstract class MixinEndPortalFrameBlock extends Block {
     private void changeOutlineShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(SHAPE_EMPTY);
-        } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            // The eye doesn't have a different shape on bedrock
-            cir.setReturnValue(viaFabricPlus$shape_frame_bedrock);
         }
     }
 
@@ -82,15 +75,6 @@ public abstract class MixinEndPortalFrameBlock extends Block {
             return state.getValue(HAS_EYE) ? viaFabricPlus$frame_with_eye_shape_r1_12_2 : SHAPE_EMPTY;
         } else {
             return super.getCollisionShape(state, world, pos, context);
-        }
-    }
-
-    @Override
-    public @NonNull VoxelShape getOcclusionShape(@NonNull BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return SHAPE_EMPTY;
-        } else {
-            return super.getOcclusionShape(state);
         }
     }
 

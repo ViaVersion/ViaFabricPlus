@@ -31,7 +31,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.jspecify.annotations.NonNull;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
@@ -52,14 +51,6 @@ public abstract class MixinLadderBlock extends Block {
         Direction.EAST, Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D)
     );
 
-    @Unique
-    private static final Map<Direction, VoxelShape> viaFabricPlus$shapes_bedrock = Map.of(
-        Direction.NORTH, Shapes.box(0, 0, 0.8125, 1, 1, 1),
-        Direction.SOUTH, Shapes.box(0, 0, 0, 1, 1, 0.1875),
-        Direction.WEST, Shapes.box(0.8125, 0, 0, 1, 1, 1),
-        Direction.EAST, Shapes.box(0, 0, 0, 0.1875, 1, 1)
-    );
-
     @Shadow
     @Final
     public static Map<Direction, VoxelShape> SHAPES;
@@ -76,8 +67,6 @@ public abstract class MixinLadderBlock extends Block {
     private Map<Direction, VoxelShape> changeOutlineShape() {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return viaFabricPlus$shapes_r1_8_x;
-        } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return viaFabricPlus$shapes_bedrock;
         } else {
             return SHAPES;
         }
@@ -85,8 +74,7 @@ public abstract class MixinLadderBlock extends Block {
 
     @Override
     public @NonNull VoxelShape getOcclusionShape(@NonNull BlockState state) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)
-            || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return SHAPES.get(state.getValue(FACING));
         } else {
             return super.getOcclusionShape(state);

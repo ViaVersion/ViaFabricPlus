@@ -22,8 +22,6 @@
 package com.viaversion.viafabricplus.features.hud;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.injection.access.core.bedrock.IChunkTracker;
-import com.viaversion.viafabricplus.injection.access.core.bedrock.IRakSessionCodec;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
@@ -36,13 +34,10 @@ import net.minecraft.client.gui.components.debug.DebugScreenEntry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.raphimc.viabedrock.protocol.storage.ChunkTracker;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 import net.raphimc.vialegacy.protocol.release.r1_1tor1_2_1_3.storage.SeedStorage;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.storage.EntityTracker;
-import org.cloudburstmc.netty.channel.raknet.RakClientChannel;
-import org.cloudburstmc.netty.handler.codec.raknet.common.RakSessionCodec;
 import org.jetbrains.annotations.Nullable;
 
 public final class VFPDebugHudEntry implements DebugScreenEntry {
@@ -73,23 +68,6 @@ public final class VFPDebugHudEntry implements DebugScreenEntry {
         final ExtensionProtocolMetadataStorage extensionProtocolMetadataStorage = connection.get(ExtensionProtocolMetadataStorage.class);
         if (extensionProtocolMetadataStorage != null) {
             information.add("CPE extensions: " + extensionProtocolMetadataStorage.getExtensionCount());
-        }
-        final ChunkTracker chunkTracker = connection.get(ChunkTracker.class);
-        if (chunkTracker != null) {
-            final IChunkTracker mixinChunkTracker = (IChunkTracker) chunkTracker;
-            final int subChunkRequests = mixinChunkTracker.viaFabricPlus$getSubChunkRequests();
-            final int pendingSubChunks = mixinChunkTracker.viaFabricPlus$getPendingSubChunks();
-            final int chunks = mixinChunkTracker.viaFabricPlus$getChunks();
-            information.add("Chunk Tracker: R: " + subChunkRequests + ", P: " + pendingSubChunks + ", C: " + chunks);
-        }
-        if (connection.getChannel() instanceof RakClientChannel rakClientChannel) {
-            final RakSessionCodec rakSessionCodec = rakClientChannel.parent().pipeline().get(RakSessionCodec.class);
-            if (rakSessionCodec != null) {
-                final IRakSessionCodec mixinRakSessionCodec = (IRakSessionCodec) rakSessionCodec;
-                final int transmitQueue = mixinRakSessionCodec.viaFabricPlus$getOutgoingPackets();
-                final int retransmitQueue = mixinRakSessionCodec.viaFabricPlus$SentDatagrams();
-                information.add("RTT: " + Math.round(rakSessionCodec.getRTT()) + " ms, P: " + rakSessionCodec.getPing() + " ms" + ", TQ: " + transmitQueue + ", RTQ: " + retransmitQueue);
-            }
         }
 
         lines.addToGroup(ID, information);

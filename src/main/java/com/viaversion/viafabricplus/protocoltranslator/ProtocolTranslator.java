@@ -52,10 +52,7 @@ import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import com.viaversion.viaversion.platform.ViaDecodeHandler;
 import com.viaversion.viaversion.platform.ViaEncodeHandler;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import dev.kastle.netty.channel.nethernet.config.NetherChannelOption;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelConfig;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.flow.FlowControlHandler;
 import io.netty.util.AttributeKey;
@@ -63,28 +60,17 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ThreadLocalRandom;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.lenni0451.reflect.stream.RStream;
-import net.lenni0451.reflect.stream.field.FieldWrapper;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.Connection;
 import net.minecraft.network.HandlerNames;
 import net.minecraft.util.Util;
-import net.raphimc.viabedrock.ViaBedrockPlatformImpl;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
-import net.raphimc.viabedrock.netty.BatchLengthCodec;
-import net.raphimc.viabedrock.netty.DisconnectHandler;
-import net.raphimc.viabedrock.netty.PacketCodec;
-import net.raphimc.viabedrock.netty.raknet.MessageCodec;
-import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.netty.PreNettyLengthPrepender;
 import net.raphimc.vialegacy.netty.PreNettyLengthRemover;
-import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 
 public final class ProtocolTranslator {
 
@@ -153,22 +139,6 @@ public final class ProtocolTranslator {
         channel.attr(ProtocolTranslator.CLIENT_CONNECTION_ATTRIBUTE_KEY).set(connection);
         channel.attr(ProtocolTranslator.TARGET_VERSION_ATTRIBUTE_KEY).set(serverVersion);
 
-        if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
-            final ChannelConfig config = channel.config();
-            // RakNet config
-            config.setOption(RakChannelOption.RAK_PROTOCOL_VERSION, ProtocolConstants.BEDROCK_RAKNET_PROTOCOL_VERSION);
-            config.setOption(RakChannelOption.RAK_COMPATIBILITY_MODE, true);
-            config.setOption(RakChannelOption.RAK_CLIENT_INTERNAL_ADDRESSES, 20);
-            config.setOption(RakChannelOption.RAK_TIME_BETWEEN_SEND_CONNECTION_ATTEMPTS_MS, 500);
-            config.setOption(RakChannelOption.RAK_CONNECT_TIMEOUT, config.getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS).longValue());
-            config.setOption(RakChannelOption.RAK_SESSION_TIMEOUT, 30_000L);
-            config.setOption(RakChannelOption.RAK_GUID, ThreadLocalRandom.current().nextLong());
-
-            // NetherNet config
-            config.setOption(NetherChannelOption.NETHER_CLIENT_HANDSHAKE_TIMEOUT_MS, config.getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS));
-            config.setOption(NetherChannelOption.NETHER_CLIENT_MAX_HANDSHAKE_ATTEMPTS, 1);
-        }
-
         final UserConnection user = ViaChannelInitializer.createUserConnection(channel, true);
         mixinClientConnection.viaFabricPlus$setUserConnection(user);
 
@@ -182,13 +152,6 @@ public final class ProtocolTranslator {
             // ViaLegacy
             pipeline.addBefore(HandlerNames.SPLITTER, PreNettyLengthPrepender.NAME, new PreNettyLengthPrepender(user));
             pipeline.addBefore(HandlerNames.PREPENDER, PreNettyLengthRemover.NAME, new PreNettyLengthRemover(user));
-        } else if (serverVersion.equals(BedrockProtocolVersion.bedrockLatest)) {
-            // ViaBedrock
-            pipeline.addBefore(HandlerNames.SPLITTER, DisconnectHandler.NAME, new DisconnectHandler());
-            pipeline.addBefore(HandlerNames.SPLITTER, MessageCodec.NAME, new MessageCodec());
-            pipeline.replace(HandlerNames.SPLITTER, HandlerNames.SPLITTER, new BatchLengthCodec());
-            pipeline.remove(HandlerNames.PREPENDER);
-            pipeline.addBefore(ViaDecodeHandler.NAME, PacketCodec.NAME, new PacketCodec());
         }
 
         pipeline.addAfter(ViaDecodeHandler.NAME, ProtocolTranslator.VIA_FLOW_CONTROL, new NoReadFlowControlHandler());
@@ -273,13 +236,6 @@ public final class ProtocolTranslator {
         return ((IConnection) handler.getConnection()).viaFabricPlus$getUserConnection();
     }
 
-    private static void changeBedrockProtocolName() {
-        final ProtocolVersion bedrockLatest = RStream.of(BedrockProtocolVersion.class).fields().by("bedrockLatest").get();
-
-        final FieldWrapper name = RStream.of(bedrockLatest).withSuper().fields().by("name");
-        name.set(name.get() + " (Work in progress)");
-    }
-
     /**
      * This method is used to initialize the whole Protocol Translator
      *
@@ -310,11 +266,9 @@ public final class ProtocolTranslator {
                     new ViaBackwardsPlatformImpl();
                     new ViaFabricPlusViaLegacyPlatform();
                     new ViaAprilFoolsPlatformImpl();
-                    new ViaBedrockPlatformImpl();
                 }
             );
             ProtocolVersion.register(AUTO_DETECT_PROTOCOL);
-            changeBedrockProtocolName();
             ViaFabricPlusProtocol.INSTANCE.initialize();
         }, Util.backgroundExecutor());
     }

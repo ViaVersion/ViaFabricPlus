@@ -30,7 +30,6 @@ import com.viaversion.viafabricplus.settings.SettingsManager;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 
 public final class SettingsSave extends AbstractSave {
 
@@ -85,26 +84,15 @@ public final class SettingsSave extends AbstractSave {
         if (selectedProtocolVersion == null) {
             return;
         }
+
         // Set target version AFTER protocol loading, so we can reach all versions
         if (GeneralSettings.INSTANCE.saveSelectedProtocolVersion.getValue()) {
-            final ProtocolVersion protocolVersion = protocolVersionByName(selectedProtocolVersion);
+            final ProtocolVersion protocolVersion = ProtocolVersion.getClosest(selectedProtocolVersion);
             if (protocolVersion != null) {
                 ProtocolTranslator.setTargetVersion(protocolVersion);
             }
         } else {
             ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION);
-        }
-    }
-
-    public static ProtocolVersion protocolVersionByName(final String name) {
-        if (name == null) {
-            return null;
-        }
-
-        if (name.contains("Bedrock")) { // Always return latest bedrock since the version often changes
-            return BedrockProtocolVersion.bedrockLatest;
-        } else {
-            return ProtocolVersion.getClosest(name);
         }
     }
 

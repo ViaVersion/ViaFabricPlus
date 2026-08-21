@@ -32,7 +32,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -44,7 +43,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinAbstractCauldronBlock extends Block {
 
     @Unique
-    private static final VoxelShape viaFabricPlus$collision_shape_r1_12_2_bedrock = Shapes.or(
+    private static final VoxelShape viaFabricPlus$collision_shape_r1_12_2 = Shapes.or(
         Shapes.box(0.0, 0.0, 0.0, 1.0, 0.3125, 1.0),
         Shapes.box(0.0, 0.0, 0.0, 0.125, 1.0, 1.0),
         Shapes.box(0.0, 0.0, 0.0, 1.0, 1.0, 0.125),
@@ -65,15 +64,13 @@ public abstract class MixinAbstractCauldronBlock extends Block {
             viaFabricPlus$requireOriginalShape = false;
         } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(Shapes.block());
-        } else if (ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            cir.setReturnValue(viaFabricPlus$collision_shape_r1_12_2_bedrock);
         }
     }
 
     @Override
     protected @NonNull VoxelShape getCollisionShape(final @NonNull BlockState blockState, final @NonNull BlockGetter blockGetter, final @NonNull BlockPos blockPos, final @NonNull CollisionContext collisionContext) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
-            return viaFabricPlus$collision_shape_r1_12_2_bedrock;
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return viaFabricPlus$collision_shape_r1_12_2;
         } else {
             return super.getCollisionShape(blockState, blockGetter, blockPos, collisionContext);
         }

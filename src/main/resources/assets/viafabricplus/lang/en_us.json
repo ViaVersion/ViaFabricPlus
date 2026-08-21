@@ -60,10 +60,6 @@
   "general_settings.viafabricplus.save_scroll_position_in_slot_screens": "Save scroll position in slot screens",
   "general_settings.viafabricplus.experimental_block_connections": "Experimental block connections",
 
-  "bedrock_settings.viafabricplus.click_to_set_bedrock_account": "Click to set account for Bedrock Edition",
-  "bedrock_settings.viafabricplus.replace_default_port": "Replace default port in server list",
-  "bedrock_settings.viafabricplus.experimental_features": "Enable experimental features (may be unstable)",
-
   "debug_settings.viafabricplus.queue_config_packets": "Queue config packets",
   "debug_settings.viafabricplus.disable_sequencing": "Disable sequencing",
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Smooth out merchant screens",
@@ -115,9 +111,6 @@
 
   "force_version.viafabricplus.title": "Please select the version with which the server should be pinged/connected",
 
-  "click_to_set_bedrock_account.viafabricplus.notice": "Your browser should have opened.\nClosing this screen will cancel the process!",
-  "click_to_set_bedrock_account.viafabricplus.display": "Bedrock account: %s",
-
   "report.viafabricplus.button": "Report issues",
   "report.viafabricplus.bug_report": "Report a bug on GitHub",
   "report.viafabricplus.feature_request": "Request a feature on GitHub",
@@ -144,29 +137,5 @@
   "classic4j_library.viafabricplus.error.username": "Invalid username.",
   "classic4j_library.viafabricplus.error.password": "Invalid password.",
   "classic4j_library.viafabricplus.error.verification": "User hasn't verified their email address yet.",
-  "classic4j_library.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your email.",
-
-  "minecraftauth_library.viafabricplus.msatoken": "Obtained Microsoft Access Token",
-  "minecraftauth_library.viafabricplus.xbldevicetoken": "Obtained Xbox Live Device Token",
-  "minecraftauth_library.viafabricplus.xblusertoken": "Obtained Xbox Live User Token",
-  "minecraftauth_library.viafabricplus.xbltitletoken": "Obtained Xbox Live Title Token",
-  "minecraftauth_library.viafabricplus.bedrockxststoken": "Obtained Bedrock XSTS Token",
-  "minecraftauth_library.viafabricplus.playfabxststoken": "Obtained PlayFab XSTS Token",
-  "minecraftauth_library.viafabricplus.realmsxststoken": "Obtained Realms XSTS Token",
-  "minecraftauth_library.viafabricplus.playfabtoken": "Obtained PlayFab Token",
-  "minecraftauth_library.viafabricplus.minecraftsession": "Obtained Minecraft Session",
-  "minecraftauth_library.viafabricplus.minecraftmultiplayertoken": "Obtained Minecraft Multiplayer Token",
-  "minecraftauth_library.viafabricplus.minecraftcertificatechain": "Obtained Minecraft Certificate Chain",
-
-  "bedrock_realms.viafabricplus.warning": "This feature requires a Bedrock Edition account to be set in the settings!",
-  "bedrock_realms.viafabricplus.availability_check": "Checking availability...",
-  "bedrock_realms.viafabricplus.no_worlds": "No worlds found :(",
-  "bedrock_realms.viafabricplus.unavailable": "Your ViaFabricPlus is outdated and not compatible with Minecraft Realms.",
-  "bedrock_realms.viafabricplus.error": "An error occurred, see the logs for more information",
-  "bedrock_realms.viafabricplus.join": "Join realm",
-  "bedrock_realms.viafabricplus.leave": "Leave realm",
-  "bedrock_realms.viafabricplus.invite": "Accept invite code",
-  "bedrock_realms.viafabricplus.expired": "The Realm is expired",
-  "bedrock_realms.viafabricplus.incompatible": "The Realms Minecraft version is either too old or too new",
-  "bedrock_realms.viafabricplus.unsupported_protocol": "Realms via the %s protocol is not supported. You can't join this realm."
+  "classic4j_library.viafabricplus.error.logincode": "Multi-factor authentication requested. Please check your email."
 }
