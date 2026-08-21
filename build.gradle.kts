@@ -31,6 +31,12 @@ subprojects {
 
     configureVVDependencies("api")
 
+    tasks {
+        runClient {
+            enabled = false
+        }
+    }
+
 }
 
 project.property("updating_minecraft").toString().toBoolean().let {
