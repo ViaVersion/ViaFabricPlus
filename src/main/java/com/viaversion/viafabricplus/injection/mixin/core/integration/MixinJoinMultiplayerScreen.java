@@ -23,15 +23,10 @@ package com.viaversion.viafabricplus.injection.mixin.core.integration;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.BedrockSettings;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,19 +36,6 @@ public abstract class MixinJoinMultiplayerScreen extends Screen {
 
     public MixinJoinMultiplayerScreen(final Component component) {
         super(component);
-    }
-
-    @WrapOperation(method = "join(Lnet/minecraft/client/multiplayer/ServerData;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/resolver/ServerAddress;parseString(Ljava/lang/String;)Lnet/minecraft/client/multiplayer/resolver/ServerAddress;"))
-    private ServerAddress replaceDefaultPort(String input, Operation<ServerAddress> original, @Local(argsOnly = true) ServerData data) {
-        final IServerData mixinServerInfo = (IServerData) data;
-
-        ProtocolVersion version;
-        if (mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
-            version = ProtocolTranslator.getTargetVersion();
-        } else {
-            version = mixinServerInfo.viaFabricPlus$forcedVersion();
-        }
-        return original.call(BedrockSettings.replaceDefaultPort(input, version));
     }
 
     @WrapOperation(method = "directJoinCallback", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/multiplayer/JoinMultiplayerScreen;join(Lnet/minecraft/client/multiplayer/ServerData;)V"))

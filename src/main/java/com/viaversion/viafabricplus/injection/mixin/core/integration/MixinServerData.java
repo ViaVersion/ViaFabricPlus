@@ -60,7 +60,7 @@ public abstract class MixinServerData implements IServerData {
     @Inject(method = "read", at = @At("TAIL"))
     private static void loadForcedVersion(CompoundTag tag, CallbackInfoReturnable<ServerData> cir, @Local(name = "server") ServerData server) {
         if (tag.contains("viafabricplus_forcedversion")) {
-            final ProtocolVersion version = SettingsSave.protocolVersionByName(tag.getStringOr("viafabricplus_forcedversion", null));
+            final ProtocolVersion version = ProtocolVersion.getClosest(tag.getStringOr("viafabricplus_forcedversion", ""));
             if (version != null) {
                 ((IServerData) server).viaFabricPlus$forceVersion(version);
             }

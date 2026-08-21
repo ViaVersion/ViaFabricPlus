@@ -23,12 +23,6 @@ allprojects {
         maven("https://repo.viaversion.com")
         maven("https://maven.lenni0451.net/everything")
         maven("https://maven.terraformersmc.com/releases")
-        maven("https://jitpack.io") {
-            content {
-                includeGroup("com.github.oryxel1")
-            }
-        }
-
         //mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
     }
 
@@ -75,29 +69,11 @@ dependencies {
 
     shade("net.lenni0451:Reflect:1.6.4")
     shade("de.florianreuth:classic4j:2.3.0")
-    configureBedrockDependencies()
 
     compileOnly("com.terraformersmc:modmenu:20.0.0-beta.2")
 }
 
 includeTransitiveJijDependencies()
-
-fun configureBedrockDependencies() {
-    dependencies {
-        shade("net.raphimc:MinecraftAuth:5.0.1") {
-            exclude(group = "com.google.code.gson", module = "gson")
-        }
-        shade("dev.kastle.netty:netty-transport-raknet:1.7.0") {
-            exclude(group = "io.netty")
-        }
-        shade("dev.kastle.netty:netty-transport-nethernet:1.7.0") {
-            exclude(group = "io.netty")
-        }
-        arrayOf("windows-x86_64", "windows-aarch64", "linux-x86_64", "linux-aarch64", "macos-aarch64").forEach {
-            shade("dev.kastle.webrtc:webrtc-java:1.0.3:$it")
-        }
-    }
-}
 
 fun Project.configureVVDependencies(configuration: String) {
     dependencies {
@@ -105,10 +81,5 @@ fun Project.configureVVDependencies(configuration: String) {
         configuration("com.viaversion:viabackwards-common:5.12.0-SNAPSHOT")
         configuration("com.viaversion:viaaprilfools-common:4.2.3-SNAPSHOT")
         configuration("net.raphimc:ViaLegacy:3.1.0-SNAPSHOT")
-        configuration("net.raphimc:ViaBedrock:0.0.29-SNAPSHOT") {
-            exclude(group = "com.mojang", module = "brigadier")
-            exclude(group = "at.yawk.lz4", module = "lz4-java")
-            exclude(group = "io.netty")
-        }
     }
 }

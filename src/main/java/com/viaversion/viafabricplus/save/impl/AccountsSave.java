@@ -25,14 +25,9 @@ import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.save.AbstractSave;
 import de.florianreuth.classic4j.model.classicube.account.CCAccount;
-import net.raphimc.minecraftauth.MinecraftAuth;
-import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
-import net.raphimc.minecraftauth.util.MinecraftAuth4To5Migrator;
-import net.raphimc.viabedrock.protocol.data.ProtocolConstants;
 
 public final class AccountsSave extends AbstractSave {
 
-    private BedrockAuthManager bedrockAccount;
     private CCAccount classicubeAccount;
 
     public AccountsSave() {
@@ -41,9 +36,6 @@ public final class AccountsSave extends AbstractSave {
 
     @Override
     public void write(JsonObject object) {
-        if (bedrockAccount != null) {
-            object.add("bedrockV3", BedrockAuthManager.toJson(bedrockAccount));
-        }
         if (classicubeAccount != null) {
             object.add("classicube", classicubeAccount.asJson());
         }
@@ -51,12 +43,6 @@ public final class AccountsSave extends AbstractSave {
 
     @Override
     public void read(JsonObject object) {
-        handleAccount("bedrockV2", object, account -> {
-            final JsonObject newAccount = MinecraftAuth4To5Migrator.migrateBedrockSave(account);
-            bedrockAccount = BedrockAuthManager.fromJson(MinecraftAuth.createHttpClient(), ProtocolConstants.BEDROCK_VERSION_NAME, newAccount);
-            bedrockAccount.getMinecraftMultiplayerToken().refreshIfExpired();
-        });
-        handleAccount("bedrockV3", object, account -> bedrockAccount = BedrockAuthManager.fromJson(MinecraftAuth.createHttpClient(), ProtocolConstants.BEDROCK_VERSION_NAME, account));
         handleAccount("classicube", object, account -> classicubeAccount = CCAccount.fromJson(account));
     }
 
@@ -68,14 +54,6 @@ public final class AccountsSave extends AbstractSave {
                 ViaFabricPlusImpl.INSTANCE.getLogger().error("Failed to read {} account!", name, e);
             }
         }
-    }
-
-    public BedrockAuthManager getBedrockAccount() {
-        return bedrockAccount;
-    }
-
-    public void setBedrockAccount(BedrockAuthManager bedrockAccount) {
-        this.bedrockAccount = bedrockAccount;
     }
 
     public CCAccount getClassicubeAccount() {
