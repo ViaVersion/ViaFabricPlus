@@ -14,7 +14,7 @@
   "debug_settings.viafabricplus.disable_sequencing": "Vypnout sekvencování",
   "debug_settings.viafabricplus.execute_inputs_synchronously": "Spustit vstupy v synchronizaci",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Staré rychlosti těžení",
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "Použít BetaCraft systém přihlašování",
+  "authentication_settings.viafabricplus.beta_craft_authentication": "Použít BetaCraft systém přihlašování",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Umožnit ViaLegacy zavolat joinServer() pro ověření relace",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Změnit verzi na CPE při používání ClassiCube",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Změnit uživatelské jméno na ClassiCube jméno při používání ClassiCube",

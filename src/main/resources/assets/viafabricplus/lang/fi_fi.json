@@ -17,7 +17,7 @@
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "Pehmennä kauppias-näyttöjä",
   "debug_settings.viafabricplus.execute_inputs_synchronously": "Suorita syöte synkronoidusti",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Perinteiset louhintanopeudet",
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "Käytä BetaCraft -todennusta",
+  "authentication_settings.viafabricplus.beta_craft_authentication": "Käytä BetaCraft -todennusta",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Salli ViaLegacy:n käyttää joinServer():iä todentaakseen istunnon",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Pakota CPE-version jos käytetään ClassiCube:a",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Huijaa pelinimi ClassiCube-nimeksi, jos käytetään ClassiCube:a",

@@ -21,8 +21,6 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import com.viaversion.viaversion.util.ConfigSection;
 import java.io.File;
@@ -80,15 +78,6 @@ public final class ViaFabricPlusConfig extends AbstractViaConfig {
     }
 
     @Override
-    public boolean isServersideBlockConnections() {
-        if (GeneralSettings.INSTANCE.experimentalBlockConnections.getValue()) {
-            return false;
-        } else {
-            return super.isServersideBlockConnections();
-        }
-    }
-
-    @Override
     public boolean fix1_21PlacementRotation() {
         return false;
     }
@@ -105,11 +94,7 @@ public final class ViaFabricPlusConfig extends AbstractViaConfig {
 
     @Override
     public boolean cancelBlockSounds() {
-        if (DebugSettings.INSTANCE.serversidePlaceSounds.isEnabled()) {
-            return false;
-        } else {
-            return super.cancelBlockSounds();
-        }
+        return false;
     }
 
     @Override

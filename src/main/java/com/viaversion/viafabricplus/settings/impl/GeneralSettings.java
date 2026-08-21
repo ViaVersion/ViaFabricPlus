@@ -48,7 +48,6 @@ public final class GeneralSettings extends SettingGroup {
         Component.translatable("base.viafabricplus.off")
     );
     public final BooleanSetting saveSelectedProtocolVersion = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.save_selected_protocol_version"), true);
-    public final BooleanSetting showClassicLoadingProgressInConnectScreen = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.show_classic_loading_progress"), true);
     public final BooleanSetting showAdvertisedServerVersion = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.show_advertised_server_version"), true);
     public final ModeSetting ignorePacketTranslationErrors = new ModeSetting(this, Component.translatable("general_settings.viafabricplus.ignore_packet_translation_errors"),
         Component.translatable("base.viafabricplus.kick"),
@@ -58,12 +57,10 @@ public final class GeneralSettings extends SettingGroup {
     public final BooleanSetting loadSkinsAndSkullsInLegacyVersions = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.load_skins_and_skulls_in_legacy_versions"), true);
     public final BooleanSetting emulateInventoryActionsInAlphaVersions = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.emulate_inventory_actions_in_alpha_versions"), true);
     public final BooleanSetting saveScrollPositionInSlotScreens = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.save_scroll_position_in_slot_screens"), true);
-    public final BooleanSetting experimentalBlockConnections = new BooleanSetting(this, Component.translatable("general_settings.viafabricplus.experimental_block_connections"), false);
 
     public GeneralSettings() {
         super(Component.translatable("setting_group_name.viafabricplus.general"));
         emulateInventoryActionsInAlphaVersions.lockValue();
-        experimentalBlockConnections.lockValue();
     }
 
     public static void setOrientation(final Position position, final int orientationIndex, final int width, final int height) {

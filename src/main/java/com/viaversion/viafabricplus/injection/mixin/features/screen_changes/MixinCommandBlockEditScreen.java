@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes;
 
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.inventory.CommandBlockEditScreen;
 import net.minecraft.world.level.block.entity.CommandBlockEntity;
@@ -48,7 +49,7 @@ public abstract class MixinCommandBlockEditScreen {
 
     @Inject(method = "init", at = @At("TAIL"))
     private void removeWidgets(CallbackInfo ci) {
-        if (DebugSettings.INSTANCE.hideModernCommandBlockScreenFeatures.isEnabled()) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             modeButton.visible = false;
             conditionalButton.visible = false;
             autoexecButton.visible = false;

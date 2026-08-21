@@ -39,7 +39,7 @@
   "debug_settings.viafabricplus.execute_inputs_synchronously": "Ejecutar entradas en sincronización",
   "debug_settings.viafabricplus.legacy_mining_speeds": "Velocidades de minería legacy",
   "debug_settings.viafabricplus.always_tick_client_player": "Actualizar siempre al jugador cliente",
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "Usar autenticación de BetaCraft",
+  "authentication_settings.viafabricplus.beta_craft_authentication": "Usar autenticación de BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Verificar sesión para servidores en modo online",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Forzar versión CPE si se usa la lista de servidores de ClassiCube",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Asignar nombre de sesión al de ClassiCube cuando se use dicha lista",

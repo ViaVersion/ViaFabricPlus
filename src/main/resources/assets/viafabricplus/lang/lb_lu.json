@@ -47,7 +47,7 @@
   "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "Keng Päckchenfehler-Ofstuerzberichter erstellen",
   "debug_settings.viafabricplus.ignore_fabric_sync_errors": "Fabric-Synchronisationsfehler ignoreieren",
   "debug_settings.viafabricplus.legacy_tab_completions": "Veraltet Tab-Vervollstännegungen",
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "BetaCraft-Authentifizeierung benotzen",
+  "authentication_settings.viafabricplus.beta_craft_authentication": "BetaCraft-Authentifizeierung benotzen",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Setzung fir Online-Modus-Server verifizeieren",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Automatesch CPE auswielen, wann du dClassiCube-Serverlescht benotzt.",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Session-Nimm op ClassiCube-Nimm sätzen, wann du dClassiCube-Serverlescht benotzt.",

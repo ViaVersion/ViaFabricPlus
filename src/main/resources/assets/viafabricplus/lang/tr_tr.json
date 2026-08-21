@@ -54,7 +54,7 @@
   "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "Paket Hatası Çökme Raporları Oluşturma",
   "debug_settings.viafabricplus.ignore_fabric_sync_errors": "Fabric Senkronizasyon Hatalarını Yoksay",
   "debug_settings.viafabricplus.legacy_tab_completions": "Eski Tab Tamamlamaları",
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "BetaCraft Doğrulamasını Kullan",
+  "authentication_settings.viafabricplus.beta_craft_authentication": "BetaCraft Doğrulamasını Kullan",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Premium Mod Oyuncuları için Hesabı Doğrula",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "ClassiCube Sunucu Listesini Kullanırken CPE'yi Otomatik Olarak Seç",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "ClassiCube Sunucu Listesini Kullanırken Oturum Adını ClassiCube Adına Ayarla",

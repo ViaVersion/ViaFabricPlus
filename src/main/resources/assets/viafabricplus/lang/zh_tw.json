@@ -77,7 +77,7 @@
   "debug_settings.viafabricplus.legacy_pane_outlines": "舊版玻璃片外框",
   "debug_settings.viafabricplus.serverside_place_sounds": "伺服器端方塊/物品放置聲音",
   "debug_settings.viafabricplus.remove_server_description_sanitize": "移除伺服器描述清理",
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "使用 BetaCraft 驗證",
+  "authentication_settings.viafabricplus.beta_craft_authentication": "使用 BetaCraft 驗證",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "允許 ViaLegacy 呼叫 joinServer() 來驗證 session",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "如果使用 ClassiCube，強制使用 CPE 版本",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "如果使用 ClassiCube，偽造使用者名稱為 ClassiCube 名稱",

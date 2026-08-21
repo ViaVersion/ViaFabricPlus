@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.duplicated_sounds;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -39,7 +40,7 @@ public abstract class MixinItems {
     @WrapWithCondition(method = "useOn", at = @At(value = "INVOKE",
         target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
     private boolean disableItemPlaceSounds(Level instance, Entity except, BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch) {
-        return !DebugSettings.INSTANCE.serversidePlaceSounds.isEnabled();
+        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
     }
 
 }

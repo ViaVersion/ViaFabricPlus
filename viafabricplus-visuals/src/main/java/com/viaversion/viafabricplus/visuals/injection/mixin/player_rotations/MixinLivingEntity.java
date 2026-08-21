@@ -21,7 +21,9 @@
 
 package com.viaversion.viafabricplus.visuals.injection.mixin.player_rotations;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -44,7 +46,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "tickHeadTurn", at = @At(value = "INVOKE", target = "Ljava/lang/Math;abs(F)F"))
     private float changeBodyRotationInterpolation(float g) {
-        if (VisualSettings.INSTANCE.changeBodyRotationInterpolation.isEnabled()) {
+        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             g = Mth.clamp(g, -75.0F, 75.0F);
             this.yBodyRot = this.getYRot() - g;
             if (Math.abs(g) > 50.0F) {
@@ -58,7 +60,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;abs(F)F"))
     private float alwaysRotateWhenWalkingBackwards(float v) {
-        if (VisualSettings.INSTANCE.sidewaysBackwardsRunning.isEnabled()) {
+        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             return 0F;
         } else {
             return Mth.abs(v);

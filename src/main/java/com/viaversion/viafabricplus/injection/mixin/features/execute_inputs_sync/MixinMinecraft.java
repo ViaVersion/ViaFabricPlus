@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.execute_inputs_sync;
 
 import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseKeyboardHandlers;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Queue;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
@@ -47,15 +48,9 @@ public abstract class MixinMinecraft {
     @Final
     public KeyboardHandler keyboardHandler;
 
-    @Inject(method = "tick",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;screen()Lnet/minecraft/client/gui/screens/Screen;", ordinal = 0),
-        slice = @Slice(
-            from = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;missTime:I", ordinal = 0, opcode = Opcodes.PUTFIELD),
-            to = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;fillReportDetails(Lnet/minecraft/CrashReport;)Lnet/minecraft/CrashReportCategory;")
-        )
-    )
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;screen()Lnet/minecraft/client/gui/screens/Screen;", ordinal = 0), slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;missTime:I", ordinal = 0, opcode = Opcodes.PUTFIELD), to = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;fillReportDetails(Lnet/minecraft/CrashReport;)Lnet/minecraft/CrashReportCategory;")))
     private void processInputQueues(CallbackInfo ci) {
-        if (DebugSettings.INSTANCE.executeInputsSynchronously.isEnabled()) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             Queue<Runnable> inputEvents = ((IMouseKeyboardHandlers) this.mouseHandler).viaFabricPlus$getPendingScreenEvents();
             while (!inputEvents.isEmpty()) inputEvents.poll().run();
 

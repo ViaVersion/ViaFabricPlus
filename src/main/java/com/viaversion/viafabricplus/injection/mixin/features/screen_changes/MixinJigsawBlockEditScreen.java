@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -62,10 +61,6 @@ public abstract class MixinJigsawBlockEditScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void disableWidgets(CallbackInfo ci) {
-        if (!DebugSettings.INSTANCE.hideModernJigsawScreenFeatures.getValue()) {
-            return;
-        }
-
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             selectionPriorityEdit.active = false;
             placementPriorityEdit.active = false;
@@ -82,7 +77,7 @@ public abstract class MixinJigsawBlockEditScreen extends Screen {
 
     @Inject(method = "extractRenderState", at = @At("HEAD"))
     private void copyText(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a, CallbackInfo ci) {
-        if (DebugSettings.INSTANCE.hideModernJigsawScreenFeatures.getValue() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             nameEdit.setValue(targetEdit.getValue());
         }
     }

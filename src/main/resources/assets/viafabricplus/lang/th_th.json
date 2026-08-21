@@ -14,7 +14,7 @@
   "debug_settings.viafabricplus.smooth_out_merchant_screens": "ปรับหน้าจอร้านค้าให้เรียบ",
   "debug_settings.viafabricplus.execute_inputs_synchronously": "ดำเนินการอินพุตในการซิงค์",
   "debug_settings.viafabricplus.legacy_mining_speeds": "ความเร็วการขุดแบบดั้งเดิม",
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "ใช้ BetaCraft ยืนยันตัวตน",
+  "authentication_settings.viafabricplus.beta_craft_authentication": "ใช้ BetaCraft ยืนยันตัวตน",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "อนุญาติให้ ViaLegacy ในการเรียก joinServer() เพื่อยืนยัน",
   "visual_settings.viafabricplus.disable_secure_chat_warning": "ลบคำเตือนแชท",
   "visual_settings.viafabricplus.hide_signature_indicator": "ซ่อนตัวบ่งชี้ลายเซ็น",

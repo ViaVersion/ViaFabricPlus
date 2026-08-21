@@ -22,7 +22,9 @@
 package com.viaversion.viafabricplus.visuals.injection.mixin.hud_element_changes;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.chat.GuiMessageTag;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +34,7 @@ public abstract class MixinChatComponent_1 {
 
     @ModifyExpressionValue(method = "accept", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/chat/GuiMessage$Line;tag()Lnet/minecraft/client/multiplayer/chat/GuiMessageTag;"))
     private GuiMessageTag removeIndicator(GuiMessageTag original) {
-        if (VisualSettings.INSTANCE.hideSignatureIndicator.isEnabled()) {
+        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
             return null;
         } else {
             return original;

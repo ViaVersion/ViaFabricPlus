@@ -41,7 +41,7 @@ public final class ViaFabricPlusClassicMPPassProvider extends ClassicMpPassProvi
             return mpPass;
         }
 
-        if (AuthenticationSettings.INSTANCE.useBetaCraftAuthentication.getValue()) {
+        if (AuthenticationSettings.INSTANCE.betaCraftAuthentication.getValue()) {
             // Doesn't use the MPPass system anymore, but still kept here for simplicity
             BetaCraftHandler.authenticate(serverId -> {
                 try {

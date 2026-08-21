@@ -76,7 +76,7 @@
   "debug_settings.viafabricplus.legacy_pane_outlines": "Старые границы стеклянных панелей и прутьев",
   "debug_settings.viafabricplus.serverside_place_sounds": "Серверные звуки размещения блоков/предметов",
   "debug_settings.viafabricplus.remove_server_description_sanitize": "Удалить очистку описания сервера",
-  "authentication_settings.viafabricplus.use_beta_craft_authentication": "Использовать аутентификацию BetaCraft",
+  "authentication_settings.viafabricplus.beta_craft_authentication": "Использовать аутентификацию BetaCraft",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Разрешить ViaLegacy вызов joinServer() для проверки сессии",
   "authentication_settings.viafabricplus.automatically_select_cpe_when_using_classicube": "Устанавливать версию CPE при использовании ClassiCube",
   "authentication_settings.viafabricplus.set_session_name_to_classicube_name": "Имя пользователя ClassiCube при его использовании",

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.visuals.injection.mixin.potion_glint;
 
-import com.viaversion.viafabricplus.visuals.settings.VisualSettings;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +39,7 @@ public abstract class MixinPotionItem extends Item {
 
     @Override
     public boolean isFoil(final ItemStack stack) {
-        if (VisualSettings.INSTANCE.potionEnchantmentGlint.isEnabled()) {
+        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             return stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).hasEffects();
         } else {
             return super.isFoil(stack);
