@@ -3,7 +3,6 @@
   "id": "viafabricplus-api",
   "version": "${version}",
   "name": "ViaFabricPlus API",
-  "description": "${description}",
   "authors": [
     {
       "name": "Florian Reuth (EnZaXD)",

@@ -57,9 +57,6 @@ dependencies {
     shade(project(":viafabricplus-api")) {
         exclude("net.fabricmc", "fabric-loader")
     }
-    shade(project(":viafabricplus-visuals")) {
-        exclude("net.fabricmc", "fabric-loader")
-    }
 
     shade(fabricApi.module("fabric-api-base", fabricApiVersion))
     shade(fabricApi.module("fabric-resource-loader-v1", fabricApiVersion))

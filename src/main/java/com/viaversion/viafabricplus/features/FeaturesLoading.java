@@ -25,6 +25,7 @@ import com.viaversion.viaaprilfools.api.AprilFoolsProtocolVersion;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.block.shape.CollisionShapes;
 import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
+import com.viaversion.viafabricplus.features.classic.creative_menu.GridItemSelectionScreen;
 import com.viaversion.viafabricplus.features.entity.attribute.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.features.entity.dimensions.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.font.FontCacheReload;
@@ -37,6 +38,7 @@ import com.viaversion.viafabricplus.features.world.footstep_particle.FootStepPar
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 public final class FeaturesLoading {
 
@@ -52,6 +54,10 @@ public final class FeaturesLoading {
 
             if (oldVersion.equals(AprilFoolsProtocolVersion.s3d_shareware) || newVersion.equals(AprilFoolsProtocolVersion.s3d_shareware)) {
                 Minecraft.getInstance().getSoundManager().reload();
+            }
+
+            if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
+                GridItemSelectionScreen.INSTANCE.itemGrid = null;
             }
 
             FontCacheReload.reload();

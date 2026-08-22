@@ -137,7 +137,7 @@ Check the ViaVersion/upstream protocol implementation.
 # Build Files
 
 - Common build logic comes from the [BaseProject Gradle convention plugin](https://github.com/florianreuth/BaseProject).
-- The root project includes all submodules (including optional ones like `viafabricplus-visuals`).
+- The root project includes all submodules (including ones like `viafabricplus-api`).
 - Be careful not to introduce unintended dependencies on optional submodules.
 
 ---

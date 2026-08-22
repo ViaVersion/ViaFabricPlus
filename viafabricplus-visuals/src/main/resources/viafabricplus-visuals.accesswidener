@@ -1,9 +1,0 @@
-accessWidener v1 official
-
-accessible field net/minecraft/client/resources/language/ClientLanguage storage Ljava/util/Map;
-accessible field net/minecraft/client/gui/screens/social/SocialInteractionsScreen TITLE Lnet/minecraft/network/chat/Component;
-accessible field net/minecraft/client/gui/components/ImageButton sprites Lnet/minecraft/client/gui/components/WidgetSprites;
-
-accessible class net/minecraft/client/gui/screens/debug/GameModeSwitcherScreen$GameModeIcon
-accessible class net/minecraft/client/gui/Font$PreparedTextBuilder
-accessible class net/minecraft/client/gui/font/FontSet$SelectedGlyphs

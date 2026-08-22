@@ -27,6 +27,7 @@ import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.settings.impl.AuthenticationSettings;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +44,7 @@ public final class SettingsManager {
         addGroup(
             GeneralSettings.INSTANCE,
             AuthenticationSettings.INSTANCE,
+            VisualSettings.INSTANCE,
             DebugSettings.INSTANCE
         );
 

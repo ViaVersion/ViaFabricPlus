@@ -19,4 +19,3 @@ plugins {
 rootProject.name = "viafabricplus"
 
 include("viafabricplus-api")
-include("viafabricplus-visuals")
