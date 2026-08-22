@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.screen;
 
 import com.viaversion.viafabricplus.screen.impl.PerServerVersionScreen;
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ObjectSelectionList;
@@ -48,9 +47,7 @@ public class VFPList extends ObjectSelectionList<VFPListEntry> {
 
     public void initScrollY(final double scrollY) {
         // Needs calling last in init to have data loaded before setting scroll amount
-        if (GeneralSettings.INSTANCE.saveScrollPositionInSlotScreens.getValue()) {
-            this.setScrollAmount(scrollY);
-        }
+        this.setScrollAmount(scrollY);
     }
 
     @Override
