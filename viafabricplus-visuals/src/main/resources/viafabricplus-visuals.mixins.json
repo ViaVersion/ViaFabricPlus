@@ -18,7 +18,6 @@
     "level_loading_transitions.MixinLevelLoadingScreen",
     "oof_sound.MixinPlayer",
     "petrified_oak_slab_model.MixinItemRenderer",
-    "player_rotations.MixinLivingEntity",
     "potion_glint.MixinPotionItem",
     "r1_7_tab_list_style.MixinClientPacketListener",
     "r1_7_tab_list_style.MixinPlayerInfo",
