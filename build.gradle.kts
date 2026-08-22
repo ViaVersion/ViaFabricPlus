@@ -30,7 +30,12 @@ allprojects {
 
 subprojects {
 
-    configureVVDependencies("api")
+    dependencies {
+        api("com.viaversion:viaversion-common:5.12.0-SNAPSHOT")
+        api("com.viaversion:viabackwards-common:5.12.0-SNAPSHOT")
+        api("com.viaversion:viaaprilfools-common:4.2.3-SNAPSHOT")
+        api("net.raphimc:ViaLegacy:3.1.0-SNAPSHOT")
+    }
 
     tasks {
         runClient {
@@ -47,8 +52,6 @@ configureTest().also {
 unlockBuildErrors()
 
 val shade = configureJarInJar()
-
-configureVVDependencies("jarInJar")
 
 dependencies {
     shade(project(":viafabricplus-api")) {
@@ -67,6 +70,10 @@ dependencies {
     shade(fabricApi.module("fabric-particles-v1", fabricApiVersion))
     shade(fabricApi.module("fabric-registry-sync-v0", fabricApiVersion))
 
+    shade("com.viaversion:viaversion-common:5.12.0-SNAPSHOT")
+    shade("com.viaversion:viabackwards-common:5.12.0-SNAPSHOT")
+    shade("com.viaversion:viaaprilfools-common:4.2.3-SNAPSHOT")
+    shade("net.raphimc:ViaLegacy:3.1.0-SNAPSHOT")
     shade("net.lenni0451:Reflect:1.6.4")
     shade("de.florianreuth:classic4j:2.3.0")
 
@@ -74,12 +81,3 @@ dependencies {
 }
 
 includeTransitiveJijDependencies()
-
-fun Project.configureVVDependencies(configuration: String) {
-    dependencies {
-        configuration("com.viaversion:viaversion-common:5.12.0-SNAPSHOT")
-        configuration("com.viaversion:viabackwards-common:5.12.0-SNAPSHOT")
-        configuration("com.viaversion:viaaprilfools-common:4.2.3-SNAPSHOT")
-        configuration("net.raphimc:ViaLegacy:3.1.0-SNAPSHOT")
-    }
-}
