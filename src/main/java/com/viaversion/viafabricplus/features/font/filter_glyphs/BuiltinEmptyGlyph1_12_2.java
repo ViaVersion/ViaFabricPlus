@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.font;
+package com.viaversion.viafabricplus.features.font.filter_glyphs;
 
 import com.mojang.blaze3d.font.GlyphBitmap;
 import com.mojang.blaze3d.font.GlyphInfo;

@@ -19,13 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.r1_7_tab_list_style;
+package com.viaversion.viafabricplus.features.font.filter_glyphs;
 
-public final class LegacyTabList {
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.font.FontSet;
 
-    /**
-     * An incremental index used for tablist entries to implement FIFO behavior in Minecraft versions up to 1.7.
-     */
-    public static int globalTablistIndex = 0;
+public final class FontCacheReload {
+
+    public static void reload() {
+        if (Minecraft.getInstance() == null) {
+            return;
+        }
+
+        for (final FontSet storage : Minecraft.getInstance().fontManager.fontSets.values()) {
+            storage.glyphCache.clear();
+        }
+    }
 
 }

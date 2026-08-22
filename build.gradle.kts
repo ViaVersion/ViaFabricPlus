@@ -46,7 +46,7 @@ subprojects {
 }
 
 configureTest().also {
-    // Uncomment during Minecraft updates to update data diff files
+    // Comment during Minecraft updates to update data diff files
     tasks.test.get().enabled = false
 }
 unlockBuildErrors()
@@ -67,14 +67,10 @@ dependencies {
     shade(fabricApi.module("fabric-particles-v1", fabricApiVersion))
     shade(fabricApi.module("fabric-registry-sync-v0", fabricApiVersion))
 
-    shade("com.viaversion:viaversion-common:5.12.0-SNAPSHOT")
-    shade("com.viaversion:viabackwards-common:5.12.0-SNAPSHOT")
-    shade("com.viaversion:viaaprilfools-common:4.2.3-SNAPSHOT")
-    shade("net.raphimc:ViaLegacy:3.1.0-SNAPSHOT")
     shade("net.lenni0451:Reflect:1.6.4")
     shade("de.florianreuth:classic4j:2.3.0")
 
-    compileOnly("com.terraformersmc:modmenu:20.0.0-beta.2")
+    compileOnly("com.terraformersmc:modmenu:20.0.0")
 }
 
 includeTransitiveJijDependencies()

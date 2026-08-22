@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.hud;
+package com.viaversion.viafabricplus.features.hud_changes;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;

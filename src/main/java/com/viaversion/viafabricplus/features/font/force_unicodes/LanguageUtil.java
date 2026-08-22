@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.force_unicode_font;
+package com.viaversion.viafabricplus.features.font.force_unicodes;
 
 import java.util.Map;
 

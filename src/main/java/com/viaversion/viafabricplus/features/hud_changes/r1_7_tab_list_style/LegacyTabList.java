@@ -19,23 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.font.force_unicode_font;
+package com.viaversion.viafabricplus.features.hud_changes.r1_7_tab_list_style;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.force_unicode_font.UnicodeFontFix1_12_2;
-import net.minecraft.client.resources.language.LanguageManager;
-import net.minecraft.server.packs.resources.ResourceManager;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+public final class LegacyTabList {
 
-@Mixin(LanguageManager.class)
-public abstract class MixinLanguageManager {
-
-    @Inject(method = "onResourceManagerReload", at = @At("RETURN"))
-    private void updateUnicodeFontOverride(ResourceManager resourceManager, CallbackInfo ci) {
-        UnicodeFontFix1_12_2.updateUnicodeFontOverride(ViaFabricPlus.getImpl().getTargetVersion());
-    }
+    /**
+     * An incremental index used for tablist entries to implement FIFO behavior in Minecraft versions up to 1.7.
+     */
+    public static int globalTablistIndex = 0;
 
 }

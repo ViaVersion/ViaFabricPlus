@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.settings.impl;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
 import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
-import com.viaversion.viafabricplus.features.font.FontCacheReload;
+import com.viaversion.viafabricplus.features.font.filter_glyphs.FontCacheReload;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import net.minecraft.network.chat.Component;

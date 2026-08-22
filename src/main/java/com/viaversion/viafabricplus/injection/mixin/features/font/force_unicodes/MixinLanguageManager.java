@@ -19,21 +19,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.font;
+package com.viaversion.viafabricplus.injection.mixin.features.font.force_unicodes;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.font.FontSet;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.features.font.force_unicodes.UnicodeFontFix1_12_2;
+import net.minecraft.client.resources.language.LanguageManager;
+import net.minecraft.server.packs.resources.ResourceManager;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-public final class FontCacheReload {
+@Mixin(LanguageManager.class)
+public abstract class MixinLanguageManager {
 
-    public static void reload() {
-        if (Minecraft.getInstance() == null) {
-            return;
-        }
-
-        for (final FontSet storage : Minecraft.getInstance().fontManager.fontSets.values()) {
-            storage.glyphCache.clear();
-        }
+    @Inject(method = "onResourceManagerReload", at = @At("RETURN"))
+    private void updateUnicodeFontOverride(ResourceManager resourceManager, CallbackInfo ci) {
+        UnicodeFontFix1_12_2.updateUnicodeFontOverride(ViaFabricPlus.getImpl().getTargetVersion());
     }
 
 }

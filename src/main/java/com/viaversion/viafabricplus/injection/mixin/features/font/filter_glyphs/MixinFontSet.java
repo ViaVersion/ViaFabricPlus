@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.font.filter_glyphs;
 
-import com.viaversion.viafabricplus.features.font.BuiltinEmptyGlyph1_12_2;
-import com.viaversion.viafabricplus.features.font.RenderableGlyphDiff;
+import com.viaversion.viafabricplus.features.font.filter_glyphs.BuiltinEmptyGlyph1_12_2;
+import com.viaversion.viafabricplus.features.font.filter_glyphs.RenderableGlyphDiff;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;

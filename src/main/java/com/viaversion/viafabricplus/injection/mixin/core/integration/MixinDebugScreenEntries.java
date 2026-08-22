@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.core.integration;
 
-import com.viaversion.viafabricplus.features.hud.VFPDebugHudEntry;
+import com.viaversion.viafabricplus.features.hud_changes.VFPDebugHudEntry;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.client.gui.components.debug.DebugScreenEntries;

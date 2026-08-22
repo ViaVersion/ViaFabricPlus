@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.hud_changes.r1_7_tab_list_style;
 
-import com.viaversion.viafabricplus.features.r1_7_tab_list_style.LegacyTabList;
+import com.viaversion.viafabricplus.features.hud_changes.r1_7_tab_list_style.LegacyTabList;
 import com.viaversion.viafabricplus.injection.access.r1_7_tab_list_style.IPlayerInfo;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import org.spongepowered.asm.mixin.Mixin;
