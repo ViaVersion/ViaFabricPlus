@@ -21,10 +21,10 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.font.filter_glyphs;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.features.font.filter_glyphs.BuiltinEmptyGlyph1_12_2;
 import com.viaversion.viafabricplus.features.font.filter_glyphs.RenderableGlyphDiff;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.font.FontSet;
@@ -98,7 +98,7 @@ public abstract class MixinFontSet {
 
     @Unique
     private boolean viaFabricPlus$shouldBeInvisible(final int codePoint) {
-        if (!viaFabricPlus$obfuscatedLookup && DebugSettings.INSTANCE.filterNonExistingGlyphs.getValue()) {
+        if (!viaFabricPlus$obfuscatedLookup && ViaFabricPlus.api().settings().advanced().filterNonExistingGlyphs().value()) {
             return (stitcher.texturePrefix.equals(Minecraft.DEFAULT_FONT)) && !RenderableGlyphDiff.isGlyphRenderable(codePoint);
         } else {
             return false;

@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.features.font.force_unicodes;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
@@ -30,22 +29,17 @@ import net.minecraft.client.OptionInstance;
 import net.minecraft.client.resources.language.ClientLanguage;
 import net.minecraft.locale.Language;
 
-/**
- * Older versions only had unicode font support for some languages and therefore servers are expecting the client
- * to use a unicode font, not using it on older versions can cause issues with wrong dimensions in chat components.
- */
 public final class UnicodeFontFix1_12_2 {
 
     private static boolean enabled = false;
     private static Runnable task = null;
 
     public static void init() {
-        ViaFabricPlus.getImpl().registerOnChangeProtocolVersionCallback((oldVersion, newVersion) -> {
+        ViaFabricPlus.api().addChangeProtocolVersionEvent((_, newVersion) -> {
             updateUnicodeFontOverride(newVersion);
         });
 
-        ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            // Prevent usages of RenderSystem.recordRenderCall()
+        ClientTickEvents.START_CLIENT_TICK.register(_ -> {
             if (task != null) {
                 task.run();
                 task = null;
@@ -56,7 +50,7 @@ public final class UnicodeFontFix1_12_2 {
     public static void updateUnicodeFontOverride(final ProtocolVersion version) {
         final OptionInstance<Boolean> option = Minecraft.getInstance().options.forceUnicodeFont();
 
-        if (VisualSettings.INSTANCE.forceUnicodeFontForNonAsciiLanguages.isEnabled(version)) {
+        if (ViaFabricPlus.api().settings().visual().forceUnicodeFontForNonAsciiLanguages().isActive(version)) {
             if (Language.getInstance() instanceof ClientLanguage storage) {
                 enabled = LanguageUtil.isUnicodeFont1_12_2(storage.storage);
                 task = () -> option.set(enabled);

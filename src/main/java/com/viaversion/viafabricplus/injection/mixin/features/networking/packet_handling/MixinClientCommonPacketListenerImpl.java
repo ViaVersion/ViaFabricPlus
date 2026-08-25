@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_handling;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.net.URL;
 import java.nio.file.Path;
@@ -74,7 +74,7 @@ public abstract class MixinClientCommonPacketListenerImpl {
 
     @Inject(method = "storeDisconnectionReport", at = @At("HEAD"), cancellable = true)
     private void dontCreatePacketErrorCrashReports(CallbackInfoReturnable<Optional<Path>> cir) {
-        if (DebugSettings.INSTANCE.dontCreatePacketErrorCrashReports.isEnabled()) {
+        if (ViaFabricPlus.api().settings().advanced().dontCreatePacketErrorCrashReports().isActive()) {
             cir.setReturnValue(Optional.empty());
         }
     }

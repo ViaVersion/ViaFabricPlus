@@ -34,12 +34,6 @@ import java.util.Map;
 
 import static com.viaversion.viaversion.api.protocol.version.ProtocolVersion.v1_20;
 
-/**
- * Data dump which contains the {@link ProtocolVersion} for each renderable glyph. This is used to hide characters
- * which are not supported by the current protocol version. This is because some servers in older versions are using
- * characters which the client doesn't know about and therefore can't render as placeholder for e.g. scoreboards, we have
- * to hide them because our client would render them as a different character.
- */
 public final class RenderableGlyphDiff {
 
     private static final Int2ObjectMap<ProtocolVersion> RENDERABLE_GLYPH_DIFF_LEGACY = new Int2ObjectOpenHashMap<>();
@@ -73,10 +67,6 @@ public final class RenderableGlyphDiff {
         }
     }
 
-    /**
-     * @param codePoint the code point to check
-     * @return true if the given code point is renderable in the current version of the game
-     */
     public static boolean isGlyphRenderable(final int codePoint) {
         final ProtocolVersion targetVersion = ProtocolTranslator.getTargetVersion();
 

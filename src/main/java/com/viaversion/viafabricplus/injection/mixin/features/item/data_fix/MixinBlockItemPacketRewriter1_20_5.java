@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.item.data_fix;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
+import com.viaversion.viafabricplus.api.events.LoadingCycleEvent;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.HolderSet;
@@ -92,8 +92,8 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
             this.viaFabricPlus$armorMaxDamage_b1_8_1.put(entry.getKey(), entry.getValue().getAsInt());
         }
 
-        ViaFabricPlusImpl.LOADING_CYCLE.register(cycle -> {
-            if (cycle != LoadingCycleCallback.LoadingCycle.POST_VIAVERSION_LOAD) {
+        ViaFabricPlusImpl.impl().addLoadingCycleEvent(cycle -> {
+            if (cycle != LoadingCycleEvent.LoadingCycle.POST_VIAVERSION_LOAD) {
                 return;
             }
 

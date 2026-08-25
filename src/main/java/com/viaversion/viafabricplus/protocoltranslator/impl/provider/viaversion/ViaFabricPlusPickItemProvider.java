@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion;
 
-import com.viaversion.viafabricplus.util.NotificationUtil;
+import com.viaversion.viafabricplus.protocoltranslator.util.NotificationUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
 import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.provider.PickItemProvider;

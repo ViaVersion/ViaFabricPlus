@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.hud_changes.beta;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Hud;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,28 +44,28 @@ public abstract class MixinHud {
 
     @Inject(method = "willPrioritizeJumpInfo", at = @At("HEAD"), cancellable = true)
     private void removeMountJumpBar(CallbackInfoReturnable<Boolean> cir) {
-        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().hideModernHUDElements().isActive()) {
             cir.setReturnValue(false);
         }
     }
 
     @Inject(method = "extractVehicleHealth", at = @At("HEAD"), cancellable = true)
     private void removeMountJumpBar(CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().hideModernHUDElements().isActive()) {
             ci.cancel();
         }
     }
 
     @Inject(method = "getVehicleMaxHearts", at = @At("HEAD"), cancellable = true)
     private void removeHungerBar(LivingEntity vehicle, CallbackInfoReturnable<Integer> cir) {
-        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().hideModernHUDElements().isActive()) {
             cir.setReturnValue(1);
         }
     }
 
     @ModifyExpressionValue(method = "extractPlayerHealth", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;guiHeight()I"), require = 0)
     private int moveHealthDown(int value) {
-        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().hideModernHUDElements().isActive()) {
             return value + 7; // Magical offset
         } else {
             return value;
@@ -74,7 +74,7 @@ public abstract class MixinHud {
 
     @ModifyArgs(method = "extractArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), require = 0)
     private static void moveArmorPositions(Args args) {
-        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().hideModernHUDElements().isActive()) {
             final int width = 10 * viaFabricPlus$ARMOR_ICON_WIDTH;
             args.set(2, (int) args.get(2) + width + 21);
             args.set(3, (int) args.get(3) + 10);
@@ -83,7 +83,7 @@ public abstract class MixinHud {
 
     @ModifyArg(method = "extractAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), index = 2, require = 0)
     private int moveAirBubbles(int value) {
-        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().hideModernHUDElements().isActive()) {
             final Minecraft client = Minecraft.getInstance();
             return client.getWindow().getGuiScaledWidth() - value - client.font.lineHeight;
         } else {

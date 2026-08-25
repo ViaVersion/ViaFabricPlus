@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.screen.impl.settings;
 
-import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
-import com.viaversion.viafabricplus.screen.VFPListEntry;
+import com.viaversion.viafabricplus.api.settings.base.VersionedBooleanSetting;
+import com.viaversion.viafabricplus.screen.base.VFPListEntry;
 import java.awt.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -32,6 +32,7 @@ import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 
 public final class VersionedBooleanListEntry extends VFPListEntry {
+
     private final VersionedBooleanSetting value;
 
     public VersionedBooleanListEntry(VersionedBooleanSetting value) {
@@ -40,29 +41,23 @@ public final class VersionedBooleanListEntry extends VFPListEntry {
 
     @Override
     public @NonNull Component getNarration() {
-        return this.value.getName();
+        return this.value.name();
     }
 
     @Override
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-        this.value.setValue(this.value.getCurrentValue() + 1);
-        if (this.value.getCurrentValue() % 3 == 0) this.value.setValue(0);
+        this.value.setValue(!this.value.value());
     }
 
     @Override
     public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final Font textRenderer = Minecraft.getInstance().font;
 
-        final boolean isAuto = this.value.getCurrentValue() == VersionedBooleanSetting.AUTO_INDEX;
-        final boolean isEnabled = this.value.isEnabled(this.value.getCurrentValue());
-        final Component text = Component.translatable("base.viafabricplus." + (isAuto ? "auto" : isEnabled ? "on" : "off"));
-        Color color = isAuto ? Color.ORANGE : isEnabled ? Color.GREEN : Color.RED;
+        final Component text = this.value.value() ? Component.translatable("base.viafabricplus.on") : Component.translatable("base.viafabricplus.off");
 
         final int offset = textRenderer.width(text) + 2;
-        renderScrollableText(Component.nullToEmpty(ChatFormatting.GRAY + this.value.getName().getString() + " " + ChatFormatting.RESET + this.value.getProtocolRange().toString()), offset);
-        context.text(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, color.getRGB());
-
-        renderTooltip(value.getTooltip(), mouseX, mouseY);
+        renderScrollableText(Component.nullToEmpty(ChatFormatting.GRAY + this.value.name().getString() + " " + ChatFormatting.RESET + this.value.versionRange().toString()), offset);
+        context.text(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, this.value.value() ? Color.GREEN.getRGB() : Color.RED.getRGB());
     }
 
 }

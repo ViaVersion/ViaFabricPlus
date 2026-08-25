@@ -21,8 +21,9 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.netty;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.api.settings.impl.PacketTranslationError;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.exception.CancelCodecException;
@@ -46,10 +47,10 @@ public final class ViaFabricPlusDecoder extends ViaDecodeHandler {
                 return;
             }
 
-            final int mode = GeneralSettings.INSTANCE.ignorePacketTranslationErrors.getIndex();
-            if (mode > 0) {
-                ViaFabricPlusImpl.INSTANCE.getLogger().error("Error occurred while decoding packet in ViaFabricPlus decoder", e);
-                if (mode == 1) {
+            final PacketTranslationError mode = ViaFabricPlus.api().settings().general().ignorePacketTranslationErrors().value();
+            if (mode != PacketTranslationError.KICK) {
+                ViaFabricPlusImpl.impl().logger().error("Error occurred while decoding packet in ViaFabricPlus decoder", e);
+                if (mode == PacketTranslationError.CANCEL_AND_NOTIFY) {
                     ChatUtil.sendPrefixedMessage(Component.translatable("translation.viafabricplus.packet_error").withStyle(ChatFormatting.RED));
                 }
             } else {

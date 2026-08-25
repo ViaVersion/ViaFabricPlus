@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion;
 
-import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -35,7 +35,7 @@ public final class ViaFabricPlusHandItemProvider extends HandItemProvider {
     @Override
     public Item getHandItem(UserConnection info) {
         if (lastUsedItem != null && !lastUsedItem.isEmpty()) {
-            return ItemTranslator.mcToVia(lastUsedItem, ProtocolVersion.v1_8);
+            return ViaFabricPlus.api().conversions().translateItem(lastUsedItem, ProtocolVersion.v1_8);
         } else {
             return null;
         }

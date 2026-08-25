@@ -24,8 +24,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.filter_creati
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.api.settings.impl.ItemFilter;
 import com.viaversion.viafabricplus.features.item.filter_creative_tabs.VersionedRegistries;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -48,11 +49,11 @@ public abstract class MixinCreativeModeTab_ItemDisplayBuilder {
     @WrapOperation(method = "accept", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;isEnabled(Lnet/minecraft/world/flag/FeatureFlagSet;)Z"))
     private boolean removeUnknownItems(Item instance, FeatureFlagSet featureSet, Operation<Boolean> original, @Local(argsOnly = true) ItemStack stack) {
         final boolean originalValue = original.call(instance, featureSet);
-        final int index = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
+        final ItemFilter filter = ViaFabricPlus.api().settings().general().removeNotAvailableItemsFromCreativeTab().value();
 
-        if (index == 2 /* Off */ || Minecraft.getInstance().isLocalServer()) {
+        if (filter == ItemFilter.OFF || Minecraft.getInstance().isLocalServer()) {
             return originalValue;
-        } else if (index == 1 /* Vanilla only */ && !BuiltInRegistries.CREATIVE_MODE_TAB.getKey(this.tab).getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
+        } else if (filter == ItemFilter.VANILLA_ONLY && !BuiltInRegistries.CREATIVE_MODE_TAB.getKey(this.tab).getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
             return originalValue;
         } else {
             return VersionedRegistries.keepItem(stack) && originalValue;

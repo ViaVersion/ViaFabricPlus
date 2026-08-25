@@ -33,7 +33,7 @@ public abstract class MixinMain {
 
     @Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;startTimerHackThread()V"))
     private static void bootstrap(CallbackInfo ci) {
-        ViaFabricPlusImpl.INSTANCE.init();
+        ViaFabricPlusImpl.impl().init();
     }
 
 }

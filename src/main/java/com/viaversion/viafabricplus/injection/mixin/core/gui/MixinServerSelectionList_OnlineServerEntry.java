@@ -24,8 +24,9 @@ package com.viaversion.viafabricplus.injection.mixin.core.gui;
 import com.google.common.collect.Lists;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -48,7 +49,7 @@ public abstract class MixinServerSelectionList_OnlineServerEntry {
     private void drawTranslatingState(GuiGraphicsExtractor instance, Component component, int x, int y, Operation<Void> original) {
         final List<Component> tooltips = new ArrayList<>();
         tooltips.add(component);
-        if (GeneralSettings.INSTANCE.showAdvertisedServerVersion.getValue()) {
+        if (ViaFabricPlus.api().settings().general().showAdvertisedServerVersion().value()) {
             tooltips.add(Component.translatable("base.viafabricplus.target_version", ((IServerData) serverData).viaFabricPlus$translatingVersion()));
             tooltips.add(Component.translatable("base.viafabricplus.server_version", serverData.version.getString() + " (" + serverData.protocol + ")"));
         }

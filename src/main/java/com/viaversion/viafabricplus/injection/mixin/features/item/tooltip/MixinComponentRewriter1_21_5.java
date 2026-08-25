@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.item.tooltip;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.nbt.tag.CompoundTag;
-import com.viaversion.viafabricplus.util.ItemUtil;
+import com.viaversion.viafabricplus.protocoltranslator.util.ItemUtil;
 import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.Protocol1_21_4To1_21_5;
 import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.rewriter.ComponentRewriter1_21_5;
 import com.viaversion.viaversion.util.TagUtil;

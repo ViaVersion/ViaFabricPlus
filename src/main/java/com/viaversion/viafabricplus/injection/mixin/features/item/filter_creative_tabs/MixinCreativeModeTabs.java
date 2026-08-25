@@ -21,8 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.filter_creative_tabs;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.api.settings.impl.ItemFilter;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.flag.FeatureFlagSet;
@@ -44,20 +45,20 @@ public abstract class MixinCreativeModeTabs {
     private static CreativeModeTab.@Nullable ItemDisplayParameters CACHED_PARAMETERS;
 
     @Shadow
-    private static void buildAllTabContents(CreativeModeTab.ItemDisplayParameters displayContext) {
+    private static void buildAllTabContents(CreativeModeTab.ItemDisplayParameters parameters) {
     }
 
     @Unique
     private static ProtocolVersion viaFabricPlus$version;
 
     @Unique
-    private static int viaFabricPlus$state;
+    private static ItemFilter viaFabricPlus$state;
 
     @Inject(method = "tryRebuildTabContents", at = @At("HEAD"), cancellable = true)
     private static void trackLastVersion(FeatureFlagSet enabledFeatures, boolean hasPermissions, HolderLookup.Provider lookup, CallbackInfoReturnable<Boolean> cir) {
-        if (viaFabricPlus$version != ProtocolTranslator.getTargetVersion() || viaFabricPlus$state != GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex()) {
+        if (viaFabricPlus$version != ProtocolTranslator.getTargetVersion() || viaFabricPlus$state != ViaFabricPlus.api().settings().general().removeNotAvailableItemsFromCreativeTab().value()) {
             viaFabricPlus$version = ProtocolTranslator.getTargetVersion();
-            viaFabricPlus$state = GeneralSettings.INSTANCE.removeNotAvailableItemsFromCreativeTab.getIndex();
+            viaFabricPlus$state = ViaFabricPlus.api().settings().general().removeNotAvailableItemsFromCreativeTab().value();
 
             CACHED_PARAMETERS = new CreativeModeTab.ItemDisplayParameters(enabledFeatures, hasPermissions, lookup);
             buildAllTabContents(CACHED_PARAMETERS);

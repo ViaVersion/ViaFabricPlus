@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.sound.oof_hurt;
 
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -40,7 +40,7 @@ public abstract class MixinPlayer {
 
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
     private void replaceSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
-        if (VisualSettings.INSTANCE.replaceHurtSoundWithOOFSound.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().replaceHurtSoundWithOOFSound().isActive()) {
             cir.setReturnValue(viaFabricPlus$oof_hurt);
         }
     }

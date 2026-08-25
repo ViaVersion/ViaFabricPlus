@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.hud_changes.beta;
 
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +33,7 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Inject(method = "hasExperience", at = @At("HEAD"), cancellable = true)
     private void removeExperienceBar(CallbackInfoReturnable<Boolean> cir) {
-        if (VisualSettings.INSTANCE.hideModernHUDElements.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().hideModernHUDElements().isActive()) {
             cir.setReturnValue(false);
         }
     }

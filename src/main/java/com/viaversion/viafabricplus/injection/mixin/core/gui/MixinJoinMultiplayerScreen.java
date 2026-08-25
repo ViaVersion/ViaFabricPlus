@@ -21,8 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.core.gui;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.api.settings.impl.Orientation;
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
@@ -45,19 +46,17 @@ public abstract class MixinJoinMultiplayerScreen extends Screen {
 
     @Inject(method = "repositionElements", at = @At("RETURN"))
     private void addProtocolSelectionButton(CallbackInfo ci) {
-        final int buttonPosition = GeneralSettings.INSTANCE.multiplayerScreenButtonOrientation.getIndex();
-        if (buttonPosition == 0) { // Off
-            return;
+        final Orientation orientation = ViaFabricPlus.api().settings().general().multiplayerScreenButtonOrientation().value();
+        if (orientation != Orientation.NONE) {
+            if (viaFabricPlus$button == null) {
+                viaFabricPlus$button = Button
+                    .builder(Component.nullToEmpty("ViaFabricPlus"), _ -> ViaFabricPlus.api().screens().openProtocolSelectionScreen(this))
+                    .size(98, 20)
+                    .build();
+                this.addRenderableWidget(viaFabricPlus$button);
+            }
+            orientation.getPositioner().setPosition(viaFabricPlus$button, width, height);
         }
-
-        if (viaFabricPlus$button == null) {
-            viaFabricPlus$button = Button
-                .builder(Component.nullToEmpty("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this))
-                .size(98, 20)
-                .build();
-            this.addRenderableWidget(viaFabricPlus$button);
-        }
-        GeneralSettings.setOrientation(viaFabricPlus$button::setPosition, buttonPosition, width, height);
     }
 
 }

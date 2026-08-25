@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.large_container;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.protocoltranslator.translator.TextComponentTranslator;
+import com.viaversion.viafabricplus.features.large_container.TextComponentTranslator;
 import com.viaversion.viafabricplus.util.network.SyncTasks;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;

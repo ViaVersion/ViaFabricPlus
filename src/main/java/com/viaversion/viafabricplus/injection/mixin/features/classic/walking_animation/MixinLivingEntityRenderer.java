@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.classic.walking_animation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
@@ -37,7 +37,7 @@ public abstract class MixinLivingEntityRenderer {
 
     @Inject(method = "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V", ordinal = 1))
     private <S extends LivingEntityRenderState> void addOldWalkAnimation(S state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.oldWalkingAnimation.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().oldWalkingAnimation().isActive()) {
             final float limbSwingAnimationProgress = state.walkAnimationPos;
             final float limbSwingAmplitude = state.walkAnimationSpeed;
 

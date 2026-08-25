@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.screen.impl;
 
-import com.viaversion.viafabricplus.save.SaveManager;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
+import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import com.viaversion.viafabricplus.screen.impl.classic4j.BetaCraftScreen;
 import com.viaversion.viafabricplus.screen.impl.classic4j.ClassiCubeLoginScreen;
 import com.viaversion.viafabricplus.screen.impl.classic4j.ClassiCubeServerListScreen;
@@ -44,7 +44,7 @@ public final class ServerListScreen extends VFPScreen {
         this.setupDefaultSubtitle();
 
         // ClassiCube
-        final boolean loggedIn = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount() != null;
+        final boolean loggedIn = ClassiCubeAccount.get() != null;
 
         final Button.Builder classiCubeBuilder = Button.builder(ClassiCubeServerListScreen.INSTANCE.getTitle(), _ -> {
             if (!loggedIn) {

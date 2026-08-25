@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.screen.impl.classic4j;
 
-import com.viaversion.viafabricplus.save.SaveManager;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
+import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import de.florianreuth.classic4j.ClassiCubeHandler;
 import de.florianreuth.classic4j.api.LoginProcessHandler;
 import de.florianreuth.classic4j.model.classicube.account.CCAccount;
@@ -55,9 +55,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
 
         this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.login"), button -> {
             this.setupSubtitle(Component.translatable("classicube.viafabricplus.loading"));
-            final CCAccount account = SaveManager.INSTANCE.getAccountsSave().getClassicubeAccount();
-
-            ClassiCubeHandler.requestAuthentication(account, mfaField.getValue(), new LoginProcessHandler() {
+            ClassiCubeHandler.requestAuthentication(ClassiCubeAccount.get(), mfaField.getValue(), new LoginProcessHandler() {
                 @Override
                 public void handleMfa(CCAccount account) {
                     // Not implemented in this case
@@ -79,7 +77,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
     @Override
     public void onClose() {
         // The user wasn't logged in when opening this screen, so he canceled the login process, so we can safely unset the account
-        SaveManager.INSTANCE.getAccountsSave().setClassicubeAccount(null);
+        ClassiCubeAccount.set(null);
         super.onClose();
     }
 

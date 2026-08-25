@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.screen.impl.classic4j;
 
-import com.viaversion.viafabricplus.screen.VFPList;
-import com.viaversion.viafabricplus.screen.VFPListEntry;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.screen.base.VFPList;
+import com.viaversion.viafabricplus.screen.base.VFPListEntry;
+import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import com.viaversion.viafabricplus.screen.impl.settings.TitleEntry;
 import com.viaversion.viafabricplus.util.network.ConnectionUtil;
 import de.florianreuth.classic4j.BetaCraftHandler;
@@ -39,7 +39,7 @@ import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 
-import static com.viaversion.viafabricplus.screen.VFPListEntry.SLOT_MARGIN;
+import static com.viaversion.viafabricplus.screen.base.VFPListEntry.SLOT_MARGIN;
 
 public final class BetaCraftScreen extends VFPScreen {
 

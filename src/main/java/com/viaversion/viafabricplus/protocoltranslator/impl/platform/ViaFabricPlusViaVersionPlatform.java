@@ -21,12 +21,13 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.platform;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.api.settings.base.SettingGroup;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusConfig;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
 import com.viaversion.viafabricplus.protocoltranslator.util.JLoggerToSLF4J;
-import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.util.ClassLoaderPriorityUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
@@ -65,7 +66,7 @@ public final class ViaFabricPlusViaVersionPlatform extends UserConnectionViaVers
 
     @Override
     public String getPlatformVersion() {
-        return ViaFabricPlusImpl.INSTANCE.getVersion();
+        return ViaFabricPlus.api().version();
     }
 
     @Override
@@ -92,7 +93,7 @@ public final class ViaFabricPlusViaVersionPlatform extends UserConnectionViaVers
     @Override
     public JsonObject getDump() {
         final JsonObject platformDump = new JsonObject();
-        platformDump.addProperty("impl_version", ViaFabricPlusImpl.INSTANCE.getImplVersion());
+        platformDump.addProperty("impl_version", ViaFabricPlus.api().implVersion());
         platformDump.addProperty("native_version", ProtocolTranslator.NATIVE_VERSION.toString());
         platformDump.addProperty("target_version", ProtocolTranslator.getTargetVersion().toString());
         platformDump.addProperty("in_world", Minecraft.getInstance().level != null);
@@ -125,7 +126,9 @@ public final class ViaFabricPlusViaVersionPlatform extends UserConnectionViaVers
         platformDump.add("mods", mods);
 
         final com.google.gson.JsonObject settings = new com.google.gson.JsonObject();
-        SaveManager.INSTANCE.getSettingsSave().writeSettings(settings);
+        for (final SettingGroup group : ViaFabricPlusImpl.impl().settings().groups()) {
+            group.write(settings);
+        }
         platformDump.add("settings", GsonUtil.getGson().fromJson(settings.toString(), JsonObject.class));
 
         if (!ClassLoaderPriorityUtil.getOverridingJars().isEmpty()) {

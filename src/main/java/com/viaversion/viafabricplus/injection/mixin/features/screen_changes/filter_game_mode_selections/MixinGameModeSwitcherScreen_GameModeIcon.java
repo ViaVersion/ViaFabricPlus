@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes.filter_game_mode_selections;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.screens.debug.GameModeSwitcherScreen;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -46,11 +46,11 @@ public abstract class MixinGameModeSwitcherScreen_GameModeIcon {
 
     @Inject(method = "getNext", at = @At("HEAD"), cancellable = true)
     private void unwrapGameModes(CallbackInfoReturnable<GameModeSwitcherScreen.GameModeIcon> cir) {
-        if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
+        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             switch ((GameModeSwitcherScreen.GameModeIcon) (Object) this) {
                 case CREATIVE -> cir.setReturnValue(SURVIVAL);
                 case SURVIVAL -> {
-                    if (ViaFabricPlus.getImpl().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
+                    if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
                         cir.setReturnValue(CREATIVE);
                     } else {
                         cir.setReturnValue(GameModeSwitcherScreen.GameModeIcon.ADVENTURE);

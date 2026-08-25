@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.screen.impl;
 
-import com.viaversion.viafabricplus.screen.VFPList;
-import com.viaversion.viafabricplus.screen.VFPListEntry;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.screen.base.VFPList;
+import com.viaversion.viafabricplus.screen.base.VFPListEntry;
+import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.awt.*;
 import java.util.function.Consumer;

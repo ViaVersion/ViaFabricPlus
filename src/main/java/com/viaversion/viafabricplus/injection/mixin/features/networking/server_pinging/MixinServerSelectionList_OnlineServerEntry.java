@@ -25,9 +25,9 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -73,7 +73,7 @@ public abstract class MixinServerSelectionList_OnlineServerEntry {
             version = ProtocolTranslator.getTargetVersion();
         }
 
-        viaFabricPlus$disableServerPinging = DebugSettings.INSTANCE.disableServerPinging.isEnabled(version);
+        viaFabricPlus$disableServerPinging = ViaFabricPlus.api().settings().visual().disableServerPinging().isActive(version);
         if (viaFabricPlus$disableServerPinging) {
             this.serverData.version = Component.nullToEmpty(version.getName()); // Show target version
             return null;

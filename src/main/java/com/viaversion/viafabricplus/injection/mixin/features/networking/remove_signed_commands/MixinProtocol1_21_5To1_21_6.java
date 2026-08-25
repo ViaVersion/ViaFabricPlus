@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_signed_commands;
 
-import com.viaversion.viafabricplus.util.NotificationUtil;
+import com.viaversion.viafabricplus.protocoltranslator.util.NotificationUtil;
 import com.viaversion.viaversion.api.minecraft.GameMode;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;

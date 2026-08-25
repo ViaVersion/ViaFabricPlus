@@ -54,7 +54,6 @@ import com.viaversion.viaversion.platform.ViaEncodeHandler;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelPipeline;
-import io.netty.handler.flow.FlowControlHandler;
 import io.netty.util.AttributeKey;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -74,29 +73,13 @@ import net.raphimc.vialegacy.netty.PreNettyLengthRemover;
 
 public final class ProtocolTranslator {
 
-    /**
-     * Internal state tracking for the game client connection, used in various Via providers
-     */
     public static final AttributeKey<Connection> CLIENT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-clientconnection");
-
-    /**
-     * Stores the target version ViaVersion is translating to. This will always be set, even if the {@link #NATIVE_VERSION} is set.
-     */
     public static final AttributeKey<ProtocolVersion> TARGET_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-targetversion");
 
-    /**
-     * The native version of the client
-     */
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v26_2;
-
-    /**
-     * Name of the {@link FlowControlHandler} added to the pipeline
-     */
     public static final String VIA_FLOW_CONTROL = "via-flow-control";
 
-    /**
-     * Protocol version that is used to enable protocol auto-detect
-     */
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v26_2;
+
     public static final ProtocolVersion AUTO_DETECT_PROTOCOL = new ProtocolVersion(VersionType.SPECIAL, -2, -1, "Auto Detect (1.7+ servers)", null) {
         @Override
         protected Comparator<ProtocolVersion> customComparator() {
@@ -117,21 +100,9 @@ public final class ProtocolTranslator {
         }
     };
 
-    /**
-     * This field stores the target version that you set in the GUI
-     */
     private static ProtocolVersion targetVersion = NATIVE_VERSION;
-
-    /**
-     * This field stores the previous selected version if {@link #setTargetVersion(ProtocolVersion, boolean)} is called with revertOnDisconnect set to true
-     */
     private static ProtocolVersion previousVersion = null;
 
-    /**
-     * Injects the ViaFabricPlus pipeline with all ViaVersion elements into a Minecraft pipeline
-     *
-     * @param connection the Minecraft connection
-     */
     public static void injectViaPipeline(final Connection connection, final Channel channel) {
         final IConnection mixinClientConnection = (IConnection) connection;
         final ProtocolVersion serverVersion = mixinClientConnection.viaFabricPlus$getTargetVersion();
@@ -163,10 +134,6 @@ public final class ProtocolTranslator {
     }
 
     public static ProtocolVersion getTargetVersion(final Channel channel) {
-        if (!channel.hasAttr(TARGET_VERSION_ATTRIBUTE_KEY)) {
-            throw new IllegalStateException("ViaFabricPlus has not injected into that channel yet!");
-        }
-
         return channel.attr(TARGET_VERSION_ATTRIBUTE_KEY).get();
     }
 
@@ -175,31 +142,23 @@ public final class ProtocolTranslator {
     }
 
     public static void setTargetVersion(final ProtocolVersion newVersion, final boolean revertOnDisconnect) {
-        if (newVersion == null) {
-            return;
-        }
-
         final ProtocolVersion oldVersion = targetVersion;
         targetVersion = newVersion;
         if (oldVersion != newVersion) {
             if (revertOnDisconnect) {
                 previousVersion = oldVersion;
             }
-            ViaFabricPlusImpl.CHANGE_PROTOCOL_VERSION.invoker().onChangeProtocolVersion(oldVersion, targetVersion);
+            ViaFabricPlusImpl.impl().runChangeProtocolVersionEvents(oldVersion, targetVersion);
         }
     }
 
-    /**
-     * Resets the previous version if it is set. Calling {@link #setTargetVersion(ProtocolVersion, boolean)} with revertOnDisconnect set to true will set it.
-     */
     public static void injectPreviousVersionReset(final Channel channel) {
-        if (previousVersion == null) {
-            return;
+        if (previousVersion != null) {
+            channel.closeFuture().addListener(_ -> {
+                setTargetVersion(previousVersion);
+                previousVersion = null;
+            });
         }
-        channel.closeFuture().addListener(future -> {
-            setTargetVersion(previousVersion);
-            previousVersion = null;
-        });
     }
 
     public static UserConnection createDummyUserConnection(final ProtocolVersion clientVersion, final ProtocolVersion serverVersion) {
@@ -227,21 +186,15 @@ public final class ProtocolTranslator {
         return user;
     }
 
-    public static UserConnection getPlayNetworkUserConnection() {
+    public static UserConnection getPlayStateUserConnection() {
         final ClientPacketListener handler = Minecraft.getInstance().getConnection();
-        if (handler == null) {
+        if (handler != null) {
+            return ((IConnection) handler.getConnection()).viaFabricPlus$getUserConnection();
+        } else {
             return null;
         }
-
-        return ((IConnection) handler.getConnection()).viaFabricPlus$getUserConnection();
     }
 
-    /**
-     * This method is used to initialize the whole Protocol Translator
-     *
-     * @param path The path where the ViaVersion config files are located
-     * @return A CompletableFuture that will be completed when the initialization is done
-     */
     public static CompletableFuture<Void> init(final Path path) {
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new IllegalStateException("Native version is not the same as the current version");

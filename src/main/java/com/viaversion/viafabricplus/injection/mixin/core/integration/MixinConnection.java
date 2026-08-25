@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.core.integration;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -41,12 +41,12 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"))
     private void printNetworkingErrors(ChannelHandlerContext ctx, Throwable cause, CallbackInfo ci) {
-        if (DebugSettings.INSTANCE.printNetworkingErrorsToLogs.getValue()) {
+        if (ViaFabricPlus.api().settings().advanced().printNetworkingErrorsToLogs().value()) {
             if (cause instanceof SocketException || cause instanceof ConnectException) {
                 // Thrown when server is not reachable
                 return;
             }
-            ViaFabricPlusImpl.INSTANCE.getLogger().error("An exception occurred while handling a packet", cause);
+            ViaFabricPlusImpl.impl().logger().error("An exception occurred while handling a packet", cause);
         }
     }
 
@@ -57,7 +57,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
         if (evt.getClass().getName().equals("me.steinborn.krypton.mod.shared.misc.KryptonPipelineEvent")) {
             if (evt.toString().equals("COMPRESSION_ENABLED")) {
                 ViaChannelInitializer.reorderPipeline(ctx.pipeline(), HandlerNames.COMPRESS, HandlerNames.DECOMPRESS);
-                ViaFabricPlusImpl.INSTANCE.getLogger().warn("ViaFabricPlus has detected that the Krypton mod is installed. Please note that Krypton is mostly snake oil on the client side, and it is not recommended to use it.");
+                ViaFabricPlusImpl.impl().logger().warn("ViaFabricPlus has detected that the Krypton mod is installed. Please note that Krypton is mostly snake oil on the client side, and it is not recommended to use it.");
                 return;
             }
         }

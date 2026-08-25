@@ -21,32 +21,33 @@
 
 package com.viaversion.viafabricplus;
 
-import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
+import com.google.common.base.Preconditions;
+import com.viaversion.viafabricplus.api.ViaFabricPlusAPI;
 import org.jetbrains.annotations.ApiStatus;
 
-/**
- * Holder class for the {@link ViaFabricPlusBase} implementation
- */
 public final class ViaFabricPlus {
 
-    private static ViaFabricPlusBase impl;
+    private static ViaFabricPlusAPI api;
 
     @ApiStatus.Internal
-    public static void init(final ViaFabricPlusBase impl) {
-        if (ViaFabricPlus.impl != null) {
-            throw new IllegalStateException("ViaFabricPlus has already been initialized!");
-        }
-        ViaFabricPlus.impl = impl;
+    public static void init(final ViaFabricPlusAPI api) {
+        Preconditions.checkArgument(ViaFabricPlus.api == null, "ViaFabricPlus has already been initialized!");
+        ViaFabricPlus.api = api;
     }
 
     /**
-     * @return the ViaFabricPlusBase implementation that is set by the internals
+     * Returns the API instance associated with this implementation.
+     *
+     * @return The API instance
      */
-    public static ViaFabricPlusBase getImpl() {
-        if (impl == null) {
-            throw new IllegalStateException("ViaFabricPlus has not been initialized yet!");
-        }
-        return impl;
+    public static ViaFabricPlusAPI api() {
+        Preconditions.checkArgument(api != null, "ViaFabricPlus has not been initialized!");
+        return api;
+    }
+
+    @Deprecated
+    public static ViaFabricPlusAPI getImpl() {
+        return api();
     }
 
 }

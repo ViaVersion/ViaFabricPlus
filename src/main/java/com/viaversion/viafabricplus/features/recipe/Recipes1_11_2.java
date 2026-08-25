@@ -79,9 +79,6 @@ import net.minecraft.world.item.crafting.TransmuteRecipe;
 import net.minecraft.world.level.ItemLike;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
-/**
- * Recipe data dump for all versions below 1.12.
- */
 public final class Recipes1_11_2 {
 
     private static final List<Pair<LegacyRecipe, ProtocolVersionRange>> LEGACY_RECIPES = new ArrayList<>();
@@ -97,9 +94,12 @@ public final class Recipes1_11_2 {
             final String type = recipeElement.getAsJsonObject().get("type").getAsString();
             final ProtocolVersionRange versionRange = ProtocolVersionRange.fromString(recipeElement.getAsJsonObject().get("version").getAsString());
             switch (type) {
-                case "shaped" -> LEGACY_RECIPES.add(new Pair<>(LegacyShapedRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
-                case "shapeless" -> LEGACY_RECIPES.add(new Pair<>(LegacyShapelessRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
-                case "smelting" -> LEGACY_RECIPES.add(new Pair<>(LegacySmeltingRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "shaped" ->
+                    LEGACY_RECIPES.add(new Pair<>(LegacyShapedRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "shapeless" ->
+                    LEGACY_RECIPES.add(new Pair<>(LegacyShapelessRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
+                case "smelting" ->
+                    LEGACY_RECIPES.add(new Pair<>(LegacySmeltingRecipe.fromJson(recipeElement.getAsJsonObject()), versionRange));
                 default -> throw new IllegalArgumentException("Unknown recipe type: " + type);
             }
         }
@@ -157,7 +157,8 @@ public final class Recipes1_11_2 {
                             final SmeltingRecipe recipe = new SmeltingRecipe(commonInfo, cookingBookInfo, input, output, legacySmeltingRecipe.experience, 200);
                             recipes.add(new RecipeHolder<>(key, recipe));
                         }
-                        default -> throw new IllegalStateException("Unknown legacy recipe type: " + legacyRecipe.getFirst().getClass());
+                        default ->
+                            throw new IllegalStateException("Unknown legacy recipe type: " + legacyRecipe.getFirst().getClass());
                     }
                 }
             }
@@ -215,15 +216,6 @@ public final class Recipes1_11_2 {
         RECIPE_MANAGER = null;
     }
 
-    /**
-     * Sets the result slot of a crafting screen handler to the correct item stack. In Minecraft versions up to 1.11.2 the result slot
-     * is not updated when the input slots change, so we need to update it manually, Spigot and Paper re-sync the slot,
-     * so we don't notice this bug on servers that use Spigot or Paper
-     *
-     * @param syncId        The sync id of the screen handler
-     * @param screenHandler The screen handler
-     * @param inventory     The inventory of the screen handler
-     */
     public static void setCraftingResultSlot(final int syncId, final AbstractContainerMenu screenHandler, final CraftingContainer inventory) {
         final ClientPacketListener network = Minecraft.getInstance().getConnection();
         final ClientLevel world = Minecraft.getInstance().level;

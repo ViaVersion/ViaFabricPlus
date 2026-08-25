@@ -22,10 +22,9 @@
 package com.viaversion.viafabricplus.screen.impl.classic4j;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
 import com.viaversion.viafabricplus.injection.access.core.IEditBox;
-import com.viaversion.viafabricplus.save.SaveManager;
-import com.viaversion.viafabricplus.save.impl.AccountsSave;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import de.florianreuth.classic4j.ClassiCubeHandler;
 import de.florianreuth.classic4j.api.LoginProcessHandler;
 import de.florianreuth.classic4j.model.classicube.account.CCAccount;
@@ -67,17 +66,16 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
         ((IEditBox) nameField).viaFabricPlus$unlockForbiddenCharacters();
         ((IEditBox) passwordField).viaFabricPlus$unlockForbiddenCharacters();
 
-        final AccountsSave accountsSave = SaveManager.INSTANCE.getAccountsSave();
-        if (accountsSave.getClassicubeAccount() != null) {
-            nameField.setValue(accountsSave.getClassicubeAccount().username());
-            passwordField.setValue(accountsSave.getClassicubeAccount().username());
+        if (ClassiCubeAccount.get() != null) {
+            nameField.setValue(ClassiCubeAccount.get().username());
+            passwordField.setValue(ClassiCubeAccount.get().password());
         }
 
         this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.login"), button -> {
-            accountsSave.setClassicubeAccount(new CCAccount(nameField.getValue(), passwordField.getValue()));
+            ClassiCubeAccount.set(new CCAccount(nameField.getValue(), passwordField.getValue()));
             this.setupSubtitle(Component.translatable("classicube.viafabricplus.loading"));
 
-            ClassiCubeHandler.requestAuthentication(accountsSave.getClassicubeAccount(), null, new LoginProcessHandler() {
+            ClassiCubeHandler.requestAuthentication(ClassiCubeAccount.get(), null, new LoginProcessHandler() {
 
                 @Override
                 public void handleMfa(CCAccount account) {
@@ -91,7 +89,7 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
 
                 @Override
                 public void handleException(Throwable throwable) {
-                    ViaFabricPlusImpl.INSTANCE.getLogger().error("Error while logging in to ClassiCube!", throwable);
+                    ViaFabricPlusImpl.impl().logger().error("Error while logging in to ClassiCube!", throwable);
                     setupSubtitle(Component.nullToEmpty(throwable.getMessage()));
                 }
             });
@@ -100,8 +98,8 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
 
     @Override
     public void onClose() {
-        // The user wasn't logged in when opening this screen, so he cancelled the login process, so we can safely unset the account
-        SaveManager.INSTANCE.getAccountsSave().setClassicubeAccount(null);
+        // The user wasn't logged in when opening this screen, so he canceled the login process, so we can safely unset the account
+        ClassiCubeAccount.set(null);
         super.onClose();
     }
 

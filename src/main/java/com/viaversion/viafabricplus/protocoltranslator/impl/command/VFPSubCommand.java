@@ -29,15 +29,12 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 
 public interface VFPSubCommand extends ViaSubCommand {
 
-    /**
-     * Automatically prefix all messages
-     */
     default void sendMessage(final ViaCommandSender sender, final String message) {
         ViaSubCommand.super.sendMessage(sender, ChatUtil.PREFIX + " " + message);
     }
 
     default UserConnection getUser() {
-        return ProtocolTranslator.getPlayNetworkUserConnection();
+        return ProtocolTranslator.getPlayStateUserConnection();
     }
 
 }

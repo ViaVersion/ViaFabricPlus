@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.screen.impl.settings;
 
-import com.viaversion.viafabricplus.screen.VFPListEntry;
+import com.viaversion.viafabricplus.screen.base.VFPListEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;

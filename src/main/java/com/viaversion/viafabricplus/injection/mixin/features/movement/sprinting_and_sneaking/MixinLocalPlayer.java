@@ -288,7 +288,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
             return;
         }
 
-        final PacketWrapper sneakingPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_COMMAND, ProtocolTranslator.getPlayNetworkUserConnection());
+        final PacketWrapper sneakingPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_COMMAND, ProtocolTranslator.getPlayStateUserConnection());
         sneakingPacket.write(Types.VAR_INT, getId());
         sneakingPacket.write(Types.VAR_INT, sneaking ? 0 : 1);
         sneakingPacket.write(Types.VAR_INT, 0); // No data
@@ -307,7 +307,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
         flags = (byte) (flags | (playerInput.shift() ? 0x20 : 0));
         flags = (byte) (flags | (playerInput.sprint() ? 0x40 : 0));
 
-        final PacketWrapper inputPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_INPUT, ProtocolTranslator.getPlayNetworkUserConnection());
+        final PacketWrapper inputPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_INPUT, ProtocolTranslator.getPlayStateUserConnection());
         inputPacket.write(Types.BYTE, flags);
         inputPacket.scheduleSendToServer(Protocol1_21_5To1_21_6.class);
     }

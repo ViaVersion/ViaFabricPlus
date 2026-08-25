@@ -18,14 +18,8 @@ If you also want to access **internal features** (including the legacy compatibi
 ```kotlin
 repositories {
     // https://github.com/ViaVersion/ViaFabricPlus/blob/ver/<version>/docs/DEVELOPER_API.md
+    mavenCentral()
     maven("https://repo.viaversion.com")
-    maven("https://maven.lenni0451.net/everything")
-    maven("https://maven.terraformersmc.com/releases")
-    maven("https://jitpack.io") {
-        content {
-            includeGroup("com.github.oryxel1")
-        }
-    }
 }
 
 dependencies {
@@ -41,12 +35,6 @@ dependencies {
 repositories {
     mavenCentral()
     maven { name = "ViaVersion"; url = "https://repo.viaversion.com" }
-    maven { name = "Lenni0451"; url = "https://maven.lenni0451.net/everything" }
-    maven {
-        name = "Jitpack"
-        url = "https://jitpack.io"
-        content { includeGroup "com.github.oryxel1" }
-    }
 }
 
 dependencies {
@@ -66,7 +54,7 @@ Get the main API instance with:
 final ViaFabricPlusBase platform = ViaFabricPlus.getImpl();
 ```
 
-The `ViaFabricPlusBase` interface contains all stable API functions that other mods can safely use.
+The `ViaFabricPlusAPI` interface contains all stable API functions that other mods can safely use.
 
 ---
 
@@ -74,8 +62,8 @@ The `ViaFabricPlusBase` interface contains all stable API functions that other m
 
 ViaFabricPlus provides two key callbacks:
 
-* **`LoadingCycleCallback`** – Fired at different stages of ViaFabricPlus loading (config, settings, files, etc.)
-* **`ChangeProtocolVersionCallback`** – Fired when the user switches to another protocol version (manually or by joining a server)
+* **`LoadingCycleEvent`** – Fired at different stages of ViaFabricPlus loading (config, settings, files, etc.)
+* **`ChangeProtocolVersionEvent`** – Fired when the user switches to another protocol version (manually or by joining a server)
 
 ### Example: Listening for version changes
 
@@ -91,7 +79,7 @@ platform.registerOnChangeProtocolVersionCallback((oldVersion, newVersion) -> {
 
 ## Loading Cycle Callback
 
-Since your mod may load **after** ViaFabricPlus, you need to register callbacks inside a `ViaFabricPlusLoadEntrypoint` declared in your `fabric.mod.json` as `viafabricplus`.
+Since your mod may load **after** ViaFabricPlus, you need to register callbacks inside a `BootstrapEntrypoint` declared in your `fabric.mod.json` as `viafabricplus`.
 This entrypoint also represents the `INITIAL_LOAD` stage.
 
 ```java

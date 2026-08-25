@@ -68,7 +68,7 @@ public abstract class MixinYggdrasilUserApiService {
         if (response.publicKeySignature() != null && response.publicKeySignature().array().length != 0) {
             ((IProfilePublicKey_Data) (Object) keyPairResponse).viafabricplus$setLegacyPublicKeySignature(response.publicKeySignature().array());
         } else {
-            ViaFabricPlusImpl.INSTANCE.getLogger().error("Could not get legacy public key signature. 1.19.0 with secure-profiles enabled will not work!");
+            ViaFabricPlusImpl.impl().logger().error("Could not get legacy public key signature. 1.19.0 with secure-profiles enabled will not work!");
         }
 
         return keyPairResponse;

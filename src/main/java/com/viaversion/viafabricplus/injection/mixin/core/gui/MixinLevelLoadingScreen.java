@@ -44,7 +44,7 @@ public abstract class MixinLevelLoadingScreen extends Screen {
     @Inject(method = "extractRenderState", at = @At("RETURN"))
     private void renderClassicProgress(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a, CallbackInfo ci) {
         // Check if ViaVersion is translating
-        final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+        final UserConnection connection = ProtocolTranslator.getPlayStateUserConnection();
         if (connection == null) {
             return;
         }

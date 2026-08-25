@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.features.entity.dimensions;
 
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.libs.gson.JsonObject;
@@ -33,14 +33,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 
-/**
- * Data dump for entity dimension changes between versions.
- */
 public final class EntityDimensionDiff {
 
-    /**
-     * A map of entity types to a map of versions to dimensions.
-     */
     private static final Map<EntityType<?>, Map<ProtocolVersion, EntityDimensions>> ENTITY_DIMENSIONS = new HashMap<>();
 
     public static void init() {
@@ -72,7 +66,7 @@ public final class EntityDimensionDiff {
             ENTITY_DIMENSIONS.put(entityType, dimensionMap);
         }
 
-        ViaFabricPlusImpl.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
+        ViaFabricPlus.api().addChangeProtocolVersionEvent((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
             for (Map.Entry<ProtocolVersion, EntityDimensions> entry : dimensionMap.entrySet()) {
                 final ProtocolVersion version = entry.getKey();
                 final EntityDimensions dimensions = entry.getValue();

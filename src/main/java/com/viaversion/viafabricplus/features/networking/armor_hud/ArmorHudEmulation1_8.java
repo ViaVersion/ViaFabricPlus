@@ -48,12 +48,12 @@ public final class ArmorHudEmulation1_8 {
         ClientTickEvents.START_LEVEL_TICK.register(_ -> {
             if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 if (Minecraft.getInstance().player != null) {
-                    final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+                    final UserConnection connection = ProtocolTranslator.getPlayStateUserConnection();
                     if (connection != null) {
                         try {
                             sendArmorUpdate(connection);
                         } catch (Throwable t) {
-                            ViaFabricPlusImpl.INSTANCE.getLogger().error("Error sending armor update", t);
+                            ViaFabricPlusImpl.impl().logger().error("Error sending armor update", t);
                         }
                     }
                 } else {

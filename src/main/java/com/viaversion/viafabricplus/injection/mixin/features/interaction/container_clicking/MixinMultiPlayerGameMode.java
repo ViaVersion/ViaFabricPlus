@@ -22,9 +22,9 @@
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.injection.access.interaction.container_clicking.IAbstractContainerMenu;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.protocoltranslator.translator.ItemTranslator;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
@@ -105,7 +105,7 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Unique
     private void viaFabricPlus$clickSlot1_21_4(final ServerboundContainerClickPacket packet) {
-        final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_21_4.CONTAINER_CLICK, ProtocolTranslator.getPlayNetworkUserConnection());
+        final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_21_4.CONTAINER_CLICK, ProtocolTranslator.getPlayStateUserConnection());
         containerClick.write(Types.VAR_INT, packet.containerId());
         containerClick.write(Types.VAR_INT, packet.stateId());
         containerClick.write(Types.SHORT, packet.slotNum());
@@ -117,11 +117,11 @@ public abstract class MixinMultiPlayerGameMode {
         for (Int2ObjectMap.Entry<HashedStack> entry : modifiedStacks.int2ObjectEntrySet()) {
             final ItemStack itemStack = minecraft.player.containerMenu.slots.get(entry.getIntKey()).getItem();
             containerClick.write(Types.SHORT, (short) entry.getIntKey());
-            containerClick.write(VersionedTypes.V1_21_4.item, ItemTranslator.mcToVia(itemStack, ProtocolVersion.v1_21_4));
+            containerClick.write(VersionedTypes.V1_21_4.item, ViaFabricPlus.api().conversions().translateItem(itemStack, ProtocolVersion.v1_21_4));
         }
 
         final ItemStack cursorStack = minecraft.player.containerMenu.getCarried();
-        containerClick.write(VersionedTypes.V1_21_4.item, ItemTranslator.mcToVia(cursorStack, ProtocolVersion.v1_21_4));
+        containerClick.write(VersionedTypes.V1_21_4.item, ViaFabricPlus.api().conversions().translateItem(cursorStack, ProtocolVersion.v1_21_4));
         containerClick.scheduleSendToServer(Protocol1_21_4To1_21_5.class);
     }
 
@@ -136,13 +136,13 @@ public abstract class MixinMultiPlayerGameMode {
             slotItemBeforeModification = viaFabricPlus$oldItems.get(packet.slotNum());
         }
 
-        final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ProtocolTranslator.getPlayNetworkUserConnection());
+        final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ProtocolTranslator.getPlayStateUserConnection());
         containerClick.write(Types.BYTE, (byte) packet.containerId());
         containerClick.write(Types.SHORT, packet.slotNum());
         containerClick.write(Types.BYTE, packet.buttonNum());
         containerClick.write(Types.SHORT, ((IAbstractContainerMenu) minecraft.player.containerMenu).viaFabricPlus$incrementAndGetActionId());
         containerClick.write(Types.VAR_INT, packet.containerInput().ordinal());
-        containerClick.write(Types.ITEM1_13_2, ItemTranslator.mcToVia(slotItemBeforeModification, ProtocolVersion.v1_16_4));
+        containerClick.write(Types.ITEM1_13_2, ViaFabricPlus.api().conversions().translateItem(slotItemBeforeModification, ProtocolVersion.v1_16_4));
         containerClick.scheduleSendToServer(Protocol1_16_4To1_17.class);
 
         viaFabricPlus$oldCursorStack = null;

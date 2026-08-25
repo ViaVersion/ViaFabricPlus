@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.features.hud_changes;
 
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
@@ -39,17 +39,18 @@ import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.Extensi
 import net.raphimc.vialegacy.protocol.release.r1_1tor1_2_1_3.storage.SeedStorage;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.storage.EntityTracker;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public final class VFPDebugHudEntry implements DebugScreenEntry {
 
     public static final Identifier ID = Identifier.fromNamespaceAndPath("viafabricplus", "viafabricplus");
 
     @Override
-    public void display(final DebugScreenDisplayer lines, @Nullable final Level world, @Nullable final LevelChunk clientChunk, @Nullable final LevelChunk chunk) {
+    public void display(final @NonNull DebugScreenDisplayer lines, @Nullable final Level world, @Nullable final LevelChunk clientChunk, @Nullable final LevelChunk chunk) {
         final List<String> information = new ArrayList<>();
-        information.add(ChatUtil.PREFIX + ChatFormatting.RESET + " " + ViaFabricPlusImpl.INSTANCE.getVersion());
+        information.add(ChatUtil.PREFIX + ChatFormatting.RESET + ' ' + ViaFabricPlus.api().version());
 
-        final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+        final UserConnection connection = ProtocolTranslator.getPlayStateUserConnection();
         if (connection == null) {
             lines.addLine(information.getFirst());
             return;

@@ -1,6 +1,5 @@
 pluginManagement {
     repositories {
-        mavenCentral()
         gradlePluginPortal()
         maven("https://maven.florianreuth.de/releases")
         maven("https://maven.fabricmc.net/")

@@ -21,6 +21,7 @@
 package com.viaversion.viafabricplus.protocoltranslator.util;
 
 import com.google.gson.JsonObject;
+import com.viaversion.viafabricplus.util.JsonSave;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -32,8 +33,6 @@ import java.nio.charset.StandardCharsets;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.network.protocol.handshake.ClientIntent;
-
-import static com.viaversion.viafabricplus.save.AbstractSave.GSON;
 
 /**
  * This class can be used to detect the protocol version of a server without connecting to it.
@@ -93,7 +92,7 @@ public final class ProtocolVersionDetector {
             }
 
             final String response = readString(dataInputStream);
-            final JsonObject object = GSON.fromJson(response, JsonObject.class);
+            final JsonObject object = JsonSave.GSON.fromJson(response, JsonObject.class);
             if (!object.has("version")) {
                 throw new IllegalStateException("Invalid ping response");
             }

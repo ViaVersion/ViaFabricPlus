@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.instant_sneaking;
 
-import com.viaversion.viafabricplus.settings.impl.VisualSettings;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -44,7 +44,7 @@ public abstract class MixinCamera {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/attribute/EnvironmentAttributeProbe;tick(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/phys/Vec3;)V", shift = At.Shift.BEFORE))
     private void sneakInstantly(CallbackInfo ci) {
-        if (VisualSettings.INSTANCE.sneakInstantly.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().sneakInstantly().isActive()) {
             eyeHeight = eyeHeightOld = entity.getEyeHeight();
         }
     }

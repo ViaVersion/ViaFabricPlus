@@ -23,17 +23,13 @@ package com.viaversion.viafabricplus.util;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 
-/**
- * Implementation of the ModMenu integration allowing users to open the protocol selection screen from the mod menu.
- */
 public final class ModMenuScreenFactory implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        //noinspection Convert2MethodRef
-        return screen -> ProtocolSelectionScreen.INSTANCE.get(screen);
+        return screen -> ViaFabricPlusImpl.impl().screens().protocolSelectionScreen(screen);
     }
 
 }

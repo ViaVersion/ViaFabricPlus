@@ -23,9 +23,7 @@ package com.viaversion.viafabricplus.features.hud_changes.r1_7_tab_list_style;
 
 public final class LegacyTabList {
 
-    /**
-     * An incremental index used for tablist entries to implement FIFO behavior in Minecraft versions up to 1.7.
-     */
+    // An incremental index used for entries to implement FIFO behavior in Minecraft versions up to 1.7.
     public static int globalTablistIndex = 0;
 
 }

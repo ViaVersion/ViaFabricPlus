@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
+import com.viaversion.viafabricplus.api.events.LoadingCycleEvent;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicWorldHeightProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusEncryptionProvider;
@@ -74,7 +74,7 @@ public final class ViaFabricPlusPlatformLoader implements ViaPlatformLoader {
         providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
         providers.use(ClassicMpPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
 
-        ViaFabricPlusImpl.LOADING_CYCLE.invoker().onLoadCycle(LoadingCycleCallback.LoadingCycle.POST_VIAVERSION_LOAD);
+        ViaFabricPlusImpl.impl().runLoadingCycleEvents(LoadingCycleEvent.LoadingCycle.POST_VIAVERSION_LOAD);
     }
 
     @Override

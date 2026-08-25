@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.injection.access.block.shape.ICrossCollisionBlock;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -120,7 +120,7 @@ public abstract class MixinIronBarsBlock extends CrossCollisionBlock implements 
 
     @Override
     public @NonNull VoxelShape getShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
-        if (DebugSettings.INSTANCE.legacyPaneOutlines.isEnabled()) {
+        if (ViaFabricPlus.api().settings().visual().legacyPaneOutlines().isActive()) {
             return this.viaFabricPlus$shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getShape(state, world, pos, context);

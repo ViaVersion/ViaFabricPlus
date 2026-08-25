@@ -27,10 +27,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * No-op implementation of {@link BlockStatePredictionHandler} for 1.18.2 and lower since those versions don't have the
- * {@link BlockStatePredictionHandler} class.
- */
 public final class PendingUpdateManager1_18_2 extends BlockStatePredictionHandler {
 
     @Override

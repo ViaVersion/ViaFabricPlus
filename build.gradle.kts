@@ -12,38 +12,15 @@ plugins {
     id("de.florianreuth.baseproject")
 }
 
-allprojects {
-
-    setupProject()
-    setupFabric()
-    setupViaPublishing()
-
-    repositories {
-        // Keep them in sync with docs/DEVELOPER_API.md
-        maven("https://repo.viaversion.com")
-        maven("https://maven.lenni0451.net/everything")
-        maven("https://maven.terraformersmc.com/releases")
-        //mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
-    }
-
+repositories {
+    maven("https://repo.viaversion.com")
+    maven("https://maven.terraformersmc.com/releases")
+    //mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
 }
 
-subprojects {
-
-    dependencies {
-        api("com.viaversion:viaversion-common:5.12.0-SNAPSHOT")
-        api("com.viaversion:viabackwards-common:5.12.0-SNAPSHOT")
-        api("com.viaversion:viaaprilfools-common:4.2.3-SNAPSHOT")
-        api("net.raphimc:ViaLegacy:3.1.0-SNAPSHOT")
-    }
-
-    tasks {
-        runClient {
-            enabled = false
-        }
-    }
-
-}
+setupProject()
+setupFabric()
+setupViaPublishing()
 
 configureTest().also {
     // Comment during Minecraft updates to update data diff files

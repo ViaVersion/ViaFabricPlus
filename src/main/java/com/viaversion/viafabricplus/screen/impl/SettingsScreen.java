@@ -22,20 +22,17 @@
 package com.viaversion.viafabricplus.screen.impl;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.api.settings.AbstractSetting;
-import com.viaversion.viafabricplus.api.settings.SettingGroup;
-import com.viaversion.viafabricplus.api.settings.type.BooleanSetting;
-import com.viaversion.viafabricplus.api.settings.type.ButtonSetting;
-import com.viaversion.viafabricplus.api.settings.type.ModeSetting;
-import com.viaversion.viafabricplus.api.settings.type.VersionedBooleanSetting;
-import com.viaversion.viafabricplus.screen.VFPList;
-import com.viaversion.viafabricplus.screen.VFPScreen;
+import com.viaversion.viafabricplus.api.settings.base.BooleanSetting;
+import com.viaversion.viafabricplus.api.settings.base.EnumSetting;
+import com.viaversion.viafabricplus.api.settings.base.Setting;
+import com.viaversion.viafabricplus.api.settings.base.SettingGroup;
+import com.viaversion.viafabricplus.api.settings.base.VersionedBooleanSetting;
+import com.viaversion.viafabricplus.screen.base.VFPList;
+import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import com.viaversion.viafabricplus.screen.impl.settings.BooleanListEntry;
-import com.viaversion.viafabricplus.screen.impl.settings.ButtonListEntry;
-import com.viaversion.viafabricplus.screen.impl.settings.ModeListEntry;
+import com.viaversion.viafabricplus.screen.impl.settings.EnumListEntry;
 import com.viaversion.viafabricplus.screen.impl.settings.TitleEntry;
 import com.viaversion.viafabricplus.screen.impl.settings.VersionedBooleanListEntry;
-import com.viaversion.viafabricplus.settings.SettingsManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
@@ -61,18 +58,15 @@ public final class SettingsScreen extends VFPScreen {
         public SlotList(Minecraft minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
             super(minecraftClient, width, height, top, bottom, entryHeight);
 
-            for (SettingGroup group : SettingsManager.INSTANCE.getGroups()) {
-                this.addEntry(new TitleEntry(group.getName()));
+            for (final SettingGroup group : ViaFabricPlusImpl.impl().settings().groups()) {
+                this.addEntry(new TitleEntry(group.name()));
 
-                for (AbstractSetting<?> setting : group.getSettings()) {
+                for (final Setting<?> setting : group.settings()) {
                     switch (setting) {
                         case final BooleanSetting booleanSetting -> this.addEntry(new BooleanListEntry(booleanSetting));
-                        case final ButtonSetting buttonSetting -> this.addEntry(new ButtonListEntry(buttonSetting));
-                        case final ModeSetting modeSetting -> this.addEntry(new ModeListEntry(modeSetting));
-                        case final VersionedBooleanSetting versionedBooleanSetting ->
-                            this.addEntry(new VersionedBooleanListEntry(versionedBooleanSetting));
-                        default ->
-                            ViaFabricPlusImpl.INSTANCE.getLogger().warn("Unknown setting type: {}", setting.getClass().getName());
+                        case final EnumSetting<?> enumSetting -> this.addEntry(new EnumListEntry<>(enumSetting));
+                        case final VersionedBooleanSetting versionedBooleanSetting -> this.addEntry(new VersionedBooleanListEntry(versionedBooleanSetting));
+                        default -> ViaFabricPlusImpl.impl().logger().warn("Unknown setting type: {}", setting.getClass().getName());
                     }
                 }
             }

@@ -22,8 +22,9 @@
 package com.viaversion.viafabricplus.features;
 
 import com.viaversion.viaaprilfools.api.AprilFoolsProtocolVersion;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.features.block.shape.CollisionShapes;
+import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
 import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
 import com.viaversion.viafabricplus.features.classic.creative_menu.GridItemSelectionScreen;
 import com.viaversion.viafabricplus.features.entity.attribute.EnchantmentAttributesEmulation1_20_6;
@@ -48,8 +49,9 @@ public final class FeaturesLoading {
         RenderableGlyphDiff.init();
         FootStepParticle1_12_2.init();
         CPEAdditions.init();
+        ClassiCubeAccount.init();
 
-        ViaFabricPlusImpl.CHANGE_PROTOCOL_VERSION.register((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> {
+        ViaFabricPlus.api().addChangeProtocolVersionEvent((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> {
             CollisionShapes.reloadBlockShapes();
 
             if (oldVersion.equals(AprilFoolsProtocolVersion.s3d_shareware) || newVersion.equals(AprilFoolsProtocolVersion.s3d_shareware)) {

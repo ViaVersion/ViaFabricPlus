@@ -65,7 +65,7 @@ public final class GridItemSelectionScreen extends Screen {
             if (item == Items.AIR || !item.requiredFeatures().contains(FeatureFlags.VANILLA)) {
                 continue;
             }
-            if (ViaFabricPlus.getImpl().itemExistsInConnection(item)) {
+            if (ViaFabricPlus.api().limitations().itemExistsInConnection(item)) {
                 allowedItems.add(item);
             }
         }
@@ -125,7 +125,9 @@ public final class GridItemSelectionScreen extends Screen {
         for (Item[] items : itemGrid) {
             int x = SIDE_OFFSET;
             for (Item item : items) {
-                if (item == null) continue;
+                if (item == null) {
+                    continue;
+                }
 
                 if (mouseX > renderX + x && mouseY > renderY + y && mouseX < renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC && mouseY < renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC) {
                     context.fill(renderX + x, renderY + y, renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC, renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC, Integer.MAX_VALUE);

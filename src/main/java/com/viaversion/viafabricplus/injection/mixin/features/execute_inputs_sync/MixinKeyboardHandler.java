@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.execute_inputs_syn
 
 import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseKeyboardHandlers;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.settings.impl.DebugSettings;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;

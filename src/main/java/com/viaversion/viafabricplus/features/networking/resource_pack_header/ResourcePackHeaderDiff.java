@@ -34,9 +34,6 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackFormat;
 import net.minecraft.world.level.storage.DataVersion;
 
-/**
- * This class file contains the {@link WorldVersion} for each protocol version.
- */
 public final class ResourcePackHeaderDiff {
 
     private final static Map<ProtocolVersion, WorldVersion> GAME_VERSION_DIFF = new HashMap<>();
@@ -64,10 +61,6 @@ public final class ResourcePackHeaderDiff {
         }
     }
 
-    /**
-     * @param version The {@link ProtocolVersion} to get the {@link WorldVersion} for.
-     * @return The {@link WorldVersion} for the given {@link ProtocolVersion}.
-     */
     public static WorldVersion get(final ProtocolVersion version) {
         if (!GAME_VERSION_DIFF.containsKey(version)) {
             return SharedConstants.getCurrentVersion();

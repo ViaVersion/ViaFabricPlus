@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.core.gui;
 
-import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
-import com.viaversion.viafabricplus.settings.impl.GeneralSettings;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.api.settings.impl.Orientation;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.DirectJoinServerScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -41,14 +41,11 @@ public abstract class MixinDirectJoinServerScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void addProtocolSelectionButton(CallbackInfo ci) {
-        final int buttonPosition = GeneralSettings.INSTANCE.directConnectScreenButtonOrientation.getIndex();
-        if (buttonPosition == 0) { // Off
-            return;
+        final Orientation orientation = ViaFabricPlus.api().settings().general().directConnectScreenButtonOrientation().value();
+        if (orientation != Orientation.NONE) {
+            final Button.Builder builder = Button.builder(Component.nullToEmpty("ViaFabricPlus"), _ -> ViaFabricPlus.api().screens().openProtocolSelectionScreen(this)).size(98, 20);
+            orientation.getPositioner().setPosition(this.addRenderableWidget(builder.build()), width, height);
         }
-
-        final Button.Builder builder = Button.builder(Component.nullToEmpty("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this)).size(98, 20);
-        GeneralSettings.setOrientation(builder::pos, buttonPosition, width, height);
-        this.addRenderableWidget(builder.build());
     }
 
 }
